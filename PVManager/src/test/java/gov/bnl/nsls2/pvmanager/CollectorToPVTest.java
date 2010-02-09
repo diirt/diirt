@@ -45,11 +45,18 @@ public class CollectorToPVTest {
     }
 
     private volatile DoublePV pv;
-    private Random rand = new Random();
     private AtomicInteger counter;
 
     @Test
     public void simpleTest() throws Exception {
+        long testTimeMs = 5000;
+        long scanPeriodMs = 40;
+        long notificationPeriodMs = 1;
+        int samplesPerNotification = 5;
+        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+        int targetNotifications = Math.min(nNotifications, maxNotifications);
+
         final Collector collector = new Collector();
         counter = new AtomicInteger();
         Aggregator aggregator = new SimpleAggregator(collector);
@@ -61,27 +68,57 @@ public class CollectorToPVTest {
 
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        System.out.println("New value " + pv.getValue());
+                        //System.out.println("New value " + pv.getValue());
                         counter.incrementAndGet();
                     }
                 });
             }
         });
         PullNotificator notificator = new PullNotificator(pv, aggregator);
-        Scanner.scan(notificator, 40);
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        Scanner.scan(notificator, scanPeriodMs);
+        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        Thread.sleep(testTimeMs + 100);
+        int actualNotification = counter.get() - 1;
+        if (Math.abs(actualNotification - targetNotifications) > 1) {
+            fail("Expected " + targetNotifications + " but got " + actualNotification);
+        }
+    }
 
+    @Test
+    public void testSlowerRate() throws Exception {
+        long testTimeMs = 5000;
+        long scanPeriodMs = 40;
+        long notificationPeriodMs = 100;
+        int samplesPerNotification = 1;
+        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+        int targetNotifications = Math.min(nNotifications, maxNotifications);
+
+        final Collector collector = new Collector();
+        counter = new AtomicInteger();
+        Aggregator aggregator = new SimpleAggregator(collector);
+        SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                collector.post(rand.nextGaussian());
-                collector.post(rand.nextGaussian());
-                collector.post(rand.nextGaussian());
-                collector.post(rand.nextGaussian());
-                collector.post(rand.nextGaussian());
+                pv = new DoublePV();
+                pv.addPropertyChangeListener(new PropertyChangeListener() {
+
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                        //System.out.println("New value " + pv.getValue());
+                        counter.incrementAndGet();
+                    }
+                });
             }
-        }, 0, 200);
-        Thread.sleep(5000);
-        System.out.println(counter.get());
+        });
+        PullNotificator notificator = new PullNotificator(pv, aggregator);
+        Scanner.scan(notificator, scanPeriodMs);
+        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        Thread.sleep(testTimeMs + 100);
+        int actualNotification = counter.get() - 1;
+        if (Math.abs(actualNotification - targetNotifications) > 1) {
+            fail("Expected " + targetNotifications + " but got " + actualNotification);
+        }
     }
 
 }
