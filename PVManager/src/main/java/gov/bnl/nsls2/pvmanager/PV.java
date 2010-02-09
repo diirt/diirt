@@ -1,12 +1,13 @@
 package gov.bnl.nsls2.pvmanager;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class PV<T> {
-	private String name;
-	private T value;
-	private State state;
-	
-	private enum State
-    {
+
+
+    public enum State {
+
         /** Nothing happened, yet */
         Idle,
         /** Trying to connect */
@@ -28,28 +29,90 @@ public class PV<T> {
         Disconnected
     }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String name;
+    public static final String PROP_NAME = "name";
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * Get the value of name
+     *
+     * @return the value of name
+     */
+    public String getName() {
+        return name;
+    }
 
-	public void setValue(T value) {
-		this.value = value;
-	}
+    /**
+     * Set the value of name
+     *
+     * @param name new value of name
+     */
+    public void setName(String name) {
+        String oldName = this.name;
+        this.name = name;
+        propertyChangeSupport.firePropertyChange(PROP_NAME, oldName, name);
+    }
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-	public T getValue() {
-		return value;
-	}
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
 
-	public void setState(State state) {
-		this.state = state;
-	}
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+    private T value;
+    public static final String PROP_VALUE = "value";
 
-	public State getState() {
-		return state;
-	}	
+    /**
+     * Get the value of value
+     *
+     * @return the value of value
+     */
+    public T getValue() {
+        return value;
+    }
+
+    /**
+     * Set the value of value
+     *
+     * @param value new value of value
+     */
+    public void setValue(T value) {
+        T oldValue = this.value;
+        this.value = value;
+        propertyChangeSupport.firePropertyChange(PROP_VALUE, oldValue, value);
+    }
+    private State state;
+    public static final String PROP_STATE = "state";
+
+    /**
+     * Get the value of state
+     *
+     * @return the value of state
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @param state new value of state
+     */
+    public void setState(State state) {
+        State oldState = this.state;
+        this.state = state;
+        propertyChangeSupport.firePropertyChange(PROP_STATE, oldState, state);
+    }
 
 }

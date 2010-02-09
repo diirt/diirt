@@ -1,19 +1,30 @@
 package gov.bnl.nsls2.pvmanager;
 
-import javax.swing.SwingUtilities;
+public class SimpleAggregator extends Aggregator {
 
-public class SimpleAggregator implements Aggregator {
+    private final Collector collector;
+    // TODO There may not be a last value!!!
+    private double lastValue = 0;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void compute(PV inputs, final PV output) {
-		// TODO Auto-generated method stub
-		final Object input = inputs.getValue();
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run(){
-				output.setValue(input);
-			}
-		});
-	}
+    public SimpleAggregator(Collector collector) {
+        this.collector = collector;
+    }
+
+    @Override
+    public synchronized double getValue() {
+        double[] data = collector.getData();
+        if (data.length > 0) {
+            lastValue = calculate(data);
+        }
+        return lastValue;
+    }
+
+    protected double calculate(double[] data) {
+        double average = 0;
+        for (double item : data) {
+            average += item;
+        }
+        return average / data.length;
+    }
 
 }
