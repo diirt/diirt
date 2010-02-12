@@ -15,23 +15,4 @@ import java.util.TimerTask;
  */
 public class DataGenerator {
 
-    private static Random rand = new Random();
-
-    public static void generateData(final Collector collector, final int nTimes, long period, final int samplesPerPeriod) {
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int innerCounter;
-
-            @Override
-            public void run() {
-                for (int i = 0; i < samplesPerPeriod; i++) {
-                    collector.post(rand.nextGaussian());
-                }
-                innerCounter++;
-                if (innerCounter == nTimes) {
-                    timer.cancel();
-                }
-            }
-        }, 0, period);
-    }
 }

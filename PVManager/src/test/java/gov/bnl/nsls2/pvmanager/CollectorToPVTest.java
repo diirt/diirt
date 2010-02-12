@@ -63,7 +63,7 @@ public class CollectorToPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pv.getValue());
+                        //System.out.println("New value " + pv.getValue().getDouble());
                         counter.incrementAndGet();
                     }
                 });
@@ -71,7 +71,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -100,7 +100,7 @@ public class CollectorToPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pv.getValue());
+                        //System.out.println("New value " + pv.getValue().getDouble());
                         counter.incrementAndGet();
                     }
                 });
@@ -108,7 +108,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -147,7 +147,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {

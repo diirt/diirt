@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
  *
  * @author carcassi
  */
-public class PullNotificator<T extends PVType> {
+public class PullNotificator<T extends PVType<T>> {
 
     private final PV<T> pv;
     private final Aggregator<T> aggregator;
