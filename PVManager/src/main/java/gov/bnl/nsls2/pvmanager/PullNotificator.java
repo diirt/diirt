@@ -11,23 +11,23 @@ import javax.swing.SwingUtilities;
  *
  * @author carcassi
  */
-public class PullNotificator {
+public class PullNotificator<T extends PVType> {
 
-    private final PV<TypeDouble> pv;
-    private final Aggregator aggregator;
+    private final PV<T> pv;
+    private final Aggregator<T> aggregator;
 
-    public PullNotificator(PV<TypeDouble> pv, Aggregator aggregator) {
+    public PullNotificator(PV<T> pv, Aggregator<T> aggregator) {
         this.pv = pv;
         this.aggregator = aggregator;
     }
 
     public void notifyPv() {
-        final double newValue = aggregator.getValue();
+        final T newValue = aggregator.getValue();
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                pv.getValue().setDouble(newValue);
+                pv.getValue().setTo(newValue);
             }
         });
     }

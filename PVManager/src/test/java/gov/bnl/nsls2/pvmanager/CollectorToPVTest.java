@@ -5,11 +5,6 @@
 
 package gov.bnl.nsls2.pvmanager;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.junit.After;
@@ -48,7 +43,7 @@ public class CollectorToPVTest {
     private AtomicInteger counter;
 
     @Test
-    public void simpleTest() throws Exception {
+    public void testFasterRate() throws Exception {
         long testTimeMs = 5000;
         long scanPeriodMs = 40;
         long notificationPeriodMs = 1;
@@ -59,7 +54,7 @@ public class CollectorToPVTest {
 
         final Collector collector = new Collector();
         counter = new AtomicInteger();
-        Aggregator aggregator = new SimpleAggregator(collector);
+        AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
@@ -74,7 +69,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator notificator = new PullNotificator(pv, aggregator);
+        PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
         DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
@@ -96,7 +91,7 @@ public class CollectorToPVTest {
 
         final Collector collector = new Collector();
         counter = new AtomicInteger();
-        Aggregator aggregator = new SimpleAggregator(collector);
+        AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
@@ -111,7 +106,46 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator notificator = new PullNotificator(pv, aggregator);
+        PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
+        Scanner.scan(notificator, scanPeriodMs);
+        DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        Thread.sleep(testTimeMs + 100);
+        int actualNotification = counter.get() - 1;
+        if (Math.abs(actualNotification - targetNotifications) > 1) {
+            fail("Expected " + targetNotifications + " but got " + actualNotification);
+        }
+    }
+
+    private volatile PV<TypeStatistics> pvStat;
+
+    @Test
+    public void testStatistics() throws Exception {
+        long testTimeMs = 5000;
+        long scanPeriodMs = 40;
+        long notificationPeriodMs = 1;
+        int samplesPerNotification = 5;
+        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+        int targetNotifications = Math.min(nNotifications, maxNotifications);
+
+        final Collector collector = new Collector();
+        counter = new AtomicInteger();
+        StatisticsAggregator aggregator = new StatisticsAggregator(collector);
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                pvStat = PV.createPv(TypeStatistics.class);
+                pvStat.addPVValueChangeListener(new PVValueChangeListener() {
+
+                    @Override
+                    public void pvValueChanged() {
+                        //System.out.println("New value " + pvStat.getValue().getAverage() + " +/- " + pvStat.getValue().getStdDev());
+                        counter.incrementAndGet();
+                    }
+                });
+            }
+        });
+        PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
         DataGenerator.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);

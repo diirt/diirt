@@ -9,6 +9,6 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-public abstract class Aggregator {
-    public abstract double getValue();
+public abstract class Aggregator<T extends PVType> {
+    public abstract T getValue();
 }

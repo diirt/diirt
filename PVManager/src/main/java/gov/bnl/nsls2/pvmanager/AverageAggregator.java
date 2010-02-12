@@ -1,20 +1,23 @@
 package gov.bnl.nsls2.pvmanager;
 
-public class SimpleAggregator extends Aggregator {
+public class AverageAggregator extends Aggregator<TypeDouble> {
 
     private final Collector collector;
     // TODO There may not be a last value!!!
-    private double lastValue = 0;
+    private TypeDouble lastValue = new TypeDouble();
 
-    public SimpleAggregator(Collector collector) {
+    public AverageAggregator(Collector collector) {
         this.collector = collector;
     }
 
     @Override
-    public synchronized double getValue() {
+    public synchronized TypeDouble getValue() {
         double[] data = collector.getData();
         if (data.length > 0) {
-            lastValue = calculate(data);
+            lastValue = new TypeDouble();
+            synchronized (lastValue) {
+                lastValue.setDouble(calculate(data));
+            }
         }
         return lastValue;
     }

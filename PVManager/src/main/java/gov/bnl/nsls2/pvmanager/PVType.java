@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class PVType<T> {
+public abstract class PVType<T extends PVType<T>> {
 
     private List<PVValueChangeListener> valueChangeListeners = new ArrayList<PVValueChangeListener>();
 
@@ -29,5 +29,7 @@ public class PVType<T> {
     protected void removePVValueChangeListener(PVValueChangeListener listener) {
         valueChangeListeners.remove(listener);
     }
+
+    abstract void setTo(T newValue);
 
 }
