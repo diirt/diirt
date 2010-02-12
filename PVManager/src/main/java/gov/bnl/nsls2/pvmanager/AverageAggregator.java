@@ -1,5 +1,10 @@
 package gov.bnl.nsls2.pvmanager;
 
+/**
+ * Aggregates the values by taking the average.
+ * 
+ * @author carcassi
+ */
 public class AverageAggregator extends Aggregator<TypeDouble> {
 
     private final Collector collector;

@@ -6,6 +6,7 @@
 package gov.bnl.nsls2.pvmanager;
 
 /**
+ * Aggregates the data out of a Collector into a new data type.
  *
  * @author carcassi
  */
