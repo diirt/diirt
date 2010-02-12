@@ -3,8 +3,29 @@ package gov.bnl.nsls2.pvmanager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class PV<T> {
+public final class PV<T extends PVType> {
 
+    private PV(T value) {
+        this.value = value;
+    }
+
+    public static <E extends PVType> PV<E> createPv(Class<E> clazz) {
+        try {
+            E data = clazz.newInstance();
+            PV<E> pv = new PV<E>(data);
+            return pv;
+        } catch (Exception e) {
+            throw new RuntimeException("Can't create PV of type " + clazz.getName(), e);
+        }
+    }
+
+    public void addPVValueChangeListener(PVValueChangeListener listener) {
+        value.addPVValueChangeListener(listener);
+    }
+
+    public void removePVValueChangeListener(PVValueChangeListener listener) {
+        value.removePVValueChangeListener(listener);
+    }
 
     public enum State {
 
@@ -70,7 +91,7 @@ public class PV<T> {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
-    private T value;
+    private final T value;
     public static final String PROP_VALUE = "value";
 
     /**
@@ -82,16 +103,6 @@ public class PV<T> {
         return value;
     }
 
-    /**
-     * Set the value of value
-     *
-     * @param value new value of value
-     */
-    public void setValue(T value) {
-        T oldValue = this.value;
-        this.value = value;
-        propertyChangeSupport.firePropertyChange(PROP_VALUE, oldValue, value);
-    }
     private State state;
     public static final String PROP_STATE = "state";
 

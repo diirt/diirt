@@ -10,7 +10,7 @@ class ConnectionManager {
 		return instance;
 	}
 	
-	DoublePV doublePV(String name){
+	PV<TypeDouble> doublePV(String name){
 		return null;
 		// implement the CA monitor.
 	}

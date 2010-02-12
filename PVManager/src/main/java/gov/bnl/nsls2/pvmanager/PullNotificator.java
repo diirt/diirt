@@ -13,10 +13,10 @@ import javax.swing.SwingUtilities;
  */
 public class PullNotificator {
 
-    private final DoublePV pv;
+    private final PV<TypeDouble> pv;
     private final Aggregator aggregator;
 
-    public PullNotificator(DoublePV pv, Aggregator aggregator) {
+    public PullNotificator(PV<TypeDouble> pv, Aggregator aggregator) {
         this.pv = pv;
         this.aggregator = aggregator;
     }
@@ -27,7 +27,7 @@ public class PullNotificator {
 
             @Override
             public void run() {
-                pv.setValue(newValue);
+                pv.getValue().setDouble(newValue);
             }
         });
     }

@@ -44,7 +44,7 @@ public class CollectorToPVTest {
     public void tearDown() {
     }
 
-    private volatile DoublePV pv;
+    private volatile PV<TypeDouble> pv;
     private AtomicInteger counter;
 
     @Test
@@ -63,11 +63,11 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = new DoublePV();
-                pv.addPropertyChangeListener(new PropertyChangeListener() {
+                pv = PV.createPv(TypeDouble.class);
+                pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
-                    public void propertyChange(PropertyChangeEvent evt) {
+                    public void pvValueChanged() {
                         //System.out.println("New value " + pv.getValue());
                         counter.incrementAndGet();
                     }
@@ -100,11 +100,11 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = new DoublePV();
-                pv.addPropertyChangeListener(new PropertyChangeListener() {
+                pv = PV.createPv(TypeDouble.class);
+                pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
-                    public void propertyChange(PropertyChangeEvent evt) {
+                    public void pvValueChanged() {
                         //System.out.println("New value " + pv.getValue());
                         counter.incrementAndGet();
                     }
