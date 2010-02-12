@@ -51,4 +51,8 @@ public class MockConnectionManager {
             throw new RuntimeException("Name doesn't match for mock connection");
         }
     }
+
+    void connect(ConnectionRecipe connRecipe) {
+        connect(connRecipe.pvName, connRecipe.collector);
+    }
 }

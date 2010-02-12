@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
 /**
  *
@@ -69,6 +70,39 @@ public class ReadingPVTest {
             @Override
             public void run() {
                 final PV<TypeDouble> pv = PVManager.readPV("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times", scanPeriodMs);
+                pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+                    @Override
+                    public void pvValueChanged() {
+                        //System.out.println("New value " + pv.getValue().getDouble());
+                        counter.incrementAndGet();
+                    }
+                });
+            }
+        });
+        Thread.sleep(testTimeMs + 100);
+        int actualNotification = counter.get() - 1;
+        if (Math.abs(actualNotification - targetNotifications) > 1) {
+            fail("Expected " + targetNotifications + " but got " + actualNotification);
+        }
+    }
+
+    @Test
+    public void testFluentApi() throws Exception {
+        long testTimeMs = 5000;
+        final long scanPeriodMs = 40;
+        final long notificationPeriodMs = 1;
+        final int samplesPerNotification = 5;
+        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+        int targetNotifications = Math.min(nNotifications, maxNotifications);
+
+
+        counter = new AtomicInteger();
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                final PV<TypeDouble> pv = PVManager.read(doublePv("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times"), scanPeriodMs);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
