@@ -17,7 +17,7 @@ public class PVExpressionLanguage {
     }
 
     public static AggregatedPVExpression<TypeDouble> averageOf(PVExpression<TypeDouble> doublePv) {
-        ConnectionRecipe<TypeDouble> recipe = new ConnectionRecipe<TypeDouble>();
+        MonitorRecipe<TypeDouble> recipe = new MonitorRecipe<TypeDouble>();
         recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
         recipe.collector = new Collector(recipe.cache);
         recipe.pvName = doublePv.getName();
@@ -25,7 +25,7 @@ public class PVExpressionLanguage {
     }
 
     public static AggregatedPVExpression<TypeStatistics> statisticsOf(PVExpression<TypeDouble> doublePv) {
-        ConnectionRecipe<TypeDouble> recipe = new ConnectionRecipe<TypeDouble>();
+        MonitorRecipe<TypeDouble> recipe = new MonitorRecipe<TypeDouble>();
         recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
         recipe.collector = new Collector(recipe.cache);
         recipe.pvName = doublePv.getName();

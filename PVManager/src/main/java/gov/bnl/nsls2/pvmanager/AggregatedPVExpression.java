@@ -11,17 +11,17 @@ package gov.bnl.nsls2.pvmanager;
  */
 public class AggregatedPVExpression<T extends PVType<T>> {
 
-    private ConnectionRecipe recipe;
+    private MonitorRecipe recipe;
     private Class<T> outputType;
     private Aggregator<T> aggregator;
 
-    AggregatedPVExpression(ConnectionRecipe recipe, Class<T> outputType, Aggregator<T> aggregator) {
+    AggregatedPVExpression(MonitorRecipe recipe, Class<T> outputType, Aggregator<T> aggregator) {
         this.recipe = recipe;
         this.outputType = outputType;
         this.aggregator = aggregator;
     }
 
-    ConnectionRecipe getRecipe() {
+    MonitorRecipe getRecipe() {
         return recipe;
     }
 

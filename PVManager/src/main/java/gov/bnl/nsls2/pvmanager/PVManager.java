@@ -22,22 +22,22 @@ public class PVManager {
         AverageAggregator aggregator = new AverageAggregator(collector);
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        ConnectionRecipe<TypeDouble> connRecipe = new ConnectionRecipe<TypeDouble>();
+        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
         connRecipe.cache = cache;
         connRecipe.pvName = name;
         connRecipe.collector = collector;
-        MockConnectionManager.instance.connect(connRecipe);
+        MockConnectionManager.instance.monitor(connRecipe);
         return pv;
     }
 
     public static PV<TypeDouble> read(PVExpression<TypeDouble> pvExpression, long scanPeriodMs) {
         PV<TypeDouble> pv = PV.createPv(TypeDouble.class);
         AggregatedPVExpression<TypeDouble> aggreg = averageOf(pvExpression);
-        @SuppressWarnings("unchecked") ConnectionRecipe<TypeDouble> connRecipe = aggreg.getRecipe();
+        @SuppressWarnings("unchecked") MonitorRecipe<TypeDouble> connRecipe = aggreg.getRecipe();
         AverageAggregator aggregator = new AverageAggregator(connRecipe.collector);
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.instance.connect(connRecipe);
+        MockConnectionManager.instance.monitor(connRecipe);
         return pv;
     }
 
@@ -56,11 +56,11 @@ public class PVManager {
         public PV<T> atHz(double rate) {
             long scanPeriodMs = (long) (1000.0 * (1.0 / rate));
             PV<T> pv = PV.createPv(aggregatedPVExpression.getOutputType());
-            @SuppressWarnings("unchecked") ConnectionRecipe connRecipe = aggregatedPVExpression.getRecipe();
+            @SuppressWarnings("unchecked") MonitorRecipe connRecipe = aggregatedPVExpression.getRecipe();
             Aggregator<T> aggregator = aggregatedPVExpression.getAggregator();
             PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregator);
             Scanner.scan(notificator, scanPeriodMs);
-            MockConnectionManager.instance.connect(connRecipe);
+            MockConnectionManager.instance.monitor(connRecipe);
             return pv;
         }
     }

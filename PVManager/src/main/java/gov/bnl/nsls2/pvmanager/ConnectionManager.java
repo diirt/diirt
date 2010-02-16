@@ -149,39 +149,26 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void connectToPV(String name, Collector collector, ValueCache<TypeDouble> value) {
-        JCAinit();
-
-        try {
-            Channel channel = ctxt.createChannel(name,
-                    new ConnectionListener() {
-
-                        @Override
-                        public void connectionChanged(ConnectionEvent ev) {
-                            // TODO Auto-generated method stub
-                            System.out.println("connection change event detected "
-                                    + ev.toString());
-                        }
-                    });
-            channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
-                    new MonitorListenerImpl(collector, value.getValue()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // at this point we have a context ready.
+    public synchronized void connect(MonitorRecipe<TypeDouble> connRecipe) {
+//        JCAinit();
+//
+//        try {
+//            Channel channel = ctxt.createChannel(connRecipe.pvName,
+//                    new ConnectionListenerImpl(pv));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    public synchronized void createConnection(PV pv, Collector collector, ValueCache<TypeDouble> value) {
+    public synchronized void monitor(MonitorRecipe<TypeDouble> connRecipe) {
         JCAinit();
 
         try {
-            Channel channel = ctxt.createChannel(pv.getName(),
-                    new ConnectionListenerImpl(pv));
+            Channel channel = ctxt.createChannel(connRecipe.pvName);
             // we assume it to be a double and move on....
             channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
-                    new MonitorListenerImpl(collector, value.getValue()));
+                    new MonitorListenerImpl(connRecipe.collector, connRecipe.cache.getValue()));
 
         } catch (Exception e) {
             e.printStackTrace();

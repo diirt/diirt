@@ -20,7 +20,7 @@ public class MockConnectionManager {
 
     private static Random rand = new Random();
 
-    public static void generateData(final Collector collector, final TypeDouble value, final int nTimes, long period, final int samplesPerPeriod) {
+    private static void generateData(final Collector collector, final TypeDouble value, final int nTimes, long period, final int samplesPerPeriod) {
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
@@ -43,7 +43,7 @@ public class MockConnectionManager {
 
     Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times");
 
-    void connect(String name, Collector collector, TypeDouble typeDouble) {
+    private void connect(String name, Collector collector, TypeDouble typeDouble) {
         Matcher matcher = pattern.matcher(name);
         if (matcher.matches()) {
             int nTimes = Integer.parseInt(matcher.group(3));
@@ -55,7 +55,11 @@ public class MockConnectionManager {
         }
     }
 
-    void connect(ConnectionRecipe<TypeDouble> connRecipe) {
+    public static String mockPVName(int samplesPerNotification, long notificationPeriodMs, int nNotifications) {
+        return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
+    }
+
+    void monitor(MonitorRecipe<TypeDouble> connRecipe) {
         connect(connRecipe.pvName, connRecipe.collector, connRecipe.cache.getValue());
     }
 }

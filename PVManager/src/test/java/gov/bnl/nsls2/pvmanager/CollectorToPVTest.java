@@ -72,7 +72,11 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
+        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        connRecipe.cache = cache;
+        connRecipe.collector = collector;
+        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        MockConnectionManager.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -110,7 +114,11 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
+        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        connRecipe.cache = cache;
+        connRecipe.collector = collector;
+        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        MockConnectionManager.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -150,7 +158,11 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
+        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        connRecipe.cache = cache;
+        connRecipe.collector = collector;
+        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        MockConnectionManager.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
