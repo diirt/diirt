@@ -90,6 +90,7 @@ public class ReadingPVTest {
     @Test
     public void testFluentApi() throws Exception {
         long testTimeMs = 5000;
+        final double scanFrequency = 25;
         final long scanPeriodMs = 40;
         final long notificationPeriodMs = 1;
         final int samplesPerNotification = 5;
@@ -102,7 +103,7 @@ public class ReadingPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                final PV<TypeDouble> pv = PVManager.read(doublePv("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times"), scanPeriodMs);
+                final PV<TypeDouble> pv = PVManager.read(doublePv("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times")).atHz(scanFrequency);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

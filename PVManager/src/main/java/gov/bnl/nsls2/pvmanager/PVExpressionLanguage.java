@@ -20,14 +20,14 @@ public class PVExpressionLanguage {
         ConnectionRecipe recipe = new ConnectionRecipe();
         recipe.collector = new Collector();
         recipe.pvName = doublePv.getName();
-        return new AggregatedPVExpression<TypeDouble>(recipe);
+        return new AggregatedPVExpression<TypeDouble>(recipe, TypeDouble.class, new AverageAggregator(recipe.collector));
     }
 
     public static AggregatedPVExpression<TypeStatistics> statisticsOf(PVExpression<TypeDouble> doublePv) {
         ConnectionRecipe recipe = new ConnectionRecipe();
         recipe.collector = new Collector();
         recipe.pvName = doublePv.getName();
-        return new AggregatedPVExpression<TypeStatistics>(recipe);
+        return new AggregatedPVExpression<TypeStatistics>(recipe, TypeStatistics.class, new StatisticsAggregator(recipe.collector));
     }
 
 }
