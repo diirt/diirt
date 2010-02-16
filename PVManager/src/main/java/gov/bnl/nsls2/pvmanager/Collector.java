@@ -14,38 +14,52 @@ import java.util.List;
  * since last check. The class needs to be thread safe, and it function
  * as a queue where the CA threads post data, and a timer based thread
  * collects the data.
+ * <p>
+ * There are two locks used: one (the object itself) must be used whenever
+ * one is either calculating the function or preparing the inputs for the function.
+ * The other (the buffer) is used whenever the buffer is modified. The idea
+ * is that the new calculation may not block the scanning and reading of the
+ * values in the buffer.
  *
  * @author carcassi
  */
 public class Collector {
 
-    // @GuardedBy(this)
-    private List<Double> buffer;
+    // @GuardedBy(buffer)
+    private final List<Double> buffer = new ArrayList<Double>();
+    private final PVFunction<TypeDouble> function;
     
-    public Collector() {
-        synchronized(this) {
-            buffer = new ArrayList<Double>();
-        }
+    Collector(PVFunction<TypeDouble> function) {
+        this.function = function;
     }
 
     /**
-     * Adds a value in the queue.
-     * @param value the new value
+     * Calculates the next value and puts it in the queue.
      */
-    public synchronized void post(double value) {
-        buffer.add(value);
+    public synchronized void collect() {
+        // Calculation may take time, and is locked by this
+        Double newValue = function.getValue().getDouble();
+
+        // Buffer is locked and updated
+        synchronized(buffer) {
+            buffer.add(newValue);
+        }
     }
 
     /**
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    public synchronized double[] getData() {
-        double[] data = new double[buffer.size()];
-        for (int i = 0; i < buffer.size(); i++) {
-            data[i] = buffer.get(i);
+    public double[] getData() {
+        synchronized(buffer) {
+            // TODO this may not be efficient: must find a way to use
+            // System.arrayCopy et al...
+            double[] data = new double[buffer.size()];
+            for (int i = 0; i < buffer.size(); i++) {
+                data[i] = buffer.get(i);
+            }
+            buffer.clear();
+            return data;
         }
-        buffer.clear();
-        return data;
     }
 }

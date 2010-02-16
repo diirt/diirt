@@ -52,7 +52,8 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final Collector collector = new Collector();
+        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -71,7 +72,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -89,7 +90,8 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final Collector collector = new Collector();
+        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -108,7 +110,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -128,7 +130,8 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final Collector collector = new Collector();
+        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         StatisticsAggregator aggregator = new StatisticsAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -147,7 +150,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MockConnectionManager.generateData(collector, nNotifications, notificationPeriodMs, samplesPerNotification);
+        MockConnectionManager.generateData(collector, cache.getValue(), nNotifications, notificationPeriodMs, samplesPerNotification);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {

@@ -20,7 +20,7 @@ public class MockConnectionManager {
 
     private static Random rand = new Random();
 
-    public static void generateData(final Collector collector, final int nTimes, long period, final int samplesPerPeriod) {
+    public static void generateData(final Collector collector, final TypeDouble value, final int nTimes, long period, final int samplesPerPeriod) {
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
@@ -28,7 +28,10 @@ public class MockConnectionManager {
             @Override
             public void run() {
                 for (int i = 0; i < samplesPerPeriod; i++) {
-                    collector.post(rand.nextGaussian());
+                    synchronized (collector) {
+                        value.setDouble(rand.nextGaussian());
+                        collector.collect();
+                    }
                 }
                 innerCounter++;
                 if (innerCounter == nTimes) {
@@ -40,19 +43,19 @@ public class MockConnectionManager {
 
     Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times");
 
-    void connect(String name, Collector collector) {
+    void connect(String name, Collector collector, TypeDouble typeDouble) {
         Matcher matcher = pattern.matcher(name);
         if (matcher.matches()) {
             int nTimes = Integer.parseInt(matcher.group(3));
             long period = Long.parseLong(matcher.group(2));
             int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateData(collector, nTimes, period, samplesPerPeriod);
+            generateData(collector, typeDouble, nTimes, period, samplesPerPeriod);
         } else {
             throw new RuntimeException("Name doesn't match for mock connection");
         }
     }
 
-    void connect(ConnectionRecipe connRecipe) {
-        connect(connRecipe.pvName, connRecipe.collector);
+    void connect(ConnectionRecipe<TypeDouble> connRecipe) {
+        connect(connRecipe.pvName, connRecipe.collector, connRecipe.cache.getValue());
     }
 }

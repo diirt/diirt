@@ -9,8 +9,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class ConnectionRecipe<T extends PVType<T>> {
-    public String pvName;
-    public ValueCache<T> cache;
-    public Collector collector;
+public abstract class PVFunction<T extends PVType> {
+    public abstract T getValue();
+    public abstract Class<T> getType();
 }

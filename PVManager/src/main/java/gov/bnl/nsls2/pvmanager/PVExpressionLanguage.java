@@ -17,15 +17,17 @@ public class PVExpressionLanguage {
     }
 
     public static AggregatedPVExpression<TypeDouble> averageOf(PVExpression<TypeDouble> doublePv) {
-        ConnectionRecipe recipe = new ConnectionRecipe();
-        recipe.collector = new Collector();
+        ConnectionRecipe<TypeDouble> recipe = new ConnectionRecipe<TypeDouble>();
+        recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        recipe.collector = new Collector(recipe.cache);
         recipe.pvName = doublePv.getName();
         return new AggregatedPVExpression<TypeDouble>(recipe, TypeDouble.class, new AverageAggregator(recipe.collector));
     }
 
     public static AggregatedPVExpression<TypeStatistics> statisticsOf(PVExpression<TypeDouble> doublePv) {
-        ConnectionRecipe recipe = new ConnectionRecipe();
-        recipe.collector = new Collector();
+        ConnectionRecipe<TypeDouble> recipe = new ConnectionRecipe<TypeDouble>();
+        recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        recipe.collector = new Collector(recipe.cache);
         recipe.pvName = doublePv.getName();
         return new AggregatedPVExpression<TypeStatistics>(recipe, TypeStatistics.class, new StatisticsAggregator(recipe.collector));
     }

@@ -6,7 +6,6 @@
 package gov.bnl.nsls2.pvmanager.test;
 
 import gov.bnl.nsls2.pvmanager.AverageAggregator;
-import gov.bnl.nsls2.pvmanager.Collector;
 import gov.bnl.nsls2.pvmanager.MockConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;

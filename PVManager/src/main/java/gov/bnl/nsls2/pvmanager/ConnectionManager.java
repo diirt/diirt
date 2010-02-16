@@ -22,16 +22,13 @@ import gov.aps.jca.event.MonitorListener;
 
 class ConnectionManager {
 
-    private static Logger logger = Logger.getLogger(ConnectionManager.class
-	    .getName());
-
+    private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
     private static ConnectionManager instance = new ConnectionManager();
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private static Context ctxt = null;
 
     // Executor to manage the updating of the collector.
-
     // Maintain a list of all the connections being managed.
 
     /*
@@ -41,34 +38,32 @@ class ConnectionManager {
     }
 
     static ConnectionManager getInstance() {
-	return instance;
+        return instance;
     }
 
     void removedoublePV() {
-
     }
 
     /*
      * This Metod will initialize the jca context.
      */
     private void JCAinit() {
-	// Create a context which uses pure channel access java with HARDCODED
-	// configuration
-	// values.
-	// TDB create the context reading some configuration file????
-	if (ctxt == null) {
-	    try {
-		logger.info("Initializing the context.");
-		ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-	    } catch (CAException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    // Display basic information about the context.
-	}
-	ctxt.printInfo();
+        // Create a context which uses pure channel access java with HARDCODED
+        // configuration
+        // values.
+        // TDB create the context reading some configuration file????
+        if (ctxt == null) {
+            try {
+                logger.info("Initializing the context.");
+                ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+            } catch (CAException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // Display basic information about the context.
+        }
+        ctxt.printInfo();
     }
-
     private final static ExecutorService pool = Executors.newCachedThreadPool();
 
     /**
@@ -77,21 +72,20 @@ class ConnectionManager {
      */
     private class ConnectionListenerImpl implements ConnectionListener {
 
-	final private PV pv;
+        final private PV pv;
 
-	public ConnectionListenerImpl(PV pv) {
-	    this.pv = pv;
-	}
+        public ConnectionListenerImpl(PV pv) {
+            this.pv = pv;
+        }
 
-	@Override
-	public void connectionChanged(ConnectionEvent ev) {
-	    // TODO Auto-generated method stub
-	    logger.info("Detected a change in the connection status of pv "
-		    + pv.getName() + " -status- " + ev.toString());
-	    pv.setName(pv.getName() + "my state changed");
-	    pv.setState(PV.State.Connected); // just putting connected.
-	}
-
+        @Override
+        public void connectionChanged(ConnectionEvent ev) {
+            // TODO Auto-generated method stub
+            logger.info("Detected a change in the connection status of pv "
+                    + pv.getName() + " -status- " + ev.toString());
+            pv.setName(pv.getName() + "my state changed");
+            pv.setState(PV.State.Connected); // just putting connected.
+        }
     }
 
     /**
@@ -100,12 +94,10 @@ class ConnectionManager {
      */
     private class AccessRightsListenerImpl implements AccessRightsListener {
 
-	@Override
-	public void accessRightsChanged(AccessRightsEvent arg0) {
-	    // TODO Auto-generated method stub
-
-	}
-
+        @Override
+        public void accessRightsChanged(AccessRightsEvent arg0) {
+            // TODO Auto-generated method stub
+        }
     }
 
     /**
@@ -113,87 +105,89 @@ class ConnectionManager {
      * this PV.
      */
     private class MonitorListenerImpl implements MonitorListener {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gov.aps.jca.event.MonitorListener#monitorChanged(gov.aps.jca.event
-	 * .MonitorEvent)
-	 */
+        /*
+         * (non-Javadoc)
+         *
+         * @see
+         * gov.aps.jca.event.MonitorListener#monitorChanged(gov.aps.jca.event
+         * .MonitorEvent)
+         */
 
-	private final Collector collector;
+        private final Collector collector;
+        private final TypeDouble value;
 
-	// public volatile CAStatus status;
-	// public volatile DBR response;
+        // public volatile CAStatus status;
+        // public volatile DBR response;
+        public MonitorListenerImpl(Collector collector, TypeDouble value) {
+            this.value = value;
+            this.collector = collector;
+        }
 
-	public MonitorListenerImpl(Collector collector) {
-	    this.collector = collector;
-	}
+        public synchronized void monitorChanged(MonitorEvent ev) {
+            synchronized (collector) {
 
-	public synchronized void monitorChanged(MonitorEvent ev) {
+                // TODO Auto-generated method stub
+                // System.out.println(Thread.currentThread().getName());
+                try {
+                    Double newValue;
+                    DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
+                            DBR_Double.TYPE);
+                    newValue = rawvalue.getDoubleValue()[0];
+                    // System.out
+                    // .println("Static conversion to double for pv "
+                    // + rawvalue.toString() + " = " + value);
+                    value.setDouble(newValue);
+                    collector.collect();
+                } catch (CAStatusException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
 
-	    // TODO Auto-generated method stub
-	    // System.out.println(Thread.currentThread().getName());
-	    try {
-		Double value;
-		DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
-			DBR_Double.TYPE);
-		value = rawvalue.getDoubleValue()[0];
-		// System.out
-		// .println("Static conversion to double for pv "
-		// + rawvalue.toString() + " = " + value);
-		collector.post(value);
-	    } catch (CAStatusException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	}
-
-	public synchronized void reset() {
-	}
+        public synchronized void reset() {
+        }
     }
 
-    public synchronized void connectToPV(String name, Collector collector) {
-	JCAinit();
+    public synchronized void connectToPV(String name, Collector collector, ValueCache<TypeDouble> value) {
+        JCAinit();
 
-	try {
-	    Channel channel = ctxt.createChannel(name,
-		    new ConnectionListener() {
-			@Override
-			public void connectionChanged(ConnectionEvent ev) {
-			    // TODO Auto-generated method stub
-			    System.out
-				    .println("connection change event detected "
-					    + ev.toString());
-			}
-		    });
-	    channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
-		    new MonitorListenerImpl(collector));
+        try {
+            Channel channel = ctxt.createChannel(name,
+                    new ConnectionListener() {
 
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+                        @Override
+                        public void connectionChanged(ConnectionEvent ev) {
+                            // TODO Auto-generated method stub
+                            System.out.println("connection change event detected "
+                                    + ev.toString());
+                        }
+                    });
+            channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
+                    new MonitorListenerImpl(collector, value.getValue()));
 
-	// at this point we have a context ready.
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // at this point we have a context ready.
     }
 
-    public synchronized void createConnection(PV pv, Collector collector) {
-	JCAinit();
+    public synchronized void createConnection(PV pv, Collector collector, ValueCache<TypeDouble> value) {
+        JCAinit();
 
-	try {
-	    Channel channel = ctxt.createChannel(pv.getName(),
-		    new ConnectionListenerImpl(pv));
-	    // we assume it to be a double and move on....
-	    channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
-		    new MonitorListenerImpl(collector));
+        try {
+            Channel channel = ctxt.createChannel(pv.getName(),
+                    new ConnectionListenerImpl(pv));
+            // we assume it to be a double and move on....
+            channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
+                    new MonitorListenerImpl(collector, value.getValue()));
 
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void dispose() {
-
     }
-
 }
