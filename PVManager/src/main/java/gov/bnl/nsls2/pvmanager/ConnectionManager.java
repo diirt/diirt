@@ -149,16 +149,16 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void connect(MonitorRecipe<TypeDouble> connRecipe) {
-//        JCAinit();
-//
-//        try {
-//            Channel channel = ctxt.createChannel(connRecipe.pvName,
-//                    new ConnectionListenerImpl(pv));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public synchronized void connect(ConnectionRecipe connRecipe) {
+        JCAinit();
+
+        try {
+            Channel channel = ctxt.createChannel(connRecipe.channelNames.iterator().next(),
+                    new ConnectionListenerImpl(connRecipe.pv));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void monitor(MonitorRecipe<TypeDouble> connRecipe) {

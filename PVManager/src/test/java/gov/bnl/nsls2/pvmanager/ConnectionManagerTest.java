@@ -6,6 +6,8 @@ package gov.bnl.nsls2.pvmanager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,7 +103,7 @@ public class ConnectionManagerTest {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    //@Test
+    @Test
     public void connectionStatusTest() throws InterruptedException, InvocationTargetException {
         final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
         final Collector collector = new Collector(cache);
@@ -129,8 +131,11 @@ public class ConnectionManagerTest {
                         System.out.println("detected a property change in PV.");
                     }
                 });
-                // TODO implement connection
-                //ConnectionManager.getInstance().createConnection(pv, collector, cache);
+
+                ConnectionRecipe connectionRecipe = new ConnectionRecipe();
+                connectionRecipe.pv = pv;
+                connectionRecipe.channelNames = Collections.singleton(pv.getName());
+                ConnectionManager.getInstance().connect(connectionRecipe);
             }
         });
         Thread.sleep(50000);
