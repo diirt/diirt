@@ -2,6 +2,7 @@ package gov.bnl.nsls2.pvmanager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
@@ -20,6 +21,9 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
 class ConnectionManager {
+
+    private static Logger logger = Logger.getLogger(ConnectionManager.class
+	    .getName());
 
     private static ConnectionManager instance = new ConnectionManager();
     // Get the JCALibrary instance.
@@ -54,7 +58,7 @@ class ConnectionManager {
 	// TDB create the context reading some configuration file????
 	if (ctxt == null) {
 	    try {
-		System.out.println("Initializing the context.");
+		logger.info("Initializing the context.");
 		ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
 	    } catch (CAException e) {
 		// TODO Auto-generated catch block
@@ -82,9 +86,8 @@ class ConnectionManager {
 	@Override
 	public void connectionChanged(ConnectionEvent ev) {
 	    // TODO Auto-generated method stub
-	    System.out
-		    .println("Detected a change in the connection status of pv "
-			    + pv.getName() + "-status-" + ev.toString());
+	    logger.info("Detected a change in the connection status of pv "
+		    + pv.getName() + " -status- " + ev.toString());
 	    pv.setName(pv.getName() + "my state changed");
 	    pv.setState(PV.State.Connected); // just putting connected.
 	}
@@ -119,22 +122,22 @@ class ConnectionManager {
 	 */
 
 	private final Collector collector;
-//	public volatile CAStatus status;
-//	public volatile DBR response;
-	
+
+	// public volatile CAStatus status;
+	// public volatile DBR response;
 
 	public MonitorListenerImpl(Collector collector) {
 	    this.collector = collector;
 	}
 
 	public synchronized void monitorChanged(MonitorEvent ev) {
-	    
-	 // TODO Auto-generated method stub
+
+	    // TODO Auto-generated method stub
 	    // System.out.println(Thread.currentThread().getName());
 	    try {
-		Double value ;
-		DBR_Double rawvalue = (DBR_Double) ev.getDBR()
-			.convert(DBR_Double.TYPE);
+		Double value;
+		DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
+			DBR_Double.TYPE);
 		value = rawvalue.getDoubleValue()[0];
 		// System.out
 		// .println("Static conversion to double for pv "
@@ -143,35 +146,7 @@ class ConnectionManager {
 	    } catch (CAStatusException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	    }	    
-
-	    
-//	    status = ev.getStatus();
-//	    response = ev.getDBR();
-	    /*
-	    pool.execute(new Runnable() {
-
-		@Override
-		public void run() {
-		    // TODO Auto-generated method stub
-		    // System.out.println(Thread.currentThread().getName());
-		    try {
-			DBR_Double rawvalue = (DBR_Double) response
-				.convert(DBR_Double.TYPE);
-			value = rawvalue.getDoubleValue()[0];
-			// System.out
-			// .println("Static conversion to double for pv "
-			// + rawvalue.toString() + " = " + value);
-		    } catch (CAStatusException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		    }
-		    collector.post(value);
-
-		}
-	    });
-	    */
-	    // this.notifyAll();
+	    }
 	}
 
 	public synchronized void reset() {
