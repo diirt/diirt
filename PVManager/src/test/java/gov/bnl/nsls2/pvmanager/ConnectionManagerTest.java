@@ -53,15 +53,14 @@ public class ConnectionManagerTest {
 	public void tearDown() throws Exception {
 	}
 
-	private volatile PV<TypeDouble> pv, pvchannel;
-	private Random rand = new Random();
-	private AtomicInteger counter1, counter2;
+	private volatile PV<TypeDouble> pv;
+	private AtomicInteger counter1;
 
 	/**
 	 * checks writes to the collector
 	 * @throws Exception
 	 */
-	@Test 
+//	@Test 
 	public void simpleTest() throws Exception {
 		final Collector collector = new Collector();
 		counter1 = new AtomicInteger();
@@ -97,7 +96,7 @@ public class ConnectionManagerTest {
 	 * @throws InvocationTargetException 
 	 * @throws InterruptedException 
 	 */
-	@Test
+//	@Test
 	public void connectionStatusTest() throws InterruptedException, InvocationTargetException{
 		final Collector collector = new Collector();
 		SwingUtilities.invokeAndWait(new Runnable() {
@@ -132,79 +131,5 @@ public class ConnectionManagerTest {
 			System.out.println(d);
 		}
 	}
-	/*
-	private volatile DoublePV pv1, pv2;
-	
-	private class testRun implements Runnable{
-		DoublePV pv;
-		Collector collector;
-		String PVName;
-		AtomicInteger counter;
-		
-		testRun(String PVName, DoublePV pv, Collector collector, AtomicInteger counter){
-			this.PVName = PVName;
-			this.pv = pv;
-			this.collector = collector;
-			this.counter = counter;
-		}
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			DoublePV pvChannel = ConnectionManager.getInstance().getdoublePV(PVName, collector);
-			pv.addPropertyChangeListener(new PropertyChangeListener() {
-
-				@Override
-				public void propertyChange(PropertyChangeEvent evt) {
-					System.out.println("New value " + pv.getValue());
-					counter.incrementAndGet();
-				}
-			});
-		}
-		
-	}
-	
-	@Test
-	public void simpleTest2() throws Exception {
-		final Collector collector1 = new Collector();
-		final Collector collector2 = new Collector();
-		
-		counter1 = new AtomicInteger();
-		counter2 = new AtomicInteger();
-		Aggregator aggregator1 = new SimpleAggregator(collector1);
-		Aggregator aggregator2 = new SimpleAggregator(collector2);
-		/*
-		SwingUtilities.invokeAndWait(new Runnable() {
-			@Override
-			public void run() {
-				pvchannel = ConnectionManager.getInstance().getdoublePV("pvk01", collector);
-				pv = new DoublePV();				
-				pv.addPropertyChangeListener(new PropertyChangeListener() {
-
-					@Override
-					public void propertyChange(PropertyChangeEvent evt) {
-						System.out.println("New value " + pv.getValue());
-						counter.incrementAndGet();
-					}
-				});
-			}
-		});
-		*/
-	/*
-		pv1 = new DoublePV();
-		SwingUtilities.invokeAndWait(new testRun("pvk01", pv1, collector1, counter1));
-		PullNotificator notificator1 = new PullNotificator(pv1, aggregator1);
-		Scanner.scan(notificator1, 400);
-		
-		pv2 = new DoublePV();
-		SwingUtilities.invokeAndWait(new testRun("pvk02", pv2, collector2, counter2));
-		PullNotificator notificator2 = new PullNotificator(pv2, aggregator2);
-		Scanner.scan(notificator2, 800);
-		
-		Thread.sleep(5000);
-		System.out.println(counter1.get());
-		System.out.println(counter2.get());
-		
-	}
-	*/
 
 }
