@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class Collector {
+class Collector {
 
     // @GuardedBy(buffer)
     private final List<Double> buffer = new ArrayList<Double>();
@@ -36,7 +36,7 @@ public class Collector {
     /**
      * Calculates the next value and puts it in the queue.
      */
-    public synchronized void collect() {
+    synchronized void collect() {
         // Calculation may take time, and is locked by this
         Double newValue = function.getValue().getDouble();
 
@@ -50,7 +50,7 @@ public class Collector {
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    public double[] getData() {
+    double[] getData() {
         synchronized(buffer) {
             // TODO this may not be efficient: must find a way to use
             // System.arrayCopy et al...

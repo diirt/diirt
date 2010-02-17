@@ -11,17 +11,18 @@ import java.beans.PropertyChangeSupport;
  * values are notified throught the {@link PVValueChangeListener}. PVs
  * are created throught the static factory which makes sure the value is
  * propertly created and initialized.
- * <P>
- * Static factory should be substituted by constructor? Should factory
- * be public or package private? Should PV name also be final?
  *
  * @author carcassi
  * @param <T> the type of the PV.
  */
 public final class PV<T extends PVType> {
 
-    private PV(T value) {
+    //Static factory should be substituted by constructor? Should factory
+    // be public or package private? Should PV name also be final?
+
+    private PV(String name, T value) {
         this.value = value;
+        this.name = name;
     }
 
     /**
@@ -32,10 +33,10 @@ public final class PV<T extends PVType> {
      * @param clazz type of the new PV
      * @return a new PV
      */
-    public static <E extends PVType> PV<E> createPv(Class<E> clazz) {
+    public static <E extends PVType> PV<E> createPv(String name, Class<E> clazz) {
         try {
             E data = clazz.newInstance();
-            PV<E> pv = new PV<E>(data);
+            PV<E> pv = new PV<E>(name, data);
             return pv;
         } catch (Exception e) {
             throw new RuntimeException("Can't create PV of type " + clazz.getName(), e);
@@ -98,16 +99,6 @@ public final class PV<T extends PVType> {
         return name;
     }
 
-    /**
-     * Set the value of name
-     *
-     * @param name new value of name
-     */
-    public void setName(String name) {
-        String oldName = this.name;
-        this.name = name;
-        propertyChangeSupport.firePropertyChange(PROP_NAME, oldName, name);
-    }
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     /**

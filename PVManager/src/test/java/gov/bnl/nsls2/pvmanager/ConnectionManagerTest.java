@@ -69,8 +69,7 @@ public class ConnectionManagerTest {
             @Override
             public void run() {
 //				ConnectionManager.getInstance().connectToPV("pvk01", collector);
-                pv = PV.createPv(TypeDouble.class);
-                pv.setName("pvk01");
+                pv = PV.createPv("pvk01", TypeDouble.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -109,8 +108,7 @@ public class ConnectionManagerTest {
             @Override
             public void run() {
 //				ConnectionManager.getInstance().connectToPV("pvk01", collector);
-                pv = PV.createPv(TypeDouble.class);
-                pv.setName("pvk01");
+                pv = PV.createPv("pvk01", TypeDouble.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

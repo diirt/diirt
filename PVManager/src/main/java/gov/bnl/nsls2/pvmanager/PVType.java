@@ -15,7 +15,7 @@ import java.util.List;
  */
 public abstract class PVType<T extends PVType<T>> {
 
-    public static <E extends PVType<E>> E newInstanceOf(Class<E> type) {
+    static <E extends PVType<E>> E newInstanceOf(Class<E> type) {
         try {
             return  type.newInstance();
         } catch (Exception e) {
@@ -28,17 +28,17 @@ public abstract class PVType<T extends PVType<T>> {
 
     private List<PVValueChangeListener> valueChangeListeners = new ArrayList<PVValueChangeListener>();
 
-    protected void firePvValueChanged() {
+    void firePvValueChanged() {
         for (PVValueChangeListener listener : valueChangeListeners) {
             listener.pvValueChanged();
         }
     }
 
-    protected void addPVValueChangeListener(PVValueChangeListener listener) {
+    void addPVValueChangeListener(PVValueChangeListener listener) {
         valueChangeListeners.add(listener);
     }
 
-    protected void removePVValueChangeListener(PVValueChangeListener listener) {
+    void removePVValueChangeListener(PVValueChangeListener listener) {
         valueChangeListeners.remove(listener);
     }
 

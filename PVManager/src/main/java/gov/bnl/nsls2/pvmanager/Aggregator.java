@@ -10,13 +10,13 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-public abstract class Aggregator<T extends PVType<T>> extends PVFunction<T> {
+abstract class Aggregator<T extends PVType<T>> extends PVFunction<T> {
 
     private final Collector collector;
     // TODO There may not be a last value!!!
     private T lastValue = PVType.newInstanceOf(getType());
 
-    public Aggregator(Class<T> type, Collector collector) {
+    Aggregator(Class<T> type, Collector collector) {
         super(type);
         this.collector = collector;
     }

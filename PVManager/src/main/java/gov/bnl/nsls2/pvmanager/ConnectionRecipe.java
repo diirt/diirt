@@ -16,10 +16,10 @@ class ConnectionRecipe {
     /**
      * The PV to setup the notification on.
      */
-    public PV<?> pv;
+    PV<?> pv;
 
     /**
      * The list of channels name that the PV depends on.
      */
-    public Set<String> channelNames;
+    Set<String> channelNames;
 }

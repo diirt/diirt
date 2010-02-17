@@ -20,7 +20,7 @@ import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
-public class ConnectionManager {
+class ConnectionManager {
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
     private static final ConnectionManager connManager = new ConnectionManager();
@@ -36,11 +36,11 @@ public class ConnectionManager {
         return instance;
     }
 
-    public static void useMockConnectionManager() {
+    static void useMockConnectionManager() {
         instance = MockConnectionManager.instance;
     }
 
-    public static void useCAConnectionManager() {
+    static void useCAConnectionManager() {
         instance = connManager;
     }
 
@@ -86,7 +86,6 @@ public class ConnectionManager {
             // TODO Auto-generated method stub
             logger.info("Detected a change in the connection status of pv "
                     + pv.getName() + " -status- " + ev.toString());
-            pv.setName(pv.getName() + "my state changed");
             pv.setState(PV.State.Connected); // just putting connected.
         }
     }

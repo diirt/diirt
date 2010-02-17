@@ -60,7 +60,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv(TypeDouble.class);
+                pv = PV.createPv("My pv", TypeDouble.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -102,7 +102,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv(TypeDouble.class);
+                pv = PV.createPv("My pv", TypeDouble.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -146,7 +146,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pvStat = PV.createPv(TypeStatistics.class);
+                pvStat = PV.createPv("My pv", TypeStatistics.class);
                 pvStat.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

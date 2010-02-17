@@ -13,11 +13,11 @@ import java.util.logging.Logger;
  *
  * @author carcassi
  */
-public class Scanner {
+class Scanner {
 
     private static Logger log = Logger.getLogger(Scanner.class.getName());
 
-    public static void scan(final PullNotificator notificator, long periodInMs) {
+    static void scan(final PullNotificator notificator, long periodInMs) {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 

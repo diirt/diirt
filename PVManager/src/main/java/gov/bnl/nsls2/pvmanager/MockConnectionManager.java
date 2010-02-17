@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-public class MockConnectionManager extends ConnectionManager {
+class MockConnectionManager extends ConnectionManager {
 
     private static Logger log = Logger.getLogger(ConnectionManager.class.getName());
     static MockConnectionManager instance = new MockConnectionManager();

@@ -5,9 +5,9 @@ package gov.bnl.nsls2.pvmanager;
  * 
  * @author carcassi
  */
-public class AverageAggregator extends Aggregator<TypeDouble> {
+class AverageAggregator extends Aggregator<TypeDouble> {
 
-    public AverageAggregator(Collector collector) {
+    AverageAggregator(Collector collector) {
         super(TypeDouble.class, collector);
     }
 

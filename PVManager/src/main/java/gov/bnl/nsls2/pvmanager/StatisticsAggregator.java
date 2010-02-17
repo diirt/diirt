@@ -2,9 +2,9 @@ package gov.bnl.nsls2.pvmanager;
 
 import static java.lang.Math.*;
 
-public class StatisticsAggregator extends Aggregator<TypeStatistics> {
+class StatisticsAggregator extends Aggregator<TypeStatistics> {
 
-    public StatisticsAggregator(Collector collector) {
+    StatisticsAggregator(Collector collector) {
         super(TypeStatistics.class, collector);
     }
 

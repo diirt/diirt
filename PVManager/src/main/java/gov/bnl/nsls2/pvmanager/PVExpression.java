@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * An expression that represent a pv read at the CA rate.
+ * Objects of this class are not created directly but through the operators defined
+ * in {@link PVExpressionLanguage}.
  *
  * @author carcassi
  */
@@ -18,6 +21,7 @@ public class PVExpression<T extends PVType<T>> {
     private List<String> pvNames;
     private List<ValueCache<?>> pvCaches;
     private PVFunction<T> function;
+    private final String defaultName;
 
     /**
      * Constructor that represents a single pv of a particular type.
@@ -31,9 +35,10 @@ public class PVExpression<T extends PVType<T>> {
         this.pvCaches = new ArrayList<ValueCache<?>>();
         pvCaches.add(cache);
         this.function = cache;
+        this.defaultName = pvName;
     }
 
-    private PVExpression(List<PVExpression<?>> childExpressions, PVFunction<T> function) {
+    private PVExpression(List<PVExpression<?>> childExpressions, PVFunction<T> function, String defaultName) {
         pvNames = new ArrayList<String>();
         pvCaches = new ArrayList<ValueCache<?>>();
         for (PVExpression<?> childExpression : childExpressions) {
@@ -47,6 +52,11 @@ public class PVExpression<T extends PVType<T>> {
             }
         }
         this.function = function;
+        this.defaultName = defaultName;
+    }
+
+    String getDefaultName() {
+        return defaultName;
     }
 
     List<String> getPvNames() {
