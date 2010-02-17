@@ -4,8 +4,17 @@ import java.util.HashSet;
 import java.util.List;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class PVManager {
 
+    /**
+     * Test function for connection-monitor
+     * @param pvExpression
+     * @return
+     */
+    
     public static PVManagerExpression<TypeDouble> read(PVExpression<TypeDouble> pvExpression) {
         return new PVManagerExpression<TypeDouble>(averageOf(pvExpression));
     }
