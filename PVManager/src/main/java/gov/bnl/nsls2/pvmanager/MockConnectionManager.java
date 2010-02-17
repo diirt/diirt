@@ -5,9 +5,11 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import java.lang.ref.WeakReference;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +18,8 @@ import java.util.regex.Pattern;
  * @author carcassi
  */
 public class MockConnectionManager extends ConnectionManager {
+
+    private static Logger log = Logger.getLogger(ConnectionManager.class.getName());
     static MockConnectionManager instance = new MockConnectionManager();
 
     private static Random rand = new Random();
@@ -24,21 +28,27 @@ public class MockConnectionManager extends ConnectionManager {
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
+            WeakReference<Collector> ref = new WeakReference<Collector>(collector);
 
             @Override
             public void run() {
-                for (int i = 0; i < samplesPerPeriod; i++) {
-                    synchronized (collector) {
-                        value.setDouble(rand.nextGaussian());
-                        collector.collect();
+                Collector collector = ref.get();
+                if (collector != null) {
+                    for (int i = 0; i < samplesPerPeriod; i++) {
+                        synchronized (collector) {
+                            value.setDouble(rand.nextGaussian());
+                            collector.collect();
+                        }
                     }
                 }
                 innerCounter++;
-                if (innerCounter == nTimes) {
+                if (innerCounter == nTimes || collector == null) {
+                    log.fine("Stopped generating data on " + collector);
                     timer.cancel();
                 }
             }
         }, 0, period);
+        log.fine("Generating data on " + collector);
     }
 
     Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times");

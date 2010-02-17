@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run.single</actionName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.classpathScope>test</exec.classpathScope>
+            <exec.args>-Djava.util.logging.config.file=${basedir}/target/test-classes/log.properties -classpath %classpath ${className}</exec.args>
+            <exec.executable>java</exec.executable>
+        </properties>
+    </action>
+    <action>
+            <actionName>run.single.main</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.classpathScope>${classPathScope}</exec.classpathScope>
+                <exec.args>-Djava.util.logging.config.file=./target/test-classes/log.properties -classpath %classpath ${packageClassName}</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+    <action>
+            <actionName>test.single</actionName>
+            <goals>
+                <goal>test-compile</goal>
+                <goal>surefire:test</goal>
+            </goals>
+            <properties>
+                <test>${className}</test>
+            </properties>
+        </action>
+</actions>

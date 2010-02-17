@@ -135,10 +135,10 @@ public class ConnectionManagerTest {
                 ConnectionManager.getInstance().connect(connectionRecipe);
             }
         });
-        Thread.sleep(50000);
+        Thread.sleep(5000);
         double[] doubleArray = collector.getData();
         for (double d : doubleArray) {
-            System.out.println(d);
+            //System.out.println(d);
         }
     }
 }
