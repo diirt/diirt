@@ -5,6 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import java.lang.ref.WeakReference;
 import javax.swing.SwingUtilities;
 
 /**
@@ -13,12 +14,19 @@ import javax.swing.SwingUtilities;
  */
 public class PullNotificator<T extends PVType<T>> {
 
-    private final PV<T> pv;
+    private final WeakReference<PV<T>> pvRef;
     private final PVFunction<T> function;
 
     public PullNotificator(PV<T> pv, PVFunction<T> aggregator) {
-        this.pv = pv;
+        this.pvRef = new WeakReference<PV<T>>(pv);
         this.function = aggregator;
+    }
+
+    public boolean isActive() {
+        if (pvRef.get() != null)
+            return true;
+        else
+            return false;
     }
 
     public void notifyPv() {
@@ -27,7 +35,10 @@ public class PullNotificator<T extends PVType<T>> {
 
             @Override
             public void run() {
-                pv.getValue().setTo(newValue);
+                PV<T> pv = pvRef.get();
+                if (pv != null) {
+                    pv.getValue().setTo(newValue);
+                }
             }
         });
     }

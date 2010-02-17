@@ -65,7 +65,7 @@ public class ReadingPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                final PV<TypeDouble> pv = PVManager.read(doublePv("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times")).atHz(scanFrequency);
+                pv = PVManager.read(doublePv("" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times")).atHz(scanFrequency);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

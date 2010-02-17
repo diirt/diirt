@@ -7,6 +7,7 @@ package gov.bnl.nsls2.pvmanager;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,14 +15,22 @@ import java.util.TimerTask;
  */
 public class Scanner {
 
+    private static Logger log = Logger.getLogger(Scanner.class.getName());
+
     public static void scan(final PullNotificator notificator, long periodInMs) {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                notificator.notifyPv();
+                if (notificator.isActive()) {
+                    notificator.notifyPv();
+                } else {
+                    cancel();
+                    log.fine("Stopped scanning " + notificator);
+                }
             }
         }, 0, periodInMs);
+        log.fine("Scanning " + notificator + " every " + periodInMs + " ms");
     }
 }
