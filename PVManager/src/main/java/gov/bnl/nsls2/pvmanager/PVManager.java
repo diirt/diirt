@@ -62,8 +62,9 @@ public class PVManager {
             for (MonitorRecipe recipe : monRecipes) {
                 connRecipe.channelNames.add(recipe.pvName);
             }
+            ConnectionManager.getInstance().connect(connRecipe);
             for (MonitorRecipe recipe : monRecipes) {
-                MockConnectionManager.instance.monitor(recipe);
+                ConnectionManager.getInstance().monitor(recipe);
             }
             return pv;
         }

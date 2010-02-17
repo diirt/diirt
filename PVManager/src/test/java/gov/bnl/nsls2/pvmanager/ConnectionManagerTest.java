@@ -68,7 +68,7 @@ public class ConnectionManagerTest {
      * 
      * @throws Exception
      */
- //   @Test
+    @Test
     public void simpleTest() throws Exception {
 	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
 		TypeDouble.class);
@@ -111,7 +111,7 @@ public class ConnectionManagerTest {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
- //   @Test
+    @Test
     public void connectionStatusTest() throws InterruptedException,
 	    InvocationTargetException {
 	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
@@ -164,9 +164,9 @@ public class ConnectionManagerTest {
      * 
      * @throws InterruptedException
      */
-    // @Test
+    @Test
     public void PVtest() throws InterruptedException {
-	// pv = PVManager.readConnect(doublePv("pvk01"), 10);
+	pv = PVManager.read(doublePv("pvk01")).atHz(10);
 	pv.addPVValueChangeListener(new PVValueChangeListener() {
 
 	    @Override
