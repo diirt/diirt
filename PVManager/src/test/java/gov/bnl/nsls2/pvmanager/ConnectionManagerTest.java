@@ -7,10 +7,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
@@ -32,6 +28,7 @@ public class ConnectionManagerTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        ConnectionManager.useCAConnectionManager();
     }
 
     /**

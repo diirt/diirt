@@ -25,6 +25,7 @@ public class CollectorToPVTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        ConnectionManager.useMockConnectionManager();
     }
 
     @AfterClass

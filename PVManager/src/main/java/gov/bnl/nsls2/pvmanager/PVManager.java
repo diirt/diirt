@@ -1,5 +1,6 @@
 package gov.bnl.nsls2.pvmanager;
 
+import java.util.HashSet;
 import java.util.List;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
@@ -24,6 +25,12 @@ public class PVManager {
             PVFunction<T> aggregatedFunction = aggregatedPVExpression.getFunction();
             PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction);
             Scanner.scan(notificator, scanPeriodMs);
+            ConnectionRecipe connRecipe = new ConnectionRecipe();
+            connRecipe.channelNames = new HashSet<String>();
+            connRecipe.pv = pv;
+            for (MonitorRecipe recipe : monRecipes) {
+                connRecipe.channelNames.add(recipe.pvName);
+            }
             for (MonitorRecipe recipe : monRecipes) {
                 MockConnectionManager.instance.monitor(recipe);
             }

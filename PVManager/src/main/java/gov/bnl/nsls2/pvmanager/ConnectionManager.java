@@ -20,10 +20,11 @@ import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 
-class ConnectionManager {
+public class ConnectionManager {
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-    private static volatile ConnectionManager instance = new ConnectionManager();
+    private static final ConnectionManager connManager = new ConnectionManager();
+    private static volatile ConnectionManager instance = connManager;
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private static Context ctxt = null;
@@ -31,14 +32,16 @@ class ConnectionManager {
     // Executor to manage the updating of the collector.
     // Maintain a list of all the connections being managed.
 
-    /*
-     * When a connection manager is created we also create the jca context.
-     */
-    private ConnectionManager() {
-    }
-
     static ConnectionManager getInstance() {
         return instance;
+    }
+
+    public static void useMockConnectionManager() {
+        instance = MockConnectionManager.instance;
+    }
+
+    public static void useCAConnectionManager() {
+        instance = connManager;
     }
 
     void removedoublePV() {
@@ -149,7 +152,7 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void connect(ConnectionRecipe connRecipe) {
+    synchronized void connect(ConnectionRecipe connRecipe) {
         JCAinit();
 
         try {
@@ -161,7 +164,7 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void monitor(MonitorRecipe connRecipe) {
+    synchronized void monitor(MonitorRecipe connRecipe) {
         if (connRecipe.cache.getType().equals(TypeDouble.class)) {
             monitor(connRecipe.pvName, connRecipe.collector, TypeDouble.class.cast(connRecipe.cache.getValue()));
         } else {
@@ -169,7 +172,7 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void monitor(String name, Collector collector, TypeDouble typeDouble) {
+    synchronized void monitor(String name, Collector collector, TypeDouble typeDouble) {
         JCAinit();
 
         try {
@@ -183,6 +186,6 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void dispose() {
+    synchronized void dispose() {
     }
 }

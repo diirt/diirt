@@ -13,6 +13,7 @@ import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
  * @author carcassi
  */
 public class PVExpressionLanguageTest {
+
     @Test
     public void expressions() {
         PVExpression<TypeDouble> myPv = doublePv("my pv");

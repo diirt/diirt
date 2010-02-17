@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-public class MockConnectionManager {
+public class MockConnectionManager extends ConnectionManager {
     static MockConnectionManager instance = new MockConnectionManager();
 
     private static Random rand = new Random();
@@ -59,11 +59,18 @@ public class MockConnectionManager {
         return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
     }
 
-    void monitor(MonitorRecipe connRecipe) {
-        if (connRecipe.cache.getType().equals(TypeDouble.class)) {
-            connect(connRecipe.pvName, connRecipe.collector, TypeDouble.class.cast(connRecipe.cache.getValue()));
+    @Override
+    void monitor(MonitorRecipe recipe) {
+        if (recipe.cache.getType().equals(TypeDouble.class)) {
+            connect(recipe.pvName, recipe.collector, TypeDouble.class.cast(recipe.cache.getValue()));
         } else {
-            throw new UnsupportedOperationException("Type " + connRecipe.cache.getType().getName() + " is not yet supported");
+            throw new UnsupportedOperationException("Type " + recipe.cache.getType().getName() + " is not yet supported");
         }
     }
+
+    @Override
+    void connect(ConnectionRecipe connRecipe) {
+        // Do nothing for now
+    }
+
 }

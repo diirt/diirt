@@ -5,16 +5,11 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
-import gov.bnl.nsls2.pvmanager.AverageAggregator;
-import gov.bnl.nsls2.pvmanager.MockConnectionManager;
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.PullNotificator;
-import gov.bnl.nsls2.pvmanager.Scanner;
-import gov.bnl.nsls2.pvmanager.StatisticsAggregator;
 import gov.bnl.nsls2.pvmanager.TypeDouble;
-import gov.bnl.nsls2.pvmanager.TypeStatistics;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.junit.After;
@@ -33,9 +28,10 @@ public class ReadingPVTest {
 
     public ReadingPVTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
+        ConnectionManager.useMockConnectionManager();
     }
 
     @AfterClass
