@@ -72,7 +72,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
         connRecipe.collector = collector;
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
@@ -114,7 +114,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
         connRecipe.collector = collector;
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
@@ -158,7 +158,7 @@ public class CollectorToPVTest {
         });
         PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator);
         Scanner.scan(notificator, scanPeriodMs);
-        MonitorRecipe<TypeDouble> connRecipe = new MonitorRecipe<TypeDouble>();
+        MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
         connRecipe.collector = collector;
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);

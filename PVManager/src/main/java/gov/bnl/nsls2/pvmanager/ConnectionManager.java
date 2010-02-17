@@ -23,7 +23,7 @@ import gov.aps.jca.event.MonitorListener;
 class ConnectionManager {
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-    private static ConnectionManager instance = new ConnectionManager();
+    private static volatile ConnectionManager instance = new ConnectionManager();
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private static Context ctxt = null;
@@ -161,14 +161,22 @@ class ConnectionManager {
         }
     }
 
-    public synchronized void monitor(MonitorRecipe<TypeDouble> connRecipe) {
+    public synchronized void monitor(MonitorRecipe connRecipe) {
+        if (connRecipe.cache.getType().equals(TypeDouble.class)) {
+            monitor(connRecipe.pvName, connRecipe.collector, TypeDouble.class.cast(connRecipe.cache.getValue()));
+        } else {
+            throw new UnsupportedOperationException("Type " + connRecipe.cache.getType().getName() + " is not yet supported");
+        }
+    }
+
+    public synchronized void monitor(String name, Collector collector, TypeDouble typeDouble) {
         JCAinit();
 
         try {
-            Channel channel = ctxt.createChannel(connRecipe.pvName);
+            Channel channel = ctxt.createChannel(name);
             // we assume it to be a double and move on....
             channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE,
-                    new MonitorListenerImpl(connRecipe.collector, connRecipe.cache.getValue()));
+                    new MonitorListenerImpl(collector, typeDouble));
 
         } catch (Exception e) {
             e.printStackTrace();

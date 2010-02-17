@@ -82,7 +82,7 @@ public class ConnectionManagerTest {
                         counter1.incrementAndGet();
                     }
                 });
-                MonitorRecipe<TypeDouble> monRecipe = new MonitorRecipe<TypeDouble>();
+                MonitorRecipe monRecipe = new MonitorRecipe();
                 monRecipe.cache = cache;
                 monRecipe.collector = collector;
                 monRecipe.pvName = pv.getName();

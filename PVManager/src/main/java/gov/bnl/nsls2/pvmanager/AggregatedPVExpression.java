@@ -5,31 +5,33 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import java.util.List;
+
 /**
  *
  * @author carcassi
  */
 public class AggregatedPVExpression<T extends PVType<T>> {
 
-    private MonitorRecipe recipe;
+    private List<MonitorRecipe> recipes;
     private Class<T> outputType;
-    private Aggregator<T> aggregator;
+    private PVFunction<T> function;
 
-    AggregatedPVExpression(MonitorRecipe recipe, Class<T> outputType, Aggregator<T> aggregator) {
-        this.recipe = recipe;
+    AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, Aggregator<T> aggregator) {
+        this.recipes = recipes;
         this.outputType = outputType;
-        this.aggregator = aggregator;
+        this.function = aggregator;
     }
 
-    MonitorRecipe getRecipe() {
-        return recipe;
+    List<MonitorRecipe> getMonitorRecipes() {
+        return recipes;
     }
 
     Class<T> getOutputType() {
         return outputType;
     }
 
-    Aggregator<T> getAggregator() {
-        return aggregator;
+    PVFunction<T> getFunction() {
+        return function;
     }
 }

@@ -59,7 +59,11 @@ public class MockConnectionManager {
         return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
     }
 
-    void monitor(MonitorRecipe<TypeDouble> connRecipe) {
-        connect(connRecipe.pvName, connRecipe.collector, connRecipe.cache.getValue());
+    void monitor(MonitorRecipe connRecipe) {
+        if (connRecipe.cache.getType().equals(TypeDouble.class)) {
+            connect(connRecipe.pvName, connRecipe.collector, TypeDouble.class.cast(connRecipe.cache.getValue()));
+        } else {
+            throw new UnsupportedOperationException("Type " + connRecipe.cache.getType().getName() + " is not yet supported");
+        }
     }
 }

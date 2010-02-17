@@ -13,23 +13,19 @@ public class PVExpressionLanguage {
     private PVExpressionLanguage() {}
 
     public static PVExpression<TypeDouble> doublePv(String name) {
-        return new PVExpression<TypeDouble>(name);
+        return new PVExpression<TypeDouble>(name, TypeDouble.class);
     }
 
     public static AggregatedPVExpression<TypeDouble> averageOf(PVExpression<TypeDouble> doublePv) {
-        MonitorRecipe<TypeDouble> recipe = new MonitorRecipe<TypeDouble>();
-        recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
-        recipe.collector = new Collector(recipe.cache);
-        recipe.pvName = doublePv.getName();
-        return new AggregatedPVExpression<TypeDouble>(recipe, TypeDouble.class, new AverageAggregator(recipe.collector));
+        Collector collector = new Collector(doublePv.getFunction());
+        return new AggregatedPVExpression<TypeDouble>(doublePv.createMontiorRecipes(collector),
+                TypeDouble.class, new AverageAggregator(collector));
     }
 
     public static AggregatedPVExpression<TypeStatistics> statisticsOf(PVExpression<TypeDouble> doublePv) {
-        MonitorRecipe<TypeDouble> recipe = new MonitorRecipe<TypeDouble>();
-        recipe.cache = new ValueCache<TypeDouble>(TypeDouble.class);
-        recipe.collector = new Collector(recipe.cache);
-        recipe.pvName = doublePv.getName();
-        return new AggregatedPVExpression<TypeStatistics>(recipe, TypeStatistics.class, new StatisticsAggregator(recipe.collector));
+        Collector collector = new Collector(doublePv.getFunction());
+        return new AggregatedPVExpression<TypeStatistics>(doublePv.createMontiorRecipes(collector),
+                TypeStatistics.class, new StatisticsAggregator(collector));
     }
 
 }

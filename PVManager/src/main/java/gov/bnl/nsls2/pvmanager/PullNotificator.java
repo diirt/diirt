@@ -14,15 +14,15 @@ import javax.swing.SwingUtilities;
 public class PullNotificator<T extends PVType<T>> {
 
     private final PV<T> pv;
-    private final Aggregator<T> aggregator;
+    private final PVFunction<T> function;
 
-    public PullNotificator(PV<T> pv, Aggregator<T> aggregator) {
+    public PullNotificator(PV<T> pv, PVFunction<T> aggregator) {
         this.pv = pv;
-        this.aggregator = aggregator;
+        this.function = aggregator;
     }
 
     public void notifyPv() {
-        final T newValue = aggregator.getValue();
+        final T newValue = function.getValue();
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override

@@ -9,8 +9,8 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class MonitorRecipe<T extends PVType<T>> {
+class MonitorRecipe {
     public String pvName;
-    public ValueCache<T> cache;
+    public ValueCache<?> cache;
     public Collector collector;
 }

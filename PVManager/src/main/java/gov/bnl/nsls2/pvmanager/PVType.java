@@ -15,6 +15,14 @@ import java.util.List;
  */
 public abstract class PVType<T extends PVType<T>> {
 
+    public static <E extends PVType<E>> E newInstanceOf(Class<E> type) {
+        try {
+            return  type.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't create value of type " + type.getName(), e);
+        }
+    }
+
     // It handles the PVValueChangeListener support, so that each
     // PV type does not have to implement it.
 

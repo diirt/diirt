@@ -11,26 +11,16 @@ package gov.bnl.nsls2.pvmanager;
  */
 public class ValueCache<T extends PVType<T>> extends PVFunction<T> {
 
-    private final Class<T> dataType;
     private final T value;
 
     public ValueCache(Class<T> dataType) {
-        this.dataType = dataType;
-        try {
-            this.value = this.dataType.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Can't create value of type " + dataType.getName(), e);
-        }
+        super(dataType);
+        this.value = PVType.newInstanceOf(dataType);
     }
 
     @Override
     public T getValue() {
         return value;
-    }
-
-    @Override
-    public Class<T> getType() {
-        return dataType;
     }
 
 }
