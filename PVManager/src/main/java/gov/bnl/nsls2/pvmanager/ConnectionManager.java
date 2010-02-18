@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import javax.sound.midi.MidiDevice.Info;
 
+import junit.framework.Assert;
+
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
@@ -42,11 +44,11 @@ class ConnectionManager {
     }
 
     static void useMockConnectionManager() {
-        instance = MockConnectionManager.instance;
+	instance = MockConnectionManager.instance;
     }
 
     static void useCAConnectionManager() {
-        instance = connManager;
+	instance = connManager;
     }
 
     void removedoublePV() {
@@ -66,7 +68,7 @@ class ConnectionManager {
 		ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
 	    } catch (CAException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		logger.severe(e.toString());
 	    }
 	    // Display basic information about the context.
 	}
@@ -92,14 +94,15 @@ class ConnectionManager {
 	@Override
 	public void connectionChanged(ConnectionEvent ev) {
 	    PV<?> pv;
+	    logger.info("detected change in connection state.");
 	    // TODO Auto-generated method stub
 	    if (pvRef.get() != null) {
 		pv = pvRef.get();
 		logger.info("Detected a change in the connection status of pv "
 			+ pv.getName() + " -status- " + ev.toString());
 		pv.setState(PV.State.Connected); // just putting connected.
-	    }else{
-		//remove this connection listener.
+	    } else {
+		// remove this connection listener.
 		disconnect(channel, this);
 	    }
 
@@ -130,23 +133,25 @@ class ConnectionManager {
 	 * gov.aps.jca.event.MonitorListener#monitorChanged(gov.aps.jca.event
 	 * .MonitorEvent)
 	 */
-	
+
 	private final WeakReference<Collector> collector;
 	private final TypeDouble value;
-	private Monitor monitor;
+	private final Monitor monitor;
 
-	public MonitorListenerImpl(Collector collector, TypeDouble value) {
+	// public MonitorListenerImpl(Collector collector, TypeDouble value) {
+	// this.value = value;
+	// this.collector = new WeakReference<Collector>(collector);
+	// }
+
+	public MonitorListenerImpl(Collector collector, TypeDouble value,
+		Monitor monitor) {
 	    this.value = value;
 	    this.collector = new WeakReference<Collector>(collector);
-	}
-	
-	public synchronized void setMonitor(Monitor monitor){
 	    this.monitor = monitor;
 	}
 
 	public synchronized void monitorChanged(MonitorEvent ev) {
 	    synchronized (collector) {
-
 		// TODO Auto-generated method stub
 		// System.out.println(Thread.currentThread().getName());
 		try {
@@ -154,21 +159,19 @@ class ConnectionManager {
 		    DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
 			    DBR_Double.TYPE);
 		    newValue = rawvalue.getDoubleValue()[0];
-		    // System.out
-		    // .println("Static conversion to double for pv "
-		    // + rawvalue.toString() + " = " + value);
 		    value.setDouble(newValue);
 		    if (collector.get() != null) {
+			System.out.println("adding value "+newValue+" to collector ");
 			Collector c = collector.get();
 			c.collect();
 		    } else {
 			// stop this monitor since collector does not exist.
 			logger.info("removing monitor");
-			removeMonitor(monitor, this);			
+			removeMonitor(monitor, this);
 		    }
 		} catch (CAStatusException e) {
 		    // TODO Auto-generated catch block
-		    e.printStackTrace();
+		    logger.severe(e.toString());
 		}
 	    }
 	}
@@ -184,10 +187,12 @@ class ConnectionManager {
 	try {
 	    Channel channel = ctxt.createChannel(connRecipe.channelNames
 		    .iterator().next());
-	    ConnectionListenerImpl connectionListenerImpl = new ConnectionListenerImpl(connRecipe.pv, channel);
+	    // ctxt.pendIO(1.0);
+	    ConnectionListenerImpl connectionListenerImpl = new ConnectionListenerImpl(
+		    connRecipe.pv, channel);
 	    channel.addConnectionListener(connectionListenerImpl);
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    logger.severe(e.toString());
 	}
     }
 
@@ -205,15 +210,21 @@ class ConnectionManager {
     synchronized void monitor(String name, Collector collector,
 	    TypeDouble typeDouble) {
 	JCAinit();
-
+	
 	try {
 	    Channel channel = ctxt.createChannel(name);
+	    System.out.println(channel.getName());
+	    // ctxt.pendIO(1.0);
 	    // we assume it to be a double and move on....
-	    MonitorListenerImpl monitorListenerImpl = new MonitorListenerImpl(collector, typeDouble);
-	    Monitor monitor = channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE, monitorListenerImpl);
-	    monitorListenerImpl.setMonitor(monitor);	    
+	    Monitor monitor = channel.addMonitor(DBR_Double.TYPE, 1,
+		    Monitor.VALUE);
+	    MonitorListenerImpl monitorListenerImpl = new MonitorListenerImpl(
+		    collector, typeDouble, monitor);
+	    monitor.addMonitorListener(monitorListenerImpl);
+	    logger.info("# of minitors = "
+		    + monitor.getMonitorListeners().length);
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    logger.severe(e.toString());
 	}
     }
 
@@ -221,28 +232,39 @@ class ConnectionManager {
      * Destroy the channel.
      */
     private synchronized void destroyChannel(Channel channel) {
+	try {
+	    channel.destroy();
+	} catch (IllegalStateException e) {
+	    // TODO Auto-generated catch block
+	    logger.severe(e.toString());
+	} catch (CAException e) {
+	    // TODO Auto-generated catch block
+	    logger.severe(e.toString());
+	}
     }
 
     /**
      * Remove connection listeners.
      */
-    private synchronized void disconnect(Channel channel, ConnectionListener connectionListener) {
+    private synchronized void disconnect(Channel channel,
+	    ConnectionListener connectionListener) {
 	try {
-	    //TODO add check to determine when to destroy channel.
+	    // TODO add check to determine when to destroy channel.
 	    channel.removeConnectionListener(connectionListener);
 	} catch (IllegalStateException e) {
 	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.severe(e.toString());
 	} catch (CAException e) {
 	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	    logger.severe(e.toString());
 	}
     }
 
     /**
      * Remove monitor.
      */
-    private synchronized void removeMonitor(Monitor monitor, MonitorListener monitorListener) {
+    private synchronized void removeMonitor(Monitor monitor,
+	    MonitorListener monitorListener) {
 	monitor.removeMonitorListener(monitorListener);
     }
 

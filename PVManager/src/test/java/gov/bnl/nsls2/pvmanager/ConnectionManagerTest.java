@@ -61,7 +61,6 @@ public class ConnectionManagerTest {
     }
 
     private volatile PV<TypeDouble> pv, pv1;
-    private AtomicInteger counter1;
 
     /**
      * checks writes to the collector
@@ -72,36 +71,72 @@ public class ConnectionManagerTest {
     public void simpleTest() throws Exception {
 	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
 		TypeDouble.class);
+//	final Collector collector = new Collector(cache);
+//	final Collector collector1 = new Collector(cache);
 	final Collector collector = new Collector(cache);
-	counter1 = new AtomicInteger();
+	final Collector collector1 = new Collector(cache);
 
 	SwingUtilities.invokeAndWait(new Runnable() {
 
-            @Override
-            public void run() {
-//				ConnectionManager.getInstance().connectToPV("pvk01", collector);
-                pv = PV.createPv("pvk01", TypeDouble.class);
-                pv.addPVValueChangeListener(new PVValueChangeListener() {
+	    @Override
+	    public void run() {
+		// ConnectionManager.getInstance().connectToPV("pvk01",
+		// collector);
+		pv = PV.createPv("pvk01", TypeDouble.class);
 
-		    @Override
-		    public void pvValueChanged() {
-			System.out.println("New value " + pv.getValue());
-			counter1.incrementAndGet();
-		    }
-		});
 		MonitorRecipe monRecipe = new MonitorRecipe();
 		monRecipe.cache = cache;
 		monRecipe.collector = collector;
 		monRecipe.pvName = pv.getName();
-		ConnectionManager.getInstance().monitor(monRecipe);
+//		ConnectionManager.getInstance().monitor(monRecipe);
+		ConnectionManager.getInstance().monitor("pvk01", collector, TypeDouble.class
+			    .cast(cache.getValue()));
+		ConnectionManager.getInstance().monitor("pvk01", collector1, TypeDouble.class
+			    .cast(cache.getValue()));
 	    }
 	});
 	Thread.sleep(5000);
 	double[] doubleArray = collector.getData();
-	for (double d : doubleArray) {
-	    System.out.println(d);
-	}
-	System.out.println(counter1.get());
+	logger.info("Completed write to collector Test1 : " + doubleArray.length);
+	double[] doubleArray1 = collector1.getData();
+	logger.info("Completed write to collector Test1 : " + doubleArray1.length);
+//	for (double d : doubleArray) {
+//	    logger.info("Simple 1:" + d);
+//	}
+
+    }
+    
+    @Test
+    public void simpleTest2() throws Exception {
+	System.gc();
+	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
+		TypeDouble.class);
+//	final Collector collector2 = new Collector(cache);
+	final Collector collector2 = new Collector(cache);
+
+	SwingUtilities.invokeAndWait(new Runnable() {
+
+	    @Override
+	    public void run() {
+		// ConnectionManager.getInstance().connectToPV("pvk01",
+		// collector);
+		pv1 = PV.createPv("pvk01", TypeDouble.class);
+
+		MonitorRecipe monRecipe = new MonitorRecipe();
+		monRecipe.cache = cache;
+		monRecipe.collector = collector2;
+		monRecipe.pvName = pv1.getName();
+//		ConnectionManager.getInstance().monitor(monRecipe);
+		ConnectionManager.getInstance().monitor("pvk01", collector2, TypeDouble.class
+			    .cast(cache.getValue()));
+	    }
+	});
+	Thread.sleep(5000);
+	double[] doubleArray = collector2.getData();
+	logger.info("Completed write to collector2 Test2 : " + doubleArray.length);
+//	for (double d : doubleArray) {
+//	    logger.info("Simple 2:" + d);
+//	}
 
     }
 
@@ -111,13 +146,14 @@ public class ConnectionManagerTest {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    @Test
+ //   @Test
     public void connectionStatusTest() throws InterruptedException,
 	    InvocationTargetException {
+
 	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
 		TypeDouble.class);
 	final Collector collector = new Collector(cache);
-	final Channel channel;
+
 	SwingUtilities.invokeAndWait(new Runnable() {
 
 	    @Override
@@ -125,24 +161,17 @@ public class ConnectionManagerTest {
 		// ConnectionManager.getInstance().connectToPV("pvk01",
 		// collector);
 		pv = PV.createPv("pvk01", TypeDouble.class);
-		pv.addPVValueChangeListener(new PVValueChangeListener() {
 
-		    @Override
-		    public void pvValueChanged() {
-			//
-			System.out.println("value changes " + pv.getName()
-				+ " " + pv.getState());
-		    }
-		});
 		pv.addPropertyChangeListener(new PropertyChangeListener() {
 
 		    @Override
 		    public void propertyChange(PropertyChangeEvent evt) {
 			// TODO Auto-generated method stub
 			// Testing this by starting and stopping the ioc.
-			System.out.println("detected a property change in PV.");
+			System.out.println("Test2: detected a property change in PV.");
 		    }
 		});
+		ConnectionManager.useCAConnectionManager();
 		// Connection
 		ConnectionRecipe connectionRecipe = new ConnectionRecipe();
 		connectionRecipe.pv = pv;
@@ -157,35 +186,93 @@ public class ConnectionManagerTest {
 	for (double d : doubleArray) {
 	    System.out.println(d);
 	}
+
     }
 
     /**
      * Test the working from start to finish.
      * 
      * @throws InterruptedException
+     * @throws InvocationTargetException
      */
-    @Test
-    public void PVtest() throws InterruptedException {
-	pv = PVManager.read(doublePv("pvk01")).atHz(10);
-	pv.addPVValueChangeListener(new PVValueChangeListener() {
+//    @Test
+    public void PVtest() throws InterruptedException, InvocationTargetException {
+	SwingUtilities.invokeAndWait(new Runnable() {
 
 	    @Override
-	    public void pvValueChanged() {
-		//
-		System.out.println(pv.getName() + " state: " + pv.getState()
-			+ " and value: " + pv.getValue().getDouble());
-	    }
-	});
-	pv.addPropertyChangeListener(new PropertyChangeListener() {
-
-	    @Override
-	    public void propertyChange(PropertyChangeEvent evt) {
+	    public void run() {
 		// TODO Auto-generated method stub
-		// Testing this by starting and stopping the ioc.
-		System.out.println("detected a property change in PV.");
+		pv = PVManager.read(doublePv("pvk02")).atHz(50);
+		pv.addPVValueChangeListener(new PVValueChangeListener() {
+		    @Override
+		    public void pvValueChanged() {
+			logger.info("Test3a: " + pv.getName() + " state: " + pv.getState()
+				+ " and value: " + pv.getValue().getDouble());
+		    }
+		});
+		pv.addPVValueChangeListener(new PVValueChangeListener() {
+		    @Override
+		    public void pvValueChanged() {
+			logger.info("Test3b: " + pv.getName() + " state: " + pv.getState()
+				+ " and value: " + pv.getValue().getDouble());
+		    }
+		});
+		pv.addPropertyChangeListener(new PropertyChangeListener() {
+
+		    @Override
+		    public void propertyChange(PropertyChangeEvent evt) {
+			// TODO Auto-generated method stub
+			// Testing this by starting and stopping the ioc.
+			logger.severe("Test3: " + "detected a property change in PV.");
+		    }
+		});
 	    }
 	});
 	Thread.sleep(5000);
     }
 
+//    @Test
+    public void multiThreadedPVTest() throws InterruptedException,
+	    InvocationTargetException {
+
+	class Test implements Runnable {
+	    String name;
+	    PV<TypeDouble> pvNew;
+
+	    public Test(String name) {
+		this.name = name;
+	    }
+
+	    public void run() {
+		pvNew = PVManager.read(doublePv(name)).atHz(50);
+		pvNew.addPVValueChangeListener(new PVValueChangeListener() {
+		    @Override
+		    public void pvValueChanged() {
+			logger.info("Test4: " + Thread.currentThread().getName() + " "
+				+ pvNew.getName() + " state: "
+				+ pvNew.getState() + " and value: "
+				+ pvNew.getValue().getDouble());
+		    }
+		});
+		pvNew.addPropertyChangeListener(new PropertyChangeListener() {
+		    @Override
+		    public void propertyChange(PropertyChangeEvent evt) {
+			// TODO Auto-generated method stub
+			// Testing this by starting and stopping the ioc.
+			logger.severe("Test4: " + "detected a property change in PV.");
+		    }
+		});
+	    }
+	}
+	
+	Thread t1 = new Thread(new Test("pvk02"));
+	Thread t2 = new Thread(new Test("pvk03"));
+	t1.start();
+	t2.start();
+	Thread.sleep(5000);
+	t1.interrupt();
+	t2.interrupt();
+	t1.join();
+	t2.join();
+    }
 }
