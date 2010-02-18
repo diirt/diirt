@@ -31,6 +31,16 @@ public class PVManager {
     }
 
     /**
+     * Reads the given expression.
+     *
+     * @param pvExpression the expression to read
+     * @return a pv manager expression
+     */
+    public static <T extends PVType<T>> PVManagerExpression<T> read(AggregatedPVExpression<T> pvExpression) {
+        return new PVManagerExpression<T>(pvExpression);
+    }
+
+    /**
      * An expression used to set the final parameters on how the pv expression
      * should be monitored.
      * @param <T> the type of the expression

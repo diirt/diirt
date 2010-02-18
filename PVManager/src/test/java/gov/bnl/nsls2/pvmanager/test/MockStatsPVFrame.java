@@ -8,23 +8,23 @@
  *
  * Created on Feb 16, 2010, 3:43:37 PM
  */
-
 package gov.bnl.nsls2.pvmanager.test;
 
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
 import gov.bnl.nsls2.pvmanager.TypeDouble;
+import gov.bnl.nsls2.pvmanager.TypeStatistics;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
 /**
  *
  * @author carcassi
  */
-public class MockPVFrame extends javax.swing.JFrame {
+public class MockStatsPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
-    public MockPVFrame() {
+    public MockStatsPVFrame() {
         PVManager.useMockData();
         initComponents();
     }
@@ -126,14 +126,14 @@ public class MockPVFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(createPVButton, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(createPVButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(valueLabel))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)))
@@ -159,34 +159,33 @@ public class MockPVFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    PV<TypeDouble> pv;
+    PV<TypeStatistics> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         long timeIntervalMs = (1000 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
         String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(doublePv(pvName)).atHz(scanRate);
+        pv = PVManager.read(statisticsOf(doublePv(pvName))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
-                valueLabel.setText(Double.toString(pv.getValue().getDouble()));
+                valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " ± " + Double.toString(pv.getValue().getStdDev()));
             }
         });
     }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
-                new MockPVFrame().setVisible(true);
+                new MockStatsPVFrame().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createPVButton;
     private javax.swing.JLabel jLabel1;
@@ -201,5 +200,4 @@ public class MockPVFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner updateRateSpinner;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
-
 }
