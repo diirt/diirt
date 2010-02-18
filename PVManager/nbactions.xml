@@ -32,6 +32,16 @@
             </goals>
             <properties>
                 <test>${className}</test>
+                <argLine>-Djava.util.logging.config.file=./target/test-classes/log.properties</argLine>
+            </properties>
+        </action>
+    <action>
+            <actionName>test</actionName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+            <properties>
+                <argLine>-Djava.util.logging.config.file=./target/test-classes/log.properties</argLine>
             </properties>
         </action>
 </actions>
