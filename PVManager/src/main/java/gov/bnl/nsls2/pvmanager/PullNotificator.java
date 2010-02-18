@@ -16,10 +16,12 @@ class PullNotificator<T extends PVType<T>> {
 
     private final WeakReference<PV<T>> pvRef;
     private final PVFunction<T> function;
+    private final ThreadSwitch onThread;
 
-    PullNotificator(PV<T> pv, PVFunction<T> aggregator) {
+    PullNotificator(PV<T> pv, PVFunction<T> aggregator, ThreadSwitch onThread) {
         this.pvRef = new WeakReference<PV<T>>(pv);
         this.function = aggregator;
+        this.onThread = onThread;
     }
 
     boolean isActive() {
@@ -31,7 +33,7 @@ class PullNotificator<T extends PVType<T>> {
 
     void notifyPv() {
         final T newValue = function.getValue();
-        SwingUtilities.invokeLater(new Runnable() {
+        onThread.post(new Runnable() {
 
             @Override
             public void run() {

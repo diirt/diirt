@@ -19,6 +19,8 @@ public class PVManager {
         ConnectionManager.useCAConnectionManager();
     }
 
+    public static volatile ThreadSwitch defaultOnThread = PVExpressionLanguage.onSwingEDT();
+
     /**
      * Reads the given expression. Will return the average of the values collected
      * at the scan rate.
@@ -48,9 +50,19 @@ public class PVManager {
     public static class PVManagerExpression<T extends PVType<T>>  {
 
         private AggregatedPVExpression<T> aggregatedPVExpression;
+        private ThreadSwitch onThread;
 
         private PVManagerExpression(AggregatedPVExpression<T> aggregatedPVExpression) {
             this.aggregatedPVExpression = aggregatedPVExpression;
+        }
+
+        public PVManagerExpression<T> andNotify(ThreadSwitch onThread) {
+            if (this.onThread == null)  {
+                this.onThread = onThread;
+            } else {
+                throw new IllegalStateException("Already set what thread to notify");
+            }
+            return this;
         }
 
         /**
@@ -64,7 +76,10 @@ public class PVManager {
             PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getOutputType());
             List<MonitorRecipe> monRecipes = aggregatedPVExpression.getMonitorRecipes();
             PVFunction<T> aggregatedFunction = aggregatedPVExpression.getFunction();
-            PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction);
+            if (onThread == null) {
+                onThread = defaultOnThread;
+            }
+            PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction, onThread);
             Scanner.scan(notificator, scanPeriodMs);
             ConnectionRecipe connRecipe = new ConnectionRecipe();
             connRecipe.channelNames = new HashSet<String>();
