@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 class Scanner {
 
     private static Logger log = Logger.getLogger(Scanner.class.getName());
+    private static Timer timer = new Timer("PV Monitor Scanner", true);
 
     static void scan(final PullNotificator notificator, long periodInMs) {
-        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override

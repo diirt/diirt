@@ -69,9 +69,7 @@ public class TypeStatistics extends PVType<TypeStatistics> {
 
     @Override
     void setTo(TypeStatistics newValue) {
-        synchronized(newValue) {
-            setStatistics(newValue.average, newValue.min, newValue.max, newValue.stdDev);
-        }
+        setStatistics(newValue.average, newValue.min, newValue.max, newValue.stdDev);
     }
 
 }

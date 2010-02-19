@@ -24,8 +24,9 @@ class MockConnectionManager extends ConnectionManager {
 
     private static Random rand = new Random();
 
+    private static Timer timer = new Timer("Mock Data Generator", true);
+
     private static void generateData(final Collector collector, final TypeDouble value, final int nTimes, long period, final int samplesPerPeriod) {
-        final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
             WeakReference<Collector> ref = new WeakReference<Collector>(collector);
@@ -44,7 +45,7 @@ class MockConnectionManager extends ConnectionManager {
                 innerCounter++;
                 if (innerCounter == nTimes || collector == null) {
                     log.fine("Stopped generating data on " + collector);
-                    timer.cancel();
+                    cancel();
                 }
             }
         }, 0, period);

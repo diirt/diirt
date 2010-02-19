@@ -35,11 +35,9 @@ public class TypeDouble extends PVType<TypeDouble> {
 
     @Override
     void setTo(TypeDouble newValue) {
-        synchronized (newValue) {
-            if (newValue.value != value) {
-                value = newValue.value;
-                firePvValueChanged();
-            }
+        if (newValue.value != value) {
+            value = newValue.value;
+            firePvValueChanged();
         }
     }
 
