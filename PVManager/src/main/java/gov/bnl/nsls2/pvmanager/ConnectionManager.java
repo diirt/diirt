@@ -4,17 +4,12 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-
-import javax.sound.midi.MidiDevice.Info;
-
 import gov.aps.jca.CAException;
-import gov.aps.jca.CAStatus;
 import gov.aps.jca.CAStatusException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
-import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_Double;
 import gov.aps.jca.event.AccessRightsEvent;
 import gov.aps.jca.event.AccessRightsListener;
