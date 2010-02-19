@@ -206,7 +206,8 @@ class ConnectionManager {
 	    // we assume it to be a double and move on....
 	    MonitorListenerImpl monitorListenerImpl = new MonitorListenerImpl(collector, typeDouble);
 	    Monitor monitor = channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE, monitorListenerImpl);
-	    monitorListenerImpl.setMonitor(monitor);	    
+	    monitorListenerImpl.setMonitor(monitor);
+            ctxt.flushIO();
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
