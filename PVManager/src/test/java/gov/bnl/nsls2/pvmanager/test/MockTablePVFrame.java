@@ -14,8 +14,7 @@ package gov.bnl.nsls2.pvmanager.test;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.TypeDouble;
-import gov.bnl.nsls2.pvmanager.TypeStatistics;
+import gov.bnl.nsls2.pvmanager.DoubleStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -195,7 +194,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    List<PV<TypeStatistics>> pvs = new ArrayList<PV<TypeStatistics>>();
+    List<PV<DoubleStatistics>> pvs = new ArrayList<PV<DoubleStatistics>>();
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
@@ -207,7 +206,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         model.setRowCount(nPvs);
         pvs.clear();
         for (int n = 0; n < nPvs; n++) {
-            final PV<TypeStatistics> pv = PVManager.read(statisticsOf(doublePv(pvName))).atHz(scanRate);
+            final PV<DoubleStatistics> pv = PVManager.read(statisticsOf(doublePv(pvName))).atHz(scanRate);
             final int nRow = n;
             pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override

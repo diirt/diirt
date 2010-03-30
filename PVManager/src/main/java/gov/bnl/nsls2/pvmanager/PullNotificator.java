@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
  *
  * @author carcassi
  */
-class PullNotificator<T extends PVType<T>> {
+class PullNotificator<T> {
 
     private final WeakReference<PV<T>> pvRef;
     private final PVFunction<T> function;
@@ -32,14 +32,19 @@ class PullNotificator<T extends PVType<T>> {
     }
 
     void notifyPv() {
+        // TODO This object should be properly synchronized
         final T newValue = function.getValue();
         onThread.post(new Runnable() {
 
             @Override
             public void run() {
                 PV<T> pv = pvRef.get();
-                if (pv != null) {
-                    pv.getValue().setTo(newValue);
+                if (pv != null && newValue != null) {
+                    TypeSupport.Notification<T> notification =
+                            TypeSupport.prepareValueAccordingly(pv.getValue(), newValue);
+                    if (notification.isNotificationNeeded()) {
+                        pv.setValue(notification.getNewValue());
+                    }
                 }
             }
         });

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class AggregatedPVExpression<T extends PVType<T>> {
+public class AggregatedPVExpression<T> {
 
     private List<MonitorRecipe> recipes;
     private Class<T> outputType;

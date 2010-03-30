@@ -60,7 +60,7 @@ public class ConnectionManagerTest {
     public void tearDown() throws Exception {
     }
 
-    private volatile PV<TypeDouble> pv, pv1;
+    private volatile PV<Double> pv, pv1;
     private AtomicInteger counter1;
 
     /**
@@ -70,8 +70,8 @@ public class ConnectionManagerTest {
      */
     @Test
     public void simpleTest() throws Exception {
-	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
-		TypeDouble.class);
+	final ValueCache<Double> cache = new ValueCache<Double>(
+		Double.class);
 	final Collector collector = new Collector(cache);
 	counter1 = new AtomicInteger();
 
@@ -80,7 +80,7 @@ public class ConnectionManagerTest {
             @Override
             public void run() {
 //				ConnectionManager.getInstance().connectToPV("pvk01", collector);
-                pv = PV.createPv("pvk01", TypeDouble.class);
+                pv = PV.createPv("pvk01", Double.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
 		    @Override
@@ -114,8 +114,8 @@ public class ConnectionManagerTest {
     @Test
     public void connectionStatusTest() throws InterruptedException,
 	    InvocationTargetException {
-	final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(
-		TypeDouble.class);
+	final ValueCache<Double> cache = new ValueCache<Double>(
+		Double.class);
 	final Collector collector = new Collector(cache);
 	final Channel channel;
 	SwingUtilities.invokeAndWait(new Runnable() {
@@ -124,7 +124,7 @@ public class ConnectionManagerTest {
 	    public void run() {
 		// ConnectionManager.getInstance().connectToPV("pvk01",
 		// collector);
-		pv = PV.createPv("pvk01", TypeDouble.class);
+		pv = PV.createPv("pvk01", Double.class);
 		pv.addPVValueChangeListener(new PVValueChangeListener() {
 
 		    @Override
@@ -173,7 +173,7 @@ public class ConnectionManagerTest {
 	    public void pvValueChanged() {
 		//
 		System.out.println(pv.getName() + " state: " + pv.getState()
-			+ " and value: " + pv.getValue().getDouble());
+			+ " and value: " + pv.getValue());
 	    }
 	});
 	pv.addPropertyChangeListener(new PropertyChangeListener() {

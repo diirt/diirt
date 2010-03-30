@@ -10,7 +10,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-public class TypeStatistics extends PVType<TypeStatistics> {
+public class DoubleStatistics {
     private double average;
     private double min;
     private double max;
@@ -63,13 +63,26 @@ public class TypeStatistics extends PVType<TypeStatistics> {
             this.min = min;
             this.max = max;
             this.stdDev = stdDev;
-            firePvValueChanged();
         }
     }
 
-    @Override
-    void setTo(TypeStatistics newValue) {
+    void setTo(DoubleStatistics newValue) {
         setStatistics(newValue.average, newValue.min, newValue.max, newValue.stdDev);
+    }
+
+    @Override
+    public int hashCode() {
+        return new Double(average).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DoubleStatistics) {
+            DoubleStatistics other = (DoubleStatistics) obj;
+            return average == other.average && min == other.min && max == other.max && stdDev == other.stdDev;
+        }
+
+        return false;
     }
 
 }

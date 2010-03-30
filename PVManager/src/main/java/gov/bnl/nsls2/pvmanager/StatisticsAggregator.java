@@ -2,14 +2,14 @@ package gov.bnl.nsls2.pvmanager;
 
 import static java.lang.Math.*;
 
-class StatisticsAggregator extends Aggregator<TypeStatistics> {
+class StatisticsAggregator extends Aggregator<DoubleStatistics> {
 
     StatisticsAggregator(Collector collector) {
-        super(TypeStatistics.class, collector);
+        super(DoubleStatistics.class, collector);
     }
 
     @Override
-    protected TypeStatistics calculate(double[] data) {
+    protected DoubleStatistics calculate(double[] data) {
         double totalSum = 0;
         double totalSquareSum = 0;
         double min = 0;
@@ -20,7 +20,7 @@ class StatisticsAggregator extends Aggregator<TypeStatistics> {
             min = min(min, item);
             max = max(min, item);
         }
-        TypeStatistics newValue = new TypeStatistics();
+        DoubleStatistics newValue = new DoubleStatistics();
         newValue.setStatistics(totalSum / data.length, min, max,
                 sqrt(totalSquareSum / data.length - (totalSum * totalSum) / (data.length * data.length)));
         return newValue;

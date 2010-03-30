@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class PVExpression<T extends PVType<T>> {
+public class PVExpression<T> {
 
     private List<String> pvNames;
     private List<ValueCache<?>> pvCaches;

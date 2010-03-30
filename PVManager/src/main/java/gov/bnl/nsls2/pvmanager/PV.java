@@ -2,6 +2,8 @@ package gov.bnl.nsls2.pvmanager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An object representing the PV. It contains all elements that are common
@@ -15,13 +17,12 @@ import java.beans.PropertyChangeSupport;
  * @author carcassi
  * @param <T> the type of the PV.
  */
-public final class PV<T extends PVType> {
+public final class PV<T> {
 
     //Static factory should be substituted by constructor? Should factory
     // be public or package private? Should PV name also be final?
 
-    private PV(String name, T value) {
-        this.value = value;
+    private PV(String name) {
         this.name = name;
     }
 
@@ -33,13 +34,15 @@ public final class PV<T extends PVType> {
      * @param clazz type of the new PV
      * @return a new PV
      */
-    public static <E extends PVType> PV<E> createPv(String name, Class<E> clazz) {
-        try {
-            E data = clazz.newInstance();
-            PV<E> pv = new PV<E>(name, data);
-            return pv;
-        } catch (Exception e) {
-            throw new RuntimeException("Can't create PV of type " + clazz.getName(), e);
+    public static <E> PV<E> createPv(String name, Class<E> clazz) {
+        return new PV<E>(name);
+    }
+
+    private List<PVValueChangeListener> valueChangeListeners = new ArrayList<PVValueChangeListener>();
+
+    void firePvValueChanged() {
+        for (PVValueChangeListener listener : valueChangeListeners) {
+            listener.pvValueChanged();
         }
     }
 
@@ -49,7 +52,7 @@ public final class PV<T extends PVType> {
      * @param listener a new listener
      */
     public void addPVValueChangeListener(PVValueChangeListener listener) {
-        value.addPVValueChangeListener(listener);
+        valueChangeListeners.add(listener);
     }
 
     /**
@@ -58,7 +61,7 @@ public final class PV<T extends PVType> {
      * @param listener a new listener
      */
     public void removePVValueChangeListener(PVValueChangeListener listener) {
-        value.removePVValueChangeListener(listener);
+        valueChangeListeners.remove(listener);
     }
 
     /**
@@ -118,7 +121,8 @@ public final class PV<T extends PVType> {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
-    private final T value;
+
+    private T value;
     public static final String PROP_VALUE = "value";
 
     /**
@@ -127,7 +131,14 @@ public final class PV<T extends PVType> {
      * @return the value of value
      */
     public T getValue() {
+        System.out.println("set " + Thread.currentThread() + " " + this.value);
         return value;
+    }
+
+    void setValue(T value) {
+        this.value = value;
+        System.out.println("set " + Thread.currentThread() + " " + this.value);
+        firePvValueChanged();
     }
 
     private State state;

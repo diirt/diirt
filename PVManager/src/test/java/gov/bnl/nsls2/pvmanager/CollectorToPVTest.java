@@ -40,7 +40,7 @@ public class CollectorToPVTest {
     public void tearDown() {
     }
 
-    private volatile PV<TypeDouble> pv;
+    private volatile PV<Double> pv;
     private AtomicInteger counter;
 
     @Test
@@ -53,14 +53,14 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
         final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv", TypeDouble.class);
+                pv = PV.createPv("My pv", Double.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -71,7 +71,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
@@ -95,14 +95,14 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
         final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv", TypeDouble.class);
+                pv = PV.createPv("My pv", Double.class);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -113,7 +113,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<TypeDouble> notificator = new PullNotificator<TypeDouble>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
@@ -127,7 +127,7 @@ public class CollectorToPVTest {
         }
     }
 
-    private volatile PV<TypeStatistics> pvStat;
+    private volatile PV<DoubleStatistics> pvStat;
 
     @Test
     public void testStatistics() throws Exception {
@@ -139,14 +139,14 @@ public class CollectorToPVTest {
         int maxNotifications = (int) (testTimeMs / scanPeriodMs);
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
-        final ValueCache<TypeDouble> cache = new ValueCache<TypeDouble>(TypeDouble.class);
+        final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
         final Collector collector = new Collector(cache);
         counter = new AtomicInteger();
         StatisticsAggregator aggregator = new StatisticsAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pvStat = PV.createPv("My pv", TypeStatistics.class);
+                pvStat = PV.createPv("My pv", DoubleStatistics.class);
                 pvStat.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -157,7 +157,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<TypeStatistics> notificator = new PullNotificator<TypeStatistics>(pvStat, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<DoubleStatistics> notificator = new PullNotificator<DoubleStatistics>(pvStat, aggregator, PVExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;

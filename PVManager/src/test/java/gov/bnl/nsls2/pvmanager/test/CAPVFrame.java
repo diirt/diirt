@@ -14,8 +14,7 @@ package gov.bnl.nsls2.pvmanager.test;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.TypeDouble;
-import gov.bnl.nsls2.pvmanager.TypeStatistics;
+import gov.bnl.nsls2.pvmanager.DoubleStatistics;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
 /**
@@ -128,7 +127,7 @@ public class CAPVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<TypeStatistics> pv;
+    PV<DoubleStatistics> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if ("".equals(pvNameField.getText()))

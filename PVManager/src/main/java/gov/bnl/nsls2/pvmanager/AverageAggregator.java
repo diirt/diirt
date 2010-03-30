@@ -5,21 +5,19 @@ package gov.bnl.nsls2.pvmanager;
  * 
  * @author carcassi
  */
-class AverageAggregator extends Aggregator<TypeDouble> {
+class AverageAggregator extends Aggregator<Double> {
 
     AverageAggregator(Collector collector) {
-        super(TypeDouble.class, collector);
+        super(Double.class, collector);
     }
 
     @Override
-    protected TypeDouble calculate(double[] data) {
+    protected Double calculate(double[] data) {
         double average = 0;
         for (double item : data) {
             average += item;
         }
-        TypeDouble newValue = PVType.newInstanceOf(getType());
-        newValue.setDouble(average / data.length);
-        return newValue;
+        return average / data.length;
     }
 
 }

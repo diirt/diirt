@@ -26,7 +26,7 @@ class MockConnectionManager extends ConnectionManager {
 
     private static Timer timer = new Timer("Mock Data Generator", true);
 
-    private static void generateData(final Collector collector, final TypeDouble value, final int nTimes, long period, final int samplesPerPeriod) {
+    private static void generateData(final Collector collector, final ValueCache<Double> value, final int nTimes, long period, final int samplesPerPeriod) {
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
             WeakReference<Collector> ref = new WeakReference<Collector>(collector);
@@ -37,7 +37,7 @@ class MockConnectionManager extends ConnectionManager {
                 if (collector != null) {
                     for (int i = 0; i < samplesPerPeriod; i++) {
                         synchronized (collector) {
-                            value.setDouble(rand.nextGaussian());
+                            value.setValue(rand.nextGaussian());
                             collector.collect();
                         }
                     }
@@ -54,13 +54,13 @@ class MockConnectionManager extends ConnectionManager {
 
     Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times");
 
-    private void connect(String name, Collector collector, TypeDouble typeDouble) {
+    private void connect(String name, Collector collector, ValueCache<Double> doubleCache) {
         Matcher matcher = pattern.matcher(name);
         if (matcher.matches()) {
             int nTimes = Integer.parseInt(matcher.group(3));
             long period = Long.parseLong(matcher.group(2));
             int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateData(collector, typeDouble, nTimes, period, samplesPerPeriod);
+            generateData(collector, doubleCache, nTimes, period, samplesPerPeriod);
         } else {
             throw new RuntimeException("Name doesn't match for mock connection");
         }
@@ -72,8 +72,10 @@ class MockConnectionManager extends ConnectionManager {
 
     @Override
     void monitor(MonitorRecipe recipe) {
-        if (recipe.cache.getType().equals(TypeDouble.class)) {
-            connect(recipe.pvName, recipe.collector, TypeDouble.class.cast(recipe.cache.getValue()));
+        if (recipe.cache.getType().equals(Double.class)) {
+            @SuppressWarnings("unchecked")
+            ValueCache<Double> cache = (ValueCache<Double>) recipe.cache;
+            connect(recipe.pvName, recipe.collector, cache);
         } else {
             throw new UnsupportedOperationException("Type " + recipe.cache.getType().getName() + " is not yet supported");
         }

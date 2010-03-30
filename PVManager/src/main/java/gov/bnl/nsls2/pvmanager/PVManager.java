@@ -28,8 +28,8 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static PVManagerExpression<TypeDouble> read(PVExpression<TypeDouble> pvExpression) {
-        return new PVManagerExpression<TypeDouble>(averageOf(pvExpression));
+    public static PVManagerExpression<Double> read(PVExpression<Double> pvExpression) {
+        return new PVManagerExpression<Double>(averageOf(pvExpression));
     }
 
     /**
@@ -38,7 +38,7 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static <T extends PVType<T>> PVManagerExpression<T> read(AggregatedPVExpression<T> pvExpression) {
+    public static <T> PVManagerExpression<T> read(AggregatedPVExpression<T> pvExpression) {
         return new PVManagerExpression<T>(pvExpression);
     }
 
@@ -47,7 +47,7 @@ public class PVManager {
      * should be monitored.
      * @param <T> the type of the expression
      */
-    public static class PVManagerExpression<T extends PVType<T>>  {
+    public static class PVManagerExpression<T>  {
 
         private AggregatedPVExpression<T> aggregatedPVExpression;
         private ThreadSwitch onThread;

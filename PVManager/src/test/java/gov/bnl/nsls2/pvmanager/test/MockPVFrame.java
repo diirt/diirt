@@ -14,7 +14,6 @@ package gov.bnl.nsls2.pvmanager.test;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.TypeDouble;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 
 /**
@@ -160,7 +159,7 @@ public class MockPVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<TypeDouble> pv;
+    PV<Double> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         long timeIntervalMs = (1000 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
@@ -171,7 +170,7 @@ public class MockPVFrame extends javax.swing.JFrame {
 
             @Override
             public void pvValueChanged() {
-                valueLabel.setText(Double.toString(pv.getValue().getDouble()));
+                valueLabel.setText(Double.toString(pv.getValue()));
             }
         });
     }//GEN-LAST:event_createPVButtonActionPerformed

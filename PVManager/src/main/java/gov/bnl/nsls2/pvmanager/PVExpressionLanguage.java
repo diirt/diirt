@@ -19,8 +19,8 @@ public class PVExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static PVExpression<TypeDouble> doublePv(String name) {
-        return new PVExpression<TypeDouble>(name, TypeDouble.class);
+    public static PVExpression<Double> doublePv(String name) {
+        return new PVExpression<Double>(name, Double.class);
     }
 
     /**
@@ -28,10 +28,10 @@ public class PVExpressionLanguage {
      * @param doublePv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
-    public static AggregatedPVExpression<TypeDouble> averageOf(PVExpression<TypeDouble> doublePv) {
+    public static AggregatedPVExpression<Double> averageOf(PVExpression<Double> doublePv) {
         Collector collector = new Collector(doublePv.getFunction());
-        return new AggregatedPVExpression<TypeDouble>(doublePv.createMontiorRecipes(collector),
-                TypeDouble.class, new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
+        return new AggregatedPVExpression<Double>(doublePv.createMontiorRecipes(collector),
+                Double.class, new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
     }
 
     /**
@@ -39,10 +39,10 @@ public class PVExpressionLanguage {
      * @param doublePv the expression to calculate the statistics information on; can't be null
      * @return an expression representing the statistical information of the expression
      */
-    public static AggregatedPVExpression<TypeStatistics> statisticsOf(PVExpression<TypeDouble> doublePv) {
+    public static AggregatedPVExpression<DoubleStatistics> statisticsOf(PVExpression<Double> doublePv) {
         Collector collector = new Collector(doublePv.getFunction());
-        return new AggregatedPVExpression<TypeStatistics>(doublePv.createMontiorRecipes(collector),
-                TypeStatistics.class, new StatisticsAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
+        return new AggregatedPVExpression<DoubleStatistics>(doublePv.createMontiorRecipes(collector),
+                DoubleStatistics.class, new StatisticsAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
     }
 
     /**

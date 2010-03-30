@@ -127,10 +127,10 @@ class ConnectionManager {
 	 */
 	
 	private final WeakReference<Collector> collector;
-	private final TypeDouble value;
+	private Double value;
 	private Monitor monitor;
 
-	public MonitorListenerImpl(Collector collector, TypeDouble value) {
+	public MonitorListenerImpl(Collector collector, Double value) {
 	    this.value = value;
 	    this.collector = new WeakReference<Collector>(collector);
 	}
@@ -152,7 +152,7 @@ class ConnectionManager {
 		    // System.out
 		    // .println("Static conversion to double for pv "
 		    // + rawvalue.toString() + " = " + value);
-		    value.setDouble(newValue);
+		    value = newValue;
 		    if (collector.get() != null) {
 			Collector c = collector.get();
 			c.collect();
@@ -187,8 +187,8 @@ class ConnectionManager {
     }
 
     synchronized void monitor(MonitorRecipe connRecipe) {
-	if (connRecipe.cache.getType().equals(TypeDouble.class)) {
-	    monitor(connRecipe.pvName, connRecipe.collector, TypeDouble.class
+	if (connRecipe.cache.getType().equals(Double.class)) {
+	    monitor(connRecipe.pvName, connRecipe.collector, Double.class
 		    .cast(connRecipe.cache.getValue()));
 	} else {
 	    throw new UnsupportedOperationException("Type "
@@ -198,7 +198,7 @@ class ConnectionManager {
     }
 
     synchronized void monitor(String name, Collector collector,
-	    TypeDouble typeDouble) {
+	    Double typeDouble) {
 	JCAinit();
 
 	try {

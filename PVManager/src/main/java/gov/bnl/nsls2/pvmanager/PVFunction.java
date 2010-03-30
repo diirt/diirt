@@ -9,7 +9,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-abstract class PVFunction<T extends PVType<T>> {
+abstract class PVFunction<T> {
 
     private Class<T> type;
 

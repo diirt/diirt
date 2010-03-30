@@ -27,9 +27,9 @@ class Collector {
 
     // @GuardedBy(buffer)
     private final List<Double> buffer = new ArrayList<Double>();
-    private final PVFunction<TypeDouble> function;
+    private final PVFunction<Double> function;
     
-    Collector(PVFunction<TypeDouble> function) {
+    Collector(PVFunction<Double> function) {
         this.function = function;
     }
 
@@ -38,7 +38,7 @@ class Collector {
      */
     synchronized void collect() {
         // Calculation may take time, and is locked by this
-        Double newValue = function.getValue().getDouble();
+        Double newValue = function.getValue();
 
         // Buffer is locked and updated
         synchronized(buffer) {

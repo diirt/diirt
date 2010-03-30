@@ -8,7 +8,6 @@ package gov.bnl.nsls2.pvmanager.test;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.TypeDouble;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.junit.After;
@@ -45,7 +44,7 @@ public class ReadingPVTest {
     public void tearDown() {
     }
 
-    private volatile PV<TypeDouble> pv;
+    private volatile PV<Double> pv;
     private AtomicInteger counter;
 
     @Test
