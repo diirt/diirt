@@ -68,7 +68,6 @@ public class ReadingPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pv.getValue().getDouble());
                         counter.incrementAndGet();
                     }
                 });

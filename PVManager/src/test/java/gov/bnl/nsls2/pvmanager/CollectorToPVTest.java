@@ -5,6 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.junit.After;
@@ -54,7 +55,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector collector = new Collector(cache);
+        final Collector<Double> collector = new Collector<Double>(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -65,7 +66,6 @@ public class CollectorToPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pv.getValue().getDouble());
                         counter.incrementAndGet();
                     }
                 });
@@ -96,7 +96,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector collector = new Collector(cache);
+        final Collector<Double> collector = new Collector<Double>(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -107,7 +107,6 @@ public class CollectorToPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pv.getValue().getDouble());
                         counter.incrementAndGet();
                     }
                 });
@@ -140,7 +139,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector collector = new Collector(cache);
+        final Collector<Double> collector = new Collector<Double>(cache);
         counter = new AtomicInteger();
         StatisticsAggregator aggregator = new StatisticsAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -151,7 +150,6 @@ public class CollectorToPVTest {
 
                     @Override
                     public void pvValueChanged() {
-                        //System.out.println("New value " + pvStat.getValue().getAverage() + " +/- " + pvStat.getValue().getStdDev());
                         counter.incrementAndGet();
                     }
                 });

@@ -5,6 +5,8 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
+
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
  * be able to monitor.
@@ -29,7 +31,7 @@ public class PVExpressionLanguage {
      * @return an expression representing the average of the expression
      */
     public static AggregatedPVExpression<Double> averageOf(PVExpression<Double> doublePv) {
-        Collector collector = new Collector(doublePv.getFunction());
+        Collector<Double> collector = new Collector<Double>(doublePv.getFunction());
         return new AggregatedPVExpression<Double>(doublePv.createMontiorRecipes(collector),
                 Double.class, new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
     }
@@ -40,7 +42,7 @@ public class PVExpressionLanguage {
      * @return an expression representing the statistical information of the expression
      */
     public static AggregatedPVExpression<DoubleStatistics> statisticsOf(PVExpression<Double> doublePv) {
-        Collector collector = new Collector(doublePv.getFunction());
+        Collector<Double> collector = new Collector<Double>(doublePv.getFunction());
         return new AggregatedPVExpression<DoubleStatistics>(doublePv.createMontiorRecipes(collector),
                 DoubleStatistics.class, new StatisticsAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
     }

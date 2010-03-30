@@ -21,7 +21,7 @@ public class AggregatedPVExpression<T> {
     private PVFunction<T> function;
     private final String defaultName;
 
-    AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, Aggregator<T> aggregator, String defaultName) {
+    AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, Aggregator<T, ?> aggregator, String defaultName) {
         this.recipes = recipes;
         this.outputType = outputType;
         this.function = aggregator;

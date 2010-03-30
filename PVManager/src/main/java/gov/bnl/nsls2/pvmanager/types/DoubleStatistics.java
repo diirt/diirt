@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.types;
 
 /**
  * Payload the represents statistical information.

@@ -5,6 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

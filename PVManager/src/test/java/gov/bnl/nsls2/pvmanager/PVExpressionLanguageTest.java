@@ -5,6 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import org.junit.Test;
 import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
 import static org.junit.Assert.*;

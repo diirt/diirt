@@ -23,13 +23,13 @@ import java.util.List;
  *
  * @author carcassi
  */
-class Collector {
+class Collector<T> {
 
     // @GuardedBy(buffer)
-    private final List<Double> buffer = new ArrayList<Double>();
-    private final PVFunction<Double> function;
+    private final List<T> buffer = new ArrayList<T>();
+    private final PVFunction<T> function;
     
-    Collector(PVFunction<Double> function) {
+    Collector(PVFunction<T> function) {
         this.function = function;
     }
 
@@ -38,11 +38,13 @@ class Collector {
      */
     synchronized void collect() {
         // Calculation may take time, and is locked by this
-        Double newValue = function.getValue();
+        T newValue = function.getValue();
 
         // Buffer is locked and updated
-        synchronized(buffer) {
-            buffer.add(newValue);
+        if (newValue != null) {
+            synchronized(buffer) {
+                buffer.add(newValue);
+            }
         }
     }
 
@@ -50,14 +52,9 @@ class Collector {
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    double[] getData() {
+    List<T> getData() {
         synchronized(buffer) {
-            // TODO this may not be efficient: must find a way to use
-            // System.arrayCopy et al...
-            double[] data = new double[buffer.size()];
-            for (int i = 0; i < buffer.size(); i++) {
-                data[i] = buffer.get(i);
-            }
+            List<T> data = new ArrayList<T>(buffer);
             buffer.clear();
             return data;
         }

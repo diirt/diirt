@@ -14,7 +14,7 @@ package gov.bnl.nsls2.pvmanager.test;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.DoubleStatistics;
+import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;

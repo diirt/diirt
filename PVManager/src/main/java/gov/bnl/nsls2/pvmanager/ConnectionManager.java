@@ -57,15 +57,13 @@ class ConnectionManager {
 	// TDB create the context reading some configuration file????
 	if (ctxt == null) {
 	    try {
-		logger.info("Initializing the context.");
+		logger.fine("Initializing the context.");
 		ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
 	    } catch (CAException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
-	    // Display basic information about the context.
 	}
-	ctxt.printInfo();
     }
 
     private final static ExecutorService pool = Executors.newCachedThreadPool();
@@ -143,15 +141,11 @@ class ConnectionManager {
 	    synchronized (collector) {
 
 		// TODO Auto-generated method stub
-		// System.out.println(Thread.currentThread().getName());
 		try {
 		    Double newValue;
 		    DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
 			    DBR_Double.TYPE);
 		    newValue = rawvalue.getDoubleValue()[0];
-		    // System.out
-		    // .println("Static conversion to double for pv "
-		    // + rawvalue.toString() + " = " + value);
 		    value = newValue;
 		    if (collector.get() != null) {
 			Collector c = collector.get();

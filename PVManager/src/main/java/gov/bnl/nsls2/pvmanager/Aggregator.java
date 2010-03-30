@@ -5,30 +5,32 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import java.util.List;
+
 /**
  * Aggregates the data out of a Collector into a new data type.
  *
  * @author carcassi
  */
-abstract class Aggregator<T> extends PVFunction<T> {
+abstract class Aggregator<T, E> extends PVFunction<T> {
 
-    private final Collector collector;
+    private final Collector<E> collector;
     // TODO There may not be a last value!!!
     private T lastValue;
 
-    Aggregator(Class<T> type, Collector collector) {
+    Aggregator(Class<T> type, Collector<E> collector) {
         super(type);
         this.collector = collector;
     }
 
     @Override
     public T getValue() {
-        double[] data = collector.getData();
-        if (data.length > 0) {
+        List<E> data = collector.getData();
+        if (data.size() > 0) {
             lastValue = calculate(data);
         }
         return lastValue;
     }
 
-    protected abstract T calculate(double[] data);
+    protected abstract T calculate(List<E> data);
 }

@@ -131,13 +131,11 @@ public final class PV<T> {
      * @return the value of value
      */
     public T getValue() {
-        System.out.println("set " + Thread.currentThread() + " " + this.value);
         return value;
     }
 
     void setValue(T value) {
         this.value = value;
-        System.out.println("set " + Thread.currentThread() + " " + this.value);
         firePvValueChanged();
     }
 
