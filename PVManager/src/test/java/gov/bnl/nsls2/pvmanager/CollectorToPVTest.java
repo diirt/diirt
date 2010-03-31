@@ -79,7 +79,7 @@ public class CollectorToPVTest {
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
         MockConnectionManager.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
-        int actualNotification = counter.get() - 1;
+        int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 1) {
             fail("Expected " + targetNotifications + " but got " + actualNotification);
         }
@@ -163,7 +163,7 @@ public class CollectorToPVTest {
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
         MockConnectionManager.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
-        int actualNotification = counter.get() - 1;
+        int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 1) {
             fail("Expected " + targetNotifications + " but got " + actualNotification);
         }

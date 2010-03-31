@@ -1,31 +1,14 @@
 package gov.bnl.nsls2.pvmanager;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import gov.aps.jca.CAException;
-import gov.aps.jca.CAStatusException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
-import gov.aps.jca.dbr.DBR_Double;
-import gov.aps.jca.event.AccessRightsEvent;
-import gov.aps.jca.event.AccessRightsListener;
-import gov.aps.jca.event.ConnectionEvent;
-import gov.aps.jca.event.ConnectionListener;
-import gov.aps.jca.event.MonitorEvent;
-import gov.aps.jca.event.MonitorListener;
+import java.util.logging.Level;
 
-class ConnectionManager {
+abstract class ConnectionManager {
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-    private static final ConnectionManager connManager = new ConnectionManager();
+    private static final ConnectionManager connManager = new JCAConnectionManager();
     private static volatile ConnectionManager instance = connManager;
-    // Get the JCALibrary instance.
-    private static JCALibrary jca = JCALibrary.getInstance();
-    private static Context ctxt = null;
 
     // Executor to manage the updating of the collector.
     // Maintain a list of all the connections being managed.
@@ -41,204 +24,58 @@ class ConnectionManager {
         instance = connManager;
     }
 
-    void removedoublePV() {
-    }
-
-    /*
-     * This Metod will initialize the jca context.
-     */
-    private void JCAinit() {
-        // Create a context which uses pure channel access java with HARDCODED
-        // configuration
-        // values.
-        // TDB create the context reading some configuration file????
-        if (ctxt == null) {
-            try {
-                logger.fine("Initializing the context.");
-                ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-            } catch (CAException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-    private final static ExecutorService pool = Executors.newCachedThreadPool();
-
     /**
-     * Implementation of ConnectionListener update the PV status based on the
-     * connection event.
+     * Helper class that contains the logic for processing a new value.
+     * It takes care of locking the collector and calling the disconnect
+     * when appropriate.
+     *
+     * @param <T>
      */
-    private class ConnectionListenerImpl implements ConnectionListener {
+    protected static abstract class ValueProcessor<T, E> {
 
-        private final WeakReference<PV<?>> pvRef;
-        private final Channel channel;
+        private final WeakReference<Collector> collectorRef;
+        private final ValueCache<E> cache;
 
-        public ConnectionListenerImpl(PV<?> pv, Channel channel) {
-            this.pvRef = new WeakReference<PV<?>>(pv);
-            this.channel = channel;
+        public ValueProcessor(Collector collector, ValueCache<E> cache) {
+            collectorRef = new WeakReference<Collector>(collector);
+            this.cache = cache;
         }
 
-        @Override
-        public void connectionChanged(ConnectionEvent ev) {
-            PV<?> pv;
-            // TODO Auto-generated method stub
-            if (pvRef.get() != null) {
-                pv = pvRef.get();
-                logger.info("Detected a change in the connection status of pv "
-                        + pv.getName() + " -status- " + ev.toString());
-                pv.setState(PV.State.Connected); // just putting connected.
-            } else {
-                //remove this connection listener.
-                disconnect(channel, this);
-            }
-
-        }
-    }
-
-    /**
-     * Implementation of AccessRightslistener throw an access error???? inform
-     * the PV
-     */
-    private class AccessRightsListenerImpl implements AccessRightsListener {
-
-        @Override
-        public void accessRightsChanged(AccessRightsEvent arg0) {
-            // TODO Auto-generated method stub
-        }
-    }
-
-    /**
-     * Implementation of MonitorListener. Update the collector associated with
-     * this PV.
-     */
-    private class MonitorListenerImpl implements MonitorListener {
-
-        private final WeakReference<Collector> collector;
-        private ValueCache<Double> value;
-        private Monitor monitor;
-
-        public MonitorListenerImpl(Collector collector, ValueCache<Double> value) {
-            this.value = value;
-            this.collector = new WeakReference<Collector>(collector);
-        }
-
-        public synchronized void setMonitor(Monitor monitor) {
-            this.monitor = monitor;
-        }
-
-        @Override
-        public synchronized void monitorChanged(MonitorEvent ev) {
+        public void processValue(T payload) {
             // Get the collector. If it was garbage collected,
             // remove the monito
-            Collector c = collector.get();
+            Collector c = collectorRef.get();
             if (c == null) {
                 logger.fine("Removing monitor " + this);
-                removeMonitor(monitor, this);
+                close();
             }
 
             // Lock the collector and prepare the new value.
             synchronized (c) {
                 try {
-                    Double newValue;
-                    DBR_Double rawvalue = (DBR_Double) ev.getDBR().convert(
-                            DBR_Double.TYPE);
-                    newValue = rawvalue.getDoubleValue()[0];
-                    value.setValue(newValue);
-                    c.collect();
-                } catch (CAStatusException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    if (updateCache(payload, cache))
+                        c.collect();
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Value processing failed", e);
                 }
             }
         }
 
-        public synchronized void reset() {
-        }
+        /**
+         * Called by the framework if this callback is no longer needed.
+         */
+        public abstract void close();
+
+        /**
+         * Implements the update of the cache given the protocol specific payload.
+         *
+         * @param payload the payload of the notification
+         * @param cache the cache to update
+         * @return true if an update is needed; false if not
+         */
+        public abstract boolean updateCache(T payload, ValueCache<E> cache);
+
     }
 
-    synchronized void connect(ConnectionRecipe connRecipe) {
-        JCAinit();
-
-        try {
-            Channel channel = ctxt.createChannel(connRecipe.channelNames.iterator().next());
-            ConnectionListenerImpl connectionListenerImpl = new ConnectionListenerImpl(connRecipe.pv, channel);
-            channel.addConnectionListener(connectionListenerImpl);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    synchronized void monitor(MonitorRecipe connRecipe) {
-        if (connRecipe.cache.getType().equals(Double.class)) {
-            @SuppressWarnings("unchecked")
-            ValueCache<Double> cache = (ValueCache<Double>) connRecipe.cache;
-            monitor(connRecipe.pvName, connRecipe.collector, cache);
-        } else {
-            throw new UnsupportedOperationException("Type "
-                    + connRecipe.cache.getType().getName()
-                    + " is not yet supported");
-        }
-    }
-
-    synchronized void monitor(String name, Collector collector,
-            ValueCache<Double> cache) {
-        JCAinit();
-
-        try {
-            Channel channel = ctxt.createChannel(name);
-            // we assume it to be a double and move on....
-            MonitorListenerImpl monitorListenerImpl = new MonitorListenerImpl(collector, cache);
-            Monitor monitor = channel.addMonitor(DBR_Double.TYPE, 1, Monitor.VALUE, monitorListenerImpl);
-            monitorListenerImpl.setMonitor(monitor);
-            ctxt.flushIO();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Destroy the channel.
-     */
-    private synchronized void destroyChannel(Channel channel) {
-    }
-
-    /**
-     * Remove connection listeners.
-     */
-    private synchronized void disconnect(Channel channel, ConnectionListener connectionListener) {
-        try {
-            //TODO add check to determine when to destroy channel.
-            channel.removeConnectionListener(connectionListener);
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (CAException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Remove monitor.
-     */
-    private synchronized void removeMonitor(Monitor monitor, MonitorListener monitorListener) {
-        monitor.removeMonitorListener(monitorListener);
-    }
-
-    /**
-     * Destroy JCA context.
-     */
-    private void destroy() {
-        try {
-
-            // Destroy the context, check if never initialized.
-            if (ctxt != null) // Destroys all the channels associated with this context.
-            {
-                ctxt.destroy();
-            }
-
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-    }
+    public abstract void monitor(MonitorRecipe connRecipe);
 }

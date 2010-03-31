@@ -139,7 +139,8 @@ public class CAPVFrame extends javax.swing.JFrame {
 
             @Override
             public void pvValueChanged() {
-                valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " ± " + Double.toString(pv.getValue().getStdDev()));
+                if (pv.getValue() != null)
+                    valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " ± " + Double.toString(pv.getValue().getStdDev()));
             }
         });
     }//GEN-LAST:event_createPVButtonActionPerformed

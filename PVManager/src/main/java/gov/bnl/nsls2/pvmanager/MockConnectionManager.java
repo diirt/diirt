@@ -29,23 +29,27 @@ class MockConnectionManager extends ConnectionManager {
     private static void generateData(final Collector collector, final ValueCache<Double> value, final int nTimes, long period, final int samplesPerPeriod) {
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
-            WeakReference<Collector> ref = new WeakReference<Collector>(collector);
+            ValueProcessor<Object, Double> processor = new ValueProcessor<Object, Double>(collector, value) {
+
+                @Override
+                public void close() {
+                    cancel();
+                }
+
+                @Override
+                public boolean updateCache(Object payload, ValueCache<Double> cache) {
+                    cache.setValue(rand.nextGaussian());
+                    return true;
+                }
+            };
 
             @Override
             public void run() {
-                Collector collector = ref.get();
-                if (collector != null) {
-                    for (int i = 0; i < samplesPerPeriod; i++) {
-                        synchronized (collector) {
-                            value.setValue(rand.nextGaussian());
-                            collector.collect();
-                        }
-                    }
-                }
+                processor.processValue(null);
                 innerCounter++;
-                if (innerCounter == nTimes || collector == null) {
+                if (innerCounter == nTimes) {
                     log.fine("Stopped generating data on " + collector);
-                    cancel();
+                    processor.close();
                 }
             }
         }, 0, period);
@@ -71,7 +75,7 @@ class MockConnectionManager extends ConnectionManager {
     }
 
     @Override
-    void monitor(MonitorRecipe recipe) {
+    public void monitor(MonitorRecipe recipe) {
         if (recipe.cache.getType().equals(Double.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<Double> cache = (ValueCache<Double>) recipe.cache;
@@ -81,7 +85,6 @@ class MockConnectionManager extends ConnectionManager {
         }
     }
 
-    @Override
     void connect(ConnectionRecipe connRecipe) {
         // Do nothing for now
     }

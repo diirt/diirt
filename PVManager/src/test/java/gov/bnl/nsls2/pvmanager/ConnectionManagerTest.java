@@ -106,30 +106,30 @@ public class ConnectionManagerTest {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    @Test
-    public void connectionStatusTest() throws InterruptedException,
-	    InvocationTargetException {
-	final ValueCache<Double> cache = new ValueCache<Double>(
-		Double.class);
-	final Collector<Double> collector = new Collector<Double>(cache);
-	final Channel channel;
-	SwingUtilities.invokeAndWait(new Runnable() {
-
-	    @Override
-	    public void run() {
-		// ConnectionManager.getInstance().connectToPV("pvk01",
-		// collector);
-		pv = PV.createPv("pvk01", Double.class);
-		// Connection
-		ConnectionRecipe connectionRecipe = new ConnectionRecipe();
-		connectionRecipe.pv = pv;
-		connectionRecipe.channelNames = Collections.singleton(pv
-			.getName());
-		ConnectionManager.getInstance().connect(connectionRecipe);
-	    }
-	});
-	Thread.sleep(5000);
-    }
+//    @Test
+//    public void connectionStatusTest() throws InterruptedException,
+//	    InvocationTargetException {
+//	final ValueCache<Double> cache = new ValueCache<Double>(
+//		Double.class);
+//	final Collector<Double> collector = new Collector<Double>(cache);
+//	final Channel channel;
+//	SwingUtilities.invokeAndWait(new Runnable() {
+//
+//	    @Override
+//	    public void run() {
+//		// ConnectionManager.getInstance().connectToPV("pvk01",
+//		// collector);
+//		pv = PV.createPv("pvk01", Double.class);
+//		// Connection
+//		ConnectionRecipe connectionRecipe = new ConnectionRecipe();
+//		connectionRecipe.pv = pv;
+//		connectionRecipe.channelNames = Collections.singleton(pv
+//			.getName());
+//		ConnectionManager.getInstance().connect(connectionRecipe);
+//	    }
+//	});
+//	Thread.sleep(5000);
+//    }
 
     /**
      * Test the working from start to finish.
