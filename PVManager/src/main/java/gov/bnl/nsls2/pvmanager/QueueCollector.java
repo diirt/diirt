@@ -23,16 +23,40 @@ import java.util.List;
  *
  * @author carcassi
  */
-abstract class Collector<T> {
+class QueueCollector<T> extends Collector<T> {
+
+    // @GuardedBy(buffer)
+    private final List<T> buffer = new ArrayList<T>();
+    private final PVFunction<T> function;
+    
+    QueueCollector(PVFunction<T> function) {
+        this.function = function;
+    }
 
     /**
      * Calculates the next value and puts it in the queue.
      */
-    abstract void collect();
+    synchronized void collect() {
+        // Calculation may take time, and is locked by this
+        T newValue = function.getValue();
+
+        // Buffer is locked and updated
+        if (newValue != null) {
+            synchronized(buffer) {
+                buffer.add(newValue);
+            }
+        }
+    }
 
     /**
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    abstract List<T> getData();
+    List<T> getData() {
+        synchronized(buffer) {
+            List<T> data = new ArrayList<T>(buffer);
+            buffer.clear();
+            return data;
+        }
+    }
 }

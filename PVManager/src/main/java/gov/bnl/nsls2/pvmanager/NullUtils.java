@@ -9,7 +9,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class NullUtils {
+public class NullUtils {
 
     /**
      * Returns true if both objects are null or they are equal.
@@ -18,7 +18,7 @@ class NullUtils {
      * @param obj2 second object
      * @return true if equals or both are null
      */
-    static boolean equalsOrBothNull(Object obj1, Object obj2) {
+    public static boolean equalsOrBothNull(Object obj1, Object obj2) {
         if (obj1 == null)
             return obj2 == null;
         else

@@ -5,6 +5,10 @@
 
 package gov.bnl.nsls2.pvmanager;
 
+import gov.aps.jca.dbr.DBR_TIME_Double;
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
+import gov.aps.jca.dbr.TimeStamp;
 import java.lang.ref.WeakReference;
 import java.util.Random;
 import java.util.Timer;
@@ -45,7 +49,47 @@ class MockConnectionManager extends ConnectionManager {
 
             @Override
             public void run() {
-                processor.processValue(null);
+                for (int i = 0; i < samplesPerPeriod; i++) {
+                    processor.processValue(null);
+                }
+                innerCounter++;
+                if (innerCounter == nTimes) {
+                    log.fine("Stopped generating data on " + collector);
+                    processor.close();
+                }
+            }
+        }, 0, period);
+        log.fine("Generating data on " + collector);
+    }
+
+    private static void generateDBRTimeDouble(final Collector collector, final ValueCache<DBR_TIME_Double> value,
+            final int nTimes, long period, final int samplesPerPeriod) {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int innerCounter;
+            ValueProcessor<Object, DBR_TIME_Double> processor = new ValueProcessor<Object, DBR_TIME_Double>(collector, value) {
+
+                @Override
+                public void close() {
+                    cancel();
+                }
+
+                @Override
+                public boolean updateCache(Object payload, ValueCache<DBR_TIME_Double> cache) {
+                    DBR_TIME_Double newValue = new DBR_TIME_Double();
+                    newValue.setSeverity(Severity.NO_ALARM);
+                    newValue.setStatus(Status.NO_ALARM);
+                    newValue.getDoubleValue()[0] = rand.nextGaussian();
+                    newValue.setTimeStamp(new TimeStamp());
+                    cache.setValue(newValue);
+                    return true;
+                }
+            };
+
+            @Override
+            public void run() {
+                for (int i = 0; i < samplesPerPeriod; i++) {
+                    processor.processValue(null);
+                }
                 innerCounter++;
                 if (innerCounter == nTimes) {
                     log.fine("Stopped generating data on " + collector);
@@ -70,6 +114,18 @@ class MockConnectionManager extends ConnectionManager {
         }
     }
 
+    private void connectDBR(String name, Collector collector, ValueCache<DBR_TIME_Double> cache) {
+        Matcher matcher = pattern.matcher(name);
+        if (matcher.matches()) {
+            int nTimes = Integer.parseInt(matcher.group(3));
+            long period = Long.parseLong(matcher.group(2));
+            int samplesPerPeriod = Integer.parseInt(matcher.group(1));
+            generateDBRTimeDouble(collector, cache, nTimes, period, samplesPerPeriod);
+        } else {
+            throw new RuntimeException("Name doesn't match for mock connection");
+        }
+    }
+
     public static String mockPVName(int samplesPerNotification, long notificationPeriodMs, int nNotifications) {
         return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
     }
@@ -80,6 +136,10 @@ class MockConnectionManager extends ConnectionManager {
             @SuppressWarnings("unchecked")
             ValueCache<Double> cache = (ValueCache<Double>) recipe.cache;
             connect(recipe.pvName, recipe.collector, cache);
+        } else if (recipe.cache.getType().equals(DBR_TIME_Double.class)) {
+            @SuppressWarnings("unchecked")
+            ValueCache<DBR_TIME_Double> cache = (ValueCache<DBR_TIME_Double>) recipe.cache;
+            connectDBR(recipe.pvName, recipe.collector, cache);
         } else {
             throw new UnsupportedOperationException("Type " + recipe.cache.getType().getName() + " is not yet supported");
         }

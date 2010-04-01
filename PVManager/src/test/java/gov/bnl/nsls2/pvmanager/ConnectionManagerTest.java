@@ -73,7 +73,7 @@ public class ConnectionManagerTest {
     public void simpleTest() throws Exception {
 	final ValueCache<Double> cache = new ValueCache<Double>(
 		Double.class);
-	final Collector<Double> collector = new Collector<Double>(cache);
+	final Collector<Double> collector = new QueueCollector<Double>(cache);
 	counter1 = new AtomicInteger();
 
 	SwingUtilities.invokeAndWait(new Runnable() {

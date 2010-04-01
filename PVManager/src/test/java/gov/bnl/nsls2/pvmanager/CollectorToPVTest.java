@@ -55,7 +55,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector<Double> collector = new Collector<Double>(cache);
+        final Collector<Double> collector = new QueueCollector<Double>(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -96,7 +96,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector<Double> collector = new Collector<Double>(cache);
+        final Collector<Double> collector = new QueueCollector<Double>(cache);
         counter = new AtomicInteger();
         AverageAggregator aggregator = new AverageAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
@@ -139,7 +139,7 @@ public class CollectorToPVTest {
         int targetNotifications = Math.min(nNotifications, maxNotifications);
 
         final ValueCache<Double> cache = new ValueCache<Double>(Double.class);
-        final Collector<Double> collector = new Collector<Double>(cache);
+        final Collector<Double> collector = new QueueCollector<Double>(cache);
         counter = new AtomicInteger();
         StatisticsAggregator aggregator = new StatisticsAggregator(collector);
         SwingUtilities.invokeAndWait(new Runnable() {

@@ -6,6 +6,8 @@
 package gov.bnl.nsls2.pvmanager;
 
 import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -94,6 +96,12 @@ public abstract class TypeSupport<T> {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
         return typeSupportFor(typeClass).prepareValue(oldValue, newValue);
+    }
+
+    static <T> BigDecimal timestampOfAccordingly(T value) {
+        @SuppressWarnings("unchecked")
+        Class<T> typeClass = (Class<T>) value.getClass();
+        return ((TimedTypeSupport<T>) typeSupportFor(typeClass)).timestampOf(value);
     }
 
     static {
