@@ -5,11 +5,10 @@
 
 package gov.bnl.nsls2.pvmanager;
 
-import gov.aps.jca.dbr.TimeStamp;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
@@ -17,15 +16,15 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class TimedCacheCollector<T> extends Collector<T> {
+class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final PVFunction<T> function;
-    private final int cachedPeriodInMs;
+    private final BigDecimal cachedPeriod;
     
     TimedCacheCollector(PVFunction<T> function, int cachedPeriodInMs) {
         this.function = function;
-        this.cachedPeriodInMs = cachedPeriodInMs;
+        cachedPeriod = new BigDecimal(cachedPeriodInMs).divide(new BigDecimal(1000));
     }
     /**
      * Calculates the next value and puts it in the queue.
@@ -50,9 +49,12 @@ public class TimedCacheCollector<T> extends Collector<T> {
     @Override
     List<T> getData() {
         synchronized(buffer) {
+            if (buffer.isEmpty())
+                return Collections.emptyList();
+
             // last allowed time = now - msCache / 1000
-            BigDecimal lastAllowedTime = new TimeStamp().asBigDecimal()
-                    .subtract(new BigDecimal(cachedPeriodInMs).divide(new BigDecimal(1000)));
+            BigDecimal lastAllowedTime = TypeSupport.timestampOfAccordingly(buffer.getLast())
+                    .subtract(cachedPeriod);
             while (!buffer.isEmpty() && lastAllowedTime.compareTo(TypeSupport.timestampOfAccordingly(buffer.getFirst()))
                     > 0) {
                 // Discard value
