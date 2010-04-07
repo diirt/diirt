@@ -45,7 +45,7 @@ public class TimedCacheCollectorTest {
         ValueCache<DBR_TIME_Double> cache =
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =
-                new TimedCacheCollector<DBR_TIME_Double>(cache, 1000);
+                new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
         MonitorRecipe monitorRecipe = new MonitorRecipe();
         monitorRecipe.cache = cache;
         monitorRecipe.collector = collector;

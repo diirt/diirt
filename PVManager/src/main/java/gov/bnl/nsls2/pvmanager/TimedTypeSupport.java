@@ -5,14 +5,12 @@
 
 package gov.bnl.nsls2.pvmanager;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author carcassi
  */
 public abstract class TimedTypeSupport<T> extends TypeSupport<T> {
 
-    public abstract BigDecimal timestampOf(T object);
+    public abstract TimeStamp timestampOf(T object);
 
 }

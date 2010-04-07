@@ -6,14 +6,11 @@
 package gov.bnl.nsls2.pvmanager.types;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
 import gov.bnl.nsls2.pvmanager.NullUtils;
+import gov.bnl.nsls2.pvmanager.TimeStamp;
 import gov.bnl.nsls2.pvmanager.TimedTypeSupport;
 import gov.bnl.nsls2.pvmanager.TypeSupport;
 import gov.bnl.nsls2.pvmanager.TypeSupport.Notification;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  *
@@ -24,8 +21,8 @@ public class JCATypeSupport {
         TypeSupport.addTypeSupport(DBR_TIME_Double.class, new TimedTypeSupport<DBR_TIME_Double>() {
 
             @Override
-            public BigDecimal timestampOf(DBR_TIME_Double object) {
-                return object.getTimeStamp().asBigDecimal();
+            public TimeStamp timestampOf(DBR_TIME_Double object) {
+                return TimeStamp.epicsTime(object.getTimeStamp().secPastEpoch(), object.getTimeStamp().nsec());
             }
 
             @Override

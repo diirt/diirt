@@ -98,7 +98,7 @@ public abstract class TypeSupport<T> {
         return typeSupportFor(typeClass).prepareValue(oldValue, newValue);
     }
 
-    static <T> BigDecimal timestampOfAccordingly(T value) {
+    static <T> TimeStamp timestampOfAccordingly(T value) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
         return ((TimedTypeSupport<T>) typeSupportFor(typeClass)).timestampOf(value);

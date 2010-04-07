@@ -20,11 +20,11 @@ class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final PVFunction<T> function;
-    private final BigDecimal cachedPeriod;
+    private final TimeDuration cachedPeriod;
     
-    TimedCacheCollector(PVFunction<T> function, int cachedPeriodInMs) {
+    TimedCacheCollector(PVFunction<T> function, TimeDuration cachedPeriod) {
         this.function = function;
-        cachedPeriod = new BigDecimal(cachedPeriodInMs).divide(new BigDecimal(1000));
+        this.cachedPeriod = cachedPeriod;
     }
     /**
      * Calculates the next value and puts it in the queue.
@@ -52,11 +52,9 @@ class TimedCacheCollector<T> extends Collector<T> {
             if (buffer.isEmpty())
                 return Collections.emptyList();
 
-            // last allowed time = now - msCache / 1000
-            BigDecimal lastAllowedTime = TypeSupport.timestampOfAccordingly(buffer.getLast())
-                    .subtract(cachedPeriod);
-            while (!buffer.isEmpty() && lastAllowedTime.compareTo(TypeSupport.timestampOfAccordingly(buffer.getFirst()))
-                    > 0) {
+            // period allowed time = now - msCache / 1000
+            TimeInterval periodAllowed = cachedPeriod.before(TypeSupport.timestampOfAccordingly(buffer.getLast()));
+            while (!buffer.isEmpty() && !periodAllowed.contains(TypeSupport.timestampOfAccordingly(buffer.getFirst()))) {
                 // Discard value
                 buffer.removeFirst();
             }
