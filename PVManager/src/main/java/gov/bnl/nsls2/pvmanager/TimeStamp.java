@@ -33,6 +33,13 @@ public class TimeStamp implements Comparable {
         this.nanoSec = nanoSec;
     }
 
+    /**
+     * Returns a new timestamp using EPICS time arguments.
+     *
+     * @param epicsSec number of second in EPICS time
+     * @param nanoSec nanoseconds from the given second
+     * @return a new timestamp
+     */
     public static TimeStamp epicsTime(long epicsSec, long nanoSec) {
         return new TimeStamp(epicsSec, nanoSec);
     }
@@ -88,10 +95,20 @@ public class TimeStamp implements Comparable {
         }
     }
 
+    /**
+     * Adds the given duration to this timestamp and returns the result.
+     * @param duration a time duration
+     * @return a new timestamp
+     */
     public TimeStamp plus(TimeDuration duration) {
         return new TimeStamp(epicsSec + (duration.getNanoSec() / 1000000), nanoSec + (duration.getNanoSec() % 1000000));
     }
 
+    /**
+     * Subtracts the given duration to this timestamp and returns the result.
+     * @param duration a time duration
+     * @return a new timestamp
+     */
     public TimeStamp minus(TimeDuration duration) {
         return new TimeStamp(epicsSec - (duration.getNanoSec() / 1000000), nanoSec - (duration.getNanoSec() % 1000000));
     }

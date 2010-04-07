@@ -17,6 +17,10 @@ public class TimeDuration {
         this.nanoSec = nanoSec;
     }
 
+    /**
+     * Duration in nanoseconds.
+     * @return duration in nanoseconds.
+     */
     public long getNanoSec() {
         return nanoSec;
     }
@@ -47,19 +51,33 @@ public class TimeDuration {
      * Returns a time interval that lasts this duration and is centered
      * around the given timestamp.
      * 
-     * @param reference
-     * @return
+     * @param reference a timestamp
+     * @return a new time interval
      */
     public TimeInterval around(TimeStamp reference) {
         TimeDuration half = this.divideBy(2);
         return TimeInterval.between(reference.minus(half), reference.plus(half));
     }
 
+    /**
+     * Returns a time interval that lasts this duration and starts from the
+     * given timestamp.
+     *
+     * @param reference a timestamp
+     * @return a new time interval
+     */
     public TimeInterval after(TimeStamp reference) {
         return TimeInterval.between(reference, reference.plus(this));
     }
 
-    TimeInterval before(TimeStamp reference) {
+    /**
+     * Returns a time interval that lasts this duration and ends at the
+     * given timestamp.
+     *
+     * @param reference a timestamp
+     * @return a new time interval
+     */
+    public TimeInterval before(TimeStamp reference) {
         return TimeInterval.between(reference.minus(this), reference);
     }
 
