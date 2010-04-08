@@ -52,9 +52,9 @@ class TimedCacheCollector<T> extends Collector<T> {
             if (buffer.isEmpty())
                 return Collections.emptyList();
 
-            // period allowed time = now - msCache / 1000
-            TimeInterval periodAllowed = cachedPeriod.before(TypeSupport.timestampOfAccordingly(buffer.getLast()));
-            while (!buffer.isEmpty() && !periodAllowed.contains(TypeSupport.timestampOfAccordingly(buffer.getFirst()))) {
+            // period allowed time = latest - msCache / 1000
+            TimeInterval periodAllowed = cachedPeriod.before(TypeSupport.timestampOf(buffer.getLast()));
+            while (!buffer.isEmpty() && !periodAllowed.contains(TypeSupport.timestampOf(buffer.getFirst()))) {
                 // Discard value
                 buffer.removeFirst();
             }

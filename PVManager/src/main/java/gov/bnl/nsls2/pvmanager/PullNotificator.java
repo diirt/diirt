@@ -41,7 +41,7 @@ class PullNotificator<T> {
                 PV<T> pv = pvRef.get();
                 if (pv != null && newValue != null) {
                     TypeSupport.Notification<T> notification =
-                            TypeSupport.prepareValueAccordingly(pv.getValue(), newValue);
+                            TypeSupport.notification(pv.getValue(), newValue);
                     if (notification.isNotificationNeeded()) {
                         pv.setValue(notification.getNewValue());
                     }

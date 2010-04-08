@@ -11,6 +11,6 @@ package gov.bnl.nsls2.pvmanager;
  */
 public abstract class TimedTypeSupport<T> extends TypeSupport<T> {
 
-    public abstract TimeStamp timestampOf(T object);
+    public abstract TimeStamp extractTimestamp(T object);
 
 }

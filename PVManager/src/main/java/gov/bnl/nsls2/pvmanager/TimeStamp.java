@@ -84,7 +84,7 @@ public class TimeStamp implements Comparable {
             return -1;
         } else if (epicsSec == other.epicsSec) {
             if (nanoSec < other.nanoSec) {
-                return -1; // return (thisVal<anotherVal ? -1 : (thisVal==anotherVal ? 0 : 1));
+                return -1;
             } else if (nanoSec == other.nanoSec) {
                 return 0;
             } else {

@@ -21,12 +21,12 @@ public class JCATypeSupport {
         TypeSupport.addTypeSupport(DBR_TIME_Double.class, new TimedTypeSupport<DBR_TIME_Double>() {
 
             @Override
-            public TimeStamp timestampOf(DBR_TIME_Double object) {
+            public TimeStamp extractTimestamp(DBR_TIME_Double object) {
                 return TimeStamp.epicsTime(object.getTimeStamp().secPastEpoch(), object.getTimeStamp().nsec());
             }
 
             @Override
-            public Notification<DBR_TIME_Double> prepareValue(DBR_TIME_Double oldValue, DBR_TIME_Double newValue) {
+            public Notification<DBR_TIME_Double> prepareNotification(DBR_TIME_Double oldValue, DBR_TIME_Double newValue) {
                 // Initialize value if never initialized
                 if (oldValue == null)
                     oldValue = new DBR_TIME_Double();

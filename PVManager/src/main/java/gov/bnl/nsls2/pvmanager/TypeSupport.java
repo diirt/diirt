@@ -57,7 +57,7 @@ public abstract class TypeSupport<T> {
      * @param newValue the newValue, which was computed during the scanning
      * @return the value to be notified
      */
-    public abstract Notification<T> prepareValue(T oldValue, T newValue);
+    public abstract Notification<T> prepareNotification(T oldValue, T newValue);
     
     private static Map<Class<?>, TypeSupport<?>> typeSupports = new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
 
@@ -92,16 +92,16 @@ public abstract class TypeSupport<T> {
      * @param newValue the newValue, which was computed during the scanning
      * @return the value to be notified
      */
-    static <T> Notification<T> prepareValueAccordingly(T oldValue, T newValue) {
+    static <T> Notification<T> notification(T oldValue, T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
-        return typeSupportFor(typeClass).prepareValue(oldValue, newValue);
+        return typeSupportFor(typeClass).prepareNotification(oldValue, newValue);
     }
 
-    static <T> TimeStamp timestampOfAccordingly(T value) {
+    static <T> TimeStamp timestampOf(T value) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
-        return ((TimedTypeSupport<T>) typeSupportFor(typeClass)).timestampOf(value);
+        return ((TimedTypeSupport<T>) typeSupportFor(typeClass)).extractTimestamp(value);
     }
 
     static {
@@ -115,7 +115,7 @@ public abstract class TypeSupport<T> {
         // Add Double support: simply return the new value
         addTypeSupport(Double.class, new TypeSupport<Double>() {
             @Override
-            public Notification<Double> prepareValue(Double oldValue, Double newValue) {
+            public Notification<Double> prepareNotification(Double oldValue, Double newValue) {
                 if (NullUtils.equalsOrBothNull(oldValue, newValue))
                     return new Notification<Double>(false, null);
                 return new Notification<Double>(true, newValue);
@@ -125,7 +125,7 @@ public abstract class TypeSupport<T> {
         // Add DoubleStatistics support: copy the new values in the old object.
         addTypeSupport(DoubleStatistics.class, new TypeSupport<DoubleStatistics>() {
             @Override
-            public Notification<DoubleStatistics> prepareValue(DoubleStatistics oldValue, DoubleStatistics newValue) {
+            public Notification<DoubleStatistics> prepareNotification(DoubleStatistics oldValue, DoubleStatistics newValue) {
                 if (oldValue == null)
                     oldValue = new DoubleStatistics();
                 if (oldValue.equals(newValue))
