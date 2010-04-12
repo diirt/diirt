@@ -31,7 +31,7 @@ public class TimeDuration {
      * @return a new duration
      */
     public static TimeDuration ms(int ms) {
-        return new TimeDuration(ms * 1000);
+        return new TimeDuration(ms * 1000000);
     }
 
     /**

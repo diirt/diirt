@@ -30,7 +30,7 @@ class MockConnectionManager extends ConnectionManager {
 
     private static Timer timer = new Timer("Mock Data Generator", true);
 
-    private static void generateData(final Collector collector, final ValueCache<Double> value, final int nTimes, long period, final int samplesPerPeriod) {
+    private static void generateData(final Collector collector, final ValueCache<Double> value, final int nTimes, long period, final int samplesPerPeriod, final String type) {
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
             ValueProcessor<Object, Double> processor = new ValueProcessor<Object, Double>(collector, value) {
@@ -42,7 +42,11 @@ class MockConnectionManager extends ConnectionManager {
 
                 @Override
                 public boolean updateCache(Object payload, ValueCache<Double> cache) {
-                    cache.setValue(rand.nextGaussian());
+                    if ("linear".equals(type)) {
+                        cache.setValue((double) innerCounter % 100);
+                    } else {
+                        cache.setValue(rand.nextGaussian());
+                    }
                     return true;
                 }
             };
@@ -63,7 +67,7 @@ class MockConnectionManager extends ConnectionManager {
     }
 
     private static void generateDBRTimeDouble(final Collector collector, final ValueCache<DBR_TIME_Double> value,
-            final int nTimes, long period, final int samplesPerPeriod) {
+            final int nTimes, long period, final int samplesPerPeriod, final String type) {
         timer.scheduleAtFixedRate(new TimerTask() {
             int innerCounter;
             ValueProcessor<Object, DBR_TIME_Double> processor = new ValueProcessor<Object, DBR_TIME_Double>(collector, value) {
@@ -78,7 +82,11 @@ class MockConnectionManager extends ConnectionManager {
                     DBR_TIME_Double newValue = new DBR_TIME_Double();
                     newValue.setSeverity(Severity.NO_ALARM);
                     newValue.setStatus(Status.NO_ALARM);
-                    newValue.getDoubleValue()[0] = rand.nextGaussian();
+                    if ("linear".equals(type)) {
+                        newValue.getDoubleValue()[0] = innerCounter % 100;
+                    } else {
+                        newValue.getDoubleValue()[0] = rand.nextGaussian();
+                    }
                     newValue.setTimeStamp(new TimeStamp());
                     cache.setValue(newValue);
                     return true;
@@ -100,15 +108,16 @@ class MockConnectionManager extends ConnectionManager {
         log.fine("Generating data on " + collector);
     }
 
-    Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times");
+    Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times(.*)");
 
     private void connect(String name, Collector collector, ValueCache<Double> doubleCache) {
         Matcher matcher = pattern.matcher(name);
         if (matcher.matches()) {
+            String type = matcher.group(4);
             int nTimes = Integer.parseInt(matcher.group(3));
             long period = Long.parseLong(matcher.group(2));
             int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateData(collector, doubleCache, nTimes, period, samplesPerPeriod);
+            generateData(collector, doubleCache, nTimes, period, samplesPerPeriod, type);
         } else {
             throw new RuntimeException("Name doesn't match for mock connection");
         }
@@ -117,10 +126,11 @@ class MockConnectionManager extends ConnectionManager {
     private void connectDBR(String name, Collector collector, ValueCache<DBR_TIME_Double> cache) {
         Matcher matcher = pattern.matcher(name);
         if (matcher.matches()) {
+            String type = matcher.group(4);
             int nTimes = Integer.parseInt(matcher.group(3));
             long period = Long.parseLong(matcher.group(2));
             int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateDBRTimeDouble(collector, cache, nTimes, period, samplesPerPeriod);
+            generateDBRTimeDouble(collector, cache, nTimes, period, samplesPerPeriod, type);
         } else {
             throw new RuntimeException("Name doesn't match for mock connection");
         }

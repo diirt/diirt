@@ -101,7 +101,7 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp plus(TimeDuration duration) {
-        return new TimeStamp(epicsSec + (duration.getNanoSec() / 1000000), nanoSec + (duration.getNanoSec() % 1000000));
+        return new TimeStamp(epicsSec + (duration.getNanoSec() / 1000000000), nanoSec + (duration.getNanoSec() % 1000000000));
     }
 
     /**
@@ -110,7 +110,7 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp minus(TimeDuration duration) {
-        return new TimeStamp(epicsSec - (duration.getNanoSec() / 1000000), nanoSec - (duration.getNanoSec() % 1000000));
+        return new TimeStamp(epicsSec - (duration.getNanoSec() / 1000000000), nanoSec - (duration.getNanoSec() % 1000000000));
     }
 
     @Override

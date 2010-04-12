@@ -5,7 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager.types;
 
-import java.math.BigDecimal;
+import gov.bnl.nsls2.pvmanager.TimeStamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author carcassi
  */
 public class SynchronizedArray<T> {
-    private BigDecimal timeStamp;
+    private TimeStamp timeStamp;
     private List<String> names = new ArrayList<String>();
     private List<T> values = new ArrayList<T>();
 
@@ -32,11 +32,11 @@ public class SynchronizedArray<T> {
         values = new ArrayList<T>(Collections.nCopies(names.size(), (T) null));
     }
 
-    public BigDecimal getTimeStamp() {
+    public TimeStamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(BigDecimal timeStamp) {
+    public void setTimeStamp(TimeStamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 

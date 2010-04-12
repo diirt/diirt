@@ -7,6 +7,7 @@ package gov.bnl.nsls2.pvmanager;
 
 import gov.bnl.nsls2.pvmanager.types.SynchronizedArray;
 import java.util.List;
+import static gov.bnl.nsls2.pvmanager.TypeSupport.*;
 
 /**
  *
@@ -15,19 +16,51 @@ import java.util.List;
 class SynchronizedArrayAggregator<T> extends PVFunction<SynchronizedArray<T>> {
 
     private final SynchronizedArray<T> array = new SynchronizedArray<T>();
-    private final TimeDuration timeInterval;
+    private final TimeDuration duration;
+    private final List<TimedCacheCollector<T>> collectors;
 
     @SuppressWarnings("unchecked")
-    public SynchronizedArrayAggregator(List<String> names, List<TimedCacheCollector<T>> collectors, TimeDuration timeInterval) {
+    public SynchronizedArrayAggregator(List<String> names, List<TimedCacheCollector<T>> collectors, TimeDuration duration) {
         super((Class) SynchronizedArray.class);
         array.setNames(names);
-        this.timeInterval = timeInterval;
+        this.duration = duration;
+        this.collectors = collectors;
     }
 
     @Override
     public SynchronizedArray<T> getValue() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TimeStamp reference = electReferenceTimeStamp(collectors);
+        array.setTimeStamp(reference);
+        TimeInterval allowedInterval = duration.around(reference);
+        int index = 0;
+        for (TimedCacheCollector<T> collector : collectors) {
+            T value = closestElement(collector.getData(), allowedInterval);
+            array.getValues().set(index, value);
+            index++;
+        }
+        return array;
     }
 
+    private static <T> TimeStamp electReferenceTimeStamp(List<TimedCacheCollector<T>> collectors) {
+        for (TimedCacheCollector<T> collector : collectors) {
+            List<T> data = collector.getData();
+            if (data.size() > 1) {
+                TimeStamp time = timestampOf(data.get(data.size() - 2));
+                if (time != null)
+                    return time;
+            }
+        }
+        return null;
+    }
+
+    private T closestElement(List<T> data, TimeInterval interval) {
+        T latest = null;
+        for (T value : data) {
+            if (interval.contains(timestampOf(value))) {
+                latest = value;
+            }
+        }
+        return latest;
+    }
 
 }
