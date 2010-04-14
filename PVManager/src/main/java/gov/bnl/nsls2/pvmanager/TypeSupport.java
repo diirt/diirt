@@ -84,6 +84,18 @@ public abstract class TypeSupport<T> {
         return (TypeSupport<T>) typeSupports.get(typeClass);
     }
 
+    static <T> TypeSupport<T> recursiveTypeSupportFor(Class<T> typeClass) {
+        TypeSupport<T> support = typeSupportFor(typeClass);
+        if (support == null) {
+            for (Class clazz : typeClass.getInterfaces()) {
+                support = typeSupportFor(clazz);
+                if (support != null)
+                    return support;
+            }
+        }
+        return support;
+    }
+
     /**
      * Returns the final value by using the appropriate type support.
      *
@@ -92,16 +104,16 @@ public abstract class TypeSupport<T> {
      * @param newValue the newValue, which was computed during the scanning
      * @return the value to be notified
      */
-    static <T> Notification<T> notification(T oldValue, T newValue) {
+    public static <T> Notification<T> notification(T oldValue, T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
-        return typeSupportFor(typeClass).prepareNotification(oldValue, newValue);
+        return recursiveTypeSupportFor(typeClass).prepareNotification(oldValue, newValue);
     }
 
-    static <T> TimeStamp timestampOf(T value) {
+    public static <T> TimeStamp timestampOf(T value) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
-        return ((TimedTypeSupport<T>) typeSupportFor(typeClass)).extractTimestamp(value);
+        return ((TimedTypeSupport<T>) recursiveTypeSupportFor(typeClass)).extractTimestamp(value);
     }
 
     static {

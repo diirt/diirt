@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-abstract class Collector<T> {
+public abstract class Collector<T> {
 
     /**
      * Calculates the next value and puts it in the queue.

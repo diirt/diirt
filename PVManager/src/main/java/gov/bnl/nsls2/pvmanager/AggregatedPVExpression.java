@@ -21,10 +21,10 @@ public class AggregatedPVExpression<T> {
     private PVFunction<T> function;
     private final String defaultName;
 
-    AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, Aggregator<T, ?> aggregator, String defaultName) {
+    public AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, PVFunction<T> function, String defaultName) {
         this.recipes = recipes;
         this.outputType = outputType;
-        this.function = aggregator;
+        this.function = function;
         this.defaultName = defaultName;
     }
 
@@ -32,7 +32,7 @@ public class AggregatedPVExpression<T> {
         return defaultName;
     }
 
-    List<MonitorRecipe> getMonitorRecipes() {
+    public List<MonitorRecipe> getMonitorRecipes() {
         return recipes;
     }
 
@@ -40,7 +40,7 @@ public class AggregatedPVExpression<T> {
         return outputType;
     }
 
-    PVFunction<T> getFunction() {
+    public PVFunction<T> getFunction() {
         return function;
     }
 }

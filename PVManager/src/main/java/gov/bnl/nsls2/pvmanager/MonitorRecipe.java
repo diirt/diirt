@@ -9,7 +9,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class MonitorRecipe {
+public class MonitorRecipe {
     String pvName;
     ValueCache<?> cache;
     Collector collector;
