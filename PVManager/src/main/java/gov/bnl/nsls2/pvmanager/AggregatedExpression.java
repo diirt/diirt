@@ -14,14 +14,14 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class AggregatedPVExpression<T> {
+public class AggregatedExpression<T> {
 
     private List<MonitorRecipe> recipes;
     private Class<T> outputType;
-    private PVFunction<T> function;
+    private Function<T> function;
     private final String defaultName;
 
-    public AggregatedPVExpression(List<MonitorRecipe> recipes, Class<T> outputType, PVFunction<T> function, String defaultName) {
+    public AggregatedExpression(List<MonitorRecipe> recipes, Class<T> outputType, Function<T> function, String defaultName) {
         this.recipes = recipes;
         this.outputType = outputType;
         this.function = function;
@@ -40,7 +40,7 @@ public class AggregatedPVExpression<T> {
         return outputType;
     }
 
-    public PVFunction<T> getFunction() {
+    public Function<T> getFunction() {
         return function;
     }
 }

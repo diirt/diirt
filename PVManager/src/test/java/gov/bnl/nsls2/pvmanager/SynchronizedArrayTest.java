@@ -43,7 +43,7 @@ public class SynchronizedArrayTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        JCATypeSupport.addJCATypeSupport();
+        JCATypeSupport.install();
         int nPvs = 100;
         List<ValueCache<DBR_TIME_Double>> caches = new ArrayList<ValueCache<DBR_TIME_Double>>();
         List<String> names = new ArrayList<String>();

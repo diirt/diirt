@@ -3,7 +3,7 @@
  */
 package gov.bnl.nsls2.pvmanager;
 
-import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.doublePv;
+import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.doublePv;
 
 import gov.aps.jca.Channel;
 

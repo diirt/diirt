@@ -11,7 +11,7 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
-import gov.bnl.nsls2.pvmanager.AggregatedPVExpression;
+import gov.bnl.nsls2.pvmanager.AggregatedExpression;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -23,8 +23,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
-import static gov.bnl.nsls2.pvmanager.types.CollectionExpressions.*;
+import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.types.ExpressionLanguage.*;
 
 /**
  *
@@ -207,7 +207,7 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
         @SuppressWarnings("unchecked")
-        AggregatedPVExpression<DoubleStatistics>[] pvs = new AggregatedPVExpression[nPvs];
+        AggregatedExpression<DoubleStatistics>[] pvs = new AggregatedExpression[nPvs];
         for (int n = 0; n < nPvs; n++) {
             pvs[n] = statisticsOf(doublePv(pvName));
         }

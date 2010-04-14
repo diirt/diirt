@@ -15,10 +15,10 @@ import javax.swing.SwingUtilities;
 class PullNotificator<T> {
 
     private final WeakReference<PV<T>> pvRef;
-    private final PVFunction<T> function;
+    private final Function<T> function;
     private final ThreadSwitch onThread;
 
-    PullNotificator(PV<T> pv, PVFunction<T> aggregator, ThreadSwitch onThread) {
+    PullNotificator(PV<T> pv, Function<T> aggregator, ThreadSwitch onThread) {
         this.pvRef = new WeakReference<PV<T>>(pv);
         this.function = aggregator;
         this.onThread = onThread;

@@ -16,11 +16,11 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class PVExpression<T> {
+public class Expression<T> {
 
     private List<String> pvNames;
     private List<ValueCache<?>> pvCaches;
-    private PVFunction<T> function;
+    private Function<T> function;
     private final String defaultName;
 
     /**
@@ -29,7 +29,7 @@ public class PVExpression<T> {
      * @param pvName the name of the pv
      * @param pvType the type of the pv
      */
-    PVExpression(String pvName, Class<T> pvType) {
+    Expression(String pvName, Class<T> pvType) {
         this.pvNames = Collections.singletonList(pvName);
         ValueCache<T> cache = new ValueCache<T>(pvType);
         this.pvCaches = new ArrayList<ValueCache<?>>();
@@ -38,10 +38,10 @@ public class PVExpression<T> {
         this.defaultName = pvName;
     }
 
-    private PVExpression(List<PVExpression<?>> childExpressions, PVFunction<T> function, String defaultName) {
+    private Expression(List<Expression<?>> childExpressions, Function<T> function, String defaultName) {
         pvNames = new ArrayList<String>();
         pvCaches = new ArrayList<ValueCache<?>>();
-        for (PVExpression<?> childExpression : childExpressions) {
+        for (Expression<?> childExpression : childExpressions) {
             for (int nPv = 0; nPv < childExpression.getPvNames().size(); nPv++) {
                 String pvName = childExpression.getPvNames().get(nPv);
                 if (pvNames.contains(pvName)) {
@@ -67,7 +67,7 @@ public class PVExpression<T> {
         return pvCaches;
     }
 
-    PVFunction<T> getFunction() {
+    Function<T> getFunction() {
         return function;
     }
 

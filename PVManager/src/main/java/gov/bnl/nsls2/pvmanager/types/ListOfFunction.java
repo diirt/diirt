@@ -5,27 +5,29 @@
 
 package gov.bnl.nsls2.pvmanager.types;
 
-import gov.bnl.nsls2.pvmanager.PVFunction;
+import gov.bnl.nsls2.pvmanager.Function;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A function that takes many inputs and creates a list with them.
  *
  * @author carcassi
  */
-public class ListOfFunction extends PVFunction<List> {
+class ListOfFunction extends Function<List> {
 
-    List<PVFunction> functions;
+    List<Function> functions;
 
-    public ListOfFunction(List<PVFunction> functions) {
+    public ListOfFunction(List<Function> functions) {
         super(List.class);
         this.functions = functions;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List getValue() {
         List list = new ArrayList();
-        for (PVFunction function : functions) {
+        for (Function function : functions) {
             list.add(function.getValue());
         }
         return list;

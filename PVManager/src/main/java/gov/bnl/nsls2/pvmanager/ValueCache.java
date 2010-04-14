@@ -9,7 +9,7 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class ValueCache<T> extends PVFunction<T> {
+class ValueCache<T> extends Function<T> {
 
     private T value;
 

@@ -71,7 +71,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
@@ -112,7 +112,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
@@ -155,7 +155,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<DoubleStatistics> notificator = new PullNotificator<DoubleStatistics>(pvStat, aggregator, PVExpressionLanguage.onSwingEDT());
+        PullNotificator<DoubleStatistics> notificator = new PullNotificator<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;

@@ -13,11 +13,12 @@ import gov.bnl.nsls2.pvmanager.TypeSupport;
 import gov.bnl.nsls2.pvmanager.TypeSupport.Notification;
 
 /**
+ * Adds support for CA types as defined in JCA.
  *
  * @author carcassi
  */
 public class JCATypeSupport {
-    public static void addJCATypeSupport() {
+    public static void install() {
         TypeSupport.addTypeSupport(DBR_TIME_Double.class, new TimedTypeSupport<DBR_TIME_Double>() {
 
             @Override

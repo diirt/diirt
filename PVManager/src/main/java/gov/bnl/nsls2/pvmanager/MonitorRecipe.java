@@ -6,6 +6,7 @@
 package gov.bnl.nsls2.pvmanager;
 
 /**
+ * Represents all information needed to create a data connection.
  *
  * @author carcassi
  */

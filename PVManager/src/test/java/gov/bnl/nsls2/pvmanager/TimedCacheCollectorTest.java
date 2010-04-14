@@ -41,7 +41,7 @@ public class TimedCacheCollectorTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        JCATypeSupport.addJCATypeSupport();
+        JCATypeSupport.install();
         ValueCache<DBR_TIME_Double> cache =
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =

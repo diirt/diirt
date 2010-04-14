@@ -9,11 +9,11 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-public abstract class PVFunction<T> {
+public abstract class Function<T> {
 
     private Class<T> type;
 
-    public PVFunction(Class<T> type) {
+    public Function(Class<T> type) {
         this.type = type;
     }
 

@@ -77,13 +77,22 @@ public abstract class TypeSupport<T> {
      *
      * @param <T> the type to retrieve support for
      * @param typeClass the class of the type
-     * @return the support of the type
+     * @return the support for the type or null
      */
     @SuppressWarnings("unchecked")
     static <T> TypeSupport<T> typeSupportFor(Class<T> typeClass) {
         return (TypeSupport<T>) typeSupports.get(typeClass);
     }
 
+    /**
+     * Retrieve support for the given type and if not found looks at the
+     * implemented interfaces.
+     *
+     * @param <T> the type to retrieve support for
+     * @param typeClass the class of the type
+     * @return the support for the type or null
+     */
+    @SuppressWarnings("unchecked")
     static <T> TypeSupport<T> recursiveTypeSupportFor(Class<T> typeClass) {
         TypeSupport<T> support = typeSupportFor(typeClass);
         if (support == null) {

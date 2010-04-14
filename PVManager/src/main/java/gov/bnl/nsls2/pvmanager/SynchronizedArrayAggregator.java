@@ -13,7 +13,7 @@ import static gov.bnl.nsls2.pvmanager.TypeSupport.*;
  *
  * @author carcassi
  */
-class SynchronizedArrayAggregator<T> extends PVFunction<SynchronizedArray<T>> {
+class SynchronizedArrayAggregator<T> extends Function<SynchronizedArray<T>> {
 
     private final SynchronizedArray<T> array = new SynchronizedArray<T>();
     private final TimeDuration duration;

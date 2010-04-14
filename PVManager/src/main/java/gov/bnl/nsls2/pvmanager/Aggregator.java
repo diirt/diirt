@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public abstract class Aggregator<T, E> extends PVFunction<T> {
+public abstract class Aggregator<T, E> extends Function<T> {
 
     private final Collector<E> collector;
     // TODO There may not be a last value!!!

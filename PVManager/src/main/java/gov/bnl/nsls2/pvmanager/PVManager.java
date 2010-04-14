@@ -2,7 +2,7 @@ package gov.bnl.nsls2.pvmanager;
 
 import java.util.HashSet;
 import java.util.List;
-import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
 
 /**
  * Manages the PV creation and scanning.
@@ -19,7 +19,7 @@ public class PVManager {
         ConnectionManager.useCAConnectionManager();
     }
 
-    public static volatile ThreadSwitch defaultOnThread = PVExpressionLanguage.onSwingEDT();
+    public static volatile ThreadSwitch defaultOnThread = ExpressionLanguage.onSwingEDT();
 
     /**
      * Reads the given expression. Will return the average of the values collected
@@ -28,7 +28,7 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static PVManagerExpression<Double> read(PVExpression<Double> pvExpression) {
+    public static PVManagerExpression<Double> read(Expression<Double> pvExpression) {
         return new PVManagerExpression<Double>(averageOf(pvExpression));
     }
 
@@ -38,7 +38,7 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static <T> PVManagerExpression<T> read(AggregatedPVExpression<T> pvExpression) {
+    public static <T> PVManagerExpression<T> read(AggregatedExpression<T> pvExpression) {
         return new PVManagerExpression<T>(pvExpression);
     }
 
@@ -49,10 +49,10 @@ public class PVManager {
      */
     public static class PVManagerExpression<T>  {
 
-        private AggregatedPVExpression<T> aggregatedPVExpression;
+        private AggregatedExpression<T> aggregatedPVExpression;
         private ThreadSwitch onThread;
 
-        private PVManagerExpression(AggregatedPVExpression<T> aggregatedPVExpression) {
+        private PVManagerExpression(AggregatedExpression<T> aggregatedPVExpression) {
             this.aggregatedPVExpression = aggregatedPVExpression;
         }
 
@@ -75,7 +75,7 @@ public class PVManager {
             long scanPeriodMs = (long) (1000.0 * (1.0 / rate));
             PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getOutputType());
             List<MonitorRecipe> monRecipes = aggregatedPVExpression.getMonitorRecipes();
-            PVFunction<T> aggregatedFunction = aggregatedPVExpression.getFunction();
+            Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
             if (onThread == null) {
                 onThread = defaultOnThread;
             }

@@ -18,7 +18,7 @@ import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import static gov.bnl.nsls2.pvmanager.PVExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
 
 /**
  *

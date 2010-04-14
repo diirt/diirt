@@ -11,6 +11,12 @@ import java.util.List;
 
 /**
  * Adds support for java.util.collections.
+ * <p>
+ * Support for collections is at the level of raw types. Adding support for
+ * generic types was not investigated but the feeling is that it would only
+ * complicate the implementation. Given that the type checking is really
+ * done when constructing the expression, the type checking is relegated
+ * to the expression language part of the API.
  *
  * @author carcassi
  */
@@ -19,6 +25,7 @@ public class CollectionsTypeSupport {
         TypeSupport.addTypeSupport(List.class, new TypeSupport<List>() {
 
             @Override
+            @SuppressWarnings("unchecked")
             public Notification<List> prepareNotification(List oldValue, List newValue) {
                 // Initialize value if never initialized
                 if (oldValue == null)
@@ -26,6 +33,9 @@ public class CollectionsTypeSupport {
 
                 boolean notificationNeeded = false;
 
+                // Check all the elements in the list and use TypeSupport
+                // to understand whether any needs notification.
+                // Notification is done only if at least one element needs notification.
                 for (int index = 0; index < newValue.size(); index++) {
                     if (oldValue.size() <= index) {
                         oldValue.add(null);

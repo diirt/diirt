@@ -27,9 +27,9 @@ class QueueCollector<T> extends Collector<T> {
 
     // @GuardedBy(buffer)
     private final List<T> buffer = new ArrayList<T>();
-    private final PVFunction<T> function;
+    private final Function<T> function;
     
-    QueueCollector(PVFunction<T> function) {
+    QueueCollector(Function<T> function) {
         this.function = function;
     }
 

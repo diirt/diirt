@@ -19,10 +19,10 @@ import java.util.List;
 class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
-    private final PVFunction<T> function;
+    private final Function<T> function;
     private final TimeDuration cachedPeriod;
     
-    TimedCacheCollector(PVFunction<T> function, TimeDuration cachedPeriod) {
+    TimedCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
         this.function = function;
         this.cachedPeriod = cachedPeriod;
     }

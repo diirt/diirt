@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Data class that represents an array of different pvs where their values
+ * have been collected at a given timestamp.
  *
  * @author carcassi
  */
