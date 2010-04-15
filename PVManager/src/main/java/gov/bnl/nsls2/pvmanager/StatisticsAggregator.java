@@ -14,8 +14,8 @@ class StatisticsAggregator extends Aggregator<DoubleStatistics, Double> {
     protected DoubleStatistics calculate(List<Double> data) {
         double totalSum = 0;
         double totalSquareSum = 0;
-        double min = 0;
-        double max = 0;
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
         for (double item : data) {
             totalSum += item;
             totalSquareSum += item * item;
