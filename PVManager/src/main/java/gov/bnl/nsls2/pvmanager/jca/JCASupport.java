@@ -5,13 +5,17 @@
 
 package gov.bnl.nsls2.pvmanager.jca;
 
+import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.Expression;
 import gov.bnl.nsls2.pvmanager.NullUtils;
 import gov.bnl.nsls2.pvmanager.TimeStamp;
 import gov.bnl.nsls2.pvmanager.TimedTypeSupport;
 import gov.bnl.nsls2.pvmanager.TypeSupport;
 import gov.bnl.nsls2.pvmanager.TypeSupport.Notification;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adds support for CA types as defined in JCA.
@@ -57,5 +61,17 @@ public class JCASupport {
                 return new Notification<DBR_TIME_Double>(true, oldValue);
             }
         });
+    }
+
+    public static <T extends DBR> Expression<T> epicsPv(String name, Class<T> epicsType) {
+        return new Expression<T>(name, epicsType);
+    }
+
+    public static <T extends DBR> List<Expression<T>> epicsPvs(List<String> names, Class<T> epicsType) {
+        List<Expression<T>> expressions = new ArrayList<Expression<T>>();
+        for (String name : names) {
+            expressions.add(epicsPv(name, epicsType));
+        }
+        return expressions;
     }
 }

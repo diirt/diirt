@@ -73,6 +73,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>epics</groupId>
             <artifactId>caj</artifactId>
             <version>1.1.5b</version>

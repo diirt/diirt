@@ -46,5 +46,9 @@ public class SynchronizedArray<T> {
         return values;
     }
 
+    @Override
+    public String toString() {
+        return timeStamp + " " + values;
+    }
 
 }

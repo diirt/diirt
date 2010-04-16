@@ -11,6 +11,8 @@ import gov.bnl.nsls2.pvmanager.Expression;
 import gov.bnl.nsls2.pvmanager.MonitorRecipe;
 import gov.bnl.nsls2.pvmanager.Function;
 import gov.bnl.nsls2.pvmanager.QueueCollector;
+import gov.bnl.nsls2.pvmanager.TimeDuration;
+import gov.bnl.nsls2.pvmanager.TimedCacheCollector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -135,6 +137,25 @@ public class ExpressionLanguage {
             expressions.add(doublePv(name));
         }
         return expressions;
+    }
+
+    public static <T> AggregatedExpression<SynchronizedArray<T>>
+            synchronizedArrayOf(TimeDuration tolerance, List<Expression<T>> expressions) {
+        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
+        List<String> names = new ArrayList<String>();
+        List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
+        for (Expression<T> expression : expressions) {
+            TimedCacheCollector<T> collector =
+                    new TimedCacheCollector<T>(expression.getFunction(), tolerance.multiplyBy(10));
+            collectors.add(collector);
+            recipes.addAll(expression.createMontiorRecipes(collector));
+            names.add(expression.getDefaultName());
+        }
+        SynchronizedArrayAggregator<T> aggregator =
+                new SynchronizedArrayAggregator<T>(names, collectors, TimeDuration.ms(100));
+        return new AggregatedExpression<SynchronizedArray<T>>(recipes,
+                aggregator.getType(),
+                aggregator, "syncArray");
     }
 
 }

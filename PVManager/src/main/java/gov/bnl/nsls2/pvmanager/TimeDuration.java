@@ -43,8 +43,24 @@ public class TimeDuration {
         return new TimeDuration(nanoSec);
     }
 
+    /**
+     * Returns a new duration which is smaller by the given factor.
+     * 
+     * @param factor constant to divide
+     * @return a new duration
+     */
     public TimeDuration divideBy(int factor) {
         return new TimeDuration(nanoSec / factor);
+    }
+
+    /**
+     * Returns a new duration which is bigger by the given factor.
+     *
+     * @param factor constant to multiply
+     * @return a new duration
+     */
+    public TimeDuration multiplyBy(int factor) {
+        return new TimeDuration(nanoSec * factor);
     }
 
     /**

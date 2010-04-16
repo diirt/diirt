@@ -36,6 +36,9 @@ class SynchronizedArrayAggregator<T> extends Function<SynchronizedArray<T>> {
     @Override
     public SynchronizedArray<T> getValue() {
         TimeStamp reference = electReferenceTimeStamp(collectors);
+        if (reference == null)
+            return null;
+
         array.setTimeStamp(reference);
         TimeInterval allowedInterval = duration.around(reference);
         int index = 0;

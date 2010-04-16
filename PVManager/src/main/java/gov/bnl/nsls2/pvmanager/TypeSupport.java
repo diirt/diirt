@@ -116,6 +116,8 @@ public abstract class TypeSupport<T> {
     public static <T> Notification<T> notification(T oldValue, T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
+        if (recursiveTypeSupportFor(typeClass) == null)
+            throw new RuntimeException("No support found for type " + typeClass);
         return recursiveTypeSupportFor(typeClass).prepareNotification(oldValue, newValue);
     }
 
