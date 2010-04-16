@@ -4,25 +4,13 @@ import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-abstract class ConnectionManager {
+public abstract class ConnectionManager {
+
+    public static ConnectionManager mockData() {
+        return MockConnectionManager.instance;
+    }
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
-    private static final ConnectionManager connManager = new JCAConnectionManager();
-    private static volatile ConnectionManager instance = connManager;
-
-    // Executor to manage the updating of the collector.
-    // Maintain a list of all the connections being managed.
-    static ConnectionManager getInstance() {
-        return instance;
-    }
-
-    static void useMockConnectionManager() {
-        instance = MockConnectionManager.instance;
-    }
-
-    static void useCAConnectionManager() {
-        instance = connManager;
-    }
 
     /**
      * Helper class that contains the logic for processing a new value.

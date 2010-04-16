@@ -3,11 +3,13 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.test;
 
+import gov.bnl.nsls2.pvmanager.AggregatedExpression;
+import gov.bnl.nsls2.pvmanager.Expression;
 import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import org.junit.Test;
-import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.types.ExpressionLanguage.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 

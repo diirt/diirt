@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.jca;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.CAStatusException;
@@ -15,6 +15,10 @@ import gov.aps.jca.dbr.DBR_Double;
 import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
+import gov.bnl.nsls2.pvmanager.Collector;
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.MonitorRecipe;
+import gov.bnl.nsls2.pvmanager.ValueCache;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +30,8 @@ class JCAConnectionManager extends ConnectionManager {
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private static Context ctxt = null;
+
+    static final JCAConnectionManager INSTANCE = new JCAConnectionManager();
 
     /*
      * This Metod will initialize the jca context.

@@ -25,7 +25,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="createPVButton" alignment="0" pref="208" max="32767" attributes="2"/>
+                  <Component id="createPVButton" alignment="0" pref="248" max="32767" attributes="2"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="2"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -35,7 +35,7 @@
                   <Group type="102" alignment="0" attributes="1">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="scanRateSpinner" pref="112" max="32767" attributes="0"/>
+                      <Component id="scanRateSpinner" pref="134" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -98,12 +98,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="samplesPerUpdateSpinner" pref="69" max="32767" attributes="0"/>
+                          <Component id="samplesPerUpdateSpinner" pref="83" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="nUpdatesSpinner" pref="115" max="32767" attributes="0"/>
+                          <Component id="nUpdatesSpinner" pref="141" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>

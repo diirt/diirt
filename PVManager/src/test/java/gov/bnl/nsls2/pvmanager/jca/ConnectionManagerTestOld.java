@@ -1,17 +1,17 @@
 /**
  * 
  */
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.jca;
 
-import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.doublePv;
 
-import gov.aps.jca.Channel;
+import gov.bnl.nsls2.pvmanager.Collector;
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.MonitorRecipe;
+import gov.bnl.nsls2.pvmanager.PV;
+import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
+import gov.bnl.nsls2.pvmanager.QueueCollector;
+import gov.bnl.nsls2.pvmanager.ValueCache;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
@@ -25,9 +25,8 @@ import org.junit.Test;
 
 /**
  * @author shroffk
- * 
  */
-public class ConnectionManagerTest {
+public class ConnectionManagerTestOld {
 
     private static Logger logger = Logger.getLogger(ConnectionManager.class
 	    .getName());
@@ -37,7 +36,6 @@ public class ConnectionManagerTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-	ConnectionManager.useCAConnectionManager();
     }
 
     /**
@@ -69,7 +67,7 @@ public class ConnectionManagerTest {
      * 
      * @throws Exception
      */
-    @Test
+    //@Test
     public void simpleTest() throws Exception {
 	final ValueCache<Double> cache = new ValueCache<Double>(
 		Double.class);
@@ -93,7 +91,7 @@ public class ConnectionManagerTest {
 		monRecipe.cache = cache;
 		monRecipe.collector = collector;
 		monRecipe.pvName = pv.getName();
-		ConnectionManager.getInstance().monitor(monRecipe);
+		JCASupport.jca().monitor(monRecipe);
 	    }
 	});
 	Thread.sleep(5000);
@@ -131,15 +129,15 @@ public class ConnectionManagerTest {
 //	Thread.sleep(5000);
 //    }
 
-    /**
-     * Test the working from start to finish.
-     * 
-     * @throws InterruptedException
-     */
-    @Test
-    public void PVtest() throws InterruptedException {
-	pv = PVManager.read(doublePv("pvk01")).atHz(10);
-	Thread.sleep(5000);
-    }
+//    /**
+//     * Test the working from start to finish.
+//     *
+//     * @throws InterruptedException
+//     */
+//    @Test
+//    public void PVtest() throws InterruptedException {
+//	pv = PVManager.read(doublePv("pvk01")).atHz(10);
+//	Thread.sleep(5000);
+//    }
 
 }

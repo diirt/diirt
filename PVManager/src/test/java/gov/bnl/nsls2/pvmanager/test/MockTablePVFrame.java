@@ -11,6 +11,7 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -18,7 +19,7 @@ import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.types.ExpressionLanguage.*;
 
 /**
  *
@@ -28,7 +29,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockTablePVFrame() {
-        PVManager.useMockData();
+        PVManager.setConnectionManager(ConnectionManager.mockData());
         initComponents();
     }
 

@@ -29,7 +29,7 @@ public class Expression<T> {
      * @param pvName the name of the pv
      * @param pvType the type of the pv
      */
-    Expression(String pvName, Class<T> pvType) {
+    public Expression(String pvName, Class<T> pvType) {
         this.pvNames = Collections.singletonList(pvName);
         ValueCache<T> cache = new ValueCache<T>(pvType);
         this.pvCaches = new ArrayList<ValueCache<?>>();
@@ -55,23 +55,23 @@ public class Expression<T> {
         this.defaultName = defaultName;
     }
 
-    String getDefaultName() {
+    public String getDefaultName() {
         return defaultName;
     }
 
-    List<String> getPvNames() {
+    public List<String> getPvNames() {
         return pvNames;
     }
 
-    List<ValueCache<?>> getPvData() {
+    public List<ValueCache<?>> getPvData() {
         return pvCaches;
     }
 
-    Function<T> getFunction() {
+    public Function<T> getFunction() {
         return function;
     }
 
-    List<MonitorRecipe> createMontiorRecipes(Collector collector) {
+    public List<MonitorRecipe> createMontiorRecipes(Collector collector) {
         List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
         for (int nPv = 0; nPv < getPvNames().size(); nPv++) {
             MonitorRecipe recipe = new MonitorRecipe();

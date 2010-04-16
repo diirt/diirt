@@ -25,18 +25,18 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="createPVButton" alignment="0" pref="693" max="32767" attributes="1"/>
+                  <Component id="createPVButton" alignment="0" pref="719" max="32767" attributes="1"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="2"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scanRateSpinner" pref="603" max="32767" attributes="0"/>
+                      <Component id="scanRateSpinner" pref="612" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" alignment="0" pref="693" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="719" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="nPVSpinner" pref="658" max="32767" attributes="0"/>
+                      <Component id="nPVSpinner" pref="676" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -107,7 +107,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="updateRateSpinner" pref="548" max="32767" attributes="0"/>
+                          <Component id="updateRateSpinner" pref="549" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
@@ -117,7 +117,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="nUpdatesSpinner" pref="600" max="32767" attributes="0"/>
+                          <Component id="nUpdatesSpinner" pref="612" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>

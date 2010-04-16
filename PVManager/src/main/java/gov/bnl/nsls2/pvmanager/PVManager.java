@@ -2,7 +2,6 @@ package gov.bnl.nsls2.pvmanager;
 
 import java.util.HashSet;
 import java.util.List;
-import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
 
 /**
  * Manages the PV creation and scanning.
@@ -11,15 +10,26 @@ import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
  */
 public class PVManager {
 
-    public static void useMockData() {
-        ConnectionManager.useMockConnectionManager();
+    private static volatile ThreadSwitch defaultOnThread = ThreadSwitch.onSwingEDT();
+    private static volatile ConnectionManager defaultConnectionManager = null;
+
+    /**
+     * Changes the default thread on which notifications are going to be posted.
+     *
+     * @param threadSwitch the new target thread
+     */
+    public static void setDefaultThread(ThreadSwitch threadSwitch) {
+        defaultOnThread = threadSwitch;
     }
 
-    public static void useChannelAccess() {
-        ConnectionManager.useCAConnectionManager();
+    /**
+     * Changes the default source for data.
+     *
+     * @param manager the data source
+     */
+    public static void setConnectionManager(ConnectionManager manager) {
+        defaultConnectionManager = manager;
     }
-
-    public static volatile ThreadSwitch defaultOnThread = ExpressionLanguage.onSwingEDT();
 
     /**
      * Reads the given expression. Will return the average of the values collected
@@ -28,8 +38,11 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static PVManagerExpression<Double> read(Expression<Double> pvExpression) {
-        return new PVManagerExpression<Double>(averageOf(pvExpression));
+    public static <T> PVManagerExpression<T> read(Expression<T> pvExpression) {
+        Collector<T> collector = new QueueCollector<T>(pvExpression.getFunction());
+        AggregatedExpression<T> aggregatedExpression = new AggregatedExpression<T>(pvExpression.createMontiorRecipes(collector),
+                pvExpression.getFunction().getType(), new LastValueAggregator<T>(pvExpression.getFunction().getType(), collector), pvExpression.getDefaultName());
+        return new PVManagerExpression<T>(aggregatedExpression);
     }
 
     /**
@@ -50,12 +63,33 @@ public class PVManager {
     public static class PVManagerExpression<T>  {
 
         private AggregatedExpression<T> aggregatedPVExpression;
-        private ThreadSwitch onThread;
+        // Initialize to defaults
+        private ThreadSwitch onThread = defaultOnThread;
+        private ConnectionManager source = defaultConnectionManager;
 
         private PVManagerExpression(AggregatedExpression<T> aggregatedPVExpression) {
             this.aggregatedPVExpression = aggregatedPVExpression;
         }
 
+        /**
+         * Defines which ConnectionManager should be used to read the data.
+         *
+         * @param connectionManager a connection manager
+         * @return this
+         */
+        public PVManagerExpression<T> from(ConnectionManager connectionManager) {
+            if (connectionManager == null)
+                throw new IllegalArgumentException("ConnectionManager can't be null");
+            source = connectionManager;
+            return this;
+        }
+
+        /**
+         * Defines on which thread the PVManager should notify the client.
+         *
+         * @param onThread the thread on which to notify
+         * @return this
+         */
         public PVManagerExpression<T> andNotify(ThreadSwitch onThread) {
             if (this.onThread == null)  {
                 this.onThread = onThread;
@@ -73,12 +107,18 @@ public class PVManager {
          */
         public PV<T> atHz(double rate) {
             long scanPeriodMs = (long) (1000.0 * (1.0 / rate));
+
+            // Check that a connection manager has been specified
+            if (source == null) {
+                throw new RuntimeException("You need to specify a source either " +
+                        "using PVManager.setDefaultConnectionManager or by using " +
+                        "read(...).from(ConnectionManager).");
+            }
+
+            // Create PV and connect
             PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getOutputType());
             List<MonitorRecipe> monRecipes = aggregatedPVExpression.getMonitorRecipes();
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
-            if (onThread == null) {
-                onThread = defaultOnThread;
-            }
             PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction, onThread);
             Scanner.scan(notificator, scanPeriodMs);
             ConnectionRecipe connRecipe = new ConnectionRecipe();
@@ -89,7 +129,7 @@ public class PVManager {
             }
             //ConnectionManager.getInstance().connect(connRecipe);
             for (MonitorRecipe recipe : monRecipes) {
-                ConnectionManager.getInstance().monitor(recipe);
+                source.monitor(recipe);
             }
             return pv;
         }

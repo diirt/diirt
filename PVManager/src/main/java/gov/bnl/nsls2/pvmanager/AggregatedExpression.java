@@ -28,7 +28,7 @@ public class AggregatedExpression<T> {
         this.defaultName = defaultName;
     }
 
-    String getDefaultName() {
+    public String getDefaultName() {
         return defaultName;
     }
 
@@ -36,7 +36,7 @@ public class AggregatedExpression<T> {
         return recipes;
     }
 
-    Class<T> getOutputType() {
+    public Class<T> getOutputType() {
         return outputType;
     }
 

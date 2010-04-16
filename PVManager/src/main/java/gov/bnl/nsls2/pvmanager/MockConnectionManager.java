@@ -9,7 +9,6 @@ import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import gov.aps.jca.dbr.TimeStamp;
-import java.lang.ref.WeakReference;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,7 +23,7 @@ import java.util.regex.Pattern;
 class MockConnectionManager extends ConnectionManager {
 
     private static Logger log = Logger.getLogger(ConnectionManager.class.getName());
-    static MockConnectionManager instance = new MockConnectionManager();
+    static final MockConnectionManager instance = new MockConnectionManager();
 
     private static Random rand = new Random();
 

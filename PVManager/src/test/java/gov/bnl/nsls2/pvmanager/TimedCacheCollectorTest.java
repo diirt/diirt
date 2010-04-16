@@ -6,7 +6,7 @@
 package gov.bnl.nsls2.pvmanager;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.bnl.nsls2.pvmanager.types.JCATypeSupport;
+import gov.bnl.nsls2.pvmanager.jca.JCASupport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class TimedCacheCollectorTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        JCATypeSupport.install();
+        JCASupport.install();
         ValueCache<DBR_TIME_Double> cache =
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =
@@ -50,8 +50,7 @@ public class TimedCacheCollectorTest {
         monitorRecipe.cache = cache;
         monitorRecipe.collector = collector;
         monitorRecipe.pvName = MockConnectionManager.mockPVName(1, 100, 300);
-        MockConnectionManager.useMockConnectionManager();
-        ConnectionManager.getInstance().monitor(monitorRecipe);
+        ConnectionManager.mockData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element
         Thread.sleep(100);

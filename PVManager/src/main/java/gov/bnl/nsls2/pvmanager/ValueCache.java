@@ -9,11 +9,11 @@ package gov.bnl.nsls2.pvmanager;
  *
  * @author carcassi
  */
-class ValueCache<T> extends Function<T> {
+public class ValueCache<T> extends Function<T> {
 
     private T value;
 
-    ValueCache(Class<T> dataType) {
+    public ValueCache(Class<T> dataType) {
         super(dataType);
         this.value = null;
     }

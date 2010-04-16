@@ -23,19 +23,20 @@ import java.util.List;
  *
  * @author carcassi
  */
-class QueueCollector<T> extends Collector<T> {
+public class QueueCollector<T> extends Collector<T> {
 
     // @GuardedBy(buffer)
     private final List<T> buffer = new ArrayList<T>();
     private final Function<T> function;
     
-    QueueCollector(Function<T> function) {
+    public QueueCollector(Function<T> function) {
         this.function = function;
     }
 
     /**
      * Calculates the next value and puts it in the queue.
      */
+    @Override
     synchronized void collect() {
         // Calculation may take time, and is locked by this
         T newValue = function.getValue();
@@ -52,6 +53,7 @@ class QueueCollector<T> extends Collector<T> {
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
+    @Override
     List<T> getData() {
         synchronized(buffer) {
             List<T> data = new ArrayList<T>(buffer);

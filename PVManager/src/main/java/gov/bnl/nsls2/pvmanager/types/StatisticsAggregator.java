@@ -1,6 +1,7 @@
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.types;
 
-import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
+import gov.bnl.nsls2.pvmanager.Aggregator;
+import gov.bnl.nsls2.pvmanager.Collector;
 import java.util.List;
 import static java.lang.Math.*;
 

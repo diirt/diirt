@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager.types;
+package gov.bnl.nsls2.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
 import gov.bnl.nsls2.pvmanager.NullUtils;
 import gov.bnl.nsls2.pvmanager.TimeStamp;
 import gov.bnl.nsls2.pvmanager.TimedTypeSupport;
@@ -17,7 +18,12 @@ import gov.bnl.nsls2.pvmanager.TypeSupport.Notification;
  *
  * @author carcassi
  */
-public class JCATypeSupport {
+public class JCASupport {
+
+    public static ConnectionManager jca() {
+        return JCAConnectionManager.INSTANCE;
+    }
+
     public static void install() {
         TypeSupport.addTypeSupport(DBR_TIME_Double.class, new TimedTypeSupport<DBR_TIME_Double>() {
 

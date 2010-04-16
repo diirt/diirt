@@ -16,13 +16,13 @@ import java.util.List;
  *
  * @author carcassi
  */
-class TimedCacheCollector<T> extends Collector<T> {
+public class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final Function<T> function;
     private final TimeDuration cachedPeriod;
     
-    TimedCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
+    public TimedCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
         this.function = function;
         this.cachedPeriod = cachedPeriod;
     }

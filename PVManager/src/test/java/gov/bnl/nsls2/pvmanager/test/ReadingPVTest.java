@@ -5,6 +5,7 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
+import gov.bnl.nsls2.pvmanager.ConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -16,7 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static gov.bnl.nsls2.pvmanager.ExpressionLanguage.*;
+import static gov.bnl.nsls2.pvmanager.types.ExpressionLanguage.*;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ReadingPVTest {
     
     @BeforeClass
     public static void setUpClass() throws Exception {
-        PVManager.useMockData();
+        PVManager.setConnectionManager(ConnectionManager.mockData());
     }
 
     @AfterClass
