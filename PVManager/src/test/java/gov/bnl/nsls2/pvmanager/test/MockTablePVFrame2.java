@@ -11,13 +11,13 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
-import gov.bnl.nsls2.pvmanager.AggregatedExpression;
 import gov.bnl.nsls2.pvmanager.MockConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
 import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -202,13 +202,7 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        @SuppressWarnings("unchecked")
-        AggregatedExpression<DoubleStatistics>[] pvs = new AggregatedExpression[nPvs];
-        for (int n = 0; n < nPvs; n++) {
-            pvs[n] = statisticsOf(doublePv(pvName));
-        }
-
-        pv = PVManager.read(listOf(pvs)).atHz(scanRate);
+        pv = PVManager.read(listOf(statisticsOf(doublePvs(Collections.nCopies(nPvs, pvName))))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {

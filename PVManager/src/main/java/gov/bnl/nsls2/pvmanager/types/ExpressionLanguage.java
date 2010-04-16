@@ -34,6 +34,15 @@ public class ExpressionLanguage {
      * @return an expression representing the list of results
      */
     public static <T> AggregatedExpression<List<T>> listOf(AggregatedExpression<T>... expressions) {
+        return listOf(Arrays.asList(expressions));
+    }
+
+    /**
+     * Converts a list of expressions to and expression that returns the list of results.
+     * @param expression a list of expressions
+     * @return an expression representing the list of results
+     */
+    public static <T> AggregatedExpression<List<T>> listOf(List<AggregatedExpression<T>> expressions) {
         // The connections needed are the union of all connections.
         // Calculate all the needed functions to combine
         List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
@@ -47,8 +56,8 @@ public class ExpressionLanguage {
         // and it might trigger an OutOfMemoryException just for this.
         // We cap the list of names to 10
         String name = null;
-        if (expressions.length < 10) {
-            name = "list" + Arrays.toString(expressions);
+        if (expressions.size() < 10) {
+            name = "list" + expressions;
         } else {
             name = "list(...)";
         }
@@ -60,7 +69,7 @@ public class ExpressionLanguage {
     }
 
     /**
-     * Aggrates the sample at the scan rate and takes the average.
+     * Aggregates the sample at the scan rate and takes the average.
      * @param doublePv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
@@ -71,7 +80,22 @@ public class ExpressionLanguage {
     }
 
     /**
-     * Aggreages the sample at the scan rate and calculates statistical information.
+     * Applies {@link #averageOf(gov.bnl.nsls2.pvmanager.Expression) to all
+     * arguments.
+     *
+     * @param doubleExpressions a list of double expressions
+     * @return a list of average expressions
+     */
+    public static List<AggregatedExpression<Double>> averageOf(List<Expression<Double>> doubleExpressions) {
+        List<AggregatedExpression<Double>> expressions = new ArrayList<AggregatedExpression<Double>>();
+        for (Expression<Double> doubleExpression : doubleExpressions) {
+            expressions.add(averageOf(doubleExpression));
+        }
+        return expressions;
+    }
+
+    /**
+     * Aggregates the sample at the scan rate and calculates statistical information.
      * @param doublePv the expression to calculate the statistics information on; can't be null
      * @return an expression representing the statistical information of the expression
      */
@@ -82,12 +106,35 @@ public class ExpressionLanguage {
     }
 
     /**
+     * Applies {@link #statisticsOf(gov.bnl.nsls2.pvmanager.Expression) to all
+     * arguments.
+     *
+     * @param doubleExpressions a list of double expressions
+     * @return a list of statistical expressions
+     */
+    public static List<AggregatedExpression<DoubleStatistics>> statisticsOf(List<Expression<Double>> doubleExpressions) {
+        List<AggregatedExpression<DoubleStatistics>> expressions = new ArrayList<AggregatedExpression<DoubleStatistics>>();
+        for (Expression<Double> doubleExpression : doubleExpressions) {
+            expressions.add(statisticsOf(doubleExpression));
+        }
+        return expressions;
+    }
+
+    /**
      * A CA channel with the given name of type double.
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
     public static Expression<Double> doublePv(String name) {
         return new Expression<Double>(name, Double.class);
+    }
+
+    public static List<Expression<Double>> doublePvs(List<String> names) {
+        List<Expression<Double>> expressions = new ArrayList<Expression<Double>>();
+        for (String name : names) {
+            expressions.add(doublePv(name));
+        }
+        return expressions;
     }
 
 }
