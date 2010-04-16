@@ -3,13 +3,19 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.types;
 
-import gov.bnl.nsls2.pvmanager.types.SynchronizedArray;
+import gov.bnl.nsls2.pvmanager.Function;
+import gov.bnl.nsls2.pvmanager.TimeDuration;
+import gov.bnl.nsls2.pvmanager.TimeInterval;
+import gov.bnl.nsls2.pvmanager.TimeStamp;
+import gov.bnl.nsls2.pvmanager.TimedCacheCollector;
 import java.util.List;
 import static gov.bnl.nsls2.pvmanager.TypeSupport.*;
 
 /**
+ * Provides an aggregator that returns a synchronized set of data by looking
+ * into a timed cache.
  *
  * @author carcassi
  */

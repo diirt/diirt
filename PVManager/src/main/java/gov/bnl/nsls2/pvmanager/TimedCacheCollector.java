@@ -47,7 +47,7 @@ public class TimedCacheCollector<T> extends Collector<T> {
      * @return a new array with the value; never null
      */
     @Override
-    List<T> getData() {
+    public List<T> getData() {
         synchronized(buffer) {
             if (buffer.isEmpty())
                 return Collections.emptyList();

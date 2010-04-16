@@ -6,10 +6,6 @@ import java.util.logging.Level;
 
 public abstract class ConnectionManager {
 
-    public static ConnectionManager mockData() {
-        return MockConnectionManager.instance;
-    }
-
     private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
 
     /**

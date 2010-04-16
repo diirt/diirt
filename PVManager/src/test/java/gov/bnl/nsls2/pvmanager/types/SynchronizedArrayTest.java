@@ -3,9 +3,14 @@
  * and open the template in the editor.
  */
 
-package gov.bnl.nsls2.pvmanager;
+package gov.bnl.nsls2.pvmanager.types;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
+import gov.bnl.nsls2.pvmanager.MockConnectionManager;
+import gov.bnl.nsls2.pvmanager.MonitorRecipe;
+import gov.bnl.nsls2.pvmanager.TimeDuration;
+import gov.bnl.nsls2.pvmanager.TimedCacheCollector;
+import gov.bnl.nsls2.pvmanager.ValueCache;
 import gov.bnl.nsls2.pvmanager.jca.JCASupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,8 @@ public class SynchronizedArrayTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        // Installs JCA types
+        JCASupport.jca();
     }
 
     @AfterClass
@@ -43,7 +50,6 @@ public class SynchronizedArrayTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        JCASupport.install();
         int nPvs = 100;
         List<ValueCache<DBR_TIME_Double>> caches = new ArrayList<ValueCache<DBR_TIME_Double>>();
         List<String> names = new ArrayList<String>();
@@ -56,7 +62,7 @@ public class SynchronizedArrayTest {
             monitorRecipe.collector = collectors.get(i);
             monitorRecipe.pvName = MockConnectionManager.mockPVName(1, 100, 300) + "linear";
             names.add("pv" + i);
-            ConnectionManager.mockData().monitor(monitorRecipe);
+            MockConnectionManager.mockData().monitor(monitorRecipe);
         }
         SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
                 new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.ms(100));

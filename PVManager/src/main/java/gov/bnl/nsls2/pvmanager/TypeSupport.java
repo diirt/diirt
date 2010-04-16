@@ -5,9 +5,6 @@
 
 package gov.bnl.nsls2.pvmanager;
 
-import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,6 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *   there will be then two copies, the old and the new, and in need to be clear
  *   how the new copy should be delivered. (e.g. just pass the new copy, modify
  *   the old object in place, etc...).</li>
+ *   <li>When to notify - by comparing elements of the value, it should
+ *   decide on what condition the old value need to be modified and the
+ *   UI should be notified of the change.</li>
  * </ul>
  *
  * @author carcassi
@@ -123,39 +123,6 @@ public abstract class TypeSupport<T> {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
         return ((TimedTypeSupport<T>) recursiveTypeSupportFor(typeClass)).extractTimestamp(value);
-    }
-
-    static {
-        addStandardTypeSupport();
-    }
-
-    /**
-     * Adds supports for standard types: Double and DoubleStatistics
-     */
-    public static void addStandardTypeSupport() {
-        // Add Double support: simply return the new value
-        addTypeSupport(Double.class, new TypeSupport<Double>() {
-            @Override
-            public Notification<Double> prepareNotification(Double oldValue, Double newValue) {
-                if (NullUtils.equalsOrBothNull(oldValue, newValue))
-                    return new Notification<Double>(false, null);
-                return new Notification<Double>(true, newValue);
-            }
-        });
-
-        // Add DoubleStatistics support: copy the new values in the old object.
-        addTypeSupport(DoubleStatistics.class, new TypeSupport<DoubleStatistics>() {
-            @Override
-            public Notification<DoubleStatistics> prepareNotification(DoubleStatistics oldValue, DoubleStatistics newValue) {
-                if (oldValue == null)
-                    oldValue = new DoubleStatistics();
-                if (oldValue.equals(newValue))
-                    return new Notification<DoubleStatistics>(false, null);
-                oldValue.setStatistics(newValue.getAverage(), newValue.getMin(),
-                        newValue.getMax(), newValue.getStdDev());
-                return new Notification<DoubleStatistics>(true, oldValue);
-            }
-        });
     }
 
 }

@@ -75,7 +75,7 @@ public class CollectorToPVTest {
         connRecipe.cache = cache;
         connRecipe.collector = collector;
         connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-        ConnectionManager.mockData().monitor(connRecipe);
+        MockConnectionManager.mockData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 2) {

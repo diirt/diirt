@@ -23,8 +23,12 @@ public class JCASupport {
     public static ConnectionManager jca() {
         return JCAConnectionManager.INSTANCE;
     }
+    
+    static {
+        install();
+    }
 
-    public static void install() {
+    static void install() {
         TypeSupport.addTypeSupport(DBR_TIME_Double.class, new TimedTypeSupport<DBR_TIME_Double>() {
 
             @Override

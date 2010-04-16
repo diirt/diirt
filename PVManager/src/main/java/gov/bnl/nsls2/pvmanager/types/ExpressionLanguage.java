@@ -16,10 +16,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Provides support for the standard types and the basic building blocks of
+ * the expression language.
  *
  * @author carcassi
  */
 public class ExpressionLanguage {
+
+    static {
+        // Installs support for standard types
+        StandardTypeSupport.install();
+    }
 
     /**
      * Converts a list of expressions to and expression that returns the list of results.

@@ -20,7 +20,11 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-class MockConnectionManager extends ConnectionManager {
+public class MockConnectionManager extends ConnectionManager {
+
+    public static ConnectionManager mockData() {
+        return MockConnectionManager.instance;
+    }
 
     private static Logger log = Logger.getLogger(ConnectionManager.class.getName());
     static final MockConnectionManager instance = new MockConnectionManager();

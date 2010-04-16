@@ -25,6 +25,7 @@ public class TimedCacheCollectorTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        JCASupport.jca();
     }
 
     @AfterClass
@@ -41,7 +42,6 @@ public class TimedCacheCollectorTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        JCASupport.install();
         ValueCache<DBR_TIME_Double> cache =
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =
@@ -50,7 +50,7 @@ public class TimedCacheCollectorTest {
         monitorRecipe.cache = cache;
         monitorRecipe.collector = collector;
         monitorRecipe.pvName = MockConnectionManager.mockPVName(1, 100, 300);
-        ConnectionManager.mockData().monitor(monitorRecipe);
+        MockConnectionManager.mockData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element
         Thread.sleep(100);

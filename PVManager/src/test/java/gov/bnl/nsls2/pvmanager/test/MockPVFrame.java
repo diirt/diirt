@@ -11,7 +11,7 @@
 
 package gov.bnl.nsls2.pvmanager.test;
 
-import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.MockConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -25,7 +25,7 @@ public class MockPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockPVFrame() {
-        PVManager.setConnectionManager(ConnectionManager.mockData());
+        PVManager.setConnectionManager(MockConnectionManager.mockData());
         initComponents();
     }
 

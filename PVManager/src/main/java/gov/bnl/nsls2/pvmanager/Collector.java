@@ -34,5 +34,5 @@ public abstract class Collector<T> {
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    abstract List<T> getData();
+    public abstract List<T> getData();
 }
