@@ -9,6 +9,7 @@ import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.bnl.nsls2.pvmanager.MockConnectionManager;
 import gov.bnl.nsls2.pvmanager.MonitorRecipe;
 import gov.bnl.nsls2.pvmanager.TimeDuration;
+import gov.bnl.nsls2.pvmanager.TimeStamp;
 import gov.bnl.nsls2.pvmanager.TimedCacheCollector;
 import gov.bnl.nsls2.pvmanager.ValueCache;
 import gov.bnl.nsls2.pvmanager.jca.JCASupport;
@@ -97,6 +98,70 @@ public class SynchronizedArrayTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void missingValues() throws InterruptedException {
+        int nPvs = 5;
+        List<ValueCache<DBR_TIME_Double>> caches = new ArrayList<ValueCache<DBR_TIME_Double>>();
+        List<String> names = new ArrayList<String>();
+        List<TimedCacheCollector<DBR_TIME_Double>> collectors = new ArrayList<TimedCacheCollector<DBR_TIME_Double>>();
+        for (int i = 0; i < nPvs; i++) {
+            caches.add(new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class));
+            collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(10)));
+            names.add("pv" + i);
+        }
+        SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
+                new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.nanos(10));
+
+        TimeStamp reference = TimeStamp.now();
+        TimeStamp secondPass = reference.plus(TimeDuration.ms(1));
+        TimeStamp thirdPass = reference.plus(TimeDuration.ms(2));
+
+        // Set values
+        caches.get(0).setValue(createValue(reference, 0.0));
+        collectors.get(0).collect();
+        caches.get(0).setValue(createValue(secondPass, 1.0));
+        collectors.get(0).collect();
+
+        // Set values
+        caches.get(1).setValue(createValue(reference, 0.0));
+        collectors.get(1).collect();
+        caches.get(1).setValue(createValue(secondPass, 1.0));
+        collectors.get(1).collect();
+        caches.get(1).setValue(createValue(thirdPass, 2.0));
+        collectors.get(1).collect();
+
+        // Set values
+        caches.get(2).setValue(createValue(secondPass, 1.0));
+        collectors.get(2).collect();
+        caches.get(2).setValue(createValue(thirdPass, 2.0));
+        collectors.get(2).collect();
+
+        // Set values
+        caches.get(3).setValue(createValue(reference, 0.0));
+        collectors.get(3).collect();
+        caches.get(3).setValue(createValue(thirdPass, 2.0));
+        collectors.get(3).collect();
+
+        // Set values
+        caches.get(4).setValue(createValue(reference, 0.0));
+        collectors.get(4).collect();
+
+        SynchronizedArray<DBR_TIME_Double> array = aggregator.getValue();
+        assertEquals(0.0, array.getValues().get(0).getDoubleValue()[0], 0.0);
+        assertEquals(0.0, array.getValues().get(1).getDoubleValue()[0], 0.0);
+        assertNull(array.getValues().get(2));
+        assertEquals(0.0, array.getValues().get(3).getDoubleValue()[0], 0.0);
+        assertEquals(0.0, array.getValues().get(4).getDoubleValue()[0], 0.0);
+
+    }
+
+    public static DBR_TIME_Double createValue(TimeStamp time, double aValue) {
+        DBR_TIME_Double value = new DBR_TIME_Double();
+        value.setTimeStamp(new gov.aps.jca.dbr.TimeStamp(time.getEpicsSec(), time.getNanoSec()));
+        value.getDoubleValue()[0] = aValue;
+        return value;
     }
 
 }

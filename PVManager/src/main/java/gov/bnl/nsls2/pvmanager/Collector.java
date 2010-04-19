@@ -28,7 +28,7 @@ public abstract class Collector<T> {
     /**
      * Calculates the next value and puts it in the queue.
      */
-    abstract void collect();
+    public abstract void collect();
 
     /**
      * Returns all values since last check and removes values from the queue.

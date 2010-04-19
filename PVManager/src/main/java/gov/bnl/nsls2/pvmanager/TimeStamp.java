@@ -33,6 +33,14 @@ public class TimeStamp implements Comparable {
         this.nanoSec = nanoSec;
     }
 
+    public long getEpicsSec() {
+        return epicsSec;
+    }
+
+    public long getNanoSec() {
+        return nanoSec;
+    }
+
     /**
      * Returns a new timestamp using EPICS time arguments.
      *
@@ -42,6 +50,17 @@ public class TimeStamp implements Comparable {
      */
     public static TimeStamp epicsTime(long epicsSec, long nanoSec) {
         return new TimeStamp(epicsSec, nanoSec);
+    }
+
+    public static TimeStamp timestampOf(Date date) {
+        long time = date.getTime();
+        long nanoSec = (time % 1000) * 1000000;
+        long epicsSec = (time / 1000) - TS_EPOCH_SEC_PAST_1970;
+        return new TimeStamp(epicsSec, nanoSec);
+    }
+
+    public static TimeStamp now() {
+        return timestampOf(new Date());
     }
 
     /**

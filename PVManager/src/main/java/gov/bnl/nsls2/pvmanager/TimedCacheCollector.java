@@ -30,7 +30,7 @@ public class TimedCacheCollector<T> extends Collector<T> {
      * Calculates the next value and puts it in the queue.
      */
     @Override
-    synchronized void collect() {
+    public synchronized void collect() {
         // Calculation may take time, and is locked by this
         T newValue = function.getValue();
 
