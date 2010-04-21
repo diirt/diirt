@@ -22,14 +22,22 @@ import static gov.bnl.nsls2.pvmanager.TypeSupport.*;
 class SynchronizedArrayAggregator<T> extends Function<SynchronizedArray<T>> {
 
     private final SynchronizedArray<T> array = new SynchronizedArray<T>();
-    private final TimeDuration duration;
+    private final TimeDuration tolerance;
     private final List<TimedCacheCollector<T>> collectors;
 
+    /**
+     * Creates a new aggregators, that takes a list of collectors
+     * and reconstructs a synchronized array.
+     *
+     * @param names names of the individual pvs
+     * @param collectors collectors that contain the past few samples
+     * @param tolerance the tolerance around the reference time for samples to be included
+     */
     @SuppressWarnings("unchecked")
-    public SynchronizedArrayAggregator(List<String> names, List<TimedCacheCollector<T>> collectors, TimeDuration duration) {
+    public SynchronizedArrayAggregator(List<String> names, List<TimedCacheCollector<T>> collectors, TimeDuration tolerance) {
         super((Class) SynchronizedArray.class);
         array.setNames(names);
-        this.duration = duration;
+        this.tolerance = tolerance;
         this.collectors = collectors;
     }
 
@@ -40,7 +48,7 @@ class SynchronizedArrayAggregator<T> extends Function<SynchronizedArray<T>> {
             return null;
 
         array.setTimeStamp(reference);
-        TimeInterval allowedInterval = duration.around(reference);
+        TimeInterval allowedInterval = tolerance.around(reference);
         int index = 0;
         for (TimedCacheCollector<T> collector : collectors) {
             T value = closestElement(collector.getData(), allowedInterval);

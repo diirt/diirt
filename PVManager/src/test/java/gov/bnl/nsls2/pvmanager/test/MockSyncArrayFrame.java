@@ -16,19 +16,12 @@ import gov.bnl.nsls2.pvmanager.MockConnectionManager;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
-import gov.bnl.nsls2.pvmanager.TimeDuration;
-import gov.bnl.nsls2.pvmanager.types.DoubleStatistics;
+import gov.bnl.nsls2.pvmanager.TypeSupport;
 import gov.bnl.nsls2.pvmanager.types.SynchronizedArray;
-import java.awt.Font;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import javax.swing.JPanel;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
@@ -39,6 +32,7 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import static gov.bnl.nsls2.pvmanager.TimeDuration.*;
 import static gov.bnl.nsls2.pvmanager.types.ExpressionLanguage.*;
 import static gov.bnl.nsls2.pvmanager.jca.JCASupport.*;
 
@@ -63,42 +57,28 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         }
         if (pv.getValue() == null)
             return;
-        final JFreeChart chart = createCombinedChart();
+        final JFreeChart chart = createChart();
         final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
         plotPanel.add(panel);
         plotPanel.revalidate();
         oldPanel = panel;
     }
 
-    private JFreeChart createCombinedChart() {
+    private JFreeChart createChart() {
 
-
-        // create subplot 1...
-        final XYDataset data1 = createDataset1();
+        final XYDataset data1 = createDataset();
         final XYItemRenderer renderer1 = new StandardXYItemRenderer();
         final NumberAxis rangeAxis1 = new NumberAxis();
         rangeAxis1.setRange(-1.5, 1.5);
         final XYPlot subplot1 = new XYPlot(data1, null, rangeAxis1, renderer1);
         subplot1.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
 
-
-//        // create subplot 2...
-//        final XYDataset data2 = createDataset2();
-//        final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-//        final NumberAxis rangeAxis2 = new NumberAxis("Range 2");
-//        rangeAxis2.setAutoRangeIncludesZero(false);
-//        final XYPlot subplot2 = new XYPlot(data2, null, rangeAxis2, renderer2);
-//        subplot2.setRangeAxisLocation(AxisLocation.TOP_OR_LEFT);
-
-        // parent plot...
         NumberAxis hor = new NumberAxis();
         hor.setRange(0, pv.getValue().getValues().size() - 1);
         final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(hor);
         plot.setGap(10.0);
 
-        // add the subplots...
         plot.add(subplot1, 1);
-//        plot.add(subplot2, 1);
         plot.setOrientation(PlotOrientation.VERTICAL);
 
         // return a new chart containing the overlaid plot...
@@ -106,9 +86,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
                               JFreeChart.DEFAULT_TITLE_FONT, plot, true);
     }
 
-    private XYDataset createDataset1() {
-
-        // create dataset 1...
+    private XYDataset createDataset() {
         final XYSeries series1 = new XYSeries("Values at " + pv.getValue().getTimeStamp().asDate());
         int index = 0;
         if (pv.getValue() != null) {
@@ -119,58 +97,11 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
             }
         }
 
-//        final XYSeries series2 = new XYSeries("Series 2");
-//        series2.add(10.0, 15000.3);
-//        series2.add(20.0, 11000.4);
-//        series2.add(30.0, 17000.3);
-//        series2.add(40.0, 15000.3);
-//        series2.add(50.0, 14000.4);
-//        series2.add(60.0, 12000.3);
-//        series2.add(70.0, 11000.5);
-//        series2.add(80.0, 12000.3);
-//        series2.add(90.0, 13000.4);
-//        series2.add(100.0, 12000.6);
-//        series2.add(110.0, 13000.3);
-//        series2.add(120.0, 17000.2);
-//        series2.add(130.0, 18000.2);
-//        series2.add(140.0, 16000.2);
-//        series2.add(150.0, 17000.2);
-
         final XYSeriesCollection collection = new XYSeriesCollection();
         collection.addSeries(series1);
-//        collection.addSeries(series2);
         return collection;
-
     }
 
-    /**
-     * Creates a sample dataset.
-     *
-     * @return Series 2.
-     */
-    private XYDataset createDataset2() {
-
-        // create dataset 2...
-        final XYSeries series2 = new XYSeries("Series 3");
-
-        series2.add(10.0, 16853.2);
-        series2.add(20.0, 19642.3);
-        series2.add(30.0, 18253.5);
-        series2.add(40.0, 15352.3);
-        series2.add(50.0, 13532.0);
-        series2.add(100.0, 12635.3);
-        series2.add(110.0, 13998.2);
-        series2.add(120.0, 11943.2);
-        series2.add(130.0, 16943.9);
-        series2.add(140.0, 17843.2);
-        series2.add(150.0, 16495.3);
-        series2.add(160.0, 17943.6);
-        series2.add(170.0, 18500.7);
-        series2.add(180.0, 19595.9);
-
-        return new XYSeriesCollection(series2);
-
-    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -318,16 +249,35 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), 
+        pv = PVManager.read(synchronizedArrayOf(ms((int) timeIntervalMs/10), ms((int) timeIntervalMs),
                 epicsPvs(Collections.nCopies(nPvs, pvName), DBR_TIME_Double.class))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {
+                printArray(pv.getValue());
                 updateChart();
             }
         });
+        // NB: Should at least deregister listener
 
     }//GEN-LAST:event_createPVButtonActionPerformed
+
+    private static void printArray(SynchronizedArray<DBR_TIME_Double> array) {
+        if (array == null)
+            return;
+        System.out.print("Array [");
+        boolean first = true;
+        for (DBR_TIME_Double value : array.getValues()) {
+            if (!first)
+                System.out.print(",");
+            first = false;
+            if (value == null)
+                System.out.print("null");
+            else
+                System.out.print(TypeSupport.timestampOf(value));// + " - " + value.getDoubleValue()[0]);
+        }
+        System.out.println("]");
+    }
 
     /**
     * @param args the command line arguments

@@ -158,4 +158,23 @@ public class ExpressionLanguage {
                 aggregator, "syncArray");
     }
 
+    public static <T> AggregatedExpression<SynchronizedArray<T>>
+            synchronizedArrayOf(TimeDuration tolerance, TimeDuration distanceBetweenSamples, List<Expression<T>> expressions) {
+        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
+        List<String> names = new ArrayList<String>();
+        List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
+        for (Expression<T> expression : expressions) {
+            TimedCacheCollector<T> collector =
+                    new TimedCacheCollector<T>(expression.getFunction(), distanceBetweenSamples.multiplyBy(5));
+            collectors.add(collector);
+            recipes.addAll(expression.createMontiorRecipes(collector));
+            names.add(expression.getDefaultName());
+        }
+        SynchronizedArrayAggregator<T> aggregator =
+                new SynchronizedArrayAggregator<T>(names, collectors, tolerance);
+        return new AggregatedExpression<SynchronizedArray<T>>(recipes,
+                aggregator.getType(),
+                aggregator, "syncArray");
+    }
+
 }
