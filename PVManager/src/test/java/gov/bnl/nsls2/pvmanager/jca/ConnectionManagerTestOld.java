@@ -5,7 +5,7 @@ package gov.bnl.nsls2.pvmanager.jca;
 
 
 import gov.bnl.nsls2.pvmanager.Collector;
-import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.DataSource;
 import gov.bnl.nsls2.pvmanager.MonitorRecipe;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -28,7 +28,7 @@ import org.junit.Test;
  */
 public class ConnectionManagerTestOld {
 
-    private static Logger logger = Logger.getLogger(ConnectionManager.class
+    private static Logger logger = Logger.getLogger(DataSource.class
 	    .getName());
 
     /**
@@ -78,19 +78,10 @@ public class ConnectionManagerTestOld {
 
             @Override
             public void run() {
-//				ConnectionManager.getInstance().connectToPV("pvk01", collector);
-                pv = PV.createPv("pvk01", Double.class);
-                pv.addPVValueChangeListener(new PVValueChangeListener() {
-
-		    @Override
-		    public void pvValueChanged() {
-			counter1.incrementAndGet();
-		    }
-		});
 		MonitorRecipe monRecipe = new MonitorRecipe();
 		monRecipe.cache = cache;
 		monRecipe.collector = collector;
-		monRecipe.pvName = pv.getName();
+		monRecipe.pvName = "pvk01";
 		JCASupport.jca().monitor(monRecipe);
 	    }
 	});
@@ -115,7 +106,7 @@ public class ConnectionManagerTestOld {
 //
 //	    @Override
 //	    public void run() {
-//		// ConnectionManager.getInstance().connectToPV("pvk01",
+//		// DataSource.getInstance().connectToPV("pvk01",
 //		// collector);
 //		pv = PV.createPv("pvk01", Double.class);
 //		// Connection
@@ -123,7 +114,7 @@ public class ConnectionManagerTestOld {
 //		connectionRecipe.pv = pv;
 //		connectionRecipe.channelNames = Collections.singleton(pv
 //			.getName());
-//		ConnectionManager.getInstance().connect(connectionRecipe);
+//		DataSource.getInstance().connect(connectionRecipe);
 //	    }
 //	});
 //	Thread.sleep(5000);

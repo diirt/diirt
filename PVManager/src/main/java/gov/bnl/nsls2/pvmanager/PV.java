@@ -34,7 +34,7 @@ public final class PV<T> {
      * @param clazz type of the new PV
      * @return a new PV
      */
-    public static <E> PV<E> createPv(String name, Class<E> clazz) {
+    static <E> PV<E> createPv(String name, Class<E> clazz) {
         return new PV<E>(name);
     }
 
@@ -64,34 +64,7 @@ public final class PV<T> {
         valueChangeListeners.remove(listener);
     }
 
-    /**
-     * State of the connection. This was just taken from PV in CSS.
-     */
-    public enum State {
-
-        /** Nothing happened, yet */
-        Idle,
-        /** Trying to connect */
-        Connecting,
-        /** Got basic connection */
-        Connected,
-        /** Requested MetaData */
-        GettingMetadata,
-        /** Received MetaData */
-        GotMetaData,
-        /** Subscribing to receive value updates */
-        Subscribing,
-        /** Received Value Updates
-         *  <p>
-         *  This is the ultimate state!
-         */
-        GotMonitor,
-        /** Got disconnected */
-        Disconnected
-    }
-
-    private String name;
-    public static final String PROP_NAME = "name";
+    private final String name;
 
     /**
      * Get the value of name
@@ -102,28 +75,7 @@ public final class PV<T> {
         return name;
     }
 
-    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
     private T value;
-    public static final String PROP_VALUE = "value";
 
     /**
      * Get the value of value
@@ -138,28 +90,4 @@ public final class PV<T> {
         this.value = value;
         firePvValueChanged();
     }
-
-    private State state;
-    public static final String PROP_STATE = "state";
-
-    /**
-     * Get the value of state
-     *
-     * @return the value of state
-     */
-    public State getState() {
-        return state;
-    }
-
-    /**
-     * Set the value of state
-     *
-     * @param state new value of state
-     */
-    public void setState(State state) {
-        State oldState = this.state;
-        this.state = state;
-        propertyChangeSupport.firePropertyChange(PROP_STATE, oldState, state);
-    }
-
 }

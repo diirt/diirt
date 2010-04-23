@@ -16,22 +16,23 @@ import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import gov.bnl.nsls2.pvmanager.Collector;
-import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.DataSource;
 import gov.bnl.nsls2.pvmanager.MonitorRecipe;
 import gov.bnl.nsls2.pvmanager.ValueCache;
 import java.util.logging.Logger;
 
 /**
+ * A data source that uses jca.
  *
  * @author carcassi
  */
-class JCAConnectionManager extends ConnectionManager {
-    private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
+class JCADataSource extends DataSource {
+    private static Logger logger = Logger.getLogger(DataSource.class.getName());
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private static Context ctxt = null;
 
-    static final JCAConnectionManager INSTANCE = new JCAConnectionManager();
+    static final JCADataSource INSTANCE = new JCADataSource();
 
     /*
      * This Metod will initialize the jca context.

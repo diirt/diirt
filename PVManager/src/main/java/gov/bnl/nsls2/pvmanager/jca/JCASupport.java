@@ -7,7 +7,7 @@ package gov.bnl.nsls2.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.bnl.nsls2.pvmanager.ConnectionManager;
+import gov.bnl.nsls2.pvmanager.DataSource;
 import gov.bnl.nsls2.pvmanager.Expression;
 import gov.bnl.nsls2.pvmanager.NullUtils;
 import gov.bnl.nsls2.pvmanager.TimeStamp;
@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class JCASupport {
 
-    public static ConnectionManager jca() {
-        return JCAConnectionManager.INSTANCE;
+    public static DataSource jca() {
+        return JCADataSource.INSTANCE;
     }
     
     static {
@@ -63,10 +63,26 @@ public class JCASupport {
         });
     }
 
+    /**
+     * Returns an expression for an epics PV of a particular type.
+     *
+     * @param <T> the type of the PV
+     * @param name the name of the PV
+     * @param epicsType the type of the PV
+     * @return an expression representing the pv
+     */
     public static <T extends DBR> Expression<T> epicsPv(String name, Class<T> epicsType) {
         return new Expression<T>(name, epicsType);
     }
 
+    /**
+     * Returns an expression of a list of epics PVs of a particular type.
+     *
+     * @param <T> the type of the PVs
+     * @param names the names of the PVs
+     * @param epicsType the type of the PVs
+     * @return a list of expressions representing the pvs
+     */
     public static <T extends DBR> List<Expression<T>> epicsPvs(List<String> names, Class<T> epicsType) {
         List<Expression<T>> expressions = new ArrayList<Expression<T>>();
         for (String name : names) {

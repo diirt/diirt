@@ -12,7 +12,7 @@
 package gov.bnl.nsls2.pvmanager.test;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.bnl.nsls2.pvmanager.MockConnectionManager;
+import gov.bnl.nsls2.pvmanager.MockDataSource;
 import gov.bnl.nsls2.pvmanager.PV;
 import gov.bnl.nsls2.pvmanager.PVManager;
 import gov.bnl.nsls2.pvmanager.PVValueChangeListener;
@@ -44,7 +44,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayFrame() {
-        PVManager.setConnectionManager(MockConnectionManager.mockData());
+        PVManager.setConnectionManager(MockDataSource.mockData());
         initComponents();
     }
 

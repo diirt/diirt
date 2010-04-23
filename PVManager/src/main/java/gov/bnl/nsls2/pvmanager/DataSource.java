@@ -4,9 +4,16 @@ import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-public abstract class ConnectionManager {
+/**
+ * A source for data that is going to be processed by the PVManager.
+ * PVManager can work with more than one source at a time. Support
+ * for each different source can be added by external libraries.
+ *
+ * @author carcassi
+ */
+public abstract class DataSource {
 
-    private static Logger logger = Logger.getLogger(ConnectionManager.class.getName());
+    private static Logger logger = Logger.getLogger(DataSource.class.getName());
 
     /**
      * Helper class that contains the logic for processing a new value.

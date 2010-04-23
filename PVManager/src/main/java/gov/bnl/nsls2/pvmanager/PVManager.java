@@ -11,7 +11,7 @@ import java.util.List;
 public class PVManager {
 
     private static volatile ThreadSwitch defaultOnThread = ThreadSwitch.onSwingEDT();
-    private static volatile ConnectionManager defaultConnectionManager = null;
+    private static volatile DataSource defaultConnectionManager = null;
 
     /**
      * Changes the default thread on which notifications are going to be posted.
@@ -27,7 +27,7 @@ public class PVManager {
      *
      * @param manager the data source
      */
-    public static void setConnectionManager(ConnectionManager manager) {
+    public static void setConnectionManager(DataSource manager) {
         defaultConnectionManager = manager;
     }
 
@@ -65,19 +65,19 @@ public class PVManager {
         private AggregatedExpression<T> aggregatedPVExpression;
         // Initialize to defaults
         private ThreadSwitch onThread = defaultOnThread;
-        private ConnectionManager source = defaultConnectionManager;
+        private DataSource source = defaultConnectionManager;
 
         private PVManagerExpression(AggregatedExpression<T> aggregatedPVExpression) {
             this.aggregatedPVExpression = aggregatedPVExpression;
         }
 
         /**
-         * Defines which ConnectionManager should be used to read the data.
+         * Defines which DataSource should be used to read the data.
          *
          * @param connectionManager a connection manager
          * @return this
          */
-        public PVManagerExpression<T> from(ConnectionManager connectionManager) {
+        public PVManagerExpression<T> from(DataSource connectionManager) {
             if (connectionManager == null)
                 throw new IllegalArgumentException("ConnectionManager can't be null");
             source = connectionManager;
@@ -121,13 +121,6 @@ public class PVManager {
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
             PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction, onThread);
             Scanner.scan(notificator, scanPeriodMs);
-            ConnectionRecipe connRecipe = new ConnectionRecipe();
-            connRecipe.channelNames = new HashSet<String>();
-            connRecipe.pv = pv;
-            for (MonitorRecipe recipe : monRecipes) {
-                connRecipe.channelNames.add(recipe.pvName);
-            }
-            //ConnectionManager.getInstance().connect(connRecipe);
             for (MonitorRecipe recipe : monRecipes) {
                 source.monitor(recipe);
             }

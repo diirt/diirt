@@ -6,7 +6,7 @@
 package gov.bnl.nsls2.pvmanager.types;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.bnl.nsls2.pvmanager.MockConnectionManager;
+import gov.bnl.nsls2.pvmanager.MockDataSource;
 import gov.bnl.nsls2.pvmanager.MonitorRecipe;
 import gov.bnl.nsls2.pvmanager.TimeDuration;
 import gov.bnl.nsls2.pvmanager.TimeStamp;
@@ -61,9 +61,9 @@ public class SynchronizedArrayTest {
             MonitorRecipe monitorRecipe = new MonitorRecipe();
             monitorRecipe.cache = caches.get(i);
             monitorRecipe.collector = collectors.get(i);
-            monitorRecipe.pvName = MockConnectionManager.mockPVName(1, 100, 300) + "linear";
+            monitorRecipe.pvName = MockDataSource.mockPVName(1, 100, 300) + "linear";
             names.add("pv" + i);
-            MockConnectionManager.mockData().monitor(monitorRecipe);
+            MockDataSource.mockData().monitor(monitorRecipe);
         }
         SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
                 new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.ms(100));

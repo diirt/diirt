@@ -49,8 +49,8 @@ public class TimedCacheCollectorTest {
         MonitorRecipe monitorRecipe = new MonitorRecipe();
         monitorRecipe.cache = cache;
         monitorRecipe.collector = collector;
-        monitorRecipe.pvName = MockConnectionManager.mockPVName(1, 100, 300);
-        MockConnectionManager.mockData().monitor(monitorRecipe);
+        monitorRecipe.pvName = MockDataSource.mockPVName(1, 100, 300);
+        MockDataSource.mockData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element
         Thread.sleep(100);

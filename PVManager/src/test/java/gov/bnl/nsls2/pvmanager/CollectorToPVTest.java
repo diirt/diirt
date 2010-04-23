@@ -74,8 +74,8 @@ public class CollectorToPVTest {
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
         connRecipe.collector = collector;
-        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-        MockConnectionManager.mockData().monitor(connRecipe);
+        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        MockDataSource.mockData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 2) {
@@ -115,8 +115,8 @@ public class CollectorToPVTest {
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.cache = cache;
         connRecipe.collector = collector;
-        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-        MockConnectionManager.instance.monitor(connRecipe);
+        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        MockDataSource.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -157,8 +157,8 @@ public class CollectorToPVTest {
 //        MonitorRecipe connRecipe = new MonitorRecipe();
 //        connRecipe.cache = cache;
 //        connRecipe.collector = collector;
-//        connRecipe.pvName = MockConnectionManager.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-//        MockConnectionManager.instance.monitor(connRecipe);
+//        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+//        MockDataSource.instance.monitor(connRecipe);
 //        Thread.sleep(testTimeMs + 100);
 //        int actualNotification = counter.get();
 //        if (Math.abs(actualNotification - targetNotifications) > 1) {

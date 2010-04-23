@@ -17,17 +17,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A data source for test data.
  *
  * @author carcassi
  */
-public class MockConnectionManager extends ConnectionManager {
+public class MockDataSource extends DataSource {
 
-    public static ConnectionManager mockData() {
-        return MockConnectionManager.instance;
+    public static DataSource mockData() {
+        return MockDataSource.instance;
     }
 
-    private static Logger log = Logger.getLogger(ConnectionManager.class.getName());
-    static final MockConnectionManager instance = new MockConnectionManager();
+    private static Logger log = Logger.getLogger(DataSource.class.getName());
+    static final MockDataSource instance = new MockDataSource();
 
     private static Random rand = new Random();
 
@@ -156,10 +157,6 @@ public class MockConnectionManager extends ConnectionManager {
         } else {
             throw new UnsupportedOperationException("Type " + recipe.cache.getType().getName() + " is not yet supported");
         }
-    }
-
-    void connect(ConnectionRecipe connRecipe) {
-        // Do nothing for now
     }
 
 }
