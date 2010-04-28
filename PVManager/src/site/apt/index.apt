@@ -1,0 +1,16 @@
+   ----
+   Home
+   ----
+   Gabriele Carcassi
+   ----
+
+PVManager
+
+  The PVManager a client utility library to manage complex objects retrival and scanning.
+It allows to decouple the rate of events on the network from the rate of refresh needed by the
+UI itself.
+
+Download
+
+  {{{https://irmis-dev.bnl.gov/hudson/job/PVManager%20-%20Build/lastSuccessfulBuild/artifact/PVManager/target/PVManager-0.1-SNAPSHOT.jar}Latest development build}}
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PVManager">
+  <bannerLeft>
+    <name>PVManager</name>
+    <!--<src>http://maven.apache.org/images/apache-maven-project.png</src>-->
+    <href>http://cs-studio.sf.net/PVManager</href>
+  </bannerLeft>
+  <!--<bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>-->
+  <body>
+    <links>
+      <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
+      <item name="JCA" href="http://jca.cosylab.com"/>
+      <item name="CAJ" href="http://jca.cosylab.com"/>
+    </links>
+
+    <menu name="PVManager">
+      <item name="About" href="index.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+  </body>
+</project>
+
