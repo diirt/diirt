@@ -35,7 +35,7 @@
                   <Group type="102" alignment="0" attributes="1">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="scanRateSpinner" pref="134" max="32767" attributes="0"/>
+                      <Component id="scanRateSpinner" pref="152" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -93,17 +93,17 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="updateRateSpinner" max="32767" attributes="0"/>
+                          <Component id="updateRateSpinner" pref="103" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="samplesPerUpdateSpinner" pref="83" max="32767" attributes="0"/>
+                          <Component id="samplesPerUpdateSpinner" pref="109" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="nUpdatesSpinner" pref="141" max="32767" attributes="0"/>
+                          <Component id="nUpdatesSpinner" pref="155" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
