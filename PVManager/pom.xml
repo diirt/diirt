@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -8,10 +9,30 @@
     <name>PVManager</name>
     <url>http://cs-studio.sourceforge.net</url>
     <description>Client utility library to manage complex objects retrival and scanning.</description>
+    <issueManagement>
+        <system>trac</system>
+        <url>http://sourceforge.net/apps/trac/pvmanager/</url>
+    </issueManagement>
     <scm>
-        <connection>scm:hg:http://cs-studio.hg.sourceforge.net:8000/hgroot/cs-studio/pvmanager</connection>
-        <url>http://cs-studio.hg.sourceforge.net/hgweb/cs-studio/pvmanager/</url>
+        <connection>scm:hg:http://pvmanager.hg.sourceforge.net:8000/hgroot/pvmanager/pvmanager</connection>
+        <url>http://pvmanager.hg.sourceforge.net/hgweb/pvmanager/pvmanager/</url>
     </scm>
+    <ciManagement>
+        <system>hudson</system>
+        <url>https://irmis-dev.bnl.gov/hudson</url>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <sendOnError>true</sendOnError>
+                <sendOnFailure>true</sendOnFailure>
+                <sendOnSuccess>false</sendOnSuccess>
+                <sendOnWarning>false</sendOnWarning>
+                <configuration>
+                    <address>pvmanager-build@lists.sourceforge.net</address>
+                </configuration>
+            </notifier>
+        </notifiers>
+    </ciManagement>
     <repositories>
         <repository>
             <id>irmis</id>
