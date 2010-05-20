@@ -5,13 +5,9 @@
 
 package gov.bnl.pvmanager.epics;
 
-import java.util.List;
-
 /**
  *
  * @author carcassi
  */
-public interface DbrTimeEnum extends DbrStsEnum {
-    List<String> getLabels();
-    void setLabels(List<String> labels);
+public interface DbrTimeEnum extends Time, DbrStsEnum {
 }
