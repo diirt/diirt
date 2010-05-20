@@ -7,7 +7,8 @@ package gov.bnl.pvmanager.epics;
 
 /**
  *
+ *
  * @author carcassi
  */
-public interface DbrStsDouble extends DbrSts, DbrDouble {
+public interface DbrStsDouble extends Sts, DbrDouble {
 }

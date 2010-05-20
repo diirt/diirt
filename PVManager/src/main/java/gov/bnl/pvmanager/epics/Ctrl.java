@@ -9,7 +9,7 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrCtrl<T extends Number> extends DbrGr<T> {
+public interface Ctrl<T extends Number> extends Gr<T> {
     T getLowerCtrlLimit();
     T getUpperCtrlLimit();
     void setLowerCtrlLimit(T lowerCtrlLimit);

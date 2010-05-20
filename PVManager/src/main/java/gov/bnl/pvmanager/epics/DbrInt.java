@@ -9,7 +9,7 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrInt extends DbrScalar<Integer> {
+public interface DbrInt extends Scalar<Integer> {
     int getInt();
     void setInt(int value);
 }

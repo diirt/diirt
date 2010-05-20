@@ -9,5 +9,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrLabelsEnum extends DbrTime, DbrStsEnum {
+public interface DbrLabelsEnum extends Time, DbrStsEnum {
 }

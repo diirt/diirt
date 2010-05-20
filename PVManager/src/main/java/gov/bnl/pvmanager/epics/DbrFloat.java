@@ -9,7 +9,7 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrFloat extends DbrScalar<Float> {
+public interface DbrFloat extends Scalar<Float> {
     float getFloat();
     void setFloat(float value);
 }

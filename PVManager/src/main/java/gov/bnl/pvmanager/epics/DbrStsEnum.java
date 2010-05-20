@@ -9,5 +9,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrStsEnum extends DbrSts, DbrEnum {
+public interface DbrStsEnum extends Sts, DbrEnum {
 }

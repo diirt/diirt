@@ -6,10 +6,13 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * The information needed to visualize a particular value. The limits must
+ * be given in terms of the same type of the scalar type, which needs
+ * to be a number.
  *
  * @author carcassi
  */
-public interface DbrGr<T extends Number> extends DbrScalar<T> {
+public interface Gr<T extends Number> extends Scalar<T> {
     T getLowerAlarmLimit();
     T getLowerDispLimit();
     T getLowerWarningLimit();

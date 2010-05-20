@@ -9,7 +9,7 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrDouble extends DbrScalar<Double>{
+public interface DbrDouble extends Scalar<Double>{
     double getDouble();
     void setDouble(double value);
 }

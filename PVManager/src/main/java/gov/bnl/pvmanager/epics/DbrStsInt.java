@@ -9,5 +9,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrStsInt extends DbrSts, DbrInt {
+public interface DbrStsInt extends Sts, DbrInt {
 }

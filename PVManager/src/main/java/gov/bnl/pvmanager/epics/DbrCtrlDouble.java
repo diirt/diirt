@@ -9,5 +9,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrCtrlDouble extends DbrCtrl<Double>, DbrGrDouble {
+public interface DbrCtrlDouble extends Ctrl<Double>, DbrGrDouble {
 }

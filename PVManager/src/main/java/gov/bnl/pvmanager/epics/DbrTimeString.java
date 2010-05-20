@@ -9,5 +9,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface DbrTimeString extends DbrTime, DbrStsString {
+public interface DbrTimeString extends Time, DbrStsString {
 }

@@ -8,10 +8,11 @@ package gov.bnl.pvmanager.epics;
 import gov.bnl.pvmanager.TimeStamp;
 
 /**
+ * Time information.
  *
  * @author carcassi
  */
-public interface DbrTime {
+public interface Time {
     TimeStamp getTimeStamp();
     void setTimeStamp(TimeStamp timeStamp);
 }
