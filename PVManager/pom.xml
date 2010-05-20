@@ -46,6 +46,21 @@
             </snapshots>
         </repository>
     </repositories>
+    <mailingLists>
+        <mailingList>
+            <name>Developer discussion</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-devel</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-devel</unsubscribe>
+            <post>pvmanager-devel@lists.sourceforge.net</post>
+            <!--<archive>http://127.0.0.1/user/</archive>-->
+        </mailingList>
+        <mailingList>
+            <name>Build notifications</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-build</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-build</unsubscribe>
+            <post>pvmanager-build@lists.sourceforge.net</post>
+        </mailingList>
+    </mailingLists>
     <build>
         <plugins>
             <plugin>
