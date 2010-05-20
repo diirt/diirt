@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>PVManager</name>
-    <url>http://cs-studio.sourceforge.net</url>
+    <url>http://pvmanager.sourceforge.net</url>
     <description>Client utility library to manage complex objects retrival and scanning.</description>
     <issueManagement>
         <system>trac</system>
