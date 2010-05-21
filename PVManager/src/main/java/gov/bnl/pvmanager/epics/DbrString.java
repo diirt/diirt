@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Scalar string.
  *
  * @author carcassi
  */

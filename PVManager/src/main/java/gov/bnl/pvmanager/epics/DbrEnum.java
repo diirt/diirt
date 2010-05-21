@@ -8,7 +8,7 @@ package gov.bnl.pvmanager.epics;
 import java.util.List;
 
 /**
- * Basic enum type. The value will be the current string being selected and
+ * Scalar enum. The value will be the current string being selected and
  * the index is the offset in the labels.
  *
  * @author carcassi

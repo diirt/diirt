@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Enumeration of connection states.
  *
  * @author carcassi
  */

@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Enumeration for severity of alarm.
  *
  * @author carcassi
  */

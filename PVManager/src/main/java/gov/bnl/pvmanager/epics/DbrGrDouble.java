@@ -6,8 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Scalar double with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface DbrGrDouble extends Gr<Double>, DbrStsDouble {
+public interface DbrGrDouble extends Gr<Double>, DbrTimeDouble {
 }

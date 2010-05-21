@@ -8,7 +8,7 @@ package gov.bnl.pvmanager.epics;
 import java.util.EnumSet;
 
 /**
- * The alarm information.
+ * Alarm information.
  * <p>
  * The alarm status is represented by a set of status bits that could be either
  * set or unset. This is implemented in Java by the use of EnumSets.

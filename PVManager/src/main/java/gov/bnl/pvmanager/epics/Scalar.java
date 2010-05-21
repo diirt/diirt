@@ -9,9 +9,6 @@ package gov.bnl.pvmanager.epics;
  * Basic type definition for all scalar types. If the channel was never connected,
  * the value will return null. Otherwise the last value is going to be returned,
  * even if a disconnection occurred.
- * <p>
- * TODO: Does the connection need a status message that can be used in case
- * of errors?
  *
  * @author carcassi
  */
@@ -20,4 +17,6 @@ public interface Scalar<T> {
     void setValue(T value);
     ConnectionStatus getConnectionStatus();
     void setConnectionStatus(ConnectionStatus connectionStatus);
+    String getConnectionStatusMessage();
+    void setConnectionStatusMesage(String connectionStatusMessage);
 }

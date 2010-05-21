@@ -6,9 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar integer with alarm.
+ * Scalar integer with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface DbrStsInt extends Sts, DbrInt {
+public interface DbrTimeInt extends Time, DbrStsInt {
 }

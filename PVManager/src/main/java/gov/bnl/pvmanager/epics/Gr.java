@@ -6,19 +6,26 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * The information needed to visualize a particular value. The limits must
+ * Limit and unit information needed for display. The limits must
  * be given in terms of the same type of the scalar type, which needs
  * to be a number.
  *
  * @author carcassi
  */
 public interface Gr<T extends Number> extends Scalar<T> {
+    @Metadata
     T getLowerAlarmLimit();
+    @Metadata
     T getLowerDispLimit();
+    @Metadata
     T getLowerWarningLimit();
+    @Metadata
     String getUnits();
+    @Metadata
     T getUpperAlarmLimit();
+    @Metadata
     T getUpperDispLimit();
+    @Metadata
     T getUpperWarningLimit();
     void setLowerAlarmLimit(T lowerAlarmLimit);
     void setLowerDispLimit(T lowerDispLimit);

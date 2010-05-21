@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Scalar integer with alarm, timestamp, display and control information.
  *
  * @author carcassi
  */

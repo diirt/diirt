@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Scalar enum with alarm.
  *
  * @author carcassi
  */

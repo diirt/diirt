@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Scalar double with alarm.
  *
  *
  * @author carcassi

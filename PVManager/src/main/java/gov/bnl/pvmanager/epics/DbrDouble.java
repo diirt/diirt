@@ -6,7 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Basic double type. Adds a convenience method for the primitive type, which
+ * Scalar double. Adds a convenience method for the primitive type, which
  * returns 0.0 in case it never connected.
  *
  * @author carcassi

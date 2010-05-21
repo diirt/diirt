@@ -6,6 +6,7 @@
 package gov.bnl.pvmanager.epics;
 
 /**
+ * Enumeration for alarm status.
  *
  * @author carcassi
  */
