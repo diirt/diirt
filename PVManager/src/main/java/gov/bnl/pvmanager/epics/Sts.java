@@ -5,7 +5,7 @@
 
 package gov.bnl.pvmanager.epics;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Alarm information.
@@ -18,6 +18,19 @@ import java.util.EnumSet;
 public interface Sts {
     AlarmSeverity getAlarmSeverity();
     void setAlarmSeverity(AlarmSeverity alarmSeverity);
-    EnumSet<AlarmStatus> getAlarmStatus();
-    void setAlarmStatus(EnumSet<AlarmStatus> alarmStatus);
+    /**
+     * Returns the set of alarm statuses that are currently active.
+     *
+     * @return a set of enabled alarms
+     */
+    Set<String> getAlarmStatus();
+    void setAlarmStatus(Set<String> alarmStatus);
+    
+    /**
+     * Defines all possible alarm statuses that are valid on this pv (better name?).
+     * 
+     * @return a set of labels
+     */
+    Set<String> getPossibleAlarms();
+    void setPossibleAlarms(Set<String> possibleAlarms);
 }

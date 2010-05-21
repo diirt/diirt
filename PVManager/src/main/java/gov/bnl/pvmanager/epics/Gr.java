@@ -5,10 +5,15 @@
 
 package gov.bnl.pvmanager.epics;
 
+import java.text.NumberFormat;
+
 /**
  * Limit and unit information needed for display. The limits must
  * be given in terms of the same type of the scalar type, which needs
  * to be a number.
+ * <p>
+ * TODO: NumberFormat, format string or directly formatted string? What
+ * happens for writes?
  *
  * @author carcassi
  */
@@ -22,6 +27,8 @@ public interface Gr<T extends Number> extends Scalar<T> {
     @Metadata
     String getUnits();
     @Metadata
+    NumberFormat getFormat();
+    @Metadata
     T getUpperAlarmLimit();
     @Metadata
     T getUpperDispLimit();
@@ -31,6 +38,7 @@ public interface Gr<T extends Number> extends Scalar<T> {
     void setLowerDispLimit(T lowerDispLimit);
     void setLowerWarningLimit(T lowerWarningLimit);
     void setUnits(String units);
+    void setFormat(String format);
     void setUpperAlarmLimit(T upperAlarmLimit);
     void setUpperDispLimit(T upperDispLimit);
     void setUpperWarningLimit(T upperWarningLimit);

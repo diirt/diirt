@@ -14,5 +14,7 @@
  * taken by a data source. The other interfaces represent atomic elements
  * that can be treated separately so that generic support can be written against
  * them (i.e. one can write support for alarms regardless of the actual type).
+ * <p>
+ * TODO: alarm acknowledgment
  */
 package gov.bnl.pvmanager.epics;
