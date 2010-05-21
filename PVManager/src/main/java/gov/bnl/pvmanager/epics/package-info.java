@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2010 Brookhaven National Laboratory.
+ * All rights reserved. Use is subject to license terms.
  */
 
 /**
