@@ -249,7 +249,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        pv = PVManager.read(synchronizedArrayOf(ms((int) timeIntervalMs/10), ms((int) timeIntervalMs),
+        pv = PVManager.read(synchronizedArrayOf(ms(30), ms((int) timeIntervalMs),
                 epicsPvs(Collections.nCopies(nPvs, pvName), DBR_TIME_Double.class))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override

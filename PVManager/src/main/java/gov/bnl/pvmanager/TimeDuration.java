@@ -39,7 +39,7 @@ public class TimeDuration {
      * @param nanoSec nanoseconds of the duration
      * @return a new duration
      */
-    public static TimeDuration nanos(int nanoSec) {
+    public static TimeDuration nanos(long nanoSec) {
         return new TimeDuration(nanoSec);
     }
 

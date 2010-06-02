@@ -8,7 +8,6 @@ package gov.bnl.pvmanager;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import gov.aps.jca.dbr.TimeStamp;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,7 +90,8 @@ public class MockDataSource extends DataSource {
                     } else {
                         newValue.getDoubleValue()[0] = rand.nextGaussian();
                     }
-                    newValue.setTimeStamp(new TimeStamp());
+                    TimeStamp now = TimeStamp.now();
+                    newValue.setTimeStamp(new gov.aps.jca.dbr.TimeStamp(now.getEpicsSec(), now.getNanoSec()));
                     cache.setValue(newValue);
                     return true;
                 }

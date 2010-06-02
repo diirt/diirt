@@ -13,6 +13,9 @@ import java.util.Date;
  * @author carcassi
  */
 public class TimeStamp implements Comparable {
+
+    private static TimeStamp base = TimeStamp.timestampOf(new Date());
+    private static long baseNano = System.nanoTime();
     
     /**
      * Constant to convert epics seconds to unix seconds
@@ -60,7 +63,7 @@ public class TimeStamp implements Comparable {
     }
 
     public static TimeStamp now() {
-        return timestampOf(new Date());
+        return base.plus(TimeDuration.nanos(System.nanoTime() - baseNano));
     }
 
     /**
@@ -120,7 +123,14 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp plus(TimeDuration duration) {
-        return new TimeStamp(epicsSec + (duration.getNanoSec() / 1000000000), nanoSec + (duration.getNanoSec() % 1000000000));
+        long secToAdd = duration.getNanoSec() / 1000000000;
+        long nanoToAdd = duration.getNanoSec() % 1000000000;
+        long newNano = nanoSec + nanoToAdd;
+        if (newNano > 999999999) {
+            newNano -= 1000000000;
+            secToAdd += 1;
+        }
+        return new TimeStamp(epicsSec + secToAdd, newNano);
     }
 
     /**
