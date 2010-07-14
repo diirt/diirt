@@ -14,5 +14,4 @@ import gov.bnl.pvmanager.TimeStamp;
  */
 public interface Time {
     TimeStamp getTimeStamp();
-    void setTimeStamp(TimeStamp timeStamp);
 }

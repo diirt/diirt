@@ -38,12 +38,4 @@ public interface Gr<T extends Number> extends Scalar<T> {
     T getUpperDispLimit();
     @Metadata
     T getUpperWarningLimit();
-    void setLowerAlarmLimit(T lowerAlarmLimit);
-    void setLowerDispLimit(T lowerDispLimit);
-    void setLowerWarningLimit(T lowerWarningLimit);
-    void setUnits(String units);
-    void setFormat(String format);
-    void setUpperAlarmLimit(T upperAlarmLimit);
-    void setUpperDispLimit(T upperDispLimit);
-    void setUpperWarningLimit(T upperWarningLimit);
 }

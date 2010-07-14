@@ -17,14 +17,13 @@ import java.util.Set;
  */
 public interface Sts {
     AlarmSeverity getAlarmSeverity();
-    void setAlarmSeverity(AlarmSeverity alarmSeverity);
+    
     /**
      * Returns the set of alarm statuses that are currently active.
      *
      * @return a set of enabled alarms
      */
     Set<String> getAlarmStatus();
-    void setAlarmStatus(Set<String> alarmStatus);
     
     /**
      * Defines all possible alarm statuses that are valid on this pv (better name?).
@@ -32,5 +31,4 @@ public interface Sts {
      * @return a set of labels
      */
     Set<String> getPossibleAlarms();
-    void setPossibleAlarms(Set<String> possibleAlarms);
 }

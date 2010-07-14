@@ -15,9 +15,4 @@ import java.util.List;
 public interface MultiChannel<T> {
     List<T> getValues();
     void setValues(List<T> value);
-    ConnectionStatus getConnectionStatus();
-    void setConnectionStatus(ConnectionStatus connectionStatus);
-    String getConnectionStatusMessage();
-    void setConnectionStatusMesage(String connectionStatusMessage);
-
 }

@@ -6,10 +6,10 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar double with alarm.
- *
+ * Scalar double with alarm. Auto-unboxing makes the extra method for the primitive type
+ * unnecessary.
  *
  * @author carcassi
  */
-public interface DbrStsDouble extends Sts, DbrDouble {
+public interface DbrStsDouble extends Sts, Scalar<Double> {
 }
