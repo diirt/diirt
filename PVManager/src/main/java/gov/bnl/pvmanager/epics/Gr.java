@@ -27,6 +27,10 @@ public interface Gr<T extends Number> extends Scalar<T> {
     @Metadata
     String getUnits();
     @Metadata
+    /**
+     * Returns a NumberFormat that creates a String with just the value (no units).
+     * Format should be locale independent.
+     */
     NumberFormat getFormat();
     @Metadata
     T getUpperAlarmLimit();

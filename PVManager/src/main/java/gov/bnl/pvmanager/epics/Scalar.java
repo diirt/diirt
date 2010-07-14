@@ -15,8 +15,4 @@ package gov.bnl.pvmanager.epics;
 public interface Scalar<T> {
     T getValue();
     void setValue(T value);
-    ConnectionStatus getConnectionStatus();
-    void setConnectionStatus(ConnectionStatus connectionStatus);
-    String getConnectionStatusMessage();
-    void setConnectionStatusMesage(String connectionStatusMessage);
 }

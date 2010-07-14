@@ -36,8 +36,17 @@ public class TimeStamp implements Comparable {
         this.nanoSec = nanoSec;
     }
 
+    /**
+     * TODO: get epicsSec out and put it in a utility class
+     * @return
+     */
     public long getEpicsSec() {
         return epicsSec;
+    }
+
+    public long getSec() {
+        // TODO
+        throw new UnsupportedOperationException("To implement");
     }
 
     public long getNanoSec() {
