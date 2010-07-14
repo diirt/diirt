@@ -8,7 +8,15 @@ package gov.bnl.pvmanager;
 import java.util.Date;
 
 /**
- * Represent a time stamp at nanosecond accuracy.
+ * Represent a time stamp at nanosecond accuracy. The time is internally stored
+ * as two values: the UNIX timestamp (number of seconds since
+ * 1/1/1970) and the nanoseconds past that timestamp. The UNIX timestamp is
+ * stored as a signed long, which has the range of 292 billion years before
+ * and another 292 past the epoch.
+ * <p>
+ * Note that while TimeStamp are usually created according to system clocks which
+ * takes into account leap seconds, all the math operations on TimeStamps do
+ * not take leap seconds into account.
  *
  * @author carcassi
  */
@@ -18,12 +26,13 @@ public class TimeStamp implements Comparable {
     private static long baseNano = System.nanoTime();
     
     /**
-     * Constant to convert epics seconds to unix seconds
+     * Constant to convert epics seconds to unix seconds. It counts the number
+     * of seconds for 20 years, 5 of which leap years. It does _not_ count the
+     * number of leap seconds (which should have been 15).
      */
-    private static long TS_EPOCH_SEC_PAST_1970=7305*86400;
+    private static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
 
-    // The time is kept in epics seconds to minimize convertions
-    private final long epicsSec;
+    private final long unixSec;
     private final long nanoSec;
     
     /**
@@ -32,7 +41,11 @@ public class TimeStamp implements Comparable {
     private Date date;
 
     private TimeStamp(long epicsSec, long nanoSec) {
-        this.epicsSec = epicsSec;
+        if (nanoSec < 0)
+            throw new IllegalArgumentException("Nanoseconds cannot be negative");
+        if (nanoSec > 999999999)
+            throw new IllegalArgumentException("Nanoseconds cannot be more than 999999999");
+        this.unixSec = epicsSec;
         this.nanoSec = nanoSec;
     }
 
@@ -41,7 +54,7 @@ public class TimeStamp implements Comparable {
      * @return
      */
     public long getEpicsSec() {
-        return epicsSec;
+        return unixSec;
     }
 
     public long getSec() {
@@ -61,14 +74,18 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public static TimeStamp epicsTime(long epicsSec, long nanoSec) {
-        return new TimeStamp(epicsSec, nanoSec);
+        return new TimeStamp(epicsSec + TS_EPOCH_SEC_PAST_1970, nanoSec);
+    }
+
+    public static TimeStamp time(long unixSec, long nanoSec) {
+        return new TimeStamp(unixSec, nanoSec);
     }
 
     public static TimeStamp timestampOf(Date date) {
         long time = date.getTime();
         long nanoSec = (time % 1000) * 1000000;
-        long epicsSec = (time / 1000) - TS_EPOCH_SEC_PAST_1970;
-        return new TimeStamp(epicsSec, nanoSec);
+        long epicsSec = (time / 1000);
+        return time(epicsSec, nanoSec);
     }
 
     public static TimeStamp now() {
@@ -90,7 +107,7 @@ public class TimeStamp implements Comparable {
      * Prepares the date object
      */
     private void prepareDate() {
-        date = new Date((epicsSec+TS_EPOCH_SEC_PAST_1970)*1000+nanoSec/1000000);
+        date = new Date((unixSec+TS_EPOCH_SEC_PAST_1970)*1000+nanoSec/1000000);
     }
 
     @Override
@@ -102,7 +119,7 @@ public class TimeStamp implements Comparable {
     public boolean equals(Object obj) {
         if (obj instanceof TimeStamp) {
             TimeStamp other = (TimeStamp) obj;
-            return other.nanoSec == nanoSec && other.epicsSec == epicsSec;
+            return other.nanoSec == nanoSec && other.unixSec == unixSec;
         }
 
         return false;
@@ -111,9 +128,9 @@ public class TimeStamp implements Comparable {
     @Override
     public int compareTo(Object o) {
         TimeStamp other = (TimeStamp) o;
-	if (epicsSec < other.epicsSec) {
+	if (unixSec < other.unixSec) {
             return -1;
-        } else if (epicsSec == other.epicsSec) {
+        } else if (unixSec == other.unixSec) {
             if (nanoSec < other.nanoSec) {
                 return -1;
             } else if (nanoSec == other.nanoSec) {
@@ -139,7 +156,7 @@ public class TimeStamp implements Comparable {
             newNano -= 1000000000;
             secToAdd += 1;
         }
-        return new TimeStamp(epicsSec + secToAdd, newNano);
+        return new TimeStamp(unixSec + secToAdd, newNano);
     }
 
     /**
@@ -148,12 +165,12 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp minus(TimeDuration duration) {
-        return new TimeStamp(epicsSec - (duration.getNanoSec() / 1000000000), nanoSec - (duration.getNanoSec() % 1000000000));
+        return new TimeStamp(unixSec - (duration.getNanoSec() / 1000000000), nanoSec - (duration.getNanoSec() % 1000000000));
     }
 
     @Override
     public String toString() {
-        return epicsSec + "." + nanoSec;
+        return unixSec + "." + nanoSec;
     }
 
 }

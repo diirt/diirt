@@ -7,13 +7,21 @@ package gov.bnl.pvmanager;
 
 /**
  * A duration of time (such as 3 sec, 30ms, 1nsec) at the nanosecond precision.
- *
+ * The duration is stored a (signed) long, which makes the maximum valid duration
+ * to around 292 years. No checks for overflows are done.
+ * <p>
+ * Note that while TimeStamp are usually created according to system clocks which
+ * takes into account leap seconds, all the math operations on TimeStamps do
+ * not take leap seconds into account.
+ * 
  * @author carcassi
  */
 public class TimeDuration {
     private long nanoSec;
 
     private TimeDuration(long nanoSec) {
+        if (nanoSec < 0)
+            throw new IllegalArgumentException("Time duration has to be positive");
         this.nanoSec = nanoSec;
     }
 
@@ -29,6 +37,7 @@ public class TimeDuration {
      * A new duration in milliseconds.
      * @param ms milliseconds of the duration
      * @return a new duration
+     * @throws IllegalArgumentException if the duration is negative
      */
     public static TimeDuration ms(int ms) {
         return new TimeDuration(ms * 1000000);
@@ -38,6 +47,7 @@ public class TimeDuration {
      * A new duration in nanoseconds.
      * @param nanoSec nanoseconds of the duration
      * @return a new duration
+     * @throws IllegalArgumentException if the duration is negative
      */
     public static TimeDuration nanos(long nanoSec) {
         return new TimeDuration(nanoSec);
@@ -48,6 +58,7 @@ public class TimeDuration {
      * 
      * @param factor constant to divide
      * @return a new duration
+     * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration divideBy(int factor) {
         return new TimeDuration(nanoSec / factor);
@@ -58,6 +69,7 @@ public class TimeDuration {
      *
      * @param factor constant to multiply
      * @return a new duration
+     * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration multiplyBy(int factor) {
         return new TimeDuration(nanoSec * factor);
