@@ -14,5 +14,4 @@ import java.util.List;
  */
 public interface MultiChannel<T> {
     List<T> getValues();
-    void setValues(List<T> value);
 }

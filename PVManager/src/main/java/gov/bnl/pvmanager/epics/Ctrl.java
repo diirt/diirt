@@ -15,6 +15,4 @@ public interface Ctrl<T extends Number> extends Gr<T> {
     T getLowerCtrlLimit();
     @Metadata
     T getUpperCtrlLimit();
-    void setLowerCtrlLimit(T lowerCtrlLimit);
-    void setUpperCtrlLimit(T upperCtrlLimit);
 }
