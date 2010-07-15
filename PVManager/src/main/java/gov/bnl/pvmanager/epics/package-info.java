@@ -15,6 +15,10 @@
  * that can be treated separately so that generic support can be written against
  * them (i.e. one can write support for alarms regardless of the actual type).
  * <p>
- * TODO: alarm acknowledgment
+ * TODO: alarm acknowledgment? Not in this package...
+ * TODO: histograms for statistics on enums?
+ * TODO: what about toString? Java default? Only value? Full information?
+ * TODO: equals and hashcodes? Each object different? Compare on the data only?
+ *       if we do, what about compare?
  */
 package gov.bnl.pvmanager.epics;

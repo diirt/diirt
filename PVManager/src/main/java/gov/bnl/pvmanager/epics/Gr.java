@@ -12,8 +12,10 @@ import java.text.NumberFormat;
  * be given in terms of the same type of the scalar type, which needs
  * to be a number.
  * <p>
- * TODO: NumberFormat, format string or directly formatted string? What
- * happens for writes?
+ * Note: NumberFormats. If there is no direct write on metadata,
+ * number formats can be used to provide a default way to convert the value
+ * to a String.
+ * <p>
  *
  * @author carcassi
  */
@@ -26,11 +28,11 @@ public interface Gr<T extends Number> extends Scalar<T> {
     T getLowerWarningLimit();
     @Metadata
     String getUnits();
-    @Metadata
     /**
      * Returns a NumberFormat that creates a String with just the value (no units).
      * Format should be locale independent.
      */
+    @Metadata
     NumberFormat getFormat();
     @Metadata
     T getUpperAlarmLimit();
