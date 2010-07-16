@@ -22,65 +22,97 @@ import java.util.Date;
  */
 public class TimeStamp implements Comparable {
 
-    private static TimeStamp base = TimeStamp.timestampOf(new Date());
-    private static long baseNano = System.nanoTime();
+    /*
+     * When the class is initialized, get the current timestamp and nanotime,
+     * so that future instances can be calculated from this reference.
+     */
+    private static final TimeStamp base = TimeStamp.timestampOf(new Date());
+    private static final long baseNano = System.nanoTime();
     
     /**
-     * Constant to convert epics seconds to unix seconds. It counts the number
+     * Constant to convert epics seconds to UNIX seconds. It counts the number
      * of seconds for 20 years, 5 of which leap years. It does _not_ count the
      * number of leap seconds (which should have been 15).
      */
     private static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
 
+    /**
+     * Unix timestamp
+     */
     private final long unixSec;
+
+    /**
+     * Nanoseconds past the timestamp. Must be 0 < nanoSec < 999,999,999
+     */
     private final long nanoSec;
     
     /**
-     * Date object is created lazily.
+     * Date object is created lazily. In multi-threaded environments,
+     * the object may be created twice, but it's guaranteed to be of the same
+     * value, so it should not cause problems.
      */
-    private Date date;
+    private volatile Date date;
 
-    private TimeStamp(long epicsSec, long nanoSec) {
-        if (nanoSec < 0)
-            throw new IllegalArgumentException("Nanoseconds cannot be negative");
-        if (nanoSec > 999999999)
-            throw new IllegalArgumentException("Nanoseconds cannot be more than 999999999");
-        this.unixSec = epicsSec;
+    private TimeStamp(long unixSec, long nanoSec) {
+        if (nanoSec < 0 || nanoSec > 999999999)
+            throw new IllegalArgumentException("Nanoseconds cannot be between 0 and 999,999,999");
+        this.unixSec = unixSec;
         this.nanoSec = nanoSec;
     }
 
     /**
-     * TODO: get epicsSec out and put it in a utility class
-     * @return
+     * Epics time; seconds from midnight 1/1/1990.
+     * @return epics time
      */
     public long getEpicsSec() {
+        return unixSec + TS_EPOCH_SEC_PAST_1970;
+    }
+
+    /**
+     * Unix time; seconds from midnight 1/1/1970.
+     * @return unix time
+     */
+    public long getSec() {
         return unixSec;
     }
 
-    public long getSec() {
-        // TODO
-        throw new UnsupportedOperationException("To implement");
-    }
-
+    /**
+     * Nanoseconds within the given second.
+     * @return nanoseconds (0 < nanoSec < 999,999,999)
+     */
     public long getNanoSec() {
         return nanoSec;
     }
 
     /**
-     * Returns a new timestamp using EPICS time arguments.
+     * Returns a new timestamp from EPICS time.
      *
      * @param epicsSec number of second in EPICS time
-     * @param nanoSec nanoseconds from the given second
+     * @param nanoSec nanoseconds from the given second (must be 0 < nanoSec < 999,999,999)
      * @return a new timestamp
      */
     public static TimeStamp epicsTime(long epicsSec, long nanoSec) {
         return new TimeStamp(epicsSec + TS_EPOCH_SEC_PAST_1970, nanoSec);
     }
 
+    /**
+     * Returns a new timestamp from UNIX time.
+     *
+     * @param unixSec number of seconds in the UNIX epoch.
+     * @param nanoSec nanoseconds past the given seconds (must be 0 < nanoSec < 999,999,999)
+     * @return a new timestamp
+     */
     public static TimeStamp time(long unixSec, long nanoSec) {
         return new TimeStamp(unixSec, nanoSec);
     }
 
+    /**
+     * Converts a {@link java.util.Date} to a timestamp. Date is accurate to
+     * milliseconds, so the last 6 digits are always going to be zeros.
+     *
+     * @param date the date to convert
+     * @return a new timestamp
+     */
     public static TimeStamp timestampOf(Date date) {
         long time = date.getTime();
         long nanoSec = (time % 1000) * 1000000;
@@ -88,14 +120,22 @@ public class TimeStamp implements Comparable {
         return time(epicsSec, nanoSec);
     }
 
+    /**
+     * Returns a new timestamp for the current instant. The timestamp is calculated
+     * using {@link java.lang.System#nanoTime()}, so it has the accuracy given
+     * by that function.
+     *
+     * @return a new timestamp
+     */
     public static TimeStamp now() {
         return base.plus(TimeDuration.nanos(System.nanoTime() - baseNano));
     }
 
     /**
-     * Converts the time stamp to a standard Date. The convertion is done once.
+     * Converts the time stamp to a standard Date. The conversion is done once,
+     * and it trims all precision below milliSec.
      *
-     * @return
+     * @return a date
      */
     public Date asDate() {
         if (date == null)
@@ -125,6 +165,12 @@ public class TimeStamp implements Comparable {
         return false;
     }
 
+    /**
+     * Defines the natural ordering for timestamp as forward in time.
+     *
+     * @param o another object
+     * @return comparison result
+     */
     @Override
     public int compareTo(Object o) {
         TimeStamp other = (TimeStamp) o;
