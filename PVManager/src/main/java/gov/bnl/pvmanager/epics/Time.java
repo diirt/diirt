@@ -13,5 +13,12 @@ import gov.bnl.pvmanager.TimeStamp;
  * @author carcassi
  */
 public interface Time {
+
+    /**
+     * The timestamp of the value, typically indicating when it was
+     * generated. Never null.
+     * 
+     * @return the timestamp
+     */
     TimeStamp getTimeStamp();
 }

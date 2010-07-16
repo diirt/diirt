@@ -18,11 +18,36 @@ package gov.bnl.pvmanager.epics;
  * Coding to {@code Statistics<T extends Number>} allows to create a client that works on statistics,
  * regardless of the type.
  *
+ * @param <T> a {@link java.lang.Number} type
  * @author carcassi
  */
 public interface Statistics<T extends Number> {
+
+    /**
+     * The average. Never null.
+     * 
+     * @return the average
+     */
     T getAverage();
+
+    /**
+     * The standard deviation. Never null.
+     * 
+     * @return the standard deviation
+     */
     T getStdDev();
+
+    /**
+     * The minimum value.
+     * 
+     * @return the minimum
+     */
     T getMin();
+
+    /**
+     * The maximum value
+     *
+     * @return the maximum
+     */
     T getMax();
 }

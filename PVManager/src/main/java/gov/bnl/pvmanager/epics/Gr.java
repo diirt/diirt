@@ -17,27 +17,75 @@ import java.text.NumberFormat;
  * to a String.
  * <p>
  *
+ * @param <T> a {@link java.lang.Number} type
  * @author carcassi
  */
 public interface Gr<T extends Number> extends Scalar<T> {
+
+    /**
+     * Lowest possible value to be displayed. Never null.
+     *
+     * @return lower display limit
+     */
+    @Metadata
+    T getLowerDisplayLimit();
+
+    /**
+     * Lowest value before the alarm region. Never null.
+     *
+     * @return lower alarm limit
+     */
     @Metadata
     T getLowerAlarmLimit();
-    @Metadata
-    T getLowerDispLimit();
+
+    /**
+     * Lowest value before the warning region. Never null.
+     *
+     * @return lower warning limit
+     */
     @Metadata
     T getLowerWarningLimit();
+
+    /**
+     * String representation of the units using for all values.
+     * Never null.
+     *
+     * @return units
+     */
     @Metadata
     String getUnits();
+
     /**
      * Returns a NumberFormat that creates a String with just the value (no units).
-     * Format should be locale independent.
+     * Format is locale independent and should be used for all values (values and
+     * lower/upper limits). Never null.
+     *
+     * @return the default format for all values
      */
     @Metadata
     NumberFormat getFormat();
-    @Metadata
-    T getUpperAlarmLimit();
-    @Metadata
-    T getUpperDispLimit();
+
+    /**
+     * Highest value before the warning region. Never null.
+     *
+     * @return upper warning limit
+     */
     @Metadata
     T getUpperWarningLimit();
+
+    /**
+     * Highest value before the alarm region. Never null.
+     *
+     * @return upper alarm limit
+     */
+    @Metadata
+    T getUpperAlarmLimit();
+
+    /**
+     * Highest possible value to be displayed. Never null.
+     *
+     * @return upper display limit
+     */
+    @Metadata
+    T getUpperDisplayLimit();
 }

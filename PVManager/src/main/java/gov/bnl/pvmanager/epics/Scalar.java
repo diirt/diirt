@@ -15,8 +15,15 @@ package gov.bnl.pvmanager.epics;
  * Coding to {@code Scalart<T extends Number>} allows to write a client that works with all
  * numbers, regardless of their type.
  *
+ * @param <T> the type of the scalar
  * @author carcassi
  */
 public interface Scalar<T> {
+
+    /**
+     * Returns the value. Never null.
+     *
+     * @return the value
+     */
     T getValue();
 }
