@@ -1,15 +1,14 @@
-/**
- * 
+/*
+ * Copyright 2010 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package gov.bnl.pvmanager.jca;
 
 
-import gov.bnl.pvmanager.jca.JCASupport;
 import gov.bnl.pvmanager.Collector;
 import gov.bnl.pvmanager.DataSource;
 import gov.bnl.pvmanager.MonitorRecipe;
 import gov.bnl.pvmanager.PV;
-import gov.bnl.pvmanager.PVValueChangeListener;
 import gov.bnl.pvmanager.QueueCollector;
 import gov.bnl.pvmanager.ValueCache;
 
@@ -22,7 +21,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * @author shroffk

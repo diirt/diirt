@@ -1,7 +1,10 @@
+/*
+ * Copyright 2010 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
+
 package gov.bnl.pvmanager;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +13,9 @@ import java.util.List;
  * to all PVs of all type. The payload is specified by the generic type,
  * and is returned by {@link #getValue()}. The value object is final
  * and cannot be changed, so all changes are done in place. Changes in
- * values are notified throught the {@link PVValueChangeListener}. PVs
- * are created throught the static factory which makes sure the value is
- * propertly created and initialized.
+ * values are notified through the {@link PVValueChangeListener}. PVs
+ * are created through the static factory which makes sure the value is
+ * properly created and initialized.
  *
  * @author carcassi
  * @param <T> the type of the PV.
