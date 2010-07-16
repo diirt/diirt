@@ -6,10 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Multi channel array of DbrGrDouble.
+ * Statistics for integer with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface DbrMultiGrDouble extends MultiChannel<DbrGrDouble>, Sts, Time {
-
+public interface DbrCtrlIntegerStatistics extends Ctrl<Integer>, DbrTimeIntegerStatistics {
 }

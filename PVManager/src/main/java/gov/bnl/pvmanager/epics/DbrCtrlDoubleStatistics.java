@@ -6,9 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar integer with alarm, timestamp and display information.
+ * Statistics for double with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface DbrGrInt extends Gr<Integer>, DbrTimeInt {
+public interface DbrCtrlDoubleStatistics extends Ctrl<Double>, DbrTimeDoubleStatistics {
 }
