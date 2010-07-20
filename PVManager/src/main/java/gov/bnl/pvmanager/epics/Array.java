@@ -15,10 +15,5 @@ import java.util.List;
  */
 public interface Array<T> {
 
-    /**
-     * The list of values for all the different channels. Never null.
-     *
-     * @return a {@link List} of values
-     */
-    List<T> getValues();
+    List<Integer> getSizes();
 }
