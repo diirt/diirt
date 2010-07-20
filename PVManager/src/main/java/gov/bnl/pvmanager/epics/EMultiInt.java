@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EMultiInt extends MultiScalar<EInt>, Sts, Time, Ctrl {
+public interface EMultiInt extends MultiScalar<EInt>, Sts, Time, Ctrl<Integer> {
 
 }

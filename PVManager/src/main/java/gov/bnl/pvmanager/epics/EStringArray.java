@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EStringArray extends Array<String>, Sts, Time, Ctrl {
+public interface EStringArray extends Array<String>, Sts, Time {
     public String[] getArray();
 }

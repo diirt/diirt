@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EMultiString extends MultiScalar<EString>, Sts, Time, Ctrl {
+public interface EMultiString extends MultiScalar<EString>, Sts, Time {
 
 }
