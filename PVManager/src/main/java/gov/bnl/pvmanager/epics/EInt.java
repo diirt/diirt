@@ -12,5 +12,5 @@ package gov.bnl.pvmanager.epics;
  * 
  * @author carcassi
  */
-public interface ElInt extends Scalar<Integer>, Sts, Time, Ctrl<Integer> {
+public interface EInt extends Scalar<Integer>, Sts, Time, Ctrl<Integer> {
 }
