@@ -10,5 +10,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EString extends Scalar<String>, Sts, Time {
+public interface EString extends Scalar<String>, Alarm, Time {
 }

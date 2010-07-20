@@ -21,7 +21,7 @@ import java.text.NumberFormat;
  * @param <T> a {@link java.lang.Number} type
  * @author carcassi
  */
-public interface Ctrl<T extends Number> {
+public interface Display<T extends Number> {
 
     /**
      * Lowest possible value to be displayed. Never null.

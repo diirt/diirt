@@ -10,5 +10,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EEnum extends Scalar<String>, Enum, Sts, Time {
+public interface EEnum extends Scalar<String>, Enum, Alarm, Time {
 }

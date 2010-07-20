@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public interface Sts {
+public interface Alarm {
 
     /**
      * Returns the alarm severity, which describes the quality of the

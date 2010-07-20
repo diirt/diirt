@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EDoubleArray extends Array<Double>, Sts, Time, Ctrl<Double> {
+public interface EDoubleArray extends Array<Double>, Alarm, Time, Display<Double> {
     double[] getArray();
 }

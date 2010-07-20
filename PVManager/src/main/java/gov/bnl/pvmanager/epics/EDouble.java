@@ -12,5 +12,5 @@ package gov.bnl.pvmanager.epics;
  * 
  * @author carcassi
  */
-public interface EDouble extends Scalar<Double>, Sts, Time, Ctrl<Double> {
+public interface EDouble extends Scalar<Double>, Alarm, Time, Display<Double> {
 }

@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EMultiEnum extends MultiScalar<EEnum>, Enum, Sts, Time {
+public interface EMultiEnum extends MultiScalar<EEnum>, Enum, Alarm, Time {
 
 }

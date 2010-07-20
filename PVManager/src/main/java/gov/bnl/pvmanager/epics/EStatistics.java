@@ -10,5 +10,5 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EStatistics extends Statistics, Sts, Time, Ctrl<Double> {
+public interface EStatistics extends Statistics, Alarm, Time, Display<Double> {
 }

@@ -10,6 +10,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EMultiDouble extends MultiScalar<EDouble>, Sts, Time, Ctrl<Double> {
+public interface EMultiDouble extends MultiScalar<EDouble>, Alarm, Time, Display<Double> {
 
 }

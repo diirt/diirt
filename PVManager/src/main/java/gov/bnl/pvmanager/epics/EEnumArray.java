@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EEnumArray extends Array<String>, Enum, Sts, Time {
+public interface EEnumArray extends Array<String>, Enum, Alarm, Time {
     public String[] getArray();
 }

@@ -9,6 +9,6 @@ package gov.bnl.pvmanager.epics;
  *
  * @author carcassi
  */
-public interface EIntArray extends Array<Integer>, Sts, Time, Ctrl<Integer> {
+public interface EIntArray extends Array<Integer>, Alarm, Time, Display<Integer> {
     public int[] getArray();
 }
