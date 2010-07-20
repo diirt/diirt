@@ -6,10 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar integer with alarm. Auto-unboxing makes the extra method for the primitive type
- * unnecessary.
+ * Scalar enum with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface DbrStsInt extends Sts, Scalar<Integer> {
+public interface EEnum extends Scalar<String>, Enum, Sts, Time {
 }

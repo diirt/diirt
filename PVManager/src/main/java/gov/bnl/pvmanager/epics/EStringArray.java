@@ -6,10 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Multi channel array of DbrTimeDouble.
  *
  * @author carcassi
  */
-public interface DbrMultiTimeDouble extends MultiChannel<DbrTimeDouble>, Sts, Time {
-
+public interface EStringArray extends Array<String>, Sts, Time, Ctrl {
+    public String[] getArray();
 }

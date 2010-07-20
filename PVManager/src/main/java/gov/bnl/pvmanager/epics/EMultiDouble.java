@@ -6,9 +6,10 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar enum with alarm and timestamp.
+ * Multi channel array of DbrGrDouble.
  *
  * @author carcassi
  */
-public interface DbrTimeEnum extends Time, DbrStsEnum {
+public interface EMultiDouble extends MultiScalar<EDouble>, Sts, Time, Ctrl {
+
 }

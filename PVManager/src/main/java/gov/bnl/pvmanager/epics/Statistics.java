@@ -15,39 +15,40 @@ package gov.bnl.pvmanager.epics;
  * time: &Sigma;<i>x<sub>i</sub>&Delta;t<sub>i</sub>/&Delta;t</i>,
  * time with linear interpolation, exponential backoff, ...).
  * <p>
- * Coding to {@code Statistics<T extends Number>} allows to create a client that works on statistics,
- * regardless of the type.
+ * No integer statistics, since averages are not integer in general.
  *
  * @param <T> a {@link java.lang.Number} type
  * @author carcassi
  */
-public interface Statistics<T extends Number> {
+public interface Statistics {
 
     /**
      * The average. Never null.
      * 
      * @return the average
      */
-    T getAverage();
+    Double getAverage();
 
     /**
      * The standard deviation. Never null.
      * 
      * @return the standard deviation
      */
-    T getStdDev();
+    Double getStdDev();
 
     /**
      * The minimum value.
      * 
      * @return the minimum
      */
-    T getMin();
+    Double getMin();
 
     /**
      * The maximum value
      *
      * @return the maximum
      */
-    T getMax();
+    Double getMax();
+
+    Integer getNSamples();
 }

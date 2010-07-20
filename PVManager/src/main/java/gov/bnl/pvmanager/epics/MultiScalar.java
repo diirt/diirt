@@ -20,11 +20,14 @@ import java.util.List;
  *   <li>Multi channel: {@link Time} returns the time of the data generation;
  * each element may or may not retain its time information</li>
  * </ul>
+ * <p>
+ * A {@link MultiScalar} can be automatically converted to a {@link Array} of the
+ * same type.
  *
  * @param <T> the type for the multi channel values
  * @author carcassi
  */
-public interface MultiChannel<T> {
+public interface MultiScalar<T extends Scalar> {
 
     /**
      * The list of values for all the different channels. Never null.

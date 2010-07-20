@@ -6,9 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Statistics for double with alarm.
  *
  * @author carcassi
  */
-public interface DbrStsDoubleStatistics extends Sts, Statistics<Double> {
+public interface EEnumArray extends Array<String>, Enum, Sts, Time, Ctrl {
+    public String[] getArray();
 }

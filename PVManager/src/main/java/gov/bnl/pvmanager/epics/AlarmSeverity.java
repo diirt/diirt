@@ -49,7 +49,7 @@ public enum AlarmSeverity {
     INVALID,
 
     /**
-     * The record cannot be read: the exact meaning is defined
+     * The record cannot be read and its state is undefined: the exact meaning is defined
      * by the PV, but typically this means that the client is either disconnected
      * or connected with no read access. The value is either stale or invalid.
      */

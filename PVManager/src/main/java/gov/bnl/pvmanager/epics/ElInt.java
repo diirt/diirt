@@ -7,8 +7,10 @@ package gov.bnl.pvmanager.epics;
 
 /**
  * Scalar integer with alarm, timestamp, display and control information.
- *
+ * Auto-unboxing makes the extra method for the primitive type
+ * unnecessary.
+ * 
  * @author carcassi
  */
-public interface DbrCtrlInt extends Ctrl<Integer>, DbrTimeInt {
+public interface ElInt extends Scalar<Integer>, Sts, Time, Ctrl<Integer> {
 }

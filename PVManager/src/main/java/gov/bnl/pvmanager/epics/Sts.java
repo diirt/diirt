@@ -5,6 +5,7 @@
 
 package gov.bnl.pvmanager.epics;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,10 +34,14 @@ public interface Sts {
     Set<String> getAlarmStatus();
     
     /**
-     * Defines all possible alarm statuses that are valid on this pv (better name?).
-     *  Never null.
+     * Defines all possible alarm statuses that are valid on this channel. Never null;
+     * if not connected returns an empty list. In Epics 3, this list is going
+     * to be the same for all PVs. In Epics V, this list is going to be possibly
+     * different for each channel, but the common lists for client/server
+     * pairs should be cached.
      * 
      * @return a set of labels
      */
-    Set<String> getPossibleAlarms();
+    @Metadata
+    List<String> getPossibleAlarms();
 }

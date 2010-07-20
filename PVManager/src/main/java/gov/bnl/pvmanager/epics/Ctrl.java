@@ -10,7 +10,8 @@ import java.text.NumberFormat;
 /**
  * Limit and unit information needed for display and control. The limits must
  * be given in terms of the same type of the scalar type, which needs
- * to be a number.
+ * to be a number. The default for the ranges corresponds to the maximum range
+ * for the type.
  * <p>
  * Note: NumberFormats. If there is no direct write on metadata,
  * number formats can be used to provide a default way to convert the value
@@ -55,7 +56,7 @@ public interface Ctrl<T extends Number> {
 
     /**
      * String representation of the units using for all values.
-     * Never null.
+     * Never null. If not yet connected, returns the empty String.
      *
      * @return units
      */
@@ -65,7 +66,8 @@ public interface Ctrl<T extends Number> {
     /**
      * Returns a NumberFormat that creates a String with just the value (no units).
      * Format is locale independent and should be used for all values (values and
-     * lower/upper limits). Never null.
+     * lower/upper limits). Never null. If not yet connected, the format always
+     * returns an empty String.
      *
      * @return the default format for all values
      */

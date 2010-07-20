@@ -6,9 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar double with alarm, timestamp, display and control information.
+ * Scalar string with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface DbrCtrlDouble extends Ctrl<Double>, DbrTimeDouble {
+public interface EString extends Scalar<String>, Sts, Time {
 }

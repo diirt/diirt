@@ -6,9 +6,9 @@
 package gov.bnl.pvmanager.epics;
 
 /**
- * Scalar string with alarm.
+ * Statistics for double with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface DbrStsString extends Sts, Scalar<String> {
+public interface EStatistics extends Statistics, Sts, Time, Ctrl<Double> {
 }
