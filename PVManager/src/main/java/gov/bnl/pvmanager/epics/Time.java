@@ -29,5 +29,5 @@ public interface Time {
      *
      * @return the user tag
      */
-    int getTimeUserTag();
+    Integer getTimeUserTag();
 }
