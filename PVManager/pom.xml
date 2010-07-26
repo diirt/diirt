@@ -35,9 +35,9 @@
     </ciManagement>
     <repositories>
         <repository>
-            <id>irmis</id>
-            <name>IRMIS Repository</name>
-            <url>http://irmis.sourceforge.net/maven2/</url>
+            <id>epics</id>
+            <name>EPICS Repository</name>
+            <url>http://epics.sourceforge.net/maven2/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
