@@ -61,9 +61,8 @@ public class SynchronizedArrayTest {
             caches.add(new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class));
             collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(1000)));
             MonitorRecipe monitorRecipe = new MonitorRecipe();
-            monitorRecipe.cache = caches.get(i);
             monitorRecipe.collector = collectors.get(i);
-            monitorRecipe.pvName = MockDataSource.mockPVName(1, 100, 300) + "linear";
+            monitorRecipe.caches.put(MockDataSource.mockPVName(1, 100, 300) + "linear", caches.get(i));
             names.add("pv" + i);
             MockDataSource.mockData().monitor(monitorRecipe);
         }

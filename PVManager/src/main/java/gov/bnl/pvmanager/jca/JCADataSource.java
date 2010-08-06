@@ -19,6 +19,7 @@ import gov.bnl.pvmanager.Collector;
 import gov.bnl.pvmanager.DataSource;
 import gov.bnl.pvmanager.MonitorRecipe;
 import gov.bnl.pvmanager.ValueCache;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -144,14 +145,16 @@ class JCADataSource extends DataSource {
 
     @Override
     public synchronized void monitor(MonitorRecipe connRecipe) {
-        if (connRecipe.cache.getType().equals(Double.class)) {
-            @SuppressWarnings("unchecked")
-            ValueCache<Double> cache = (ValueCache<Double>) connRecipe.cache;
-            monitor(connRecipe.pvName, connRecipe.collector, cache);
-        } else {
-            throw new UnsupportedOperationException("Type "
-                    + connRecipe.cache.getType().getName()
-                    + " is not yet supported");
+        for (Map.Entry<String, ValueCache> entry : connRecipe.caches.entrySet()) {
+            if (entry.getValue().getType().equals(Double.class)) {
+                @SuppressWarnings("unchecked")
+                ValueCache<Double> cache = (ValueCache<Double>) entry.getValue();
+                monitor(entry.getKey(), connRecipe.collector, cache);
+            } else {
+                throw new UnsupportedOperationException("Type "
+                        + entry.getValue().getType().getName()
+                        + " is not yet supported");
+            }
         }
     }
 

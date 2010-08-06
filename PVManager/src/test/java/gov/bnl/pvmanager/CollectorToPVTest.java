@@ -83,9 +83,8 @@ public class CollectorToPVTest {
         PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
-        connRecipe.cache = cache;
         connRecipe.collector = collector;
-        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        connRecipe.caches.put(MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
         MockDataSource.mockData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
@@ -124,9 +123,8 @@ public class CollectorToPVTest {
         PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
-        connRecipe.cache = cache;
         connRecipe.collector = collector;
-        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+        connRecipe.caches.put(MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
         MockDataSource.instance.monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;

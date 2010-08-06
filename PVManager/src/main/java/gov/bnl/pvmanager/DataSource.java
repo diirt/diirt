@@ -38,10 +38,10 @@ public abstract class DataSource {
 
         public void processValue(T payload) {
             // Get the collector. If it was garbage collected,
-            // remove the monito
+            // remove the monitor
             Collector c = collectorRef.get();
             if (c == null) {
-                logger.fine("Removing monitor " + this);
+                logger.log(Level.FINE, "Removing monitor {0}", this);
                 close();
             }
 

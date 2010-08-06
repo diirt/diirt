@@ -52,9 +52,8 @@ public class TimedCacheCollectorTest {
         TimedCacheCollector<DBR_TIME_Double> collector =
                 new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
         MonitorRecipe monitorRecipe = new MonitorRecipe();
-        monitorRecipe.cache = cache;
         monitorRecipe.collector = collector;
-        monitorRecipe.pvName = MockDataSource.mockPVName(1, 100, 300);
+        monitorRecipe.caches.put(MockDataSource.mockPVName(1, 100, 300), cache);
         MockDataSource.mockData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element

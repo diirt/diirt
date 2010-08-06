@@ -78,9 +78,8 @@ public class ConnectionManagerTestOld {
             @Override
             public void run() {
 		MonitorRecipe monRecipe = new MonitorRecipe();
-		monRecipe.cache = cache;
 		monRecipe.collector = collector;
-		monRecipe.pvName = "pvk01";
+                monRecipe.caches.put("pvk01", cache);
 		JCASupport.jca().monitor(monRecipe);
 	    }
 	});

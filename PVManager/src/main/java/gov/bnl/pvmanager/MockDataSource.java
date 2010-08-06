@@ -8,6 +8,7 @@ package gov.bnl.pvmanager;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -146,16 +147,22 @@ public class MockDataSource extends DataSource {
 
     @Override
     public void monitor(MonitorRecipe recipe) {
-        if (recipe.cache.getType().equals(Double.class)) {
+        for (Map.Entry<String, ValueCache> entry : recipe.caches.entrySet()) {
+            createMonitor(recipe.collector, entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void createMonitor(Collector collector, String pvName, ValueCache<?> cache) {
+        if (cache.getType().equals(Double.class)) {
             @SuppressWarnings("unchecked")
-            ValueCache<Double> cache = (ValueCache<Double>) recipe.cache;
-            connect(recipe.pvName, recipe.collector, cache);
-        } else if (recipe.cache.getType().equals(DBR_TIME_Double.class)) {
+            ValueCache<Double> doubleCache = (ValueCache<Double>) cache;
+            connect(pvName, collector, doubleCache);
+        } else if (cache.getType().equals(DBR_TIME_Double.class)) {
             @SuppressWarnings("unchecked")
-            ValueCache<DBR_TIME_Double> cache = (ValueCache<DBR_TIME_Double>) recipe.cache;
-            connectDBR(recipe.pvName, recipe.collector, cache);
+            ValueCache<DBR_TIME_Double> dbrTimeCache = (ValueCache<DBR_TIME_Double>) cache;
+            connectDBR(pvName, collector, dbrTimeCache);
         } else {
-            throw new UnsupportedOperationException("Type " + recipe.cache.getType().getName() + " is not yet supported");
+            throw new UnsupportedOperationException("Type " + cache.getType().getName() + " is not yet supported");
         }
     }
 

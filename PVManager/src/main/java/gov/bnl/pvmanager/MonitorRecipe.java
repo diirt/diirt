@@ -5,13 +5,16 @@
 
 package gov.bnl.pvmanager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents all information needed to create a data connection.
+ * 
  *
  * @author carcassi
  */
 public class MonitorRecipe {
-    public String pvName;
-    public ValueCache<?> cache;
+    public final Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
     public Collector collector;
 }

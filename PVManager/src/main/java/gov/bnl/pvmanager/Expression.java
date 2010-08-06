@@ -73,13 +73,12 @@ public class Expression<T> {
 
     public List<MonitorRecipe> createMontiorRecipes(Collector collector) {
         List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
+        MonitorRecipe recipe = new MonitorRecipe();
         for (int nPv = 0; nPv < getPvNames().size(); nPv++) {
-            MonitorRecipe recipe = new MonitorRecipe();
-            recipe.pvName = getPvNames().get(nPv);
-            recipe.cache = getPvData().get(nPv);
+            recipe.caches.put(getPvNames().get(nPv), getPvData().get(nPv));
             recipe.collector = collector;
-            recipes.add(recipe);
         }
+        recipes.add(recipe);
         return recipes;
     }
 
