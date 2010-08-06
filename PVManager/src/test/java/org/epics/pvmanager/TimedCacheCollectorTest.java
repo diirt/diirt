@@ -6,7 +6,7 @@
 package org.epics.pvmanager;
 
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.MockDataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.TimedCacheCollector;
@@ -53,8 +53,8 @@ public class TimedCacheCollectorTest {
                 new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
         MonitorRecipe monitorRecipe = new MonitorRecipe();
         monitorRecipe.collector = collector;
-        monitorRecipe.caches.put(MockDataSource.mockPVName(1, 100, 300), cache);
-        MockDataSource.mockData().monitor(monitorRecipe);
+        monitorRecipe.caches.put(SimulationDataSource.mockPVName(1, 100, 300), cache);
+        SimulationDataSource.simulatedData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element
         Thread.sleep(100);

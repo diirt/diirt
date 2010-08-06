@@ -9,7 +9,7 @@ import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.PullNotificator;
 import org.epics.pvmanager.Scanner;
 import org.epics.pvmanager.PV;
-import org.epics.pvmanager.MockDataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.LastValueAggregator;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.Collector;
@@ -84,8 +84,8 @@ public class CollectorToPVTest {
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.collector = collector;
-        connRecipe.caches.put(MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
-        MockDataSource.mockData().monitor(connRecipe);
+        connRecipe.caches.put(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
+        SimulationDataSource.simulatedData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 2) {
@@ -124,8 +124,8 @@ public class CollectorToPVTest {
         Scanner.scan(notificator, scanPeriodMs);
         MonitorRecipe connRecipe = new MonitorRecipe();
         connRecipe.collector = collector;
-        connRecipe.caches.put(MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
-        MockDataSource.instance.monitor(connRecipe);
+        connRecipe.caches.put(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
+        SimulationDataSource.simulatedData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -166,8 +166,8 @@ public class CollectorToPVTest {
 //        MonitorRecipe connRecipe = new MonitorRecipe();
 //        connRecipe.cache = cache;
 //        connRecipe.collector = collector;
-//        connRecipe.pvName = MockDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-//        MockDataSource.instance.monitor(connRecipe);
+//        connRecipe.pvName = SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
+//        SimulationDataSource.instance.monitor(connRecipe);
 //        Thread.sleep(testTimeMs + 100);
 //        int actualNotification = counter.get();
 //        if (Math.abs(actualNotification - targetNotifications) > 1) {

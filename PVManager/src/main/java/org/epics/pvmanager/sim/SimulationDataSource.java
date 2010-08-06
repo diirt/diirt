@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.sim;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
@@ -15,20 +15,25 @@ import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.MonitorRecipe;
+import org.epics.pvmanager.TimeStamp;
+import org.epics.pvmanager.ValueCache;
 
 /**
  * A data source for test data.
  *
  * @author carcassi
  */
-public class MockDataSource extends DataSource {
+public class SimulationDataSource extends DataSource {
 
-    public static DataSource mockData() {
-        return MockDataSource.instance;
+    public static DataSource simulatedData() {
+        return SimulationDataSource.instance;
     }
 
-    private static Logger log = Logger.getLogger(DataSource.class.getName());
-    static final MockDataSource instance = new MockDataSource();
+    private static final Logger log = Logger.getLogger(DataSource.class.getName());
+    static final SimulationDataSource instance = new SimulationDataSource();
 
     private static Random rand = new Random();
 

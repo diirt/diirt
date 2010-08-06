@@ -11,7 +11,7 @@
 
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.MockDataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
@@ -25,7 +25,7 @@ public class MockPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockPVFrame() {
-        PVManager.setConnectionManager(MockDataSource.mockData());
+        PVManager.setConnectionManager(SimulationDataSource.simulatedData());
         initComponents();
     }
 

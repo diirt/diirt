@@ -8,7 +8,7 @@ package org.epics.pvmanager.types;
 import org.epics.pvmanager.types.SynchronizedArray;
 import org.epics.pvmanager.types.SynchronizedArrayAggregator;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import org.epics.pvmanager.MockDataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
@@ -62,9 +62,9 @@ public class SynchronizedArrayTest {
             collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(1000)));
             MonitorRecipe monitorRecipe = new MonitorRecipe();
             monitorRecipe.collector = collectors.get(i);
-            monitorRecipe.caches.put(MockDataSource.mockPVName(1, 100, 300) + "linear", caches.get(i));
+            monitorRecipe.caches.put(SimulationDataSource.mockPVName(1, 100, 300) + "linear", caches.get(i));
             names.add("pv" + i);
-            MockDataSource.mockData().monitor(monitorRecipe);
+            SimulationDataSource.simulatedData().monitor(monitorRecipe);
         }
         SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
                 new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.ms(100));

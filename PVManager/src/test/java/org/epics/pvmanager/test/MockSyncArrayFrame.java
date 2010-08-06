@@ -12,7 +12,7 @@
 package org.epics.pvmanager.test;
 
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import org.epics.pvmanager.MockDataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
@@ -44,7 +44,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayFrame() {
-        PVManager.setConnectionManager(MockDataSource.mockData());
+        PVManager.setConnectionManager(SimulationDataSource.simulatedData());
         initComponents();
     }
 
