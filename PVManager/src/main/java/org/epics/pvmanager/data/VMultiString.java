@@ -6,10 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
- * Multi channel array of EDouble.
  *
  * @author carcassi
  */
-public interface EMultiDouble extends MultiScalar<EDouble>, Alarm, Time, Display<Double> {
+public interface VMultiString extends MultiScalar<VString>, Alarm, Time {
 
 }

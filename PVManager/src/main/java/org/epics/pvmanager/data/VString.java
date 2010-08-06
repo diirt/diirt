@@ -6,9 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
+ * Scalar string with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface EDoubleArray extends Array<Double>, Alarm, Time, Display<Double> {
-    double[] getArray();
+public interface VString extends Scalar<String>, Alarm, Time {
 }

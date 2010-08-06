@@ -6,9 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
+ * Scalar enum with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface EEnumArray extends Array<String>, Enum, Alarm, Time {
-    public String[] getArray();
+public interface VEnum extends Scalar<String>, Enum, Alarm, Time {
 }

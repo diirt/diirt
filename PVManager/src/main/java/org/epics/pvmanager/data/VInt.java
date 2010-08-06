@@ -6,11 +6,11 @@
 package org.epics.pvmanager.data;
 
 /**
- * Scalar double with alarm, timestamp, display and control information.
+ * Scalar integer with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
  * 
  * @author carcassi
  */
-public interface EDouble extends Scalar<Double>, Alarm, Time, Display<Double> {
+public interface VInt extends Scalar<Integer>, Alarm, Time, Display<Integer> {
 }

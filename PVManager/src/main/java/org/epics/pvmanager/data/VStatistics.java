@@ -6,9 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
+ * Statistics for double with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface EMultiString extends MultiScalar<EString>, Alarm, Time {
-
+public interface VStatistics extends Statistics, Alarm, Time, Display<Double> {
 }

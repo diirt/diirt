@@ -6,9 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
- * Statistics for double with alarm, timestamp and display information.
  *
  * @author carcassi
  */
-public interface EStatistics extends Statistics, Alarm, Time, Display<Double> {
+public interface VDoubleArray extends Array<Double>, Alarm, Time, Display<Double> {
+    double[] getArray();
 }

@@ -6,9 +6,10 @@
 package org.epics.pvmanager.data;
 
 /**
+ * Multi channel array of VDouble.
  *
  * @author carcassi
  */
-public interface EMultiEnum extends MultiScalar<EEnum>, Enum, Alarm, Time {
+public interface VMultiDouble extends MultiScalar<VDouble>, Alarm, Time, Display<Double> {
 
 }

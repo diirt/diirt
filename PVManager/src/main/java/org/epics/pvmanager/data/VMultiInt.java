@@ -6,9 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
- * Scalar enum with alarm and timestamp.
  *
  * @author carcassi
  */
-public interface EEnum extends Scalar<String>, Enum, Alarm, Time {
+public interface VMultiInt extends MultiScalar<VInt>, Alarm, Time, Display<Integer> {
+
 }

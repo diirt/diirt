@@ -23,16 +23,16 @@ import java.util.Set;
 public class TypeFactory {
 
     /**
-     * Creates new immutable EInt.
+     * Creates new immutable VInt.
      */
-    public static EInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
+    public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
             final Set<String> alarmStatus, final List<String> possibleAlarms, final TimeStamp timeStamp,
             final Integer timeUserTag,
             final Integer lowerDisplayLimit, final Integer lowerAlarmLimit, final Integer lowerWarningLimit,
             final String units, final NumberFormat numberFormat, final Integer upperWarningLimit,
             final Integer upperAlarmLimit, final Integer upperDisplayLimit,
             final Integer lowerCtrlLimit, final Integer upperCtrlLimit) {
-        return new EInt() {
+        return new VInt() {
 
             @Override
             public Integer getLowerCtrlLimit() {
@@ -119,9 +119,9 @@ public class TypeFactory {
     /**
      * Creates new immutable newDbrCtrlInt by using the metadata from the old value.
      */
-    public static EInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
+    public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
             final Set<String> alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
-            EInt oldValue) {
+            VInt oldValue) {
         return newEInt(value, alarmSeverity, alarmStatus, oldValue.getPossibleAlarms(),
                 timeStamp,
                 timeUserTag,
