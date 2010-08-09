@@ -5,15 +5,19 @@
 
 package org.epics.pvmanager;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
- * Embeds the logic to post events on a seperate thread so that PVManager
+ * Embeds the logic to post events on a separate thread so that PVManager
  * can appropriately redirect the notifications.
  *
  * @author carcassi
  */
 public abstract class ThreadSwitch {
+
+    private static final Logger log = Logger.getLogger(ThreadSwitch.class.getName());
 
     /**
      * Tells the PV manager to notify on the Swing Event Dispatch Thread using
@@ -51,7 +55,13 @@ public abstract class ThreadSwitch {
 
         @Override
         public void post(Runnable task) {
-            task.run();
+            try {
+                task.run();
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Exception on the timer thread caused by a ValueListener", ex);
+            } catch (AssertionError ex) {
+                log.log(Level.WARNING, "Assertion failed on the timer thread", ex);
+            }
         }
     };
 

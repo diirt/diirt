@@ -20,7 +20,117 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public class TypeFactory {
+public class ValueFactory {
+
+    /**
+     * Creates new immutable VDouble.
+     */
+    public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
+            final Set<String> alarmStatus, final List<String> possibleAlarms, final TimeStamp timeStamp,
+            final Integer timeUserTag,
+            final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
+            final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
+            final Double upperAlarmLimit, final Double upperDisplayLimit,
+            final Double lowerCtrlLimit, final Double upperCtrlLimit) {
+        return new VDouble() {
+
+            @Override
+            public Double getLowerCtrlLimit() {
+                return lowerCtrlLimit;
+            }
+
+            @Override
+            public Double getUpperCtrlLimit() {
+                return upperCtrlLimit;
+            }
+
+            @Override
+            public Double getLowerDisplayLimit() {
+                return lowerDisplayLimit;
+            }
+
+            @Override
+            public Double getLowerAlarmLimit() {
+                return lowerAlarmLimit;
+            }
+
+            @Override
+            public Double getLowerWarningLimit() {
+                return lowerWarningLimit;
+            }
+
+            @Override
+            public String getUnits() {
+                return units;
+            }
+
+            @Override
+            public NumberFormat getFormat() {
+                return numberFormat;
+            }
+
+            @Override
+            public Double getUpperWarningLimit() {
+                return upperWarningLimit;
+            }
+
+            @Override
+            public Double getUpperAlarmLimit() {
+                return upperAlarmLimit;
+            }
+
+            @Override
+            public Double getUpperDisplayLimit() {
+                return upperDisplayLimit;
+            }
+
+            @Override
+            public Integer getTimeUserTag() {
+                return timeUserTag;
+            }
+
+            @Override
+            public TimeStamp getTimeStamp() {
+                return timeStamp;
+            }
+
+            @Override
+            public AlarmSeverity getAlarmSeverity() {
+                return alarmSeverity;
+            }
+
+            @Override
+            public Set<String> getAlarmStatus() {
+                return alarmStatus;
+            }
+
+            @Override
+            public List<String> getPossibleAlarms() {
+                return possibleAlarms;
+            }
+
+            @Override
+            public Double getValue() {
+                return value;
+            }
+        };
+    }
+
+    /**
+     * Creates new immutable new VDouble by using the metadata from the old value.
+     */
+    public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
+            final Set<String> alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
+            VDouble oldValue) {
+        return newVDouble(value, alarmSeverity, alarmStatus, oldValue.getPossibleAlarms(),
+                timeStamp,
+                timeUserTag,
+                oldValue.getLowerDisplayLimit(), oldValue.getLowerAlarmLimit(),
+                oldValue.getLowerWarningLimit(), oldValue.getUnits(),
+                oldValue.getFormat(), oldValue.getUpperWarningLimit(),
+                oldValue.getUpperAlarmLimit(), oldValue.getUpperDisplayLimit(),
+                oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
+    }
 
     /**
      * Creates new immutable VInt.

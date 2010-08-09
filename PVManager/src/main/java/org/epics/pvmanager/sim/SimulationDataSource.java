@@ -20,6 +20,7 @@ import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.data.VDouble;
 
 /**
  * A data source for test data.
@@ -30,6 +31,15 @@ public class SimulationDataSource extends DataSource {
 
     public static DataSource simulatedData() {
         return SimulationDataSource.instance;
+    }
+
+    protected static abstract class ValueProcessor<T, E>
+    extends DataSource.ValueProcessor<T, E> {
+
+        public ValueProcessor(Collector collector, ValueCache<E> cache) {
+            super(collector, cache);
+        }
+
     }
 
     private static final Logger log = Logger.getLogger(DataSource.class.getName());
@@ -166,9 +176,18 @@ public class SimulationDataSource extends DataSource {
             @SuppressWarnings("unchecked")
             ValueCache<DBR_TIME_Double> dbrTimeCache = (ValueCache<DBR_TIME_Double>) cache;
             connectDBR(pvName, collector, dbrTimeCache);
+        } else if (cache.getType().equals(VDouble.class)) {
+            @SuppressWarnings("unchecked")
+            ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;
+            connectVDouble(pvName, collector, vDoubleCache);
         } else {
             throw new UnsupportedOperationException("Type " + cache.getType().getName() + " is not yet supported");
         }
+    }
+
+    private void connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
+        final Ramp ramp = NameParser.createFunction(name);
+        ramp.start(timer, collector, cache);
     }
 
 }
