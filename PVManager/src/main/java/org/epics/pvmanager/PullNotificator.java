@@ -25,23 +25,30 @@ class PullNotificator<T> {
     }
 
     boolean isActive() {
-        if (pvRef.get() != null)
+        if (pvRef.get() != null && !pvRef.get().isClosed())
             return true;
         else
             return false;
     }
 
     void notifyPv() {
-        // TODO This object should be properly synchronized
-        final T newValue = function.getValue();
+        // Synchronization policy: the newValue is guarded by this pull notificator
+        final T newValue;
+        synchronized(this) {
+            newValue = function.getValue();
+        }
         onThread.post(new Runnable() {
 
             @Override
             public void run() {
+                T safeValue;
+                synchronized(PullNotificator.this) {
+                    safeValue = newValue;
+                }
                 PV<T> pv = pvRef.get();
-                if (pv != null && newValue != null) {
+                if (pv != null && safeValue != null) {
                     TypeSupport.Notification<T> notification =
-                            TypeSupport.notification(pv.getValue(), newValue);
+                            TypeSupport.notification(pv.getValue(), safeValue);
                     if (notification.isNotificationNeeded()) {
                         pv.setValue(notification.getNewValue());
                     }

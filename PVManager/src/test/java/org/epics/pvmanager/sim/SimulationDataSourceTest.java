@@ -30,7 +30,7 @@ public class SimulationDataSourceTest {
         PVManager.setConnectionManager(SimulationDataSource.simulatedData());
         final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.125)"))
                 .atHz(10);
-        PVValueChangeListener listener = new PVValueChangeListener() {
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
@@ -40,10 +40,9 @@ public class SimulationDataSourceTest {
                         sampleCounter.get() == pv.getValue().getValue().intValue() + 11);
                 sampleCounter.incrementAndGet();
             }
-        };
-        pv.addPVValueChangeListener(listener);
+        });
         Thread.sleep(2500);
-        pv.removePVValueChangeListener(listener);
+        pv.close();
         // After 10s, expect about 20 samples
         assertTrue("Less than 19 calls", sampleCounter.get() >= 19);
         assertTrue("More than 21 calls", sampleCounter.get() <= 21);
@@ -58,7 +57,7 @@ public class SimulationDataSourceTest {
         PVManager.setConnectionManager(SimulationDataSource.simulatedData());
         final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
                 .atHz(10);
-        PVValueChangeListener listener = new PVValueChangeListener() {
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
@@ -68,10 +67,9 @@ public class SimulationDataSourceTest {
                         sampleCounter.get() == pv.getValue().getValue().intValue() + 11);
                 sampleCounter.incrementAndGet();
             }
-        };
-        pv.addPVValueChangeListener(listener);
+        });
         Thread.sleep(2000);
-        pv.removePVValueChangeListener(listener);
+        pv.close();
         // After 10s, expect about 10 samples
         assertTrue("Less than 9 calls", sampleCounter.get() >= 9);
         assertTrue("More than 11 calls", sampleCounter.get() <= 11);

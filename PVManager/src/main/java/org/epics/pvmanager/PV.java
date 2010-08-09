@@ -5,17 +5,16 @@
 
 package org.epics.pvmanager;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * An object representing the PV. It contains all elements that are common
  * to all PVs of all type. The payload is specified by the generic type,
- * and is returned by {@link #getValue()}. The value object is final
- * and cannot be changed, so all changes are done in place. Changes in
- * values are notified through the {@link PVValueChangeListener}. PVs
- * are created through the static factory which makes sure the value is
- * properly created and initialized.
+ * and is returned by {@link #getValue()}. Changes in
+ * values are notified through the {@link PVValueChangeListener}. Listeners
+ * can be registered from any thread. The value can only be accessed on the
+ * thread on which the listeners is called.
  *
  * @author carcassi
  * @param <T> the type of the PV.
@@ -41,7 +40,7 @@ public final class PV<T> {
         return new PV<E>(name);
     }
 
-    private List<PVValueChangeListener> valueChangeListeners = new ArrayList<PVValueChangeListener>();
+    private List<PVValueChangeListener> valueChangeListeners = new CopyOnWriteArrayList<PVValueChangeListener>();
 
     void firePvValueChanged() {
         for (PVValueChangeListener listener : valueChangeListeners) {
@@ -50,16 +49,18 @@ public final class PV<T> {
     }
 
     /**
-     * Adds a listener to the value.
+     * Adds a listener to the value. This method is thread safe.
      *
      * @param listener a new listener
      */
     public void addPVValueChangeListener(PVValueChangeListener listener) {
+        if (isClosed())
+            throw new IllegalStateException("Can't add listeners to a closed PV");
         valueChangeListeners.add(listener);
     }
 
     /**
-     * Adds a listener to the value.
+     * Adds a listener to the value. This method is thread safe.
      *
      * @param listener a new listener
      */
@@ -70,7 +71,7 @@ public final class PV<T> {
     private final String name;
 
     /**
-     * Get the value of name
+     * Returns the name of the PV. This method is thread safe.
      *
      * @return the value of name
      */
@@ -81,7 +82,8 @@ public final class PV<T> {
     private T value;
 
     /**
-     * Get the value of value
+     * Returns the value of the PV. Not thread safe: can be safely accessed only
+     * as part of the {@link PVValueChangeListener}.
      *
      * @return the value of value
      */
@@ -92,5 +94,30 @@ public final class PV<T> {
     void setValue(T value) {
         this.value = value;
         firePvValueChanged();
+    }
+
+    // This needs to be modified on client thread (i.e. UI) and
+    // read on the timer thread (so that actual closing happens in the
+    // background)
+    private volatile boolean closed = false;
+
+    /**
+     * De-registers all listeners, stops all notifications and closes all
+     * connections from the data sources needed by this. Once the PV
+     * is closed, it can't be re-opened. Subsequent calls to close do not
+     * do anything.
+     */
+    public void close() {
+        valueChangeListeners.clear();
+        closed = true;
+    }
+
+    /**
+     * True if no more notifications are going to be sent for this PV.
+     *
+     * @return true if closed
+     */
+    public boolean isClosed() {
+        return closed;
     }
 }
