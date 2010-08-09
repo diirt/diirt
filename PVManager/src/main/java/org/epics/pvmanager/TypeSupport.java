@@ -97,7 +97,7 @@ public abstract class TypeSupport<T> {
         TypeSupport<T> support = typeSupportFor(typeClass);
         if (support == null) {
             for (Class clazz : typeClass.getInterfaces()) {
-                support = typeSupportFor(clazz);
+                support = recursiveTypeSupportFor(clazz);
                 if (support != null)
                     return support;
             }

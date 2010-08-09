@@ -22,19 +22,19 @@ class EpicsTypeSupport {
         if (installed)
             return;
 
-        addVDouble();
+        addScalar();
 
         installed = true;
     }
 
-    private static void addVDouble() {
+    private static void addScalar() {
         // Add support for all scalars: simply return the new value
-        TypeSupport.addTypeSupport(VDouble.class, new TypeSupport<VDouble>() {
+        TypeSupport.addTypeSupport(Scalar.class, new TypeSupport<Scalar>() {
             @Override
-            public Notification<VDouble> prepareNotification(VDouble oldValue, VDouble newValue) {
+            public Notification<Scalar> prepareNotification(Scalar oldValue, Scalar newValue) {
                 if (NullUtils.equalsOrBothNull(oldValue, newValue))
-                    return new Notification<VDouble>(false, null);
-                return new Notification<VDouble>(true, newValue);
+                    return new Notification<Scalar>(false, null);
+                return new Notification<Scalar>(true, newValue);
             }
         });
     }

@@ -45,7 +45,8 @@ public class SimulationDataSourceTest {
         Thread.sleep(2500);
         pv.removePVValueChangeListener(listener);
         // After 10s, expect about 20 samples
-        assertTrue(sampleCounter.get() >= 19 && sampleCounter.get() <= 21);
+        assertTrue("Less than 19 calls", sampleCounter.get() >= 19);
+        assertTrue("More than 21 calls", sampleCounter.get() <= 21);
         pv.removePVValueChangeListener(null);
     }
 
