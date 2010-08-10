@@ -43,6 +43,7 @@ public abstract class DataSource {
             if (c == null) {
                 logger.log(Level.FINE, "Removing monitor {0}", this);
                 close();
+                return;
             }
 
             // Lock the collector and prepare the new value.
