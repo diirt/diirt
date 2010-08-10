@@ -18,9 +18,9 @@ class PullNotificator<T> {
     private final Function<T> function;
     private final ThreadSwitch onThread;
 
-    PullNotificator(PV<T> pv, Function<T> aggregator, ThreadSwitch onThread) {
+    PullNotificator(PV<T> pv, Function<T> function, ThreadSwitch onThread) {
         this.pvRef = new WeakReference<PV<T>>(pv);
-        this.function = aggregator;
+        this.function = function;
         this.onThread = onThread;
     }
 
