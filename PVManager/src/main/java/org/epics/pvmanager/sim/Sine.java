@@ -6,38 +6,37 @@
 package org.epics.pvmanager.sim;
 
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.TimeStamp;
+import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Simulated function for a ramp.
+ * Simulated function for a sine.
  *
  * @author carcassi
  */
-class Ramp extends SimFunction<VDouble> {
+class Sine extends SimFunction<VDouble> {
 
     private double min;
     private double max;
-    private double currentValue;
-    private double step;
+    private long currentValue;
+    private double samplesPerCycle;
     private double range;
-    private double interval;
     private VDouble lastValue;
 
-    public Ramp(Double min, Double max, Double step, Double interval) {
-        super(interval, VDouble.class);
-        if (interval <= 0.0) {
-            throw new IllegalArgumentException("Interval must be greater than zero (was " + interval + ")");
-        }
+    public Sine(Double min, Double max, Double samplesPerCycle, Double secondsBeetwenSamples) {
+        super(secondsBeetwenSamples, VDouble.class);
         this.min = min;
         this.max = max;
-        this.currentValue = min - step;
-        this.step = step;
-        this.interval = interval;
+        this.currentValue = 0;
+        this.samplesPerCycle = samplesPerCycle;
         range = max - min;
-        lastValue = ValueFactory.newVDouble(currentValue, AlarmSeverity.NONE, Collections.<String>emptySet(),
+        lastValue = ValueFactory.newVDouble(0.0, AlarmSeverity.NONE, Collections.<String>emptySet(),
                 Constants.POSSIBLE_ALARM_STATUS, TimeStamp.now(), null,
                 min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
                 min + range * 0.8, min + range * 0.9, max, min, max);
@@ -45,11 +44,9 @@ class Ramp extends SimFunction<VDouble> {
 
     @Override
     public VDouble nextValue() {
-        currentValue = currentValue + step;
-        if (currentValue > max) {
-            currentValue = min;
-        }
+        double value = Math.sin(currentValue * 2 * Math.PI /samplesPerCycle) * range / 2 + min + (range / 2);
+        currentValue++;
 
-        return newValue(currentValue, lastValue);
+        return newValue(value, lastValue);
     }
 }

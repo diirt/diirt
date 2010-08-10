@@ -57,9 +57,18 @@ public class NameParserTest {
 
     @Test
     public void testRamp() {
-        Ramp ramp = NameParser.createFunction("ramp(1.0, 10.0, 1.0, 1.0)");
-        assertThat(ramp.nextVDouble().getValue(), equalTo(1.0));
+        Ramp ramp = (Ramp) NameParser.createFunction("ramp(1.0, 10.0, 1.0, 1.0)");
+        assertThat(ramp.nextValue().getValue(), equalTo(1.0));
 
+    }
+
+    @Test
+    public void testSine() {
+        Sine ramp = (Sine) NameParser.createFunction("sine(0.0, 10.0, 4.0, 1.0)");
+        assertEquals(5.0, ramp.nextValue().getValue(), 0.0001);
+        assertEquals(10.0, ramp.nextValue().getValue(), 0.0001);
+        assertEquals(5.0, ramp.nextValue().getValue(), 0.0001);
+        assertEquals(0.0, ramp.nextValue().getValue(), 0.0001);
     }
 
 }

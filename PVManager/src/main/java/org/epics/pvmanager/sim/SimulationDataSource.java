@@ -186,7 +186,8 @@ public class SimulationDataSource extends DataSource {
     }
 
     private void connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
-        final Ramp ramp = NameParser.createFunction(name);
+        @SuppressWarnings("unchecked")
+        final SimFunction<VDouble> ramp = (SimFunction<VDouble>) NameParser.createFunction(name);
         ramp.start(timer, collector, cache);
     }
 

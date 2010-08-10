@@ -56,7 +56,7 @@ class NameParser {
      * @param string the function call
      * @return the function
      */
-    static Ramp createFunction(String string) {
+    static SimFunction<?> createFunction(String string) {
         List<Object> parameters = parseFunction(string);
         StringBuilder className = new StringBuilder("org.epics.pvmanager.sim.");
         int firstCharPosition = className.length();
@@ -64,7 +64,8 @@ class NameParser {
         className.setCharAt(firstCharPosition, Character.toUpperCase(className.charAt(firstCharPosition)));
 
         try {
-            Class<Ramp> clazz = (Class<Ramp>) Class.forName(className.toString());
+            @SuppressWarnings("unchecked")
+            Class<SimFunction<?>> clazz = (Class<SimFunction<?>>) Class.forName(className.toString());
             Object[] constructorParams = parameters.subList(1, parameters.size()).toArray();
             Class[] types = new Class[constructorParams.length];
             for (int i = 0; i < types.length; i++) {

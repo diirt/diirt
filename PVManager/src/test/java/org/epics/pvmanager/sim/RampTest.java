@@ -19,7 +19,7 @@ public class RampTest {
     @Test
     public void rampValues() {
         Ramp ramp1 = new Ramp(0.0, 10.0, 1.0, 1.0);
-        VDouble firstValue = ramp1.nextVDouble();
+        VDouble firstValue = ramp1.nextValue();
         assertThat(firstValue.getValue(), equalTo(0.0));
         assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
         assertTrue(firstValue.getAlarmStatus().isEmpty());
@@ -31,26 +31,26 @@ public class RampTest {
         assertThat(firstValue.getUpperAlarmLimit(), equalTo(9.0));
         assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(1.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(2.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(3.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(4.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(5.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(6.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(7.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(8.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(9.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(10.0));
-        assertThat(ramp1.nextVDouble().getValue(), equalTo(0.0));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(ramp1.nextVDouble().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(ramp1.nextValue().getValue(), equalTo(1.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(2.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(3.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(4.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(5.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(6.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(7.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(8.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(9.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(10.0));
+        assertThat(ramp1.nextValue().getValue(), equalTo(0.0));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
     }
 }
