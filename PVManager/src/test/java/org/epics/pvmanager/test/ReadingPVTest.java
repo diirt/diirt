@@ -76,7 +76,7 @@ public class ReadingPVTest {
         });
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
-        if (Math.abs(actualNotification - targetNotifications) > 1) {
+        if (Math.abs(actualNotification - targetNotifications) > 2) {
             fail("Expected " + targetNotifications + " but got " + actualNotification);
         }
     }

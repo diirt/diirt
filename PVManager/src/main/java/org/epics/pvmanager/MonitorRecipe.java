@@ -15,6 +15,6 @@ import java.util.Map;
  * @author carcassi
  */
 public class MonitorRecipe {
-    public final Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+    public Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
     public Collector collector;
 }
