@@ -13,7 +13,11 @@ import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Simulated function for a noise.
+ * Function to simulate a signal that has a gaussian distribution. The warning
+ * limits are set above the standard deviation and the alarm above two times
+ * the standard deviation. The total range is 4 times the standard deviation.
+ * All values are going to have no alarm status, with the timestamp set at the
+ * moment the sample was generated.
  *
  * @author carcassi
  */
@@ -24,10 +28,22 @@ class Gaussian extends SimFunction<VDouble> {
     private double stdDev;
     private VDouble lastValue;
 
+    /**
+     * Creates a signal with a normal distribution (average zero and
+     * standard deviation one), updating every 100ms (10Hz).
+     */
     public Gaussian() {
-        this(1.0, 1.0, 0.1);
+        this(0.0, 1.0, 0.1);
     }
 
+    /**
+     * Creates a signal with a gaussian distribution, updating at the rate
+     * specified.
+     *
+     * @param average average of the gaussian distribution
+     * @param stdDev standard deviation of the gaussian distribution
+     * @param interval time between samples in seconds
+     */
     public Gaussian(Double average, Double stdDev, Double interval) {
         super(interval, VDouble.class);
         if (interval <= 0.0) {

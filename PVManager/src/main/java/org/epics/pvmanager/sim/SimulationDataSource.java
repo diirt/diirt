@@ -23,7 +23,8 @@ import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.VDouble;
 
 /**
- * A data source for test data.
+ * Data source to produce simulated signals that can be using during development
+ * and testing.
  *
  * @author carcassi
  */

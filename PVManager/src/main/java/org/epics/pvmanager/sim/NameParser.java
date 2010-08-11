@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Utility class to parse variable names and create simulated signals.
  *
  * @author carcassi
  */
@@ -21,14 +22,25 @@ class NameParser {
     static final Pattern commaSeparatedDoubles = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*");
     static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*)\\))?");
 
+    /**
+     * Parses a comma separated list of arguments and returns them as a list.
+     *
+     * @param string a comma separated list of arguments; if null or empty returns
+     * the empty list
+     * @return the list of parsed arguments
+     */
     static List<Object> parseParameters(String string) {
+        // Argument is empty
         if (string == null || "".equals(string))
             return Collections.emptyList();
+
+        // Validate input
         if (!commaSeparatedDoubles.matcher(string).matches()) {
             throw new IllegalArgumentException("Arguments must be a comma separated list of double values (was " + string + ")");
         }
-        Matcher matcher = doublePattern.matcher(string);
 
+        // Parse parameters
+        Matcher matcher = doublePattern.matcher(string);
         List<Object> parameters = new ArrayList<Object>();
         while (matcher.find()) {
             String parameter = matcher.group();
@@ -39,6 +51,13 @@ class NameParser {
         return parameters;
     }
 
+    /**
+     * Parse a function with parameters and returns a list where the first
+     * element is the function name and the others are the parsed arguments.
+     *
+     * @param string a string representing a function
+     * @return the name and the parameters
+     */
     static List<Object> parseFunction(String string) {
         Matcher matcher = functionAndParameter.matcher(string);
         if (!matcher.matches()) {

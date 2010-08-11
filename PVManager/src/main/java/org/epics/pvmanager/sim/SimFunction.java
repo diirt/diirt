@@ -15,7 +15,8 @@ import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Base class for all simulation functions.
+ * Base class for all simulated signals. It provides the common mechanism for
+ * registering the update on a timer and a few other utilities.
  *
  * @author carcassi
  */

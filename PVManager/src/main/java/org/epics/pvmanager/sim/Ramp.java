@@ -12,7 +12,11 @@ import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Simulated function for a ramp.
+ * Function to simulate a signal that increases constantly within a range
+ * (saw-tooth shape). The warning
+ * limits are set at 80% of the range and the alarm at 90% the range.
+ * All values are going to have no alarm status, with the timestamp set at the
+ * moment the sample was generated.
  *
  * @author carcassi
  */
@@ -25,6 +29,15 @@ class Ramp extends SimFunction<VDouble> {
     private double range;
     private VDouble lastValue;
 
+    /**
+     * Creates a ramp shaped signal between min and max, updating a step amount
+     * every interval seconds.
+     *
+     * @param min minimum value
+     * @param max maximum value
+     * @param step increment for each sample
+     * @param interval interval between samples in seconds
+     */
     public Ramp(Double min, Double max, Double step, Double interval) {
         super(interval, VDouble.class);
         if (interval <= 0.0) {

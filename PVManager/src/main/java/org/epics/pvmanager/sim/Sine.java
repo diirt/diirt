@@ -6,17 +6,16 @@
 package org.epics.pvmanager.sim;
 
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Simulated function for a sine.
+ * Function to simulate a signal shaped like a sine. The warning
+ * limits are set at 80% of the range and the alarm at 90% the range.
+ * All values are going to have no alarm status, with the timestamp set at the
+ * moment the sample was generated.
  *
  * @author carcassi
  */
@@ -29,6 +28,15 @@ class Sine extends SimFunction<VDouble> {
     private double range;
     private VDouble lastValue;
 
+    /**
+     * Creates a ramp shaped signal between min and max, updating
+     * every interval seconds with samplesPerCycles samples every full sine cycle.
+     *
+     * @param min minimum value
+     * @param max maximum value
+     * @param samplesPerCycle number of samples for each full cycle (each 2 Pi)
+     * @param secondsBeetwenSamples interval between samples in seconds
+     */
     public Sine(Double min, Double max, Double samplesPerCycle, Double secondsBeetwenSamples) {
         super(secondsBeetwenSamples, VDouble.class);
         this.min = min;
