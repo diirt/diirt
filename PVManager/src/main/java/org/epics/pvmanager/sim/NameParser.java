@@ -6,6 +6,7 @@ package org.epics.pvmanager.sim;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,9 +19,11 @@ class NameParser {
 
     static final Pattern doublePattern = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*");
     static final Pattern commaSeparatedDoubles = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*");
-    static final Pattern functionAndParameter = Pattern.compile("(\\w+)\\((\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*)\\)");
+    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*)\\))?");
 
     static List<Object> parseParameters(String string) {
+        if (string == null || "".equals(string))
+            return Collections.emptyList();
         if (!commaSeparatedDoubles.matcher(string).matches()) {
             throw new IllegalArgumentException("Arguments must be a comma separated list of double values (was " + string + ")");
         }
@@ -44,7 +47,7 @@ class NameParser {
 
         List<Object> parameters = new ArrayList<Object>();
         parameters.add(matcher.group(1));
-        parameters.addAll(parseParameters(matcher.group(2)));
+        parameters.addAll(parseParameters(matcher.group(3)));
         return parameters;
     }
 

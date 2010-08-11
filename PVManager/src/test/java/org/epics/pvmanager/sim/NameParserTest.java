@@ -71,4 +71,10 @@ public class NameParserTest {
         assertEquals(0.0, ramp.nextValue().getValue(), 0.0001);
     }
 
+    @Test
+    public void testNoise() {
+        Noise noise1 = (Noise) NameParser.createFunction("noise(0.0, 10.0, 1.0)");
+        Noise noise2 = (Noise) NameParser.createFunction("noise");
+    }
+
 }
