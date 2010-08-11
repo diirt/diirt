@@ -7,15 +7,12 @@ package org.epics.pvmanager.sim;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
+ * Test simulated pv function names parsing
  *
  * @author carcassi
  */
@@ -26,6 +23,7 @@ public class NameParserTest {
 
     @Test
     public void testParameterParsing() {
+        // A couple of correct combinations
         List<Object> parameters = NameParser.parseParameters("1.0,2.0");
         assertThat(parameters, equalTo(Arrays.asList((Object) 1.0, 2.0)));
         parameters = NameParser.parseParameters("-1,.5,  23.25");
@@ -49,6 +47,7 @@ public class NameParserTest {
 
     @Test
     public void testParsing() {
+        // Couple of correct functions
         List<Object> parameters = NameParser.parseFunction("sine(1.0,2.0)");
         assertThat(parameters, equalTo(Arrays.asList((Object) "sine",  1.0, 2.0)));
         parameters = NameParser.parseFunction("ramp(-1,.5,  23.25)");
@@ -75,6 +74,18 @@ public class NameParserTest {
     public void testNoise() {
         Noise noise1 = (Noise) NameParser.createFunction("noise(0.0, 10.0, 1.0)");
         Noise noise2 = (Noise) NameParser.createFunction("noise");
+        // Forces use of variables
+        assertTrue(noise1.nextValue().getAlarmStatus().isEmpty());
+        assertTrue(noise2.nextValue().getAlarmStatus().isEmpty());
+    }
+
+    @Test
+    public void gaussianNoise() {
+        Gaussian noise1 = (Gaussian) NameParser.createFunction("gaussian(0.0, 10.0, 1.0)");
+        Gaussian noise2 = (Gaussian) NameParser.createFunction("gaussian");
+        // Forces use of variables
+        assertTrue(noise1.nextValue().getAlarmStatus().isEmpty());
+        assertTrue(noise2.nextValue().getAlarmStatus().isEmpty());
     }
 
 }

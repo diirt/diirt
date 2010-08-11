@@ -17,34 +17,32 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-class Noise extends SimFunction<VDouble> {
+class Gaussian extends SimFunction<VDouble> {
 
     private Random rand = new Random();
-    private double min;
-    private double max;
-    private double range;
+    private double average;
+    private double stdDev;
     private VDouble lastValue;
 
-    public Noise() {
-        this(-5.0, 5.0, 0.1);
+    public Gaussian() {
+        this(1.0, 1.0, 0.1);
     }
 
-    public Noise(Double min, Double max, Double interval) {
+    public Gaussian(Double average, Double stdDev, Double interval) {
         super(interval, VDouble.class);
         if (interval <= 0.0) {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + interval + ")");
         }
-        this.min = min;
-        this.max = max;
-        range = max - min;
-        lastValue = ValueFactory.newVDouble(min, AlarmSeverity.NONE, Collections.<String>emptySet(),
+        this.average = average;
+        this.stdDev = stdDev;
+        lastValue = ValueFactory.newVDouble(average, AlarmSeverity.NONE, Collections.<String>emptySet(),
                 Constants.POSSIBLE_ALARM_STATUS, TimeStamp.now(), null,
-                min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max);
+                average - 4 * stdDev, average - 2 * stdDev, average - stdDev, "x", Constants.DOUBLE_FORMAT,
+                average + stdDev, average + 2 * stdDev, average + 4 * stdDev, average - 4 * stdDev, average + 4 * stdDev);
     }
 
     @Override
     public VDouble nextValue() {
-        return newValue(min + rand.nextDouble() * range, lastValue);
+        return newValue(average + rand.nextGaussian() * stdDev, lastValue);
     }
 }

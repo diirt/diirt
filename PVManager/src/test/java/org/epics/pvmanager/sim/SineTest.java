@@ -18,8 +18,11 @@ public class SineTest {
 
     @Test
     public void rampValues() {
+        // Creates the function
         Sine sine = new Sine(0.0, 10.0, 4.0, 1.0);
         VDouble firstValue = sine.nextValue();
+
+        // Check limits
         assertEquals(5.0, firstValue.getValue(), 0.0001);
         assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertTrue(firstValue.getAlarmStatus().isEmpty());
@@ -31,6 +34,8 @@ public class SineTest {
         assertThat(firstValue.getUpperAlarmLimit(), equalTo(9.0));
         assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
+
+        // Check values
         assertEquals(10.0, sine.nextValue().getValue(), 0.0001);
         assertEquals(5.0, sine.nextValue().getValue(), 0.0001);
         assertEquals(0.0, sine.nextValue().getValue(), 0.0001);

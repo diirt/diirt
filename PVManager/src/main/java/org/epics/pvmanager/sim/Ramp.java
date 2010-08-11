@@ -23,7 +23,6 @@ class Ramp extends SimFunction<VDouble> {
     private double currentValue;
     private double step;
     private double range;
-    private double interval;
     private VDouble lastValue;
 
     public Ramp(Double min, Double max, Double step, Double interval) {
@@ -35,7 +34,6 @@ class Ramp extends SimFunction<VDouble> {
         this.max = max;
         this.currentValue = min - step;
         this.step = step;
-        this.interval = interval;
         range = max - min;
         lastValue = ValueFactory.newVDouble(currentValue, AlarmSeverity.NONE, Collections.<String>emptySet(),
                 Constants.POSSIBLE_ALARM_STATUS, TimeStamp.now(), null,

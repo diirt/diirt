@@ -18,8 +18,11 @@ public class RampTest {
 
     @Test
     public void rampValues() {
+        // Creates the function
         Ramp ramp1 = new Ramp(0.0, 10.0, 1.0, 1.0);
         VDouble firstValue = ramp1.nextValue();
+
+        // Check limits
         assertThat(firstValue.getValue(), equalTo(0.0));
         assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
         assertTrue(firstValue.getAlarmStatus().isEmpty());
@@ -31,6 +34,8 @@ public class RampTest {
         assertThat(firstValue.getUpperAlarmLimit(), equalTo(9.0));
         assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
+        
+        // Check values
         assertThat(ramp1.nextValue().getValue(), equalTo(1.0));
         assertThat(ramp1.nextValue().getValue(), equalTo(2.0));
         assertThat(ramp1.nextValue().getValue(), equalTo(3.0));

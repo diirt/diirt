@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
+ * Tests uniform noise distribution function
  *
  * @author carcassi
  */
@@ -18,8 +18,11 @@ public class NoiseTest {
 
     @Test
     public void rampValues() {
+        // Creates the function
         Noise noise = new Noise(-10.0, 10.0, 1.0);
         VDouble firstValue = noise.nextValue();
+
+        // Check limits
         assertTrue(firstValue.getAlarmStatus().isEmpty());
         assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
         assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
@@ -30,6 +33,7 @@ public class NoiseTest {
         assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
 
+        // Calculate histogram
         int quart1 = 0;
         int quart2 = 0;
         int quart3 = 0;
@@ -52,6 +56,8 @@ public class NoiseTest {
             }
         }
 
+        // Check distribution
+        // Each quarts gets 25%
         assertTrue(quart1 < 26000);
         assertTrue(quart2 < 26000);
         assertTrue(quart3 < 26000);
