@@ -36,6 +36,10 @@ public class CollectorToPVTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        // Force type support loading
+        Expression<Double> exp = org.epics.pvmanager.types.ExpressionLanguage.doublePv("test");
+        if (exp.hashCode() == 0)
+            System.out.println("Loaded");
     }
 
     @AfterClass
