@@ -195,14 +195,30 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp plus(TimeDuration duration) {
-        long secToAdd = duration.getNanoSec() / 1000000000;
-        long nanoToAdd = duration.getNanoSec() % 1000000000;
-        long newNano = nanoSec + nanoToAdd;
-        if (newNano > 999999999) {
-            newNano -= 1000000000;
-            secToAdd += 1;
+        return createWithCarry(unixSec, nanoSec + duration.getNanoSec());
+    }
+
+    /**
+     * Creates a new time stamp by carrying nanosecs into seconds if necessary.
+     *
+     * @param seconds new seconds
+     * @param nanos new nanoseconds (can be the whole long range)
+     * @return the new timestamp
+     */
+    private static TimeStamp createWithCarry(long seconds, long nanos) {
+        if (nanos > 999999999) {
+            seconds = seconds + nanos / 1000000000;
+            nanos = nanos % 1000000000;
         }
-        return new TimeStamp(unixSec + secToAdd, newNano);
+
+        if (nanos < 0) {
+            long pastSec = nanos / 1000000000;
+            pastSec--;
+            seconds += pastSec;
+            nanos -= pastSec * 1000000000;
+        }
+
+        return new TimeStamp(seconds, nanos);
     }
 
     /**
@@ -211,7 +227,7 @@ public class TimeStamp implements Comparable {
      * @return a new timestamp
      */
     public TimeStamp minus(TimeDuration duration) {
-        return new TimeStamp(unixSec - (duration.getNanoSec() / 1000000000), nanoSec - (duration.getNanoSec() % 1000000000));
+        return createWithCarry(unixSec, nanoSec - duration.getNanoSec());
     }
 
     @Override

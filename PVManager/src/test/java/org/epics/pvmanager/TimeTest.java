@@ -5,12 +5,6 @@
 
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.TimeDuration;
-import org.epics.pvmanager.TimeStamp;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -23,27 +17,23 @@ public class TimeTest {
     public TimeTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void nanoSecCarry() {
         TimeStamp time = TimeStamp.epicsTime(100, 100000000);
         TimeStamp newTime = time.plus(TimeDuration.nanos(999000000));
         assertEquals(TimeStamp.epicsTime(101, 99000000), newTime);
+
+        newTime = time.plus(TimeDuration.ms(1000));
+        assertEquals(TimeStamp.epicsTime(101, 100000000), newTime);
+
+        newTime = time.plus(TimeDuration.ms(5443));
+        assertEquals(TimeStamp.epicsTime(105, 543000000), newTime);
+
+        newTime = time.minus(TimeDuration.ms(1000));
+        assertEquals(TimeStamp.epicsTime(99, 100000000), newTime);
+
+        newTime = time.minus(TimeDuration.nanos(999000000));
+        assertEquals(TimeStamp.epicsTime(99, 101000000), newTime);
     }
 
 }

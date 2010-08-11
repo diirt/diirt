@@ -40,7 +40,7 @@ public class TimeDuration {
      * @throws IllegalArgumentException if the duration is negative
      */
     public static TimeDuration ms(int ms) {
-        return new TimeDuration(ms * 1000000);
+        return new TimeDuration(((long) ms) * 1000000);
     }
 
     /**
