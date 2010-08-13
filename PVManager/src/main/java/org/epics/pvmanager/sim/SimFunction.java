@@ -7,6 +7,8 @@ package org.epics.pvmanager.sim;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
@@ -21,6 +23,8 @@ import org.epics.pvmanager.data.ValueFactory;
  * @author carcassi
  */
 public abstract class SimFunction<T> {
+
+    private static final Logger log = Logger.getLogger(SimFunction.class.getName());
 
     private double secondsBeetwenSamples;
     private Class<T> classToken;
@@ -59,6 +63,14 @@ public abstract class SimFunction<T> {
             throw new IllegalArgumentException("Function is of type " + classToken.getSimpleName() + " (requested " + cache.getType().getSimpleName() + ")");
         }
 
+        // The timer only accepts interval up to the millisecond.
+        // For intervals shorter than that, we calculate the extra samples
+        // we need to generate within each time execution.
+        long intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000);
+        if (intervalBetweenExecution == 0)
+            intervalBetweenExecution = 1;
+        final int samplesPerExecution = (int) ((double) intervalBetweenExecution / (secondsBeetwenSamples * 1000.0));
+
         if (task != null)
             task.cancel();
         task = new TimerTask() {
@@ -67,6 +79,7 @@ public abstract class SimFunction<T> {
 
                 @Override
                 public void close() {
+                    log.fine("Closing " + this);
                     cancel();
                 }
 
@@ -79,10 +92,17 @@ public abstract class SimFunction<T> {
 
             @Override
             public void run() {
-                processor.processValue(null);
+                // Protect the timer thread for possible problems.
+                try {
+                    for (int i = 0; i < samplesPerExecution; i++) {
+                        processor.processValue(null);
+                    }
+                } catch (Exception ex) {
+                    log.log(Level.WARNING, "Data simulation problem", ex);
+                }
             }
         };
-        timer.scheduleAtFixedRate(task, 0, (long) (secondsBeetwenSamples * 1000));
+        timer.scheduleAtFixedRate(task, 0, intervalBetweenExecution);
     }
 
     /**

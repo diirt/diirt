@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
  */
 class NameParser {
 
-    static final Pattern doublePattern = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*");
-    static final Pattern commaSeparatedDoubles = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*");
-    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+)\\s*)*)\\))?");
+    static final Pattern doublePattern = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*");
+    static final Pattern commaSeparatedDoubles = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*)*");
+    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*)*)\\))?");
 
     /**
      * Parses a comma separated list of arguments and returns them as a list.
@@ -61,7 +61,7 @@ class NameParser {
     static List<Object> parseFunction(String string) {
         Matcher matcher = functionAndParameter.matcher(string);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("Syntax error: function like xxx(num1, num2, ...)");
+            throw new IllegalArgumentException("Syntax error: function should be like xxx(num1, num2, ...) and was " + string);
         }
 
         List<Object> parameters = new ArrayList<Object>();

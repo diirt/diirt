@@ -133,6 +133,140 @@ public class ValueFactory {
     }
 
     /**
+     * Creates a new immutable VStatistics.
+     */
+    public static VStatistics newVStatistics(final double average, final double stdDev,
+            final double min, final double max, final int nSamples,
+            final AlarmSeverity alarmSeverity,
+            final Set<String> alarmStatus, final List<String> possibleAlarms, final TimeStamp timeStamp,
+            final Integer timeUserTag,
+            final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
+            final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
+            final Double upperAlarmLimit, final Double upperDisplayLimit,
+            final Double lowerCtrlLimit, final Double upperCtrlLimit) {
+        return new VStatistics() {
+
+            @Override
+            public Double getAverage() {
+                return average;
+            }
+
+            @Override
+            public Double getStdDev() {
+                return stdDev;
+            }
+
+            @Override
+            public Double getMin() {
+                return min;
+            }
+
+            @Override
+            public Double getMax() {
+                return max;
+            }
+
+            @Override
+            public Integer getNSamples() {
+                return nSamples;
+            }
+
+            @Override
+            public Double getLowerCtrlLimit() {
+                return lowerCtrlLimit;
+            }
+
+            @Override
+            public Double getUpperCtrlLimit() {
+                return upperCtrlLimit;
+            }
+
+            @Override
+            public Double getLowerDisplayLimit() {
+                return lowerDisplayLimit;
+            }
+
+            @Override
+            public Double getLowerAlarmLimit() {
+                return lowerAlarmLimit;
+            }
+
+            @Override
+            public Double getLowerWarningLimit() {
+                return lowerWarningLimit;
+            }
+
+            @Override
+            public String getUnits() {
+                return units;
+            }
+
+            @Override
+            public NumberFormat getFormat() {
+                return numberFormat;
+            }
+
+            @Override
+            public Double getUpperWarningLimit() {
+                return upperWarningLimit;
+            }
+
+            @Override
+            public Double getUpperAlarmLimit() {
+                return upperAlarmLimit;
+            }
+
+            @Override
+            public Double getUpperDisplayLimit() {
+                return upperDisplayLimit;
+            }
+
+            @Override
+            public Integer getTimeUserTag() {
+                return timeUserTag;
+            }
+
+            @Override
+            public TimeStamp getTimeStamp() {
+                return timeStamp;
+            }
+
+            @Override
+            public AlarmSeverity getAlarmSeverity() {
+                return alarmSeverity;
+            }
+
+            @Override
+            public Set<String> getAlarmStatus() {
+                return alarmStatus;
+            }
+
+            @Override
+            public List<String> getPossibleAlarms() {
+                return possibleAlarms;
+            }
+        };
+    }
+
+    /**
+     * Creates a new VStatistics by taking the metadata from a VDouble.
+     */
+    public static VStatistics newVStatistics(final double average, final double stdDev,
+            final double min, final double max, final int nSamples, final AlarmSeverity alarmSeverity,
+            final Set<String> alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
+            VDouble aValue) {
+        return newVStatistics(average, stdDev, min, max, nSamples,
+                alarmSeverity, alarmStatus, aValue.getPossibleAlarms(),
+                timeStamp,
+                timeUserTag,
+                aValue.getLowerDisplayLimit(), aValue.getLowerAlarmLimit(),
+                aValue.getLowerWarningLimit(), aValue.getUnits(),
+                aValue.getFormat(), aValue.getUpperWarningLimit(),
+                aValue.getUpperAlarmLimit(), aValue.getUpperDisplayLimit(),
+                aValue.getLowerCtrlLimit(), aValue.getUpperCtrlLimit());
+    }
+
+    /**
      * Creates new immutable VInt.
      */
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,

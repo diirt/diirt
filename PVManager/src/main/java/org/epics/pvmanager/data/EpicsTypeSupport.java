@@ -23,6 +23,7 @@ class EpicsTypeSupport {
             return;
 
         addScalar();
+        addStatistics();
 
         installed = true;
     }
@@ -35,6 +36,18 @@ class EpicsTypeSupport {
                 if (NullUtils.equalsOrBothNull(oldValue, newValue))
                     return new Notification<Scalar>(false, null);
                 return new Notification<Scalar>(true, newValue);
+            }
+        });
+    }
+
+    private static void addStatistics() {
+        // Add support for statistics: simply return the new value
+        TypeSupport.addTypeSupport(Statistics.class, new TypeSupport<Statistics>() {
+            @Override
+            public Notification<Statistics> prepareNotification(Statistics oldValue, Statistics newValue) {
+                if (NullUtils.equalsOrBothNull(oldValue, newValue))
+                    return new Notification<Statistics>(false, null);
+                return new Notification<Statistics>(true, newValue);
             }
         });
     }

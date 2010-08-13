@@ -44,5 +44,12 @@ public abstract class Aggregator<T, E> extends Function<T> {
         return lastCalculatedValue;
     }
 
+    /**
+     * Calculates the new value from a set of collected value. This function
+     * will never be called with an empty list
+     *
+     * @param data the new data to aggregate
+     * @return the aggregated value
+     */
     protected abstract T calculate(List<E> data);
 }
