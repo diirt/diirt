@@ -5,17 +5,8 @@
 
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.PullNotificator;
-import org.epics.pvmanager.Scanner;
-import org.epics.pvmanager.PV;
+import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.LastValueAggregator;
-import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ThreadSwitch;
-import org.epics.pvmanager.QueueCollector;
-import org.epics.pvmanager.MonitorRecipe;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.junit.After;
@@ -86,9 +77,8 @@ public class CollectorToPVTest {
         });
         PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
-        MonitorRecipe connRecipe = new MonitorRecipe();
-        connRecipe.collector = collector;
-        connRecipe.caches.put(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
+        DataSourceRecipe connRecipe = new DataSourceRecipe();
+        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
         SimulationDataSource.simulatedData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
@@ -126,9 +116,8 @@ public class CollectorToPVTest {
         });
         PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
-        MonitorRecipe connRecipe = new MonitorRecipe();
-        connRecipe.collector = collector;
-        connRecipe.caches.put(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache);
+        DataSourceRecipe connRecipe = new DataSourceRecipe();
+        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
         SimulationDataSource.simulatedData().monitor(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
@@ -167,7 +156,7 @@ public class CollectorToPVTest {
 //        });
 //        PullNotificator<DoubleStatistics> notificator = new PullNotificator<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
 //        Scanner.scan(notificator, scanPeriodMs);
-//        MonitorRecipe connRecipe = new MonitorRecipe();
+//        PVRecipe connRecipe = new PVRecipe();
 //        connRecipe.cache = cache;
 //        connRecipe.collector = collector;
 //        connRecipe.pvName = SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);

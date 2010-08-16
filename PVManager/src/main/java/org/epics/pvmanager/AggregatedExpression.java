@@ -8,7 +8,7 @@ package org.epics.pvmanager;
 import java.util.List;
 
 /**
- * An expression that reprents a PV that is read at the UI scan rate.
+ * An expression that represents a PV that is read at the UI scan rate.
  * Objects of this class are not created directly but through the operators defined
  * in {@link PVExpressionLanguage}.
  *
@@ -16,28 +16,41 @@ import java.util.List;
  */
 public class AggregatedExpression<T> {
 
-    private List<MonitorRecipe> recipes;
-    private Class<T> outputType;
-    private Function<T> function;
+    private final DataSourceRecipe recipe;
+    private final Function<T> function;
     private final String defaultName;
 
-    public AggregatedExpression(List<MonitorRecipe> recipes, Class<T> outputType, Function<T> function, String defaultName) {
-        this.recipes = recipes;
-        this.outputType = outputType;
+    public AggregatedExpression(DataSourceRecipe recipe, Function<T> function, String defaultName) {
+        this.recipe = recipe;
         this.function = function;
         this.defaultName = defaultName;
+    }
+
+    public AggregatedExpression(List<AggregatedExpression<?>> childExpressions, Function<T> function, String defaultName) {
+        this.recipe = combineRecipes(childExpressions);
+        this.function = function;
+        this.defaultName = defaultName;
+    }
+
+    private static DataSourceRecipe combineRecipes(List<AggregatedExpression<?>> childExpressions) {
+        if (childExpressions.isEmpty())
+            return new DataSourceRecipe();
+
+        DataSourceRecipe recipe = childExpressions.get(0).getDataSourceRecipe();
+        for (int i = 1; i < childExpressions.size(); i++) {
+            DataSourceRecipe newRecipe = childExpressions.get(i).getDataSourceRecipe();
+            recipe = recipe.includeRecipe(newRecipe);
+        }
+
+        return recipe;
     }
 
     public String getDefaultName() {
         return defaultName;
     }
 
-    public List<MonitorRecipe> getMonitorRecipes() {
-        return recipes;
-    }
-
-    public Class<T> getOutputType() {
-        return outputType;
+    public DataSourceRecipe getDataSourceRecipe() {
+        return recipe;
     }
 
     public Function<T> getFunction() {

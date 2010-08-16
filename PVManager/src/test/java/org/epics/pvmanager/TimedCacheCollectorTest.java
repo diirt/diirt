@@ -5,11 +5,8 @@
 
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.ValueCache;
+import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.TimeDuration;
-import org.epics.pvmanager.MonitorRecipe;
-import org.epics.pvmanager.TimedCacheCollector;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import org.epics.pvmanager.jca.JCASupport;
 import org.junit.After;
@@ -51,9 +48,8 @@ public class TimedCacheCollectorTest {
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =
                 new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
-        MonitorRecipe monitorRecipe = new MonitorRecipe();
-        monitorRecipe.collector = collector;
-        monitorRecipe.caches.put(SimulationDataSource.mockPVName(1, 100, 300), cache);
+        DataSourceRecipe monitorRecipe = new DataSourceRecipe();
+        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap(SimulationDataSource.mockPVName(1, 100, 300), cache));
         SimulationDataSource.simulatedData().monitor(monitorRecipe);
 
         // After 100 ms there should be one element

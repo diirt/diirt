@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.MonitorRecipe;
+import org.epics.pvmanager.DataSourceRecipe;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.VDouble;
@@ -162,9 +162,12 @@ public class SimulationDataSource extends DataSource {
     }
 
     @Override
-    public void monitor(MonitorRecipe recipe) {
-        for (Map.Entry<String, ValueCache> entry : recipe.caches.entrySet()) {
-            createMonitor(recipe.collector, entry.getKey(), entry.getValue());
+    public void monitor(DataSourceRecipe recipe) {
+        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+            Collector collector = collEntry.getKey();
+            for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
+                createMonitor(collector, entry.getKey(), entry.getValue());
+            }
         }
     }
 

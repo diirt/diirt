@@ -77,36 +77,45 @@ public class CompositeDataSource extends DataSource {
     }
 
     @Override
-    public void monitor(MonitorRecipe connRecipe) {
-        Map<String, Map<String, ValueCache>> routingCaches = new HashMap<String, Map<String, ValueCache>>();
+    public void monitor(DataSourceRecipe recipe) {
+        Map<String, DataSourceRecipe> recipes = new HashMap<String, DataSourceRecipe>();
 
         // Iterate through the recipe to understand how to distribute
         // the calls
-        for (Map.Entry<String, ValueCache> entry : connRecipe.caches.entrySet()) {
-            String name = entry.getKey();
-            String dataSource = defaultDataSource;
+        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+            Map<String, Map<String, ValueCache>> routingCaches = new HashMap<String, Map<String, ValueCache>>();
+            Collector collector = collEntry.getKey();
+            for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
+                String name = entry.getKey();
+                String dataSource = defaultDataSource;
 
-            int indexDelimiter = name.indexOf(delimiter);
-            if (indexDelimiter != -1) {
-                dataSource = name.substring(0, indexDelimiter);
-                name = name.substring(indexDelimiter + delimiter.length());
+                int indexDelimiter = name.indexOf(delimiter);
+                if (indexDelimiter != -1) {
+                    dataSource = name.substring(0, indexDelimiter);
+                    name = name.substring(indexDelimiter + delimiter.length());
+                }
+
+                if (dataSource == null)
+                    throw new IllegalArgumentException("Channel " + name + " uses the default data source but one was never set.");
+
+                // Add recipe for the target dataSource
+                if (routingCaches.get(dataSource) == null)
+                    routingCaches.put(dataSource, new HashMap<String, ValueCache>());
+                routingCaches.get(dataSource).put(name, entry.getValue());
             }
 
-            if (dataSource == null)
-                throw new IllegalArgumentException("Channel " + name + " uses the default data source but one was never set.");
+            // Add to the recipes
+            for (Map.Entry<String, Map<String, ValueCache>> entry : routingCaches.entrySet()) {
+                if (recipes.get(entry.getKey()) == null)
+                    recipes.put(entry.getKey(), new DataSourceRecipe());
+                recipes.put(entry.getKey(), recipes.get(entry.getKey()).includeCollector(collector, entry.getValue()));
+            }
 
-            // Add recipe for the target dataSource
-            if (routingCaches.get(dataSource) == null)
-                routingCaches.put(dataSource, new HashMap<String, ValueCache>());
-            routingCaches.get(dataSource).put(name, entry.getValue());
         }
 
         // Dispatch calls to all the data sources
-        for (Map.Entry<String, Map<String, ValueCache>> entry : routingCaches.entrySet()) {
-            MonitorRecipe recipe = new MonitorRecipe();
-            recipe.caches = entry.getValue();
-            recipe.collector = connRecipe.collector;
-            dataSources.get(entry.getKey()).monitor(recipe);
+        for (Map.Entry<String, DataSourceRecipe> entry : recipes.entrySet()) {
+            dataSources.get(entry.getKey()).monitor(entry.getValue());
         }
     }
 

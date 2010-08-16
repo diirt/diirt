@@ -40,7 +40,7 @@ public class ExpressionLanguage {
     public static AggregatedExpression<VStatistics> statisticsOf(Expression<VDouble> doublePv) {
         Collector<VDouble> collector = new QueueCollector<VDouble>(doublePv.getFunction());
         return new AggregatedExpression<VStatistics>(doublePv.createMontiorRecipes(collector),
-                VStatistics.class, new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
+                new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
     }
 
 }

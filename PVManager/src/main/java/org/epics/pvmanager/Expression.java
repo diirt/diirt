@@ -5,9 +5,9 @@
 
 package org.epics.pvmanager;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An expression that represent a pv read at the CA rate.
@@ -18,8 +18,7 @@ import java.util.List;
  */
 public class Expression<T> {
 
-    private List<String> pvNames;
-    private List<ValueCache<?>> pvCaches;
+    private Map<String, ValueCache> caches;
     private Function<T> function;
     private final String defaultName;
 
@@ -30,25 +29,22 @@ public class Expression<T> {
      * @param pvType the type of the pv
      */
     public Expression(String pvName, Class<T> pvType) {
-        this.pvNames = Collections.singletonList(pvName);
         ValueCache<T> cache = new ValueCache<T>(pvType);
-        this.pvCaches = new ArrayList<ValueCache<?>>();
-        pvCaches.add(cache);
+        caches = new HashMap<String, ValueCache>();
+        caches.put(pvName, cache);
         this.function = cache;
         this.defaultName = pvName;
     }
 
     private Expression(List<Expression<?>> childExpressions, Function<T> function, String defaultName) {
-        pvNames = new ArrayList<String>();
-        pvCaches = new ArrayList<ValueCache<?>>();
+        caches = new HashMap<String, ValueCache>();
         for (Expression<?> childExpression : childExpressions) {
-            for (int nPv = 0; nPv < childExpression.getPvNames().size(); nPv++) {
-                String pvName = childExpression.getPvNames().get(nPv);
-                if (pvNames.contains(pvName)) {
+            for (Map.Entry<String, ValueCache> entry : childExpression.getCaches().entrySet()) {
+                String pvName = entry.getKey();
+                if (caches.keySet().contains(pvName)) {
                     throw new UnsupportedOperationException("Need to implement functions that take the same PV twice (right now we probably get double notifications)");
                 }
-                pvNames.add(pvName);
-                pvCaches.add(childExpression.getPvData().get(nPv));
+                caches.put(pvName, entry.getValue());
             }
         }
         this.function = function;
@@ -59,27 +55,17 @@ public class Expression<T> {
         return defaultName;
     }
 
-    public List<String> getPvNames() {
-        return pvNames;
-    }
-
-    public List<ValueCache<?>> getPvData() {
-        return pvCaches;
+    public Map<String, ValueCache> getCaches() {
+        return caches;
     }
 
     public Function<T> getFunction() {
         return function;
     }
 
-    public List<MonitorRecipe> createMontiorRecipes(Collector collector) {
-        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
-        MonitorRecipe recipe = new MonitorRecipe();
-        for (int nPv = 0; nPv < getPvNames().size(); nPv++) {
-            recipe.caches.put(getPvNames().get(nPv), getPvData().get(nPv));
-            recipe.collector = collector;
-        }
-        recipes.add(recipe);
-        return recipes;
+    public DataSourceRecipe createMontiorRecipes(Collector collector) {
+        DataSourceRecipe recipe = new DataSourceRecipe();
+        return recipe.includeCollector(collector, caches);
     }
 
 }

@@ -8,7 +8,6 @@ package org.epics.pvmanager.types;
 import org.epics.pvmanager.AggregatedExpression;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.Expression;
-import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.TimeDuration;
@@ -16,6 +15,7 @@ import org.epics.pvmanager.TimedCacheCollector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.epics.pvmanager.DataSourceRecipe;
 
 /**
  * Provides support for the standard types and the basic building blocks of
@@ -45,12 +45,9 @@ public class ExpressionLanguage {
      * @return an expression representing the list of results
      */
     public static <T> AggregatedExpression<List<T>> listOf(List<AggregatedExpression<T>> expressions) {
-        // The connections needed are the union of all connections.
         // Calculate all the needed functions to combine
-        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
         List<Function> functions = new ArrayList<Function>();
         for (AggregatedExpression<T> expression : expressions) {
-            recipes.addAll(expression.getMonitorRecipes());
             functions.add(expression.getFunction());
         }
 
@@ -65,8 +62,8 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        AggregatedExpression<List<T>> expression = new AggregatedExpression<List<T>>(recipes,
-                (Class<List<T>>) (Class) List.class, (Function<List<T>>) (Function) new ListOfFunction(functions), name);
+        AggregatedExpression<List<T>> expression = new AggregatedExpression<List<T>>((List<AggregatedExpression<?>>) (List) expressions,
+                (Function<List<T>>) (Function) new ListOfFunction(functions), name);
         return expression;
     }
 
@@ -78,7 +75,7 @@ public class ExpressionLanguage {
     public static AggregatedExpression<Double> averageOf(Expression<Double> doublePv) {
         Collector<Double> collector = new QueueCollector<Double>(doublePv.getFunction());
         return new AggregatedExpression<Double>(doublePv.createMontiorRecipes(collector),
-                Double.class, new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
+                new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
     }
 
     /**
@@ -104,7 +101,7 @@ public class ExpressionLanguage {
     public static AggregatedExpression<DoubleStatistics> statisticsOf(Expression<Double> doublePv) {
         Collector<Double> collector = new QueueCollector<Double>(doublePv.getFunction());
         return new AggregatedExpression<DoubleStatistics>(doublePv.createMontiorRecipes(collector),
-                DoubleStatistics.class, new StatisticsAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
+                new StatisticsAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
     }
 
     /**
@@ -141,39 +138,37 @@ public class ExpressionLanguage {
 
     public static <T> AggregatedExpression<SynchronizedArray<T>>
             synchronizedArrayOf(TimeDuration tolerance, List<Expression<T>> expressions) {
-        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
         List<String> names = new ArrayList<String>();
         List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
+        DataSourceRecipe recipe = new DataSourceRecipe();
         for (Expression<T> expression : expressions) {
             TimedCacheCollector<T> collector =
                     new TimedCacheCollector<T>(expression.getFunction(), tolerance.multiplyBy(10));
             collectors.add(collector);
-            recipes.addAll(expression.createMontiorRecipes(collector));
+            recipe = recipe.includeRecipe(expression.createMontiorRecipes(collector));
             names.add(expression.getDefaultName());
         }
         SynchronizedArrayAggregator<T> aggregator =
                 new SynchronizedArrayAggregator<T>(names, collectors, TimeDuration.ms(100));
-        return new AggregatedExpression<SynchronizedArray<T>>(recipes,
-                aggregator.getType(),
+        return new AggregatedExpression<SynchronizedArray<T>>(recipe,
                 aggregator, "syncArray");
     }
 
     public static <T> AggregatedExpression<SynchronizedArray<T>>
             synchronizedArrayOf(TimeDuration tolerance, TimeDuration distanceBetweenSamples, List<Expression<T>> expressions) {
-        List<MonitorRecipe> recipes = new ArrayList<MonitorRecipe>();
         List<String> names = new ArrayList<String>();
         List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
+        DataSourceRecipe recipe = new DataSourceRecipe();
         for (Expression<T> expression : expressions) {
             TimedCacheCollector<T> collector =
                     new TimedCacheCollector<T>(expression.getFunction(), distanceBetweenSamples.multiplyBy(5));
             collectors.add(collector);
-            recipes.addAll(expression.createMontiorRecipes(collector));
+            recipe = recipe.includeRecipe(expression.createMontiorRecipes(collector));
             names.add(expression.getDefaultName());
         }
         SynchronizedArrayAggregator<T> aggregator =
                 new SynchronizedArrayAggregator<T>(names, collectors, tolerance);
-        return new AggregatedExpression<SynchronizedArray<T>>(recipes,
-                aggregator.getType(),
+        return new AggregatedExpression<SynchronizedArray<T>>(recipe,
                 aggregator, "syncArray");
     }
 

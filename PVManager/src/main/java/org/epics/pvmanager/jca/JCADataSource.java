@@ -17,10 +17,10 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.ValueCache;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.epics.pvmanager.DataSourceRecipe;
 
 /**
  * A data source that uses jca.
@@ -144,16 +144,19 @@ class JCADataSource extends DataSource {
     }
 
     @Override
-    public synchronized void monitor(MonitorRecipe connRecipe) {
-        for (Map.Entry<String, ValueCache> entry : connRecipe.caches.entrySet()) {
-            if (entry.getValue().getType().equals(Double.class)) {
-                @SuppressWarnings("unchecked")
-                ValueCache<Double> cache = (ValueCache<Double>) entry.getValue();
-                monitor(entry.getKey(), connRecipe.collector, cache);
-            } else {
-                throw new UnsupportedOperationException("Type "
-                        + entry.getValue().getType().getName()
-                        + " is not yet supported");
+    public synchronized void monitor(DataSourceRecipe connRecipe) {
+        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : connRecipe.getChannelsPerCollectors().entrySet()) {
+            Collector collector = collEntry.getKey();
+            for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
+                if (entry.getValue().getType().equals(Double.class)) {
+                    @SuppressWarnings("unchecked")
+                    ValueCache<Double> cache = (ValueCache<Double>) entry.getValue();
+                    monitor(entry.getKey(), collector, cache);
+                } else {
+                    throw new UnsupportedOperationException("Type "
+                            + entry.getValue().getType().getName()
+                            + " is not yet supported");
+                }
             }
         }
     }

@@ -73,5 +73,5 @@ public abstract class DataSource {
 
     }
 
-    public abstract void monitor(MonitorRecipe connRecipe);
+    public abstract void monitor(DataSourceRecipe connRecipe);
 }

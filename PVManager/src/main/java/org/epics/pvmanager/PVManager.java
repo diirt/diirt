@@ -44,7 +44,7 @@ public class PVManager {
     public static <T> PVManagerExpression<T> read(Expression<T> pvExpression) {
         Collector<T> collector = new QueueCollector<T>(pvExpression.getFunction());
         AggregatedExpression<T> aggregatedExpression = new AggregatedExpression<T>(pvExpression.createMontiorRecipes(collector),
-                pvExpression.getFunction().getType(), new LastValueAggregator<T>(pvExpression.getFunction().getType(), collector), pvExpression.getDefaultName());
+                new LastValueAggregator<T>(pvExpression.getFunction().getType(), collector), pvExpression.getDefaultName());
         return new PVManagerExpression<T>(aggregatedExpression);
     }
 
@@ -119,14 +119,12 @@ public class PVManager {
             }
 
             // Create PV and connect
-            PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getOutputType());
-            List<MonitorRecipe> monRecipes = aggregatedPVExpression.getMonitorRecipes();
+            PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getFunction().getType());
+            DataSourceRecipe pvRecipe = aggregatedPVExpression.getDataSourceRecipe();
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
             PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction, onThread);
             Scanner.scan(notificator, scanPeriodMs);
-            for (MonitorRecipe recipe : monRecipes) {
-                source.monitor(recipe);
-            }
+            source.monitor(pvRecipe);
             return pv;
         }
     }

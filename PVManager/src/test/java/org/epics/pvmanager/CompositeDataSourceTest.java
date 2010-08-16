@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager;
 
+import java.util.Map;
+import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,12 +43,12 @@ public class CompositeDataSourceTest {
     public void tearDown() {
     }
 
-    private MonitorRecipe mock1Recipes;
-    private MonitorRecipe mock2Recipes;
+    private DataSourceRecipe mock1Recipes;
+    private DataSourceRecipe mock2Recipes;
     DataSource mock1 = new DataSource() {
 
         @Override
-        public void monitor(MonitorRecipe connRecipe) {
+        public void monitor(DataSourceRecipe connRecipe) {
             mock1Recipes = connRecipe;
         }
     };
@@ -54,7 +56,7 @@ public class CompositeDataSourceTest {
     DataSource mock2 = new DataSource() {
 
         @Override
-        public void monitor(MonitorRecipe connRecipe) {
+        public void monitor(DataSourceRecipe connRecipe) {
             mock2Recipes = connRecipe;
         }
     };
@@ -68,14 +70,16 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        MonitorRecipe recipe = new MonitorRecipe();
-        recipe.collector = new QueueCollector<Double>(new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv01", new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv03", new ValueCache<Double>(Double.class));
+        DataSourceRecipe recipe = new DataSourceRecipe();
+        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+        caches.put("pv01", new ValueCache<Double>(Double.class));
+        caches.put("pv03", new ValueCache<Double>(Double.class));
+        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
+                caches);
 
         // Call and check
         composite.monitor(recipe);
-        assertThat(mock1Recipes.caches, equalTo(recipe.caches));
+        assertThat(mock1Recipes.getChannelsPerCollectors(), equalTo(recipe.getChannelsPerCollectors()));
         assertThat(mock2Recipes, nullValue());
     }
 
@@ -88,20 +92,24 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        MonitorRecipe recipe = new MonitorRecipe();
-        recipe.collector = new QueueCollector<Double>(new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv01", new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv03", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock1://pv02", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock2://pv04", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock1://pv05", new ValueCache<Double>(Double.class));
-
+        DataSourceRecipe recipe = new DataSourceRecipe();
+        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+        caches.put("pv01", new ValueCache<Double>(Double.class));
+        caches.put("pv03", new ValueCache<Double>(Double.class));
+        caches.put("mock1://pv02", new ValueCache<Double>(Double.class));
+        caches.put("mock2://pv04", new ValueCache<Double>(Double.class));
+        caches.put("mock1://pv05", new ValueCache<Double>(Double.class));
+        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
+                caches);
+        
         // Call and check
         composite.monitor(recipe);
-        assertThat(mock1Recipes.caches.size(), equalTo(4));
-        assertThat(mock2Recipes.caches.size(), equalTo(1));
-        assertThat(mock1Recipes.caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
-        assertThat(mock2Recipes.caches.keySet(), hasItem("pv04"));
+        Map<String, ValueCache> mock1Caches = mock1Recipes.getChannelsPerCollectors().values().iterator().next();
+        Map<String, ValueCache> mock2Caches = mock2Recipes.getChannelsPerCollectors().values().iterator().next();
+        assertThat(mock1Caches.size(), equalTo(4));
+        assertThat(mock2Caches.size(), equalTo(1));
+        assertThat(mock1Caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
+        assertThat(mock2Caches.keySet(), hasItem("pv04"));
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -112,10 +120,12 @@ public class CompositeDataSourceTest {
         composite.putDataSource("mock2", mock2);
 
         // Call only default
-        MonitorRecipe recipe = new MonitorRecipe();
-        recipe.collector = new QueueCollector<Double>(new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv01", new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv03", new ValueCache<Double>(Double.class));
+        DataSourceRecipe recipe = new DataSourceRecipe();
+        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+        caches.put("pv01", new ValueCache<Double>(Double.class));
+        caches.put("pv03", new ValueCache<Double>(Double.class));
+        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
+                caches);
 
         // Should cause error
         composite.monitor(recipe);
@@ -142,20 +152,25 @@ public class CompositeDataSourceTest {
         composite.setDelimiter("?");
 
         // Call only default
-        MonitorRecipe recipe = new MonitorRecipe();
-        recipe.collector = new QueueCollector<Double>(new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv01", new ValueCache<Double>(Double.class));
-        recipe.caches.put("pv03", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock1?pv02", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock2?pv04", new ValueCache<Double>(Double.class));
-        recipe.caches.put("mock1?pv05", new ValueCache<Double>(Double.class));
+        // Call only default
+        DataSourceRecipe recipe = new DataSourceRecipe();
+        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+        caches.put("pv01", new ValueCache<Double>(Double.class));
+        caches.put("pv03", new ValueCache<Double>(Double.class));
+        caches.put("mock1?pv02", new ValueCache<Double>(Double.class));
+        caches.put("mock2?pv04", new ValueCache<Double>(Double.class));
+        caches.put("mock1?pv05", new ValueCache<Double>(Double.class));
+        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
+                caches);
 
         // Call and check
         composite.monitor(recipe);
-        assertThat(mock1Recipes.caches.size(), equalTo(4));
-        assertThat(mock2Recipes.caches.size(), equalTo(1));
-        assertThat(mock1Recipes.caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
-        assertThat(mock2Recipes.caches.keySet(), hasItem("pv04"));
+        Map<String, ValueCache> mock1Caches = mock1Recipes.getChannelsPerCollectors().values().iterator().next();
+        Map<String, ValueCache> mock2Caches = mock2Recipes.getChannelsPerCollectors().values().iterator().next();
+        assertThat(mock1Caches.size(), equalTo(4));
+        assertThat(mock2Caches.size(), equalTo(1));
+        assertThat(mock1Caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
+        assertThat(mock2Caches.keySet(), hasItem("pv04"));
     }
 
 }

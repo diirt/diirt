@@ -5,10 +5,9 @@
 package org.epics.pvmanager.jca;
 
 
-import org.epics.pvmanager.jca.JCASupport;
+import java.util.Collections;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.MonitorRecipe;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ValueCache;
@@ -17,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
+import org.epics.pvmanager.DataSourceRecipe;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -78,10 +78,11 @@ public class ConnectionManagerTestOld {
 
             @Override
             public void run() {
-		MonitorRecipe monRecipe = new MonitorRecipe();
-		monRecipe.collector = collector;
-                monRecipe.caches.put("pvk01", cache);
-		JCASupport.jca().monitor(monRecipe);
+                DataSourceRecipe connRecipe = new DataSourceRecipe();
+                connRecipe = connRecipe.includeCollector(collector,
+                        Collections.<String,ValueCache>singletonMap("pvk01", cache));
+
+		JCASupport.jca().monitor(connRecipe);
 	    }
 	});
 	Thread.sleep(5000);
