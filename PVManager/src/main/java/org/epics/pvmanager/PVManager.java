@@ -120,11 +120,13 @@ public class PVManager {
 
             // Create PV and connect
             PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getFunction().getType());
-            DataSourceRecipe pvRecipe = aggregatedPVExpression.getDataSourceRecipe();
+            DataSourceRecipe dataRecipe = aggregatedPVExpression.getDataSourceRecipe();
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
-            PullNotificator<T> notificator = new PullNotificator<T>(pv, aggregatedFunction, onThread);
+            Notifier<T> notificator = new Notifier<T>(pv, aggregatedFunction, onThread);
             Scanner.scan(notificator, scanPeriodMs);
-            source.monitor(pvRecipe);
+            source.monitor(dataRecipe);
+            PVRecipe recipe = new PVRecipe(dataRecipe, source, notificator);
+            notificator.setPvRecipe(recipe);
             return pv;
         }
     }

@@ -8,10 +8,14 @@ package org.epics.pvmanager.sim;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,17 +165,32 @@ public class SimulationDataSource extends DataSource {
         return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
     }
 
+    private static Map<DataSourceRecipe, Set<SimFunction<?>>> registeredFunctions = new ConcurrentHashMap<DataSourceRecipe, Set<SimFunction<?>>>();
+
     @Override
     public void monitor(DataSourceRecipe recipe) {
+        Set<SimFunction<?>> functions = new HashSet<SimFunction<?>>();
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
-                createMonitor(collector, entry.getKey(), entry.getValue());
+                SimFunction<?> simFunction = createMonitor(collector, entry.getKey(), entry.getValue());
+                functions.add(simFunction);
             }
         }
+        registeredFunctions.put(recipe, functions);
     }
 
-    public void createMonitor(Collector collector, String pvName, ValueCache<?> cache) {
+    @Override
+    public void disconnect(DataSourceRecipe recipe) {
+        Set<SimFunction<?>> functions = registeredFunctions.get(recipe);
+        for (SimFunction<?> function : functions) {
+            function.stop();
+        }
+        registeredFunctions.remove(recipe);
+        timer.purge();
+    }
+
+    public SimFunction<?> createMonitor(Collector collector, String pvName, ValueCache<?> cache) {
         if (cache.getType().equals(Double.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<Double> doubleCache = (ValueCache<Double>) cache;
@@ -183,16 +202,18 @@ public class SimulationDataSource extends DataSource {
         } else if (cache.getType().equals(VDouble.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;
-            connectVDouble(pvName, collector, vDoubleCache);
+            return connectVDouble(pvName, collector, vDoubleCache);
         } else {
             throw new UnsupportedOperationException("Type " + cache.getType().getName() + " is not yet supported");
         }
+        return null;
     }
 
-    private void connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
+    private SimFunction<?> connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
         @SuppressWarnings("unchecked")
         final SimFunction<VDouble> ramp = (SimFunction<VDouble>) NameParser.createFunction(name);
         ramp.start(timer, collector, cache);
+        return ramp;
     }
 
 }

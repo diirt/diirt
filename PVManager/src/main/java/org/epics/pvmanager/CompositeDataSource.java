@@ -76,9 +76,14 @@ public class CompositeDataSource extends DataSource {
         this.defaultDataSource = defaultDataSource;
     }
 
+    // Need to remember how the recipes where split, so that they can be
+    // re-sent for disconnection
+    private Map<DataSourceRecipe, Map<String, DataSourceRecipe>> splitRecipes =
+            new ConcurrentHashMap<DataSourceRecipe, Map<String, DataSourceRecipe>>();
+
     @Override
     public void monitor(DataSourceRecipe recipe) {
-        Map<String, DataSourceRecipe> recipes = new HashMap<String, DataSourceRecipe>();
+        Map<String, DataSourceRecipe> splitRecipe = new HashMap<String, DataSourceRecipe>();
 
         // Iterate through the recipe to understand how to distribute
         // the calls
@@ -106,17 +111,44 @@ public class CompositeDataSource extends DataSource {
 
             // Add to the recipes
             for (Map.Entry<String, Map<String, ValueCache>> entry : routingCaches.entrySet()) {
-                if (recipes.get(entry.getKey()) == null)
-                    recipes.put(entry.getKey(), new DataSourceRecipe());
-                recipes.put(entry.getKey(), recipes.get(entry.getKey()).includeCollector(collector, entry.getValue()));
+                if (splitRecipe.get(entry.getKey()) == null)
+                    splitRecipe.put(entry.getKey(), new DataSourceRecipe());
+                splitRecipe.put(entry.getKey(), splitRecipe.get(entry.getKey()).includeCollector(collector, entry.getValue()));
             }
 
         }
 
+        splitRecipes.put(recipe, splitRecipe);
+
         // Dispatch calls to all the data sources
-        for (Map.Entry<String, DataSourceRecipe> entry : recipes.entrySet()) {
-            dataSources.get(entry.getKey()).monitor(entry.getValue());
+        for (Map.Entry<String, DataSourceRecipe> entry : splitRecipe.entrySet()) {
+            try {
+                dataSources.get(entry.getKey()).monitor(entry.getValue());
+            } catch(Exception ex) {
+                // If data source fail, still go and connect the others
+            }
         }
     }
+
+    @Override
+    public void disconnect(DataSourceRecipe recipe) {
+        Map<String, DataSourceRecipe> splitRecipe = splitRecipes.get(recipe);
+        if (splitRecipe == null) {
+            throw new IllegalStateException("Recipe was never opened or already closed");
+        }
+
+        // Dispatch calls to all the data sources
+        for (Map.Entry<String, DataSourceRecipe> entry : splitRecipe.entrySet()) {
+            try {
+                dataSources.get(entry.getKey()).disconnect(entry.getValue());
+            } catch(Exception ex) {
+                // If a data source fails, still go and disconnect the others
+            }
+        }
+
+        splitRecipes.remove(recipe);
+    }
+
+
 
 }

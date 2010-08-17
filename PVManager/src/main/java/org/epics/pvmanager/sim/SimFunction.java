@@ -103,6 +103,18 @@ public abstract class SimFunction<T> {
             }
         };
         timer.scheduleAtFixedRate(task, 0, intervalBetweenExecution);
+        log.log(Level.FINE, "Synch starting {0}", task);
+    }
+
+    /**
+     * Stops the variable from further notifications.
+     */
+    public void stop() {
+        if (task != null) {
+            task.cancel();
+            log.log(Level.FINE, "Synch closing {0}", task);
+        }
+        task = null;
     }
 
     /**

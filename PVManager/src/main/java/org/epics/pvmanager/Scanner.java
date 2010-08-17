@@ -18,7 +18,7 @@ class Scanner {
     private static Logger log = Logger.getLogger(Scanner.class.getName());
     private static Timer timer = new Timer("PV Monitor Scanner", true);
 
-    static void scan(final PullNotificator notificator, long periodInMs) {
+    static void scan(final Notifier notificator, long periodInMs) {
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -27,6 +27,7 @@ class Scanner {
                     notificator.notifyPv();
                 } else {
                     cancel();
+                    timer.purge();
                     log.fine("Stopped scanning " + notificator);
                 }
             }

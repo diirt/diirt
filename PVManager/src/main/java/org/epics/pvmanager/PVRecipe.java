@@ -5,10 +5,6 @@
 
 package org.epics.pvmanager;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Represents all information needed to create a PV.
  * <p>
@@ -18,48 +14,48 @@ import java.util.Map;
  */
 class PVRecipe {
 
-    private final Map<Collector, Map<String, ValueCache>> channelsPerCollector;
-    private final PullNotificator notificator;
-
-    PVRecipe() {
-        channelsPerCollector = Collections.emptyMap();
-        notificator = null;
-    }
+    private final DataSourceRecipe dataSourceRecipe;
+    private final DataSource dataSource;
+    private final Notifier notificator;
 
     /**
      * Creates a new recipe. The collections passed to the constructor must
      * already be immutable copies.
      *
-     * @param channelsPerCollector the list of all channels needed by each collector
+     * @param dataSourceRecipe the list of all channels needed by each collector
      * @param notificator 
      */
-    PVRecipe(Map<Collector, Map<String, ValueCache>> channelsPerCollector, PullNotificator notificator) {
-        this.channelsPerCollector = channelsPerCollector;
+    PVRecipe(DataSourceRecipe dataSourceRecipe, DataSource dataSource, Notifier notificator) {
+        this.dataSourceRecipe = dataSourceRecipe;
+        this.dataSource = dataSource;
         this.notificator = notificator;
     }
 
     /**
-     * Creates a new recipe by adding the new collector and the new caches.
+     * The recipe used by the DataSource to connect all required channels.
      *
-     * @param collector the new collector
-     * @param caches the caches that the collector depends on
-     * @return a new recipe
+     * @return the data recipe
      */
-    PVRecipe includeCollector(Collector collector, Map<String, ValueCache> caches) {
-        Map<Collector, Map<String, ValueCache>> newChannelsPerCollector =
-                new HashMap<Collector, Map<String, ValueCache>>(channelsPerCollector);
-        Map<String, ValueCache> newCaches =
-                Collections.unmodifiableMap(new HashMap<String, ValueCache>(caches));
-        newChannelsPerCollector.put(collector, newCaches);
-        return new PVRecipe(Collections.unmodifiableMap(newChannelsPerCollector), notificator);
+    DataSourceRecipe getDataSourceRecipe() {
+        return dataSourceRecipe;
     }
 
-    public Map<Collector, Map<String, ValueCache>> getChannelsPerCollectors() {
-        return channelsPerCollector;
-    }
-
-    PullNotificator getNotificator() {
+    /**
+     * The notifier used for the PV.
+     *
+     * @return the notifier
+     */
+    Notifier getNotificator() {
         return notificator;
+    }
+
+    /**
+     * The data source used to connect to the data.
+     *
+     * @return the data source
+     */
+    DataSource getDataSource() {
+        return dataSource;
     }
 
 }

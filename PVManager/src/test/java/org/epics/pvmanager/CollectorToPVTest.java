@@ -75,7 +75,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Notifier<Double> notificator = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         DataSourceRecipe connRecipe = new DataSourceRecipe();
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
@@ -114,7 +114,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        PullNotificator<Double> notificator = new PullNotificator<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Notifier<Double> notificator = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
         Scanner.scan(notificator, scanPeriodMs);
         DataSourceRecipe connRecipe = new DataSourceRecipe();
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
@@ -154,7 +154,7 @@ public class CollectorToPVTest {
 //                });
 //            }
 //        });
-//        PullNotificator<DoubleStatistics> notificator = new PullNotificator<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
+//        Notifier<DoubleStatistics> notificator = new Notifier<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
 //        Scanner.scan(notificator, scanPeriodMs);
 //        PVRecipe connRecipe = new PVRecipe();
 //        connRecipe.cache = cache;

@@ -73,5 +73,25 @@ public abstract class DataSource {
 
     }
 
-    public abstract void monitor(DataSourceRecipe connRecipe);
+    /**
+     * Connects to a set of channels based on the given recipe.
+     * <p>
+     * The data source must update the value caches relative to each channel.
+     * Before updating any cache, it must lock the collector relative to that
+     * cache and after any update it must notify the collector.
+     *
+     * @param recipe the instructions for the data connection
+     */
+    public abstract void monitor(DataSourceRecipe recipe);
+
+    /**
+     * Disconnects the set of channels given by the recipe.
+     * <p>
+     * The disconnect call is guaranteed to be given the same object,
+     * so that the recipe itself can be used as a key in a map to retrieve
+     * the list of resources needed to be closed.
+     *
+     * @param recipe the instructions for the data connection
+     */
+    public abstract void disconnect(DataSourceRecipe recipe);
 }
