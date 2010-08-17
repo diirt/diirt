@@ -22,6 +22,17 @@ import java.util.Set;
  */
 public class ValueFactory {
 
+    public static VMultiDouble newVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
+            Set<String> alarmStatus, List<String> possibleAlarms,
+            TimeStamp timeStamp, Integer timeUserTag, Double lowerDisplayLimit,
+            Double lowerCtrlLimit, Double lowerAlarmLimit, Double lowerWarningLimit,
+            String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
+            Double upperCtrlLimit, Double upperDisplayLimit) {
+        return new IVMultiDouble(values, alarmSeverity, alarmStatus, possibleAlarms,
+                timeStamp, timeUserTag, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit,
+                units, format, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
+    }
+
     /**
      * Creates new immutable VDouble.
      */

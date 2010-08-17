@@ -124,7 +124,10 @@ public abstract class TypeSupport<T> {
     public static <T> TimeStamp timestampOf(T value) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
-        return ((TimedTypeSupport<T>) recursiveTypeSupportFor(typeClass)).extractTimestamp(value);
+        TimedTypeSupport<T> timeSupport = (TimedTypeSupport<T>) recursiveTypeSupportFor(typeClass);
+        if (timeSupport == null)
+            throw new RuntimeException("No support found for type " + typeClass);
+        return (timeSupport).extractTimestamp(value);
     }
 
 }

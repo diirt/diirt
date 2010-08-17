@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.types;
+package org.epics.pvmanager.data;
 
 import java.util.Collections;
 import org.epics.pvmanager.DataRecipe;
@@ -13,7 +13,6 @@ import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.TimedCacheCollector;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.jca.JCASupport;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -34,8 +33,7 @@ public class SynchronizedArrayTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        // Installs JCA types
-        JCASupport.jca();
+        EpicsTypeSupport.install();
     }
 
     @AfterClass
@@ -53,48 +51,48 @@ public class SynchronizedArrayTest {
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
         int nPvs = 100;
-        List<ValueCache<DBR_TIME_Double>> caches = new ArrayList<ValueCache<DBR_TIME_Double>>();
+        List<ValueCache<VDouble>> caches = new ArrayList<ValueCache<VDouble>>();
         List<String> names = new ArrayList<String>();
-        List<TimedCacheCollector<DBR_TIME_Double>> collectors = new ArrayList<TimedCacheCollector<DBR_TIME_Double>>();
+        List<TimedCacheCollector<VDouble>> collectors = new ArrayList<TimedCacheCollector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
-            caches.add(new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class));
-            collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(1000)));
+            caches.add(new ValueCache<VDouble>(VDouble.class));
+            collectors.add(new TimedCacheCollector<VDouble>(caches.get(i), TimeDuration.ms(1000)));
             DataRecipe connRecipe = new DataRecipe();
             connRecipe = connRecipe.includeCollector(collectors.get(i),
-                    Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(1, 100, 300) + "linear", caches.get(i)));
+                    Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, 0.1)", caches.get(i)));
             names.add("pv" + i);
             SimulationDataSource.simulatedData().connect(connRecipe);
         }
-        SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
-                new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.ms(100));
+        SynchronizedArrayAggregator aggregator =
+                new SynchronizedArrayAggregator(names, collectors, TimeDuration.ms(100));
 
         // After 100 ms there should be one element
         Thread.sleep(100);
         aggregator.getValue();
-        for (DBR_TIME_Double data : aggregator.getValue().getValues()) {
+        for (VDouble data : aggregator.getValue().getValues()) {
             Double value = null;
             if (data == null) {
                 fail("Not all elements had a value");
             } else {
                 if (value == null) {
-                    value = ((double[]) data.getValue())[0];
+                    value = data.getValue();
                 } else {
-                    assertEquals("Value of elements in not the same (incorrect binning)", value, (Double) ((double[]) data.getValue())[0]);
+                    assertEquals("Value of elements in not the same (incorrect binning)", value, data.getValue());
                 }
             }
         }
 
         Thread.sleep(500);
         aggregator.getValue();
-        for (DBR_TIME_Double data : aggregator.getValue().getValues()) {
+        for (VDouble data : aggregator.getValue().getValues()) {
             Double value = null;
             if (data == null) {
                 fail("Not all elements had a value");
             } else {
                 if (value == null) {
-                    value = ((double[]) data.getValue())[0];
+                    value = data.getValue();
                 } else {
-                    assertEquals("Value of elements in not the same (incorrect binning)", value, (Double) ((double[]) data.getValue())[0]);
+                    assertEquals("Value of elements in not the same (incorrect binning)", value, data.getValue());
                 }
             }
         }
@@ -103,16 +101,16 @@ public class SynchronizedArrayTest {
     @Test
     public void missingValues() throws InterruptedException {
         int nPvs = 5;
-        List<ValueCache<DBR_TIME_Double>> caches = new ArrayList<ValueCache<DBR_TIME_Double>>();
+        List<ValueCache<VDouble>> caches = new ArrayList<ValueCache<VDouble>>();
         List<String> names = new ArrayList<String>();
-        List<TimedCacheCollector<DBR_TIME_Double>> collectors = new ArrayList<TimedCacheCollector<DBR_TIME_Double>>();
+        List<TimedCacheCollector<VDouble>> collectors = new ArrayList<TimedCacheCollector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
-            caches.add(new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class));
-            collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(10)));
+            caches.add(new ValueCache<VDouble>(VDouble.class));
+            collectors.add(new TimedCacheCollector<VDouble>(caches.get(i), TimeDuration.ms(10)));
             names.add("pv" + i);
         }
-        SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
-                new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.nanos(10));
+        SynchronizedArrayAggregator aggregator =
+                new SynchronizedArrayAggregator(names, collectors, TimeDuration.nanos(10));
 
         TimeStamp reference = TimeStamp.now();
         TimeStamp secondPass = reference.plus(TimeDuration.ms(1));
@@ -148,20 +146,23 @@ public class SynchronizedArrayTest {
         caches.get(4).setValue(createValue(reference, 0.0));
         collectors.get(4).collect();
 
-        SynchronizedArray<DBR_TIME_Double> array = aggregator.getValue();
-        assertEquals(0.0, array.getValues().get(0).getDoubleValue()[0], 0.0);
-        assertEquals(0.0, array.getValues().get(1).getDoubleValue()[0], 0.0);
+        VMultiDouble array = aggregator.getValue();
+        assertEquals(0.0, array.getValues().get(0).getValue(), 0.0);
+        assertEquals(0.0, array.getValues().get(1).getValue(), 0.0);
         assertNull(array.getValues().get(2));
-        assertEquals(0.0, array.getValues().get(3).getDoubleValue()[0], 0.0);
-        assertEquals(0.0, array.getValues().get(4).getDoubleValue()[0], 0.0);
+        assertEquals(0.0, array.getValues().get(3).getValue(), 0.0);
+        assertEquals(0.0, array.getValues().get(4).getValue(), 0.0);
 
     }
 
-    public static DBR_TIME_Double createValue(TimeStamp time, double aValue) {
+    public static VDouble createValue(TimeStamp time, double aValue) {
         DBR_TIME_Double value = new DBR_TIME_Double();
         value.setTimeStamp(new gov.aps.jca.dbr.TimeStamp(time.getEpicsSec(), time.getNanoSec()));
         value.getDoubleValue()[0] = aValue;
-        return value;
+        return ValueFactory.newVDouble(aValue, AlarmSeverity.NONE, Collections.<String>emptySet(),
+                Collections.<String>emptyList(), time, null, Double.MIN_VALUE, Double.MIN_VALUE,
+                Double.MIN_VALUE, "", null, Double.MAX_VALUE,
+                Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
     }
 
 }

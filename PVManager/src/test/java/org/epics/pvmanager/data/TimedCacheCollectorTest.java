@@ -3,12 +3,16 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.data;
 
+import org.epics.pvmanager.Expression;
 import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import org.epics.pvmanager.jca.JCASupport;
+import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.TimeDuration;
+import org.epics.pvmanager.TimedCacheCollector;
+import org.epics.pvmanager.ValueCache;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,29 +31,32 @@ public class TimedCacheCollectorTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        JCASupport.jca();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+        // Force type support loading
+        EpicsTypeSupport.install();
     }
 
     @Before
     public void setUp() {
+        monitorRecipe = null;
     }
 
     @After
     public void tearDown() {
+        // Always disconnect
+        if (monitorRecipe != null)
+            SimulationDataSource.simulatedData().disconnect(monitorRecipe);
     }
+
+    DataRecipe monitorRecipe;
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        ValueCache<DBR_TIME_Double> cache =
-                new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
-        TimedCacheCollector<DBR_TIME_Double> collector =
-                new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
-        DataRecipe monitorRecipe = new DataRecipe();
-        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap(SimulationDataSource.mockPVName(1, 100, 300), cache));
+        ValueCache<VDouble> cache =
+                new ValueCache<VDouble>(VDouble.class);
+        TimedCacheCollector<VDouble> collector =
+                new TimedCacheCollector<VDouble>(cache, TimeDuration.ms(1000));
+        monitorRecipe = new DataRecipe();
+        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.1)", cache));
         SimulationDataSource.simulatedData().connect(monitorRecipe);
 
         // After 100 ms there should be one element
@@ -63,6 +70,7 @@ public class TimedCacheCollectorTest {
         // After another second there should be 10 or 11 samples
         Thread.sleep(1000);
         assertTrue(Math.abs(11 - collector.getData().size()) < 2);
+
     }
 
 }
