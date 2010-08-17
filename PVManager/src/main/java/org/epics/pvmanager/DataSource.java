@@ -38,7 +38,7 @@ public abstract class DataSource {
 
         public void processValue(T payload) {
             // Get the collector. If it was garbage collected,
-            // remove the monitor
+            // remove the connect
             Collector c = collectorRef.get();
             if (c == null) {
                 logger.log(Level.FINE, "Removing monitor {0}", this);
@@ -82,7 +82,7 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public abstract void monitor(DataSourceRecipe recipe);
+    public abstract void connect(DataRecipe recipe);
 
     /**
      * Disconnects the set of channels given by the recipe.
@@ -93,5 +93,5 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public abstract void disconnect(DataSourceRecipe recipe);
+    public abstract void disconnect(DataRecipe recipe);
 }

@@ -43,17 +43,17 @@ public class CompositeDataSourceTest {
     public void tearDown() {
     }
 
-    private DataSourceRecipe mock1Recipe;
-    private DataSourceRecipe mock2Recipe;
+    private DataRecipe mock1Recipe;
+    private DataRecipe mock2Recipe;
     DataSource mock1 = new DataSource() {
 
         @Override
-        public void monitor(DataSourceRecipe recipe) {
+        public void connect(DataRecipe recipe) {
             mock1Recipe = recipe;
         }
 
         @Override
-        public void disconnect(DataSourceRecipe recipe) {
+        public void disconnect(DataRecipe recipe) {
             mock1Recipe = recipe;
         }
 
@@ -63,12 +63,12 @@ public class CompositeDataSourceTest {
     DataSource mock2 = new DataSource() {
 
         @Override
-        public void monitor(DataSourceRecipe recipe) {
+        public void connect(DataRecipe recipe) {
             mock2Recipe = recipe;
         }
 
         @Override
-        public void disconnect(DataSourceRecipe recipe) {
+        public void disconnect(DataRecipe recipe) {
             mock2Recipe = recipe;
         }
     };
@@ -82,7 +82,7 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
         caches.put("pv01", new ValueCache<Double>(Double.class));
         caches.put("pv03", new ValueCache<Double>(Double.class));
@@ -90,7 +90,7 @@ public class CompositeDataSourceTest {
                 caches);
 
         // Call and check
-        composite.monitor(recipe);
+        composite.connect(recipe);
         assertThat(mock1Recipe.getChannelsPerCollectors(), equalTo(recipe.getChannelsPerCollectors()));
         assertThat(mock2Recipe, nullValue());
     }
@@ -104,7 +104,7 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
         caches.put("pv01", new ValueCache<Double>(Double.class));
         caches.put("pv03", new ValueCache<Double>(Double.class));
@@ -115,7 +115,7 @@ public class CompositeDataSourceTest {
                 caches);
         
         // Call and check
-        composite.monitor(recipe);
+        composite.connect(recipe);
         Map<String, ValueCache> mock1Caches = mock1Recipe.getChannelsPerCollectors().values().iterator().next();
         Map<String, ValueCache> mock2Caches = mock2Recipe.getChannelsPerCollectors().values().iterator().next();
         assertThat(mock1Caches.size(), equalTo(4));
@@ -124,8 +124,8 @@ public class CompositeDataSourceTest {
         assertThat(mock2Caches.keySet(), hasItem("pv04"));
 
         // Check close
-        DataSourceRecipe mock1Connect = mock1Recipe;
-        DataSourceRecipe mock2Connect = mock2Recipe;
+        DataRecipe mock1Connect = mock1Recipe;
+        DataRecipe mock2Connect = mock2Recipe;
         composite.disconnect(recipe);
         assertSame(mock1Connect, mock1Recipe);
         assertSame(mock2Connect, mock2Recipe);
@@ -139,7 +139,7 @@ public class CompositeDataSourceTest {
         composite.putDataSource("mock2", mock2);
 
         // Call only default
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
         caches.put("pv01", new ValueCache<Double>(Double.class));
         caches.put("pv03", new ValueCache<Double>(Double.class));
@@ -147,7 +147,7 @@ public class CompositeDataSourceTest {
                 caches);
 
         // Should cause error
-        composite.monitor(recipe);
+        composite.connect(recipe);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -171,7 +171,7 @@ public class CompositeDataSourceTest {
         composite.setDelimiter("?");
 
         // Call only default
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
         caches.put("pv01", new ValueCache<Double>(Double.class));
         caches.put("pv03", new ValueCache<Double>(Double.class));
@@ -182,7 +182,7 @@ public class CompositeDataSourceTest {
                 caches);
 
         // Call and check
-        composite.monitor(recipe);
+        composite.connect(recipe);
         Map<String, ValueCache> mock1Caches = mock1Recipe.getChannelsPerCollectors().values().iterator().next();
         Map<String, ValueCache> mock2Caches = mock2Recipe.getChannelsPerCollectors().values().iterator().next();
         assertThat(mock1Caches.size(), equalTo(4));

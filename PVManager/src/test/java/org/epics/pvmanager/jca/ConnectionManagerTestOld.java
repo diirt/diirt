@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import org.epics.pvmanager.DataSourceRecipe;
+import org.epics.pvmanager.DataRecipe;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -78,11 +78,11 @@ public class ConnectionManagerTestOld {
 
             @Override
             public void run() {
-                DataSourceRecipe connRecipe = new DataSourceRecipe();
+                DataRecipe connRecipe = new DataRecipe();
                 connRecipe = connRecipe.includeCollector(collector,
                         Collections.<String,ValueCache>singletonMap("pvk01", cache));
 
-		JCASupport.jca().monitor(connRecipe);
+		JCASupport.jca().connect(connRecipe);
 	    }
 	});
 	Thread.sleep(5000);

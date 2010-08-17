@@ -75,11 +75,11 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<Double> notificator = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
-        Scanner.scan(notificator, scanPeriodMs);
-        DataSourceRecipe connRecipe = new DataSourceRecipe();
+        Notifier<Double> notifier = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Scanner.scan(notifier, scanPeriodMs);
+        DataRecipe connRecipe = new DataRecipe();
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
-        SimulationDataSource.simulatedData().monitor(connRecipe);
+        SimulationDataSource.simulatedData().connect(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get();
         if (Math.abs(actualNotification - targetNotifications) > 2) {
@@ -114,11 +114,11 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<Double> notificator = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
-        Scanner.scan(notificator, scanPeriodMs);
-        DataSourceRecipe connRecipe = new DataSourceRecipe();
+        Notifier<Double> notifier = new Notifier<Double>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Scanner.scan(notifier, scanPeriodMs);
+        DataRecipe connRecipe = new DataRecipe();
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications), cache));
-        SimulationDataSource.simulatedData().monitor(connRecipe);
+        SimulationDataSource.simulatedData().connect(connRecipe);
         Thread.sleep(testTimeMs + 100);
         int actualNotification = counter.get() - 1;
         if (Math.abs(actualNotification - targetNotifications) > 1) {
@@ -154,13 +154,13 @@ public class CollectorToPVTest {
 //                });
 //            }
 //        });
-//        Notifier<DoubleStatistics> notificator = new Notifier<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
-//        Scanner.scan(notificator, scanPeriodMs);
+//        Notifier<DoubleStatistics> notifier = new Notifier<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
+//        Scanner.scan(notifier, scanPeriodMs);
 //        PVRecipe connRecipe = new PVRecipe();
 //        connRecipe.cache = cache;
 //        connRecipe.collector = collector;
 //        connRecipe.pvName = SimulationDataSource.mockPVName(samplesPerNotification, notificationPeriodMs, nNotifications);
-//        SimulationDataSource.instance.monitor(connRecipe);
+//        SimulationDataSource.instance.connect(connRecipe);
 //        Thread.sleep(testTimeMs + 100);
 //        int actualNotification = counter.get();
 //        if (Math.abs(actualNotification - targetNotifications) > 1) {

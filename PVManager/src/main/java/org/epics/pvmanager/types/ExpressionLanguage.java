@@ -15,7 +15,7 @@ import org.epics.pvmanager.TimedCacheCollector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.DataSourceRecipe;
+import org.epics.pvmanager.DataRecipe;
 
 /**
  * Provides support for the standard types and the basic building blocks of
@@ -140,7 +140,7 @@ public class ExpressionLanguage {
             synchronizedArrayOf(TimeDuration tolerance, List<Expression<T>> expressions) {
         List<String> names = new ArrayList<String>();
         List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         for (Expression<T> expression : expressions) {
             TimedCacheCollector<T> collector =
                     new TimedCacheCollector<T>(expression.getFunction(), tolerance.multiplyBy(10));
@@ -158,7 +158,7 @@ public class ExpressionLanguage {
             synchronizedArrayOf(TimeDuration tolerance, TimeDuration distanceBetweenSamples, List<Expression<T>> expressions) {
         List<String> names = new ArrayList<String>();
         List<TimedCacheCollector<T>> collectors = new ArrayList<TimedCacheCollector<T>>();
-        DataSourceRecipe recipe = new DataSourceRecipe();
+        DataRecipe recipe = new DataRecipe();
         for (Expression<T> expression : expressions) {
             TimedCacheCollector<T> collector =
                     new TimedCacheCollector<T>(expression.getFunction(), distanceBetweenSamples.multiplyBy(5));

@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,23 +16,23 @@ import java.util.logging.Logger;
  */
 class Scanner {
 
-    private static Logger log = Logger.getLogger(Scanner.class.getName());
+    private static final Logger log = Logger.getLogger(Scanner.class.getName());
     private static Timer timer = new Timer("PV Monitor Scanner", true);
 
-    static void scan(final Notifier notificator, long periodInMs) {
+    static void scan(final Notifier notifier, long periodInMs) {
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                if (notificator.isActive()) {
-                    notificator.notifyPv();
+                if (notifier.isActive()) {
+                    notifier.notifyPv();
                 } else {
                     cancel();
                     timer.purge();
-                    log.fine("Stopped scanning " + notificator);
+                    log.log(Level.FINE, "Stopped scanning {0}", notifier);
                 }
             }
         }, 0, periodInMs);
-        log.fine("Scanning " + notificator + " every " + periodInMs + " ms");
+        log.log(Level.FINE, "Scanning {0} every {1} ms", new Object[]{notifier, periodInMs});
     }
 }

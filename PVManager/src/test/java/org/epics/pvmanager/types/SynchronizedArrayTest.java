@@ -6,7 +6,7 @@
 package org.epics.pvmanager.types;
 
 import java.util.Collections;
-import org.epics.pvmanager.DataSourceRecipe;
+import org.epics.pvmanager.DataRecipe;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.TimeDuration;
@@ -59,11 +59,11 @@ public class SynchronizedArrayTest {
         for (int i = 0; i < nPvs; i++) {
             caches.add(new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class));
             collectors.add(new TimedCacheCollector<DBR_TIME_Double>(caches.get(i), TimeDuration.ms(1000)));
-            DataSourceRecipe connRecipe = new DataSourceRecipe();
+            DataRecipe connRecipe = new DataRecipe();
             connRecipe = connRecipe.includeCollector(collectors.get(i),
                     Collections.<String,ValueCache>singletonMap(SimulationDataSource.mockPVName(1, 100, 300) + "linear", caches.get(i)));
             names.add("pv" + i);
-            SimulationDataSource.simulatedData().monitor(connRecipe);
+            SimulationDataSource.simulatedData().connect(connRecipe);
         }
         SynchronizedArrayAggregator<DBR_TIME_Double> aggregator =
                 new SynchronizedArrayAggregator<DBR_TIME_Double>(names, collectors, TimeDuration.ms(100));

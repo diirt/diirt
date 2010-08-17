@@ -20,7 +20,7 @@ import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.ValueCache;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.epics.pvmanager.DataSourceRecipe;
+import org.epics.pvmanager.DataRecipe;
 
 /**
  * A data source that uses jca.
@@ -77,7 +77,7 @@ class JCADataSource extends DataSource {
     }
 
     /**
-     * Remove monitor.
+     * Remove connect.
      */
     private synchronized void removeMonitor(Monitor monitor, MonitorListener monitorListener) {
         monitor.removeMonitorListener(monitorListener);
@@ -144,7 +144,7 @@ class JCADataSource extends DataSource {
     }
 
     @Override
-    public synchronized void monitor(DataSourceRecipe connRecipe) {
+    public synchronized void connect(DataRecipe connRecipe) {
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : connRecipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
@@ -178,7 +178,7 @@ class JCADataSource extends DataSource {
     }
 
     @Override
-    public void disconnect(DataSourceRecipe recipe) {
+    public void disconnect(DataRecipe recipe) {
         // TODO: Implemented
     }
 

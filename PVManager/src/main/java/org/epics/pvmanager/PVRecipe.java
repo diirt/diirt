@@ -14,21 +14,21 @@ package org.epics.pvmanager;
  */
 class PVRecipe {
 
-    private final DataSourceRecipe dataSourceRecipe;
+    private final DataRecipe dataSourceRecipe;
     private final DataSource dataSource;
-    private final Notifier notificator;
+    private final Notifier notifier;
 
     /**
      * Creates a new recipe. The collections passed to the constructor must
      * already be immutable copies.
      *
      * @param dataSourceRecipe the list of all channels needed by each collector
-     * @param notificator 
+     * @param notifier
      */
-    PVRecipe(DataSourceRecipe dataSourceRecipe, DataSource dataSource, Notifier notificator) {
+    PVRecipe(DataRecipe dataSourceRecipe, DataSource dataSource, Notifier notifier) {
         this.dataSourceRecipe = dataSourceRecipe;
         this.dataSource = dataSource;
-        this.notificator = notificator;
+        this.notifier = notifier;
     }
 
     /**
@@ -36,7 +36,7 @@ class PVRecipe {
      *
      * @return the data recipe
      */
-    DataSourceRecipe getDataSourceRecipe() {
+    DataRecipe getDataSourceRecipe() {
         return dataSourceRecipe;
     }
 
@@ -45,8 +45,8 @@ class PVRecipe {
      *
      * @return the notifier
      */
-    Notifier getNotificator() {
-        return notificator;
+    Notifier getNotifier() {
+        return notifier;
     }
 
     /**

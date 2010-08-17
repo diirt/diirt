@@ -63,7 +63,7 @@ class Notifier<T> {
      * Notifies the PV of a new value.
      */
     void notifyPv() {
-        // Synchronization policy: the newValue is guarded by this pull notificator
+        // Synchronization policy: the newValue is guarded by this pull notifier
         final T newValue;
         synchronized(this) {
             newValue = function.getValue();

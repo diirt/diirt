@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class AggregatedExpression<T> {
 
-    private final DataSourceRecipe recipe;
+    private final DataRecipe recipe;
     private final Function<T> function;
     private final String defaultName;
 
-    public AggregatedExpression(DataSourceRecipe recipe, Function<T> function, String defaultName) {
+    public AggregatedExpression(DataRecipe recipe, Function<T> function, String defaultName) {
         this.recipe = recipe;
         this.function = function;
         this.defaultName = defaultName;
@@ -32,13 +32,13 @@ public class AggregatedExpression<T> {
         this.defaultName = defaultName;
     }
 
-    private static DataSourceRecipe combineRecipes(List<AggregatedExpression<?>> childExpressions) {
+    private static DataRecipe combineRecipes(List<AggregatedExpression<?>> childExpressions) {
         if (childExpressions.isEmpty())
-            return new DataSourceRecipe();
+            return new DataRecipe();
 
-        DataSourceRecipe recipe = childExpressions.get(0).getDataSourceRecipe();
+        DataRecipe recipe = childExpressions.get(0).getDataSourceRecipe();
         for (int i = 1; i < childExpressions.size(); i++) {
-            DataSourceRecipe newRecipe = childExpressions.get(i).getDataSourceRecipe();
+            DataRecipe newRecipe = childExpressions.get(i).getDataSourceRecipe();
             recipe = recipe.includeRecipe(newRecipe);
         }
 
@@ -49,7 +49,7 @@ public class AggregatedExpression<T> {
         return defaultName;
     }
 
-    public DataSourceRecipe getDataSourceRecipe() {
+    public DataRecipe getDataSourceRecipe() {
         return recipe;
     }
 

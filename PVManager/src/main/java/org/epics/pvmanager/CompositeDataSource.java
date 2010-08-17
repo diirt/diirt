@@ -78,12 +78,12 @@ public class CompositeDataSource extends DataSource {
 
     // Need to remember how the recipes where split, so that they can be
     // re-sent for disconnection
-    private Map<DataSourceRecipe, Map<String, DataSourceRecipe>> splitRecipes =
-            new ConcurrentHashMap<DataSourceRecipe, Map<String, DataSourceRecipe>>();
+    private Map<DataRecipe, Map<String, DataRecipe>> splitRecipes =
+            new ConcurrentHashMap<DataRecipe, Map<String, DataRecipe>>();
 
     @Override
-    public void monitor(DataSourceRecipe recipe) {
-        Map<String, DataSourceRecipe> splitRecipe = new HashMap<String, DataSourceRecipe>();
+    public void connect(DataRecipe recipe) {
+        Map<String, DataRecipe> splitRecipe = new HashMap<String, DataRecipe>();
 
         // Iterate through the recipe to understand how to distribute
         // the calls
@@ -112,7 +112,7 @@ public class CompositeDataSource extends DataSource {
             // Add to the recipes
             for (Map.Entry<String, Map<String, ValueCache>> entry : routingCaches.entrySet()) {
                 if (splitRecipe.get(entry.getKey()) == null)
-                    splitRecipe.put(entry.getKey(), new DataSourceRecipe());
+                    splitRecipe.put(entry.getKey(), new DataRecipe());
                 splitRecipe.put(entry.getKey(), splitRecipe.get(entry.getKey()).includeCollector(collector, entry.getValue()));
             }
 
@@ -121,9 +121,9 @@ public class CompositeDataSource extends DataSource {
         splitRecipes.put(recipe, splitRecipe);
 
         // Dispatch calls to all the data sources
-        for (Map.Entry<String, DataSourceRecipe> entry : splitRecipe.entrySet()) {
+        for (Map.Entry<String, DataRecipe> entry : splitRecipe.entrySet()) {
             try {
-                dataSources.get(entry.getKey()).monitor(entry.getValue());
+                dataSources.get(entry.getKey()).connect(entry.getValue());
             } catch(Exception ex) {
                 // If data source fail, still go and connect the others
             }
@@ -131,14 +131,14 @@ public class CompositeDataSource extends DataSource {
     }
 
     @Override
-    public void disconnect(DataSourceRecipe recipe) {
-        Map<String, DataSourceRecipe> splitRecipe = splitRecipes.get(recipe);
+    public void disconnect(DataRecipe recipe) {
+        Map<String, DataRecipe> splitRecipe = splitRecipes.get(recipe);
         if (splitRecipe == null) {
             throw new IllegalStateException("Recipe was never opened or already closed");
         }
 
         // Dispatch calls to all the data sources
-        for (Map.Entry<String, DataSourceRecipe> entry : splitRecipe.entrySet()) {
+        for (Map.Entry<String, DataRecipe> entry : splitRecipe.entrySet()) {
             try {
                 dataSources.get(entry.getKey()).disconnect(entry.getValue());
             } catch(Exception ex) {

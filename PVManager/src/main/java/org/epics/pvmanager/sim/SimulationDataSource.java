@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.DataSourceRecipe;
+import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.VDouble;
@@ -165,10 +165,10 @@ public class SimulationDataSource extends DataSource {
         return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
     }
 
-    private static Map<DataSourceRecipe, Set<SimFunction<?>>> registeredFunctions = new ConcurrentHashMap<DataSourceRecipe, Set<SimFunction<?>>>();
+    private static Map<DataRecipe, Set<SimFunction<?>>> registeredFunctions = new ConcurrentHashMap<DataRecipe, Set<SimFunction<?>>>();
 
     @Override
-    public void monitor(DataSourceRecipe recipe) {
+    public void connect(DataRecipe recipe) {
         Set<SimFunction<?>> functions = new HashSet<SimFunction<?>>();
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
@@ -181,10 +181,11 @@ public class SimulationDataSource extends DataSource {
     }
 
     @Override
-    public void disconnect(DataSourceRecipe recipe) {
+    public void disconnect(DataRecipe recipe) {
         Set<SimFunction<?>> functions = registeredFunctions.get(recipe);
         for (SimFunction<?> function : functions) {
-            function.stop();
+            if (function != null)
+                function.stop();
         }
         registeredFunctions.remove(recipe);
         timer.purge();

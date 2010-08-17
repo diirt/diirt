@@ -13,11 +13,11 @@ import java.util.Map;
  *
  * @author carcassi
  */
-public class DataSourceRecipe {
+public class DataRecipe {
 
     private final Map<Collector, Map<String, ValueCache>> channelsPerCollector;
 
-    public DataSourceRecipe() {
+    public DataRecipe() {
         channelsPerCollector = Collections.emptyMap();
     }
 
@@ -26,9 +26,8 @@ public class DataSourceRecipe {
      * already be immutable copies.
      *
      * @param channelsPerCollector the list of all channels needed by each collector
-     * @param notificator
      */
-    private DataSourceRecipe(Map<Collector, Map<String, ValueCache>> channelsPerCollector) {
+    private DataRecipe(Map<Collector, Map<String, ValueCache>> channelsPerCollector) {
         this.channelsPerCollector = channelsPerCollector;
     }
 
@@ -39,20 +38,20 @@ public class DataSourceRecipe {
      * @param caches the caches that the collector depends on
      * @return a new recipe
      */
-    public DataSourceRecipe includeCollector(Collector collector, Map<String, ValueCache> caches) {
+    public DataRecipe includeCollector(Collector collector, Map<String, ValueCache> caches) {
         Map<Collector, Map<String, ValueCache>> newChannelsPerCollector =
                 new HashMap<Collector, Map<String, ValueCache>>(channelsPerCollector);
         Map<String, ValueCache> newCaches =
                 Collections.unmodifiableMap(new HashMap<String, ValueCache>(caches));
         newChannelsPerCollector.put(collector, newCaches);
-        return new DataSourceRecipe(Collections.unmodifiableMap(newChannelsPerCollector));
+        return new DataRecipe(Collections.unmodifiableMap(newChannelsPerCollector));
     }
 
-    public DataSourceRecipe includeRecipe(DataSourceRecipe dataSource) {
+    public DataRecipe includeRecipe(DataRecipe dataSource) {
         Map<Collector, Map<String, ValueCache>> newChannelsPerCollector =
                 new HashMap<Collector, Map<String, ValueCache>>(channelsPerCollector);
         newChannelsPerCollector.putAll(dataSource.channelsPerCollector);
-        return new DataSourceRecipe(Collections.unmodifiableMap(newChannelsPerCollector));
+        return new DataRecipe(Collections.unmodifiableMap(newChannelsPerCollector));
     }
 
     public Map<Collector, Map<String, ValueCache>> getChannelsPerCollectors() {

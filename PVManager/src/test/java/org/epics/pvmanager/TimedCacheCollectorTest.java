@@ -48,9 +48,9 @@ public class TimedCacheCollectorTest {
                 new ValueCache<DBR_TIME_Double>(DBR_TIME_Double.class);
         TimedCacheCollector<DBR_TIME_Double> collector =
                 new TimedCacheCollector<DBR_TIME_Double>(cache, TimeDuration.ms(1000));
-        DataSourceRecipe monitorRecipe = new DataSourceRecipe();
+        DataRecipe monitorRecipe = new DataRecipe();
         monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap(SimulationDataSource.mockPVName(1, 100, 300), cache));
-        SimulationDataSource.simulatedData().monitor(monitorRecipe);
+        SimulationDataSource.simulatedData().connect(monitorRecipe);
 
         // After 100 ms there should be one element
         Thread.sleep(100);
