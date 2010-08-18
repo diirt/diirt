@@ -178,11 +178,13 @@ public class SimulationDataSource extends DataSource {
             }
         }
 
-        // Synchronize the timing of the simulated pvs
+        // Synchronize the timing of the simulated channel
+        // and start them
         TimeStamp startTime = TimeStamp.now();
         for (SimFunction<?> function : functions) {
             if (function != null)
                 function.setLastTime(startTime);
+            function.start(timer);
         }
         registeredFunctions.put(recipe, functions);
     }
@@ -220,7 +222,7 @@ public class SimulationDataSource extends DataSource {
     private SimFunction<?> connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
         @SuppressWarnings("unchecked")
         final SimFunction<VDouble> ramp = (SimFunction<VDouble>) NameParser.createFunction(name);
-        ramp.start(timer, collector, cache);
+        ramp.initialize(collector, cache);
         return ramp;
     }
 

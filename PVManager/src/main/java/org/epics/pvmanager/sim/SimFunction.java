@@ -28,6 +28,7 @@ public abstract class SimFunction<T> {
     private static final Logger log = Logger.getLogger(SimFunction.class.getName());
 
     private double secondsBeetwenSamples;
+    private long intervalBetweenExecution;
     private TimeDuration timeBetweenSamples;
     private Class<T> classToken;
     private volatile TimeStamp lastTime;
@@ -56,13 +57,12 @@ public abstract class SimFunction<T> {
     private TimerTask task;
 
     /**
-     * Starts notifications of new values using the timer thread.
+     * Initialize timer task. Must be called before start.
      *
-     * @param timer timer on which to execute the updates
      * @param collector collector notified of updates
      * @param cache cache to put the new value in
      */
-    public void start(Timer timer, final Collector collector, final ValueCache<T> cache) {
+    public void initialize(final Collector collector, final ValueCache<T> cache) {
         if (!cache.getType().equals(classToken)) {
             throw new IllegalArgumentException("Function is of type " + classToken.getSimpleName() + " (requested " + cache.getType().getSimpleName() + ")");
         }
@@ -70,10 +70,9 @@ public abstract class SimFunction<T> {
         // The timer only accepts interval up to the millisecond.
         // For intervals shorter than that, we calculate the extra samples
         // we need to generate within each time execution.
-        long intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000) / 2;
+        intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000) / 2;
         if (intervalBetweenExecution == 0)
             intervalBetweenExecution = 1;
-        final int samplesPerExecution = Math.max((int) ((double) intervalBetweenExecution / (secondsBeetwenSamples * 1000.0)), 1);
 
         if (task != null)
             task.cancel();
@@ -114,8 +113,19 @@ public abstract class SimFunction<T> {
                 }
             }
         };
+    }
+
+    /**
+     * Starts notification by dispatching the prepared task on the timer.
+     *
+     * @param timer timer on which to execute the updates
+     */
+    public void start(Timer timer) {
+        if (task == null)
+            throw new IllegalStateException("Must call initialize first");
+
         timer.scheduleAtFixedRate(task, 0, intervalBetweenExecution);
-        log.log(Level.FINE, "Synch starting {0} every " + intervalBetweenExecution + " ms " + samplesPerExecution + " samples", task);
+        log.log(Level.FINE, "Synch starting {0} every " + intervalBetweenExecution + " ms", task);
     }
 
     /**
