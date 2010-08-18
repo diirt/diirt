@@ -54,22 +54,24 @@ public class TimedCacheCollectorTest {
         ValueCache<VDouble> cache =
                 new ValueCache<VDouble>(VDouble.class);
         TimedCacheCollector<VDouble> collector =
-                new TimedCacheCollector<VDouble>(cache, TimeDuration.ms(1000));
+                new TimedCacheCollector<VDouble>(cache, TimeDuration.ms(100));
         monitorRecipe = new DataRecipe();
-        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.1)", cache));
+        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.01)", cache));
         SimulationDataSource.simulatedData().connect(monitorRecipe);
 
         // After 100 ms there should be one element
-        Thread.sleep(100);
+        Thread.sleep(10);
         assertTrue(Math.abs(1 - collector.getData().size()) < 2);
 
         // After another second there should be 10 or 11 samples
-        Thread.sleep(1000);
-        assertTrue(Math.abs(11 - collector.getData().size()) < 2);
+        Thread.sleep(100);
+        DataUtils.printArray(collector.getData());
+        assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
         
         // After another second there should be 10 or 11 samples
-        Thread.sleep(1000);
-        assertTrue(Math.abs(11 - collector.getData().size()) < 2);
+        Thread.sleep(100);
+        DataUtils.printArray(collector.getData());
+        assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
 
     }
 

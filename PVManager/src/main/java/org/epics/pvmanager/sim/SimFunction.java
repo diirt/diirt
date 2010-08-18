@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
@@ -27,7 +28,9 @@ public abstract class SimFunction<T> {
     private static final Logger log = Logger.getLogger(SimFunction.class.getName());
 
     private double secondsBeetwenSamples;
+    private TimeDuration timeBetweenSamples;
     private Class<T> classToken;
+    private TimeStamp lastTime;
 
     /**
      * Creates a new simulation function.
@@ -39,6 +42,7 @@ public abstract class SimFunction<T> {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + secondsBeetwenSamples + ")");
         }
         this.secondsBeetwenSamples = secondsBeetwenSamples;
+        timeBetweenSamples = TimeDuration.nanos((long) (secondsBeetwenSamples * 1000000000));
         this.classToken = classToken;
     }
 
@@ -66,7 +70,7 @@ public abstract class SimFunction<T> {
         // The timer only accepts interval up to the millisecond.
         // For intervals shorter than that, we calculate the extra samples
         // we need to generate within each time execution.
-        long intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000);
+        long intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000) / 2;
         if (intervalBetweenExecution == 0)
             intervalBetweenExecution = 1;
         final int samplesPerExecution = Math.max((int) ((double) intervalBetweenExecution / (secondsBeetwenSamples * 1000.0)), 1);
@@ -90,12 +94,20 @@ public abstract class SimFunction<T> {
                 }
             };
 
+
             @Override
             public void run() {
                 // Protect the timer thread for possible problems.
                 try {
-                    for (int i = 0; i < samplesPerExecution; i++) {
+                    if (lastTime == null)
+                        lastTime = TimeStamp.now();
+                    TimeStamp currentTime = TimeStamp.now();
+                    TimeStamp newTime = lastTime.plus(timeBetweenSamples);
+
+                    while (currentTime.compareTo(newTime) >= 0) {
+                        lastTime = newTime;
                         processor.processValue(null);
+                        newTime = lastTime.plus(timeBetweenSamples);
                     }
                 } catch (Exception ex) {
                     log.log(Level.WARNING, "Data simulation problem", ex);
@@ -124,7 +136,10 @@ public abstract class SimFunction<T> {
      * @param oldValue old VDouble
      * @return new VDouble
      */
-    protected static VDouble newValue(double value, VDouble oldValue) {
+    protected VDouble newValue(double value, VDouble oldValue) {
+        if (lastTime == null)
+            lastTime = TimeStamp.now();
+        
         // Calculate new AlarmSeverity, using oldValue ranges
         AlarmSeverity severity = AlarmSeverity.NONE;
         if (value <= oldValue.getLowerAlarmLimit() || value >= oldValue.getUpperAlarmLimit())
@@ -133,7 +148,7 @@ public abstract class SimFunction<T> {
             severity = AlarmSeverity.MINOR;
 
         return ValueFactory.newVDouble(value, severity, Constants.NO_ALARMS,
-                null, TimeStamp.now(), oldValue);
+                null, lastTime, oldValue);
     }
 
 }

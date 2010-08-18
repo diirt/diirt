@@ -265,22 +265,6 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_createPVButtonActionPerformed
 
-    private static void printArray(VMultiDouble array) {
-        if (array == null)
-            return;
-        System.out.print("Array [");
-        boolean first = true;
-        for (VDouble value : array.getValues()) {
-            if (!first)
-                System.out.print(",");
-            first = false;
-            if (value == null)
-                System.out.print("null");
-            else
-                System.out.print(TypeSupport.timestampOf(value));// + " - " + value.getDoubleValue()[0]);
-        }
-        System.out.println("]");
-    }
 
     /**
     * @param args the command line arguments
