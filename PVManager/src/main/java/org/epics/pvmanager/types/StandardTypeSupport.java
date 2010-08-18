@@ -32,7 +32,6 @@ class StandardTypeSupport {
 
         addDouble();
         addDoubleStatistics();
-        addSynchronizedArray();
         addList();
 
         installed = true;
@@ -96,25 +95,6 @@ class StandardTypeSupport {
                 oldValue.setStatistics(newValue.getAverage(), newValue.getMin(),
                         newValue.getMax(), newValue.getStdDev());
                 return new Notification<DoubleStatistics>(true, oldValue);
-            }
-        });
-    }
-
-    private static void addSynchronizedArray() {
-        // Add DoubleStatistics support: copy the new values in the old object.
-        TypeSupport.addTypeSupport(SynchronizedArray.class, new TypeSupport<SynchronizedArray>() {
-            @Override
-            public Notification<SynchronizedArray> prepareNotification(SynchronizedArray oldValue, SynchronizedArray newValue) {
-                if (newValue == null)
-                    return new Notification<SynchronizedArray>(false, null);
-                if (oldValue == null)
-                    oldValue = new SynchronizedArray();
-                if (newValue.getTimeStamp().equals(oldValue.getTimeStamp()))
-                    return new Notification<SynchronizedArray>(false, null);
-                oldValue.setTimeStamp(newValue.getTimeStamp());
-                oldValue.getValues().clear();
-                oldValue.getValues().addAll(newValue.getValues());
-                return new Notification<SynchronizedArray>(true, oldValue);
             }
         });
     }

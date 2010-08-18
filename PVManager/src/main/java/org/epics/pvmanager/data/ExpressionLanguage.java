@@ -30,11 +30,20 @@ public class ExpressionLanguage {
 
     /**
      * A channel with the given name of type VDouble.
+     *
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
     public static Expression<VDouble> vDouble(String name) {
         return new Expression<VDouble>(name, VDouble.class);
+    }
+
+    public static List<Expression<VDouble>> vDoubles(List<String> names) {
+        List<Expression<VDouble>> expressions = new ArrayList<Expression<VDouble>>();
+        for (String name : names) {
+            expressions.add(vDouble(name));
+        }
+        return expressions;
     }
 
     /**
@@ -60,26 +69,28 @@ public class ExpressionLanguage {
             recipe = recipe.includeRecipe(expression.createMontiorRecipes(collector));
             names.add(expression.getDefaultName());
         }
-        SynchronizedArrayAggregator aggregator =
-                new SynchronizedArrayAggregator(names, collectors, tolerance);
+        SynchronizedVDoubleAggregator aggregator =
+                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
         return new AggregatedExpression<VMultiDouble>(recipe,
                 aggregator, "syncArray");
     }
 
     public static AggregatedExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, TimeDuration distanceBetweenSamples, List<Expression<VDouble>> expressions) {
+            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, List<Expression<VDouble>> expressions) {
+        if (cacheDepth.equals(TimeDuration.ms(0)))
+            throw new IllegalArgumentException("Distance between samples must be non-zero");
         List<String> names = new ArrayList<String>();
         List<TimedCacheCollector<VDouble>> collectors = new ArrayList<TimedCacheCollector<VDouble>>();
         DataRecipe recipe = new DataRecipe();
         for (Expression<VDouble> expression : expressions) {
             TimedCacheCollector<VDouble> collector =
-                    new TimedCacheCollector<VDouble>(expression.getFunction(), distanceBetweenSamples.multiplyBy(5));
+                    new TimedCacheCollector<VDouble>(expression.getFunction(), cacheDepth);
             collectors.add(collector);
             recipe = recipe.includeRecipe(expression.createMontiorRecipes(collector));
             names.add(expression.getDefaultName());
         }
-        SynchronizedArrayAggregator aggregator =
-                new SynchronizedArrayAggregator(names, collectors, tolerance);
+        SynchronizedVDoubleAggregator aggregator =
+                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
         return new AggregatedExpression<VMultiDouble>(recipe,
                 aggregator, "syncArray");
     }

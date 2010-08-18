@@ -11,15 +11,15 @@
 
 package org.epics.pvmanager.test;
 
-import gov.aps.jca.dbr.DBR_TIME_Double;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.TypeSupport;
-import org.epics.pvmanager.types.SynchronizedArray;
 import java.util.Collections;
 import javax.swing.JPanel;
+import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VMultiDouble;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
@@ -33,8 +33,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import static org.epics.pvmanager.TimeDuration.*;
-import static org.epics.pvmanager.types.ExpressionLanguage.*;
-import static org.epics.pvmanager.jca.JCASupport.*;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**
  *
@@ -90,9 +89,9 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         final XYSeries series1 = new XYSeries("Values at " + pv.getValue().getTimeStamp().asDate());
         int index = 0;
         if (pv.getValue() != null) {
-            for (DBR_TIME_Double value : pv.getValue().getValues()) {
+            for (VDouble value : pv.getValue().getValues()) {
                 if (value != null)
-                    series1.add(index, value.getDoubleValue()[0]);
+                    series1.add(index, value.getValue());
                 index++;
             }
         }
@@ -239,35 +238,39 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<SynchronizedArray<DBR_TIME_Double>> pv;
+    PV<VMultiDouble> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
-        pv = null;
+        if (pv != null)
+            pv.close();
 
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
-        long timeIntervalMs = (1000 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
+        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
+        String pvName = "ramp(-1.5, 1.5, 0.1, " + timeIntervalSec + ")";
+        System.out.println(pvName);
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        pv = PVManager.read(synchronizedArrayOf(ms(30), ms((int) timeIntervalMs),
-                epicsPvs(Collections.nCopies(nPvs, pvName), DBR_TIME_Double.class))).atHz(scanRate);
+        // Buffer depth has to be longest between the time between scan and
+        // the time between sample multiplied by 5 (so you get at least 5 samples).
+        double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
+
+        pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
+                vDoubles(Collections.nCopies(nPvs, pvName)))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {
-                printArray(pv.getValue());
+                //printArray(pv.getValue());
                 updateChart();
             }
         });
-        // NB: Should at least deregister listener
-
     }//GEN-LAST:event_createPVButtonActionPerformed
 
-    private static void printArray(SynchronizedArray<DBR_TIME_Double> array) {
+    private static void printArray(VMultiDouble array) {
         if (array == null)
             return;
         System.out.print("Array [");
         boolean first = true;
-        for (DBR_TIME_Double value : array.getValues()) {
+        for (VDouble value : array.getValues()) {
             if (!first)
                 System.out.print(",");
             first = false;

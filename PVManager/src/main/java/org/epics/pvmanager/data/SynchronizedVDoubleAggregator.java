@@ -21,7 +21,7 @@ import static org.epics.pvmanager.TypeSupport.*;
  *
  * @author carcassi
  */
-class SynchronizedArrayAggregator extends Function<VMultiDouble> {
+class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
 
     private final TimeDuration tolerance;
     private final List<TimedCacheCollector<VDouble>> collectors;
@@ -35,8 +35,10 @@ class SynchronizedArrayAggregator extends Function<VMultiDouble> {
      * @param tolerance the tolerance around the reference time for samples to be included
      */
     @SuppressWarnings("unchecked")
-    public SynchronizedArrayAggregator(List<String> names, List<TimedCacheCollector<VDouble>> collectors, TimeDuration tolerance) {
+    public SynchronizedVDoubleAggregator(List<String> names, List<TimedCacheCollector<VDouble>> collectors, TimeDuration tolerance) {
         super(VMultiDouble.class);
+        if (tolerance.equals(TimeDuration.ms(0)))
+            throw new IllegalArgumentException("Tolerance between samples must be non-zero");
         this.tolerance = tolerance;
         this.collectors = collectors;
     }
@@ -50,7 +52,7 @@ class SynchronizedArrayAggregator extends Function<VMultiDouble> {
         TimeInterval allowedInterval = tolerance.around(reference);
         List<VDouble> values = new ArrayList<VDouble>(collectors.size());
         for (TimedCacheCollector<VDouble> collector : collectors) {
-            VDouble value = closestElement(collector.getData(), allowedInterval);
+            VDouble value = closestElement(collector.getData(), allowedInterval, reference);
             values.add(value);
         }
         return ValueFactory.newVMultiDouble(values, AlarmSeverity.NONE, Collections.<String>emptySet(),
@@ -58,7 +60,7 @@ class SynchronizedArrayAggregator extends Function<VMultiDouble> {
                 null, null, null, null, null, null, null, null, null, null);
     }
 
-    private static <T> TimeStamp electReferenceTimeStamp(List<TimedCacheCollector<T>> collectors) {
+    static <T> TimeStamp electReferenceTimeStamp(List<TimedCacheCollector<T>> collectors) {
         for (TimedCacheCollector<T> collector : collectors) {
             List<T> data = collector.getData();
             if (data.size() > 1) {
@@ -70,11 +72,22 @@ class SynchronizedArrayAggregator extends Function<VMultiDouble> {
         return null;
     }
 
-    private static <T> T closestElement(List<T> data, TimeInterval interval) {
+    static <T> T closestElement(List<T> data, TimeInterval interval, TimeStamp reference) {
         T latest = null;
+        long latestDistance = Long.MAX_VALUE;
         for (T value : data) {
-            if (interval.contains(timestampOf(value))) {
-                latest = value;
+            TimeStamp newTime = timestampOf(value);
+            if (interval.contains(newTime)) {
+                if (latest == null) {
+                    latest = value;
+                    latestDistance = newTime.durationFrom(reference).getNanoSec();
+                } else {
+                    long newDistance = newTime.durationFrom(reference).getNanoSec();
+                    if (newDistance < latestDistance) {
+                        latest = value;
+                        latestDistance = newDistance;
+                    }
+                }
             }
         }
         return latest;

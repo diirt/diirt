@@ -69,7 +69,7 @@ public abstract class SimFunction<T> {
         long intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000);
         if (intervalBetweenExecution == 0)
             intervalBetweenExecution = 1;
-        final int samplesPerExecution = (int) ((double) intervalBetweenExecution / (secondsBeetwenSamples * 1000.0));
+        final int samplesPerExecution = Math.max((int) ((double) intervalBetweenExecution / (secondsBeetwenSamples * 1000.0)), 1);
 
         if (task != null)
             task.cancel();
@@ -103,7 +103,7 @@ public abstract class SimFunction<T> {
             }
         };
         timer.scheduleAtFixedRate(task, 0, intervalBetweenExecution);
-        log.log(Level.FINE, "Synch starting {0}", task);
+        log.log(Level.FINE, "Synch starting {0} every " + intervalBetweenExecution + " ms " + samplesPerExecution + " samples", task);
     }
 
     /**

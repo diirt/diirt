@@ -25,6 +25,7 @@ class EpicsTypeSupport {
             return;
 
         addScalar();
+        addMultiScalar();
         addStatistics();
 
         installed = true;
@@ -42,6 +43,25 @@ class EpicsTypeSupport {
 
             @Override
             public TimeStamp extractTimestamp(Scalar object) {
+                Time time = (Time) object;
+                return time.getTimeStamp();
+            }
+
+        });
+    }
+
+    private static void addMultiScalar() {
+        // Add support for all scalars: simply return the new value
+        TypeSupport.addTypeSupport(MultiScalar.class, new TimedTypeSupport<MultiScalar>() {
+            @Override
+            public Notification<MultiScalar> prepareNotification(MultiScalar oldValue, MultiScalar newValue) {
+                if (NullUtils.equalsOrBothNull(oldValue, newValue))
+                    return new Notification<MultiScalar>(false, null);
+                return new Notification<MultiScalar>(true, newValue);
+            }
+
+            @Override
+            public TimeStamp extractTimestamp(MultiScalar object) {
                 Time time = (Time) object;
                 return time.getTimeStamp();
             }

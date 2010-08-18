@@ -114,4 +114,22 @@ public class TimeDuration {
         return "" + nanoSec;
     }
 
+    @Override
+    public int hashCode() {
+        return new Long(nanoSec).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (obj instanceof TimeDuration) {
+            if (nanoSec == ((TimeDuration) obj).nanoSec)
+                return true;
+        }
+
+        return false;
+    }
+
 }

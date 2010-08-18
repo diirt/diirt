@@ -36,4 +36,13 @@ public class TimeTest {
         assertEquals(TimeStamp.epicsTime(99, 101000000), newTime);
     }
 
+    @Test
+    public void testDurationFrom() {
+        TimeStamp reference = TimeStamp.now();
+        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.nanos(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.nanos(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ms(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ms(10))).getNanoSec());
+    }
+
 }
