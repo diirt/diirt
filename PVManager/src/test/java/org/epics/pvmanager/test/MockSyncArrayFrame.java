@@ -15,7 +15,6 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.TypeSupport;
 import java.util.Collections;
 import javax.swing.JPanel;
 import org.epics.pvmanager.data.VDouble;
@@ -247,7 +246,6 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
         double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
         String pvName = "ramp(-1.5, 1.5, 0.1, " + timeIntervalSec + ")";
-        System.out.println(pvName);
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
         // Buffer depth has to be longest between the time between scan and
