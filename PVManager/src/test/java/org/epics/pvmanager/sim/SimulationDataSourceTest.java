@@ -12,6 +12,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.TimeDuration;
+import org.epics.pvmanager.data.DataUtils;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -89,7 +90,7 @@ public class SimulationDataSourceTest {
         // Data generation every 100 ms
         // Tolerance 200 ms
         // Cache last 5 samples
-        final PV<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(200), TimeDuration.ms(500), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.1)"))))
+        final PV<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), TimeDuration.ms(250), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.05)"))))
                 .atHz(10);
         Thread.sleep(300);
         pv.addPVValueChangeListener(new PVValueChangeListener() {

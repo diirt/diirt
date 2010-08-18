@@ -177,6 +177,13 @@ public class SimulationDataSource extends DataSource {
                 functions.add(simFunction);
             }
         }
+
+        // Synchronize the timing of the simulated pvs
+        TimeStamp startTime = TimeStamp.now();
+        for (SimFunction<?> function : functions) {
+            if (function != null)
+                function.setLastTime(startTime);
+        }
         registeredFunctions.put(recipe, functions);
     }
 

@@ -65,12 +65,10 @@ public class TimedCacheCollectorTest {
 
         // After another second there should be 10 or 11 samples
         Thread.sleep(100);
-        DataUtils.printArray(collector.getData());
         assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
         
         // After another second there should be 10 or 11 samples
         Thread.sleep(100);
-        DataUtils.printArray(collector.getData());
         assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
 
     }

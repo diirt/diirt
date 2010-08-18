@@ -30,7 +30,7 @@ public abstract class SimFunction<T> {
     private double secondsBeetwenSamples;
     private TimeDuration timeBetweenSamples;
     private Class<T> classToken;
-    private TimeStamp lastTime;
+    private volatile TimeStamp lastTime;
 
     /**
      * Creates a new simulation function.
@@ -150,5 +150,11 @@ public abstract class SimFunction<T> {
         return ValueFactory.newVDouble(value, severity, Constants.NO_ALARMS,
                 null, lastTime, oldValue);
     }
+
+    void setLastTime(TimeStamp lastTime) {
+        this.lastTime = lastTime;
+    }
+
+
 
 }
