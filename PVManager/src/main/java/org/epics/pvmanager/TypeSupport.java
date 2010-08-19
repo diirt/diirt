@@ -51,7 +51,7 @@ public abstract class TypeSupport<T> {
      * Given the old and new value, prepare the final value that will be notified.
      * This method is guaranteed to be called in the notification thread (the
      * UI thread). This method may either update the old value or return the new
-     * value, depending on wether the type is immutable or what is more efficient.
+     * value, depending on whether the type is immutable or what is more efficient.
      *
      * @param oldValue the oldValue, which was previously in the previous notification
      * @param newValue the newValue, which was computed during the scanning
@@ -60,6 +60,7 @@ public abstract class TypeSupport<T> {
     public abstract Notification<T> prepareNotification(T oldValue, T newValue);
     
     private static Map<Class<?>, TypeSupport<?>> typeSupports = new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
+    private static Map<Class<?>, TypeSupport<?>> calculatedTypeSupport = new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
 
     /**
      * Adds support for a new type.
@@ -70,6 +71,7 @@ public abstract class TypeSupport<T> {
      */
     public static <T> void addTypeSupport(Class<T> typeClass, TypeSupport<T> typeSupport) {
         typeSupports.put(typeClass, typeSupport);
+        calculatedTypeSupport.clear();
     }
 
     /**
@@ -106,6 +108,26 @@ public abstract class TypeSupport<T> {
     }
 
     /**
+     * Calculates and caches the type support for a particular class, so that
+     * introspection does not occur at every call.
+     *
+     * @param <T> the type to retrieve support for
+     * @param typeClass the class of the type
+     * @return the support for the type or null
+     */
+    static <T> TypeSupport<T> cachedTypeSupportFor(Class<T> typeClass) {
+        @SuppressWarnings("unchecked")
+        TypeSupport<T> support = (TypeSupport<T>) calculatedTypeSupport.get(typeClass);
+        if (support == null) {
+            support = recursiveTypeSupportFor(typeClass);
+            if (support == null)
+                throw new RuntimeException("No support found for type " + typeClass);
+            calculatedTypeSupport.put(typeClass, support);
+        }
+        return support;
+    }
+
+    /**
      * Returns the final value by using the appropriate type support.
      *
      * @param <T> the type of the value
@@ -116,17 +138,21 @@ public abstract class TypeSupport<T> {
     public static <T> Notification<T> notification(T oldValue, T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
-        if (recursiveTypeSupportFor(typeClass) == null)
-            throw new RuntimeException("No support found for type " + typeClass);
-        return recursiveTypeSupportFor(typeClass).prepareNotification(oldValue, newValue);
+        TypeSupport<T> support = cachedTypeSupportFor(typeClass);
+        return support.prepareNotification(oldValue, newValue);
     }
 
+    /**
+     * Extracts the TimeStamp of the value using the appropriate type support.
+     *
+     * @param <T> the type of the value
+     * @param value the value from which to extract the timestamp
+     * @return the extracted timestamp
+     */
     public static <T> TimeStamp timestampOf(T value) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) value.getClass();
-        TimedTypeSupport<T> timeSupport = (TimedTypeSupport<T>) recursiveTypeSupportFor(typeClass);
-        if (timeSupport == null)
-            throw new RuntimeException("No support found for type " + typeClass);
+        TimedTypeSupport<T> timeSupport = (TimedTypeSupport<T>) cachedTypeSupportFor(typeClass);
         return (timeSupport).extractTimestamp(value);
     }
 
