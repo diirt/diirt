@@ -182,9 +182,10 @@ public class SimulationDataSource extends DataSource {
         // and start them
         TimeStamp startTime = TimeStamp.now();
         for (SimFunction<?> function : functions) {
-            if (function != null)
+            if (function != null) {
                 function.setLastTime(startTime);
-            function.start(timer);
+                function.start(timer);
+            }
         }
         registeredFunctions.put(recipe, functions);
     }
