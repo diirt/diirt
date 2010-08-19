@@ -5,18 +5,12 @@
 
 package org.epics.pvmanager.sim;
 
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.DataRecipe;
@@ -30,8 +24,13 @@ import org.epics.pvmanager.data.VDouble;
  *
  * @author carcassi
  */
-public class SimulationDataSource extends DataSource {
+public final class SimulationDataSource extends DataSource {
 
+    /**
+     * Data source instance.
+     *
+     * @return the data source instance
+     */
     public static DataSource simulatedData() {
         return SimulationDataSource.instance;
     }
@@ -45,78 +44,27 @@ public class SimulationDataSource extends DataSource {
 
     }
 
-    private static final Logger log = Logger.getLogger(DataSource.class.getName());
+    private static final Logger log = Logger.getLogger(SimulationDataSource.class.getName());
     static final SimulationDataSource instance = new SimulationDataSource();
 
-    private static Random rand = new Random();
+    /**
+     * Timer on which all simulated data is generated.
+     */
+    private static Timer timer = new Timer("Simulated Data Generator", true);
 
-    private static Timer timer = new Timer("Mock Data Generator", true);
-
-    private static void generateData(final Collector collector, final ValueCache<Double> value, final int nTimes, long period, final int samplesPerPeriod, final String type) {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int innerCounter;
-            ValueProcessor<Object, Double> processor = new ValueProcessor<Object, Double>(collector, value) {
-
-                @Override
-                public void close() {
-                    cancel();
-                }
-
-                @Override
-                public boolean updateCache(Object payload, ValueCache<Double> cache) {
-                    if ("linear".equals(type)) {
-                        cache.setValue((double) innerCounter % 100);
-                    } else {
-                        cache.setValue(rand.nextGaussian());
-                    }
-                    return true;
-                }
-            };
-
-            @Override
-            public void run() {
-                for (int i = 0; i < samplesPerPeriod; i++) {
-                    processor.processValue(null);
-                }
-                innerCounter++;
-                if (innerCounter == nTimes) {
-                    log.fine("Stopped generating data on " + collector);
-                    processor.close();
-                }
-            }
-        }, 0, period);
-        log.fine("Generating data on " + collector);
-    }
-
-
-    Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times(.*)");
-
-    private void connect(String name, Collector collector, ValueCache<Double> doubleCache) {
-        Matcher matcher = pattern.matcher(name);
-        if (matcher.matches()) {
-            String type = matcher.group(4);
-            int nTimes = Integer.parseInt(matcher.group(3));
-            long period = Long.parseLong(matcher.group(2));
-            int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateData(collector, doubleCache, nTimes, period, samplesPerPeriod, type);
-        } else {
-            throw new RuntimeException("Name doesn't match for mock connection");
-        }
-    }
-
-    public static String mockPVName(int samplesPerNotification, long notificationPeriodMs, int nNotifications) {
-        return "" + samplesPerNotification + "samples_every" + notificationPeriodMs + "ms_for" + nNotifications + "times";
-    }
-
+    /**
+     * Cache for all functions created for each data recipe.
+     */
     private static Map<DataRecipe, Set<SimFunction<?>>> registeredFunctions = new ConcurrentHashMap<DataRecipe, Set<SimFunction<?>>>();
 
     @Override
     public void connect(DataRecipe recipe) {
+        // First create all the functions for the recipe
         Set<SimFunction<?>> functions = new HashSet<SimFunction<?>>();
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
-                SimFunction<?> simFunction = createMonitor(collector, entry.getKey(), entry.getValue());
+                SimFunction<?> simFunction = connectSingle(collector, entry.getKey(), entry.getValue());
                 functions.add(simFunction);
             }
         }
@@ -130,33 +78,33 @@ public class SimulationDataSource extends DataSource {
                 function.start(timer);
             }
         }
+
+        // Keep functions for later disconnections
         registeredFunctions.put(recipe, functions);
     }
 
     @Override
     public void disconnect(DataRecipe recipe) {
+        // Get all the function registered for this recipe and stop them
         Set<SimFunction<?>> functions = registeredFunctions.get(recipe);
         for (SimFunction<?> function : functions) {
             if (function != null)
                 function.stop();
         }
         registeredFunctions.remove(recipe);
+
+        // Purge timer, or tasks will remain and memory would leak
         timer.purge();
     }
 
-    public SimFunction<?> createMonitor(Collector collector, String pvName, ValueCache<?> cache) {
-        if (cache.getType().equals(Double.class)) {
-            @SuppressWarnings("unchecked")
-            ValueCache<Double> doubleCache = (ValueCache<Double>) cache;
-            connect(pvName, collector, doubleCache);
-        } else if (cache.getType().equals(VDouble.class)) {
+    private SimFunction<?> connectSingle(Collector collector, String pvName, ValueCache<?> cache) {
+        if (cache.getType().equals(VDouble.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;
             return connectVDouble(pvName, collector, vDoubleCache);
         } else {
             throw new UnsupportedOperationException("Type " + cache.getType().getName() + " is not yet supported");
         }
-        return null;
     }
 
     private SimFunction<?> connectVDouble(String name, Collector collector, ValueCache<VDouble> cache) {
