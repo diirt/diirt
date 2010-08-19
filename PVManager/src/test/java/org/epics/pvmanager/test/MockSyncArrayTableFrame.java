@@ -5,26 +5,17 @@
 
 package org.epics.pvmanager.test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.table.AbstractTableModel;
+import org.epics.pvmanager.data.VMultiDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import java.util.Collections;
-import javax.swing.JPanel;
+import javax.swing.table.TableModel;
 import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VMultiDouble;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.AxisLocation;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CombinedDomainXYPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import static org.epics.pvmanager.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
@@ -32,66 +23,12 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
  *
  * @author carcassi
  */
-public class MockSyncArrayFrame extends javax.swing.JFrame {
+public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
-    public MockSyncArrayFrame() {
+    public MockSyncArrayTableFrame() {
         PVManager.setConnectionManager(SimulationDataSource.simulatedData());
         initComponents();
-    }
-
-    private JPanel oldPanel;
-
-    private void updateChart() {
-        if (oldPanel != null) {
-            plotPanel.remove(oldPanel);
-            oldPanel = null;
-        }
-        if (pv.getValue() == null)
-            return;
-        final JFreeChart chart = createChart();
-        final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
-        plotPanel.add(panel);
-        plotPanel.revalidate();
-        oldPanel = panel;
-    }
-
-    private JFreeChart createChart() {
-
-        final XYDataset data1 = createDataset();
-        final XYItemRenderer renderer1 = new StandardXYItemRenderer();
-        final NumberAxis rangeAxis1 = new NumberAxis();
-        rangeAxis1.setRange(-1.5, 1.5);
-        final XYPlot subplot1 = new XYPlot(data1, null, rangeAxis1, renderer1);
-        subplot1.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
-
-        NumberAxis hor = new NumberAxis();
-        hor.setRange(0, pv.getValue().getValues().size() - 1);
-        final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(hor);
-        plot.setGap(10.0);
-
-        plot.add(subplot1, 1);
-        plot.setOrientation(PlotOrientation.VERTICAL);
-
-        // return a new chart containing the overlaid plot...
-        return new JFreeChart(null,
-                              JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-    }
-
-    private XYDataset createDataset() {
-        final XYSeries series1 = new XYSeries("Values at " + pv.getValue().getTimeStamp().asDate());
-        int index = 0;
-        if (pv.getValue() != null) {
-            for (VDouble value : pv.getValue().getValues()) {
-                if (value != null)
-                    series1.add(index, value.getValue());
-                index++;
-            }
-        }
-
-        final XYSeriesCollection collection = new XYSeriesCollection();
-        collection.addSeries(series1);
-        return collection;
     }
 
     /** This method is called from within the constructor to
@@ -103,17 +40,20 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pvTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         scanRateSpinner = new javax.swing.JSpinner();
         createPVButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         nPVSpinner = new javax.swing.JSpinner();
-        plotPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         updateRateSpinner = new javax.swing.JSpinner();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jScrollPane1.setViewportView(pvTable);
 
         jLabel6.setText("UI scan rate (Hz):");
 
@@ -130,8 +70,6 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
         nPVSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
-        plotPanel.setLayout(new java.awt.BorderLayout());
-
         jLabel3.setText("PV update rate (Hz):");
 
         updateRateSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
@@ -143,7 +81,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(plotPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                     .addComponent(createPVButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -164,8 +102,8 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(plotPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,12 +145,46 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {
-                //printArray(pv.getValue());
-                updateChart();
+                final List<VDouble> values = pv.getValue().getValues();
+                if (values != null) {
+                    TableModel model = new AbstractTableModel() {
+
+                        List<String> names = Arrays.asList("Value", "Timestamp");
+
+                        @Override
+                        public int getRowCount() {
+                            return values.size();
+                        }
+
+                        @Override
+                        public int getColumnCount() {
+                            return names.size();
+                        }
+
+                        @Override
+                        public String getColumnName(int column) {
+                            return names.get(column);
+                        }
+
+                        @Override
+                        public Object getValueAt(int rowIndex, int columnIndex) {
+                            if (values.get(rowIndex) == null)
+                                return null;
+                            switch(columnIndex) {
+                                case 0:
+                                    return values.get(rowIndex).getValue();
+                                case 1:
+                                    return values.get(rowIndex).getTimeStamp();
+                            }
+                            throw new IllegalStateException();
+                        }
+                    };
+                    pvTable.setModel(model);
+                }
             }
         });
-    }//GEN-LAST:event_createPVButtonActionPerformed
 
+    }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**
     * @param args the command line arguments
@@ -220,7 +192,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MockSyncArrayFrame().setVisible(true);
+                new MockSyncArrayTableFrame().setVisible(true);
             }
         });
     }
@@ -230,9 +202,10 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner nPVSpinner;
-    private javax.swing.JPanel plotPanel;
+    private javax.swing.JTable pvTable;
     private javax.swing.JSpinner scanRateSpinner;
     private javax.swing.JSpinner updateRateSpinner;
     // End of variables declaration//GEN-END:variables
