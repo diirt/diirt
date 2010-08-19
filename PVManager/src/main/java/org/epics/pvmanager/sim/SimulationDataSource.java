@@ -5,10 +5,8 @@
 
 package org.epics.pvmanager.sim;
 
-import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
@@ -90,48 +88,6 @@ public class SimulationDataSource extends DataSource {
         log.fine("Generating data on " + collector);
     }
 
-    private static void generateDBRTimeDouble(final Collector collector, final ValueCache<DBR_TIME_Double> value,
-            final int nTimes, long period, final int samplesPerPeriod, final String type) {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int innerCounter;
-            ValueProcessor<Object, DBR_TIME_Double> processor = new ValueProcessor<Object, DBR_TIME_Double>(collector, value) {
-
-                @Override
-                public void close() {
-                    cancel();
-                }
-
-                @Override
-                public boolean updateCache(Object payload, ValueCache<DBR_TIME_Double> cache) {
-                    DBR_TIME_Double newValue = new DBR_TIME_Double();
-                    newValue.setSeverity(Severity.NO_ALARM);
-                    newValue.setStatus(Status.NO_ALARM);
-                    if ("linear".equals(type)) {
-                        newValue.getDoubleValue()[0] = innerCounter % 100;
-                    } else {
-                        newValue.getDoubleValue()[0] = rand.nextGaussian();
-                    }
-                    TimeStamp now = TimeStamp.now();
-                    newValue.setTimeStamp(new gov.aps.jca.dbr.TimeStamp(now.getEpicsSec(), now.getNanoSec()));
-                    cache.setValue(newValue);
-                    return true;
-                }
-            };
-
-            @Override
-            public void run() {
-                for (int i = 0; i < samplesPerPeriod; i++) {
-                    processor.processValue(null);
-                }
-                innerCounter++;
-                if (innerCounter == nTimes) {
-                    log.fine("Stopped generating data on " + collector);
-                    processor.close();
-                }
-            }
-        }, 0, period);
-        log.fine("Generating data on " + collector);
-    }
 
     Pattern pattern = Pattern.compile("(\\d*)samples_every(\\d*)ms_for(\\d*)times(.*)");
 
@@ -143,19 +99,6 @@ public class SimulationDataSource extends DataSource {
             long period = Long.parseLong(matcher.group(2));
             int samplesPerPeriod = Integer.parseInt(matcher.group(1));
             generateData(collector, doubleCache, nTimes, period, samplesPerPeriod, type);
-        } else {
-            throw new RuntimeException("Name doesn't match for mock connection");
-        }
-    }
-
-    private void connectDBR(String name, Collector collector, ValueCache<DBR_TIME_Double> cache) {
-        Matcher matcher = pattern.matcher(name);
-        if (matcher.matches()) {
-            String type = matcher.group(4);
-            int nTimes = Integer.parseInt(matcher.group(3));
-            long period = Long.parseLong(matcher.group(2));
-            int samplesPerPeriod = Integer.parseInt(matcher.group(1));
-            generateDBRTimeDouble(collector, cache, nTimes, period, samplesPerPeriod, type);
         } else {
             throw new RuntimeException("Name doesn't match for mock connection");
         }
@@ -206,10 +149,6 @@ public class SimulationDataSource extends DataSource {
             @SuppressWarnings("unchecked")
             ValueCache<Double> doubleCache = (ValueCache<Double>) cache;
             connect(pvName, collector, doubleCache);
-//        } else if (cache.getType().equals(DBR_TIME_Double.class)) {
-//            @SuppressWarnings("unchecked")
-//            ValueCache<DBR_TIME_Double> dbrTimeCache = (ValueCache<DBR_TIME_Double>) cache;
-//            connectDBR(pvName, collector, dbrTimeCache);
         } else if (cache.getType().equals(VDouble.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;

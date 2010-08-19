@@ -26,7 +26,7 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class SimulationDataSourceTest {
 
-    //@Test
+    @Test
     public void ramp1() throws InterruptedException {
         // Read data from a ramp PV
         final AtomicInteger sampleCounter = new AtomicInteger();
@@ -54,7 +54,7 @@ public class SimulationDataSourceTest {
         pv.removePVValueChangeListener(null);
     }
 
-    //@Test
+    @Test
     public void ramp2() throws InterruptedException {
         // Read data from a ramp PV
         final AtomicInteger sampleCounter = new AtomicInteger();
