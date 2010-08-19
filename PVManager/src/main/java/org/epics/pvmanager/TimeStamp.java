@@ -237,7 +237,7 @@ public class TimeStamp implements Comparable {
 
     public TimeDuration durationFrom(TimeStamp reference) {
         long nanoSecDiff = reference.nanoSec - nanoSec;
-        nanoSecDiff += (reference.unixSec - unixSec) * 1000;
+        nanoSecDiff += (reference.unixSec - unixSec) * 1000000000;
         nanoSecDiff = Math.abs(nanoSecDiff);
         return TimeDuration.nanos(nanoSecDiff);
     }

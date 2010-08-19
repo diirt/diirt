@@ -206,10 +206,10 @@ public class SimulationDataSource extends DataSource {
             @SuppressWarnings("unchecked")
             ValueCache<Double> doubleCache = (ValueCache<Double>) cache;
             connect(pvName, collector, doubleCache);
-        } else if (cache.getType().equals(DBR_TIME_Double.class)) {
-            @SuppressWarnings("unchecked")
-            ValueCache<DBR_TIME_Double> dbrTimeCache = (ValueCache<DBR_TIME_Double>) cache;
-            connectDBR(pvName, collector, dbrTimeCache);
+//        } else if (cache.getType().equals(DBR_TIME_Double.class)) {
+//            @SuppressWarnings("unchecked")
+//            ValueCache<DBR_TIME_Double> dbrTimeCache = (ValueCache<DBR_TIME_Double>) cache;
+//            connectDBR(pvName, collector, dbrTimeCache);
         } else if (cache.getType().equals(VDouble.class)) {
             @SuppressWarnings("unchecked")
             ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;
