@@ -6,6 +6,8 @@
 package org.epics.pvmanager;
 
 import java.lang.ref.WeakReference;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Object responsible to notify the PV of changes on the appropriate thread.
@@ -59,23 +61,45 @@ class Notifier<T> {
         }
     }
 
+    /*
+     * Concurrent queue to safely publish objects.
+     * The timer thread will put objects in the queue, while the notification
+     * thread will take them.
+     * Given that the queue does not accept null, publish nullValue object
+     * instead of null.
+     */
+    private Queue<Object> publishingQueue = new ConcurrentLinkedQueue<Object>();
+    private static final Object nullValue = new Object();
+
+    private void push(T element) {
+        if (element != null) {
+            publishingQueue.add(element);
+        } else {
+            publishingQueue.add(nullValue);
+        }
+    }
+
+    private T pop() {
+        Object element = publishingQueue.poll();
+        if (element == nullValue)
+            return null;
+        else
+            return (T) element;
+    }
+
     /**
      * Notifies the PV of a new value.
      */
     void notifyPv() {
-        // Synchronization policy: the newValue is guarded by this pull notifier
-        final T newValue;
-        synchronized(this) {
-            newValue = function.getValue();
-        }
+        // Using concurrent queue to safely publish object
+        T newValue = function.getValue();
+        push(newValue);
+
         onThread.post(new Runnable() {
 
             @Override
             public void run() {
-                T safeValue;
-                synchronized(Notifier.this) {
-                    safeValue = newValue;
-                }
+                T safeValue = pop();
                 PV<T> pv = pvRef.get();
                 if (pv != null && safeValue != null) {
                     TypeSupport.Notification<T> notification =
