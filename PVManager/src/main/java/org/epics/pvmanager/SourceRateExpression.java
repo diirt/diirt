@@ -63,9 +63,10 @@ public class SourceRateExpression<T> {
         return function;
     }
 
-    DataRecipe createMontiorRecipes(Collector collector) {
-        DataRecipe recipe = new DataRecipe();
-        return recipe.includeCollector(collector, caches);
+    DataRecipeBuilder createMontiorRecipes(Collector collector) {
+        DataRecipeBuilder recipe = new DataRecipeBuilder();
+        recipe.addCollector(collector, caches);
+        return recipe;
     }
 
 }

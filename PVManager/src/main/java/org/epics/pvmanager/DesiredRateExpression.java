@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class DesiredRateExpression<T> {
 
-    private final DataRecipe recipe;
+    private final DataRecipeBuilder recipe;
     private final Function<T> function;
     private final String defaultName;
 
@@ -58,14 +58,14 @@ public class DesiredRateExpression<T> {
         this.defaultName = defaultName;
     }
 
-    private static DataRecipe combineRecipes(List<DesiredRateExpression<?>> childExpressions) {
+    private static DataRecipeBuilder combineRecipes(List<DesiredRateExpression<?>> childExpressions) {
         if (childExpressions.isEmpty())
-            return new DataRecipe();
+            return new DataRecipeBuilder();
 
-        DataRecipe recipe = childExpressions.get(0).getDataRecipe();
+        DataRecipeBuilder recipe = childExpressions.get(0).recipe;
         for (int i = 1; i < childExpressions.size(); i++) {
-            DataRecipe newRecipe = childExpressions.get(i).getDataRecipe();
-            recipe = recipe.includeRecipe(newRecipe);
+            DataRecipeBuilder newRecipe = childExpressions.get(i).recipe;
+            recipe.addAll(newRecipe);
         }
 
         return recipe;
@@ -86,7 +86,7 @@ public class DesiredRateExpression<T> {
      * @return a data recipe
      */
     public DataRecipe getDataRecipe() {
-        return recipe;
+        return recipe.build();
     }
 
     /**
