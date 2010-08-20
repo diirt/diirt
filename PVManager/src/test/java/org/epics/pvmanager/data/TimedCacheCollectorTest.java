@@ -5,16 +5,14 @@
 
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.SourceRateExpression;
+import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.PrivateFactory;
 import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import gov.aps.jca.dbr.DBR_TIME_Double;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.TimeDuration;
-import org.epics.pvmanager.TimedCacheCollector;
 import org.epics.pvmanager.ValueCache;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,8 +51,8 @@ public class TimedCacheCollectorTest {
     public void correctNumberOfValuesInCache() throws InterruptedException {
         ValueCache<VDouble> cache =
                 new ValueCache<VDouble>(VDouble.class);
-        TimedCacheCollector<VDouble> collector =
-                new TimedCacheCollector<VDouble>(cache, TimeDuration.ms(100));
+        Collector<VDouble> collector =
+                PrivateFactory.newTimeCacheCollector(cache, TimeDuration.ms(100));
         monitorRecipe = new DataRecipe();
         monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.01)", cache));
         SimulationDataSource.simulatedData().connect(monitorRecipe);

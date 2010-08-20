@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class TimedCacheCollector<T> extends Collector<T> {
+class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final Function<T> function;

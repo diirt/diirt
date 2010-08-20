@@ -8,10 +8,11 @@ package org.epics.pvmanager.data;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.TimedCacheCollector;
 import org.epics.pvmanager.ValueCache;
 import java.util.ArrayList;
 import java.util.List;
+import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.PrivateFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,12 +35,13 @@ public class SynchronizedArrayTest {
         int nPvs = 5;
         List<ValueCache<VDouble>> caches = new ArrayList<ValueCache<VDouble>>();
         List<String> names = new ArrayList<String>();
-        List<TimedCacheCollector<VDouble>> collectors = new ArrayList<TimedCacheCollector<VDouble>>();
+        List<Collector<VDouble>> collectors = new ArrayList<Collector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
             caches.add(new ValueCache<VDouble>(VDouble.class));
-            collectors.add(new TimedCacheCollector<VDouble>(caches.get(i), TimeDuration.ms(10)));
+            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), TimeDuration.ms(10)));
             names.add("pv" + i);
         }
+        @SuppressWarnings("unchecked")
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.nanos(10));
 
@@ -91,12 +93,13 @@ public class SynchronizedArrayTest {
         int nPvs = 5;
         List<ValueCache<VDouble>> caches = new ArrayList<ValueCache<VDouble>>();
         List<String> names = new ArrayList<String>();
-        List<TimedCacheCollector<VDouble>> collectors = new ArrayList<TimedCacheCollector<VDouble>>();
+        List<Collector<VDouble>> collectors = new ArrayList<Collector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
             caches.add(new ValueCache<VDouble>(VDouble.class));
-            collectors.add(new TimedCacheCollector<VDouble>(caches.get(i), TimeDuration.ms(10)));
+            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), TimeDuration.ms(10)));
             names.add("pv" + i);
         }
+        @SuppressWarnings("unchecked")
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.ms(5));
 

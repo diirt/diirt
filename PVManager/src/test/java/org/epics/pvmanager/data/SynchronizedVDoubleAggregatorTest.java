@@ -7,9 +7,7 @@ package org.epics.pvmanager.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.TimeInterval;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.TimedCacheCollector;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
