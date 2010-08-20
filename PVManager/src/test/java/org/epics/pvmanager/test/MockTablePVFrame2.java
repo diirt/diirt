@@ -3,24 +3,19 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-/*
- * MockPVFrame.java
- *
- * Created on Feb 16, 2010, 3:43:37 PM
- */
-
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.types.DoubleStatistics;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.types.ExpressionLanguage.*;
 
 /**
@@ -192,21 +187,22 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<List<DoubleStatistics>> pv;
+    PV<List<VStatistics>> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
-        pv = null;
+        if (pv != null)
+            pv.close();
 
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
-        long timeIntervalMs = (1000 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
+        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
+        String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        pv = PVManager.read(listOf(statisticsOf(doublePvs(Collections.nCopies(nPvs, pvName))))).atHz(scanRate);
+        pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {
-                final List<DoubleStatistics> values = pv.getValue();
+                final List<VStatistics> values = pv.getValue();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {
 

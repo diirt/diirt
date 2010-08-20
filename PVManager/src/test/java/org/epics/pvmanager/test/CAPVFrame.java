@@ -11,12 +11,12 @@
 
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.jca.JCASupport;
-import org.epics.pvmanager.types.DoubleStatistics;
-import static org.epics.pvmanager.types.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**
  *
@@ -129,14 +129,17 @@ public class CAPVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<DoubleStatistics> pv;
+    PV<VStatistics> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if ("".equals(pvNameField.getText()))
             return;
 
+        if (pv != null)
+            pv.close();
+
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(statisticsOf(doublePv(pvNameField.getText()))).atHz(scanRate);
+        pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).atHz(scanRate);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override

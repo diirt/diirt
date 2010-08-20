@@ -30,8 +30,6 @@ class StandardTypeSupport {
         if (installed)
             return;
 
-        addDouble();
-        addDoubleStatistics();
         addList();
 
         installed = true;
@@ -67,34 +65,6 @@ class StandardTypeSupport {
                 }
 
                 return new Notification<List>(notificationNeeded, oldValue);
-            }
-        });
-    }
-    
-    private static void addDouble() {
-        // Add Double support: simply return the new value
-        TypeSupport.addTypeSupport(Double.class, new TypeSupport<Double>() {
-            @Override
-            public Notification<Double> prepareNotification(Double oldValue, Double newValue) {
-                if (NullUtils.equalsOrBothNull(oldValue, newValue))
-                    return new Notification<Double>(false, null);
-                return new Notification<Double>(true, newValue);
-            }
-        });
-    }
-
-    private static void addDoubleStatistics() {
-        // Add DoubleStatistics support: copy the new values in the old object.
-        TypeSupport.addTypeSupport(DoubleStatistics.class, new TypeSupport<DoubleStatistics>() {
-            @Override
-            public Notification<DoubleStatistics> prepareNotification(DoubleStatistics oldValue, DoubleStatistics newValue) {
-                if (oldValue == null)
-                    oldValue = new DoubleStatistics();
-                if (oldValue.equals(newValue))
-                    return new Notification<DoubleStatistics>(false, null);
-                oldValue.setStatistics(newValue.getAverage(), newValue.getMin(),
-                        newValue.getMax(), newValue.getStdDev());
-                return new Notification<DoubleStatistics>(true, oldValue);
             }
         });
     }

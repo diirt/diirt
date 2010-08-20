@@ -3,23 +3,17 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-/*
- * MockPVFrame.java
- *
- * Created on Feb 16, 2010, 3:43:37 PM
- */
-
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.types.DoubleStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import static org.epics.pvmanager.types.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**
  *
@@ -195,19 +189,25 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    List<PV<DoubleStatistics>> pvs = new ArrayList<PV<DoubleStatistics>>();
+    List<PV<VStatistics>> pvs = new ArrayList<PV<VStatistics>>();
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
+        if (pvs != null && !pvs.isEmpty()) {
+            for (PV<VStatistics> pv : pvs) {
+                pv.close();
+            }
+        }
+
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
-        long timeIntervalMs = (1000 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "" + samplesPerUpdateSpinner.getModel().getValue() + "samples_every" + timeIntervalMs + "ms_for" + nUpdatesSpinner.getModel().getValue() + "times";
+        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
+        String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
         final DefaultTableModel model = (DefaultTableModel) pvTable.getModel();
         model.setRowCount(nPvs);
         pvs.clear();
         for (int n = 0; n < nPvs; n++) {
-            final PV<DoubleStatistics> pv = PVManager.read(statisticsOf(doublePv(pvName))).atHz(scanRate);
+            final PV<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).atHz(scanRate);
             final int nRow = n;
             pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override

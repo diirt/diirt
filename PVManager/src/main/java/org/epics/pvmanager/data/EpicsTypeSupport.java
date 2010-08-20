@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.epics.pvmanager.NullUtils;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.TimedTypeSupport;
@@ -27,6 +29,7 @@ class EpicsTypeSupport {
         addScalar();
         addMultiScalar();
         addStatistics();
+        addList();
 
         installed = true;
     }
@@ -77,6 +80,40 @@ class EpicsTypeSupport {
                 if (NullUtils.equalsOrBothNull(oldValue, newValue))
                     return new Notification<Statistics>(false, null);
                 return new Notification<Statistics>(true, newValue);
+            }
+        });
+    }
+
+    private static void addList() {
+        TypeSupport.addTypeSupport(List.class, new TypeSupport<List>() {
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public Notification<List> prepareNotification(List oldValue, List newValue) {
+                // Initialize value if never initialized
+                if (oldValue == null)
+                    oldValue = new ArrayList();
+
+                boolean notificationNeeded = false;
+
+                // Check all the elements in the list and use StandardTypeSupport
+                // to understand whether any needs notification.
+                // Notification is done only if at least one element needs notification.
+                for (int index = 0; index < newValue.size(); index++) {
+                    if (oldValue.size() <= index) {
+                        oldValue.add(null);
+                    }
+
+                    if (newValue.get(index) != null) {
+                        Notification itemNotification = TypeSupport.notification(oldValue.get(index), newValue.get(index));
+                        if (itemNotification.isNotificationNeeded()) {
+                            notificationNeeded = true;
+                            oldValue.set(index, itemNotification.getNewValue());
+                        }
+                    }
+                }
+
+                return new Notification<List>(notificationNeeded, oldValue);
             }
         });
     }

@@ -20,7 +20,7 @@
             </goals>
             <properties>
                 <exec.classpathScope>${classPathScope}</exec.classpathScope>
-                <exec.args>-Xmx256m -Djava.util.logging.config.file=./target/test-classes/log.properties -classpath %classpath ${packageClassName}</exec.args>
+                <exec.args>-Xmx512m -Djava.util.logging.config.file=./target/test-classes/log.properties -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
