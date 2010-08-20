@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class QueueCollector<T> extends Collector<T> {
+class QueueCollector<T> extends Collector<T> {
 
     // @GuardedBy(buffer)
     private final List<T> buffer = new ArrayList<T>();

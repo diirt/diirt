@@ -12,7 +12,6 @@ import org.epics.pvmanager.Function;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeInterval;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.TimedCacheCollector;
 import java.util.List;
 import java.util.logging.Level;
 import static org.epics.pvmanager.TypeSupport.*;
@@ -27,7 +26,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
 
     private static final Logger log = Logger.getLogger(SynchronizedVDoubleAggregator.class.getName());
     private final TimeDuration tolerance;
-    private final List<TimedCacheCollector<VDouble>> collectors;
+    private final List<Function<List<VDouble>>> collectors;
 
     /**
      * Creates a new aggregators, that takes a list of collectors
@@ -38,7 +37,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
      * @param tolerance the tolerance around the reference time for samples to be included
      */
     @SuppressWarnings("unchecked")
-    public SynchronizedVDoubleAggregator(List<String> names, List<TimedCacheCollector<VDouble>> collectors, TimeDuration tolerance) {
+    public SynchronizedVDoubleAggregator(List<String> names, List<Function<List<VDouble>>> collectors, TimeDuration tolerance) {
         super(VMultiDouble.class);
         if (tolerance.equals(TimeDuration.ms(0)))
             throw new IllegalArgumentException("Tolerance between samples must be non-zero");
@@ -55,7 +54,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
         TimeInterval allowedInterval = tolerance.around(reference);
         List<VDouble> values = new ArrayList<VDouble>(collectors.size());
         StringBuilder buffer = new StringBuilder();
-        for (TimedCacheCollector<VDouble> collector : collectors) {
+        for (Function<List<VDouble>> collector : collectors) {
             List<VDouble> data = collector.getValue();
             if (log.isLoggable(Level.FINE)) {
                 buffer.append(data.size()).append(", ");
@@ -71,8 +70,8 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
                 null, null, null, null, null, null, null, null, null, null);
     }
 
-    static <T> TimeStamp electReferenceTimeStamp(List<TimedCacheCollector<T>> collectors) {
-        for (TimedCacheCollector<T> collector : collectors) {
+    static <T> TimeStamp electReferenceTimeStamp(List<Function<List<T>>> collectors) {
+        for (Function<List<T>> collector : collectors) {
             List<T> data = collector.getValue();
             if (data.size() > 1) {
                 TimeStamp time = timestampOf(data.get(data.size() - 2));

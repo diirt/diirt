@@ -22,19 +22,13 @@ public class DesiredRateExpression<T> {
     private final String defaultName;
 
     /**
-     * Creates a new aggregated expression. Use this constructor when making
-     * an aggregated expression out of a collector and a non-aggregated expression.
+     * Creates a new expression at the desired rate. Use this constructor when making
+     * an DesiredRateExpression out of a collector and a SourceRateExpression.
      *
-     * @param recipe the list of channels needed for this expression
-     * @param function the function that calculates the value of the new expression
+     * @param expression the original source rate expression
+     * @param collector the collector for the original source
      * @param defaultName the display name of the expression
      */
-    public DesiredRateExpression(DataRecipe recipe, Function<T> function, String defaultName) {
-        this.recipe = recipe;
-        this.function = function;
-        this.defaultName = defaultName;
-    }
-
     public DesiredRateExpression(SourceRateExpression<?> expression, Function<T> collector, String defaultName) {
         if (!(collector instanceof Collector)){
             throw new IllegalArgumentException("collector must be of type Collector");

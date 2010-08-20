@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.data;
 
+import org.epics.pvmanager.Function;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.TimedCacheCollector;
@@ -40,7 +41,7 @@ public class SynchronizedArrayTest {
             names.add("pv" + i);
         }
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, TimeDuration.nanos(10));
+                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.nanos(10));
 
         TimeStamp reference = TimeStamp.now();
         TimeStamp secondPass = reference.plus(ms(1));
@@ -97,7 +98,7 @@ public class SynchronizedArrayTest {
             names.add("pv" + i);
         }
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, TimeDuration.ms(5));
+                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.ms(5));
 
         TimeStamp reference = TimeStamp.now();
         TimeStamp future1 = reference.plus(TimeDuration.ms(1));
