@@ -15,7 +15,7 @@ import java.util.List;
  * @param <T> type of the expression output
  * @author carcassi
  */
-public class AggregatedExpression<T> {
+public class DesiredRateExpression<T> {
 
     private final DataRecipe recipe;
     private final Function<T> function;
@@ -29,8 +29,23 @@ public class AggregatedExpression<T> {
      * @param function the function that calculates the value of the new expression
      * @param defaultName the display name of the expression
      */
-    public AggregatedExpression(DataRecipe recipe, Function<T> function, String defaultName) {
+    public DesiredRateExpression(DataRecipe recipe, Function<T> function, String defaultName) {
         this.recipe = recipe;
+        this.function = function;
+        this.defaultName = defaultName;
+    }
+
+    public DesiredRateExpression(SourceRateExpression<?> expression, Function<T> collector, String defaultName) {
+        if (!(collector instanceof Collector)){
+            throw new IllegalArgumentException("collector must be of type Collector");
+        }
+        this.recipe = expression.createMontiorRecipes((Collector) collector);
+        this.function = collector;
+        this.defaultName = defaultName;
+    }
+
+    public DesiredRateExpression(DesiredRateExpression<?> expression, Function<T> function, String defaultName) {
+        this.recipe = expression.recipe;
         this.function = function;
         this.defaultName = defaultName;
     }
@@ -43,13 +58,13 @@ public class AggregatedExpression<T> {
      * @param function the function that calculates the value of the new expression
      * @param defaultName the display name of the expression
      */
-    public AggregatedExpression(List<AggregatedExpression<?>> childExpressions, Function<T> function, String defaultName) {
+    public DesiredRateExpression(List<DesiredRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
         this.recipe = combineRecipes(childExpressions);
         this.function = function;
         this.defaultName = defaultName;
     }
 
-    private static DataRecipe combineRecipes(List<AggregatedExpression<?>> childExpressions) {
+    private static DataRecipe combineRecipes(List<DesiredRateExpression<?>> childExpressions) {
         if (childExpressions.isEmpty())
             return new DataRecipe();
 

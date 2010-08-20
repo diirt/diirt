@@ -8,7 +8,7 @@ package org.epics.pvmanager.jca;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.Expression;
+import org.epics.pvmanager.SourceRateExpression;
 import org.epics.pvmanager.NullUtils;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.TimedTypeSupport;
@@ -71,8 +71,8 @@ public class JCASupport {
      * @param epicsType the type of the PV
      * @return an expression representing the pv
      */
-    public static <T extends DBR> Expression<T> epicsPv(String name, Class<T> epicsType) {
-        return new Expression<T>(name, epicsType);
+    public static <T extends DBR> SourceRateExpression<T> epicsPv(String name, Class<T> epicsType) {
+        return new SourceRateExpression<T>(name, epicsType);
     }
 
     /**
@@ -83,8 +83,8 @@ public class JCASupport {
      * @param epicsType the type of the PVs
      * @return a list of expressions representing the pvs
      */
-    public static <T extends DBR> List<Expression<T>> epicsPvs(List<String> names, Class<T> epicsType) {
-        List<Expression<T>> expressions = new ArrayList<Expression<T>>();
+    public static <T extends DBR> List<SourceRateExpression<T>> epicsPvs(List<String> names, Class<T> epicsType) {
+        List<SourceRateExpression<T>> expressions = new ArrayList<SourceRateExpression<T>>();
         for (String name : names) {
             expressions.add(epicsPv(name, epicsType));
         }

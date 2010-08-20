@@ -33,7 +33,7 @@ public abstract class Aggregator<T, E> extends Function<T> {
 
     @Override
     public T getValue() {
-        List<E> data = collector.getData();
+        List<E> data = collector.getValue();
         if (data.size() > 0) {
             lastCalculatedValue = calculate(data);
             lastValue = data.get(data.size() - 1);

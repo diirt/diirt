@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author carcassi
  */
-public class Expression<T> {
+public class SourceRateExpression<T> {
 
     private Map<String, ValueCache> caches;
     private Function<T> function;
@@ -28,7 +28,7 @@ public class Expression<T> {
      * @param pvName the name of the pv
      * @param pvType the type of the pv
      */
-    public Expression(String pvName, Class<T> pvType) {
+    public SourceRateExpression(String pvName, Class<T> pvType) {
         ValueCache<T> cache = new ValueCache<T>(pvType);
         caches = new HashMap<String, ValueCache>();
         caches.put(pvName, cache);
@@ -36,9 +36,9 @@ public class Expression<T> {
         this.defaultName = pvName;
     }
 
-    private Expression(List<Expression<?>> childExpressions, Function<T> function, String defaultName) {
+    private SourceRateExpression(List<SourceRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
         caches = new HashMap<String, ValueCache>();
-        for (Expression<?> childExpression : childExpressions) {
+        for (SourceRateExpression<?> childExpression : childExpressions) {
             for (Map.Entry<String, ValueCache> entry : childExpression.getCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (caches.keySet().contains(pvName)) {

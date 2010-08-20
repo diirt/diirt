@@ -56,7 +56,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
         List<VDouble> values = new ArrayList<VDouble>(collectors.size());
         StringBuilder buffer = new StringBuilder();
         for (TimedCacheCollector<VDouble> collector : collectors) {
-            List<VDouble> data = collector.getData();
+            List<VDouble> data = collector.getValue();
             if (log.isLoggable(Level.FINE)) {
                 buffer.append(data.size()).append(", ");
             }
@@ -73,7 +73,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
 
     static <T> TimeStamp electReferenceTimeStamp(List<TimedCacheCollector<T>> collectors) {
         for (TimedCacheCollector<T> collector : collectors) {
-            List<T> data = collector.getData();
+            List<T> data = collector.getValue();
             if (data.size() > 1) {
                 TimeStamp time = timestampOf(data.get(data.size() - 2));
                 if (time != null)

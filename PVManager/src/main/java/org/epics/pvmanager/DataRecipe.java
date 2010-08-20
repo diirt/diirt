@@ -27,7 +27,7 @@ public class DataRecipe {
      *
      * @param channelsPerCollector the list of all channels needed by each collector
      */
-    private DataRecipe(Map<Collector, Map<String, ValueCache>> channelsPerCollector) {
+    DataRecipe(Map<Collector, Map<String, ValueCache>> channelsPerCollector) {
         this.channelsPerCollector = channelsPerCollector;
     }
 

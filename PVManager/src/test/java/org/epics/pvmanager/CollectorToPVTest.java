@@ -29,7 +29,7 @@ public class CollectorToPVTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Force type support loading
-        Expression<VDouble> exp = org.epics.pvmanager.data.ExpressionLanguage.vDouble("test");
+        SourceRateExpression<VDouble> exp = org.epics.pvmanager.data.ExpressionLanguage.vDouble("test");
         if (exp.hashCode() == 0)
             System.out.println("Loaded");
     }

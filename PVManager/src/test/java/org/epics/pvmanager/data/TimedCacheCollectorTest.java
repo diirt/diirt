@@ -5,7 +5,7 @@
 
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.Expression;
+import org.epics.pvmanager.SourceRateExpression;
 import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.dbr.DBR_TIME_Double;
@@ -61,15 +61,15 @@ public class TimedCacheCollectorTest {
 
         // After 100 ms there should be one element
         Thread.sleep(10);
-        assertTrue(Math.abs(1 - collector.getData().size()) < 2);
+        assertTrue(Math.abs(1 - collector.getValue().size()) < 2);
 
         // After another second there should be 10 or 11 samples
         Thread.sleep(100);
-        assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
+        assertTrue("Was " + collector.getValue().size(), Math.abs(10 - collector.getValue().size()) < 2);
         
         // After another second there should be 10 or 11 samples
         Thread.sleep(100);
-        assertTrue("Was " + collector.getData().size(), Math.abs(10 - collector.getData().size()) < 2);
+        assertTrue("Was " + collector.getValue().size(), Math.abs(10 - collector.getValue().size()) < 2);
 
     }
 

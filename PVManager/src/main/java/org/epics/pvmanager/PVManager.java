@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import java.util.List;
-
 /**
  * Manages the PV creation and scanning.
  *
@@ -41,11 +39,8 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static <T> PVManagerExpression<T> read(Expression<T> pvExpression) {
-        Collector<T> collector = new QueueCollector<T>(pvExpression.getFunction());
-        AggregatedExpression<T> aggregatedExpression = new AggregatedExpression<T>(pvExpression.createMontiorRecipes(collector),
-                new LastValueAggregator<T>(pvExpression.getFunction().getType(), collector), pvExpression.getDefaultName());
-        return new PVManagerExpression<T>(aggregatedExpression);
+    public static <T> PVManagerExpression<T> read(SourceRateExpression<T> pvExpression) {
+        return new PVManagerExpression<T>(ExpressionLanguage.lastValueOf(pvExpression));
     }
 
     /**
@@ -54,7 +49,7 @@ public class PVManager {
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
-    public static <T> PVManagerExpression<T> read(AggregatedExpression<T> pvExpression) {
+    public static <T> PVManagerExpression<T> read(DesiredRateExpression<T> pvExpression) {
         return new PVManagerExpression<T>(pvExpression);
     }
 
@@ -65,12 +60,12 @@ public class PVManager {
      */
     public static class PVManagerExpression<T>  {
 
-        private AggregatedExpression<T> aggregatedPVExpression;
+        private DesiredRateExpression<T> aggregatedPVExpression;
         // Initialize to defaults
         private ThreadSwitch onThread = defaultOnThread;
         private DataSource source = defaultConnectionManager;
 
-        private PVManagerExpression(AggregatedExpression<T> aggregatedPVExpression) {
+        private PVManagerExpression(DesiredRateExpression<T> aggregatedPVExpression) {
             this.aggregatedPVExpression = aggregatedPVExpression;
         }
 

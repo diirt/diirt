@@ -54,7 +54,7 @@ public class QueueCollector<T> extends Collector<T> {
      * @return a new array with the value; never null
      */
     @Override
-    public List<T> getData() {
+    public List<T> getValue() {
         synchronized(buffer) {
             List<T> data = new ArrayList<T>(buffer);
             buffer.clear();

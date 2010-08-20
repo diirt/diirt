@@ -5,7 +5,7 @@
 
 package org.epics.pvmanager.types;
 
-import org.epics.pvmanager.AggregatedExpression;
+import org.epics.pvmanager.DesiredRateExpression;
 import org.epics.pvmanager.Function;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class ExpressionLanguage {
      * @param expression a list of expressions
      * @return an expression representing the list of results
      */
-    public static <T> AggregatedExpression<List<T>> listOf(AggregatedExpression<T>... expressions) {
+    public static <T> DesiredRateExpression<List<T>> listOf(DesiredRateExpression<T>... expressions) {
         return listOf(Arrays.asList(expressions));
     }
 
@@ -38,10 +38,10 @@ public class ExpressionLanguage {
      * @param expression a list of expressions
      * @return an expression representing the list of results
      */
-    public static <T> AggregatedExpression<List<T>> listOf(List<AggregatedExpression<T>> expressions) {
+    public static <T> DesiredRateExpression<List<T>> listOf(List<DesiredRateExpression<T>> expressions) {
         // Calculate all the needed functions to combine
         List<Function> functions = new ArrayList<Function>();
-        for (AggregatedExpression<T> expression : expressions) {
+        for (DesiredRateExpression<T> expression : expressions) {
             functions.add(expression.getFunction());
         }
 
@@ -56,7 +56,7 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        AggregatedExpression<List<T>> expression = new AggregatedExpression<List<T>>((List<AggregatedExpression<?>>) (List) expressions,
+        DesiredRateExpression<List<T>> expression = new DesiredRateExpression<List<T>>((List<DesiredRateExpression<?>>) (List) expressions,
                 (Function<List<T>>) (Function) new ListOfFunction(functions), name);
         return expression;
     }

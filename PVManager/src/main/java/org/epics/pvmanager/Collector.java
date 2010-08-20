@@ -23,7 +23,12 @@ import java.util.List;
  *
  * @author carcassi
  */
-public abstract class Collector<T> {
+public abstract class Collector<T> extends Function<List<T>> {
+
+    @SuppressWarnings("unchecked")
+    public Collector() {
+        super((Class<List<T>>) (Class) List.class);
+    }
 
     /**
      * Calculates the next value and puts it in the queue.
@@ -34,5 +39,6 @@ public abstract class Collector<T> {
      * Returns all values since last check and removes values from the queue.
      * @return a new array with the value; never null
      */
-    public abstract List<T> getData();
+    @Override
+    public abstract List<T> getValue();
 }

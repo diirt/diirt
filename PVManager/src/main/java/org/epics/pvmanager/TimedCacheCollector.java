@@ -5,7 +5,6 @@
 
 package org.epics.pvmanager;
 
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +46,7 @@ public class TimedCacheCollector<T> extends Collector<T> {
      * @return a new array with the value; never null
      */
     @Override
-    public List<T> getData() {
+    public List<T> getValue() {
         synchronized(buffer) {
             if (buffer.isEmpty())
                 return Collections.emptyList();
