@@ -65,7 +65,7 @@ public class TimeStamp implements Comparable {
      * @return epics time
      */
     public long getEpicsSec() {
-        return unixSec + TS_EPOCH_SEC_PAST_1970;
+        return unixSec - TS_EPOCH_SEC_PAST_1970;
     }
 
     /**
