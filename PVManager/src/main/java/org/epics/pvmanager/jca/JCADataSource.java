@@ -25,8 +25,10 @@ import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.ValueCache;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.data.VDouble;
 
 /**
@@ -43,13 +45,12 @@ class JCADataSource extends DataSource {
     static final JCADataSource INSTANCE = new JCADataSource();
 
     JCADataSource() {
-        initContext();
     }
 
     /*
      * This Metod will initialize the jca context.
      */
-    private void initContext() {
+    private void initContext(ExceptionHandler handler) {
         // Create a context which uses pure channel access java with HARDCODED
         // configuration
         // values.
@@ -59,8 +60,7 @@ class JCADataSource extends DataSource {
                 logger.fine("Initializing the context.");
                 ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             } catch (CAException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                handler.handleException(e);
             }
         }
     }
@@ -68,24 +68,23 @@ class JCADataSource extends DataSource {
     /**
      * Destroy JCA context.
      */
-    private void releaseContext() {
-        try {
-
-            // Destroy the context, check if never initialized.
-            if (ctxt != null && connectedProcessors.isEmpty()) // Destroys all the channels associated with this context.
-            {
+    private void releaseContext(ExceptionHandler handler) {
+        if (ctxt != null && connectedProcessors.isEmpty()) {
+            try {
+                // If a context was created and is the last pv active,
+                // destroy the context.
                 ctxt.destroy();
+            } catch (CAException e) {
+                handler.handleException(e);
             }
-
-        } catch (CAException th) {
-            th.printStackTrace();
         }
     }
 
     private class VDoubleProcessor extends ValueProcessor<MonitorEvent, VDouble> {
 
-        private VDoubleProcessor(final Channel channel, Collector collector, ValueCache<VDouble> cache)
-        throws CAException {
+        private VDoubleProcessor(final Channel channel, Collector collector,
+                ValueCache<VDouble> cache, final ExceptionHandler handler)
+                throws CAException {
             super(collector, cache);
             channel.addConnectionListener(new ConnectionListener() {
 
@@ -98,7 +97,7 @@ class JCADataSource extends DataSource {
                             ctxt.flushIO();
                         }
                     } catch (CAException ex) {
-
+                        handler.handleException(ex);
                     }
                 }
             });
@@ -132,16 +131,16 @@ class JCADataSource extends DataSource {
     }
 
     @Override
-    public synchronized void connect(DataRecipe connRecipe) {
-        initContext();
+    public synchronized void connect(DataRecipe dataRecipe) {
+        initContext(dataRecipe.getExceptionHandler());
         Set<ValueProcessor> processors = new HashSet<ValueProcessor>();
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : connRecipe.getChannelsPerCollectors().entrySet()) {
+        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : dataRecipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 if (entry.getValue().getType().equals(VDouble.class)) {
                     @SuppressWarnings("unchecked")
                     ValueCache<VDouble> cache = (ValueCache<VDouble>) entry.getValue();
-                    ValueProcessor processor = monitorVDouble(entry.getKey(), collector, cache);
+                    ValueProcessor processor = monitorVDouble(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
                     if (processor != null)
                         processors.add(processor);
                 } else {
@@ -151,22 +150,20 @@ class JCADataSource extends DataSource {
                 }
             }
         }
-        connectedProcessors.put(connRecipe, processors);
+        connectedProcessors.put(dataRecipe, processors);
     }
 
     private Map<DataRecipe, Set<ValueProcessor>> connectedProcessors = new HashMap<DataRecipe, Set<ValueProcessor>>();
 
-    private VDoubleProcessor monitorVDouble(String pvName, Collector collector, ValueCache<VDouble> cache) {
+    private VDoubleProcessor monitorVDouble(String pvName, Collector collector,
+            ValueCache<VDouble> cache, ExceptionHandler handler) {
         try {
-            synchronized (this) {
-                Channel channel = ctxt.createChannel(pvName);
-                VDoubleProcessor doubleProcessor = new VDoubleProcessor(channel, collector, cache);
-                ctxt.flushIO();
-                return doubleProcessor;
-            }
-            //ctxt.flushIO();
+            Channel channel = ctxt.createChannel(pvName);
+            VDoubleProcessor doubleProcessor = new VDoubleProcessor(channel, collector, cache, handler);
+            ctxt.flushIO();
+            return doubleProcessor;
         } catch (Exception e) {
-            e.printStackTrace();
+            handler.handleException(e);
         }
         return null;
     }
@@ -181,7 +178,7 @@ class JCADataSource extends DataSource {
             }
         }
         connectedProcessors.remove(recipe);
-        releaseContext();
+        releaseContext(recipe.getExceptionHandler());
     }
 
 }
