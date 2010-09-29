@@ -6,21 +6,14 @@
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.CAException;
-import gov.aps.jca.CAStatusException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_CTRL_Int;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.DBR_TIME_Int;
-import gov.aps.jca.event.ConnectionEvent;
-import gov.aps.jca.event.ConnectionListener;
-import gov.aps.jca.event.MonitorEvent;
-import gov.aps.jca.event.MonitorListener;
-import java.util.HashMap;
 import java.util.HashSet;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
@@ -104,8 +97,8 @@ class JCADataSource extends DataSource {
         }
 
         @Override
-        protected VDouble createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata) {
-            return new VDoubleFromDbrCtrlDouble(value, metadata);
+        protected VDouble createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata, boolean disconnected) {
+            return new VDoubleFromDbrCtrlDouble(value, metadata, disconnected);
         }
     }
 
@@ -128,8 +121,8 @@ class JCADataSource extends DataSource {
         }
 
         @Override
-        protected VInt createValue(DBR_TIME_Int value, DBR_CTRL_Int metadata) {
-            return new VIntFromDbrCtrlInt(value, metadata);
+        protected VInt createValue(DBR_TIME_Int value, DBR_CTRL_Int metadata, boolean disconnected) {
+            return new VIntFromDbrCtrlInt(value, metadata, disconnected);
         }
     }
 

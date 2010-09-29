@@ -22,10 +22,16 @@ public class VIntFromDbrCtrlInt implements VInt {
 
     private final DBR_TIME_Int dbrValue;
     private final DBR_CTRL_Int metadata;
+    private final boolean disconnected;
 
     public VIntFromDbrCtrlInt(DBR_TIME_Int dbrValue, DBR_CTRL_Int metadata) {
+        this(dbrValue, metadata, false);
+    }
+
+    public VIntFromDbrCtrlInt(DBR_TIME_Int dbrValue, DBR_CTRL_Int metadata, boolean disconnected) {
         this.dbrValue = dbrValue;
         this.metadata = metadata;
+        this.disconnected = disconnected;
     }
 
     @Override
@@ -35,6 +41,8 @@ public class VIntFromDbrCtrlInt implements VInt {
 
     @Override
     public AlarmSeverity getAlarmSeverity() {
+        if (disconnected)
+            return AlarmSeverity.UNDEFINED;
         return DataUtils.fromEpics(dbrValue.getSeverity());
     }
 

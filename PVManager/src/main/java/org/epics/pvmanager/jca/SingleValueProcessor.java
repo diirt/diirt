@@ -19,6 +19,8 @@ import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.ValueCache;
 
 /**
+ * Generic class that manages the monitor and the connection of an
+ * epics channel.
  *
  * @author carcassi
  */
@@ -35,6 +37,7 @@ abstract class SingleValueProcessor<VType, EpicsType, MetaType> extends DataSour
 
                 @Override
                 public void connectionChanged(ConnectionEvent ev) {
+                    System.out.println("Connection " + ev.isConnected());
                     try {
                         // Setup monitors on connection and tear them
                         // down on disconnection
@@ -42,6 +45,7 @@ abstract class SingleValueProcessor<VType, EpicsType, MetaType> extends DataSour
                             setup(channel);
                         } else {
                             close();
+                            processValue(event);
                         }
                     } catch (CAException ex) {
                         handler.handleException(ex);
@@ -75,13 +79,15 @@ abstract class SingleValueProcessor<VType, EpicsType, MetaType> extends DataSour
 
         protected abstract DBRType getMetaType();
         protected abstract DBRType getEpicsType();
-        protected abstract VType createValue(EpicsType value, MetaType metadata);
+        protected abstract VType createValue(EpicsType value, MetaType metadata, boolean disconnected);
 
         private volatile Monitor monitor;
         private volatile MetaType metadata;
+        private volatile MonitorEvent event;
         private final MonitorListener monitorListener = new MonitorListener() {
                 @Override
                 public void monitorChanged(MonitorEvent event) {
+                    SingleValueProcessor.this.event = event;
                     processValue(event);
                 }
             };
@@ -98,7 +104,7 @@ abstract class SingleValueProcessor<VType, EpicsType, MetaType> extends DataSour
         public boolean updateCache(MonitorEvent event, ValueCache<VType> cache) {
             @SuppressWarnings("unchecked")
             EpicsType rawvalue = (EpicsType) event.getDBR();
-            cache.setValue(createValue(rawvalue, metadata));
+            cache.setValue(createValue(rawvalue, metadata, monitor == null));
             return true;
         }
 

@@ -24,10 +24,16 @@ public class VDoubleFromDbrCtrlDouble implements VDouble {
 
     private final DBR_TIME_Double dbrValue;
     private final DBR_CTRL_Double metadata;
+    private final boolean disconnected;
 
     public VDoubleFromDbrCtrlDouble(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata) {
+        this(dbrValue, metadata, false);
+    }
+
+    public VDoubleFromDbrCtrlDouble(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata, boolean disconnected) {
         this.dbrValue = dbrValue;
         this.metadata = metadata;
+        this.disconnected = disconnected;
     }
 
     @Override
@@ -37,6 +43,8 @@ public class VDoubleFromDbrCtrlDouble implements VDouble {
 
     @Override
     public AlarmSeverity getAlarmSeverity() {
+        if (disconnected)
+            return AlarmSeverity.UNDEFINED;
         return DataUtils.fromEpics(dbrValue.getSeverity());
     }
 
