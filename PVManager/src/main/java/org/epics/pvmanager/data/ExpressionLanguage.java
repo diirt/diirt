@@ -48,6 +48,26 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name of type VString.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static SourceRateExpression<VString> vString(String name) {
+        return new SourceRateExpression<VString>(name, VString.class);
+    }
+
+    /**
+     * A channel with the given name of type VEnum.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static SourceRateExpression<VEnum> vEnum(String name) {
+        return new SourceRateExpression<VEnum>(name, VEnum.class);
+    }
+
+    /**
      * A list of channels with the given names, all of type VDouble.
      *
      * @param names the channel names; can't be null

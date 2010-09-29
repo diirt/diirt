@@ -5,40 +5,38 @@
 
 package org.epics.pvmanager.jca;
 
-import gov.aps.jca.dbr.DBR_CTRL_Double;
-import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
+import gov.aps.jca.dbr.DBR_CTRL_Int;
+import gov.aps.jca.dbr.DBR_TIME_Int;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Set;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VInt;
 
 /**
  *
  * @author carcassi
  */
-public class VDoubleFromDbrCtrlDouble implements VDouble {
+public class VIntFromDbr implements VInt {
 
-    private final DBR_TIME_Double dbrValue;
-    private final DBR_CTRL_Double metadata;
+    private final DBR_TIME_Int dbrValue;
+    private final DBR_CTRL_Int metadata;
     private final boolean disconnected;
 
-    public VDoubleFromDbrCtrlDouble(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata) {
+    public VIntFromDbr(DBR_TIME_Int dbrValue, DBR_CTRL_Int metadata) {
         this(dbrValue, metadata, false);
     }
 
-    public VDoubleFromDbrCtrlDouble(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata, boolean disconnected) {
+    public VIntFromDbr(DBR_TIME_Int dbrValue, DBR_CTRL_Int metadata, boolean disconnected) {
         this.dbrValue = dbrValue;
         this.metadata = metadata;
         this.disconnected = disconnected;
     }
 
     @Override
-    public Double getValue() {
-        return dbrValue.getDoubleValue()[0];
+    public Integer getValue() {
+        return dbrValue.getIntValue()[0];
     }
 
     @Override
@@ -73,23 +71,23 @@ public class VDoubleFromDbrCtrlDouble implements VDouble {
     }
 
     @Override
-    public Double getLowerDisplayLimit() {
-        return (Double) metadata.getLowerDispLimit();
+    public Integer getLowerDisplayLimit() {
+        return (Integer) metadata.getLowerDispLimit();
     }
 
     @Override
-    public Double getLowerCtrlLimit() {
-        return (Double) metadata.getLowerCtrlLimit();
+    public Integer getLowerCtrlLimit() {
+        return (Integer) metadata.getLowerCtrlLimit();
     }
 
     @Override
-    public Double getLowerAlarmLimit() {
-        return (Double) metadata.getLowerAlarmLimit();
+    public Integer getLowerAlarmLimit() {
+        return (Integer) metadata.getLowerAlarmLimit();
     }
 
     @Override
-    public Double getLowerWarningLimit() {
-        return (Double) metadata.getLowerWarningLimit();
+    public Integer getLowerWarningLimit() {
+        return (Integer) metadata.getLowerWarningLimit();
     }
 
     @Override
@@ -104,23 +102,23 @@ public class VDoubleFromDbrCtrlDouble implements VDouble {
     }
 
     @Override
-    public Double getUpperWarningLimit() {
-        return (Double) metadata.getUpperWarningLimit();
+    public Integer getUpperWarningLimit() {
+        return (Integer) metadata.getUpperWarningLimit();
     }
 
     @Override
-    public Double getUpperAlarmLimit() {
-        return (Double) metadata.getUpperAlarmLimit();
+    public Integer getUpperAlarmLimit() {
+        return (Integer) metadata.getUpperAlarmLimit();
     }
 
     @Override
-    public Double getUpperCtrlLimit() {
-        return (Double) metadata.getUpperCtrlLimit();
+    public Integer getUpperCtrlLimit() {
+        return (Integer) metadata.getUpperCtrlLimit();
     }
 
     @Override
-    public Double getUpperDisplayLimit() {
-        return (Double) metadata.getUpperDispLimit();
+    public Integer getUpperDisplayLimit() {
+        return (Integer) metadata.getUpperDispLimit();
     }
 
 }

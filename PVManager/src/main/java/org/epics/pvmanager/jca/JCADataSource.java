@@ -25,7 +25,9 @@ import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VInt;
+import org.epics.pvmanager.data.VString;
 
 /**
  * A data source that uses jca.
@@ -78,54 +80,6 @@ class JCADataSource extends DataSource {
         }
     }
 
-    private class VDoubleProcessor extends SingleValueProcessor<VDouble, DBR_TIME_Double, DBR_CTRL_Double> {
-
-        public VDoubleProcessor(final Channel channel, Collector collector,
-                ValueCache<VDouble> cache, final ExceptionHandler handler)
-                throws CAException {
-            super(channel, collector, cache, handler);
-        }
-
-        @Override
-        protected DBRType getMetaType() {
-            return DBR_CTRL_Double.TYPE;
-        }
-
-        @Override
-        protected DBRType getEpicsType() {
-            return DBR_TIME_Double.TYPE;
-        }
-
-        @Override
-        protected VDouble createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata, boolean disconnected) {
-            return new VDoubleFromDbrCtrlDouble(value, metadata, disconnected);
-        }
-    }
-
-    private class VIntProcessor extends SingleValueProcessor<VInt, DBR_TIME_Int, DBR_CTRL_Int> {
-
-        public VIntProcessor(final Channel channel, Collector collector,
-                ValueCache<VInt> cache, final ExceptionHandler handler)
-                throws CAException {
-            super(channel, collector, cache, handler);
-        }
-
-        @Override
-        protected DBRType getMetaType() {
-            return DBR_CTRL_Int.TYPE;
-        }
-
-        @Override
-        protected DBRType getEpicsType() {
-            return DBR_TIME_Int.TYPE;
-        }
-
-        @Override
-        protected VInt createValue(DBR_TIME_Int value, DBR_CTRL_Int metadata, boolean disconnected) {
-            return new VIntFromDbrCtrlInt(value, metadata, disconnected);
-        }
-    }
-
     @Override
     public synchronized void connect(DataRecipe dataRecipe) {
         initContext(dataRecipe.getExceptionHandler());
@@ -143,6 +97,18 @@ class JCADataSource extends DataSource {
                     @SuppressWarnings("unchecked")
                     ValueCache<VInt> cache = (ValueCache<VInt>) entry.getValue();
                     ValueProcessor processor = monitorVInt(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
+                    if (processor != null)
+                        processors.add(processor);
+                } else if (entry.getValue().getType().equals(VString.class)) {
+                    @SuppressWarnings("unchecked")
+                    ValueCache<VString> cache = (ValueCache<VString>) entry.getValue();
+                    ValueProcessor processor = monitorVString(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
+                    if (processor != null)
+                        processors.add(processor);
+                } else if (entry.getValue().getType().equals(VEnum.class)) {
+                    @SuppressWarnings("unchecked")
+                    ValueCache<VEnum> cache = (ValueCache<VEnum>) entry.getValue();
+                    ValueProcessor processor = monitorVEnum(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
                     if (processor != null)
                         processors.add(processor);
                 } else {
@@ -175,6 +141,32 @@ class JCADataSource extends DataSource {
         try {
             Channel channel = ctxt.createChannel(pvName);
             VIntProcessor processor = new VIntProcessor(channel, collector, cache, handler);
+            ctxt.flushIO();
+            return processor;
+        } catch (Exception e) {
+            handler.handleException(e);
+        }
+        return null;
+    }
+
+    private VStringProcessor monitorVString(String pvName, Collector collector,
+            ValueCache<VString> cache, ExceptionHandler handler) {
+        try {
+            Channel channel = ctxt.createChannel(pvName);
+            VStringProcessor processor = new VStringProcessor(channel, collector, cache, handler);
+            ctxt.flushIO();
+            return processor;
+        } catch (Exception e) {
+            handler.handleException(e);
+        }
+        return null;
+    }
+
+    private VEnumProcessor monitorVEnum(String pvName, Collector collector,
+            ValueCache<VEnum> cache, ExceptionHandler handler) {
+        try {
+            Channel channel = ctxt.createChannel(pvName);
+            VEnumProcessor processor = new VEnumProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
         } catch (Exception e) {
