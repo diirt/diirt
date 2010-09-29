@@ -13,7 +13,9 @@ import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
+import gov.aps.jca.dbr.DBR_CTRL_Int;
 import gov.aps.jca.dbr.DBR_TIME_Double;
+import gov.aps.jca.dbr.DBR_TIME_Int;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
@@ -25,11 +27,12 @@ import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.ValueCache;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Handler;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VInt;
 
 /**
  * A data source that uses jca.
@@ -57,7 +60,7 @@ class JCADataSource extends DataSource {
         // TDB create the context reading some configuration file????
         if (ctxt == null) {
             try {
-                logger.fine("Initializing the context.");
+                logger.fine("Initializing JCA context");
                 ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
             } catch (CAException e) {
                 handler.handleException(e);
@@ -74,59 +77,59 @@ class JCADataSource extends DataSource {
                 // If a context was created and is the last pv active,
                 // destroy the context.
                 ctxt.destroy();
+                ctxt = null;
+                logger.fine("JCA context destroyed");
             } catch (CAException e) {
                 handler.handleException(e);
             }
         }
     }
 
-    private class VDoubleProcessor extends ValueProcessor<MonitorEvent, VDouble> {
+    private class VDoubleProcessor extends SingleValueProcessor<VDouble, DBR_TIME_Double, DBR_CTRL_Double> {
 
-        private VDoubleProcessor(final Channel channel, Collector collector,
+        public VDoubleProcessor(final Channel channel, Collector collector,
                 ValueCache<VDouble> cache, final ExceptionHandler handler)
                 throws CAException {
-            super(collector, cache);
-            channel.addConnectionListener(new ConnectionListener() {
-
-                @Override
-                public void connectionChanged(ConnectionEvent ev) {
-                    try {
-                        if (ev.isConnected()) {
-                            metadata = (DBR_CTRL_Double) channel.get(DBRType.CTRL_DOUBLE, 1);
-                            monitor = channel.addMonitor(DBR_TIME_Double.TYPE, 1, Monitor.VALUE, monitorListener);
-                            ctxt.flushIO();
-                        }
-                    } catch (CAException ex) {
-                        handler.handleException(ex);
-                    }
-                }
-            });
-        }
-
-        private volatile Monitor monitor;
-        private volatile DBR_CTRL_Double metadata;
-        private final MonitorListener monitorListener = new MonitorListener() {
-                @Override
-                public void monitorChanged(MonitorEvent event) {
-                    processValue(event);
-                }
-            };
-
-        @Override
-        public void close() {
-            monitor.removeMonitorListener(monitorListener);
+            super(channel, collector, cache, handler);
         }
 
         @Override
-        public boolean updateCache(MonitorEvent event, ValueCache<VDouble> cache) {
-            try {
-                DBR_CTRL_Double rawvalue = (DBR_CTRL_Double) event.getDBR().convert(
-                        DBR_CTRL_Double.TYPE);
-                cache.setValue(new VDoubleFromDbrCtrlDouble(rawvalue, metadata));
-                return true;
-            } catch (CAStatusException cAStatusException) {
-                throw new RuntimeException(cAStatusException);
-            }
+        protected DBRType getMetaType() {
+            return DBR_CTRL_Double.TYPE;
+        }
+
+        @Override
+        protected DBRType getEpicsType() {
+            return DBR_TIME_Double.TYPE;
+        }
+
+        @Override
+        protected VDouble createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata) {
+            return new VDoubleFromDbrCtrlDouble(value, metadata);
+        }
+    }
+
+    private class VIntProcessor extends SingleValueProcessor<VInt, DBR_TIME_Int, DBR_CTRL_Int> {
+
+        public VIntProcessor(final Channel channel, Collector collector,
+                ValueCache<VInt> cache, final ExceptionHandler handler)
+                throws CAException {
+            super(channel, collector, cache, handler);
+        }
+
+        @Override
+        protected DBRType getMetaType() {
+            return DBR_CTRL_Int.TYPE;
+        }
+
+        @Override
+        protected DBRType getEpicsType() {
+            return DBR_TIME_Int.TYPE;
+        }
+
+        @Override
+        protected VInt createValue(DBR_TIME_Int value, DBR_CTRL_Int metadata) {
+            return new VIntFromDbrCtrlInt(value, metadata);
         }
     }
 
@@ -143,6 +146,12 @@ class JCADataSource extends DataSource {
                     ValueProcessor processor = monitorVDouble(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
                     if (processor != null)
                         processors.add(processor);
+                } else if (entry.getValue().getType().equals(VInt.class)) {
+                    @SuppressWarnings("unchecked")
+                    ValueCache<VInt> cache = (ValueCache<VInt>) entry.getValue();
+                    ValueProcessor processor = monitorVInt(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
+                    if (processor != null)
+                        processors.add(processor);
                 } else {
                     throw new UnsupportedOperationException("Type "
                             + entry.getValue().getType().getName()
@@ -153,7 +162,7 @@ class JCADataSource extends DataSource {
         connectedProcessors.put(dataRecipe, processors);
     }
 
-    private Map<DataRecipe, Set<ValueProcessor>> connectedProcessors = new HashMap<DataRecipe, Set<ValueProcessor>>();
+    private Map<DataRecipe, Set<ValueProcessor>> connectedProcessors = new ConcurrentHashMap<DataRecipe, Set<ValueProcessor>>();
 
     private VDoubleProcessor monitorVDouble(String pvName, Collector collector,
             ValueCache<VDouble> cache, ExceptionHandler handler) {
@@ -168,13 +177,26 @@ class JCADataSource extends DataSource {
         return null;
     }
 
+    private VIntProcessor monitorVInt(String pvName, Collector collector,
+            ValueCache<VInt> cache, ExceptionHandler handler) {
+        try {
+            Channel channel = ctxt.createChannel(pvName);
+            VIntProcessor processor = new VIntProcessor(channel, collector, cache, handler);
+            ctxt.flushIO();
+            return processor;
+        } catch (Exception e) {
+            handler.handleException(e);
+        }
+        return null;
+    }
+
     @Override
-    public void disconnect(DataRecipe recipe) {
+    public synchronized void disconnect(DataRecipe recipe) {
         for (ValueProcessor processor : connectedProcessors.get(recipe)) {
             try {
                 processor.close();
             } catch (Exception ex) {
-                // TODO
+                recipe.getExceptionHandler().handleException(ex);
             }
         }
         connectedProcessors.remove(recipe);

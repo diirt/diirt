@@ -26,7 +26,7 @@ public abstract class DataSource {
      *
      * @param <T>
      */
-    protected static abstract class ValueProcessor<T, E> {
+    public static abstract class ValueProcessor<T, E> {
 
         private final WeakReference<Collector> collectorRef;
         private final ValueCache<E> cache;
