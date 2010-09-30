@@ -10,5 +10,5 @@ package org.epics.pvmanager.data;
  * @author carcassi
  */
 public interface VIntArray extends Array<Integer>, Alarm, Time, Display<Integer> {
-    public int[] getArray();
+    int[] getArray();
 }
