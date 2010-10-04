@@ -14,7 +14,7 @@ import java.util.List;
  */
 class LastValueAggregator<T> extends Aggregator<T, T> {
 
-    LastValueAggregator(Class<T> clazz, Collector<T> collector) {
+    LastValueAggregator(Class<T> clazz, Function<List<T>> collector) {
         super(clazz, collector);
     }
 

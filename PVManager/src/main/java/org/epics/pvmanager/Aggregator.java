@@ -22,11 +22,11 @@ import java.util.List;
  */
 public abstract class Aggregator<T, E> extends Function<T> {
 
-    private final Collector<E> collector;
+    private final Function<List<E>> collector;
     private T lastCalculatedValue;
     private E lastValue;
 
-    protected Aggregator(Class<T> type, Collector<E> collector) {
+    protected Aggregator(Class<T> type, Function<List<E>> collector) {
         super(type);
         this.collector = collector;
     }

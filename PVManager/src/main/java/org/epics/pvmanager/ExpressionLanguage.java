@@ -30,7 +30,7 @@ public class ExpressionLanguage {
                 expression.getDefaultName());
     }
 
-    public static <T> DesiredRateExpression<T> lastValueOf(SourceRateExpression<T> expression) {
+    public static <T> DesiredRateExpression<T> latestValueOf(SourceRateExpression<T> expression) {
         DesiredRateExpression<List<T>> queue = queueOf(expression);
         return new DesiredRateExpression<T>(queue,
                 new LastValueAggregator<T>(expression.getFunction().getType(), (Collector<T>) queue.getFunction()),

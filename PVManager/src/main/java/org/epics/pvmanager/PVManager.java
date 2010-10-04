@@ -40,7 +40,7 @@ public class PVManager {
      * @return a pv manager expression
      */
     public static <T> PVManagerExpression<T> read(SourceRateExpression<T> pvExpression) {
-        return new PVManagerExpression<T>(ExpressionLanguage.lastValueOf(pvExpression));
+        return new PVManagerExpression<T>(ExpressionLanguage.latestValueOf(pvExpression));
     }
 
     /**
