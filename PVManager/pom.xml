@@ -15,6 +15,7 @@
     </issueManagement>
     <scm>
         <connection>scm:hg:http://pvmanager.hg.sourceforge.net:8000/hgroot/pvmanager/pvmanager</connection>
+        <developerConnection>scm:hg:ssh://carcassi@pvmanager.hg.sourceforge.net/hgroot/pvmanager/pvmanager</developerConnection>
         <url>http://pvmanager.hg.sourceforge.net/hgweb/pvmanager/pvmanager/</url>
     </scm>
     <ciManagement>
