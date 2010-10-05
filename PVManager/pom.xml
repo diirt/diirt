@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>gov.bnl.nsls2</groupId>
+    <groupId>epics</groupId>
     <artifactId>PVManager</artifactId>
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
@@ -46,6 +46,22 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <distributionManagement>
+    	<!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
+    	(id values there should match ids below) -->
+        <site>
+            <id>pvmanager.sf.net</id>
+            <name>PVManager Sourceforge site</name>
+            <url>scp://shell.sourceforge.net/home/groups/p/pv/pvmanager/htdocs/</url>
+        </site>
+        <repository>
+            <id>epics.releases</id>
+            <name>EPICS Repository</name>
+            <url>scp://shell.sourceforge.net/home/groups/e/ep/epics/htdocs/maven2</url>
+        </repository>
+    </distributionManagement>
+
     <mailingLists>
         <mailingList>
             <name>Developer discussion</name>
