@@ -26,8 +26,7 @@ public abstract class Aggregator<T, E> extends Function<T> {
     private T lastCalculatedValue;
     private E lastValue;
 
-    protected Aggregator(Class<T> type, Function<List<E>> collector) {
-        super(type);
+    protected Aggregator(Function<List<E>> collector) {
         this.collector = collector;
     }
 

@@ -6,19 +6,17 @@
 package org.epics.pvmanager;
 
 /**
+ * A basic building block in the PVManager framework that can return a result
+ * of a given type.
  *
  * @author carcassi
  */
 public abstract class Function<T> {
 
-    private Class<T> type;
-
-    public Function(Class<T> type) {
-        this.type = type;
-    }
-
+    /**
+     * Calculates, if needed, and then returns the value for this function.
+     *
+     * @return a value
+     */
     public abstract T getValue();
-    public Class<T> getType() {
-        return type;
-    }
 }

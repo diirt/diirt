@@ -114,7 +114,7 @@ public class PVManager {
             }
 
             // Create PV and connect
-            PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName(), aggregatedPVExpression.getFunction().getType());
+            PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName());
             DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
             Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, onThread);

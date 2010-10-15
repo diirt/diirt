@@ -27,7 +27,6 @@ public abstract class Collector<T> extends Function<List<T>> {
 
     @SuppressWarnings("unchecked")
     public Collector() {
-        super((Class<List<T>>) (Class) List.class);
     }
 
     /**

@@ -64,11 +64,11 @@ public class CollectorToPVTest {
         final ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
         final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
         counter = new AtomicInteger();
-        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(VDouble.class, collector);
+        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv", VDouble.class);
+                pv = PV.createPv("My pv");
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -104,11 +104,11 @@ public class CollectorToPVTest {
         final ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
         final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
         counter = new AtomicInteger();
-        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(VDouble.class, collector);
+        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv", VDouble.class);
+                pv = PV.createPv("My pv");
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
