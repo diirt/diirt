@@ -28,6 +28,7 @@ public class CustomFunctionTest {
 
         public void writeValue(String name, Object value) {
             for (Collector<?> collector : expression.getDataRecipe().getChannelsPerCollectors().keySet()) {
+                @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = expression.getDataRecipe().getChannelsPerCollectors().get(collector).get(name);
                 if (cache != null) {
                     cache.setValue(value);
@@ -104,6 +105,7 @@ public class CustomFunctionTest {
         SourceRateExpression<Integer> value1 = new SourceRateExpression<Integer>("test1", Integer.class);
         SourceRateExpression<Integer> value2 = new SourceRateExpression<Integer>("test2", Integer.class);
         SourceRateExpression<Integer> value3 = new SourceRateExpression<Integer>("test3", Integer.class);
+        @SuppressWarnings("unchecked")
         DesiredRateExpression<Double> expression = resultOf(new OneArgFunction<Double, List<Integer>>() {
             @Override
             public Double calculate(List<Integer> numbers) {

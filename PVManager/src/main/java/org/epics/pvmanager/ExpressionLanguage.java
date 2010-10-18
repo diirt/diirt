@@ -105,7 +105,10 @@ public class ExpressionLanguage {
                 ", " + arg2Expression.getDefaultName() + ")";
         final Function<A1> arg1 = arg1Expression.getFunction();
         final Function<A2> arg2 = arg2Expression.getFunction();
-        return new DesiredRateExpression<R>(Arrays.asList(arg1Expression, arg2Expression),
+        @SuppressWarnings("unchecked")
+        final List<DesiredRateExpression<? extends Object>> argExpressions =
+                Arrays.asList(arg1Expression, arg2Expression);
+        return new DesiredRateExpression<R>(argExpressions,
                 new Function<R>() {
                     @Override
                     public R getValue() {
