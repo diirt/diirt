@@ -87,7 +87,7 @@ public class CollectorToPVTest {
         Thread.sleep(testTimeMs);
         pv.close();
         int actualNotification = counter.get();
-        if (Math.abs(actualNotification - targetNotifications) > 2) {
+        if (actualNotification > targetNotifications) {
             fail("Expected " + targetNotifications + " but got " + actualNotification);
         }
     }
