@@ -54,6 +54,12 @@ public class ExpressionLanguage {
      * @param <A> argument type
      */
     public static interface OneArgFunction<R, A> {
+        /**
+         * Calculates the new value.
+         *
+         * @param arg argument
+         * @return result
+         */
         R calculate(A arg);
     }
 
@@ -65,6 +71,13 @@ public class ExpressionLanguage {
      * @param <A2> second argument type
      */
     public static interface TwoArgFunction<R, A1, A2> {
+        /**
+         * Calculates the new value.
+         *
+         * @param arg1 first argument
+         * @param arg2 second argument
+         * @return result
+         */
         R calculate(A1 arg1, A2 arg2);
     }
 
@@ -96,7 +109,8 @@ public class ExpressionLanguage {
      * @param <A1> first argument type
      * @param <A2> second argument type
      * @param function the user provided function
-     * @param argExpression expression for the function argument
+     * @param arg1Expression expression for the first argument
+     * @param arg2Expression expression for the second argument
      * @return a new expression
      */
     public static <R, A1, A2> DesiredRateExpression<R> resultOf(final TwoArgFunction<R, A1, A2> function,

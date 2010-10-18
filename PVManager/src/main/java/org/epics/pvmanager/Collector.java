@@ -19,13 +19,10 @@ import java.util.List;
  * is that the new calculation may not block the scanning and reading of the
  * values in the buffer.
  *
+ * @param <T> type being collected
  * @author carcassi
  */
 public abstract class Collector<T> extends Function<List<T>> {
-
-    @SuppressWarnings("unchecked")
-    public Collector() {
-    }
 
     /**
      * Calculates the next value and puts it in the queue.

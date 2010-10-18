@@ -36,6 +36,7 @@ public class PVManager {
      * Reads the given expression. Will return the average of the values collected
      * at the scan rate.
      *
+     * @param <T> type of the pv value
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
@@ -46,6 +47,7 @@ public class PVManager {
     /**
      * Reads the given expression.
      *
+     * @param <T> type of the pv value
      * @param pvExpression the expression to read
      * @return a pv manager expression
      */
