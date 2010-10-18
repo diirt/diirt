@@ -24,7 +24,7 @@ public class JCAClientExample {
     private static final String channelName = "SR:C01-BI:G02A<BPM:L1>Pos-X";
 
     public static void main(String[] args) throws Exception {
-        PVManager.setConnectionManager(JCASupport.jca());
+        PVManager.setDefaultDataSource(JCASupport.jca());
         PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
         testVDoubleSupport();

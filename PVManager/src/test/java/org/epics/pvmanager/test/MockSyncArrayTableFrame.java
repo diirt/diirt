@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.ThreadSwitch;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,8 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayTableFrame() {
-        PVManager.setConnectionManager(SimulationDataSource.simulatedData());
+        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }
 

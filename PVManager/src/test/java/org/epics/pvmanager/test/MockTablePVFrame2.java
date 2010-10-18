@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
@@ -26,7 +27,8 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockTablePVFrame2() {
-        PVManager.setConnectionManager(SimulationDataSource.simulatedData());
+        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }
 

@@ -32,6 +32,7 @@ public class CollectorToPVTest {
         SourceRateExpression<VDouble> exp = org.epics.pvmanager.data.ExpressionLanguage.vDouble("test");
         if (exp.hashCode() == 0)
             System.out.println("Loaded");
+        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
     }
 
     @AfterClass
