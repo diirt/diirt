@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author carcassi
  */
-public class SourceRateExpression<T> implements Expression<T> {
+public class SourceRateExpression<T> {
 
     private Map<String, ValueCache> caches;
     private Function<T> function;

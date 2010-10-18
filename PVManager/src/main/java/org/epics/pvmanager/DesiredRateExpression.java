@@ -15,7 +15,7 @@ import java.util.List;
  * @param <T> type of the expression output
  * @author carcassi
  */
-public class DesiredRateExpression<T> implements Expression<T> {
+public class DesiredRateExpression<T> {
 
     private final DataRecipeBuilder recipe;
     private final Function<T> function;
