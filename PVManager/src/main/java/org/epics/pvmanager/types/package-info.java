@@ -4,7 +4,7 @@
  */
 
 /**
- * Contains all support for standard and basic types.
+ * Support for standard java types, including collections.
  */
 package org.epics.pvmanager.types;
 
