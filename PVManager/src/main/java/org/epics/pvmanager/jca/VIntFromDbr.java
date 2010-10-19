@@ -18,7 +18,7 @@ import org.epics.pvmanager.data.VInt;
  *
  * @author carcassi
  */
-public class VIntFromDbr implements VInt {
+class VIntFromDbr implements VInt {
 
     private final DBR_TIME_Int dbrValue;
     private final DBR_CTRL_Double metadata;

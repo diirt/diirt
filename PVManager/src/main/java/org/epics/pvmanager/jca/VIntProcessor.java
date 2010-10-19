@@ -18,7 +18,7 @@ import org.epics.pvmanager.data.VInt;
  *
  * @author carcassi
  */
-public class VIntProcessor extends SingleValueProcessor<VInt, DBR_TIME_Int, DBR_CTRL_Double> {
+class VIntProcessor extends SingleValueProcessor<VInt, DBR_TIME_Int, DBR_CTRL_Double> {
 
     public VIntProcessor(final Channel channel, Collector collector,
             ValueCache<VInt> cache, final ExceptionHandler handler)
