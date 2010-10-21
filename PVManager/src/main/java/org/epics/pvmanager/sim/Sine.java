@@ -43,7 +43,7 @@ class Sine extends SimFunction<VDouble> {
         this.max = max;
         this.currentValue = 0;
         this.samplesPerCycle = samplesPerCycle;
-        range = max - min;
+        range = this.max - this.min;
         lastValue = ValueFactory.newVDouble(0.0, AlarmSeverity.NONE, Collections.<String>emptySet(),
                 Constants.POSSIBLE_ALARM_STATUS, TimeStamp.now(), null,
                 min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,

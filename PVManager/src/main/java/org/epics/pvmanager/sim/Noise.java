@@ -51,7 +51,7 @@ class Noise extends SimFunction<VDouble> {
         }
         this.min = min;
         this.max = max;
-        range = max - min;
+        range = this.max - this.min;
         lastValue = ValueFactory.newVDouble(min, AlarmSeverity.NONE, Collections.<String>emptySet(),
                 Constants.POSSIBLE_ALARM_STATUS, TimeStamp.now(), null,
                 min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,

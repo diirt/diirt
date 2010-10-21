@@ -45,13 +45,6 @@ public class TimeStamp implements Comparable {
      * Nanoseconds past the timestamp. Must be 0 < nanoSec < 999,999,999
      */
     private final long nanoSec;
-    
-    /**
-     * Date object is created lazily. In multi-threaded environments,
-     * the object may be created twice, but it's guaranteed to be of the same
-     * value, so it should not cause problems.
-     */
-    private volatile Date date;
 
     private TimeStamp(long unixSec, long nanoSec) {
         if (nanoSec < 0 || nanoSec > 999999999)
@@ -138,21 +131,12 @@ public class TimeStamp implements Comparable {
      * @return a date
      */
     public Date asDate() {
-        if (date == null)
-            prepareDate();
-        return date;
-    }
-
-    /**
-     * Prepares the date object
-     */
-    private void prepareDate() {
-        date = new Date((unixSec+TS_EPOCH_SEC_PAST_1970)*1000+nanoSec/1000000);
+        return new Date((unixSec+TS_EPOCH_SEC_PAST_1970)*1000+nanoSec/1000000);
     }
 
     @Override
     public int hashCode() {
-        return new Long(nanoSec).hashCode();
+        return Long.valueOf(nanoSec).hashCode();
     }
 
     @Override

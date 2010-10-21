@@ -77,12 +77,11 @@ public abstract class SimFunction<T> {
         if (task != null)
             task.cancel();
         task = new TimerTask() {
-            int innerCounter;
             SimulationDataSource.ValueProcessor<Object, T> processor = new SimulationDataSource.ValueProcessor<Object, T>(collector, cache) {
 
                 @Override
                 public void close() {
-                    log.fine("Closing " + this);
+                    log.log(Level.FINE, "Closing {0}", this);
                     cancel();
                 }
 

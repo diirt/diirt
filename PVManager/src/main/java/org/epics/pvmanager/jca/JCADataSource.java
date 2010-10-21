@@ -124,7 +124,9 @@ public class JCADataSource extends DataSource {
             VDoubleProcessor doubleProcessor = new VDoubleProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return doubleProcessor;
-        } catch (Exception e) {
+        } catch (CAException e) {
+            handler.handleException(e);
+        } catch (RuntimeException e) {
             handler.handleException(e);
         }
         return null;
@@ -137,7 +139,9 @@ public class JCADataSource extends DataSource {
             VIntProcessor processor = new VIntProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
-        } catch (Exception e) {
+        } catch (CAException e) {
+            handler.handleException(e);
+        } catch (RuntimeException e) {
             handler.handleException(e);
         }
         return null;
@@ -150,7 +154,9 @@ public class JCADataSource extends DataSource {
             VStringProcessor processor = new VStringProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
-        } catch (Exception e) {
+        } catch (CAException e) {
+            handler.handleException(e);
+        } catch (RuntimeException e) {
             handler.handleException(e);
         }
         return null;
@@ -163,7 +169,9 @@ public class JCADataSource extends DataSource {
             VEnumProcessor processor = new VEnumProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
-        } catch (Exception e) {
+        } catch (CAException e) {
+            handler.handleException(e);
+        } catch (RuntimeException e) {
             handler.handleException(e);
         }
         return null;
