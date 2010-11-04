@@ -9,9 +9,13 @@ import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
 
 /**
  * Utilities to convert JCA types to VData types.
@@ -19,6 +23,38 @@ import org.epics.pvmanager.data.AlarmSeverity;
  * @author carcassi
  */
 class DataUtils {
+
+    private static final Logger log = Logger.getLogger(DataUtils.class.getName());
+    private static final Map<gov.aps.jca.dbr.Status, AlarmStatus> statusConverter;
+    
+    static {
+        // Prepares the map to convert from JCA status to the
+        // standard status
+        Map<gov.aps.jca.dbr.Status, AlarmStatus> newMap = new HashMap<Status, AlarmStatus>();
+        newMap.put(Status.NO_ALARM, AlarmStatus.NONE);
+        newMap.put(Status.READ_ALARM, AlarmStatus.DRIVER);
+        newMap.put(Status.WRITE_ALARM, AlarmStatus.DRIVER);
+        newMap.put(Status.HIHI_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.HIGH_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.LOLO_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.LOW_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.STATE_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.COS_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.COMM_ALARM, AlarmStatus.DRIVER);
+        newMap.put(Status.TIMEOUT_ALARM, AlarmStatus.DRIVER);
+        newMap.put(Status.HW_LIMIT_ALARM, AlarmStatus.DEVICE);
+        newMap.put(Status.CALC_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.SCAN_ALARM, AlarmStatus.DB);
+        newMap.put(Status.LINK_ALARM, AlarmStatus.DB);
+        newMap.put(Status.SOFT_ALARM, AlarmStatus.CONF);
+        newMap.put(Status.BAD_SUB_ALARM, AlarmStatus.CONF);
+        newMap.put(Status.UDF_ALARM, AlarmStatus.UNDEFINED);
+        newMap.put(Status.DISABLE_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.SIMM_ALARM, AlarmStatus.RECORD);
+        newMap.put(Status.READ_ACCESS_ALARM, AlarmStatus.DRIVER);
+        newMap.put(Status.WRITE_ACCESS_ALARM, AlarmStatus.DRIVER);
+        statusConverter = Collections.unmodifiableMap(newMap);
+    }
 
     /**
      * Converts an alarm severity from JCA to VData.
@@ -68,10 +104,12 @@ class DataUtils {
      * @param status JCA status
      * @return VData status
      */
-    static Set<String> fromEpics(Status status) {
-        if (status == null)
-            return Collections.emptySet();
-        return Collections.singleton(epicsPossibleStatus().get(status.getValue()));
+    static AlarmStatus fromEpics(Status status) {
+        if (status == null) {
+            log.log(Level.INFO, "Received null alarm status", new Exception());
+            return AlarmStatus.NONE;
+        }
+        return statusConverter.get(status);
     }
 
 }

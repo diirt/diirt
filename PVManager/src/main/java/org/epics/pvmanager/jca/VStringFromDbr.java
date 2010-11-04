@@ -7,9 +7,9 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR_TIME_String;
 import java.util.List;
-import java.util.Set;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VString;
 
 /**
@@ -43,13 +43,8 @@ class VStringFromDbr implements VString {
     }
 
     @Override
-    public Set<String> getAlarmStatus() {
+    public AlarmStatus getAlarmStatus() {
         return DataUtils.fromEpics(dbrValue.getStatus());
-    }
-
-    @Override
-    public List<String> getPossibleAlarms() {
-        return DataUtils.epicsPossibleStatus();
     }
 
     @Override

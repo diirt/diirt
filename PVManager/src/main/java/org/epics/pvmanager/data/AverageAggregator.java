@@ -63,7 +63,7 @@ class AverageAggregator extends Aggregator<VDouble, VDouble> {
             }
         }
         return ValueFactory.newVDouble(totalSum / data.size(),
-                statSeverity, Collections.<String>emptySet(), null, data.get(data.size() / 2).getTimeStamp(), data.get(0));
+                statSeverity, AlarmStatus.NONE, null, data.get(data.size() / 2).getTimeStamp(), data.get(0));
     }
 
 }

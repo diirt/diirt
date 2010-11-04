@@ -14,6 +14,7 @@ import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
@@ -156,7 +157,7 @@ public abstract class SimFunction<T> {
         else if(value <= oldValue.getLowerWarningLimit() || value >= oldValue.getUpperWarningLimit())
             severity = AlarmSeverity.MINOR;
 
-        return ValueFactory.newVDouble(value, severity, Constants.NO_ALARMS,
+        return ValueFactory.newVDouble(value, severity, AlarmStatus.NONE,
                 null, lastTime, oldValue);
     }
 

@@ -5,7 +5,6 @@
 
 package org.epics.pvmanager.data;
 
-import java.util.Collections;
 import java.util.List;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.TypeSupport;
@@ -17,8 +16,8 @@ import org.epics.pvmanager.TypeSupport;
 public class DataUtils {
 
     public static VDouble createValue(TimeStamp time, double aValue) {
-        return ValueFactory.newVDouble(aValue, AlarmSeverity.NONE, Collections.<String>emptySet(),
-                Collections.<String>emptyList(), time, null, Double.MIN_VALUE, Double.MIN_VALUE,
+        return ValueFactory.newVDouble(aValue, AlarmSeverity.NONE, AlarmStatus.NONE,
+                time, null, Double.MIN_VALUE, Double.MIN_VALUE,
                 Double.MIN_VALUE, "", null, Double.MAX_VALUE,
                 Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
     }

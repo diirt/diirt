@@ -5,6 +5,7 @@
 package org.epics.pvmanager.sim;
 
 import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class SineTest {
         // Check limits
         assertEquals(5.0, firstValue.getValue(), 0.0001);
         assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertTrue(firstValue.getAlarmStatus().isEmpty());
+        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(firstValue.getLowerCtrlLimit(), equalTo(0.0));
         assertThat(firstValue.getLowerDisplayLimit(), equalTo(0.0));
         assertThat(firstValue.getLowerAlarmLimit(), equalTo(1.0));

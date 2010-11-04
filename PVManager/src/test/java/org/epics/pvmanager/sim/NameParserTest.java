@@ -7,6 +7,7 @@ package org.epics.pvmanager.sim;
 
 import java.util.Arrays;
 import java.util.List;
+import org.epics.pvmanager.data.AlarmStatus;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -75,8 +76,8 @@ public class NameParserTest {
         Noise noise1 = (Noise) NameParser.createFunction("noise(0.0, 10.0, 1.0)");
         Noise noise2 = (Noise) NameParser.createFunction("noise");
         // Forces use of variables
-        assertTrue(noise1.nextValue().getAlarmStatus().isEmpty());
-        assertTrue(noise2.nextValue().getAlarmStatus().isEmpty());
+        assertThat(noise1.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(noise2.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
     }
 
     @Test
@@ -84,8 +85,8 @@ public class NameParserTest {
         Gaussian noise1 = (Gaussian) NameParser.createFunction("gaussian(0.0, 10.0, 1.0)");
         Gaussian noise2 = (Gaussian) NameParser.createFunction("gaussian");
         // Forces use of variables
-        assertTrue(noise1.nextValue().getAlarmStatus().isEmpty());
-        assertTrue(noise2.nextValue().getAlarmStatus().isEmpty());
+        assertThat(noise1.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(noise2.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
     }
 
 }

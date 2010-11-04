@@ -9,9 +9,9 @@ import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Int;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Set;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VInt;
 
 /**
@@ -47,13 +47,8 @@ class VIntFromDbr implements VInt {
     }
 
     @Override
-    public Set<String> getAlarmStatus() {
+    public AlarmStatus getAlarmStatus() {
         return DataUtils.fromEpics(dbrValue.getStatus());
-    }
-
-    @Override
-    public List<String> getPossibleAlarms() {
-        return DataUtils.epicsPossibleStatus();
     }
 
     @Override

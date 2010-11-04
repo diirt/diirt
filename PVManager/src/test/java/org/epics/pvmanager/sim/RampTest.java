@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class RampTest {
         // Check limits
         assertThat(firstValue.getValue(), equalTo(0.0));
         assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertTrue(firstValue.getAlarmStatus().isEmpty());
+        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(firstValue.getLowerCtrlLimit(), equalTo(0.0));
         assertThat(firstValue.getLowerDisplayLimit(), equalTo(0.0));
         assertThat(firstValue.getLowerAlarmLimit(), equalTo(1.0));

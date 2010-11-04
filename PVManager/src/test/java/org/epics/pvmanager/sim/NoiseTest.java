@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,7 +24,7 @@ public class NoiseTest {
         VDouble firstValue = noise.nextValue();
 
         // Check limits
-        assertTrue(firstValue.getAlarmStatus().isEmpty());
+        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
         assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
         assertThat(firstValue.getLowerAlarmLimit(), equalTo(-8.0));
