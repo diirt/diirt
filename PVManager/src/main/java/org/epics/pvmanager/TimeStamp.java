@@ -219,6 +219,14 @@ public class TimeStamp implements Comparable {
         return unixSec + "." + nanoSec;
     }
 
+    /**
+     * Calculates the time passed from the reference to this timeStamp.
+     * The resulting duration is the absolute value, so it does not matter
+     * on which object the function is called.
+     *
+     * @param reference another time stamp
+     * @return the duration between the two timeStamps
+     */
     public TimeDuration durationFrom(TimeStamp reference) {
         long nanoSecDiff = reference.nanoSec - nanoSec;
         nanoSecDiff += (reference.unixSec - unixSec) * 1000000000;
