@@ -17,7 +17,7 @@ import org.epics.pvmanager.data.Time;
  *
  * @author carcassi
  */
-class XmlVMetaData implements Time, Alarm {
+class XmlVMetaData extends ReplayValue implements Time, Alarm {
 
     @XmlAttribute @XmlJavaTypeAdapter(value=TimeStampAdapter.class)
     TimeStamp timeStamp;

@@ -16,16 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author carcassi
  */
 @XmlRootElement(name="values")
-public class XmlValues {
+class XmlValues {
 
     @XmlElements({
         @XmlElement(name = "vDouble", type = XmlVDouble.class)
     })
-    protected List<Object> value;
+    protected List<ReplayValue> value;
 
-    public List<Object> getValue() {
+    public List<ReplayValue> getValues() {
         if (value == null) {
-            value = new ArrayList<Object>();
+            value = new ArrayList<ReplayValue>();
         }
         return this.value;
     }

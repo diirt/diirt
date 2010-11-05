@@ -13,7 +13,7 @@ import org.epics.pvmanager.TimeStamp;
  *
  * @author carcassi
  */
-public class TimeStampAdapter extends XmlAdapter<BigDecimal, TimeStamp> {
+class TimeStampAdapter extends XmlAdapter<BigDecimal, TimeStamp> {
 
     @Override
     public TimeStamp unmarshal(BigDecimal v) throws Exception {

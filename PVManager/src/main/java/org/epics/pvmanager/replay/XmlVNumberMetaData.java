@@ -13,7 +13,7 @@ import org.epics.pvmanager.data.Display;
  *
  * @author carcassi
  */
-public class XmlVNumberMetaData extends XmlVMetaData implements Display {
+class XmlVNumberMetaData extends XmlVMetaData implements Display {
 
     @XmlAttribute
     String units;
