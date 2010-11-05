@@ -5,12 +5,15 @@
 
 package org.epics.pvmanager.sim;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.TimeDuration;
+import org.epics.pvmanager.TimeInterval;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
@@ -55,6 +58,25 @@ public abstract class SimFunction<T> {
      */
     protected abstract T nextValue();
 
+    /**
+     * Computes all the new values in the given time slice.
+     *
+     * @param interval the interval where the data should be generated
+     * @return the new values
+     */
+    protected List<T> createValues(TimeInterval interval) {
+        List<T> values = new ArrayList<T>();
+        TimeStamp newTime = lastTime.plus(timeBetweenSamples);
+
+        while (interval.contains(newTime)) {
+            lastTime = newTime;
+            values.add(nextValue());
+            newTime = lastTime.plus(timeBetweenSamples);
+        }
+
+        return values;
+    }
+
     private TimerTask task;
 
     /**
@@ -78,7 +100,7 @@ public abstract class SimFunction<T> {
         if (task != null)
             task.cancel();
         task = new TimerTask() {
-            SimulationDataSource.ValueProcessor<Object, T> processor = new SimulationDataSource.ValueProcessor<Object, T>(collector, cache) {
+            SimulationDataSource.ValueProcessor<T, T> processor = new SimulationDataSource.ValueProcessor<T, T>(collector, cache) {
 
                 @Override
                 public void close() {
@@ -87,8 +109,8 @@ public abstract class SimFunction<T> {
                 }
 
                 @Override
-                public boolean updateCache(Object payload, ValueCache<T> cache) {
-                    cache.setValue(nextValue());
+                public boolean updateCache(T payload, ValueCache<T> cache) {
+                    cache.setValue(payload);
                     return true;
                 }
             };
@@ -100,13 +122,10 @@ public abstract class SimFunction<T> {
                 try {
                     if (lastTime == null)
                         lastTime = TimeStamp.now();
-                    TimeStamp currentTime = TimeStamp.now();
-                    TimeStamp newTime = lastTime.plus(timeBetweenSamples);
+                    List<T> newValues = createValues(TimeInterval.between(lastTime, TimeStamp.now()));
 
-                    while (currentTime.compareTo(newTime) >= 0) {
-                        lastTime = newTime;
-                        processor.processValue(null);
-                        newTime = lastTime.plus(timeBetweenSamples);
+                    for (T newValue : newValues) {
+                        processor.processValue(newValue);
                     }
                 } catch (Exception ex) {
                     log.log(Level.WARNING, "Data simulation problem", ex);
