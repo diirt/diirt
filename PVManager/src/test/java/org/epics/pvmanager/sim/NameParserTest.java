@@ -53,6 +53,8 @@ public class NameParserTest {
         assertThat(parameters, equalTo(Arrays.asList((Object) "sine",  1.0, 2.0)));
         parameters = NameParser.parseFunction("ramp(-1,.5,  23.25)");
         assertThat(parameters, equalTo(Arrays.asList((Object) "ramp", -1.0, 0.5,  23.25)));
+        parameters = NameParser.parseFunction("replay(\"test.xml\")");
+        assertThat(parameters, equalTo(Arrays.asList((Object) "replay", "test.xml")));
     }
 
     @Test
