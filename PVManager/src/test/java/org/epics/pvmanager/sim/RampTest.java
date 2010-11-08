@@ -4,15 +4,11 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.TimeStamp;
-import java.util.List;
 import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.epics.pvmanager.TimeDuration.*;
 
 /**
  *
@@ -23,49 +19,49 @@ public class RampTest {
     @Test
     public void rampValues() {
         // Creates the function
-        TimeStamp start = TimeStamp.now();
-        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse1.xml\")");
-        List<VDouble> values = replay.createValues(ms(1000).after(start));
-        assertThat(values.size(), equalTo(4));
+        Noise noise = new Noise(-10.0, 10.0, 1.0);
+        VDouble firstValue = noise.nextValue();
 
-        // Check first value
-        VDouble value = values.get(0);
-        assertThat(value.getValue(), equalTo(0.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0)));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(value.getTimeUserTag(), equalTo(0));
-        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(value.getLowerAlarmLimit(), equalTo(-9.0));
-        assertThat(value.getLowerWarningLimit(), equalTo(-8.0));
-        assertThat(value.getUpperWarningLimit(), equalTo(8.0));
-        assertThat(value.getUpperAlarmLimit(), equalTo(9.0));
-        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
-        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
+        // Check limits
+        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
+        assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(firstValue.getLowerAlarmLimit(), equalTo(-8.0));
+        assertThat(firstValue.getLowerWarningLimit(), equalTo(-6.0));
+        assertThat(firstValue.getUpperWarningLimit(), equalTo(6.0));
+        assertThat(firstValue.getUpperAlarmLimit(), equalTo(8.0));
+        assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
 
-        // Check second value
-        value = values.get(1);
-        assertThat(value.getValue(), equalTo(1.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(100))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        // Calculate histogram
+        int quart1 = 0;
+        int quart2 = 0;
+        int quart3 = 0;
+        int quart4 = 0;
 
-        // Check third value
-        value = values.get(2);
-        assertThat(value.getValue(), equalTo(2.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(200))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        for (int i = 0; i < 100000; i++) {
+            double value = noise.nextValue().getValue();
+            if (value < 0) {
+                if (value < -5.0) {
+                    quart1++;
+                } else {
+                    quart2++;
+                }
+            } else {
+                if (value < 5.0) {
+                    quart3++;
+                } else {
+                    quart4++;
+                }
+            }
+        }
 
-        // Check fourth value
-        value = values.get(3);
-        assertThat(value.getValue(), equalTo(3.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(500))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        // Check distribution
+        // Each quarts gets 25%
+        assertTrue(quart1 < 26000);
+        assertTrue(quart2 < 26000);
+        assertTrue(quart3 < 26000);
+        assertTrue(quart4 < 26000);
+        assertEquals(100000, quart1+quart2+quart3+quart4);
     }
 }

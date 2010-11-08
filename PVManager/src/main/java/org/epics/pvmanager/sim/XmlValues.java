@@ -7,6 +7,7 @@ package org.epics.pvmanager.sim;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,10 +24,19 @@ class XmlValues {
     })
     protected List<ReplayValue> value;
 
+    @XmlAttribute
+    private boolean adjustTime;
+
     public List<ReplayValue> getValues() {
         if (value == null) {
             value = new ArrayList<ReplayValue>();
         }
         return this.value;
     }
+
+    public boolean isAdjustTime() {
+        return adjustTime;
+    }
+
+    
 }
