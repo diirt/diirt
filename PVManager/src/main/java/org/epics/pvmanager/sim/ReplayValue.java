@@ -3,12 +3,15 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.epics.pvmanager.TimeStamp;
 
 /**
  *
@@ -16,6 +19,13 @@ import java.util.List;
  */
 class ReplayValue {
     private static List<Field> fields = new ArrayList<Field>();
+
+    @XmlAttribute @XmlJavaTypeAdapter(value=XmlTimeStampAdapter.class)
+    TimeStamp timeStamp;
+
+    public TimeStamp getTimeStamp() {
+        return timeStamp;
+    }
     
     private void updateFields(Class<?> clazz) {
         fields.addAll(Arrays.asList(clazz.getDeclaredFields()));

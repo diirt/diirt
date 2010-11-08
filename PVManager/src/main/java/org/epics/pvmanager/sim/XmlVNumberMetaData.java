@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
 import java.text.NumberFormat;
 import javax.xml.bind.annotation.XmlAttribute;

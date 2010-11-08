@@ -2,7 +2,7 @@
  * Copyright 2010 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import javax.xml.bind.Unmarshaller;
  *
  * @author carcassi
  */
-class Parser {
+class ReplayParser {
 
     static XmlValues parse(URI url) {
         // If relative, resolve it in the current directory

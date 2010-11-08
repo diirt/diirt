@@ -3,8 +3,11 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.sim.XmlValues;
+import org.epics.pvmanager.sim.XmlVDouble;
+import org.epics.pvmanager.sim.ReplayParser;
 import java.net.URI;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
@@ -26,7 +29,7 @@ public class ParserTest {
     @Test
     public void unmarshalParse1() throws Exception {
         // Unmarshal XML file
-        XmlValues values = Parser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
+        XmlValues values = ReplayParser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
         assertThat(values.getValues().size(), equalTo(4));
         assertThat(values.getValues().get(0), is(XmlVDouble.class));
 
@@ -74,7 +77,7 @@ public class ParserTest {
     @Test
     public void updateParse1() throws Exception {
         // Unmarshal XML file
-        XmlValues values = Parser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
+        XmlValues values = ReplayParser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
         XmlVDouble value = new XmlVDouble();
         assertThat(value.getValue(), nullValue());
 

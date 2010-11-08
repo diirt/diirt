@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -13,7 +13,7 @@ import org.epics.pvmanager.TimeStamp;
  *
  * @author carcassi
  */
-class TimeStampAdapter extends XmlAdapter<BigDecimal, TimeStamp> {
+class XmlTimeStampAdapter extends XmlAdapter<BigDecimal, TimeStamp> {
 
     @Override
     public TimeStamp unmarshal(BigDecimal v) throws Exception {

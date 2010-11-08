@@ -5,14 +5,13 @@
 
 package org.epics.pvmanager.sim;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeInterval;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.ValueFactory;
 
 /**
  *
@@ -20,8 +19,14 @@ import org.epics.pvmanager.data.ValueFactory;
  */
 class Replay extends SimFunction<VDouble> {
 
+    private TimeStamp reference = TimeStamp.now();
+    private TimeDuration offset;
+    private XmlValues values;
+
     public Replay(String uri) {
         super(0.010, VDouble.class);
+        values = ReplayParser.parse(URI.create(uri));
+        offset = ((VDouble) values.getValues().get(0)).getTimeStamp().durationFrom(reference);
     }
 
     @Override
@@ -31,7 +36,14 @@ class Replay extends SimFunction<VDouble> {
 
     @Override
     protected List<VDouble> createValues(TimeInterval interval) {
-        return super.createValues(interval);
+        TimeInterval originalInterval = interval.minus(offset);
+        List<VDouble> newValues = new ArrayList<VDouble>();
+        for (ReplayValue value : values.getValues()) {
+            if (originalInterval.contains(value.getTimeStamp())) {
+                newValues.add((VDouble) value);
+            }
+        }
+        return newValues;
     }
 
 }

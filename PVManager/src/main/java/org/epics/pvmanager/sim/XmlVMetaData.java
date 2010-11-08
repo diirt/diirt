@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.sim.replay;
+package org.epics.pvmanager.sim;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -19,19 +19,12 @@ import org.epics.pvmanager.data.Time;
  */
 class XmlVMetaData extends ReplayValue implements Time, Alarm {
 
-    @XmlAttribute @XmlJavaTypeAdapter(value=TimeStampAdapter.class)
-    TimeStamp timeStamp;
     @XmlAttribute
     Integer timeUserTag;
     @XmlAttribute
     AlarmSeverity alarmSeverity;
     @XmlAttribute
     AlarmStatus alarmStatus;
-
-    @Override
-    public TimeStamp getTimeStamp() {
-        return timeStamp;
-    }
 
     @Override
     public Integer getTimeUserTag() {
