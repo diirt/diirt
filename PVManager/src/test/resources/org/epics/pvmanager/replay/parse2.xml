@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<values>
+<values adjustTime="true">
     <vDouble timeStamp="0" value="0.0" alarmSeverity="NONE" alarmStatus="NONE" timeUserTag="0"
     lowerCtrlLimit="-10.0" lowerDisplayLimit="-10.0" lowerAlarmLimit="-9.0"  lowerWarningLimit="-8.0"
     upperCtrlLimit="10.0" upperDisplayLimit="10.0" upperAlarmLimit="9.0"  upperWarningLimit="8.0"/>

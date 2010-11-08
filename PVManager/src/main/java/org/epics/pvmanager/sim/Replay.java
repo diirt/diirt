@@ -40,7 +40,7 @@ class Replay extends SimFunction<VDouble> {
         List<VDouble> newValues = new ArrayList<VDouble>();
         for (ReplayValue value : values.getValues()) {
             if (originalInterval.contains(value.getTimeStamp())) {
-                newValues.add((VDouble) value);
+                newValues.add((VDouble) value.copy());
             }
         }
         return newValues;

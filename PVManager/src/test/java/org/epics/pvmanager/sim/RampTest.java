@@ -4,12 +4,15 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.TimeStamp;
+import java.util.List;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.epics.pvmanager.TimeDuration.*;
 
 /**
  *
@@ -20,43 +23,49 @@ public class RampTest {
     @Test
     public void rampValues() {
         // Creates the function
-        Ramp ramp1 = new Ramp(0.0, 10.0, 1.0, 1.0);
-        VDouble firstValue = ramp1.nextValue();
+        TimeStamp start = TimeStamp.now();
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse1.xml\")");
+        List<VDouble> values = replay.createValues(ms(1000).after(start));
+        assertThat(values.size(), equalTo(4));
 
-        // Check limits
-        assertThat(firstValue.getValue(), equalTo(0.0));
-        assertThat(firstValue.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(firstValue.getLowerCtrlLimit(), equalTo(0.0));
-        assertThat(firstValue.getLowerDisplayLimit(), equalTo(0.0));
-        assertThat(firstValue.getLowerAlarmLimit(), equalTo(1.0));
-        assertThat(firstValue.getLowerWarningLimit(), equalTo(2.0));
-        assertThat(firstValue.getUpperWarningLimit(), equalTo(8.0));
-        assertThat(firstValue.getUpperAlarmLimit(), equalTo(9.0));
-        assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
-        assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
-        
-        // Check values
-        assertThat(ramp1.nextValue().getValue(), equalTo(1.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(2.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(3.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(4.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(5.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(6.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(7.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(8.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(9.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(10.0));
-        assertThat(ramp1.nextValue().getValue(), equalTo(0.0));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(ramp1.nextValue().getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
+        // Check first value
+        VDouble value = values.get(0);
+        assertThat(value.getValue(), equalTo(0.0));
+        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0)));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
+        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(value.getLowerAlarmLimit(), equalTo(-9.0));
+        assertThat(value.getLowerWarningLimit(), equalTo(-8.0));
+        assertThat(value.getUpperWarningLimit(), equalTo(8.0));
+        assertThat(value.getUpperAlarmLimit(), equalTo(9.0));
+        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
+        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
+
+        // Check second value
+        value = values.get(1);
+        assertThat(value.getValue(), equalTo(1.0));
+        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(100))));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
+        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(value.getTimeUserTag(), equalTo(0));
+
+        // Check third value
+        value = values.get(2);
+        assertThat(value.getValue(), equalTo(2.0));
+        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(200))));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getTimeUserTag(), equalTo(0));
+
+        // Check fourth value
+        value = values.get(3);
+        assertThat(value.getValue(), equalTo(3.0));
+        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(500))));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getTimeUserTag(), equalTo(0));
     }
 }

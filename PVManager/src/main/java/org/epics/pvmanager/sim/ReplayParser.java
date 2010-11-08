@@ -28,7 +28,18 @@ class ReplayParser {
         try {
             JAXBContext jaxbCtx = JAXBContext.newInstance(XmlValues.class);
             Unmarshaller reader = jaxbCtx.createUnmarshaller();
-            return (XmlValues) reader.unmarshal(url.toURL());
+            XmlValues values = (XmlValues) reader.unmarshal(url.toURL());
+
+            // Adjust all values by using the previous as default
+            ReplayValue previousValue = null;
+            for (ReplayValue newValue : values.getValues()) {
+                if (previousValue == null) {
+                    previousValue = newValue;
+                } else {
+                    newValue.updateNullValues(previousValue);
+                }
+            }
+            return values;
         } catch (Exception ex) {
             throw new RuntimeException("Can't parse file", ex);
         } finally {
