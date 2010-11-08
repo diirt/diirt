@@ -2,7 +2,7 @@
  * Copyright 2010 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager.replay;
+package org.epics.pvmanager.sim.replay;
 
 import java.io.File;
 import java.io.IOException;

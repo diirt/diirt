@@ -3,17 +3,12 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.replay;
+package org.epics.pvmanager.sim.replay;
 
 import java.net.URI;
-import java.net.URL;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

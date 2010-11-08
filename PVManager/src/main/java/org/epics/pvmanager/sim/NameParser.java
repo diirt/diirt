@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
  */
 class NameParser {
 
-    static final Pattern doublePattern = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*");
-    static final Pattern commaSeparatedDoubles = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*)*");
-    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*(,\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*)*)\\))?");
+    static final Pattern doubleParameter = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*");
+    static final Pattern commaSeparatedDoubles = Pattern.compile(doubleParameter + "(," + doubleParameter + ")*");
+    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\((" + commaSeparatedDoubles + ")\\))?");
 
     /**
      * Parses a comma separated list of arguments and returns them as a list.
@@ -40,7 +40,7 @@ class NameParser {
         }
 
         // Parse parameters
-        Matcher matcher = doublePattern.matcher(string);
+        Matcher matcher = doubleParameter.matcher(string);
         List<Object> parameters = new ArrayList<Object>();
         while (matcher.find()) {
             String parameter = matcher.group();

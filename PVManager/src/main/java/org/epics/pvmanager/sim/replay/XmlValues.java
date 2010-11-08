@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.replay;
+package org.epics.pvmanager.sim.replay;
 
 import java.util.ArrayList;
 import java.util.List;
