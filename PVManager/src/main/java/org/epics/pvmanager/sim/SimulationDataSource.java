@@ -60,6 +60,7 @@ public final class SimulationDataSource extends DataSource {
     @Override
     public void connect(DataRecipe recipe) {
         // First create all the functions for the recipe
+        TimeStamp startTime = TimeStamp.now();
         Set<SimFunction<?>> functions = new HashSet<SimFunction<?>>();
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
@@ -71,7 +72,6 @@ public final class SimulationDataSource extends DataSource {
 
         // Synchronize the timing of the simulated channel
         // and start them
-        TimeStamp startTime = TimeStamp.now();
         for (SimFunction<?> function : functions) {
             if (function != null) {
                 function.setLastTime(startTime);
