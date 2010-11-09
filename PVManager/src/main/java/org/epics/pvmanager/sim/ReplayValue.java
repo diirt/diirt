@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,7 +23,7 @@ import org.epics.pvmanager.TimeStamp;
  * @author carcassi
  */
 class ReplayValue {
-    private static List<Field> fields = new ArrayList<Field>();
+    private static Map<Class<?>, List<Field>> fields = new ConcurrentHashMap<Class<?>, List<Field>>();
     private static final Logger log = Logger.getLogger(ReplayValue.class.getName());
 
     @XmlAttribute @XmlJavaTypeAdapter(value=XmlTimeStampAdapter.class)
@@ -31,20 +33,27 @@ class ReplayValue {
         return timeStamp;
     }
 
-    private void updateFields(Class<?> clazz) {
+    private static List<Field> calculateFields(Class<?> clazz, List<Field> props) {
         for (Field field : clazz.getDeclaredFields()) {
             if (!Modifier.isStatic(field.getModifiers())) {
-                fields.add(field);
+                props.add(field);
             }
         }
         
         if (clazz.getSuperclass() != null) {
-            updateFields(clazz.getSuperclass());
+            calculateFields(clazz.getSuperclass(), props);
         }
+
+        return props;
     }
 
-    {
-        updateFields(getClass());
+    private List<Field> properties() {
+        List<Field> props = fields.get(getClass());
+        if (props == null) {
+            props = calculateFields(getClass(), new ArrayList<Field>());
+            fields.put(getClass(), props);
+        }
+        return props;
     }
 
     ReplayValue copy() {
@@ -70,7 +79,7 @@ class ReplayValue {
             throw new RuntimeException("Updating value " + this + " from different class " + obj);
         }
 
-        for (Field field : fields) {
+        for (Field field : properties()) {
             try {
                 Object newValue = field.get(obj);
                 if (newValue != null) {
@@ -89,7 +98,7 @@ class ReplayValue {
             throw new RuntimeException("Updating value " + this + " from different class " + obj);
         }
 
-        for (Field field : fields) {
+        for (Field field : properties()) {
             try {
                 Object oldValue = field.get(this);
                 if (oldValue == null) {

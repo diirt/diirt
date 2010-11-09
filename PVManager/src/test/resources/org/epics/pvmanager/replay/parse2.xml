@@ -6,8 +6,8 @@
     upperCtrlLimit="10.0" upperDisplayLimit="10.0" upperAlarmLimit="9.0"  upperWarningLimit="8.0"/>
     <vDouble timeStamp="1" value="1.0" alarmSeverity="INVALID" alarmStatus="RECORD" />
     <vDouble timeStamp="2" value="2.0" alarmSeverity="NONE" alarmStatus="NONE" />
-    <vDouble timeStamp="2.1" value="3.0" alarmSeverity="NONE" alarmStatus="NONE" />
-    <vDouble timeStamp="2.2" value="4.0" alarmSeverity="NONE" alarmStatus="NONE" />
+    <vDouble timeStamp="2.1" value="3.0" alarmSeverity="MINOR" alarmStatus="RECORD" />
+    <vDouble timeStamp="2.2" value="4.0" alarmSeverity="MAJOR" alarmStatus="RECORD" />
     <vDouble timeStamp="2.5" value="5.0" alarmSeverity="NONE" alarmStatus="NONE" />
-    <vDouble timeStamp="5" value="6.0" alarmSeverity="NONE" alarmStatus="NONE" />
+    <vDouble timeStamp="5" value="6.0" alarmSeverity="UNDEFINED" alarmStatus="CLIENT" />
 </values>

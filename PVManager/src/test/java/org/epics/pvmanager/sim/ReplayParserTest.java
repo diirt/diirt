@@ -5,9 +5,6 @@
 
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.sim.XmlValues;
-import org.epics.pvmanager.sim.XmlVDouble;
-import org.epics.pvmanager.sim.ReplayParser;
 import java.net.URI;
 import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;

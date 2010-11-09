@@ -11,6 +11,11 @@
 
 package org.epics.pvmanager.test;
 
+import java.awt.Color;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import org.epics.pvmanager.data.AlarmSeverity;
 import javax.swing.JOptionPane;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
@@ -26,11 +31,18 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
  */
 public class MockSimPVFrame extends javax.swing.JFrame {
 
+    Map<AlarmSeverity, Color> severityColor = new EnumMap<AlarmSeverity, Color>(AlarmSeverity.class);
+
     /** Creates new form MockPVFrame */
     public MockSimPVFrame() {
         PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
+        severityColor.put(AlarmSeverity.NONE, Color.BLACK);
+        severityColor.put(AlarmSeverity.MINOR, Color.YELLOW);
+        severityColor.put(AlarmSeverity.MAJOR, Color.RED);
+        severityColor.put(AlarmSeverity.INVALID, Color.GRAY);
+        severityColor.put(AlarmSeverity.UNDEFINED, Color.MAGENTA);
     }
 
     /** This method is called from within the constructor to
@@ -127,6 +139,7 @@ public class MockSimPVFrame extends javax.swing.JFrame {
                 @Override
                 public void pvValueChanged() {
                     valueLabel.setText(Double.toString(pv.getValue().getValue()));
+                    valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
                 }
             });
         } catch(Exception ex) {
