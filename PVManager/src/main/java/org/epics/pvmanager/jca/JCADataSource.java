@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.data.VString;
@@ -105,6 +106,12 @@ public class JCADataSource extends DataSource {
                     ValueProcessor processor = monitorVEnum(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
                     if (processor != null)
                         processors.add(processor);
+                } else if (entry.getValue().getType().equals(VDoubleArray.class)) {
+                    @SuppressWarnings("unchecked")
+                    ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) entry.getValue();
+                    ValueProcessor processor = monitorVDoubleArray(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
+                    if (processor != null)
+                        processors.add(processor);
                 } else {
                     throw new UnsupportedOperationException("Type "
                             + entry.getValue().getType().getName()
@@ -167,6 +174,21 @@ public class JCADataSource extends DataSource {
         try {
             Channel channel = ctxt.createChannel(pvName);
             VEnumProcessor processor = new VEnumProcessor(channel, collector, cache, handler);
+            ctxt.flushIO();
+            return processor;
+        } catch (CAException e) {
+            handler.handleException(e);
+        } catch (RuntimeException e) {
+            handler.handleException(e);
+        }
+        return null;
+    }
+
+    private VDoubleArrayProcessor monitorVDoubleArray(String pvName, Collector collector,
+            ValueCache<VDoubleArray> cache, ExceptionHandler handler) {
+        try {
+            Channel channel = ctxt.createChannel(pvName);
+            VDoubleArrayProcessor processor = new VDoubleArrayProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
         } catch (CAException e) {

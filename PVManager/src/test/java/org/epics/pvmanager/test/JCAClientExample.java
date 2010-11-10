@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.test;
 
+import java.util.Arrays;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VString;
 import org.epics.pvmanager.data.VDouble;
@@ -12,6 +13,8 @@ import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
+import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.pvmanager.data.VMultiDouble;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
@@ -27,11 +30,27 @@ public class JCAClientExample {
         PVManager.setDefaultDataSource(JCASupport.jca());
         PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
+        testVDoubleArraySupport();
         testVDoubleSupport();
         testVIntSupport();
         testVStringSupport();
         testVEnumSupport();
 
+    }
+
+    private static void testVDoubleArraySupport() throws Exception {
+        final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
     }
 
     private static void testVDoubleSupport() throws Exception {

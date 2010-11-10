@@ -131,7 +131,7 @@ public class TimeStamp implements Comparable {
      * @return a date
      */
     public Date asDate() {
-        return new Date((unixSec+TS_EPOCH_SEC_PAST_1970)*1000+nanoSec/1000000);
+        return new Date((unixSec)*1000+nanoSec/1000000);
     }
 
     @Override

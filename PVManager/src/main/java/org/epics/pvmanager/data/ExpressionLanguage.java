@@ -38,6 +38,16 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name of type VDoubleArray.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static SourceRateExpression<VDoubleArray> vDoubleArray(String name) {
+        return new SourceRateExpression<VDoubleArray>(name, VDoubleArray.class);
+    }
+
+    /**
      * A channel with the given name of type VInt.
      *
      * @param name the channel name; can't be null
