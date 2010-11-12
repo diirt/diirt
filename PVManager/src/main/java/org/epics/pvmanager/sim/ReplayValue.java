@@ -19,13 +19,20 @@ import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeStamp;
 
 /**
+ * Value object for replay function. Adds introspection utilities to substitute
+ * values from another ReplayValue.
+ * <p>
+ * Classes extending this class must include a default constructor.
  *
  * @author carcassi
  */
 class ReplayValue {
+
+    // Introspected fields for ReplyValue classes
     private static Map<Class<?>, List<Field>> fields = new ConcurrentHashMap<Class<?>, List<Field>>();
     private static final Logger log = Logger.getLogger(ReplayValue.class.getName());
 
+    // TimeStamp support
     @XmlAttribute @XmlJavaTypeAdapter(value=XmlTimeStampAdapter.class)
     TimeStamp timeStamp;
 
@@ -33,6 +40,13 @@ class ReplayValue {
         return timeStamp;
     }
 
+    /**
+     * Uses reflection to determine the non-static fields.
+     *
+     * @param clazz a ReplayValue class
+     * @param props list of properties to add
+     * @return the props argument, filled with all fields
+     */
     private static List<Field> calculateFields(Class<?> clazz, List<Field> props) {
         for (Field field : clazz.getDeclaredFields()) {
             if (!Modifier.isStatic(field.getModifiers())) {
@@ -47,6 +61,12 @@ class ReplayValue {
         return props;
     }
 
+    /**
+     * The non-static fields. Uses reflection the first time, then uses the
+     * cached values.
+     *
+     * @return a list of fields
+     */
     private List<Field> properties() {
         List<Field> props = fields.get(getClass());
         if (props == null) {
@@ -56,6 +76,11 @@ class ReplayValue {
         return props;
     }
 
+    /**
+     * Returns a new ReplayObject with the same data.
+     *
+     * @return a copy of this object
+     */
     ReplayValue copy() {
         try {
             ReplayValue copy = getClass().newInstance();
@@ -70,10 +95,20 @@ class ReplayValue {
         }
     }
 
+    /**
+     * Changes the time by adding the given duration.
+     *
+     * @param duration a time duration
+     */
     void adjustTime(TimeDuration duration) {
         timeStamp = timeStamp.plus(duration);
     }
 
+    /**
+     * Updates all fields with the values found in the argument's fields.
+     *
+     * @param obj another value of the same type
+     */
     void updateValue(ReplayValue obj) {
         if (!getClass().isInstance(obj)) {
             throw new RuntimeException("Updating value " + this + " from different class " + obj);
@@ -93,6 +128,12 @@ class ReplayValue {
         }
     }
 
+    /**
+     * Updates fields that currently have null values with the values found
+     * in the argument's fields.
+     *
+     * @param obj another value of the same type
+     */
     void updateNullValues(ReplayValue obj) {
         if (!getClass().isInstance(obj)) {
             throw new RuntimeException("Updating value " + this + " from different class " + obj);

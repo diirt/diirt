@@ -12,23 +12,34 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 /**
+ * XML parse for the Replay function.
  *
  * @author carcassi
  */
 class ReplayParser {
 
-    static XmlValues parse(URI url) {
+    private ReplayParser() {
+        // Avoid construction
+    }
+
+    /**
+     * Reads the XML file located at the given uri.
+     *
+     * @param uri local url for a local file, or absolute uri for any other protocol
+     * @return the parsed file
+     */
+    static XmlValues parse(URI uri) {
         // If relative, resolve it in the current directory
-        if (!url.isAbsolute()) {
+        if (!uri.isAbsolute()) {
             File current = new File(".");
-            url = current.toURI().resolve(url);
+            uri = current.toURI().resolve(uri);
         }
         
         InputStream in = null;
         try {
             JAXBContext jaxbCtx = JAXBContext.newInstance(XmlValues.class);
             Unmarshaller reader = jaxbCtx.createUnmarshaller();
-            XmlValues values = (XmlValues) reader.unmarshal(url.toURL());
+            XmlValues values = (XmlValues) reader.unmarshal(uri.toURL());
 
             // Adjust all values by using the previous as default
             ReplayValue previousValue = null;
@@ -47,7 +58,7 @@ class ReplayParser {
                 try {
                     in.close();
                 } catch (IOException ex) {
-                    //
+                    // Can't do anything anyway...
                 }
             }
         }

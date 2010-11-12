@@ -35,7 +35,7 @@ public final class SimulationDataSource extends DataSource {
         return SimulationDataSource.instance;
     }
 
-    protected static abstract class ValueProcessor<T, E>
+    static abstract class ValueProcessor<T, E>
     extends DataSource.ValueProcessor<T, E> {
 
         public ValueProcessor(Collector collector, ValueCache<E> cache) {

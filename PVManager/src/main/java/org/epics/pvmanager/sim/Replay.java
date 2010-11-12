@@ -14,15 +14,23 @@ import org.epics.pvmanager.TimeStamp;
 import org.epics.pvmanager.data.VDouble;
 
 /**
+ * Function that reads an xml file and simulates a pv by replaying it.
  *
  * @author carcassi
  */
-class Replay extends SimFunction<VDouble> {
+public class Replay extends SimFunction<VDouble> {
 
     private TimeStamp reference = TimeStamp.now();
     private TimeDuration offset;
     private XmlValues values;
 
+    /**
+     * The URI of the file. Any of the standard protocol is supported (file:,
+     * http:, ...). Relative uris are allowed, and they will be resolved on the
+     * current location in the filesystem.
+     *
+     * @param uri the location of the playback file
+     */
     public Replay(String uri) {
         super(0.010, VDouble.class);
         values = ReplayParser.parse(URI.create(uri));
@@ -30,12 +38,12 @@ class Replay extends SimFunction<VDouble> {
     }
 
     @Override
-    public VDouble nextValue() {
+    VDouble nextValue() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected List<VDouble> createValues(TimeInterval interval) {
+    List<VDouble> createValues(TimeInterval interval) {
         TimeInterval originalInterval = interval.minus(offset);
         List<VDouble> newValues = new ArrayList<VDouble>();
         for (ReplayValue value : values.getValues()) {

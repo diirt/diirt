@@ -20,7 +20,7 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-class Ramp extends SimFunction<VDouble> {
+public class Ramp extends SimFunction<VDouble> {
 
     private double min;
     private double max;
@@ -55,7 +55,7 @@ class Ramp extends SimFunction<VDouble> {
     }
 
     @Override
-    public VDouble nextValue() {
+    VDouble nextValue() {
         currentValue = currentValue + step;
         if (currentValue > max) {
             currentValue = min;

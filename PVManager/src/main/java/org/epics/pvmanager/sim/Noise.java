@@ -20,7 +20,7 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-class Noise extends SimFunction<VDouble> {
+public class Noise extends SimFunction<VDouble> {
 
     private Random rand = new Random();
     private double min;
@@ -59,7 +59,7 @@ class Noise extends SimFunction<VDouble> {
     }
 
     @Override
-    public VDouble nextValue() {
+    VDouble nextValue() {
         return newValue(min + rand.nextDouble() * range, lastValue);
     }
 }

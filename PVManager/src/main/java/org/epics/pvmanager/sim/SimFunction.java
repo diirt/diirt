@@ -27,7 +27,7 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-public abstract class SimFunction<T> {
+abstract class SimFunction<T> {
 
     private static final Logger log = Logger.getLogger(SimFunction.class.getName());
 
@@ -42,7 +42,7 @@ public abstract class SimFunction<T> {
      *
      * @param secondsBeetwenSamples seconds between each samples
      */
-    public SimFunction(double secondsBeetwenSamples, Class<T> classToken) {
+    SimFunction(double secondsBeetwenSamples, Class<T> classToken) {
         if (secondsBeetwenSamples <= 0.0) {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + secondsBeetwenSamples + ")");
         }
@@ -56,7 +56,7 @@ public abstract class SimFunction<T> {
      *
      * @return the next value
      */
-    protected abstract T nextValue();
+    abstract T nextValue();
 
     /**
      * Computes all the new values in the given time slice.
@@ -64,7 +64,7 @@ public abstract class SimFunction<T> {
      * @param interval the interval where the data should be generated
      * @return the new values
      */
-    protected List<T> createValues(TimeInterval interval) {
+    List<T> createValues(TimeInterval interval) {
         List<T> values = new ArrayList<T>();
         TimeStamp newTime = lastTime.plus(timeBetweenSamples);
 
@@ -85,7 +85,7 @@ public abstract class SimFunction<T> {
      * @param collector collector notified of updates
      * @param cache cache to put the new value in
      */
-    public void initialize(final Collector collector, final ValueCache<T> cache) {
+    void initialize(final Collector collector, final ValueCache<T> cache) {
         if (!cache.getType().equals(classToken)) {
             throw new IllegalArgumentException("Function is of type " + classToken.getSimpleName() + " (requested " + cache.getType().getSimpleName() + ")");
         }
@@ -139,7 +139,7 @@ public abstract class SimFunction<T> {
      *
      * @param timer timer on which to execute the updates
      */
-    public void start(Timer timer) {
+    void start(Timer timer) {
         if (task == null)
             throw new IllegalStateException("Must call initialize first");
 
@@ -150,7 +150,7 @@ public abstract class SimFunction<T> {
     /**
      * Stops the variable from further notifications.
      */
-    public void stop() {
+    void stop() {
         if (task != null) {
             task.cancel();
             log.log(Level.FINE, "Synch closing {0}", task);
@@ -165,7 +165,7 @@ public abstract class SimFunction<T> {
      * @param oldValue old VDouble
      * @return new VDouble
      */
-    protected VDouble newValue(double value, VDouble oldValue) {
+    VDouble newValue(double value, VDouble oldValue) {
         if (lastTime == null)
             lastTime = TimeStamp.now();
         
@@ -183,7 +183,5 @@ public abstract class SimFunction<T> {
     void setLastTime(TimeStamp lastTime) {
         this.lastTime = lastTime;
     }
-
-
 
 }

@@ -21,7 +21,7 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-class Gaussian extends SimFunction<VDouble> {
+public class Gaussian extends SimFunction<VDouble> {
 
     private Random rand = new Random();
     private double average;
@@ -58,7 +58,7 @@ class Gaussian extends SimFunction<VDouble> {
     }
 
     @Override
-    public VDouble nextValue() {
+    VDouble nextValue() {
         return newValue(average + rand.nextGaussian() * stdDev, lastValue);
     }
 }

@@ -19,7 +19,7 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-class Sine extends SimFunction<VDouble> {
+public class Sine extends SimFunction<VDouble> {
 
     private double min;
     private double max;
@@ -51,7 +51,7 @@ class Sine extends SimFunction<VDouble> {
     }
 
     @Override
-    public VDouble nextValue() {
+    VDouble nextValue() {
         double value = Math.sin(currentValue * 2 * Math.PI /samplesPerCycle) * range / 2 + min + (range / 2);
         currentValue++;
 
