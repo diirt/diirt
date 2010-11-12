@@ -63,8 +63,7 @@ class VDoubleArrayFromDbr implements VDoubleArray {
         if (dbrValue.getTimeStamp() == null)
             return null;
         
-        return TimeStamp.epicsTime(dbrValue.getTimeStamp().secPastEpoch(),
-                dbrValue.getTimeStamp().secPastEpoch());
+        return DataUtils.fromEpics(dbrValue.getTimeStamp());
     }
 
     @Override

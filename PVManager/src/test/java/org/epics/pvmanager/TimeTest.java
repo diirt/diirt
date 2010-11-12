@@ -19,21 +19,21 @@ public class TimeTest {
 
     @Test
     public void nanoSecCarry() {
-        TimeStamp time = TimeStamp.epicsTime(100, 100000000);
+        TimeStamp time = TimeStamp.time(100, 100000000);
         TimeStamp newTime = time.plus(TimeDuration.nanos(999000000));
-        assertEquals(TimeStamp.epicsTime(101, 99000000), newTime);
+        assertEquals(TimeStamp.time(101, 99000000), newTime);
 
         newTime = time.plus(TimeDuration.ms(1000));
-        assertEquals(TimeStamp.epicsTime(101, 100000000), newTime);
+        assertEquals(TimeStamp.time(101, 100000000), newTime);
 
         newTime = time.plus(TimeDuration.ms(5443));
-        assertEquals(TimeStamp.epicsTime(105, 543000000), newTime);
+        assertEquals(TimeStamp.time(105, 543000000), newTime);
 
         newTime = time.minus(TimeDuration.ms(1000));
-        assertEquals(TimeStamp.epicsTime(99, 100000000), newTime);
+        assertEquals(TimeStamp.time(99, 100000000), newTime);
 
         newTime = time.minus(TimeDuration.nanos(999000000));
-        assertEquals(TimeStamp.epicsTime(99, 101000000), newTime);
+        assertEquals(TimeStamp.time(99, 101000000), newTime);
     }
 
     @Test

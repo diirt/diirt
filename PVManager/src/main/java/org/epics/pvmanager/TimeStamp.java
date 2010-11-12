@@ -28,13 +28,6 @@ public class TimeStamp implements Comparable {
      */
     private static final TimeStamp base = TimeStamp.timestampOf(new Date());
     private static final long baseNano = System.nanoTime();
-    
-    /**
-     * Constant to convert epics seconds to UNIX seconds. It counts the number
-     * of seconds for 20 years, 5 of which leap years. It does _not_ count the
-     * number of leap seconds (which should have been 15).
-     */
-    private static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
 
     /**
      * Unix timestamp
@@ -54,14 +47,6 @@ public class TimeStamp implements Comparable {
     }
 
     /**
-     * Epics time; seconds from midnight 1/1/1990.
-     * @return epics time
-     */
-    public long getEpicsSec() {
-        return unixSec - TS_EPOCH_SEC_PAST_1970;
-    }
-
-    /**
      * Unix time; seconds from midnight 1/1/1970.
      * @return unix time
      */
@@ -75,17 +60,6 @@ public class TimeStamp implements Comparable {
      */
     public long getNanoSec() {
         return nanoSec;
-    }
-
-    /**
-     * Returns a new timestamp from EPICS time.
-     *
-     * @param epicsSec number of second in EPICS time
-     * @param nanoSec nanoseconds from the given second (must be 0 < nanoSec < 999,999,999)
-     * @return a new timestamp
-     */
-    public static TimeStamp epicsTime(long epicsSec, long nanoSec) {
-        return new TimeStamp(epicsSec + TS_EPOCH_SEC_PAST_1970, nanoSec);
     }
 
     /**

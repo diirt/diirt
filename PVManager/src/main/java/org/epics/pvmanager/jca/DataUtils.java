@@ -57,6 +57,23 @@ class DataUtils {
     }
 
     /**
+     * Constant to convert epics seconds to UNIX seconds. It counts the number
+     * of seconds for 20 years, 5 of which leap years. It does _not_ count the
+     * number of leap seconds (which should have been 15).
+     */
+    private static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
+
+    /**
+     * Converts a JCA timestamp to a pvmanager timestamp.
+     *
+     * @param epicsTimeStamp the epics timestamp
+     * @return a new pvmanager timestamp
+     */
+    static org.epics.pvmanager.TimeStamp fromEpics(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
+        return org.epics.pvmanager.TimeStamp.time(epicsTimeStamp.secPastEpoch() - TS_EPOCH_SEC_PAST_1970, epicsTimeStamp.nsec());
+    }
+
+    /**
      * Converts an alarm severity from JCA to VData.
      *
      * @param severity the JCA severity
