@@ -28,7 +28,7 @@ abstract class Simulation<T> {
 
     private final long intervalBetweenExecution;
     private final Class<T> classToken;
-    protected volatile TimeStamp lastTime;
+    volatile TimeStamp lastTime;
 
     /**
      * Creates a new simulation.
