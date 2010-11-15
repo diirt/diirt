@@ -18,7 +18,7 @@ import org.epics.pvmanager.data.VDouble;
  *
  * @author carcassi
  */
-public class Replay extends SimFunction<VDouble> {
+public class Replay extends Simulation<VDouble> {
 
     private TimeStamp reference = TimeStamp.now();
     private TimeDuration offset;
@@ -32,14 +32,9 @@ public class Replay extends SimFunction<VDouble> {
      * @param uri the location of the playback file
      */
     public Replay(String uri) {
-        super(0.010, VDouble.class);
+        super(TimeDuration.ms(10), VDouble.class);
         values = ReplayParser.parse(URI.create(uri));
         offset = ((VDouble) values.getValues().get(0)).getTimeStamp().durationFrom(reference);
-    }
-
-    @Override
-    VDouble nextValue() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

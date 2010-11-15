@@ -90,7 +90,7 @@ class NameParser {
      * @param string the function call
      * @return the function
      */
-    static SimFunction<?> createFunction(String string) {
+    static Simulation<?> createFunction(String string) {
         List<Object> parameters = parseFunction(string);
         StringBuilder className = new StringBuilder("org.epics.pvmanager.sim.");
         int firstCharPosition = className.length();

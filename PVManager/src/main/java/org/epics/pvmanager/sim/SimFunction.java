@@ -27,15 +27,11 @@ import org.epics.pvmanager.data.ValueFactory;
  *
  * @author carcassi
  */
-abstract class SimFunction<T> {
+abstract class SimFunction<T> extends Simulation<T> {
 
     private static final Logger log = Logger.getLogger(SimFunction.class.getName());
 
-    private double secondsBeetwenSamples;
-    private long intervalBetweenExecution;
     private TimeDuration timeBetweenSamples;
-    private Class<T> classToken;
-    private volatile TimeStamp lastTime;
 
     /**
      * Creates a new simulation function.
@@ -43,12 +39,16 @@ abstract class SimFunction<T> {
      * @param secondsBeetwenSamples seconds between each samples
      */
     SimFunction(double secondsBeetwenSamples, Class<T> classToken) {
+        // The timer only accepts interval up to the millisecond.
+        // For intervals shorter than that, we calculate the extra samples
+        // we need to generate within each time execution.
+        super(TimeDuration.ms(Math.max((int) (secondsBeetwenSamples * 1000) / 2, 1)), classToken);
+
         if (secondsBeetwenSamples <= 0.0) {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + secondsBeetwenSamples + ")");
         }
-        this.secondsBeetwenSamples = secondsBeetwenSamples;
+
         timeBetweenSamples = TimeDuration.nanos((long) (secondsBeetwenSamples * 1000000000));
-        this.classToken = classToken;
     }
 
     /**
@@ -64,6 +64,7 @@ abstract class SimFunction<T> {
      * @param interval the interval where the data should be generated
      * @return the new values
      */
+    @Override
     List<T> createValues(TimeInterval interval) {
         List<T> values = new ArrayList<T>();
         TimeStamp newTime = lastTime.plus(timeBetweenSamples);
@@ -75,87 +76,6 @@ abstract class SimFunction<T> {
         }
 
         return values;
-    }
-
-    private TimerTask task;
-
-    /**
-     * Initialize timer task. Must be called before start.
-     *
-     * @param collector collector notified of updates
-     * @param cache cache to put the new value in
-     */
-    void initialize(final Collector collector, final ValueCache<T> cache) {
-        if (!cache.getType().equals(classToken)) {
-            throw new IllegalArgumentException("Function is of type " + classToken.getSimpleName() + " (requested " + cache.getType().getSimpleName() + ")");
-        }
-
-        // The timer only accepts interval up to the millisecond.
-        // For intervals shorter than that, we calculate the extra samples
-        // we need to generate within each time execution.
-        intervalBetweenExecution = (long) (secondsBeetwenSamples * 1000) / 2;
-        if (intervalBetweenExecution == 0)
-            intervalBetweenExecution = 1;
-
-        if (task != null)
-            task.cancel();
-        task = new TimerTask() {
-            SimulationDataSource.ValueProcessor<T, T> processor = new SimulationDataSource.ValueProcessor<T, T>(collector, cache) {
-
-                @Override
-                public void close() {
-                    log.log(Level.FINE, "Closing {0}", this);
-                    cancel();
-                }
-
-                @Override
-                public boolean updateCache(T payload, ValueCache<T> cache) {
-                    cache.setValue(payload);
-                    return true;
-                }
-            };
-
-
-            @Override
-            public void run() {
-                // Protect the timer thread for possible problems.
-                try {
-                    if (lastTime == null)
-                        lastTime = TimeStamp.now();
-                    List<T> newValues = createValues(TimeInterval.between(lastTime, TimeStamp.now()));
-
-                    for (T newValue : newValues) {
-                        processor.processValue(newValue);
-                    }
-                } catch (Exception ex) {
-                    log.log(Level.WARNING, "Data simulation problem", ex);
-                }
-            }
-        };
-    }
-
-    /**
-     * Starts notification by dispatching the prepared task on the timer.
-     *
-     * @param timer timer on which to execute the updates
-     */
-    void start(Timer timer) {
-        if (task == null)
-            throw new IllegalStateException("Must call initialize first");
-
-        timer.schedule(task, 0, intervalBetweenExecution);
-        log.log(Level.FINE, "Synch starting {0} every " + intervalBetweenExecution + " ms", task);
-    }
-
-    /**
-     * Stops the variable from further notifications.
-     */
-    void stop() {
-        if (task != null) {
-            task.cancel();
-            log.log(Level.FINE, "Synch closing {0}", task);
-        }
-        task = null;
     }
 
     /**
@@ -178,10 +98,6 @@ abstract class SimFunction<T> {
 
         return ValueFactory.newVDouble(value, severity, AlarmStatus.NONE,
                 null, lastTime, oldValue);
-    }
-
-    void setLastTime(TimeStamp lastTime) {
-        this.lastTime = lastTime;
     }
 
 }
