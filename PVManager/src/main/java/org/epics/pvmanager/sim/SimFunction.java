@@ -7,23 +7,18 @@ package org.epics.pvmanager.sim;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.TimeDuration;
 import org.epics.pvmanager.TimeInterval;
 import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.ValueFactory;
 
 /**
- * Base class for all simulated signals. It provides the common mechanism for
- * registering the update on a timer and a few other utilities.
+ * Base class for all simulated functions. It provide constant rate data generation
+ * facilities.
  *
  * @author carcassi
  */
@@ -37,6 +32,7 @@ abstract class SimFunction<T> extends Simulation<T> {
      * Creates a new simulation function.
      *
      * @param secondsBeetwenSamples seconds between each samples
+     * @param classToken simulated class
      */
     SimFunction(double secondsBeetwenSamples, Class<T> classToken) {
         // The timer only accepts interval up to the millisecond.
@@ -59,7 +55,8 @@ abstract class SimFunction<T> extends Simulation<T> {
     abstract T nextValue();
 
     /**
-     * Computes all the new values in the given time slice.
+     * Computes all the new values in the given time slice by calling nextValue()
+     * appropriately.
      *
      * @param interval the interval where the data should be generated
      * @return the new values

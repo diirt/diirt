@@ -127,6 +127,11 @@ abstract class Simulation<T> {
         task = null;
     }
 
+    /**
+     * Changes the time at which the data will be generated.
+     *
+     * @param lastTime new timestamp
+     */
     void setLastTime(TimeStamp lastTime) {
         this.lastTime = lastTime;
     }
