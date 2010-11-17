@@ -14,7 +14,6 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VDoubleArray;
-import org.epics.pvmanager.data.VMultiDouble;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
@@ -30,11 +29,11 @@ public class JCAClientExample {
         PVManager.setDefaultDataSource(JCASupport.jca());
         PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
-        testVDoubleArraySupport();
         testVDoubleSupport();
         testVIntSupport();
         testVStringSupport();
         testVEnumSupport();
+        testVDoubleArraySupport();
 
     }
 

@@ -19,11 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VDoubleArray;
-import org.epics.pvmanager.data.VEnum;
-import org.epics.pvmanager.data.VInt;
-import org.epics.pvmanager.data.VString;
 
 /**
  * A data source that uses jca.
@@ -82,41 +77,9 @@ public class JCADataSource extends DataSource {
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : dataRecipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
-                if (entry.getValue().getType().equals(VDouble.class)) {
-                    @SuppressWarnings("unchecked")
-                    ValueCache<VDouble> cache = (ValueCache<VDouble>) entry.getValue();
-                    ValueProcessor processor = monitorVDouble(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
-                    if (processor != null)
-                        processors.add(processor);
-                } else if (entry.getValue().getType().equals(VInt.class)) {
-                    @SuppressWarnings("unchecked")
-                    ValueCache<VInt> cache = (ValueCache<VInt>) entry.getValue();
-                    ValueProcessor processor = monitorVInt(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
-                    if (processor != null)
-                        processors.add(processor);
-                } else if (entry.getValue().getType().equals(VString.class)) {
-                    @SuppressWarnings("unchecked")
-                    ValueCache<VString> cache = (ValueCache<VString>) entry.getValue();
-                    ValueProcessor processor = monitorVString(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
-                    if (processor != null)
-                        processors.add(processor);
-                } else if (entry.getValue().getType().equals(VEnum.class)) {
-                    @SuppressWarnings("unchecked")
-                    ValueCache<VEnum> cache = (ValueCache<VEnum>) entry.getValue();
-                    ValueProcessor processor = monitorVEnum(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
-                    if (processor != null)
-                        processors.add(processor);
-                } else if (entry.getValue().getType().equals(VDoubleArray.class)) {
-                    @SuppressWarnings("unchecked")
-                    ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) entry.getValue();
-                    ValueProcessor processor = monitorVDoubleArray(entry.getKey(), collector, cache, dataRecipe.getExceptionHandler());
-                    if (processor != null)
-                        processors.add(processor);
-                } else {
-                    throw new UnsupportedOperationException("Type "
-                            + entry.getValue().getType().getName()
-                            + " is not yet supported");
-                }
+                ValueProcessor processor = createProcessor(entry.getKey(), collector, entry.getValue(), dataRecipe.getExceptionHandler());
+                if (processor != null)
+                    processors.add(processor);
             }
         }
         connectedProcessors.put(dataRecipe, processors);
@@ -124,71 +87,11 @@ public class JCADataSource extends DataSource {
 
     private Map<DataRecipe, Set<ValueProcessor>> connectedProcessors = new ConcurrentHashMap<DataRecipe, Set<ValueProcessor>>();
 
-    private VDoubleProcessor monitorVDouble(String pvName, Collector collector,
-            ValueCache<VDouble> cache, ExceptionHandler handler) {
+    private ValueProcessor createProcessor(String pvName, Collector collector,
+            ValueCache<?> cache, ExceptionHandler handler) {
         try {
             Channel channel = ctxt.createChannel(pvName);
-            VDoubleProcessor doubleProcessor = new VDoubleProcessor(channel, collector, cache, handler);
-            ctxt.flushIO();
-            return doubleProcessor;
-        } catch (CAException e) {
-            handler.handleException(e);
-        } catch (RuntimeException e) {
-            handler.handleException(e);
-        }
-        return null;
-    }
-
-    private VIntProcessor monitorVInt(String pvName, Collector collector,
-            ValueCache<VInt> cache, ExceptionHandler handler) {
-        try {
-            Channel channel = ctxt.createChannel(pvName);
-            VIntProcessor processor = new VIntProcessor(channel, collector, cache, handler);
-            ctxt.flushIO();
-            return processor;
-        } catch (CAException e) {
-            handler.handleException(e);
-        } catch (RuntimeException e) {
-            handler.handleException(e);
-        }
-        return null;
-    }
-
-    private VStringProcessor monitorVString(String pvName, Collector collector,
-            ValueCache<VString> cache, ExceptionHandler handler) {
-        try {
-            Channel channel = ctxt.createChannel(pvName);
-            VStringProcessor processor = new VStringProcessor(channel, collector, cache, handler);
-            ctxt.flushIO();
-            return processor;
-        } catch (CAException e) {
-            handler.handleException(e);
-        } catch (RuntimeException e) {
-            handler.handleException(e);
-        }
-        return null;
-    }
-
-    private VEnumProcessor monitorVEnum(String pvName, Collector collector,
-            ValueCache<VEnum> cache, ExceptionHandler handler) {
-        try {
-            Channel channel = ctxt.createChannel(pvName);
-            VEnumProcessor processor = new VEnumProcessor(channel, collector, cache, handler);
-            ctxt.flushIO();
-            return processor;
-        } catch (CAException e) {
-            handler.handleException(e);
-        } catch (RuntimeException e) {
-            handler.handleException(e);
-        }
-        return null;
-    }
-
-    private VDoubleArrayProcessor monitorVDoubleArray(String pvName, Collector collector,
-            ValueCache<VDoubleArray> cache, ExceptionHandler handler) {
-        try {
-            Channel channel = ctxt.createChannel(pvName);
-            VDoubleArrayProcessor processor = new VDoubleArrayProcessor(channel, collector, cache, handler);
+            ValueProcessor processor = JCAProcessorFactory.getFactory().createProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
         } catch (CAException e) {

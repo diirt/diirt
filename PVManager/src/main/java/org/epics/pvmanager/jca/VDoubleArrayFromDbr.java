@@ -20,22 +20,16 @@ import org.epics.pvmanager.data.VDoubleArray;
  *
  * @author carcassi
  */
-class VDoubleArrayFromDbr implements VDoubleArray {
-
-    private final DBR_TIME_Double dbrValue;
-    private final DBR_CTRL_Double metadata;
-    private final boolean disconnected;
+class VDoubleArrayFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Double> implements VDoubleArray {
 
     public VDoubleArrayFromDbr(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata) {
         this(dbrValue, metadata, false);
     }
 
     public VDoubleArrayFromDbr(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata, boolean disconnected) {
-        this.dbrValue = dbrValue;
-        this.metadata = metadata;
-        this.disconnected = disconnected;
+        super(dbrValue, metadata, disconnected);
     }
-
+    
     @Override
     public double[] getArray() {
         return dbrValue.getDoubleValue();
@@ -44,82 +38,6 @@ class VDoubleArrayFromDbr implements VDoubleArray {
     @Override
     public List<Integer> getSizes() {
         return Collections.singletonList(dbrValue.getDoubleValue().length);
-    }
-
-    @Override
-    public AlarmSeverity getAlarmSeverity() {
-        if (disconnected)
-            return AlarmSeverity.UNDEFINED;
-        return DataUtils.fromEpics(dbrValue.getSeverity());
-    }
-
-    @Override
-    public AlarmStatus getAlarmStatus() {
-        return DataUtils.fromEpics(dbrValue.getStatus());
-    }
-
-    @Override
-    public TimeStamp getTimeStamp() {
-        if (dbrValue.getTimeStamp() == null)
-            return null;
-        
-        return DataUtils.fromEpics(dbrValue.getTimeStamp());
-    }
-
-    @Override
-    public Integer getTimeUserTag() {
-        return null;
-    }
-
-    @Override
-    public Double getLowerDisplayLimit() {
-        return (Double) metadata.getLowerDispLimit();
-    }
-
-    @Override
-    public Double getLowerCtrlLimit() {
-        return (Double) metadata.getLowerCtrlLimit();
-    }
-
-    @Override
-    public Double getLowerAlarmLimit() {
-        return (Double) metadata.getLowerAlarmLimit();
-    }
-
-    @Override
-    public Double getLowerWarningLimit() {
-        return (Double) metadata.getLowerWarningLimit();
-    }
-
-    @Override
-    public String getUnits() {
-        return metadata.getUnits();
-    }
-
-    @Override
-    public NumberFormat getFormat() {
-        // TODO: this needs to be revised
-        return NumberFormat.getNumberInstance();
-    }
-
-    @Override
-    public Double getUpperWarningLimit() {
-        return (Double) metadata.getUpperWarningLimit();
-    }
-
-    @Override
-    public Double getUpperAlarmLimit() {
-        return (Double) metadata.getUpperAlarmLimit();
-    }
-
-    @Override
-    public Double getUpperCtrlLimit() {
-        return (Double) metadata.getUpperCtrlLimit();
-    }
-
-    @Override
-    public Double getUpperDisplayLimit() {
-        return (Double) metadata.getUpperDispLimit();
     }
 
 }
