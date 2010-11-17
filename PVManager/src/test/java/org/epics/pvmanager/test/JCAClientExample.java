@@ -13,7 +13,12 @@ import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
+import org.epics.pvmanager.data.VByteArray;
 import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.pvmanager.data.VFloatArray;
+import org.epics.pvmanager.data.VIntArray;
+import org.epics.pvmanager.data.VShortArray;
+import org.epics.pvmanager.data.VStringArray;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
@@ -33,12 +38,92 @@ public class JCAClientExample {
         testVIntSupport();
         testVStringSupport();
         testVEnumSupport();
+        testVFloatArraySupport();
         testVDoubleArraySupport();
+        testVByteArraySupport();
+        testVShortArraySupport();
+        testVIntArraySupport();
+        testVStringArraySupport();
 
+    }
+
+    private static void testVFloatArraySupport() throws Exception {
+        final PV<VFloatArray> pv = PVManager.read(vFloatArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
     }
 
     private static void testVDoubleArraySupport() throws Exception {
         final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
+    }
+
+    private static void testVByteArraySupport() throws Exception {
+        final PV<VByteArray> pv = PVManager.read(vByteArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
+    }
+
+    private static void testVShortArraySupport() throws Exception {
+        final PV<VShortArray> pv = PVManager.read(vShortArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
+    }
+
+    private static void testVIntArraySupport() throws Exception {
+        final PV<VIntArray> pv = PVManager.read(vIntArray(channelName)).atHz(10);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
+    }
+
+    private static void testVStringArraySupport() throws Exception {
+        final PV<VStringArray> pv = PVManager.read(vStringArray(channelName)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
