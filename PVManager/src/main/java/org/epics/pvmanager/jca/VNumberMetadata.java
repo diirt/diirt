@@ -8,56 +8,19 @@ package org.epics.pvmanager.jca;
 import gov.aps.jca.dbr.CTRL;
 import gov.aps.jca.dbr.TIME;
 import java.text.NumberFormat;
-import org.epics.pvmanager.TimeStamp;
-import org.epics.pvmanager.data.Alarm;
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Display;
-import org.epics.pvmanager.data.Time;
 
 /**
  *
  * @author carcassi
  */
-class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> implements Alarm, Time, Display {
+class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMetadata<TValue> implements Display {
 
-    final TValue dbrValue;
     private final TMetadata metadata;
-    private final boolean disconnected;
-
-    VNumberMetadata(TValue dbrValue, TMetadata metadata) {
-        this(dbrValue, metadata, false);
-    }
 
     VNumberMetadata(TValue dbrValue, TMetadata metadata, boolean disconnected) {
-        this.dbrValue = dbrValue;
+        super(dbrValue, disconnected);
         this.metadata = metadata;
-        this.disconnected = disconnected;
-    }
-
-    @Override
-    public AlarmSeverity getAlarmSeverity() {
-        if (disconnected)
-            return AlarmSeverity.UNDEFINED;
-        return DataUtils.fromEpics(dbrValue.getSeverity());
-    }
-
-    @Override
-    public AlarmStatus getAlarmStatus() {
-        return DataUtils.fromEpics(dbrValue.getStatus());
-    }
-
-    @Override
-    public TimeStamp getTimeStamp() {
-        if (dbrValue.getTimeStamp() == null)
-            return null;
-        
-        return DataUtils.fromEpics(dbrValue.getTimeStamp());
-    }
-
-    @Override
-    public Integer getTimeUserTag() {
-        return null;
     }
 
     @Override

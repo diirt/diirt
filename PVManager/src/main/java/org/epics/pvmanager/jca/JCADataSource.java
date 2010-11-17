@@ -91,6 +91,7 @@ public class JCADataSource extends DataSource {
             ValueCache<?> cache, ExceptionHandler handler) {
         try {
             Channel channel = ctxt.createChannel(pvName);
+            @SuppressWarnings("unchecked")
             ValueProcessor processor = JCAProcessorFactory.getFactory().createProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
