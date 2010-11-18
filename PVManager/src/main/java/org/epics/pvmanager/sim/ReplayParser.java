@@ -7,8 +7,10 @@ package org.epics.pvmanager.sim;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 /**
@@ -35,7 +37,6 @@ class ReplayParser {
             uri = current.toURI().resolve(uri);
         }
         
-        InputStream in = null;
         try {
             JAXBContext jaxbCtx = JAXBContext.newInstance(XmlValues.class);
             Unmarshaller reader = jaxbCtx.createUnmarshaller();
@@ -51,16 +52,10 @@ class ReplayParser {
                 }
             }
             return values;
-        } catch (Exception ex) {
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException("Can't access file", ex);
+        } catch (JAXBException ex) {
             throw new RuntimeException("Can't parse file", ex);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                    // Can't do anything anyway...
-                }
-            }
         }
     }
 
