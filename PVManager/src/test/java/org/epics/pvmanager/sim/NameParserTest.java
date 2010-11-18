@@ -50,6 +50,26 @@ public class NameParserTest {
         NameParser.parseParameters("1.1.2");
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testError4() {
+        NameParser.parseFunction("test(1.0 2.0)");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testError5() {
+        NameParser.parseFunction("test(1.O)");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testError6() {
+        NameParser.parseFunction("test(1.1.2)");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testError7() {
+        NameParser.parseFunction("test1.2");
+    }
+
     @Test
     public void testParsing() {
         // Couple of correct functions
@@ -90,6 +110,7 @@ public class NameParserTest {
     public void gaussianNoise() {
         Gaussian noise1 = (Gaussian) NameParser.createFunction("gaussian(0.0, 10.0, 1.0)");
         Gaussian noise2 = (Gaussian) NameParser.createFunction("gaussian");
+        Gaussian noise3 = (Gaussian) NameParser.createFunction("gaussian()");
         // Forces use of variables
         assertThat(noise1.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(noise2.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
