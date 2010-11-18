@@ -30,8 +30,25 @@ public class JCADataSource extends DataSource {
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
     private volatile Context ctxt = null;
+    private final String className;
 
     static final JCADataSource INSTANCE = new JCADataSource();
+
+    /**
+     * Creates a new data source using pure Java implementation
+     */
+    public JCADataSource() {
+        this(JCALibrary.CHANNEL_ACCESS_JAVA);
+    }
+
+    /**
+     * Creates a new data source using the className to create the context.
+     *
+     * @param className JCALibrary.CHANNEL_ACCESS_JAVA, JCALibrary.JNI_THREAD_SAFE, ...
+     */
+    public JCADataSource(String className) {
+        this.className = className;
+    }
 
     /*
      * This Metod will initialize the JCA context.
@@ -44,7 +61,7 @@ public class JCADataSource extends DataSource {
         if (ctxt == null) {
             try {
                 logger.fine("Initializing JCA context");
-                ctxt = jca.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+                ctxt = jca.createContext(className);
             } catch (CAException e) {
                 handler.handleException(e);
             }
