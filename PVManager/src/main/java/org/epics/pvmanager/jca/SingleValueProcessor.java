@@ -31,7 +31,7 @@ abstract class SingleValueProcessor<VType, EpicsType, MetaType> extends DataSour
     protected SingleValueProcessor(final Channel channel, Collector collector,
             ValueCache<VType> cache, final ExceptionHandler handler, DBRType epicsType, DBRType metaType)
             throws CAException {
-        super(collector, cache);
+        super(collector, cache, handler);
         this.metaType = metaType;
         this.epicsType = epicsType;
 

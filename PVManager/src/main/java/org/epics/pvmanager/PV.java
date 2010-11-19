@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An object representing the PV. It contains all elements that are common
@@ -119,5 +120,26 @@ public final class PV<T> {
      */
     public boolean isClosed() {
         return closed;
+    }
+    
+    private AtomicReference<Exception> lastException = new AtomicReference<Exception>();
+    
+    /**
+     * Changes the last exception associated with the PV.
+     * 
+     * @param ex the new exception
+     */
+    void setLastException(Exception ex) {
+        lastException.set(ex);
+    }
+
+    /**
+     * Returns the last exception that was generated preparing the value
+     * for this PV and clears it (subsequent call will return null).
+     *
+     * @return the last generated exception or null
+     */
+    public Exception lastException() {
+        return lastException.getAndSet(null);
     }
 }

@@ -79,7 +79,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
         Scanner.scan(notifier, scanPeriodMs);
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
@@ -119,7 +119,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT());
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
         Scanner.scan(notifier, scanPeriodMs);
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
