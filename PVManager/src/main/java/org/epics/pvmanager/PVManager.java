@@ -120,7 +120,7 @@ public class PVManager {
             PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName());
             DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
             if (exceptionHandler == null) {
-                dataRecipe = dataRecipe.withExceptionHandler(new DefaultExceptionHandler(pv));
+                dataRecipe = dataRecipe.withExceptionHandler(new DefaultExceptionHandler(pv, onThread));
             } else {
                 dataRecipe = dataRecipe.withExceptionHandler(exceptionHandler);
             }

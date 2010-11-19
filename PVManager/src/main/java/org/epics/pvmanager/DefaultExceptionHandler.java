@@ -12,15 +12,23 @@ package org.epics.pvmanager;
 class DefaultExceptionHandler extends ExceptionHandler {
 
     private final PV<?> pv;
+    private final ThreadSwitch threadSwitch;
 
-    DefaultExceptionHandler(PV<?> pv) {
+    DefaultExceptionHandler(PV<?> pv, ThreadSwitch threadSwitch) {
         this.pv = pv;
+        this.threadSwitch = threadSwitch;
     }
 
     @Override
-    public void handleException(Exception ex) {
-        pv.setLastException(ex);
-        pv.firePvValueChanged();
+    public void handleException(final Exception ex) {
+        threadSwitch.post(new Runnable() {
+
+            @Override
+            public void run() {
+                pv.setLastException(ex);
+                pv.firePvValueChanged();
+            }
+        });
     }
 
 }
