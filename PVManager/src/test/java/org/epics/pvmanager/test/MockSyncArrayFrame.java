@@ -5,13 +5,14 @@
 
 package org.epics.pvmanager.test;
 
+import java.awt.Color;
+import java.awt.BasicStroke;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import java.util.Collections;
-import javax.swing.JPanel;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.jfree.chart.ChartPanel;
@@ -34,28 +35,23 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
  * @author carcassi
  */
 public class MockSyncArrayFrame extends javax.swing.JFrame {
+    ChartPanel panel;
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayFrame() {
         PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
-    }
-
-    private JPanel oldPanel;
-
-    private void updateChart() {
-        if (oldPanel != null) {
-            plotPanel.remove(oldPanel);
-            oldPanel = null;
-        }
-        if (pv.getValue() == null)
-            return;
-        final JFreeChart chart = createChart();
-        final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
+        panel = new ChartPanel(null, true, true, true, false, true);
         plotPanel.add(panel);
         plotPanel.revalidate();
-        oldPanel = panel;
+    }
+
+    private void updateChart() {
+        if (pv.getValue() == null)
+            return;
+        JFreeChart chart = createChart();
+        panel.setChart(chart);
     }
 
     private JFreeChart createChart() {
@@ -66,6 +62,10 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         rangeAxis1.setRange(-1.5, 1.5);
         final XYPlot subplot1 = new XYPlot(data1, null, rangeAxis1, renderer1);
         subplot1.setRangeAxisLocation(AxisLocation.BOTTOM_OR_LEFT);
+        subplot1.setDomainGridlineStroke(new BasicStroke());
+        subplot1.setDomainGridlinePaint(new Color(240, 240, 240));
+        subplot1.setRangeGridlineStroke(new BasicStroke());
+        subplot1.setRangeGridlinePaint(new Color(240, 240, 240));
 
         NumberAxis hor = new NumberAxis();
         hor.setRange(0, pv.getValue().getValues().size() - 1);
@@ -119,7 +119,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
         jLabel6.setText("UI scan rate (Hz):");
 
-        scanRateSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
+        scanRateSpinner.setModel(new javax.swing.SpinnerNumberModel(25, 1, 50, 1));
 
         createPVButton.setText("Create ");
         createPVButton.addActionListener(new java.awt.event.ActionListener() {
@@ -130,13 +130,13 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
         jLabel1.setText("N PVs:");
 
-        nPVSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        nPVSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         plotPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel3.setText("PV update rate (Hz):");
 
-        updateRateSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
+        updateRateSpinner.setModel(new javax.swing.SpinnerNumberModel(50, 1, 1000, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,22 +145,22 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(plotPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
-                    .addComponent(createPVButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                    .addComponent(plotPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+                    .addComponent(createPVButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE))
+                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nPVSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
+                        .addComponent(nPVSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(updateRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
