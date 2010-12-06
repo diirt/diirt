@@ -6,6 +6,7 @@
 package org.epics.pvmanager.util;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,13 +50,13 @@ public final class NumberFormats {
             throw new IllegalArgumentException("Precision must be non-negative");
 
         if (precision == 0)
-            return new DecimalFormat("0");
+            return new DecimalFormat("0", new DecimalFormatSymbols(currentLocale));
 
         StringBuilder sb = new StringBuilder("0.");
         for (int i = 0; i < precision; i++) {
             sb.append("0");
         }
-        return new DecimalFormat(sb.toString());
+        return new DecimalFormat(sb.toString(), new DecimalFormatSymbols(currentLocale));
     }
 
 }
