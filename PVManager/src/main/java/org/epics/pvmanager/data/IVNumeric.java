@@ -6,7 +6,6 @@
 package org.epics.pvmanager.data;
 
 import java.text.NumberFormat;
-import java.util.List;
 import org.epics.pvmanager.TimeStamp;
 
 /**
@@ -14,12 +13,8 @@ import org.epics.pvmanager.TimeStamp;
  *
  * @author carcassi
  */
-class IVNumeric implements Alarm, Time, Display {
+class IVNumeric extends IVMetadata implements Display {
     
-    private final AlarmSeverity alarmSeverity;
-    private final AlarmStatus alarmStatus;
-    private final TimeStamp timeStamp;
-    private final Integer timeUserTag;
     private final Double lowerDisplayLimit;
     private final Double lowerCtrlLimit;
     private final Double lowerAlarmLimit;
@@ -36,10 +31,7 @@ class IVNumeric implements Alarm, Time, Display {
             Double lowerCtrlLimit, Double lowerAlarmLimit, Double lowerWarningLimit,
             String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
             Double upperCtrlLimit, Double upperDisplayLimit) {
-        this.alarmSeverity = alarmSeverity;
-        this.alarmStatus = alarmStatus;
-        this.timeStamp = timeStamp;
-        this.timeUserTag = timeUserTag;
+        super(alarmSeverity, alarmStatus, timeStamp, timeUserTag);
         this.lowerDisplayLimit = lowerDisplayLimit;
         this.lowerCtrlLimit = lowerCtrlLimit;
         this.lowerAlarmLimit = lowerAlarmLimit;
@@ -50,26 +42,6 @@ class IVNumeric implements Alarm, Time, Display {
         this.upperAlarmLimit = upperAlarmLimit;
         this.upperCtrlLimit = upperCtrlLimit;
         this.upperDisplayLimit = upperDisplayLimit;
-    }
-
-    @Override
-    public AlarmSeverity getAlarmSeverity() {
-        return alarmSeverity;
-    }
-
-    @Override
-    public AlarmStatus getAlarmStatus() {
-        return alarmStatus;
-    }
-
-    @Override
-    public TimeStamp getTimeStamp() {
-        return timeStamp;
-    }
-
-    @Override
-    public Integer getTimeUserTag() {
-        return timeUserTag;
     }
 
     @Override

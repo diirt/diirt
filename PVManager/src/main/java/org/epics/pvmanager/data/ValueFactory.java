@@ -22,6 +22,12 @@ import java.util.Set;
  */
 public class ValueFactory {
 
+    public static VString newVString(String value, AlarmSeverity alarmSeverity,
+            AlarmStatus alarmStatus,
+            TimeStamp timeStamp, Integer timeUserTag) {
+        return new IVString(value, alarmSeverity, alarmStatus, timeStamp, timeUserTag);
+    }
+
     public static VMultiDouble newVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
             AlarmStatus alarmStatus,
             TimeStamp timeStamp, Integer timeUserTag, Double lowerDisplayLimit,
