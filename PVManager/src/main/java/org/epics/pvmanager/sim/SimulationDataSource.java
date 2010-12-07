@@ -90,21 +90,11 @@ public final class SimulationDataSource extends DataSource {
         timer.purge();
     }
 
+    @SuppressWarnings("unchecked")
     private Simulation<?> connectSingle(Collector collector, String pvName, ValueCache<?> cache, ExceptionHandler exceptionHandler) {
-        if (cache.getType().equals(VDouble.class)) {
-            @SuppressWarnings("unchecked")
-            ValueCache<VDouble> vDoubleCache = (ValueCache<VDouble>) cache;
-            return connectVDouble(pvName, collector, vDoubleCache, exceptionHandler);
-        } else {
-            throw new UnsupportedOperationException("Type " + cache.getType().getName() + " is not yet supported");
-        }
-    }
-
-    private Simulation<?> connectVDouble(String name, Collector collector, ValueCache<VDouble> cache, ExceptionHandler exceptionHandler) {
-        @SuppressWarnings("unchecked")
-        final Simulation<VDouble> simulation = (Simulation<VDouble>) NameParser.createFunction(name);
-        simulation.initialize(collector, cache, exceptionHandler);
-        return simulation;
+        SimFunction simFunction = (SimFunction) NameParser.createFunction(pvName);
+        simFunction.initialize(collector, cache, exceptionHandler);
+        return simFunction;
     }
 
 }

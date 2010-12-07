@@ -153,7 +153,7 @@ public class MovkProbe extends javax.swing.JFrame {
                 if (pv.getValue() != null) {
                     Object value = pv.getValue();
                     pvTextValue.setText(format.format(value));
-                    pvType.setText(Utils.typeOf(value).getName());
+                    pvType.setText(Utils.typeOf(value).getSimpleName());
                 }
             }
         });
@@ -165,6 +165,8 @@ public class MovkProbe extends javax.swing.JFrame {
     private void setLastError(Exception ex) {
         if (ex != null)
             lastError.setText(ex.getMessage());
+        else
+            lastError.setText("");
     }
 
     /**
