@@ -166,12 +166,12 @@ public class MovkProbe extends javax.swing.JFrame {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
                     Object value = pv.getValue();
-                    pvTextValue.setText(format.format(value));
-                    pvType.setText(Utils.typeOf(value).getSimpleName());
+                    setTextValue(format.format(value));
+                    setType(Utils.typeOf(value));
                     setAlarm(Utils.alarmOf(value));
                 } else {
-                    pvTextValue.setText("");
-                    pvType.setText("");
+                    setTextValue(null);
+                    setType(null);
                     setAlarm(null);
                 }
             }
@@ -180,6 +180,22 @@ public class MovkProbe extends javax.swing.JFrame {
     }//GEN-LAST:event_pvNameActionPerformed
 
     PV<?> pv;
+
+    private void setTextValue(String value) {
+        if (value == null) {
+            pvTextValue.setText(null);
+        } else {
+            pvTextValue.setText(value);
+        }
+    }
+
+    private void setType(Class type) {
+        if (type == null) {
+            pvType.setText(null);
+        } else {
+            pvType.setText(type.getSimpleName());
+        }
+    }
 
     private void setAlarm(Alarm alarm) {
         if (alarm != null)
