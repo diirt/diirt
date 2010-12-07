@@ -15,6 +15,7 @@ import gov.aps.jca.dbr.DBR_TIME_String;
 import java.util.HashSet;
 import java.util.Set;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.data.VString;
@@ -80,7 +81,7 @@ abstract class VTypeFactory<TValue, TEpicsValue, TEpicsMeta> {
                 return vTypeFactory;
             }
         }
-        throw new UnsupportedOperationException("Type " + desiredType.getName() + " is not assignable from " + dbrType.getName());
+        throw new UnsupportedOperationException("Type " + desiredType.getName() + " is not assignable from " + dbrType.getName() + ", element count " + elementCount);
     }
 
     static {
@@ -113,20 +114,13 @@ abstract class VTypeFactory<TValue, TEpicsValue, TEpicsMeta> {
                 return new VEnumFromDbr(value, metadata, disconnected);
             }
         });
-//        newFactories.put(VDoubleArray.class, new JCAProcessorFactory<VDoubleArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VDoubleArray> createProcessor(Channel channel, Collector collector, ValueCache<VDoubleArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VDoubleArray, DBR_TIME_Double, DBR_CTRL_Double>(channel, collector, cache, handler,
-//                        DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE) {
-//
-//                    @Override
-//                    protected VDoubleArray createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata, boolean disconnected) {
-//                        return new VDoubleArrayFromDbr(value, metadata, disconnected);
-//                    }
-//                };
-//            }
-//        });
+        newFactories.add(new VTypeFactory<VDoubleArray, DBR_TIME_Double, DBR_CTRL_Double>(VDoubleArray.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            protected VDoubleArray createValue(DBR_TIME_Double value, DBR_CTRL_Double metadata, boolean disconnected) {
+                return new VDoubleArrayFromDbr(value, metadata, disconnected);
+            }
+        });
 //        newFactories.put(VFloatArray.class, new JCAProcessorFactory<VFloatArray>() {
 //
 //            @Override

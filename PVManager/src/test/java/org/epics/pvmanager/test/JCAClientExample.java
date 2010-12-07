@@ -30,7 +30,7 @@ public class JCAClientExample {
 
     private static final String doublePV = "SR:C01-BI:G02A<BPM:L1>Pos-X";
     private static final String enumPV = doublePV + ".SCAN";
-    private static final String longPV = doublePV + ".RVAL";
+    private static final String intPV = doublePV + ".RVAL";
     private static final String stringPV = doublePV + ".EGU";
     private static final String doubleArrayPV = "SR:C00-Glb:G00<BETA:00>RB-X";
 
@@ -43,8 +43,8 @@ public class JCAClientExample {
         testVIntSupport();
         testVStringSupport();
         testVEnumSupport();
+        testVDoubleArraySupport();
 //        testVFloatArraySupport();
-//        testVDoubleArraySupport();
 //        testVByteArraySupport();
 //        testVShortArraySupport();
 //        testVIntArraySupport();
@@ -54,25 +54,50 @@ public class JCAClientExample {
 
     private static void logException(Exception ex) {
         if (ex != null)
-            ex.printStackTrace();
+            ex.printStackTrace(System.out);
     }
 
     private static void testNativeTypeSupport() throws Exception {
-        final PV<Object> pv = PVManager.read(nativeType(doublePV)).atHz(10);
-        logException(pv.lastException());
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
-
-            @Override
-            public void pvValueChanged() {
-                logException(pv.lastException());
-                VDouble value = (VDouble) pv.getValue();
-                System.out.println(value.getValue() + " " + value.getTimeStamp().asDate() + " " + value.getAlarmSeverity());
-            }
-        });
-
-        Thread.sleep(10000);
-
-        pv.close();
+        {
+            final PV<Object> pv = PVManager.read(nativeType(doublePV)).atHz(10);
+            Thread.sleep(250);
+            logException(pv.lastException());
+            VDouble value = (VDouble) pv.getValue();
+            System.out.println(value.getClass());
+            pv.close();
+        }
+        {
+            final PV<Object> pv = PVManager.read(nativeType(stringPV)).atHz(10);
+            Thread.sleep(250);
+            logException(pv.lastException());
+            VString value = (VString) pv.getValue();
+            System.out.println(value.getClass());
+            pv.close();
+        }
+        {
+            final PV<Object> pv = PVManager.read(nativeType(enumPV)).atHz(10);
+            Thread.sleep(250);
+            logException(pv.lastException());
+            VEnum value = (VEnum) pv.getValue();
+            System.out.println(value.getClass());
+            pv.close();
+        }
+        {
+            final PV<Object> pv = PVManager.read(nativeType(intPV)).atHz(10);
+            Thread.sleep(250);
+            logException(pv.lastException());
+            VInt value = (VInt) pv.getValue();
+            System.out.println(value.getClass());
+            pv.close();
+        }
+        {
+            final PV<Object> pv = PVManager.read(nativeType(doubleArrayPV)).atHz(10);
+            Thread.sleep(250);
+            logException(pv.lastException());
+            VDoubleArray value = (VDoubleArray) pv.getValue();
+            System.out.println(value.getClass());
+            pv.close();
+        }
     }
 
     private static void testVFloatArraySupport() throws Exception {
@@ -91,12 +116,15 @@ public class JCAClientExample {
     }
 
     private static void testVDoubleArraySupport() throws Exception {
-        final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(doublePV)).atHz(10);
+        final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(doubleArrayPV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                logException(pv.lastException());
+                if (pv.getValue() != null) {
+                    System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                }
             }
         });
 
@@ -182,7 +210,7 @@ public class JCAClientExample {
     }
 
     private static void testVIntSupport() throws Exception {
-            final PV<VInt> pv = PVManager.read(vInt(longPV)).atHz(10);
+            final PV<VInt> pv = PVManager.read(vInt(intPV)).atHz(10);
             pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                 @Override
