@@ -53,11 +53,23 @@ public class Utils {
      * Extracts the alarm information if present.
      *
      * @param obj an object implementing a standard type
-     * @return the alarm for the object
+     * @return the alarm information for the object
      */
     public static Alarm alarmOf(Object obj) {
         if (obj instanceof Alarm)
             return (Alarm) obj;
+        return null;
+    }
+
+    /**
+     * Extracts the time information if present.
+     *
+     * @param obj an object implementing a standard type
+     * @return the time information for the object
+     */
+    public static Time timeOf(Object obj) {
+        if (obj instanceof Time)
+            return (Time) obj;
         return null;
     }
 }

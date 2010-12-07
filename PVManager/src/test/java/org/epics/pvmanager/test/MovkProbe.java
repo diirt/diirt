@@ -25,8 +25,8 @@ import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.Formatting;
+import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.data.Utils;
-import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -74,10 +74,12 @@ public class MovkProbe extends javax.swing.JFrame {
         pvTextValue = new javax.swing.JTextField();
         pvType = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        pvTime = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("PV value:");
+        jLabel1.setText("Value:");
 
         jLabel2.setText("PV name:");
 
@@ -89,13 +91,17 @@ public class MovkProbe extends javax.swing.JFrame {
 
         jLabel3.setText("Last error:");
 
-        jLabel5.setText("PV type:");
+        jLabel5.setText("Type:");
 
         pvTextValue.setEditable(false);
 
         pvType.setEditable(false);
 
         lastError.setEditable(false);
+
+        jLabel4.setText("Timestamp:");
+
+        pvTime.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,13 +118,19 @@ public class MovkProbe extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pvTextValue, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addComponent(pvTextValue, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pvTime, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pvType, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                .addComponent(pvType, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -142,12 +154,16 @@ public class MovkProbe extends javax.swing.JFrame {
                     .addComponent(pvTextValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(pvType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pvTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(lastError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pvType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lastError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -169,10 +185,12 @@ public class MovkProbe extends javax.swing.JFrame {
                     setTextValue(format.format(value));
                     setType(Utils.typeOf(value));
                     setAlarm(Utils.alarmOf(value));
+                    setTime(Utils.timeOf(value));
                 } else {
                     setTextValue(null);
                     setType(null);
                     setAlarm(null);
+                    setTime(null);
                 }
             }
         });
@@ -183,7 +201,7 @@ public class MovkProbe extends javax.swing.JFrame {
 
     private void setTextValue(String value) {
         if (value == null) {
-            pvTextValue.setText(null);
+            pvTextValue.setText("");
         } else {
             pvTextValue.setText(value);
         }
@@ -191,7 +209,7 @@ public class MovkProbe extends javax.swing.JFrame {
 
     private void setType(Class type) {
         if (type == null) {
-            pvType.setText(null);
+            pvType.setText("");
         } else {
             pvType.setText(type.getSimpleName());
         }
@@ -202,6 +220,14 @@ public class MovkProbe extends javax.swing.JFrame {
             pvTextValue.setBorder(borders.get(alarm.getAlarmSeverity()));
         else
             pvTextValue.setBorder(borders.get(AlarmSeverity.UNDEFINED));
+    }
+
+    private void setTime(Time time) {
+        if (time == null) {
+            pvTime.setText("");
+        } else {
+            pvTime.setText(time.getTimeStamp().asDate().toString());
+        }
     }
 
     private void setLastError(Exception ex) {
@@ -226,11 +252,13 @@ public class MovkProbe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
     private javax.swing.JTextField pvName;
     private javax.swing.JTextField pvTextValue;
+    private javax.swing.JTextField pvTime;
     private javax.swing.JTextField pvType;
     // End of variables declaration//GEN-END:variables
 
