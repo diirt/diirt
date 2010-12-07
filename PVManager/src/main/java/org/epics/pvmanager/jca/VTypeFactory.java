@@ -8,17 +8,25 @@ package org.epics.pvmanager.jca;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_LABELS_Enum;
+import gov.aps.jca.dbr.DBR_TIME_Byte;
 import gov.aps.jca.dbr.DBR_TIME_Double;
 import gov.aps.jca.dbr.DBR_TIME_Enum;
+import gov.aps.jca.dbr.DBR_TIME_Float;
 import gov.aps.jca.dbr.DBR_TIME_Int;
+import gov.aps.jca.dbr.DBR_TIME_Short;
 import gov.aps.jca.dbr.DBR_TIME_String;
 import java.util.HashSet;
 import java.util.Set;
+import org.epics.pvmanager.data.VByteArray;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VEnum;
+import org.epics.pvmanager.data.VFloatArray;
 import org.epics.pvmanager.data.VInt;
+import org.epics.pvmanager.data.VIntArray;
+import org.epics.pvmanager.data.VShortArray;
 import org.epics.pvmanager.data.VString;
+import org.epics.pvmanager.data.VStringArray;
 
 /**
  *
@@ -121,76 +129,41 @@ abstract class VTypeFactory<TValue, TEpicsValue, TEpicsMeta> {
                 return new VDoubleArrayFromDbr(value, metadata, disconnected);
             }
         });
-//        newFactories.put(VFloatArray.class, new JCAProcessorFactory<VFloatArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VFloatArray> createProcessor(Channel channel, Collector collector, ValueCache<VFloatArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VFloatArray, DBR_TIME_Float, DBR_CTRL_Double>(channel, collector, cache, handler,
-//                        DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE) {
-//
-//                    @Override
-//                    protected VFloatArray createValue(DBR_TIME_Float value, DBR_CTRL_Double metadata, boolean disconnected) {
-//                        return new VFloatArrayFromDbr(value, metadata, disconnected);
-//                    }
-//                };
-//            }
-//        });
-//        newFactories.put(VByteArray.class, new JCAProcessorFactory<VByteArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VByteArray> createProcessor(Channel channel, Collector collector, ValueCache<VByteArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VByteArray, DBR_TIME_Byte, DBR_CTRL_Double>(channel, collector, cache, handler,
-//                        DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE) {
-//
-//                    @Override
-//                    protected VByteArray createValue(DBR_TIME_Byte value, DBR_CTRL_Double metadata, boolean disconnected) {
-//                        return new VByteArrayFromDbr(value, metadata, disconnected);
-//                    }
-//                };
-//            }
-//        });
-//        newFactories.put(VShortArray.class, new JCAProcessorFactory<VShortArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VShortArray> createProcessor(Channel channel, Collector collector, ValueCache<VShortArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VShortArray, DBR_TIME_Short, DBR_CTRL_Double>(channel, collector, cache, handler,
-//                        DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE) {
-//
-//                    @Override
-//                    protected VShortArray createValue(DBR_TIME_Short value, DBR_CTRL_Double metadata, boolean disconnected) {
-//                        return new VShortArrayFromDbr(value, metadata, disconnected);
-//                    }
-//                };
-//            }
-//        });
-//        newFactories.put(VIntArray.class, new JCAProcessorFactory<VIntArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VIntArray> createProcessor(Channel channel, Collector collector, ValueCache<VIntArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VIntArray, DBR_TIME_Int, DBR_CTRL_Double>(channel, collector, cache, handler,
-//                        DBR_TIME_Int.TYPE, DBR_CTRL_Double.TYPE) {
-//
-//                    @Override
-//                    protected VIntArray createValue(DBR_TIME_Int value, DBR_CTRL_Double metadata, boolean disconnected) {
-//                        return new VIntArrayFromDbr(value, metadata, disconnected);
-//                    }
-//                };
-//            }
-//        });
-//        newFactories.put(VStringArray.class, new JCAProcessorFactory<VStringArray>() {
-//
-//            @Override
-//            ValueProcessor<MonitorEvent, VStringArray> createProcessor(Channel channel, Collector collector, ValueCache<VStringArray> cache, ExceptionHandler handler) throws CAException {
-//                return new ArrayProcessor<VStringArray, DBR_TIME_String, DBR_TIME_String>(channel, collector, cache, handler,
-//                        DBR_TIME_String.TYPE, null) {
-//
-//                    @Override
-//                    protected VStringArray createValue(DBR_TIME_String value, DBR_TIME_String metadata, boolean disconnected) {
-//                        return new VStringArrayFromDbr(value, disconnected);
-//                    }
-//                };
-//            }
-//        });
+        newFactories.add(new VTypeFactory<VFloatArray, DBR_TIME_Float, DBR_CTRL_Double>(VFloatArray.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            protected VFloatArray createValue(DBR_TIME_Float value, DBR_CTRL_Double metadata, boolean disconnected) {
+                return new VFloatArrayFromDbr(value, metadata, disconnected);
+            }
+        });
+        newFactories.add(new VTypeFactory<VByteArray, DBR_TIME_Byte, DBR_CTRL_Double>(VByteArray.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            protected VByteArray createValue(DBR_TIME_Byte value, DBR_CTRL_Double metadata, boolean disconnected) {
+                return new VByteArrayFromDbr(value, metadata, disconnected);
+            }
+        });
+        newFactories.add(new VTypeFactory<VShortArray, DBR_TIME_Short, DBR_CTRL_Double>(VShortArray.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            protected VShortArray createValue(DBR_TIME_Short value, DBR_CTRL_Double metadata, boolean disconnected) {
+                return new VShortArrayFromDbr(value, metadata, disconnected);
+            }
+        });
+        newFactories.add(new VTypeFactory<VIntArray, DBR_TIME_Int, DBR_CTRL_Double>(VIntArray.class, DBR_TIME_Int.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            protected VIntArray createValue(DBR_TIME_Int value, DBR_CTRL_Double metadata, boolean disconnected) {
+                return new VIntArrayFromDbr(value, metadata, disconnected);
+            }
+        });
+        newFactories.add(new VTypeFactory<VStringArray, DBR_TIME_String, DBR_TIME_String>(VStringArray.class, DBR_TIME_String.TYPE, null, true) {
+
+            @Override
+            protected VStringArray createValue(DBR_TIME_String value, DBR_TIME_String metadata, boolean disconnected) {
+                return new VStringArrayFromDbr(value, disconnected);
+            }
+        });
         factories = newFactories;
     }
 
