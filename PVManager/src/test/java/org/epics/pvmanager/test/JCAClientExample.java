@@ -28,27 +28,55 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
  */
 public class JCAClientExample {
 
-    private static final String channelName = "SR:C01-BI:G02A<BPM:L1>Pos-X";
+    private static final String doublePV = "SR:C01-BI:G02A<BPM:L1>Pos-X";
+    private static final String enumPV = doublePV + ".SCAN";
+    private static final String longPV = doublePV + ".RVAL";
+    private static final String stringPV = doublePV + ".EGU";
+    private static final String doubleArrayPV = "SR:C00-Glb:G00<BETA:00>RB-X";
 
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(JCASupport.jca());
         PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
+        testNativeTypeSupport();
         testVDoubleSupport();
         testVIntSupport();
         testVStringSupport();
         testVEnumSupport();
-        testVFloatArraySupport();
-        testVDoubleArraySupport();
-        testVByteArraySupport();
-        testVShortArraySupport();
-        testVIntArraySupport();
-        testVStringArraySupport();
+//        testVFloatArraySupport();
+//        testVDoubleArraySupport();
+//        testVByteArraySupport();
+//        testVShortArraySupport();
+//        testVIntArraySupport();
+//        testVStringArraySupport();
 
     }
 
+    private static void logException(Exception ex) {
+        if (ex != null)
+            ex.printStackTrace();
+    }
+
+    private static void testNativeTypeSupport() throws Exception {
+        final PV<Object> pv = PVManager.read(nativeType(doublePV)).atHz(10);
+        logException(pv.lastException());
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                logException(pv.lastException());
+                VDouble value = (VDouble) pv.getValue();
+                System.out.println(value.getValue() + " " + value.getTimeStamp().asDate() + " " + value.getAlarmSeverity());
+            }
+        });
+
+        Thread.sleep(10000);
+
+        pv.close();
+    }
+
     private static void testVFloatArraySupport() throws Exception {
-        final PV<VFloatArray> pv = PVManager.read(vFloatArray(channelName)).atHz(10);
+        final PV<VFloatArray> pv = PVManager.read(vFloatArray(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -63,7 +91,7 @@ public class JCAClientExample {
     }
 
     private static void testVDoubleArraySupport() throws Exception {
-        final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(channelName)).atHz(10);
+        final PV<VDoubleArray> pv = PVManager.read(vDoubleArray(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -78,7 +106,7 @@ public class JCAClientExample {
     }
 
     private static void testVByteArraySupport() throws Exception {
-        final PV<VByteArray> pv = PVManager.read(vByteArray(channelName)).atHz(10);
+        final PV<VByteArray> pv = PVManager.read(vByteArray(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -93,7 +121,7 @@ public class JCAClientExample {
     }
 
     private static void testVShortArraySupport() throws Exception {
-        final PV<VShortArray> pv = PVManager.read(vShortArray(channelName)).atHz(10);
+        final PV<VShortArray> pv = PVManager.read(vShortArray(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -108,7 +136,8 @@ public class JCAClientExample {
     }
 
     private static void testVIntArraySupport() throws Exception {
-        final PV<VIntArray> pv = PVManager.read(vIntArray(channelName)).atHz(10);
+        final PV<VIntArray> pv = PVManager.read(vIntArray(doublePV)).atHz(10);
+        logException(pv.lastException());
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -123,7 +152,7 @@ public class JCAClientExample {
     }
 
     private static void testVStringArraySupport() throws Exception {
-        final PV<VStringArray> pv = PVManager.read(vStringArray(channelName)).atHz(10);
+        final PV<VStringArray> pv = PVManager.read(vStringArray(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -138,7 +167,7 @@ public class JCAClientExample {
     }
 
     private static void testVDoubleSupport() throws Exception {
-        final PV<VDouble> pv = PVManager.read(vDouble(channelName)).atHz(10);
+        final PV<VDouble> pv = PVManager.read(vDouble(doublePV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -153,7 +182,7 @@ public class JCAClientExample {
     }
 
     private static void testVIntSupport() throws Exception {
-            final PV<VInt> pv = PVManager.read(vInt(channelName)).atHz(10);
+            final PV<VInt> pv = PVManager.read(vInt(longPV)).atHz(10);
             pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                 @Override
@@ -168,12 +197,15 @@ public class JCAClientExample {
     }
 
     private static void testVStringSupport() throws Exception {
-        final PV<VString> pv = PVManager.read(vString(channelName)).atHz(10);
+        final PV<VString> pv = PVManager.read(vString(stringPV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
-                System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                logException(pv.lastException());
+                if (pv.getValue() != null) {
+                    System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                }
             }
         });
 
@@ -183,12 +215,15 @@ public class JCAClientExample {
     }
 
     private static void testVEnumSupport() throws Exception {
-        final PV<VEnum> pv = PVManager.read(vEnum(channelName + ".SCAN")).atHz(10);
+        final PV<VEnum> pv = PVManager.read(vEnum(enumPV)).atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
-                System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                logException(pv.lastException());
+                if (pv.getValue() != null) {
+                    System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimeStamp().asDate() + " " + pv.getValue().getAlarmSeverity());
+                }
             }
         });
 

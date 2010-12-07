@@ -109,7 +109,7 @@ public class JCADataSource extends DataSource {
         try {
             Channel channel = ctxt.createChannel(pvName);
             @SuppressWarnings("unchecked")
-            ValueProcessor processor = JCAProcessorFactory.getFactory().createProcessor(channel, collector, cache, handler);
+            ValueProcessor processor = new JCAProcessor(channel, collector, cache, handler);
             ctxt.flushIO();
             return processor;
         } catch (CAException e) {

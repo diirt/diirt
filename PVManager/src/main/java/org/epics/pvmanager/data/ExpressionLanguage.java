@@ -28,6 +28,16 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name of any type.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static SourceRateExpression<Object> nativeType(String name) {
+        return new SourceRateExpression<Object>(name, Object.class);
+    }
+
+    /**
      * A channel with the given name of type VDouble.
      *
      * @param name the channel name; can't be null
