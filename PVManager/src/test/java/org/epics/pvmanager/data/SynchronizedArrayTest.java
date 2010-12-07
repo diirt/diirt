@@ -27,7 +27,7 @@ public class SynchronizedArrayTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        EpicsTypeSupport.install();
+        TypeSupport.install();
     }
 
     @Test

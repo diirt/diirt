@@ -22,7 +22,7 @@ public class SynchronizedVDoubleAggregatorTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        EpicsTypeSupport.install();
+        TypeSupport.install();
     }
 
     /**

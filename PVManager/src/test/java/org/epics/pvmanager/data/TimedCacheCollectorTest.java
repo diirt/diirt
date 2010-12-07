@@ -30,7 +30,7 @@ public class TimedCacheCollectorTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Force type support loading
-        EpicsTypeSupport.install();
+        TypeSupport.install();
     }
 
     @Before

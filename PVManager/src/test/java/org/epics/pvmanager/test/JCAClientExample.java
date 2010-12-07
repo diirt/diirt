@@ -20,6 +20,7 @@ import org.epics.pvmanager.data.VIntArray;
 import org.epics.pvmanager.data.VShortArray;
 import org.epics.pvmanager.data.VStringArray;
 import org.epics.pvmanager.jca.JCASupport;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**
@@ -59,7 +60,7 @@ public class JCAClientExample {
 
     private static void testNativeTypeSupport() throws Exception {
         {
-            final PV<Object> pv = PVManager.read(nativeType(doublePV)).atHz(10);
+            final PV<Object> pv = PVManager.read(channel(doublePV)).atHz(10);
             Thread.sleep(250);
             logException(pv.lastException());
             VDouble value = (VDouble) pv.getValue();
@@ -67,7 +68,7 @@ public class JCAClientExample {
             pv.close();
         }
         {
-            final PV<Object> pv = PVManager.read(nativeType(stringPV)).atHz(10);
+            final PV<Object> pv = PVManager.read(channel(stringPV)).atHz(10);
             Thread.sleep(250);
             logException(pv.lastException());
             VString value = (VString) pv.getValue();
@@ -75,7 +76,7 @@ public class JCAClientExample {
             pv.close();
         }
         {
-            final PV<Object> pv = PVManager.read(nativeType(enumPV)).atHz(10);
+            final PV<Object> pv = PVManager.read(channel(enumPV)).atHz(10);
             Thread.sleep(250);
             logException(pv.lastException());
             VEnum value = (VEnum) pv.getValue();
@@ -83,7 +84,7 @@ public class JCAClientExample {
             pv.close();
         }
         {
-            final PV<Object> pv = PVManager.read(nativeType(intPV)).atHz(10);
+            final PV<Object> pv = PVManager.read(channel(intPV)).atHz(10);
             Thread.sleep(250);
             logException(pv.lastException());
             VInt value = (VInt) pv.getValue();
@@ -91,7 +92,7 @@ public class JCAClientExample {
             pv.close();
         }
         {
-            final PV<Object> pv = PVManager.read(nativeType(doubleArrayPV)).atHz(10);
+            final PV<Object> pv = PVManager.read(channel(doubleArrayPV)).atHz(10);
             Thread.sleep(250);
             logException(pv.lastException());
             VDoubleArray value = (VDoubleArray) pv.getValue();

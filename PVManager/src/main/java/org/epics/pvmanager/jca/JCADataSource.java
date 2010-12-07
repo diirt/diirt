@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.data.TypeSupport;
 
 /**
  * A data source that uses jca.
@@ -26,6 +27,12 @@ import org.epics.pvmanager.ExceptionHandler;
  * @author carcassi
  */
 public class JCADataSource extends DataSource {
+
+    static {
+        // Install type support for the types it generates.
+        TypeSupport.install();
+    }
+
     private static final Logger logger = Logger.getLogger(JCADataSource.class.getName());
     // Get the JCALibrary instance.
     private static JCALibrary jca = JCALibrary.getInstance();
