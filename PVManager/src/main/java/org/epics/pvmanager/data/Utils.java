@@ -48,4 +48,16 @@ public class Utils {
 
         return typeOf(clazz.getSuperclass());
     }
+
+    /**
+     * Extracts the alarm information if present.
+     *
+     * @param obj an object implementing a standard type
+     * @return the alarm for the object
+     */
+    public static Alarm alarmOf(Object obj) {
+        if (obj instanceof Alarm)
+            return (Alarm) obj;
+        return null;
+    }
 }

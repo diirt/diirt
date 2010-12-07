@@ -11,12 +11,19 @@
 
 package org.epics.pvmanager.test;
 
+import java.awt.Color;
+import java.util.EnumMap;
+import java.util.Map;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.data.Alarm;
+import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.Formatting;
 import org.epics.pvmanager.data.Utils;
 import org.epics.pvmanager.data.VDouble;
@@ -29,6 +36,8 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
  */
 public class MovkProbe extends javax.swing.JFrame {
 
+    Map<AlarmSeverity, Border> borders = new EnumMap<AlarmSeverity, Border>(AlarmSeverity.class);
+
     /** Creates new form MockPVFrame */
     public MovkProbe() {
         PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
@@ -38,6 +47,11 @@ public class MovkProbe extends javax.swing.JFrame {
         dataSource.setDefaultDataSource("sim");
         PVManager.setDefaultDataSource(dataSource);
         initComponents();
+        borders.put(AlarmSeverity.NONE, pvTextValue.getBorder());
+        borders.put(AlarmSeverity.MINOR, new LineBorder(Color.YELLOW));
+        borders.put(AlarmSeverity.MAJOR, new LineBorder(Color.RED));
+        borders.put(AlarmSeverity.INVALID, new LineBorder(Color.GRAY));
+        borders.put(AlarmSeverity.UNDEFINED, new LineBorder(Color.MAGENTA));
     }
 
     Formatting format = Formatting.newFormatting(3);
@@ -154,9 +168,11 @@ public class MovkProbe extends javax.swing.JFrame {
                     Object value = pv.getValue();
                     pvTextValue.setText(format.format(value));
                     pvType.setText(Utils.typeOf(value).getSimpleName());
+                    setAlarm(Utils.alarmOf(value));
                 } else {
                     pvTextValue.setText("");
                     pvType.setText("");
+                    setAlarm(null);
                 }
             }
         });
@@ -164,6 +180,13 @@ public class MovkProbe extends javax.swing.JFrame {
     }//GEN-LAST:event_pvNameActionPerformed
 
     PV<?> pv;
+
+    private void setAlarm(Alarm alarm) {
+        if (alarm != null)
+            pvTextValue.setBorder(borders.get(alarm.getAlarmSeverity()));
+        else
+            pvTextValue.setBorder(borders.get(AlarmSeverity.UNDEFINED));
+    }
 
     private void setLastError(Exception ex) {
         if (ex != null)
