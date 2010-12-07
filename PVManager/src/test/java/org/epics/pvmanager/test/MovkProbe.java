@@ -154,6 +154,9 @@ public class MovkProbe extends javax.swing.JFrame {
                     Object value = pv.getValue();
                     pvTextValue.setText(format.format(value));
                     pvType.setText(Utils.typeOf(value).getSimpleName());
+                } else {
+                    pvTextValue.setText("");
+                    pvType.setText("");
                 }
             }
         });
