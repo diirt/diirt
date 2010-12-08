@@ -33,6 +33,9 @@ public class Utils {
      * @return the type is implementing
      */
     public static Class<?> typeOf(Object obj) {
+        if (obj == null)
+            return null;
+
         return typeOf(obj.getClass());
     }
 

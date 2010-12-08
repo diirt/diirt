@@ -180,18 +180,11 @@ public class MovkProbe extends javax.swing.JFrame {
             @Override
             public void pvValueChanged() {
                 setLastError(pv.lastException());
-                if (pv.getValue() != null) {
-                    Object value = pv.getValue();
-                    setTextValue(format.format(value));
-                    setType(Utils.typeOf(value));
-                    setAlarm(Utils.alarmOf(value));
-                    setTime(Utils.timeOf(value));
-                } else {
-                    setTextValue(null);
-                    setType(null);
-                    setAlarm(null);
-                    setTime(null);
-                }
+                Object value = pv.getValue();
+                setTextValue(format.format(value));
+                setType(Utils.typeOf(value));
+                setAlarm(Utils.alarmOf(value));
+                setTime(Utils.timeOf(value));
             }
         });
 
@@ -219,7 +212,7 @@ public class MovkProbe extends javax.swing.JFrame {
         if (alarm != null)
             pvTextValue.setBorder(borders.get(alarm.getAlarmSeverity()));
         else
-            pvTextValue.setBorder(borders.get(AlarmSeverity.UNDEFINED));
+            pvTextValue.setBorder(borders.get(AlarmSeverity.NONE));
     }
 
     private void setTime(Time time) {
