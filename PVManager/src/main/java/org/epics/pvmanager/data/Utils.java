@@ -7,6 +7,7 @@ package org.epics.pvmanager.data;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -73,6 +74,99 @@ public class Utils {
     public static Time timeOf(Object obj) {
         if (obj instanceof Time)
             return (Time) obj;
+        return null;
+    }
+
+    /**
+     * Extracts the display information if present.
+     *
+     * @param obj an object implementing a standard type
+     * @return the display information for the object
+     */
+    public static Display displayOf(Object obj) {
+        if (obj instanceof Display)
+            return (Display) obj;
+        return null;
+    }
+    
+    /**
+     * Extracts the numericValueOf the object and normalizes according
+     * to the display range.
+     * 
+     * @param obj an object implementing a standard type
+     * @return the value normalized in its display range, or null
+     *         if no value or display information is present
+     */
+    public static Double normalizedNumericValueOf(Object obj) {
+        return normalize(numericValueOf(obj), displayOf(obj));
+    }
+
+    /**
+     * Normalizes the given value according to the given display information.
+     *
+     * @param value a value
+     * @param display the display information
+     * @return the normalized value, or null of either value or display is null
+     */
+    public static Double normalize(Number value, Display display) {
+        if (value == null || display == null) {
+            return null;
+        }
+
+        return (value.doubleValue() - display.getLowerDisplayLimit()) / (display.getUpperDisplayLimit() - display.getLowerDisplayLimit());
+    }
+
+    /**
+     * Extracts a numeric value for the object. If it's a numeric scalar,
+     * the value is returned. If it's a numeric array, the first element is
+     * returned. If it's a numeric multi array, the value of the first
+     * element is returned.
+     *
+     * @param obj an object implementing a standard type
+     * @return the numeric value
+     */
+    public static Double numericValueOf(Object obj) {
+        if (obj instanceof Scalar) {
+            Object value = ((Scalar) obj).getValue();
+            if (value instanceof Number)
+                return ((Number) value).doubleValue();
+        }
+
+        if (obj instanceof Array) {
+            Object array = ((Array) obj).getArray();
+            if (array instanceof byte[]) {
+                byte[] tArray = (byte[]) array;
+                if (tArray.length != 0)
+                    return (double) tArray[0];
+            }
+            if (array instanceof short[]) {
+                short[] tArray = (short[]) array;
+                if (tArray.length != 0)
+                    return (double) tArray[0];
+            }
+            if (array instanceof int[]) {
+                int[] tArray = (int[]) array;
+                if (tArray.length != 0)
+                    return (double) tArray[0];
+            }
+            if (array instanceof float[]) {
+                float[] tArray = (float[]) array;
+                if (tArray.length != 0)
+                    return (double) tArray[0];
+            }
+            if (array instanceof double[]) {
+                double[] tArray = (double[]) array;
+                if (tArray.length != 0)
+                    return (double) tArray[0];
+            }
+        }
+
+        if (obj instanceof MultiScalar) {
+            List values = ((MultiScalar) obj).getValues();
+            if (!values.isEmpty())
+                return numericValueOf(values.get(0));
+        }
+
         return null;
     }
 }
