@@ -20,24 +20,6 @@ public class CustomFunctionTest {
     public CustomFunctionTest() {
     }
 
-    public static class ExpressionTester {
-        private DesiredRateExpression<?> expression;
-        public ExpressionTester(DesiredRateExpression<?> expression) {
-            this.expression = expression;
-        }
-
-        public void writeValue(String name, Object value) {
-            for (Collector<?> collector : expression.getDataRecipe().getChannelsPerCollectors().keySet()) {
-                @SuppressWarnings("unchecked")
-                ValueCache<Object> cache = expression.getDataRecipe().getChannelsPerCollectors().get(collector).get(name);
-                if (cache != null) {
-                    cache.setValue(value);
-                    collector.collect();
-                }
-            }
-        }
-    }
-
     @Test
     public void singleArgFunction() {
         // Sets up a pipeline where we put data in the cache, and apply
