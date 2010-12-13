@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public class Utils {
+public class Util {
 
     private static Collection<Class<?>> types = Arrays.<Class<?>>asList(VByteArray.class, VDouble.class,
             VDoubleArray.class, VEnum.class, VEnumArray.class, VFloatArray.class,

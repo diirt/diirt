@@ -26,7 +26,7 @@ import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.Formatting;
 import org.epics.pvmanager.data.Time;
-import org.epics.pvmanager.data.Utils;
+import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -187,10 +187,10 @@ public class MovkProbe extends javax.swing.JFrame {
                 setLastError(pv.lastException());
                 Object value = pv.getValue();
                 setTextValue(format.format(value));
-                setType(Utils.typeOf(value));
-                setAlarm(Utils.alarmOf(value));
-                setTime(Utils.timeOf(value));
-                setIndicator(Utils.normalizedNumericValueOf(value));
+                setType(Util.typeOf(value));
+                setAlarm(Util.alarmOf(value));
+                setTime(Util.timeOf(value));
+                setIndicator(Util.normalizedNumericValueOf(value));
             }
         });
 
