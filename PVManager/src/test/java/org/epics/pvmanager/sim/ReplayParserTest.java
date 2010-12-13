@@ -6,13 +6,13 @@
 package org.epics.pvmanager.sim;
 
 import java.net.URI;
-import org.epics.pvmanager.TimeStamp;
+import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.epics.pvmanager.TimeDuration.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *

@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.util.TimeDuration;
+
 /**
  * Exports package private constructors for testing purposes.
  * @author carcassi

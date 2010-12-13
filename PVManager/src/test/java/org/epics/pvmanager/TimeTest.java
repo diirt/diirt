@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.util.TimeStamp;
+import org.epics.pvmanager.util.TimeDuration;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

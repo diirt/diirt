@@ -11,7 +11,7 @@ import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
-import org.epics.pvmanager.TimeDuration;
+import org.epics.pvmanager.util.TimeDuration;
 import org.epics.pvmanager.data.DataUtils;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.junit.Test;

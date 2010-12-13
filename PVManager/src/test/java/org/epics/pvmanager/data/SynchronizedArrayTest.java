@@ -6,8 +6,8 @@
 package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.TimeDuration;
-import org.epics.pvmanager.TimeStamp;
+import org.epics.pvmanager.util.TimeDuration;
+import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.ValueCache;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.data.DataUtils.*;
-import static org.epics.pvmanager.TimeDuration.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *

@@ -17,7 +17,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import javax.swing.table.TableModel;
 import org.epics.pvmanager.data.VDouble;
-import static org.epics.pvmanager.TimeDuration.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**

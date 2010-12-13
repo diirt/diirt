@@ -10,7 +10,7 @@ import org.epics.pvmanager.PrivateFactory;
 import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.DataRecipe;
-import org.epics.pvmanager.TimeDuration;
+import org.epics.pvmanager.util.TimeDuration;
 import org.epics.pvmanager.ValueCache;
 import org.junit.After;
 import org.junit.Before;
