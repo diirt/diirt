@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.data;
 
+import org.epics.pvmanager.util.NumberFormats;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -17,7 +18,7 @@ public class FormattingTest {
 
     @Test
     public void testDefaultPrecision() {
-        Formatting f = Formatting.newFormatting(3);
+        ValueFormat f = new SimpleValueFormat(3);
         assertThat(f.format(DataUtils.createValue(null, 1234.5678)), equalTo("1234.568"));
         assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3})), equalTo("[1, 2, 3]"));
         assertThat(f.format(DataUtils.createValue(null, new int[] {1})), equalTo("[1]"));
@@ -29,7 +30,8 @@ public class FormattingTest {
 
     @Test
     public void testMandatedPrecision() {
-        Formatting f = Formatting.newFormatting(2, 3);
+        ValueFormat f = new SimpleValueFormat(3);
+        f.setNumberFormat(NumberFormats.format(2));
         assertThat(f.format(DataUtils.createValue(null, 1234.5678)), equalTo("1234.57"));
         assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3})), equalTo("[1.00, 2.00, 3.00]"));
         assertThat(f.format(DataUtils.createValue(null, new int[] {1})), equalTo("[1.00]"));

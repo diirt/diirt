@@ -19,9 +19,11 @@ import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
-import org.epics.pvmanager.data.Formatting;
+import org.epics.pvmanager.data.SimpleValueFormat;
+import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
+import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**
@@ -39,9 +41,11 @@ public class ScaleFrame extends javax.swing.JFrame {
             addPV("epics://" + pvNames.get(i));
         }
         System.out.println(System.currentTimeMillis() - startTime);
+        format = new SimpleValueFormat(3);
+        format.setNumberFormat(NumberFormats.format(6));
     }
     
-    Formatting format = Formatting.newFormatting(6, 3);
+    ValueFormat format;
 
     List<PV<Object>> pvs = new ArrayList<PV<Object>>();
 

@@ -12,6 +12,8 @@
 package org.epics.pvmanager.test;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.swing.border.Border;
@@ -24,10 +26,12 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.Formatting;
+import org.epics.pvmanager.data.SimpleValueFormat;
+import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**
@@ -54,7 +58,7 @@ public class MovkProbe extends javax.swing.JFrame {
         borders.put(AlarmSeverity.UNDEFINED, new LineBorder(Color.MAGENTA));
     }
 
-    Formatting format = Formatting.newFormatting(3);
+    ValueFormat format = new SimpleValueFormat(3);
 
     /** This method is called from within the constructor to
      * initialize the form.
