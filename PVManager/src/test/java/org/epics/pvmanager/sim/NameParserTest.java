@@ -102,8 +102,8 @@ public class NameParserTest {
         Noise noise1 = (Noise) NameParser.createFunction("noise(0.0, 10.0, 1.0)");
         Noise noise2 = (Noise) NameParser.createFunction("noise");
         // Forces use of variables
-        assertThat(noise1.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(noise2.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(noise1.nextValue().getAlarmStatus(), notNullValue());
+        assertThat(noise2.nextValue().getAlarmStatus(), notNullValue());
     }
 
     @Test
@@ -112,8 +112,8 @@ public class NameParserTest {
         Gaussian noise2 = (Gaussian) NameParser.createFunction("gaussian");
         Gaussian noise3 = (Gaussian) NameParser.createFunction("gaussian()");
         // Forces use of variables
-        assertThat(noise1.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(noise2.nextValue().getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(noise1.nextValue().getAlarmStatus(), notNullValue());
+        assertThat(noise2.nextValue().getAlarmStatus(), notNullValue());
     }
 
     @Test

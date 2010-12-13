@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -18,13 +17,12 @@ import static org.hamcrest.CoreMatchers.*;
 public class NoiseTest {
 
     @Test
-    public void rampValues() {
+    public void values() {
         // Creates the function
         Noise noise = new Noise(-10.0, 10.0, 1.0);
         VDouble firstValue = noise.nextValue();
 
         // Check limits
-        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
         assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
         assertThat(firstValue.getLowerAlarmLimit(), equalTo(-8.0));

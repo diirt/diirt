@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class SineTest {
 
     @Test
-    public void rampValues() {
+    public void values() {
         // Creates the function
         Sine sine = new Sine(0.0, 10.0, 4.0, 1.0);
         VDouble firstValue = sine.nextValue();

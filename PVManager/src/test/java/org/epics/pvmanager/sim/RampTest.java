@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
@@ -17,51 +18,45 @@ import static org.hamcrest.CoreMatchers.*;
 public class RampTest {
 
     @Test
-    public void rampValues() {
+    public void values() {
         // Creates the function
-        Noise noise = new Noise(-10.0, 10.0, 1.0);
-        VDouble firstValue = noise.nextValue();
+        Ramp ramp = new Ramp(-10.0, 10.0, 2.0, 1.0);
+        VDouble value = ramp.nextValue();
 
         // Check limits
-        assertThat(firstValue.getAlarmStatus(), equalTo(AlarmStatus.NONE));
-        assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(firstValue.getLowerAlarmLimit(), equalTo(-8.0));
-        assertThat(firstValue.getLowerWarningLimit(), equalTo(-6.0));
-        assertThat(firstValue.getUpperWarningLimit(), equalTo(6.0));
-        assertThat(firstValue.getUpperAlarmLimit(), equalTo(8.0));
-        assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
-        assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
-
-        // Calculate histogram
-        int quart1 = 0;
-        int quart2 = 0;
-        int quart3 = 0;
-        int quart4 = 0;
-
-        for (int i = 0; i < 100000; i++) {
-            double value = noise.nextValue().getValue();
-            if (value < 0) {
-                if (value < -5.0) {
-                    quart1++;
-                } else {
-                    quart2++;
-                }
-            } else {
-                if (value < 5.0) {
-                    quart3++;
-                } else {
-                    quart4++;
-                }
-            }
-        }
-
-        // Check distribution
-        // Each quarts gets 25%
-        assertTrue(quart1 < 26000);
-        assertTrue(quart2 < 26000);
-        assertTrue(quart3 < 26000);
-        assertTrue(quart4 < 26000);
-        assertEquals(100000, quart1+quart2+quart3+quart4);
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
+        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(value.getLowerAlarmLimit(), equalTo(-8.0));
+        assertThat(value.getLowerWarningLimit(), equalTo(-6.0));
+        assertThat(value.getUpperWarningLimit(), equalTo(6.0));
+        assertThat(value.getUpperAlarmLimit(), equalTo(8.0));
+        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
+        
+        assertThat(value.getValue(), equalTo(-10.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(-8.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(-6.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(-4.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(-2.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(0.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(2.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(4.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(6.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(8.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(10.0));
+        value = ramp.nextValue();
+        assertThat(value.getValue(), equalTo(-10.0));
     }
 }
