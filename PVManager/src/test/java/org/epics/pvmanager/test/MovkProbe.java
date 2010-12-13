@@ -12,8 +12,6 @@
 package org.epics.pvmanager.test;
 
 import java.awt.Color;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.swing.border.Border;
@@ -31,7 +29,6 @@ import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**
