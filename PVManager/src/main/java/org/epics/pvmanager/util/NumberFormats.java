@@ -27,7 +27,7 @@ public final class NumberFormats {
 
     /**
      * Returns a number format that formats a number with the given
-     * number of precision digits.
+     * number of precision digits. Parsing is not currently supported.
      *
      * @param precision number of digits past the decimal point
      * @return a number format
@@ -62,7 +62,7 @@ public final class NumberFormats {
 
     /**
      * Returns the NumberFormat that uses the standard text representation
-     * (toString) for numbers.
+     * (toString) for numbers. Parsing is not currently supported.
      *
      * @return a number format
      */
