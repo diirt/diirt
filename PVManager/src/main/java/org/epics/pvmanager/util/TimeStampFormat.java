@@ -6,6 +6,7 @@
 package org.epics.pvmanager.util;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
@@ -41,15 +42,43 @@ public class TimeStampFormat extends Format {
     private List<String> nanoFieldStrings = new ArrayList<String>();
 
 
+    /**
+     * Creates a new TimeStampFormat using the current Locale.
+     *
+     */
     public TimeStampFormat() {
         dateFormat = new SimpleDateFormat();
     }
 
+    /**
+     * Creates a new TimeStampFormat using the given pattern and the symbols
+     * from the current Locale.
+     *
+     * @param pattern the pattern describing the date and time format
+     */
     public TimeStampFormat(String pattern) {
         initPattern(pattern);
         dateFormat = new SimpleDateFormat(convertedPattern);
     }
 
+    /**
+     * Creates a new TimeStampFormat using the given pattern and symbols.
+     *
+     * @param pattern the pattern describing the date and time format
+     * @param symbols symbols to be used in formatting
+     */
+    public TimeStampFormat(String pattern, DateFormatSymbols symbols) {
+        initPattern(pattern);
+        dateFormat = new SimpleDateFormat(convertedPattern, symbols);
+    }
+
+    /**
+     * Creates a new TimeStampFormat using the given pattern and the symbols
+     * from the current Locale.
+     *
+     * @param pattern the pattern describing the date and time format
+     * @param locale the Locale to be used
+     */
     public TimeStampFormat(String pattern, Locale locale) {
         initPattern(pattern);
         dateFormat = new SimpleDateFormat(convertedPattern, locale);
@@ -110,6 +139,12 @@ public class TimeStampFormat extends Format {
         }
     }
 
+    /**
+     * Formats the given TimeStamp.
+     *
+     * @param timeStamp a TimeStamp
+     * @return the formatted String
+     */
     public String format(TimeStamp timeStamp) {
         return format((Object) timeStamp);
     }
