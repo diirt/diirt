@@ -112,7 +112,7 @@ public class CompositeDataSource extends DataSource {
             // Add to the recipes
             for (Map.Entry<String, Map<String, ValueCache>> entry : routingCaches.entrySet()) {
                 if (splitRecipe.get(entry.getKey()) == null)
-                    splitRecipe.put(entry.getKey(), new DataRecipe());
+                    splitRecipe.put(entry.getKey(), new DataRecipe(recipe.getExceptionHandler()));
                 splitRecipe.put(entry.getKey(), splitRecipe.get(entry.getKey()).includeCollector(collector, entry.getValue()));
             }
 
