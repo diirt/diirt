@@ -104,6 +104,11 @@ public class TypeSupport {
                     }
                 }
 
+                // Shrink the list if more elements are there
+                while (oldValue.size() > newValue.size()) {
+                    oldValue.remove(oldValue.size() - 1);
+                }
+
                 return new Notification<List>(notificationNeeded, oldValue);
             }
         });
