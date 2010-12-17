@@ -123,8 +123,11 @@ public class CompositeDataSource extends DataSource {
         // Dispatch calls to all the data sources
         for (Map.Entry<String, DataRecipe> entry : splitRecipe.entrySet()) {
             try {
-                dataSources.get(entry.getKey()).connect(entry.getValue());
-            } catch(RuntimeException ex) {
+                DataSource dataSource = dataSources.get(entry.getKey());
+                if (dataSource == null)
+                    throw new IllegalArgumentException("DataSource '" + entry.getKey() + "://' was not configured.");
+                dataSource.connect(entry.getValue());
+            } catch (RuntimeException ex) {
                 // If data source fail, still go and connect the others
                 recipe.getExceptionHandler().handleException(ex);
             }

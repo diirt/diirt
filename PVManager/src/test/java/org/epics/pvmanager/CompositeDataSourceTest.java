@@ -22,6 +22,17 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class CompositeDataSourceTest {
 
+    private static ExceptionHandler rethrow = new ExceptionHandler() {
+
+        @Override
+        public void handleException(Exception ex) {
+            if (ex instanceof RuntimeException)
+                throw (RuntimeException) ex;
+            throw new RuntimeException("rethrown", ex);
+        }
+
+    };
+
     public CompositeDataSourceTest() {
     }
 
@@ -189,6 +200,22 @@ public class CompositeDataSourceTest {
         assertThat(mock2Caches.size(), equalTo(1));
         assertThat(mock1Caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
         assertThat(mock2Caches.keySet(), hasItem("pv04"));
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void testEmpty() {
+        // Setup composite
+        CompositeDataSource composite = new CompositeDataSource();
+
+        // Call only default
+        DataRecipe recipe = new DataRecipe(rethrow);
+        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
+        caches.put("mock://pv03", new ValueCache<Double>(Double.class));
+        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
+                caches);
+
+        // Should cause error
+        composite.connect(recipe);
     }
 
 }
