@@ -379,7 +379,7 @@ public class ValueFactory {
                 oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
     }
 
-    static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
+    public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
             final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
