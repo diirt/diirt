@@ -7,14 +7,12 @@ package org.epics.pvmanager.extra;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.util.List;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
-import org.epics.pvmanager.data.ValueFactory;
 
 /**
  *
@@ -23,12 +21,17 @@ import org.epics.pvmanager.data.ValueFactory;
 class WaterfallPlotter extends Function<VImage> {
 
     private final Function<List<VDoubleArray>> function;
-    private final WaterfallPlotParameters parameters = new WaterfallPlotParameters();
+    private final WaterfallPlotParameters parameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
 
     public WaterfallPlotter(Function<List<VDoubleArray>> function) {
+        this(function, new WaterfallPlotParameters());
+    }
+
+    public WaterfallPlotter(Function<List<VDoubleArray>> function, WaterfallPlotParameters parameters) {
         this.function = function;
+        this.parameters = parameters;
     }
 
     @Override

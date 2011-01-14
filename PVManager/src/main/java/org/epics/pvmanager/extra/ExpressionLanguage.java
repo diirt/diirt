@@ -39,4 +39,11 @@ public class ExpressionLanguage {
                 new WaterfallPlotter(queue.getFunction()), "waterfallOf(" + arrayPv.getDefaultName() + ")");
     }
 
+    public static DesiredRateExpression<VImage> waterfallPlotOf(SourceRateExpression<VDoubleArray> arrayPv,
+            WaterfallPlotParameters parameters) {
+        DesiredRateExpression<List<VDoubleArray>> queue = newValuesOf(arrayPv);
+        return new DesiredRateExpression<VImage>(queue,
+                new WaterfallPlotter(queue.getFunction(), parameters), "waterfallOf(" + arrayPv.getDefaultName() + ")");
+    }
+
 }

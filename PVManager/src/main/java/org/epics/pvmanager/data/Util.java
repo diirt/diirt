@@ -122,6 +122,22 @@ public class Util {
     }
 
     /**
+     * Normalizes the given value according to the given range;
+     *
+     * @param value a value
+     * @param lowValue the lowest value in the range
+     * @param highValue the highest value in the range
+     * @return the normalized value, or null if any value is null
+     */
+    public static Double normalize(Number value, Number lowValue, Number highValue) {
+        if (value == null || lowValue == null || highValue == null) {
+            return null;
+        }
+
+        return (value.doubleValue() - lowValue.doubleValue()) / (highValue.doubleValue() - lowValue.doubleValue());
+    }
+
+    /**
      * Extracts a numeric value for the object. If it's a numeric scalar,
      * the value is returned. If it's a numeric array, the first element is
      * returned. If it's a numeric multi array, the value of the first

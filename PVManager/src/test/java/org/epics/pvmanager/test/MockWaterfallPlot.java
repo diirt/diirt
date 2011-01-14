@@ -11,6 +11,7 @@
 
 package org.epics.pvmanager.test;
 
+import java.awt.Color;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
@@ -22,6 +23,8 @@ import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.extra.ColorScheme;
+import org.epics.pvmanager.extra.WaterfallPlotParameters;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
@@ -117,7 +120,8 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         if (pv != null)
             pv.close();
 
-        pv = PVManager.read(waterfallPlotOf(vDoubleArray(pvName.getText()))).andNotify(ThreadSwitch.onSwingEDT())
+        pv = PVManager.read(waterfallPlotOf(vDoubleArray(pvName.getText()), new WaterfallPlotParameters()
+                .withColorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)))).andNotify(ThreadSwitch.onSwingEDT())
                 .atHz(20);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
