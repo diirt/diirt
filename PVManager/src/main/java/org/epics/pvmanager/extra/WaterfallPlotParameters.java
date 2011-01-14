@@ -15,23 +15,30 @@ public class WaterfallPlotParameters {
 
     final int maxHeight;
     final ColorScheme colorScheme;
+    final boolean adaptiveRange;
 
     public WaterfallPlotParameters() {
         maxHeight = 50;
         colorScheme = ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE);
+        adaptiveRange = false;
     }
 
-    private WaterfallPlotParameters(int maxHeight, ColorScheme colorScheme) {
+    public WaterfallPlotParameters(int maxHeight, ColorScheme colorScheme, boolean adaptiveRange) {
         this.maxHeight = maxHeight;
         this.colorScheme = colorScheme;
+        this.adaptiveRange = adaptiveRange;
     }
 
     public WaterfallPlotParameters withMaxHeight(int maxHeight) {
-        return new WaterfallPlotParameters(maxHeight, colorScheme);
+        return new WaterfallPlotParameters(maxHeight, colorScheme, adaptiveRange);
     }
 
     public WaterfallPlotParameters withColorScheme(ColorScheme colorScheme) {
-        return new WaterfallPlotParameters(maxHeight, colorScheme);
+        return new WaterfallPlotParameters(maxHeight, colorScheme, adaptiveRange);
+    }
+
+    public WaterfallPlotParameters withAdaptiveRange(boolean adaptiveRange) {
+        return new WaterfallPlotParameters(maxHeight, colorScheme, adaptiveRange);
     }
 
     

@@ -121,7 +121,8 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             pv.close();
 
         pv = PVManager.read(waterfallPlotOf(vDoubleArray(pvName.getText()), new WaterfallPlotParameters()
-                .withColorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)))).andNotify(ThreadSwitch.onSwingEDT())
+                .withColorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED))
+                .withAdaptiveRange(true))).andNotify(ThreadSwitch.onSwingEDT())
                 .atHz(20);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 

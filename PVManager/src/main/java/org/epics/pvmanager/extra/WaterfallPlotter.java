@@ -24,6 +24,7 @@ class WaterfallPlotter extends Function<VImage> {
     private final WaterfallPlotParameters parameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
+    private AdaptiveRange adaptiveRange;
 
     public WaterfallPlotter(Function<List<VDoubleArray>> function) {
         this(function, new WaterfallPlotParameters());
@@ -39,6 +40,13 @@ class WaterfallPlotter extends Function<VImage> {
         List<VDoubleArray> newArrays = function.getValue();
         if (newArrays.isEmpty())
             return previousImage;
+
+        if (parameters.adaptiveRange) {
+            if (adaptiveRange == null) {
+                adaptiveRange = new AdaptiveRange();
+            }
+            adaptiveRange.considerValues(newArrays);
+        }
 
         int newWidth = 0;
         for (VDoubleArray vDoubleArray : newArrays) {
@@ -56,8 +64,13 @@ class WaterfallPlotter extends Function<VImage> {
         int line = newArrays.size();
         for (VDoubleArray vDoubleArray : newArrays) {
             line--;
-            if (line < parameters.maxHeight)
-                fillLine(line, vDoubleArray.getArray(), vDoubleArray, parameters.colorScheme, image);
+            if (line < parameters.maxHeight) {
+                if (parameters.adaptiveRange) {
+                    fillLine(line, vDoubleArray.getArray(), adaptiveRange, parameters.colorScheme, image);
+                } else {
+                    fillLine(line, vDoubleArray.getArray(), vDoubleArray, parameters.colorScheme, image);
+                }
+            }
         }
 
         previousImage = Util.toVImage(image);

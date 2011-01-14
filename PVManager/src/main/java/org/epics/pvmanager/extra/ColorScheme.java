@@ -62,7 +62,9 @@ public abstract class ColorScheme {
                 double normalValue = 0.0;
                 Color minValueColor = null;
                 Color maxValueColor = null;
-                // prioritize the normal range
+                // Determine in which range the value is.
+                // The equals are put so that if the value is at the limit,
+                // the range closer to the center wins
                 if (value < ranges.getLowerDisplayLimit()) {
                     return lowerDisplayColor.getRGB();
                 } else if (value < ranges.getLowerAlarmLimit()) {
@@ -73,11 +75,11 @@ public abstract class ColorScheme {
                     normalValue = Util.normalize(value, ranges.getLowerAlarmLimit(), ranges.getLowerWarningLimit());
                     minValueColor = lowerAlarmColor;
                     maxValueColor = lowerWarningColor;
-                } else if (value < ranges.getUpperWarningLimit()) {
+                } else if (value <= ranges.getUpperWarningLimit()) {
                     normalValue = Util.normalize(value, ranges.getLowerWarningLimit(), ranges.getUpperWarningLimit());
                     minValueColor = lowerWarningColor;
                     maxValueColor = upperWarningColor;
-                } else if (value < ranges.getUpperAlarmLimit()) {
+                } else if (value <= ranges.getUpperAlarmLimit()) {
                     normalValue = Util.normalize(value, ranges.getUpperWarningLimit(), ranges.getUpperAlarmLimit());
                     minValueColor = upperWarningColor;
                     maxValueColor = upperAlarmColor;
