@@ -6,7 +6,9 @@
 package org.epics.pvmanager.data;
 
 /**
- * Represent a buffered image, ready to be displayed.
+ * Represent a buffered image. Use {@link Util#toImage(org.epics.pvmanager.data.VImage)}
+ * and {@link Util#toVImage(java.awt.image.BufferedImage)} to convert objects
+ * of this class to and from awt images.
  * <p>
  * The data is currently encoded as 3 bytes for each pixel (RGB). To read the
  * buffer in AWT use the following code:

@@ -11,6 +11,7 @@ import java.awt.image.DataBufferByte;
 import java.util.List;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
+import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.data.ValueFactory;
@@ -56,8 +57,7 @@ class WaterfallPlotter extends Function<VImage> {
                 fillLine(line, vDoubleArray.getArray(), vDoubleArray, parameters.colorScheme, image);
         }
 
-        byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        previousImage = ValueFactory.newVImage(image.getHeight(), image.getWidth(), buffer);
+        previousImage = Util.toVImage(image);
         previousBuffer = image;
         return previousImage;
     }

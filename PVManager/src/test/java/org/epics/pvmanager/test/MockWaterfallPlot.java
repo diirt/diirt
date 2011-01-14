@@ -20,6 +20,7 @@ import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
+import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -124,9 +125,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             public void pvValueChanged() {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
-                    BufferedImage image = new BufferedImage(pv.getValue().getWidth(), pv.getValue().getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-                    System.arraycopy(pv.getValue().getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0,
-                            pv.getValue().getWidth()*pv.getValue().getHeight()*3);
+                    BufferedImage image = Util.toImage(pv.getValue());
                     plotLabel.setIcon(new ImageIcon(image));
                 }
             }
