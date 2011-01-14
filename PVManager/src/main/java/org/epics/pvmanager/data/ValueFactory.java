@@ -391,6 +391,10 @@ public class ValueFactory {
                 upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
 
+    public static VImage newVImage(int height, int width, byte[] data) {
+        return new IVImage(height, width, data);
+    }
+
     static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
