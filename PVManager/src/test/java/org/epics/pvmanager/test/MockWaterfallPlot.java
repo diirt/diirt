@@ -11,16 +11,11 @@
 
 package org.epics.pvmanager.test;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import org.epics.pvmanager.CompositeDataSource;
+import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.SwingWorker;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
@@ -38,17 +33,13 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     /** Creates new form MockWaterfallPlot */
     public MockWaterfallPlot() {
+        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        CompositeDataSource dataSource = new CompositeDataSource();
+        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
+        dataSource.putDataSource("epics", new JCADataSource());
+        dataSource.setDefaultDataSource("sim");
+        PVManager.setDefaultDataSource(dataSource);
         initComponents();
-//        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
-//        System.out.println(image.getRaster().getDataBuffer().getClass());
-//        System.out.println(image.getRaster().getDataBuffer().getNumBanks());
-//        System.out.println(image.getRaster().getDataBuffer().getSize());
-//        byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-//        for (int i = 0; i < 100; i++) {
-//            if (i % 2 == 0)
-//                buffer[i] = 127;
-//        }
-        
     }
 
     private PV<VImage> pv;
@@ -126,7 +117,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             pv.close();
 
         pv = PVManager.read(waterfallPlotOf(vDoubleArray(pvName.getText()))).andNotify(ThreadSwitch.onSwingEDT())
-                .from(SimulationDataSource.simulatedData()).atHz(20);
+                .atHz(20);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
