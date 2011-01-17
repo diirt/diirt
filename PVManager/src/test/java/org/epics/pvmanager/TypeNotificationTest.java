@@ -30,6 +30,7 @@ public class TypeNotificationTest {
 
     @BeforeClass
     public static void modifyDefaultSource() {
+        NotificationTypeSupport.install();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
     }
 

@@ -5,9 +5,8 @@
 
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.util.TimeStamp;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Implements the mechanism for registering different types so that the library
@@ -30,39 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class TypeSupport<T> {
 
-    public static class Notification<T> {
-        private boolean notificationNeeded;
-        private T newValue;
-
-        public Notification(boolean notificationNeeded, T newValue) {
-            this.notificationNeeded = notificationNeeded;
-            this.newValue = newValue;
-        }
-
-        public boolean isNotificationNeeded() {
-            return notificationNeeded;
-        }
-
-        public T getNewValue() {
-            return newValue;
-        }
-    }
-
-    /**
-     * Given the old and new value, prepare the final value that will be notified.
-     * This method is guaranteed to be called in the notification thread (the
-     * UI thread). This method may either update the old value or return the new
-     * value, depending on whether the type is immutable or what is more efficient.
-     *
-     * @param oldValue the oldValue, which was previously in the previous notification
-     * @param newValue the newValue, which was computed during the scanning
-     * @return the value to be notified
-     */
-    public abstract Notification<T> prepareNotification(T oldValue, T newValue);
-    
-    private static Map<Class<?>, TypeSupport<?>> typeSupports = new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
-    private static Map<Class<?>, TypeSupport<?>> calculatedTypeSupport = new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
-
     /**
      * Adds support for a new type.
      *
@@ -70,21 +36,16 @@ public abstract class TypeSupport<T> {
      * @param typeClass the class of the type
      * @param typeSupport the support for the type
      */
-    public static <T> void addTypeSupport(Class<T> typeClass, TypeSupport<T> typeSupport) {
-        typeSupports.put(typeClass, typeSupport);
-        calculatedTypeSupport.clear();
-    }
+    public static <T> void addTypeSupport(final Class<T> typeClass, 
+                                          final TypeSupport<T> typeSupport,
+                                          final Map<Class<?>, TypeSupport<?>> supportMap,
+                                          final Map<Class<?>, TypeSupport<?>> calcSupportMap) {
+        supportMap.put(typeClass, typeSupport);
+//        typeSupports.put(typeClass, typeSupport);
 
-    /**
-     * Retrieves support for the given type.
-     *
-     * @param <T> the type to retrieve support for
-     * @param typeClass the class of the type
-     * @return the support for the type or null
-     */
-    @SuppressWarnings("unchecked")
-    static <T> TypeSupport<T> typeSupportFor(Class<T> typeClass) {
-        return (TypeSupport<T>) typeSupports.get(typeClass);
+        calcSupportMap.remove(typeClass);
+        // TODO (carcassi) : On adding a new type support for 'typeClass', all other calculated ones are removed?
+//        calculatedTypeSupport.clear(); 
     }
 
     /**
@@ -96,13 +57,15 @@ public abstract class TypeSupport<T> {
      * @return the support for the type or null
      */
     @SuppressWarnings("unchecked")
-    static <T> TypeSupport<T> recursiveTypeSupportFor(Class<T> typeClass) {
-        TypeSupport<T> support = typeSupportFor(typeClass);
+    private static <T> TypeSupport<T> recursiveTypeSupportFor(final Class<T> typeClass,
+                                                      final Map<Class<?>, TypeSupport<?>> supportMap) {
+        TypeSupport<T> support = (TypeSupport<T>) supportMap.get(typeClass);
         if (support == null) {
-            for (Class clazz : typeClass.getInterfaces()) {
-                support = recursiveTypeSupportFor(clazz);
-                if (support != null)
+            for (@SuppressWarnings("rawtypes") final Class clazz : typeClass.getInterfaces()) {
+                support = recursiveTypeSupportFor(clazz, supportMap);
+                if (support != null) {
                     return support;
+                }
             }
         }
         return support;
@@ -111,50 +74,39 @@ public abstract class TypeSupport<T> {
     /**
      * Calculates and caches the type support for a particular class, so that
      * introspection does not occur at every call.
+     * 
+     * First the supertypes are recursively 
      *
      * @param <T> the type to retrieve support for
      * @param typeClass the class of the type
      * @return the support for the type or null
+     * @throws RuntimeException when no support could be identified 
      */
-    static <T> TypeSupport<T> cachedTypeSupportFor(Class<T> typeClass) {
-        @SuppressWarnings("unchecked")
-        TypeSupport<T> support = (TypeSupport<T>) calculatedTypeSupport.get(typeClass);
+    @SuppressWarnings("unchecked")
+    protected static <T> TypeSupport<T> cachedTypeSupportFor(final Class<T> typeClass,
+                                                             final Map<Class<?>, TypeSupport<?>> supportMap,
+                                                             final Map<Class<?>, TypeSupport<?>> calcSupportMap) {
+        TypeSupport<T> support = (TypeSupport<T>) calcSupportMap.get(typeClass);
         if (support == null) {
-            support = recursiveTypeSupportFor(typeClass);
-            if (support == null)
+            support = recursiveTypeSupportFor(typeClass, supportMap);
+            if (support == null) {
+                Class<? super T> superClass = typeClass.getSuperclass();
+                while (!superClass.equals(Object.class)) {
+                    support = (TypeSupport<T>) supportMap.get(superClass);
+                    if (support != null) {
+                        break;
+                    }
+                    superClass = superClass.getSuperclass();
+                }
+            }
+            if (support == null) {
+                // TODO (carcassi) : unchecked vs checked? a dedicated TypeSupportException? I don't know...
                 throw new RuntimeException("No support found for type " + typeClass);
-            calculatedTypeSupport.put(typeClass, support);
+            }
+            calcSupportMap.put(typeClass, support);
         }
         return support;
     }
 
-    /**
-     * Returns the final value by using the appropriate type support.
-     *
-     * @param <T> the type of the value
-     * @param oldValue the oldValue, which was previously in the previous notification
-     * @param newValue the newValue, which was computed during the scanning
-     * @return the value to be notified
-     */
-    public static <T> Notification<T> notification(T oldValue, T newValue) {
-        @SuppressWarnings("unchecked")
-        Class<T> typeClass = (Class<T>) newValue.getClass();
-        TypeSupport<T> support = cachedTypeSupportFor(typeClass);
-        return support.prepareNotification(oldValue, newValue);
-    }
-
-    /**
-     * Extracts the TimeStamp of the value using the appropriate type support.
-     *
-     * @param <T> the type of the value
-     * @param value the value from which to extract the timestamp
-     * @return the extracted timestamp
-     */
-    public static <T> TimeStamp timestampOf(T value) {
-        @SuppressWarnings("unchecked")
-        Class<T> typeClass = (Class<T>) value.getClass();
-        TimedTypeSupport<T> timeSupport = (TimedTypeSupport<T>) cachedTypeSupportFor(typeClass);
-        return (timeSupport).extractTimestamp(value);
-    }
 
 }

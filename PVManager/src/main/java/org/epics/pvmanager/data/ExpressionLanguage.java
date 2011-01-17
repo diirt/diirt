@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.DesiredRateExpression;
 import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.NotificationTypeSupport;
 import org.epics.pvmanager.SourceRateExpression;
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.TimedTypeSupport;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -24,7 +26,8 @@ public class ExpressionLanguage {
 
     static {
         // Add support for Epics types.
-        TypeSupport.install();
+        TimedTypeSupport.install();
+        NotificationTypeSupport.install();
     }
 
     /**

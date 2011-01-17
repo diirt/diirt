@@ -1,2 +1,7 @@
 /target/
 
+classes/
+.project
+.classpath
+.checkstyle
+.fbprefs

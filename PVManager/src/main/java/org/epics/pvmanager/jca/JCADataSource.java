@@ -12,6 +12,8 @@ import gov.aps.jca.JCALibrary;
 import java.util.HashSet;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.NotificationTypeSupport;
+import org.epics.pvmanager.TimedTypeSupport;
 import org.epics.pvmanager.ValueCache;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +32,8 @@ public class JCADataSource extends DataSource {
 
     static {
         // Install type support for the types it generates.
-        TypeSupport.install();
+        TimedTypeSupport.install();
+        NotificationTypeSupport.install();
     }
 
     private static final Logger logger = Logger.getLogger(JCADataSource.class.getName());

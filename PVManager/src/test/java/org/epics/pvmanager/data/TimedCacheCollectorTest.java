@@ -7,6 +7,8 @@ package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.PrivateFactory;
+import org.epics.pvmanager.TimedTypeSupport;
+
 import java.util.Collections;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.DataRecipe;
@@ -30,7 +32,7 @@ public class TimedCacheCollectorTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Force type support loading
-        TypeSupport.install();
+        TimedTypeSupport.install();
     }
 
     @Before

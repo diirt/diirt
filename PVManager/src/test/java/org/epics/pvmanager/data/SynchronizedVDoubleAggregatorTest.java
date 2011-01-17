@@ -7,6 +7,8 @@ package org.epics.pvmanager.data;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.epics.pvmanager.TimedTypeSupport;
 import org.epics.pvmanager.util.TimeStamp;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +24,7 @@ public class SynchronizedVDoubleAggregatorTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        TypeSupport.install();
+        TimedTypeSupport.install();
     }
 
     /**
