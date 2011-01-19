@@ -27,8 +27,7 @@ public class ExpressionLanguage {
 
     static {
         // Add support for Epics types.
-        NotificationTypeSupport.install();
-        TimedTypeSupport.install();
+        DataTypeSupport.install();
     }
 
     /**

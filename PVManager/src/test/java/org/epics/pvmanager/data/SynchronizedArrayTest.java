@@ -28,7 +28,7 @@ public class SynchronizedArrayTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        TimedTypeSupport.install();
+        DataTypeSupport.install();
     }
 
     @Test

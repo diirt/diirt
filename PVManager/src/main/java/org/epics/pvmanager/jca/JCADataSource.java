@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.data.TypeSupport;
+import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
  * A data source that uses jca.
@@ -32,8 +32,7 @@ public class JCADataSource extends DataSource {
 
     static {
         // Install type support for the types it generates.
-        TimedTypeSupport.install();
-        NotificationTypeSupport.install();
+        DataTypeSupport.install();
     }
 
     private static final Logger logger = Logger.getLogger(JCADataSource.class.getName());

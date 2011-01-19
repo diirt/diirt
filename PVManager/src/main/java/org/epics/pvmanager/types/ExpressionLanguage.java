@@ -8,6 +8,7 @@ package org.epics.pvmanager.types;
 import org.epics.pvmanager.DesiredRateExpression;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.NotificationTypeSupport;
+import org.epics.pvmanager.data.DataTypeSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class ExpressionLanguage {
 
     static {
         // Installs support for standard types
-        NotificationTypeSupport.install();
+        DataTypeSupport.install();
     }
 
     /**

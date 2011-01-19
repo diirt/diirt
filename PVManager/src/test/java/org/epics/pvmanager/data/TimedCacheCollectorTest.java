@@ -5,20 +5,20 @@
 
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.PrivateFactory;
-import org.epics.pvmanager.TimedTypeSupport;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
-import org.epics.pvmanager.sim.SimulationDataSource;
+
+import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataRecipe;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.pvmanager.PrivateFactory;
 import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.sim.SimulationDataSource;
+import org.epics.pvmanager.util.TimeDuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -32,7 +32,7 @@ public class TimedCacheCollectorTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Force type support loading
-        TimedTypeSupport.install();
+        DataTypeSupport.install();
     }
 
     @Before

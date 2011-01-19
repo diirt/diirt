@@ -6,6 +6,8 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.epics.pvmanager.data.DataTypeSupport;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.sim.SimulationDataSource;
@@ -30,7 +32,7 @@ public class TypeNotificationTest {
 
     @BeforeClass
     public static void modifyDefaultSource() {
-        NotificationTypeSupport.install();
+        DataTypeSupport.install();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
     }
 

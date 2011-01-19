@@ -30,25 +30,6 @@ import java.util.Map;
 public abstract class TypeSupport<T> {
 
     /**
-     * Adds support for a new type.
-     *
-     * @param <T> the type to add support for
-     * @param typeClass the class of the type
-     * @param typeSupport the support for the type
-     */
-    public static <T> void addTypeSupport(final Class<T> typeClass, 
-                                          final TypeSupport<T> typeSupport,
-                                          final Map<Class<?>, TypeSupport<?>> supportMap,
-                                          final Map<Class<?>, TypeSupport<?>> calcSupportMap) {
-        supportMap.put(typeClass, typeSupport);
-//        typeSupports.put(typeClass, typeSupport);
-
-        calcSupportMap.remove(typeClass);
-        // TODO (carcassi) : On adding a new type support for 'typeClass', all other calculated ones are removed?
-//        calculatedTypeSupport.clear(); 
-    }
-
-    /**
      * Retrieve support for the given type and if not found looks at the
      * implemented interfaces.
      *
@@ -58,7 +39,7 @@ public abstract class TypeSupport<T> {
      */
     @SuppressWarnings("unchecked")
     private static <T> TypeSupport<T> recursiveTypeSupportFor(final Class<T> typeClass,
-                                                      final Map<Class<?>, TypeSupport<?>> supportMap) {
+                                                              final Map<Class<?>, TypeSupport<?>> supportMap) {
         TypeSupport<T> support = (TypeSupport<T>) supportMap.get(typeClass);
         if (support == null) {
             for (@SuppressWarnings("rawtypes") final Class clazz : typeClass.getInterfaces()) {
