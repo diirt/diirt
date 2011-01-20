@@ -30,26 +30,50 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class TypeSupport<T> {
     
+    /**
+     * Internal class to improve readability.
+     * @author bknerr
+     * @since 20.01.2011
+     */
     private static final class TypeSupportMap<T> extends ConcurrentHashMap<Class<T>, TypeSupport<T>> {
         private static final long serialVersionUID = -8726785703555122582L;
+        public TypeSupportMap() { /* EMPTY */ }
     }
     
-    private static Map<? extends TypeSupport<?>, TypeSupportMap<?>> allTypeSupports = 
-        new ConcurrentHashMap<TypeSupport<?>, TypeSupportMap<?>>();
-    private static Map<? extends TypeSupport<?>, TypeSupportMap<?>> allCalcTypeSupports = 
-        new ConcurrentHashMap<TypeSupport<?>, TypeSupportMap<?>>();
+    @SuppressWarnings("rawtypes")
+    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allTypeSupports = 
+        new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
+    @SuppressWarnings("rawtypes")
+    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allCalcTypeSupports = 
+        new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
+    
+    
+    @SuppressWarnings("rawtypes")
+    private static 
+    void addTypeSupportFamilyIfNotExists(final Map<Class<? extends TypeSupport>, TypeSupportMap> map, 
+                                         final Class<? extends TypeSupport> typeSupportFamily) {
+        
+        TypeSupportMap<?> familyMap = (TypeSupportMap<?>) map.get(typeSupportFamily);
+        if (familyMap == null) {
+            TypeSupportMap<?> supportMap = new TypeSupportMap();
+            map.put(typeSupportFamily, supportMap);
+        }
+    }
+    
     
     @SuppressWarnings("unchecked")
-    public static <K extends TypeSupport<T>>
-    void addTypeSupport(final K typeSupportFamily,  
-                        final Class<?> typeClass, 
-                        final TypeSupport<?> typeSupport) {
-        TypeSupportMap<?> familyMap = (TypeSupportMap<?>) allTypeSupports.get(typeSupportFamily);
-        if (familyMap == null) {
-            familyMap = new TypeSupportMap();
-            allTypeSupports.put(typeSupportFamily, familyMap);
-        }
-        familyMap.put(typeClass, typeSupport);
+    public static <T>
+    void addTypeSupport(final Class<T> typeClass, 
+                        final TypeSupport<T> typeSupport) {
+        // typeSupport.getClass() wouldn't work, as anonymous derived classes of XXXTypeSupport 
+        // differ by their concrete class 
+        Class<? extends TypeSupport<T>> typeSupportFamily = typeSupport.getTypeSupportFamily();
+        
+        addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);
+        addTypeSupportFamilyIfNotExists(allCalcTypeSupports, typeSupportFamily);
+        
+        allTypeSupports.get(typeSupportFamily).put(typeClass, typeSupport);
+        allCalcTypeSupports.get(typeSupportFamily).remove(typeClass);
     }
     
     
@@ -64,7 +88,7 @@ public abstract class TypeSupport<T> {
      */
     @SuppressWarnings("unchecked")
     private static <T> TypeSupport<T> recursiveTypeSupportFor(final Class<T> typeClass,
-                                                              final Map<Class<?>, TypeSupport<?>> supportMap) {
+                                                              final TypeSupportMap<?> supportMap) {
         TypeSupport<T> support = (TypeSupport<T>) supportMap.get(typeClass);
         if (support == null) {
             for (@SuppressWarnings("rawtypes") final Class clazz : typeClass.getInterfaces()) {
@@ -89,9 +113,12 @@ public abstract class TypeSupport<T> {
      * @throws RuntimeException when no support could be identified 
      */
     @SuppressWarnings("unchecked")
-    protected static <T> TypeSupport<T> cachedTypeSupportFor(final Class<T> typeClass,
-                                                             final Map<Class<?>, TypeSupport<?>> supportMap,
-                                                             final Map<Class<?>, TypeSupport<?>> calcSupportMap) {
+    protected static <T> TypeSupport<T> cachedTypeSupportFor(@SuppressWarnings("rawtypes") final Class<? extends TypeSupport> supportFamily,
+                                                             final Class<T> typeClass) {
+        
+        TypeSupportMap<T> calcSupportMap = allCalcTypeSupports.get(supportFamily);
+        TypeSupportMap<T> supportMap = allTypeSupports.get(supportFamily);
+        
         TypeSupport<T> support = (TypeSupport<T>) calcSupportMap.get(typeClass);
         if (support == null) {
             support = recursiveTypeSupportFor(typeClass, supportMap);
@@ -115,4 +142,5 @@ public abstract class TypeSupport<T> {
     }
 
 
+    public abstract Class<? extends TypeSupport<T>> getTypeSupportFamily();
 }

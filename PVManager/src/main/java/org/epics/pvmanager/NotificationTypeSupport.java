@@ -1,7 +1,5 @@
 package org.epics.pvmanager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -11,20 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 17.01.2011
  */
 public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
-    
-    private static Map<Class<?>, TypeSupport<?>> typeSupports = 
-        new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
-    private static Map<Class<?>, TypeSupport<?>> calculatedTypeSupports = 
-        new ConcurrentHashMap<Class<?>, TypeSupport<?>>();
-    
-    
-    public static <T> void addTypeSupport(final Class<T> typeClass, 
-                                          final TypeSupport<T> typeSupport) {
-        typeSupports.put(typeClass, typeSupport);
-        calculatedTypeSupports.remove(typeClass);
-      // TODO (carcassi) : On adding a new type support for 'typeClass', all other calculated ones are removed?
-//      calculatedTypeSupport.clear(); 
-    }
     
     /**
      * Returns the final value by using the appropriate type support.
@@ -37,9 +21,9 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
     public static <T> Notification<T> notification(final T oldValue, final T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
-        NotificationTypeSupport<T> support = (NotificationTypeSupport<T>) cachedTypeSupportFor(typeClass, 
-                                                                                               typeSupports,
-                                                                                               calculatedTypeSupports);
+        NotificationTypeSupport<T> support = 
+            (NotificationTypeSupport<T>) cachedTypeSupportFor(NotificationTypeSupport.class, 
+                                                              typeClass);
         return support.prepareNotification(oldValue, newValue);
     }    
     
@@ -54,4 +38,29 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
      * @return the value to be notified
      */
     public abstract Notification<T> prepareNotification(final T oldValue, final T newValue);
+    
+    /**
+     * Adds an immutable type support that does not actually has to discriminate via {@param clazz}
+     * but uses the parameter merely as compiler information for @param <T>.
+     * @param <T>
+     * @param clazz
+     * @return
+     */
+    public static <T> NotificationTypeSupport<T> immutableTypeSupport(@SuppressWarnings("unused") final Class<T> clazz) {
+        return new NotificationTypeSupport<T>() {
+          @Override
+          public Notification<T> prepareNotification(final T oldValue, final T newValue) {
+              if (NullUtils.equalsOrBothNull(oldValue, newValue)) {
+                return new Notification<T>(false, null);
+            }
+              return new Notification<T>(true, newValue);
+          }
+        };
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public Class<? extends TypeSupport<T>> getTypeSupportFamily() {
+        return (Class<? extends TypeSupport<T>>) NotificationTypeSupport.class;
+    }
 }
