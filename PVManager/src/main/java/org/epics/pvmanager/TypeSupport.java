@@ -65,8 +65,6 @@ public abstract class TypeSupport<T> {
     public static <T>
     void addTypeSupport(final Class<T> typeClass, 
                         final TypeSupport<T> typeSupport) {
-        // typeSupport.getClass() wouldn't work, as anonymous derived classes of XXXTypeSupport 
-        // differ by their concrete class 
         Class<? extends TypeSupport<T>> typeSupportFamily = typeSupport.getTypeSupportFamily();
         
         addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);

@@ -60,7 +60,7 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public Class<? extends TypeSupport<T>> getTypeSupportFamily() {
+    public final Class<? extends TypeSupport<T>> getTypeSupportFamily() {
         return (Class<? extends TypeSupport<T>>) NotificationTypeSupport.class;
     }
 }
