@@ -6,6 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -28,7 +29,31 @@ import java.util.Map;
  * @author carcassi
  */
 public abstract class TypeSupport<T> {
-
+    
+    private static final class TypeSupportMap<T> extends ConcurrentHashMap<Class<T>, TypeSupport<T>> {
+        private static final long serialVersionUID = -8726785703555122582L;
+    }
+    
+    private static Map<? extends TypeSupport<?>, TypeSupportMap<?>> allTypeSupports = 
+        new ConcurrentHashMap<TypeSupport<?>, TypeSupportMap<?>>();
+    private static Map<? extends TypeSupport<?>, TypeSupportMap<?>> allCalcTypeSupports = 
+        new ConcurrentHashMap<TypeSupport<?>, TypeSupportMap<?>>();
+    
+    @SuppressWarnings("unchecked")
+    public static <K extends TypeSupport<T>>
+    void addTypeSupport(final K typeSupportFamily,  
+                        final Class<?> typeClass, 
+                        final TypeSupport<?> typeSupport) {
+        TypeSupportMap<?> familyMap = (TypeSupportMap<?>) allTypeSupports.get(typeSupportFamily);
+        if (familyMap == null) {
+            familyMap = new TypeSupportMap();
+            allTypeSupports.put(typeSupportFamily, familyMap);
+        }
+        familyMap.put(typeClass, typeSupport);
+    }
+    
+    
+    
     /**
      * Retrieve support for the given type and if not found looks at the
      * implemented interfaces.
