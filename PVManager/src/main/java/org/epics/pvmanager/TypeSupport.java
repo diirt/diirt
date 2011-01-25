@@ -99,8 +99,7 @@ public abstract class TypeSupport<T> {
      * @return the support for the type or null
      * @throws RuntimeException when no support could be identified 
      */
-    @SuppressWarnings("unchecked")
-    protected static <T> TypeSupport<T> cachedTypeSupportFor(@SuppressWarnings("rawtypes") final Class<? extends TypeSupport> supportFamily,
+    protected static <T> TypeSupport<T> cachedTypeSupportFor(final Class<? extends TypeSupport> supportFamily,
                                                              final Class<T> typeClass) {
         
         TypeSupportMap calcSupportMap = allCalcTypeSupports.get(supportFamily);
@@ -109,7 +108,10 @@ public abstract class TypeSupport<T> {
         if (supportMap == null || calcSupportMap == null) {
             throw new RuntimeException("No type support found for family " + supportFamily, null);
         }
-        
+
+        // If we get the cached support for a specific type,
+        // we are guaranteeded that they support is for that type
+        @SuppressWarnings("unchecked")
         TypeSupport<T> support = (TypeSupport<T>) calcSupportMap.get(typeClass);
         if (support == null) {
             support = calculateSupport(typeClass, supportMap);
