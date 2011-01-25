@@ -111,7 +111,7 @@ class Notifier<T> {
                     PV<T> pv = pvRef.get();
                     if (pv != null && safeValue != null) {
                         Notification<T> notification =
-                                NotificationTypeSupport.notification(pv.getValue(), safeValue);
+                                NotificationSupport.notification(pv.getValue(), safeValue);
                         if (notification.isNotificationNeeded()) {
                             pv.setValue(notification.getNewValue());
                         }

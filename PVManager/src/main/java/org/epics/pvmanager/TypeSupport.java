@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *   UI should be notified of the change.</li>
  * </ul>
  *
+ * @param <T> the type for which to add support
  * @author carcassi
  */
 public abstract class TypeSupport<T> {
@@ -95,11 +96,12 @@ public abstract class TypeSupport<T> {
      * First the supertypes are recursively 
      *
      * @param <T> the type to retrieve support for
+     * @param supportFamily the support family for which to find support
      * @param typeClass the class of the type
      * @return the support for the type or null
      * @throws RuntimeException when no support could be identified 
      */
-    protected static <T> TypeSupport<T> cachedTypeSupportFor(final Class<? extends TypeSupport> supportFamily,
+    protected static <T> TypeSupport<T> findTypeSupportFor(final Class<? extends TypeSupport> supportFamily,
                                                              final Class<T> typeClass) {
         
         TypeSupportMap calcSupportMap = allCalcTypeSupports.get(supportFamily);
@@ -171,6 +173,7 @@ public abstract class TypeSupport<T> {
      * Creates a new type support of the given type
      * 
      * @param type the type on which support is defined
+     * @param typeSupportFamily the kind of support is being defined
      */
     public TypeSupport(Class<T> type, Class<? extends TypeSupport> typeSupportFamily) {
         this.type = type;

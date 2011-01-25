@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.epics.pvmanager.Notification;
-import org.epics.pvmanager.NotificationTypeSupport;
-import org.epics.pvmanager.TimedTypeSupport;
+import org.epics.pvmanager.NotificationSupport;
+import org.epics.pvmanager.TimeSupport;
 import org.epics.pvmanager.TypeSupport;
 import org.epics.pvmanager.util.TimeStamp;
 
@@ -33,7 +33,7 @@ public final class DataTypeSupport {
         }
 
         // Add time support for everything
-        TimedTypeSupport.addTypeSupport(new TimedTypeSupport<Time>(Time.class) {
+        TimeSupport.addTypeSupport(new TimeSupport<Time>(Time.class) {
 
             @Override
             public TimeStamp extractTimestamp(final Time object) {
@@ -42,18 +42,18 @@ public final class DataTypeSupport {
         });
 
         // Add notification support for all immutable types
-        TypeSupport.addTypeSupport(NotificationTypeSupport.immutableTypeSupport(Scalar.class));
-        TypeSupport.addTypeSupport(NotificationTypeSupport.immutableTypeSupport(MultiScalar.class));
-        TypeSupport.addTypeSupport(NotificationTypeSupport.immutableTypeSupport(Array.class));
-        TypeSupport.addTypeSupport(NotificationTypeSupport.immutableTypeSupport(Statistics.class));
-        TypeSupport.addTypeSupport(NotificationTypeSupport.immutableTypeSupport(VImage.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Scalar.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(MultiScalar.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Array.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Statistics.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(VImage.class));
         addList();
 
         installed = true;
     }
 
     private static void addList() {
-        TypeSupport.addTypeSupport(new NotificationTypeSupport<List>(List.class) {
+        TypeSupport.addTypeSupport(new NotificationSupport<List>(List.class) {
 
             @Override
             @SuppressWarnings({"unchecked", "rawtypes"})
@@ -74,7 +74,7 @@ public final class DataTypeSupport {
                     }
 
                     if (newValue.get(index) != null) {
-                        Notification itemNotification = NotificationTypeSupport.notification(oldValue.get(index), newValue.get(index));
+                        Notification itemNotification = NotificationSupport.notification(oldValue.get(index), newValue.get(index));
                         if (itemNotification.isNotificationNeeded()) {
                             notificationNeeded = true;
                             oldValue.set(index, itemNotification.getNewValue());

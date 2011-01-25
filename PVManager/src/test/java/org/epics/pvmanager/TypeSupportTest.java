@@ -30,40 +30,40 @@ public class TypeSupportTest {
     @Test
     public void testInheritance() {
         TypeSupport.addTypeSupport(new MyTypeSupport<Object>(Object.class));
-        MyTypeSupport support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Number.class);
+        MyTypeSupport support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Number.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
 
         // Add direct support for double
         TypeSupport.addTypeSupport(new MyTypeSupport<Double>(Double.class));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Object.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Object.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Integer.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Integer.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Double.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Double.class);
         assertThat(support.type, is(equalTo((Class) Double.class)));
 
         // Add direct support for Integer
         TypeSupport.addTypeSupport(new MyTypeSupport<Integer>(Integer.class));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Object.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Object.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Integer.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Integer.class);
         assertThat(support.type, is(equalTo((Class) Integer.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Double.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Double.class);
         assertThat(support.type, is(equalTo((Class) Double.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Float.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Float.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
 
         // Add direct support for Comparable and Number
         TypeSupport.addTypeSupport(new MyTypeSupport<Comparable>(Comparable.class));
         TypeSupport.addTypeSupport(new MyTypeSupport<Number>(Number.class));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Object.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Object.class);
         assertThat(support.type, is(equalTo((Class) Object.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Integer.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Integer.class);
         assertThat(support.type, is(equalTo((Class) Integer.class)));
-        support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Double.class);
+        support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Double.class);
         assertThat(support.type, is(equalTo((Class) Double.class)));
         try {
-            support = (MyTypeSupport) TypeSupport.cachedTypeSupportFor(MyTypeSupport.class, Float.class);
+            support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Float.class);
             fail("Found single support for " + support.type);
         } catch(Exception ex) {
             // Fails because two supports are there

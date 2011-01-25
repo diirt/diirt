@@ -5,10 +5,11 @@ package org.epics.pvmanager;
 /**
  * Dedicated notification type support.
  * 
+ * @param <T> type for which the notifications are prepared
  * @author bknerr
  * @since 17.01.2011
  */
-public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
+public abstract class NotificationSupport<T> extends TypeSupport<T> {
 
     /**
      * Creates a new notification type support.
@@ -16,8 +17,8 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
      * @param clazz the type being supported
      */
     @SuppressWarnings("unchecked")
-    public NotificationTypeSupport(Class<T> clazz) {
-        super(clazz, NotificationTypeSupport.class);
+    public NotificationSupport(Class<T> clazz) {
+        super(clazz, NotificationSupport.class);
     }
     
     /**
@@ -31,8 +32,8 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
     public static <T> Notification<T> notification(final T oldValue, final T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
-        NotificationTypeSupport<T> support = 
-            (NotificationTypeSupport<T>) cachedTypeSupportFor(NotificationTypeSupport.class, 
+        NotificationSupport<T> support =
+            (NotificationSupport<T>) findTypeSupportFor(NotificationSupport.class,
                                                               typeClass);
         return support.prepareNotification(oldValue, newValue);
     }    
@@ -50,14 +51,15 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
     public abstract Notification<T> prepareNotification(final T oldValue, final T newValue);
     
     /**
-     * Adds an immutable type support that does not actually has to discriminate via {@param clazz}
-     * but uses the parameter merely as compiler information for @param <T>.
-     * @param <T>
-     * @param clazz
-     * @return
+     * Support for notification of immutable types. Notification is enabled if
+     * the value changed according to {@link Object#equals(java.lang.Object) }.
+     *
+     * @param <T> type for which to add support
+     * @param clazz type for which to add support
+     * @return support for immutable objects of the given type
      */
-    public static <T> NotificationTypeSupport<T> immutableTypeSupport(final Class<T> clazz) {
-        return new NotificationTypeSupport<T>(clazz) {
+    public static <T> NotificationSupport<T> immutableTypeSupport(final Class<T> clazz) {
+        return new NotificationSupport<T>(clazz) {
           @Override
           public Notification<T> prepareNotification(final T oldValue, final T newValue) {
               if (NullUtils.equalsOrBothNull(oldValue, newValue)) {
