@@ -5,14 +5,16 @@
 
 package org.epics.pvmanager.data;
 
+import static org.epics.pvmanager.data.DataUtils.createValue;
+import static org.epics.pvmanager.util.TimeDuration.ms;
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.epics.pvmanager.util.TimeStamp;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.epics.pvmanager.data.DataUtils.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -22,7 +24,7 @@ public class SynchronizedVDoubleAggregatorTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        TypeSupport.install();
+        DataTypeSupport.install();
     }
 
     /**

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.PrivateFactory;
+import org.epics.pvmanager.TimeSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -27,7 +28,7 @@ public class SynchronizedArrayTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        TypeSupport.install();
+        DataTypeSupport.install();
     }
 
     @Test

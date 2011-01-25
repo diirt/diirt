@@ -8,6 +8,7 @@ package org.epics.pvmanager.data;
 import java.util.Collections;
 import java.util.List;
 import org.epics.pvmanager.util.TimeStamp;
+import org.epics.pvmanager.TimeSupport;
 import org.epics.pvmanager.TypeSupport;
 import org.epics.pvmanager.util.NumberFormats;
 
@@ -54,7 +55,7 @@ public class DataUtils {
             if (value == null)
                 System.out.print("null");
             else
-                System.out.print(TypeSupport.timestampOf(value));// + " - " + value.getDoubleValue()[0]);
+                System.out.print(TimeSupport.timestampOf(value));// + " - " + value.getDoubleValue()[0]);
         }
         System.out.println("]");
     }
