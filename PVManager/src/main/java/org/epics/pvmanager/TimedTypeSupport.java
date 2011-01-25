@@ -12,7 +12,11 @@ import org.epics.pvmanager.util.TimeStamp;
  * @author carcassi
  */
 public abstract class TimedTypeSupport<T> extends TypeSupport<T> {
-  
+
+    @SuppressWarnings("unchecked")
+    public TimedTypeSupport(Class<T> clazz) {
+        super(clazz, (Class<? extends TypeSupport<T>>) (Class) TimedTypeSupport.class);
+    }
     
     /**
      * Extracts the TimeStamp of the value using the appropriate type support.
@@ -30,10 +34,4 @@ public abstract class TimedTypeSupport<T> extends TypeSupport<T> {
     }
     
     protected abstract TimeStamp extractTimestamp(T object);
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public final Class<? extends TypeSupport<T>> getTypeSupportFamily() {
-        return (Class<? extends TypeSupport<T>>) TimedTypeSupport.class;
-    }
 }

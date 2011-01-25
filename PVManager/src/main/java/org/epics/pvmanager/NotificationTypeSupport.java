@@ -9,6 +9,16 @@ package org.epics.pvmanager;
  * @since 17.01.2011
  */
 public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
+
+    /**
+     * Creates a new notification type support.
+     *
+     * @param clazz the type being supported
+     */
+    @SuppressWarnings("unchecked")
+    public NotificationTypeSupport(Class<T> clazz) {
+        super(clazz, (Class<? extends TypeSupport<T>>) (Class) NotificationTypeSupport.class);
+    }
     
     /**
      * Returns the final value by using the appropriate type support.
@@ -46,8 +56,8 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
      * @param clazz
      * @return
      */
-    public static <T> NotificationTypeSupport<T> immutableTypeSupport(@SuppressWarnings("unused") final Class<T> clazz) {
-        return new NotificationTypeSupport<T>() {
+    public static <T> NotificationTypeSupport<T> immutableTypeSupport(final Class<T> clazz) {
+        return new NotificationTypeSupport<T>(clazz) {
           @Override
           public Notification<T> prepareNotification(final T oldValue, final T newValue) {
               if (NullUtils.equalsOrBothNull(oldValue, newValue)) {
@@ -56,11 +66,5 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
               return new Notification<T>(true, newValue);
           }
         };
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public final Class<? extends TypeSupport<T>> getTypeSupportFamily() {
-        return (Class<? extends TypeSupport<T>>) NotificationTypeSupport.class;
     }
 }

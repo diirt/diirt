@@ -40,19 +40,15 @@ public abstract class TypeSupport<T> {
         public TypeSupportMap() { /* EMPTY */ }
     }
     
-    @SuppressWarnings("rawtypes")
     private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allTypeSupports = 
         new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
-    @SuppressWarnings("rawtypes")
     private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allCalcTypeSupports = 
         new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
     
     
-    @SuppressWarnings("rawtypes")
     private static 
     void addTypeSupportFamilyIfNotExists(final Map<Class<? extends TypeSupport>, TypeSupportMap> map, 
                                          final Class<? extends TypeSupport> typeSupportFamily) {
-        
         TypeSupportMap<?> familyMap = (TypeSupportMap<?>) map.get(typeSupportFamily);
         if (familyMap == null) {
             TypeSupportMap<?> supportMap = new TypeSupportMap();
@@ -60,18 +56,35 @@ public abstract class TypeSupport<T> {
         }
     }
     
-    
-    @SuppressWarnings("unchecked")
-    public static <T>
-    void addTypeSupport(final Class<T> typeClass, 
-                        final TypeSupport<T> typeSupport) {
-        Class<? extends TypeSupport<T>> typeSupportFamily = typeSupport.getTypeSupportFamily();
+    /**
+     * Adds type support for the given class. The type support added will apply
+     * to the given class and all of its subclasses. Support of the same
+     * family cannot be added twice and will cause an exception. Support for
+     * the more specific subclass overrides support for the more abstract class.
+     * A class cannot have two types support in the same family coming from
+     * two different and unrelated interfaces.
+     *
+     * @param <T> type to add support for
+     * @param typeClass type to add support for
+     * @param typeSupport the support to add
+     */
+    public static
+    void addTypeSupport(final TypeSupport<?> typeSupport) {
+        Class<? extends TypeSupport<?>> typeSupportFamily = typeSupport.getTypeSupportFamily();
         
         addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);
         addTypeSupportFamilyIfNotExists(allCalcTypeSupports, typeSupportFamily);
+
+        // Can't install support for the same type twice
+        if (allTypeSupports.get(typeSupportFamily).get(typeSupport.getType()) != null) {
+            throw new RuntimeException(typeSupportFamily.getSimpleName() + " was already added for type " + typeSupport.getType().getName());
+        }
         
-        allTypeSupports.get(typeSupportFamily).put(typeClass, typeSupport);
-        allCalcTypeSupports.get(typeSupportFamily).remove(typeClass);
+        allTypeSupports.get(typeSupportFamily).put(typeSupport.getType(), typeSupport);
+        // Need to clear all calculated supports since registering an
+        // interface may affect all the calculated supports
+        // of all the implementations
+        allCalcTypeSupports.get(typeSupportFamily).clear();
     }
     
     
@@ -150,6 +163,37 @@ public abstract class TypeSupport<T> {
         return support;
     }
 
+    /**
+     * Creates a new type support of the given type
+     * 
+     * @param type the type on which support is defined
+     */
+    public TypeSupport(Class<T> type, Class<? extends TypeSupport<T>> typeSupportFamily) {
+        this.type = type;
+        this.typeSupportFamily = typeSupportFamily;
+    }
 
-    public abstract Class<? extends TypeSupport<T>> getTypeSupportFamily();
+    // Type on which the support is defined
+    private final Class<T> type;
+
+    // Which kind of type support is defined
+    private final Class<? extends TypeSupport<T>> typeSupportFamily;
+
+
+    /**
+     * Defines which type of support is implementing, notification or time.
+     *
+     * @return the support family
+     */
+    private Class<? extends TypeSupport<T>> getTypeSupportFamily() {
+        return typeSupportFamily;
+    }
+
+    /**
+     * Defines on which class the support is defined.
+     */
+    private Class<T> getType() {
+        return type;
+    }
+
 }
