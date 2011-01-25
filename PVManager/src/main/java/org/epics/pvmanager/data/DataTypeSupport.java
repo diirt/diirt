@@ -4,10 +4,6 @@
  */
 package org.epics.pvmanager.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.epics.pvmanager.Notification;
 import org.epics.pvmanager.NotificationSupport;
 import org.epics.pvmanager.TimeSupport;
 import org.epics.pvmanager.TypeSupport;
@@ -47,49 +43,8 @@ public final class DataTypeSupport {
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Array.class));
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Statistics.class));
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(VImage.class));
-        addList();
 
         installed = true;
-    }
-
-    private static void addList() {
-        TypeSupport.addTypeSupport(new NotificationSupport<List>(List.class) {
-
-            @Override
-            @SuppressWarnings({"unchecked", "rawtypes"})
-            public Notification<List> prepareNotification(List oldValue, final List newValue) {
-                // Initialize value if never initialized
-                if (oldValue == null) {
-                    oldValue = new ArrayList();
-                }
-
-                boolean notificationNeeded = false;
-
-                // Check all the elements in the list and use StandardTypeSupport
-                // to understand whether any needs notification.
-                // Notification is done only if at least one element needs notification.
-                for (int index = 0; index < newValue.size(); index++) {
-                    if (oldValue.size() <= index) {
-                        oldValue.add(null);
-                    }
-
-                    if (newValue.get(index) != null) {
-                        Notification itemNotification = NotificationSupport.notification(oldValue.get(index), newValue.get(index));
-                        if (itemNotification.isNotificationNeeded()) {
-                            notificationNeeded = true;
-                            oldValue.set(index, itemNotification.getNewValue());
-                        }
-                    }
-                }
-
-                // Shrink the list if more elements are there
-                while (oldValue.size() > newValue.size()) {
-                    oldValue.remove(oldValue.size() - 1);
-                }
-
-                return new Notification<List>(notificationNeeded, oldValue);
-            }
-        });
     }
 
     /**
