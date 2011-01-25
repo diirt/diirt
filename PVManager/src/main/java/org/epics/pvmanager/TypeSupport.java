@@ -70,7 +70,7 @@ public abstract class TypeSupport<T> {
      */
     public static
     void addTypeSupport(final TypeSupport<?> typeSupport) {
-        Class<? extends TypeSupport<?>> typeSupportFamily = typeSupport.getTypeSupportFamily();
+        Class<? extends TypeSupport> typeSupportFamily = typeSupport.getTypeSupportFamily();
         
         addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);
         addTypeSupportFamilyIfNotExists(allCalcTypeSupports, typeSupportFamily);
@@ -168,7 +168,7 @@ public abstract class TypeSupport<T> {
      * 
      * @param type the type on which support is defined
      */
-    public TypeSupport(Class<T> type, Class<? extends TypeSupport<T>> typeSupportFamily) {
+    public TypeSupport(Class<T> type, Class<? extends TypeSupport> typeSupportFamily) {
         this.type = type;
         this.typeSupportFamily = typeSupportFamily;
     }
@@ -177,7 +177,7 @@ public abstract class TypeSupport<T> {
     private final Class<T> type;
 
     // Which kind of type support is defined
-    private final Class<? extends TypeSupport<T>> typeSupportFamily;
+    private final Class<? extends TypeSupport> typeSupportFamily;
 
 
     /**
@@ -185,7 +185,7 @@ public abstract class TypeSupport<T> {
      *
      * @return the support family
      */
-    private Class<? extends TypeSupport<T>> getTypeSupportFamily() {
+    private Class<? extends TypeSupport> getTypeSupportFamily() {
         return typeSupportFamily;
     }
 

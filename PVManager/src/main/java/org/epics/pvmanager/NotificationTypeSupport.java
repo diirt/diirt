@@ -17,7 +17,7 @@ public abstract class NotificationTypeSupport<T> extends TypeSupport<T> {
      */
     @SuppressWarnings("unchecked")
     public NotificationTypeSupport(Class<T> clazz) {
-        super(clazz, (Class<? extends TypeSupport<T>>) (Class) NotificationTypeSupport.class);
+        super(clazz, NotificationTypeSupport.class);
     }
     
     /**

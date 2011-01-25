@@ -15,7 +15,7 @@ public abstract class TimedTypeSupport<T> extends TypeSupport<T> {
 
     @SuppressWarnings("unchecked")
     public TimedTypeSupport(Class<T> clazz) {
-        super(clazz, (Class<? extends TypeSupport<T>>) (Class) TimedTypeSupport.class);
+        super(clazz, TimedTypeSupport.class);
     }
     
     /**
