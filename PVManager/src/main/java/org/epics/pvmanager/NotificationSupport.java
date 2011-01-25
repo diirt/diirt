@@ -1,7 +1,5 @@
 package org.epics.pvmanager;
 
-
-
 /**
  * Dedicated notification type support.
  * 
@@ -16,7 +14,6 @@ public abstract class NotificationSupport<T> extends TypeSupport<T> {
      *
      * @param clazz the type being supported
      */
-    @SuppressWarnings("unchecked")
     public NotificationSupport(Class<T> clazz) {
         super(clazz, NotificationSupport.class);
     }

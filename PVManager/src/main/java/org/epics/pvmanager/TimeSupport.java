@@ -21,7 +21,6 @@ public abstract class TimeSupport<T> extends TypeSupport<T> {
      *
      * @param clazz the type on which to add support
      */
-    @SuppressWarnings("unchecked")
     public TimeSupport(Class<T> clazz) {
         super(clazz, TimeSupport.class);
     }
