@@ -5,7 +5,10 @@
 
 package org.epics.pvmanager;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -86,31 +89,6 @@ public abstract class TypeSupport<T> {
         // of all the implementations
         allCalcTypeSupports.get(typeSupportFamily).clear();
     }
-    
-    
-    
-    /**
-     * Retrieve support for the given type and if not found looks at the
-     * implemented interfaces.
-     *
-     * @param <T> the type to retrieve support for
-     * @param typeClass the class of the type
-     * @return the support for the type or null
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> TypeSupport<T> recursiveTypeSupportFor(final Class<T> typeClass,
-                                                              final TypeSupportMap<?> supportMap) {
-        TypeSupport<T> support = (TypeSupport<T>) supportMap.get(typeClass);
-        if (support == null) {
-            for (@SuppressWarnings("rawtypes") final Class clazz : typeClass.getInterfaces()) {
-                support = recursiveTypeSupportFor(clazz, supportMap);
-                if (support != null) {
-                    return support;
-                }
-            }
-        }
-        return support;
-    }
 
     /**
      * Calculates and caches the type support for a particular class, so that
@@ -136,33 +114,59 @@ public abstract class TypeSupport<T> {
         
         TypeSupport<T> support = (TypeSupport<T>) calcSupportMap.get(typeClass);
         if (support == null) {
-            support = recursiveTypeSupportFor(typeClass, supportMap);
+            support = calculateSupport(typeClass, supportMap);
             if (support == null) {
-                support = recursiveClassSupportFor(typeClass, supportMap);
-            }
-            if (support == null) {
-                // TODO (carcassi) : unchecked vs checked? a dedicated TypeSupportException? I don't know...
-                throw new RuntimeException("No support found for type " + typeClass);
+                // It's up to the specific support to decide what to do
+                return null;
             }
             calcSupportMap.put(typeClass, support);
         }
         return support;
     }
 
-    private static <T> TypeSupport<T> recursiveClassSupportFor(final Class<T> typeClass,
-                                                               final TypeSupportMap<T> supportMap) {
-        Class<? super T> superClass = typeClass.getSuperclass();
-        TypeSupport<T> support = null;
-        while (!superClass.equals(Object.class)) {
-            support = (TypeSupport<T>) supportMap.get(superClass);
-            if (support != null) {
-                break;
-            }
-            superClass = superClass.getSuperclass();
+    private static <T> TypeSupport<T> calculateSupport(final Class<T> typeClass,
+                                                               final TypeSupportMap supportMap) {
+        // Get all super types that have a support defined on
+        Set<Class> superTypes = new HashSet<Class>();
+        recursiveAddAllSuperTypes(typeClass, superTypes);
+        superTypes.retainAll(supportMap.keySet());
+
+        // No super type found, no support for this type
+        if (superTypes.isEmpty()) {
+            return null;
         }
-        return support;
+
+        // Super types found, make sure that there is one
+        // type that implements everything
+        for (Class<?> type : superTypes) {
+            boolean assignableToEverything = true;
+            for (Class<?> compareType : superTypes) {
+                assignableToEverything = assignableToEverything && compareType.isAssignableFrom(type);
+            }
+            if (assignableToEverything) {
+                // The introspection above guarantees that the type
+                // support is of a compatible type
+                @SuppressWarnings("unchecked")
+                TypeSupport<T> support = (TypeSupport<T>) supportMap.get(type);
+                return support;
+            }
+        }
+
+        throw new RuntimeException("Multiple support for type " + typeClass + " through " + superTypes);
     }
 
+    private static void recursiveAddAllSuperTypes(Class clazz, Set<Class> superClasses) {
+        // If already visited or null , return
+        if (clazz == null || superClasses.contains(clazz)) {
+            return;
+        }
+
+        superClasses.add(clazz);
+        recursiveAddAllSuperTypes(clazz.getSuperclass(), superClasses);
+        for (Class interf : clazz.getInterfaces()) {
+            recursiveAddAllSuperTypes(interf, superClasses);
+        }
+    }
     /**
      * Creates a new type support of the given type
      * 
