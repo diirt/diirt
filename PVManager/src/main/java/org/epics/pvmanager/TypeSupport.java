@@ -117,24 +117,35 @@ public abstract class TypeSupport<T> {
         TypeSupportMap<T> calcSupportMap = allCalcTypeSupports.get(supportFamily);
         TypeSupportMap<T> supportMap = allTypeSupports.get(supportFamily);
         
+        if (supportMap == null || calcSupportMap == null) {
+            throw new RuntimeException("No type support found for family " + supportFamily, null);
+        }
+        
         TypeSupport<T> support = (TypeSupport<T>) calcSupportMap.get(typeClass);
         if (support == null) {
             support = recursiveTypeSupportFor(typeClass, supportMap);
             if (support == null) {
-                Class<? super T> superClass = typeClass.getSuperclass();
-                while (!superClass.equals(Object.class)) {
-                    support = (TypeSupport<T>) supportMap.get(superClass);
-                    if (support != null) {
-                        break;
-                    }
-                    superClass = superClass.getSuperclass();
-                }
+                support = recursiveClassSupportFor(typeClass, supportMap);
             }
             if (support == null) {
                 // TODO (carcassi) : unchecked vs checked? a dedicated TypeSupportException? I don't know...
                 throw new RuntimeException("No support found for type " + typeClass);
             }
             calcSupportMap.put(typeClass, support);
+        }
+        return support;
+    }
+
+    private static <T> TypeSupport<T> recursiveClassSupportFor(final Class<T> typeClass,
+                                                               final TypeSupportMap<T> supportMap) {
+        Class<? super T> superClass = typeClass.getSuperclass();
+        TypeSupport<T> support = null;
+        while (!superClass.equals(Object.class)) {
+            support = (TypeSupport<T>) supportMap.get(superClass);
+            if (support != null) {
+                break;
+            }
+            superClass = superClass.getSuperclass();
         }
         return support;
     }
