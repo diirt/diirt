@@ -38,7 +38,7 @@ public abstract class TypeSupport<T> {
      * @author bknerr
      * @since 20.01.2011
      */
-    private static final class TypeSupportMap<T> extends ConcurrentHashMap<Class<T>, TypeSupport<T>> {
+    private static final class TypeSupportMap extends ConcurrentHashMap<Class, TypeSupport> {
         private static final long serialVersionUID = -8726785703555122582L;
         public TypeSupportMap() { /* EMPTY */ }
     }
@@ -52,9 +52,9 @@ public abstract class TypeSupport<T> {
     private static 
     void addTypeSupportFamilyIfNotExists(final Map<Class<? extends TypeSupport>, TypeSupportMap> map, 
                                          final Class<? extends TypeSupport> typeSupportFamily) {
-        TypeSupportMap<?> familyMap = (TypeSupportMap<?>) map.get(typeSupportFamily);
+        TypeSupportMap familyMap = map.get(typeSupportFamily);
         if (familyMap == null) {
-            TypeSupportMap<?> supportMap = new TypeSupportMap();
+            TypeSupportMap supportMap = new TypeSupportMap();
             map.put(typeSupportFamily, supportMap);
         }
     }
@@ -67,8 +67,6 @@ public abstract class TypeSupport<T> {
      * A class cannot have two types support in the same family coming from
      * two different and unrelated interfaces.
      *
-     * @param <T> type to add support for
-     * @param typeClass type to add support for
      * @param typeSupport the support to add
      */
     public static
@@ -105,8 +103,8 @@ public abstract class TypeSupport<T> {
     protected static <T> TypeSupport<T> cachedTypeSupportFor(@SuppressWarnings("rawtypes") final Class<? extends TypeSupport> supportFamily,
                                                              final Class<T> typeClass) {
         
-        TypeSupportMap<T> calcSupportMap = allCalcTypeSupports.get(supportFamily);
-        TypeSupportMap<T> supportMap = allTypeSupports.get(supportFamily);
+        TypeSupportMap calcSupportMap = allCalcTypeSupports.get(supportFamily);
+        TypeSupportMap supportMap = allTypeSupports.get(supportFamily);
         
         if (supportMap == null || calcSupportMap == null) {
             throw new RuntimeException("No type support found for family " + supportFamily, null);
