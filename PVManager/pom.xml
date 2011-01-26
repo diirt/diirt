@@ -5,7 +5,7 @@
     <groupId>epics</groupId>
     <artifactId>PVManager</artifactId>
     <packaging>jar</packaging>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
     <name>PVManager</name>
     <url>http://pvmanager.sourceforge.net</url>
     <description>Client utility library to manage complex objects retrival and scanning.</description>
