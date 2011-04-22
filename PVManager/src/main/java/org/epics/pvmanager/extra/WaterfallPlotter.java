@@ -13,6 +13,7 @@ import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.extra.WaterfallPlotParameters.InternalCopy;
 
 /**
  *
@@ -21,17 +22,21 @@ import org.epics.pvmanager.data.VImage;
 class WaterfallPlotter extends Function<VImage> {
 
     private final Function<List<VDoubleArray>> function;
-    private final WaterfallPlotParameters parameters;
+    private volatile WaterfallPlotParameters.InternalCopy parameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
     private AdaptiveRange adaptiveRange;
 
-    public WaterfallPlotter(Function<List<VDoubleArray>> function) {
-        this(function, new WaterfallPlotParameters());
+    public WaterfallPlotter(Function<List<VDoubleArray>> function, WaterfallPlotParameters.InternalCopy parameters) {
+        this.function = function;
+        this.parameters = parameters;
     }
 
-    public WaterfallPlotter(Function<List<VDoubleArray>> function, WaterfallPlotParameters parameters) {
-        this.function = function;
+    public InternalCopy getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(InternalCopy parameters) {
         this.parameters = parameters;
     }
 

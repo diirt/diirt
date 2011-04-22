@@ -15,7 +15,6 @@ import java.awt.Color;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import javax.swing.ImageIcon;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
@@ -24,10 +23,11 @@ import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
-import org.epics.pvmanager.extra.WaterfallPlotParameters;
+import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
+import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 
 /**
  *
@@ -47,6 +47,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
     }
 
     private PV<VImage> pv;
+    private WaterfallPlot plot;
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -62,6 +63,8 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         pvName = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,24 +80,32 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
         lastError.setEditable(false);
 
+        jLabel2.setText("Max Height:");
+
+        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner1StateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(plotLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lastError, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(plotLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                    .addComponent(lastError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -105,9 +116,13 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(pvName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plotLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(plotLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lastError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -120,9 +135,10 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         if (pv != null)
             pv.close();
 
-        pv = PVManager.read(waterfallPlotOf(vDoubleArray(pvName.getText()), new WaterfallPlotParameters()
-                .withColorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED))
-                .withAdaptiveRange(true))).andNotify(ThreadSwitch.onSwingEDT())
+        plot = waterfallPlotOf(vDoubleArray(pvName.getText())).with(
+                colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)),
+                adaptiveRange(true));
+        pv = PVManager.read(plot).andNotify(ThreadSwitch.onSwingEDT())
                 .atHz(20);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -136,6 +152,12 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_pvNameActionPerformed
+
+    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
+        if (plot != null) {
+            plot.with(maxHeight(((Number) jSpinner1.getValue()).intValue()));
+        }
+    }//GEN-LAST:event_jSpinner1StateChanged
 
 
     private void setLastError(Exception ex) {
@@ -161,7 +183,9 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField lastError;
     private javax.swing.JLabel plotLabel;
     private javax.swing.JTextField pvName;
