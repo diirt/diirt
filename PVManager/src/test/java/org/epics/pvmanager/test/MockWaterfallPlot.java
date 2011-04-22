@@ -64,7 +64,8 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         lastError = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        maxHeightField = new javax.swing.JSpinner();
+        adaptiveRangeField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,9 +83,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
         jLabel2.setText("Max Height:");
 
-        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+        maxHeightField.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(50), Integer.valueOf(1), null, Integer.valueOf(1)));
+        maxHeightField.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSpinner1StateChanged(evt);
+                maxHeightFieldStateChanged(evt);
+            }
+        });
+
+        adaptiveRangeField.setText("Adaptive range");
+        adaptiveRangeField.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                adaptiveRangeFieldStateChanged(evt);
             }
         });
 
@@ -105,7 +114,9 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(maxHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(adaptiveRangeField)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -118,7 +129,8 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(maxHeightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adaptiveRangeField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -136,8 +148,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             pv.close();
 
         plot = waterfallPlotOf(vDoubleArray(pvName.getText())).with(
-                colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)),
-                adaptiveRange(true));
+                colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)));
         pv = PVManager.read(plot).andNotify(ThreadSwitch.onSwingEDT())
                 .atHz(20);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
@@ -153,11 +164,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_pvNameActionPerformed
 
-    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
+    private void maxHeightFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxHeightFieldStateChanged
         if (plot != null) {
-            plot.with(maxHeight(((Number) jSpinner1.getValue()).intValue()));
+            plot.with(maxHeight(((Number) maxHeightField.getValue()).intValue()));
         }
-    }//GEN-LAST:event_jSpinner1StateChanged
+    }//GEN-LAST:event_maxHeightFieldStateChanged
+
+    private void adaptiveRangeFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_adaptiveRangeFieldStateChanged
+        if (plot != null) {
+            plot.with(adaptiveRange(adaptiveRangeField.isSelected()));
+        }
+    }//GEN-LAST:event_adaptiveRangeFieldStateChanged
 
 
     private void setLastError(Exception ex) {
@@ -182,11 +199,12 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox adaptiveRangeField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField lastError;
+    private javax.swing.JSpinner maxHeightField;
     private javax.swing.JLabel plotLabel;
     private javax.swing.JTextField pvName;
     // End of variables declaration//GEN-END:variables
