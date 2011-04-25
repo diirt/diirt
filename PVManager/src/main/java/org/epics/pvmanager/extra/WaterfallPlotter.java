@@ -90,8 +90,14 @@ class WaterfallPlotter extends Function<VImage> {
 //            Graphics2D gc = image.createGraphics();
 //            gc.drawImage(previousBuffer, 0, newArrays.size(), null);
 //        }
-
-        TimeStamp finalTime = TimeStamp.now();
+        
+        TimeStamp finalTime;
+        if (previousFinalTime != null) {
+            int nNewPixels = (int) (TimeStamp.now().durationFrom(previousFinalTime).getNanoSec() / parameters.pixelDuration.getNanoSec());
+            finalTime = previousFinalTime.plus(parameters.pixelDuration.multiplyBy(nNewPixels));
+        } else {
+            finalTime = TimeStamp.now();
+        }
         TimeStamp initialTime = finalTime.minus(parameters.pixelDuration.multiplyBy(parameters.height));
         
         TimeStamp pixelStart = initialTime;
@@ -137,12 +143,15 @@ class WaterfallPlotter extends Function<VImage> {
                 }
             }
             
-            previousDisplayed = toDisplay;
+            if (!pixelValues.isEmpty())
+                previousDisplayed = pixelValues.get(pixelValues.size() - 1);
             pixelEnd = pixelEnd.plus(parameters.pixelDuration);
         }
 
         previousImage = Util.toVImage(image);
         previousBuffer = image;
+        previousInitialTime = initialTime;
+        previousFinalTime = finalTime;
         return previousImage;
     }
     
