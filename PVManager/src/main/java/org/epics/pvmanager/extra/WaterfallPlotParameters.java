@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.epics.pvmanager.util.TimeDuration;
 
 /**
  *
@@ -17,14 +18,16 @@ import java.util.Map;
 public class WaterfallPlotParameters extends Parameters {
 
     static class InternalCopy {
-        final Integer maxHeight;
+        final Integer height;
         final ColorScheme colorScheme;
         final Boolean adaptiveRange;
+        final TimeDuration pixelDuration;
         
         private InternalCopy(Map<Object, Object> params) {
-            maxHeight = (Integer) params.get("maxHeight");
+            height = (Integer) params.get("height");
             colorScheme = (ColorScheme) params.get("colorScheme");
             adaptiveRange = (Boolean) params.get("adaptiveRange");
+            pixelDuration = (TimeDuration) params.get("pixelDuration");
         }
         
     }
@@ -43,9 +46,10 @@ public class WaterfallPlotParameters extends Parameters {
 
     static WaterfallPlotParameters defaults() {
         Map<Object, Object> defaults = new HashMap<Object, Object>();
-        defaults.put("maxHeight", 50);
+        defaults.put("height", 50);
         defaults.put("colorScheme", ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE));
         defaults.put("adaptiveRange", false);
+        defaults.put("pixelDuration", TimeDuration.ms(10));
         return new WaterfallPlotParameters(defaults);
     }
     
@@ -53,8 +57,8 @@ public class WaterfallPlotParameters extends Parameters {
         return new InternalCopy(getParameters());
     }
     
-    public static WaterfallPlotParameters maxHeight(int maxHeight) {
-        return new WaterfallPlotParameters("maxHeight", maxHeight);
+    public static WaterfallPlotParameters height(int height) {
+        return new WaterfallPlotParameters("height", height);
     }
 
     public static WaterfallPlotParameters colorScheme(ColorScheme colorScheme) {

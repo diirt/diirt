@@ -33,7 +33,7 @@ public class WaterfallPlot extends DesiredRateExpression<VImage> {
     }
 
     public int getMaxHeight() {
-        return getPlotter().getParameters().maxHeight;
+        return getPlotter().getParameters().height;
     }
 
     public boolean isAdaptiveRange() {

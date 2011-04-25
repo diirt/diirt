@@ -15,6 +15,8 @@ import java.awt.Color;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
@@ -166,7 +168,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     private void maxHeightFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxHeightFieldStateChanged
         if (plot != null) {
-            plot.with(maxHeight(((Number) maxHeightField.getValue()).intValue()));
+            plot.with(height(((Number) maxHeightField.getValue()).intValue()));
         }
     }//GEN-LAST:event_maxHeightFieldStateChanged
 
@@ -178,9 +180,10 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
 
     private void setLastError(Exception ex) {
-        if (ex != null)
+        if (ex != null) {
             lastError.setText(ex.getMessage());
-        else
+            Logger.getLogger(MockWaterfallPlot.class.getName()).log(Level.WARNING, "Error", ex);
+        } else
             lastError.setText("");
     }
 
