@@ -69,5 +69,8 @@ public class WaterfallPlotParameters extends Parameters {
         return new WaterfallPlotParameters("adaptiveRange", adaptiveRange);
     }
 
+    public static WaterfallPlotParameters pixelDuration(TimeDuration pixelDuration) {
+        return new WaterfallPlotParameters("pixelDuration", pixelDuration);
+    }
     
 }

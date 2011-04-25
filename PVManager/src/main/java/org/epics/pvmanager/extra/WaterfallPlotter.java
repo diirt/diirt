@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.extra;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +28,11 @@ class WaterfallPlotter extends Function<VImage> {
 
     private final Function<List<VDoubleArray>> function;
     private volatile WaterfallPlotParameters.InternalCopy mutableParameters;
+    private WaterfallPlotParameters.InternalCopy previousParameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
-    private TimeStamp previousInitialTime;
-    private TimeStamp previousFinalTime;
+    private TimeStamp previousPlotStart;
+    private TimeStamp previousPlotEnd;
     private AdaptiveRange adaptiveRange;
     private List<VDoubleArray> previousValues = new LinkedList<VDoubleArray>();
 
@@ -54,6 +56,9 @@ class WaterfallPlotter extends Function<VImage> {
         if (parameters == null)
             return null;
         
+        // If parameters changed, redraw all
+        boolean redrawAll = parameters != previousParameters;
+        
         // Take new values and sort them
         List<VDoubleArray> newArrays = function.getValue();
 
@@ -68,8 +73,6 @@ class WaterfallPlotter extends Function<VImage> {
             adaptiveRange = null;
         }
         
-        // XXX for now, just repaint everything
-        
         // Calculate new image width (max from all data)
         int newWidth = 0;
         for (VDoubleArray vDoubleArray : newArrays) {
@@ -83,30 +86,33 @@ class WaterfallPlotter extends Function<VImage> {
         Collections.sort(previousValues, Util.timeComparator());
         if (previousValues.isEmpty())
             return null;
-
-        BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
-        // Don't use the old image for now
-//        if (previousImage != null && newArrays.size() < parameters.height) {
-//            Graphics2D gc = image.createGraphics();
-//            gc.drawImage(previousBuffer, 0, newArrays.size(), null);
-//        }
         
-        TimeStamp finalTime;
-        if (previousFinalTime != null) {
-            int nNewPixels = (int) (TimeStamp.now().durationFrom(previousFinalTime).getNanoSec() / parameters.pixelDuration.getNanoSec());
-            finalTime = previousFinalTime.plus(parameters.pixelDuration.multiplyBy(nNewPixels));
+        TimeStamp plotEnd;
+        int nNewPixels;
+        if (previousPlotEnd != null) {
+            nNewPixels = (int) (TimeStamp.now().durationFrom(previousPlotEnd).getNanoSec() / parameters.pixelDuration.getNanoSec());
+            plotEnd = previousPlotEnd.plus(parameters.pixelDuration.multiplyBy(nNewPixels));
         } else {
-            finalTime = TimeStamp.now();
+            plotEnd = TimeStamp.now();
+            nNewPixels = 0;
+            redrawAll = true;
         }
-        TimeStamp initialTime = finalTime.minus(parameters.pixelDuration.multiplyBy(parameters.height));
         
-        TimeStamp pixelStart = initialTime;
-        TimeStamp pixelEnd = initialTime.plus(parameters.pixelDuration);
+        BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
+        if (previousImage != null && !redrawAll) {
+            Graphics2D gc = image.createGraphics();
+            gc.drawImage(previousBuffer, 0, nNewPixels, null);
+        }
+        
+        TimeStamp plotStart = plotEnd.minus(parameters.pixelDuration.multiplyBy(parameters.height));
+        
+        TimeStamp pixelStart = plotStart;
+        TimeStamp pixelEnd = plotStart.plus(parameters.pixelDuration);
         
         // Remove old values, but keep one
         List<VDoubleArray> oldValues = new ArrayList<VDoubleArray>();
         for (VDoubleArray vDoubleArray : previousValues) {
-            if (vDoubleArray.getTimeStamp().compareTo(initialTime) <= 0) {
+            if (vDoubleArray.getTimeStamp().compareTo(plotStart) <= 0) {
                 oldValues.add(vDoubleArray);
             } else {
                 break;
@@ -119,23 +125,45 @@ class WaterfallPlotter extends Function<VImage> {
         
         Iterator<VDoubleArray> iter = previousValues.iterator();
         VDoubleArray currentValue = null;
-        if (!oldValues.isEmpty())
+        VDoubleArray previousDisplayed = null;
+        if (!oldValues.isEmpty()) {
             currentValue = oldValues.get(oldValues.size() - 1);
+            previousDisplayed = currentValue;
+        } else {
+            currentValue = iter.next();
+        }
         
         List<VDoubleArray> pixelValues = new ArrayList<VDoubleArray>();
-        VDoubleArray previousDisplayed = currentValue;
-        for (int line = 0; line < parameters.height; line++) {
+        for (int line = parameters.height - 1; line >= 0; line--) {
             // Accumulate values in pixel
+            boolean drawLine = redrawAll || line < nNewPixels;
             pixelValues.clear();
-            while (iter.hasNext() && (currentValue == null || currentValue.getTimeStamp().compareTo(pixelEnd) <= 0)) {
+            while (currentValue != null) {
+                // current value is past the pixel range
+                if (currentValue.getTimeStamp().compareTo(pixelEnd) > 0) {
+                    break;
+                }
+                
+                // current value in pixel range, add
                 pixelValues.add(currentValue);
-                currentValue = iter.next();
+                
+                // If it is a new value, you must draw the line again
+                drawLine = drawLine || newArrays.contains(currentValue);
+                
+                // Get new value if exists
+                if (iter.hasNext()) {
+                    currentValue = iter.next();
+                } else {
+                    currentValue = null;
+                }
             }
             
             VDoubleArray toDisplay = aggregate(pixelValues);
-            if (toDisplay == null)
+            if (toDisplay == null) {
                 toDisplay = previousDisplayed;
-            if (toDisplay != null) {
+                drawLine = drawLine || newArrays.contains(previousDisplayed);
+            }
+            if (toDisplay != null && drawLine) {
                 if (parameters.adaptiveRange) {
                     fillLine(line, toDisplay.getArray(), adaptiveRange, parameters.colorScheme, image);
                 } else {
@@ -150,8 +178,9 @@ class WaterfallPlotter extends Function<VImage> {
 
         previousImage = Util.toVImage(image);
         previousBuffer = image;
-        previousInitialTime = initialTime;
-        previousFinalTime = finalTime;
+        previousPlotStart = plotStart;
+        previousPlotEnd = plotEnd;
+        previousParameters = parameters;
         return previousImage;
     }
     
