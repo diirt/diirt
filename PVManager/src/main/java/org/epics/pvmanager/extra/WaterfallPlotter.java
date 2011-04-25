@@ -100,8 +100,7 @@ class WaterfallPlotter extends Function<VImage> {
         
         BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
         if (previousImage != null && !redrawAll) {
-            Graphics2D gc = image.createGraphics();
-            gc.drawImage(previousBuffer, 0, nNewPixels, null);
+            drawOldImage(image, previousBuffer, nNewPixels, parameters);
         }
         
         TimeStamp plotStart = plotEnd.minus(parameters.pixelDuration.multiplyBy(parameters.height));
@@ -165,9 +164,9 @@ class WaterfallPlotter extends Function<VImage> {
             }
             if (toDisplay != null && drawLine) {
                 if (parameters.adaptiveRange) {
-                    fillLine(line, toDisplay.getArray(), adaptiveRange, parameters.colorScheme, image);
+                    fillLine(line, toDisplay.getArray(), adaptiveRange, parameters.colorScheme, image, parameters);
                 } else {
-                    fillLine(line, toDisplay.getArray(), toDisplay, parameters.colorScheme, image);
+                    fillLine(line, toDisplay.getArray(), toDisplay, parameters.colorScheme, image, parameters);
                 }
             }
             
@@ -191,9 +190,21 @@ class WaterfallPlotter extends Function<VImage> {
         return values.get(values.size() - 1);
     }
 
-    private static void fillLine(int y, double[] array, Display display, ColorScheme colorScheme, BufferedImage image) {
+    private static void fillLine(int y, double[] array, Display display, ColorScheme colorScheme, BufferedImage image, InternalCopy parameters) {
+        if (!parameters.latestOnTop) {
+            y = parameters.height - y - 1;
+        }
         for (int i = 0; i < array.length; i++) {
             image.setRGB(i, y, colorScheme.color(array[i], display));
+        }
+    }
+
+    private void drawOldImage(BufferedImage image, BufferedImage previousBuffer, int nNewPixels, InternalCopy parameters) {
+        Graphics2D gc = image.createGraphics();
+        if (parameters.latestOnTop) {
+            gc.drawImage(previousBuffer, 0, nNewPixels, null);
+        } else {
+            gc.drawImage(previousBuffer, 0, -nNewPixels, null);
         }
     }
 
