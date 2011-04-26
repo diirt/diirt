@@ -98,6 +98,12 @@ class WaterfallPlotFunction extends Function<VImage> {
             redrawAll = true;
         }
         
+        // If we already have an image, no new data, and the plot did not move,
+        // just return the same plot!
+        if (previousImage != null && nNewPixels == 0 && newArrays.isEmpty()) {
+            return previousImage;
+        }
+        
         BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
         if (previousImage != null && !redrawAll) {
             drawOldImage(image, previousBuffer, nNewPixels, parameters);
