@@ -117,6 +117,16 @@ public class WaterfallPlotParameters extends Parameters {
     public static WaterfallPlotParameters pixelDuration(TimeDuration pixelDuration) {
         return new WaterfallPlotParameters("pixelDuration", pixelDuration);
     }
+    
+    /**
+     * Returns a new set of parameters with the given changes;
+     * 
+     * @param newParameters parameters to change
+     * @return a new set of parameters
+     */
+    public WaterfallPlotParameters with(WaterfallPlotParameters... newParameters) {
+        return new WaterfallPlotParameters(this, newParameters);
+    }
 
     /**
      * The height of the plot in pixels.
