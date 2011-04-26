@@ -17,6 +17,7 @@ import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.data.ValueFactory;
 import org.epics.pvmanager.extra.WaterfallPlotParameters.InternalCopy;
 import org.epics.pvmanager.util.TimeStamp;
 
@@ -163,7 +164,7 @@ class WaterfallPlotFunction extends Function<VImage> {
                 }
             }
             
-            VDoubleArray toDisplay = aggregate(pixelValues);
+            VDoubleArray toDisplay = aggregate(pixelValues, newWidth);
             if (toDisplay == null) {
                 toDisplay = previousDisplayed;
                 drawLine = drawLine || newArrays.contains(previousDisplayed);
@@ -189,11 +190,36 @@ class WaterfallPlotFunction extends Function<VImage> {
         return previousImage;
     }
     
-    private static VDoubleArray aggregate(List<VDoubleArray> values) {
+    private static VDoubleArray aggregate(List<VDoubleArray> values, int width) {
+        // TODO: averaging/aggregation of arrays should be implemented somewhere else
+        // for general use
         if (values.isEmpty())
             return null;
         
-        return values.get(values.size() - 1);
+        if (values.size() == 1)
+            return values.get(0);
+        
+        double[] average = new double[width];
+        
+        for (VDoubleArray value : values) {
+            for (int i = 0; i < value.getArray().length; i++) {
+                average[i] += value.getArray()[i];
+            }
+        }
+        
+        for (int i = 0; i < average.length; i++) {
+            average[i] = average[i] / values.size();
+        }
+        
+        VDoubleArray template = values.get(values.size() - 1);
+        
+        return ValueFactory.newVDoubleArray(average, template.getSizes(),
+                template.getAlarmSeverity(), template.getAlarmStatus(),
+                template.getTimeStamp(), template.getTimeUserTag(),
+                template.getLowerDisplayLimit(), template.getLowerAlarmLimit(),
+                template.getLowerWarningLimit(), template.getUnits(), template.getFormat(),
+                template.getUpperWarningLimit(), template.getUpperAlarmLimit(),
+                template.getUpperDisplayLimit(), template.getLowerCtrlLimit(), template.getUpperCtrlLimit());
     }
 
     private static void fillLine(int y, double[] array, Display display, ColorScheme colorScheme, BufferedImage image, InternalCopy parameters) {
