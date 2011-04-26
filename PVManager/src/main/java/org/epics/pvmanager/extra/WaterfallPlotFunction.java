@@ -32,7 +32,6 @@ class WaterfallPlotFunction extends Function<VImage> {
     private WaterfallPlotParameters.InternalCopy previousParameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
-    private TimeStamp previousPlotStart;
     private TimeStamp previousPlotEnd;
     private AdaptiveRange adaptiveRange;
     private List<VDoubleArray> previousValues = new LinkedList<VDoubleArray>();
@@ -60,8 +59,14 @@ class WaterfallPlotFunction extends Function<VImage> {
         // If parameters changed, redraw all
         boolean redrawAll = parameters != previousParameters;
         
-        // Take new values and sort them
+        // Take new values, add them and reorder by time
         List<VDoubleArray> newArrays = function.getValue();
+        previousValues.addAll(newArrays);
+        Collections.sort(previousValues, Util.timeComparator());
+        
+        // If no values at all, return null
+        if (previousValues.isEmpty())
+            return null;
 
         // Initialize adaptive range
         if (parameters.adaptiveRange) {
@@ -82,12 +87,8 @@ class WaterfallPlotFunction extends Function<VImage> {
         if (previousImage != null)
             newWidth = Math.max(previousImage.getWidth(), newWidth);
         
-        // Add new samples and reorder
-        previousValues.addAll(newArrays);
-        Collections.sort(previousValues, Util.timeComparator());
-        if (previousValues.isEmpty())
-            return null;
-        
+        // Calculate new end time for the plot, and how many pixels
+        // should the plot scroll
         TimeStamp plotEnd;
         int nNewPixels;
         if (previousPlotEnd != null) {
@@ -105,15 +106,17 @@ class WaterfallPlotFunction extends Function<VImage> {
             return previousImage;
         }
         
+        
+        // Create new image. Copy the old image if needed.
         BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
         if (previousImage != null && !redrawAll) {
             drawOldImage(image, previousBuffer, nNewPixels, parameters);
         }
         
+        // Calculate the rest of the time range
         TimeStamp plotStart = plotEnd.minus(parameters.pixelDuration.multiplyBy(parameters.height));
-        
         TimeStamp pixelStart = plotStart;
-        TimeStamp pixelEnd = plotStart.plus(parameters.pixelDuration);
+        TimeStamp pixelEnd = pixelStart.plus(parameters.pixelDuration);
         
         // Remove old values, but keep one
         List<VDoubleArray> oldValues = new ArrayList<VDoubleArray>();
@@ -129,6 +132,10 @@ class WaterfallPlotFunction extends Function<VImage> {
             previousValues.removeAll(oldValues);
         }
         
+        // Initialize iterator. CurrentValue will hold the last value
+        // taken from the iterator, that was not within the time intervale
+        // of the current line. PreviousDisplayed holds the latest value
+        // so that it can be redisplayed in case there are no new valued.
         Iterator<VDoubleArray> iter = previousValues.iterator();
         VDoubleArray currentValue = null;
         VDoubleArray previousDisplayed = null;
@@ -139,10 +146,16 @@ class WaterfallPlotFunction extends Function<VImage> {
             currentValue = iter.next();
         }
         
+        // The values that fall within the pixel time range
         List<VDoubleArray> pixelValues = new ArrayList<VDoubleArray>();
+        
+        // Loop over all lines
         for (int line = parameters.height - 1; line >= 0; line--) {
-            // Accumulate values in pixel
+            // Wether this line needs to be drawn. If everything needs
+            // to be redrawn or if it's a new pixel, always draw.
             boolean drawLine = redrawAll || line < nNewPixels;
+
+            // Accumulate values in pixel
             pixelValues.clear();
             while (currentValue != null) {
                 // current value is past the pixel range
@@ -164,27 +177,33 @@ class WaterfallPlotFunction extends Function<VImage> {
                 }
             }
             
-            VDoubleArray toDisplay = aggregate(pixelValues, newWidth);
-            if (toDisplay == null) {
-                toDisplay = previousDisplayed;
+            // Decide what to draw
+            VDoubleArray toDraw = aggregate(pixelValues, newWidth);
+            if (toDraw == null) {
+                toDraw = previousDisplayed;
                 drawLine = drawLine || newArrays.contains(previousDisplayed);
             }
-            if (toDisplay != null && drawLine) {
+            
+            // Draw only if we have a line to draw and if it needs to be drawn
+            if (toDraw != null && drawLine) {
                 if (parameters.adaptiveRange) {
-                    fillLine(line, toDisplay.getArray(), adaptiveRange, parameters.colorScheme, image, parameters);
+                    fillLine(line, toDraw.getArray(), adaptiveRange, parameters.colorScheme, image, parameters);
                 } else {
-                    fillLine(line, toDisplay.getArray(), toDisplay, parameters.colorScheme, image, parameters);
+                    fillLine(line, toDraw.getArray(), toDraw, parameters.colorScheme, image, parameters);
                 }
             }
             
+            // Get the latest value in case it should be displayed in the
+            // next line
             if (!pixelValues.isEmpty())
                 previousDisplayed = pixelValues.get(pixelValues.size() - 1);
+            
+            // Increase pixel range
             pixelEnd = pixelEnd.plus(parameters.pixelDuration);
         }
 
         previousImage = Util.toVImage(image);
         previousBuffer = image;
-        previousPlotStart = plotStart;
         previousPlotEnd = plotEnd;
         previousParameters = parameters;
         return previousImage;
