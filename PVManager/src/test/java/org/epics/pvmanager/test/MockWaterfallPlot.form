@@ -44,7 +44,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="maxHeightField" min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="heightField" min="-2" pref="60" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -68,7 +68,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="maxHeightField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="heightField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pixelDurationField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -116,14 +116,14 @@
         <Property name="text" type="java.lang.String" value="Max Height:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="maxHeightField">
+    <Component class="javax.swing.JSpinner" name="heightField">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel initial="50" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="maxHeightFieldStateChanged"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="heightFieldStateChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="adaptiveRangeField">
@@ -142,7 +142,7 @@
     <Component class="javax.swing.JSpinner" name="pixelDurationField">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="100" numberType="java.lang.Integer" stepSize="1" type="number"/>
+          <SpinnerModel initial="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
       </Properties>
       <Events>

@@ -46,12 +46,12 @@ public class WaterfallPlotParameters extends Parameters {
         super(defaults, newValues);
     }
 
-    static WaterfallPlotParameters defaults() {
+    public static WaterfallPlotParameters defaults() {
         Map<Object, Object> defaults = new HashMap<Object, Object>();
         defaults.put("height", 50);
         defaults.put("colorScheme", ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE));
         defaults.put("adaptiveRange", false);
-        defaults.put("latestOnTop", false);
+        defaults.put("scrollDown", false);
         defaults.put("pixelDuration", TimeDuration.ms(10));
         return new WaterfallPlotParameters(defaults);
     }
@@ -78,6 +78,26 @@ public class WaterfallPlotParameters extends Parameters {
 
     public static WaterfallPlotParameters pixelDuration(TimeDuration pixelDuration) {
         return new WaterfallPlotParameters("pixelDuration", pixelDuration);
+    }
+
+    public int getHeight() {
+        return internalCopy().height;
+    }
+
+    public boolean isAdaptiveRange() {
+        return internalCopy().adaptiveRange;
+    }
+    
+    public boolean isScrollDown() {
+        return internalCopy().scrollDown;
+    }
+
+    public ColorScheme getColorScheme() {
+        return internalCopy().colorScheme;
+    }
+    
+    public TimeDuration getPixelDuration() {
+        return internalCopy().pixelDuration;
     }
     
 }

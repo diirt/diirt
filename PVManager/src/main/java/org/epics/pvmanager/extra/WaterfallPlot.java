@@ -31,20 +31,8 @@ public class WaterfallPlot extends DesiredRateExpression<VImage> {
         getPlotter().setParameters(copy);
         return this;
     }
-
-    public int getMaxHeight() {
-        return getPlotter().getParameters().height;
-    }
-
-    public boolean isAdaptiveRange() {
-        return getPlotter().getParameters().adaptiveRange;
-    }
     
-    public boolean scrollDown() {
-        return getPlotter().getParameters().scrollDown;
-    }
-
-    public ColorScheme getColorScheme() {
-        return getPlotter().getParameters().colorScheme;
+    public WaterfallPlotParameters getParameters() {
+        return parameters;
     }
 }
