@@ -16,13 +16,13 @@ import org.epics.pvmanager.data.VImage;
 public class WaterfallPlot extends DesiredRateExpression<VImage> {
 
     WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
-        super(queue, new WaterfallPlotter(queue.getFunction(), WaterfallPlotParameters.defaults().internalCopy()), name);
+        super(queue, new WaterfallPlotFunction(queue.getFunction(), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
     
     private volatile WaterfallPlotParameters parameters = WaterfallPlotParameters.defaults();
 
-    WaterfallPlotter getPlotter() {
-        return (WaterfallPlotter) getFunction();
+    WaterfallPlotFunction getPlotter() {
+        return (WaterfallPlotFunction) getFunction();
     }
     
     public WaterfallPlot with(WaterfallPlotParameters... newParameters) {
@@ -38,6 +38,10 @@ public class WaterfallPlot extends DesiredRateExpression<VImage> {
 
     public boolean isAdaptiveRange() {
         return getPlotter().getParameters().adaptiveRange;
+    }
+    
+    public boolean scrollDown() {
+        return getPlotter().getParameters().scrollDown;
     }
 
     public ColorScheme getColorScheme() {

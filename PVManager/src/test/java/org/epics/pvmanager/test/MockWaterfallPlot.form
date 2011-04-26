@@ -29,7 +29,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="adaptiveRangeField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="latestOnTopField" min="-2" max="-2" attributes="0"/>
+                      <Component id="scrollDownField" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -75,7 +75,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="adaptiveRangeField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="latestOnTopField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="scrollDownField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -149,13 +149,13 @@
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="pixelDurationFieldStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="latestOnTopField">
+    <Component class="javax.swing.JCheckBox" name="scrollDownField">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Latest on top"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="latestOnTopFieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="scrollDownFieldActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

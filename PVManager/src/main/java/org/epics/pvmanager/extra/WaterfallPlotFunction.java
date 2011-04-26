@@ -24,7 +24,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class WaterfallPlotter extends Function<VImage> {
+class WaterfallPlotFunction extends Function<VImage> {
 
     private final Function<List<VDoubleArray>> function;
     private volatile WaterfallPlotParameters.InternalCopy mutableParameters;
@@ -36,7 +36,7 @@ class WaterfallPlotter extends Function<VImage> {
     private AdaptiveRange adaptiveRange;
     private List<VDoubleArray> previousValues = new LinkedList<VDoubleArray>();
 
-    public WaterfallPlotter(Function<List<VDoubleArray>> function, WaterfallPlotParameters.InternalCopy parameters) {
+    public WaterfallPlotFunction(Function<List<VDoubleArray>> function, WaterfallPlotParameters.InternalCopy parameters) {
         this.function = function;
         this.mutableParameters = parameters;
     }
@@ -191,7 +191,7 @@ class WaterfallPlotter extends Function<VImage> {
     }
 
     private static void fillLine(int y, double[] array, Display display, ColorScheme colorScheme, BufferedImage image, InternalCopy parameters) {
-        if (!parameters.latestOnTop) {
+        if (!parameters.scrollDown) {
             y = parameters.height - y - 1;
         }
         for (int i = 0; i < array.length; i++) {
@@ -201,7 +201,7 @@ class WaterfallPlotter extends Function<VImage> {
 
     private void drawOldImage(BufferedImage image, BufferedImage previousBuffer, int nNewPixels, InternalCopy parameters) {
         Graphics2D gc = image.createGraphics();
-        if (parameters.latestOnTop) {
+        if (parameters.scrollDown) {
             gc.drawImage(previousBuffer, 0, nNewPixels, null);
         } else {
             gc.drawImage(previousBuffer, 0, -nNewPixels, null);

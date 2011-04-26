@@ -71,7 +71,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         adaptiveRangeField = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         pixelDurationField = new javax.swing.JSpinner();
-        latestOnTopField = new javax.swing.JCheckBox();
+        scrollDownField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,11 +112,11 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             }
         });
 
-        latestOnTopField.setSelected(true);
-        latestOnTopField.setText("Latest on top");
-        latestOnTopField.addActionListener(new java.awt.event.ActionListener() {
+        scrollDownField.setSelected(true);
+        scrollDownField.setText("Latest on top");
+        scrollDownField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                latestOnTopFieldActionPerformed(evt);
+                scrollDownFieldActionPerformed(evt);
             }
         });
 
@@ -131,7 +131,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(adaptiveRangeField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(latestOnTopField)
+                        .addComponent(scrollDownField)
                         .addGap(239, 239, 239))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -167,7 +167,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adaptiveRangeField)
-                    .addComponent(latestOnTopField))
+                    .addComponent(scrollDownField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,7 +187,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         plot = waterfallPlotOf(vDoubleArray(pvName.getText())).with(
                 colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)),
                 adaptiveRange(adaptiveRangeField.isSelected()),
-                latestOnTop(latestOnTopField.isSelected()),
+                scrollDown(scrollDownField.isSelected()),
                 height(((Number) maxHeightField.getValue()).intValue()),
                 pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).andNotify(ThreadSwitch.onSwingEDT())
@@ -217,11 +217,11 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pixelDurationFieldStateChanged
 
-    private void latestOnTopFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latestOnTopFieldActionPerformed
+    private void scrollDownFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scrollDownFieldActionPerformed
         if (plot != null) {
-            plot.with(latestOnTop(latestOnTopField.isSelected()));
+            plot.with(scrollDown(scrollDownField.isSelected()));
         }
-    }//GEN-LAST:event_latestOnTopFieldActionPerformed
+    }//GEN-LAST:event_scrollDownFieldActionPerformed
 
     private void adaptiveRangeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaptiveRangeFieldActionPerformed
         if (plot != null) {
@@ -259,11 +259,11 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
-    private javax.swing.JCheckBox latestOnTopField;
     private javax.swing.JSpinner maxHeightField;
     private javax.swing.JSpinner pixelDurationField;
     private javax.swing.JLabel plotLabel;
     private javax.swing.JTextField pvName;
+    private javax.swing.JCheckBox scrollDownField;
     // End of variables declaration//GEN-END:variables
 
 }

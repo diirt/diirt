@@ -21,14 +21,14 @@ public class WaterfallPlotParameters extends Parameters {
         final Integer height;
         final ColorScheme colorScheme;
         final Boolean adaptiveRange;
-        final Boolean latestOnTop;
+        final Boolean scrollDown;
         final TimeDuration pixelDuration;
         
         private InternalCopy(Map<Object, Object> params) {
             height = (Integer) params.get("height");
             colorScheme = (ColorScheme) params.get("colorScheme");
             adaptiveRange = (Boolean) params.get("adaptiveRange");
-            latestOnTop = (Boolean) params.get("latestOnTop");
+            scrollDown = (Boolean) params.get("scrollDown");
             pixelDuration = (TimeDuration) params.get("pixelDuration");
         }
         
@@ -72,8 +72,8 @@ public class WaterfallPlotParameters extends Parameters {
         return new WaterfallPlotParameters("adaptiveRange", adaptiveRange);
     }
 
-    public static WaterfallPlotParameters latestOnTop(boolean latestOnTop) {
-        return new WaterfallPlotParameters("latestOnTop", latestOnTop);
+    public static WaterfallPlotParameters scrollDown(boolean scrollDown) {
+        return new WaterfallPlotParameters("scrollDown", scrollDown);
     }
 
     public static WaterfallPlotParameters pixelDuration(TimeDuration pixelDuration) {
