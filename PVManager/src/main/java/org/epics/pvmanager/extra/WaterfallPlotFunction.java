@@ -22,6 +22,7 @@ import org.epics.pvmanager.extra.WaterfallPlotParameters.InternalCopy;
 import org.epics.pvmanager.util.TimeStamp;
 
 /**
+ * Implements the image calculation.
  *
  * @author carcassi
  */
