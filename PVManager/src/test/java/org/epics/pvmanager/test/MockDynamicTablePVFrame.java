@@ -5,6 +5,9 @@
 
 package org.epics.pvmanager.test;
 
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JTable;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.data.Util;
@@ -20,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.extra.DynamicGroup;
@@ -35,6 +39,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     private DynamicGroup group = group();
     private PV<List<Object>> pv = PVManager.read(group).andNotify(ThreadSwitch.onSwingEDT()).atHz(2);
     private List<Object> latestValue = null;
+    private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
     private ValueFormat format = new SimpleValueFormat(3);
     
@@ -48,6 +53,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                 @Override
                 public void pvValueChanged() {
                     latestValue = pv.getValue();
+                    latestExceptions = group.lastExceptions();
                     fireTableRowsUpdated(0, getRowCount());
                 }
             });
@@ -83,19 +89,19 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                         return pvNames.get(rowIndex);
                     }
                 case 1:
-                    if (rowIndex >= pvNames.size() || latestValue == null) {
+                    if (latestValue == null || rowIndex >= latestValue.size()) {
                         return "";
                     } else {
                         return format.format(latestValue.get(rowIndex));
                     }
                 case 2:
-                    if (rowIndex >= pvNames.size() || latestValue == null) {
+                    if (latestValue == null || rowIndex >= latestValue.size()) {
                         return "";
                     } else {
                         return alarmSeverityOf(latestValue.get(rowIndex));
                     }
                 case 3:
-                    if (rowIndex >= pvNames.size() || latestValue == null) {
+                    if (latestValue == null || rowIndex >= latestValue.size()) {
                         return "";
                     } else {
                         return timeStampOf(latestValue.get(rowIndex));
@@ -137,6 +143,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                     group.set(rowIndex, latestValueOf(channel(name)));
                     pvNames.set(rowIndex, name);
                 }
+                latestExceptions = group.lastExceptions();
                 fireTableDataChanged();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(MockDynamicTablePVFrame.this, ex.getMessage(), "Can't open pv", JOptionPane.ERROR_MESSAGE);
@@ -151,6 +158,23 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     public MockDynamicTablePVFrame() {
         initComponents();
         pvTable.setModel(model);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component result = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (latestExceptions != null && row < latestExceptions.size() && latestExceptions.get(row) != null) {
+                    setToolTipText(latestExceptions.get(row).getMessage());
+                    result.setForeground(Color.red);
+                } else {
+                    setToolTipText(null);
+                    result.setForeground(table.getForeground());
+                }
+                return result;
+            }
+            
+        };
+        pvTable.setDefaultRenderer(String.class, renderer);
     }
 
     /** This method is called from within the constructor to
