@@ -7,6 +7,7 @@ package org.epics.pvmanager.test;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
@@ -21,7 +22,11 @@ import org.epics.pvmanager.PVManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -43,7 +48,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     private List<String> pvNames = new ArrayList<String>();
     private ValueFormat format = new SimpleValueFormat(3);
     
-    private TableModel model = new AbstractTableModel() {
+    private AbstractTableModel model = new AbstractTableModel() {
         
         private List<String> titles = Arrays.asList("PV name", "Value", "Alarm", "Time");
         
@@ -175,6 +180,21 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             
         };
         pvTable.setDefaultRenderer(String.class, renderer);
+        Action deleteAction = new AbstractAction("delete") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[] viewRows = pvTable.getSelectedRows();
+                for (int i = viewRows.length - 1; i >= 0; i--) {
+                    int modelRow = pvTable.convertRowIndexToModel(viewRows[i]);
+                    group.remove(modelRow);
+                    pvNames.remove(modelRow);
+                    model.fireTableRowsDeleted(modelRow, modelRow);
+                }
+            }
+        };
+        pvTable.getActionMap().put("delete", deleteAction);
+        pvTable.getInputMap(pvTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("DELETE"), "delete");
     }
 
     /** This method is called from within the constructor to
