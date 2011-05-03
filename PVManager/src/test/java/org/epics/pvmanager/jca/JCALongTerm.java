@@ -39,7 +39,7 @@ public class JCALongTerm {
             int index = rand.nextInt(names.size());
             PV<?> pv = pvs.get(index);
             if (pv == null) {
-                pv = PVManager.read(channel(names.get(index))).atHz(1);
+                pv = PVManager.read(channel(names.get(index))).atHz(rand.nextInt(20) + 1);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
