@@ -31,7 +31,7 @@ public class InterpolationsTest {
         // Should return the same value
         double[] x = new double[] {0.0, 1.0, 2.0};
         double[] y = new double[] {3.0, 4.0, 1.0};
-        double[] result = Interpolations.noInterpolation(x, y, 3);
+        double[] result = Interpolations.noInterpolation().interpolate(x, y, 3);
         assertEquals(3, result.length);
         assertArrayEquals(y, result, 0.000000000001);
     }
@@ -41,7 +41,7 @@ public class InterpolationsTest {
         // Interpolate 2 values
         double[] x = new double[] {0.0, 1.0};
         double[] y = new double[] {10.0, 4.0};
-        double[] result = Interpolations.noInterpolation(x, y, 4);
+        double[] result = Interpolations.noInterpolation().interpolate(x, y, 4);
         assertEquals(4, result.length);
         assertArrayEquals(new double[] {10.0, 10.0, 4.0, 4.0}, result, 0.000000000001);
     }
@@ -51,7 +51,7 @@ public class InterpolationsTest {
         // Interpolate 3 values, checks middle value is prolonged in both directions
         double[] x = new double[] {0.0, 1.0, 2.0};
         double[] y = new double[] {3.0, 4.0, 1.0};
-        double[] result = Interpolations.noInterpolation(x, y, 7);
+        double[] result = Interpolations.noInterpolation().interpolate(x, y, 7);
         assertEquals(7, result.length);
         assertArrayEquals(new double[] {3.0, 3.0, 4.0, 4.0, 4.0, 1.0, 1.0}, result, 0.000000000001);
     }
@@ -61,7 +61,7 @@ public class InterpolationsTest {
         // 4th value is taken but 2 is interpolated
         double[] x = new double[] {0.0, 1.0, 1.5, 2.0};
         double[] y = new double[] {3.0, 4.0, 2.0, 1.0};
-        double[] result = Interpolations.noInterpolation(x, y, 5);
+        double[] result = Interpolations.noInterpolation().interpolate(x, y, 5);
         assertEquals(5, result.length);
         assertArrayEquals(new double[] {3.0, 4.0, 4.0, 2.0, 1.0}, result, 0.000000000001);
     }
@@ -71,7 +71,7 @@ public class InterpolationsTest {
         // Should discard bunch of values
         double[] x = new double[] {0.0, 0.1, 1.0, 1.5, 1.9, 2.0};
         double[] y = new double[] {3.0, 10.0, 4.0, 2.0, 10.0, 1.0};
-        double[] result = Interpolations.noInterpolation(x, y, 3);
+        double[] result = Interpolations.noInterpolation().interpolate(x, y, 3);
         assertEquals(3, result.length);
         assertArrayEquals(new double[] {3.0, 4.0, 1.0}, result, 0.000000000001);
     }
