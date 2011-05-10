@@ -27,7 +27,8 @@ public class InterpolationsTest {
     }
 
     @Test
-    public void testNoInterpolationPreciseValues() {
+    public void testNoInterpolation1() {
+        // Should return the same value
         double[] x = new double[] {0.0, 1.0, 2.0};
         double[] y = new double[] {3.0, 4.0, 1.0};
         double[] result = Interpolations.noInterpolation(x, y, 3);
@@ -36,11 +37,42 @@ public class InterpolationsTest {
     }
     
     @Test
-    public void testNoInterpolation() {
+    public void testNoInterpolation2() {
+        // Interpolate 2 values
         double[] x = new double[] {0.0, 1.0};
         double[] y = new double[] {10.0, 4.0};
         double[] result = Interpolations.noInterpolation(x, y, 4);
         assertEquals(4, result.length);
         assertArrayEquals(new double[] {10.0, 10.0, 4.0, 4.0}, result, 0.000000000001);
+    }
+    
+    @Test
+    public void testNoInterpolation3() {
+        // Interpolate 3 values, checks middle value is prolonged in both directions
+        double[] x = new double[] {0.0, 1.0, 2.0};
+        double[] y = new double[] {3.0, 4.0, 1.0};
+        double[] result = Interpolations.noInterpolation(x, y, 7);
+        assertEquals(7, result.length);
+        assertArrayEquals(new double[] {3.0, 3.0, 4.0, 4.0, 4.0, 1.0, 1.0}, result, 0.000000000001);
+    }
+    
+    @Test
+    public void testNoInterpolation4() {
+        // 4th value is taken but 2 is interpolated
+        double[] x = new double[] {0.0, 1.0, 1.5, 2.0};
+        double[] y = new double[] {3.0, 4.0, 2.0, 1.0};
+        double[] result = Interpolations.noInterpolation(x, y, 5);
+        assertEquals(5, result.length);
+        assertArrayEquals(new double[] {3.0, 4.0, 4.0, 2.0, 1.0}, result, 0.000000000001);
+    }
+    
+    @Test
+    public void testNoInterpolation5() {
+        // Should discard bunch of values
+        double[] x = new double[] {0.0, 0.1, 1.0, 1.5, 1.9, 2.0};
+        double[] y = new double[] {3.0, 10.0, 4.0, 2.0, 10.0, 1.0};
+        double[] result = Interpolations.noInterpolation(x, y, 3);
+        assertEquals(3, result.length);
+        assertArrayEquals(new double[] {3.0, 4.0, 1.0}, result, 0.000000000001);
     }
 }
