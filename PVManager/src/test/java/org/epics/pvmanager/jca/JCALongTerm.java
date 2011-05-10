@@ -27,13 +27,17 @@ public class JCALongTerm {
         JCADataSource jca = new JCADataSource(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM, false);
         PVManager.setDefaultDataSource(jca);
         
-        List<String> names = Arrays.asList("carcassi", "carcassi2", "carcassi");
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i <= 20; i++) {
+            names.add("counter" + i);
+            names.add("counter" + i);
+        }
         List<PV<?>> pvs = new ArrayList<PV<?>>(); 
         for (String name : names) {
             pvs.add(null);
         }
         Random rand = new Random(1);
-        final AtomicInteger count = new AtomicInteger();
+        final AtomicInteger count = new AtomicInteger(-1);
         
         while (true) {
             int index = rand.nextInt(names.size());
@@ -44,7 +48,10 @@ public class JCALongTerm {
 
                     @Override
                     public void pvValueChanged() {
-                        count.incrementAndGet();
+                        int value = count.incrementAndGet();
+                        if (value % 1000 == 0) {
+                            System.out.println(System.currentTimeMillis());
+                        }
                     }
                 });
                 pvs.set(index, pv);

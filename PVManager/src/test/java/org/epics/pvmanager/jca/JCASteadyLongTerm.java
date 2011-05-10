@@ -28,7 +28,16 @@ public class JCASteadyLongTerm {
         PVManager.setDefaultDataSource(jca);
         final AtomicInteger count = new AtomicInteger();
         
-        PV<?> pv = PVManager.read(channel("carcassi")).atHz(50);
+        PV<?> pv = PVManager.read(channel("counter1")).atHz(50);
+        pv.addPVValueChangeListener(new PVValueChangeListener() {
+
+            @Override
+            public void pvValueChanged() {
+                count.incrementAndGet();
+            }
+        });
+        
+        pv = PVManager.read(channel("counter1")).atHz(50);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
