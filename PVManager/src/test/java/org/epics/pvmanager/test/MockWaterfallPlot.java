@@ -192,6 +192,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
         plot = waterfallPlotOf(vDoubleArray(pvName.getText())).with(
                 colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)),
+                backgroundColor(getBackground().getRGB()),
                 adaptiveRange(adaptiveRangeField.isSelected()),
                 scrollDown(scrollDownField.isSelected()),
                 height(((Number) heightField.getValue()).intValue()),
