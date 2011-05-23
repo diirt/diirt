@@ -59,7 +59,7 @@
         <repository>
             <id>epics.releases</id>
             <name>EPICS Repository</name>
-            <url>scp://shell.sourceforge.net/home/groups/e/ep/epics/htdocs/maven2</url>
+            <url>scp://shell.sourceforge.net/home/project-web/epics/htdocs/maven2</url>
         </repository>
     </distributionManagement>
 
