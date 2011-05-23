@@ -54,7 +54,7 @@
         <site>
             <id>pvmanager.sf.net</id>
             <name>PVManager Sourceforge site</name>
-            <url>scp://shell.sourceforge.net/home/groups/p/pv/pvmanager/htdocs/</url>
+            <url>scp://shell.sourceforge.net/home/project-web/pvmanager/htdocs/</url>
         </site>
         <repository>
             <id>epics.releases</id>
