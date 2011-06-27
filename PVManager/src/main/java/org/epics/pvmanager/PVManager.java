@@ -63,6 +63,23 @@ public class PVManager {
     public static <T> PVManagerExpression<T> read(DesiredRateExpression<T> pvExpression) {
         return new PVManagerExpression<T>(pvExpression);
     }
+    
+    public static <T> PVManagerWriteExpression<T> write(WriteExpression<T> writeExpression) {
+        return new PVManagerWriteExpression<T>(writeExpression);
+    }
+    
+    public static class PVManagerWriteExpression<T>  {
+        private WriteExpression<T> writeExpression;
+
+        public PVManagerWriteExpression(WriteExpression<T> writeExpression) {
+            this.writeExpression = writeExpression;
+        }
+        
+        public PVWriter<T> sync() {
+            return new PVWriter<T>();
+        }
+        
+    }
 
     /**
      * An expression used to set the final parameters on how the pv expression
