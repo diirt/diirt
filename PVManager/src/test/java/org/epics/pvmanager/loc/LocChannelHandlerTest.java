@@ -36,7 +36,7 @@ public class LocChannelHandlerTest {
         MockitoAnnotations.initMocks(this);
     }
     
-    @Spy ValueCache<VDouble> vDoubleCache = new ValueCache<VDouble>(VDouble.class);
+    @Mock ValueCache<VDouble> vDoubleCache;
     @Mock Collector<VDouble> vDoubleCollector;
     @Mock ChannelWriteCallback failOnException;
 
