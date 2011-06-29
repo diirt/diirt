@@ -102,4 +102,16 @@ public abstract class DataSource {
      * @param recipe the instructions for the data connection
      */
     public abstract void disconnect(DataRecipe recipe);
+    
+    public void prepareWrite(WriteBuffer writeBuffer) {
+        throw new UnsupportedOperationException("This data source is read only");
+    }
+    
+    public void write(WriteBuffer writeBuffer) {
+        throw new UnsupportedOperationException("This data source is read only");
+    }
+    
+    public void concludeWrite(WriteBuffer writeBuffer) {
+        throw new UnsupportedOperationException("This data source is read only");
+    }
 }
