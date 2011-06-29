@@ -5,7 +5,7 @@
 package org.epics.pvmanager.loc;
 
 import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.TUtil;
+import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.AfterClass;
@@ -39,6 +39,7 @@ public class LocChannelHandlerTest {
     @Mock ValueCache<VDouble> vDoubleCache;
     @Mock Collector<VDouble> vDoubleCollector;
     @Mock ChannelWriteCallback failOnException;
+    @Mock ExceptionHandler exceptionHandler;
 
     @Test
     public void testChannelHandler() {
@@ -50,12 +51,12 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(false));
 
         // Attaching a monitor cache/collactor
-        channel.addMonitor(vDoubleCollector, vDoubleCache, TUtil.failOnException());
+        channel.addMonitor(vDoubleCollector, vDoubleCache, exceptionHandler);
         assertThat(channel.getUsageCounter(), equalTo(1));
         assertThat(channel.isConnected(), is(true));
 
         // Adding a writer
-        channel.addWriter(TUtil.failOnException());
+        channel.addWriter(exceptionHandler);
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 
@@ -68,5 +69,6 @@ public class LocChannelHandlerTest {
         assertThat(newValue.getValue().getValue(), equalTo(6.28));
         inOrder.verify(vDoubleCollector).collect();
         inOrder.verify(failOnException).channelWritten(null);
+        verifyZeroInteractions(exceptionHandler);
     }
 }
