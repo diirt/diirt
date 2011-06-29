@@ -29,6 +29,6 @@ class WriteBufferBuilder {
     }
 
     WriteBuffer build() {
-        return new WriteBuffer(new HashMap<String, WriteCache>(caches));
+        return new WriteBuffer(new HashMap<String, WriteCache>(caches), null, null);
     }
 }

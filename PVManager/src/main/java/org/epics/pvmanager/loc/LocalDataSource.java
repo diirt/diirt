@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.loc;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,14 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
@@ -51,17 +55,24 @@ public final class LocalDataSource extends DataSource {
     
     private Map<String, LocChannelHandler> usedChannels = new ConcurrentHashMap<String, LocChannelHandler>();
     private Set<DataRecipe> recipes = new CopyOnWriteArraySet<DataRecipe>();
+    private Set<WriteBuffer> registeredBuffers = new CopyOnWriteArraySet<WriteBuffer>();
 
+    private LocChannelHandler channel(String channelName) {
+        LocChannelHandler channel = usedChannels.get(channelName);
+        if (channel == null) {
+            channel = new LocChannelHandler(channelName);
+            usedChannels.put(channelName, channel);
+        }
+        return channel;
+    }
+    
     @Override
     public void connect(final DataRecipe recipe) {
         for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             final Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
-                if (usedChannels.get(channelName) == null) {
-                    usedChannels.put(channelName, new LocChannelHandler(channelName));
-                }
-                final LocChannelHandler channelHandler = usedChannels.get(channelName);
+                final LocChannelHandler channelHandler = channel(channelName);
                 final ValueCache cache = entry.getValue();
                 
                 // Add monitor on other thread in case it triggers notifications
@@ -97,6 +108,84 @@ public final class LocalDataSource extends DataSource {
         }
         
         recipes.remove(recipe);
+    }
+    
+    @Override
+    public void prepareWrite(final WriteBuffer writeBuffer) {
+        final Set<LocChannelHandler> handlers = new HashSet<LocChannelHandler>();
+        for (String channelName : writeBuffer.getWriteCaches().keySet()) {
+            handlers.add(channel(channelName));
+        }
+        
+        // Connect using another thread
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                for (LocChannelHandler channelHandler : handlers) {
+                    channelHandler.addWriter(writeBuffer.getExceptionHandler());
+                }
+            }
+        });
+        registeredBuffers.add(writeBuffer);
+    }
+
+    @Override
+    public void concludeWrite(final WriteBuffer writeBuffer) {
+        if (!registeredBuffers.contains(writeBuffer)) {
+            log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
+            return;
+        }
+        
+        registeredBuffers.remove(writeBuffer);
+        final Set<LocChannelHandler> handlers = new HashSet<LocChannelHandler>();
+        for (String channelName : writeBuffer.getWriteCaches().keySet()) {
+            handlers.add(channel(channelName));
+        }
+        
+        // Connect using another thread
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                for (LocChannelHandler channelHandler : handlers) {
+                    channelHandler.removeWrite(writeBuffer.getExceptionHandler());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void write(final WriteBuffer writeBuffer) {
+        final Map<LocChannelHandler, Object> handlersAndValues = new HashMap<LocChannelHandler, Object>();
+        for (Map.Entry<String, WriteCache> entry : writeBuffer.getWriteCaches().entrySet()) {
+            LocChannelHandler channel = channel(entry.getKey());
+            handlersAndValues.put(channel, entry.getValue().getValue());
+        }
+        
+        // Connect using another thread
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                ChannelWriteCallback callback = new ChannelWriteCallback() {
+
+                    AtomicInteger counter = new AtomicInteger();
+                    
+                    @Override
+                    public void channelWritten(Exception ex) {
+                        // Notify only when the last channel was written
+                        int value = counter.incrementAndGet();
+                        if (value == handlersAndValues.size()) {
+                            writeBuffer.getWriteListener().pvValueWritten();
+                        }
+                    }
+                };
+                for (Map.Entry<LocChannelHandler, Object> entry : handlersAndValues.entrySet()) {
+                    entry.getKey().write(entry.getValue(), callback);
+                }
+            }
+        });
     }
 
 }
