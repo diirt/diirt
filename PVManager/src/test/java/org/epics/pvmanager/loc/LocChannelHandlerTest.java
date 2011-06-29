@@ -8,16 +8,12 @@ import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.VDouble;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -40,7 +36,7 @@ public class LocChannelHandlerTest {
     @Mock Collector<VDouble> vDoubleCollector1;
     @Mock ValueCache<VDouble> vDoubleCache2;
     @Mock Collector<VDouble> vDoubleCollector2;
-    @Mock ChannelWriteCallback failOnException;
+    @Mock ChannelWriteCallback channelWriteCallback;
     @Mock ExceptionHandler exceptionHandler;
 
     @Test
@@ -63,15 +59,21 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(true));
 
         // Writing a number and see if it is converted to a VDouble
-        channel.write(6.28, failOnException);
+        channel.write(6.28, channelWriteCallback);
         
-        InOrder inOrder = inOrder(vDoubleCache1, vDoubleCollector1, failOnException);
+        // Removing all readers and writers
+        channel.removeMonitor(vDoubleCollector1);
+        channel.removeWrite(exceptionHandler);
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+        
+        InOrder inOrder = inOrder(vDoubleCache1, vDoubleCollector1, channelWriteCallback, exceptionHandler);
         ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
         inOrder.verify(vDoubleCache1).setValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(6.28));
         inOrder.verify(vDoubleCollector1).collect();
-        inOrder.verify(failOnException).channelWritten(null);
-        verifyZeroInteractions(exceptionHandler);
+        inOrder.verify(channelWriteCallback).channelWritten(null);
+        inOrder.verifyNoMoreInteractions();
     }
 
     @Test
@@ -99,17 +101,23 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(true));
 
         // Writing a number and see if it is converted to a VDouble
-        channel.write(16.28, failOnException);
+        channel.write(16.28, channelWriteCallback);
         
-        InOrder inOrder = inOrder(vDoubleCache1, vDoubleCollector1, vDoubleCache2, vDoubleCollector2, failOnException);
+        // Remove reader/writers
+        channel.removeWrite(exceptionHandler);
+        channel.removeMonitor(vDoubleCollector1);
+        channel.removeMonitor(vDoubleCollector2);
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+        
         ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-        inOrder.verify(vDoubleCache1).setValue(newValue.capture());
+        verify(vDoubleCache1).setValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(16.28));
-        inOrder.verify(vDoubleCollector1).collect();
-        inOrder.verify(vDoubleCache2).setValue(newValue.capture());
+        verify(vDoubleCollector1).collect();
+        verify(vDoubleCache2).setValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(16.28));
-        inOrder.verify(vDoubleCollector2).collect();
-        inOrder.verify(failOnException).channelWritten(null);
-        verifyZeroInteractions(exceptionHandler);
+        verify(vDoubleCollector2).collect();
+        verify(channelWriteCallback).channelWritten(null);
+        verifyZeroInteractions(channelWriteCallback, exceptionHandler);
     }
 }
