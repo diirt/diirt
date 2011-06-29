@@ -86,6 +86,11 @@ public abstract class ChannelHandler<EType> {
         guardedConnect(handler);
         writeUsageCounter++;
     }
+
+    public synchronized void removeWrite(ExceptionHandler exceptionHandler) {
+        writeUsageCounter--;
+        guardedDisconnect(exceptionHandler);
+    }
     
     public final void processValue(EType payload) {
         for (MonitorHandler monitor : monitors.values()) {
