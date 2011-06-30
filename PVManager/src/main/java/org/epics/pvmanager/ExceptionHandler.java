@@ -29,4 +29,21 @@ public class ExceptionHandler {
     public void handleException(Exception ex) {
         log.log(Level.INFO, "Exception for PV", ex);
     }
+    
+    public static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final ThreadSwitch threadSwitch) {
+        return new ExceptionHandler() {
+            @Override
+            public void handleException(final Exception ex) {
+                threadSwitch.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        pvWriter.setLastWriteException(ex);
+                        pvWriter.firePvValueWritten();
+                    }
+                });
+            }
+            
+        };
+    }
 }

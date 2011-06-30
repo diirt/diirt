@@ -89,7 +89,7 @@ public class WriteExpression<T> {
      * @param collector the collector to be notified by changes in this expression
      * @return a data recipe
      */
-    WriteBufferBuilder createDataRecipe(Collector collector) {
+    WriteBufferBuilder createWriteBuffer() {
         WriteBufferBuilder buffer = new WriteBufferBuilder();
         buffer.addCaches(writeCaches);
         return buffer;

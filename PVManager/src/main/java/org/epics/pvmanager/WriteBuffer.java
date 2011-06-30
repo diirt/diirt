@@ -15,26 +15,13 @@ import org.epics.pvmanager.loc.ChannelWriteCallback;
  */
 public class WriteBuffer {
     private final Map<String, WriteCache> caches;
-    private final ExceptionHandler exceptionHandler;
-    private final PVValueWriteListener writeListener;
 
-    public WriteBuffer(Map<String, WriteCache> caches, ExceptionHandler exceptionHandler,
-            PVValueWriteListener writeListener) {
+    public WriteBuffer(Map<String, WriteCache> caches) {
         this.caches = caches;
-        this.exceptionHandler = exceptionHandler;
-        this.writeListener = writeListener;
     }
     
     public Map<String, WriteCache> getWriteCaches() {
         return caches;
-    }
-
-    public ExceptionHandler getExceptionHandler() {
-        return exceptionHandler;
-    }
-
-    public PVValueWriteListener getWriteListener() {
-        return writeListener;
     }
     
 }

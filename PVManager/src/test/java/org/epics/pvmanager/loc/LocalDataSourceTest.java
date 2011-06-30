@@ -9,7 +9,10 @@ import java.util.Map;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueWriteListener;
+import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteCache;
@@ -22,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**
  *
@@ -41,11 +45,12 @@ public class LocalDataSourceTest {
     @Mock DataRecipe dataRecipe;
     @Mock WriteCache<?> writeCache1;
     @Mock WriteCache<?> writeCache2;
-    @Mock PVValueWriteListener pvValueWriteListener;
+    @Mock Runnable callback;
     @Mock ExceptionHandler exceptionHandler;
     @Mock ValueCache<VDouble> valueCache1;
     @Mock ValueCache<VDouble> valueCache2;
     @Mock Collector collector;
+    @Mock PVValueWriteListener listener;
     String channelName1 = "test1";
     String channelName2 = "test2";
 
@@ -59,8 +64,6 @@ public class LocalDataSourceTest {
             caches.put(channelName2, writeCache2);
             when(writeCache2.getValue()).thenReturn(16.28);
             when(writeBuffer.getWriteCaches()).thenReturn(caches);
-            when(writeBuffer.getWriteListener()).thenReturn(pvValueWriteListener);
-            when(writeBuffer.getExceptionHandler()).thenReturn(exceptionHandler);
         }
         
         // Prepare mock read recipe
@@ -77,10 +80,10 @@ public class LocalDataSourceTest {
         // TEST: connect, write, disconnect
         LocalDataSource dataSource = new LocalDataSource();
         dataSource.connect(dataRecipe);
-        dataSource.prepareWrite(writeBuffer);
-        dataSource.write(writeBuffer);
+        dataSource.prepareWrite(writeBuffer, exceptionHandler);
+        dataSource.write(writeBuffer, callback, exceptionHandler);
         Thread.sleep(200);
-        dataSource.concludeWrite(writeBuffer);
+        dataSource.concludeWrite(writeBuffer, exceptionHandler);
         dataSource.disconnect(dataRecipe);
        
         // Check that the correct value was written and that the write notification was sent
@@ -90,6 +93,40 @@ public class LocalDataSourceTest {
         verify(valueCache2).setValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(16.28));
         verify(collector, times(2)).collect();
-        verify(pvValueWriteListener).pvValueWritten();
+        verify(callback).run();
     }
+    
+    @Test
+    public void fullSyncPipeline() throws Exception {
+        LocalDataSource dataSource = new LocalDataSource();
+        PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
+        PVWriter<Object> writer = PVManager.write(toChannel(channelName1)).from(dataSource).sync();
+        writer.addPVValueWriteListener(listener);
+        writer.write(10);
+        
+        verify(listener).pvValueWritten();
+        Thread.sleep(5);
+        pv.close();
+        writer.close();
+        
+        assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
+    }
+    
+    @Test
+    public void fullAsyncPipeline() throws Exception {
+        LocalDataSource dataSource = new LocalDataSource();
+        PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
+        PVWriter<Object> writer = PVManager.write(toChannel(channelName1)).from(dataSource).async();
+        writer.addPVValueWriteListener(listener);
+        writer.write(10);
+        verify(listener, never()).pvValueWritten();
+        
+        Thread.sleep(10);
+        pv.close();
+        writer.close();
+        
+        verify(listener).pvValueWritten();
+        assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
+    }
+
 }

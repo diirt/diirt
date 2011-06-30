@@ -21,6 +21,7 @@ import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.PVValueWriteListener;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.ValueCache;
@@ -111,7 +112,7 @@ public final class LocalDataSource extends DataSource {
     }
     
     @Override
-    public void prepareWrite(final WriteBuffer writeBuffer) {
+    public void prepareWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
         final Set<LocChannelHandler> handlers = new HashSet<LocChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
             handlers.add(channel(channelName));
@@ -123,7 +124,7 @@ public final class LocalDataSource extends DataSource {
             @Override
             public void run() {
                 for (LocChannelHandler channelHandler : handlers) {
-                    channelHandler.addWriter(writeBuffer.getExceptionHandler());
+                    channelHandler.addWriter(exceptionHandler);
                 }
             }
         });
@@ -131,7 +132,7 @@ public final class LocalDataSource extends DataSource {
     }
 
     @Override
-    public void concludeWrite(final WriteBuffer writeBuffer) {
+    public void concludeWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
         if (!registeredBuffers.contains(writeBuffer)) {
             log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
             return;
@@ -149,14 +150,14 @@ public final class LocalDataSource extends DataSource {
             @Override
             public void run() {
                 for (LocChannelHandler channelHandler : handlers) {
-                    channelHandler.removeWrite(writeBuffer.getExceptionHandler());
+                    channelHandler.removeWrite(exceptionHandler);
                 }
             }
         });
     }
 
     @Override
-    public void write(final WriteBuffer writeBuffer) {
+    public void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
         final Map<LocChannelHandler, Object> handlersAndValues = new HashMap<LocChannelHandler, Object>();
         for (Map.Entry<String, WriteCache> entry : writeBuffer.getWriteCaches().entrySet()) {
             LocChannelHandler channel = channel(entry.getKey());
@@ -168,7 +169,7 @@ public final class LocalDataSource extends DataSource {
 
             @Override
             public void run() {
-                ChannelWriteCallback callback = new ChannelWriteCallback() {
+                ChannelWriteCallback channelCallback = new ChannelWriteCallback() {
 
                     AtomicInteger counter = new AtomicInteger();
                     
@@ -177,12 +178,12 @@ public final class LocalDataSource extends DataSource {
                         // Notify only when the last channel was written
                         int value = counter.incrementAndGet();
                         if (value == handlersAndValues.size()) {
-                            writeBuffer.getWriteListener().pvValueWritten();
+                            callback.run();
                         }
                     }
                 };
                 for (Map.Entry<LocChannelHandler, Object> entry : handlersAndValues.entrySet()) {
-                    entry.getKey().write(entry.getValue(), callback);
+                    entry.getKey().write(entry.getValue(), channelCallback);
                 }
             }
         });
