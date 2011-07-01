@@ -43,7 +43,7 @@ public class LocChannelHandlerTest {
     public void writeToLocalChannelSingleMonitor() {
         
         // Creating a test local channel
-        LocChannelHandler channel = new LocChannelHandler("test1");
+        LocalChannelHandler channel = new LocalChannelHandler("test1");
         assertThat(channel.getChannelName(), equalTo("test1"));
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
@@ -80,7 +80,7 @@ public class LocChannelHandlerTest {
     public void writeToLocalChannelTwoMonitors() {
         
         // Creating a test local channel
-        LocChannelHandler channel = new LocChannelHandler("test2");
+        LocalChannelHandler channel = new LocalChannelHandler("test2");
         assertThat(channel.getChannelName(), equalTo("test2"));
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));

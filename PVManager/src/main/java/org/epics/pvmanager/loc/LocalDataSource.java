@@ -54,14 +54,14 @@ public final class LocalDataSource extends DataSource {
 
     private Executor exec = Executors.newSingleThreadExecutor();
     
-    private Map<String, LocChannelHandler> usedChannels = new ConcurrentHashMap<String, LocChannelHandler>();
+    private Map<String, LocalChannelHandler> usedChannels = new ConcurrentHashMap<String, LocalChannelHandler>();
     private Set<DataRecipe> recipes = new CopyOnWriteArraySet<DataRecipe>();
     private Set<WriteBuffer> registeredBuffers = new CopyOnWriteArraySet<WriteBuffer>();
 
-    private LocChannelHandler channel(String channelName) {
-        LocChannelHandler channel = usedChannels.get(channelName);
+    private LocalChannelHandler channel(String channelName) {
+        LocalChannelHandler channel = usedChannels.get(channelName);
         if (channel == null) {
-            channel = new LocChannelHandler(channelName);
+            channel = new LocalChannelHandler(channelName);
             usedChannels.put(channelName, channel);
         }
         return channel;
@@ -73,7 +73,7 @@ public final class LocalDataSource extends DataSource {
             final Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
-                final LocChannelHandler channelHandler = channel(channelName);
+                final LocalChannelHandler channelHandler = channel(channelName);
                 final ValueCache cache = entry.getValue();
                 
                 // Add monitor on other thread in case it triggers notifications
@@ -100,7 +100,7 @@ public final class LocalDataSource extends DataSource {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
-                LocChannelHandler channelHandler = usedChannels.get(channelName);
+                LocalChannelHandler channelHandler = usedChannels.get(channelName);
                 if (channelHandler == null) {
                     log.log(Level.WARNING, "Channel {0} should have been connected, but is not found during disconnection. Ignoring it.", channelName);
                 }
@@ -113,7 +113,7 @@ public final class LocalDataSource extends DataSource {
     
     @Override
     public void prepareWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
-        final Set<LocChannelHandler> handlers = new HashSet<LocChannelHandler>();
+        final Set<LocalChannelHandler> handlers = new HashSet<LocalChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
             handlers.add(channel(channelName));
         }
@@ -123,7 +123,7 @@ public final class LocalDataSource extends DataSource {
 
             @Override
             public void run() {
-                for (LocChannelHandler channelHandler : handlers) {
+                for (LocalChannelHandler channelHandler : handlers) {
                     channelHandler.addWriter(exceptionHandler);
                 }
             }
@@ -139,7 +139,7 @@ public final class LocalDataSource extends DataSource {
         }
         
         registeredBuffers.remove(writeBuffer);
-        final Set<LocChannelHandler> handlers = new HashSet<LocChannelHandler>();
+        final Set<LocalChannelHandler> handlers = new HashSet<LocalChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
             handlers.add(channel(channelName));
         }
@@ -149,7 +149,7 @@ public final class LocalDataSource extends DataSource {
 
             @Override
             public void run() {
-                for (LocChannelHandler channelHandler : handlers) {
+                for (LocalChannelHandler channelHandler : handlers) {
                     channelHandler.removeWrite(exceptionHandler);
                 }
             }
@@ -158,9 +158,9 @@ public final class LocalDataSource extends DataSource {
 
     @Override
     public void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
-        final Map<LocChannelHandler, Object> handlersAndValues = new HashMap<LocChannelHandler, Object>();
+        final Map<LocalChannelHandler, Object> handlersAndValues = new HashMap<LocalChannelHandler, Object>();
         for (Map.Entry<String, WriteCache> entry : writeBuffer.getWriteCaches().entrySet()) {
-            LocChannelHandler channel = channel(entry.getKey());
+            LocalChannelHandler channel = channel(entry.getKey());
             handlersAndValues.put(channel, entry.getValue().getValue());
         }
         
@@ -182,7 +182,7 @@ public final class LocalDataSource extends DataSource {
                         }
                     }
                 };
-                for (Map.Entry<LocChannelHandler, Object> entry : handlersAndValues.entrySet()) {
+                for (Map.Entry<LocalChannelHandler, Object> entry : handlersAndValues.entrySet()) {
                     entry.getKey().write(entry.getValue(), channelCallback);
                 }
             }

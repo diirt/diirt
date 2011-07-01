@@ -15,9 +15,9 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-public class LocChannelHandler extends ChannelHandler<Object> {
+public class LocalChannelHandler extends ChannelHandler<Object> {
 
-    public LocChannelHandler(String channelName) {
+    public LocalChannelHandler(String channelName) {
         super(channelName);
     }
 
