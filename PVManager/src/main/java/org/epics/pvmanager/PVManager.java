@@ -182,11 +182,13 @@ public class PVManager {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public PVManagerWriteExpression<T> from(DataSource dataSource) {
             return (PVManagerWriteExpression<T>) super.from(dataSource);
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public PVManagerWriteExpression<T> andNotify(ThreadSwitch onThread) {
             return (PVManagerWriteExpression<T>) super.andNotify(onThread);
         }
