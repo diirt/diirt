@@ -59,7 +59,7 @@ public final class SimulationDataSource extends DataSource {
         // First create all the functions for the recipe
         TimeStamp startTime = TimeStamp.now();
         Set<Simulation<?>> functions = new HashSet<Simulation<?>>();
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 Simulation<?> simFunction = connectSingle(collector, entry.getKey(), entry.getValue(), recipe.getExceptionHandler());

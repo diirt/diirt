@@ -87,7 +87,7 @@ public class CompositeDataSource extends DataSource {
 
         // Iterate through the recipe to understand how to distribute
         // the calls
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
             Map<String, Map<String, ValueCache>> routingCaches = new HashMap<String, Map<String, ValueCache>>();
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {

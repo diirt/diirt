@@ -120,7 +120,7 @@ public class JCADataSource extends DataSource {
     public synchronized void connect(DataRecipe dataRecipe) {
         initContext(dataRecipe.getExceptionHandler());
         Set<ValueProcessor> processors = new HashSet<ValueProcessor>();
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : dataRecipe.getChannelsPerCollectors().entrySet()) {
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : dataRecipe.getChannelsPerCollectors().entrySet()) {
             Collector collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 ValueProcessor processor = createProcessor(entry.getKey(), collector, entry.getValue(), dataRecipe.getExceptionHandler());

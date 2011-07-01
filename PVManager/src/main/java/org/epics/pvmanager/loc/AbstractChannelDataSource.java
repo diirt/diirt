@@ -55,8 +55,8 @@ public abstract class AbstractChannelDataSource extends DataSource {
 
     @Override
     public void connect(final DataRecipe recipe) {
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
-            final Collector collector = collEntry.getKey();
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+            final Collector<?> collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
                 final ChannelHandler channelHandler = channel(channelName);
@@ -82,8 +82,8 @@ public abstract class AbstractChannelDataSource extends DataSource {
             return;
         }
 
-        for (Map.Entry<Collector, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
-            Collector collector = collEntry.getKey();
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : recipe.getChannelsPerCollectors().entrySet()) {
+            Collector<?> collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
                 ChannelHandler channelHandler = usedChannels.get(channelName);
