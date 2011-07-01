@@ -105,7 +105,7 @@ public class LocalDataSourceTest {
         writer.write(10);
         
         verify(listener).pvValueWritten();
-        Thread.sleep(5);
+        Thread.sleep(10);
         pv.close();
         writer.close();
         
