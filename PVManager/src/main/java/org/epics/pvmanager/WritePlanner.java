@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteCache;
-import org.epics.pvmanager.loc.ChannelHandler;
 
 /**
  *

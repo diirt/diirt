@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.loc;
 
+import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.AlarmSeverity;

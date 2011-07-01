@@ -7,7 +7,6 @@ package org.epics.pvmanager;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Collections;
-import org.epics.pvmanager.loc.ChannelHandler;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
