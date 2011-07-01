@@ -30,7 +30,7 @@ class WritePlanner {
         values.put(channel.getChannelName(), value);
         preceding.put(channel.getChannelName(), new HashSet<String>(precedingChannels));
         for (String precedingChannel : precedingChannels) {
-            Set<String> succeedingChannels = succeeding.get(channel.getChannelName());
+            Set<String> succeedingChannels = succeeding.get(precedingChannel);
             if (succeedingChannels ==  null) {
                 succeedingChannels = new HashSet<String>();
                 succeeding.put(precedingChannel, succeedingChannels);
@@ -43,7 +43,16 @@ class WritePlanner {
     }
     
     void removeChannel(String channelName) {
-        
+        channels.remove(channelName);
+        values.remove(channelName);
+        preceding.remove(channelName);
+        Set<String> succeedingChannels = succeeding.remove(channelName);
+        for (String succeedingChannel : succeedingChannels) {
+            Set<String> precedingChannels = preceding.get(succeedingChannel);
+            precedingChannels.remove(channelName);
+            if (precedingChannels.isEmpty())
+                leafs.add(succeedingChannel);
+        }
     }
 
     Map<ChannelHandler, Object> nextChannels() {
