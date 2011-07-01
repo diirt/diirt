@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -30,7 +31,7 @@ public class WriteSyntaxTest {
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), hasSize(2));
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));
         
-        PVWriter<Object> writer = PVManager.write(toChannel(channelName)).sync();
+        PVWriter<Object> writer = PVManager.write(toChannel(channelName)).from(new LocalDataSource()).sync();
         writer.write(10);
     }
 
