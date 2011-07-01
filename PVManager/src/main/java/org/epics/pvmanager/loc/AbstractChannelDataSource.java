@@ -36,10 +36,10 @@ public abstract class AbstractChannelDataSource extends DataSource {
     public static boolean isWriteable() {
         return writeable;
     }
-    private Map<String, ChannelHandler> usedChannels = new ConcurrentHashMap<String, ChannelHandler>();
+    private Map<String, ChannelHandler<?>> usedChannels = new ConcurrentHashMap<String, ChannelHandler<?>>();
 
-    private final ChannelHandler channel(String channelName) {
-        ChannelHandler channel = usedChannels.get(channelName);
+    private ChannelHandler<?> channel(String channelName) {
+        ChannelHandler<?> channel = usedChannels.get(channelName);
         if (channel == null) {
             channel = createChannel(channelName);
             usedChannels.put(channelName, channel);
@@ -47,7 +47,7 @@ public abstract class AbstractChannelDataSource extends DataSource {
         return channel;
     }
 
-    protected abstract ChannelHandler createChannel(String channelName);
+    protected abstract ChannelHandler<?> createChannel(String channelName);
     private static final Logger log = Logger.getLogger(LocalDataSource.class.getName());
     private Executor exec = Executors.newSingleThreadExecutor();
     private Set<DataRecipe> recipes = new CopyOnWriteArraySet<DataRecipe>();
@@ -59,7 +59,7 @@ public abstract class AbstractChannelDataSource extends DataSource {
             final Collector<?> collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
-                final ChannelHandler channelHandler = channel(channelName);
+                final ChannelHandler<?> channelHandler = channel(channelName);
                 final ValueCache cache = entry.getValue();
 
                 // Add monitor on other thread in case it triggers notifications
@@ -86,7 +86,7 @@ public abstract class AbstractChannelDataSource extends DataSource {
             Collector<?> collector = collEntry.getKey();
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
-                ChannelHandler channelHandler = usedChannels.get(channelName);
+                ChannelHandler<?> channelHandler = usedChannels.get(channelName);
                 if (channelHandler == null) {
                     log.log(Level.WARNING, "Channel {0} should have been connected, but is not found during disconnection. Ignoring it.", channelName);
                 }

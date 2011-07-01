@@ -71,7 +71,7 @@ public class LocalDataSourceTest {
             Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
             caches.put(channelName1, valueCache1);
             caches.put(channelName2, valueCache2);
-            Map<Collector, Map<String, ValueCache>> collectorMap = new HashMap<Collector, Map<String, ValueCache>>();
+            Map<Collector<?>, Map<String, ValueCache>> collectorMap = new HashMap<Collector<?>, Map<String, ValueCache>>();
             collectorMap.put(collector, caches);
             when(dataRecipe.getExceptionHandler()).thenReturn(exceptionHandler);
             when(dataRecipe.getChannelsPerCollectors()).thenReturn(collectorMap);
