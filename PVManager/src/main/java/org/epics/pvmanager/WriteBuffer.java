@@ -5,7 +5,6 @@
 package org.epics.pvmanager;
 
 import java.util.Map;
-import org.epics.pvmanager.loc.ChannelWriteCallback;
 
 /**
  * Represents all the values, channel names and ordering information needed

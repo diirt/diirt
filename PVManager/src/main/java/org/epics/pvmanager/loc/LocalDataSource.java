@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.loc;
 
+import org.epics.pvmanager.ChannelWriteCallback;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
