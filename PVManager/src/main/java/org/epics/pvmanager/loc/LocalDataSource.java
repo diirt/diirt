@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.loc;
 
+import org.epics.pvmanager.AbstractChannelDataSource;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.data.DataTypeSupport;
 
