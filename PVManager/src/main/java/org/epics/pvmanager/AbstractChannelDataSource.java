@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -164,5 +165,9 @@ public abstract class AbstractChannelDataSource extends DataSource {
                 }
             }
         });
+    }
+    
+    public Collection<ChannelHandler<?>> getChannels() {
+        return usedChannels.values();
     }
 }
