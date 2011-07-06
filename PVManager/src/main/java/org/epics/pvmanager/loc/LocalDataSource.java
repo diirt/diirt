@@ -33,7 +33,7 @@ public final class LocalDataSource extends AbstractChannelDataSource {
     static final LocalDataSource instance = new LocalDataSource();
 
     @Override
-    protected ChannelHandler createChannel(String channelName) {
+    protected ChannelHandler<?> createChannel(String channelName) {
         return new LocalChannelHandler(channelName);
     }
 

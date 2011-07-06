@@ -10,6 +10,7 @@ import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
+import gov.aps.jca.event.MonitorEvent;
 import java.util.HashSet;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.Collector;
