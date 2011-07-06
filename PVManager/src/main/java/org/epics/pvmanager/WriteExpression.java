@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class WriteExpression<T> {
 
-    private Map<String, WriteCache> writeCaches;
+    private Map<String, WriteCache<?>> writeCaches;
     private WriteFunction<T> writeFunction;
     private final String defaultName;
 
@@ -31,7 +31,7 @@ public class WriteExpression<T> {
      */
     public WriteExpression(String channelName) {
         WriteCache<T> cache = new WriteCache<T>();
-        writeCaches = new HashMap<String, WriteCache>();
+        writeCaches = new HashMap<String, WriteCache<?>>();
         writeCaches.put(channelName, cache);
         this.writeFunction = cache;
         this.defaultName = channelName;
@@ -42,9 +42,9 @@ public class WriteExpression<T> {
     }
 
     public WriteExpression(List<WriteExpression<?>> childExpressions, WriteFunction<T> function, String defaultName) {
-        writeCaches = new HashMap<String, WriteCache>();
+        writeCaches = new HashMap<String, WriteCache<?>>();
         for (WriteExpression<?> childExpression : childExpressions) {
-            for (Map.Entry<String, WriteCache> entry : childExpression.getWriteCaches().entrySet()) {
+            for (Map.Entry<String, WriteCache<?>> entry : childExpression.getWriteCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (writeCaches.keySet().contains(pvName)) {
                     throw new RuntimeException("Can't define a write operation that writes to the same channel more than once.");
@@ -70,7 +70,7 @@ public class WriteExpression<T> {
      *
      * @return the value caches for this expression
      */
-    private Map<String, WriteCache> getWriteCaches() {
+    private Map<String, WriteCache<?>> getWriteCaches() {
         return writeCaches;
     }
 

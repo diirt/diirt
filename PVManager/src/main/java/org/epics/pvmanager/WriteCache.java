@@ -6,6 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class WriteCache<T> extends WriteFunction<T> {
         this.precedingChannels = Collections.unmodifiableList(new ArrayList<String>(precedingChannels));
     }
 
-    public List<String> getPrecedingChannels() {
+    public Collection<String> getPrecedingChannels() {
         return precedingChannels;
     }
     

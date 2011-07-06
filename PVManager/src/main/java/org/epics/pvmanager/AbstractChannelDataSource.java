@@ -135,38 +135,44 @@ public abstract class AbstractChannelDataSource extends DataSource {
     }
 
     @Override
-    public void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
-        final Map<ChannelHandler, Object> handlersAndValues = new HashMap<ChannelHandler, Object>();
-        for (Map.Entry<String, WriteCache> entry : writeBuffer.getWriteCaches().entrySet()) {
-            ChannelHandler channel = channel(entry.getKey());
-            handlersAndValues.put(channel, entry.getValue().getValue());
+    public final void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
+        final WritePlanner planner = new WritePlanner();
+        for (Map.Entry<String, WriteCache<?>> entry : writeBuffer.getWriteCaches().entrySet()) {
+            ChannelHandler<?> channel = channel(entry.getKey());
+            planner.addChannel(channel, entry.getValue().getValue(), entry.getValue().getPrecedingChannels());
         }
 
         // Connect using another thread
         exec.execute(new Runnable() {
 
+            private void scheduleNext() {
+                for (Map.Entry<ChannelHandler, Object> entry : planner.nextChannels().entrySet()) {
+                    final String channelName = entry.getKey().getChannelName();
+                    entry.getKey().write(entry.getValue(), new ChannelWriteCallback() {
+
+                        AtomicInteger counter = new AtomicInteger();
+
+                        @Override
+                        public void channelWritten(Exception ex) {
+                            planner.removeChannel(channelName);
+                            // Notify only when the last channel was written
+                            if (planner.isDone()) {
+                                callback.run();
+                            } else {
+                                scheduleNext();
+                            }
+                        }
+                    });
+                }
+            }
+
             @Override
             public void run() {
-                ChannelWriteCallback channelCallback = new ChannelWriteCallback() {
-
-                    AtomicInteger counter = new AtomicInteger();
-
-                    @Override
-                    public void channelWritten(Exception ex) {
-                        // Notify only when the last channel was written
-                        int value = counter.incrementAndGet();
-                        if (value == handlersAndValues.size()) {
-                            callback.run();
-                        }
-                    }
-                };
-                for (Map.Entry<ChannelHandler, Object> entry : handlersAndValues.entrySet()) {
-                    entry.getKey().write(entry.getValue(), channelCallback);
-                }
+                scheduleNext();
             }
         });
     }
-    
+
     public Collection<ChannelHandler<?>> getChannels() {
         return usedChannels.values();
     }

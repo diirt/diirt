@@ -14,13 +14,13 @@ import java.util.Map;
  */
 class WriteBufferBuilder {
 
-    private final Map<String, WriteCache> caches;
+    private final Map<String, WriteCache<?>> caches;
 
     WriteBufferBuilder() {
-        caches = new HashMap<String, WriteCache>();
+        caches = new HashMap<String, WriteCache<?>>();
     }
 
-    void addCaches(Map<String, WriteCache> newCaches) {
+    void addCaches(Map<String, WriteCache<?>> newCaches) {
         caches.putAll(newCaches);
     }
 
@@ -29,6 +29,6 @@ class WriteBufferBuilder {
     }
 
     WriteBuffer build() {
-        return new WriteBuffer(new HashMap<String, WriteCache>(caches));
+        return new WriteBuffer(new HashMap<String, WriteCache<?>>(caches));
     }
 }

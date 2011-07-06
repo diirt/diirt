@@ -13,13 +13,13 @@ import java.util.Map;
  * @author carcassi
  */
 public class WriteBuffer {
-    private final Map<String, WriteCache> caches;
+    private final Map<String, WriteCache<?>> caches;
 
-    public WriteBuffer(Map<String, WriteCache> caches) {
+    public WriteBuffer(Map<String, WriteCache<?>> caches) {
         this.caches = caches;
     }
     
-    public Map<String, WriteCache> getWriteCaches() {
+    public Map<String, WriteCache<?>> getWriteCaches() {
         return caches;
     }
     

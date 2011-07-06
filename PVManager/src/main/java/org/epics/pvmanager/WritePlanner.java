@@ -46,11 +46,13 @@ class WritePlanner {
         values.remove(channelName);
         preceding.remove(channelName);
         Set<String> succeedingChannels = succeeding.remove(channelName);
-        for (String succeedingChannel : succeedingChannels) {
-            Set<String> precedingChannels = preceding.get(succeedingChannel);
-            precedingChannels.remove(channelName);
-            if (precedingChannels.isEmpty())
-                leafs.add(succeedingChannel);
+        if (succeedingChannels != null) {
+            for (String succeedingChannel : succeedingChannels) {
+                Set<String> precedingChannels = preceding.get(succeedingChannel);
+                precedingChannels.remove(channelName);
+                if (precedingChannels.isEmpty())
+                    leafs.add(succeedingChannel);
+            }
         }
     }
 
@@ -61,6 +63,10 @@ class WritePlanner {
         }
         leafs.clear();
         return nextChannels;
+    }
+    
+    boolean isDone() {
+        return channels.isEmpty();
     }
     
 }

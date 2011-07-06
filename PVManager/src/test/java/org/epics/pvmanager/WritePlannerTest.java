@@ -60,9 +60,16 @@ public class WritePlannerTest {
         assertThat(nextChannels.get(channel1), equalTo((Object) 6.28));
         assertThat(nextChannels.get(channel2), equalTo((Object) 3.14));
         assertThat(nextChannels.get(channel3), equalTo((Object) 1.57));
+        assertThat(planner.isDone(), equalTo(false));
         
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
+        planner.removeChannel("channel1");
+        assertThat(planner.isDone(), equalTo(false));
+        planner.removeChannel("channel2");
+        assertThat(planner.isDone(), equalTo(false));
+        planner.removeChannel("channel3");
+        assertThat(planner.isDone(), equalTo(true));
     }
 
     @Test
@@ -92,6 +99,10 @@ public class WritePlannerTest {
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
         
+        planner.removeChannel("channel2");
+        assertThat(planner.isDone(), equalTo(false));
+        planner.removeChannel("channel3");
+        assertThat(planner.isDone(), equalTo(true));
     }
 
     @Test
@@ -116,6 +127,7 @@ public class WritePlannerTest {
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(1));
         assertThat(nextChannels.get(channel2), equalTo((Object) 3.14));
+        assertThat(planner.isDone(), equalTo(false));
         
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
@@ -124,10 +136,13 @@ public class WritePlannerTest {
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(1));
         assertThat(nextChannels.get(channel3), equalTo((Object) 1.57));
+        assertThat(planner.isDone(), equalTo(false));
         
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
         
+        planner.removeChannel("channel3");
+        assertThat(planner.isDone(), equalTo(true));
     }
 
     @Test
@@ -155,6 +170,7 @@ public class WritePlannerTest {
         assertThat(nextChannels.size(), equalTo(2));
         assertThat(nextChannels.get(channel2), equalTo((Object) 3.14));
         assertThat(nextChannels.get(channel3), equalTo((Object) 1.57));
+        assertThat(planner.isDone(), equalTo(false));
         
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
@@ -162,14 +178,18 @@ public class WritePlannerTest {
         planner.removeChannel("channel2");
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
+        assertThat(planner.isDone(), equalTo(false));
         
         planner.removeChannel("channel3");
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(1));
         assertThat(nextChannels.get(channel4), equalTo((Object) 12.56));
+        assertThat(planner.isDone(), equalTo(false));
         
         nextChannels = planner.nextChannels();
         assertThat(nextChannels.size(), equalTo(0));
+        planner.removeChannel("channel4");
+        assertThat(planner.isDone(), equalTo(true));
         
     }
 }

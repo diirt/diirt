@@ -58,7 +58,7 @@ public class LocalDataSourceTest {
     public void writeToLocalDataSource() throws Exception {
         // Prepare mock write buffer
         {
-            Map<String, WriteCache> caches = new HashMap<String, WriteCache>();
+            Map<String, WriteCache<?>> caches = new HashMap<String, WriteCache<?>>();
             caches.put(channelName1, writeCache1);
             when(writeCache1.getValue()).thenReturn(6.28);
             caches.put(channelName2, writeCache2);
