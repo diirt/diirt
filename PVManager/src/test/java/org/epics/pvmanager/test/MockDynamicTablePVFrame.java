@@ -31,7 +31,9 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.extra.DynamicGroup;
+import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 
@@ -158,11 +160,96 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         
         
     };
+    
+    private AbstractTableModel writeModel = new AbstractTableModel() {
+        
+        private List<String> titles = Arrays.asList("PV name", "New Value");
+        private List<String> writePvNames = new ArrayList<String>();
+        private List<String> writePvValues = new ArrayList<String>();
+        private List<PVWriter> pvWriters = new ArrayList<PVWriter>();
+
+        @Override
+        public String getColumnName(int column) {
+            return titles.get(column);
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return String.class;
+        }
+
+        @Override
+        public int getRowCount() {
+            return writePvNames.size() + 1;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return titles.size();
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            switch(columnIndex) {
+                case 0:
+                    if (rowIndex >= writePvNames.size()) {
+                        return "";
+                    } else {
+                        return writePvNames.get(rowIndex);
+                    }
+                case 1:
+                    if (rowIndex >= writePvValues.size()) {
+                        return "";
+                    } else {
+                        return writePvValues.get(rowIndex);
+                    }
+            }
+            throw new RuntimeException();
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return true;
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            if (columnIndex > 2) {
+                throw new RuntimeException();
+            }
+            
+            if (columnIndex == 1) {
+                writePvValues.set(rowIndex, aValue.toString());
+                pvWriters.get(rowIndex).write(aValue.toString());
+            } else {
+                String name = aValue.toString();
+
+                try {
+                    if (rowIndex == writePvNames.size()) {
+                        pvWriters.add(PVManager.write(toChannel(name)).async());
+                        writePvNames.add(name);
+                        writePvValues.add("");
+                    } else {
+                        pvWriters.set(rowIndex, PVManager.write(toChannel(name)).async());
+                        writePvNames.set(rowIndex, name);
+                        writePvValues.set(rowIndex, "");
+                    }
+                    fireTableDataChanged();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(MockDynamicTablePVFrame.this, ex.getMessage(), "Can't open pv", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        
+        
+        
+    };
 
     /** Creates new form MockPVFrame */
     public MockDynamicTablePVFrame() {
         initComponents();
         pvTable.setModel(model);
+        writePvTable.setModel(writeModel);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
 
             @Override
@@ -208,10 +295,20 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         pvTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        writePvTable = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jScrollPane1.setViewportView(pvTable);
+
+        jLabel1.setText("Read:");
+
+        jScrollPane2.setViewportView(writePvTable);
+
+        jLabel2.setText("Write:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -219,14 +316,24 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -243,6 +350,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());
+        dataSource.putDataSource("loc", new LocalDataSource());
         dataSource.setDefaultDataSource("sim");
         PVManager.setDefaultDataSource(dataSource);
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -253,8 +361,12 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable pvTable;
+    private javax.swing.JTable writePvTable;
     // End of variables declaration//GEN-END:variables
 
 }
