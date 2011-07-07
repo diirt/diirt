@@ -14,12 +14,13 @@ import org.epics.pvmanager.data.ValueFactory;
 import org.epics.pvmanager.util.TimeStamp;
 
 /**
+ * Implementation for channels of a {@link LocalDataSource}.
  *
  * @author carcassi
  */
-public class LocalChannelHandler extends ChannelHandler<Object> {
+class LocalChannelHandler extends ChannelHandler<Object> {
 
-    public LocalChannelHandler(String channelName) {
+    LocalChannelHandler(String channelName) {
         super(channelName);
     }
 
@@ -37,10 +38,12 @@ public class LocalChannelHandler extends ChannelHandler<Object> {
     public void write(Object newValue, ChannelWriteCallback callback) {
         try {
             if (newValue instanceof Number) {
+                // Special support for numbers
                 newValue = ValueFactory.newVDouble(((Number) newValue).doubleValue(),
                         AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null, null, null,
                         null, null, null, null, null, null, null, null);
             } else if (newValue instanceof String) {
+                // Special support for strings
                 newValue = ValueFactory.newVString(((String) newValue),
                         AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null);
             }

@@ -10,7 +10,8 @@ import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
- * Data source for data locally written.
+ * Data source for locally written data. Each instance of this
+ * data source will have its own separate channels and values.
  *
  * @author carcassi
  */
@@ -21,20 +22,12 @@ public final class LocalDataSource extends DataSource {
         DataTypeSupport.install();
     }
 
+    /**
+     * Creates a new data source.
+     */
     public LocalDataSource() {
         super(true);
     }
-
-    /**
-     * Data source instance.
-     *
-     * @return the data source instance
-     */
-    public static LocalDataSource localData() {
-        return LocalDataSource.instance;
-    }
-
-    static final LocalDataSource instance = new LocalDataSource();
 
     @Override
     protected ChannelHandler<?> createChannel(String channelName) {
