@@ -30,7 +30,7 @@ public abstract class AbstractChannelDataSource extends DataSource {
     }
     private Map<String, ChannelHandler<?>> usedChannels = new ConcurrentHashMap<String, ChannelHandler<?>>();
 
-    private ChannelHandler<?> channel(String channelName) {
+    ChannelHandler<?> channel(String channelName) {
         ChannelHandler<?> channel = usedChannels.get(channelName);
         if (channel == null) {
             channel = createChannel(channelName);

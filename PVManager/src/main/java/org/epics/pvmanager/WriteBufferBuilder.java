@@ -20,12 +20,14 @@ class WriteBufferBuilder {
         caches = new HashMap<String, WriteCache<?>>();
     }
 
-    void addCaches(Map<String, WriteCache<?>> newCaches) {
+    WriteBufferBuilder addCaches(Map<String, WriteCache<?>> newCaches) {
         caches.putAll(newCaches);
+        return this;
     }
 
-    void addBuffer(WriteBufferBuilder buffer) {
+    WriteBufferBuilder addBuffer(WriteBufferBuilder buffer) {
         caches.putAll(buffer.caches);
+        return this;
     }
 
     WriteBuffer build() {

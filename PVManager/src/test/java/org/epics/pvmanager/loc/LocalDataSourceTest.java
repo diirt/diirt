@@ -7,6 +7,7 @@ package org.epics.pvmanager.loc;
 import java.util.HashMap;
 import java.util.Map;
 import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PV;
@@ -105,11 +106,32 @@ public class LocalDataSourceTest {
         writer.write(10);
         
         verify(listener).pvValueWritten();
-        Thread.sleep(10);
+        Thread.sleep(50);
         pv.close();
         writer.close();
         
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
+    }
+    
+    @Test
+    public void fullSyncPipelineWithTwoDataSources() throws Exception {
+        LocalDataSource dataSource1 = new LocalDataSource();
+        LocalDataSource dataSource2 = new LocalDataSource();
+        CompositeDataSource compositeSource = new CompositeDataSource();
+        compositeSource.putDataSource("loc1", dataSource1);
+        compositeSource.putDataSource("loc2", dataSource2);
+        PV<Object> pv1 = PVManager.read(channel("loc1://test")).from(compositeSource).atHz(100);
+        PV<Object> pv2 = PVManager.read(channel("loc2://test")).from(compositeSource).atHz(100);
+        PVWriter<Object> writer = PVManager.write(toChannel("loc1://test")).from(compositeSource).sync();
+        writer.addPVValueWriteListener(listener);
+        writer.write(10);
+        
+        verify(listener).pvValueWritten();
+        Thread.sleep(50);
+        pv1.close();
+        writer.close();
+        
+        assertThat(((VDouble) pv1.getValue()).getValue(), equalTo(10.0));
     }
     
     @Test
