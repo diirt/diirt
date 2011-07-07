@@ -26,7 +26,7 @@ public final class SimulationDataSource extends DataSource {
     }
 
     public SimulationDataSource() {
-        super(true);
+        super(false);
     }
 
     /**
