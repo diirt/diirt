@@ -19,6 +19,7 @@ public abstract class ChannelHandler<EType> {
     private final String channelName;
     private int readUsageCounter = 0;
     private int writeUsageCounter = 0;
+    private volatile EType lastValue;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
 
     private class MonitorHandler {
@@ -61,8 +62,12 @@ public abstract class ChannelHandler<EType> {
 
     public synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, final ExceptionHandler handler) {
         readUsageCounter++;
-        monitors.put(collector, new MonitorHandler(collector, cache, handler));
+        MonitorHandler monitor = new MonitorHandler(collector, cache, handler);
+        monitors.put(collector, monitor);
         guardedConnect(handler);
+        if (readUsageCounter > 1 && lastValue != null) {
+            monitor.processValue(lastValue);
+        } 
     }
 
     public synchronized void removeMonitor(Collector<?> collector) {
@@ -88,6 +93,7 @@ public abstract class ChannelHandler<EType> {
     }
 
     public final void processValue(EType payload) {
+        lastValue = payload;
         for (MonitorHandler monitor : monitors.values()) {
             monitor.processValue(payload);
         }
