@@ -8,7 +8,6 @@ package org.epics.pvmanager.sim;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-import org.epics.pvmanager.AbstractChannelDataSource;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.data.DataTypeSupport;
@@ -19,11 +18,15 @@ import org.epics.pvmanager.data.DataTypeSupport;
  *
  * @author carcassi
  */
-public final class SimulationDataSource extends AbstractChannelDataSource {
+public final class SimulationDataSource extends DataSource {
 
     static {
         // Install type support for the types it generates.
         DataTypeSupport.install();
+    }
+
+    public SimulationDataSource() {
+        super(true);
     }
 
     /**

@@ -56,7 +56,12 @@ public class CompositeDataSourceTest {
 
     private DataRecipe mock1Recipe;
     private DataRecipe mock2Recipe;
-    DataSource mock1 = new DataSource() {
+    DataSource mock1 = new DataSource(true) {
+
+        @Override
+        protected ChannelHandler<?> createChannel(String channelName) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 
         @Override
         public void connect(DataRecipe recipe) {
@@ -71,7 +76,12 @@ public class CompositeDataSourceTest {
 
     };
 
-    DataSource mock2 = new DataSource() {
+    DataSource mock2 = new DataSource(true) {
+
+        @Override
+        protected ChannelHandler<?> createChannel(String channelName) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 
         @Override
         public void connect(DataRecipe recipe) {

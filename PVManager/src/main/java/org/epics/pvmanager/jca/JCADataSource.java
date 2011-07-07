@@ -6,21 +6,12 @@
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
-import gov.aps.jca.event.MonitorEvent;
-import java.util.HashSet;
 import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.ValueCache;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-import org.epics.pvmanager.AbstractChannelDataSource;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.data.DataTypeSupport;
@@ -30,7 +21,7 @@ import org.epics.pvmanager.data.DataTypeSupport;
  *
  * @author carcassi
  */
-public class JCADataSource extends AbstractChannelDataSource {
+public class JCADataSource extends DataSource {
 
     static {
         // Install type support for the types it generates.
@@ -73,6 +64,7 @@ public class JCADataSource extends AbstractChannelDataSource {
      * @param monitorMask Monitor.VALUE, ...
      */
     public JCADataSource(String className, int monitorMask, boolean destroyContextWhenDone) {
+        super(true);
         this.className = className;
         this.monitorMask = monitorMask;
         this.destroyContextWhenDone = destroyContextWhenDone;

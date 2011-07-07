@@ -15,13 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author carcassi
  */
-public class CompositeDataSource extends AbstractChannelDataSource {
+public class CompositeDataSource extends DataSource {
 
     // Stores all data sources by name
     private Map<String, DataSource> dataSources = new ConcurrentHashMap<String, DataSource>();
 
     private volatile String delimiter = "://";
     private volatile String defaultDataSource;
+
+    public CompositeDataSource() {
+        super(true);
+    }
 
     /**
      * Returns the delimeter that divides the data source name from the
@@ -216,7 +220,7 @@ public class CompositeDataSource extends AbstractChannelDataSource {
     ChannelHandler<?> channel(String channelName) {
         String name = nameOf(channelName);
         String dataSource = sourceOf(channelName);
-        return ((AbstractChannelDataSource) dataSources.get(dataSource)).channel(name);
+        return dataSources.get(dataSource).channel(name);
     }
     
     @Override
