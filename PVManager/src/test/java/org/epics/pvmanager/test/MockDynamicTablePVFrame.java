@@ -213,6 +213,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex > 2) {
                 throw new RuntimeException();
