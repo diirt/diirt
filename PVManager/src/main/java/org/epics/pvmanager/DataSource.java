@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -25,20 +25,39 @@ import java.util.logging.Logger;
  */
 public abstract class DataSource {
 
-    private static Logger log = Logger.getLogger(DataSource.class.getName());
+    private static final Logger log = Logger.getLogger(DataSource.class.getName());
 
     private final boolean writeable;
 
+    /**
+     * Returns true whether the channels of this data source can be
+     * written to.
+     * 
+     * @return true if data source accept write operations
+     */
     public boolean isWriteable() {
         return writeable;
     }
-
+    
+    /**
+     * Creates a new data source.
+     * 
+     * @param writeable whether the data source implements write operations
+     */
     public DataSource(boolean writeable) {
         this.writeable = writeable;
     }
-    
+
+    // Keeps track of the currently created channels
     private Map<String, ChannelHandler<?>> usedChannels = new ConcurrentHashMap<String, ChannelHandler<?>>();
 
+    /**
+     * Returns a channel from the given name, either cached or it
+     * will create it.
+     * 
+     * @param channelName name of a channel
+     * @return a new or cached handler
+     */
     ChannelHandler<?> channel(String channelName) {
         ChannelHandler<?> channel = usedChannels.get(channelName);
         if (channel == null) {
@@ -48,8 +67,22 @@ public abstract class DataSource {
         return channel;
     }
 
+    /**
+     * Creates a channel handler for the given name. In the simplest
+     * case, this is the only method a data source needs to implement.
+     * 
+     * @param channelName the name for a new channel
+     * @return a new handler
+     */
     protected abstract ChannelHandler<?> createChannel(String channelName);
-    private Executor exec = Executors.newSingleThreadExecutor();
+
+    // The executor used by the data source to perform asynchronous operations,
+    // such as connections and writes. I am current using a single thread for
+    // all data sources, which can be changed if needed.
+    private static Executor exec = Executors.newSingleThreadExecutor();
+    
+    // Keeps track of the recipes and buffers that were opened with
+    // this data source.
     private Set<DataRecipe> recipes = new CopyOnWriteArraySet<DataRecipe>();
     private Set<WriteBuffer> registeredBuffers = new CopyOnWriteArraySet<WriteBuffer>();
 
@@ -113,6 +146,15 @@ public abstract class DataSource {
         recipes.remove(recipe);
     }
     
+    /**
+     * Prepares the channels defined in the write buffer for writes.
+     * <p>
+     * If these are channels over the network, it will create the 
+     * network connections with the underlying libraries.
+     * 
+     * @param writeBuffer the buffer that will contain the write data
+     * @param exceptionHandler where to report the exceptions
+     */
     public void prepareWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
         if (!isWriteable())
             throw new UnsupportedOperationException("This data source is read only");
@@ -135,6 +177,14 @@ public abstract class DataSource {
         registeredBuffers.add(writeBuffer);
     }
     
+    /**
+     * Releases the resources associated with the given write buffer.
+     * <p>
+     * Will close network channels and deallocate memory needed.
+     * 
+     * @param writeBuffer the buffer that will no longer be used
+     * @param exceptionHandler where to report the exceptions
+     */
     public void concludeWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
         if (!isWriteable())
             throw new UnsupportedOperationException("This data source is read only");
@@ -162,6 +212,17 @@ public abstract class DataSource {
         });
     }
     
+    /**
+     * Writes the contents in the given write buffers to the channels
+     * of this data sources.
+     * <p>
+     * The write buffer need to be first prepared with {@link #prepareWrite(org.epics.pvmanager.WriteBuffer, org.epics.pvmanager.ExceptionHandler) }
+     * and then cleaned up with {@link #concludeWrite(org.epics.pvmanager.WriteBuffer, org.epics.pvmanager.ExceptionHandler) }.
+     * 
+     * @param writeBuffer the buffer containing the data to write
+     * @param callback function to call when the write is concluded
+     * @param exceptionHandler where to report the exceptions
+     */
     public void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
         if (!isWriteable())
             throw new UnsupportedOperationException("This data source is read only");
@@ -203,8 +264,13 @@ public abstract class DataSource {
         });
     }
 
-    public Collection<ChannelHandler<?>> getChannels() {
-        return usedChannels.values();
+    /**
+     * Returns the channel handlers for this data source.
+     * 
+     * @return an unmodifiable collection
+     */
+    public Map<String, ChannelHandler<?>> getChannels() {
+        return Collections.unmodifiableMap(usedChannels);
     }
     
 }
