@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import org.epics.pvmanager.util.ThreadFactories;
 
 /**
  * Manages the PV creation and scanning.
@@ -72,7 +73,7 @@ public class PVManager {
         return new PVManagerWriteExpression<T>(writeExpression);
     }
     
-    private static ScheduledExecutorService pvManagerThreadPool = Executors.newSingleThreadScheduledExecutor();
+    private static ScheduledExecutorService pvManagerThreadPool = Executors.newSingleThreadScheduledExecutor(ThreadFactories.namedPool("PVMgr Worker "));
     
     private static class AbstractPVManagerExpression {
         // Initialize to defaults
