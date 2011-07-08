@@ -36,7 +36,7 @@ class WriteDirector<T> {
         dataSource.prepareWrite(writeBuffer, exceptionHandler);
     }
     
-    void write(final T newValue, final PVWriter<T> pvWriter) {
+    void write(final T newValue, final PVWriterImpl<T> pvWriter) {
         executor.execute(new Runnable() {
 
             @Override
@@ -55,7 +55,7 @@ class WriteDirector<T> {
         });
     }
     
-    void syncWrite(final T newValue, final PVWriter<T> pvWriter) {
+    void syncWrite(final T newValue, final PVWriterImpl<T> pvWriter) {
         log.finest("Sync write: creating latch");
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<Exception> exception = new AtomicReference<Exception>();

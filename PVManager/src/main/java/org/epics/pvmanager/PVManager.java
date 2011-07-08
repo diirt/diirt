@@ -163,7 +163,7 @@ public class PVManager {
             checkDataSourceAndThreadSwitch();
 
             // Create PV and connect
-            PVWriter<T> pvWriter = new PVWriter<T>(syncWrite);
+            PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite);
             WriteBuffer writeBuffer = writeExpression.createWriteBuffer().build();
             if (writeExceptionHandler == null) {
                 writeExceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, onThread);

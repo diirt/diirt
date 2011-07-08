@@ -23,7 +23,6 @@ public class ExceptionHandler {
     /**
      * Notifies of an exception being thrown.
      * 
-     * TODO: Needs pv
      * @param ex the exception
      */
     public void handleException(Exception ex) {
@@ -31,6 +30,7 @@ public class ExceptionHandler {
     }
     
     public static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final ThreadSwitch threadSwitch) {
+        final PVWriterImpl<?> pvWriterImpl = (PVWriterImpl<?>) pvWriter;
         return new ExceptionHandler() {
             @Override
             public void handleException(final Exception ex) {
@@ -38,8 +38,8 @@ public class ExceptionHandler {
 
                     @Override
                     public void run() {
-                        pvWriter.setLastWriteException(ex);
-                        pvWriter.firePvValueWritten();
+                        pvWriterImpl.setLastWriteException(ex);
+                        pvWriterImpl.firePvValueWritten();
                     }
                 });
             }
