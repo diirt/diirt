@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,6 +70,15 @@ public class CompositeDataSource extends DataSource {
      */
     public String getDefaultDataSource() {
         return defaultDataSource;
+    }
+    
+    /**
+     * Returns the data sources registered to this composite data source.
+     * 
+     * @return the registered data sources
+     */
+    public Map<String, DataSource> getDataSources() {
+        return Collections.unmodifiableMap(dataSources);
     }
 
     /**
