@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager.jca;
 
-import com.cosylab.epics.caj.impl.CAContext;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
@@ -14,23 +13,20 @@ import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
+import gov.aps.jca.event.PutEvent;
+import gov.aps.jca.event.PutListener;
 import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.loc.*;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.ValueFactory;
-import org.epics.pvmanager.util.TimeStamp;
 
 /**
  *
  * @author carcassi
  */
 public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
-    
+
     private final Context context;
     private final int monitorMask;
     private Channel channel;
@@ -48,15 +44,13 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
         }
         super.addMonitor(collector, cache, handler);
     }
-    
-    
 
     @Override
     public void connect(ExceptionHandler handler) {
         try {
             channel = context.createChannel(getChannelName());
 
-            connectionListener = createConnectionListener(channel, handler) ;
+            connectionListener = createConnectionListener(channel, handler);
 
             // Need to wait for the connection to be established
             // before reading the metadata
@@ -108,7 +102,7 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
             processValue(event);
         }
     };
-    
+
     private ConnectionListener createConnectionListener(final Channel channel,
             final ExceptionHandler handler) {
         return new ConnectionListener() {
@@ -144,7 +138,7 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
             }
         }
     }
-    
+
     @Override
     public void disconnect(ExceptionHandler handler) {
         close(handler);
@@ -157,7 +151,27 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
     }
 
     @Override
-    public void write(Object newValue, ChannelWriteCallback callback) {
+    public void write(Object newValue, final ChannelWriteCallback callback) {
+        try {
+            PutListener listener = new PutListener() {
+
+                @Override
+                public void putCompleted(PutEvent ev) {
+                    callback.channelWritten(null);
+                }
+            };
+            if (newValue instanceof String) {
+                channel.put(Double.parseDouble(newValue.toString()), listener);
+            } else if (newValue instanceof Byte || newValue instanceof Short
+                    || newValue instanceof Integer || newValue instanceof Long) {
+                channel.put(((Number) newValue).longValue(), listener);
+            } else if (newValue instanceof Float || newValue instanceof Double) {
+                channel.put(((Number) newValue).doubleValue(), listener);
+            }
+            context.flushIO();
+        } catch (CAException ex) {
+            callback.channelWritten(ex);
+        }
     }
 
     @Override
@@ -173,5 +187,4 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
     public boolean isConnected() {
         return monitor != null;
     }
-    
 }
