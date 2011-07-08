@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.epics.pvmanager.WriteBuffer;
-import org.epics.pvmanager.WriteCache;
 
 /**
  *
