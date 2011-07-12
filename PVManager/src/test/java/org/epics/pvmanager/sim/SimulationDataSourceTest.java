@@ -30,7 +30,6 @@ public class SimulationDataSourceTest {
     public void ramp1() throws InterruptedException {
         // Read data from a ramp PV
         final AtomicInteger sampleCounter = new AtomicInteger();
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.05)"))
                 .atHz(200);
@@ -58,7 +57,6 @@ public class SimulationDataSourceTest {
     public void ramp2() throws InterruptedException {
         // Read data from a ramp PV
         final AtomicInteger sampleCounter = new AtomicInteger();
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
                 .atHz(50);
@@ -85,7 +83,6 @@ public class SimulationDataSourceTest {
         // Read data from a ramp PV
         final AtomicInteger sampleCounter = new AtomicInteger();
         final AtomicInteger failedComparisons = new AtomicInteger();
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         // Data generation every 100 ms
         // Tolerance 200 ms

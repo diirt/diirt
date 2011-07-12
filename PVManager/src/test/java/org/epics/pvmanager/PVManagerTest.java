@@ -7,6 +7,8 @@ package org.epics.pvmanager;
 
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -18,11 +20,16 @@ public class PVManagerTest {
 
     public PVManagerTest() {
     }
+    
+    @Before @After
+    public void restoreDefaults() {
+        PVManager.setDefaultDataSource(null);
+        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
+    }
 
     @Test(expected=IllegalStateException.class)
     public void lackDataSource() {
         PVManager.setDefaultDataSource(null);
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
         PVManager.read(channel("test")).atHz(10);
     }
@@ -30,7 +37,6 @@ public class PVManagerTest {
     @Test
     public void overrideDataSource() {
         PVManager.setDefaultDataSource(new JCADataSource());
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
         PVManager.read(channel("test")).from(SimulationDataSource.simulatedData()).atHz(10);
     }
@@ -46,7 +52,6 @@ public class PVManagerTest {
     @Test
     public void overrideThreadSwitch() {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
         PVManager.read(channel("test")).andNotify(ThreadSwitch.onSwingEDT()).atHz(10);
     }

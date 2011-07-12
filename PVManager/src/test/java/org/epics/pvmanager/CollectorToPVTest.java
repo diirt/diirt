@@ -37,6 +37,7 @@ public class CollectorToPVTest {
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
     }
 
     @Before
