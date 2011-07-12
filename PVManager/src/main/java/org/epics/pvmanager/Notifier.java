@@ -6,8 +6,6 @@
 package org.epics.pvmanager;
 
 import java.lang.ref.WeakReference;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 
 /**
@@ -66,53 +64,23 @@ class Notifier<T> {
         }
     }
 
-    /*
-     * Concurrent queue to safely publish objects.
-     * The timer thread will put objects in the queue, while the notification
-     * thread will take them.
-     * Given that the queue does not accept null, publish nullValue object
-     * instead of null.
-     */
-    private Queue<Object> publishingQueue = new ConcurrentLinkedQueue<Object>();
-    private static final Object nullValue = new Object();
-
-    private void push(T element) {
-        if (element != null) {
-            publishingQueue.add(element);
-        } else {
-            publishingQueue.add(nullValue);
-        }
-    }
-
-    private T pop() {
-        Object element = publishingQueue.poll();
-        if (element == nullValue)
-            return null;
-        else {
-            @SuppressWarnings("unchecked")
-            T popped = (T) element;
-            return popped;
-        }
-    }
-
     /**
      * Notifies the PV of a new value.
      */
     void notifyPv() {
         try {
-            // Using concurrent queue to safely publish object
-            T newValue = function.getValue();
-            push(newValue);
+            // The data will be shipped as part of the task,
+            // which is properly synchronized by the executor
+            final T newValue = function.getValue();
 
             notificationExecutor.execute(new Runnable() {
 
                 @Override
                 public void run() {
-                    T safeValue = pop();
                     PV<T> pv = pvRef.get();
-                    if (pv != null && safeValue != null) {
+                    if (pv != null && newValue != null) {
                         Notification<T> notification =
-                                NotificationSupport.notification(pv.getValue(), safeValue);
+                                NotificationSupport.notification(pv.getValue(), newValue);
                         if (notification.isNotificationNeeded()) {
                             pv.setValue(notification.getNewValue());
                         }
