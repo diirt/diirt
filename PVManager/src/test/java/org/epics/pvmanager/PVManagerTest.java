@@ -24,7 +24,7 @@ public class PVManagerTest {
     @Before @After
     public void restoreDefaults() {
         PVManager.setDefaultDataSource(null);
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
+        PVManager.setDefaultThread(ThreadSwitch.onDefaultThread());
     }
 
     @Test(expected=IllegalStateException.class)

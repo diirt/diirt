@@ -8,6 +8,7 @@ package org.epics.pvmanager;
 import java.lang.ref.WeakReference;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
 
 /**
  * Object responsible to notify the PV of changes on the appropriate thread.
@@ -18,7 +19,7 @@ class Notifier<T> {
 
     private final WeakReference<PV<T>> pvRef;
     private final Function<T> function;
-    private final ThreadSwitch onThread;
+    private final Executor notificationExecutor;
     private volatile PVRecipe pvRecipe;
     private final ExceptionHandler exceptionHandler;
 
@@ -32,12 +33,12 @@ class Notifier<T> {
      *
      * @param pv the pv on which to notify
      * @param function the function used to calculate new values
-     * @param onThread the thread switching mechanism
+     * @param notificationExecutor the thread switching mechanism
      */
-    Notifier(PV<T> pv, Function<T> function, ThreadSwitch onThread, ExceptionHandler exceptionHandler) {
+    Notifier(PV<T> pv, Function<T> function, Executor notificationExecutor, ExceptionHandler exceptionHandler) {
         this.pvRef = new WeakReference<PV<T>>(pv);
         this.function = function;
-        this.onThread = onThread;
+        this.notificationExecutor = notificationExecutor;
         this.exceptionHandler = exceptionHandler;
     }
 
@@ -103,7 +104,7 @@ class Notifier<T> {
             T newValue = function.getValue();
             push(newValue);
 
-            onThread.post(new Runnable() {
+            notificationExecutor.execute(new Runnable() {
 
                 @Override
                 public void run() {
