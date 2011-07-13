@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.epics.pvmanager.util.ThreadFactories;
+import org.epics.pvmanager.util.TimeDuration;
 
 /**
  * Manages the PV creation and scanning.
@@ -274,7 +275,7 @@ public class PVManager {
             if (rate > 200.0)
                 throw new IllegalArgumentException("Current implementation limits the rate up to 200 Hz (requested " + rate + ")");
             
-            long scanPeriodMs = (long) (1000.0 * (1.0 / rate));
+            int scanPeriodMs = (int) (1000.0 * (1.0 / rate));
 
             // Get defaults
             if (source == null)
@@ -305,8 +306,8 @@ public class PVManager {
                 dataRecipe = dataRecipe.withExceptionHandler(exceptionHandler);
             }
             Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
-            Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, notificationExecutor, dataRecipe.getExceptionHandler());
-            Scanner.scan(notifier, scanPeriodMs);
+            Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, pvManagerThreadPool, notificationExecutor, dataRecipe.getExceptionHandler());
+            notifier.startScan(TimeDuration.ms(scanPeriodMs));
             try {
                 source.connect(dataRecipe);
             } catch (RuntimeException ex) {

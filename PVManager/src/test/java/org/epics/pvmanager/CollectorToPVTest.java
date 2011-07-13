@@ -6,10 +6,13 @@
 package org.epics.pvmanager;
 
 import java.util.Collections;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.util.TimeDuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,6 +25,8 @@ import static org.junit.Assert.*;
  * @author carcassi
  */
 public class CollectorToPVTest {
+    
+    private static ScheduledExecutorService scanExecService;
 
     public CollectorToPVTest() {
     }
@@ -33,11 +38,13 @@ public class CollectorToPVTest {
         if (exp.hashCode() == 0)
             System.out.println("Loaded");
         PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        scanExecService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         PVManager.setDefaultThread(ThreadSwitch.onDefaultThread());
+        scanExecService.shutdownNow();
     }
 
     @Before
@@ -80,8 +87,8 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
-        Scanner.scan(notifier, scanPeriodMs);
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
+        notifier.startScan(TimeDuration.ms((int) scanPeriodMs));
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
@@ -120,8 +127,8 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
-        Scanner.scan(notifier, scanPeriodMs);
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
+        notifier.startScan(TimeDuration.ms((int) scanPeriodMs));
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
         connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
