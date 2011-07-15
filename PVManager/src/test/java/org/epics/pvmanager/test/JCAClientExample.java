@@ -29,7 +29,7 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
  */
 public class JCAClientExample {
 
-    private static final String doublePV = "SR:C01-BI:G02A<BPM:L1>Pos-X";
+    private static final String doublePV = "counter1";
     private static final String enumPV = doublePV + ".SCAN";
     private static final String intPV = doublePV + ".RVAL";
     private static final String stringPV = doublePV + ".EGU";
@@ -37,7 +37,6 @@ public class JCAClientExample {
 
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(JCASupport.jca());
-        PVManager.setDefaultThread(ThreadSwitch.onTimerThread());
 
         testNativeTypeSupport();
         testVDoubleSupport();

@@ -166,11 +166,11 @@ public class PVManager {
 
             // Create PV and connect
             PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite);
-            WriteBuffer writeBuffer = writeExpression.createWriteBuffer().build();
+            WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
             if (writeExceptionHandler == null) {
                 writeExceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
             }
-            WriteFunction<T> writeFunction = writeExpression.getWriteFunction();
+            WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
             
             pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, pvManagerThreadPool, writeExceptionHandler));
             return pvWriter;

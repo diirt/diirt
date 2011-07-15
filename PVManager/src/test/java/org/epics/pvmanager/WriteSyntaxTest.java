@@ -10,7 +10,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
 
 /**
  *
@@ -26,10 +25,11 @@ public class WriteSyntaxTest {
         assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getValue(), nullValue());
         assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getPrecedingChannels().isEmpty(), equalTo(true));
         WriteExpression<Object> expr = toChannel(channelName).after("a", "b");
-        assertThat(expr.getDefaultName(), equalTo(channelName));
-        assertThat(((WriteCache<Object>) expr.getWriteFunction()).getValue(), nullValue());
-        assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), hasSize(2));
-        assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));
+        WriteExpressionImpl<Object> exprImpl = WriteExpressionImpl.implOf(expr);
+        assertThat(exprImpl.getDefaultName(), equalTo(channelName));
+        assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getValue(), nullValue());
+        assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getPrecedingChannels(), hasSize(2));
+        assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));
         
         PVWriter<Object> writer = PVManager.write(toChannel(channelName)).from(new LocalDataSource()).sync();
         writer.write(10);

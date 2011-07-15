@@ -10,7 +10,7 @@ import java.util.Arrays;
  *
  * @author carcassi
  */
-public class ChannelExpression<T> extends WriteExpression<T> {
+public class ChannelExpression<T> extends WriteExpressionImpl<T> {
 
     public ChannelExpression(String channelName) {
         super(channelName);
