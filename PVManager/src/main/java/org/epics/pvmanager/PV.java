@@ -20,12 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author carcassi
  * @param <T> the type of the PV.
  */
-public final class PV<T> {
+public class PV<T> {
 
-    //Static factory should be substituted by constructor? Should factory
-    // be public or package private? Should PV name also be final?
-
-    private PV(String name) {
+    PV(String name) {
         this.name = name;
     }
 
