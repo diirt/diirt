@@ -17,7 +17,7 @@ import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     
     private DynamicGroup group = group();
-    private PV<List<Object>> pv = PVManager.read(group).andNotify(ThreadSwitch.onSwingEDT()).atHz(2);
+    private PVReader<List<Object>> pv = PVManager.read(group).andNotify(ThreadSwitch.onSwingEDT()).atHz(2);
     private List<Object> latestValue = null;
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
@@ -341,7 +341,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    List<PV<VStatistics>> pvs = new ArrayList<PV<VStatistics>>();
+    List<PVReader<VStatistics>> pvs = new ArrayList<PVReader<VStatistics>>();
 
     /**
     * @param args the command line arguments

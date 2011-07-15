@@ -5,7 +5,7 @@
 package org.epics.pvmanager.jca;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.junit.AfterClass;
@@ -28,7 +28,7 @@ public class JCACloseIT extends JCABase {
 
     @Test
     public void testSingleOpenAndClose() throws Exception{
-        final PV<Object> pv =PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv =PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -51,7 +51,7 @@ public class JCACloseIT extends JCABase {
 
     @Test
     public void testMultipleOpenAndClose() throws Exception{
-        final PV<Object> pv1 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv1.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -60,7 +60,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv2 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv2.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -69,7 +69,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv3 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv3.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -78,7 +78,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv4 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv4.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -104,7 +104,7 @@ public class JCACloseIT extends JCABase {
 
     @Test
     public void testMultipleDifferentOpenAndClose() throws Exception{
-        final PV<Object> pv1 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv1.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -113,7 +113,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv2 = PVManager.read(channel("carcassi2"))
+        final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
                 .atHz(10);
         pv2.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -122,7 +122,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv3 = PVManager.read(channel("carcassi"))
+        final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .atHz(10);
         pv3.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -131,7 +131,7 @@ public class JCACloseIT extends JCABase {
                 counter.incrementAndGet();
             }
         });
-        final PV<Object> pv4 = PVManager.read(channel("carcassi2"))
+        final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
                 .atHz(10);
         pv4.addPVValueChangeListener(new PVValueChangeListener() {
 

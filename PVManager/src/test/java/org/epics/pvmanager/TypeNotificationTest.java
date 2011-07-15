@@ -38,7 +38,7 @@ public class TypeNotificationTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PV<VDouble> pv = PVManager.read(vDouble("gaussian()")).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(vDouble("gaussian()")).atHz(10);
         final AtomicInteger noTypeCounter = new AtomicInteger();
         final AtomicInteger doubleCounter = new AtomicInteger();
         final AtomicInteger intCounter = new AtomicInteger();

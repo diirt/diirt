@@ -12,7 +12,7 @@ import org.epics.pvmanager.util.ThreadFactories;
 import org.epics.pvmanager.util.TimeDuration;
 
 /**
- * Manages the PV creation and scanning.
+ * Manages the PVReader creation and scanning.
  *
  * @author carcassi
  */
@@ -164,7 +164,7 @@ public class PVManager {
         private PVWriter<T> create(boolean syncWrite) {
             checkDataSourceAndThreadSwitch();
 
-            // Create PV and connect
+            // Create PVReader and connect
             PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite);
             WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
             if (writeExceptionHandler == null) {
@@ -221,7 +221,7 @@ public class PVManager {
          * was thrown.
          * <p>
          * Giving a custom exception handler will disable the default handler,
-         * so {@link PV#lastException() } is no longer set and no notification
+         * so {@link PVReader#lastException() } is no longer set and no notification
          * is done.
          *
          * @param exceptionHandler an exception handler
@@ -263,12 +263,12 @@ public class PVManager {
         }
 
         /**
-         * Sets the rate of scan of the expression and creates the actual {@link PV}
+         * Sets the rate of scan of the expression and creates the actual {@link PVReader}
          * object that can be monitored through listeners.
          * @param rate rate in Hz; should be between 0 and 50
-         * @return the PV
+         * @return the PVReader
          */
-        public PV<T> atHz(double rate) {
+        public PVReader<T> atHz(double rate) {
             if (rate <= 0)
                 throw new IllegalArgumentException("Rate has to be greater than 0 (requested " + rate + ")");
             
@@ -297,8 +297,8 @@ public class PVManager {
                         "read(...).andNotify(threadSwitch).");
             }
 
-            // Create PV and connect
-            PV<T> pv = PV.createPv(aggregatedPVExpression.getDefaultName());
+            // Create PVReader and connect
+            PVReader<T> pv = PVReader.createPv(aggregatedPVExpression.getDefaultName());
             DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
             if (exceptionHandler == null) {
                 dataRecipe = dataRecipe.withExceptionHandler(new DefaultExceptionHandler(pv, notificationExecutor));

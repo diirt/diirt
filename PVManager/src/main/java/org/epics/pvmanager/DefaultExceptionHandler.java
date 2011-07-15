@@ -13,10 +13,10 @@ import java.util.concurrent.Executor;
  */
 class DefaultExceptionHandler extends ExceptionHandler {
 
-    private final PV<?> pv;
+    private final PVReader<?> pv;
     private final Executor notificationExecutor;
 
-    DefaultExceptionHandler(PV<?> pv, Executor notificationExecutor) {
+    DefaultExceptionHandler(PVReader<?> pv, Executor notificationExecutor) {
         this.pv = pv;
         this.notificationExecutor = notificationExecutor;
     }

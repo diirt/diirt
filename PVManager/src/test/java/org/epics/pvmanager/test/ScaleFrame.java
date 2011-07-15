@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JTextField;
 import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
@@ -47,12 +47,12 @@ public class ScaleFrame extends javax.swing.JFrame {
     
     ValueFormat format;
 
-    List<PV<Object>> pvs = new ArrayList<PV<Object>>();
+    List<PVReader<Object>> pvs = new ArrayList<PVReader<Object>>();
 
     private void addPV(final String name) {
         final JTextField field = new JTextField();
         getContentPane().add(field);
-        final PV<Object> pv = PVManager.read(channel(name)).atHz(50);
+        final PVReader<Object> pv = PVManager.read(channel(name)).atHz(50);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override

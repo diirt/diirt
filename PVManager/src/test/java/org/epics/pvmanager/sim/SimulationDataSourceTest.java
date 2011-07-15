@@ -6,7 +6,7 @@ package org.epics.pvmanager.sim;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
@@ -28,10 +28,10 @@ public class SimulationDataSourceTest {
 
     @Test
     public void ramp1() throws InterruptedException {
-        // Read data from a ramp PV
+        // Read data from a ramp PVReader
         final AtomicInteger sampleCounter = new AtomicInteger();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
-        final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.05)"))
+        final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.05)"))
                 .atHz(200);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -55,10 +55,10 @@ public class SimulationDataSourceTest {
 
     @Test
     public void ramp2() throws InterruptedException {
-        // Read data from a ramp PV
+        // Read data from a ramp PVReader
         final AtomicInteger sampleCounter = new AtomicInteger();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
-        final PV<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
+        final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
                 .atHz(50);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
@@ -80,14 +80,14 @@ public class SimulationDataSourceTest {
 
     @Test
     public void synchRamp() throws InterruptedException {
-        // Read data from a ramp PV
+        // Read data from a ramp PVReader
         final AtomicInteger sampleCounter = new AtomicInteger();
         final AtomicInteger failedComparisons = new AtomicInteger();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         // Data generation every 100 ms
         // Tolerance 200 ms
         // Cache last 5 samples
-        final PV<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), TimeDuration.ms(250), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.05)"))))
+        final PVReader<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), TimeDuration.ms(250), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.05)"))))
                 .atHz(10);
         Thread.sleep(300);
         pv.addPVValueChangeListener(new PVValueChangeListener() {

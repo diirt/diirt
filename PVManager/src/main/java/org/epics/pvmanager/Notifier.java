@@ -13,13 +13,13 @@ import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.util.TimeDuration;
 
 /**
- * Object responsible to notify the PV of changes on the appropriate thread.
+ * Object responsible to notify the PVReader of changes on the appropriate thread.
  *
  * @author carcassi
  */
 class Notifier<T> {
 
-    private final WeakReference<PV<T>> pvRef;
+    private final WeakReference<PVReader<T>> pvRef;
     private final Function<T> function;
     private final Executor notificationExecutor;
     private final ScheduledExecutorService scannerExecutor;
@@ -39,8 +39,8 @@ class Notifier<T> {
      * @param function the function used to calculate new values
      * @param notificationExecutor the thread switching mechanism
      */
-    Notifier(PV<T> pv, Function<T> function, ScheduledExecutorService scannerExecutor, Executor notificationExecutor, ExceptionHandler exceptionHandler) {
-        this.pvRef = new WeakReference<PV<T>>(pv);
+    Notifier(PVReader<T> pv, Function<T> function, ScheduledExecutorService scannerExecutor, Executor notificationExecutor, ExceptionHandler exceptionHandler) {
+        this.pvRef = new WeakReference<PVReader<T>>(pv);
         this.function = function;
         this.notificationExecutor = notificationExecutor;
         this.scannerExecutor = scannerExecutor;
@@ -50,7 +50,7 @@ class Notifier<T> {
     /**
      * Determines whether the notifier is active or not.
      * <p>
-     * The notifier becomes inactive if the PV is closed or is garbage collected.
+     * The notifier becomes inactive if the PVReader is closed or is garbage collected.
      * The first time this function determines that the notifier is inactive,
      * it will ask the data source to close all channels relative to the
      * pv.
@@ -59,7 +59,7 @@ class Notifier<T> {
      */
     boolean isActive() {
         // Making sure to get the reference once for thread safety
-        final PV<T> pv = pvRef.get();
+        final PVReader<T> pv = pvRef.get();
         if (pv != null && !pv.isClosed()) {
             return true;
         } else {
@@ -72,7 +72,7 @@ class Notifier<T> {
     }
     
     /**
-     * Notifies the PV of a new value.
+     * Notifies the PVReader of a new value.
      */
     void notifyPv() {
         try {
@@ -84,7 +84,7 @@ class Notifier<T> {
 
                 @Override
                 public void run() {
-                    PV<T> pv = pvRef.get();
+                    PVReader<T> pv = pvRef.get();
                     if (pv != null && newValue != null) {
                         Notification<T> notification =
                                 NotificationSupport.notification(pv.getValue(), newValue);

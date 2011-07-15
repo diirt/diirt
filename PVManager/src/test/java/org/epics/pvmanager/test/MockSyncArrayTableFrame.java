@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import javax.swing.table.TableModel;
@@ -127,7 +127,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PV<VMultiDouble> pv;
+    PVReader<VMultiDouble> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if (pv != null)

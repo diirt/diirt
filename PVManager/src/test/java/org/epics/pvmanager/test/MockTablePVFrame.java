@@ -8,7 +8,7 @@ package org.epics.pvmanager.test;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import java.util.ArrayList;
@@ -142,11 +142,11 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    List<PV<VStatistics>> pvs = new ArrayList<PV<VStatistics>>();
+    List<PVReader<VStatistics>> pvs = new ArrayList<PVReader<VStatistics>>();
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if (pvs != null && !pvs.isEmpty()) {
-            for (PV<VStatistics> pv : pvs) {
+            for (PVReader<VStatistics> pv : pvs) {
                 pv.close();
             }
         }
@@ -160,7 +160,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         model.setRowCount(nPvs);
         pvs.clear();
         for (int n = 0; n < nPvs; n++) {
-            final PV<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).atHz(scanRate);
+            final PVReader<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).atHz(scanRate);
             final int nRow = n;
             pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override

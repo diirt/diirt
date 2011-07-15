@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.ThreadSwitch;
@@ -55,7 +55,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         pixelDurationField.setValue(defaults.getPixelDuration().getNanoSec() / 1000000);
     }
 
-    private PV<VImage> pv;
+    private PVReader<VImage> pv;
     private WaterfallPlot plot;
 
     /** This method is called from within the constructor to

@@ -14,6 +14,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author carcassi
  */
 class PVWriterImpl<T> implements PVWriter<T> {
+    
+    static <T> PVWriterImpl<T> implOf(PVWriter<T> pvWriter) {
+        if (pvWriter instanceof PVWriterImpl) {
+            return (PVWriterImpl<T>) pvWriter;
+        }
+        
+        throw new IllegalArgumentException("PVWriter must be implemented using PVWriterImpl");
+    }
 
     private List<PVValueWriteListener> valueWriteListeners = new CopyOnWriteArrayList<PVValueWriteListener>();
     private volatile Exception lastWriteException;

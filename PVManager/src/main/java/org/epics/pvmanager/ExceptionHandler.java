@@ -31,7 +31,7 @@ public class ExceptionHandler {
     }
     
     public static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final Executor notificationExecutor) {
-        final PVWriterImpl<?> pvWriterImpl = (PVWriterImpl<?>) pvWriter;
+        final PVWriterImpl<?> pvWriterImpl = PVWriterImpl.implOf(pvWriter);
         return new ExceptionHandler() {
             @Override
             public void handleException(final Exception ex) {

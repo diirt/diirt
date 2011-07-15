@@ -10,7 +10,7 @@ import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueWriteListener;
 import org.epics.pvmanager.PVWriter;
@@ -100,7 +100,7 @@ public class LocalDataSourceTest {
     @Test
     public void fullSyncPipeline() throws Exception {
         LocalDataSource dataSource = new LocalDataSource();
-        PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
+        PVReader<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
         PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).sync();
         writer.addPVValueWriteListener(listener);
         writer.write(10);
@@ -120,8 +120,8 @@ public class LocalDataSourceTest {
         CompositeDataSource compositeSource = new CompositeDataSource();
         compositeSource.putDataSource("loc1", dataSource1);
         compositeSource.putDataSource("loc2", dataSource2);
-        PV<Object> pv1 = PVManager.read(channel("loc1://test")).from(compositeSource).atHz(100);
-        PV<Object> pv2 = PVManager.read(channel("loc2://test")).from(compositeSource).atHz(100);
+        PVReader<Object> pv1 = PVManager.read(channel("loc1://test")).from(compositeSource).atHz(100);
+        PVReader<Object> pv2 = PVManager.read(channel("loc2://test")).from(compositeSource).atHz(100);
         PVWriter<Object> writer = PVManager.write(channel("loc1://test")).from(compositeSource).sync();
         writer.addPVValueWriteListener(listener);
         writer.write(10);
@@ -137,7 +137,7 @@ public class LocalDataSourceTest {
     @Test
     public void fullAsyncPipeline() throws Exception {
         LocalDataSource dataSource = new LocalDataSource();
-        PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
+        PVReader<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
         PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).async();
         writer.addPVValueWriteListener(listener);
         writer.write(10);

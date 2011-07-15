@@ -55,7 +55,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PV<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
         notificationReceived = false;
 
         pv.addPVValueChangeListener(new PVValueChangeListener() {
@@ -91,7 +91,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionSourceRateFunction() throws Exception {
-        final PV<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
         notificationReceived = false;
 
         pv.addPVValueChangeListener(new PVValueChangeListener() {

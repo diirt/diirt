@@ -19,7 +19,7 @@ import javax.swing.border.LineBorder;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.Alarm;
@@ -197,7 +197,7 @@ public class MovkProbe extends javax.swing.JFrame {
 
     }//GEN-LAST:event_pvNameActionPerformed
 
-    PV<?> pv;
+    PVReader<?> pv;
 
     private void setTextValue(String value) {
         if (value == null) {

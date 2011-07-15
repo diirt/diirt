@@ -58,7 +58,7 @@ public class CollectorToPVTest {
             pv.close();
     }
 
-    private volatile PV<VDouble> pv;
+    private volatile PVReader<VDouble> pv;
     private AtomicInteger counter;
 
     @Test
@@ -77,7 +77,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv");
+                pv = PVReader.createPv("My pv");
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -117,7 +117,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = PV.createPv("My pv");
+                pv = PVReader.createPv("My pv");
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -158,7 +158,7 @@ public class CollectorToPVTest {
 //        SwingUtilities.invokeAndWait(new Runnable() {
 //            @Override
 //            public void run() {
-//                pvStat = PV.createPv("My pv", DoubleStatistics.class);
+//                pvStat = PVReader.createPv("My pv", DoubleStatistics.class);
 //                pvStat.addPVValueChangeListener(new PVValueChangeListener() {
 //
 //                    @Override
