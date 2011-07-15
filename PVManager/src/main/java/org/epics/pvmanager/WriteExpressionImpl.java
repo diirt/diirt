@@ -25,6 +25,10 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
             return (WriteExpressionImpl<T>) writeExpression;
         }
         
+        if (writeExpression instanceof ReadWriteExpression) {
+            return ((ReadWriteExpression<?, T>) writeExpression).getWriteExpressionImpl();
+        }
+        
         throw new IllegalArgumentException("WriteExpression must be implemented using WriteExpressionImpl");
     }
 

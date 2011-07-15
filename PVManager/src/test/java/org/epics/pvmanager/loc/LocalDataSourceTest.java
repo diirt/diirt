@@ -101,7 +101,7 @@ public class LocalDataSourceTest {
     public void fullSyncPipeline() throws Exception {
         LocalDataSource dataSource = new LocalDataSource();
         PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
-        PVWriter<Object> writer = PVManager.write(toChannel(channelName1)).from(dataSource).sync();
+        PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).sync();
         writer.addPVValueWriteListener(listener);
         writer.write(10);
         
@@ -122,7 +122,7 @@ public class LocalDataSourceTest {
         compositeSource.putDataSource("loc2", dataSource2);
         PV<Object> pv1 = PVManager.read(channel("loc1://test")).from(compositeSource).atHz(100);
         PV<Object> pv2 = PVManager.read(channel("loc2://test")).from(compositeSource).atHz(100);
-        PVWriter<Object> writer = PVManager.write(toChannel("loc1://test")).from(compositeSource).sync();
+        PVWriter<Object> writer = PVManager.write(channel("loc1://test")).from(compositeSource).sync();
         writer.addPVValueWriteListener(listener);
         writer.write(10);
         
@@ -138,7 +138,7 @@ public class LocalDataSourceTest {
     public void fullAsyncPipeline() throws Exception {
         LocalDataSource dataSource = new LocalDataSource();
         PV<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).atHz(100);
-        PVWriter<Object> writer = PVManager.write(toChannel(channelName1)).from(dataSource).async();
+        PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).async();
         writer.addPVValueWriteListener(listener);
         writer.write(10);
         verify(listener, never()).pvValueWritten();

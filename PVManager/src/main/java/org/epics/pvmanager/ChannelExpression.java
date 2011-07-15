@@ -10,14 +10,14 @@ import java.util.Arrays;
  *
  * @author carcassi
  */
-public class ChannelExpression<T> extends WriteExpressionImpl<T> {
+public class ChannelExpression<R, W> extends ReadWriteExpression<R, W> {
 
-    public ChannelExpression(String channelName) {
-        super(channelName);
+    ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
+        super(new SourceRateExpressionImpl<R>(channelName, readClass), new WriteExpressionImpl<W>(channelName));
     }
     
-    public WriteExpression<T> after(String... channelNames) {
-        ((WriteCache<T>) getWriteFunction()).setPrecedingChannels(Arrays.asList(channelNames));
+    public ChannelExpression<R, W> after(String... channelNames) {
+        ((WriteCache<W>) getWriteExpressionImpl().getWriteFunction()).setPrecedingChannels(Arrays.asList(channelNames));
         return this;
     }
     

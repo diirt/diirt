@@ -227,11 +227,11 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
 
                 try {
                     if (rowIndex == writePvNames.size()) {
-                        pvWriters.add(PVManager.write(toChannel(name)).async());
+                        pvWriters.add(PVManager.write(channel(name)).async());
                         writePvNames.add(name);
                         writePvValues.add("");
                     } else {
-                        pvWriters.set(rowIndex, PVManager.write(toChannel(name)).async());
+                        pvWriters.set(rowIndex, PVManager.write(channel(name)).async());
                         writePvNames.set(rowIndex, name);
                         writePvValues.set(rowIndex, "");
                     }

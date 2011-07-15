@@ -31,12 +31,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<Object> channel(String name) {
-        return new SourceRateExpressionImpl<Object>(name, Object.class);
-    }
-
-    public static ChannelExpression<Object> toChannel(String name) {
-        return new ChannelExpression<Object>(name);
+    public static ChannelExpression<Object, Object> channel(String name) {
+        return new ChannelExpression<Object, Object>(name, Object.class, Object.class);
     }
 
     /**

@@ -20,18 +20,19 @@ public class WriteSyntaxTest {
     @Test
     public void simpleWriter() {
         String channelName = "test";
-        ChannelExpression<Object> chExpr = toChannel(channelName);
+        ChannelExpression<Object, Object> chExpr = channel(channelName);
+        WriteExpressionImpl<Object> chExprImpl = WriteExpressionImpl.implOf(chExpr);
         assertThat(chExpr.getDefaultName(), equalTo(channelName));
-        assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getValue(), nullValue());
-        assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getPrecedingChannels().isEmpty(), equalTo(true));
-        WriteExpression<Object> expr = toChannel(channelName).after("a", "b");
+        assertThat(((WriteCache<Object>) chExprImpl.getWriteFunction()).getValue(), nullValue());
+        assertThat(((WriteCache<Object>) chExprImpl.getWriteFunction()).getPrecedingChannels().isEmpty(), equalTo(true));
+        WriteExpression<Object> expr = channel(channelName).after("a", "b");
         WriteExpressionImpl<Object> exprImpl = WriteExpressionImpl.implOf(expr);
         assertThat(exprImpl.getDefaultName(), equalTo(channelName));
         assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getValue(), nullValue());
         assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getPrecedingChannels(), hasSize(2));
         assertThat(((WriteCache<Object>) exprImpl.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));
         
-        PVWriter<Object> writer = PVManager.write(toChannel(channelName)).from(new LocalDataSource()).sync();
+        PVWriter<Object> writer = PVManager.write(channel(channelName)).from(new LocalDataSource()).sync();
         writer.write(10);
     }
 

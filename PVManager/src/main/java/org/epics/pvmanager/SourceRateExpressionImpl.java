@@ -25,6 +25,10 @@ public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
             return (SourceRateExpressionImpl<T>) sourceRateExpression;
         }
         
+        if (sourceRateExpression instanceof ReadWriteExpression) {
+            return ((ReadWriteExpression<T, ?>) sourceRateExpression).getSourceRateExpressionImpl();
+        }
+        
         throw new IllegalArgumentException("SourceRateExpression must be implemented using SourceRateExpressionImpl");
     }
 
