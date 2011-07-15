@@ -19,7 +19,7 @@ import org.epics.pvmanager.util.TimeDuration;
  */
 class Notifier<T> {
 
-    private final WeakReference<PVReader<T>> pvRef;
+    private final WeakReference<PVReaderImpl<T>> pvRef;
     private final Function<T> function;
     private final Executor notificationExecutor;
     private final ScheduledExecutorService scannerExecutor;
@@ -39,8 +39,8 @@ class Notifier<T> {
      * @param function the function used to calculate new values
      * @param notificationExecutor the thread switching mechanism
      */
-    Notifier(PVReader<T> pv, Function<T> function, ScheduledExecutorService scannerExecutor, Executor notificationExecutor, ExceptionHandler exceptionHandler) {
-        this.pvRef = new WeakReference<PVReader<T>>(pv);
+    Notifier(PVReaderImpl<T> pv, Function<T> function, ScheduledExecutorService scannerExecutor, Executor notificationExecutor, ExceptionHandler exceptionHandler) {
+        this.pvRef = new WeakReference<PVReaderImpl<T>>(pv);
         this.function = function;
         this.notificationExecutor = notificationExecutor;
         this.scannerExecutor = scannerExecutor;
@@ -84,7 +84,7 @@ class Notifier<T> {
 
                 @Override
                 public void run() {
-                    PVReader<T> pv = pvRef.get();
+                    PVReaderImpl<T> pv = pvRef.get();
                     if (pv != null && newValue != null) {
                         Notification<T> notification =
                                 NotificationSupport.notification(pv.getValue(), newValue);

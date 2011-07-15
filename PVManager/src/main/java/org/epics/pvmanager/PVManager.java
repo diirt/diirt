@@ -298,7 +298,7 @@ public class PVManager {
             }
 
             // Create PVReader and connect
-            PVReader<T> pv = PVReader.createPv(aggregatedPVExpression.getDefaultName());
+            PVReaderImpl<T> pv = new PVReaderImpl<T>(aggregatedPVExpression.getDefaultName());
             DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
             if (exceptionHandler == null) {
                 dataRecipe = dataRecipe.withExceptionHandler(new DefaultExceptionHandler(pv, notificationExecutor));
