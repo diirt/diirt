@@ -41,7 +41,7 @@ public class ErrorHandlingTest {
     }
 
     public static SourceRateExpression<VDouble> exception(SourceRateExpression<VDouble> expression) {
-        return new SourceRateExpression<VDouble>(expression, new Function<VDouble>() {
+        return new SourceRateExpressionImpl<VDouble>(expression, new Function<VDouble>() {
 
             @Override
             public VDouble getValue() {

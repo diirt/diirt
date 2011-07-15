@@ -32,7 +32,7 @@ public class ExpressionLanguage {
      * @return an expression representing the channel
      */
     public static SourceRateExpression<Object> channel(String name) {
-        return new SourceRateExpression<Object>(name, Object.class);
+        return new SourceRateExpressionImpl<Object>(name, Object.class);
     }
 
     public static ChannelExpression<Object> toChannel(String name) {

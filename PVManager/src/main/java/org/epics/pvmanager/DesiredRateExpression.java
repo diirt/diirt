@@ -33,7 +33,7 @@ public class DesiredRateExpression<T> {
         if (!(collector instanceof Collector)){
             throw new IllegalArgumentException("collector must be of type Collector");
         }
-        this.recipe = expression.createDataRecipe((Collector) collector);
+        this.recipe = SourceRateExpressionImpl.implOf(expression).createDataRecipe((Collector) collector);
         this.function = collector;
         this.defaultName = defaultName;
     }

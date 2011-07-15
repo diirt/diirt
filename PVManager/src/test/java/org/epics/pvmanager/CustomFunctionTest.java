@@ -24,7 +24,7 @@ public class CustomFunctionTest {
     public void singleArgFunction() {
         // Sets up a pipeline where we put data in the cache, and apply
         // a function to it
-        SourceRateExpression<Double> vDouble = new SourceRateExpression<Double>("test", Double.class);
+        SourceRateExpression<Double> vDouble = new SourceRateExpressionImpl<Double>("test", Double.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<Double> expression = resultOf(new OneArgFunction<Double, Double>() {
             @Override
@@ -55,8 +55,8 @@ public class CustomFunctionTest {
     public void twoArgFunction() {
         // Sets up a pipeline where we put data in the cache, and apply
         // a function to it
-        SourceRateExpression<String> value1 = new SourceRateExpression<String>("test1", String.class);
-        SourceRateExpression<Integer> value2 = new SourceRateExpression<Integer>("test2", Integer.class);
+        SourceRateExpression<String> value1 = new SourceRateExpressionImpl<String>("test1", String.class);
+        SourceRateExpression<Integer> value2 = new SourceRateExpressionImpl<Integer>("test2", Integer.class);
         DesiredRateExpression<String> expression = resultOf(new TwoArgFunction<String, String, Integer>() {
             @Override
             public String calculate(String name, Integer number) {
@@ -84,9 +84,9 @@ public class CustomFunctionTest {
     public void nArgFunction() {
         // Sets up a pipeline where we put data in the cache, and apply
         // a function to it
-        SourceRateExpression<Integer> value1 = new SourceRateExpression<Integer>("test1", Integer.class);
-        SourceRateExpression<Integer> value2 = new SourceRateExpression<Integer>("test2", Integer.class);
-        SourceRateExpression<Integer> value3 = new SourceRateExpression<Integer>("test3", Integer.class);
+        SourceRateExpression<Integer> value1 = new SourceRateExpressionImpl<Integer>("test1", Integer.class);
+        SourceRateExpression<Integer> value2 = new SourceRateExpressionImpl<Integer>("test2", Integer.class);
+        SourceRateExpression<Integer> value3 = new SourceRateExpressionImpl<Integer>("test3", Integer.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<Double> expression = resultOf(new OneArgFunction<Double, List<Integer>>() {
             @Override

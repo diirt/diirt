@@ -39,7 +39,7 @@ public class FilteringTest {
                 return false;
             }
         };
-        SourceRateExpression<Integer> vInteger = new SourceRateExpression<Integer>("test", Integer.class);
+        SourceRateExpression<Integer> vInteger = new SourceRateExpressionImpl<Integer>("test", Integer.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Integer>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ExpressionTester tester = new ExpressionTester(expression);
@@ -81,7 +81,7 @@ public class FilteringTest {
                 return false;
             }
         };
-        SourceRateExpression<Number> vInteger = new SourceRateExpression<Number>("test", Number.class);
+        SourceRateExpression<Number> vInteger = new SourceRateExpressionImpl<Number>("test", Number.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Number>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ExpressionTester tester = new ExpressionTester(expression);
@@ -123,7 +123,7 @@ public class FilteringTest {
                 return false;
             }
         };
-        SourceRateExpression<Object> vInteger = new SourceRateExpression<Object>("test", Object.class);
+        SourceRateExpression<Object> vInteger = new SourceRateExpressionImpl<Object>("test", Object.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ExpressionTester tester = new ExpressionTester(expression);
@@ -165,7 +165,7 @@ public class FilteringTest {
                 return false;
             }
         };
-        SourceRateExpression<Object> vInteger = new SourceRateExpression<Object>("test", Object.class);
+        SourceRateExpression<Object> vInteger = new SourceRateExpressionImpl<Object>("test", Object.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ExpressionTester tester = new ExpressionTester(expression);
