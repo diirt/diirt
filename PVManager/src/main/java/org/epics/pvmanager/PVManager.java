@@ -75,6 +75,11 @@ public class PVManager {
         return new PVWriterConfiguration<T>(writeExpression);
     }
     
+    public static <R, W> PVConfiguration<R, W> readAndWrite(ReadWriteExpression<R, W> readWriteExpression) {
+        return new PVConfiguration<R, W>(ExpressionLanguage.latestValueOf(readWriteExpression.getSourceRateExpressionImpl()),
+                readWriteExpression.getWriteExpressionImpl());
+    }
+    
     // TODO: this should be configurable, and probably split in asyncWriteExecutor and scannerExectuor
     static ScheduledExecutorService pvManagerThreadPool = Executors.newSingleThreadScheduledExecutor(ThreadFactories.namedPool("PVMgr Worker "));
     

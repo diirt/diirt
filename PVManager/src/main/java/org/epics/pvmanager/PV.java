@@ -10,10 +10,10 @@ package org.epics.pvmanager;
  */
 public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     
-    private final PVReaderImpl<R> reader;
-    private final PVWriterImpl<W> writer;
+    private final PVReader<R> reader;
+    private final PVWriter<W> writer;
 
-    PV(PVReaderImpl<R> reader, PVWriterImpl<W> writer) {
+    PV(PVReader<R> reader, PVWriter<W> writer) {
         this.reader = reader;
         this.writer = writer;
     }
