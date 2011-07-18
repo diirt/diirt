@@ -40,6 +40,9 @@ public class TimeDuration {
      * @return a new duration
      */
     public static TimeDuration hz(double hz) {
+        if (hz <= 0.0) {
+            throw new IllegalArgumentException("Frequency has to be greater than 0.0");
+        }
         return nanos((long) (1000000000.0 / hz));
     }
 
@@ -51,6 +54,16 @@ public class TimeDuration {
      */
     public static TimeDuration ms(int ms) {
         return new TimeDuration(((long) ms) * 1000000);
+    }
+
+    /**
+     * A new duration in milliseconds.
+     * @param ms milliseconds of the duration
+     * @return a new duration
+     * @throws IllegalArgumentException if the duration is negative
+     */
+    public static TimeDuration ms(double ms) {
+        return new TimeDuration((long) (ms * 1000000));
     }
 
     /**

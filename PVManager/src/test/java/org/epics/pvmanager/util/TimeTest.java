@@ -64,4 +64,11 @@ public class TimeTest {
         assertTrue(TimeDuration.ms(100).equals(TimeDuration.hz(10)));
         assertTrue(TimeDuration.ms(1).equals(TimeDuration.hz(1000)));
     }
+
+    @Test
+    public void testDoubleMs() {
+        assertTrue(TimeDuration.ms(100.0).equals(TimeDuration.ms(100)));
+        assertTrue(TimeDuration.ms(2.5).equals(TimeDuration.hz(400)));
+        assertTrue(TimeDuration.ms(0.2).equals(TimeDuration.nanos(200000)));
+    }
 }
