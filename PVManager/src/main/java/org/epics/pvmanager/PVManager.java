@@ -13,6 +13,16 @@ import org.epics.pvmanager.util.ThreadFactories;
  * Entry point for the library, manages the defaults and allows to create
  * {@link PVReader}, {@link PVWriter} and {@link PV } from an read or write expression.
  * <p>
+ * <b>NotificationExecutor</b> - This is used for all notifications.
+ * By default this uses {@link ThreadSwitch#onLocalThread()} so that
+ * the notification are done on whatever current thread needs to notify.
+ * This means that new read notifications are run on threads managed by
+ * the ReadScannerExecutorService, write notifications are run on threads
+ * managed by the DataSource and exceptions notification are run on the thread
+ * where the exception is done. This can be changed to make all notifications
+ * routed to single threaded sub-systems, such as UI environments like SWING,
+ * SWT or similar. This can be changed on a PV by PV basis.
+ * <p>
  * <b>AsynchWriteExecutor</b> - This is used for asynchronous writes, to return
  * right away. By default this uses the internal PVManager work pool. The work
  * submitted here is the calculation of the corresponding {@link WriteExpression}
