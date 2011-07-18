@@ -7,7 +7,10 @@ package org.epics.pvmanager;
 import java.util.Arrays;
 
 /**
+ * Represents a channel, which can be both read or written.
  *
+ * @param <R> type of the read payload
+ * @param <W> type of the write payload
  * @author carcassi
  */
 public class ChannelExpression<R, W> extends ReadWriteExpression<R, W> {
@@ -19,8 +22,19 @@ public class ChannelExpression<R, W> extends ReadWriteExpression<R, W> {
         }
     }
     
+    /**
+     * For writes only, marks that this channel should be written only after the
+     * given channels.
+     * 
+     * @param channelNames
+     * @return
+     */
     public ChannelExpression<R, W> after(String... channelNames) {
-        ((WriteCache<W>) getWriteExpressionImpl().getWriteFunction()).setPrecedingChannels(Arrays.asList(channelNames));
+        WriteCache<W> cache = (WriteCache<W>) getWriteExpressionImpl().getWriteFunction();
+        if (!cache.getPrecedingChannels().isEmpty()) {
+            throw new IllegalArgumentException("Preceding channels were already set to " + cache.getPrecedingChannels());
+        }
+        cache.setPrecedingChannels(Arrays.asList(channelNames));
         return this;
     }
     
