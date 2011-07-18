@@ -10,6 +10,7 @@ import org.epics.pvmanager.util.TimeDuration;
 /**
  * An expression used to set the final parameters on how the pv expression
  * should be monitored.
+ * 
  * @param <T> the type of the expression
  * @author carcassi
  */
@@ -56,7 +57,8 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     /**
      * Sets the rate of scan of the expression and creates the actual {@link PVReader}
      * object that can be monitored through listeners.
-     * @param rate rate in Hz; should be between 0 and 50
+     * 
+     * @param period the minimum time distance (i.e. the maximum rate) at which notifications should be sent
      * @return the PVReader
      */
     public PVReader<T> every(TimeDuration period) {

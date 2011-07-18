@@ -29,6 +29,7 @@ public interface PVReader<T> {
      * Adds a listener to the value, which is notified only if the value is
      * of a given type. This method is thread safe.
      *
+     * @param clazz type to filter notifications for
      * @param listener a new listener
      */
     public void addPVValueChangeListener(final Class<?> clazz, final PVValueChangeListener listener);

@@ -49,7 +49,7 @@ public class PVManager {
     /**
      * Changes the default executor on which all notifications are going to be posted.
      *
-     * @param defaultNotificationExecutor the new notification executor
+     * @param notificationExecutor the new notification executor
      */
     public static void setDefaultNotificationExecutor(Executor notificationExecutor) {
         defaultNotificationExecutor = notificationExecutor;
