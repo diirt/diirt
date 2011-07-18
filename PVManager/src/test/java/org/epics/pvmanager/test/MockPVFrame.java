@@ -11,13 +11,13 @@
 
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -27,7 +27,7 @@ public class MockPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockPVFrame() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }

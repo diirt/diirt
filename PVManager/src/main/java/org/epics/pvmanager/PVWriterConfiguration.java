@@ -5,7 +5,6 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
-import org.epics.pvmanager.util.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -23,12 +22,12 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     }
 
     @Override
-    public PVWriterConfiguration<T> andNotify(Executor onThread) {
-        super.andNotify(onThread);
+    public PVWriterConfiguration<T> notifyOn(Executor onThread) {
+        super.notifyOn(onThread);
         return this;
     }
     private WriteExpression<T> writeExpression;
-    private ExceptionHandler writeExceptionHandler;
+    private ExceptionHandler exceptionHandler;
 
     PVWriterConfiguration(WriteExpression<T> writeExpression) {
         this.writeExpression = writeExpression;
@@ -43,14 +42,14 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
      * so {@link PVWriter#lastWriteException() } is no longer set and no notification
      * is done.
      *
-     * @param writeExceptionHandler an exception handler
+     * @param exceptionHandler an exception handler
      * @return this
      */
-    public PVWriterConfiguration<T> routeWriteExceptionsTo(ExceptionHandler writeExceptionHandler) {
-        if (this.writeExceptionHandler != null) {
+    public PVWriterConfiguration<T> routeExceptionsTo(ExceptionHandler exceptionHandler) {
+        if (this.exceptionHandler != null) {
             throw new IllegalArgumentException("Exception handler already set");
         }
-        this.writeExceptionHandler = writeExceptionHandler;
+        this.exceptionHandler = exceptionHandler;
         return this;
     }
         
@@ -60,12 +59,12 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             // Create PVReader and connect
             PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite);
             WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
-            if (writeExceptionHandler == null) {
-                writeExceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
+            if (exceptionHandler == null) {
+                exceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
             }
             WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
             
-            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), writeExceptionHandler));
+            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler));
             return pvWriter;
         }
         

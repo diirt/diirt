@@ -13,17 +13,16 @@ package org.epics.pvmanager.test;
 
 import java.awt.Color;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import org.epics.pvmanager.data.AlarmSeverity;
 import javax.swing.JOptionPane;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -35,7 +34,7 @@ public class MockSimPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSimPVFrame() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
         severityColor.put(AlarmSeverity.NONE, Color.BLACK);

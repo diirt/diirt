@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.data.DataTypeSupport;
-import org.epics.pvmanager.util.ThreadFactories;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  * Data source to produce simulated signals that can be using during development
@@ -45,7 +45,7 @@ public final class SimulationDataSource extends DataSource {
     /**
      * ExecutorService on which all simulated data is generated.
      */
-    private static ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(ThreadFactories.namedPool("PVMgr Simulator "));
+    private static ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(namedPool("PVMgr Simulator "));
 
     @Override
     @SuppressWarnings("unchecked")

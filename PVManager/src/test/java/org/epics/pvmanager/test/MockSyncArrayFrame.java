@@ -7,7 +7,6 @@ package org.epics.pvmanager.test;
 
 import java.awt.Color;
 import java.awt.BasicStroke;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
@@ -29,6 +28,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import static org.epics.pvmanager.util.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -39,7 +39,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayFrame() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
         panel = new ChartPanel(null, true, true, true, false, true);

@@ -37,7 +37,7 @@ class CommonConfiguration {
      * @return this
      */
     @SuppressWarnings("unchecked")
-    public CommonConfiguration andNotify(Executor onThread) {
+    public CommonConfiguration notifyOn(Executor onThread) {
         if (this.notificationExecutor == null) {
             this.notificationExecutor = onThread;
         } else {

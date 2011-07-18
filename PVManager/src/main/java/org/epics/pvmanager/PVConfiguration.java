@@ -26,9 +26,9 @@ public class PVConfiguration<R, W> {
         return this;
     }
 
-    public PVConfiguration<R, W> andNotify(Executor onThread) {
-        pvReaderConfiguration.andNotify(onThread);
-        pvWriterConfiguration.andNotify(onThread);
+    public PVConfiguration<R, W> notifyOn(Executor onThread) {
+        pvReaderConfiguration.notifyOn(onThread);
+        pvWriterConfiguration.notifyOn(onThread);
         return this;
     }
 
@@ -47,7 +47,7 @@ public class PVConfiguration<R, W> {
      */
     public PVConfiguration<R, W> routeExceptionsTo(ExceptionHandler exceptionHandler) {
         pvReaderConfiguration.routeExceptionsTo(exceptionHandler);
-        pvWriterConfiguration.routeWriteExceptionsTo(exceptionHandler);
+        pvWriterConfiguration.routeExceptionsTo(exceptionHandler);
         return this;
     }
     

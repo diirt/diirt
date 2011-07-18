@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -37,13 +38,13 @@ public class CollectorToPVTest {
         SourceRateExpression<VDouble> exp = org.epics.pvmanager.data.ExpressionLanguage.vDouble("test");
         if (exp.hashCode() == 0)
             System.out.println("Loaded");
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         scanExecService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onLocalThread());
+        PVManager.setDefaultNotificationExecutor(localThread());
         scanExecService.shutdownNow();
     }
 
@@ -87,7 +88,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, swingEDT(), new ExceptionHandler());
         notifier.startScan(TimeDuration.ms((int) scanPeriodMs));
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
@@ -127,7 +128,7 @@ public class CollectorToPVTest {
                 });
             }
         });
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, ThreadSwitch.onSwingEDT(), new ExceptionHandler());
+        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, scanExecService, swingEDT(), new ExceptionHandler());
         notifier.startScan(TimeDuration.ms((int) scanPeriodMs));
         DataRecipe connRecipe = new DataRecipe();
         double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
@@ -168,7 +169,7 @@ public class CollectorToPVTest {
 //                });
 //            }
 //        });
-//        Notifier<DoubleStatistics> notifier = new Notifier<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.onSwingEDT());
+//        Notifier<DoubleStatistics> notifier = new Notifier<DoubleStatistics>(pvStat, aggregator, ExpressionLanguage.swingEDT());
 //        Scanner.scan(notifier, scanPeriodMs);
 //        PVRecipe connRecipe = new PVRecipe();
 //        connRecipe.cache = cache;

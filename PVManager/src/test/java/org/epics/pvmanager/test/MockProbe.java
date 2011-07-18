@@ -17,7 +17,6 @@ import java.util.Map;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
@@ -30,18 +29,19 @@ import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
  * @author carcassi
  */
-public class MovkProbe extends javax.swing.JFrame {
+public class MockProbe extends javax.swing.JFrame {
 
     Map<AlarmSeverity, Border> borders = new EnumMap<AlarmSeverity, Border>(AlarmSeverity.class);
 
     /** Creates new form MockPVFrame */
-    public MovkProbe() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+    public MockProbe() {
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());
@@ -252,7 +252,7 @@ public class MovkProbe extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MovkProbe().setVisible(true);
+                new MockProbe().setVisible(true);
             }
         });
     }

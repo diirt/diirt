@@ -15,9 +15,9 @@ import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -28,7 +28,7 @@ public class CAPVFrame extends javax.swing.JFrame {
     /** Creates new form MockPVFrame */
     public CAPVFrame() {
         initComponents();
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(JCASupport.jca());
     }
 

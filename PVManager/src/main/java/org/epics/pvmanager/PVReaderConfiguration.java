@@ -22,8 +22,8 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
 
     @Override
-    public PVReaderConfiguration<T> andNotify(Executor onThread) {
-        super.andNotify(onThread);
+    public PVReaderConfiguration<T> notifyOn(Executor onThread) {
+        super.notifyOn(onThread);
         return this;
     }
     private DesiredRateExpression<T> aggregatedPVExpression;

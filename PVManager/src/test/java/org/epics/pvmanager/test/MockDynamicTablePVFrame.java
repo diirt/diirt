@@ -14,7 +14,6 @@ import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.ValueFormat;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
@@ -24,18 +23,17 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.InputMap;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableModel;
 import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.extra.DynamicGroup;
 import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -44,7 +42,7 @@ import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     
     private DynamicGroup group = group();
-    private PVReader<List<Object>> pv = PVManager.read(group).andNotify(ThreadSwitch.onSwingEDT()).atHz(2);
+    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).atHz(2);
     private List<Object> latestValue = null;
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
@@ -347,7 +345,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());

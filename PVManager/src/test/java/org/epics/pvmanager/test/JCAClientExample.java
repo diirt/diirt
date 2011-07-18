@@ -12,7 +12,6 @@ import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VByteArray;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VFloatArray;

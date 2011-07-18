@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.util.ThreadFactories;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  * A source for data that is going to be processed by the PVManager.
@@ -80,7 +80,7 @@ public abstract class DataSource {
     // The executor used by the data source to perform asynchronous operations,
     // such as connections and writes. I am current using a single thread for
     // all data sources, which can be changed if needed.
-    private static Executor exec = Executors.newSingleThreadExecutor(ThreadFactories.namedPool("PVMgr DataSource Worker "));
+    private static Executor exec = Executors.newSingleThreadExecutor(namedPool("PVMgr DataSource Worker "));
     
     // Keeps track of the recipes and buffers that were opened with
     // this data source.

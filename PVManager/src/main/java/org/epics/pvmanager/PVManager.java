@@ -7,14 +7,13 @@ package org.epics.pvmanager;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import org.epics.pvmanager.util.ThreadFactories;
 
 /**
  * Entry point for the library, manages the defaults and allows to create
  * {@link PVReader}, {@link PVWriter} and {@link PV } from an read or write expression.
  * <p>
  * <b>NotificationExecutor</b> - This is used for all notifications.
- * By default this uses {@link ThreadSwitch#onLocalThread()} so that
+ * By default this uses {@link ExpressionLanguage#localThread()} so that
  * the notification are done on whatever current thread needs to notify.
  * This means that new read notifications are run on threads managed by
  * the ReadScannerExecutorService, write notifications are run on threads
@@ -28,7 +27,7 @@ import org.epics.pvmanager.util.ThreadFactories;
  * submitted here is the calculation of the corresponding {@link WriteExpression}
  * and submission to the {@link DataSource}. The DataSource itself typically
  * has asynchronous work, which is executed in the DataSource specific threads.
- * Changing this to {@link ThreadSwitch#onLocalThread()} will make that preparation
+ * Changing this to {@link ExpressionLanguage#localThread()} will make that preparation
  * task on the thread that calls {@link PVWriter#write(java.lang.Object) } but
  * it will not transform the call in a synchronous call.
  * <p>
@@ -41,19 +40,19 @@ import org.epics.pvmanager.util.ThreadFactories;
  */
 public class PVManager {
 
-    private static volatile Executor defaultNotificationExecutor = ThreadSwitch.onLocalThread();
+    private static volatile Executor defaultNotificationExecutor = org.epics.pvmanager.util.Executors.localThread();
     private static volatile DataSource defaultDataSource = null;
-    private static final ScheduledExecutorService workerPool = Executors.newSingleThreadScheduledExecutor(ThreadFactories.namedPool("PVMgr Worker "));
+    private static final ScheduledExecutorService workerPool = Executors.newSingleThreadScheduledExecutor(org.epics.pvmanager.util.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
     private static Executor asyncWriteExecutor = workerPool;
 
     /**
      * Changes the default executor on which all notifications are going to be posted.
      *
-     * @param threadSwitch the new target thread
+     * @param defaultNotificationExecutor the new notification executor
      */
-    public static void setDefaultNotificationExecutor(Executor threadSwitch) {
-        defaultNotificationExecutor = threadSwitch;
+    public static void setDefaultNotificationExecutor(Executor notificationExecutor) {
+        defaultNotificationExecutor = notificationExecutor;
     }
 
     /**

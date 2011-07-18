@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -24,7 +25,7 @@ public class PVManagerTest {
     @Before @After
     public void restoreDefaults() {
         PVManager.setDefaultDataSource(null);
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onLocalThread());
+        PVManager.setDefaultNotificationExecutor(localThread());
     }
 
     @Test(expected=IllegalStateException.class)
@@ -53,7 +54,7 @@ public class PVManagerTest {
     public void overrideThreadSwitch() {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
 
-        PVManager.read(channel("test")).andNotify(ThreadSwitch.onSwingEDT()).atHz(10);
+        PVManager.read(channel("test")).notifyOn(swingEDT()).atHz(10);
     }
 
 }

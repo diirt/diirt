@@ -21,7 +21,6 @@ import javax.swing.ImageIcon;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
@@ -32,6 +31,7 @@ import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -41,7 +41,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     /** Creates new form MockWaterfallPlot */
     public MockWaterfallPlot() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());
@@ -197,7 +197,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 scrollDown(scrollDownField.isSelected()),
                 height(((Number) heightField.getValue()).intValue()),
                 pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
-        pv = PVManager.read(plot).andNotify(ThreadSwitch.onSwingEDT())
+        pv = PVManager.read(plot).notifyOn(swingEDT())
                 .atHz(50);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 

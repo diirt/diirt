@@ -18,13 +18,13 @@ import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -82,7 +82,7 @@ public class ScaleFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());

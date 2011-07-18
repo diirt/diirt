@@ -5,7 +5,6 @@
 
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.ThreadSwitch;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.Executors.*;
 
 /**
  *
@@ -24,7 +24,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockTablePVFrame() {
-        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }
