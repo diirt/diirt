@@ -105,6 +105,12 @@ public class DataRecipe {
         return exceptionHandler;
     }
 
+    /**
+     * Creates a new data recipe with the given handler.
+     * 
+     * @param handler a new exception handler
+     * @return a new data recipe
+     */
     public DataRecipe withExceptionHandler(ExceptionHandler handler) {
         return new DataRecipe(channelsPerCollector, handler);
     }

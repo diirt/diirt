@@ -30,7 +30,7 @@ public class ExceptionHandler {
         log.log(Level.INFO, "Exception for PV", ex);
     }
     
-    public static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final Executor notificationExecutor) {
+    static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final Executor notificationExecutor) {
         final PVWriterImpl<?> pvWriterImpl = PVWriterImpl.implOf(pvWriter);
         return new ExceptionHandler() {
             @Override

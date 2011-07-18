@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,6 +27,9 @@ public class CompositeDataSource extends DataSource {
     private volatile String delimiter = "://";
     private volatile String defaultDataSource;
 
+    /**
+     * Creates a new CompositeDataSource.
+     */
     public CompositeDataSource() {
         super(true);
     }
