@@ -5,7 +5,10 @@
 package org.epics.pvmanager;
 
 /**
+ * Represents an expression that can be both read and written.
  *
+ * @param <R> type of the read payload
+ * @param <W> type of the write payload
  * @author carcassi
  */
 public class ReadWriteExpression<R, W> implements SourceRateExpression<R>, WriteExpression<W> {
@@ -13,6 +16,12 @@ public class ReadWriteExpression<R, W> implements SourceRateExpression<R>, Write
     private final SourceRateExpression<R> sourceRateExpression;
     private final WriteExpression<W> writeExpression;
 
+    /**
+     * Creates an expression that can be both read and written.
+     * 
+     * @param sourceRateExpression the read part of the expression
+     * @param writeExpression the write part of the expression
+     */
     public ReadWriteExpression(SourceRateExpression<R> sourceRateExpression, WriteExpression<W> writeExpression) {
         this.sourceRateExpression = sourceRateExpression;
         this.writeExpression = writeExpression;
