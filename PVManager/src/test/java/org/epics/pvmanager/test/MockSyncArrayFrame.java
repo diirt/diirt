@@ -39,7 +39,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayFrame() {
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
         panel = new ChartPanel(null, true, true, true, false, true);

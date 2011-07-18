@@ -28,7 +28,7 @@ public class CAPVFrame extends javax.swing.JFrame {
     /** Creates new form MockPVFrame */
     public CAPVFrame() {
         initComponents();
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(JCASupport.jca());
     }
 

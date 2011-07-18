@@ -24,7 +24,7 @@ public class PVManagerTest {
     @Before @After
     public void restoreDefaults() {
         PVManager.setDefaultDataSource(null);
-        PVManager.setDefaultThread(ThreadSwitch.onDefaultThread());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onLocalThread());
     }
 
     @Test(expected=IllegalStateException.class)
@@ -44,7 +44,7 @@ public class PVManagerTest {
     @Test(expected=IllegalStateException.class)
     public void lackThreadSwitch() {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
-        PVManager.setDefaultThread(null);
+        PVManager.setDefaultNotificationExecutor(null);
 
         PVManager.read(channel("test")).atHz(10);
     }

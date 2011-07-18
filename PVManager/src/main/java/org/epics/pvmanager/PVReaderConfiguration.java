@@ -81,7 +81,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
             dataRecipe = dataRecipe.withExceptionHandler(exceptionHandler);
         }
         Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
-        Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.pvManagerThreadPool, notificationExecutor, dataRecipe.getExceptionHandler());
+        Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(), notificationExecutor, dataRecipe.getExceptionHandler());
         notifier.startScan(TimeDuration.ms(scanPeriodMs));
         try {
             source.connect(dataRecipe);

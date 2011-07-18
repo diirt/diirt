@@ -28,7 +28,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockSyncArrayTableFrame() {
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }

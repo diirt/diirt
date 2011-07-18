@@ -347,7 +347,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());

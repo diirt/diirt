@@ -24,7 +24,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockTablePVFrame() {
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
     }

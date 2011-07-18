@@ -65,7 +65,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             }
             WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
             
-            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.pvManagerThreadPool, writeExceptionHandler));
+            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), writeExceptionHandler));
             return pvWriter;
         }
         

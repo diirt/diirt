@@ -37,13 +37,13 @@ public class CollectorToPVTest {
         SourceRateExpression<VDouble> exp = org.epics.pvmanager.data.ExpressionLanguage.vDouble("test");
         if (exp.hashCode() == 0)
             System.out.println("Loaded");
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         scanExecService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        PVManager.setDefaultThread(ThreadSwitch.onDefaultThread());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onLocalThread());
         scanExecService.shutdownNow();
     }
 

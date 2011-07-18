@@ -37,7 +37,7 @@ public abstract class ThreadSwitch {
      * 
      * @return an object that runs tasks on the current thread
      */
-    public static Executor onDefaultThread() {
+    public static Executor onLocalThread() {
         return ThreadSwitch.CURRENT_EXECUTOR;
     }
 

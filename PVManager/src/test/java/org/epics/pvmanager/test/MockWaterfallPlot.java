@@ -41,7 +41,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     /** Creates new form MockWaterfallPlot */
     public MockWaterfallPlot() {
-        PVManager.setDefaultThread(ThreadSwitch.onSwingEDT());
+        PVManager.setDefaultNotificationExecutor(ThreadSwitch.onSwingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());

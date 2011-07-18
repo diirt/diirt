@@ -52,7 +52,7 @@ class CommonConfiguration {
             source = PVManager.getDefaultDataSource();
         }
         if (notificationExecutor == null) {
-            notificationExecutor = PVManager.defaultNotificationExecutor;
+            notificationExecutor = PVManager.getDefaultNotificationExecutor();
         }
 
         // Check that a data source has been specified
