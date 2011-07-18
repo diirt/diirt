@@ -11,6 +11,7 @@ package org.epics.pvmanager;
  * can be registered from any thread. The value can only be accessed on the
  * thread on which the listeners is called.
  *
+ * @param <T> type of the write payload
  * @author carcassi
  */
 public interface PVWriter<T> {

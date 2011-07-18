@@ -68,10 +68,22 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             return pvWriter;
         }
         
+        /**
+         * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
+         * method is synchronous (i.e. blocking).
+         * 
+         * @return a new PVWriter
+         */
         public PVWriter<T> sync() {
             return create(true);
         }
         
+        /**
+         * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
+         * method is asynchronous (i.e. non-blocking).
+         * 
+         * @return a new PVWriter
+         */
         public PVWriter<T> async() {
             return create(false);
         }

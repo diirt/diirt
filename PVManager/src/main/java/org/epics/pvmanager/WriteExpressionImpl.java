@@ -49,10 +49,24 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
         this.defaultName = channelName;
     }
 
+    /**
+     * Creates a new write expression.
+     * 
+     * @param childExpression the expression used as arguments by this expression
+     * @param function the function that will decompose the payload for this expression
+     * @param defaultName the name for this expression
+     */
     public WriteExpressionImpl(WriteExpressionImpl<?> childExpression, WriteFunction<T> function, String defaultName) {
         this(Collections.<WriteExpressionImpl<?>>singletonList(childExpression), function, defaultName);
     }
 
+    /**
+     * Creates a new write expression.
+     * 
+     * @param childExpressions the expressions used as arguments by this expression
+     * @param function the function that will decompose the payload for this expression
+     * @param defaultName the name for this expression
+     */
     public WriteExpressionImpl(List<WriteExpressionImpl<?>> childExpressions, WriteFunction<T> function, String defaultName) {
         writeCaches = new HashMap<String, WriteCache<?>>();
         for (WriteExpressionImpl<?> childExpression : childExpressions) {

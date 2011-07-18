@@ -50,10 +50,24 @@ public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
         this.defaultName = pvName;
     }
 
+    /**
+     * Creates a new source rate expression.
+     * 
+     * @param childExpression the expression used as argument used by this expression
+     * @param function the function that will calculate the value for this expression
+     * @param defaultName the name for this expression
+     */
     public SourceRateExpressionImpl(SourceRateExpression<?> childExpression, Function<T> function, String defaultName) {
         this(Collections.<SourceRateExpression<?>>singletonList(childExpression), function, defaultName);
     }
 
+    /**
+     * Creates a new source rate expression.
+     * 
+     * @param childExpressions the expressions used as arguments by this expression
+     * @param function the function that will calculate the value for this expression
+     * @param defaultName the name for this expression
+     */
     public SourceRateExpressionImpl(List<SourceRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
         caches = new HashMap<String, ValueCache>();
         for (SourceRateExpression<?> childExpression : childExpressions) {
