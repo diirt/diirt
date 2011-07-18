@@ -32,6 +32,16 @@ public class TimeDuration {
     public long getNanoSec() {
         return nanoSec;
     }
+    
+    /**
+     * A new duration in hertz, will convert to the length of the period.
+     * 
+     * @param hz frequency to be converted to a duration
+     * @return a new duration
+     */
+    public static TimeDuration hz(double hz) {
+        return nanos((long) (1000000000.0 / hz));
+    }
 
     /**
      * A new duration in milliseconds.

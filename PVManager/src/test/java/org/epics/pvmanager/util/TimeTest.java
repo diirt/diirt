@@ -2,13 +2,12 @@
  * Copyright 2010 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
+package org.epics.pvmanager.util;
 
-package org.epics.pvmanager;
-
-import org.epics.pvmanager.util.TimeStamp;
-import org.epics.pvmanager.util.TimeDuration;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -57,4 +56,12 @@ public class TimeTest {
         assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ms(10))).getNanoSec());
     }
 
+    @Test
+    public void testHz() {
+        TimeDuration duration = TimeDuration.hz(1.0);
+        assertThat(duration.getNanoSec(), equalTo(1000000000L));
+        
+        assertTrue(TimeDuration.ms(100).equals(TimeDuration.hz(10)));
+        assertTrue(TimeDuration.ms(1).equals(TimeDuration.hz(1000)));
+    }
 }
