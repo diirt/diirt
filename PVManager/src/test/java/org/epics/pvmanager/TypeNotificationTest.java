@@ -11,15 +11,12 @@ import org.epics.pvmanager.data.DataTypeSupport;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -38,7 +35,7 @@ public class TypeNotificationTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(vDouble("gaussian()")).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(vDouble("gaussian()")).every(hz(10));
         final AtomicInteger noTypeCounter = new AtomicInteger();
         final AtomicInteger doubleCounter = new AtomicInteger();
         final AtomicInteger intCounter = new AtomicInteger();

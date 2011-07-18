@@ -16,6 +16,7 @@ import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 
 /**
@@ -30,7 +31,7 @@ public class SimulationDataSourceTest {
         final AtomicInteger sampleCounter = new AtomicInteger();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.05)"))
-                .atHz(200);
+                .every(hz(200));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -57,7 +58,7 @@ public class SimulationDataSourceTest {
         final AtomicInteger sampleCounter = new AtomicInteger();
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
-                .atHz(50);
+                .every(hz(50));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -86,7 +87,7 @@ public class SimulationDataSourceTest {
         // Tolerance 200 ms
         // Cache last 5 samples
         final PVReader<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), TimeDuration.ms(250), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.05)"))))
-                .atHz(10);
+                .every(hz(10));
         Thread.sleep(300);
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 

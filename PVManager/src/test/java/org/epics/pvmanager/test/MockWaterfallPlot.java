@@ -32,6 +32,7 @@ import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 import static org.epics.pvmanager.util.Executors.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -198,7 +199,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 height(((Number) heightField.getValue()).intValue()),
                 pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
-                .atHz(50);
+                .every(hz(50));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override

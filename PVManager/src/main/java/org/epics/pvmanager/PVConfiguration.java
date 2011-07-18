@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
+import org.epics.pvmanager.util.TimeDuration;
 
 /**
  *
@@ -51,14 +52,14 @@ public class PVConfiguration<R, W> {
         return this;
     }
     
-    public PV<R, W> synchWriteAndReadAtHz(double rate) {
-        PVReader<R> pvReader = pvReaderConfiguration.atHz(rate);
+    public PV<R, W> synchWriteAndReadEvery(TimeDuration period) {
+        PVReader<R> pvReader = pvReaderConfiguration.every(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.sync();
         return new PV<R, W>(pvReader, pvWriter);
     }
     
-    public PV<R, W> asynchWriteAndReadAtHz(double rate) {
-        PVReader<R> pvReader = pvReaderConfiguration.atHz(rate);
+    public PV<R, W> asynchWriteAndReadEvery(TimeDuration period) {
+        PVReader<R> pvReader = pvReaderConfiguration.every(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.async();
         return new PV<R, W>(pvReader, pvWriter);
     }

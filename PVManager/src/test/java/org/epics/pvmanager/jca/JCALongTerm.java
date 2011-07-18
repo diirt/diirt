@@ -7,8 +7,6 @@ package org.epics.pvmanager.jca;
 import java.util.ArrayList;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,6 +15,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -43,7 +42,7 @@ public class JCALongTerm {
             int index = rand.nextInt(names.size());
             PVReader<?> pv = pvs.get(index);
             if (pv == null) {
-                pv = PVManager.read(channel(names.get(index))).atHz(rand.nextInt(20) + 1);
+                pv = PVManager.read(channel(names.get(index))).every(hz(rand.nextInt(20) + 1));
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

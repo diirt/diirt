@@ -29,6 +29,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import static org.epics.pvmanager.util.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -205,7 +206,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
         pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
-                vDoubles(Collections.nCopies(nPvs, pvName)))).atHz(scanRate);
+                vDoubles(Collections.nCopies(nPvs, pvName)))).every(hz(scanRate));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {

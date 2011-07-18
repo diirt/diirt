@@ -23,6 +23,7 @@ import org.epics.pvmanager.PVValueChangeListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -132,7 +133,7 @@ public class MockSimPVFrame extends javax.swing.JFrame {
             pv.close();
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         try {
-            pv = PVManager.read(vDouble(pvNameField.getText())).atHz(scanRate);
+            pv = PVManager.read(vDouble(pvNameField.getText())).every(hz(scanRate));
             pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                 @Override

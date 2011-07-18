@@ -34,6 +34,7 @@ import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -42,7 +43,7 @@ import static org.epics.pvmanager.util.Executors.*;
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     
     private DynamicGroup group = group();
-    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).atHz(2);
+    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).every(hz(2));
     private List<Object> latestValue = null;
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();

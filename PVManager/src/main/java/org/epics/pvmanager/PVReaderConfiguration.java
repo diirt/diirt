@@ -59,16 +59,12 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param rate rate in Hz; should be between 0 and 50
      * @return the PVReader
      */
-    public PVReader<T> atHz(double rate) {
-        if (rate <= 0) {
-            throw new IllegalArgumentException("Rate has to be greater than 0 (requested " + rate + ")");
+    public PVReader<T> every(TimeDuration period) {
+        //int scanPeriodMs = (int) (period.getNanoSec() / 1000000);
+        
+        if (period.getNanoSec() < 5000000) {
+            throw new IllegalArgumentException("Current implementation limits the rate to >5ms or <200Hz (requested " + (period.getNanoSec() / 1000000) + "ms)");
         }
-
-        if (rate > 200.0) {
-            throw new IllegalArgumentException("Current implementation limits the rate up to 200 Hz (requested " + rate + ")");
-        }
-
-        int scanPeriodMs = (int) (1000.0 * (1.0 / rate));
 
         checkDataSourceAndThreadSwitch();
 
@@ -82,7 +78,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         }
         Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
         Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(), notificationExecutor, dataRecipe.getExceptionHandler());
-        notifier.startScan(TimeDuration.ms(scanPeriodMs));
+        notifier.startScan(period);
         try {
             source.connect(dataRecipe);
         } catch (RuntimeException ex) {

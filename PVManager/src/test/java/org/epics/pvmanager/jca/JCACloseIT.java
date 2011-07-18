@@ -14,6 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -29,7 +30,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testSingleOpenAndClose() throws Exception{
         final PVReader<Object> pv =PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -52,7 +53,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv1.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -61,7 +62,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv2.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -70,7 +71,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv3.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -79,7 +80,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv4.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -105,7 +106,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleDifferentOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv1.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -114,7 +115,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
-                .atHz(10);
+                .every(hz(10));
         pv2.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -123,7 +124,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
-                .atHz(10);
+                .every(hz(10));
         pv3.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
@@ -132,7 +133,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
-                .atHz(10);
+                .every(hz(10));
         pv4.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override

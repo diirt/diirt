@@ -11,6 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -23,7 +24,7 @@ public class PVSyntaxTest {
         String channelName = "test";
         DataSource dataSource = new LocalDataSource();
         
-        PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndReadAtHz(50);
+        PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndReadEvery(hz(50));
         assertThat(pv.getValue(), nullValue());
         
         pv.write(10);

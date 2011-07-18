@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -160,7 +161,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         model.setRowCount(nPvs);
         pvs.clear();
         for (int n = 0; n < nPvs; n++) {
-            final PVReader<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).atHz(scanRate);
+            final PVReader<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).every(hz(scanRate));
             final int nRow = n;
             pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override

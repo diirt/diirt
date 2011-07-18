@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
+import org.epics.pvmanager.util.TimeDuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -55,7 +56,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).every(TimeDuration.hz(10));
         notificationReceived = false;
 
         pv.addPVValueChangeListener(new PVValueChangeListener() {
@@ -91,7 +92,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionSourceRateFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).atHz(10);
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).every(TimeDuration.hz(10));
         notificationReceived = false;
 
         pv.addPVValueChangeListener(new PVValueChangeListener() {
