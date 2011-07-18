@@ -30,8 +30,7 @@ public class ExceptionHandler {
         log.log(Level.INFO, "Exception for PV", ex);
     }
     
-    static ExceptionHandler createDefaultExceptionHandler(final PVWriter<?> pvWriter, final Executor notificationExecutor) {
-        final PVWriterImpl<?> pvWriterImpl = PVWriterImpl.implOf(pvWriter);
+    static ExceptionHandler createDefaultExceptionHandler(final PVWriterImpl<?> pvWriter, final Executor notificationExecutor) {
         return new ExceptionHandler() {
             @Override
             public void handleException(final Exception ex) {
@@ -39,12 +38,29 @@ public class ExceptionHandler {
 
                     @Override
                     public void run() {
-                        pvWriterImpl.setLastWriteException(ex);
-                        pvWriterImpl.firePvValueWritten();
+                        pvWriter.setLastWriteException(ex);
+                        pvWriter.firePvValueWritten();
                     }
                 });
             }
             
+        };
+    }
+    
+    static ExceptionHandler createDefaultExceptionHanderl(final PVReaderImpl<?> pv, final Executor notificationExecutor) {
+        return new ExceptionHandler() {
+
+            @Override
+            public void handleException(final Exception ex) {
+                notificationExecutor.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        pv.setLastException(ex);
+                        pv.firePvValueChanged();
+                    }
+                });
+            }
         };
     }
 }
