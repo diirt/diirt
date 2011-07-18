@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 Brookhaven National Laboratory
+ * Copyright 2011 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager;
@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 /**
  * Manages the connection for each channel of a data source.
  *
+ * @param <EType> type of the connection payload
  * @author carcassi
  */
 public abstract class ChannelHandler<EType> {

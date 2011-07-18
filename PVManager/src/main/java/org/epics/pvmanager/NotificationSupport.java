@@ -1,5 +1,7 @@
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.util.NullUtils;
+
 /**
  * Dedicated notification type support.
  * 
