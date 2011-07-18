@@ -14,6 +14,9 @@ public class ChannelExpression<R, W> extends ReadWriteExpression<R, W> {
 
     ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
         super(new SourceRateExpressionImpl<R>(channelName, readClass), new WriteExpressionImpl<W>(channelName));
+        if (channelName == null) {
+            throw new NullPointerException("Channel name can't be null");
+        }
     }
     
     public ChannelExpression<R, W> after(String... channelNames) {
