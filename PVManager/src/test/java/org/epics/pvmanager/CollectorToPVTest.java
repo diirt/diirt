@@ -78,7 +78,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = new PVReaderImpl<VDouble>("My pv");
+                pv = new PVReaderImpl<VDouble>("My pv", false);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override
@@ -118,7 +118,7 @@ public class CollectorToPVTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                pv = new PVReaderImpl<VDouble>("My pv");
+                pv = new PVReaderImpl<VDouble>("My pv", false);
                 pv.addPVValueChangeListener(new PVValueChangeListener() {
 
                     @Override

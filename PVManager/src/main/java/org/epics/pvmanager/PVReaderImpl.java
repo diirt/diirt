@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -34,13 +35,18 @@ class PVReaderImpl<T> implements PVReader<T> {
      * Factory methods for PVReader objects. The class is used to initialize
      * the value of the PVReader.
      *
-     * @param <E> name of the PVReader
+     * @param name of the PVReader
+     * @param notifyFirstListener true if, when the first listener is registered
+     * and a previous event was generated (value or exception),
+     * it should be fired so that it is not lost
      */
-    PVReaderImpl(String name) {
+    PVReaderImpl(String name, boolean notifyFirstListener) {
         this.name = name;
+        this.notifyFirstListener = notifyFirstListener;
     }
 
     private List<PVValueChangeListener> valueChangeListeners = new CopyOnWriteArrayList<PVValueChangeListener>();
+    private final boolean notifyFirstListener; 
 
     void firePvValueChanged() {
         for (PVValueChangeListener listener : valueChangeListeners) {
@@ -56,7 +62,19 @@ class PVReaderImpl<T> implements PVReader<T> {
     public void addPVValueChangeListener(PVValueChangeListener listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
+        
+        // Check whether to notify when the first listener is added.
+        // This is done to make sure that exceptions thrown at pv creation
+        // are not lost since the listener is added after the pv is created.
+        // If the notification is done on a separate thread, the context switch
+        // is enough to make sure the listener is registerred before the event
+        // arrives, but if the notification is done on the same thread, then
+        // it can't.
+        boolean notify = valueChangeListeners.isEmpty() && notifyFirstListener &&
+                (value != null || lastException.get() != null);
         valueChangeListeners.add(listener);
+        if (notify)
+            listener.pvValueChanged();
     }
 
     /**

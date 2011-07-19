@@ -63,6 +63,8 @@ public abstract class DataSource {
         ChannelHandler<?> channel = usedChannels.get(channelName);
         if (channel == null) {
             channel = createChannel(channelName);
+            if (channel == null)
+                return null;
             usedChannels.put(channelName, channel);
         }
         return channel;
@@ -102,6 +104,8 @@ public abstract class DataSource {
             for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                 String channelName = entry.getKey();
                 final ChannelHandler<?> channelHandler = channel(channelName);
+                if (channelHandler == null)
+                    throw new ReadFailException();
                 final ValueCache cache = entry.getValue();
 
                 // Add monitor on other thread in case it triggers notifications
@@ -163,7 +167,7 @@ public abstract class DataSource {
         final Set<ChannelHandler> handlers = new HashSet<ChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
             handlers.add(channel(channelName));
-        }
+            }
 
         // Connect using another thread
         exec.execute(new Runnable() {

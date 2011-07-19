@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
+import org.epics.pvmanager.util.Executors;
 import org.epics.pvmanager.util.TimeDuration;
 
 /**
@@ -71,7 +72,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         checkDataSourceAndThreadSwitch();
 
         // Create PVReader and connect
-        PVReaderImpl<T> pv = new PVReaderImpl<T>(aggregatedPVExpression.getDefaultName());
+        PVReaderImpl<T> pv = new PVReaderImpl<T>(aggregatedPVExpression.getDefaultName(), Executors.localThread() == notificationExecutor);
         DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
         if (exceptionHandler == null) {
             dataRecipe = dataRecipe.withExceptionHandler(ExceptionHandler.createDefaultExceptionHanderl(pv, notificationExecutor));
