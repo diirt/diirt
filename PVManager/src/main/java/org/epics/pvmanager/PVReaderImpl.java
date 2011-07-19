@@ -7,14 +7,13 @@ package org.epics.pvmanager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An object representing the PVReader. It contains all elements that are common
  * to all PVs of all type. The payload is specified by the generic type,
  * and is returned by {@link #getValue()}. Changes in
- * values are notified through the {@link PVValueChangeListener}. Listeners
+ * values are notified through the {@link PVReaderListener}. Listeners
  * can be registered from any thread. The value can only be accessed on the
  * thread on which the listeners is called.
  *
@@ -45,12 +44,12 @@ class PVReaderImpl<T> implements PVReader<T> {
         this.notifyFirstListener = notifyFirstListener;
     }
 
-    private List<PVValueChangeListener> valueChangeListeners = new CopyOnWriteArrayList<PVValueChangeListener>();
+    private List<PVReaderListener> pvReaderListeners = new CopyOnWriteArrayList<PVReaderListener>();
     private final boolean notifyFirstListener; 
 
     void firePvValueChanged() {
-        for (PVValueChangeListener listener : valueChangeListeners) {
-            listener.pvValueChanged();
+        for (PVReaderListener listener : pvReaderListeners) {
+            listener.pvChanged();
         }
     }
 
@@ -59,7 +58,8 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @param listener a new listener
      */
-    public void addPVValueChangeListener(PVValueChangeListener listener) {
+    @Override
+    public void addPVReaderListener(PVReaderListener listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -70,11 +70,11 @@ class PVReaderImpl<T> implements PVReader<T> {
         // is enough to make sure the listener is registerred before the event
         // arrives, but if the notification is done on the same thread
         // the notification would be lost.
-        boolean notify = valueChangeListeners.isEmpty() && notifyFirstListener &&
+        boolean notify = pvReaderListeners.isEmpty() && notifyFirstListener &&
                 (value != null || lastException.get() != null);
-        valueChangeListeners.add(listener);
+        pvReaderListeners.add(listener);
         if (notify)
-            listener.pvValueChanged();
+            listener.pvChanged();
     }
 
     /**
@@ -83,27 +83,28 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @param listener a new listener
      */
-    public void addPVValueChangeListener(final Class<?> clazz, final PVValueChangeListener listener) {
+    @Override
+    public void addPVReaderListener(final Class<?> clazz, final PVReaderListener listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
-        valueChangeListeners.add(new ListenerDelegate<T>(clazz, listener));
+        pvReaderListeners.add(new ListenerDelegate<T>(clazz, listener));
     }
 
-    private class ListenerDelegate<T> implements PVValueChangeListener {
+    private class ListenerDelegate<T> implements PVReaderListener {
 
         private Class<?> clazz;
-        private PVValueChangeListener delegate;
+        private PVReaderListener delegate;
 
-        public ListenerDelegate(Class<?> clazz, PVValueChangeListener delegate) {
+        public ListenerDelegate(Class<?> clazz, PVReaderListener delegate) {
             this.clazz = clazz;
             this.delegate = delegate;
         }
 
         @Override
-        public void pvValueChanged() {
+        public void pvChanged() {
             // forward the change if the value is of the right type
             if (clazz.isInstance(getValue()))
-                delegate.pvValueChanged();
+                delegate.pvChanged();
         }
 
         @Override
@@ -129,10 +130,11 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @param listener the old listener
      */
-    public void removePVValueChangeListener(PVValueChangeListener listener) {
+    @Override
+    public void removePVReaderListener(PVReaderListener listener) {
         // Removing a delegate will cause the proper comparisons
         // so that it removes either the direct or the delegate
-        valueChangeListeners.remove(new ListenerDelegate<T>(Object.class, listener));
+        pvReaderListeners.remove(new ListenerDelegate<T>(Object.class, listener));
     }
 
     private final String name;
@@ -142,6 +144,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @return the value of name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -150,10 +153,11 @@ class PVReaderImpl<T> implements PVReader<T> {
 
     /**
      * Returns the value of the PVReader. Not thread safe: can be safely accessed only
-     * as part of the {@link PVValueChangeListener}.
+     * as part of the {@link PVReaderListener}.
      *
      * @return the value of value
      */
+    @Override
     public T getValue() {
         return value;
     }
@@ -174,8 +178,9 @@ class PVReaderImpl<T> implements PVReader<T> {
      * is closed, it can't be re-opened. Subsequent calls to close do not
      * do anything.
      */
+    @Override
     public void close() {
-        valueChangeListeners.clear();
+        pvReaderListeners.clear();
         closed = true;
     }
 
@@ -184,6 +189,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @return true if closed
      */
+    @Override
     public boolean isClosed() {
         return closed;
     }
@@ -205,6 +211,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      *
      * @return the last generated exception or null
      */
+    @Override
     public Exception lastException() {
         return lastException.getAndSet(null);
     }

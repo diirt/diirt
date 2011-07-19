@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -43,10 +43,10 @@ public class JCALongTerm {
             PVReader<?> pv = pvs.get(index);
             if (pv == null) {
                 pv = PVManager.read(channel(names.get(index))).every(hz(rand.nextInt(20) + 1));
-                pv.addPVValueChangeListener(new PVValueChangeListener() {
+                pv.addPVReaderListener(new PVReaderListener() {
 
                     @Override
-                    public void pvValueChanged() {
+                    public void pvChanged() {
                         int value = count.incrementAndGet();
                         if (value % 1000 == 0) {
                             System.out.println(System.currentTimeMillis());

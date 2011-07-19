@@ -20,7 +20,7 @@ import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.SimpleValueFormat;
@@ -182,10 +182,10 @@ public class MockProbe extends javax.swing.JFrame {
             pv.close();
 
         pv = PVManager.read(channel(pvName.getText())).every(hz(10));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 setLastError(pv.lastException());
                 Object value = pv.getValue();
                 setTextValue(format.format(value));

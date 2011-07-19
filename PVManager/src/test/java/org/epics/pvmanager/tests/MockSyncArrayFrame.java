@@ -10,7 +10,7 @@ import java.awt.BasicStroke;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import java.util.Collections;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VMultiDouble;
@@ -207,9 +207,9 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
 
         pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
                 vDoubles(Collections.nCopies(nPvs, pvName)))).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 //printArray(pv.getValue());
                 updateChart();
             }

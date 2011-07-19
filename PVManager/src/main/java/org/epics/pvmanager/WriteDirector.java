@@ -47,7 +47,7 @@ class WriteDirector<T> {
 
                         @Override
                         public void run() {
-                            pvWriter.firePvValueWritten();
+                            pvWriter.firePvWritten();
                         }
                     }, exceptionHandler);
                 }
@@ -71,7 +71,7 @@ class WriteDirector<T> {
                             @Override
                             public void run() {
                                 log.finest("Writing done, releasing latch");
-                                pvWriter.firePvValueWritten();
+                                pvWriter.firePvWritten();
                                 latch.countDown();
                             }
                         }, new ExceptionHandler() {

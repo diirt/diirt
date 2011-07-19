@@ -12,7 +12,7 @@ import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueWriteListener;
+import org.epics.pvmanager.PVWriterListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.WriteBuffer;
@@ -52,7 +52,7 @@ public class LocalDataSourceTest {
     @Mock ValueCache<VDouble> valueCache1;
     @Mock ValueCache<VDouble> valueCache2;
     @Mock Collector collector;
-    @Mock PVValueWriteListener listener;
+    @Mock PVWriterListener listener;
     String channelName1 = "test1";
     String channelName2 = "test2";
 
@@ -103,10 +103,10 @@ public class LocalDataSourceTest {
         LocalDataSource dataSource = new LocalDataSource();
         PVReader<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).every(hz(100));
         PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).sync();
-        writer.addPVValueWriteListener(listener);
+        writer.addPVWriterListener(listener);
         writer.write(10);
         
-        verify(listener).pvValueWritten();
+        verify(listener).pvWritten();
         Thread.sleep(50);
         pv.close();
         writer.close();
@@ -124,10 +124,10 @@ public class LocalDataSourceTest {
         PVReader<Object> pv1 = PVManager.read(channel("loc1://test")).from(compositeSource).every(hz(100));
         PVReader<Object> pv2 = PVManager.read(channel("loc2://test")).from(compositeSource).every(hz(100));
         PVWriter<Object> writer = PVManager.write(channel("loc1://test")).from(compositeSource).sync();
-        writer.addPVValueWriteListener(listener);
+        writer.addPVWriterListener(listener);
         writer.write(10);
         
-        verify(listener).pvValueWritten();
+        verify(listener).pvWritten();
         Thread.sleep(50);
         pv1.close();
         writer.close();
@@ -140,15 +140,15 @@ public class LocalDataSourceTest {
         LocalDataSource dataSource = new LocalDataSource();
         PVReader<Object> pv = PVManager.read(channel(channelName1)).from(dataSource).every(hz(100));
         PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).async();
-        writer.addPVValueWriteListener(listener);
+        writer.addPVWriterListener(listener);
         writer.write(10);
-        verify(listener, never()).pvValueWritten();
+        verify(listener, never()).pvWritten();
         
         Thread.sleep(50);
         pv.close();
         writer.close();
         
-        verify(listener).pvValueWritten();
+        verify(listener).pvWritten();
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
     }
 

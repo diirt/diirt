@@ -24,7 +24,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
         throw new IllegalArgumentException("PVWriter must be implemented using PVWriterImpl");
     }
 
-    private List<PVValueWriteListener> valueWriteListeners = new CopyOnWriteArrayList<PVValueWriteListener>();
+    private List<PVWriterListener> pvWriterListeners = new CopyOnWriteArrayList<PVWriterListener>();
     private AtomicReference<Exception> lastWriteException = new AtomicReference<Exception>();
     private volatile  WriteDirector<T> writeDirector;
     private final boolean syncWrite;
@@ -35,9 +35,9 @@ class PVWriterImpl<T> implements PVWriter<T> {
         this.notifyFirstListener = notifyFirstListener;
     }
     
-    void firePvValueWritten() {
-        for (PVValueWriteListener listener : valueWriteListeners) {
-            listener.pvValueWritten();
+    void firePvWritten() {
+        for (PVWriterListener listener : pvWriterListeners) {
+            listener.pvWritten();
         }
     }
 
@@ -52,7 +52,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param listener a new listener
      */
     @Override
-    public void addPVValueWriteListener(PVValueWriteListener listener) {
+    public void addPVWriterListener(PVWriterListener listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -63,11 +63,11 @@ class PVWriterImpl<T> implements PVWriter<T> {
         // is enough to make sure the listener is registerred before the event
         // arrives, but if the notification is done on the same thread
         // the notification would be lost.
-        boolean notify = valueWriteListeners.isEmpty() && notifyFirstListener &&
+        boolean notify = pvWriterListeners.isEmpty() && notifyFirstListener &&
                 lastWriteException.get() != null;
-        valueWriteListeners.add(listener);
+        pvWriterListeners.add(listener);
         if (notify)
-            listener.pvValueWritten();
+            listener.pvWritten();
     }
 
     /**
@@ -76,8 +76,8 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param listener the old listener
      */
     @Override
-    public void removePVValueChangeListener(PVValueWriteListener listener) {
-        valueWriteListeners.remove(listener);
+    public void removePVWriterListener(PVWriterListener listener) {
+        pvWriterListeners.remove(listener);
     }
     
     
@@ -105,7 +105,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     public void close() {
         boolean wasClosed = closed.getAndSet(true);
         if (!wasClosed) {
-            valueWriteListeners.clear();
+            pvWriterListeners.clear();
             writeDirector.close();
         }
     }

@@ -13,7 +13,7 @@ package org.epics.pvmanager.tests;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VStatistics;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
@@ -123,10 +123,10 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
         String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         pv = PVManager.read(statisticsOf(vDouble(pvName))).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
             }
         });

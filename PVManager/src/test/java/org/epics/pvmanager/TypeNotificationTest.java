@@ -40,33 +40,33 @@ public class TypeNotificationTest {
         final AtomicInteger doubleCounter = new AtomicInteger();
         final AtomicInteger intCounter = new AtomicInteger();
 
-        PVValueChangeListener noTypeListener = new PVValueChangeListener() {
+        PVReaderListener noTypeListener = new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 noTypeCounter.incrementAndGet();
             }
         };
 
-        PVValueChangeListener doubleListener = new PVValueChangeListener() {
+        PVReaderListener doubleListener = new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 doubleCounter.incrementAndGet();
             }
         };
 
-        PVValueChangeListener intListener = new PVValueChangeListener() {
+        PVReaderListener intListener = new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 intCounter.incrementAndGet();
             }
         };
 
-        pv.addPVValueChangeListener(noTypeListener);
-        pv.addPVValueChangeListener(VDouble.class, doubleListener);
-        pv.addPVValueChangeListener(VInt.class, intListener);
+        pv.addPVReaderListener(noTypeListener);
+        pv.addPVReaderListener(VDouble.class, doubleListener);
+        pv.addPVReaderListener(VInt.class, intListener);
 
         Thread.sleep(2000);
 
@@ -75,8 +75,8 @@ public class TypeNotificationTest {
         assertThat(noTypeCounter.get(), not(equalTo(0)));
 
         // Removing the listener to check whether the notifications stop
-        pv.removePVValueChangeListener(noTypeListener);
-        pv.removePVValueChangeListener(doubleListener);
+        pv.removePVReaderListener(noTypeListener);
+        pv.removePVReaderListener(doubleListener);
         int tempCount = noTypeCounter.get();
         int tempCount2 = doubleCounter.get();
 

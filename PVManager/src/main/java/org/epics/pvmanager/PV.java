@@ -26,13 +26,13 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     }
 
     @Override
-    public void addPVValueWriteListener(PVValueWriteListener listener) {
-        writer.addPVValueWriteListener(listener);
+    public void addPVWriterListener(PVWriterListener listener) {
+        writer.addPVWriterListener(listener);
     }
 
     @Override
-    public void removePVValueChangeListener(PVValueWriteListener listener) {
-        writer.removePVValueChangeListener(listener);
+    public void removePVWriterListener(PVWriterListener listener) {
+        writer.removePVWriterListener(listener);
     }
 
     @Override
@@ -46,18 +46,18 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     }
 
     @Override
-    public void addPVValueChangeListener(PVValueChangeListener listener) {
-        reader.addPVValueChangeListener(listener);
+    public void addPVReaderListener(PVReaderListener listener) {
+        reader.addPVReaderListener(listener);
     }
 
     @Override
-    public void addPVValueChangeListener(Class<?> clazz, PVValueChangeListener listener) {
-        reader.addPVValueChangeListener(clazz, listener);
+    public void addPVReaderListener(Class<?> clazz, PVReaderListener listener) {
+        reader.addPVReaderListener(clazz, listener);
     }
 
     @Override
-    public void removePVValueChangeListener(PVValueChangeListener listener) {
-        reader.removePVValueChangeListener(listener);
+    public void removePVReaderListener(PVReaderListener listener) {
+        reader.removePVReaderListener(listener);
     }
 
     @Override

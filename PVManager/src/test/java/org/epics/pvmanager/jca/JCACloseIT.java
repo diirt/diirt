@@ -7,7 +7,7 @@ package org.epics.pvmanager.jca;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,10 +31,10 @@ public class JCACloseIT extends JCABase {
     public void testSingleOpenAndClose() throws Exception{
         final PVReader<Object> pv =PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
@@ -54,37 +54,37 @@ public class JCACloseIT extends JCABase {
     public void testMultipleOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv1.addPVValueChangeListener(new PVValueChangeListener() {
+        pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv2.addPVValueChangeListener(new PVValueChangeListener() {
+        pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv3.addPVValueChangeListener(new PVValueChangeListener() {
+        pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv4.addPVValueChangeListener(new PVValueChangeListener() {
+        pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
@@ -107,37 +107,37 @@ public class JCACloseIT extends JCABase {
     public void testMultipleDifferentOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv1.addPVValueChangeListener(new PVValueChangeListener() {
+        pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
                 .every(hz(10));
-        pv2.addPVValueChangeListener(new PVValueChangeListener() {
+        pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .every(hz(10));
-        pv3.addPVValueChangeListener(new PVValueChangeListener() {
+        pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
                 .every(hz(10));
-        pv4.addPVValueChangeListener(new PVValueChangeListener() {
+        pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 counter.incrementAndGet();
             }
         });

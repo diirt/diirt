@@ -9,7 +9,7 @@ package org.epics.pvmanager;
  * An object representing the PVReader. It contains all elements that are common
  * to all PVs of all type. The payload is specified by the generic type,
  * and is returned by {@link #getValue()}. Changes in
- * values are notified through the {@link PVValueChangeListener}. Listeners
+ * values are notified through the {@link PVReaderListener}. Listeners
  * can be registered from any thread. The value can only be accessed on the
  * thread on which the listeners is called.
  *
@@ -23,7 +23,7 @@ public interface PVReader<T> {
      *
      * @param listener a new listener
      */
-    public void addPVValueChangeListener(PVValueChangeListener listener);
+    public void addPVReaderListener(PVReaderListener listener);
 
     /**
      * Adds a listener to the value, which is notified only if the value is
@@ -32,14 +32,14 @@ public interface PVReader<T> {
      * @param clazz type to filter notifications for
      * @param listener a new listener
      */
-    public void addPVValueChangeListener(final Class<?> clazz, final PVValueChangeListener listener);
+    public void addPVReaderListener(final Class<?> clazz, final PVReaderListener listener);
 
     /**
      * Removes a listener to the value. This method is thread safe.
      *
      * @param listener the old listener
      */
-    public void removePVValueChangeListener(PVValueChangeListener listener);
+    public void removePVReaderListener(PVReaderListener listener);
 
     /**
      * Returns the name of the PVReader. This method is thread safe.
@@ -50,7 +50,7 @@ public interface PVReader<T> {
 
     /**
      * Returns the value of the PVReader. Not thread safe: can be safely accessed only
-     * as part of the {@link PVValueChangeListener}.
+     * as part of the {@link PVReaderListener}.
      *
      * @return the value of value
      */

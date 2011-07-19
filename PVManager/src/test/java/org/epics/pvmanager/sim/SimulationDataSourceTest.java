@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.util.TimeDuration;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.junit.Test;
@@ -32,10 +32,10 @@ public class SimulationDataSourceTest {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,.05)"))
                 .every(hz(200));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
 //                // Check that the value is right
                 assertTrue("Counter was " + sampleCounter.get() + " and value was " + pv.getValue().getValue().intValue(),
                         sampleCounter.get() == pv.getValue().getValue().intValue() ||
@@ -49,7 +49,7 @@ public class SimulationDataSourceTest {
         // After 10s, expect about 20 samples
         assertTrue("Less than 19 calls", sampleCounter.get() >= 19);
         assertTrue("More than 21 calls", sampleCounter.get() <= 21);
-        pv.removePVValueChangeListener(null);
+        pv.removePVReaderListener(null);
     }
 
     @Test
@@ -59,10 +59,10 @@ public class SimulationDataSourceTest {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         final PVReader<VDouble> pv = PVManager.read(vDouble("ramp(0,10,1,0.2)"))
                 .every(hz(50));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 // Check that the value is right
                 assertTrue("Counter was " + sampleCounter.get() + " and value was " + pv.getValue().getValue().intValue(),
                         sampleCounter.get() == pv.getValue().getValue().intValue() ||
@@ -89,10 +89,10 @@ public class SimulationDataSourceTest {
         final PVReader<VMultiDouble> pv = PVManager.read(synchronizedArrayOf(TimeDuration.ms(10), TimeDuration.ms(250), vDoubles(Collections.nCopies(100, "ramp(0,10,1,0.05)"))))
                 .every(hz(10));
         Thread.sleep(300);
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 VMultiDouble array = pv.getValue();
                 if (array == null)
                     return;

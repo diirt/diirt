@@ -39,7 +39,7 @@ public class ExceptionHandler {
                     @Override
                     public void run() {
                         pvWriter.setLastWriteException(ex);
-                        pvWriter.firePvValueWritten();
+                        pvWriter.firePvWritten();
                     }
                 });
             }

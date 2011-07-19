@@ -21,14 +21,14 @@ public interface PVWriter<T> {
      *
      * @param listener a new listener
      */
-    public void addPVValueWriteListener(PVValueWriteListener listener);
+    public void addPVWriterListener(PVWriterListener listener);
 
     /**
      * Removes a listener to the value. This method is thread safe.
      *
      * @param listener the old listener
      */
-    public void removePVValueChangeListener(PVValueWriteListener listener);
+    public void removePVWriterListener(PVWriterListener listener);
     
     /**
      * Writes a new value. This method can be synchronous or synchronous

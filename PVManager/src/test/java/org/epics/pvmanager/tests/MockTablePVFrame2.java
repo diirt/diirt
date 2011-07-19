@@ -9,7 +9,7 @@ import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -158,9 +158,9 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
         pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 final List<VStatistics> values = pv.getValue();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {

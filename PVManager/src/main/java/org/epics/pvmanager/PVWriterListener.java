@@ -9,10 +9,10 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public interface PVValueWriteListener {
+public interface PVWriterListener {
     
     /**
      * Notified when the value was written.
      */
-    public void pvValueWritten();
+    public void pvWritten();
 }

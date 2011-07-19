@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.Util;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
@@ -200,10 +200,10 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
                 .every(hz(50));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
                     BufferedImage image = Util.toImage(pv.getValue());

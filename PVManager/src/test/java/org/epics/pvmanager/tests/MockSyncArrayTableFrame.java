@@ -13,7 +13,7 @@ import org.epics.pvmanager.data.VMultiDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import javax.swing.table.TableModel;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -145,9 +145,9 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
         pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
                 vDoubles(Collections.nCopies(nPvs, pvName)))).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 final List<VDouble> values = pv.getValue().getValues();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {

@@ -14,7 +14,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -30,19 +30,19 @@ public class JCASteadyLongTerm {
         final AtomicInteger count = new AtomicInteger();
         
         PVReader<?> pv = PVManager.read(channel("counter1")).every(hz(50));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 count.incrementAndGet();
             }
         });
         
         pv = PVManager.read(channel("counter1")).every(hz(50));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 count.incrementAndGet();
             }
         });

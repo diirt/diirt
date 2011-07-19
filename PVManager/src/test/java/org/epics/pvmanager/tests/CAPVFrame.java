@@ -14,7 +14,7 @@ package org.epics.pvmanager.tests;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
@@ -143,10 +143,10 @@ public class CAPVFrame extends javax.swing.JFrame {
 
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvValueChanged() {
+            public void pvChanged() {
                 if (pv.getValue() != null)
                     valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
             }

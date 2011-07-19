@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import org.epics.pvmanager.PVValueChangeListener;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.extra.DynamicGroup;
 import org.epics.pvmanager.loc.LocalDataSource;
@@ -54,10 +54,10 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         private List<String> titles = Arrays.asList("PV name", "Value", "Alarm", "Time");
         
         {
-            pv.addPVValueChangeListener(new PVValueChangeListener() {
+            pv.addPVReaderListener(new PVReaderListener() {
 
                 @Override
-                public void pvValueChanged() {
+                public void pvChanged() {
                     latestValue = pv.getValue();
                     latestExceptions = group.lastExceptions();
                     fireTableRowsUpdated(0, getRowCount());
