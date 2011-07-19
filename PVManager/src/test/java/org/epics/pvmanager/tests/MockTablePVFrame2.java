@@ -3,21 +3,20 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import javax.swing.table.AbstractTableModel;
-import org.epics.pvmanager.data.VMultiDouble;
+import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-import org.epics.pvmanager.data.VDouble;
-import static org.epics.pvmanager.util.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.types.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
@@ -25,10 +24,10 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  *
  * @author carcassi
  */
-public class MockSyncArrayTableFrame extends javax.swing.JFrame {
+public class MockTablePVFrame2 extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
-    public MockSyncArrayTableFrame() {
+    public MockTablePVFrame2() {
         PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
@@ -56,6 +55,25 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        pvTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Average", "Standard deviation", "Minimum", "Maximum"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(pvTable);
 
         jLabel6.setText("UI scan rate (Hz):");
@@ -81,6 +99,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -99,13 +118,12 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(updateRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -128,7 +146,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PVReader<VMultiDouble> pv;
+    PVReader<List<VStatistics>> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if (pv != null)
@@ -136,23 +154,18 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
 
         int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
         double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "ramp(-1.5, 1.5, 0.1, " + timeIntervalSec + ")";
+        String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        // Buffer depth has to be longest between the time between scan and
-        // the time between sample multiplied by 5 (so you get at least 5 samples).
-        double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
-
-        pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
-                vDoubles(Collections.nCopies(nPvs, pvName)))).every(hz(scanRate));
+        pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).every(hz(scanRate));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
             @Override
             public void pvValueChanged() {
-                final List<VDouble> values = pv.getValue().getValues();
+                final List<VStatistics> values = pv.getValue();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {
 
-                        List<String> names = Arrays.asList("Value", "Timestamp");
+                        List<String> names = Arrays.asList("Average", "Standard deviation", "Minimum", "Maximum");
 
                         @Override
                         public int getRowCount() {
@@ -165,19 +178,18 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
                         }
 
                         @Override
-                        public String getColumnName(int column) {
-                            return names.get(column);
-                        }
-
-                        @Override
                         public Object getValueAt(int rowIndex, int columnIndex) {
                             if (values.get(rowIndex) == null)
                                 return null;
                             switch(columnIndex) {
                                 case 0:
-                                    return values.get(rowIndex).getValue();
+                                    return values.get(rowIndex).getAverage();
                                 case 1:
-                                    return values.get(rowIndex).getTimeStamp();
+                                    return values.get(rowIndex).getStdDev();
+                                case 2:
+                                    return values.get(rowIndex).getMin();
+                                case 3:
+                                    return values.get(rowIndex).getMax();
                             }
                             throw new IllegalStateException();
                         }
@@ -195,7 +207,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MockSyncArrayTableFrame().setVisible(true);
+                new MockTablePVFrame2().setVisible(true);
             }
         });
     }

@@ -9,7 +9,7 @@
  * Created on Feb 16, 2010, 3:43:37 PM
  */
 
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
 import java.awt.Color;
 import java.util.EnumMap;

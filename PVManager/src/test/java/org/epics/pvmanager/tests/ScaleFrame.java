@@ -8,7 +8,7 @@
  *
  * Created on Dec 9, 2010, 9:33:00 AM
  */
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;

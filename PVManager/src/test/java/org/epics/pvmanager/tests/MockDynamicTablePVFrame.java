@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -9,8 +9,13 @@
  * Created on Feb 16, 2010, 3:43:37 PM
  */
 
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
+import java.awt.Color;
+import java.util.EnumMap;
+import java.util.Map;
+import org.epics.pvmanager.data.AlarmSeverity;
+import javax.swing.JOptionPane;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
@@ -24,13 +29,20 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  *
  * @author carcassi
  */
-public class MockPVFrame extends javax.swing.JFrame {
+public class MockSimPVFrame extends javax.swing.JFrame {
+
+    Map<AlarmSeverity, Color> severityColor = new EnumMap<AlarmSeverity, Color>(AlarmSeverity.class);
 
     /** Creates new form MockPVFrame */
-    public MockPVFrame() {
+    public MockSimPVFrame() {
         PVManager.setDefaultNotificationExecutor(swingEDT());
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         initComponents();
+        severityColor.put(AlarmSeverity.NONE, Color.BLACK);
+        severityColor.put(AlarmSeverity.MINOR, Color.YELLOW);
+        severityColor.put(AlarmSeverity.MAJOR, Color.RED);
+        severityColor.put(AlarmSeverity.INVALID, Color.GRAY);
+        severityColor.put(AlarmSeverity.UNDEFINED, Color.MAGENTA);
     }
 
     /** This method is called from within the constructor to
@@ -48,7 +60,7 @@ public class MockPVFrame extends javax.swing.JFrame {
         scanRateSpinner = new javax.swing.JSpinner();
         createPVButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        updateRateSpinner = new javax.swing.JSpinner();
+        pvNameField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,9 +79,7 @@ public class MockPVFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("PV update rate (Hz):");
-
-        updateRateSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
+        jLabel3.setText("PV name:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,16 +91,16 @@ public class MockPVFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
+                        .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(updateRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
+                        .addComponent(pvNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(10, 10, 10)
-                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
-                    .addComponent(createPVButton, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+                    .addComponent(createPVButton, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -103,7 +113,7 @@ public class MockPVFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(updateRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pvNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(scanRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,17 +131,20 @@ public class MockPVFrame extends javax.swing.JFrame {
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if (pv != null)
             pv.close();
-        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(vDouble(pvName)).every(hz(scanRate));
-        pv.addPVValueChangeListener(new PVValueChangeListener() {
+        try {
+            pv = PVManager.read(vDouble(pvNameField.getText())).every(hz(scanRate));
+            pv.addPVValueChangeListener(new PVValueChangeListener() {
 
-            @Override
-            public void pvValueChanged() {
-                valueLabel.setText(Double.toString(pv.getValue().getValue()));
-            }
-        });
+                @Override
+                public void pvValueChanged() {
+                    valueLabel.setText(Double.toString(pv.getValue().getValue()));
+                    valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
+                }
+            });
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**
@@ -140,7 +153,7 @@ public class MockPVFrame extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MockPVFrame().setVisible(true);
+                new MockSimPVFrame().setVisible(true);
             }
         });
     }
@@ -150,8 +163,8 @@ public class MockPVFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField pvNameField;
     private javax.swing.JSpinner scanRateSpinner;
-    private javax.swing.JSpinner updateRateSpinner;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 

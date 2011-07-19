@@ -8,13 +8,14 @@
  *
  * Created on Feb 16, 2010, 3:43:37 PM
  */
-package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.sim.SimulationDataSource;
+package org.epics.pvmanager.tests;
+
+import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVValueChangeListener;
-import org.epics.pvmanager.data.VStatistics;
+import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -23,13 +24,13 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  *
  * @author carcassi
  */
-public class MockStatsPVFrame extends javax.swing.JFrame {
+public class CAPVFrame extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
-    public MockStatsPVFrame() {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
+    public CAPVFrame() {
         initComponents();
+        PVManager.setDefaultNotificationExecutor(swingEDT());
+        PVManager.setDefaultDataSource(JCASupport.jca());
     }
 
     /** This method is called from within the constructor to
@@ -43,17 +44,42 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         valueLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        pvNameField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         scanRateSpinner = new javax.swing.JSpinner();
         createPVButton = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        updateRateSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("PV value:");
 
         valueLabel.setText("0");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("PV parameters"));
+
+        jLabel3.setText("PV Name:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pvNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(pvNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         jLabel6.setText("UI scan rate (Hz):");
 
@@ -66,10 +92,6 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("PV update rate (Hz):");
-
-        updateRateSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,19 +99,16 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(createPVButton, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(valueLabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(updateRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addGap(10, 10, 10)
-                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
-                    .addComponent(createPVButton, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scanRateSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -99,14 +118,12 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(valueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(updateRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(scanRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(scanRateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(createPVButton)
                 .addContainerGap())
@@ -114,42 +131,49 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     PVReader<VStatistics> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
+        if ("".equals(pvNameField.getText()))
+            return;
+
         if (pv != null)
             pv.close();
-        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
+
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(statisticsOf(vDouble(pvName))).every(hz(scanRate));
+        pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).every(hz(scanRate));
         pv.addPVValueChangeListener(new PVValueChangeListener() {
 
             @Override
             public void pvValueChanged() {
-                valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
+                if (pv.getValue() != null)
+                    valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
             }
         });
     }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**
-     * @param args the command line arguments
-     */
+    * @param args the command line arguments
+    */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-
+            @Override
             public void run() {
-                new MockStatsPVFrame().setVisible(true);
+                new CAPVFrame().setVisible(true);
             }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createPVButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField pvNameField;
     private javax.swing.JSpinner scanRateSpinner;
-    private javax.swing.JSpinner updateRateSpinner;
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
+
 }

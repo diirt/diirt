@@ -9,7 +9,7 @@
  * Created on Jan 10, 2011, 3:59:13 PM
  */
 
-package org.epics.pvmanager.test;
+package org.epics.pvmanager.tests;
 
 import java.awt.Color;
 import org.epics.pvmanager.CompositeDataSource;
