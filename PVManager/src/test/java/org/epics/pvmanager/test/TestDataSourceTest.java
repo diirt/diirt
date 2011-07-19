@@ -78,4 +78,25 @@ public class TestDataSourceTest {
         verify(writeListener).pvWritten();
         pvWriter.close();
     }
+    
+    @Test
+    public void delayedWrite() throws Exception {
+        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).from(dataSource).async();
+        pvWriter.addPVWriterListener(writeListener);
+        pvWriter.write("test");
+        
+        Thread.sleep(15);
+        
+        WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, never()).pvWritten();
+        
+        Thread.sleep(1000);
+        
+        ex = (WriteFailException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener).pvWritten();
+        
+        pvWriter.close();
+    }
 }
