@@ -7,6 +7,7 @@ package org.epics.pvmanager;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Implementation class for {@link PVWriter}.
@@ -24,7 +25,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     }
 
     private List<PVValueWriteListener> valueWriteListeners = new CopyOnWriteArrayList<PVValueWriteListener>();
-    private volatile Exception lastWriteException;
+    private AtomicReference<Exception> lastWriteException = new AtomicReference<Exception>();
     private volatile  WriteDirector<T> writeDirector;
     private final boolean syncWrite;
     private final boolean notifyFirstListener; 
@@ -63,7 +64,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
         // arrives, but if the notification is done on the same thread
         // the notification would be lost.
         boolean notify = valueWriteListeners.isEmpty() && notifyFirstListener &&
-                lastWriteException != null;
+                lastWriteException.get() != null;
         valueWriteListeners.add(listener);
         if (notify)
             listener.pvValueWritten();
@@ -125,7 +126,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param ex the new exception
      */
     void setLastWriteException(Exception ex) {
-        lastWriteException = ex;
+        lastWriteException.set(ex);
     }
 
     /**
@@ -136,7 +137,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
      */
     @Override
     public Exception lastWriteException() {
-        return lastWriteException;
+        return lastWriteException.getAndSet(null);
     }
     
 }
