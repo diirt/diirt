@@ -121,6 +121,19 @@ class Notifier<T> {
         }, 0, duration.getNanoSec(), TimeUnit.NANOSECONDS);
     }
     
+    void timeout(TimeDuration timeout, final String timeoutMessage) {
+        scannerExecutor.schedule(new Runnable() {
+
+            @Override
+            public void run() {
+                PVReaderImpl<T> pv = pvRef.get();
+                if (pv != null && pv.getValue() == null) {
+                    exceptionHandler.handleException(new TimeoutException(timeoutMessage));
+                }
+            }
+        }, timeout.getNanoSec(), TimeUnit.NANOSECONDS);
+    }
+    
     void stopScan() {
         scanTaskHandle.cancel(false);
     }

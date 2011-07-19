@@ -32,6 +32,10 @@ public class BasicTypeSupport {
 
         // Add support for lists
         addList();
+        
+        // Add support for numbers and strings
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Number.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(String.class));
 
         installed = true;
     }

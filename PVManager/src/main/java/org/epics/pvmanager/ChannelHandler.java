@@ -49,7 +49,7 @@ public abstract class ChannelHandler<EType> {
             }
         }
     }
-
+    
     /**
      * Creates a new channel handler.
      * 

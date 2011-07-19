@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.BasicTypeSupport;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 
@@ -15,6 +16,11 @@ import org.epics.pvmanager.DataSource;
  * @author carcassi
  */
 public final class TestDataSource extends DataSource {
+
+    static {
+        // Install type support for the types it generates.
+        BasicTypeSupport.install();
+    }
 
     /**
      * Creates a new data source.
@@ -27,6 +33,9 @@ public final class TestDataSource extends DataSource {
     protected ChannelHandler<?> createChannel(String channelName) {
         if ("delayedWrite".equals(channelName)) {
             return new DelayedWriteChannel(channelName);
+        }
+        if ("delayedConnection".equals(channelName)) {
+            return new DelayedConnectionChannel(channelName);
         }
         return null;
     }

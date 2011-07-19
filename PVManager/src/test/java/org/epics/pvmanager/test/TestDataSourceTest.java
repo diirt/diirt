@@ -54,7 +54,7 @@ public class TestDataSourceTest {
     @Mock PVWriterListener writeListener;
     @Mock PVReaderListener readListener;
     
-    //@Test
+    @Test
     public void channelDoesNotExist1() throws Exception {
         PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).every(ms(10));
         pvReader.addPVReaderListener(readListener);
@@ -67,7 +67,7 @@ public class TestDataSourceTest {
         pvReader.close();
     }
     
-    //@Test
+    @Test
     public void channelDoesNotExist2() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
@@ -80,7 +80,7 @@ public class TestDataSourceTest {
         pvWriter.close();
     }
     
-    //@Test
+    @Test
     public void delayedWrite() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
@@ -174,5 +174,32 @@ public class TestDataSourceTest {
         verify(writeListener, times(4)).pvWritten();
         
         pvWriter.close();
+    }
+    
+    @Test
+    public void delayedReadConnectionWithTimeout() throws Exception {
+        PVReader<Object> pvReader = PVManager.read(channel("delayedConnection")).timeout(ms(500)).from(dataSource).every(ms(50));
+        pvReader.addPVReaderListener(readListener);
+        
+        Thread.sleep(15);
+        
+        TimeoutException ex = (TimeoutException) pvReader.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, never()).pvChanged();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvReader.lastException();
+        assertThat(ex, not(nullValue()));
+        verify(readListener).pvChanged();
+        
+        Thread.sleep(600);
+        
+        ex = (TimeoutException) pvReader.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, times(2)).pvChanged();
+        assertThat((String) pvReader.getValue(), equalTo("Initial value"));
+        
+        pvReader.close();
     }
 }

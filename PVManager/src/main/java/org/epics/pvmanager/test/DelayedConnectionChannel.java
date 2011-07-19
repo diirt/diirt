@@ -14,15 +14,20 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-class DelayedWriteChannel extends ChannelHandler<Object> {
+class DelayedConnectionChannel extends ChannelHandler<Object> {
 
-    DelayedWriteChannel(String channelName) {
+    DelayedConnectionChannel(String channelName) {
         super(channelName);
     }
 
     @Override
     public void connect(ExceptionHandler handler) {
-        // Nothing to be done
+        try {
+            Thread.sleep(1000);
+        } catch(Exception ex) {
+        }
+        
+        processValue("Initial value");
     }
 
     @Override
@@ -33,7 +38,6 @@ class DelayedWriteChannel extends ChannelHandler<Object> {
     @Override
     public void write(Object newValue, ChannelWriteCallback callback) {
         try {
-            Thread.sleep(1000);
             processValue(newValue);
             callback.channelWritten(null);
         } catch (Exception ex) {
