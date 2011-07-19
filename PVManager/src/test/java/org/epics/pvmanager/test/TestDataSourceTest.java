@@ -66,16 +66,16 @@ public class TestDataSourceTest {
         pvReader.close();
     }
     
-//    @Test
-//    public void channelDoesNotExist2() throws Exception {
-//        PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
-//        pvWriter.addPVValueWriteListener(writeListener);
-//        
-//        Thread.sleep(15);
-//        
-//        WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
-//        assertThat(ex, not(nullValue()));
-//        verify(writeListener).pvValueWritten();
-//        pvWriter.close();
-//    }
+    @Test
+    public void channelDoesNotExist2() throws Exception {
+        PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
+        pvWriter.addPVValueWriteListener(writeListener);
+        
+        Thread.sleep(15);
+        
+        WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
+        assertThat(ex, not(nullValue()));
+        verify(writeListener).pvValueWritten();
+        pvWriter.close();
+    }
 }

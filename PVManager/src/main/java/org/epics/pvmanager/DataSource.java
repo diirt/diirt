@@ -166,7 +166,10 @@ public abstract class DataSource {
         
         final Set<ChannelHandler> handlers = new HashSet<ChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
-            handlers.add(channel(channelName));
+            ChannelHandler handler = channel(channelName);
+            if (handler == null)
+                throw new WriteFailException();
+            handlers.add(handler);
             }
 
         // Connect using another thread

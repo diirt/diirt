@@ -27,9 +27,11 @@ class PVWriterImpl<T> implements PVWriter<T> {
     private volatile Exception lastWriteException;
     private volatile  WriteDirector<T> writeDirector;
     private final boolean syncWrite;
+    private final boolean notifyFirstListener; 
 
-    PVWriterImpl(boolean syncWrite) {
+    PVWriterImpl(boolean syncWrite, boolean notifyFirstListener) {
         this.syncWrite = syncWrite;
+        this.notifyFirstListener = notifyFirstListener;
     }
     
     void firePvValueWritten() {
@@ -52,7 +54,19 @@ class PVWriterImpl<T> implements PVWriter<T> {
     public void addPVValueWriteListener(PVValueWriteListener listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
+        
+        // Check whether to notify when the first listener is added.
+        // This is done to make sure that exceptions thrown at pv creation
+        // are not lost since the listener is added after the pv is created.
+        // If the notification is done on a separate thread, the context switch
+        // is enough to make sure the listener is registerred before the event
+        // arrives, but if the notification is done on the same thread
+        // the notification would be lost.
+        boolean notify = valueWriteListeners.isEmpty() && notifyFirstListener &&
+                lastWriteException != null;
         valueWriteListeners.add(listener);
+        if (notify)
+            listener.pvValueWritten();
     }
 
     /**

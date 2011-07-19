@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
+import org.epics.pvmanager.util.Executors;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -57,14 +58,18 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             checkDataSourceAndThreadSwitch();
 
             // Create PVReader and connect
-            PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite);
+            PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite, Executors.localThread() == notificationExecutor);
             WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
             if (exceptionHandler == null) {
                 exceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
             }
             WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
             
-            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler));
+            try {
+                pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler));
+            } catch(Exception ex) {
+                exceptionHandler.handleException(ex);
+            }
             return pvWriter;
         }
         

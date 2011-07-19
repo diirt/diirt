@@ -68,8 +68,8 @@ class PVReaderImpl<T> implements PVReader<T> {
         // are not lost since the listener is added after the pv is created.
         // If the notification is done on a separate thread, the context switch
         // is enough to make sure the listener is registerred before the event
-        // arrives, but if the notification is done on the same thread, then
-        // it can't.
+        // arrives, but if the notification is done on the same thread
+        // the notification would be lost.
         boolean notify = valueChangeListeners.isEmpty() && notifyFirstListener &&
                 (value != null || lastException.get() != null);
         valueChangeListeners.add(listener);
