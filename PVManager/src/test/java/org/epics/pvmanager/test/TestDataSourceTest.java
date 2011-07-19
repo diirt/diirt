@@ -127,4 +127,52 @@ public class TestDataSourceTest {
         
         pvWriter.close();
     }
+    
+    @Test
+    public void delayedWriteWithTimeout2() throws Exception {
+        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ms(500)).from(dataSource).async();
+        pvWriter.addPVWriterListener(writeListener);
+        pvWriter.write("test");
+        
+        Thread.sleep(15);
+        
+        TimeoutException ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, never()).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, not(nullValue()));
+        verify(writeListener).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, times(2)).pvWritten();
+        
+        // Write again
+        pvWriter.write("test2");
+        
+        Thread.sleep(15);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, times(2)).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, not(nullValue()));
+        verify(writeListener, times(3)).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, times(4)).pvWritten();
+        
+        pvWriter.close();
+    }
 }
