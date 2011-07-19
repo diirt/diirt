@@ -14,6 +14,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ReadFailException;
+import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.WriteFailException;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
@@ -53,7 +54,7 @@ public class TestDataSourceTest {
     @Mock PVWriterListener writeListener;
     @Mock PVReaderListener readListener;
     
-    @Test
+    //@Test
     public void channelDoesNotExist1() throws Exception {
         PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).every(ms(10));
         pvReader.addPVReaderListener(readListener);
@@ -66,7 +67,7 @@ public class TestDataSourceTest {
         pvReader.close();
     }
     
-    @Test
+    //@Test
     public void channelDoesNotExist2() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
@@ -79,7 +80,7 @@ public class TestDataSourceTest {
         pvWriter.close();
     }
     
-    @Test
+    //@Test
     public void delayedWrite() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
@@ -96,6 +97,33 @@ public class TestDataSourceTest {
         ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
         verify(writeListener).pvWritten();
+        
+        pvWriter.close();
+    }
+    
+    @Test
+    public void delayedWriteWithTimeout() throws Exception {
+        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ms(500)).from(dataSource).async();
+        pvWriter.addPVWriterListener(writeListener);
+        pvWriter.write("test");
+        
+        Thread.sleep(15);
+        
+        TimeoutException ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, never()).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, not(nullValue()));
+        verify(writeListener).pvWritten();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pvWriter.lastWriteException();
+        assertThat(ex, nullValue());
+        verify(writeListener, times(2)).pvWritten();
         
         pvWriter.close();
     }

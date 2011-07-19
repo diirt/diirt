@@ -6,6 +6,7 @@ package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.util.Executors;
+import org.epics.pvmanager.util.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -27,6 +28,13 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         super.notifyOn(onThread);
         return this;
     }
+
+    @Override
+    public PVWriterConfiguration<T> timeout(TimeDuration timeout) {
+        super.timeout(timeout);
+        return this;
+    }
+    
     private WriteExpression<T> writeExpression;
     private ExceptionHandler exceptionHandler;
 
@@ -66,7 +74,8 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
             
             try {
-                pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler));
+                pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler,
+                        timeout, "Write timeout"));
             } catch(Exception ex) {
                 exceptionHandler.handleException(ex);
             }

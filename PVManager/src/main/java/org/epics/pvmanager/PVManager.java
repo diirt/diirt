@@ -23,7 +23,8 @@ import java.util.concurrent.ScheduledExecutorService;
  * SWT or similar. This can be changed on a PV by PV basis.
  * <p>
  * <b>AsynchWriteExecutor</b> - This is used for asynchronous writes, to return
- * right away. By default this uses the internal PVManager work pool. The work
+ * right away, and for running timeouts on each write.
+ * By default this uses the internal PVManager work pool. The work
  * submitted here is the calculation of the corresponding {@link WriteExpression}
  * and submission to the {@link DataSource}. The DataSource itself typically
  * has asynchronous work, which is executed in the DataSource specific threads.
@@ -44,7 +45,7 @@ public class PVManager {
     private static volatile DataSource defaultDataSource = null;
     private static final ScheduledExecutorService workerPool = Executors.newSingleThreadScheduledExecutor(org.epics.pvmanager.util.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
-    private static Executor asyncWriteExecutor = workerPool;
+    private static ScheduledExecutorService asyncWriteExecutor = workerPool;
 
     /**
      * Changes the default executor on which all notifications are going to be posted.
@@ -139,7 +140,7 @@ public class PVManager {
      * 
      * @return the current executor
      */
-    public static Executor getAsyncWriteExecutor() {
+    public static ScheduledExecutorService getAsyncWriteExecutor() {
         return asyncWriteExecutor;
     }
 
@@ -148,7 +149,7 @@ public class PVManager {
      * 
      * @param asyncWriteExecutor the new executor
      */
-    public static void setAsyncWriteExecutor(Executor asyncWriteExecutor) {
+    public static void setAsyncWriteExecutor(ScheduledExecutorService asyncWriteExecutor) {
         PVManager.asyncWriteExecutor = asyncWriteExecutor;
     }
 

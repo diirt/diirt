@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
+import org.epics.pvmanager.util.TimeDuration;
 
 /**
  *
@@ -14,6 +15,7 @@ class CommonConfiguration {
 
     Executor notificationExecutor;
     DataSource source;
+    TimeDuration timeout;
 
     /**
      * Defines which DataSource should be used to read the data.
@@ -21,7 +23,6 @@ class CommonConfiguration {
      * @param dataSource a connection manager
      * @return this
      */
-    @SuppressWarnings("unchecked")
     public CommonConfiguration from(DataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException("dataSource can't be null");
@@ -36,13 +37,19 @@ class CommonConfiguration {
      * @param onThread the thread on which to notify
      * @return this
      */
-    @SuppressWarnings("unchecked")
     public CommonConfiguration notifyOn(Executor onThread) {
         if (this.notificationExecutor == null) {
             this.notificationExecutor = onThread;
         } else {
             throw new IllegalStateException("Already set what thread to notify");
         }
+        return this;
+    }
+    
+    public CommonConfiguration timeout(TimeDuration timeout) {
+        if (this.timeout != null)
+            throw new IllegalStateException("Timeout already set");
+        this.timeout = timeout;
         return this;
     }
 
