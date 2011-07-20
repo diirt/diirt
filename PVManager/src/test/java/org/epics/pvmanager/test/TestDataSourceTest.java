@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderListener;
@@ -201,5 +202,32 @@ public class TestDataSourceTest {
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
         
         pvReader.close();
+    }
+    
+    @Test
+    public void delayedReadOnPVWithTimeout() throws Exception {
+        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ms(500)).from(dataSource).asynchWriteAndReadEvery(ms(50));
+        pv.addPVReaderListener(readListener);
+        
+        Thread.sleep(15);
+        
+        TimeoutException ex = (TimeoutException) pv.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, never()).pvChanged();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pv.lastException();
+        assertThat(ex, not(nullValue()));
+        verify(readListener).pvChanged();
+        
+        Thread.sleep(600);
+        
+        ex = (TimeoutException) pv.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, times(2)).pvChanged();
+        assertThat((String) pv.getValue(), equalTo("Initial value"));
+        
+        pv.close();
     }
 }

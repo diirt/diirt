@@ -38,6 +38,13 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         return this;
     }
 
+    @Override
+    public PVConfiguration<R, W> timeout(TimeDuration timeout) {
+        pvReaderConfiguration.timeout(timeout);
+        pvWriterConfiguration.timeout(timeout);
+        return this;
+    }
+
     /**
      * Forwards exception to the given exception handler. No thread switch
      * is done, so the handler is notified on the thread where the exception
