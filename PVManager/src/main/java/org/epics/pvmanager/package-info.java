@@ -5,12 +5,13 @@
 
 /**
  * <p align="center"><img src="doc-files/PVManagerLogo150.png"/></p>
- * <p id="contents"/>
+ * <div style="float: right; margin-top: -170px" id="contents"></div>
  * 
  * <h1>User documentation</h3>
  * 
  * <b> 
  *      <a href="#1">1. Reading a single channel</a><br/> 
+ *      <a href="#1">2. Writing a single channel asynchrnously</a><br/> 
  * </b>
  * 
  * <h3 id="1">1. Reading a single channel</h3>
@@ -30,7 +31,18 @@
  *     }
  * });
  * </pre>
- * <p>
+ * 
+ * <h3 id="2">2. Writing a single channel asynchronously</h3>
+ * 
+ * <pre>
+ * PVWriter&lt;Object&gt; pvWriter = PVManager.write(channel("channelName")).async();
+ * pvWriter.addPVWriterListener(new PVWriterListener() {
+ *     public void pvWritten() {
+ *         System.out.println("Write finished");
+ *     }
+ * });
+ * pvWriter.write("New value");
+ * </pre>
  * 
  * <h1> Package description</h1>
  * 
