@@ -5,6 +5,32 @@
 
 /**
  * <p align="center"><img src="doc-files/PVManagerLogo150.png"/></p>
+ * <p id="contents"/>
+ * 
+ * <h1>User documentation</h3>
+ * 
+ * <b> 
+ *      <a href="#1">1. Reading a single channel</a><br/> 
+ * </b>
+ * 
+ * <h3 id="1">1. Reading a single channel</h3>
+ * 
+ * <pre>
+ * // Let's statically import so the code looks cleaner
+ * import static org.epics.pvmanager.ExpressionLanguage.*;
+ * import static org.epics.pvmanager.util.TimeDuration.*;
+ * 
+ * // Read channel "channelName" to most every 100 ms
+ * PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ *     public void pvChanged() {
+ *         // Do something with each value
+ *         Object newValue = pvReader.getValue();
+ *         System.out.println(newValue);
+ *     }
+ * });
+ * </pre>
+ * <p>
  * 
  * <h1> Package description</h1>
  * 
