@@ -34,6 +34,14 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         super.timeout(timeout);
         return this;
     }
+
+    @Override
+    public PVReaderConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
+        super.timeout(timeout, timeoutMessage);
+        return this;
+    }
+    
+    
     
     private DesiredRateExpression<T> aggregatedPVExpression;
     private ExceptionHandler exceptionHandler;
@@ -90,7 +98,9 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(), notificationExecutor, dataRecipe.getExceptionHandler());
         notifier.startScan(period);
         if (timeout != null) {
-            notifier.timeout(timeout, "Read timeout");
+            if (timeoutMessage == null)
+                timeoutMessage = "Read timeout";
+            notifier.timeout(timeout, timeoutMessage);
         }
         try {
             source.connect(dataRecipe);

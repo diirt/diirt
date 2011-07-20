@@ -100,6 +100,8 @@ public class TestDataSourceTest {
         verify(writeListener).pvWritten();
         
         pvWriter.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
     @Test
@@ -127,6 +129,8 @@ public class TestDataSourceTest {
         verify(writeListener, times(2)).pvWritten();
         
         pvWriter.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
     @Test
@@ -175,6 +179,8 @@ public class TestDataSourceTest {
         verify(writeListener, times(4)).pvWritten();
         
         pvWriter.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
     @Test
@@ -202,6 +208,8 @@ public class TestDataSourceTest {
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
         
         pvReader.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
     }
     
     @Test
@@ -209,7 +217,7 @@ public class TestDataSourceTest {
         PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ms(500)).from(dataSource).asynchWriteAndReadEvery(ms(50));
         pv.addPVReaderListener(readListener);
         
-        Thread.sleep(15);
+        Thread.sleep(50);
         
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
@@ -229,5 +237,38 @@ public class TestDataSourceTest {
         assertThat((String) pv.getValue(), equalTo("Initial value"));
         
         pv.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
+    }
+    
+    @Test
+    public void delayedReadOnPVWithTimeoutAndCustomMessage() throws Exception {
+        String message = "Ouch! Timeout!";
+        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ms(500), message).from(dataSource).asynchWriteAndReadEvery(ms(50));
+        pv.addPVReaderListener(readListener);
+        
+        Thread.sleep(50);
+        
+        TimeoutException ex = (TimeoutException) pv.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, never()).pvChanged();
+        
+        Thread.sleep(500);
+        
+        ex = (TimeoutException) pv.lastException();
+        assertThat(ex, not(nullValue()));
+        assertThat(ex.getMessage(), equalTo(message));
+        verify(readListener).pvChanged();
+        
+        Thread.sleep(600);
+        
+        ex = (TimeoutException) pv.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, times(2)).pvChanged();
+        assertThat((String) pv.getValue(), equalTo("Initial value"));
+        
+        pv.close();
+        Thread.sleep(15);
+        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
     }
 }

@@ -16,6 +16,7 @@ class CommonConfiguration {
     Executor notificationExecutor;
     DataSource source;
     TimeDuration timeout;
+    String timeoutMessage;
 
     /**
      * Defines which DataSource should be used to read the data.
@@ -50,6 +51,12 @@ class CommonConfiguration {
         if (this.timeout != null)
             throw new IllegalStateException("Timeout already set");
         this.timeout = timeout;
+        return this;
+    }
+    
+    public CommonConfiguration timeout(TimeDuration timeout, String timeoutMessage) {
+        timeout(timeout);
+        this.timeoutMessage = timeoutMessage;
         return this;
     }
 

@@ -45,6 +45,13 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         return this;
     }
 
+    @Override
+    public PVConfiguration<R, W>  timeout(TimeDuration timeout, String timeoutMessage) {
+        pvReaderConfiguration.timeout(timeout, timeoutMessage);
+        pvWriterConfiguration.timeout(timeout, timeoutMessage);
+        return this;
+    }
+
     /**
      * Forwards exception to the given exception handler. No thread switch
      * is done, so the handler is notified on the thread where the exception

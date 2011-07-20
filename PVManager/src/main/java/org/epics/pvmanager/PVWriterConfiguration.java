@@ -34,7 +34,12 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         super.timeout(timeout);
         return this;
     }
-    
+
+    @Override
+    public PVWriterConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
+        super.timeout(timeout, timeoutMessage);
+        return this;
+    }
     private WriteExpression<T> writeExpression;
     private ExceptionHandler exceptionHandler;
 
@@ -61,44 +66,46 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         this.exceptionHandler = exceptionHandler;
         return this;
     }
-        
-        private PVWriter<T> create(boolean syncWrite) {
-            checkDataSourceAndThreadSwitch();
 
-            // Create PVReader and connect
-            PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite, Executors.localThread() == notificationExecutor);
-            WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
-            if (exceptionHandler == null) {
-                exceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
-            }
-            WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
-            
-            try {
-                pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler,
-                        timeout, "Write timeout"));
-            } catch(Exception ex) {
-                exceptionHandler.handleException(ex);
-            }
-            return pvWriter;
+    private PVWriter<T> create(boolean syncWrite) {
+        checkDataSourceAndThreadSwitch();
+
+        // Create PVReader and connect
+        PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite, Executors.localThread() == notificationExecutor);
+        WriteBuffer writeBuffer = WriteExpressionImpl.implOf(writeExpression).createWriteBuffer().build();
+        if (exceptionHandler == null) {
+            exceptionHandler = ExceptionHandler.createDefaultExceptionHandler(pvWriter, notificationExecutor);
         }
-        
-        /**
-         * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
-         * method is synchronous (i.e. blocking).
-         * 
-         * @return a new PVWriter
-         */
-        public PVWriter<T> sync() {
-            return create(true);
+        WriteFunction<T> writeFunction = WriteExpressionImpl.implOf(writeExpression).getWriteFunction();
+
+        try {
+            if (timeoutMessage == null)
+                timeoutMessage = "Write timeout";
+            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler,
+                    timeout, timeoutMessage));
+        } catch (Exception ex) {
+            exceptionHandler.handleException(ex);
         }
-        
-        /**
-         * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
-         * method is asynchronous (i.e. non-blocking).
-         * 
-         * @return a new PVWriter
-         */
-        public PVWriter<T> async() {
-            return create(false);
-        }
+        return pvWriter;
+    }
+
+    /**
+     * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
+     * method is synchronous (i.e. blocking).
+     * 
+     * @return a new PVWriter
+     */
+    public PVWriter<T> sync() {
+        return create(true);
+    }
+
+    /**
+     * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
+     * method is asynchronous (i.e. non-blocking).
+     * 
+     * @return a new PVWriter
+     */
+    public PVWriter<T> async() {
+        return create(false);
+    }
 }
