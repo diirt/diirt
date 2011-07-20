@@ -53,6 +53,20 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
     }
 
     /**
+     * Specifies a timeout, with a different message for the read and the write.
+     * 
+     * @param timeout time before notification
+     * @param readMessage exception message for the read timeout
+     * @param writeMessage exception message for the write timeout
+     * @return this
+     */
+    public PVConfiguration<R, W>  timeout(TimeDuration timeout, String readMessage, String writeMessage) {
+        pvReaderConfiguration.timeout(timeout, readMessage);
+        pvWriterConfiguration.timeout(timeout, writeMessage);
+        return this;
+    }
+
+    /**
      * Forwards exception to the given exception handler. No thread switch
      * is done, so the handler is notified on the thread where the exception
      * was thrown.
