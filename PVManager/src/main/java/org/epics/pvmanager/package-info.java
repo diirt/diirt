@@ -4,6 +4,10 @@
  */
 
 /**
+ * <p align="center"><img src="doc-files/PVManagerLogo150.png"/></p>
+ * 
+ * <h1> Package description</h1>
+ * 
  * This package contains all the basic compononents of the PVManager framework
  * and the basic support for the language to define the creation.
  * <p>
