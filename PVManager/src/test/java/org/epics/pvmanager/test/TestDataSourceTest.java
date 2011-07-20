@@ -100,7 +100,7 @@ public class TestDataSourceTest {
         verify(writeListener).pvWritten();
         
         pvWriter.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
@@ -129,7 +129,7 @@ public class TestDataSourceTest {
         verify(writeListener, times(2)).pvWritten();
         
         pvWriter.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
@@ -179,7 +179,7 @@ public class TestDataSourceTest {
         verify(writeListener, times(4)).pvWritten();
         
         pvWriter.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
     }
     
@@ -208,7 +208,7 @@ public class TestDataSourceTest {
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
         
         pvReader.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
     }
     
@@ -237,7 +237,7 @@ public class TestDataSourceTest {
         assertThat((String) pv.getValue(), equalTo("Initial value"));
         
         pv.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
     }
     
@@ -268,7 +268,7 @@ public class TestDataSourceTest {
         assertThat((String) pv.getValue(), equalTo("Initial value"));
         
         pv.close();
-        Thread.sleep(15);
+        Thread.sleep(30);
         assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
     }
 }
