@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -177,7 +178,8 @@ public class CompositeDataSource extends DataSource {
     public void disconnect(DataRecipe recipe) {
         Map<String, DataRecipe> splitRecipe = splitRecipes.get(recipe);
         if (splitRecipe == null) {
-            throw new IllegalStateException("Asked to close DataRecipe " + recipe + " but was either already closed or never opened");
+            log.log(Level.WARNING, "DataRecipe {0} was disconnected but was never connected. Ignoring it.", recipe);
+            return;
         }
 
         // Dispatch calls to all the data sources
@@ -225,7 +227,8 @@ public class CompositeDataSource extends DataSource {
     public void concludeWrite(WriteBuffer writeBuffer, ExceptionHandler exceptionHandler) {
         Map<String, WriteBuffer> splitBuffer = writeBuffers.remove(writeBuffer);
         if (splitBuffer == null) {
-            throw new IllegalStateException("Asked to close WriteBuffer " + writeBuffer + " but was either already closed or never opened");
+            log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
+            return;
         }
         
         for (Map.Entry<String, WriteBuffer> en : splitBuffer.entrySet()) {
