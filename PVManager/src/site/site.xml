@@ -2,8 +2,8 @@
 <project name="PVManager">
   <bannerLeft>
     <name>PVManager</name>
-    <!--<src>http://maven.apache.org/images/apache-maven-project.png</src>-->
-    <href>http://cs-studio.sf.net/PVManager</href>
+    <src>images/PVManagerLogo100.png</src>
+    <href>http://pvmanager.sourceforge.net</href>
   </bannerLeft>
   <!--<bannerRight>
     <src>http://maven.apache.org/images/maven-small.gif</src>
