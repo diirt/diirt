@@ -11,7 +11,9 @@
  * 
  * <b> 
  *      <a href="#1">1. Reading a single channel</a><br/> 
- *      <a href="#1">2. Writing a single channel asynchrnously</a><br/> 
+ *      <a href="#2">2. Writing a single channel asynchrnously</a><br/> 
+ *      <a href="#3">3. Writing a single channel synchrnously</a><br/> 
+ *      <a href="#4">4. Reading and writing a single channel</a><br/> 
  * </b>
  * 
  * <h3 id="1">1. Reading a single channel</h3>
@@ -41,7 +43,33 @@
  *         System.out.println("Write finished");
  *     }
  * });
+ * // This will return right away, and the notification will be sent
+ * // on the listener
  * pvWriter.write("New value");
+ * </pre>
+ * 
+ * <h3 id="3">3. Writing a single channel synchronously</h3>
+ * 
+ * <pre>
+ * PVWriter&lt;Object&gt; pvWriter = PVManager.write(channel("channelName")).sync();
+ * // This will block until the write is done
+ * pvWriter.write("New value");
+ * System.out.println("Write finished");
+ * </pre>
+ * 
+ * <h3 id="4">4. Reading and writing a single channel</h3>
+ * 
+ * <pre>
+ * // A PV is both a PVReader and a PVWriter
+ * PV&lt;Object, Object&gt; pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndReadEvery(ms(10));
+ * pv.addPVReaderListener(new PVReaderListener() {
+ *     public void pvChanged() {
+ *         // Do something with each value
+ *         Object newValue = pvReader.getValue();
+ *         System.out.println(newValue);
+ *     }
+ * });
+ * pv.write("New value");
  * </pre>
  * 
  * <h1> Package description</h1>
