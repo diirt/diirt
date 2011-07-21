@@ -27,9 +27,9 @@
  * 
  * <h3 id="c1">Using PVManager in CSS</h3>
  * 
- * In CSS, the data sources are configured by adding the appropriate plugins,
- * so you <b>must not change the default configuration</b>. The only thing that
- * changes is that, if you are writing a UI, you want to route the notifications
+ * In CSS, data sources are configured by adding the appropriate plug-ins,
+ * so you <b>must not change the default configuration</b>.
+ * If you are developing user interfaces in SWT, you will want to route the notifications
  * on the SWT thread.
  * 
  * <pre>
@@ -42,15 +42,15 @@
  * 
  * <h3 id="c2">Using PVManager in Swing</h3>
  * 
- * You will need to configure the data sources yourself (see other examples).
- * You can route notification directly on the Event Dispatch Thread. You can
+ * You will first need to configure the data sources yourself (see other examples).
+ * You will want to route notification directly on the Event Dispatch Thread. You can
  * do this on a PV by PV basis, or you can change the default.
  * 
  * <pre>
  * // Import from here
  * import static org.epics.pvmanager.util.Executors.*;
  * 
- * // When creating a pv, remember to ask for notification on the Swing thread
+ * // Route notification for this pv on the Swing EDT
  * PVReader&lt;?&gt; pvReader = PVManager.read(...)..notifyOn(swingEDT()).every(ms(100));
  * 
  * // Or you can change the default
@@ -71,7 +71,7 @@
  * PVManager.setDefaultDataSource(new JCADataSource(jcaContext, Monitor.VALUE | Monitor.ALARM));
  * </pre>
  * 
- * For more options, check the constructors for JCADataSource
+ * For more options, check the constructors for JCADataSource.
  * <p>
  * 
  * <h3 id="c4">Configuring multiple data sources with different prefixes</h3>
@@ -89,7 +89,7 @@
  * PVManager.setDefaultDataSource(composite);
  * </pre>
  * 
- * For more options, check the documentation for CompositeDataSource
+ * For more options, check the documentation for CompositeDataSource.
  * 
  * <h3 id="b1">Reading a single channel</h3>
  * 
@@ -98,7 +98,7 @@
  * import static org.epics.pvmanager.ExpressionLanguage.*;
  * import static org.epics.pvmanager.util.TimeDuration.*;
  * 
- * // Read channel "channelName" to most every 100 ms
+ * // Read channel "channelName" up to every 100 ms
  * PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
