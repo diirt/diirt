@@ -17,6 +17,8 @@ import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ReadFailException;
 import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.WriteFailException;
+import org.epics.pvmanager.util.TimeDuration;
+import org.epics.pvmanager.util.TimeStamp;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,6 +36,22 @@ import static org.epics.pvmanager.util.TimeDuration.*;
 public class TestDataSourceTest {
     
     public TestDataSourceTest() {
+    }
+    
+    public static void waitForChannelToClose(DataSource source, String channelName) {
+        TimeStamp startTime = TimeStamp.now();
+        TimeDuration timeout = ms(5000);
+        while (TimeStamp.now().durationFrom(startTime).getNanoSec() < timeout.getNanoSec()) {
+            if (!source.getChannels().get(channelName).isConnected()) {
+                return;
+            }
+            try {
+                Thread.sleep(100);
+            } catch(Exception ex) {
+                
+            }
+        }
+        fail("Channel " + channelName + " didn't close after 5 seconds");
     }
 
     @BeforeClass
@@ -101,7 +119,7 @@ public class TestDataSourceTest {
         
         pvWriter.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
@@ -130,7 +148,7 @@ public class TestDataSourceTest {
         
         pvWriter.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
@@ -180,7 +198,7 @@ public class TestDataSourceTest {
         
         pvWriter.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedWrite").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
@@ -209,7 +227,7 @@ public class TestDataSourceTest {
         
         pvReader.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedConnection");
     }
     
     @Test
@@ -238,7 +256,7 @@ public class TestDataSourceTest {
         
         pv.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedConnection");
     }
     
     @Test
@@ -269,6 +287,6 @@ public class TestDataSourceTest {
         
         pv.close();
         Thread.sleep(30);
-        assertThat(dataSource.getChannels().get("delayedConnection").isConnected(), is(false));
+        waitForChannelToClose(dataSource, "delayedConnection");
     }
 }
