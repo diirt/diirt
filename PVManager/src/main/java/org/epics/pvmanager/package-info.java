@@ -7,16 +7,91 @@
  * <p align="center"><img src="doc-files/PVManagerLogo150.png"/></p>
  * <div style="float: right; margin-top: -170px" id="contents"></div>
  * 
- * <h1>User documentation</h3>
  * 
- * <b> 
- *      <a href="#1">1. Reading a single channel</a><br/> 
- *      <a href="#2">2. Writing a single channel asynchrnously</a><br/> 
- *      <a href="#3">3. Writing a single channel synchrnously</a><br/> 
- *      <a href="#4">4. Reading and writing a single channel</a><br/> 
- * </b>
+ * <h1>Contents</h1>
  * 
- * <h3 id="1">1. Reading a single channel</h3>
+ * <h3>Configuration</h3>
+ * <ol>
+ *     <li><a href="#c1">Using PVManager in CSS</a></li>
+ *     <li><a href="#c2">Using PVManager in Swing</a></li>
+ *     <li><a href="#c3">Configuring JCA/CAJ as the default data source</a></li>
+ *     <li><a href="#c4">Configuring multiple data sources with different prefixes</a></li>
+ * </ol>
+ * <h3>Basic usage</h3>
+ * <ol>
+ *     <li><a href="#b1">Reading a single channel</a></li>
+ *     <li><a href="#b2">Writing a single channel asynchrnously</a></li>
+ *     <li><a href="#b3">Writing a single channel synchrnously</a></li>
+ *     <li><a href="#b4">Reading and writing a single channel</a></li>
+ * </ol>
+ * 
+ * <h3 id="c1">Using PVManager in CSS</h3>
+ * 
+ * In CSS, the data sources are configured by adding the appropriate plugins,
+ * so you <b>must not change the default configuration</b>. The only thing that
+ * changes is that, if you are writing a UI, you want to route the notifications
+ * on the SWT thread.
+ * 
+ * <pre>
+ * // Import from here
+ * import static org.csstudio.utility.pvmanager.ui.SWTUtil.*;
+ * 
+ * // When creating a pv, remember to ask for notification on the SWT thread
+ * PVReader&lt;?&gt; pvReader = PVManager.read(...)..notifyOn(swtThread()).every(ms(100));
+ * </pre>
+ * 
+ * <h3 id="c2">Using PVManager in Swing</h3>
+ * 
+ * You will need to configure the data sources yourself (see other examples).
+ * You can route notification directly on the Event Dispatch Thread. You can
+ * do this on a PV by PV basis, or you can change the default.
+ * 
+ * <pre>
+ * // Import from here
+ * import static org.epics.pvmanager.util.Executors.*;
+ * 
+ * // When creating a pv, remember to ask for notification on the Swing thread
+ * PVReader&lt;?&gt; pvReader = PVManager.read(...)..notifyOn(swingEDT()).every(ms(100));
+ * 
+ * // Or you can change the default
+ * PVManager.setDefaultNotificationExecutor(swingEDT());
+ * </pre>
+ * 
+ * <h3 id="c3">Configuring JCA/CAJ as the default data source</h3>
+ * 
+ * <pre>
+ * // Sets CAJ (pure java implementation) as the default data source,
+ * // monitoring both value and alarm changes
+ * PVManager.setDefaultDataSource(new JCADataSource());
+ * 
+ * // For utltimate control, you can create the JCA context yourself
+ * // and pass it to the data source
+ * ...
+ * Context jcaContext = ...
+ * PVManager.setDefaultDataSource(new JCADataSource(jcaContext, Monitor.VALUE | Monitor.ALARM));
+ * </pre>
+ * 
+ * For more options, check the constructors for JCADataSource
+ * <p>
+ * 
+ * <h3 id="c4">Configuring multiple data sources with different prefixes</h3>
+ * 
+ * <pre>
+ * // Create a multiple data source, and add different data sources
+ * CompositeDataSource composite = new CompositeDataSource();
+ * composite.putDataSource("ca", new JCADataSource());
+ * composite.putDataSource("sim", new SimulationDataSource());
+ * 
+ * // If no prefix is given to a channel, use JCA as default
+ * composite.setDefaultDataSource("ca");
+ * 
+ * // Set the composite as the default
+ * PVManager.setDefaultDataSource(composite);
+ * </pre>
+ * 
+ * For more options, check the documentation for CompositeDataSource
+ * 
+ * <h3 id="b1">Reading a single channel</h3>
  * 
  * <pre>
  * // Let's statically import so the code looks cleaner
@@ -34,7 +109,7 @@
  * });
  * </pre>
  * 
- * <h3 id="2">2. Writing a single channel asynchronously</h3>
+ * <h3 id="b2">Writing a single channel asynchronously</h3>
  * 
  * <pre>
  * PVWriter&lt;Object&gt; pvWriter = PVManager.write(channel("channelName")).async();
@@ -48,7 +123,7 @@
  * pvWriter.write("New value");
  * </pre>
  * 
- * <h3 id="3">3. Writing a single channel synchronously</h3>
+ * <h3 id="b3">Writing a single channel synchronously</h3>
  * 
  * <pre>
  * PVWriter&lt;Object&gt; pvWriter = PVManager.write(channel("channelName")).sync();
@@ -57,7 +132,7 @@
  * System.out.println("Write finished");
  * </pre>
  * 
- * <h3 id="4">4. Reading and writing a single channel</h3>
+ * <h3 id="b4">Reading and writing a single channel</h3>
  * 
  * <pre>
  * // A PV is both a PVReader and a PVWriter
