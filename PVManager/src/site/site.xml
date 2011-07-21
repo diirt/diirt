@@ -11,8 +11,8 @@
   <body>
     <links>
       <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
-      <item name="JCA" href="http://jca.cosylab.com"/>
-      <item name="CAJ" href="http://jca.cosylab.com"/>
+      <item name="JCA-JCA" href="http://epics-jca.sourceforge.net/"/>
+      <item name="CSS" href="http://cs-studio.sourceforge.net"/>
     </links>
 
     <menu name="PVManager">
