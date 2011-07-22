@@ -100,7 +100,7 @@
  * import static org.epics.pvmanager.util.TimeDuration.*;
  * 
  * // Read channel "channelName" up to every 100 ms
- * PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * {@link org.epics.pvmanager.PVReader}&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -118,7 +118,7 @@
  * <pre>
  * // Read channel "channelName" up to every 100 ms, and get all
  * // the new values from the last notification.
- * PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read(newValuesOf(channel("channelName"))).every(ms(100));
+ * PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read({@link org.epics.pvmanager.ExpressionLanguage#newValuesOf(org.epics.pvmanager.SourceRateExpression) newValuesOf}(channel("channelName"))).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -133,7 +133,7 @@
  * </pre>
  * 
  * To limit memory consumption, you can specify the maximum amount of values
- * to retain.
+ * to retain. See all options at {@link org.epics.pvmanager.ExpressionLanguage}.
  * 
  * <h3 id="b2">Writing a single channel asynchronously</h3>
  * 
