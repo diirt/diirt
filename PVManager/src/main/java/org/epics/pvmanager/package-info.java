@@ -72,7 +72,7 @@
  * PVManager.setDefaultDataSource(new JCADataSource(jcaContext, Monitor.VALUE | Monitor.ALARM));
  * </pre>
  * 
- * For more options, check the constructors for JCADataSource.
+ * For more options, check the constructors for {@link org.epics.pvmanager.jca.JCADataSource}.
  * <p>
  * 
  * <h3 id="c4">Configuring multiple data sources with different prefixes</h3>
@@ -90,7 +90,7 @@
  * PVManager.setDefaultDataSource(composite);
  * </pre>
  * 
- * For more options, check the documentation for CompositeDataSource.
+ * For more options, check the documentation for {@link org.epics.pvmanager.CompositeDataSource}.
  * 
  * <h3 id="b1">Reading a single channel</h3>
  * 
