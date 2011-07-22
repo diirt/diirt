@@ -20,6 +20,7 @@
  * <h3>Basic usage</h3>
  * <ol>
  *     <li><a href="#b1">Reading a single channel</a></li>
+ *     <li><a href="#b1a">Reading all values values from a channel</a></li>
  *     <li><a href="#b2">Writing a single channel asynchrnously</a></li>
  *     <li><a href="#b3">Writing a single channel synchrnously</a></li>
  *     <li><a href="#b4">Reading and writing a single channel</a></li>
@@ -111,6 +112,28 @@
  * // Remember to close
  * pvReader.close();
  * </pre>
+ * 
+ * <h3 id="b1a">Reading all values values from a channel</h3>
+ * 
+ * <pre>
+ * // Read channel "channelName" up to every 100 ms, and get all
+ * // the new values from the last notification.
+ * PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read(newValuesOf(channel("channelName"))).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ *     public void pvChanged() {
+ *         // Do something with each value
+ *         for (Object newValue : pvReader.getValue()) {
+ *             System.out.println(newValue);
+ *         }
+ *     }
+ * });
+ * 
+ * // Remember to close
+ * pvReader.close();
+ * </pre>
+ * 
+ * To limit memory consumption, you can specify the maximum amount of values
+ * to retain.
  * 
  * <h3 id="b2">Writing a single channel asynchronously</h3>
  * 
