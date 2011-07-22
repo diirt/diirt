@@ -107,6 +107,9 @@
  *         System.out.println(newValue);
  *     }
  * });
+ * 
+ * // Remember to close
+ * pvReader.close();
  * </pre>
  * 
  * <h3 id="b2">Writing a single channel asynchronously</h3>
@@ -121,6 +124,9 @@
  * // This will return right away, and the notification will be sent
  * // on the listener
  * pvWriter.write("New value");
+ * 
+ * // Remember to close
+ * pvWriter.close();
  * </pre>
  * 
  * <h3 id="b3">Writing a single channel synchronously</h3>
@@ -130,6 +136,9 @@
  * // This will block until the write is done
  * pvWriter.write("New value");
  * System.out.println("Write finished");
+ * 
+ * // Remember to close
+ * pvWriter.close();
  * </pre>
  * 
  * <h3 id="b4">Reading and writing a single channel</h3>
@@ -145,6 +154,9 @@
  *     }
  * });
  * pv.write("New value");
+ * 
+ * // Remember to close
+ * pv.close();
  * </pre>
  * 
  * <h1> Package description</h1>
