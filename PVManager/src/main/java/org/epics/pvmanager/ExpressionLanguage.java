@@ -9,6 +9,7 @@ import org.epics.pvmanager.util.TimeDuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
@@ -380,6 +381,39 @@ public class ExpressionLanguage {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<T>> expression = new DesiredRateExpressionImpl<List<T>>((List<DesiredRateExpression<?>>) (List) expressions,
                 (Function<List<T>>) (Function) new ListOfFunction(functions), null);
+        return expression;
+    }
+
+    /**
+     * Converts a list of expressions to an expression that returns the map from
+     * the name to the results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing a map from name to results
+     */
+    public static <T> DesiredRateExpression<Map<String, T>> mapOf(DesiredRateExpression<T>... expressions) {
+        return mapOf(Arrays.asList(expressions));
+    }
+
+    /**
+     * Converts a list of expressions to an expression that returns the map from
+     * the name to the results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing a map from name to results
+     */
+    public static <T> DesiredRateExpression<Map<String, T>> mapOf(List<DesiredRateExpression<T>> expressions) {
+        // Calculate all the needed functions to combine
+        List<String> names = new ArrayList<String>();
+        List<Function<T>> functions = new ArrayList<Function<T>>();
+        for (DesiredRateExpression<T> expression : expressions) {
+            names.add(expression.getDefaultName());
+            functions.add(expression.getFunction());
+        }
+
+        @SuppressWarnings("unchecked")
+        DesiredRateExpression<Map<String, T>> expression = new DesiredRateExpressionImpl<Map<String, T>>((List<DesiredRateExpression<?>>) (List) expressions,
+                new MapOfFunction(names, functions), null);
         return expression;
     }
     
