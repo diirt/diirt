@@ -22,9 +22,9 @@ public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
             return (DesiredRateExpressionImpl<T>) sourceRateExpression;
         }
         
-//        if (sourceRateExpression instanceof SourceRateReadWriteExpression) {
-//            return ((SourceRateReadWriteExpression<T, ?>) sourceRateExpression).getSourceRateExpressionImpl();
-//        }
+        if (sourceRateExpression instanceof DesiredRateReadWriteExpression) {
+            return ((DesiredRateReadWriteExpression<T, ?>) sourceRateExpression).getDesiredRateExpressionImpl();
+        }
         
         throw new IllegalArgumentException("DesiredRateExpression must be implemented using DesiredRateExpressionImpl");
     }
