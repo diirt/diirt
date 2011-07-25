@@ -27,5 +27,14 @@ public class PVSyntaxTest {
         PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channel("channel1")), latestValueOf(channel("channel2")))).from(dataSource).every(hz(50));
         pvReader.close();
     }
+
+    @Test
+    public void readWriteMap() throws Exception {
+        DataSource dataSource = new LocalDataSource();
+        
+        @SuppressWarnings("unchecked")
+        PV<Map<String, Object>, Map<String, Object>> pv = PVManager.readAndWrite(rwMapOf(latestValueOf(channel("channel1")), latestValueOf(channel("channel2")))).from(dataSource).synchWriteAndReadEvery(hz(50));
+        pv.close();
+    }
     
 }

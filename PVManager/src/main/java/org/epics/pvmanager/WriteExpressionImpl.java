@@ -60,8 +60,8 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression
      */
-    public WriteExpressionImpl(WriteExpressionImpl<?> childExpression, WriteFunction<T> function, String defaultName) {
-        this(Collections.<WriteExpressionImpl<?>>singletonList(childExpression), function, defaultName);
+    public WriteExpressionImpl(WriteExpression<?> childExpression, WriteFunction<T> function, String defaultName) {
+        this(Collections.<WriteExpression<?>>singletonList(childExpression), function, defaultName);
     }
 
     /**
@@ -71,10 +71,10 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression
      */
-    public WriteExpressionImpl(List<WriteExpressionImpl<?>> childExpressions, WriteFunction<T> function, String defaultName) {
+    public WriteExpressionImpl(List<WriteExpression<?>> childExpressions, WriteFunction<T> function, String defaultName) {
         writeCaches = new HashMap<String, WriteCache<?>>();
-        for (WriteExpressionImpl<?> childExpression : childExpressions) {
-            for (Map.Entry<String, WriteCache<?>> entry : childExpression.getWriteCaches().entrySet()) {
+        for (WriteExpression<?> childExpression : childExpressions) {
+            for (Map.Entry<String, WriteCache<?>> entry : implOf(childExpression).getWriteCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (writeCaches.keySet().contains(pvName)) {
                     throw new RuntimeException("Can't define a write operation that writes to the same channel more than once.");
