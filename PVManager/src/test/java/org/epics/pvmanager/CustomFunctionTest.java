@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.types.ExpressionLanguage.*;
 
 /**
  *

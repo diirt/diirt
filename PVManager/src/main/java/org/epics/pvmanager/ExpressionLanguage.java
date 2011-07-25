@@ -351,4 +351,36 @@ public class ExpressionLanguage {
                     }
                 }, name);
     }
+    
+    // Static collections (no change after expression creation
+
+    /**
+     * Converts a list of expressions to an expression that returns the list of results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing the list of results
+     */
+    public static <T> DesiredRateExpression<List<T>> listOf(DesiredRateExpression<T>... expressions) {
+        return listOf(Arrays.asList(expressions));
+    }
+
+    /**
+     * Converts a list of expressions to an expression that returns the list of results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing the list of results
+     */
+    public static <T> DesiredRateExpression<List<T>> listOf(List<DesiredRateExpression<T>> expressions) {
+        // Calculate all the needed functions to combine
+        List<Function> functions = new ArrayList<Function>();
+        for (DesiredRateExpression<T> expression : expressions) {
+            functions.add(expression.getFunction());
+        }
+
+        @SuppressWarnings("unchecked")
+        DesiredRateExpression<List<T>> expression = new DesiredRateExpressionImpl<List<T>>((List<DesiredRateExpression<?>>) (List) expressions,
+                (Function<List<T>>) (Function) new ListOfFunction(functions), null);
+        return expression;
+    }
+    
 }
