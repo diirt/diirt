@@ -11,7 +11,7 @@ package org.epics.pvmanager;
  * @param <W> type of the write payload
  * @author carcassi
  */
-public class ReadWriteExpression<R, W> implements SourceRateExpression<R>, WriteExpression<W> {
+public class SourceRateReadWriteExpression<R, W> implements SourceRateExpression<R>, WriteExpression<W> {
     
     private final SourceRateExpression<R> sourceRateExpression;
     private final WriteExpression<W> writeExpression;
@@ -22,7 +22,7 @@ public class ReadWriteExpression<R, W> implements SourceRateExpression<R>, Write
      * @param sourceRateExpression the read part of the expression
      * @param writeExpression the write part of the expression
      */
-    public ReadWriteExpression(SourceRateExpression<R> sourceRateExpression, WriteExpression<W> writeExpression) {
+    public SourceRateReadWriteExpression(SourceRateExpression<R> sourceRateExpression, WriteExpression<W> writeExpression) {
         this.sourceRateExpression = sourceRateExpression;
         this.writeExpression = writeExpression;
     }

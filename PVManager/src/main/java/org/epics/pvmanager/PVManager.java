@@ -130,7 +130,7 @@ public class PVManager {
      * @param readWriteExpression the expression to read and write
      * @return the read and write configuration
      */
-    public static <R, W> PVConfiguration<R, W> readAndWrite(ReadWriteExpression<R, W> readWriteExpression) {
+    public static <R, W> PVConfiguration<R, W> readAndWrite(SourceRateReadWriteExpression<R, W> readWriteExpression) {
         return new PVConfiguration<R, W>(ExpressionLanguage.latestValueOf(readWriteExpression.getSourceRateExpressionImpl()),
                 readWriteExpression.getWriteExpressionImpl());
     }

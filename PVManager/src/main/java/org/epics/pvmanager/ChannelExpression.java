@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @param <W> type of the write payload
  * @author carcassi
  */
-public class ChannelExpression<R, W> extends ReadWriteExpression<R, W> {
+public class ChannelExpression<R, W> extends SourceRateReadWriteExpression<R, W> {
 
     ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
         super(new SourceRateExpressionImpl<R>(channelName, readClass), new WriteExpressionImpl<W>(channelName));
