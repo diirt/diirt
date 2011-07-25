@@ -19,9 +19,9 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
     private final PVReaderConfiguration<R> pvReaderConfiguration;
     private final PVWriterConfiguration<W> pvWriterConfiguration;
 
-    PVConfiguration(DesiredRateExpression<R> readExpression, WriteExpression<W> writeExpression) {
-        pvReaderConfiguration = new PVReaderConfiguration<R>(readExpression);
-        pvWriterConfiguration = new PVWriterConfiguration<W>(writeExpression);
+    PVConfiguration(DesiredRateReadWriteExpression<R, W> readWriteExpression) {
+        pvReaderConfiguration = new PVReaderConfiguration<R>(readWriteExpression.getDesiredRateExpressionImpl());
+        pvWriterConfiguration = new PVWriterConfiguration<W>(readWriteExpression.getWriteExpressionImpl());
     }
     
     @Override

@@ -106,11 +106,23 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <T> DesiredRateExpression<T> latestValueOf(SourceRateExpression<T> expression) {
-        // TODO This should use a cache of size one
         DesiredRateExpression<List<T>> queue = newValuesOf(expression, 1);
         return new DesiredRateExpressionImpl<T>(queue,
                 new LastValueAggregator<T>((Collector<T>) queue.getFunction()),
                 expression.getDefaultName());
+    }
+
+    /**
+     * For reads, returns (only) the latest value computed
+     * from a {@code SourceRateReadWriteExpression}; for writes, same
+     * as the given expression.
+     *
+     * @param <R, W> read and write payloads
+     * @param expression expression read at the source rate
+     * @return a new expression
+     */
+    public static <R, W> DesiredRateReadWriteExpression<R, W> latestValueOf(SourceRateReadWriteExpression<R, W> expression) {
+        return new DesiredRateReadWriteExpression<R, W>(latestValueOf(expression.getSourceRateExpressionImpl()), expression.getWriteExpressionImpl());
     }
     
     /**

@@ -131,8 +131,21 @@ public class PVManager {
      * @return the read and write configuration
      */
     public static <R, W> PVConfiguration<R, W> readAndWrite(SourceRateReadWriteExpression<R, W> readWriteExpression) {
-        return new PVConfiguration<R, W>(ExpressionLanguage.latestValueOf(readWriteExpression.getSourceRateExpressionImpl()),
-                readWriteExpression.getWriteExpressionImpl());
+        return readAndWrite(ExpressionLanguage.latestValueOf(readWriteExpression));
+    }
+    
+    /**
+     * Both reads and writes the given expression, and returns an object to configure the parameters
+     * for the both read and write. It's similar to use both {@link #read(org.epics.pvmanager.SourceRateExpression) }
+     * and {@link #write(org.epics.pvmanager.WriteExpression) ) at the same time.
+     *
+     * @param <R> type of the read payload
+     * @param <W> type of the write payload
+     * @param readWriteExpression the expression to read and write
+     * @return the read and write configuration
+     */
+    public static <R, W> PVConfiguration<R, W> readAndWrite(DesiredRateReadWriteExpression<R, W> readWriteExpression) {
+        return new PVConfiguration<R, W>(readWriteExpression);
     }
 
     /**
