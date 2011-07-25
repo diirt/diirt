@@ -32,7 +32,7 @@ public class ErrorHandlingTest {
     }
 
     public static DesiredRateExpression<VDouble> exception(DesiredRateExpression<VDouble> expression) {
-        return new DesiredRateExpression<VDouble>(expression, new Function<VDouble>() {
+        return new DesiredRateExpressionImpl<VDouble>(expression, new Function<VDouble>() {
 
             @Override
             public VDouble getValue() {

@@ -7,12 +7,12 @@ package org.epics.pvmanager.types;
 
 import org.epics.pvmanager.DesiredRateExpression;
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.NotificationSupport;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.epics.pvmanager.DesiredRateExpressionImpl;
 
 /**
  * Provides support for the standard types and the basic building blocks of
@@ -59,7 +59,7 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        DesiredRateExpression<List<T>> expression = new DesiredRateExpression<List<T>>((List<DesiredRateExpression<?>>) (List) expressions,
+        DesiredRateExpression<List<T>> expression = new DesiredRateExpressionImpl<List<T>>((List<DesiredRateExpression<?>>) (List) expressions,
                 (Function<List<T>>) (Function) new ListOfFunction(functions), name);
         return expression;
     }

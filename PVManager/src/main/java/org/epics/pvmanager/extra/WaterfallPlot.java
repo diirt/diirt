@@ -6,6 +6,7 @@ package org.epics.pvmanager.extra;
 
 import java.util.List;
 import org.epics.pvmanager.DesiredRateExpression;
+import org.epics.pvmanager.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
 
@@ -14,7 +15,7 @@ import org.epics.pvmanager.data.VImage;
  *
  * @author carcassi
  */
-public class WaterfallPlot extends DesiredRateExpression<VImage> {
+public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
     WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
         super(queue, new WaterfallPlotFunction(queue.getFunction(), WaterfallPlotParameters.defaults().internalCopy()), name);

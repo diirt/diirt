@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager.data;
 
+import org.epics.pvmanager.DesiredRateExpressionImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.DesiredRateExpression;
@@ -150,7 +151,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpression<VDouble> averageOf(SourceRateExpression<VDouble> doublePv) {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
         Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
-        return new DesiredRateExpression<VDouble>(queue,
+        return new DesiredRateExpressionImpl<VDouble>(queue,
                 new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
     }
 
@@ -163,7 +164,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpression<VStatistics> statisticsOf(SourceRateExpression<VDouble> doublePv) {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
         Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
-        return new DesiredRateExpression<VStatistics>(queue,
+        return new DesiredRateExpressionImpl<VStatistics>(queue,
                 new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
     }
 
@@ -219,7 +220,7 @@ public class ExpressionLanguage {
         }
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, collectors, tolerance);
-        return new DesiredRateExpression<VMultiDouble>(collectorExps,
+        return new DesiredRateExpressionImpl<VMultiDouble>(collectorExps,
                 (Function<VMultiDouble>) aggregator, "syncArray");
     }
 

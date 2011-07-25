@@ -61,7 +61,7 @@ public class ExpressionLanguage {
      */
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression) {
-        return new DesiredRateExpression<List<T>>(expression,
+        return new DesiredRateExpressionImpl<List<T>>(expression,
                 new QueueCollector<T>(expression.getFunction()),
                 expression.getDefaultName());
     }
@@ -76,7 +76,7 @@ public class ExpressionLanguage {
      */
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression, int maxValues) {
-        return new DesiredRateExpression<List<T>>(expression,
+        return new DesiredRateExpressionImpl<List<T>>(expression,
                 new QueueCollector<T>(expression.getFunction(), maxValues),
                 expression.getDefaultName());
     }
@@ -92,7 +92,7 @@ public class ExpressionLanguage {
      */
     public static <T> DesiredRateExpression<List<T>>
             timedCacheOf(SourceRateExpression<T> expression, TimeDuration maxIntervalBetweenSamples) {
-        return new DesiredRateExpression<List<T>>(expression,
+        return new DesiredRateExpressionImpl<List<T>>(expression,
                 new TimedCacheCollector<T>(expression.getFunction(), maxIntervalBetweenSamples),
                 expression.getDefaultName());
     }
@@ -108,7 +108,7 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<T> latestValueOf(SourceRateExpression<T> expression) {
         // TODO This should use a cache of size one
         DesiredRateExpression<List<T>> queue = newValuesOf(expression, 1);
-        return new DesiredRateExpression<T>(queue,
+        return new DesiredRateExpressionImpl<T>(queue,
                 new LastValueAggregator<T>((Collector<T>) queue.getFunction()),
                 expression.getDefaultName());
     }
@@ -160,7 +160,7 @@ public class ExpressionLanguage {
             DesiredRateExpression<A> argExpression) {
         String name = function.getClass().getSimpleName() + "(" + argExpression.getDefaultName() + ")";
         final Function<A> arg = argExpression.getFunction();
-        return new DesiredRateExpression<R>(argExpression, new Function<R>() {
+        return new DesiredRateExpressionImpl<R>(argExpression, new Function<R>() {
             @Override
             public R getValue() {
                 return function.calculate(arg.getValue());
@@ -188,7 +188,7 @@ public class ExpressionLanguage {
         @SuppressWarnings("unchecked")
         final List<DesiredRateExpression<? extends Object>> argExpressions =
                 Arrays.asList(arg1Expression, arg2Expression);
-        return new DesiredRateExpression<R>(argExpressions,
+        return new DesiredRateExpressionImpl<R>(argExpressions,
                 new Function<R>() {
                     @Override
                     public R getValue() {
@@ -320,7 +320,7 @@ public class ExpressionLanguage {
             DesiredRateExpression<List<T>> expression) {
         String name = expression.getDefaultName();
         final Function<List<T>> arg = expression.getFunction();
-        return new DesiredRateExpression<List<T>>(expression,
+        return new DesiredRateExpressionImpl<List<T>>(expression,
                 new Function<List<T>>() {
 
                     private T previousValue;
