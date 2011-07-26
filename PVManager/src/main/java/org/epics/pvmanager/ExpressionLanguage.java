@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 
 /**
@@ -132,7 +133,7 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <R, W> DesiredRateReadWriteExpression<R, W> latestValueOf(SourceRateReadWriteExpression<R, W> expression) {
-        return new DesiredRateReadWriteExpression<R, W>(latestValueOf((SourceRateExpression<R>) expression), expression);
+        return new DesiredRateReadWriteExpressionImpl<R, W>(latestValueOf((SourceRateExpression<R>) expression), expression);
     }
     
     /**
@@ -442,7 +443,7 @@ public class ExpressionLanguage {
         WriteExpression<Map<String, W>> writeExpression = new WriteExpressionImpl<Map<String, W>>(writeExpressions,
                 new MapOfWriteFunction<W>(names, writefunctions), null);
         
-        return new DesiredRateReadWriteExpression<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
+        return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
     }
     
 }

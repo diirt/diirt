@@ -22,11 +22,16 @@ import org.epics.pvmanager.ValueCache;
  * @param <T> type returned by the expression
  * @author carcassi
  */
-public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
+public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T> implements SourceRateExpression<T> {
 
     private Map<String, ValueCache> caches;
     private Function<T> function;
     private final String defaultName;
+    
+    {
+        // Make sure that the list includes this expression
+        addThis();
+    }
 
     /**
      * Constructor that represents a single pv of a particular type.

@@ -15,7 +15,7 @@ import org.epics.pvmanager.Function;
  * @param <T> type returned by the expression
  * @author carcassi
  */
-public interface SourceRateExpression<T> extends SourceRateExpressionImplProvider<T> {
+public interface SourceRateExpression<T> extends SourceRateExpressionList<T>, SourceRateExpressionImplProvider<T> {
 
     /**
      * Name representation of the expression.

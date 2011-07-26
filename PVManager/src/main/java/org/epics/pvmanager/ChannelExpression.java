@@ -6,8 +6,8 @@ package org.epics.pvmanager;
 
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.WriteExpressionImpl;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
 import java.util.Arrays;
+import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
 
 /**
  * Represents a channel, which can be both read or written.
@@ -16,7 +16,7 @@ import java.util.Arrays;
  * @param <W> type of the write payload
  * @author carcassi
  */
-public class ChannelExpression<R, W> extends SourceRateReadWriteExpression<R, W> {
+public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R, W> {
 
     ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
         super(new SourceRateExpressionImpl<R>(channelName, readClass), new WriteExpressionImpl<W>(channelName));
