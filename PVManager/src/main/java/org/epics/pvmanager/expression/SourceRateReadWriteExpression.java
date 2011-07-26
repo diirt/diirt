@@ -2,7 +2,11 @@
  * Copyright 2010-11 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
+
+import org.epics.pvmanager.Function;
+import org.epics.pvmanager.WriteBuffer;
+import org.epics.pvmanager.WriteFunction;
 
 /**
  * Represents an expression that can be both read and written.
@@ -37,12 +41,23 @@ public class SourceRateReadWriteExpression<R, W> implements SourceRateExpression
         return sourceRateExpression.getFunction();
     }
     
-    SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
-        return SourceRateExpressionImpl.implOf(sourceRateExpression);
+    @Override
+    public SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
+        return sourceRateExpression.getSourceRateExpressionImpl();
     }
     
     WriteExpressionImpl<W> getWriteExpressionImpl() {
         return WriteExpressionImpl.implOf(writeExpression);
+    }
+
+    @Override
+    public WriteFunction<W> getWriteFunction() {
+        return writeExpression.getWriteFunction();
+    }
+
+    @Override
+    public WriteBuffer createWriteBuffer() {
+        return writeExpression.createWriteBuffer();
     }
     
 }

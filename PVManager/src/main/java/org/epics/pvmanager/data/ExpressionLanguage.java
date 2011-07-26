@@ -5,14 +5,14 @@
 
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.SourceRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.SourceRateExpressionImpl;
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 

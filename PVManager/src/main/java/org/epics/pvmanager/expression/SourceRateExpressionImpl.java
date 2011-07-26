@@ -3,12 +3,16 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.DataRecipeBuilder;
+import org.epics.pvmanager.Function;
+import org.epics.pvmanager.ValueCache;
 
 /**
  * An expression that represent a pv read at the CA rate.
@@ -19,18 +23,6 @@ import java.util.Map;
  * @author carcassi
  */
 public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
-    
-    static <T> SourceRateExpressionImpl<T> implOf(SourceRateExpression<T> sourceRateExpression) {
-        if (sourceRateExpression instanceof SourceRateExpressionImpl) {
-            return (SourceRateExpressionImpl<T>) sourceRateExpression;
-        }
-        
-        if (sourceRateExpression instanceof SourceRateReadWriteExpression) {
-            return ((SourceRateReadWriteExpression<T, ?>) sourceRateExpression).getSourceRateExpressionImpl();
-        }
-        
-        throw new IllegalArgumentException("SourceRateExpression must be implemented using SourceRateExpressionImpl");
-    }
 
     private Map<String, ValueCache> caches;
     private Function<T> function;
@@ -71,7 +63,7 @@ public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
     public SourceRateExpressionImpl(List<SourceRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
         caches = new HashMap<String, ValueCache>();
         for (SourceRateExpression<?> childExpression : childExpressions) {
-            for (Map.Entry<String, ValueCache> entry : SourceRateExpressionImpl.implOf(childExpression).getCaches().entrySet()) {
+            for (Map.Entry<String, ValueCache> entry : childExpression.getSourceRateExpressionImpl().getCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (caches.keySet().contains(pvName)) {
                     throw new UnsupportedOperationException("Need to implement functions that take the same PV twice (right now we probably get double notifications)");
@@ -122,6 +114,11 @@ public class SourceRateExpressionImpl<T> implements SourceRateExpression<T> {
         DataRecipeBuilder recipe = new DataRecipeBuilder();
         recipe.addCollector(collector, caches);
         return recipe;
+    }
+
+    @Override
+    public SourceRateExpressionImpl<T> getSourceRateExpressionImpl() {
+        return this;
     }
 
 }

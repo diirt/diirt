@@ -3,7 +3,9 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
+
+import org.epics.pvmanager.Function;
 
 /**
  * An expression that represent a pv read at the CA rate.
@@ -13,7 +15,7 @@ package org.epics.pvmanager;
  * @param <T> type returned by the expression
  * @author carcassi
  */
-public interface SourceRateExpression<T> {
+public interface SourceRateExpression<T> extends SourceRateExpressionImplProvider<T> {
 
     /**
      * Name representation of the expression.

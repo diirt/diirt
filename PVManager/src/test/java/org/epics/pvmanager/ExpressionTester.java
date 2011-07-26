@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.DesiredRateExpression;
+
 /**
  *
  * @author carcassi

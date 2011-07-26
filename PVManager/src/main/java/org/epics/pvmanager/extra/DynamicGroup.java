@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.DesiredRateExpression;
-import org.epics.pvmanager.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PVManager;
 

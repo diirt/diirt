@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.SourceRateExpression;
 import java.util.Collections;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

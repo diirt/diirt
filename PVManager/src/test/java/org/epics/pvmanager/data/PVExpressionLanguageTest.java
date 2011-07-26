@@ -5,8 +5,8 @@
 
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.DesiredRateExpression;
-import org.epics.pvmanager.SourceRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.junit.Assert.*;

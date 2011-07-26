@@ -2,7 +2,13 @@
  * Copyright 2010-11 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
+
+import java.util.List;
+import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.Function;
+import org.epics.pvmanager.WriteBuffer;
+import org.epics.pvmanager.WriteFunction;
 
 /**
  * Represents an expression that can be both read and written.
@@ -37,8 +43,9 @@ public class DesiredRateReadWriteExpression<R, W> implements DesiredRateExpressi
         return desiredRateExpression.getFunction();
     }
     
-    DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
-        return DesiredRateExpressionImpl.implOf(desiredRateExpression);
+    @Override
+    public DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
+        return desiredRateExpression.getDesiredRateExpressionImpl();
     }
     
     WriteExpressionImpl<W> getWriteExpressionImpl() {
@@ -49,5 +56,26 @@ public class DesiredRateReadWriteExpression<R, W> implements DesiredRateExpressi
     public DataRecipe getDataRecipe() {
         return desiredRateExpression.getDataRecipe();
     }
+
+    @Override
+    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions) {
+        return desiredRateExpression.and(expressions);
+    }
+
+    @Override
+    public List<DesiredRateExpression<R>> getDesiredRateExpressions() {
+        return desiredRateExpression.getDesiredRateExpressions();
+    }
+
+    @Override
+    public WriteFunction<W> getWriteFunction() {
+        return writeExpression.getWriteFunction();
+    }
+
+    @Override
+    public WriteBuffer createWriteBuffer() {
+        return writeExpression.createWriteBuffer();
+    }
+    
     
 }

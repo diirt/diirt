@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.DesiredRateExpression;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.util.Executors;
 import org.epics.pvmanager.util.TimeDuration;

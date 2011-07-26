@@ -3,12 +3,16 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
 
+import org.epics.pvmanager.WriteBufferBuilder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.WriteBuffer;
+import org.epics.pvmanager.WriteCache;
+import org.epics.pvmanager.WriteFunction;
 
 /**
  * An expression that represent a pv write.
@@ -109,6 +113,7 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
      *
      * @return the function
      */
+    @Override
     public WriteFunction<T> getWriteFunction() {
         return writeFunction;
     }
@@ -119,10 +124,11 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
      * @param collector the collector to be notified by changes in this expression
      * @return a data recipe
      */
-    WriteBufferBuilder createWriteBuffer() {
+    @Override
+    public WriteBuffer createWriteBuffer() {
         WriteBufferBuilder buffer = new WriteBufferBuilder();
         buffer.addCaches(writeCaches);
-        return buffer;
+        return buffer.build();
     }
 
 }

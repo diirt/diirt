@@ -3,9 +3,13 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
 
 import java.util.List;
+import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.DataRecipeBuilder;
+import org.epics.pvmanager.Function;
 
 /**
  * An expression that represents a PV that is read at the UI scan rate.
@@ -15,23 +19,15 @@ import java.util.List;
  * @param <T> type of the expression output
  * @author carcassi
  */
-public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
-    
-    static <T> DesiredRateExpressionImpl<T> implOf(DesiredRateExpression<T> sourceRateExpression) {
-        if (sourceRateExpression instanceof DesiredRateExpressionImpl) {
-            return (DesiredRateExpressionImpl<T>) sourceRateExpression;
-        }
-        
-        if (sourceRateExpression instanceof DesiredRateReadWriteExpression) {
-            return ((DesiredRateReadWriteExpression<T, ?>) sourceRateExpression).getDesiredRateExpressionImpl();
-        }
-        
-        throw new IllegalArgumentException("DesiredRateExpression must be implemented using DesiredRateExpressionImpl");
-    }
+public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<T> implements DesiredRateExpression<T> {
 
     private final DataRecipeBuilder recipe;
     private final Function<T> function;
     private final String defaultName;
+    
+    {
+        and(this);
+    }
 
     /**
      * Creates a new expression at the desired rate. Use this constructor when making
@@ -45,7 +41,7 @@ public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
         if (!(collector instanceof Collector)){
             throw new IllegalArgumentException("collector must be of type Collector");
         }
-        this.recipe = SourceRateExpressionImpl.implOf(expression).createDataRecipe((Collector) collector);
+        this.recipe = expression.getSourceRateExpressionImpl().createDataRecipe((Collector) collector);
         this.function = collector;
         this.defaultName = defaultName;
     }
@@ -64,7 +60,7 @@ public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
         if (expression == null) {
             this.recipe = new DataRecipeBuilder();
         } else {
-            this.recipe = implOf(expression).recipe;
+            this.recipe = expression.getDesiredRateExpressionImpl().recipe;
         }
         this.function = function;
         this.defaultName = defaultName;
@@ -89,9 +85,9 @@ public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
         if (childExpressions.isEmpty())
             return new DataRecipeBuilder();
 
-        DataRecipeBuilder recipe = implOf(childExpressions.get(0)).recipe;
+        DataRecipeBuilder recipe = childExpressions.get(0).getDesiredRateExpressionImpl().recipe;
         for (int i = 1; i < childExpressions.size(); i++) {
-            DataRecipeBuilder newRecipe = implOf(childExpressions.get(i)).recipe;
+            DataRecipeBuilder newRecipe = childExpressions.get(i).getDesiredRateExpressionImpl().recipe;
             recipe.addAll(newRecipe);
         }
 
@@ -127,4 +123,10 @@ public class DesiredRateExpressionImpl<T> implements DesiredRateExpression<T> {
     public Function<T> getFunction() {
         return function;
     }
+
+    @Override
+    public DesiredRateExpressionImpl<T> getDesiredRateExpressionImpl() {
+        return this;
+    }
+    
 }

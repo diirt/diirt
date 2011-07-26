@@ -3,7 +3,10 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
+
+import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.Function;
 
 /**
  * An expression that represents a PV that is read at the UI scan rate.
@@ -13,7 +16,7 @@ package org.epics.pvmanager;
  * @param <T> type of the expression output
  * @author carcassi
  */
-public interface DesiredRateExpression<T> {
+public interface DesiredRateExpression<T> extends DesiredRateExpressionList<T>, DesiredRateExpressionImplProvider<T> {
 
     /**
      * The default name for a PV of this expression.
@@ -35,4 +38,5 @@ public interface DesiredRateExpression<T> {
      * @return a function
      */
     public Function<T> getFunction();
+    
 }

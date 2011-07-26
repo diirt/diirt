@@ -8,8 +8,8 @@ package org.epics.pvmanager.extra;
 import org.epics.pvmanager.data.*;
 import java.util.List;
 import org.epics.pvmanager.BasicTypeSupport;
-import org.epics.pvmanager.DesiredRateExpression;
-import org.epics.pvmanager.SourceRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**

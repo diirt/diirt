@@ -5,8 +5,8 @@
 package org.epics.pvmanager.extra;
 
 import java.util.List;
-import org.epics.pvmanager.DesiredRateExpression;
-import org.epics.pvmanager.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
 

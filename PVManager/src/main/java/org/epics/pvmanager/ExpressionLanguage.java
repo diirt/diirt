@@ -5,6 +5,14 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.WriteExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.WriteExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
+import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
 import org.epics.pvmanager.util.TimeDuration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,7 +131,7 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <R, W> DesiredRateReadWriteExpression<R, W> latestValueOf(SourceRateReadWriteExpression<R, W> expression) {
-        return new DesiredRateReadWriteExpression<R, W>(latestValueOf(expression.getSourceRateExpressionImpl()), expression.getWriteExpressionImpl());
+        return new DesiredRateReadWriteExpression<R, W>(latestValueOf((SourceRateExpression<R>) expression), expression);
     }
     
     /**
@@ -383,6 +391,11 @@ public class ExpressionLanguage {
                 (Function<List<T>>) (Function) new ListOfFunction(functions), null);
         return expression;
     }
+    
+    public static <T> DesiredRateExpression<Map<String, T>> mapOf(DesiredRateExpressionList<T> expressions) {
+        return mapOf(expressions.getDesiredRateExpressions());
+    }
+
 
     /**
      * Converts a list of expressions to an expression that returns the map from
@@ -434,9 +447,9 @@ public class ExpressionLanguage {
         for (DesiredRateReadWriteExpression<R, W> expression : expressions) {
             names.add(expression.getDefaultName());
             functions.add(expression.getFunction());
-            writefunctions.add(expression.getWriteExpressionImpl().getWriteFunction());
-            readExpressions.add(expression.getDesiredRateExpressionImpl());
-            writeExpressions.add(expression.getWriteExpressionImpl());
+            writefunctions.add(expression.getWriteFunction());
+            readExpressions.add(expression);
+            writeExpressions.add(expression);
         }
         
         DesiredRateExpression<Map<String, R>> readExpression = new DesiredRateExpressionImpl<Map<String, R>>(readExpressions,

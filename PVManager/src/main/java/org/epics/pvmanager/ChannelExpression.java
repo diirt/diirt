@@ -4,6 +4,9 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
+import org.epics.pvmanager.expression.WriteExpressionImpl;
+import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
 import java.util.Arrays;
 
 /**
@@ -30,7 +33,7 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpression<R, W>
      * @return
      */
     public ChannelExpression<R, W> after(String... channelNames) {
-        WriteCache<W> cache = (WriteCache<W>) getWriteExpressionImpl().getWriteFunction();
+        WriteCache<W> cache = (WriteCache<W>) getWriteFunction();
         if (!cache.getPrecedingChannels().isEmpty()) {
             throw new IllegalArgumentException("Preceding channels were already set to " + cache.getPrecedingChannels());
         }

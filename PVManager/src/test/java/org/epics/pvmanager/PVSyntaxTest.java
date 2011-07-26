@@ -23,8 +23,10 @@ public class PVSyntaxTest {
     public void readMap() throws Exception {
         DataSource dataSource = new LocalDataSource();
         
-        @SuppressWarnings("unchecked")
-        PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channel("channel1")), latestValueOf(channel("channel2")))).from(dataSource).every(hz(50));
+        PVReader<Map<String, Object>> pvReader =
+                PVManager.read(mapOf(latestValueOf(channel("channel1"))
+                                    .and(latestValueOf(channel("channel2")))))
+                .from(dataSource).every(hz(50));
         pvReader.close();
     }
 

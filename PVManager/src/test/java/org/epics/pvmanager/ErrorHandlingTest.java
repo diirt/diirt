@@ -5,6 +5,10 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.TimeDuration;

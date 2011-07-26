@@ -3,7 +3,10 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
+
+import org.epics.pvmanager.WriteBuffer;
+import org.epics.pvmanager.WriteFunction;
 
 /**
  * An expression that represent a pv write.
@@ -15,4 +18,7 @@ package org.epics.pvmanager;
  */
 public interface WriteExpression<T> {
 
+    public WriteFunction<T> getWriteFunction();
+    
+    public WriteBuffer createWriteBuffer();
 }

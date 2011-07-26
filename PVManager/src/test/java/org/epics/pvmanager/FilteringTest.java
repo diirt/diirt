@@ -5,6 +5,9 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpression;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
