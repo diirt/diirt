@@ -23,22 +23,6 @@ import org.epics.pvmanager.WriteFunction;
  * @author carcassi
  */
 public class WriteExpressionImpl<T> implements WriteExpression<T> {
-    
-    static <T> WriteExpressionImpl<T> implOf(WriteExpression<T> writeExpression) {
-        if (writeExpression instanceof WriteExpressionImpl) {
-            return (WriteExpressionImpl<T>) writeExpression;
-        }
-        
-        if (writeExpression instanceof SourceRateReadWriteExpression) {
-            return ((SourceRateReadWriteExpression<?, T>) writeExpression).getWriteExpressionImpl();
-        }
-        
-        if (writeExpression instanceof DesiredRateReadWriteExpression) {
-            return ((DesiredRateReadWriteExpression<?, T>) writeExpression).getWriteExpressionImpl();
-        }
-        
-        throw new IllegalArgumentException("WriteExpression must be implemented using WriteExpressionImpl");
-    }
 
     private Map<String, WriteCache<?>> writeCaches;
     private WriteFunction<T> writeFunction;
@@ -78,7 +62,7 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
     public WriteExpressionImpl(List<WriteExpression<?>> childExpressions, WriteFunction<T> function, String defaultName) {
         writeCaches = new HashMap<String, WriteCache<?>>();
         for (WriteExpression<?> childExpression : childExpressions) {
-            for (Map.Entry<String, WriteCache<?>> entry : implOf(childExpression).getWriteCaches().entrySet()) {
+            for (Map.Entry<String, WriteCache<?>> entry : childExpression.getWriteExpressionImpl().getWriteCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (writeCaches.keySet().contains(pvName)) {
                     throw new RuntimeException("Can't define a write operation that writes to the same channel more than once.");
@@ -129,6 +113,11 @@ public class WriteExpressionImpl<T> implements WriteExpression<T> {
         WriteBufferBuilder buffer = new WriteBufferBuilder();
         buffer.addCaches(writeCaches);
         return buffer.build();
+    }
+
+    @Override
+    public WriteExpressionImpl<T> getWriteExpressionImpl() {
+        return this;
     }
 
 }

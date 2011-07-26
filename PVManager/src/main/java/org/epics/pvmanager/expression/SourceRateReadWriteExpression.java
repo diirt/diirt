@@ -46,8 +46,9 @@ public class SourceRateReadWriteExpression<R, W> implements SourceRateExpression
         return sourceRateExpression.getSourceRateExpressionImpl();
     }
     
-    WriteExpressionImpl<W> getWriteExpressionImpl() {
-        return WriteExpressionImpl.implOf(writeExpression);
+    @Override
+    public WriteExpressionImpl<W> getWriteExpressionImpl() {
+        return writeExpression.getWriteExpressionImpl();
     }
 
     @Override

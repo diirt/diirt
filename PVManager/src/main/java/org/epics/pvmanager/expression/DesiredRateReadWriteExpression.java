@@ -48,8 +48,9 @@ public class DesiredRateReadWriteExpression<R, W> implements DesiredRateExpressi
         return desiredRateExpression.getDesiredRateExpressionImpl();
     }
     
-    WriteExpressionImpl<W> getWriteExpressionImpl() {
-        return WriteExpressionImpl.implOf(writeExpression);
+    @Override
+    public WriteExpressionImpl<W> getWriteExpressionImpl() {
+        return writeExpression.getWriteExpressionImpl();
     }
 
     @Override
