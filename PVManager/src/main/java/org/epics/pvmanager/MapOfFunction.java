@@ -36,7 +36,9 @@ class MapOfFunction<T> extends Function<Map<String, T>> {
         Map<String, T> map = new HashMap<String, T>();
         for (int nFunction = 0; nFunction < names.size(); nFunction++) {
             T value = functions.get(nFunction).getValue();
-            map.put(names.get(nFunction), value);
+            if (value!= null) {
+                map.put(names.get(nFunction), value);
+            }
         }
         return map;
     }
