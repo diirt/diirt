@@ -12,17 +12,15 @@ import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
 
 /**
- * An expression that represents a PV that is read at the UI scan rate.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * Implementation class for {@link DesiredRateExpression}
  *
- * @param <T> type of the expression output
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<T> implements DesiredRateExpression<T> {
+public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<R> implements DesiredRateExpression<R> {
 
     private final DataRecipeBuilder recipe;
-    private final Function<T> function;
+    private final Function<R> function;
     private final String defaultName;
     
     {
@@ -38,7 +36,7 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @param collector the collector for the original source
      * @param defaultName the display name of the expression
      */
-    public DesiredRateExpressionImpl(SourceRateExpression<?> expression, Function<T> collector, String defaultName) {
+    public DesiredRateExpressionImpl(SourceRateExpression<?> expression, Function<R> collector, String defaultName) {
         if (!(collector instanceof Collector)){
             throw new IllegalArgumentException("collector must be of type Collector");
         }
@@ -56,7 +54,7 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @param function the function to calculate the new expression
      * @param defaultName the name of the expression
      */
-    public DesiredRateExpressionImpl(DesiredRateExpression<?> expression, Function<T> function, String defaultName) {
+    public DesiredRateExpressionImpl(DesiredRateExpression<?> expression, Function<R> function, String defaultName) {
         // TODO: maybe another constructor for no parent expression?
         if (expression == null) {
             this.recipe = new DataRecipeBuilder();
@@ -76,7 +74,7 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @param function the function that calculates the value of the new expression
      * @param defaultName the display name of the expression
      */
-    public DesiredRateExpressionImpl(List<DesiredRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
+    public DesiredRateExpressionImpl(List<DesiredRateExpression<?>> childExpressions, Function<R> function, String defaultName) {
         this.recipe = combineRecipes(childExpressions);
         this.function = function;
         this.defaultName = defaultName;
@@ -101,7 +99,7 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @return the default name
      */
     @Override
-    public String getDefaultName() {
+    public final String getDefaultName() {
         return defaultName;
     }
 
@@ -111,7 +109,7 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @return a data recipe
      */
     @Override
-    public DataRecipe getDataRecipe() {
+    public final DataRecipe getDataRecipe() {
         return recipe.build();
     }
 
@@ -121,12 +119,16 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
      * @return a function
      */
     @Override
-    public Function<T> getFunction() {
+    public final Function<R> getFunction() {
         return function;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
-    public DesiredRateExpressionImpl<T> getDesiredRateExpressionImpl() {
+    public final DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
         return this;
     }
     

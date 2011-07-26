@@ -5,6 +5,10 @@
 package org.epics.pvmanager.expression;
 
 /**
+ * This interface serves two purposes: gives us the implementation of a
+ * DesiredRateExpression, so that we can reach package private implementation
+ * methods from multiple implemented interfaces, simulating multiple inheritance;
+ * it effectively prevents implementations outside of the package.
  *
  * @author carcassi
  */

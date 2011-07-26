@@ -9,14 +9,14 @@ import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.Function;
 
 /**
- * An expression that represents a PV that is read at the UI scan rate.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * An expression representing a PV read at the desired rate.
+ * <p>
+ * Don't implement objects with this interface, use {@link DesiredRateExpressionImpl}.
  *
- * @param <T> type of the expression output
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public interface DesiredRateExpression<T> extends DesiredRateExpressionList<T>, DesiredRateExpressionImplProvider<T> {
+public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, DesiredRateExpressionImplProvider<R> {
 
     /**
      * The default name for a PV of this expression.
@@ -37,6 +37,6 @@ public interface DesiredRateExpression<T> extends DesiredRateExpressionList<T>, 
      *
      * @return a function
      */
-    public Function<T> getFunction();
+    public Function<R> getFunction();
     
 }
