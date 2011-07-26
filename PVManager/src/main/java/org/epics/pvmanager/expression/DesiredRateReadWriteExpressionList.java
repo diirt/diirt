@@ -13,22 +13,9 @@ import java.util.List;
  *
  * @author carcassi
  */
-public class DesiredRateReadWriteExpressionList<R, W> {
+public interface DesiredRateReadWriteExpressionList<R, W> extends DesiredRateExpressionList<R>, WriteExpressionList<W> {
     
-    private List<DesiredRateReadWriteExpression<R, W>> desiredRateExpressions = new ArrayList<DesiredRateReadWriteExpression<R, W>>();
-    
-    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpression<R, W> expression) {
-        desiredRateExpressions.add(expression);
-        return this;
-    }
-    
-    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions) {
-        desiredRateExpressions.addAll(expressions.desiredRateExpressions);
-        return this;
-    }
+    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions);
 
-    List<DesiredRateReadWriteExpression<R, W>> getDesiredRateExpressions() {
-        return desiredRateExpressions;
-    }
-    
+    public List<DesiredRateReadWriteExpression<R, W>> getDesiredRateReadWriteExpressions();
 }

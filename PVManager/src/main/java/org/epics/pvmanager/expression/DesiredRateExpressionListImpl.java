@@ -5,6 +5,7 @@
 package org.epics.pvmanager.expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,7 +16,15 @@ import java.util.List;
  */
 public class DesiredRateExpressionListImpl<T> implements DesiredRateExpressionList<T> {
     
-    private List<DesiredRateExpression<T>> desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>();
+    private List<DesiredRateExpression<T>> desiredRateExpressions;
+
+    public DesiredRateExpressionListImpl() {
+        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>();
+    }
+
+    DesiredRateExpressionListImpl(Collection<? extends DesiredRateExpression<T>> desiredRateExpressions) {
+        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>(desiredRateExpressions);
+    }
     
     @Override
     public DesiredRateExpressionListImpl<T> and(DesiredRateExpressionList<T> expressions) {
