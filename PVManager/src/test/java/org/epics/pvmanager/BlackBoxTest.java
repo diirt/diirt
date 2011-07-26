@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VString;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,7 +36,9 @@ public class BlackBoxTest {
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
+        System.out.println("Closing");
         pv.close();
+        System.out.println("Closed");
     }
 
     @Test
@@ -43,8 +47,8 @@ public class BlackBoxTest {
         String channel2 = "channel2";
         DataSource dataSource = new LocalDataSource();
         
-        PV<Map<String, Object>, Map<String, Object>> pv =
-                PVManager.readAndWrite(rwMapOf(latestValueOf(channel("channel1")), latestValueOf(channel("channel2"))))
+        final PV<Map<String, Object>, Map<String, Object>> pv =
+                PVManager.readAndWrite(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))))
                 .from(dataSource).synchWriteAndReadEvery(hz(50));
         assertThat(pv.getValue(), nullValue());
 

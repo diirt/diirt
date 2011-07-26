@@ -17,10 +17,15 @@ import org.epics.pvmanager.WriteFunction;
  * @param <W> type of the write payload
  * @author carcassi
  */
-public class DesiredRateReadWriteExpression<R, W> implements DesiredRateExpression<R>, WriteExpression<W> {
+public class DesiredRateReadWriteExpression<R, W> extends DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRateExpression<R>, WriteExpression<W> {
     
     private final DesiredRateExpression<R> desiredRateExpression;
     private final WriteExpression<W> writeExpression;
+    
+    {
+        // Make sure that the list includes this expression
+        addThis();
+    }
 
     /**
      * Creates an expression that can be both read and written.

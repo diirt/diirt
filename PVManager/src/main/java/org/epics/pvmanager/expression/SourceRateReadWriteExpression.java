@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
+import java.util.List;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteFunction;
@@ -59,6 +60,16 @@ public class SourceRateReadWriteExpression<R, W> implements SourceRateExpression
     @Override
     public WriteBuffer createWriteBuffer() {
         return writeExpression.createWriteBuffer();
+    }
+
+    @Override
+    public WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<WriteExpression<W>> getWriteExpressions() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

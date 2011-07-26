@@ -26,7 +26,8 @@ public class DesiredRateExpressionImpl<T> extends DesiredRateExpressionListImpl<
     private final String defaultName;
     
     {
-        and(this);
+        // Make sure that the list includes this expression
+        addThis();
     }
 
     /**

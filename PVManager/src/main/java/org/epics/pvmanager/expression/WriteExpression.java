@@ -16,7 +16,7 @@ import org.epics.pvmanager.WriteFunction;
  * @param <T> type taken by the expression
  * @author carcassi
  */
-public interface WriteExpression<T> extends WriteExpressionImplProvider<T> {
+public interface WriteExpression<T> extends WriteExpressionList<T>, WriteExpressionImplProvider<T> {
 
     public WriteFunction<T> getWriteFunction();
     

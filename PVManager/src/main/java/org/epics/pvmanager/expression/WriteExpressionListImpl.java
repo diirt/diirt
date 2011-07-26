@@ -17,6 +17,10 @@ import java.util.List;
 public class WriteExpressionListImpl<T> implements WriteExpressionList<T> {
     
     private List<WriteExpression<T>> writeExpressions;
+    
+    protected void addThis() {
+        writeExpressions.add((WriteExpression<T>) this);
+    }
 
     public WriteExpressionListImpl() {
         this.writeExpressions = new ArrayList<WriteExpression<T>>();

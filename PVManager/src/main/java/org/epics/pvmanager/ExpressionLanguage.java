@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
@@ -392,34 +393,18 @@ public class ExpressionLanguage {
         return expression;
     }
     
+    /**
+     * Converts a list of expressions to an expression that returns the map from
+     * the name to the results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing a map from name to results
+     */
     public static <T> DesiredRateExpression<Map<String, T>> mapOf(DesiredRateExpressionList<T> expressions) {
-        return mapOf(expressions.getDesiredRateExpressions());
-    }
-
-
-    /**
-     * Converts a list of expressions to an expression that returns the map from
-     * the name to the results.
-     * 
-     * @param expression a list of expressions
-     * @return an expression representing a map from name to results
-     */
-    public static <T> DesiredRateExpression<Map<String, T>> mapOf(DesiredRateExpression<T>... expressions) {
-        return mapOf(Arrays.asList(expressions));
-    }
-
-    /**
-     * Converts a list of expressions to an expression that returns the map from
-     * the name to the results.
-     * 
-     * @param expression a list of expressions
-     * @return an expression representing a map from name to results
-     */
-    public static <T> DesiredRateExpression<Map<String, T>> mapOf(List<DesiredRateExpression<T>> expressions) {
         // Calculate all the needed functions to combine
         List<String> names = new ArrayList<String>();
         List<Function<T>> functions = new ArrayList<Function<T>>();
-        for (DesiredRateExpression<T> expression : expressions) {
+        for (DesiredRateExpression<T> expression : expressions.getDesiredRateExpressions()) {
             names.add(expression.getDefaultName());
             functions.add(expression.getFunction());
         }
@@ -437,14 +422,14 @@ public class ExpressionLanguage {
      * @param expression a list of expressions
      * @return an expression representing a map from name to results
      */
-    public static <R, W> DesiredRateReadWriteExpression<Map<String, R>, Map<String, W>> rwMapOf(DesiredRateReadWriteExpression<R, W>... expressions) {
+    public static <R, W> DesiredRateReadWriteExpression<Map<String, R>, Map<String, W>> mapOf(DesiredRateReadWriteExpressionList<R, W> expressions) {
         // Calculate all the needed functions to combine
         List<String> names = new ArrayList<String>();
         List<Function<R>> functions = new ArrayList<Function<R>>();
         List<WriteFunction<W>> writefunctions = new ArrayList<WriteFunction<W>>();
         List<DesiredRateExpression<?>> readExpressions = new ArrayList<DesiredRateExpression<?>>();
         List<WriteExpression<?>> writeExpressions = new ArrayList<WriteExpression<?>>();
-        for (DesiredRateReadWriteExpression<R, W> expression : expressions) {
+        for (DesiredRateReadWriteExpression<R, W> expression : expressions.getDesiredRateReadWriteExpressions()) {
             names.add(expression.getDefaultName());
             functions.add(expression.getFunction());
             writefunctions.add(expression.getWriteFunction());

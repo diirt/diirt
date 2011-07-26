@@ -22,11 +22,16 @@ import org.epics.pvmanager.WriteFunction;
  * @param <T> type taken by the expression
  * @author carcassi
  */
-public class WriteExpressionImpl<T> implements WriteExpression<T> {
+public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implements WriteExpression<T> {
 
     private Map<String, WriteCache<?>> writeCaches;
     private WriteFunction<T> writeFunction;
     private final String defaultName;
+    
+    {
+        // Make sure that the list includes this expression
+        addThis();
+    }
 
     /**
      * Constructor that represents a single channel of a particular type.

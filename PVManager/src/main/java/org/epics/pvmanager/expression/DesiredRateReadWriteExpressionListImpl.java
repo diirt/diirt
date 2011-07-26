@@ -17,6 +17,10 @@ import java.util.List;
 public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRateReadWriteExpressionList<R, W> {
     
     private List<DesiredRateReadWriteExpression<R, W>> desiredRateReadWriteExpressions = new ArrayList<DesiredRateReadWriteExpression<R, W>>();
+    
+    protected void addThis() {
+        desiredRateReadWriteExpressions.add((DesiredRateReadWriteExpression<R, W>) this);
+    }
 
     @Override
     public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions) {

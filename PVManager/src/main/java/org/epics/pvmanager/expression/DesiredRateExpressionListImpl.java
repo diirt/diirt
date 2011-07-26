@@ -17,6 +17,10 @@ import java.util.List;
 public class DesiredRateExpressionListImpl<T> implements DesiredRateExpressionList<T> {
     
     private List<DesiredRateExpression<T>> desiredRateExpressions;
+    
+    protected void addThis() {
+        desiredRateExpressions.add((DesiredRateExpression<T>) this);
+    }
 
     public DesiredRateExpressionListImpl() {
         this.desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>();
