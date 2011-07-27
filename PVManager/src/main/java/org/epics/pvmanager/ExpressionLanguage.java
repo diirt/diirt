@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
+import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.WriteExpressionList;
 
 /**
@@ -131,6 +133,23 @@ public class ExpressionLanguage {
      */
     public static <R, W> DesiredRateReadWriteExpression<R, W> latestValueOf(SourceRateReadWriteExpression<R, W> expression) {
         return new DesiredRateReadWriteExpressionImpl<R, W>(latestValueOf((SourceRateExpression<R>) expression), expression);
+    }
+
+    /**
+     * For reads, returns (only) the latest value computed
+     * from a {@code SourceRateReadWriteExpression}; for writes, same
+     * as the given expression.
+     *
+     * @param <R, W> read and write payloads
+     * @param expression expression read at the source rate
+     * @return a new expression
+     */
+    public static <R, W> DesiredRateReadWriteExpressionList<R, W> latestValueOf(SourceRateReadWriteExpressionList<R, W> expressions) {
+        DesiredRateReadWriteExpressionListImpl<R, W> list = new DesiredRateReadWriteExpressionListImpl<R, W>();
+        for (SourceRateReadWriteExpression<R, W> expression : expressions.getSourceRateReadWriteExpressions()) {
+            list.and(latestValueOf(expression));
+        }
+        return list;
     }
     
     /**

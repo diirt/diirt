@@ -6,6 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.Arrays;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.WriteExpression;
 import java.util.Map;
@@ -55,6 +56,12 @@ public class PVSyntaxTest {
             assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), hasSize(1));
             assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), contains("master1"));
         }
+    }
+    
+    @Test
+    public void latestValueOf1() {
+        DesiredRateReadWriteExpressionList<Object, Object> exp = latestValueOf(channels("one", "two", "three"));
+        assertThat(exp.getDesiredRateReadWriteExpressions(), hasSize(3));
     }
     
     @Test
