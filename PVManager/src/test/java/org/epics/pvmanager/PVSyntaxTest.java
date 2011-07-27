@@ -56,4 +56,14 @@ public class PVSyntaxTest {
         }
     }
     
+    @Test
+    public void writeMap1() {
+        WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
+        WriteBuffer buffer = mapOf.createWriteBuffer();
+        assertThat(buffer.getWriteCaches().keySet(), hasSize(3));
+        assertThat(buffer.getWriteCaches().get("first").getPrecedingChannels(), hasSize(0));
+        assertThat(buffer.getWriteCaches().get("second").getPrecedingChannels(), contains("first"));
+        assertThat(buffer.getWriteCaches().get("third").getPrecedingChannels(), contains("first"));
+    }
+    
 }

@@ -18,6 +18,8 @@ import org.epics.pvmanager.WriteFunction;
  */
 public interface WriteExpression<T> extends WriteExpressionList<T>, WriteExpressionImplProvider<T> {
 
+    public String getDefaultName();
+    
     public WriteFunction<T> getWriteFunction();
     
     public WriteBuffer createWriteBuffer();

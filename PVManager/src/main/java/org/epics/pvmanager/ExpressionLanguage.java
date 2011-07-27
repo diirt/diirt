@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
+import org.epics.pvmanager.expression.WriteExpressionList;
 
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
@@ -409,6 +410,28 @@ public class ExpressionLanguage {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<Map<String, T>> expression = new DesiredRateExpressionImpl<Map<String, T>>((List<DesiredRateExpression<?>>) (List) expressions,
                 new MapOfFunction(names, functions), null);
+        return expression;
+    }
+    
+    /**
+     * Converts a list of expressions to an expression that returns the map from
+     * the name to the results.
+     * 
+     * @param expression a list of expressions
+     * @return an expression representing a map from name to results
+     */
+    public static <T> WriteExpression<Map<String, T>> mapOf(WriteExpressionList<T> expressions) {
+        // Calculate all the needed functions to combine
+        List<String> names = new ArrayList<String>();
+        List<WriteFunction<T>> functions = new ArrayList<WriteFunction<T>>();
+        for (WriteExpression<T> expression : expressions.getWriteExpressions()) {
+            names.add(expression.getDefaultName());
+            functions.add(expression.getWriteFunction());
+        }
+
+        @SuppressWarnings("unchecked")
+        WriteExpression<Map<String, T>> expression = new WriteExpressionImpl<Map<String, T>>((List<WriteExpression<?>>) (List) expressions.getWriteExpressions(),
+                new MapOfWriteFunction<T>(names, functions), null);
         return expression;
     }
 

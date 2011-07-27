@@ -66,15 +66,5 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
     public WriteBuffer createWriteBuffer() {
         return writeExpression.createWriteBuffer();
     }
-
-    @Override
-    public WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<WriteExpression<W>> getWriteExpressions() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
 }
