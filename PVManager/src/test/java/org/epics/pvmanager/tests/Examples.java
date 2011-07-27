@@ -4,7 +4,9 @@
  */
 package org.epics.pvmanager.tests;
 
+import java.util.Map;
 import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVReaderConfiguration;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterListener;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
+import java.util.HashMap;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
@@ -137,5 +140,47 @@ public class Examples {
 
         // Remember to close
         pv.close();
+    }
+    
+    public void m1() {
+        // Read a map with the channels named "one", "two" and "three"
+        final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                // Print the values if any
+                Map<String, Object> map = pvReader.getValue();
+                if (map != null) {
+                    System.out.println("one: " + map.get("one") +
+                            " - two: " + map.get("two") + 
+                            " - three: " + map.get("three"));
+                }
+            }
+        });
+        
+        // Remember to close
+        pvReader.close();
+    }
+    
+    public void m2() {
+        // Write a map to the channels named "one", "two" and "three"
+        // Write "two" after "one" and write "three" after "two"
+        PVWriter<Map<String, Object>> pvWriter = PVManager.write(
+                mapOf(channel("one")
+                      .and(channel("two").after("one"))
+                      .and(channel("three").after("two")))).async();
+        
+        // Prepare the 3 values
+        Map<String, Object> values = new HashMap<String, Object>();
+        values.put("one", 1.0);
+        values.put("two", 2.0);
+        values.put("three", "run");
+        
+        // Write
+        pvWriter.write(values);
+        
+        // Remember to close
+        pvWriter.close();
     }
 }

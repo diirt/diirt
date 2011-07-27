@@ -182,9 +182,60 @@
  * pv.close();
  * </pre>
  * 
+ * <h3 id="m1">Reading a map with multiple channels</h3>
+ * 
+ * <pre>
+ * // Read a map with the channels named "one", "two" and "three"
+ * final PVReader&lt;Map&lt;String, Object&gt;&gt; pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ *     public void pvChanged() {
+ *         // Print the values if any
+ *         Map&lt;String, Object&gt; map = pvReader.getValue();
+ *         if (map != null) {
+ *             System.out.println("one: " + map.get("one") +
+ *                     " - two: " + map.get("two") + 
+ *                     " - three: " + map.get("three"));
+ *         }
+ *     }
+ * });
+ *  
+ * // Remember to close
+ * pvReader.close();
+ * </pre>
+ * 
+ * Note that when using a composite datasource, the channels
+ * can be from different sources (e.g. "sim://noise" and "ca://mypv").
+ * 
+ * <h3 id="m2">Writing a map with multiple channels</h3>
+ * 
+ * <pre>
+ * // Write a map to the channels named "one", "two" and "three"
+ * // Write "two" after "one" and write "three" after "two"
+ * PVWriter&lt;Map&lt;String, Object&gt;&gt; pvWriter = PVManager.write(
+ *         mapOf(channel("one")
+ *               .and(channel("two").after("one"))
+ *               .and(channel("three").after("two")))).async();
+ * 
+ * // Prepare the 3 values
+ * Map&lt;String, Object&gt; values = new HashMap&lt;String, Object&gt;();
+ * values.put("one", 1.0);
+ * values.put("two", 2.0);
+ * values.put("three", "run");
+ * 
+ * // Write
+ * pvWriter.write(values);
+ * 
+ * // Remember to close
+ * pvWriter.close();
+ * </pre>
+ * 
+ * Note that when using a composite datasource, the channels
+ * can be from different sources (e.g. "sim://noise" and "ca://mypv"). The
+ * write ordering will also be respected across sources.
+ * 
  * <h1> Package description</h1>
  * 
- * This package contains all the basic compononents of the PVManager framework
+ * This package contains all the basic components of the PVManager framework
  * and the basic support for the language to define the creation.
  * <p>
  * There are two distinct parts in the PVManager framework. The first part
