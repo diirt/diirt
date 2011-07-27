@@ -35,7 +35,7 @@ public class ExpressionLanguage {
      */
     public static WaterfallPlot waterfallPlotOf(SourceRateExpression<VDoubleArray> arrayPv) {
         DesiredRateExpression<List<VDoubleArray>> queue = newValuesOf(arrayPv);
-        return new WaterfallPlot(queue, "waterfallOf(" + arrayPv.getDefaultName() + ")");
+        return new WaterfallPlot(queue, "waterfallOf(" + arrayPv.getName() + ")");
     }
     
     /**

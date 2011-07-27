@@ -18,7 +18,7 @@ import org.epics.pvmanager.WriteFunction;
  */
 public interface WriteExpression<T> extends WriteExpressionList<T>, WriteExpressionImplProvider<T> {
 
-    public String getDefaultName();
+    public String getName();
     
     public WriteFunction<T> getWriteFunction();
     

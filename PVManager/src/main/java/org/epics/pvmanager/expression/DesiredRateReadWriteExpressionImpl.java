@@ -46,8 +46,8 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public String getDefaultName() {
-        return desiredRateExpression.getDefaultName();
+    public String getName() {
+        return desiredRateExpression.getName();
     }
 
     @Override

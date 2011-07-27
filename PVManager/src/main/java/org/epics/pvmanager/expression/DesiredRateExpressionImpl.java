@@ -21,7 +21,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     private final DataRecipeBuilder recipe;
     private final Function<R> function;
-    private String defaultName;
+    private String name;
     
     {
         // Make sure that the list includes this expression
@@ -30,7 +30,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     @Override
     public DesiredRateExpressionImpl<R> as(String name) {
-        defaultName = name;
+        this.name = name;
         return this;
     }
 
@@ -48,7 +48,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
         }
         this.recipe = expression.getSourceRateExpressionImpl().createDataRecipe((Collector) collector);
         this.function = collector;
-        this.defaultName = defaultName;
+        this.name = defaultName;
     }
 
     /**
@@ -68,7 +68,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
             this.recipe = expression.getDesiredRateExpressionImpl().recipe;
         }
         this.function = function;
-        this.defaultName = defaultName;
+        this.name = defaultName;
     }
 
     /**
@@ -83,7 +83,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
     public DesiredRateExpressionImpl(List<DesiredRateExpression<?>> childExpressions, Function<R> function, String defaultName) {
         this.recipe = combineRecipes(childExpressions);
         this.function = function;
-        this.defaultName = defaultName;
+        this.name = defaultName;
     }
 
     private static DataRecipeBuilder combineRecipes(List<DesiredRateExpression<?>> childExpressions) {
@@ -105,8 +105,8 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
      * @return the default name
      */
     @Override
-    public final String getDefaultName() {
-        return defaultName;
+    public final String getName() {
+        return name;
     }
 
     /**

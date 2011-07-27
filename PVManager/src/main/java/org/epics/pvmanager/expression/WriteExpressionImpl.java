@@ -90,7 +90,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @return a name
      */
     @Override
-    public String getDefaultName() {
+    public String getName() {
         return defaultName;
     }
 

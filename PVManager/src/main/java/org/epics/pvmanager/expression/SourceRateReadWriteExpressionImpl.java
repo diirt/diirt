@@ -45,8 +45,8 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
     }
 
     @Override
-    public String getDefaultName() {
-        return sourceRateExpression.getDefaultName();
+    public String getName() {
+        return sourceRateExpression.getName();
     }
 
     @Override

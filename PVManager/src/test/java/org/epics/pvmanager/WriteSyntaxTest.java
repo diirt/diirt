@@ -23,11 +23,11 @@ public class WriteSyntaxTest {
     public void simpleWriter() {
         String channelName = "test";
         ChannelExpression<Object, Object> chExpr = channel(channelName);
-        assertThat(chExpr.getDefaultName(), equalTo(channelName));
+        assertThat(chExpr.getName(), equalTo(channelName));
         assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getValue(), nullValue());
         assertThat(((WriteCache<Object>) chExpr.getWriteFunction()).getPrecedingChannels().isEmpty(), equalTo(true));
         WriteExpression<Object> expr = channel(channelName).after("a", "b");
-        //assertThat(expr.getDefaultName(), equalTo(channelName));
+        //assertThat(expr.getName(), equalTo(channelName));
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getValue(), nullValue());
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), hasSize(2));
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));

@@ -70,7 +70,7 @@ public class PVSyntaxTest {
     @Test
     public void rename1() {
         SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
-        assertThat(exp.getDefaultName(), equalTo("myName"));
+        assertThat(exp.getName(), equalTo("myName"));
         DesiredRateReadWriteExpression<Object, Object> finalExp = latestValueOf(exp);
         DataRecipe recipe = finalExp.getDataRecipe();
         assertThat(recipe.getChannelsPerCollectors().values(), hasSize(1));

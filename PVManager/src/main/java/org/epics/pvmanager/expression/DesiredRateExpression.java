@@ -31,7 +31,7 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, 
      *
      * @return the default name
      */
-    public String getDefaultName();
+    public String getName();
     
     /**
      * The recipe for connect the channels for this expression.

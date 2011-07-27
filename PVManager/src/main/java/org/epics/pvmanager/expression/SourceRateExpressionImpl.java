@@ -26,7 +26,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
 
     private Map<String, ValueCache> caches;
     private Function<T> function;
-    private String defaultName;
+    private String name;
     
     {
         // Make sure that the list includes this expression
@@ -35,7 +35,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
 
     @Override
     public SourceRateExpressionImpl<T> as(String name) {
-        defaultName = name;
+        this.name = name;
         return this;
     }
 
@@ -50,7 +50,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
         caches = new HashMap<String, ValueCache>();
         caches.put(pvName, cache);
         this.function = cache;
-        this.defaultName = pvName;
+        this.name = pvName;
     }
 
     /**
@@ -83,7 +83,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
             }
         }
         this.function = function;
-        this.defaultName = defaultName;
+        this.name = defaultName;
     }
 
     /**
@@ -92,8 +92,8 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @return a name
      */
     @Override
-    public String getDefaultName() {
-        return defaultName;
+    public String getName() {
+        return name;
     }
 
     /**

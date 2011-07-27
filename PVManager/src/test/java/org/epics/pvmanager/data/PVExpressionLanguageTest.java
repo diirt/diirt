@@ -21,11 +21,11 @@ public class PVExpressionLanguageTest {
     @Test
     public void expressions() {
         SourceRateExpression<VDouble> myPv = vDouble("my pv");
-        assertThat(myPv.getDefaultName(), equalTo("my pv"));
+        assertThat(myPv.getName(), equalTo("my pv"));
         DesiredRateExpression<VDouble> avgOfMyPV = averageOf(vDouble("my pv"));
-        assertThat(avgOfMyPV.getDefaultName(), equalTo("avg(my pv)"));
+        assertThat(avgOfMyPV.getName(), equalTo("avg(my pv)"));
         DesiredRateExpression<VStatistics> statsOfMyPV = statisticsOf(vDouble("my pv"));
-        assertThat(statsOfMyPV.getDefaultName(), equalTo("stats(my pv)"));
+        assertThat(statsOfMyPV.getName(), equalTo("stats(my pv)"));
     }
 
 }

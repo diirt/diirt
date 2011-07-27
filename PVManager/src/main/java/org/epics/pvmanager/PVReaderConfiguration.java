@@ -88,7 +88,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         checkDataSourceAndThreadSwitch();
 
         // Create PVReader and connect
-        PVReaderImpl<T> pv = new PVReaderImpl<T>(aggregatedPVExpression.getDefaultName(), Executors.localThread() == notificationExecutor);
+        PVReaderImpl<T> pv = new PVReaderImpl<T>(aggregatedPVExpression.getName(), Executors.localThread() == notificationExecutor);
         DataRecipe dataRecipe = aggregatedPVExpression.getDataRecipe();
         if (exceptionHandler == null) {
             dataRecipe = dataRecipe.withExceptionHandler(ExceptionHandler.createDefaultExceptionHanderl(pv, notificationExecutor));

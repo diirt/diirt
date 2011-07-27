@@ -152,7 +152,7 @@ public class ExpressionLanguage {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
         Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
         return new DesiredRateExpressionImpl<VDouble>(queue,
-                new AverageAggregator(collector), "avg(" + doublePv.getDefaultName() + ")");
+                new AverageAggregator(collector), "avg(" + doublePv.getName() + ")");
     }
 
     /**
@@ -165,7 +165,7 @@ public class ExpressionLanguage {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
         Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
         return new DesiredRateExpressionImpl<VStatistics>(queue,
-                new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getDefaultName() + ")");
+                new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getName() + ")");
     }
 
     /**
@@ -216,7 +216,7 @@ public class ExpressionLanguage {
             DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
             collectorExps.add(collectorExp);
             collectors.add(collectorExp.getFunction());
-            names.add(expression.getDefaultName());
+            names.add(expression.getName());
         }
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, collectors, tolerance);

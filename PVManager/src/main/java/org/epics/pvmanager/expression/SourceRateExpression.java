@@ -30,7 +30,7 @@ public interface SourceRateExpression<T> extends SourceRateExpressionList<T>, So
      *
      * @return a name
      */
-    public String getDefaultName();
+    public String getName();
 
     /**
      * Returns the function represented by this expression.
