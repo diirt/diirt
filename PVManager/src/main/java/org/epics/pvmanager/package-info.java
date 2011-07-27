@@ -52,7 +52,7 @@
  * import static org.epics.pvmanager.util.Executors.*;
  * 
  * // Route notification for this pv on the Swing EDT
- * PVReader&lt;?&gt; pvReader = PVManager.read(...)..notifyOn(swingEDT()).every(ms(100));
+ * PVReader&lt;?&gt; pvReader = PVManager.read(...).notifyOn(swingEDT()).every(ms(100));
  * 
  * // Or you can change the default
  * PVManager.setDefaultNotificationExecutor(swingEDT());
@@ -100,7 +100,7 @@
  * import static org.epics.pvmanager.util.TimeDuration.*;
  * 
  * // Read channel "channelName" up to every 100 ms
- * {@link org.epics.pvmanager.PVReader}&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * final {@link org.epics.pvmanager.PVReader}&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -118,7 +118,7 @@
  * <pre>
  * // Read channel "channelName" up to every 100 ms, and get all
  * // the new values from the last notification.
- * PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read({@link org.epics.pvmanager.ExpressionLanguage#newValuesOf(org.epics.pvmanager.SourceRateExpression) newValuesOf}(channel("channelName"))).every(ms(100));
+ * final PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read({@link org.epics.pvmanager.ExpressionLanguage#newValuesOf(org.epics.pvmanager.SourceRateExpression) newValuesOf}(channel("channelName"))).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -168,11 +168,11 @@
  * 
  * <pre>
  * // A PV is both a PVReader and a PVWriter
- * PV&lt;Object, Object&gt; pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndReadEvery(ms(10));
+ * final PV&lt;Object, Object&gt; pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndReadEvery(ms(10));
  * pv.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
- *         Object newValue = pvReader.getValue();
+ *         Object newValue = pv.getValue();
  *         System.out.println(newValue);
  *     }
  * });
