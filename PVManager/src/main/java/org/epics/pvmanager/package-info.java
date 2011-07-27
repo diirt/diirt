@@ -25,6 +25,11 @@
  *     <li><a href="#b3">Writing a single channel synchrnously</a></li>
  *     <li><a href="#b4">Reading and writing a single channel</a></li>
  * </ol>
+ * <h3>Multiple channels</h3>
+ * <ol>
+ *     <li><a href="#m1">Reading a map with multiple channels</a></li>
+ *     <li><a href="#m2">Writing a map with multiple channels</a></li>
+ * </ol>
  * 
  * <h3 id="c1">Using PVManager in CSS</h3>
  * 
