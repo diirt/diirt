@@ -6,6 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.Arrays;
+import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.WriteExpression;
 import java.util.Map;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
@@ -64,6 +65,17 @@ public class PVSyntaxTest {
         assertThat(buffer.getWriteCaches().get("first").getPrecedingChannels(), hasSize(0));
         assertThat(buffer.getWriteCaches().get("second").getPrecedingChannels(), contains("first"));
         assertThat(buffer.getWriteCaches().get("third").getPrecedingChannels(), contains("first"));
+    }
+    
+    @Test
+    public void rename1() {
+        SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
+        assertThat(exp.getDefaultName(), equalTo("myName"));
+        DesiredRateReadWriteExpression<Object, Object> finalExp = latestValueOf(exp);
+        DataRecipe recipe = finalExp.getDataRecipe();
+        assertThat(recipe.getChannelsPerCollectors().values(), hasSize(1));
+        Map<String, ValueCache> caches = recipe.getChannelsPerCollectors().values().iterator().next();
+        assertThat(caches.keySet(), contains("myChannel"));
     }
     
 }

@@ -26,7 +26,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
 
     private Map<String, WriteCache<?>> writeCaches;
     private WriteFunction<T> writeFunction;
-    private final String defaultName;
+    private String defaultName;
     
     {
         // Make sure that the list includes this expression
@@ -44,6 +44,11 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
         writeCaches.put(channelName, cache);
         this.writeFunction = cache;
         this.defaultName = channelName;
+    }
+
+    public WriteExpression<T> as(String name) {
+        defaultName = name;
+        return this;
     }
 
     /**

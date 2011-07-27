@@ -26,11 +26,17 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
 
     private Map<String, ValueCache> caches;
     private Function<T> function;
-    private final String defaultName;
+    private String defaultName;
     
     {
         // Make sure that the list includes this expression
         addThis();
+    }
+
+    @Override
+    public SourceRateExpressionImpl<T> as(String name) {
+        defaultName = name;
+        return this;
     }
 
     /**

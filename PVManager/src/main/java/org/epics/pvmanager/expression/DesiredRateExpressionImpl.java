@@ -21,11 +21,17 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     private final DataRecipeBuilder recipe;
     private final Function<R> function;
-    private final String defaultName;
+    private String defaultName;
     
     {
         // Make sure that the list includes this expression
         addThis();
+    }
+
+    @Override
+    public DesiredRateExpressionImpl<R> as(String name) {
+        defaultName = name;
+        return this;
     }
 
     /**

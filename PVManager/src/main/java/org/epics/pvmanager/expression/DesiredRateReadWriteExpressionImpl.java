@@ -27,6 +27,13 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
         addThis();
     }
 
+    @Override
+    public DesiredRateReadWriteExpressionImpl<R, W> as(String name) {
+        desiredRateExpression.as(name);
+        writeExpression.getWriteExpressionImpl().as(name);
+        return this;
+    }
+
     /**
      * Creates an expression that can be both read and written.
      * 

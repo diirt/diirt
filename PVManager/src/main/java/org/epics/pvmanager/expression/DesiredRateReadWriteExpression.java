@@ -12,5 +12,4 @@ package org.epics.pvmanager.expression;
  * @author carcassi
  */
 public interface DesiredRateReadWriteExpression<R, W> extends DesiredRateExpression<R>, WriteExpression<W>, DesiredRateReadWriteExpressionList<R, W> {
-    
 }

@@ -17,7 +17,15 @@ import org.epics.pvmanager.Function;
  * @author carcassi
  */
 public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, DesiredRateExpressionImplProvider<R> {
-
+    
+    /**
+     * Changes the name for this expression
+     * 
+     * @param name new name
+     * @return this
+     */
+    public DesiredRateExpression<R> as(String name);
+    
     /**
      * The default name for a PV of this expression.
      *

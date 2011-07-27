@@ -26,6 +26,13 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
         addThis();
     }
 
+    @Override
+    public SourceRateReadWriteExpressionImpl<R, W> as(String name) {
+        sourceRateExpression.as(name);
+        writeExpression.getWriteExpressionImpl().as(name);
+        return this;
+    }
+
     /**
      * Creates an expression that can be both read and written.
      * 

@@ -13,4 +13,12 @@ package org.epics.pvmanager.expression;
  */
 public interface SourceRateReadWriteExpression<R, W> extends SourceRateExpression<R>, WriteExpression<W>, SourceRateReadWriteExpressionList<R, W> {
     
+    /**
+     * Changes the name for this expression
+     * 
+     * @param name new name
+     * @return this
+     */
+    @Override
+    SourceRateReadWriteExpression<R, W> as(String name);
 }
