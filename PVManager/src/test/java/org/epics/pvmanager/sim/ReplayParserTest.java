@@ -28,7 +28,7 @@ public class ReplayParserTest {
         // Unmarshal XML file
         XmlValues values = ReplayParser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
         assertThat(values.getValues().size(), equalTo(4));
-        assertThat(values.getValues().get(0), is(XmlVDouble.class));
+        assertThat(values.getValues().get(0), instanceOf(XmlVDouble.class));
 
         // Check first value
         XmlVDouble value = (XmlVDouble) values.getValues().get(0);

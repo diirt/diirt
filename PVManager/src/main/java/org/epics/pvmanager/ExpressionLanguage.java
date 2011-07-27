@@ -55,12 +55,8 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return an list of expressions representing the channels
      */
-    public static List<ChannelExpression<Object, Object>> channels(String... names) {
-        List<ChannelExpression<Object, Object>> expressions = new ArrayList<ChannelExpression<Object, Object>>();
-        for (String name : names) {
-            expressions.add(channel(name));
-        }
-        return expressions;
+    public static ChannelExpressionList<Object, Object> channels(String... names) {
+        return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names);
     }
 
     /**

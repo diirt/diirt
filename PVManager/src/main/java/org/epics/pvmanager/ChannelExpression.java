@@ -29,8 +29,8 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R
      * For writes only, marks that this channel should be written only after the
      * given channels.
      * 
-     * @param channelNames
-     * @return
+     * @param channelNames preceding channel names
+     * @return this
      */
     public ChannelExpression<R, W> after(String... channelNames) {
         WriteCache<W> cache = (WriteCache<W>) getWriteFunction();

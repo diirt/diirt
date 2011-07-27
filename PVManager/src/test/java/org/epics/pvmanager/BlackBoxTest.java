@@ -36,9 +36,7 @@ public class BlackBoxTest {
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
-        System.out.println("Closing");
         pv.close();
-        System.out.println("Closed");
     }
 
     @Test
