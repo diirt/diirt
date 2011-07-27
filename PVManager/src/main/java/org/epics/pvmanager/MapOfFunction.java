@@ -40,6 +40,8 @@ class MapOfFunction<T> extends Function<Map<String, T>> {
                 map.put(names.get(nFunction), value);
             }
         }
+        if (map.isEmpty())
+            return null;
         return map;
     }
 
