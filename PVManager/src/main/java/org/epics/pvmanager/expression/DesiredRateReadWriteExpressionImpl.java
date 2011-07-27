@@ -28,7 +28,7 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public DesiredRateReadWriteExpressionImpl<R, W> as(String name) {
+    public final DesiredRateReadWriteExpressionImpl<R, W> as(String name) {
         desiredRateExpression.as(name);
         writeExpression.getWriteExpressionImpl().as(name);
         return this;
@@ -46,47 +46,37 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return desiredRateExpression.getName();
     }
 
     @Override
-    public Function<R> getFunction() {
+    public final Function<R> getFunction() {
         return desiredRateExpression.getFunction();
     }
     
     @Override
-    public DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
+    public final DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
         return desiredRateExpression.getDesiredRateExpressionImpl();
     }
     
     @Override
-    public WriteExpressionImpl<W> getWriteExpressionImpl() {
+    public final WriteExpressionImpl<W> getWriteExpressionImpl() {
         return writeExpression.getWriteExpressionImpl();
     }
 
     @Override
-    public DataRecipe getDataRecipe() {
+    public final DataRecipe getDataRecipe() {
         return desiredRateExpression.getDataRecipe();
     }
 
     @Override
-    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions) {
-        return desiredRateExpression.and(expressions);
-    }
-
-    @Override
-    public List<DesiredRateExpression<R>> getDesiredRateExpressions() {
-        return desiredRateExpression.getDesiredRateExpressions();
-    }
-
-    @Override
-    public WriteFunction<W> getWriteFunction() {
+    public final WriteFunction<W> getWriteFunction() {
         return writeExpression.getWriteFunction();
     }
 
     @Override
-    public WriteBuffer createWriteBuffer() {
+    public final WriteBuffer createWriteBuffer() {
         return writeExpression.createWriteBuffer();
     }
     

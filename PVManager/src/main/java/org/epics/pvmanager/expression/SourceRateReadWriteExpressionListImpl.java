@@ -18,40 +18,40 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     
     private List<SourceRateReadWriteExpression<R, W>> sourceRateReadWriteExpressions = new ArrayList<SourceRateReadWriteExpression<R, W>>();
     
-    protected void addThis() {
+    protected final void addThis() {
         sourceRateReadWriteExpressions.add((SourceRateReadWriteExpression<R, W>) this);
     }
 
     @Override
-    public SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<R, W> expressions) {
+    public final SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<R, W> expressions) {
         sourceRateReadWriteExpressions.addAll(expressions.getSourceRateReadWriteExpressions());
         return this;
     }
 
     @Override
-    public List<SourceRateReadWriteExpression<R, W>> getSourceRateReadWriteExpressions() {
+    public final List<SourceRateReadWriteExpression<R, W>> getSourceRateReadWriteExpressions() {
         return sourceRateReadWriteExpressions;
     }
 
     @Override
-    public SourceRateExpressionList<R> and(SourceRateExpressionList<R> expressions) {
+    public final SourceRateExpressionList<R> and(SourceRateExpressionList<R> expressions) {
         return new SourceRateExpressionListImpl<R>(sourceRateReadWriteExpressions).and(expressions);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<SourceRateExpression<R>> getSourceRateExpressions() {
+    public final List<SourceRateExpression<R>> getSourceRateExpressions() {
         return Collections.unmodifiableList(sourceRateReadWriteExpressions);
     }
 
     @Override
-    public WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
+    public final WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
         return new WriteExpressionListImpl<W>(sourceRateReadWriteExpressions).and(expressions);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<WriteExpression<W>> getWriteExpressions() {
+    public final List<WriteExpression<W>> getWriteExpressions() {
         return Collections.unmodifiableList(sourceRateReadWriteExpressions);
     }
     

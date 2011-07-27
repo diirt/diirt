@@ -45,32 +45,32 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return sourceRateExpression.getName();
     }
 
     @Override
-    public Function<R> getFunction() {
+    public final Function<R> getFunction() {
         return sourceRateExpression.getFunction();
     }
     
     @Override
-    public SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
+    public final SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
         return sourceRateExpression.getSourceRateExpressionImpl();
     }
     
     @Override
-    public WriteExpressionImpl<W> getWriteExpressionImpl() {
+    public final WriteExpressionImpl<W> getWriteExpressionImpl() {
         return writeExpression.getWriteExpressionImpl();
     }
 
     @Override
-    public WriteFunction<W> getWriteFunction() {
+    public final WriteFunction<W> getWriteFunction() {
         return writeExpression.getWriteFunction();
     }
 
     @Override
-    public WriteBuffer createWriteBuffer() {
+    public final WriteBuffer createWriteBuffer() {
         return writeExpression.createWriteBuffer();
     }
     

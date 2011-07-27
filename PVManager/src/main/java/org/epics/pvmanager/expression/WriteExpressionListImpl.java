@@ -18,7 +18,7 @@ public class WriteExpressionListImpl<T> implements WriteExpressionList<T> {
     
     private List<WriteExpression<T>> writeExpressions;
     
-    protected void addThis() {
+    protected final void addThis() {
         writeExpressions.add((WriteExpression<T>) this);
     }
 
@@ -31,13 +31,13 @@ public class WriteExpressionListImpl<T> implements WriteExpressionList<T> {
     }
     
     @Override
-    public WriteExpressionListImpl<T> and(WriteExpressionList<T> expressions) {
+    public final WriteExpressionListImpl<T> and(WriteExpressionList<T> expressions) {
         writeExpressions.addAll(expressions.getWriteExpressions());
         return this;
     }
 
     @Override
-    public List<WriteExpression<T>> getWriteExpressions() {
+    public final List<WriteExpression<T>> getWriteExpressions() {
         return writeExpressions;
     }
     

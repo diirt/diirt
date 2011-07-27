@@ -18,40 +18,40 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     
     private List<DesiredRateReadWriteExpression<R, W>> desiredRateReadWriteExpressions = new ArrayList<DesiredRateReadWriteExpression<R, W>>();
     
-    protected void addThis() {
+    protected final void addThis() {
         desiredRateReadWriteExpressions.add((DesiredRateReadWriteExpression<R, W>) this);
     }
 
     @Override
-    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions) {
+    public final DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions) {
         desiredRateReadWriteExpressions.addAll(expressions.getDesiredRateReadWriteExpressions());
         return this;
     }
 
     @Override
-    public List<DesiredRateReadWriteExpression<R, W>> getDesiredRateReadWriteExpressions() {
+    public final List<DesiredRateReadWriteExpression<R, W>> getDesiredRateReadWriteExpressions() {
         return desiredRateReadWriteExpressions;
     }
 
     @Override
-    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions) {
+    public final DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions) {
         return new DesiredRateExpressionListImpl<R>(desiredRateReadWriteExpressions).and(expressions);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<DesiredRateExpression<R>> getDesiredRateExpressions() {
+    public final List<DesiredRateExpression<R>> getDesiredRateExpressions() {
         return Collections.unmodifiableList(desiredRateReadWriteExpressions);
     }
 
     @Override
-    public WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
+    public final WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
         return new WriteExpressionListImpl<W>(desiredRateReadWriteExpressions).and(expressions);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<WriteExpression<W>> getWriteExpressions() {
+    public final List<WriteExpression<W>> getWriteExpressions() {
         return Collections.unmodifiableList(desiredRateReadWriteExpressions);
     }
     

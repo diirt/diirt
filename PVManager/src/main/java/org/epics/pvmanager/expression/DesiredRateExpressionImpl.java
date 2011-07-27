@@ -29,7 +29,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
     }
 
     @Override
-    public DesiredRateExpressionImpl<R> as(String name) {
+    public final DesiredRateExpressionImpl<R> as(String name) {
         this.name = name;
         return this;
     }

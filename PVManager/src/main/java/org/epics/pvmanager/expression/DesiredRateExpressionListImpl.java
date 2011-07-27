@@ -18,7 +18,7 @@ public class DesiredRateExpressionListImpl<T> implements DesiredRateExpressionLi
     
     private List<DesiredRateExpression<T>> desiredRateExpressions;
     
-    protected void addThis() {
+    protected final void addThis() {
         desiredRateExpressions.add((DesiredRateExpression<T>) this);
     }
 
@@ -31,13 +31,13 @@ public class DesiredRateExpressionListImpl<T> implements DesiredRateExpressionLi
     }
     
     @Override
-    public DesiredRateExpressionListImpl<T> and(DesiredRateExpressionList<T> expressions) {
+    public final DesiredRateExpressionListImpl<T> and(DesiredRateExpressionList<T> expressions) {
         desiredRateExpressions.addAll(expressions.getDesiredRateExpressions());
         return this;
     }
 
     @Override
-    public List<DesiredRateExpression<T>> getDesiredRateExpressions() {
+    public final List<DesiredRateExpression<T>> getDesiredRateExpressions() {
         return desiredRateExpressions;
     }
     

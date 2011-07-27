@@ -34,7 +34,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
     }
 
     @Override
-    public SourceRateExpressionImpl<T> as(String name) {
+    public final SourceRateExpressionImpl<T> as(String name) {
         this.name = name;
         return this;
     }
@@ -92,7 +92,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @return a name
      */
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -101,7 +101,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      *
      * @return the value caches for this expression
      */
-    private Map<String, ValueCache> getCaches() {
+    private final Map<String, ValueCache> getCaches() {
         return caches;
     }
 
@@ -111,7 +111,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @return the function
      */
     @Override
-    public Function<T> getFunction() {
+    public final Function<T> getFunction() {
         return function;
     }
 
@@ -128,7 +128,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
     }
 
     @Override
-    public SourceRateExpressionImpl<T> getSourceRateExpressionImpl() {
+    public final SourceRateExpressionImpl<T> getSourceRateExpressionImpl() {
         return this;
     }
 

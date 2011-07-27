@@ -18,7 +18,7 @@ public class SourceRateExpressionListImpl<T> implements SourceRateExpressionList
     
     private List<SourceRateExpression<T>> sourceRateExpressions;
     
-    protected void addThis() {
+    protected final void addThis() {
         sourceRateExpressions.add((SourceRateExpression<T>) this);
     }
 
@@ -31,13 +31,13 @@ public class SourceRateExpressionListImpl<T> implements SourceRateExpressionList
     }
     
     @Override
-    public SourceRateExpressionListImpl<T> and(SourceRateExpressionList<T> expressions) {
+    public final SourceRateExpressionListImpl<T> and(SourceRateExpressionList<T> expressions) {
         sourceRateExpressions.addAll(expressions.getSourceRateExpressions());
         return this;
     }
 
     @Override
-    public List<SourceRateExpression<T>> getSourceRateExpressions() {
+    public final List<SourceRateExpression<T>> getSourceRateExpressions() {
         return sourceRateExpressions;
     }
     

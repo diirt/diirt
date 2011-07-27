@@ -46,7 +46,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
         this.defaultName = channelName;
     }
 
-    public WriteExpression<T> as(String name) {
+    public final WriteExpression<T> as(String name) {
         defaultName = name;
         return this;
     }
@@ -90,7 +90,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @return a name
      */
     @Override
-    public String getName() {
+    public final String getName() {
         return defaultName;
     }
 
@@ -109,7 +109,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @return the function
      */
     @Override
-    public WriteFunction<T> getWriteFunction() {
+    public final WriteFunction<T> getWriteFunction() {
         return writeFunction;
     }
 
@@ -120,14 +120,14 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @return a data recipe
      */
     @Override
-    public WriteBuffer createWriteBuffer() {
+    public final WriteBuffer createWriteBuffer() {
         WriteBufferBuilder buffer = new WriteBufferBuilder();
         buffer.addCaches(writeCaches);
         return buffer.build();
     }
 
     @Override
-    public WriteExpressionImpl<T> getWriteExpressionImpl() {
+    public final WriteExpressionImpl<T> getWriteExpressionImpl() {
         return this;
     }
 
