@@ -9,18 +9,33 @@ import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteFunction;
 
 /**
- * An expression that represent a pv write.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * An expression to write.
+ * <p>
+ * Don't implement objects with this interface, use {@link WriteExpressionImpl}.
  *
- * @param <T> type taken by the expression
+ * @param <W> the write payload
  * @author carcassi
  */
-public interface WriteExpression<T> extends WriteExpressionList<T>, WriteExpressionImplProvider<T> {
+public interface WriteExpression<W> extends WriteExpressionList<W>, WriteExpressionImplProvider<W> {
 
+    /**
+     * Name of this expression.
+     *
+     * @return the expression name
+     */
     public String getName();
     
-    public WriteFunction<T> getWriteFunction();
+    /**
+     * The function that implements this expression.
+     *
+     * @return the expression function
+     */
+    public WriteFunction<W> getWriteFunction();
     
+    /**
+     * The buffer that will contain the data to write.
+     *
+     * @return the data buffer
+     */
     public WriteBuffer createWriteBuffer();
 }

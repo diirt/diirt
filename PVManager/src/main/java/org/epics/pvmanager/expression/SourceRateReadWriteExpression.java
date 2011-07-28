@@ -5,7 +5,9 @@
 package org.epics.pvmanager.expression;
 
 /**
- * Represents an expression that can be both read and written.
+ * An expression to write and to read at the rate of the source.
+ * <p>
+ * Don't implement objects with this interface, use {@link SourceRateReadWriteExpressionImpl}.
  *
  * @param <R> type of the read payload
  * @param <W> type of the write payload
@@ -13,12 +15,7 @@ package org.epics.pvmanager.expression;
  */
 public interface SourceRateReadWriteExpression<R, W> extends SourceRateExpression<R>, WriteExpression<W>, SourceRateReadWriteExpressionList<R, W> {
     
-    /**
-     * Changes the name for this expression
-     * 
-     * @param name new name
-     * @return this
-     */
+    // Override so that the return type is appropriate
     @Override
-    SourceRateReadWriteExpression<R, W> as(String name);
+    public SourceRateReadWriteExpression<R, W> as(String name);
 }

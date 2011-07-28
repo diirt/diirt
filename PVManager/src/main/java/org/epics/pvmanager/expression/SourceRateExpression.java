@@ -8,14 +8,14 @@ package org.epics.pvmanager.expression;
 import org.epics.pvmanager.Function;
 
 /**
- * An expression that represent a pv read at the CA rate.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * An expression to read at the rate of the source.
+ * <p>
+ * Don't implement objects with this interface, use {@link SourceRateExpressionImpl}.
  *
- * @param <T> type returned by the expression
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public interface SourceRateExpression<T> extends SourceRateExpressionList<T>, SourceRateExpressionImplProvider<T> {
+public interface SourceRateExpression<R> extends SourceRateExpressionList<R>, SourceRateExpressionImplProvider<R> {
     
     /**
      * Changes the name for this expression
@@ -23,20 +23,20 @@ public interface SourceRateExpression<T> extends SourceRateExpressionList<T>, So
      * @param name new name
      * @return this
      */
-    public SourceRateExpression<T> as(String name);
+    public SourceRateExpression<R> as(String name);
 
     /**
-     * Name representation of the expression.
+     * Name of the expression.
      *
-     * @return a name
+     * @return the expression name
      */
     public String getName();
 
     /**
-     * Returns the function represented by this expression.
+     * The function that calculates this expression.
      *
-     * @return the function
+     * @return the expression function
      */
-    public Function<T> getFunction();
+    public Function<R> getFunction();
 
 }

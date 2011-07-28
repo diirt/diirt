@@ -4,19 +4,31 @@
  */
 package org.epics.pvmanager.expression;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A list of desired rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * A list of expressions to read at the desired rate.
+ * <p>
+ * Don't implement objects with this interface, use {@link DesiredRateExpressionListImpl}.
  *
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public interface DesiredRateExpressionList<T> {
+public interface DesiredRateExpressionList<R> {
     
-    public DesiredRateExpressionList<T> and(DesiredRateExpressionList<T> expressions);
+    /**
+     * Adds the given expressions to this list.
+     * 
+     * @param expressions a list of expressions
+     * @return this
+     */
+    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions);
 
-    List<DesiredRateExpression<T>> getDesiredRateExpressions();
+    /**
+     * The expressions of this list.
+     * 
+     * @return a list of expressions
+     */
+    public List<DesiredRateExpression<R>> getDesiredRateExpressions();
     
 }

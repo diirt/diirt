@@ -9,7 +9,7 @@ import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.Function;
 
 /**
- * An expression representing a PV read at the desired rate.
+ * An expression to read at the desired rate.
  * <p>
  * Don't implement objects with this interface, use {@link DesiredRateExpressionImpl}.
  *
@@ -27,9 +27,9 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, 
     public DesiredRateExpression<R> as(String name);
     
     /**
-     * The default name for a PV of this expression.
+     * Name of this expression.
      *
-     * @return the default name
+     * @return the expression name
      */
     public String getName();
     
@@ -41,9 +41,9 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, 
     public DataRecipe getDataRecipe();
     
     /**
-     * The function that calculates new values for this expression.
+     * The function that calculates this expression.
      *
-     * @return a function
+     * @return the expression function
      */
     public Function<R> getFunction();
     
