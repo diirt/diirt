@@ -2,10 +2,9 @@
  * Copyright 2010-11 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
 
-import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpressionListImpl;
+import java.util.Collection;
 
 /**
  * Represents a list of channel, which can be both read or written.
@@ -16,7 +15,16 @@ import org.epics.pvmanager.expression.SourceRateReadWriteExpressionListImpl;
  */
 public class ChannelExpressionList<R, W> extends SourceRateReadWriteExpressionListImpl<R, W> {
 
-    ChannelExpressionList(Class<R> readClass, Class<W> writeClass, String... channelNames) {
+    /**
+     * An expression for a list of channels with the given names, which are expected to
+     * provide a read payload of {@code readClass} and accept a write payload
+     * of {@code writeClass}.
+     * 
+     * @param readClass type of the read payload
+     * @param writeClass type of the write payload
+     * @param channelNames the names of the channels
+     */
+    public ChannelExpressionList(Collection<String> channelNames, Class<R> readClass, Class<W> writeClass) {
         for (String channelName : channelNames) {
             and(new ChannelExpression<R, W>(channelName, readClass, writeClass));
         }

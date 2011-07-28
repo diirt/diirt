@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.ChannelExpressionList;
+import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
@@ -73,7 +75,7 @@ public class ExpressionLanguage {
      * @return an list of expressions representing the channels
      */
     public static ChannelExpressionList<Object, Object> channels(String... names) {
-        return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names);
+        return new ChannelExpressionList<Object, Object>(Arrays.asList(names), Object.class, Object.class);
     }
 
     /**
@@ -84,7 +86,7 @@ public class ExpressionLanguage {
      * @return an list of expressions representing the channels
      */
     public static <R, W> ChannelExpressionList<R, W> channels(List<String> names, Class<R> readType, Class<W> writeType) {
-        return new ChannelExpressionList<R, W>(readType, writeType, names.toArray(new String[names.size()]));
+        return new ChannelExpressionList<R, W>(names, readType, writeType);
     }
 
     /**
@@ -95,7 +97,7 @@ public class ExpressionLanguage {
      * @return an list of expressions representing the channels
      */
     public static ChannelExpressionList<Object, Object> channels(Collection<String> names) {
-        return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names.toArray(new String[names.size()]));
+        return new ChannelExpressionList<Object, Object>(names, Object.class, Object.class);
     }
 
     /**

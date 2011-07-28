@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.WriteExpression;
 import org.epics.pvmanager.expression.WriteExpressionImpl;
 import org.epics.pvmanager.loc.LocalDataSource;

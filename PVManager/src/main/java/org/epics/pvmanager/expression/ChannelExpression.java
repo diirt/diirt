@@ -2,12 +2,10 @@
  * Copyright 2010-11 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.expression;
 
-import org.epics.pvmanager.expression.SourceRateExpressionImpl;
-import org.epics.pvmanager.expression.WriteExpressionImpl;
 import java.util.Arrays;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
+import org.epics.pvmanager.WriteCache;
 
 /**
  * Represents a channel, which can be both read or written.
@@ -18,7 +16,16 @@ import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
  */
 public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R, W> {
 
-    ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
+    /**
+     * An expression for a channel with the given name, which is expected to
+     * provide a read payload of {@code readClass} and accept a write payload
+     * of {@code writeClass}.
+     * 
+     * @param channelName the name of the channel
+     * @param readClass type of the read payload
+     * @param writeClass type of the write payload
+     */
+    public ChannelExpression(String channelName, Class<R> readClass, Class<W> writeClass) {
         super(new SourceRateExpressionImpl<R>(channelName, readClass), new WriteExpressionImpl<W>(channelName));
         if (channelName == null) {
             throw new NullPointerException("Channel name can't be null");

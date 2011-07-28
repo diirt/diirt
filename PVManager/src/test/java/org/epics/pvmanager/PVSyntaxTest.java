@@ -5,6 +5,7 @@
 
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.expression.ChannelExpressionList;
 import java.util.Arrays;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
