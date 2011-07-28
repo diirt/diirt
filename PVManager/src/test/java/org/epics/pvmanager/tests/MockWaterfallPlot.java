@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.data.Util;
+import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
@@ -206,7 +206,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             public void pvChanged() {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
-                    BufferedImage image = Util.toImage(pv.getValue());
+                    BufferedImage image = ValueUtil.toImage(pv.getValue());
                     plotLabel.setIcon(new ImageIcon(image));
                 }
             }

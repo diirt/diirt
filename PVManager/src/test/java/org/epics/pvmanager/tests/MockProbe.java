@@ -26,7 +26,7 @@ import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.Time;
-import org.epics.pvmanager.data.Util;
+import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
@@ -189,10 +189,10 @@ public class MockProbe extends javax.swing.JFrame {
                 setLastError(pv.lastException());
                 Object value = pv.getValue();
                 setTextValue(format.format(value));
-                setType(Util.typeOf(value));
-                setAlarm(Util.alarmOf(value));
-                setTime(Util.timeOf(value));
-                setIndicator(Util.normalizedNumericValueOf(value));
+                setType(ValueUtil.typeOf(value));
+                setAlarm(ValueUtil.alarmOf(value));
+                setTime(ValueUtil.timeOf(value));
+                setIndicator(ValueUtil.normalizedNumericValueOf(value));
             }
         });
 

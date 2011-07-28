@@ -8,7 +8,7 @@ package org.epics.pvmanager.extra;
 import java.awt.Color;
 import java.util.Random;
 import org.epics.pvmanager.data.Display;
-import org.epics.pvmanager.data.Util;
+import org.epics.pvmanager.data.ValueUtil;
 
 /**
  *
@@ -40,7 +40,7 @@ public abstract class ColorScheme {
 
             @Override
             public int color(double value, Display ranges) {
-                double normalValue = Util.normalize(value, ranges);
+                double normalValue = ValueUtil.normalize(value, ranges);
                 int alpha = 0;
                 int red = (int) (minValueColor.getRed() + (maxValueColor.getRed() - minValueColor.getRed()) * normalValue);
                 int green = (int) (minValueColor.getGreen() + (maxValueColor.getGreen() - minValueColor.getGreen()) * normalValue);
@@ -68,19 +68,19 @@ public abstract class ColorScheme {
                 if (value < ranges.getLowerDisplayLimit()) {
                     return lowerDisplayColor.getRGB();
                 } else if (value < ranges.getLowerAlarmLimit()) {
-                    normalValue = Util.normalize(value, ranges.getLowerDisplayLimit(), ranges.getLowerAlarmLimit());
+                    normalValue = ValueUtil.normalize(value, ranges.getLowerDisplayLimit(), ranges.getLowerAlarmLimit());
                     minValueColor = lowerDisplayColor;
                     maxValueColor = lowerAlarmColor;
                 } else if (value < ranges.getLowerWarningLimit()) {
-                    normalValue = Util.normalize(value, ranges.getLowerAlarmLimit(), ranges.getLowerWarningLimit());
+                    normalValue = ValueUtil.normalize(value, ranges.getLowerAlarmLimit(), ranges.getLowerWarningLimit());
                     minValueColor = lowerAlarmColor;
                     maxValueColor = lowerWarningColor;
                 } else if (value <= ranges.getUpperWarningLimit()) {
-                    normalValue = Util.normalize(value, ranges.getLowerWarningLimit(), ranges.getUpperWarningLimit());
+                    normalValue = ValueUtil.normalize(value, ranges.getLowerWarningLimit(), ranges.getUpperWarningLimit());
                     minValueColor = lowerWarningColor;
                     maxValueColor = upperWarningColor;
                 } else if (value <= ranges.getUpperAlarmLimit()) {
-                    normalValue = Util.normalize(value, ranges.getUpperWarningLimit(), ranges.getUpperAlarmLimit());
+                    normalValue = ValueUtil.normalize(value, ranges.getUpperWarningLimit(), ranges.getUpperAlarmLimit());
                     minValueColor = upperWarningColor;
                     maxValueColor = upperAlarmColor;
                 } else {

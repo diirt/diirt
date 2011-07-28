@@ -11,6 +11,7 @@ import org.epics.pvmanager.PVWriterListener;
 import java.util.List;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.CompositeDataSource;
+import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
@@ -18,8 +19,14 @@ import java.util.HashMap;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.data.Alarm;
+import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.Display;
+import org.epics.pvmanager.data.Time;
+import org.epics.pvmanager.data.ValueUtil;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
@@ -141,6 +148,9 @@ public class Examples {
         pv.close();
     }
     
+    // TODO handling exceptions
+    // TODO hz, sec, min, hour
+    
     public void m1() {
         // Read a map with the channels named "one", "two" and "three"
         final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
@@ -225,5 +235,86 @@ public class Examples {
         
         // Remember to close
         pvWriter.close();
+    }
+    
+    public void v1() {
+        // Read and Write a vDouble
+        // Note that the read type is different form the write type
+        final PV<VDouble, Double> pv = PVManager.readAndWrite(vDouble("currentRB")).asynchWriteAndReadEvery(ms(10));
+        pv.addPVReaderListener(new PVReaderListener() {
+
+            public void pvChanged() {
+                VDouble value = pv.getValue();
+                if (value != null) {
+                    System.out.println(value.getValue() + " " + value.getAlarmSeverity());
+                }
+            }
+        });
+        pv.write(1.0);
+        
+        // Remember to close
+        pv.close();
+    }
+    
+    public void v2() {
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).every(ms(10));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                Object value = pvReader.getValue();
+                // We can extract the different aspect of the read object,
+                // so that we can work on them separately
+                
+                // This returns the interface implemented (VDouble, VInt, ...)
+                Class<?> type = ValueUtil.typeOf(value);
+                // Extracts the alarm if present
+                Alarm alarm = ValueUtil.alarmOf(value);
+                // Extracts the time if present
+                Time time = ValueUtil.timeOf(value);
+                // Extracts a numeric value if present
+                Double number = ValueUtil.numericValueOf(value);
+                // Extract display information if present
+                Display display = ValueUtil.displayOf(value);
+                
+                setAlarm(alarm);
+                // ...
+            }
+        });
+    }
+    
+    public void v3() {
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                // We can switch on the full type
+                if (pvReader.getValue() instanceof VDouble) {
+                    VDouble vDouble = (VDouble) pvReader.getValue();
+                    // Do something with a VDouble
+                }
+                // ...
+            }
+        });
+    }
+    
+    public void v4() {
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).every(ms(100));
+        pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                // We are already guaranteed that the cast succeeds
+                // and that the value is not null
+                VDouble vDouble = (VDouble) pvReader.getValue();
+                System.out.println(vDouble.getValue());
+                // ...
+            }
+        });
+    }
+    
+    public void setAlarm(Object obj) {
+        
     }
 }

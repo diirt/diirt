@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
-import org.epics.pvmanager.data.Util;
+import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.data.ValueFactory;
@@ -64,7 +64,7 @@ class WaterfallPlotFunction extends Function<VImage> {
         // Take new values, add them and reorder by time
         List<VDoubleArray> newArrays = function.getValue();
         previousValues.addAll(newArrays);
-        Collections.sort(previousValues, Util.timeComparator());
+        Collections.sort(previousValues, ValueUtil.timeComparator());
         
         // If no values at all, return null
         if (previousValues.isEmpty())
@@ -210,7 +210,7 @@ class WaterfallPlotFunction extends Function<VImage> {
             pixelEnd = pixelEnd.plus(parameters.pixelDuration);
         }
 
-        previousImage = Util.toVImage(image);
+        previousImage = ValueUtil.toVImage(image);
         previousBuffer = image;
         previousPlotEnd = plotEnd;
         previousParameters = parameters;

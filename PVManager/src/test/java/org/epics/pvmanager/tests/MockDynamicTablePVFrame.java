@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.data.Util;
+import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.VStatistics;
@@ -119,13 +119,13 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         private String alarmSeverityOf(Object value) {
             if (value == null)
                 return "";
-            return Util.alarmOf(value).getAlarmSeverity().toString();
+            return ValueUtil.alarmOf(value).getAlarmSeverity().toString();
         }
         
         private String timeStampOf(Object value) {
             if (value == null)
                 return "";
-            return Util.timeOf(value).getTimeStamp().toString();
+            return ValueUtil.timeOf(value).getTimeStamp().toString();
         }
 
         @Override
