@@ -16,7 +16,7 @@ import org.epics.pvmanager.WriteFunction;
  * @param <W> the write payload
  * @author carcassi
  */
-public interface WriteExpression<W> extends WriteExpressionList<W>, WriteExpressionImplProvider<W> {
+public interface WriteExpression<W> extends WriteExpressionList<W> {
 
     /**
      * Name of this expression.
@@ -38,4 +38,11 @@ public interface WriteExpression<W> extends WriteExpressionList<W>, WriteExpress
      * @return the data buffer
      */
     public WriteBuffer createWriteBuffer();
+    
+    /**
+     * The implementation of this expression.
+     * 
+     * @return the implementation
+     */
+    public WriteExpressionImpl<W> getWriteExpressionImpl();
 }

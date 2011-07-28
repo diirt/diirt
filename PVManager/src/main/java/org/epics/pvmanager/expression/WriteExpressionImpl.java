@@ -120,7 +120,6 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
     /**
      * Creates a data recipe for the given expression.
      *
-     * @param collector the collector to be notified by changes in this expression
      * @return a data recipe
      */
     @Override
