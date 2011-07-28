@@ -9,35 +9,38 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A list of desired rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * Implementation class for {@link WriteExpressionList}.
  *
+ * @param <W> type of the write payload
  * @author carcassi
  */
-public class WriteExpressionListImpl<T> implements WriteExpressionList<T> {
+public class WriteExpressionListImpl<W> implements WriteExpressionList<W> {
     
-    private List<WriteExpression<T>> writeExpressions;
+    private List<WriteExpression<W>> writeExpressions;
     
-    protected final void addThis() {
-        writeExpressions.add((WriteExpression<T>) this);
+    final void addThis() {
+        writeExpressions.add((WriteExpression<W>) this);
     }
 
+    /**
+     * Creates a new empty expression list.
+     */
     public WriteExpressionListImpl() {
-        this.writeExpressions = new ArrayList<WriteExpression<T>>();
+        this.writeExpressions = new ArrayList<WriteExpression<W>>();
     }
 
-    WriteExpressionListImpl(Collection<? extends WriteExpression<T>> writeExpressions) {
-        this.writeExpressions = new ArrayList<WriteExpression<T>>(writeExpressions);
+    WriteExpressionListImpl(Collection<? extends WriteExpression<W>> writeExpressions) {
+        this.writeExpressions = new ArrayList<WriteExpression<W>>(writeExpressions);
     }
     
     @Override
-    public final WriteExpressionListImpl<T> and(WriteExpressionList<T> expressions) {
+    public final WriteExpressionListImpl<W> and(WriteExpressionList<W> expressions) {
         writeExpressions.addAll(expressions.getWriteExpressions());
         return this;
     }
 
     @Override
-    public final List<WriteExpression<T>> getWriteExpressions() {
+    public final List<WriteExpression<W>> getWriteExpressions() {
         return writeExpressions;
     }
     

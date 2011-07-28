@@ -15,17 +15,15 @@ import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.WriteFunction;
 
 /**
- * An expression that represent a pv write.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * Implementation class for {@link WriteExpression}.
  *
- * @param <T> type taken by the expression
+ * @param <W> type of the write payload
  * @author carcassi
  */
-public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implements WriteExpression<T> {
+public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implements WriteExpression<W> {
 
     private Map<String, WriteCache<?>> writeCaches;
-    private WriteFunction<T> writeFunction;
+    private WriteFunction<W> writeFunction;
     private String defaultName;
     
     {
@@ -39,14 +37,20 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @param channelName the name of the channel
      */
     public WriteExpressionImpl(String channelName) {
-        WriteCache<T> cache = new WriteCache<T>();
+        WriteCache<W> cache = new WriteCache<W>();
         writeCaches = new HashMap<String, WriteCache<?>>();
         writeCaches.put(channelName, cache);
         this.writeFunction = cache;
         this.defaultName = channelName;
     }
 
-    public final WriteExpression<T> as(String name) {
+    /**
+     * Changes the name for this expression
+     * 
+     * @param name new name
+     * @return this
+     */
+    public final WriteExpression<W> as(String name) {
         defaultName = name;
         return this;
     }
@@ -58,7 +62,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression
      */
-    public WriteExpressionImpl(WriteExpression<?> childExpression, WriteFunction<T> function, String defaultName) {
+    public WriteExpressionImpl(WriteExpression<?> childExpression, WriteFunction<W> function, String defaultName) {
         this(Collections.<WriteExpression<?>>singletonList(childExpression), function, defaultName);
     }
 
@@ -69,7 +73,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression
      */
-    public WriteExpressionImpl(List<WriteExpression<?>> childExpressions, WriteFunction<T> function, String defaultName) {
+    public WriteExpressionImpl(List<WriteExpression<?>> childExpressions, WriteFunction<W> function, String defaultName) {
         writeCaches = new HashMap<String, WriteCache<?>>();
         for (WriteExpression<?> childExpression : childExpressions) {
             for (Map.Entry<String, WriteCache<?>> entry : childExpression.getWriteExpressionImpl().getWriteCaches().entrySet()) {
@@ -109,7 +113,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
      * @return the function
      */
     @Override
-    public final WriteFunction<T> getWriteFunction() {
+    public final WriteFunction<W> getWriteFunction() {
         return writeFunction;
     }
 
@@ -127,7 +131,7 @@ public class WriteExpressionImpl<T> extends WriteExpressionListImpl<T> implement
     }
 
     @Override
-    public final WriteExpressionImpl<T> getWriteExpressionImpl() {
+    public final WriteExpressionImpl<W> getWriteExpressionImpl() {
         return this;
     }
 

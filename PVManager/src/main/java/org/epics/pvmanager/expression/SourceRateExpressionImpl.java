@@ -15,17 +15,15 @@ import org.epics.pvmanager.Function;
 import org.epics.pvmanager.ValueCache;
 
 /**
- * An expression that represent a pv read at the CA rate.
- * Objects of this class are not created directly but through the operators defined
- * in {@link ExpressionLanguage}.
+ * Implementation class for {@link SourceRateExpression}.
  *
- * @param <T> type returned by the expression
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T> implements SourceRateExpression<T> {
+public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R> implements SourceRateExpression<R> {
 
     private Map<String, ValueCache> caches;
-    private Function<T> function;
+    private Function<R> function;
     private String name;
     
     {
@@ -34,7 +32,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
     }
 
     @Override
-    public final SourceRateExpressionImpl<T> as(String name) {
+    public final SourceRateExpressionImpl<R> as(String name) {
         this.name = name;
         return this;
     }
@@ -45,8 +43,8 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @param pvName the name of the pv
      * @param pvType the type of the pv
      */
-    public SourceRateExpressionImpl(String pvName, Class<T> pvType) {
-        ValueCache<T> cache = new ValueCache<T>(pvType);
+    public SourceRateExpressionImpl(String pvName, Class<R> pvType) {
+        ValueCache<R> cache = new ValueCache<R>(pvType);
         caches = new HashMap<String, ValueCache>();
         caches.put(pvName, cache);
         this.function = cache;
@@ -60,7 +58,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @param function the function that will calculate the value for this expression
      * @param defaultName the name for this expression
      */
-    public SourceRateExpressionImpl(SourceRateExpression<?> childExpression, Function<T> function, String defaultName) {
+    public SourceRateExpressionImpl(SourceRateExpression<?> childExpression, Function<R> function, String defaultName) {
         this(Collections.<SourceRateExpression<?>>singletonList(childExpression), function, defaultName);
     }
 
@@ -71,7 +69,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
      * @param function the function that will calculate the value for this expression
      * @param defaultName the name for this expression
      */
-    public SourceRateExpressionImpl(List<SourceRateExpression<?>> childExpressions, Function<T> function, String defaultName) {
+    public SourceRateExpressionImpl(List<SourceRateExpression<?>> childExpressions, Function<R> function, String defaultName) {
         caches = new HashMap<String, ValueCache>();
         for (SourceRateExpression<?> childExpression : childExpressions) {
             for (Map.Entry<String, ValueCache> entry : childExpression.getSourceRateExpressionImpl().getCaches().entrySet()) {
@@ -86,11 +84,6 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
         this.name = defaultName;
     }
 
-    /**
-     * Name representation of the expression.
-     *
-     * @return a name
-     */
     @Override
     public final String getName() {
         return name;
@@ -105,13 +98,8 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
         return caches;
     }
 
-    /**
-     * Returns the function represented by this expression.
-     *
-     * @return the function
-     */
     @Override
-    public final Function<T> getFunction() {
+    public final Function<R> getFunction() {
         return function;
     }
 
@@ -128,7 +116,7 @@ public class SourceRateExpressionImpl<T> extends SourceRateExpressionListImpl<T>
     }
 
     @Override
-    public final SourceRateExpressionImpl<T> getSourceRateExpressionImpl() {
+    public final SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
         return this;
     }
 

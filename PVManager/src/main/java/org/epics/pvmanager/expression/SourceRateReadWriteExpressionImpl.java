@@ -10,7 +10,7 @@ import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteFunction;
 
 /**
- * Represents an expression that can be both read and written.
+ * Implementation class for {@link SourceRateReadWriteExpression}.
  *
  * @param <R> type of the read payload
  * @param <W> type of the write payload

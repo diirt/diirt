@@ -9,35 +9,38 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A list of desired rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * Implementation class for {@link SourceRateExpressionList}.
  *
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public class SourceRateExpressionListImpl<T> implements SourceRateExpressionList<T> {
+public class SourceRateExpressionListImpl<R> implements SourceRateExpressionList<R> {
     
-    private List<SourceRateExpression<T>> sourceRateExpressions;
+    private List<SourceRateExpression<R>> sourceRateExpressions;
     
-    protected final void addThis() {
-        sourceRateExpressions.add((SourceRateExpression<T>) this);
+    final void addThis() {
+        sourceRateExpressions.add((SourceRateExpression<R>) this);
     }
 
+    /**
+     * Creates a new empty expression list.
+     */
     public SourceRateExpressionListImpl() {
-        this.sourceRateExpressions = new ArrayList<SourceRateExpression<T>>();
+        this.sourceRateExpressions = new ArrayList<SourceRateExpression<R>>();
     }
 
-    SourceRateExpressionListImpl(Collection<? extends SourceRateExpression<T>> sourceRateExpressions) {
-        this.sourceRateExpressions = new ArrayList<SourceRateExpression<T>>(sourceRateExpressions);
+    SourceRateExpressionListImpl(Collection<? extends SourceRateExpression<R>> sourceRateExpressions) {
+        this.sourceRateExpressions = new ArrayList<SourceRateExpression<R>>(sourceRateExpressions);
     }
     
     @Override
-    public final SourceRateExpressionListImpl<T> and(SourceRateExpressionList<T> expressions) {
+    public final SourceRateExpressionListImpl<R> and(SourceRateExpressionList<R> expressions) {
         sourceRateExpressions.addAll(expressions.getSourceRateExpressions());
         return this;
     }
 
     @Override
-    public final List<SourceRateExpression<T>> getSourceRateExpressions() {
+    public final List<SourceRateExpression<R>> getSourceRateExpressions() {
         return sourceRateExpressions;
     }
     

@@ -12,7 +12,7 @@ import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
 
 /**
- * Implementation class for {@link DesiredRateExpression}
+ * Implementation class for {@link DesiredRateExpression}.
  *
  * @param <R> type of the read payload
  * @author carcassi

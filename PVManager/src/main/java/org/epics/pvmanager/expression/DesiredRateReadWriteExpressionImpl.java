@@ -11,7 +11,7 @@ import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteFunction;
 
 /**
- * Represents an expression that can be both read and written.
+ * Implementation class for {@link DesiredRateReadWriteExpression}.
  *
  * @param <R> type of the read payload
  * @param <W> type of the write payload
@@ -35,7 +35,7 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     /**
-     * Creates an expression that can be both read and written.
+     * Creates an expression that can be both read at the desired rate and written.
      * 
      * @param desiredRateExpression the read part of the expression
      * @param writeExpression the write part of the expression

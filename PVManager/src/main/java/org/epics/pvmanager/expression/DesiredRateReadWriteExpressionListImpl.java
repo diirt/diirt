@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A list of desired rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * Implementation class for {@link DesiredRateReadWriteExpressionList}.
  *
+ * @param <R> type of read payload
+ * @param <W> type of write payload
  * @author carcassi
  */
 public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRateReadWriteExpressionList<R, W> {
     
     private List<DesiredRateReadWriteExpression<R, W>> desiredRateReadWriteExpressions = new ArrayList<DesiredRateReadWriteExpression<R, W>>();
     
-    protected final void addThis() {
+    final void addThis() {
         desiredRateReadWriteExpressions.add((DesiredRateReadWriteExpression<R, W>) this);
     }
 

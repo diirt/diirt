@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A list of source rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * Implementation class for {@link SourceRateReadWriteExpressionList}.
  *
+ * @param <R> type of the read payload
+ * @param <W> type of the write payload
  * @author carcassi
  */
 public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateReadWriteExpressionList<R, W> {
     
     private List<SourceRateReadWriteExpression<R, W>> sourceRateReadWriteExpressions = new ArrayList<SourceRateReadWriteExpression<R, W>>();
     
-    protected final void addThis() {
+    final void addThis() {
         sourceRateReadWriteExpressions.add((SourceRateReadWriteExpression<R, W>) this);
     }
 

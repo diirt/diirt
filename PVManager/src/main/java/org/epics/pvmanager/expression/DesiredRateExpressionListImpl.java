@@ -9,35 +9,38 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A list of desired rate expression, to have functions that work on multiple
- * expressions at the same time.
+ * Implementation class for {@link DesiredRateExpressionList}.
  *
+ * @param <R> type of the read payload
  * @author carcassi
  */
-public class DesiredRateExpressionListImpl<T> implements DesiredRateExpressionList<T> {
+public class DesiredRateExpressionListImpl<R> implements DesiredRateExpressionList<R> {
     
-    private List<DesiredRateExpression<T>> desiredRateExpressions;
+    private List<DesiredRateExpression<R>> desiredRateExpressions;
     
-    protected final void addThis() {
-        desiredRateExpressions.add((DesiredRateExpression<T>) this);
+    final void addThis() {
+        desiredRateExpressions.add((DesiredRateExpression<R>) this);
     }
 
+    /**
+     * Creates a new empty expression list.
+     */
     public DesiredRateExpressionListImpl() {
-        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>();
+        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<R>>();
     }
 
-    DesiredRateExpressionListImpl(Collection<? extends DesiredRateExpression<T>> desiredRateExpressions) {
-        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<T>>(desiredRateExpressions);
+    DesiredRateExpressionListImpl(Collection<? extends DesiredRateExpression<R>> desiredRateExpressions) {
+        this.desiredRateExpressions = new ArrayList<DesiredRateExpression<R>>(desiredRateExpressions);
     }
     
     @Override
-    public final DesiredRateExpressionListImpl<T> and(DesiredRateExpressionList<T> expressions) {
+    public final DesiredRateExpressionListImpl<R> and(DesiredRateExpressionList<R> expressions) {
         desiredRateExpressions.addAll(expressions.getDesiredRateExpressions());
         return this;
     }
 
     @Override
-    public final List<DesiredRateExpression<T>> getDesiredRateExpressions() {
+    public final List<DesiredRateExpression<R>> getDesiredRateExpressions() {
         return desiredRateExpressions;
     }
     
