@@ -16,6 +16,8 @@ import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
 import org.epics.pvmanager.util.TimeDuration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
@@ -49,7 +51,6 @@ public class ExpressionLanguage {
     public static ChannelExpression<Object, Object> channel(String name) {
         return new ChannelExpression<Object, Object>(name, Object.class, Object.class);
     }
-    
 
     /**
      * A list of channels with the given names of any type. This expression can be
@@ -60,6 +61,17 @@ public class ExpressionLanguage {
      */
     public static ChannelExpressionList<Object, Object> channels(String... names) {
         return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names);
+    }
+
+    /**
+     * A list of channels with the given names of any type. This expression can be
+     * used both in a read and a write expression.
+     *
+     * @param names the channel names; can't be null
+     * @return an list of expressions representing the channels
+     */
+    public static ChannelExpressionList<Object, Object> channels(Collection<String> names) {
+        return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names.toArray(new String[names.size()]));
     }
 
     /**
