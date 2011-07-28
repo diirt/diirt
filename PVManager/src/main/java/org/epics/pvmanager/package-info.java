@@ -215,11 +215,7 @@
  * 
  * <pre>
  * // Write a map to the channels named "one", "two" and "three"
- * // Write "two" after "one" and write "three" after "two"
- * PVWriter&lt;Map&lt;String, Object&gt;&gt; pvWriter = PVManager.write(
- *         mapOf(channel("one")
- *               .and(channel("two").after("one"))
- *               .and(channel("three").after("two")))).async();
+ * PVWriter&lt;Map&lt;String, Object&gt;&gt; pvWriter = PVManager.write(mapOf(channels("one", "two", "three"))).async();
  * 
  * // Prepare the 3 values
  * Map&lt;String, Object&gt; values = new HashMap&lt;String, Object&gt;();
@@ -229,6 +225,69 @@
  * 
  * // Write
  * pvWriter.write(values);
+ * 
+ * // Remember to close
+ * pvWriter.close();
+ * </pre>
+ * 
+ * Note that when using a composite datasource, the channels
+ * can be from different sources (e.g. "sim://noise" and "ca://mypv").
+ * 
+ * 
+ * <h3 id="m3">Read and write a map with multiple channels</h3>
+ * 
+ * <pre>
+ * // Read and write a map to the channels named "one", "two" and "three"
+ * PV&lt;Map&lt;String, Object&gt;, Map&lt;String, Object&gt;&gt; pv = PVManager.readAndWrite(
+ *         mapOf(latestValueOf(channels("one", "two", "three")))).asynchWriteAndReadEvery(ms(100));
+ * 
+ * // Do something
+ * // ...
+ * 
+ * // Remember to close
+ * pv.close();
+ * </pre>
+ * 
+ * 
+ * <h3 id="m4">Refer to channel with a different name</h3>
+ * 
+ * <pre>
+ * // Read a map with the channels "one", "two" and "three"
+ * // reffered in the map as "setpoint", "readback" and "difference"
+ * final PVReader&lt;Map&lt;String, Object&gt;&gt; pvReader = PVManager.read(mapOf(
+ *         latestValueOf(channel("one").as("setpoint").and(channel("two").as("readback")).and(channel("three").as("difference"))))).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     public void pvChanged() {
+ *         // Print the values if any
+ *         Map&lt;String, Object&gt; map = pvReader.getValue();
+ *         if (map != null) {
+ *             System.out.println("setpoint: " + map.get("setpoint") +
+ *                     " - readback: " + map.get("readback") + 
+ *                     " - difference: " + map.get("difference"));
+ *         }
+ *     }
+ * });
+ * 
+ * // Remember to close
+ * pvReader.close();
+ * </pre>
+ * 
+ * You can rename channels and any read expression, regardless of how they are combined later.
+ * 
+ * 
+ * <h3 id="m5">Impose write ordering</h3>
+ * 
+ * <pre>
+ * // Write a map to the channels named "one", "two" and "three"
+ * // Write "two" after "one" and write "three" after "two"
+ * PVWriter&lt;Map&lt;String, Object&gt;&gt; pvWriter = PVManager.write(
+ *         mapOf(channel("one")
+ *               .and(channel("two").after("one"))
+ *               .and(channel("three").after("two")))).async();
+ * 
+ * // Do something
+ * // ...
  * 
  * // Remember to close
  * pvWriter.close();

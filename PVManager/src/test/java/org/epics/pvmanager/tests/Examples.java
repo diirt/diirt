@@ -6,7 +6,6 @@ package org.epics.pvmanager.tests;
 
 import java.util.Map;
 import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVReaderConfiguration;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterListener;
 import java.util.List;
@@ -147,7 +146,6 @@ public class Examples {
         final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            @Override
             public void pvChanged() {
                 // Print the values if any
                 Map<String, Object> map = pvReader.getValue();
@@ -165,11 +163,7 @@ public class Examples {
     
     public void m2() {
         // Write a map to the channels named "one", "two" and "three"
-        // Write "two" after "one" and write "three" after "two"
-        PVWriter<Map<String, Object>> pvWriter = PVManager.write(
-                mapOf(channel("one")
-                      .and(channel("two").after("one"))
-                      .and(channel("three").after("two")))).async();
+        PVWriter<Map<String, Object>> pvWriter = PVManager.write(mapOf(channels("one", "two", "three"))).async();
         
         // Prepare the 3 values
         Map<String, Object> values = new HashMap<String, Object>();
@@ -179,6 +173,55 @@ public class Examples {
         
         // Write
         pvWriter.write(values);
+        
+        // Remember to close
+        pvWriter.close();
+    }
+    
+    public void m3() {
+        // Read and write a map to the channels named "one", "two" and "three"
+        PV<Map<String, Object>, Map<String, Object>> pv = PVManager.readAndWrite(
+                mapOf(latestValueOf(channels("one", "two", "three")))).asynchWriteAndReadEvery(ms(100));
+        
+        // Do something
+        // ...
+        
+        // Remember to close
+        pv.close();
+    }
+    
+    public void m4() {
+        // Read a map with the channels "one", "two" and "three"
+        // reffered in the map as "setpoint", "readback" and "difference"
+        final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(
+                latestValueOf(channel("one").as("setpoint").and(channel("two").as("readback")).and(channel("three").as("difference"))))).every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            public void pvChanged() {
+                // Print the values if any
+                Map<String, Object> map = pvReader.getValue();
+                if (map != null) {
+                    System.out.println("setpoint: " + map.get("setpoint") +
+                            " - readback: " + map.get("readback") + 
+                            " - difference: " + map.get("difference"));
+                }
+            }
+        });
+        
+        // Remember to close
+        pvReader.close();
+    }
+    
+    public void m5() {
+        // Write a map to the channels named "one", "two" and "three"
+        // Write "two" after "one" and write "three" after "two"
+        PVWriter<Map<String, Object>> pvWriter = PVManager.write(
+                mapOf(channel("one")
+                      .and(channel("two").after("one"))
+                      .and(channel("three").after("two")))).async();
+        
+        // Do something
+        // ...
         
         // Remember to close
         pvWriter.close();
