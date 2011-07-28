@@ -8,15 +8,15 @@ package org.epics.pvmanager.data;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import java.util.ArrayList;
 import java.util.List;
+import org.epics.pvmanager.ChannelExpression;
+import org.epics.pvmanager.ChannelExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
-import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
-import org.epics.pvmanager.expression.SourceRateExpressionListImpl;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -39,8 +39,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VDouble> vDouble(String name) {
-        return new SourceRateExpressionImpl<VDouble>(name, VDouble.class);
+    public static ChannelExpression<VDouble, Double> vDouble(String name) {
+        return channel(name, VDouble.class, Double.class);
     }
 
     /**
@@ -49,8 +49,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VFloatArray> vFloatArray(String name) {
-        return new SourceRateExpressionImpl<VFloatArray>(name, VFloatArray.class);
+    public static ChannelExpression<VFloatArray, float[]> vFloatArray(String name) {
+        return channel(name, VFloatArray.class, float[].class);
     }
 
     /**
@@ -59,8 +59,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VDoubleArray> vDoubleArray(String name) {
-        return new SourceRateExpressionImpl<VDoubleArray>(name, VDoubleArray.class);
+    public static ChannelExpression<VDoubleArray, float[]> vDoubleArray(String name) {
+        return channel(name, VDoubleArray.class, float[].class);
     }
 
     /**
@@ -69,8 +69,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VInt> vInt(String name) {
-        return new SourceRateExpressionImpl<VInt>(name, VInt.class);
+    public static ChannelExpression<VInt, Integer> vInt(String name) {
+        return channel(name, VInt.class, Integer.class);
     }
 
     /**
@@ -79,8 +79,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VByteArray> vByteArray(String name) {
-        return new SourceRateExpressionImpl<VByteArray>(name, VByteArray.class);
+    public static ChannelExpression<VByteArray, byte[]> vByteArray(String name) {
+        return channel(name, VByteArray.class, byte[].class);
     }
 
     /**
@@ -89,8 +89,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VShortArray> vShortArray(String name) {
-        return new SourceRateExpressionImpl<VShortArray>(name, VShortArray.class);
+    public static ChannelExpression<VShortArray, short[]> vShortArray(String name) {
+        return channel(name, VShortArray.class, short[].class);
     }
 
     /**
@@ -99,8 +99,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VIntArray> vIntArray(String name) {
-        return new SourceRateExpressionImpl<VIntArray>(name, VIntArray.class);
+    public static ChannelExpression<VIntArray, int[]> vIntArray(String name) {
+        return channel(name, VIntArray.class, int[].class);
     }
 
     /**
@@ -109,8 +109,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VString> vString(String name) {
-        return new SourceRateExpressionImpl<VString>(name, VString.class);
+    public static ChannelExpression<VString, String> vString(String name) {
+        return channel(name, VString.class, String.class);
     }
 
     /**
@@ -119,8 +119,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VStringArray> vStringArray(String name) {
-        return new SourceRateExpressionImpl<VStringArray>(name, VStringArray.class);
+    public static ChannelExpression<VStringArray, String[]> vStringArray(String name) {
+        return channel(name, VStringArray.class, String[].class);
     }
 
     /**
@@ -129,8 +129,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static SourceRateExpression<VEnum> vEnum(String name) {
-        return new SourceRateExpressionImpl<VEnum>(name, VEnum.class);
+    public static ChannelExpression<VEnum, Integer> vEnum(String name) {
+        return channel(name, VEnum.class, Integer.class);
     }
 
     /**
@@ -139,12 +139,8 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return a list of expressions representing the channels
      */
-    public static SourceRateExpressionList<VDouble> vDoubles(List<String> names) {
-        SourceRateExpressionList<VDouble> expressions = new SourceRateExpressionListImpl<VDouble>();
-        for (String name : names) {
-            expressions.and(vDouble(name));
-        }
-        return expressions;
+    public static ChannelExpressionList<VDouble, Double> vDoubles(List<String> names) {
+        return channels(names, VDouble.class, Double.class);
     }
 
     /**

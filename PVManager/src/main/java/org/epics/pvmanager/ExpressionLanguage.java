@@ -55,6 +55,17 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name and type. This expression can be
+     * used both in a read and a write expression.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static <R, W> ChannelExpression<R, W> channel(String name, Class<R> readType, Class<W> writeType) {
+        return new ChannelExpression<R, W>(name, readType, writeType);
+    }
+
+    /**
      * A list of channels with the given names of any type. This expression can be
      * used both in a read and a write expression.
      *
@@ -63,6 +74,17 @@ public class ExpressionLanguage {
      */
     public static ChannelExpressionList<Object, Object> channels(String... names) {
         return new ChannelExpressionList<Object, Object>(Object.class, Object.class, names);
+    }
+
+    /**
+     * A list of channels with the given names and type. This expression can be
+     * used both in a read and a write expression.
+     *
+     * @param names the channel names; can't be null
+     * @return an list of expressions representing the channels
+     */
+    public static <R, W> ChannelExpressionList<R, W> channels(List<String> names, Class<R> readType, Class<W> writeType) {
+        return new ChannelExpressionList<R, W>(readType, writeType, names.toArray(new String[names.size()]));
     }
 
     /**
