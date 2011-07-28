@@ -33,6 +33,16 @@
  *     <li><a href="#m4">Refer to channel with a different name</a></li>
  *     <li><a href="#m5">Impose write ordering</a></li>
  * </ol>
+ * <h3>Working with standard VTypes</h3>
+ * <ol>
+ *     <li><a href="#v1">Read/Write a specific type</a></li>
+ *     <li><a href="#v2">Working with an unknown type: extracting alarm, time, ...</a></li>
+ *     <li><a href="#v3">Working with an unknown type: switch on the type</a></li>
+ *     <li><a href="#v4">Working with an unknown type: register listener on type</a></li>
+ * </ol>
+ * 
+ *  * <h3 id="v1">Read/Write a specific type</h3>
+
  * 
  * <h3 id="c1">Using PVManager in CSS</h3>
  * 
@@ -299,6 +309,105 @@
  * Note that when using a composite datasource, the channels
  * can be from different sources (e.g. "sim://noise" and "ca://mypv"). The
  * write ordering will also be respected across sources.
+ * 
+ * 
+ * <h3 id="v1">Read/Write a specific type</h3>
+ * 
+ * <pre>
+ * // Let's statically import so the code looks cleaner
+ * import static org.epics.pvmanager.data.ExpressionLanguage.*;
+ * 
+ * // Read and Write a vDouble
+ * // Note that the read type is different form the write type
+ * final PV&lt;VDouble, Double&gt; pv = PVManager.readAndWrite(vDouble("currentRB")).asynchWriteAndReadEvery(ms(10));
+ * pv.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     public void pvChanged() {
+ *         VDouble value = pv.getValue();
+ *         if (value != null) {
+ *             System.out.println(value.getValue() + " " + value.getAlarmSeverity());
+ *         }
+ *     }
+ * });
+ * pv.write(1.0);
+ * 
+ * // Remember to close
+ * pv.close();
+ * </pre>
+ * 
+ * For a full list of types, refer to {@link org.epics.pvmanager.data.ExpressionLanguage}.
+ * 
+ * 
+ * <h3 id="v2">Working with an unknown type: extracting alarm, time, ...</h3>
+ * 
+ * <pre>
+ * // We connect to a channel that produces a VType, but we
+ * // don't know which one
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(10));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     @Override
+ *     public void pvChanged() {
+ *         Object value = pvReader.getValue();
+ *         // We can extract the different aspect of the read object,
+ *         // so that we can work on them separately
+ *         
+ *         // This returns the interface implemented (VDouble, VInt, ...)
+ *         Class&lt;?&gt; type = ValueUtil.typeOf(value);
+ *         // Extracts the alarm if present
+ *         Alarm alarm = ValueUtil.alarmOf(value);
+ *         // Extracts the time if present
+ *         Time time = ValueUtil.timeOf(value);
+ *         // Extracts a numeric value if present
+ *         Double number = ValueUtil.numericValueOf(value);
+ *         // Extract display information if present
+ *         Display display = ValueUtil.displayOf(value);
+ *         
+ *         setAlarm(alarm);
+ *         // ...
+ *     }
+ * });
+ * </pre>
+ * 
+ * 
+ * <h3 id="v3">Working with an unknown type: switch on the type</h3>
+ * 
+ * <pre>
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     @Override
+ *     public void pvChanged() {
+ *         // We can switch on the full type
+ *         if (pvReader.getValue() instanceof VDouble) {
+ *             VDouble vDouble = (VDouble) pvReader.getValue();
+ *             // Do something with a VDouble
+ *         }
+ *         // ...
+ *     }
+ * });
+ * </pre>
+ * 
+ * 
+ * <h3 id="v4">Working with an unknown type: register listener on type</h3>
+ * 
+ * <pre>
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
+ * 
+ *     @Override
+ *     public void pvChanged() {
+ *         // We are already guaranteed that the cast succeeds
+ *         // and that the value is not null
+ *         VDouble vDouble = (VDouble) pvReader.getValue();
+ *         System.out.println(vDouble.getValue());
+ *         // ...
+ *     }
+ * });
+ * </pre>
+ * 
+ * 
+ * 
  * 
  * <h1> Package description</h1>
  * 
