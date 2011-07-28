@@ -12,7 +12,11 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
+import org.epics.pvmanager.expression.SourceRateExpressionList;
+import org.epics.pvmanager.expression.SourceRateExpressionListImpl;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
@@ -135,10 +139,10 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return a list of expressions representing the channels
      */
-    public static List<SourceRateExpression<VDouble>> vDoubles(List<String> names) {
-        List<SourceRateExpression<VDouble>> expressions = new ArrayList<SourceRateExpression<VDouble>>();
+    public static SourceRateExpressionList<VDouble> vDoubles(List<String> names) {
+        SourceRateExpressionList<VDouble> expressions = new SourceRateExpressionListImpl<VDouble>();
         for (String name : names) {
-            expressions.add(vDouble(name));
+            expressions.and(vDouble(name));
         }
         return expressions;
     }
@@ -175,10 +179,10 @@ public class ExpressionLanguage {
      * @param doubleExpressions a list of double expressions
      * @return a list of statistical expressions
      */
-    public static List<DesiredRateExpression<VStatistics>> statisticsOf(List<SourceRateExpression<VDouble>> doubleExpressions) {
-        List<DesiredRateExpression<VStatistics>> expressions = new ArrayList<DesiredRateExpression<VStatistics>>();
-        for (SourceRateExpression<VDouble> doubleExpression : doubleExpressions) {
-            expressions.add(statisticsOf(doubleExpression));
+    public static DesiredRateExpressionList<VStatistics> statisticsOf(SourceRateExpressionList<VDouble> doubleExpressions) {
+        DesiredRateExpressionList<VStatistics> expressions = new DesiredRateExpressionListImpl<VStatistics>();
+        for (SourceRateExpression<VDouble> doubleExpression : doubleExpressions.getSourceRateExpressions()) {
+            expressions.and(statisticsOf(doubleExpression));
         }
         return expressions;
     }
@@ -191,7 +195,7 @@ public class ExpressionLanguage {
      * @return an expression for the array
      */
     public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, List<SourceRateExpression<VDouble>> expressions) {
+            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpression<VDouble> expressions) {
         return synchronizedArrayOf(tolerance, tolerance.multiplyBy(10), expressions);
     }
 
@@ -206,13 +210,13 @@ public class ExpressionLanguage {
      * @return an expression for the array
      */
     public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, List<SourceRateExpression<VDouble>> expressions) {
+            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
         if (cacheDepth.equals(TimeDuration.ms(0)))
             throw new IllegalArgumentException("Distance between samples must be non-zero");
         List<String> names = new ArrayList<String>();
         List<DesiredRateExpression<?>> collectorExps = new ArrayList<DesiredRateExpression<?>>();
         List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
-        for (SourceRateExpression<VDouble> expression : expressions) {
+        for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
             DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
             collectorExps.add(collectorExp);
             collectors.add(collectorExp.getFunction());

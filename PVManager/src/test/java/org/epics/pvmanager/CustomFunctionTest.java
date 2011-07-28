@@ -99,7 +99,7 @@ public class CustomFunctionTest {
                 }
                 return average / numbers.size();
             }
-        }, listOf(latestValueOf(value1), latestValueOf(value2), latestValueOf(value3)));
+        }, listOf(latestValueOf(value1).and(latestValueOf(value2)).and(latestValueOf(value3))));
         ExpressionTester tester = new ExpressionTester(expression);
         Function<Double> function = expression.getFunction();
 
