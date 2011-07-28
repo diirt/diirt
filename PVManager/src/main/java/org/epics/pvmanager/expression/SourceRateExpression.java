@@ -15,7 +15,7 @@ import org.epics.pvmanager.Function;
  * @param <R> type of the read payload
  * @author carcassi
  */
-public interface SourceRateExpression<R> extends SourceRateExpressionList<R>, SourceRateExpressionImplProvider<R> {
+public interface SourceRateExpression<R> extends SourceRateExpressionList<R> {
     
     /**
      * Changes the name for this expression
@@ -38,5 +38,12 @@ public interface SourceRateExpression<R> extends SourceRateExpressionList<R>, So
      * @return the expression function
      */
     public Function<R> getFunction();
+    
+    /**
+     * The implementation of this expression.
+     * 
+     * @return the implementation
+     */
+    public SourceRateExpressionImpl<R> getSourceRateExpressionImpl();
 
 }

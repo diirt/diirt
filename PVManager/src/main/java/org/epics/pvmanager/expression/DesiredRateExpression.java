@@ -16,7 +16,7 @@ import org.epics.pvmanager.Function;
  * @param <R> type of the read payload
  * @author carcassi
  */
-public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, DesiredRateExpressionImplProvider<R> {
+public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R> {
     
     /**
      * Changes the name for this expression
@@ -47,4 +47,10 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R>, 
      */
     public Function<R> getFunction();
     
+    /**
+     * The implementation of this expression.
+     * 
+     * @return the implementation
+     */
+    public DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl();
 }
