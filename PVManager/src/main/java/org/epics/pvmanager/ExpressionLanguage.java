@@ -20,9 +20,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
+import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.WriteExpressionList;
 
@@ -132,6 +134,22 @@ public class ExpressionLanguage {
         return new DesiredRateExpressionImpl<T>(queue,
                 new LastValueAggregator<T>((Collector<T>) queue.getFunction()),
                 expression.getName());
+    }
+
+    /**
+     * Expression that returns (only) the latest value computed
+     * from a {@code SourceRateExpression}.
+     *
+     * @param <T> type being read
+     * @param expressions expressions read at the source rate
+     * @return an expression list
+     */
+    public static <T> DesiredRateExpressionList<T> latestValueOf(SourceRateExpressionList<T> expressions) {
+        DesiredRateExpressionList<T> list = new DesiredRateExpressionListImpl<T>();
+        for (SourceRateExpression<T> expression : expressions.getSourceRateExpressions()) {
+            list.and(latestValueOf(expression));
+        }
+        return list;
     }
 
     /**
