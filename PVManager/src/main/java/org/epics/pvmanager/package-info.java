@@ -29,6 +29,9 @@
  * <ol>
  *     <li><a href="#m1">Reading a map with multiple channels</a></li>
  *     <li><a href="#m2">Writing a map with multiple channels</a></li>
+ *     <li><a href="#m3">Read and write a map with multiple channels</a></li>
+ *     <li><a href="#m4">Refer to channel with a different name</a></li>
+ *     <li><a href="#m5">Impose write ordering</a></li>
  * </ol>
  * 
  * <h3 id="c1">Using PVManager in CSS</h3>
