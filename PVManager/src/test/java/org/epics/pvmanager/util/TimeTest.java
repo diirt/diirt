@@ -57,6 +57,14 @@ public class TimeTest {
     }
 
     @Test
+    public void sec() {
+        TimeDuration duration = TimeDuration.sec(1.0);
+        assertThat(duration.getNanoSec(), equalTo(1000000000L));
+        
+        assertThat(TimeDuration.sec(0.1), equalTo(TimeDuration.ms(100)));
+    }
+
+    @Test
     public void testHz() {
         TimeDuration duration = TimeDuration.hz(1.0);
         assertThat(duration.getNanoSec(), equalTo(1000000000L));

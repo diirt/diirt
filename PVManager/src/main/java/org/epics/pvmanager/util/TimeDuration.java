@@ -17,6 +17,7 @@ package org.epics.pvmanager.util;
  * @author carcassi
  */
 public class TimeDuration {
+
     private long nanoSec;
 
     private TimeDuration(long nanoSec) {
@@ -31,6 +32,16 @@ public class TimeDuration {
      */
     public long getNanoSec() {
         return nanoSec;
+    }
+    
+    /**
+     * A new duration in seconds.
+     * 
+     * @param sec seconds
+     * @return a new duration
+     */
+    public static TimeDuration sec(double sec) {
+        return nanos((long) (sec * 1000000000));
     }
     
     /**
