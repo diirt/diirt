@@ -67,7 +67,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         if (this.exceptionHandler != null) {
             throw new IllegalArgumentException("Exception handler already set");
         }
-        this.exceptionHandler = exceptionHandler;
+        this.exceptionHandler = ExceptionHandler.safeHandler(exceptionHandler);
         return this;
     }
 
