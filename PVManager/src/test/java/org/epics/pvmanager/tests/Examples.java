@@ -204,8 +204,6 @@ public class Examples {
         });
     }
     
-    // TODO handling exceptions
-    
     public void m1() {
         // Read a map with the channels named "one", "two" and "three"
         final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
