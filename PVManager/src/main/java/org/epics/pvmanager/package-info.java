@@ -131,6 +131,9 @@
  * pvReader.close();
  * </pre>
  * 
+ * The interval between updates can be specified in different units (e.g. ms, sec, min, hour, hz).
+ * Check the documentation at {@link org.epics.pvmanager.util.TimeDuration}.
+ * 
  * <h3 id="b1a">Reading all values values from a channel</h3>
  * 
  * <pre>
