@@ -57,7 +57,6 @@ public class ExceptionHandler {
                     @Override
                     public void run() {
                         pv.setLastException(ex);
-                        pv.firePvValueChanged();
                     }
                 });
             }
