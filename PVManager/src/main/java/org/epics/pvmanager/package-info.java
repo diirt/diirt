@@ -24,6 +24,9 @@
  *     <li><a href="#b2">Writing a single channel asynchrnously</a></li>
  *     <li><a href="#b3">Writing a single channel synchrnously</a></li>
  *     <li><a href="#b4">Reading and writing a single channel</a></li>
+ *     <li><a href="#b5">Handling read errors on notifications</a></li>
+ *     <li><a href="#b6">Handling read errors using an ExceptionHandler</a></li>
+ *     <li><a href="#b7">Setting read connection timeouts</a></li>
  * </ol>
  * <h3>Multiple channels</h3>
  * <ol>
@@ -202,6 +205,70 @@
  * // Remember to close
  * pv.close();
  * </pre>
+ * 
+ * 
+ * <h3 id="b5">Handling read errors on notifications</h3>
+ * 
+ * <pre>
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     public void pvChanged() {
+ *         // By default, read exceptions are made available
+ *         // on the reader itself.
+ *         // This will give you only the last exception, so if
+ *         // more then one exception was generated after the last read,
+ *         // some will be lost.
+ *         Exception ex = pvReader.lastException();
+ *         
+ *         // Note that taking the exception, clears it
+ *         // so next call you'll get null.
+ *         if (pvReader.lastException() == null) {
+ *             // Always true
+ *         }
+ *     }
+ * });
+ * </pre>
+ * 
+ * 
+ * <h3 id="b6">Handling read errors using an ExceptionHandler</h3>
+ * 
+ * <pre>
+ * // All read exceptions will be passed to the exception handler
+ * // on the thread that it generates them. The handler, therefore,
+ * // must be thread safe. Overriding the exception handling means
+ * // disabling the default handling, so read exception will no longer
+ * // be accessible with {@code pvReader.lastException()}
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName"))
+ *         .routeExceptionsTo(new ExceptionHandler() {
+ *             public void handleException(Exception ex) {
+ *                 System.out.println("Error: " + ex.getMessage());
+ *             }
+ *         }).every(ms(100));
+ * </pre>
+ * 
+ * 
+ * <h3 id="b7">Setting read connection timeouts</h3>
+ * 
+ * <pre>
+ * // If after 5 seconds no new value comes (i.e. pvReader.getValue() == null)
+ * // then a timeout is sent. PVManager will _still_ try to connect,
+ * // until pvReader.close() is called.
+ * // The timeout will be notified only on the first connection.
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).timeout(sec(5)).every(ms(100));
+ * pvReader.addPVReaderListener(new PVReaderListener() {
+ * 
+ *     public void pvChanged() {
+ *         // Timeout are passed as exceptions. This allows you to
+ *         // treat them as any other error conditions.
+ *         Exception ex = pvReader.lastException();
+ *         if (ex instanceof TimeoutException) {
+ *             System.out.println("Didn't connected after 5 seconds");
+ *         }
+ *     }
+ * });
+ * </pre>
+ * 
  * 
  * <h3 id="m1">Reading a map with multiple channels</h3>
  * 

@@ -172,6 +172,11 @@ public class Examples {
     }
     
     public void b6() {
+        // All read exceptions will be passed to the exception handler
+        // on the thread that it generates them. The handler, therefore,
+        // must be thread safe. Overriding the exception handling means
+        // disabling the default handling, so read exception will no longer
+        // be accessible with {@code pvReader.lastException()}
         final PVReader<Object> pvReader = PVManager.read(channel("channelName"))
                 .routeExceptionsTo(new ExceptionHandler() {
                     public void handleException(Exception ex) {
@@ -184,6 +189,7 @@ public class Examples {
         // If after 5 seconds no new value comes (i.e. pvReader.getValue() == null)
         // then a timeout is sent. PVManager will _still_ try to connect,
         // until pvReader.close() is called.
+        // The timeout will be notified only on the first connection.
         final PVReader<Object> pvReader = PVManager.read(channel("channelName")).timeout(sec(5)).every(ms(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
