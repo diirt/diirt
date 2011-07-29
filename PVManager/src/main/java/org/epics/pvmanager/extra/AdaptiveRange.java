@@ -29,31 +29,35 @@ class AdaptiveRange implements Display {
 
     public void considerValues(List<VDoubleArray> values) {
         for (VDoubleArray vDoubleArray : values) {
-            for (int i = 0; i < vDoubleArray.getArray().length; i++) {
-                double d = vDoubleArray.getArray()[i];
-                if (firstValue) {
-                    lowerDisplayLimit = d;
-                    lowerCtrlLimit = d;
-                    lowerAlarmLimit = d;
-                    lowerWarningLimit = d;
+            considerValues(vDoubleArray.getArray());
+        }
+    }
+
+    void considerValues(double[] array) {
+        for (int i = 0; i < array.length; i++) {
+            double d = array[i];
+            if (firstValue) {
+                lowerDisplayLimit = d;
+                lowerCtrlLimit = d;
+                lowerAlarmLimit = d;
+                lowerWarningLimit = d;
+                upperWarningLimit = d;
+                upperAlarmLimit = d;
+                upperCtrlLimit = d;
+                upperDisplayLimit = d;
+                firstValue = false;
+            } else {
+                if (d > upperDisplayLimit) {
                     upperWarningLimit = d;
                     upperAlarmLimit = d;
                     upperCtrlLimit = d;
                     upperDisplayLimit = d;
-                    firstValue = false;
-                } else {
-                    if (d > upperDisplayLimit) {
-                        upperWarningLimit = d;
-                        upperAlarmLimit = d;
-                        upperCtrlLimit = d;
-                        upperDisplayLimit = d;
-                    }
-                    if (d < lowerDisplayLimit) {
-                        lowerDisplayLimit = d;
-                        lowerCtrlLimit = d;
-                        lowerAlarmLimit = d;
-                        lowerWarningLimit = d;
-                    }
+                }
+                if (d < lowerDisplayLimit) {
+                    lowerDisplayLimit = d;
+                    lowerCtrlLimit = d;
+                    lowerAlarmLimit = d;
+                    lowerWarningLimit = d;
                 }
             }
         }

@@ -18,13 +18,13 @@ import org.epics.pvmanager.data.VImage;
 public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
     WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
-        super(queue, new WaterfallPlotFunction(queue.getFunction(), WaterfallPlotParameters.defaults().internalCopy()), name);
+        super(queue, new WaterfallPlotFunction2(new DoubleArrayTimeCacheFromVDoubleArray(queue.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
     
     private volatile WaterfallPlotParameters parameters = WaterfallPlotParameters.defaults();
 
-    WaterfallPlotFunction getPlotter() {
-        return (WaterfallPlotFunction) getFunction();
+    WaterfallPlotFunction2 getPlotter() {
+        return (WaterfallPlotFunction2) getFunction();
     }
     
     /**
