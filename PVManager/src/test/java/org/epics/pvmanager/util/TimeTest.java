@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
  *
@@ -57,7 +58,14 @@ public class TimeTest {
     }
 
     @Test
-    public void sec() {
+    public void testMin() {
+        assertThat(min(1.0), equalTo(sec(60.0)));
+        assertThat(min(1.0), equalTo(ms(60000.0)));
+        assertThat(min(0.5), equalTo(sec(30.0)));
+    }
+
+    @Test
+    public void testSec() {
         TimeDuration duration = TimeDuration.sec(1.0);
         assertThat(duration.getNanoSec(), equalTo(1000000000L));
         
