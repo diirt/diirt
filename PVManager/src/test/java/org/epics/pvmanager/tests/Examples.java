@@ -16,9 +16,11 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import java.util.HashMap;
+import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.Display;
@@ -148,8 +150,55 @@ public class Examples {
         pv.close();
     }
     
+    public void b5() {
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            public void pvChanged() {
+                // By default, read exceptions are made available
+                // on the reader itself.
+                // This will give you only the last exception, so if
+                // more then one exception was generated after the last read,
+                // some will be lost.
+                Exception ex = pvReader.lastException();
+                
+                // Note that taking the exception, clears it
+                // so next call you'll get null.
+                if (pvReader.lastException() == null) {
+                    // Always true
+                }
+            }
+        });
+    }
+    
+    public void b6() {
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName"))
+                .routeExceptionsTo(new ExceptionHandler() {
+                    public void handleException(Exception ex) {
+                        System.out.println("Error: " + ex.getMessage());
+                    }
+                }).every(ms(100));
+    }
+    
+    public void b7() {
+        // If after 5 seconds no new value comes (i.e. pvReader.getValue() == null)
+        // then a timeout is sent. PVManager will _still_ try to connect,
+        // until pvReader.close() is called.
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).timeout(sec(5)).every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            public void pvChanged() {
+                // Timeout are passed as exceptions. This allows you to
+                // treat them as any other error conditions.
+                Exception ex = pvReader.lastException();
+                if (ex instanceof TimeoutException) {
+                    System.out.println("Didn't connected after 5 seconds");
+                }
+            }
+        });
+    }
+    
     // TODO handling exceptions
-    // TODO hz, sec, min, hour
     
     public void m1() {
         // Read a map with the channels named "one", "two" and "three"
