@@ -58,6 +58,14 @@ public class TimeTest {
     }
 
     @Test
+    public void testHour() {
+        assertThat(hour(1), equalTo(min(60)));
+        assertThat(hour(2), equalTo(sec(7200)));
+        assertThat(hour(1.0), equalTo(ms(3600000)));
+        assertThat(hour(0.5), equalTo(min(30.0)));
+    }
+
+    @Test
     public void testMin() {
         assertThat(min(1.0), equalTo(sec(60.0)));
         assertThat(min(1.0), equalTo(ms(60000.0)));

@@ -35,6 +35,16 @@ public class TimeDuration {
     }
     
     /**
+     * A new duration in hours.
+     * 
+     * @param hour hours
+     * @return a new duration
+     */
+    public static TimeDuration hour(double hour) {
+        return nanos((long) (hour * 60 * 60 * 1000000000));
+    }
+    
+    /**
      * A new duration in minutes.
      * 
      * @param min minutes
