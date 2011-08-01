@@ -12,12 +12,13 @@
 package org.epics.pvmanager.tests;
 
 import java.awt.Color;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
@@ -52,8 +53,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         WaterfallPlotParameters defaults = WaterfallPlotParameters.defaults();
         adaptiveRangeField.setSelected(defaults.isAdaptiveRange());
         scrollDownField.setSelected(defaults.isScrollDown());
-        heightField.setValue(defaults.getHeight());
         pixelDurationField.setValue(defaults.getPixelDuration().getNanoSec() / 1000000);
+        plotView.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if (plot != null) {
+                    plot.with(height(plotView.getHeight()));
+                }
+            }
+            
+        });
     }
 
     private PVReader<VImage> pv;
@@ -68,21 +78,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        plotLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         pvName = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel2 = new javax.swing.JLabel();
-        heightField = new javax.swing.JSpinner();
         adaptiveRangeField = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         pixelDurationField = new javax.swing.JSpinner();
         scrollDownField = new javax.swing.JCheckBox();
+        plotView = new org.epics.pvmanager.tests.ImagePanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        plotLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel1.setText("PV Name:");
 
@@ -93,15 +99,6 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         });
 
         lastError.setEditable(false);
-
-        jLabel2.setText("Max Height:");
-
-        heightField.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(50), Integer.valueOf(1), null, Integer.valueOf(1)));
-        heightField.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                heightFieldStateChanged(evt);
-            }
-        });
 
         adaptiveRangeField.setText("Adaptive range");
         adaptiveRangeField.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +124,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout plotViewLayout = new javax.swing.GroupLayout(plotView);
+        plotView.setLayout(plotViewLayout);
+        plotViewLayout.setHorizontalGroup(
+            plotViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 474, Short.MAX_VALUE)
+        );
+        plotViewLayout.setVerticalGroup(
+            plotViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 223, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,17 +150,13 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                         .addGap(239, 239, 239))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(plotLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                            .addComponent(plotView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
                             .addComponent(lastError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(heightField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(pixelDurationField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -167,8 +171,6 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                     .addComponent(pvName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(heightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(pixelDurationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -178,7 +180,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plotLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                .addComponent(plotView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lastError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -196,7 +198,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 backgroundColor(getBackground().getRGB()),
                 adaptiveRange(adaptiveRangeField.isSelected()),
                 scrollDown(scrollDownField.isSelected()),
-                height(((Number) heightField.getValue()).intValue()),
+                height(plotView.getHeight()),
                 pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
                 .every(hz(50));
@@ -207,17 +209,11 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
                     BufferedImage image = ValueUtil.toImage(pv.getValue());
-                    plotLabel.setIcon(new ImageIcon(image));
+                    plotView.setImage(image);
                 }
             }
         });
     }//GEN-LAST:event_pvNameActionPerformed
-
-    private void heightFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_heightFieldStateChanged
-        if (plot != null) {
-            plot.with(height(((Number) heightField.getValue()).intValue()));
-        }
-    }//GEN-LAST:event_heightFieldStateChanged
 
     private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged
         if (plot != null) {
@@ -262,14 +258,12 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox adaptiveRangeField;
-    private javax.swing.JSpinner heightField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
     private javax.swing.JSpinner pixelDurationField;
-    private javax.swing.JLabel plotLabel;
+    private org.epics.pvmanager.tests.ImagePanel plotView;
     private javax.swing.JTextField pvName;
     private javax.swing.JCheckBox scrollDownField;
     // End of variables declaration//GEN-END:variables
