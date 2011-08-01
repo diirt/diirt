@@ -60,7 +60,7 @@ class WaterfallPlotFunction2 extends Function<VImage> {
             return null;
         
         // If parameters changed, redraw all
-        boolean redrawAll = true;// parameters != previousParameters;
+        boolean redrawAll = parameters != previousParameters;
         
         // Calculate new end time for the plot, and how many pixels
         // should the plot scroll

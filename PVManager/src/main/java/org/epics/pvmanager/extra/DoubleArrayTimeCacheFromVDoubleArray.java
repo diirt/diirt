@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.extra;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,12 +86,50 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         if (newBegin == null)
             newBegin = cache.firstKey();
         
-        return new Data(cache.subMap(newBegin, end), newBegin, end);
+        return data(newBegin, end);
+    }
+    
+    private Data data(TimeStamp begin, TimeStamp end) {
+        return new Data(cache.subMap(begin, end), begin, end);
     }
 
     @Override
     public List<DoubleArrayTimeCache.Data> newData(TimeStamp beginUpdate, TimeStamp endUpdate, TimeStamp beginNew, TimeStamp endNew) {
-        return new ArrayList<DoubleArrayTimeCache.Data>();
+        List<VDoubleArray> newValues = function.getValue();
+        
+        // No new values, just return the last value
+        if (newValues.isEmpty()) {
+            return Collections.singletonList(data(cache.lowerKey(endNew), endNew));
+        }
+        
+        List<TimeStamp> newTimeStamps = new ArrayList<TimeStamp>();
+        for (VDoubleArray value : newValues) {
+            cache.put(value.getTimeStamp(), value);
+            newTimeStamps.add(value.getTimeStamp());
+        }
+        if (cache.isEmpty())
+            return Collections.emptyList();
+        
+        Collections.sort(newTimeStamps);
+        TimeStamp firstNewValue = newTimeStamps.get(0);
+        
+        // We have just one section that start from the oldest update.
+        // If the oldest update is too far, we use the start of the update region.
+        // If the oldest update is too recent, we start from the being period
+        TimeStamp newBegin = firstNewValue;
+        if (firstNewValue.compareTo(beginUpdate) < 0) {
+            newBegin = beginUpdate;
+        }
+        if (firstNewValue.compareTo(beginNew) > 0) {
+            newBegin = beginNew;
+        }
+        
+        
+        newBegin = cache.lowerKey(newBegin);
+        if (newBegin == null)
+            newBegin = cache.firstKey();
+        
+        return Collections.singletonList(data(newBegin, endNew));
     }
 
     @Override
