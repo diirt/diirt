@@ -48,6 +48,8 @@ public abstract class ColorScheme {
                     return nanColor.getRGB();
                 
                 double normalValue = ValueUtil.normalize(value, ranges);
+                normalValue = Math.min(normalValue, 1.0);
+                normalValue = Math.max(normalValue, 0.0);
                 int alpha = 255;
                 int red = (int) (minValueColor.getRed() + (maxValueColor.getRed() - minValueColor.getRed()) * normalValue);
                 int green = (int) (minValueColor.getGreen() + (maxValueColor.getGreen() - minValueColor.getGreen()) * normalValue);
