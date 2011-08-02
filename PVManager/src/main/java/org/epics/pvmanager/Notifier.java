@@ -75,20 +75,35 @@ class Notifier<T> {
      * Notifies the PVReader of a new value.
      */
     void notifyPv() {
+        // Calculate new value
+        T newValue = null;
+        boolean calculationSucceeded = false;
         try {
-            // The data will be shipped as part of the task,
-            // which is properly synchronized by the executor
-            final T newValue = function.getValue();
+            // Tries to calculate the value
+            newValue = function.getValue();
+            calculationSucceeded = true;
+        } catch(RuntimeException ex) {
+            // Calculation failed
+            exceptionHandler.handleException(ex);
+        }
+        
+        // Prepare values to ship to the other thread.
+        // The data will be shipped as part of the task,
+        // which is properly synchronized by the executor
+        final T finalValue = newValue;
+        final boolean finalCalculationSucceeded = calculationSucceeded;
+        notificationExecutor.execute(new Runnable() {
 
-            notificationExecutor.execute(new Runnable() {
-
-                @Override
-                public void run() {
-                    PVReaderImpl<T> pv = pvRef.get();
-                    // XXX Are we sure that we should skip notifications if values are null?
-                    if (pv != null && newValue != null) {
+            @Override
+            public void run() {
+                PVReaderImpl<T> pv = pvRef.get();
+                // Proceed with notification only if PVReader was not garbage
+                // collected
+                if (pv != null) {
+                // XXX Are we sure that we should skip notifications if values are null?
+                    if (finalCalculationSucceeded && finalValue != null) {
                         Notification<T> notification =
-                                NotificationSupport.notification(pv.getValue(), newValue);
+                                NotificationSupport.notification(pv.getValue(), finalValue);
                         // Remember to notify anyway if an exception need to be notified
                         if (notification.isNotificationNeeded() || pv.isLastExceptionToNotify()) {
                             pv.setValue(notification.getNewValue());
@@ -100,10 +115,8 @@ class Notifier<T> {
                         }
                     }
                 }
-            });
-        } catch(RuntimeException ex) {
-            exceptionHandler.handleException(ex);
-        }
+            }
+        });
     }
 
     void setPvRecipe(PVRecipe pvRecipe) {
