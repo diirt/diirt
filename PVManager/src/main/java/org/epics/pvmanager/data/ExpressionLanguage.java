@@ -16,6 +16,7 @@ import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.ExpressionLanguage.*;
@@ -31,6 +32,10 @@ public class ExpressionLanguage {
     static {
         // Add support for Epics types.
         DataTypeSupport.install();
+    }
+    
+    public static SourceRateExpression<VDouble> vDoubleOf(SourceRateExpression<?> expression) {
+        return new SourceRateExpressionImpl<VDouble>(expression, new NumericConverterFunction(expression.getFunction()), expression.getName());
     }
 
     /**
