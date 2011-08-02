@@ -85,11 +85,18 @@ class Notifier<T> {
                 @Override
                 public void run() {
                     PVReaderImpl<T> pv = pvRef.get();
+                    // XXX Are we sure that we should skip notifications if values are null?
                     if (pv != null && newValue != null) {
                         Notification<T> notification =
                                 NotificationSupport.notification(pv.getValue(), newValue);
-                        if (notification.isNotificationNeeded()) {
+                        // Remember to notify anyway if an exception need to be notified
+                        if (notification.isNotificationNeeded() || pv.isLastExceptionToNotify()) {
                             pv.setValue(notification.getNewValue());
+                        }
+                    } else {
+                        // Remember to notify anyway if an exception need to be notified
+                        if (pv.isLastExceptionToNotify()) {
+                            pv.firePvValueChanged();
                         }
                     }
                 }

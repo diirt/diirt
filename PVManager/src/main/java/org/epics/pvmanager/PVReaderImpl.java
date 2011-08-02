@@ -48,6 +48,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     private final boolean notifyFirstListener; 
 
     void firePvValueChanged() {
+        lastExceptionToNotify = false;
         for (PVReaderListener listener : pvReaderListeners) {
             listener.pvChanged();
         }
@@ -195,6 +196,17 @@ class PVReaderImpl<T> implements PVReader<T> {
     }
     
     private AtomicReference<Exception> lastException = new AtomicReference<Exception>();
+    private volatile boolean lastExceptionToNotify = false;
+
+    /**
+     * Whether there is an exception that needs to be notified to the client.
+     * This is used to throttle back exceptions.
+     * 
+     * @return true if this pvReader needs to notify an exception
+     */
+    boolean isLastExceptionToNotify() {
+        return lastExceptionToNotify;
+    }
     
     /**
      * Changes the last exception associated with the PVReader.
@@ -203,6 +215,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      */
     void setLastException(Exception ex) {
         lastException.set(ex);
+        lastExceptionToNotify = true;
     }
 
     /**
