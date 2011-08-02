@@ -29,6 +29,7 @@ import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.extra.WaterfallPlotParameters;
+import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.TimeDuration;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -49,6 +50,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("epics", new JCADataSource());
+        dataSource.putDataSource("loc", new LocalDataSource());
         dataSource.setDefaultDataSource("sim");
         PVManager.setDefaultDataSource(dataSource);
         initComponents();
@@ -232,7 +234,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
         }
 
         plot = waterfallPlotOf(vDoubles(names)).with(
-                colorScheme(ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE)),
+                colorScheme(ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE, getBackground())),
                 backgroundColor(getBackground().getRGB()),
                 adaptiveRange(adaptiveRangeField.isSelected()),
                 scrollDown(scrollDownField.isSelected()),
