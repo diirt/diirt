@@ -35,13 +35,20 @@ public abstract class ColorScheme {
      * @return
      */
     public static ColorScheme singleRangeGradient(final Color minValueColor, final Color maxValueColor) {
+        return singleRangeGradient(minValueColor, maxValueColor, Color.BLACK);
+    }
+
+    public static ColorScheme singleRangeGradient(final Color minValueColor, final Color maxValueColor, final Color nanColor) {
         return new ColorScheme() {
             Random rand = new Random();
 
             @Override
             public int color(double value, Display ranges) {
+                if (Double.isNaN(value))
+                    return nanColor.getRGB();
+                
                 double normalValue = ValueUtil.normalize(value, ranges);
-                int alpha = 0;
+                int alpha = 255;
                 int red = (int) (minValueColor.getRed() + (maxValueColor.getRed() - minValueColor.getRed()) * normalValue);
                 int green = (int) (minValueColor.getGreen() + (maxValueColor.getGreen() - minValueColor.getGreen()) * normalValue);
                 int blue = (int) (minValueColor.getBlue() + (maxValueColor.getBlue() - minValueColor.getBlue()) * normalValue);
@@ -60,7 +67,7 @@ public abstract class ColorScheme {
             @Override
             public int color(double value, Display ranges) {
                 if (Double.isNaN(value))
-                    return 255 << 24;
+                    return 0;
                 
                 double normalValue = 0.0;
                 Color minValueColor = null;
@@ -90,7 +97,7 @@ public abstract class ColorScheme {
                     return upperDisplayColor.getRGB();
                 }
 
-                int alpha = 0;
+                int alpha = 255;
                 int red = (int) (minValueColor.getRed() + (maxValueColor.getRed() - minValueColor.getRed()) * normalValue);
                 int green = (int) (minValueColor.getGreen() + (maxValueColor.getGreen() - minValueColor.getGreen()) * normalValue);
                 int blue = (int) (minValueColor.getBlue() + (maxValueColor.getBlue() - minValueColor.getBlue()) * normalValue);
