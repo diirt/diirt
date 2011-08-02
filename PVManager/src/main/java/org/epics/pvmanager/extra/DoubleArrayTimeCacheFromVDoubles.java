@@ -129,7 +129,8 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
                 
                 // Fix the following values
                 for (Map.Entry<TimeStamp, double[]> en : cache.tailMap(vDouble.getTimeStamp().plus(tolerance)).entrySet()) {
-                    if (en.getValue()[n] == oldValue)
+                    // If no value or same value as before, replace it
+                    if (Double.isNaN(en.getValue()[n]) || en.getValue()[n] == oldValue)
                         en.getValue()[n] = vDouble.getValue();
                 }
             }
