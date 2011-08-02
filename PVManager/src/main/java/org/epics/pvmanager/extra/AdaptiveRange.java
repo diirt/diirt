@@ -36,28 +36,30 @@ class AdaptiveRange implements Display {
     void considerValues(double[] array) {
         for (int i = 0; i < array.length; i++) {
             double d = array[i];
-            if (firstValue) {
-                lowerDisplayLimit = d;
-                lowerCtrlLimit = d;
-                lowerAlarmLimit = d;
-                lowerWarningLimit = d;
-                upperWarningLimit = d;
-                upperAlarmLimit = d;
-                upperCtrlLimit = d;
-                upperDisplayLimit = d;
-                firstValue = false;
-            } else {
-                if (d > upperDisplayLimit) {
-                    upperWarningLimit = d;
-                    upperAlarmLimit = d;
-                    upperCtrlLimit = d;
-                    upperDisplayLimit = d;
-                }
-                if (d < lowerDisplayLimit) {
+            if (!Double.isNaN(d)) {
+                if (firstValue) {
                     lowerDisplayLimit = d;
                     lowerCtrlLimit = d;
                     lowerAlarmLimit = d;
                     lowerWarningLimit = d;
+                    upperWarningLimit = d;
+                    upperAlarmLimit = d;
+                    upperCtrlLimit = d;
+                    upperDisplayLimit = d;
+                    firstValue = false;
+                } else {
+                    if (d > upperDisplayLimit) {
+                        upperWarningLimit = d;
+                        upperAlarmLimit = d;
+                        upperCtrlLimit = d;
+                        upperDisplayLimit = d;
+                    }
+                    if (d < lowerDisplayLimit) {
+                        lowerDisplayLimit = d;
+                        lowerCtrlLimit = d;
+                        lowerAlarmLimit = d;
+                        lowerWarningLimit = d;
+                    }
                 }
             }
         }
