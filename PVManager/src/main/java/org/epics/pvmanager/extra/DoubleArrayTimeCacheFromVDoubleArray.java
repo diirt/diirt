@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.extra;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -74,7 +74,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     }
 
     @Override
-    public Data getData(TimeStamp begin, TimeStamp end) {
+    public DoubleArrayTimeCache.Data getData(TimeStamp begin, TimeStamp end) {
         List<VDoubleArray> newValues = function.getValue();
         for (VDoubleArray value : newValues) {
             cache.put(value.getTimeStamp(), value);
@@ -89,7 +89,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         return data(newBegin, end);
     }
     
-    private Data data(TimeStamp begin, TimeStamp end) {
+    private DoubleArrayTimeCache.Data data(TimeStamp begin, TimeStamp end) {
         return new Data(cache.subMap(begin, end), begin, end);
     }
 
