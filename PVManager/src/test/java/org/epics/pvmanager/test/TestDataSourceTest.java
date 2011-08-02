@@ -78,7 +78,7 @@ public class TestDataSourceTest {
         PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).every(ms(10));
         pvReader.addPVReaderListener(readListener);
         
-        Thread.sleep(15);
+        Thread.sleep(20);
         
         ReadFailException ex = (ReadFailException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
