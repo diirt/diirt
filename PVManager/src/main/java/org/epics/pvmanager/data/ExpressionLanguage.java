@@ -34,8 +34,15 @@ public class ExpressionLanguage {
         DataTypeSupport.install();
     }
     
+    /**
+     * Expects a numeric scalar (VDouble or VInt) and converts it to
+     * a VDouble.
+     * 
+     * @param expression an expression that returns a numeric scalar
+     * @return a new expression
+     */
     public static SourceRateExpression<VDouble> vDoubleOf(SourceRateExpression<?> expression) {
-        return new SourceRateExpressionImpl<VDouble>(expression, new NumericConverterFunction(expression.getFunction()), expression.getName());
+        return new SourceRateExpressionImpl<VDouble>(expression, new ConverterVDoubleFunction(expression.getFunction()), expression.getName());
     }
 
     /**

@@ -13,7 +13,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class NumericConverterFunction extends Function<VDouble> {
+class ConverterVDoubleFunction extends Function<VDouble> {
     
     private final Function<?> argument;
 
@@ -22,18 +22,18 @@ class NumericConverterFunction extends Function<VDouble> {
      * 
      * @param argument the argument function
      */
-    public NumericConverterFunction(Function<?> argument) {
+    public ConverterVDoubleFunction(Function<?> argument) {
         this.argument = argument;
     }
 
     @Override
     public VDouble getValue() {
-        Object value = argument;
+        Object value = argument.getValue();
         if (value instanceof VDouble) {
             return (VDouble) value;
         }
         
-        // Convert VInt to VDoublae
+        // Convert VInt to VDouble
         if (value instanceof VInt) {
             final VInt vInt = (VInt) value;
             return new VDouble() {
