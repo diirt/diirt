@@ -4,11 +4,15 @@
  */
 package org.epics.pvmanager.extra;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.epics.pvmanager.Function;
+import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
 /**
  * A waterfall plot.
@@ -19,6 +23,18 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
     WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
         super(queue, new WaterfallPlotFunction2(new DoubleArrayTimeCacheFromVDoubleArray(queue.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
+    }
+
+    WaterfallPlot(DesiredRateExpressionList<List<VDouble>> queue, String name) {
+        super((List<DesiredRateExpression<?>>) (List) queue.getDesiredRateExpressions(), new WaterfallPlotFunction2(new DoubleArrayTimeCacheFromVDoubles(getFunctions(queue)), WaterfallPlotParameters.defaults().internalCopy()), name);
+    }
+    
+    private static List<Function<List<VDouble>>> getFunctions(DesiredRateExpressionList<List<VDouble>> exp) {
+        List<Function<List<VDouble>>> functions = new ArrayList<Function<List<VDouble>>>();
+        for (DesiredRateExpression<List<VDouble>> desiredRateExpression : exp.getDesiredRateExpressions()) {
+            functions.add(desiredRateExpression.getFunction());
+        }
+        return functions;
     }
     
     private volatile WaterfallPlotParameters parameters = WaterfallPlotParameters.defaults();

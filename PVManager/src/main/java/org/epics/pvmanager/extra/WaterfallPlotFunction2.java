@@ -119,6 +119,8 @@ class WaterfallPlotFunction2 extends Function<VImage> {
         // TODO if adaptiveRange has changed, should redraw all!
         
         int newWidth = calculateNewWidth(previousBuffer, parameters, newMaxArraySize);
+        if (newWidth == 0)
+            return null;
         
         
         // Create new image. Copy the old image if needed.

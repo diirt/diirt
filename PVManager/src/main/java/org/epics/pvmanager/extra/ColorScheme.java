@@ -59,6 +59,9 @@ public abstract class ColorScheme {
 
             @Override
             public int color(double value, Display ranges) {
+                if (Double.isNaN(value))
+                    return 255 << 24;
+                
                 double normalValue = 0.0;
                 Color minValueColor = null;
                 Color maxValueColor = null;
