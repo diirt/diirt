@@ -26,6 +26,13 @@ class AdaptiveRange implements Display {
     private Double upperDisplayLimit = 0.0;
     
     private boolean firstValue = true;
+    private boolean limitsChanged = false;
+
+    public boolean limitsChanged() {
+        boolean returnValue = limitsChanged;
+        limitsChanged = false;
+        return returnValue;
+    }
 
     public void considerValues(List<VDoubleArray> values) {
         for (VDoubleArray vDoubleArray : values) {
@@ -47,18 +54,21 @@ class AdaptiveRange implements Display {
                     upperCtrlLimit = d;
                     upperDisplayLimit = d;
                     firstValue = false;
+                    limitsChanged = true;
                 } else {
                     if (d > upperDisplayLimit) {
                         upperWarningLimit = d;
                         upperAlarmLimit = d;
                         upperCtrlLimit = d;
                         upperDisplayLimit = d;
+                        limitsChanged = true;
                     }
                     if (d < lowerDisplayLimit) {
                         lowerDisplayLimit = d;
                         lowerCtrlLimit = d;
                         lowerAlarmLimit = d;
                         lowerWarningLimit = d;
+                        limitsChanged = true;
                     }
                 }
             }

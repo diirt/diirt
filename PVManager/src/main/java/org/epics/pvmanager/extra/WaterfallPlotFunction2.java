@@ -115,7 +115,14 @@ class WaterfallPlotFunction2 extends Function<VImage> {
             }
         }
         
-        // TODO if adaptiveRange has changed, should redraw all!
+        if (adaptiveRange != null && adaptiveRange.limitsChanged()) {
+            DoubleArrayTimeCache.Data data = doubleArrayTimeCache.getData(plotStart, plotEnd);
+            if (data != null && data.getNArrays() != 0) {
+                dataToPlot = Collections.singletonList(data);
+            } else {
+                dataToPlot = new ArrayList<DoubleArrayTimeCache.Data>();
+            }
+        }
         
         int newWidth = calculateNewWidth(previousBuffer, parameters, newMaxArraySize);
         if (newWidth == 0) {
