@@ -22,11 +22,11 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
 public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
     WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
-        super(queue, new WaterfallPlotFunction2(new DoubleArrayTimeCacheFromVDoubleArray(queue.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
+        super(queue, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubleArray(queue.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
 
     WaterfallPlot(DesiredRateExpressionList<List<VDouble>> queue, String name) {
-        super((List<DesiredRateExpression<?>>) (List) queue.getDesiredRateExpressions(), new WaterfallPlotFunction2(new DoubleArrayTimeCacheFromVDoubles(getFunctions(queue)), WaterfallPlotParameters.defaults().internalCopy()), name);
+        super((List<DesiredRateExpression<?>>) (List) queue.getDesiredRateExpressions(), new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubles(getFunctions(queue)), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
     
     private static List<Function<List<VDouble>>> getFunctions(DesiredRateExpressionList<List<VDouble>> exp) {
@@ -39,8 +39,8 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
     
     private volatile WaterfallPlotParameters parameters = WaterfallPlotParameters.defaults();
 
-    WaterfallPlotFunction2 getPlotter() {
-        return (WaterfallPlotFunction2) getFunction();
+    WaterfallPlotFunction getPlotter() {
+        return (WaterfallPlotFunction) getFunction();
     }
     
     /**
