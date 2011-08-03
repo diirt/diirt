@@ -15,7 +15,6 @@ import java.util.TreeMap;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.util.TimeDuration;
 import org.epics.pvmanager.util.TimeInterval;
 import org.epics.pvmanager.util.TimeStamp;
@@ -144,6 +143,7 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         if (newBegin == null)
             newBegin = cache.firstKey();
         
+        deleteBefore(begin);
         return data(newBegin, end);
     }
     
@@ -185,6 +185,28 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         return Collections.singletonList(TimeInterval.between(firstChange.minus(tolerance), lastChange));
     }
     
+    private void deleteBefore(TimeStamp timeStamp) {
+        if (cache.isEmpty())
+            return;
+        
+        // This we want to keep as we need to draw the area
+        // from the timestamp to the first new value
+        TimeStamp firstEntryBeforeTimeStamp = cache.lowerKey(timeStamp);
+        if (firstEntryBeforeTimeStamp == null)
+            return;
+        
+        // This is the last entry we want to delete
+        TimeStamp lastToDelete = cache.lowerKey(firstEntryBeforeTimeStamp);
+        if (lastToDelete == null)
+            return;
+        
+        TimeStamp firstKey = cache.firstKey();
+        while (firstKey.compareTo(lastToDelete) <= 0) {
+            cache.remove(firstKey);
+            firstKey = cache.firstKey();
+        }
+    }
+    
     private DoubleArrayTimeCache.Data data(TimeStamp begin, TimeStamp end) {
         return new Data(cache.subMap(begin, end), begin, end);
     }
@@ -214,6 +236,7 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         TimeInterval updateInterval = updates.get(0);
         TimeStamp newBegin = max(beginUpdate, updateInterval.getStart());
         newBegin = min(newBegin, beginNew);
+        deleteBefore(beginUpdate);
         return Collections.singletonList(data(newBegin, endNew));
     }
 
