@@ -22,7 +22,7 @@ public interface DesiredRateExpressionList<R> {
      * @param expressions a list of expressions
      * @return this
      */
-    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions);
+    public DesiredRateExpressionList<R> and(DesiredRateExpressionList<? extends R> expressions);
 
     /**
      * The expressions of this list.

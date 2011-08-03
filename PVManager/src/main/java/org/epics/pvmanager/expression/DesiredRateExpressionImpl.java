@@ -80,13 +80,15 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
      * @param function the function that calculates the value of the new expression
      * @param defaultName the display name of the expression
      */
-    public DesiredRateExpressionImpl(List<DesiredRateExpression<?>> childExpressions, Function<R> function, String defaultName) {
+    public DesiredRateExpressionImpl(DesiredRateExpressionList<?> childExpressions, Function<R> function, String defaultName) {
         this.recipe = combineRecipes(childExpressions);
         this.function = function;
         this.name = defaultName;
     }
 
-    private static DataRecipeBuilder combineRecipes(List<DesiredRateExpression<?>> childExpressions) {
+    private static DataRecipeBuilder combineRecipes(DesiredRateExpressionList<?> expressions) {
+        @SuppressWarnings("unchecked")
+        List<DesiredRateExpression<?>> childExpressions = (List<DesiredRateExpression<?>>) (List) expressions.getDesiredRateExpressions();
         if (childExpressions.isEmpty())
             return new DataRecipeBuilder();
 

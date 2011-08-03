@@ -23,7 +23,7 @@ public interface DesiredRateReadWriteExpressionList<R, W> extends DesiredRateExp
      * @param expressions a list of expressions
      * @return this
      */
-    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions);
+    public DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<? extends R, ? extends W> expressions);
 
     /**
      * The expressions of this list.

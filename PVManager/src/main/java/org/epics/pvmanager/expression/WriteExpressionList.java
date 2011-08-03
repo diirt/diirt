@@ -22,7 +22,7 @@ public interface WriteExpressionList<W> {
      * @param expressions a list of expressions
      * @return this
      */
-    public WriteExpressionList<W> and(WriteExpressionList<W> expressions);
+    public WriteExpressionList<W> and(WriteExpressionList<? extends W> expressions);
 
     /**
      * The expressions of this list.

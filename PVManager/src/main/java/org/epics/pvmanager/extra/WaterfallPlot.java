@@ -21,12 +21,12 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  */
 public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
-    WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> queue, String name) {
-        super(queue, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubleArray(queue.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
+    WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> expression, String name) {
+        super(expression, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubleArray(expression.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
 
-    WaterfallPlot(DesiredRateExpressionList<List<VDouble>> queue, String name) {
-        super((List<DesiredRateExpression<?>>) (List) queue.getDesiredRateExpressions(), new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubles(getFunctions(queue)), WaterfallPlotParameters.defaults().internalCopy()), name);
+    WaterfallPlot(DesiredRateExpressionList<List<VDouble>> expressions, String name) {
+        super(expressions, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubles(getFunctions(expressions)), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
     
     private static List<Function<List<VDouble>>> getFunctions(DesiredRateExpressionList<List<VDouble>> exp) {

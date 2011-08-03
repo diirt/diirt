@@ -22,7 +22,7 @@ public interface SourceRateExpressionList<R> {
      * @param expressions a list of expressions
      * @return this
      */
-    public SourceRateExpressionList<R> and(SourceRateExpressionList<R> expressions);
+    public SourceRateExpressionList<R> and(SourceRateExpressionList<? extends R> expressions);
 
     /**
      * The expressions of this list.

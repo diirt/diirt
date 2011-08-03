@@ -24,8 +24,10 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     }
 
     @Override
-    public final DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<R, W> expressions) {
-        desiredRateReadWriteExpressions.addAll(expressions.getDesiredRateReadWriteExpressions());
+    public final DesiredRateReadWriteExpressionList<R, W> and(DesiredRateReadWriteExpressionList<? extends R, ? extends W> expressions) {
+        @SuppressWarnings("unchecked")
+        DesiredRateReadWriteExpressionList<R, W> newExpression = (DesiredRateReadWriteExpressionList<R, W>) (DesiredRateReadWriteExpressionList) expressions;
+        desiredRateReadWriteExpressions.addAll(newExpression.getDesiredRateReadWriteExpressions());
         return this;
     }
 
@@ -35,8 +37,10 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     }
 
     @Override
-    public final DesiredRateExpressionList<R> and(DesiredRateExpressionList<R> expressions) {
-        return new DesiredRateExpressionListImpl<R>(desiredRateReadWriteExpressions).and(expressions);
+    public final DesiredRateExpressionList<R> and(DesiredRateExpressionList<? extends R> expressions) {
+        @SuppressWarnings("unchecked")
+        DesiredRateExpressionList<R> newExpression = (DesiredRateExpressionList<R>) (DesiredRateExpressionList) expressions;
+        return new DesiredRateExpressionListImpl<R>(desiredRateReadWriteExpressions).and(newExpression);
     }
 
     @Override
@@ -46,8 +50,10 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     }
 
     @Override
-    public final WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
-        return new WriteExpressionListImpl<W>(desiredRateReadWriteExpressions).and(expressions);
+    public final WriteExpressionList<W> and(WriteExpressionList<? extends W> expressions) {
+        @SuppressWarnings("unchecked")
+        WriteExpressionList<W> newExpression = (WriteExpressionList<W>) (WriteExpressionList) expressions;
+        return new WriteExpressionListImpl<W>(desiredRateReadWriteExpressions).and(newExpression);
     }
 
     @Override

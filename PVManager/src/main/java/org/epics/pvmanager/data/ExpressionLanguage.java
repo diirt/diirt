@@ -222,17 +222,17 @@ public class ExpressionLanguage {
         if (cacheDepth.equals(TimeDuration.ms(0)))
             throw new IllegalArgumentException("Distance between samples must be non-zero");
         List<String> names = new ArrayList<String>();
-        List<DesiredRateExpression<?>> collectorExps = new ArrayList<DesiredRateExpression<?>>();
         List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
+        DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
         for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
             DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
-            collectorExps.add(collectorExp);
+            desiredRateExpressions.and(collectorExp);
             collectors.add(collectorExp.getFunction());
             names.add(expression.getName());
         }
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, collectors, tolerance);
-        return new DesiredRateExpressionImpl<VMultiDouble>(collectorExps,
+        return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
                 (Function<VMultiDouble>) aggregator, "syncArray");
     }
 

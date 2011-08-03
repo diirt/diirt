@@ -34,8 +34,10 @@ public class WriteExpressionListImpl<W> implements WriteExpressionList<W> {
     }
     
     @Override
-    public final WriteExpressionListImpl<W> and(WriteExpressionList<W> expressions) {
-        writeExpressions.addAll(expressions.getWriteExpressions());
+    public final WriteExpressionListImpl<W> and(WriteExpressionList<? extends W> expressions) {
+        @SuppressWarnings("unchecked")
+        WriteExpressionList<W> newExpression = (WriteExpressionList<W>) (WriteExpressionList) expressions;
+        writeExpressions.addAll(newExpression.getWriteExpressions());
         return this;
     }
 

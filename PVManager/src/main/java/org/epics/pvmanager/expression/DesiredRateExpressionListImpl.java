@@ -34,8 +34,10 @@ public class DesiredRateExpressionListImpl<R> implements DesiredRateExpressionLi
     }
     
     @Override
-    public final DesiredRateExpressionListImpl<R> and(DesiredRateExpressionList<R> expressions) {
-        desiredRateExpressions.addAll(expressions.getDesiredRateExpressions());
+    public final DesiredRateExpressionListImpl<R> and(DesiredRateExpressionList<? extends R> expressions) {
+        @SuppressWarnings("unchecked")
+        DesiredRateExpressionList<R> newExpression = (DesiredRateExpressionList<R>) (DesiredRateExpressionList) expressions;
+        desiredRateExpressions.addAll(newExpression.getDesiredRateExpressions());
         return this;
     }
 

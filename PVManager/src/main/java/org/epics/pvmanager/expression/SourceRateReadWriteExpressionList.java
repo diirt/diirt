@@ -27,7 +27,7 @@ public interface SourceRateReadWriteExpressionList<R, W> extends SourceRateExpre
      * @param expressions a list of expressions
      * @return this
      */
-    public SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<R, W> expressions);
+    public SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<? extends R, ? extends W> expressions);
 
     /**
      * The expressions of this list.

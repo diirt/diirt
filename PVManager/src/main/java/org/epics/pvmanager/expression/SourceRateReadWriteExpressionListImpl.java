@@ -24,8 +24,10 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     }
 
     @Override
-    public final SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<R, W> expressions) {
-        sourceRateReadWriteExpressions.addAll(expressions.getSourceRateReadWriteExpressions());
+    public final SourceRateReadWriteExpressionList<R, W> and(SourceRateReadWriteExpressionList<? extends R, ? extends W> expressions) {
+        @SuppressWarnings("unchecked")
+        SourceRateReadWriteExpressionList<R, W> newExpression = (SourceRateReadWriteExpressionList<R, W>) (SourceRateReadWriteExpressionList) expressions;
+        sourceRateReadWriteExpressions.addAll(newExpression.getSourceRateReadWriteExpressions());
         return this;
     }
 
@@ -35,8 +37,10 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     }
 
     @Override
-    public final SourceRateExpressionList<R> and(SourceRateExpressionList<R> expressions) {
-        return new SourceRateExpressionListImpl<R>(sourceRateReadWriteExpressions).and(expressions);
+    public final SourceRateExpressionList<R> and(SourceRateExpressionList<? extends R> expressions) {
+        @SuppressWarnings("unchecked")
+        SourceRateExpressionList<R> newExpression = (SourceRateExpressionList<R>) (SourceRateExpressionList) expressions;
+        return new SourceRateExpressionListImpl<R>(sourceRateReadWriteExpressions).and(newExpression);
     }
 
     @Override
@@ -46,8 +50,10 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     }
 
     @Override
-    public final WriteExpressionList<W> and(WriteExpressionList<W> expressions) {
-        return new WriteExpressionListImpl<W>(sourceRateReadWriteExpressions).and(expressions);
+    public final WriteExpressionList<W> and(WriteExpressionList<? extends W> expressions) {
+        @SuppressWarnings("unchecked")
+        WriteExpressionList<W> newExpression = (WriteExpressionList<W>) (WriteExpressionList) expressions;
+        return new WriteExpressionListImpl<W>(sourceRateReadWriteExpressions).and(newExpression);
     }
 
     @Override

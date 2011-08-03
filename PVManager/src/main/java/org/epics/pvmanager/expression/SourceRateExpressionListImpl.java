@@ -34,8 +34,10 @@ public class SourceRateExpressionListImpl<R> implements SourceRateExpressionList
     }
     
     @Override
-    public final SourceRateExpressionListImpl<R> and(SourceRateExpressionList<R> expressions) {
-        sourceRateExpressions.addAll(expressions.getSourceRateExpressions());
+    public final SourceRateExpressionListImpl<R> and(SourceRateExpressionList<? extends R> expressions) {
+        @SuppressWarnings("unchecked")
+        SourceRateExpressionList<R> newExpression = (SourceRateExpressionList<R>) (SourceRateExpressionList) expressions;
+        sourceRateExpressions.addAll(newExpression.getSourceRateExpressions());
         return this;
     }
 

@@ -295,8 +295,8 @@ public class ExpressionLanguage {
         final Function<A1> arg1 = arg1Expression.getFunction();
         final Function<A2> arg2 = arg2Expression.getFunction();
         @SuppressWarnings("unchecked")
-        final List<DesiredRateExpression<? extends Object>> argExpressions =
-                Arrays.asList(arg1Expression, arg2Expression);
+        DesiredRateExpressionList<? extends Object> argExpressions =
+                new DesiredRateExpressionListImpl<Object>().and(arg1Expression).and(arg2Expression);
         return new DesiredRateExpressionImpl<R>(argExpressions,
                 new Function<R>() {
                     @Override
@@ -465,7 +465,7 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        DesiredRateExpression<List<T>> expression = new DesiredRateExpressionImpl<List<T>>((List<DesiredRateExpression<?>>) (List) expressions.getDesiredRateExpressions(),
+        DesiredRateExpression<List<T>> expression = new DesiredRateExpressionImpl<List<T>>(expressions,
                 (Function<List<T>>) (Function) new ListOfFunction(functions), null);
         return expression;
     }
@@ -487,7 +487,7 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        DesiredRateExpression<Map<String, T>> expression = new DesiredRateExpressionImpl<Map<String, T>>((List<DesiredRateExpression<?>>) (List) expressions,
+        DesiredRateExpression<Map<String, T>> expression = new DesiredRateExpressionImpl<Map<String, T>>(expressions,
                 new MapOfFunction(names, functions), null);
         return expression;
     }
@@ -536,7 +536,7 @@ public class ExpressionLanguage {
             writeExpressions.add(expression);
         }
         
-        DesiredRateExpression<Map<String, R>> readExpression = new DesiredRateExpressionImpl<Map<String, R>>(readExpressions,
+        DesiredRateExpression<Map<String, R>> readExpression = new DesiredRateExpressionImpl<Map<String, R>>(expressions,
                 new MapOfFunction<R>(names, functions), null);
         WriteExpression<Map<String, W>> writeExpression = new WriteExpressionImpl<Map<String, W>>(writeExpressions,
                 new MapOfWriteFunction<W>(names, writefunctions), null);
