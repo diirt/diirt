@@ -17,6 +17,7 @@ import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.util.TimeDuration;
+import org.epics.pvmanager.util.TimeInterval;
 import org.epics.pvmanager.util.TimeStamp;
 
 /**
@@ -146,48 +147,74 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         return data(newBegin, end);
     }
     
+    private List<TimeInterval> update() {
+        // Let's do it in a crappy way first...
+        // Only keep track of first and last change
+        TimeStamp firstChange = null;
+        TimeStamp lastChange = null;
+        for (int n = 0; n < functions.size(); n++) {
+            List<VDouble> vDoubles = functions.get(n).getValue();
+            for (VDouble vDouble : vDoubles) {
+                if (display == null)
+                    display = vDouble;
+                double[] array = arrayFor(vDouble.getTimeStamp());
+                double oldValue = array[n];
+                array[n] = vDouble.getValue();
+                if (firstChange == null) {
+                    firstChange = vDouble.getTimeStamp();
+                }
+                if (lastChange == null) {
+                    lastChange = vDouble.getTimeStamp();
+                }
+                firstChange = min(firstChange, vDouble.getTimeStamp());
+                lastChange = max(lastChange, vDouble.getTimeStamp());
+                
+                // Fix the following values
+                for (Map.Entry<TimeStamp, double[]> en : cache.tailMap(vDouble.getTimeStamp().plus(tolerance)).entrySet()) {
+                    // If no value or same value as before, replace it
+                    if (Double.isNaN(en.getValue()[n]) || en.getValue()[n] == oldValue)
+                        en.getValue()[n] = vDouble.getValue();
+                }
+            }
+        }
+        
+        if (firstChange == null) {
+            return Collections.emptyList();
+        }
+        
+        return Collections.singletonList(TimeInterval.between(firstChange.minus(tolerance), lastChange));
+    }
+    
     private DoubleArrayTimeCache.Data data(TimeStamp begin, TimeStamp end) {
         return new Data(cache.subMap(begin, end), begin, end);
+    }
+    
+    private <T extends Comparable<T>> T max(T a, T b) {
+        if (a.compareTo(b) > 0) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+    
+    private <T extends Comparable<T>> T min(T a, T b) {
+        if (a.compareTo(b) < 0) {
+            return a;
+        } else {
+            return b;
+        }
     }
 
     @Override
     public List<DoubleArrayTimeCache.Data> newData(TimeStamp beginUpdate, TimeStamp endUpdate, TimeStamp beginNew, TimeStamp endNew) {
-        return Collections.singletonList(getData(beginUpdate, endNew));
-//        List<VDoubleArray> newValues = function.getValue();
-//        
-//        // No new values, just return the last value
-//        if (newValues.isEmpty()) {
-//            return Collections.singletonList(data(cache.lowerKey(endNew), endNew));
-//        }
-//        
-//        List<TimeStamp> newTimeStamps = new ArrayList<TimeStamp>();
-//        for (VDoubleArray value : newValues) {
-//            cache.put(value.getTimeStamp(), value);
-//            newTimeStamps.add(value.getTimeStamp());
-//        }
-//        if (cache.isEmpty())
-//            return Collections.emptyList();
-//        
-//        Collections.sort(newTimeStamps);
-//        TimeStamp firstNewValue = newTimeStamps.get(0);
-//        
-//        // We have just one section that start from the oldest update.
-//        // If the oldest update is too far, we use the start of the update region.
-//        // If the oldest update is too recent, we start from the being period
-//        TimeStamp newBegin = firstNewValue;
-//        if (firstNewValue.compareTo(beginUpdate) < 0) {
-//            newBegin = beginUpdate;
-//        }
-//        if (firstNewValue.compareTo(beginNew) > 0) {
-//            newBegin = beginNew;
-//        }
-//        
-//        
-//        newBegin = cache.lowerKey(newBegin);
-//        if (newBegin == null)
-//            newBegin = cache.firstKey();
-//        
-//        return Collections.singletonList(data(newBegin, endNew));
+        List<TimeInterval> updates = update();
+        if (updates.isEmpty())
+            return Collections.singletonList(data(cache.lowerKey(beginNew), endNew));
+        
+        TimeInterval updateInterval = updates.get(0);
+        TimeStamp newBegin = max(beginUpdate, updateInterval.getStart());
+        newBegin = min(newBegin, beginNew);
+        return Collections.singletonList(data(newBegin, endNew));
     }
 
     @Override

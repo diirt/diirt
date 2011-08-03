@@ -93,6 +93,11 @@ class WaterfallPlotFunction2 extends Function<VImage> {
         if (previousImage != null && nNewPixels == 0 && dataToPlot.isEmpty()) {
             return previousImage;
         }
+        
+        // If we don't have an image, and we have no new data, return no image
+        if (previousImage == null && dataToPlot.isEmpty()) {
+            return null;
+        }
 
         // Initialize adaptiveRange
         if (parameters.adaptiveRange) {
@@ -119,8 +124,10 @@ class WaterfallPlotFunction2 extends Function<VImage> {
         // TODO if adaptiveRange has changed, should redraw all!
         
         int newWidth = calculateNewWidth(previousBuffer, parameters, newMaxArraySize);
-        if (newWidth == 0)
+        if (newWidth == 0) {
+            // If all data was zero length, return no image
             return null;
+        }
         
         
         // Create new image. Copy the old image if needed.
@@ -163,7 +170,7 @@ class WaterfallPlotFunction2 extends Function<VImage> {
         TimeStamp pixelEnd = pixelStart.plus(pixelDuration);
         
         // Loop until the pixel starts before the range end
-        while (pixelStart.compareTo(data.getEnd()) <= 0) {
+        while (pixelStart.compareTo(data.getEnd()) < 0) {
             // Get all the values in the pixel
             List<double[]> pixelValues = valuesInPixel(pixelStart, pixelEnd, data, usedArrays);
             // Determine the data to print on screen
