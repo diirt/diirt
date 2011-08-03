@@ -54,24 +54,13 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
     /**
      * Creates a new source rate expression.
      * 
-     * @param childExpression the expression used as argument used by this expression
-     * @param function the function that will calculate the value for this expression
-     * @param defaultName the name for this expression
-     */
-    public SourceRateExpressionImpl(SourceRateExpression<?> childExpression, Function<R> function, String defaultName) {
-        this(Collections.<SourceRateExpression<?>>singletonList(childExpression), function, defaultName);
-    }
-
-    /**
-     * Creates a new source rate expression.
-     * 
      * @param childExpressions the expressions used as arguments by this expression
      * @param function the function that will calculate the value for this expression
      * @param defaultName the name for this expression
      */
-    public SourceRateExpressionImpl(List<SourceRateExpression<?>> childExpressions, Function<R> function, String defaultName) {
+    public SourceRateExpressionImpl(SourceRateExpressionList<?> childExpressions, Function<R> function, String defaultName) {
         caches = new HashMap<String, ValueCache>();
-        for (SourceRateExpression<?> childExpression : childExpressions) {
+        for (SourceRateExpression<?> childExpression : childExpressions.getSourceRateExpressions()) {
             for (Map.Entry<String, ValueCache> entry : childExpression.getSourceRateExpressionImpl().getCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (caches.keySet().contains(pvName)) {

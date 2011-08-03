@@ -58,24 +58,13 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
     /**
      * Creates a new write expression.
      * 
-     * @param childExpression the expression used as arguments by this expression
-     * @param function the function that will decompose the payload for this expression
-     * @param defaultName the name for this expression
-     */
-    public WriteExpressionImpl(WriteExpression<?> childExpression, WriteFunction<W> function, String defaultName) {
-        this(Collections.<WriteExpression<?>>singletonList(childExpression), function, defaultName);
-    }
-
-    /**
-     * Creates a new write expression.
-     * 
      * @param childExpressions the expressions used as arguments by this expression
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression
      */
-    public WriteExpressionImpl(List<WriteExpression<?>> childExpressions, WriteFunction<W> function, String defaultName) {
+    public WriteExpressionImpl(WriteExpressionList<?> childExpressions, WriteFunction<W> function, String defaultName) {
         writeCaches = new HashMap<String, WriteCache<?>>();
-        for (WriteExpression<?> childExpression : childExpressions) {
+        for (WriteExpression<?> childExpression : childExpressions.getWriteExpressions()) {
             for (Map.Entry<String, WriteCache<?>> entry : childExpression.getWriteExpressionImpl().getWriteCaches().entrySet()) {
                 String pvName = entry.getKey();
                 if (writeCaches.keySet().contains(pvName)) {

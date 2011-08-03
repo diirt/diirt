@@ -53,26 +53,6 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     /**
      * Creates a new aggregated expression. Use this constructor when making
-     * a {@code DesiredRateExpression} that is a function of another
-     * {@code DesiredRateExpression}.
-     *
-     * @param expression the expression for the argument of the function
-     * @param function the function to calculate the new expression
-     * @param defaultName the name of the expression
-     */
-    public DesiredRateExpressionImpl(DesiredRateExpression<?> expression, Function<R> function, String defaultName) {
-        // TODO: maybe another constructor for no parent expression?
-        if (expression == null) {
-            this.recipe = new DataRecipeBuilder();
-        } else {
-            this.recipe = expression.getDesiredRateExpressionImpl().recipe;
-        }
-        this.function = function;
-        this.name = defaultName;
-    }
-
-    /**
-     * Creates a new aggregated expression. Use this constructor when making
      * a {@code DesiredRateExpression} that is a function of a number of
      * {@code DesiredRateExpression}s.
      *

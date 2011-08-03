@@ -509,7 +509,7 @@ public class ExpressionLanguage {
         }
 
         @SuppressWarnings("unchecked")
-        WriteExpression<Map<String, T>> expression = new WriteExpressionImpl<Map<String, T>>((List<WriteExpression<?>>) (List) expressions.getWriteExpressions(),
+        WriteExpression<Map<String, T>> expression = new WriteExpressionImpl<Map<String, T>>(expressions,
                 new MapOfWriteFunction<T>(names, functions), null);
         return expression;
     }
@@ -526,19 +526,15 @@ public class ExpressionLanguage {
         List<String> names = new ArrayList<String>();
         List<Function<R>> functions = new ArrayList<Function<R>>();
         List<WriteFunction<W>> writefunctions = new ArrayList<WriteFunction<W>>();
-        List<DesiredRateExpression<?>> readExpressions = new ArrayList<DesiredRateExpression<?>>();
-        List<WriteExpression<?>> writeExpressions = new ArrayList<WriteExpression<?>>();
         for (DesiredRateReadWriteExpression<R, W> expression : expressions.getDesiredRateReadWriteExpressions()) {
             names.add(expression.getName());
             functions.add(expression.getFunction());
             writefunctions.add(expression.getWriteFunction());
-            readExpressions.add(expression);
-            writeExpressions.add(expression);
         }
         
         DesiredRateExpression<Map<String, R>> readExpression = new DesiredRateExpressionImpl<Map<String, R>>(expressions,
                 new MapOfFunction<R>(names, functions), null);
-        WriteExpression<Map<String, W>> writeExpression = new WriteExpressionImpl<Map<String, W>>(writeExpressions,
+        WriteExpression<Map<String, W>> writeExpression = new WriteExpressionImpl<Map<String, W>>(expressions,
                 new MapOfWriteFunction<W>(names, writefunctions), null);
         
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
