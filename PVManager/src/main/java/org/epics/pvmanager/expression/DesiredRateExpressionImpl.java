@@ -67,14 +67,12 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
     }
 
     private static DataRecipeBuilder combineRecipes(DesiredRateExpressionList<?> expressions) {
-        @SuppressWarnings("unchecked")
-        List<DesiredRateExpression<?>> childExpressions = (List<DesiredRateExpression<?>>) (List) expressions.getDesiredRateExpressions();
-        if (childExpressions.isEmpty())
+        if (expressions.getDesiredRateExpressions().isEmpty())
             return new DataRecipeBuilder();
 
-        DataRecipeBuilder recipe = childExpressions.get(0).getDesiredRateExpressionImpl().recipe;
-        for (int i = 1; i < childExpressions.size(); i++) {
-            DataRecipeBuilder newRecipe = childExpressions.get(i).getDesiredRateExpressionImpl().recipe;
+        DataRecipeBuilder recipe = expressions.getDesiredRateExpressions().get(0).getDesiredRateExpressionImpl().recipe;
+        for (int i = 1; i < expressions.getDesiredRateExpressions().size(); i++) {
+            DataRecipeBuilder newRecipe = expressions.getDesiredRateExpressions().get(i).getDesiredRateExpressionImpl().recipe;
             recipe.addAll(newRecipe);
         }
 
