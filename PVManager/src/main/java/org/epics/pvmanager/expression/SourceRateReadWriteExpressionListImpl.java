@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +44,8 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final List<SourceRateExpression<R>> getSourceRateExpressions() {
-        return Collections.unmodifiableList(sourceRateReadWriteExpressions);
+        return Collections.<SourceRateExpression<R>>unmodifiableList(sourceRateReadWriteExpressions);
     }
 
     @Override
@@ -57,9 +56,8 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final List<WriteExpression<W>> getWriteExpressions() {
-        return Collections.unmodifiableList(sourceRateReadWriteExpressions);
+        return Collections.<WriteExpression<W>>unmodifiableList(sourceRateReadWriteExpressions);
     }
     
 }

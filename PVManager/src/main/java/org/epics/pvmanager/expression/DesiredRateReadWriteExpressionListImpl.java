@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +44,8 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final List<DesiredRateExpression<R>> getDesiredRateExpressions() {
-        return Collections.unmodifiableList(desiredRateReadWriteExpressions);
+        return Collections.<DesiredRateExpression<R>>unmodifiableList(desiredRateReadWriteExpressions);
     }
 
     @Override
@@ -57,9 +56,8 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final List<WriteExpression<W>> getWriteExpressions() {
-        return Collections.unmodifiableList(desiredRateReadWriteExpressions);
+        return Collections.<WriteExpression<W>>unmodifiableList(desiredRateReadWriteExpressions);
     }
     
 }
