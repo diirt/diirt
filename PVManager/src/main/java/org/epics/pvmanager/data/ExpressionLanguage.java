@@ -203,7 +203,7 @@ public class ExpressionLanguage {
      * @return an expression for the array
      */
     public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpression<VDouble> expressions) {
+            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
         return synchronizedArrayOf(tolerance, tolerance.multiplyBy(10), expressions);
     }
 
