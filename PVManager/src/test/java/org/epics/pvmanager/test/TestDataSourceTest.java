@@ -78,7 +78,7 @@ public class TestDataSourceTest {
         PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).every(ms(10));
         pvReader.addPVReaderListener(readListener);
         
-        Thread.sleep(20);
+        Thread.sleep(30);
         
         ReadFailException ex = (ReadFailException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
@@ -111,7 +111,7 @@ public class TestDataSourceTest {
         assertThat(ex, nullValue());
         verify(writeListener, never()).pvWritten();
         
-        Thread.sleep(1000);
+        Thread.sleep(1100);
         
         ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
@@ -140,7 +140,7 @@ public class TestDataSourceTest {
         assertThat(ex, not(nullValue()));
         verify(writeListener).pvWritten();
         
-        Thread.sleep(500);
+        Thread.sleep(600);
         
         ex = (TimeoutException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
@@ -212,7 +212,7 @@ public class TestDataSourceTest {
         assertThat(ex, nullValue());
         verify(readListener, never()).pvChanged();
         
-        Thread.sleep(500);
+        Thread.sleep(600);
         
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
@@ -241,7 +241,7 @@ public class TestDataSourceTest {
         assertThat(ex, nullValue());
         verify(readListener, never()).pvChanged();
         
-        Thread.sleep(500);
+        Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
@@ -271,7 +271,7 @@ public class TestDataSourceTest {
         assertThat(ex, nullValue());
         verify(readListener, never()).pvChanged();
         
-        Thread.sleep(500);
+        Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));

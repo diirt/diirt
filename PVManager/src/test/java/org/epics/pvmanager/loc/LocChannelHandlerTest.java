@@ -81,7 +81,7 @@ public class LocChannelHandlerTest {
     public void writeToLocalChannelTwoMonitors() {
         
         // Creating a test local channel
-        LocalChannelHandler channel = new LocalChannelHandler("test2");
+        LocalChannelHandler channel = new LocalChannelHandler("test2", 0.0);
         assertThat(channel.getChannelName(), equalTo("test2"));
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
@@ -112,12 +112,15 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(false));
         
         ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-        verify(vDoubleCache1).setValue(newValue.capture());
-        assertThat(newValue.getValue().getValue(), equalTo(16.28));
-        verify(vDoubleCollector1).collect();
-        verify(vDoubleCache2).setValue(newValue.capture());
-        assertThat(newValue.getValue().getValue(), equalTo(16.28));
-        verify(vDoubleCollector2).collect();
+        verify(vDoubleCache1, times(2)).setValue(newValue.capture());
+        assertThat(newValue.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue.getAllValues().get(1).getValue(), equalTo(16.28));
+        verify(vDoubleCollector1, times(2)).collect();
+        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
+        verify(vDoubleCache2, times(2)).setValue(newValue2.capture());
+        assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));
+        verify(vDoubleCollector2, times(2)).collect();
         verify(channelWriteCallback).channelWritten(null);
         verifyZeroInteractions(channelWriteCallback, exceptionHandler);
     }

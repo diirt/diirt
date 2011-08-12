@@ -87,14 +87,17 @@ public class LocalDataSourceTest {
         Thread.sleep(200);
         dataSource.concludeWrite(writeBuffer, exceptionHandler);
         dataSource.disconnect(dataRecipe);
-       
+        
         // Check that the correct value was written and that the write notification was sent
-        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-        verify(valueCache1).setValue(newValue.capture());
-        assertThat(newValue.getValue().getValue(), equalTo(6.28));
-        verify(valueCache2).setValue(newValue.capture());
-        assertThat(newValue.getValue().getValue(), equalTo(16.28));
-        verify(collector, times(2)).collect();
+        ArgumentCaptor<VDouble> newValue1 = ArgumentCaptor.forClass(VDouble.class); 
+        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
+        verify(valueCache1, times(2)).setValue(newValue1.capture());
+        assertThat(newValue1.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue1.getAllValues().get(1).getValue(), equalTo(6.28));
+        verify(valueCache2, times(2)).setValue(newValue2.capture());
+        assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));
+        verify(collector, times(4)).collect();
         verify(callback).run();
     }
     
