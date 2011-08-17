@@ -166,7 +166,7 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
                 }
             };
             if (newValue instanceof String) {
-                channel.put(Double.parseDouble(newValue.toString()), listener);
+                channel.put(newValue.toString(), listener);
             } else if (newValue instanceof Byte || newValue instanceof Short
                     || newValue instanceof Integer || newValue instanceof Long) {
                 channel.put(((Number) newValue).longValue(), listener);
