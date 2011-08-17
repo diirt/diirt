@@ -167,11 +167,23 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
             };
             if (newValue instanceof String) {
                 channel.put(newValue.toString(), listener);
+            } else if (newValue instanceof byte[]) {
+                channel.put((byte[]) newValue, listener);
+            } else if (newValue instanceof short[]) {
+                channel.put((short[]) newValue, listener);
+            } else if (newValue instanceof int[]) {
+                channel.put((int[]) newValue, listener);
+            } else if (newValue instanceof float[]) {
+                channel.put((float[]) newValue, listener);
+            } else if (newValue instanceof double[]) {
+                channel.put((double[]) newValue, listener);
             } else if (newValue instanceof Byte || newValue instanceof Short
                     || newValue instanceof Integer || newValue instanceof Long) {
                 channel.put(((Number) newValue).longValue(), listener);
             } else if (newValue instanceof Float || newValue instanceof Double) {
                 channel.put(((Number) newValue).doubleValue(), listener);
+            } else {
+                throw new RuntimeException("Unsupported type for CA: " + newValue.getClass());
             }
             context.flushIO();
         } catch (CAException ex) {
