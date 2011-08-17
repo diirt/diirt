@@ -5,6 +5,7 @@
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.CAException;
+import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
@@ -157,7 +158,11 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
 
                 @Override
                 public void putCompleted(PutEvent ev) {
-                    callback.channelWritten(null);
+                    if (ev.getStatus().isSuccessful()) {
+                        callback.channelWritten(null);
+                    } else {
+                        callback.channelWritten(new Exception(ev.toString()));
+                    }
                 }
             };
             if (newValue instanceof String) {
