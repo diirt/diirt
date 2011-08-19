@@ -24,6 +24,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
     private double min;
     private double max;
     private int nSamples;
+    private double range;
     private VDoubleArray lastValue;
 
     /**
@@ -59,6 +60,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
         super(interval, VDoubleArray.class);
         this.min = min;
         this.max = max;
+        range = this.max - this.min;
         this.nSamples = nSamples.intValue();
         if (this.nSamples <= 0) {
             throw new IllegalArgumentException("Number of sample must be a positive integer.");
@@ -79,7 +81,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
             lastTime = TimeStamp.now();
         return ValueFactory.newVDoubleArray(generateNewValue(), Collections.singletonList(nSamples), AlarmSeverity.NONE, AlarmStatus.NONE,
                 lastTime, null,
-                -0.5, -0.35, -0.25, "x", Constants.DOUBLE_FORMAT,
-                1.0, 1.10, 1.25, -0.5, 1.25);
+                min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
+                min + range * 0.8, min + range * 0.9, max, min, max);
     }
 }
