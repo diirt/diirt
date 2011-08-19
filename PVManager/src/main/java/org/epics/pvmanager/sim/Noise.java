@@ -33,7 +33,7 @@ public class Noise extends SimFunction<VDouble> {
      * every 100ms (10Hz).
      */
     public Noise() {
-        this(-5.0, 5.0, 0.1);
+        this(-5.0, 5.0, 1.0);
     }
     
     /**
