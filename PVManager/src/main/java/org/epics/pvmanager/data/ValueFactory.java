@@ -138,15 +138,15 @@ public class ValueFactory {
      */
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
-            VDouble oldValue) {
+            Display display) {
         return newVDouble(value, alarmSeverity, alarmStatus,
                 timeStamp,
                 timeUserTag,
-                oldValue.getLowerDisplayLimit(), oldValue.getLowerAlarmLimit(),
-                oldValue.getLowerWarningLimit(), oldValue.getUnits(),
-                oldValue.getFormat(), oldValue.getUpperWarningLimit(),
-                oldValue.getUpperAlarmLimit(), oldValue.getUpperDisplayLimit(),
-                oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
+                display.getLowerDisplayLimit(), display.getLowerAlarmLimit(),
+                display.getLowerWarningLimit(), display.getUnits(),
+                display.getFormat(), display.getUpperWarningLimit(),
+                display.getUpperAlarmLimit(), display.getUpperDisplayLimit(),
+                display.getLowerCtrlLimit(), display.getUpperCtrlLimit());
     }
     
     /**
@@ -155,23 +155,23 @@ public class ValueFactory {
      * 
      * @param value new numeric value
      * @param timeStamp time stamp
-     * @param oldValue metadata
+     * @param display metadata
      * @return new value
      */
-    public static VDouble newVDouble(double value, TimeStamp timeStamp, VDouble oldValue) {
+    public static VDouble newVDouble(double value, TimeStamp timeStamp, Display display) {
         // Calculate new AlarmSeverity, using oldValue ranges
         AlarmSeverity severity = AlarmSeverity.NONE;
         AlarmStatus status = AlarmStatus.NONE;
-        if (value <= oldValue.getLowerAlarmLimit() || value >= oldValue.getUpperAlarmLimit()) {
+        if (value <= display.getLowerAlarmLimit() || value >= display.getUpperAlarmLimit()) {
             status = AlarmStatus.RECORD;
             severity = AlarmSeverity.MAJOR;
-        } else if (value <= oldValue.getLowerWarningLimit() || value >= oldValue.getUpperWarningLimit()) {
+        } else if (value <= display.getLowerWarningLimit() || value >= display.getUpperWarningLimit()) {
             status = AlarmStatus.RECORD;
             severity = AlarmSeverity.MINOR;
         }
 
         return ValueFactory.newVDouble(value, severity, status,
-                null, timeStamp, oldValue);
+                null, timeStamp, display);
     }
     
     /**
@@ -179,11 +179,11 @@ public class ValueFactory {
      * now as timestamp and computing alarm from the metadata range.
      * 
      * @param value new numeric value
-     * @param oldValue metadata
+     * @param display metadata
      * @return new value
      */
-    public static VDouble newVDouble(double value, VDouble oldValue) {
-        return newVDouble(value, TimeStamp.now(), oldValue);
+    public static VDouble newVDouble(double value, Display display) {
+        return newVDouble(value, TimeStamp.now(), display);
     }
 
     /**
