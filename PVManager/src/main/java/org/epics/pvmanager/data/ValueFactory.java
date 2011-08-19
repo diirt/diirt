@@ -148,6 +148,43 @@ public class ValueFactory {
                 oldValue.getUpperAlarmLimit(), oldValue.getUpperDisplayLimit(),
                 oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
     }
+    
+    /**
+     * Creates new immutable VDouble by using the metadata from the old value,
+     * and computing the alarm from the metadata range.
+     * 
+     * @param value new numeric value
+     * @param timeStamp time stamp
+     * @param oldValue metadata
+     * @return new value
+     */
+    public static VDouble newVDouble(double value, TimeStamp timeStamp, VDouble oldValue) {
+        // Calculate new AlarmSeverity, using oldValue ranges
+        AlarmSeverity severity = AlarmSeverity.NONE;
+        AlarmStatus status = AlarmStatus.NONE;
+        if (value <= oldValue.getLowerAlarmLimit() || value >= oldValue.getUpperAlarmLimit()) {
+            status = AlarmStatus.RECORD;
+            severity = AlarmSeverity.MAJOR;
+        } else if (value <= oldValue.getLowerWarningLimit() || value >= oldValue.getUpperWarningLimit()) {
+            status = AlarmStatus.RECORD;
+            severity = AlarmSeverity.MINOR;
+        }
+
+        return ValueFactory.newVDouble(value, severity, status,
+                null, timeStamp, oldValue);
+    }
+    
+    /**
+     * Creates new immutable VDouble by using metadata from the old value,
+     * now as timestamp and computing alarm from the metadata range.
+     * 
+     * @param value new numeric value
+     * @param oldValue metadata
+     * @return new value
+     */
+    public static VDouble newVDouble(double value, VDouble oldValue) {
+        return newVDouble(value, TimeStamp.now(), oldValue);
+    }
 
     /**
      * Creates a new immutable VStatistics.
