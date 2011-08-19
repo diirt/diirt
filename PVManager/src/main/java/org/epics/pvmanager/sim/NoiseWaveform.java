@@ -1,0 +1,82 @@
+/*
+ * Copyright 2010-11 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
+package org.epics.pvmanager.sim;
+
+import java.util.Collections;
+import java.util.Random;
+import org.epics.pvmanager.util.TimeStamp;
+import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.AlarmStatus;
+import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.pvmanager.data.ValueFactory;
+
+/**
+ * Function to simulate a waveform containing a uniformly distributed
+ * random data.
+ *
+ * @author carcassi
+ */
+public class NoiseWaveform extends SimFunction<VDoubleArray> {
+
+    private Random rand = new Random();
+    private double min;
+    private double max;
+    private int nSamples;
+    private VDoubleArray lastValue;
+
+    /**
+     * Creates a waveform with samples from a uniform distribution from -5 to 5,
+     * updating every second.
+     */
+    public NoiseWaveform() {
+        this(-5.0, 5.0, 1, 1.0);
+    }
+    
+    /**
+     * Creates a gaussian waveform signal with a gaussian distribution, updating at the rate
+     * specified.
+     *
+     * @param min the minimum value
+     * @param max the maximum value
+     * @param interval time between samples in seconds
+     */
+    public NoiseWaveform(Double min, Double max, Double interval) {
+        this(min, max, 1, interval);
+    }
+
+    /**
+     * Creates a gaussian waveform signal with a gaussian distribution, updating at the rate
+     * specified.
+     *
+     * @param min the minimum value
+     * @param max the maximum value
+     * @param nSamples number of elements in the waveform
+     * @param interval time between samples in seconds
+     */
+    public NoiseWaveform(Double min, Double max, int nSamples, Double interval) {
+        super(interval, VDoubleArray.class);
+        this.min = min;
+        this.max = max;
+        this.nSamples = nSamples;
+    }
+
+    private double[] generateNewValue() {
+        double[] newArray = new double[nSamples];
+        for (int i = 0; i < newArray.length; i++) {
+            newArray[i] = min + rand.nextDouble() * (max - min);
+        }
+        return newArray;
+    }
+
+    @Override
+    VDoubleArray nextValue() {
+        if (lastTime == null)
+            lastTime = TimeStamp.now();
+        return ValueFactory.newVDoubleArray(generateNewValue(), Collections.singletonList(nSamples), AlarmSeverity.NONE, AlarmStatus.NONE,
+                lastTime, null,
+                -0.5, -0.35, -0.25, "x", Constants.DOUBLE_FORMAT,
+                1.0, 1.10, 1.25, -0.5, 1.25);
+    }
+}
