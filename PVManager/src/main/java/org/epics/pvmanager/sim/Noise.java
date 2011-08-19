@@ -35,6 +35,20 @@ public class Noise extends SimFunction<VDouble> {
     public Noise() {
         this(-5.0, 5.0, 0.1);
     }
+    
+    /**
+     * Do not use: only provided to provide some sort of error message
+     * for people migrating from utility.pv.
+     * 
+     * @param min minimum value
+     * @param max maximum value
+     * @param step ignored
+     * @param interval interval between samples in seconds
+     */
+    public Noise(Double min, Double max, Double step, Double interval) {
+        super(interval, VDouble.class);
+        throw new IllegalArgumentException("Please rename to noise(" + min + ", " + max + ", " + interval + ")");
+    }
 
     /**
      * Creates a signal uniformly distributed between min and max, updating
