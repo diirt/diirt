@@ -31,7 +31,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
      * updating every second.
      */
     public NoiseWaveform() {
-        this(-5.0, 5.0, 1, 1.0);
+        this(-5.0, 5.0, 1.0);
     }
     
     /**
@@ -43,7 +43,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
      * @param interval time between samples in seconds
      */
     public NoiseWaveform(Double min, Double max, Double interval) {
-        this(min, max, 1, interval);
+        this(min, max, 1.0, interval);
     }
 
     /**
@@ -55,11 +55,14 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
      * @param nSamples number of elements in the waveform
      * @param interval time between samples in seconds
      */
-    public NoiseWaveform(Double min, Double max, int nSamples, Double interval) {
+    public NoiseWaveform(Double min, Double max, Double nSamples, Double interval) {
         super(interval, VDoubleArray.class);
         this.min = min;
         this.max = max;
-        this.nSamples = nSamples;
+        this.nSamples = nSamples.intValue();
+        if (this.nSamples <= 0) {
+            throw new IllegalArgumentException("Number of sample must be a positive integer.");
+        }
     }
 
     private double[] generateNewValue() {
