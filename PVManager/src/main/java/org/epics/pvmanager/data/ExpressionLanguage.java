@@ -19,6 +19,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.util.TimeDuration;
+import org.epics.pvmanager.util.TimeStamp;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**
@@ -164,6 +165,39 @@ public class ExpressionLanguage {
      */
     public static ChannelExpressionList<VDouble, Double> vDoubles(List<String> names) {
         return channels(names, VDouble.class, Double.class);
+    }
+
+    /**
+     * A list of constant expressions of type VDouble.
+     */
+    public static DesiredRateExpressionList<VDouble> vDoubleConstants(List<Double> values) {
+        DesiredRateExpressionList<VDouble> list = new DesiredRateExpressionListImpl<VDouble>();
+        for (Double value : values) {
+            list.and(constant(ValueFactory.newVDouble(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null, null, null, null, null, null, null, null, null, null, null)));
+        }
+        return list;
+    }
+
+    /**
+     * A list of constant expressions of type VDouble.
+     */
+    public static DesiredRateExpressionList<VInt> vIntConstants(List<Integer> values) {
+        DesiredRateExpressionList<VInt> list = new DesiredRateExpressionListImpl<VInt>();
+        for (Integer value : values) {
+            list.and(constant(ValueFactory.newVInt(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null, null, null, null, null, null, null, null, null, null, null)));
+        }
+        return list;
+    }
+
+    /**
+     * A list of constant expressions of type VString.
+     */
+    public static DesiredRateExpressionList<VString> vStringConstants(List<String> values) {
+        DesiredRateExpressionList<VString> list = new DesiredRateExpressionListImpl<VString>();
+        for (String value : values) {
+            list.and(constant(ValueFactory.newVString(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null)));
+        }
+        return list;
     }
 
     /**
