@@ -40,6 +40,19 @@ public class ValueFactory {
     }
 
     /**
+     * Creates new immutable VInt.
+     */
+    public static VInt newVInt(final Integer value, final AlarmSeverity alarmSeverity,
+            final AlarmStatus alarmStatus, final TimeStamp timeStamp,
+            final Integer timeUserTag,
+            final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
+            final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
+            final Double upperAlarmLimit, final Double upperDisplayLimit,
+            final Double lowerCtrlLimit, final Double upperCtrlLimit) {
+        return new IVInt(value, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
+    }
+
+    /**
      * Creates new immutable VDouble.
      */
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
