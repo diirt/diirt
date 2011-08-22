@@ -21,7 +21,7 @@ import java.util.Set;
  * @author carcassi
  */
 public class ValueFactory {
-
+    
     public static VString newVString(String value, AlarmSeverity alarmSeverity,
             AlarmStatus alarmStatus,
             TimeStamp timeStamp, Integer timeUserTag) {
