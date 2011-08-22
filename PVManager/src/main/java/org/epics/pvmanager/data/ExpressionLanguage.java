@@ -281,4 +281,24 @@ public class ExpressionLanguage {
                 (Function<VMultiDouble>) aggregator, "syncArray");
     }
 
+    /**
+     * A column for an aggregated vTable.
+     * 
+     * @param name the name of the column
+     * @param values the value of the column
+     * @return the column
+     */
+    public static VTableColumn column(String name, DesiredRateExpressionList<?> values) {
+        return new VTableColumn(name, values);
+    }
+    
+    /**
+     * Creates a vTable by aggregating different values from different pvs.
+     * 
+     * @param columns columns of the table
+     * @return an expression for the table
+     */
+    public static DesiredRateExpression<VTable> vTable(VTableColumn... columns) {
+        return null;
+    }
 }
