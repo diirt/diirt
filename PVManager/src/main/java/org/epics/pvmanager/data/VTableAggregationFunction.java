@@ -38,6 +38,7 @@ public class VTableAggregationFunction extends Function<VTable> {
         arrayAdders.put(Double.TYPE, new ArrayAdder() {
 
             @Override
+            @SuppressWarnings("unchecked")
             public void addValue(Object array, int pos, Object value) {
                 ((double[]) array)[pos] = ((Scalar<Number>) value).getValue().doubleValue();
             }
@@ -45,6 +46,7 @@ public class VTableAggregationFunction extends Function<VTable> {
         arrayAdders.put(Integer.TYPE, new ArrayAdder() {
 
             @Override
+            @SuppressWarnings("unchecked")
             public void addValue(Object array, int pos, Object value) {
                 ((int[]) array)[pos] = ((Scalar<Number>) value).getValue().intValue();
             }
