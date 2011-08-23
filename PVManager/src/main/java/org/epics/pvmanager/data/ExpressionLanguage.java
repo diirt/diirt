@@ -16,6 +16,7 @@ import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.util.TimeDuration;
@@ -299,6 +300,14 @@ public class ExpressionLanguage {
      * @return an expression for the table
      */
     public static DesiredRateExpression<VTable> vTable(VTableColumn... columns) {
-        return null;
+        DesiredRateExpressionListImpl<Object> list = new DesiredRateExpressionListImpl<Object>();
+        List<List<Function<?>>> functions = new ArrayList<List<Function<?>>>();
+        List<String> names = new ArrayList<String>();
+        for (VTableColumn column : columns) {
+            functions.add(Expressions.functionsOf(column.getValueExpressions()));
+            list.and(column.getValueExpressions());
+            names.add(column.getName());
+        }
+        return new DesiredRateExpressionImpl<VTable>(list, new VTableAggregationFunction(functions, names), "table");
     }
 }
