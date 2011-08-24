@@ -77,12 +77,7 @@ public class VTableAggregationFunction extends Function<VTable> {
             // Extract all values and determine column type
             for (Function<?> function : columnFunctions) {
                 Object value = function.getValue();
-                columnType = validateType(value, columnType);
-                
-                // Types don't match
-                if (columnType == null) {
-                    throw new RuntimeException("Values for column " + names.get(types.size()) + " are not all of the same valid column type (currently only VString, VDouble and VInt).");
-                }
+                columnType = validateType(value, columnType, names.get(types.size()));
                 
                 columnValues.add(value);
             }
@@ -105,7 +100,10 @@ public class VTableAggregationFunction extends Function<VTable> {
         void addValue(Object array, int pos, Object value);
     }
     
-    private Class<?> validateType(Object value, Class<?> oldType) {
+    private Class<?> validateType(Object value, Class<?> oldType, String columnName) {
+        if (value == null)
+            return oldType;
+        
         // Type of the final array
         Class<?> newType = typeConversion.get(ValueUtil.typeOf(value));
         if (oldType == null)
@@ -123,7 +121,10 @@ public class VTableAggregationFunction extends Function<VTable> {
         if (newType.equals(Integer.class) && oldType.equals(Double.class))
             return oldType;
         
-        return null;
+                
+        // Types don't match
+        throw new RuntimeException("Values for column " + columnName + " are not all of the same valid column type: found "
+                + oldType.getSimpleName() + " and " + value.getClass().getSimpleName() + " - currently only VString, VDouble and VInt).");
     }
     
 }
