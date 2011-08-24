@@ -114,9 +114,9 @@ public class VTableAggregationFunction extends Function<VTable> {
                 return oldType;
 
             // Convert integers to double if mixed column
-            if (newType.equals(Double.class) && oldType.equals(Integer.class))
+            if (newType.equals(Double.TYPE) && oldType.equals(Integer.TYPE))
                 return newType;
-            if (newType.equals(Integer.class) && oldType.equals(Double.class))
+            if (newType.equals(Integer.TYPE) && oldType.equals(Double.TYPE))
                 return oldType;
         }
         
