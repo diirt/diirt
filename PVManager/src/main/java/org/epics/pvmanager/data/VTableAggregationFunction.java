@@ -32,7 +32,8 @@ public class VTableAggregationFunction extends Function<VTable> {
 
             @Override
             public void addValue(Object array, int pos, Object value) {
-                ((String[]) array)[pos] = ((VString) value).getValue();
+                if (value != null)
+                   ((String[]) array)[pos] = ((VString) value).getValue();
             }
         });
         arrayAdders.put(Double.TYPE, new ArrayAdder() {
@@ -40,7 +41,10 @@ public class VTableAggregationFunction extends Function<VTable> {
             @Override
             @SuppressWarnings("unchecked")
             public void addValue(Object array, int pos, Object value) {
-                ((double[]) array)[pos] = ((Scalar<Number>) value).getValue().doubleValue();
+                double converted = Double.NaN;
+                if (value != null)
+                    converted = ((Scalar<Number>) value).getValue().doubleValue();
+                ((double[]) array)[pos] = converted;
             }
         });
         arrayAdders.put(Integer.TYPE, new ArrayAdder() {
@@ -48,7 +52,10 @@ public class VTableAggregationFunction extends Function<VTable> {
             @Override
             @SuppressWarnings("unchecked")
             public void addValue(Object array, int pos, Object value) {
-                ((int[]) array)[pos] = ((Scalar<Number>) value).getValue().intValue();
+                int converted = 0;
+                if (value != null)
+                    converted = ((Scalar<Number>) value).getValue().intValue();
+                ((int[]) array)[pos] = converted;
             }
         });
     }
