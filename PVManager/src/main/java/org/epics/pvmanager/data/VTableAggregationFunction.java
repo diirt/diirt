@@ -109,22 +109,21 @@ public class VTableAggregationFunction extends Function<VTable> {
         if (oldType == null)
             return newType;
         
-        if (newType == null)
-            return null;
-        
-        if (newType.equals(oldType))
-            return oldType;
-        
-        // Convert integers to double if mixed column
-        if (newType.equals(Double.class) && oldType.equals(Integer.class))
-            return newType;
-        if (newType.equals(Integer.class) && oldType.equals(Double.class))
-            return oldType;
+        if (newType != null) {
+            if (newType.equals(oldType))
+                return oldType;
+
+            // Convert integers to double if mixed column
+            if (newType.equals(Double.class) && oldType.equals(Integer.class))
+                return newType;
+            if (newType.equals(Integer.class) && oldType.equals(Double.class))
+                return oldType;
+        }
         
                 
         // Types don't match
-        throw new RuntimeException("Values for column " + columnName + " are not all of the same valid column type: found "
-                + oldType.getSimpleName() + " and " + value.getClass().getSimpleName() + " - currently only VString, VDouble and VInt).");
+        throw new RuntimeException("Values for column " + columnName + " are not all of the same valid column type: can't convert "
+                + value.getClass().getSimpleName() + " to " + oldType.getSimpleName() + " - currently only VString, VDouble and VInt).");
     }
     
 }
