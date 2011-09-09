@@ -45,7 +45,7 @@ public class MockProbe extends javax.swing.JFrame {
         PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("epics", new JCADataSource());
+        dataSource.putDataSource("ca", new JCADataSource());
         dataSource.setDefaultDataSource("sim");
         PVManager.setDefaultDataSource(dataSource);
         initComponents();
