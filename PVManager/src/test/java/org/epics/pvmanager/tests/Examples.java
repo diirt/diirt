@@ -15,6 +15,7 @@ import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.jca.JCADataSource;
@@ -25,6 +26,7 @@ import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Time;
+import org.epics.pvmanager.data.VTable;
 import org.epics.pvmanager.data.ValueUtil;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
@@ -362,6 +364,26 @@ public class Examples {
                 // and that the value is not null
                 VDouble vDouble = (VDouble) pvReader.getValue();
                 System.out.println(vDouble.getValue());
+                // ...
+            }
+        });
+    }
+    
+    public void t1() {
+        List<String> names = Arrays.asList("one", "two", "trhee");
+        final PVReader<VTable> pvReader = PVManager.read(vTable(
+                column("Names", vStringConstants(names)),
+                column("Values", latestValueOf(channels(names)))))
+                .every(ms(100));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                VTable vTable = pvReader.getValue();
+                // First column is the names
+                String[] names = (String[]) vTable.getColumnArray(0);
+                // Second column is the values
+                double[] values = (double[]) vTable.getColumnArray(1);
                 // ...
             }
         });
