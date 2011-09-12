@@ -21,6 +21,9 @@ import java.util.List;
  */
 public interface VExtendedAlarm {
     
+    /**
+     * A single alarm condition that can be on or off.
+     */
     public interface Condition {
         
         /**
