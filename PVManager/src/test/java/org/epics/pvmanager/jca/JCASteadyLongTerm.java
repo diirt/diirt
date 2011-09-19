@@ -25,7 +25,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  */
 public class JCASteadyLongTerm {
     public static void main(String[] args) throws Exception {
-        JCADataSource jca = new JCADataSource(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM, false);
+        JCADataSource jca = new JCADataSource(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM);
         PVManager.setDefaultDataSource(jca);
         final AtomicInteger count = new AtomicInteger();
         
