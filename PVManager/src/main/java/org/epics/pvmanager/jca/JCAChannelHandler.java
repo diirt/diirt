@@ -64,7 +64,6 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
         connectionExceptionHandler = handler;
         try {
             // Give the listener right away so that no event gets lost
-            connectionListener = createConnectionListener();
             channel = context.createChannel(getChannelName(), connectionListener);
         } catch (CAException ex) {
             handler.handleException(ex);
@@ -105,10 +104,31 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
     }
     
     // protected (not private) to allow different type factory
-    protected Class<?> cacheType;
+    protected volatile Class<?> cacheType;
     // protected (not private) to allow different type factory
     protected volatile TypeFactory vTypeFactory;
-    private ConnectionListener connectionListener;
+    
+    private final ConnectionListener connectionListener = new ConnectionListener() {
+
+            @Override
+            public void connectionChanged(ConnectionEvent ev) {
+                try {
+                    // Take the channel from the event so that there is no
+                    // synchronization problem
+                    Channel channel = (Channel) ev.getSource();
+                    
+                    // Setup monitors on connection
+                    if (ev.isConnected()) {
+                        setup(channel);
+                        dispatchValue();
+                    } else {
+                        dispatchValue();
+                    }
+                } catch (Exception ex) {
+                    connectionExceptionHandler.handleException(ex);
+                }
+            }
+        };;
     
     // The change in metadata and even has to be atomic
     // so they are both guarded by this
@@ -135,30 +155,6 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
         }
     }
 
-    private ConnectionListener createConnectionListener() {
-        return new ConnectionListener() {
-
-            @Override
-            public void connectionChanged(ConnectionEvent ev) {
-                try {
-                    // Take the channel from the event so that there is no
-                    // synchronization problem
-                    Channel channel = (Channel) ev.getSource();
-                    
-                    // Setup monitors on connection
-                    if (ev.isConnected()) {
-                        setup(channel);
-                        dispatchValue();
-                    } else {
-                        dispatchValue();
-                    }
-                } catch (Exception ex) {
-                    connectionExceptionHandler.handleException(ex);
-                }
-            }
-        };
-    }
-
     @Override
     public void disconnect(ExceptionHandler handler) {
         try {
@@ -167,10 +163,10 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
         } catch (CAException ex) {
             handler.handleException(ex);
         } finally {
+            channel = null;
             synchronized(this) {
                 metadata = null;
                 event = null;
-                channel = null;
             }
         }
     }
