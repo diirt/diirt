@@ -57,8 +57,13 @@ public class StopWatch {
     public void printStatisticsMS(PrintStream out) {
         out.println("Results:");
         out.println("Number of attempts: " + getNAttempts());
-        out.println("Average ns: " + getAverageNS() / 1000000);
-        out.println("Std dev ns: " + getStdDevNS() / 1000000);
+        out.println("Average ms: " + getAverageNS() / 1000000);
+        out.println("Std dev ms: " + getStdDevNS() / 1000000);
+    }
+    
+    public void printLast(PrintStream out) {
+        out.println("Results:");
+        out.println("Total time ms: " + lastEntry().timeNS() / 100000);
     }
     
     public int getNAttempts() {
