@@ -150,7 +150,7 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
     
     private synchronized void dispatchValue() {
         // Only process the value if we have both event and metadata
-        if (event != null && vTypeFactory.getEpicsMetaType() == null || metadata != null) {
+        if (event != null && (vTypeFactory.getEpicsMetaType() == null || metadata != null)) {
             processValue(event);
         }
     }
