@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.tests;
 
+import gov.aps.jca.JCALibrary;
+import gov.aps.jca.Monitor;
 import java.util.Arrays;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VString;
@@ -18,6 +20,7 @@ import org.epics.pvmanager.data.VFloatArray;
 import org.epics.pvmanager.data.VIntArray;
 import org.epics.pvmanager.data.VShortArray;
 import org.epics.pvmanager.data.VStringArray;
+import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -36,7 +39,10 @@ public class JCAClientExample {
     private static final String doubleArrayPV = "SR:C00-Glb:G00<BETA:00>RB-X";
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(JCASupport.jca());
+        System.out.println("Test");
+        System.out.println(System.getProperty("java.library.path"));
+        
+        PVManager.setDefaultDataSource(new JCADataSource(JCALibrary.JNI_THREAD_SAFE, Monitor.VALUE));
 
         testNativeTypeSupport();
         testVDoubleSupport();
