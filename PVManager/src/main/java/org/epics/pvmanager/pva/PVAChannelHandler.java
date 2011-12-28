@@ -9,9 +9,9 @@ import org.epics.ca.CAException;
 import org.epics.ca.client.Channel;
 import org.epics.ca.client.Channel.ConnectionState;
 import org.epics.ca.client.ChannelRequester;
-import org.epics.ca.client.ClientContext;
 import org.epics.ca.client.CreateRequestFactory;
 import org.epics.ca.client.GetFieldRequester;
+import org.epics.ca.impl.remote.Context;
 import org.epics.pvData.monitor.Monitor;
 import org.epics.pvData.monitor.MonitorElement;
 import org.epics.pvData.monitor.MonitorRequester;
@@ -32,12 +32,12 @@ import org.epics.pvmanager.ValueCache;
  */
 public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
 
-    private final ClientContext pvaContext;
+    private final Context pvaContext;
     private final short priority;
     private Channel channel;
     private volatile Monitor monitor;
 
-    public PVAChannelHandler(String channelName, ClientContext pvaContext, short priority) {
+    public PVAChannelHandler(String channelName, Context pvaContext, short priority) {
         super(channelName);
         this.pvaContext = pvaContext;
         this.priority = priority;
@@ -79,7 +79,7 @@ public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
 
     @Override
     public void connect(ExceptionHandler handler) {
-        channel = pvaContext.getProvider().createChannel(getChannelName(), channelRequester, priority);
+        //channel = pvaContext.getProvider().createChannel(getChannelName(), channelRequester, priority);
     }
 //
 //    private void pvAConnect() {

@@ -9,8 +9,8 @@ import gov.aps.jca.Channel;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import java.util.logging.Logger;
-import org.epics.ca.client.ClientContext;
 import org.epics.ca.client.impl.remote.ClientContextImpl;
+import org.epics.ca.impl.remote.Context;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
@@ -26,14 +26,14 @@ public class PVADataSource extends DataSource {
 
     private static final Logger logger = Logger.getLogger(PVADataSource.class.getName());
 
-    private volatile ClientContext pvaContext;
+    private volatile Context pvaContext;
     private final short defaultPriority;
 
     public PVADataSource() {
         this(new ClientContextImpl(), Channel.PRIORITY_DEFAULT);
     }
 
-    public PVADataSource(ClientContext pvaContext, short defaultPriority) {
+    public PVADataSource(Context pvaContext, short defaultPriority) {
         super(true);
         this.pvaContext = pvaContext;
         // TODO Do I need to call this or not?
@@ -42,7 +42,7 @@ public class PVADataSource extends DataSource {
     }
 
     
-    protected ClientContext getContext() {
+    protected Context getContext() {
         return pvaContext;
     }
 
@@ -51,7 +51,7 @@ public class PVADataSource extends DataSource {
     }
     
     public void close() {
-        pvaContext.dispose();
+        //pvaContext.dispose();
     }
 
     @Override
