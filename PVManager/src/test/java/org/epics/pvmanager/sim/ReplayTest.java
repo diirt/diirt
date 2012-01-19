@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 import static org.epics.pvmanager.TimeMatchers.*;
+import org.junit.BeforeClass;
 
 /**
  * Tests uniform noise distribution function
@@ -69,6 +70,13 @@ public class ReplayTest {
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(value.getTimeUserTag(), equalTo(0));
+    }
+    
+    @BeforeClass
+    public static void initializeParser() {
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse2.xml\")");
+        if (replay.hashCode() == 0)
+            System.out.println("");
     }
 
     @Test
