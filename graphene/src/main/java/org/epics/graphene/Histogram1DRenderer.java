@@ -34,6 +34,9 @@ public class Histogram1DRenderer {
         
         int yValueMin = hist.getMinCountRange();
         int yValueMax = hist.getMaxCountRange();
+        // In bigger plots, too many horizonal lines make it too confusing,
+        // so distance between each vertical ticks is higher at smaller heights
+        // and smaller at higher heights.
         int nYTicks = 0;
         if (imageHeight < 80) {
             nYTicks = 2;
