@@ -32,16 +32,27 @@ public class Histogram1DRenderer {
         double xValueMax = hist.getMaxValueRange();
         double[] xValueTicks = RangeUtil.ticksForRange(xValueMin, xValueMax, imageWidth / 60);
         
-        int yValueMin = 0;
-        int yValueMax = 550;
-        int[] yValueTicks = new int[] {100, 200, 300, 400, 500};
+        int yValueMin = hist.getMinCountRange();
+        int yValueMax = hist.getMaxCountRange();
+        int nYTicks = 0;
+        if (imageHeight < 80) {
+            nYTicks = 2;
+        } else if (imageHeight < 360) {
+            nYTicks = 6;
+        } else {
+            nYTicks = imageHeight / 60;
+        }
+        double[] yValueTicks = RangeUtil.ticksForRange(yValueMin, yValueMax, Math.max(4, nYTicks), 1.0);
 
         // Create labels
         String[] xLabels = new String[xValueTicks.length];
         for (int i = 0; i < xLabels.length; i++) {
             xLabels[i] = Double.toString(xValueTicks[i]);
         }
-        String[] yLabels = new String[] {"100", "200", "300", "400", "500"};
+        String[] yLabels = new String[yValueTicks.length];
+        for (int i = 0; i < yLabels.length; i++) {
+            yLabels[i] = Integer.toString((int) yValueTicks[i]);
+        }
         Font axisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
         graphics.setFont(axisFont);
         
@@ -130,8 +141,10 @@ public class Histogram1DRenderer {
         }
         
         for (int i = 0; i < yTicks.length; i++) {
-            graphics.setColor(backgroundColor);
-            graphics.drawLine(yAxisFromLeft, imageHeight - yTicks[i], yAxisFromLeft + plotWidth, imageHeight - yTicks[i]);
+            if (yTicks[i] != xAxisFromBottom) {
+                graphics.setColor(backgroundColor);
+                graphics.drawLine(yAxisFromLeft, imageHeight - yTicks[i], yAxisFromLeft + plotWidth, imageHeight - yTicks[i]);
+            }
         }
         
         int previousHeight = 0;

@@ -54,4 +54,13 @@ public interface Histogram1D {
      * @return maximum x axis value
      */
     public double getMaxValueRange();
+    
+
+    public int getMaxCountRange();
+
+    public void setMaxCountRange(int maxCountRange);
+
+    public int getMinCountRange();
+
+    public void setMinCountRange(int minCountRange);
 }

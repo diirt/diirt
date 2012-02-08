@@ -62,7 +62,7 @@ public class ShowImage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws Exception {
-        Histogram1D hist = new Hist1DT2();
+        Histogram1D hist = new Hist1DT1();
         BufferedImage image = new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Histogram1DRenderer renderer = new Histogram1DRenderer();
         Graphics2D graphics = (Graphics2D) image.getGraphics();
