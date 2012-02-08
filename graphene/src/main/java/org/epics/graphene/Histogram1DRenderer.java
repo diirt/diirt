@@ -6,7 +6,6 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import org.omg.CORBA.INTERNAL;
 
 /**
  *
@@ -18,11 +17,12 @@ public class Histogram1DRenderer {
         return (value - min) / (max - min);
     }
 
-    public void draw(Graphics2D graphics, Histogram1DView view) {
+    public void draw(Graphics2D graphics, Histogram1D view) {
         int imageWidth = 300;
         int imageHeight = 200;
         
         Color backgroundColor = Color.WHITE;
+        Color axisTextColor = Color.BLACK;
         Color axisColor = Color.BLACK;
         Color dividerColor = new Color(196, 196, 196);
         Color lineColor = new Color(140, 140, 140);
@@ -95,21 +95,23 @@ public class Histogram1DRenderer {
         binLimitsPx[binLimits.length - 1] = yAxisFromLeft + (int) (normalize(binLimits[binLimits.length - 1], xValueMin, xValueMax) * plotWidth);
 
         // Draw background
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, imageWidth, imageHeight);
 
         // Draw x-axis
-        graphics.setColor(Color.BLACK);
-
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setColor(axisColor);
         graphics.drawLine(yAxisFromLeft, imageHeight - xAxisFromBottom, yAxisFromLeft + plotWidth, imageHeight - xAxisFromBottom);
         for (int i = 0; i < xLabels.length; i++) {
             Rectangle2D bounds = metrics.getStringBounds(xLabels[i], graphics);
+            graphics.setColor(axisTextColor);
             graphics.drawString(xLabels[i], xTicks[i] - ((int) ((bounds.getWidth() / 2))), imageHeight - margin);
+            graphics.setColor(axisColor);
             graphics.drawLine(xTicks[i], imageHeight - xAxisFromBottom, xTicks[i], imageHeight - xAxisFromBottom + xAxisTickSize);
         }
 
         // Draw y-axis
+        graphics.setColor(axisTextColor);
         for (int i = 0; i < yLabels.length; i++) {
             int halfHeight = (metrics.getAscent()) / 2 - 1;
             graphics.drawString(yLabels[i], yAxisFromLeft - yLabelWidths[i] - axisMargin, imageHeight - yTicks[i] + halfHeight);
