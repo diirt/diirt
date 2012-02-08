@@ -71,4 +71,28 @@ public interface Histogram1D {
      * @return  minimum y axis value
      */
     public int getMinCountRange();
+    
+    /**
+     * The number of bins.
+     * 
+     * @return number of bins
+     */
+    public int getNBins();
+    
+    /**
+     * The value where the corresponding bin starts. The range is up to
+     * {@link #getNBins() } + 1 for the right boundary of the last bin.
+     * 
+     * @param index between 0 and nBins + 1
+     * @return the value at the boundary
+     */
+    public double getBinValueBoundary(int index);
+    
+    /**
+     * The count for the given bin.
+     * 
+     * @param index between 0 and nBins
+     * @return the count for the given bin
+     */
+    public int getBinCount(int index);
 }

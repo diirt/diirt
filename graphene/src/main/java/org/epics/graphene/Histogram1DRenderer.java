@@ -59,11 +59,6 @@ public class Histogram1DRenderer {
         Font axisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
         graphics.setFont(axisFont);
         
-        double[] binLimits = new double[] {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
-            1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0};
-        int[] binValues = new int[] {30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
-            350, 230, 180, 220, 170, 130, 80, 30, 40};
-        
         // Compute axis size
         
         int margin = 3; // 3 px of margin all around
@@ -103,14 +98,14 @@ public class Histogram1DRenderer {
         }
         
         // Compute bin limits
-        int[] binLimitsPx = new int[binLimits.length];
-        int[] binHeightsPx = new int[binValues.length];
+        int[] binLimitsPx = new int[hist.getNBins() + 1];
+        int[] binHeightsPx = new int[hist.getNBins()];
         
-        for (int i = 0; i < binValues.length; i++) {
-            binLimitsPx[i] = yAxisFromLeft + (int) (normalize(binLimits[i], xValueMin, xValueMax) * plotWidth);
-            binHeightsPx[i] = (int) (normalize(binValues[i], yValueMin, yValueMax) * plotHeight);
+        for (int i = 0; i < hist.getNBins(); i++) {
+            binLimitsPx[i] = yAxisFromLeft + (int) (normalize(hist.getBinValueBoundary(i), xValueMin, xValueMax) * plotWidth);
+            binHeightsPx[i] = (int) (normalize(hist.getBinCount(i), yValueMin, yValueMax) * plotHeight);
         }
-        binLimitsPx[binLimits.length - 1] = yAxisFromLeft + (int) (normalize(binLimits[binLimits.length - 1], xValueMin, xValueMax) * plotWidth);
+        binLimitsPx[hist.getNBins()] = yAxisFromLeft + (int) (normalize(hist.getBinValueBoundary(hist.getNBins()), xValueMin, xValueMax) * plotWidth);
 
         // Draw background
         graphics.setColor(backgroundColor);
@@ -136,7 +131,7 @@ public class Histogram1DRenderer {
         }
         
         // Draw histogram area
-        for (int i = 0; i < binValues.length; i++) {
+        for (int i = 0; i < binHeightsPx.length; i++) {
             graphics.setColor(histogramColor);
             graphics.fillRect(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1] - binLimitsPx[i], binHeightsPx[i]);
             graphics.setColor(dividerColor);
@@ -151,7 +146,7 @@ public class Histogram1DRenderer {
         }
         
         int previousHeight = 0;
-        for (int i = 0; i < binValues.length; i++) {
+        for (int i = 0; i < binHeightsPx.length; i++) {
             graphics.setColor(lineColor);
             graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - previousHeight, binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i]);
             graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1], imageHeight - xAxisFromBottom - binHeightsPx[i]);

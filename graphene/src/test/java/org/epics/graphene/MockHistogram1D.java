@@ -16,6 +16,8 @@ public class MockHistogram1D implements Histogram1D {
     private double maxValueRange;
     private int minCountRange;
     private int maxCountRange;
+    private double[] binValueBoundary;
+    private int[] binCount;
     
 
     @Override
@@ -73,7 +75,28 @@ public class MockHistogram1D implements Histogram1D {
     public void setMinCountRange(int minCountRange) {
         this.minCountRange = minCountRange;
     }
-    
-    
+
+    @Override
+    public int getNBins() {
+        return binCount.length;
+    }
+
+    @Override
+    public double getBinValueBoundary(int index) {
+        return binValueBoundary[index];
+    }
+
+    @Override
+    public int getBinCount(int index) {
+        return binCount[index];
+    }
+
+    public void setBinCount(int[] binCount) {
+        this.binCount = binCount;
+    }
+
+    public void setBinValueBoundary(double[] binValueBoundary) {
+        this.binValueBoundary = binValueBoundary;
+    }
     
 }
