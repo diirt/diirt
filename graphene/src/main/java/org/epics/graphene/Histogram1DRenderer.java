@@ -30,13 +30,17 @@ public class Histogram1DRenderer {
 
         double xValueMin = hist.getMinValueRange();
         double xValueMax = hist.getMaxValueRange();
-        double[] xValueTicks = new double[] {0.0, 0.5, 1.0, 1.5, 2.0};
+        double[] xValueTicks = RangeUtil.ticksForRange(xValueMin, xValueMax, imageWidth / 60);
         
         int yValueMin = 0;
         int yValueMax = 550;
         int[] yValueTicks = new int[] {100, 200, 300, 400, 500};
-        
-        String[] xLabels = new String[] {"0.0", "0.5", "1.0", "1.5", "2.0"};
+
+        // Create labels
+        String[] xLabels = new String[xValueTicks.length];
+        for (int i = 0; i < xLabels.length; i++) {
+            xLabels[i] = Double.toString(xValueTicks[i]);
+        }
         String[] yLabels = new String[] {"100", "200", "300", "400", "500"};
         Font axisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
         graphics.setFont(axisFont);
@@ -56,7 +60,7 @@ public class Histogram1DRenderer {
         // Compute x axis spacing
         int[] xLabelWidths = new int[xLabels.length];
         for (int i = 0; i < xLabelWidths.length; i++) {
-            xLabelWidths[i] = metrics.stringWidth(yLabels[i]);
+            xLabelWidths[i] = metrics.stringWidth(xLabels[i]);
         }
         int xAxisFromBottom = margin + metrics.getHeight() - metrics.getLeading() + axisMargin;
         
