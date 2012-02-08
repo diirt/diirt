@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import junit.framework.AssertionFailedError;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -42,6 +43,7 @@ public class Histogram1DRendererTest {
     
     public static void compareImages(String imageName, BufferedImage image) throws Exception {
         BufferedImage expected = ImageIO.read(Histogram1DRendererTest.class.getResource(imageName + ".png"));
+        boolean done = false;
         try {
             assertEquals("Images are not the same height", expected.getHeight(), image.getHeight());
             assertEquals("Images are not the same width", expected.getWidth(), image.getWidth());
@@ -51,9 +53,11 @@ public class Histogram1DRendererTest {
                     assertEquals(expected.getRGB(x, y), image.getRGB(x, y));
                 }
             }
-        } catch(RuntimeException ex) {
-            ImageIO.write(image, "png", new File(imageName + ".failed.png"));
-            throw ex;
+            done = true;
+        } finally {
+            if (!done) {
+                ImageIO.write(image, "png", new File("src/test/resources/org/epics/graphene/" + imageName + ".failed.png"));
+            }
         }
     }
 }
