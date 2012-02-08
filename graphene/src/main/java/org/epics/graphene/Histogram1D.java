@@ -23,4 +23,20 @@ public interface Histogram1D {
      * @return width in px
      */
     public int getImageWidth();
+    
+    /**
+     * The minimum value that should be displayed in the 
+     * x axis of the plot.
+     * 
+     * @return minimum x axis value
+     */
+    public double getMinValueRange();
+    
+    /**
+     * The maximum value that should be displayed
+     * in the x axis of the plot.
+     * 
+     * @return maximum x axis value
+     */
+    public double getMaxValueRange();
 }

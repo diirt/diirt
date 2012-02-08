@@ -28,8 +28,8 @@ public class Histogram1DRenderer {
         Color lineColor = new Color(140, 140, 140);
         Color histogramColor = new Color(175, 175, 175);
 
-        double xValueMin = 0;
-        double xValueMax = 2.0;
+        double xValueMin = hist.getMinValueRange();
+        double xValueMax = hist.getMaxValueRange();
         double[] xValueTicks = new double[] {0.0, 0.5, 1.0, 1.5, 2.0};
         
         int yValueMin = 0;
