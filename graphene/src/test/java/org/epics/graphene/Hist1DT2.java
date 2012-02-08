@@ -9,15 +9,18 @@ package org.epics.graphene;
  * @author carcassi
  */
 public class Hist1DT2 implements Histogram1D {
+    
+    private int height = 200;
+    private int width = 300;
 
     @Override
     public int getImageHeight() {
-        return 600;
+        return height;
     }
 
     @Override
     public int getImageWidth() {
-        return 800;
+        return width;
     }
 
     @Override
@@ -28,6 +31,16 @@ public class Hist1DT2 implements Histogram1D {
     @Override
     public double getMaxValueRange() {
         return 10.0;
+    }
+
+    @Override
+    public void setImageHeight(int height) {
+        this.height = height;
+    }
+
+    @Override
+    public void setImageWidth(int width) {
+        this.width = width;
     }
     
 }
