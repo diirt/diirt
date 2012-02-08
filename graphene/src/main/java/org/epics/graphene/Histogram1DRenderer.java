@@ -17,9 +17,9 @@ public class Histogram1DRenderer {
         return (value - min) / (max - min);
     }
 
-    public void draw(Graphics2D graphics, Histogram1D view) {
-        int imageWidth = 300;
-        int imageHeight = 200;
+    public void draw(Graphics2D graphics, Histogram1D hist) {
+        int imageWidth = hist.getImageWidth();
+        int imageHeight = hist.getImageHeight();
         
         Color backgroundColor = Color.WHITE;
         Color axisTextColor = Color.BLACK;

@@ -8,6 +8,13 @@ package org.epics.graphene;
  *
  * @author carcassi
  */
-public interface Histogram1D {
+public class Histogram1D {
     
+    public int getImageHeight() {
+        return 200;
+    }
+    
+    public int getImageWidth() {
+        return 300;
+    }
 }
