@@ -32,11 +32,11 @@ public class Histogram1DRendererTest {
     @Test
     public void test1() throws Exception {
         BufferedImage expected = ImageIO.read(getClass().getResource("hist1D.1.png"));
-        Histogram1D hist = new Histogram1D();
+        Histogram1D hist = new Hist1DT1();
         BufferedImage image = new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Histogram1DRenderer renderer = new Histogram1DRenderer();
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        renderer.draw(graphics, new Histogram1D());
+        renderer.draw(graphics, hist);
         compareImages(expected, image);
     }
     

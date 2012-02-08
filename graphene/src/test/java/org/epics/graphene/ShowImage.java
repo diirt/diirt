@@ -65,7 +65,7 @@ public class ShowImage extends javax.swing.JFrame {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Histogram1DRenderer renderer = new Histogram1DRenderer();
         Graphics2D graphics = (Graphics2D) image.getGraphics();
-        renderer.draw(graphics, new Histogram1D());
+        renderer.draw(graphics, new Hist1DT1());
         showImage(image);
 //        ImageIO.write(image, "png", new File("hist1dtest.png"));
     }
