@@ -61,7 +61,6 @@ public class MockHistogram1D implements Histogram1D {
         return maxCountRange;
     }
 
-    @Override
     public void setMaxCountRange(int maxCountRange) {
         this.maxCountRange = maxCountRange;
     }
@@ -71,7 +70,6 @@ public class MockHistogram1D implements Histogram1D {
         return minCountRange;
     }
 
-    @Override
     public void setMinCountRange(int minCountRange) {
         this.minCountRange = minCountRange;
     }

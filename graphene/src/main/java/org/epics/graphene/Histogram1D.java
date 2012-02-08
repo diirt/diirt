@@ -56,11 +56,19 @@ public interface Histogram1D {
     public double getMaxValueRange();
     
 
+    /**
+     * The maximum value that should be displayed in the
+     * y axis of the plot.
+     * 
+     * @return maximum y axis value
+     */
     public int getMaxCountRange();
 
-    public void setMaxCountRange(int maxCountRange);
-
+    /**
+     * The minimum value that should be displayed in the
+     * y axis of the plot.
+     * 
+     * @return  minimum y axis value
+     */
     public int getMinCountRange();
-
-    public void setMinCountRange(int minCountRange);
 }
