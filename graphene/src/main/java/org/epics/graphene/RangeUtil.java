@@ -69,4 +69,14 @@ public class RangeUtil {
         }
         return ticks;
     }
+    
+    public static double[] createBins(double min, double max, int nBins) {
+        double increment = (max - min) / nBins;
+        double[] boundary = new double[nBins+1];
+        boundary[0] = min;
+        for (int i = 1; i < boundary.length; i++) {
+            boundary[i] = boundary[i-1] + increment;
+        }
+        return boundary;
+    }
 }

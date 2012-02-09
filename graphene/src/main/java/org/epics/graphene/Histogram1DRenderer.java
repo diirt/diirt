@@ -6,16 +6,13 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import static org.epics.graphene.NumberUtil.normalize;
 
 /**
  *
  * @author carcassi
  */
 public class Histogram1DRenderer {
-    
-    private double normalize(double value, double min, double max) {
-        return (value - min) / (max - min);
-    }
 
     public void draw(Graphics2D graphics, Histogram1D hist) {
         int imageWidth = hist.getImageWidth();
