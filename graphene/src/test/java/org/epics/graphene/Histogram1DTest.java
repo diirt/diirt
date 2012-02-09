@@ -33,10 +33,16 @@ public class Histogram1DTest {
     
     @Test
     public void computeHistogram() throws Exception {
-        Dataset1D dataset = MockDataset1D.uniform(0.0, 1.0, 300);
-        Histogram1D histogram = Histograms.createHistogram(dataset);
-        assertEquals(100, histogram.getNBins());
-        assertEquals(0.0, histogram.getMinValueRange(), 0.00001);
-        assertEquals(1.0, histogram.getMaxValueRange(), 0.00001);
+        Dataset1D dataset = MockDataset1D.uniform(0.0, 100.0, 300);
+        Histogram1D h = Histograms.createHistogram(dataset);
+        assertEquals(100, h.getNBins());
+        assertEquals(0.0, h.getMinValueRange(), 0.0000001);
+        assertEquals(100.0, h.getMaxValueRange(), 0.0000001);
+        for (int i = 0; i < 99; i++) {
+            assertEquals(1.0 * i, h.getBinValueBoundary(i), 0.0001);
+            assertEquals("Element " + i,3, h.getBinCount(i));
+        }
+        assertEquals(99, h.getBinValueBoundary(99), 0.0001);
+        assertEquals(4, h.getBinCount(99));
     }
 }

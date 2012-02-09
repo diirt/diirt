@@ -75,7 +75,7 @@ public class RangeUtil {
         double[] boundary = new double[nBins+1];
         boundary[0] = min;
         for (int i = 1; i < boundary.length; i++) {
-            boundary[i] = boundary[i-1] + increment;
+            boundary[i] = min + ( (max - min) * i / nBins );
         }
         return boundary;
     }

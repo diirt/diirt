@@ -120,7 +120,11 @@ class Histogram1DFromDataset1D implements Histogram1D {
             return;
         }
         
-        int bin = (int) Math.floor(NumberUtil.normalize(value, getBinValueBoundary(0), getBinValueBoundary(nBins)) * nBins);
+        int bin = (int) Math.floor(NumberUtil.scale(value, getBinValueBoundary(0), getBinValueBoundary(nBins), nBins));
+        if (bin == nBins) {
+            bin--;
+        }
+        
         binCount[bin]++;
     }
 
