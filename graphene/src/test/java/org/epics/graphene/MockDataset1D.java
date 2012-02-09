@@ -72,4 +72,9 @@ public class MockDataset1D implements Dataset1D {
         }
         return new MockDataset1D(values);
     }
+
+    @Override
+    public Dataset1DUpdater update() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
