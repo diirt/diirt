@@ -112,6 +112,8 @@ class Histogram1DFromDataset1D implements Histogram1D {
         while (values.hasNext()) {
             addValueToBin(values.next());
         }
+
+        autoBinRange();
     }
     
     private void addValueToBin(double value) {
@@ -126,6 +128,21 @@ class Histogram1DFromDataset1D implements Histogram1D {
         }
         
         binCount[bin]++;
+    }
+    
+    protected void autoBinRange() {
+        int max = NumberUtil.minMix(binCount)[1];
+        
+        if (max < 10) {
+            minCountRange = 0;
+            maxCountRange = 10;
+        } else if (max < 50) {
+            minCountRange = 0;
+            maxCountRange = 50;
+        } else {
+            minCountRange = 0;
+            maxCountRange = (max / 100) * 100 + 100;
+        }
     }
 
     

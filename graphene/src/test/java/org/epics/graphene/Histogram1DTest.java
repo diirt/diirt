@@ -38,6 +38,8 @@ public class Histogram1DTest {
         assertEquals(100, h.getNBins());
         assertEquals(0.0, h.getMinValueRange(), 0.0000001);
         assertEquals(100.0, h.getMaxValueRange(), 0.0000001);
+        assertEquals(0, h.getMinCountRange());
+        assertEquals(10, h.getMaxCountRange());
         for (int i = 0; i < 99; i++) {
             assertEquals(1.0 * i, h.getBinValueBoundary(i), 0.0001);
             assertEquals("Element " + i,3, h.getBinCount(i));
