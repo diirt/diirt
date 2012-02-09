@@ -4,6 +4,8 @@
  */
 package org.epics.graphene;
 
+import java.util.Random;
+
 /**
  *
  * @author carcassi
@@ -60,5 +62,14 @@ public class MockDataset1D implements Dataset1D {
     
     public static Dataset1D uniform(double minValue, double maxValue, int nSamples) {
         return new MockDataset1D(RangeUtil.createBins(minValue, maxValue, nSamples));
+    }
+    
+    public static Dataset1D gaussian(int nSamples) {
+        Random rand = new Random();
+        double[] values = new double[nSamples];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = rand.nextGaussian();
+        }
+        return new MockDataset1D(values);
     }
 }
