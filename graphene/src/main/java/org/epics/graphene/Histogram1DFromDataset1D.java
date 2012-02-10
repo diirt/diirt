@@ -49,16 +49,6 @@ class Histogram1DFromDataset1D implements Histogram1D {
     public void setMinValueRange(double minValueRange) {
         this.minValueRange = minValueRange;
     }
-    
-    @Override
-    public void setImageHeight(int height) {
-        this.imageHeight = height;
-    }
-
-    @Override
-    public void setImageWidth(int width) {
-        this.imageWidth = width;
-    }
 
     @Override
     public int getMaxCountRange() {
@@ -145,5 +135,12 @@ class Histogram1DFromDataset1D implements Histogram1D {
         }
     }
 
+    @Override
+    public void update(Histogram1DUpdate update) {
+        if (update.getImageHeight() != null)
+            imageHeight = update.getImageHeight();
+        if (update.getImageWidth() != null)
+            imageWidth = update.getImageWidth();
+    }
     
 }

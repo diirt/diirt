@@ -10,6 +10,8 @@ package org.epics.graphene;
  */
 public interface Histogram1D {
     
+    public void update(Histogram1DUpdate update);
+    
     /**
      * The plot height.
      * 
@@ -18,25 +20,11 @@ public interface Histogram1D {
     public int getImageHeight();
     
     /**
-     * Changes the plot height.
-     * 
-     * @param height new height in px
-     */
-    public void setImageHeight(int height);
-    
-    /**
      * The plot width.
      * 
      * @return width in px
      */
     public int getImageWidth();
-    
-    /**
-     * Changes the plot height.
-     * 
-     * @param width new height in px
-     */
-    public void setImageWidth(int width);
     
     
     /**

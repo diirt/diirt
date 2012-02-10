@@ -27,8 +27,9 @@ public class ShowHistogram extends javax.swing.JFrame {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                hist.setImageHeight(getRootPane().getHeight());
-                hist.setImageWidth(getRootPane().getWidth());
+                hist.update(new Histogram1DUpdate()
+                        .imageHeight(getRootPane().getHeight())
+                        .imageWidth(getRootPane().getWidth()));
                 imagePanel.setImage(new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
                 redrawHistogram();
             }
@@ -60,8 +61,9 @@ public class ShowHistogram extends javax.swing.JFrame {
 
     public void setHistogram(Histogram1D hist) {
         this.hist = hist;
-        hist.setImageHeight(getRootPane().getHeight());
-        hist.setImageWidth(getRootPane().getWidth());
+        hist.update(new Histogram1DUpdate()
+                .imageHeight(getRootPane().getHeight())
+                .imageWidth(getRootPane().getWidth()));
         imagePanel.setImage(new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
         pack();
         redrawHistogram();

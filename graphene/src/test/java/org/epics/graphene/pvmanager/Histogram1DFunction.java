@@ -42,8 +42,9 @@ public class Histogram1DFunction extends Function<VImage> {
         update.commit();
         
         histogram = Histograms.createHistogram(dataset);
-        histogram.setImageWidth(400);
-        histogram.setImageHeight(300);
+        histogram.update(new Histogram1DUpdate()
+                .imageHeight(300)
+                .imageWidth(400));
         
         BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         renderer.draw(image.createGraphics(), histogram);
