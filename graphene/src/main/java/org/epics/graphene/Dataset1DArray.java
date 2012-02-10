@@ -43,6 +43,8 @@ public class Dataset1DArray implements Dataset1D {
         }
         if (endOffset == startOffset)
             startOffset++;
+        if (startOffset == data.length)
+            startOffset = 0;
     }
 
     @Override
