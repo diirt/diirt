@@ -17,7 +17,7 @@ public class Dataset1DArray implements Dataset1D {
     private double maxValue = Double.NaN;
     
     public Dataset1DArray(int capacity) {
-        data = new double[capacity];
+        data = new double[capacity+1];
     }
 
     @Override
@@ -38,8 +38,9 @@ public class Dataset1DArray implements Dataset1D {
     private void addValue(double value) {
         data[endOffset] = value;
         endOffset++;
-        if (endOffset == data.length)
+        if (endOffset == data.length) {
             endOffset = 0;
+        }
         if (endOffset == startOffset)
             startOffset++;
     }
