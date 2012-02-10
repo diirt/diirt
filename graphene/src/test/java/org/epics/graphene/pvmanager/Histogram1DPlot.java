@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.pvmanager;
 
+import org.epics.graphene.Histogram1DUpdate;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
@@ -15,8 +16,11 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  */
 public class Histogram1DPlot extends DesiredRateExpressionImpl<VImage> {
 
-    public Histogram1DPlot(DesiredRateExpressionList<?> childExpressions, Function<VImage> function, String defaultName) {
+    public Histogram1DPlot(DesiredRateExpressionList<?> childExpressions, Histogram1DFunction function, String defaultName) {
         super(childExpressions, function, defaultName);
     }
     
+    public void update(Histogram1DUpdate update) {
+        ((Histogram1DFunction) getFunction()).update(update);
+    }
 }

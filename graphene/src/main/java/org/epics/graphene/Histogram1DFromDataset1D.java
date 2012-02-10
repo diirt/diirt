@@ -141,6 +141,8 @@ class Histogram1DFromDataset1D implements Histogram1D {
             imageHeight = update.getImageHeight();
         if (update.getImageWidth() != null)
             imageWidth = update.getImageWidth();
+        if (update.getDataset() != null)
+            setDataset(update.getDataset());
     }
     
 }

@@ -29,9 +29,9 @@ public class ExpressionLanguage {
         BasicTypeSupport.install();
     }
 
-    public static DesiredRateExpression<VImage> histogramOf(SourceRateExpression<VDouble> vDoubles) {
+    public static Histogram1DPlot histogramOf(SourceRateExpression<VDouble> vDoubles) {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(vDoubles);
-        return new DesiredRateExpressionImpl<VImage>(queue, new Histogram1DFunction(queue.getFunction()), "histogram");
+        return new Histogram1DPlot(queue, new Histogram1DFunction(queue.getFunction()), "histogram");
     }
 
 }
