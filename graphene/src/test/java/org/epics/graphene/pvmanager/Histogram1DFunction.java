@@ -23,6 +23,7 @@ public class Histogram1DFunction extends Function<VImage> {
     private Dataset1D dataset = new Dataset1DArray(1000000);
     private Histogram1D histogram = Histograms.createHistogram(dataset);
     private Histogram1DRenderer renderer = new Histogram1DRenderer();
+    private VImage previousImage;
 
     public Histogram1DFunction(Function<List<VDouble>> argument) {
         this.argument = argument;
@@ -30,8 +31,12 @@ public class Histogram1DFunction extends Function<VImage> {
 
     @Override
     public VImage getValue() {
+        List<VDouble> newData = argument.getValue();
+        if (newData.isEmpty() && previousImage != null)
+            return previousImage;
+        
         Dataset1DUpdater update = dataset.update();
-        for (VDouble vDouble : argument.getValue()) {
+        for (VDouble vDouble : newData) {
             update.addData(vDouble.getValue());
         }
         update.commit();
@@ -43,7 +48,8 @@ public class Histogram1DFunction extends Function<VImage> {
         BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         renderer.draw(image.createGraphics(), histogram);
         
-        return ValueUtil.toVImage(image);
+        previousImage = ValueUtil.toVImage(image);
+        return previousImage;
     }
     
 }
