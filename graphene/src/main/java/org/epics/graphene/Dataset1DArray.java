@@ -13,8 +13,8 @@ public class Dataset1DArray implements Dataset1D {
     private double[] data;
     private int startOffset;
     private int endOffset;
-    private double minValue;
-    private double maxValue;
+    private double minValue = Double.NaN;
+    private double maxValue = Double.NaN;
     
     public Dataset1DArray(int capacity) {
         data = new double[capacity];
@@ -59,6 +59,10 @@ public class Dataset1DArray implements Dataset1D {
                         addValue(iteratorDouble.next());
                     }
                 }
+                
+                double[] minMax = NumberUtil.minMax(data);
+                minValue = minMax[0];
+                maxValue = minMax[1];
             }
         };
     }

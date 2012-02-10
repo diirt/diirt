@@ -26,10 +26,10 @@ public class Iterators {
             public double next() {
                 if (!hasNext())
                     throw new NoSuchElementException();
-                double value = data[index];
-                index++;
                 if (index == data.length)
                     index = 0;
+                double value = data[index];
+                index++;
                 return value;
             }
         };

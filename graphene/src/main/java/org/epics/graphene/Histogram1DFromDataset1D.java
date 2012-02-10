@@ -131,7 +131,7 @@ class Histogram1DFromDataset1D implements Histogram1D {
     }
     
     protected void autoBinRange() {
-        int max = NumberUtil.minMix(binCount)[1];
+        int max = NumberUtil.minMax(binCount)[1];
         
         if (max < 10) {
             minCountRange = 0;

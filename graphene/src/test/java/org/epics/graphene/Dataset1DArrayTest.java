@@ -33,12 +33,18 @@ public class Dataset1DArrayTest {
     
     @Test
     public void createAndAddData() throws Exception {
-        Dataset1D dataset = new Dataset1DArray(100);
+        Dataset1D dataset = new Dataset1DArray(10);
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
+        assertEquals(Double.NaN, dataset.getMinValue(), 0.0001);
+        assertEquals(Double.NaN, dataset.getMaxValue(), 0.0001);
         dataset.update().addData(0.0);
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
+        assertEquals(Double.NaN, dataset.getMinValue(), 0.0001);
+        assertEquals(Double.NaN, dataset.getMaxValue(), 0.0001);
         dataset.update().addData(0.0).commit();
         assertArrayEquals(new double[] {0.0}, Iterators.toArray(dataset.getValues()), 0.0001);
+        assertEquals(0.0, dataset.getMinValue(), 0.0001);
+        assertEquals(0.0, dataset.getMaxValue(), 0.0001);
         dataset.update().addData(1.0).addData(2.0).commit();
         assertArrayEquals(new double[] {0.0, 1.0, 2.0}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update().addData(new double[] {3.0, 4.0, 5.0}).commit();
@@ -46,6 +52,8 @@ public class Dataset1DArrayTest {
         dataset.update().clearData();
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update().clearData().commit();
+        assertEquals(0.0, dataset.getMinValue(), 0.0);
+        assertEquals(0.0, dataset.getMaxValue(), 5.0);
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update().addData(0.0).clearData().commit();
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
