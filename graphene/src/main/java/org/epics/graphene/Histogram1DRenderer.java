@@ -155,9 +155,12 @@ public class Histogram1DRenderer {
             graphics.setColor(histogramColor);
             graphics.fillRect(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1] - binLimitsPx[i], binHeightsPx[i]);
             graphics.setColor(dividerColor);
-            graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i], imageHeight - xAxisFromBottom - 1);
+            // Draw the divider only if the vertical size is more than 0
+            if (binHeightsPx[i] > 0)
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i], imageHeight - xAxisFromBottom - 1);
         }
         
+        // Draw horizontal reference lines
         for (int i = 0; i < yTicks.length; i++) {
             if (yTicks[i] != xAxisFromBottom) {
                 graphics.setColor(backgroundColor);
@@ -165,14 +168,21 @@ public class Histogram1DRenderer {
             }
         }
         
+        // Draw histogram contour
         int previousHeight = 0;
         for (int i = 0; i < binHeightsPx.length; i++) {
             graphics.setColor(lineColor);
-            graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - previousHeight, binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i]);
-            graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1], imageHeight - xAxisFromBottom - binHeightsPx[i]);
+            // Draw the countour only when the height is not 0
+            if (binHeightsPx[i] > 0 || previousHeight > 0) {
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - Math.max(previousHeight, 1), binLimitsPx[i], imageHeight - xAxisFromBottom - Math.max(binHeightsPx[i], 1));
+            }
+            if (binHeightsPx[i] > 0) {
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1], imageHeight - xAxisFromBottom - binHeightsPx[i]);
+            }
             previousHeight = binHeightsPx[i];
         }
-        graphics.drawLine(binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom - previousHeight, binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom);
+        if (previousHeight > 0)
+            graphics.drawLine(binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom - previousHeight, binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom - 1);
         
         
         
