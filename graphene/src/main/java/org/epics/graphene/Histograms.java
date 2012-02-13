@@ -9,6 +9,12 @@ package org.epics.graphene;
  * @author carcassi
  */
 public class Histograms {
+    
+    public static Histogram1D newHistogram() {
+        Histogram1DFromDataset1D histogram = new Histogram1DFromDataset1D();
+        return histogram;
+    }
+    
     public static Histogram1D createHistogram(Dataset1D dataset) {
         Histogram1DFromDataset1D histogram = new Histogram1DFromDataset1D();
         histogram.setDataset(dataset);
