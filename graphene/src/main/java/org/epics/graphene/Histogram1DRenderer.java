@@ -14,9 +14,32 @@ import static org.epics.graphene.NumberUtil.normalize;
  */
 public class Histogram1DRenderer {
 
+    public Histogram1DRenderer(int imageWidth, int imageHeight) {
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+    }
+    
+    private int imageWidth;
+    private int imageHeight;
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void update(Histogram1DRendererUpdate update) {
+        if (update.getImageHeight() != null)
+            imageHeight = update.getImageHeight();
+        if (update.getImageWidth() != null)
+            imageWidth = update.getImageWidth();
+    }
+
     public void draw(Graphics2D graphics, Histogram1D hist) {
-        int imageWidth = hist.getImageWidth();
-        int imageHeight = hist.getImageHeight();
+        int imageWidth = this.getImageWidth();
+        int imageHeight = this.getImageHeight();
         
         Color backgroundColor = Color.WHITE;
         Color axisTextColor = Color.BLACK;

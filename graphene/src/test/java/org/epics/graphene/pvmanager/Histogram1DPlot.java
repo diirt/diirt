@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.pvmanager;
 
+import org.epics.graphene.Histogram1DRendererUpdate;
 import org.epics.graphene.Histogram1DUpdate;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.VImage;
@@ -21,6 +22,10 @@ public class Histogram1DPlot extends DesiredRateExpressionImpl<VImage> {
     }
     
     public void update(Histogram1DUpdate update) {
+        ((Histogram1DFunction) getFunction()).update(update);
+    }
+    
+    public void update(Histogram1DRendererUpdate update) {
         ((Histogram1DFunction) getFunction()).update(update);
     }
 }

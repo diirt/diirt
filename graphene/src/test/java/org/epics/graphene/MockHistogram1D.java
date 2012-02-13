@@ -10,8 +10,6 @@ package org.epics.graphene;
  */
 public class MockHistogram1D implements Histogram1D {
     
-    private int imageHeight;
-    private int imageWidth;
     private double minValueRange;
     private double maxValueRange;
     private int minCountRange;
@@ -19,17 +17,6 @@ public class MockHistogram1D implements Histogram1D {
     private double[] binValueBoundary;
     private int[] binCount;
     
-
-    @Override
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    @Override
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
     @Override
     public double getMinValueRange() {
         return minValueRange;
@@ -91,10 +78,7 @@ public class MockHistogram1D implements Histogram1D {
 
     @Override
     public void update(Histogram1DUpdate update) {
-        if (update.getImageHeight() != null)
-            imageHeight = update.getImageHeight();
-        if (update.getImageWidth() != null)
-            imageWidth = update.getImageWidth();
+        throw new UnsupportedOperationException();
     }
     
 }

@@ -23,18 +23,6 @@ public class ShowHistogram extends javax.swing.JFrame {
      */
     public ShowHistogram() {
         initComponents();
-        addComponentListener(new ComponentAdapter() {
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                hist.update(new Histogram1DUpdate()
-                        .imageHeight(getRootPane().getHeight())
-                        .imageWidth(getRootPane().getWidth()));
-                imagePanel.setImage(new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
-                redrawHistogram();
-            }
-            
-        });
     }
 
     /**
@@ -57,14 +45,11 @@ public class ShowHistogram extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private Histogram1D hist;
-    private Histogram1DRenderer renderer = new Histogram1DRenderer();
+    private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
 
     public void setHistogram(Histogram1D hist) {
         this.hist = hist;
-        hist.update(new Histogram1DUpdate()
-                .imageHeight(getRootPane().getHeight())
-                .imageWidth(getRootPane().getWidth()));
-        imagePanel.setImage(new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
+        imagePanel.setImage(new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
         pack();
         redrawHistogram();
     }

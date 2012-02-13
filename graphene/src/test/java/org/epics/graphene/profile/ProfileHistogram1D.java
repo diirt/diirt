@@ -21,8 +21,8 @@ public class ProfileHistogram1D {
     public static void main(String[] args) {
         int nSamples = 1000;
         int nTries = 10000;
-        int imageWidth = 300;
-        int imageHeight = 200;
+        int imageWidth = 600;
+        int imageHeight = 400;
         Random rand = new Random();
                 
         Dataset1D dataset = new Dataset1DArray(nSamples);
@@ -33,15 +33,14 @@ public class ProfileHistogram1D {
         dataset.update(update);
         
         Histogram1D histogram = Histograms.createHistogram(dataset);
-        histogram.update(new Histogram1DUpdate().imageWidth(imageWidth).imageHeight(imageHeight));
-        Histogram1DRenderer renderer = new Histogram1DRenderer();
+        Histogram1DRenderer renderer = new Histogram1DRenderer(imageWidth, imageHeight);
         
         StopWatch stopWatch = new StopWatch(nTries);
         
         for (int i = 0; i < nTries; i++) {
             stopWatch.start();
             histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
-            BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D graphics = image.createGraphics();
             renderer.draw(graphics, histogram);
             stopWatch.stop();
@@ -55,7 +54,6 @@ public class ProfileHistogram1D {
         Dataset1D timings = new Dataset1DArray(nTries);
         timings.update(new Dataset1DUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
         Histogram1D hist = Histograms.createHistogram(timings);
-        hist.update(new Histogram1DUpdate().imageWidth(800).imageHeight(600));
         ShowResizableImage.showHistogram(hist);
     }
 }

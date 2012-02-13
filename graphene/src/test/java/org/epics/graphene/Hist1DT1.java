@@ -11,9 +11,6 @@ package org.epics.graphene;
 public final class Hist1DT1 extends MockHistogram1D {
 
     public Hist1DT1() {
-        update(new Histogram1DUpdate()
-                .imageHeight(200)
-                .imageWidth(300));
         setMinValueRange(0.0);
         setMaxValueRange(2.0);
         setMinCountRange(0);

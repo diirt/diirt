@@ -10,8 +10,6 @@ package org.epics.graphene;
  */
 class Histogram1DFromDataset1D implements Histogram1D {
     
-    private int imageHeight;
-    private int imageWidth;
     private double minValueRange;
     private double maxValueRange;
     private int minCountRange;
@@ -20,17 +18,6 @@ class Histogram1DFromDataset1D implements Histogram1D {
     private int[] binCount;
     private boolean autoValueRange = true;
     private int nBins = 100;
-    
-
-    @Override
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    @Override
-    public int getImageWidth() {
-        return imageWidth;
-    }
 
     @Override
     public double getMinValueRange() {
@@ -137,10 +124,6 @@ class Histogram1DFromDataset1D implements Histogram1D {
 
     @Override
     public void update(Histogram1DUpdate update) {
-        if (update.getImageHeight() != null)
-            imageHeight = update.getImageHeight();
-        if (update.getImageWidth() != null)
-            imageWidth = update.getImageWidth();
         if (update.getDataset() != null)
             setDataset(update.getDataset());
     }

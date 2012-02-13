@@ -24,9 +24,10 @@ class Histogram1DFunction extends Function<VImage> {
     private Function<List<VDouble>> argument;
     private Dataset1D dataset = new Dataset1DArray(1000000);
     private Histogram1D histogram = Histograms.createHistogram(dataset);
-    private Histogram1DRenderer renderer = new Histogram1DRenderer();
+    private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
     private VImage previousImage;
     private List<Histogram1DUpdate> histogramUpdates = Collections.synchronizedList(new ArrayList<Histogram1DUpdate>());
+    private List<Histogram1DRendererUpdate> rendererUpdates = Collections.synchronizedList(new ArrayList<Histogram1DRendererUpdate>());
 
     public Histogram1DFunction(Function<List<VDouble>> argument) {
         this.argument = argument;
@@ -35,6 +36,11 @@ class Histogram1DFunction extends Function<VImage> {
     public void update(Histogram1DUpdate update) {
         // Already synchronized
         histogramUpdates.add(update);
+    }
+    
+    public void update(Histogram1DRendererUpdate update) {
+        // Already synchronized
+        rendererUpdates.add(update);
     }
 
     @Override
@@ -58,12 +64,20 @@ class Histogram1DFunction extends Function<VImage> {
             histogramUpdates.clear();
         }
         histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
+
+        // Process all renderer updates
+        synchronized(rendererUpdates) {
+            for (Histogram1DRendererUpdate rendererUpdate : rendererUpdates) {
+                renderer.update(rendererUpdate);
+            }
+            rendererUpdates.clear();
+        }
         
         // If no size is set, don't calculate anything
-        if (histogram.getImageHeight() == 0 && histogram.getImageWidth() == 0)
+        if (renderer.getImageHeight() == 0 && renderer.getImageWidth() == 0)
             return null;
         
-        BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         renderer.draw(image.createGraphics(), histogram);
         
         previousImage = ValueUtil.toVImage(image);

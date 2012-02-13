@@ -43,8 +43,7 @@ public class ProfileLockHistogram1D1 {
             public void run() {
 
                 Histogram1D histogram = Histograms.createHistogram(dataset);
-                histogram.update(new Histogram1DUpdate().imageWidth(imageWidth).imageHeight(imageHeight));
-                Histogram1DRenderer renderer = new Histogram1DRenderer();
+                Histogram1DRenderer renderer = new Histogram1DRenderer(imageWidth, imageHeight);
 
                 StopWatch stopWatch = new StopWatch(nTries);
 
@@ -52,7 +51,7 @@ public class ProfileLockHistogram1D1 {
                     stopWatch.start();
                     synchronized(dataset) {
                     histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
-                    BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+                    BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
                     Graphics2D graphics = image.createGraphics();
                     renderer.draw(graphics, histogram);
 

@@ -13,21 +13,6 @@ public interface Histogram1D {
     public void update(Histogram1DUpdate update);
     
     /**
-     * The plot height.
-     * 
-     * @return height in px
-     */
-    public int getImageHeight();
-    
-    /**
-     * The plot width.
-     * 
-     * @return width in px
-     */
-    public int getImageWidth();
-    
-    
-    /**
      * The minimum value that should be displayed in the 
      * x axis of the plot.
      * 

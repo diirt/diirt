@@ -63,8 +63,8 @@ public class ShowImage extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws Exception {
         Histogram1D hist = new Hist1DT1();
-        BufferedImage image = new BufferedImage(hist.getImageWidth(), hist.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Histogram1DRenderer renderer = new Histogram1DRenderer();
+        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
+        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, hist);
         showImage(image);
