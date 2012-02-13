@@ -84,7 +84,7 @@ public class ShowResizableImage extends javax.swing.JFrame {
     
     
 
-    private static void showHistogram(final Histogram1D hist) {
+    public static void showHistogram(final Histogram1D hist) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {

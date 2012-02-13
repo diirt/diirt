@@ -1,0 +1,59 @@
+/*
+ * Copyright 2011 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
+package org.epics.graphene.profile;
+
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import org.epics.graphene.*;
+
+/**
+ *
+ * @author carcassi
+ */
+public class ProfileHistogram1D {
+
+    public static void main(String[] args) {
+        int nSamples = 1000;
+        int nTries = 10000;
+        int imageWidth = 300;
+        int imageHeight = 200;
+        Random rand = new Random();
+                
+        Dataset1D dataset = new Dataset1DArray(nSamples);
+        Dataset1DUpdater update = dataset.update();
+        for (int i = 0; i < nSamples; i++) {
+            update.addData(rand.nextGaussian());
+        }
+        update.commit();
+        
+        Histogram1D histogram = Histograms.createHistogram(dataset);
+        histogram.update(new Histogram1DUpdate().imageWidth(imageWidth).imageHeight(imageHeight));
+        Histogram1DRenderer renderer = new Histogram1DRenderer();
+        
+        StopWatch stopWatch = new StopWatch(nTries);
+        
+        for (int i = 0; i < nTries; i++) {
+            stopWatch.start();
+            histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
+            BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            renderer.draw(image.createGraphics(), histogram);
+            stopWatch.stop();
+            
+            if (image.getRGB(0, 0) == 0) {
+                System.out.println("Black");
+            }
+        }
+        
+        System.out.println("average " + stopWatch.getAverageMs() + " ms");
+        Dataset1D timings = new Dataset1DArray(nTries);
+        timings.update().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)).commit();
+        Histogram1D hist = Histograms.createHistogram(timings);
+        hist.update(new Histogram1DUpdate().imageWidth(800).imageHeight(600));
+        ShowResizableImage.showHistogram(hist);
+    }
+}
