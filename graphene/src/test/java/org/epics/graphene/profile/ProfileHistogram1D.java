@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.profile;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Random;
@@ -41,7 +42,8 @@ public class ProfileHistogram1D {
             stopWatch.start();
             histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
             BufferedImage image = new BufferedImage(histogram.getImageWidth(), histogram.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-            renderer.draw(image.createGraphics(), histogram);
+            Graphics2D graphics = image.createGraphics();
+            renderer.draw(graphics, histogram);
             stopWatch.stop();
             
             if (image.getRGB(0, 0) == 0) {
