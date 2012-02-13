@@ -16,5 +16,5 @@ public interface Dataset1D {
     
     public double getMaxValue();
     
-    public Dataset1DUpdater update();
+    public void update(Dataset1DUpdate update);
 }

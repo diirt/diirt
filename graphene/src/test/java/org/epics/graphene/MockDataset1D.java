@@ -74,7 +74,7 @@ public class MockDataset1D implements Dataset1D {
     }
 
     @Override
-    public Dataset1DUpdater update() {
+    public void update(Dataset1DUpdate update) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

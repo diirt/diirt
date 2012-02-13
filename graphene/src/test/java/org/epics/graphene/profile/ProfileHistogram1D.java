@@ -26,11 +26,11 @@ public class ProfileHistogram1D {
         Random rand = new Random();
                 
         Dataset1D dataset = new Dataset1DArray(nSamples);
-        Dataset1DUpdater update = dataset.update();
+        Dataset1DUpdate update = new Dataset1DUpdate();
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
-        update.commit();
+        dataset.update(update);
         
         Histogram1D histogram = Histograms.createHistogram(dataset);
         histogram.update(new Histogram1DUpdate().imageWidth(imageWidth).imageHeight(imageHeight));
@@ -53,7 +53,7 @@ public class ProfileHistogram1D {
         
         System.out.println("average " + stopWatch.getAverageMs() + " ms");
         Dataset1D timings = new Dataset1DArray(nTries);
-        timings.update().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)).commit();
+        timings.update(new Dataset1DUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
         Histogram1D hist = Histograms.createHistogram(timings);
         hist.update(new Histogram1DUpdate().imageWidth(800).imageHeight(600));
         ShowResizableImage.showHistogram(hist);

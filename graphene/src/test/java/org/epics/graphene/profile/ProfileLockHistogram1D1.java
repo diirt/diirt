@@ -29,11 +29,11 @@ public class ProfileLockHistogram1D1 {
         int nThreads = 1;
                 
         final Dataset1D dataset = new Dataset1DArray(nSamples);
-        Dataset1DUpdater update = dataset.update();
+        Dataset1DUpdate update = new Dataset1DUpdate();
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
-        update.commit();
+        dataset.update(update);
         
         ExecutorService executor = Executors.newFixedThreadPool(nThreads);
         for (int i = 0; i < nThreads; i++) {

@@ -44,11 +44,11 @@ class Histogram1DFunction extends Function<VImage> {
             return previousImage;
         
         // Update the dataset
-        Dataset1DUpdater update = dataset.update();
+        Dataset1DUpdate update = new Dataset1DUpdate();
         for (VDouble vDouble : newData) {
             update.addData(vDouble.getValue());
         }
-        update.commit();
+        dataset.update(update);
         
         // Process all updates
         synchronized(histogramUpdates) {

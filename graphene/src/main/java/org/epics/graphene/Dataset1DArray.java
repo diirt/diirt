@@ -48,25 +48,18 @@ public class Dataset1DArray implements Dataset1D {
     }
 
     @Override
-    public Dataset1DUpdater update() {
-        return new Dataset1DUpdater() {
+    public void update(Dataset1DUpdate update) {
+        if (update.isToClear()) {
+            startOffset = 0;
+            endOffset = 0;
+        }
+        IteratorDouble iteratorDouble = update.getNewData();
+        while (iteratorDouble.hasNext()) {
+            addValue(iteratorDouble.next());
+        }
 
-            @Override
-            public void commit() {
-                if (clear) {
-                    startOffset = 0;
-                    endOffset = 0;
-                }
-                for (IteratorDouble iteratorDouble : newData) {
-                    while (iteratorDouble.hasNext()) {
-                        addValue(iteratorDouble.next());
-                    }
-                }
-                
-                double[] minMax = NumberUtil.minMax(data);
-                minValue = minMax[0];
-                maxValue = minMax[1];
-            }
-        };
+        double[] minMax = NumberUtil.minMax(data);
+        minValue = minMax[0];
+        maxValue = minMax[1];
     }
 }

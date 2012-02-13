@@ -5,6 +5,8 @@
 package org.epics.graphene;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -69,4 +71,30 @@ public class Iterators {
         return Arrays.copyOf(buffer, offset);
     }
     
+    public static IteratorDouble combine(final Collection<IteratorDouble> iterators) {
+        return new IteratorDouble() {
+            
+            private IteratorDouble currentIterator = null;
+            private Iterator<IteratorDouble> iterator = iterators.iterator();
+
+            @Override
+            public boolean hasNext() {
+                if (currentIterator != null && currentIterator.hasNext()) {
+                    return true;
+                }
+                
+                if (iterator.hasNext()) {
+                    currentIterator = iterator.next();
+                    return hasNext();
+                }
+                
+                return false;
+            }
+
+            @Override
+            public double next() {
+                return currentIterator.next();
+            }
+        };
+    }
 }
