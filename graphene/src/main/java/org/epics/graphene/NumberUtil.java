@@ -48,13 +48,18 @@ public class NumberUtil {
      * @return the minimum and the maximum
      */
     public static double[] minMax(double[] array) {
-        if (array.length == 0) {
+        return minMax(Iterators.arrayIterator(array));
+    }
+    
+    public static double[] minMax(IteratorDouble iterator) {
+        if (!iterator.hasNext()) {
             return null;
         }
+        double firstValue = iterator.next();
         
-        double[] minMax = new double[] {array[0], array[0]};
-        for (int i = 1; i < array.length; i++) {
-            double value = array[i];
+        double[] minMax = new double[] {firstValue, firstValue};
+        while (iterator.hasNext()) {
+            double value = iterator.next();
             if (value > minMax[1])
                 minMax[1] = value;
             if (value < minMax[0])

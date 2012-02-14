@@ -32,7 +32,7 @@ public class Dataset1DArrayTest {
     }
     
     @Test
-    public void createAndAddData() throws Exception {
+    public void createAndAddData1() throws Exception {
         Dataset1D dataset = new Dataset1DArray(10);
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
         assertEquals(Double.NaN, dataset.getMinValue(), 0.0001);
@@ -45,9 +45,9 @@ public class Dataset1DArrayTest {
         assertArrayEquals(new double[] {0.0, 1.0, 2.0}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(new double[] {3.0, 4.0, 5.0}));
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0}, Iterators.toArray(dataset.getValues()), 0.0001);
-        dataset.update(new Dataset1DUpdate().clearData());
         assertEquals(0.0, dataset.getMinValue(), 0.0);
         assertEquals(0.0, dataset.getMaxValue(), 5.0);
+        dataset.update(new Dataset1DUpdate().clearData());
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(0.0).clearData());
         assertArrayEquals(new double[] {}, Iterators.toArray(dataset.getValues()), 0.0001);
@@ -62,6 +62,15 @@ public class Dataset1DArrayTest {
         assertArrayEquals(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, Iterators.toArray(dataset.getValues()), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}));
         assertArrayEquals(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, Iterators.toArray(dataset.getValues()), 0.0001);
+    }
+    
+    @Test
+    public void createAndAddData2() throws Exception {
+        Dataset1D dataset = new Dataset1DArray(10);
+        dataset.update(new Dataset1DUpdate().addData(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}));
+        assertArrayEquals(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}, Iterators.toArray(dataset.getValues()), 0.000000001);
+        assertEquals(0.000000111, dataset.getMinValue(), 0.000000001);
+        assertEquals(0.000000168, dataset.getMaxValue(), 0.000000001);
     }
     
 }

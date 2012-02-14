@@ -58,8 +58,13 @@ public class Dataset1DArray implements Dataset1D {
             addValue(iteratorDouble.next());
         }
 
-        double[] minMax = NumberUtil.minMax(data);
-        minValue = minMax[0];
-        maxValue = minMax[1];
+        double[] minMax = NumberUtil.minMax(getValues());
+        if (minMax == null) {
+            minValue = Double.NaN;
+            maxValue = Double.NaN;
+        } else {
+            minValue = minMax[0];
+            maxValue = minMax[1];
+        }
     }
 }
