@@ -72,10 +72,6 @@ public class MockHistogram extends javax.swing.JFrame {
         pvName = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        adaptiveRangeField = new javax.swing.JCheckBox();
-        jLabel3 = new javax.swing.JLabel();
-        pixelDurationField = new javax.swing.JSpinner();
-        scrollDownField = new javax.swing.JCheckBox();
         plotView = new org.epics.pvmanager.graphene.ImagePanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,30 +85,6 @@ public class MockHistogram extends javax.swing.JFrame {
         });
 
         lastError.setEditable(false);
-
-        adaptiveRangeField.setText("Adaptive range");
-        adaptiveRangeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adaptiveRangeFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("ms per pixel:");
-
-        pixelDurationField.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(100), Integer.valueOf(1), null, Integer.valueOf(1)));
-        pixelDurationField.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pixelDurationFieldStateChanged(evt);
-            }
-        });
-
-        scrollDownField.setSelected(true);
-        scrollDownField.setText("Latest on top");
-        scrollDownField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scrollDownFieldActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout plotViewLayout = new javax.swing.GroupLayout(plotView);
         plotView.setLayout(plotViewLayout);
@@ -134,22 +106,9 @@ public class MockHistogram extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pvName))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(adaptiveRangeField)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(scrollDownField))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(pixelDurationField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                         .addGap(12, 12, 12))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -164,15 +123,7 @@ public class MockHistogram extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(pvName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(pixelDurationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(adaptiveRangeField)
-                    .addComponent(scrollDownField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(60, 60, 60)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(plotView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -210,15 +161,6 @@ public class MockHistogram extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_pvNameActionPerformed
 
-    private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged
-    }//GEN-LAST:event_pixelDurationFieldStateChanged
-
-    private void scrollDownFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scrollDownFieldActionPerformed
-    }//GEN-LAST:event_scrollDownFieldActionPerformed
-
-    private void adaptiveRangeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaptiveRangeFieldActionPerformed
-    }//GEN-LAST:event_adaptiveRangeFieldActionPerformed
-
     private void setLastError(Exception ex) {
         if (ex != null) {
             lastError.setText(ex.getMessage());
@@ -241,14 +183,10 @@ public class MockHistogram extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox adaptiveRangeField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
-    private javax.swing.JSpinner pixelDurationField;
     private org.epics.pvmanager.graphene.ImagePanel plotView;
     private javax.swing.JTextField pvName;
-    private javax.swing.JCheckBox scrollDownField;
     // End of variables declaration//GEN-END:variables
 }
