@@ -46,7 +46,7 @@ class Histogram1DFunction extends Function<VImage> {
     @Override
     public VImage getValue() {
         List<VDouble> newData = argument.getValue();
-        if (newData.isEmpty() && previousImage != null)
+        if (newData.isEmpty() && previousImage != null && histogramUpdates.isEmpty() && rendererUpdates.isEmpty())
             return previousImage;
         
         // Update the dataset
