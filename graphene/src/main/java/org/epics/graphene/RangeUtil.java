@@ -15,7 +15,7 @@ public class RangeUtil {
     }
     
     public static double[] ticksForRange(double min, double max, int nTicks, double minIncrement) {
-        double magnitude = Math.pow(10.0, Math.floor(Math.log10(max)));
+        double magnitude = Math.pow(10.0, Math.floor(Math.log10(Math.max(Math.abs(max), Math.abs(min)))));
         if (magnitude < minIncrement) {
             return new double[] {min, max};
         }

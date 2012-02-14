@@ -50,5 +50,7 @@ public class RangeUtilTest {
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, RangeUtil.ticksForRange(0.0, 10.0, 101, 1.0), 0.000001);
         assertArrayEquals(new double[] {0.0, 2.0, 4.0, 6.0, 8.0, 10.0}, RangeUtil.ticksForRange(0.0, 10.0, 6), 0.000001);
         assertArrayEquals(new double[] {0.0, 2.0, 4.0, 6.0, 8.0, 10.0}, RangeUtil.ticksForRange(0.0, 10.0, 8), 0.000001);
+        assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0}, RangeUtil.ticksForRange(-10.0, -1.0, 11), 0.000001);
+        assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0}, RangeUtil.ticksForRange(-10.0, 0.0, 11), 0.000001);
     }
 }
