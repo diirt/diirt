@@ -145,7 +145,9 @@ public class LocalDataSourceTest {
         PVWriter<Object> writer = PVManager.write(channel(channelName1)).from(dataSource).async();
         writer.addPVWriterListener(listener);
         writer.write(10);
-        verify(listener, never()).pvWritten();
+        // On some machines, the local write is fast enough that it may already
+        // be done
+        verify(listener, atMost(1)).pvWritten();
         
         Thread.sleep(50);
         pv.close();
