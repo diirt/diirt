@@ -25,14 +25,8 @@ public class ValueAxisTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-/*
-    @Test
-    public void testCountTicks() {
-        assertEquals(11, RangeUtil.countTicks(0.0, 10.0, 1.0));
-        assertEquals(7, RangeUtil.countTicks(0.29876, 3.986, 0.5));
-        assertEquals(29, RangeUtil.countTicks(19.4, 2968, 100.0));
-    }
 
+    /*
     @Test
     public void testCreateTicks() {
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0}, RangeUtil.createTicks(0.0, 10.0, 1.0), 0.000001);
@@ -40,12 +34,6 @@ public class ValueAxisTest {
         assertArrayEquals(new double[] {100.0, 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0, 900.0, 1000.0,
             1100.0, 1200.0, 1300.0, 1400.0, 1500.0, 1600.0, 1700.0, 1800.0, 1900.0, 2000.0,
             2100.0, 2200.0, 2300.0, 2400.0, 2500.0, 2600.0, 2700.0, 2800.0, 2900.0}, RangeUtil.createTicks(19.4, 2968, 100.0), 0.000001);
-    }
-
-    @Test
-    public void testTicksForRange1() {
-        assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0}, RangeUtil.ticksForRange(-10.0, -1.0, 11), 0.000001);
-        assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0}, RangeUtil.ticksForRange(-10.0, 0.0, 11), 0.000001);
     }*/
     
     @Test
@@ -102,6 +90,13 @@ public class ValueAxisTest {
         ValueAxis axis = ValueAxis.createAutoAxis(-10.0, 0.0, 11);
         assertAxisEquals(-10.0, 0.0, new double[]{-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0},
                 new String[]{"-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0"}, axis);
+    }
+    
+    @Test
+    public void testTicksForRange9() {
+        ValueAxis axis = ValueAxis.createAutoAxis(0.9, 1.3, 10);
+        assertAxisEquals(0.9, 1.3, new double[]{0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3},
+                new String[]{"0.90", "0.95", "1.00", "1.05", "1.10", "1.15", "1.20", "1.25", "1.30"}, axis);
     }
 
     private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {

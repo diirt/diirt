@@ -58,6 +58,8 @@ public class ValueAxis {
         DecimalFormat format = defaultFormat;
         if (incrementOrder == -1) {
             format = decimal1;
+        } else if (incrementOrder == -2) {
+            format = decimal2;
         }
         
         String[] labels = new String[ticks.length];
