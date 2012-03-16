@@ -57,9 +57,13 @@ public class ValueAxisTest {
     @Test
     public void testTicksForRange1() {
         ValueAxis axis = ValueAxis.createAutoAxis(1.0, 9.0, 4);
-        assertEquals(1.0, axis.getMinValue(), 0.000001);
-        assertEquals(9.0, axis.getMaxValue(), 0.000001);
-        assertArrayEquals(new double[] {2.0, 4.0, 6.0, 8.0}, axis.getTickValues(), 0.000001);
-        assertArrayEquals(new String[] {"2", "4", "6", "8"}, axis.getTickLabels());
+        assertAxisEquals(1.0, 9.0, new double[]{2.0, 4.0, 6.0, 8.0}, new String[]{"2", "4", "6", "8"}, axis);
+    }
+
+    private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
+        assertEquals(minValue, axis.getMinValue(), 0.000001);
+        assertEquals(maxValue, axis.getMaxValue(), 0.000001);
+        assertArrayEquals(tickValues, axis.getTickValues(), 0.000001);
+        assertArrayEquals(tickLabels, axis.getTickLabels());
     }
 }
