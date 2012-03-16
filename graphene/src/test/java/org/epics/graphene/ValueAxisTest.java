@@ -44,8 +44,6 @@ public class ValueAxisTest {
 
     @Test
     public void testTicksForRange1() {
-        assertArrayEquals(new double[] {0.0, 2.0, 4.0, 6.0, 8.0, 10.0}, RangeUtil.ticksForRange(0.0, 10.0, 6), 0.000001);
-        assertArrayEquals(new double[] {0.0, 2.0, 4.0, 6.0, 8.0, 10.0}, RangeUtil.ticksForRange(0.0, 10.0, 8), 0.000001);
         assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0}, RangeUtil.ticksForRange(-10.0, -1.0, 11), 0.000001);
         assertArrayEquals(new double[] {-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0}, RangeUtil.ticksForRange(-10.0, 0.0, 11), 0.000001);
     }*/
@@ -90,6 +88,13 @@ public class ValueAxisTest {
         ValueAxis axis = ValueAxis.createAutoAxis(0.0, 10.0, 8);
         assertAxisEquals(0.0, 10.0, new double[]{0.0, 2.0, 4.0, 6.0, 8.0, 10.0},
                 new String[]{"0", "2", "4", "6", "8", "10"}, axis);
+    }
+    
+    @Test
+    public void testTicksForRange7() {
+        ValueAxis axis = ValueAxis.createAutoAxis(-10.0, -1.0, 11);
+        assertAxisEquals(-10.0, -1.0, new double[]{-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0},
+                new String[]{"-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1"}, axis);
     }
 
     private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
