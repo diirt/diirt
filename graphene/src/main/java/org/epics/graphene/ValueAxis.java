@@ -119,43 +119,29 @@ public class ValueAxis {
         return orderOfMagnitude(Math.max(Math.abs(max), Math.abs(min)));
     }
     
-    static double incrementForRange(double min, double max, int nTicks, double minIncrement) {
-        double magnitude = Math.pow(10.0, orderOfMagnitude(min, max));
-        if (magnitude < minIncrement) {
-            return Double.NaN;
-        }
-        int ticks = countTicks(min, max, magnitude);
-        if (ticks > nTicks) {
-            if (ticks / 2 < nTicks) {
-                int newTicks = countTicks(min, max, magnitude * 5);
-                if (newTicks > 2 && newTicks <= nTicks) {
-                    return magnitude * 5;
-                }
-            }
-            
-            if (ticks / 5 < nTicks) {
-                int newTicks = countTicks(min, max, magnitude * 2);
-                if (newTicks > 2 && newTicks <= nTicks) {
-                    return magnitude * 2;
-                }
-            }
-            
-            return Double.NaN;
+    /**
+     * Find the space between ticks given the constraints.
+     * 
+     * @param min range start
+     * @param max range end
+     * @param maxTick maximum ticks
+     * @param minIncrement minimum increment
+     * @return the increment between each tick
+     */
+    static double incrementForRange(double min, double max, int maxTick, double minIncrement) {
+        double range = max - min;
+        double increment = Math.max(range/maxTick, minIncrement);
+        double magnitude = Math.pow(10.0, orderOfMagnitude(increment));
+        double normalizedIncrement = increment / magnitude;
+        
+        if (normalizedIncrement <= 1.0) {
+            return magnitude;
+        } else if (normalizedIncrement <= 2.0) {
+            return magnitude * 2;
+        } else if (normalizedIncrement <= 5.0) {
+            return magnitude * 5;
         } else {
-            double increment = magnitude;
-            // Refine if there is still space to refine
-            while (countTicks(min, max, increment / 2) <= nTicks) {
-                if (increment / 10 >= minIncrement && countTicks(min, max, increment / 10) <= nTicks) {
-                    increment /= 10;
-                } else if (increment / 5 >= minIncrement && countTicks(min, max, increment / 5) <= nTicks) {
-                    return increment / 5;
-                } else if(increment / 2 >= minIncrement) {
-                    return increment / 2;
-                } else {
-                    return increment;
-                }
-            }
-            return increment;
+            return magnitude * 10;
         }
     }
     
