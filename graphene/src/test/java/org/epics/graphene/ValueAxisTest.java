@@ -126,6 +126,13 @@ public class ValueAxisTest {
         assertAxisEquals(0.00008, 0.00012, new double[]{0.00008, 0.00009, 0.0001, 0.00011, 0.00012},
                 new String[]{"0.8e-4", "0.9e-4", "1.0e-4", "1.1e-4", "1.2e-4"}, axis);
     }
+    
+    @Test
+    public void testTicksForRange14() {
+        ValueAxis axis = ValueAxis.createAutoAxis(0.0000799, 0.0000809, 5);
+        assertAxisEquals(0.0000799, 0.0000809, new double[]{0.00008, 0.0000802, 0.0000804, 0.0000806, 0.0000808},
+                new String[]{"8.00e-5","8.02e-5","8.04e-5","8.06e-5","8.08e-5"}, axis);
+    }
 
     private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
         assertEquals(minValue, axis.getMinValue(), 0.000001);
