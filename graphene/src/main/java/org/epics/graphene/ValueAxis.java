@@ -4,7 +4,9 @@
  */
 package org.epics.graphene;
 
-import java.text.DecimalFormat;
+import java.text.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -50,24 +52,63 @@ public class ValueAxis {
     private static final DecimalFormat decimal1 = new DecimalFormat("0.0");
     private static final DecimalFormat decimal2 = new DecimalFormat("0.00");
     
+    private static final Map<Integer, DecimalFormat> formats = new ConcurrentHashMap<Integer, DecimalFormat>();
+    
+    static DecimalFormat formatWithFixedSignificantDigits(int significantDigits) {
+        DecimalFormat result = formats.get(significantDigits);
+        if (result == null) {
+            StringBuilder pattern = new StringBuilder("0");
+            for (int i = 0; i < significantDigits; i++) {
+                if (i == 0) {
+                    pattern.append(".");
+                }
+                pattern.append("0");
+            }
+            result = new DecimalFormat(pattern.toString());
+            formats.put(significantDigits, result);
+        }
+        return result;
+    }
+    
     public static ValueAxis createAutoAxis(double minValue, double maxValue, int maxTicks, double minIncrement) {
         double increment = incrementForRange(minValue, maxValue, maxTicks, minIncrement);
         double[] ticks = createTicks(minValue, maxValue, increment);
         int rangeOrder = (int) orderOfMagnitude(minValue, maxValue);
         int incrementOrder = (int) orderOfMagnitude(increment);
+        int nDigits = rangeOrder - incrementOrder;
+        
+        // The format will decide how many significant digit to show
         DecimalFormat format = defaultFormat;
-        if (incrementOrder == -1) {
-            format = decimal1;
-        } else if (incrementOrder == -2) {
-            format = decimal2;
+        // The normalization and the exponent will need to agree and
+        // decide what order of magnitude to format the number as
+        double normalization = 1.0;
+        String exponent = null;
+        if (rangeOrder >= -3 && rangeOrder <= 3) {
+            if (incrementOrder < 0) {
+                format = formatWithFixedSignificantDigits(-incrementOrder);
+            } else {
+                format = formatWithFixedSignificantDigits(0);
+            }
+        } else if (rangeOrder < -3) {
+            format = formatWithFixedSignificantDigits(nDigits);
+            normalization = Math.pow(10.0, rangeOrder);
+            exponent = Integer.toString(rangeOrder);
         }
         
         String[] labels = new String[ticks.length];
         for (int i = 0; i < ticks.length; i++) {
             double value = ticks[i];
-            labels[i] = format.format(value);
+            labels[i] = format(value, format, exponent, normalization);
         }
         return new ValueAxis(minValue, maxValue, ticks, labels);
+    }
+    
+    static String format(double number, DecimalFormat format, String exponent, double normalization) {
+        if (exponent != null) {
+            return format.format(number/normalization) + "e" + exponent;
+        } else {
+            return format.format(number/normalization);
+        }
     }
     
     static double orderOfMagnitude(double value) {
