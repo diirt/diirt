@@ -134,7 +134,7 @@ public class Histogram1DRenderer {
         for (int i = 0; i < xLabels.length; i++) {
             Rectangle2D bounds = metrics.getStringBounds(xLabels[i], graphics);
             graphics.setColor(axisTextColor);
-            graphics.drawString(xLabels[i], xTicks[i] - ((int) ((bounds.getWidth() / 2))), imageHeight - margin);
+            drawCenteredText(graphics, xLabels[i], xTicks[i], bounds.getWidth(), 0, imageWidth, imageHeight - margin);
             graphics.setColor(axisColor);
             graphics.drawLine(xTicks[i], imageHeight - xAxisFromBottom, xTicks[i], imageHeight - xAxisFromBottom + xAxisTickSize);
         }
@@ -182,5 +182,24 @@ public class Histogram1DRenderer {
         
         
         
+    }
+    
+    private static void drawCenteredText(Graphics2D graphics, String text, int center, double width, int minX, int maxX, int y) {
+        // If there is no space, don't draw anything
+        if (maxX - minX < width)
+            return;
+        
+        // If the center is not in the range, don't draw anything
+        if (maxX < center || minX > center)
+            return;
+        
+        int targetX = center - (int) ((width / 2));
+        if (targetX < minX) {
+            targetX = minX;
+        } else if (targetX + width > maxX) {
+            targetX = maxX - (int) width;
+        }
+        
+        graphics.drawString(text, targetX, y);
     }
 }
