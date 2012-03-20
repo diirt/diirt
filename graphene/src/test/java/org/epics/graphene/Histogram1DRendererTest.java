@@ -51,10 +51,21 @@ public class Histogram1DRendererTest {
         compareImages("hist1D.3", image);
     }
     
+    @Test
+    public void test4() throws Exception {
+        Histogram1D hist = new Hist1DT4();
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, hist);
+        compareImages("hist1D.4", image);
+    }
+    
     public static void compareImages(String imageName, BufferedImage image) throws Exception {
-        BufferedImage expected = ImageIO.read(Histogram1DRendererTest.class.getResource(imageName + ".png"));
         boolean done = false;
         try {
+            BufferedImage expected = ImageIO.read(Histogram1DRendererTest.class.getResource(imageName + ".png"));
+            
             assertEquals("Images are not the same height", expected.getHeight(), image.getHeight());
             assertEquals("Images are not the same width", expected.getWidth(), image.getWidth());
 
