@@ -154,6 +154,20 @@ public class ValueAxisTest {
         assertAxisEquals(0, 550, new double[]{0, 100, 200, 300, 400, 500},
                 new String[]{"0","100","200","300", "400", "500"}, axis);
     }
+    
+    @Test
+    public void testTicksForRange18() {
+        ValueAxis axis = ValueAxis.createAutoAxis(0.00001, 0.00004, 4);
+        assertAxisEquals(0.00001, 0.00004, new double[]{0.00001, 0.00002, 0.00003, 0.00004},
+                new String[]{"1e-5","2e-5","3e-5","4e-5"}, axis);
+    }
+    
+    @Test
+    public void testTicksForRange19() {
+        ValueAxis axis = ValueAxis.createAutoAxis(0.00001, 0.0004, 5);
+        assertAxisEquals(0.00001, 0.0004, new double[]{0.0001, 0.0002, 0.0003, 0.0004},
+                new String[]{"1e-4","2e-4","3e-4","4e-4"}, axis);
+    }
 
     private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
         assertEquals(minValue, axis.getMinValue(), 0.000001);
