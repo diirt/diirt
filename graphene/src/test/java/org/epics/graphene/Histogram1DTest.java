@@ -47,4 +47,19 @@ public class Histogram1DTest {
         assertEquals(99, h.getBinValueBoundary(99), 0.0001);
         assertEquals(4, h.getBinCount(99));
     }
+    
+    @Test
+    public void computeHistogram2() throws Exception {
+        Dataset1D dataset = MockDataset1D.uniform(10.0, 10.1, 300);
+        Histogram1D h = Histograms.createHistogram(dataset);
+        assertEquals(100, h.getNBins());
+        assertEquals(10.0, h.getMinValueRange(), 0.0000001);
+        assertEquals(10.1, h.getMaxValueRange(), 0.0000001);
+        assertEquals(0, h.getMinCountRange());
+        assertEquals(10, h.getMaxCountRange());
+        for (int i = 0; i < 100; i++) {
+            assertEquals(10.0 + 0.001 * i, h.getBinValueBoundary(i), 0.0001);
+            assertTrue("Element " + i, Math.abs(h.getBinCount(i) - 3) <= 1);
+        }
+    }
 }
