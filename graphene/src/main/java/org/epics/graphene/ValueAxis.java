@@ -89,6 +89,10 @@ public class ValueAxis {
             } else {
                 format = formatWithFixedSignificantDigits(0);
             }
+        } else if (rangeOrder > 3) {
+            format = formatWithFixedSignificantDigits(nDigits);
+            normalization = Math.pow(10.0, rangeOrder);
+            exponent = Integer.toString(rangeOrder);
         } else if (rangeOrder < -3) {
             format = formatWithFixedSignificantDigits(nDigits);
             normalization = Math.pow(10.0, rangeOrder);
