@@ -71,6 +71,16 @@ public class Histogram1DRendererTest {
         compareImages("hist1D.5", image);
     }
     
+    @Test
+    public void test6() throws Exception {
+        Histogram1D hist = new Hist1DT6();
+        BufferedImage image = new BufferedImage(600, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Histogram1DRenderer renderer = new Histogram1DRenderer(600, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, hist);
+        compareImages("hist1D.6", image);
+    }
+    
     public static void compareImages(String imageName, BufferedImage image) throws Exception {
         boolean done = false;
         try {

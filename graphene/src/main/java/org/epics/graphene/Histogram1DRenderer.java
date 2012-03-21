@@ -135,12 +135,12 @@ public class Histogram1DRenderer {
         
         // Draw first and last value first, as they must be there
         graphics.setColor(axisTextColor);
-        drawCenteredText(graphics, metrics, xLabels[0], xTicks[0], drawRange, imageHeight - margin, true);
-        drawCenteredText(graphics, metrics, xLabels[xLabels.length - 1], xTicks[xLabels.length - 1], drawRange, imageHeight - margin, false);
+        drawCenteredText(graphics, metrics, xLabels[0], xTicks[0], drawRange, imageHeight - margin, true, false);
+        drawCenteredText(graphics, metrics, xLabels[xLabels.length - 1], xTicks[xLabels.length - 1], drawRange, imageHeight - margin, false, false);
         
         for (int i = 0; i < xLabels.length; i++) {
             graphics.setColor(axisTextColor);
-            drawCenteredText(graphics, metrics, xLabels[i], xTicks[i], drawRange, imageHeight - margin, true);
+            drawCenteredText(graphics, metrics, xLabels[i], xTicks[i], drawRange, imageHeight - margin, true, true);
             graphics.setColor(axisColor);
             graphics.drawLine(xTicks[i], imageHeight - xAxisFromBottom, xTicks[i], imageHeight - xAxisFromBottom + xAxisTickSize);
         }
@@ -193,7 +193,7 @@ public class Histogram1DRenderer {
     private static final int MIN = 0;
     private static final int MAX = 1;
     private static final int marginBetweenXLabels = 4;
-    private static void drawCenteredText(Graphics2D graphics, FontMetrics metrics, String text, int center, int[] drawRange, int y, boolean updateMin) {
+    private static void drawCenteredText(Graphics2D graphics, FontMetrics metrics, String text, int center, int[] drawRange, int y, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < center || drawRange[MIN] > center)
             return;
@@ -205,8 +205,12 @@ public class Histogram1DRenderer {
         
         int targetX = center - (int) ((width / 2));
         if (targetX < drawRange[MIN]) {
+            if (centeredOnly)
+                return;
             targetX = drawRange[MIN];
         } else if (targetX + width > drawRange[MAX]) {
+            if (centeredOnly)
+                return;
             targetX = drawRange[MAX] - (int) width;
         }
         

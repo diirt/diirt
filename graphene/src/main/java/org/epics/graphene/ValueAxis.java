@@ -174,9 +174,9 @@ public class ValueAxis {
      * @return values for the ticks
      */
     static double[] createTicks(double min, double max, double increment) {
-        int start = (int) Math.ceil(min / increment);
-        int end = (int) Math.floor(max / increment);
-        double[] ticks = new double[end-start+1];
+        long start = (long) Math.ceil(min / increment);
+        long end = (long) Math.floor(max / increment);
+        double[] ticks = new double[(int) (end-start+1)];
         for (int i = 0; i < ticks.length; i++) {
             ticks[i] = (i + start) * increment;
         }
