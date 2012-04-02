@@ -139,7 +139,7 @@
                 <configuration>
                     <header>header.txt</header>
                     <includes>
-                        <include>**.java</include>
+                        <include>src/**/*.java</include>
                     </includes>
                     <strictCheck>true</strictCheck>
                 </configuration>
