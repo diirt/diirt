@@ -13,6 +13,12 @@
         <system>trac</system>
         <url>http://sourceforge.net/apps/trac/pvmanager/</url>
     </issueManagement>
+    <licenses>
+        <license>
+            <name>GNU General Public License 2 with the Classpath Exception</name>
+            <url>LICENSE.TXT</url>
+        </license>
+    </licenses>
     <scm>
         <connection>scm:hg:http://pvmanager.hg.sourceforge.net:8000/hgroot/pvmanager/pvmanager</connection>
         <developerConnection>scm:hg:ssh://carcassi@pvmanager.hg.sourceforge.net/hgroot/pvmanager/pvmanager</developerConnection>
@@ -214,11 +220,11 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.3</version>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.0.1</version>
-            </plugin>
+            </plugin>-->
         </plugins>
     </reporting>
 </project>
