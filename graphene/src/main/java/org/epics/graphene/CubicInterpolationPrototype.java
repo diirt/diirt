@@ -7,6 +7,7 @@ package org.epics.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Path2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -36,7 +37,21 @@ public class CubicInterpolationPrototype {
             scaledX[i] = dataX[i] * width / 10;
             scaledY[i] = height - dataY[i] * height;
         }
+        Path2D path = cubicInterpolation(scaledX, scaledY);
         
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[0], scaledY[0]);
+        for (int i = 1; i < scaledY.length; i++) {
+            line.lineTo(scaledX[i], scaledY[i]);
+        }
+        
+        //g.drawLine(0, 0, 30, 30);
+        g.draw(path);
+        g.draw(line);
+        ImageIO.write(image, "png", new File("test.png"));
+    }
+
+    private static Double cubicInterpolation(double[] scaledX, double[] scaledY) {
         Path2D.Double path = new Path2D.Double();
         path.moveTo(scaledX[0], scaledY[0]);
         for (int i = 1; i < scaledY.length; i++) {
@@ -79,16 +94,6 @@ public class CubicInterpolationPrototype {
             
             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
         }
-        
-        Path2D.Double line = new Path2D.Double();
-        line.moveTo(scaledX[0], scaledY[0]);
-        for (int i = 1; i < scaledY.length; i++) {
-            line.lineTo(scaledX[i], scaledY[i]);
-        }
-        
-        //g.drawLine(0, 0, 30, 30);
-        g.draw(path);
-        g.draw(line);
-        ImageIO.write(image, "png", new File("test.png"));
+        return path;
     }
 }
