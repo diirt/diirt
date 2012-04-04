@@ -91,12 +91,4 @@ public class CubicInterpolationPrototype {
         g.draw(line);
         ImageIO.write(image, "png", new File("test.png"));
     }
-    
-    private static double compute(double a, double b, double c, double d, double x) {
-        return a * x * x * x + b * x * x + c * x + d;
-    }
-    
-    private static double computeDerivative(double a, double b, double c, double x) {
-        return 3 * a * x * x + 2 * b * x + c;
-    }
 }
