@@ -38,17 +38,21 @@ public class CubicInterpolationPrototype {
             scaledY[i] = height - dataY[i] * height;
         }
         Path2D path = cubicInterpolation(scaledX, scaledY);
-        
-        Path2D.Double line = new Path2D.Double();
-        line.moveTo(scaledX[0], scaledY[0]);
-        for (int i = 1; i < scaledY.length; i++) {
-            line.lineTo(scaledX[i], scaledY[i]);
-        }
+        Path2D line = linearInterpolation(scaledX, scaledY);
         
         //g.drawLine(0, 0, 30, 30);
         g.draw(path);
         g.draw(line);
         ImageIO.write(image, "png", new File("test.png"));
+    }
+
+    private static Double linearInterpolation(double[] scaledX, double[] scaledY) {
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[0], scaledY[0]);
+        for (int i = 1; i < scaledY.length; i++) {
+            line.lineTo(scaledX[i], scaledY[i]);
+        }
+        return line;
     }
 
     private static Double cubicInterpolation(double[] scaledX, double[] scaledY) {
