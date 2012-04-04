@@ -6,6 +6,7 @@ package org.epics.graphene;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
 import java.awt.geom.Path2D.Double;
 import java.awt.image.BufferedImage;
@@ -20,10 +21,11 @@ public class CubicInterpolationPrototype {
     public static void main(String[] args) throws Exception {
         BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 600, 400);
         g.setColor(Color.BLACK);
-        double[] dataY = new double[] {0.1,0.1,0.6,0.3,0.7,0.5,0.5};
+        double[] dataY = new double[] {0.1,0.15,0.6,0.3,0.7,0.5,0.55};
         double[] dataX = new double[] {1,2,3,4,7,8,9};
         //double[] dataY = new double[] {0.1,0.6,0.7,0.3};
         //double[] dataX = new double[] {1,3,7,9};
@@ -39,11 +41,25 @@ public class CubicInterpolationPrototype {
         }
         Path2D path = cubicInterpolation(scaledX, scaledY);
         Path2D line = linearInterpolation(scaledX, scaledY);
+        Path2D nearest = nearestNeighbour(scaledX, scaledY);
         
         //g.drawLine(0, 0, 30, 30);
         g.draw(path);
         g.draw(line);
+        g.draw(nearest);
         ImageIO.write(image, "png", new File("test.png"));
+    }
+
+    private static Double nearestNeighbour(double[] scaledX, double[] scaledY) {
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[0], scaledY[0]);
+        for (int i = 1; i < scaledY.length; i++) {
+            double halfX = scaledX[i-1] + (scaledX[i] - scaledX[i-1]) / 2;
+            line.lineTo(halfX, scaledY[i - 1]);
+            line.lineTo(halfX, scaledY[i]);
+        }
+        line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
+        return line;
     }
 
     private static Double linearInterpolation(double[] scaledX, double[] scaledY) {
