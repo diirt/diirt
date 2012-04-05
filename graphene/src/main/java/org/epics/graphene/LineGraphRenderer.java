@@ -19,6 +19,17 @@ import javax.imageio.ImageIO;
  * @author carcassi
  */
 public class LineGraphRenderer {
+    private int width = 300;
+    private int height = 200;
+
+    public LineGraphRenderer(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public LineGraphRenderer() {
+        this(300,200);
+    }
     
     public void draw(Graphics2D g, OrderedDataset2D data) {
         int dataCount = data.getCount();
@@ -26,13 +37,29 @@ public class LineGraphRenderer {
         double startY = data.getYMinValue();
         double endX = data.getXMaxValue();
         double endY = data.getYMaxValue();
-        int width = 300;
-        int height = 200;
+        int margin = 3;
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
         g.setColor(Color.BLACK);
+        
+        // Compute axis
+        ValueAxis xAxis = ValueAxis.createAutoAxis(data.getXMinValue(), data.getXMaxValue(), Math.max(2, width / 60));
+        ValueAxis yAxis = ValueAxis.createAutoAxis(data.getYMinValue(), data.getYMaxValue(), Math.max(2, height / 60));
+        HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
+        VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
+        
+        // Compute graph area
+        int xStartGraph = yAxisRenderer.getAxisWidth();
+        int xEndGraph = width - margin;
+        int yStartGraph = margin;
+        int yEndGraph = height - xAxisRenderer.getAxisHeight();
+        
+        // Draw axis
+        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
+        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
+        
         
         double rangeX = endX - startX;
         double rangeY = endY - startY;
