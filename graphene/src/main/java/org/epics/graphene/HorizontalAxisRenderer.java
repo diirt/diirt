@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
  */
 class HorizontalAxisRenderer {
     
-    private ValueAxis xAxis;
+    private ValueAxis axis;
     private static Font defaultAxisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
     private Font axisFont = defaultAxisFont;
     private int axisHeight;
@@ -29,13 +29,13 @@ class HorizontalAxisRenderer {
     private FontMetrics metrics;
 
     HorizontalAxisRenderer(ValueAxis valueAxis, int bottomMargin, Graphics2D graphics) {
-        this.xAxis = valueAxis;
+        this.axis = valueAxis;
         this.bottomMargin = bottomMargin;
         metrics = graphics.getFontMetrics(axisFont);
         
         // Compute x axis spacing
-        xValueTicks = xAxis.getTickValues();
-        xLabels = xAxis.getTickLabels();
+        xValueTicks = axis.getTickValues();
+        xLabels = axis.getTickLabels();
         int[] xLabelWidths = new int[xLabels.length];
         for (int i = 0; i < xLabelWidths.length; i++) {
             xLabelWidths[i] = metrics.stringWidth(xLabels[i]);
@@ -50,7 +50,7 @@ class HorizontalAxisRenderer {
         int imageHeight = axisPosition + getAxisHeight();
         int[] xTicks = new int[xLabels.length];
         for (int i = 0; i < xTicks.length; i++) {
-            xTicks[i] = startAxis + (int) (NumberUtil.normalize(xValueTicks[i], xAxis.getMinValue(), xAxis.getMaxValue()) * plotWidth);
+            xTicks[i] = startAxis + (int) (NumberUtil.normalize(xValueTicks[i], axis.getMinValue(), axis.getMaxValue()) * plotWidth);
         }
         
         // Draw x-axis
@@ -71,7 +71,6 @@ class HorizontalAxisRenderer {
         }
         
     }
-    
     
     
     public int getAxisHeight() {

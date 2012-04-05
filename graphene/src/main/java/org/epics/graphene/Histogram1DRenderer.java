@@ -71,8 +71,7 @@ public class Histogram1DRenderer {
             nYTicks = imageHeight / 60;
         }
         ValueAxis yAxis = ValueAxis.createAutoAxis(yValueMin, yValueMax, Math.max(4, nYTicks), 1.0);
-        double[] yValueTicks = yAxis.getTickValues();
-        String[] yLabels = yAxis.getTickLabels();
+        VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, graphics);
 
         // Labels
         Font axisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
@@ -83,49 +82,30 @@ public class Histogram1DRenderer {
         FontMetrics metrics = graphics.getFontMetrics();
         
         
-        // Compute y axis spacing
-        int[] yLabelWidths = new int[yLabels.length];
-        int yLargestLabel = 0;
-        for (int i = 0; i < yLabelWidths.length; i++) {
-            yLabelWidths[i] = metrics.stringWidth(yLabels[i]);
-            yLargestLabel = Math.max(yLargestLabel, yLabelWidths[i]);
-        }
-        int yAxisFromLeft = margin + yLargestLabel + axisMargin;
-        
         // Compute plot size
         
-        int plotWidth = imageWidth - yAxisFromLeft - margin;
+        int plotWidth = imageWidth - yAxisRenderer.getAxisWidth() - margin;
         int plotHeight = imageHeight - xAxisRenderer.getAxisHeight() - margin;
-        
-        // Compute ticks
-        int[] yTicks = new int[yLabels.length];
-        for (int i = 0; i < yTicks.length; i++) {
-            yTicks[i] = xAxisRenderer.getAxisHeight() + (int) (normalize(yValueTicks[i], yValueMin, yValueMax) * plotHeight);
-        }
         
         // Compute bin limits
         int[] binLimitsPx = new int[hist.getNBins() + 1];
         int[] binHeightsPx = new int[hist.getNBins()];
         
         for (int i = 0; i < hist.getNBins(); i++) {
-            binLimitsPx[i] = yAxisFromLeft + (int) (normalize(hist.getBinValueBoundary(i), xValueMin, xValueMax) * plotWidth);
+            binLimitsPx[i] = yAxisRenderer.getAxisWidth() + (int) (normalize(hist.getBinValueBoundary(i), xValueMin, xValueMax) * plotWidth);
             binHeightsPx[i] = (int) (normalize(hist.getBinCount(i), yValueMin, yValueMax) * plotHeight);
         }
-        binLimitsPx[hist.getNBins()] = yAxisFromLeft + (int) (normalize(hist.getBinValueBoundary(hist.getNBins()), xValueMin, xValueMax) * plotWidth);
+        binLimitsPx[hist.getNBins()] = yAxisRenderer.getAxisWidth() + (int) (normalize(hist.getBinValueBoundary(hist.getNBins()), xValueMin, xValueMax) * plotWidth);
 
         // Draw background
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, imageWidth, imageHeight);
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        xAxisRenderer.draw(graphics, 0, yAxisFromLeft, imageWidth - margin, imageWidth, imageHeight - xAxisRenderer.getAxisHeight());
-
-        // Draw y-axis
-        graphics.setColor(axisTextColor);
-        for (int i = 0; i < yLabels.length; i++) {
-            int halfHeight = (metrics.getAscent()) / 2 - 1;
-            graphics.drawString(yLabels[i], yAxisFromLeft - yLabelWidths[i] - axisMargin, imageHeight - yTicks[i] + halfHeight);
-        }
+        // Draw axis
+        xAxisRenderer.draw(graphics, 0, yAxisRenderer.getAxisWidth(), imageWidth - margin, imageWidth, imageHeight - xAxisRenderer.getAxisHeight());
+        yAxisRenderer.draw(graphics, 0, margin, imageHeight - xAxisRenderer.getAxisHeight(), imageHeight, yAxisRenderer.getAxisWidth());
+        int[] yTicks = yAxisRenderer.verticalTickPositions();
         
         // Draw histogram area
         for (int i = 0; i < binHeightsPx.length; i++) {
@@ -141,7 +121,7 @@ public class Histogram1DRenderer {
         for (int i = 0; i < yTicks.length; i++) {
             if (yTicks[i] != xAxisRenderer.getAxisHeight()) {
                 graphics.setColor(backgroundColor);
-                graphics.drawLine(yAxisFromLeft, imageHeight - yTicks[i], yAxisFromLeft + plotWidth, imageHeight - yTicks[i]);
+                graphics.drawLine(yAxisRenderer.getAxisWidth(), imageHeight - yTicks[i], yAxisRenderer.getAxisWidth() + plotWidth, imageHeight - yTicks[i]);
             }
         }
         
