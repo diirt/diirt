@@ -55,6 +55,8 @@ public class LineGraphRenderer {
         int xEndGraph = width - margin;
         int yStartGraph = margin;
         int yEndGraph = height - xAxisRenderer.getAxisHeight();
+        int plotWidth = xEndGraph - xStartGraph;
+        int plotHeight = yEndGraph - yStartGraph;
         
         // Draw axis
         xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
@@ -68,17 +70,17 @@ public class LineGraphRenderer {
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
         for (int i = 0; i < scaledY.length; i++) {
-            scaledX[i] = NumberUtil.scale(data.getXValue(i), startX, endX, width);
-            scaledY[i] = NumberUtil.scale(data.getYValue(i), startY, endY, height);
+            scaledX[i] = xStartGraph + NumberUtil.scale(data.getXValue(i), startX, endX, plotWidth);
+            scaledY[i] = height - xAxisRenderer.getAxisHeight() - NumberUtil.scale(data.getYValue(i), startY, endY, plotHeight);
         }
         Path2D path = cubicInterpolation(scaledX, scaledY);
         Path2D line = linearInterpolation(scaledX, scaledY);
         Path2D nearest = nearestNeighbour(scaledX, scaledY);
 
         //g.drawLine(0, 0, 30, 30);
-        g.draw(path);
+        //g.draw(path);
         //g.draw(line);
-        //g.draw(nearest);
+        g.draw(nearest);
     }
 
     private static Double nearestNeighbour(double[] scaledX, double[] scaledY) {
