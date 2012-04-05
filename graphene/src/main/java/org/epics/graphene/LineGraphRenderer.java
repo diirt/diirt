@@ -18,46 +18,40 @@ import javax.imageio.ImageIO;
  *
  * @author carcassi
  */
-public class CubicInterpolationPrototype {
-    public static void main(String[] args) throws Exception {
-        // Given data
-        double[] dataY = new double[] {0.1,0.15,0.6,0.3,0.7,0.5,0.55};
-        double[] dataX = new double[] {1,2,3,4,7,8,9};
-        //double[] dataY = new double[] {0.1,0.6,0.7,0.3};
-        //double[] dataX = new double[] {1,3,7,9};
-        double startX = 0;
-        double startY = 0;
-        double endX = 10;
-        double endY = 1;
-        int width = 600;
-        int height = 400;
+public class LineGraphRenderer {
+    
+    public void draw(Graphics2D g, OrderedDataset2D data) {
+        int dataCount = data.getCount();
+        double startX = data.getXMinValue();
+        double startY = data.getYMinValue();
+        double endX = data.getXMaxValue();
+        double endY = data.getYMaxValue();
+        int width = 300;
+        int height = 200;
 
-        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 600, 400);
+        g.fillRect(0, 0, width, height);
         g.setColor(Color.BLACK);
         
         double rangeX = endX - startX;
         double rangeY = endY - startY;
         
         // Scale data
-        double[] scaledX = new double[dataX.length];
-        double[] scaledY = new double[dataY.length];
+        double[] scaledX = new double[dataCount];
+        double[] scaledY = new double[dataCount];
         for (int i = 0; i < scaledY.length; i++) {
-            scaledX[i] = dataX[i] * width / rangeX;
-            scaledY[i] = height - dataY[i] * height / rangeY;
+            scaledX[i] = NumberUtil.scale(data.getXValue(i), startX, endX, width);
+            scaledY[i] = NumberUtil.scale(data.getYValue(i), startY, endY, height);
         }
         Path2D path = cubicInterpolation(scaledX, scaledY);
         Path2D line = linearInterpolation(scaledX, scaledY);
         Path2D nearest = nearestNeighbour(scaledX, scaledY);
-        
+
         //g.drawLine(0, 0, 30, 30);
         g.draw(path);
         //g.draw(line);
         //g.draw(nearest);
-        ImageIO.write(image, "png", new File("test.png"));
     }
 
     private static Double nearestNeighbour(double[] scaledX, double[] scaledY) {
