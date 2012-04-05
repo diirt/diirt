@@ -48,11 +48,14 @@ public class Histogram1DRenderer {
         Color lineColor = new Color(140, 140, 140);
         Color histogramColor = new Color(175, 175, 175);
         
+        int margin = 3; // 3 px of margin all around
+        int axisMargin = 3; // 3 px of margin all around
+        int xAxisTickSize = 3;
+        
         double xValueMin = hist.getMinValueRange();
         double xValueMax = hist.getMaxValueRange();
         ValueAxis xAxis = ValueAxis.createAutoAxis(xValueMin, xValueMax, imageWidth / 60);
-        double[] xValueTicks = xAxis.getTickValues();
-        String[] xLabels = xAxis.getTickLabels();
+        HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, graphics);
         
         int yValueMin = hist.getMinCountRange();
         int yValueMax = hist.getMaxCountRange();
@@ -77,17 +80,8 @@ public class Histogram1DRenderer {
         
         // Compute axis size
         
-        int margin = 3; // 3 px of margin all around
-        int axisMargin = 3; // 3 px of margin all around
-        int xAxisTickSize = 3;
         FontMetrics metrics = graphics.getFontMetrics();
         
-        // Compute x axis spacing
-        int[] xLabelWidths = new int[xLabels.length];
-        for (int i = 0; i < xLabelWidths.length; i++) {
-            xLabelWidths[i] = metrics.stringWidth(xLabels[i]);
-        }
-        int xAxisFromBottom = margin + metrics.getHeight() - metrics.getLeading() + axisMargin;
         
         // Compute y axis spacing
         int[] yLabelWidths = new int[yLabels.length];
@@ -101,16 +95,12 @@ public class Histogram1DRenderer {
         // Compute plot size
         
         int plotWidth = imageWidth - yAxisFromLeft - margin;
-        int plotHeight = imageHeight - xAxisFromBottom - margin;
+        int plotHeight = imageHeight - xAxisRenderer.getAxisHeight() - margin;
         
         // Compute ticks
-        int[] xTicks = new int[xLabels.length];
-        for (int i = 0; i < xTicks.length; i++) {
-            xTicks[i] = yAxisFromLeft + (int) (normalize(xValueTicks[i], xValueMin, xValueMax) * plotWidth);
-        }
         int[] yTicks = new int[yLabels.length];
         for (int i = 0; i < yTicks.length; i++) {
-            yTicks[i] = xAxisFromBottom + (int) (normalize(yValueTicks[i], yValueMin, yValueMax) * plotHeight);
+            yTicks[i] = xAxisRenderer.getAxisHeight() + (int) (normalize(yValueTicks[i], yValueMin, yValueMax) * plotHeight);
         }
         
         // Compute bin limits
@@ -126,24 +116,9 @@ public class Histogram1DRenderer {
         // Draw background
         graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, imageWidth, imageHeight);
-
-        // Draw x-axis
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setColor(axisColor);
-        graphics.drawLine(yAxisFromLeft, imageHeight - xAxisFromBottom, yAxisFromLeft + plotWidth, imageHeight - xAxisFromBottom);
-        int[] drawRange = new int[] {0, imageWidth};
-        
-        // Draw first and last value first, as they must be there
-        graphics.setColor(axisTextColor);
-        drawCenteredText(graphics, metrics, xLabels[0], xTicks[0], drawRange, imageHeight - margin, true, false);
-        drawCenteredText(graphics, metrics, xLabels[xLabels.length - 1], xTicks[xLabels.length - 1], drawRange, imageHeight - margin, false, false);
-        
-        for (int i = 0; i < xLabels.length; i++) {
-            graphics.setColor(axisTextColor);
-            drawCenteredText(graphics, metrics, xLabels[i], xTicks[i], drawRange, imageHeight - margin, true, true);
-            graphics.setColor(axisColor);
-            graphics.drawLine(xTicks[i], imageHeight - xAxisFromBottom, xTicks[i], imageHeight - xAxisFromBottom + xAxisTickSize);
-        }
+
+        xAxisRenderer.draw(graphics, 0, yAxisFromLeft, imageWidth - margin, imageWidth, imageHeight - xAxisRenderer.getAxisHeight());
 
         // Draw y-axis
         graphics.setColor(axisTextColor);
@@ -155,16 +130,16 @@ public class Histogram1DRenderer {
         // Draw histogram area
         for (int i = 0; i < binHeightsPx.length; i++) {
             graphics.setColor(histogramColor);
-            graphics.fillRect(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1] - binLimitsPx[i], binHeightsPx[i]);
+            graphics.fillRect(binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - binHeightsPx[i], binLimitsPx[i+1] - binLimitsPx[i], binHeightsPx[i]);
             graphics.setColor(dividerColor);
             // Draw the divider only if the vertical size is more than 0
             if (binHeightsPx[i] > 0)
-                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i], imageHeight - xAxisFromBottom - 1);
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - binHeightsPx[i], binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - 1);
         }
         
         // Draw horizontal reference lines
         for (int i = 0; i < yTicks.length; i++) {
-            if (yTicks[i] != xAxisFromBottom) {
+            if (yTicks[i] != xAxisRenderer.getAxisHeight()) {
                 graphics.setColor(backgroundColor);
                 graphics.drawLine(yAxisFromLeft, imageHeight - yTicks[i], yAxisFromLeft + plotWidth, imageHeight - yTicks[i]);
             }
@@ -176,15 +151,15 @@ public class Histogram1DRenderer {
             graphics.setColor(lineColor);
             // Draw the countour only when the height is not 0
             if (binHeightsPx[i] > 0 || previousHeight > 0) {
-                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - Math.max(previousHeight, 1), binLimitsPx[i], imageHeight - xAxisFromBottom - Math.max(binHeightsPx[i], 1));
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - Math.max(previousHeight, 1), binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - Math.max(binHeightsPx[i], 1));
             }
             if (binHeightsPx[i] > 0) {
-                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisFromBottom - binHeightsPx[i], binLimitsPx[i+1], imageHeight - xAxisFromBottom - binHeightsPx[i]);
+                graphics.drawLine(binLimitsPx[i], imageHeight - xAxisRenderer.getAxisHeight() - binHeightsPx[i], binLimitsPx[i+1], imageHeight - xAxisRenderer.getAxisHeight() - binHeightsPx[i]);
             }
             previousHeight = binHeightsPx[i];
         }
         if (previousHeight > 0)
-            graphics.drawLine(binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom - previousHeight, binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisFromBottom - 1);
+            graphics.drawLine(binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisRenderer.getAxisHeight() - previousHeight, binLimitsPx[binLimitsPx.length - 1], imageHeight - xAxisRenderer.getAxisHeight() - 1);
         
         
         
