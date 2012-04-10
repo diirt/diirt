@@ -9,9 +9,9 @@ import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
-import java.util.logging.Logger;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
@@ -83,6 +83,7 @@ public class JCADataSource extends DataSource {
 
     @Override
     public void close() {
+        super.close();
         ctxt.dispose();
     }
 
