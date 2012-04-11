@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -83,6 +84,17 @@ public class LineGraphRenderer {
             scaledX[i] = xStartGraph + NumberUtil.scale(data.getXValue(i), startX, endX, plotWidth);
             scaledY[i] = height - xAxisRenderer.getAxisHeight() - NumberUtil.scale(data.getYValue(i), startY, endY, plotHeight);
         }
+        
+        // Draw reference lines
+        g.setColor(new Color(240, 240, 240));
+        int[] xTicks = xAxisRenderer.horizontalTickPositions();
+        for (int xTick : xTicks) {
+            g.drawLine(xTick, yStartGraph, xTick, yEndGraph);
+        }
+        int[] yTicks = yAxisRenderer.verticalTickPositions();
+        for (int yTick : yTicks) {
+            g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
+        }
 
         Path2D path;
         switch (scheme) {
@@ -101,6 +113,7 @@ public class LineGraphRenderer {
         g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
         
         // Draw the line
+        g.setColor(Color.BLACK);
         g.draw(path);
     }
 

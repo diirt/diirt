@@ -24,6 +24,7 @@ class HorizontalAxisRenderer {
     private int textTickMargin = 0;
     private String[] xLabels;
     private double[] xValueTicks;
+    private int[] xTicks;
     private Color axisColor = Color.BLACK;
     private Color axisTextColor = Color.BLACK;
     private FontMetrics metrics;
@@ -48,7 +49,7 @@ class HorizontalAxisRenderer {
         int plotWidth = endAxis - startAxis;
         int imageWidth = endImage - startImage;
         int imageHeight = axisPosition + getAxisHeight();
-        int[] xTicks = new int[xLabels.length];
+        xTicks = new int[xLabels.length];
         for (int i = 0; i < xTicks.length; i++) {
             xTicks[i] = startAxis + (int) (NumberUtil.normalize(xValueTicks[i], axis.getMinValue(), axis.getMaxValue()) * plotWidth);
         }
@@ -107,6 +108,11 @@ class HorizontalAxisRenderer {
         } else {
             drawRange[MAX] = targetX - marginBetweenXLabels;
         }
+    }
+
+    
+    public int[] horizontalTickPositions() {
+        return xTicks;
     }
     
 }
