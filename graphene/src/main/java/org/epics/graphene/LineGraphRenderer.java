@@ -4,23 +4,21 @@
  */
 package org.epics.graphene;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
 import java.awt.geom.Path2D.Double;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author carcassi
  */
 public class LineGraphRenderer {
+
     private int width = 300;
     private int height = 200;
+    private InterpolationScheme scheme = InterpolationScheme.NEAREST_NEIGHBOUR;
 
     public LineGraphRenderer(int width, int height) {
         this.width = width;
@@ -28,9 +26,21 @@ public class LineGraphRenderer {
     }
 
     public LineGraphRenderer() {
-        this(300,200);
+        this(300, 200);
     }
-    
+
+    public void update(LineGraphRendererUpdate update) {
+        if (update.getImageHeight() != null) {
+            height = update.getImageHeight();
+        }
+        if (update.getImageWidth() != null) {
+            width = update.getImageWidth();
+        }
+        if (update.getInterpolation() != null) {
+            scheme = update.getInterpolation();
+        }
+    }
+
     public void draw(Graphics2D g, OrderedDataset2D data) {
         int dataCount = data.getCount();
         double startX = data.getXMinValue();
@@ -43,13 +53,13 @@ public class LineGraphRenderer {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
         g.setColor(Color.BLACK);
-        
+
         // Compute axis
         ValueAxis xAxis = ValueAxis.createAutoAxis(data.getXMinValue(), data.getXMaxValue(), Math.max(2, width / 60));
         ValueAxis yAxis = ValueAxis.createAutoAxis(data.getYMinValue(), data.getYMaxValue(), Math.max(2, height / 60));
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
         VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
-        
+
         // Compute graph area
         int xStartGraph = yAxisRenderer.getAxisWidth();
         int xEndGraph = width - margin;
@@ -57,15 +67,15 @@ public class LineGraphRenderer {
         int yEndGraph = height - xAxisRenderer.getAxisHeight();
         int plotWidth = xEndGraph - xStartGraph;
         int plotHeight = yEndGraph - yStartGraph;
-        
+
         // Draw axis
         xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
         yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
-        
-        
+
+
         double rangeX = endX - startX;
         double rangeY = endY - startY;
-        
+
         // Scale data
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
@@ -73,21 +83,32 @@ public class LineGraphRenderer {
             scaledX[i] = xStartGraph + NumberUtil.scale(data.getXValue(i), startX, endX, plotWidth);
             scaledY[i] = height - xAxisRenderer.getAxisHeight() - NumberUtil.scale(data.getYValue(i), startY, endY, plotHeight);
         }
-        Path2D path = cubicInterpolation(scaledX, scaledY);
-        Path2D line = linearInterpolation(scaledX, scaledY);
-        Path2D nearest = nearestNeighbour(scaledX, scaledY);
 
-        //g.drawLine(0, 0, 30, 30);
-        //g.draw(path);
-        //g.draw(line);
-        g.draw(nearest);
+        Path2D path;
+        switch (scheme) {
+            default:
+            case NEAREST_NEIGHBOUR:
+                path = nearestNeighbour(scaledX, scaledY);
+                break;
+            case LINEAR:
+                path = linearInterpolation(scaledX, scaledY);
+                break;
+            case CUBIC:
+                path = cubicInterpolation(scaledX, scaledY);
+        }
+
+        // Make sure that the line does not go ouside the chart
+        g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
+        
+        // Draw the line
+        g.draw(path);
     }
 
     private static Double nearestNeighbour(double[] scaledX, double[] scaledY) {
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[0], scaledY[0]);
         for (int i = 1; i < scaledY.length; i++) {
-            double halfX = scaledX[i-1] + (scaledX[i] - scaledX[i-1]) / 2;
+            double halfX = scaledX[i - 1] + (scaledX[i] - scaledX[i - 1]) / 2;
             line.lineTo(halfX, scaledY[i - 1]);
             line.lineTo(halfX, scaledY[i]);
         }
@@ -131,7 +152,7 @@ public class LineGraphRenderer {
                 y3 = y2 + (y2 - y1) / 2;
                 x3 = x2 + (x2 - x1) / 2;
             }
-            
+
             // Convert to Bezier
             double bx0 = x1;
             double by0 = y1;
@@ -143,7 +164,7 @@ public class LineGraphRenderer {
             double by1 = (bx1 - bx0) * bdy0 + by0;
             double bx2 = bx3 - (x3 - x1) / 6.0;
             double by2 = (bx2 - bx3) * bdy3 + by3;
-            
+
             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
         }
         return path;

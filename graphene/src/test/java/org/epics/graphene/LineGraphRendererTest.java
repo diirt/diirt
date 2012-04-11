@@ -38,6 +38,28 @@ public class LineGraphRendererTest {
         LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        //ImageAssert.compareImages("lineGraph.1", image);
+        ImageAssert.compareImages("lineGraph.1", image);
+    }
+    
+    @Test
+    public void test2() throws Exception {
+        OrderedDataset2D data = new OrderedDataset2DT1();
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
+        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraph.2", image);
+    }
+    
+    @Test
+    public void test3() throws Exception {
+        OrderedDataset2D data = new OrderedDataset2DT1();
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
+        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraph.3", image);
     }
 }
