@@ -30,6 +30,18 @@ public class LineGraphRenderer {
         this(300, 200);
     }
 
+    public int getImageHeight() {
+        return height;
+    }
+
+    public int getImageWidth() {
+        return width;
+    }
+    
+    public InterpolationScheme getInterpolation() {
+        return scheme;
+    }
+
     public void update(LineGraphRendererUpdate update) {
         if (update.getImageHeight() != null) {
             height = update.getImageHeight();
