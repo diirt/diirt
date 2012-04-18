@@ -14,6 +14,7 @@ import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 
 /**
  *
@@ -37,6 +38,22 @@ public class ExpressionLanguage {
     public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> vDoubleArray) {
         DesiredRateExpression<VDoubleArray> queue = latestValueOf(vDoubleArray);
         return new LineGraphPlot(queue, new LineGraphFunction(queue.getFunction()), "lineGraph");
+    }
+
+    public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> yArray,
+            SourceRateExpression<VDouble> xInitialOffset,
+            SourceRateExpression<VDouble> xIncrementSize) {
+        DesiredRateExpression<VDoubleArray> yCache = latestValueOf(yArray);
+        DesiredRateExpression<VDouble> xInitialOffsetCache = latestValueOf(xInitialOffset);
+        DesiredRateExpression<VDouble> xIncrementSizeCache = latestValueOf(xIncrementSize);
+        return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(yCache).and(xInitialOffsetCache).and(xIncrementSizeCache),
+                new LineGraphFunction(yCache.getFunction(), xInitialOffsetCache.getFunction(), xIncrementSizeCache.getFunction()), "lineGraph");
+    }
+
+    public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> xVDoubleArray, SourceRateExpression<VDoubleArray> yVDoubleArray) {
+        DesiredRateExpression<VDoubleArray> yQueue = latestValueOf(yVDoubleArray);
+        DesiredRateExpression<VDoubleArray> xQueue = latestValueOf(xVDoubleArray);
+        return new LineGraphPlot(xQueue.and(yQueue), new LineGraphFunction(xQueue.getFunction(), yQueue.getFunction()), "lineGraph");
     }
 
 }
