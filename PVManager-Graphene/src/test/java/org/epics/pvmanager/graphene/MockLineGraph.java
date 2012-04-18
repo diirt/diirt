@@ -72,18 +72,24 @@ public class MockLineGraph extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        pvName = new javax.swing.JTextField();
+        yPv = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
         plotView = new org.epics.pvmanager.graphene.ImagePanel();
+        jLabel2 = new javax.swing.JLabel();
+        xPv = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        xInitialOffset = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        xIncrementSize = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("PV Name:");
+        jLabel1.setText("Y pv:");
 
-        pvName.addActionListener(new java.awt.event.ActionListener() {
+        yPv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pvNameActionPerformed(evt);
+                yPvActionPerformed(evt);
             }
         });
 
@@ -93,31 +99,64 @@ public class MockLineGraph extends javax.swing.JFrame {
         plotView.setLayout(plotViewLayout);
         plotViewLayout.setHorizontalGroup(
             plotViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
         plotViewLayout.setVerticalGroup(
             plotViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 122, Short.MAX_VALUE)
+            .addGap(0, 197, Short.MAX_VALUE)
         );
+
+        jLabel2.setText("X pv:");
+
+        jLabel3.setText("X initial offset:");
+
+        xInitialOffset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xInitialOffsetActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("X increment size:");
+
+        xIncrementSize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xIncrementSizeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                        .addComponent(yPv)
                         .addGap(12, 12, 12))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(plotView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lastError))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(xPv)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(xInitialOffset)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(xIncrementSize)
                         .addContainerGap())))
+            .addComponent(jSeparator1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,8 +164,20 @@ public class MockLineGraph extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(pvName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                    .addComponent(yPv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(xPv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(xInitialOffset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(xIncrementSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(plotView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -138,17 +189,28 @@ public class MockLineGraph extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pvNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pvNameActionPerformed
+    private void yPvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yPvActionPerformed
         if (pv != null) {
             pv.close();
             plotView.setImage(null);
+            plot = null;
         }
         
-        if (pvName.getText() == null || pvName.getText().trim().isEmpty()) {
+        if (yPv.getText() == null || yPv.getText().trim().isEmpty()) {
             return;
         }
+        
+        if (xInitialOffset.getText() != null && !xInitialOffset.getText().trim().isEmpty()
+                && xIncrementSize.getText() != null && !xIncrementSize.getText().trim().isEmpty()) {
+            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(yPv.getText())),
+                    vDoubleOf(channel(xInitialOffset.getText())),
+                    vDoubleOf(channel(xIncrementSize.getText())));
+        }
 
-        plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(pvName.getText())));
+        if (plot == null) {
+            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(yPv.getText())));
+        }
+        
         plot.update(new LineGraphRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
         pv = PVManager.read(plot).notifyOn(swingEDT()).every(hz(50));
         pv.addPVReaderListener(new PVReaderListener() {
@@ -162,7 +224,15 @@ public class MockLineGraph extends javax.swing.JFrame {
                 }
             }
         });
-    }//GEN-LAST:event_pvNameActionPerformed
+    }//GEN-LAST:event_yPvActionPerformed
+
+    private void xInitialOffsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xInitialOffsetActionPerformed
+        yPvActionPerformed(evt);
+    }//GEN-LAST:event_xInitialOffsetActionPerformed
+
+    private void xIncrementSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xIncrementSizeActionPerformed
+        yPvActionPerformed(evt);
+    }//GEN-LAST:event_xIncrementSizeActionPerformed
 
     private void setLastError(Exception ex) {
         if (ex != null) {
@@ -187,9 +257,15 @@ public class MockLineGraph extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
     private org.epics.pvmanager.graphene.ImagePanel plotView;
-    private javax.swing.JTextField pvName;
+    private javax.swing.JTextField xIncrementSize;
+    private javax.swing.JTextField xInitialOffset;
+    private javax.swing.JTextField xPv;
+    private javax.swing.JTextField yPv;
     // End of variables declaration//GEN-END:variables
 }
