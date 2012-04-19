@@ -108,6 +108,12 @@ public class MockLineGraph extends javax.swing.JFrame {
 
         jLabel2.setText("X pv:");
 
+        xPv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xPvActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("X initial offset:");
 
         xInitialOffset.addActionListener(new java.awt.event.ActionListener() {
@@ -200,7 +206,10 @@ public class MockLineGraph extends javax.swing.JFrame {
             return;
         }
         
-        if (xInitialOffset.getText() != null && !xInitialOffset.getText().trim().isEmpty()
+        if (xPv.getText() != null && !xPv.getText().trim().isEmpty()) {
+            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(xPv.getText())),
+                    vDoubleArrayOf(channel(yPv.getText())));
+        } else if (xInitialOffset.getText() != null && !xInitialOffset.getText().trim().isEmpty()
                 && xIncrementSize.getText() != null && !xIncrementSize.getText().trim().isEmpty()) {
             plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(yPv.getText())),
                     vDoubleOf(channel(xInitialOffset.getText())),
@@ -233,6 +242,10 @@ public class MockLineGraph extends javax.swing.JFrame {
     private void xIncrementSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xIncrementSizeActionPerformed
         yPvActionPerformed(evt);
     }//GEN-LAST:event_xIncrementSizeActionPerformed
+
+    private void xPvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xPvActionPerformed
+        yPvActionPerformed(evt);
+    }//GEN-LAST:event_xPvActionPerformed
 
     private void setLastError(Exception ex) {
         if (ex != null) {

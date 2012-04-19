@@ -65,7 +65,7 @@ class LineGraphFunction extends Function<VImage> {
         if (xArray != null) {
             // Plot with two arrays
             VDoubleArray xData = xArray.getValue();
-            if (xData != null && newData.getArray() == null) {
+            if (xData != null && newData.getArray() != null) {
                 dataset = org.epics.graphene.Arrays.lineData(xData.getArray(), newData.getArray());
             }
             
