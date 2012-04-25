@@ -6,14 +6,15 @@ package org.epics.util.array;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.epics.util.array.CollectionTest.testCollection;
 
 /**
  *
  * @author carcassi
  */
-public class CollectionTest {
+public class ListTest {
     
-    public CollectionTest() {
+    public ListTest() {
     }
 
     @org.junit.BeforeClass
@@ -25,8 +26,8 @@ public class CollectionTest {
     }
     
     @Test
-    public void testCollectionDouble() {
-        CollectionDouble coll = new CollectionDouble() {
+    public void testListDouble() {
+        ListDouble coll = new ListDouble() {
 
             public IteratorDouble iterator() {
                 return new IteratorDouble() {
@@ -47,13 +48,18 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public double getDouble(int index) {
+                return 1.0;
+            }
         };
         testCollection(coll);
+        testList(coll);
     }
     
     @Test
-    public void testCollectionFloat() {
-        CollectionFloat coll = new CollectionFloat() {
+    public void testListFloat() {
+        ListFloat coll = new ListFloat() {
 
             public IteratorFloat iterator() {
                 return new IteratorFloat() {
@@ -74,13 +80,17 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public float getFloat(int index) {
+                return (float) 1.0;
+            }
         };
         testCollection(coll);
     }
     
     @Test
-    public void testCollectionLong() {
-        CollectionLong coll = new CollectionLong() {
+    public void testListLong() {
+        ListLong coll = new ListLong() {
 
             public IteratorLong iterator() {
                 return new IteratorLong() {
@@ -101,13 +111,19 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public long getLong(int index) {
+                return 1L;
+            }
+
         };
         testCollection(coll);
+        testList(coll);
     }
     
     @Test
-    public void testCollectionInt() {
-        CollectionInt coll = new CollectionInt() {
+    public void testListInt() {
+        ListInt coll = new ListInt() {
 
             public IteratorInt iterator() {
                 return new IteratorInt() {
@@ -128,13 +144,18 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public int getInt(int index) {
+                return 1;
+            }
         };
         testCollection(coll);
+        testList(coll);
     }
     
     @Test
-    public void testCollectionShort() {
-        CollectionShort coll = new CollectionShort() {
+    public void testListShort() {
+        ListShort coll = new ListShort() {
 
             public IteratorShort iterator() {
                 return new IteratorShort() {
@@ -155,13 +176,18 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public short getShort(int index) {
+                return (short) 1;
+            }
         };
         testCollection(coll);
+        testList(coll);
     }
     
     @Test
-    public void testCollectionByte() {
-        CollectionByte coll = new CollectionByte() {
+    public void testListByte() {
+        ListByte coll = new ListByte() {
 
             public IteratorByte iterator() {
                 return new IteratorByte() {
@@ -182,35 +208,26 @@ public class CollectionTest {
             public int size() {
                 return 10;
             }
+
+            public byte getByte(int index) {
+                return (byte) 1;
+            }
+
         };
         testCollection(coll);
+        testList(coll);
+    }
+
+    public static void testList(ListNumber coll) {
+        assertEquals(10, coll.size());
+        for (int i = 0; i < coll.size(); i++) {
+            assertEquals(1.0, coll.getDouble(i), 0.00001);
+            assertEquals((float) 1.0, coll.getFloat(i), 0.00001);
+            assertEquals(1L, coll.getLong(i));
+            assertEquals(1, coll.getInt(i));
+            assertEquals((short) 1, coll.getShort(i));
+            assertEquals((byte) 1, coll.getByte(i));
+        }
     }
     
-    public static void testCollection(CollectionNumber coll) {
-        assertEquals(10, coll.size());
-        IteratorNumber iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals(1.0, iter.nextDouble(), 0.0001);
-        }
-        iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals((float) 1.0, iter.nextFloat(), 0.0001);
-        }
-        iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals(1L, iter.nextLong());
-        }
-        iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals(1, iter.nextInt());
-        }
-        iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals((short) 1, iter.nextShort());
-        }
-        iter = coll.iterator();
-        while (iter.hasNext()) {
-            assertEquals((byte) 1, iter.nextByte());
-        }
-    }
 }
