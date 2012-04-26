@@ -4,13 +4,15 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.array.IteratorNumber;
+
 /**
  *
  * @author carcassi
  */
 public interface Dataset1D {
     
-    public IteratorDouble getValues();
+    public IteratorNumber getValues();
     
     public double getMinValue();
     

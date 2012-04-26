@@ -4,6 +4,9 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.array.IteratorDouble;
+import org.epics.util.array.IteratorNumber;
+
 /**
  *
  * @author carcassi
@@ -53,9 +56,9 @@ public class Dataset1DArray implements Dataset1D {
             startOffset = 0;
             endOffset = 0;
         }
-        IteratorDouble iteratorDouble = update.getNewData();
+        IteratorNumber iteratorDouble = update.getNewData();
         while (iteratorDouble.hasNext()) {
-            addValue(iteratorDouble.next());
+            addValue(iteratorDouble.nextDouble());
         }
 
         double[] minMax = NumberUtil.minMax(getValues());

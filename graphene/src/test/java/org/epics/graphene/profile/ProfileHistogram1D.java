@@ -19,6 +19,9 @@ import org.epics.graphene.*;
 public class ProfileHistogram1D {
 
     public static void main(String[] args) {
+        // With 1000000 samples and 1000 tries, 26 ms
+        // With 1000 samples and 100000 tries, 0.86 ms
+        
         int nSamples = 1000;
         int nTries = 10000;
         int imageWidth = 600;

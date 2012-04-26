@@ -5,6 +5,7 @@
 package org.epics.graphene;
 
 import java.util.Random;
+import org.epics.util.array.IteratorDouble;
 
 /**
  *
@@ -41,7 +42,7 @@ public class MockDataset1D implements Dataset1D {
             }
 
             @Override
-            public double next() {
+            public double nextDouble() {
                 double value = data[index];
                 index++;
                 return value;
