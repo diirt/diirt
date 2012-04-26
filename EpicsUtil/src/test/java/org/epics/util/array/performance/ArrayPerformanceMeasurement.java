@@ -19,19 +19,24 @@ public class ArrayPerformanceMeasurement {
 
         double[] doubleArray = new double[arraySize];
         float[] floatArray = new float[arraySize];
+        byte[] byteArray = new byte[arraySize];
         Random rand = new Random();
         for (int i = 0; i < doubleArray.length; i++) {
             doubleArray[i] = rand.nextGaussian();
             floatArray[i] = (float) rand.nextGaussian();
         }
+        rand.nextBytes(byteArray);
 
-        profileArrayDoubleThroughCollectionNumber(doubleArray, nIterations);
-        profileArrayFloatThroughCollectionNumber(floatArray, nIterations);
-        profileArrayDoubleThroughCollectionNumber(doubleArray, nIterations);
+        profileArrayThroughCollectionNumber(doubleArray, nIterations);
+        profileArrayThroughCollectionNumber(floatArray, nIterations);
+        profileArrayThroughCollectionNumber(byteArray, nIterations);
+        profileArrayThroughCollectionNumber(doubleArray, nIterations);
 
-        profileArray(nIterations, doubleArray);
+        profileJavaArray(nIterations, doubleArray);
+        profileJavaArray(nIterations, byteArray);
 
-        profileArrayDouble(doubleArray, nIterations);
+        profileArray(doubleArray, nIterations);
+        profileArray(byteArray, nIterations);
 
 //        {
 //            // TODO
@@ -53,7 +58,7 @@ public class ArrayPerformanceMeasurement {
 
     }
 
-    private static void profileArrayDoubleThroughCollectionNumber(double[] doubleArray, int nIterations) {
+    private static void profileArrayThroughCollectionNumber(double[] doubleArray, int nIterations) {
         long startTime = System.nanoTime();
         CollectionNumber list = new ArrayDouble(doubleArray);
         for (int i = 0; i < nIterations; i++) {
@@ -64,10 +69,10 @@ public class ArrayPerformanceMeasurement {
         }
         long stopTime = System.nanoTime();
 
-        System.out.println("Iteration using abstract class: ns " + (stopTime - startTime) / nIterations);
+        System.out.println("Iteration using double[] through abstract class: ns " + (stopTime - startTime) / nIterations);
     }
 
-    private static void profileArrayFloatThroughCollectionNumber(float[] floatArray, int nIterations) {
+    private static void profileArrayThroughCollectionNumber(float[] floatArray, int nIterations) {
         long startTime = System.nanoTime();
         CollectionNumber list = new ArrayFloat(floatArray);
         for (int i = 0; i < nIterations; i++) {
@@ -78,10 +83,24 @@ public class ArrayPerformanceMeasurement {
         }
         long stopTime = System.nanoTime();
 
-        System.out.println("Iteration using abstract class: ns " + (stopTime - startTime) / nIterations);
+        System.out.println("Iteration using float[] through abstract class: ns " + (stopTime - startTime) / nIterations);
     }
 
-    private static void profileArrayDouble(double[] doubleArray, int nIterations) {
+    private static void profileArrayThroughCollectionNumber(byte[] byteArray, int nIterations) {
+        long startTime = System.nanoTime();
+        CollectionNumber list = new ArrayByte(byteArray);
+        for (int i = 0; i < nIterations; i++) {
+            double sum = ArrayOperation.average.compute(list);
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using byte[] through abstract class: ns " + (stopTime - startTime) / nIterations);
+    }
+
+    private static void profileArray(double[] doubleArray, int nIterations) {
         long startTime = System.nanoTime();
         ArrayDouble coll = new ArrayDouble(doubleArray);
         for (int i = 0; i < nIterations; i++) {
@@ -95,10 +114,27 @@ public class ArrayPerformanceMeasurement {
         }
         long stopTime = System.nanoTime();
 
-        System.out.println("Iteration using final class: ns " + (stopTime - startTime) / nIterations);
+        System.out.println("Iteration using ArrayDouble: ns " + (stopTime - startTime) / nIterations);
     }
 
-    private static void profileArray(int nIterations, double[] doubleArray) {
+    private static void profileArray(byte[] byteArray, int nIterations) {
+        long startTime = System.nanoTime();
+        ArrayByte coll = new ArrayByte(byteArray);
+        for (int i = 0; i < nIterations; i++) {
+            int sum = 0;
+            for (int j = 0; j < coll.size(); j++) {
+                sum += coll.getByte(j);
+            }
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using ArrayByte: ns " + (stopTime - startTime) / nIterations);
+    }
+
+    private static void profileJavaArray(int nIterations, double[] doubleArray) {
         long startTime = System.nanoTime();
         for (int i = 0; i < nIterations; i++) {
             double sum = 0;
@@ -111,6 +147,22 @@ public class ArrayPerformanceMeasurement {
         }
         long stopTime = System.nanoTime();
 
-        System.out.println("Iteration using array: ns " + (stopTime - startTime) / nIterations);
+        System.out.println("Iteration using double[]: ns " + (stopTime - startTime) / nIterations);
+    }
+
+    private static void profileJavaArray(int nIterations, byte[] byteArray) {
+        long startTime = System.nanoTime();
+        for (int i = 0; i < nIterations; i++) {
+            int sum = 0;
+            for (int j = 0; j < byteArray.length; j++) {
+                sum += byteArray[j];
+            }
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using byte[]: ns " + (stopTime - startTime) / nIterations);
     }
 }
