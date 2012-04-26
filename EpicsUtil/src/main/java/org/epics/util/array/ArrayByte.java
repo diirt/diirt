@@ -16,25 +16,30 @@ public final class ArrayByte extends ListByte {
         this.array = array;
     }
 
+    @Override
     public final IteratorByte iterator() {
         return new IteratorByte() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public byte nextByte() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public final byte getByte(int index) {
         return array[index];
     }

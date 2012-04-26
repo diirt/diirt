@@ -10,30 +10,27 @@ package org.epics.util.array;
  */
 public abstract class IteratorDouble implements IteratorNumber {
 
-    public void remove() {
-        throw new UnsupportedOperationException("Read only iterator.");
-    }
-
-    public Number next() {
-        return nextDouble();
-    }
-
+    @Override
     public float nextFloat() {
         return (float) nextDouble();
     }
 
+    @Override
     public byte nextByte() {
         return (byte) nextDouble();
     }
 
+    @Override
     public short nextShort() {
         return (short) nextDouble();
     }
 
+    @Override
     public int nextInt() {
         return (int) nextDouble();
     }
 
+    @Override
     public long nextLong() {
         return (long) nextDouble();
     }

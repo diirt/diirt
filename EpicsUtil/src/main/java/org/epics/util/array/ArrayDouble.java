@@ -16,25 +16,30 @@ public final class ArrayDouble extends ListDouble {
         this.array = array;
     }
 
+    @Override
     public final IteratorDouble iterator() {
         return new IteratorDouble() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public double nextDouble() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public double getDouble(int index) {
         return array[index];
     }

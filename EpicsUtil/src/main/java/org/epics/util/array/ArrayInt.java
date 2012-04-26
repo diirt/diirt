@@ -16,25 +16,30 @@ public final class ArrayInt extends ListInt {
         this.array = array;
     }
 
+    @Override
     public final IteratorInt iterator() {
         return new IteratorInt() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public int nextInt() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public int getInt(int index) {
         return array[index];
     }

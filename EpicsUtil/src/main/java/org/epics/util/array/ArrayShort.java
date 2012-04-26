@@ -16,25 +16,30 @@ public final class ArrayShort extends ListShort {
         this.array = array;
     }
 
+    @Override
     public final IteratorShort iterator() {
         return new IteratorShort() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public short nextShort() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public short getShort(int index) {
         return array[index];
     }

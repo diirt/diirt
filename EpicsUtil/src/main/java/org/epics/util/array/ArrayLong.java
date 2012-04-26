@@ -16,25 +16,30 @@ public final class ArrayLong extends ListLong {
         this.array = array;
     }
 
+    @Override
     public final IteratorLong iterator() {
         return new IteratorLong() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public long nextLong() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public long getLong(int index) {
         return array[index];
     }

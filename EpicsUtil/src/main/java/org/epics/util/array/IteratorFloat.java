@@ -10,30 +10,27 @@ package org.epics.util.array;
  */
 public abstract class IteratorFloat implements IteratorNumber {
 
-    public void remove() {
-        throw new UnsupportedOperationException("Read only iterator.");
-    }
-
-    public Number next() {
-        return nextFloat();
-    }
-
+    @Override
     public double nextDouble() {
         return (double) nextFloat();
     }
 
+    @Override
     public byte nextByte() {
         return (byte) nextFloat();
     }
 
+    @Override
     public short nextShort() {
         return (short) nextFloat();
     }
 
+    @Override
     public int nextInt() {
         return (int) nextFloat();
     }
 
+    @Override
     public long nextLong() {
         return (long) nextFloat();
     }

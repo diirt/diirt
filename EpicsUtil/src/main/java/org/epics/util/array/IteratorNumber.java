@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author carcassi
  */
-public interface IteratorNumber extends Iterator<Number> {
+public interface IteratorNumber {
     
     boolean hasNext();
     

@@ -10,6 +10,7 @@ package org.epics.util.array;
  */
 public interface CollectionInt extends CollectionNumber {
 
+    @Override
     IteratorInt iterator();
     
 }

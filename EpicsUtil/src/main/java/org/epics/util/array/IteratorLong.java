@@ -4,36 +4,35 @@
  */
 package org.epics.util.array;
 
+import java.util.Iterator;
+
 /**
  *
  * @author carcassi
  */
 public abstract class IteratorLong implements IteratorNumber {
 
-    public void remove() {
-        throw new UnsupportedOperationException("Read only iterator.");
-    }
-
-    public Number next() {
-        return nextLong();
-    }
-
+    @Override
     public float nextFloat() {
         return (float) nextLong();
     }
 
+    @Override
     public double nextDouble() {
         return (double) nextLong();
     }
 
+    @Override
     public byte nextByte() {
         return (byte) nextLong();
     }
 
+    @Override
     public short nextShort() {
         return (short) nextLong();
     }
 
+    @Override
     public int nextInt() {
         return (int) nextLong();
     }

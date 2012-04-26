@@ -16,25 +16,30 @@ public final class ArrayFloat extends ListFloat {
         this.array = array;
     }
 
+    @Override
     public final IteratorFloat iterator() {
         return new IteratorFloat() {
             
             private int index;
 
+            @Override
             public boolean hasNext() {
                 return index < array.length;
             }
 
+            @Override
             public float nextFloat() {
                 return array[index++];
             }
         };
     }
 
+    @Override
     public final int size() {
         return array.length;
     }
     
+    @Override
     public float getFloat(int index) {
         return array[index];
     }
