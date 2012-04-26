@@ -10,6 +10,14 @@ package org.epics.util.array;
  */
 public abstract class IteratorShort implements IteratorNumber {
 
+    public void remove() {
+        throw new UnsupportedOperationException("Read only iterator.");
+    }
+
+    public Number next() {
+        return nextShort();
+    }
+
     public float nextFloat() {
         return (float) nextShort();
     }

@@ -4,11 +4,13 @@
  */
 package org.epics.util.array;
 
+import java.util.Iterator;
+
 /**
  *
  * @author carcassi
  */
-public interface IteratorNumber {
+public interface IteratorNumber extends Iterator<Number> {
     
     boolean hasNext();
     

@@ -10,6 +10,14 @@ package org.epics.util.array;
  */
 public abstract class IteratorLong implements IteratorNumber {
 
+    public void remove() {
+        throw new UnsupportedOperationException("Read only iterator.");
+    }
+
+    public Number next() {
+        return nextLong();
+    }
+
     public float nextFloat() {
         return (float) nextLong();
     }
