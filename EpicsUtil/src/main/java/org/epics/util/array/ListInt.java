@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An ordered collection of {@code int}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class ListInt implements ListNumber, CollectionInt {
 

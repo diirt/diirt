@@ -73,13 +73,13 @@ public interface IteratorNumber {
     short nextShort();
     
     /**
-     * Returns the next element in the iteration casted to a int.
+     * Returns the next element in the iteration casted to an int.
      *
      * @return the next element in the iteration
      * @throws NoSuchElementException if the iteration has no more elements
      */
     int nextInt();
-    
+
     /**
      * Returns the next element in the iteration casted to a long.
      *

@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An ordered collection of {@code short}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class ListShort implements ListNumber, CollectionShort {
 

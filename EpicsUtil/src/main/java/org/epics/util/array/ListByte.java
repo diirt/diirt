@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An ordered collection of {@code byte}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class ListByte implements ListNumber, CollectionByte {
 

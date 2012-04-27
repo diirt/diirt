@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An ordered collection of {@code double}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class ListDouble implements ListNumber, CollectionDouble {
 
