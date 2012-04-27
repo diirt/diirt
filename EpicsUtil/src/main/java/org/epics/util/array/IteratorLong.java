@@ -4,11 +4,10 @@
  */
 package org.epics.util.array;
 
-import java.util.Iterator;
-
 /**
+ * An iterator of {@code long}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class IteratorLong implements IteratorNumber {
 

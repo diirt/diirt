@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An iterator of {@code short}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class IteratorShort implements IteratorNumber {
 

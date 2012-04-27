@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An iterator of {@code double}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class IteratorDouble implements IteratorNumber {
 

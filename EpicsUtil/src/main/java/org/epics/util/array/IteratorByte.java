@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * An iterator of {@code byte}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public abstract class IteratorByte implements IteratorNumber {
 
