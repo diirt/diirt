@@ -16,7 +16,7 @@ import java.util.Iterator;
  * {@link IteratorDouble}.
  * <p>
  * We looked into making this class implement Iterator, but unfortunately,
- * because of generics, we cannot provide a scheme that would work naturally
+ * because of generics being invariant, we cannot provide a scheme that would work naturally
  * in all cases. Ideally, we would want to have {@code IteratorNumber} be {@link Iterator<Number>}
  * and {@code IteratorDouble} be {@code Iterator<Double>}, but this does
  * not work because generics are invariant. We could have
