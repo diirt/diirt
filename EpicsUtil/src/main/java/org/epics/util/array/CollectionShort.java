@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * A collection of {@code short}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public interface CollectionShort extends CollectionNumber {
 

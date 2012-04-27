@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * A collection of {@code float}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public interface CollectionFloat extends CollectionNumber {
 

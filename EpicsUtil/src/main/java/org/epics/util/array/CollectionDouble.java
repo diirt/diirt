@@ -5,8 +5,9 @@
 package org.epics.util.array;
 
 /**
+ * A collection of {@code double}s.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public interface CollectionDouble extends CollectionNumber {
 
