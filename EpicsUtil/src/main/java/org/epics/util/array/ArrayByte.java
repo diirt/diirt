@@ -5,13 +5,19 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code byte[]} into a {@link ListByte}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayByte extends ListByte {
     
     private final byte[] array;
 
+    /**
+     * A new {@code ArrayByte} that wraps around the given array.
+     * 
+     * @param array an array
+     */
     public ArrayByte(byte[] array) {
         this.array = array;
     }

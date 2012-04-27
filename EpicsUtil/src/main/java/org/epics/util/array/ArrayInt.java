@@ -5,13 +5,19 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code int[]} into a {@link ListInt}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayInt extends ListInt {
     
     private final int[] array;
 
+    /**
+     * A new {@code ArrayInt} that wraps around the given array.
+     * 
+     * @param array an array
+     */
     public ArrayInt(int[] array) {
         this.array = array;
     }

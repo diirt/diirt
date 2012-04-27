@@ -5,13 +5,19 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code double[]} into a {@link ListDouble}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayDouble extends ListDouble {
     
     private final double[] array;
 
+    /**
+     * A new {@code ArrayDouble} that wraps around the given array.
+     * 
+     * @param array an array
+     */
     public ArrayDouble(double[] array) {
         this.array = array;
     }

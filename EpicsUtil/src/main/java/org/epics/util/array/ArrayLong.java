@@ -5,13 +5,19 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code long[]} into a {@link ListLong}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayLong extends ListLong {
     
     private final long[] array;
 
+    /**
+     * A new {@code ArrayLong} that wraps around the given array.
+     * 
+     * @param array an array
+     */
     public ArrayLong(long[] array) {
         this.array = array;
     }

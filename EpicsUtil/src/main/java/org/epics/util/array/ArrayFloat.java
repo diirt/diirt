@@ -5,13 +5,19 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code float[]} into a {@link ListFloat}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayFloat extends ListFloat {
     
     private final float[] array;
 
+    /**
+     * A new {@code ArrayFloat} that wraps around the given array.
+     * 
+     * @param array an array
+     */
     public ArrayFloat(float[] array) {
         this.array = array;
     }

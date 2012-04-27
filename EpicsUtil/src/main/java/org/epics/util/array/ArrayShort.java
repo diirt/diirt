@@ -5,12 +5,18 @@
 package org.epics.util.array;
 
 /**
+ * Wraps a {@code short[]} into a {@link ListShort}.
  *
- * @author carcassi
+ * @author Gabriele Carcassi
  */
 public final class ArrayShort extends ListShort {
     
     private final short[] array;
+    /**
+     * A new {@code ArrayShort} that wraps around the given array.
+     * 
+     * @param array an array
+     */
 
     public ArrayShort(short[] array) {
         this.array = array;
