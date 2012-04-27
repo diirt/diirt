@@ -4,7 +4,7 @@
  */
 package org.epics.util.array;
 
-import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * An iterator for a stream of primitive numbers, which allows to retrieve
