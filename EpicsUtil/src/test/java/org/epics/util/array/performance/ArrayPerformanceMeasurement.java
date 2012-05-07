@@ -21,42 +21,33 @@ public class ArrayPerformanceMeasurement {
 
         double[] doubleArray = new double[arraySize];
         float[] floatArray = new float[arraySize];
+        int[] intArray = new int[arraySize];
+        short[] shortArray = new short[arraySize];
         byte[] byteArray = new byte[arraySize];
         Random rand = new Random();
         for (int i = 0; i < doubleArray.length; i++) {
             doubleArray[i] = rand.nextGaussian();
             floatArray[i] = (float) rand.nextGaussian();
+            intArray[i] = rand.nextInt(100);
+            shortArray[i] = (short) rand.nextInt(100);
         }
         rand.nextBytes(byteArray);
 
+        // Rearrenging the order will change which type executes faster
         profileArrayThroughCollectionNumber(doubleArray, nIterations);
         profileArrayThroughCollectionNumber(floatArray, nIterations);
+        profileArrayThroughCollectionNumber(intArray, nIterations);
+        profileArrayThroughCollectionNumber(shortArray, nIterations);
         profileArrayThroughCollectionNumber(byteArray, nIterations);
         profileArrayThroughCollectionNumber(doubleArray, nIterations);
 
-        profileJavaArray(nIterations, doubleArray);
-        profileJavaArray(nIterations, byteArray);
+        profileJavaArray(doubleArray, nIterations);
+        profileJavaArray(intArray, nIterations);
+        profileJavaArray(byteArray, nIterations);
 
         profileArray(doubleArray, nIterations);
+        profileArray(intArray, nIterations);
         profileArray(byteArray, nIterations);
-
-//        {
-//            // TODO
-//            long startTime = System.nanoTime();
-//            ArrayDouble coll = new ArrayDouble(doubleArray);
-//            for (int i = 0; i < nIterations; i++) {
-//                double sum = 0;
-//                for (int j = 0; j < coll.size(); j++) {
-//                    sum += coll.getDouble(j);
-//                }
-//                if (sum == 0) {
-//                    System.out.println("Unexpected value " + sum);
-//                }
-//            }
-//            long stopTime = System.nanoTime();
-//
-//            System.out.println("Iteration using abstract class converted: ns " + (stopTime - startTime) / nIterations);
-//        }
 
     }
 
@@ -88,6 +79,20 @@ public class ArrayPerformanceMeasurement {
         System.out.println("Iteration using float[] through abstract class: ns " + (stopTime - startTime) / nIterations);
     }
 
+    private static void profileArrayThroughCollectionNumber(int[] intArray, int nIterations) {
+        long startTime = System.nanoTime();
+        CollectionNumber list = new ArrayInt(intArray);
+        for (int i = 0; i < nIterations; i++) {
+            double sum = ArrayOperation.average.compute(list);
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using int[] through abstract class: ns " + (stopTime - startTime) / nIterations);
+    }
+
     private static void profileArrayThroughCollectionNumber(byte[] byteArray, int nIterations) {
         long startTime = System.nanoTime();
         CollectionNumber list = new ArrayByte(byteArray);
@@ -100,6 +105,20 @@ public class ArrayPerformanceMeasurement {
         long stopTime = System.nanoTime();
 
         System.out.println("Iteration using byte[] through abstract class: ns " + (stopTime - startTime) / nIterations);
+    }
+
+    private static void profileArrayThroughCollectionNumber(short[] shortArray, int nIterations) {
+        long startTime = System.nanoTime();
+        CollectionNumber list = new ArrayShort(shortArray);
+        for (int i = 0; i < nIterations; i++) {
+            double sum = ArrayOperation.average.compute(list);
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using short[] through abstract class: ns " + (stopTime - startTime) / nIterations);
     }
 
     private static void profileArray(double[] doubleArray, int nIterations) {
@@ -119,6 +138,23 @@ public class ArrayPerformanceMeasurement {
         System.out.println("Iteration using ArrayDouble: ns " + (stopTime - startTime) / nIterations);
     }
 
+    private static void profileArray(int[] intArray, int nIterations) {
+        long startTime = System.nanoTime();
+        ArrayInt coll = new ArrayInt(intArray);
+        for (int i = 0; i < nIterations; i++) {
+            double sum = 0;
+            for (int j = 0; j < coll.size(); j++) {
+                sum += coll.getDouble(j);
+            }
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using ArrayInt: ns " + (stopTime - startTime) / nIterations);
+    }
+
     private static void profileArray(byte[] byteArray, int nIterations) {
         long startTime = System.nanoTime();
         ArrayByte coll = new ArrayByte(byteArray);
@@ -136,7 +172,7 @@ public class ArrayPerformanceMeasurement {
         System.out.println("Iteration using ArrayByte: ns " + (stopTime - startTime) / nIterations);
     }
 
-    private static void profileJavaArray(int nIterations, double[] doubleArray) {
+    private static void profileJavaArray(double[] doubleArray, int nIterations) {
         long startTime = System.nanoTime();
         for (int i = 0; i < nIterations; i++) {
             double sum = 0;
@@ -152,7 +188,23 @@ public class ArrayPerformanceMeasurement {
         System.out.println("Iteration using double[]: ns " + (stopTime - startTime) / nIterations);
     }
 
-    private static void profileJavaArray(int nIterations, byte[] byteArray) {
+    private static void profileJavaArray(int[] intArray, int nIterations) {
+        long startTime = System.nanoTime();
+        for (int i = 0; i < nIterations; i++) {
+            double sum = 0;
+            for (int j = 0; j < intArray.length; j++) {
+                sum += intArray[j];
+            }
+            if (sum == 0) {
+                System.out.println("Unexpected value " + sum);
+            }
+        }
+        long stopTime = System.nanoTime();
+
+        System.out.println("Iteration using int[]: ns " + (stopTime - startTime) / nIterations);
+    }
+
+    private static void profileJavaArray(byte[] byteArray, int nIterations) {
         long startTime = System.nanoTime();
         for (int i = 0; i < nIterations; i++) {
             int sum = 0;
