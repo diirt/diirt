@@ -120,7 +120,7 @@ public class TimeDuration {
      * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration dividedBy(int factor) {
-        return createWithCarry(sec / factor, sec % factor + nanoSec / factor);
+        return createWithCarry(sec / factor, ((sec % factor) * NANOSEC_IN_SEC + (long) nanoSec) / factor);
     }
 
     /**
