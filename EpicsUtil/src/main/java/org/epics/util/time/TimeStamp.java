@@ -75,7 +75,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param nanoSec nanoseconds past the given seconds (must be 0 < nanoSec < 999,999,999)
      * @return a new timestamp
      */
-    public static TimeStamp time(long epochSec, int nanoSec) {
+    public static TimeStamp of(long epochSec, int nanoSec) {
         return new TimeStamp(epochSec, nanoSec);
     }
 
@@ -90,7 +90,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
         long time = date.getTime();
         int nanoSec = (int) (time % 1000) * 1000000;
         long epochSec = (time / 1000);
-        return time(epochSec, nanoSec);
+        return of(epochSec, nanoSec);
     }
 
     /**
