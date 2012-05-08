@@ -119,7 +119,7 @@ public class TimeDuration {
      * @return a new duration
      * @throws IllegalArgumentException if factor is negative
      */
-    public TimeDuration divideBy(int factor) {
+    public TimeDuration dividedBy(int factor) {
         return createWithCarry(sec / factor, sec % factor + nanoSec / factor);
     }
 
@@ -130,7 +130,7 @@ public class TimeDuration {
      * @return a new duration
      * @throws IllegalArgumentException if factor is negative
      */
-    public TimeDuration multiplyBy(int factor) {
+    public TimeDuration multipliedBy(int factor) {
         return createWithCarry(sec * factor, nanoSec * factor);
     }
 
@@ -166,7 +166,7 @@ public class TimeDuration {
      * @return a new time interval
      */
     public TimeInterval around(TimeStamp reference) {
-        TimeDuration half = this.divideBy(2);
+        TimeDuration half = this.dividedBy(2);
         return TimeInterval.between(reference.minus(half), reference.plus(half));
     }
 
