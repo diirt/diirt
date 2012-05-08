@@ -7,20 +7,18 @@ package org.epics.util.time;
 import java.util.Date;
 
 /**
- * Represent a time stamp at nanosecond accuracy. The time is internally stored
- * as two values: the UNIX timestamp (number of seconds since
- * 1/1/1970) and the nanoseconds past that timestamp. The UNIX timestamp is
- * stored as a signed long, which has the range of 292 billion years before
- * and another 292 past the epoch.
+ * Represents a time stamp at nanosecond accuracy. The time is internally stored
+ * as a 64 + 32 bit value: number of seconds from the Java/UNIX epoch 
+ * (1/1/1970) and the nanoseconds past that instant. 
+ * The range is of 292 billion years before and another 292 past the epoch.
  * <p>
  * Note that while TimeStamp are usually created according to system clocks which
  * may take into account leap seconds, all the math operations on TimeStamps do
  * not take leap seconds into account.
  * <p>
  * <h3>JSR 310 compatibility</h3>
- * Java 8 will introduce a better time definition that is going to be very
- * similar to this class. That effort is unfortunately too unstable to use
- * directly. When it will be released, the plan is to phase out
+ * This class is essentially equivalent to {@code javax.time.Instant}.
+ * When it will be released, the plan is to phase out
  * this class in the same way that {@link java.util.Date} is going to be phased out.
  * As of 2012/05/07, there are still multiple proposal on the table on that will
  * work, but in all cases it requires having this class implement a single
@@ -34,7 +32,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * When the class is initialized, get the current timestamp and nanotime,
      * so that future instances can be calculated from this reference.
      */
-    private static final TimeStamp base = TimeStamp.timestampOf(new Date());
+    private static final TimeStamp base = TimeStamp.of(new Date());
     private static final long baseNano = System.nanoTime();
 
     /**
@@ -71,14 +69,14 @@ public class TimeStamp implements Comparable<TimeStamp> {
     }
 
     /**
-     * Returns a new timestamp from UNIX time.
+     * Returns a new timestamp from Java/UNIX time.
      *
-     * @param unixSec number of seconds in the UNIX epoch.
+     * @param epochSec number of seconds in the Java/UNIX epoch.
      * @param nanoSec nanoseconds past the given seconds (must be 0 < nanoSec < 999,999,999)
      * @return a new timestamp
      */
-    public static TimeStamp time(long unixSec, int nanoSec) {
-        return new TimeStamp(unixSec, nanoSec);
+    public static TimeStamp time(long epochSec, int nanoSec) {
+        return new TimeStamp(epochSec, nanoSec);
     }
 
     /**
@@ -88,7 +86,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param date the date to convert
      * @return a new timestamp
      */
-    public static TimeStamp timestampOf(Date date) {
+    public static TimeStamp of(Date date) {
         long time = date.getTime();
         int nanoSec = (int) (time % 1000) * 1000000;
         long epicsSec = (time / 1000);
@@ -112,7 +110,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      *
      * @return a date
      */
-    public Date asDate() {
+    public Date toDate() {
         return new Date((unixSec)*1000+nanoSec/1000000);
     }
 
