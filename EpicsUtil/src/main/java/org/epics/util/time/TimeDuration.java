@@ -220,16 +220,28 @@ public class TimeDuration {
 
     private static final DecimalFormat format = new DecimalFormat("000000000");
 
+    /**
+     * The number of seconds concatenated with the number of nanoseconds (12.500000000
+     * for 12.5 seconds).
+     * 
+     * @return the string representation
+     */
     @Override
     public String toString() {
         return sec + "." + format.format(nanoSec);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Long.valueOf(nanoSec).hashCode();
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null)
