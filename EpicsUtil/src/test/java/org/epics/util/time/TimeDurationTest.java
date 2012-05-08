@@ -161,5 +161,16 @@ public class TimeDurationTest {
         assertThat(duration.getNanoSec(), equalTo(100000073));
         assertThat(duration.getSec(), equalTo(8L));
     }
+    
+    // Test equality
+    
+    @Test
+    public void equals1() {
+        TimeDuration duration = TimeDuration.ofNanos(1000000);
+        assertThat(duration, equalTo(TimeDuration.ofMillis(1)));
+        assertThat(duration, equalTo(TimeDuration.ofSeconds(0.001)));
+        assertThat(duration, equalTo(TimeDuration.ofMinutes(0.0000166666666667)));
+        assertThat(duration, equalTo(TimeDuration.ofHours(0.0000002777777778)));
+    }
 
 }
