@@ -64,7 +64,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * Nanoseconds within the given second.
      * @return nanoseconds (0 < nanoSec < 999,999,999)
      */
-    public long getNanoSec() {
+    public int getNanoSec() {
         return nanoSec;
     }
 
