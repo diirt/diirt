@@ -199,17 +199,31 @@ public class TimeStamp implements Comparable<TimeStamp> {
     }
 
     /**
-     * Calculates the time passed from the reference to this timeStamp.
+     * Calculates the time between the reference and this timeStamp.
      * The resulting duration is the absolute value, so it does not matter
      * on which object the function is called.
      *
-     * @param reference another time stamp
+     * @param time another time stamp
      * @return the duration between the two timeStamps
      */
-    public TimeDuration durationFrom(TimeStamp reference) {
-        long nanoSecDiff = reference.nanoSec - nanoSec;
-        nanoSecDiff += (reference.unixSec - unixSec) * 1000000000;
+    public TimeDuration durationBetween(TimeStamp time) {
+        long nanoSecDiff = time.nanoSec - nanoSec;
+        nanoSecDiff += (time.unixSec - unixSec) * 1000000000;
         nanoSecDiff = Math.abs(nanoSecDiff);
+        return TimeDuration.ofNanos(nanoSecDiff);
+    }
+
+    /**
+     * Calculates the time passed from the reference to this timeStamp.
+     * The result is the relative time from the reference to this
+     * timestamp, so that reference + result = this.
+     *
+     * @param reference another time stamp
+     * @return the duration from the reference to this
+     */
+    public TimeDuration durationFrom(TimeStamp reference) {
+        long nanoSecDiff = nanoSec - reference.nanoSec;
+        nanoSecDiff += (unixSec - reference.unixSec) * 1000000000;
         return TimeDuration.ofNanos(nanoSecDiff);
     }
 

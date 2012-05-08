@@ -93,4 +93,52 @@ public class TimeStampTest {
         assertThat(newTime, equalTo(TimeStamp.of(-1, 900000000)));
     }
     
+    @Test
+    public void durationFrom1() {
+        TimeStamp reference = TimeStamp.now();
+        assertThat(reference.plus(TimeDuration.ofNanos(10)).durationFrom(reference), equalTo(TimeDuration.ofNanos(10)));
+    }
+    
+    @Test
+    public void durationFrom2() {
+        TimeStamp reference = TimeStamp.now();
+        assertThat(reference.minus(TimeDuration.ofNanos(10)).durationFrom(reference), equalTo(TimeDuration.ofNanos(-10)));
+    }
+    
+    @Test
+    public void durationFrom3() {
+        TimeStamp reference = TimeStamp.of(10, 500000000);
+        assertThat(reference.plus(TimeDuration.ofMillis(600)).durationFrom(reference), equalTo(TimeDuration.ofMillis(600)));
+    }
+    
+    @Test
+    public void durationFrom4() {
+        TimeStamp reference = TimeStamp.of(10, 500000000);
+        assertThat(reference.minus(TimeDuration.ofMillis(600)).durationFrom(reference), equalTo(TimeDuration.ofMillis(-600)));
+    }
+    
+    @Test
+    public void durationBetween1() {
+        TimeStamp reference = TimeStamp.now();
+        assertThat(reference.durationBetween(reference.plus(TimeDuration.ofNanos(10))), equalTo(TimeDuration.ofNanos(10)));
+    }
+    
+    @Test
+    public void durationBetween2() {
+        TimeStamp reference = TimeStamp.now();
+        assertThat(reference.durationBetween(reference.minus(TimeDuration.ofNanos(10))), equalTo(TimeDuration.ofNanos(10)));
+    }
+    
+    @Test
+    public void durationBetween3() {
+        TimeStamp reference = TimeStamp.of(10, 500000000);
+        assertThat(reference.durationBetween(reference.plus(TimeDuration.ofMillis(600))), equalTo(TimeDuration.ofMillis(600)));
+    }
+    
+    @Test
+    public void durationBetween4() {
+        TimeStamp reference = TimeStamp.of(10, 500000000);
+        assertThat(reference.durationBetween(reference.minus(TimeDuration.ofMillis(600))), equalTo(TimeDuration.ofMillis(600)));
+    }
+    
 }
