@@ -29,7 +29,7 @@ public class TimeDuration {
 
     private TimeDuration(long sec, int nanoSec) {
         if (nanoSec < 0 || nanoSec >= NANOSEC_IN_SEC)
-            throw new IllegalArgumentException("Nanoseconds must be between 0 and 999,999,999");
+            throw new IllegalArgumentException("Nanoseconds must be between 0 and 999,999,999. Was " + nanoSec);
         this.nanoSec = nanoSec;
         this.sec = sec;
     }
@@ -119,7 +119,7 @@ public class TimeDuration {
      * @throws IllegalArgumentException if the duration is negative
      */
     public static TimeDuration nanos(long nanoSec) {
-        return new TimeDuration(nanoSec / NANOSEC_IN_SEC, (int) (nanoSec % NANOSEC_IN_SEC));
+        return createWithCarry(nanoSec / NANOSEC_IN_SEC, (int) (nanoSec % NANOSEC_IN_SEC));
     }
 
     /**
