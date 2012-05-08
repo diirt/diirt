@@ -4,6 +4,8 @@
  */
 package org.epics.util.time;
 
+import java.text.DecimalFormat;
+
 /**
  * A duration of time (such as 3 seconds, 30 ms, 1 nanosec) at the nanosecond precision.
  * The duration is stored as 96 bits, 64 for seconds and 32 for nanoseconds within
@@ -216,16 +218,18 @@ public class TimeDuration {
         return TimeInterval.between(reference.minus(this), reference);
     }
 
+    private static final DecimalFormat format = new DecimalFormat("000000000");
+
     @Override
     public String toString() {
-        return "" + nanoSec;
+        return sec + "." + format.format(nanoSec);
     }
 
     @Override
     public int hashCode() {
         return Long.valueOf(nanoSec).hashCode();
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null)

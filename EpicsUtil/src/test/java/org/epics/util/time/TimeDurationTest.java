@@ -302,4 +302,10 @@ public class TimeDurationTest {
         assertThat(duration.dividedBy(4), equalTo(TimeDuration.ofSeconds(2.6)));
     }
     
+    @Test
+    public void toString1() {
+        TimeDuration duration = TimeDuration.ofMillis(10);
+        assertThat(duration.toString(), equalTo("0.010000000"));
+    }
+    
 }
