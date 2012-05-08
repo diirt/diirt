@@ -6,8 +6,6 @@ package org.epics.util.time;
  */
 
 
-import org.epics.util.time.*;
-import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -20,12 +18,6 @@ public class TimeDurationTest {
 
     public TimeDurationTest() {
     }
-    
-    // TimeDuration
-    // - test that factory method create expected ofSeconds/nano, including negative
-    // - test equality between different factory methods, including negative
-    // - test plus/minus with equlity, including carry and negative
-
     
     // Test factory methods
 
@@ -199,6 +191,8 @@ public class TimeDurationTest {
         assertThat(duration, equalTo(TimeDuration.ofMinutes(6)));
         assertThat(duration, equalTo(TimeDuration.ofHours(1)));
     }
+    
+    // Test operations
     
     @Test
     public void plus1() {
