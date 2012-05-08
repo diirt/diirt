@@ -101,7 +101,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @return a new timestamp
      */
     public static TimeStamp now() {
-        return base.plus(TimeDuration.nanos(System.nanoTime() - baseNano));
+        return base.plus(TimeDuration.ofNanos(System.nanoTime() - baseNano));
     }
 
     /**
@@ -165,7 +165,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * Creates a new time stamp by carrying nanosecs into seconds if necessary.
      *
      * @param seconds new seconds
-     * @param nanos new nanoseconds (can be the whole long range)
+     * @param ofNanos new nanoseconds (can be the whole long range)
      * @return the new timestamp
      */
     private static TimeStamp createWithCarry(long seconds, long nanos) {
@@ -210,7 +210,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
         long nanoSecDiff = reference.nanoSec - nanoSec;
         nanoSecDiff += (reference.unixSec - unixSec) * 1000000000;
         nanoSecDiff = Math.abs(nanoSecDiff);
-        return TimeDuration.nanos(nanoSecDiff);
+        return TimeDuration.ofNanos(nanoSecDiff);
     }
 
 }

@@ -21,72 +21,72 @@ public class TimeTest {
     @Test
     public void nanoSecCarry() {
         TimeStamp time = TimeStamp.time(100, 100000000);
-        TimeStamp newTime = time.plus(TimeDuration.nanos(999000000));
+        TimeStamp newTime = time.plus(TimeDuration.ofNanos(999000000));
         assertEquals(TimeStamp.time(101, 99000000), newTime);
 
-        newTime = time.plus(TimeDuration.ms(1000));
+        newTime = time.plus(TimeDuration.ofMillis(1000));
         assertEquals(TimeStamp.time(101, 100000000), newTime);
 
-        newTime = time.plus(TimeDuration.ms(5443));
+        newTime = time.plus(TimeDuration.ofMillis(5443));
         assertEquals(TimeStamp.time(105, 543000000), newTime);
 
-        newTime = time.minus(TimeDuration.ms(1000));
+        newTime = time.minus(TimeDuration.ofMillis(1000));
         assertEquals(TimeStamp.time(99, 100000000), newTime);
 
-        newTime = time.minus(TimeDuration.nanos(999000000));
+        newTime = time.minus(TimeDuration.ofNanos(999000000));
         assertEquals(TimeStamp.time(99, 101000000), newTime);
     }
 
     @Test
     public void testDurationFrom() {
         TimeStamp reference = TimeStamp.now();
-        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ms(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ms(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ofMillis(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ofMillis(10))).getNanoSec());
         reference = TimeStamp.time(10, 999999999);
-        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ms(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ms(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ofMillis(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ofMillis(10))).getNanoSec());
         reference = TimeStamp.time(10, 1);
-        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.nanos(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ms(10))).getNanoSec());
-        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ms(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.plus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10, reference.durationFrom(reference.minus(TimeDuration.ofNanos(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ofMillis(10))).getNanoSec());
+        assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ofMillis(10))).getNanoSec());
     }
 
     @Test
     public void testHour() {
-        assertThat(hour(1), equalTo(min(60)));
-        assertThat(hour(2), equalTo(sec(7200)));
-        assertThat(hour(1.0), equalTo(ms(3600000)));
-        assertThat(hour(0.5), equalTo(min(30.0)));
+        assertThat(ofHours(1), equalTo(ofMinutes(60)));
+        assertThat(ofHours(2), equalTo(ofSeconds(7200)));
+        assertThat(ofHours(1.0), equalTo(ofMillis(3600000)));
+        assertThat(ofHours(0.5), equalTo(ofMinutes(30.0)));
     }
 
     @Test
     public void testMin() {
-        assertThat(min(1.0), equalTo(sec(60.0)));
-        assertThat(min(1.0), equalTo(ms(60000)));
-        assertThat(min(0.5), equalTo(sec(30.0)));
+        assertThat(ofMinutes(1.0), equalTo(ofSeconds(60.0)));
+        assertThat(ofMinutes(1.0), equalTo(ofMillis(60000)));
+        assertThat(ofMinutes(0.5), equalTo(ofSeconds(30.0)));
     }
 
     @Test
     public void testSec() {
-        TimeDuration duration = TimeDuration.sec(1.0);
+        TimeDuration duration = TimeDuration.ofSeconds(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(1L));
         
-        assertThat(TimeDuration.sec(0.1), equalTo(TimeDuration.ms(100)));
+        assertThat(TimeDuration.ofSeconds(0.1), equalTo(TimeDuration.ofMillis(100)));
     }
 
     @Test
     public void testHz() {
-        TimeDuration duration = TimeDuration.hz(1.0);
+        TimeDuration duration = TimeDuration.ofHertz(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(1L));
         
-        assertTrue(TimeDuration.ms(100).equals(TimeDuration.hz(10)));
-        assertTrue(TimeDuration.ms(1).equals(TimeDuration.hz(1000)));
+        assertTrue(TimeDuration.ofMillis(100).equals(TimeDuration.ofHertz(10)));
+        assertTrue(TimeDuration.ofMillis(1).equals(TimeDuration.ofHertz(1000)));
     }
 }

@@ -22,7 +22,7 @@ public class TimeDurationTest {
     }
     
     // TimeDuration
-    // - test that factory method create expected sec/nano, including negative
+    // - test that factory method create expected ofSeconds/nano, including negative
     // - test equality between different factory methods, including negative
     // - test plus/minus with equlity, including carry and negative
 
@@ -31,133 +31,133 @@ public class TimeDurationTest {
 
     @Test
     public void nanos1() {
-        TimeDuration duration = TimeDuration.nanos(100L);
+        TimeDuration duration = TimeDuration.ofNanos(100L);
         assertThat(duration.getNanoSec(), equalTo(100));
         assertThat(duration.getSec(), equalTo(0L));
     }
 
     @Test
     public void nanos2() {
-        TimeDuration duration = TimeDuration.nanos(1234567890L);
+        TimeDuration duration = TimeDuration.ofNanos(1234567890L);
         assertThat(duration.getNanoSec(), equalTo(234567890));
         assertThat(duration.getSec(), equalTo(1L));
     }
 
     @Test
     public void nanos3() {
-        TimeDuration duration = TimeDuration.nanos(123456789012L);
+        TimeDuration duration = TimeDuration.ofNanos(123456789012L);
         assertThat(duration.getNanoSec(), equalTo(456789012));
         assertThat(duration.getSec(), equalTo(123L));
     }
 
     @Test
     public void nanos4() {
-        TimeDuration duration = TimeDuration.nanos(-1234567890L);
+        TimeDuration duration = TimeDuration.ofNanos(-1234567890L);
         assertThat(duration.getNanoSec(), equalTo(765432110));
         assertThat(duration.getSec(), equalTo(-2L));
     }
 
     @Test
     public void ms1() {
-        TimeDuration duration = TimeDuration.ms(100);
+        TimeDuration duration = TimeDuration.ofMillis(100);
         assertThat(duration.getNanoSec(), equalTo(100000000));
         assertThat(duration.getSec(), equalTo(0L));
     }
 
     @Test
     public void ms2() {
-        TimeDuration duration = TimeDuration.ms(12345);
+        TimeDuration duration = TimeDuration.ofMillis(12345);
         assertThat(duration.getNanoSec(), equalTo(345000000));
         assertThat(duration.getSec(), equalTo(12L));
     }
 
     @Test
     public void ms3() {
-        TimeDuration duration = TimeDuration.ms(-12345);
+        TimeDuration duration = TimeDuration.ofMillis(-12345);
         assertThat(duration.getNanoSec(), equalTo(655000000));
         assertThat(duration.getSec(), equalTo(-13L));
     }
 
     @Test
     public void sec1() {
-        TimeDuration duration = TimeDuration.sec(1.0);
+        TimeDuration duration = TimeDuration.ofSeconds(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(1L));
     }
 
     @Test
     public void sec2() {
-        TimeDuration duration = TimeDuration.sec(0.123456789);
+        TimeDuration duration = TimeDuration.ofSeconds(0.123456789);
         assertThat(duration.getNanoSec(), equalTo(123456789));
         assertThat(duration.getSec(), equalTo(0L));
     }
 
     @Test
     public void sec3() {
-        TimeDuration duration = TimeDuration.sec(-1.23456789);
+        TimeDuration duration = TimeDuration.ofSeconds(-1.23456789);
         assertThat(duration.getNanoSec(), equalTo(765432110));
         assertThat(duration.getSec(), equalTo(-2L));
     }
 
     @Test
     public void min1() {
-        TimeDuration duration = TimeDuration.min(1.0);
+        TimeDuration duration = TimeDuration.ofMinutes(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(60L));
     }
 
     @Test
     public void min2() {
-        TimeDuration duration = TimeDuration.min(0.123456789);
+        TimeDuration duration = TimeDuration.ofMinutes(0.123456789);
         assertThat(duration.getNanoSec(), equalTo(407407340));
         assertThat(duration.getSec(), equalTo(7L));
     }
 
     @Test
     public void min3() {
-        TimeDuration duration = TimeDuration.min(-1.23456789);
+        TimeDuration duration = TimeDuration.ofMinutes(-1.23456789);
         assertThat(duration.getNanoSec(), equalTo(925926601));
         assertThat(duration.getSec(), equalTo(-75L));
     }
 
     @Test
     public void hour1() {
-        TimeDuration duration = TimeDuration.hour(1.0);
+        TimeDuration duration = TimeDuration.ofHours(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(3600L));
     }
 
     @Test
     public void hour2() {
-        TimeDuration duration = TimeDuration.hour(0.123456789);
+        TimeDuration duration = TimeDuration.ofHours(0.123456789);
         assertThat(duration.getNanoSec(), equalTo(444440399));
         assertThat(duration.getSec(), equalTo(444L));
     }
 
     @Test
     public void hour3() {
-        TimeDuration duration = TimeDuration.hour(-1.23456789);
+        TimeDuration duration = TimeDuration.ofHours(-1.23456789);
         assertThat(duration.getNanoSec(), equalTo(555596001));
         assertThat(duration.getSec(), equalTo(-4445L));
     }
 
     @Test
     public void hz1() {
-        TimeDuration duration = TimeDuration.hz(1.0);
+        TimeDuration duration = TimeDuration.ofHertz(1.0);
         assertThat(duration.getNanoSec(), equalTo(0));
         assertThat(duration.getSec(), equalTo(1L));
     }
 
     @Test
     public void hz2() {
-        TimeDuration duration = TimeDuration.hz(100.0);
+        TimeDuration duration = TimeDuration.ofHertz(100.0);
         assertThat(duration.getNanoSec(), equalTo(10000000));
         assertThat(duration.getSec(), equalTo(0L));
     }
 
     @Test
     public void hz3() {
-        TimeDuration duration = TimeDuration.hz(0.123456789);
+        TimeDuration duration = TimeDuration.ofHertz(0.123456789);
         assertThat(duration.getNanoSec(), equalTo(100000073));
         assertThat(duration.getSec(), equalTo(8L));
     }

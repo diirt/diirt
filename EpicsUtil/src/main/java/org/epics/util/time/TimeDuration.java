@@ -7,7 +7,7 @@ package org.epics.util.time;
 import java.math.BigInteger;
 
 /**
- * A duration of time (such as 3 sec, 30ms, 1nsec) at the nanosecond precision.
+ * A duration of time (such as 3 ofSeconds, 30ms, 1nsec) at the nanosecond precision.
  * The duration is stored a (signed) long, which makes the maximum valid duration
  * to around 292 years. No checks for overflows are done.
  * <p>
@@ -45,57 +45,57 @@ public class TimeDuration {
     /**
      * A new duration in hours.
      * 
-     * @param hour hours
+     * @param ofHours hours
      * @return a new duration
      */
-    public static TimeDuration hour(double hour) {
-        return nanos((long) (hour * 60 * 60 * 1000000000));
+    public static TimeDuration ofHours(double hour) {
+        return ofNanos((long) (hour * 60 * 60 * 1000000000));
     }
     
     /**
      * A new duration in minutes.
      * 
-     * @param min minutes
+     * @param ofMinutes minutes
      * @return a new duration
      */
-    public static TimeDuration min(double min) {
-        return nanos((long) (min * 60 * 1000000000));
+    public static TimeDuration ofMinutes(double min) {
+        return ofNanos((long) (min * 60 * 1000000000));
     }
     
     /**
      * A new duration in seconds.
      * 
-     * @param sec seconds
+     * @param ofSeconds seconds
      * @return a new duration
      */
-    public static TimeDuration sec(double sec) {
-        return nanos((long) (sec * 1000000000));
+    public static TimeDuration ofSeconds(double sec) {
+        return ofNanos((long) (sec * 1000000000));
     }
     
     /**
      * A new duration in hertz, will convert to the length of the period.
      * 
-     * @param hz frequency to be converted to a duration
+     * @param ofHertz frequency to be converted to a duration
      * @return a new duration
      */
-    public static TimeDuration hz(double hz) {
+    public static TimeDuration ofHertz(double hz) {
         if (hz <= 0.0) {
             throw new IllegalArgumentException("Frequency has to be greater than 0.0");
         }
-        return nanos((long) (1000000000.0 / hz));
+        return ofNanos((long) (1000000000.0 / hz));
     }
 
     /**
      * A new duration in milliseconds.
-     * @param ms milliseconds of the duration
+     * @param ofMillis milliseconds of the duration
      * @return a new duration
      * @throws IllegalArgumentException if the duration is negative
      */
-    public static TimeDuration ms(int ms) {
-        return nanos(((long) ms) * 1000000);
+    public static TimeDuration ofMillis(int ms) {
+        return ofNanos(((long) ms) * 1000000);
     }
 
-    private static TimeDuration nanos(double durationInNanos) {
+    private static TimeDuration ofNanos(double durationInNanos) {
         long sec = (long) (durationInNanos / NANOSEC_IN_SEC);
         int nanoSec = (int) (durationInNanos - sec * NANOSEC_IN_SEC);
         return new TimeDuration(sec, nanoSec);
@@ -108,7 +108,7 @@ public class TimeDuration {
      * @return a new duration
      * @throws IllegalArgumentException if the duration is negative
      */
-    public static TimeDuration nanos(long nanoSec) {
+    public static TimeDuration ofNanos(long nanoSec) {
         return createWithCarry(nanoSec / NANOSEC_IN_SEC, (int) (nanoSec % NANOSEC_IN_SEC));
     }
 
