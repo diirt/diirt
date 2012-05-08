@@ -4,6 +4,7 @@
  */
 package org.epics.util.time;
 
+import java.util.Date;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -26,6 +27,14 @@ public class TimeStampTest {
     
     @Test(expected=IllegalArgumentException.class)
     public void time2() {
-        TimeStamp time = TimeStamp.time(100, 1000000000);
+        TimeStamp.time(100, 1000000000);
     }
+    
+    public void ofDate1() {
+        Date date = new Date(123456789);
+        TimeStamp time = TimeStamp.of(date);
+        assertThat(time.getSec(), equalTo(123456L));
+        assertThat(time.getNanoSec(), equalTo(789000000));
+    }
+    
 }
