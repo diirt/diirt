@@ -15,9 +15,8 @@ import java.math.BigInteger;
  * takes into account leap seconds, all the math operations on TimeStamps do
  * not take leap seconds into account.
  * <h3>JSR 310 compatibility</h3>
- * Java 8 will introduce a better time definition that is going to be very
- * similar to this class. When that will happen, the plan is to phase out
- * this class.
+ * This class is essentially equivalent to {@code javax.time.Duration}.
+ * When it will be released, the plan is to phase out this class where appropriate.
  * 
  * @author carcassi
  */
