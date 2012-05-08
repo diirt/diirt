@@ -290,4 +290,16 @@ public class TimeDurationTest {
         assertThat(duration.dividedBy(3), equalTo(TimeDuration.ofSeconds(0.4)));
     }
     
+    @Test
+    public void dividedBy3() {
+        TimeDuration duration = TimeDuration.ofMillis(1200);
+        assertThat(duration.dividedBy(-3), equalTo(TimeDuration.ofSeconds(-0.4)));
+    }
+    
+    @Test
+    public void dividedBy4() {
+        TimeDuration duration = TimeDuration.ofSeconds(10.4);
+        assertThat(duration.dividedBy(4), equalTo(TimeDuration.ofSeconds(2.6)));
+    }
+    
 }
