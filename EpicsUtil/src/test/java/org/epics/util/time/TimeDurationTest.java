@@ -71,4 +71,11 @@ public class TimeDurationTest {
         assertThat(duration.getSec(), equalTo(12L));
     }
 
+    @Test
+    public void ms3() {
+        TimeDuration duration = TimeDuration.ms(-12345);
+        assertThat(duration.getNanoSec(), equalTo(655000000));
+        assertThat(duration.getSec(), equalTo(-13L));
+    }
+
 }
