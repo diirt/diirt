@@ -4,12 +4,16 @@
  */
 package org.epics.util.time;
 
-import java.math.BigInteger;
-
 /**
- * A duration of time (such as 3 ofSeconds, 30ms, 1nsec) at the nanosecond precision.
- * The duration is stored a (signed) long, which makes the maximum valid duration
- * to around 292 years. No checks for overflows are done.
+ * A duration of time (such as 3 seconds, 30 ms, 1 nanosec) at the nanosecond precision.
+ * The duration is stored as 96 bits, 64 for seconds and 32 for nanoseconds within
+ * the second. This makes the representation equivalent to the {@link TimeStamp} class.
+ * <p>
+ * This class can be used both to represent a span of time, or
+ * as a relative timestamp (e.g. 3 seconds before or after a reference). As such,
+ * it allows for "negative" durations. Even for negative values the nanoseconds
+ * is positive. For example, -1.5 seconds will be stored as -2 seconds and
+ * 500,000,000 nanoseconds.
  * <p>
  * Note that while TimeStamp are usually created according to system clocks which
  * takes into account leap seconds, all the math operations on TimeStamps do
@@ -34,10 +38,21 @@ public class TimeDuration {
         this.sec = sec;
     }
 
+    /**
+     * The amount of nanoseconds for the duration. This value is guaranteed to be between
+     * 0 and 999,999,999.
+     * 
+     * @return the nanosecond part
+     */
     public int getNanoSec() {
         return nanoSec;
     }
 
+    /**
+     * The amount of seconds for the duration. This can be both positive or negative.
+     * 
+     * @return the second part
+     */
     public long getSec() {
         return sec;
     }
@@ -45,7 +60,7 @@ public class TimeDuration {
     /**
      * A new duration in hours.
      * 
-     * @param ofHours hours
+     * @param hour hours
      * @return a new duration
      */
     public static TimeDuration ofHours(double hour) {
@@ -55,7 +70,7 @@ public class TimeDuration {
     /**
      * A new duration in minutes.
      * 
-     * @param ofMinutes minutes
+     * @param min minutes
      * @return a new duration
      */
     public static TimeDuration ofMinutes(double min) {
@@ -65,7 +80,7 @@ public class TimeDuration {
     /**
      * A new duration in seconds.
      * 
-     * @param ofSeconds seconds
+     * @param sec seconds
      * @return a new duration
      */
     public static TimeDuration ofSeconds(double sec) {
@@ -75,7 +90,7 @@ public class TimeDuration {
     /**
      * A new duration in hertz, will convert to the length of the period.
      * 
-     * @param ofHertz frequency to be converted to a duration
+     * @param hz frequency to be converted to a duration
      * @return a new duration
      */
     public static TimeDuration ofHertz(double hz) {
@@ -87,9 +102,8 @@ public class TimeDuration {
 
     /**
      * A new duration in milliseconds.
-     * @param ofMillis milliseconds of the duration
+     * @param ms milliseconds of the duration
      * @return a new duration
-     * @throws IllegalArgumentException if the duration is negative
      */
     public static TimeDuration ofMillis(int ms) {
         return ofNanos(((long) ms) * 1000000);
@@ -117,7 +131,6 @@ public class TimeDuration {
      * 
      * @param factor constant to divide
      * @return a new duration
-     * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration dividedBy(int factor) {
         return createWithCarry(sec / factor, ((sec % factor) * NANOSEC_IN_SEC + (long) nanoSec) / factor);
@@ -128,7 +141,6 @@ public class TimeDuration {
      *
      * @param factor constant to multiply
      * @return a new duration
-     * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration multipliedBy(int factor) {
         return createWithCarry(sec * factor, ((long) nanoSec) * factor);
@@ -150,10 +162,22 @@ public class TimeDuration {
         return new TimeDuration(seconds, (int) nanos);
     }
     
+    /**
+     * Returns the sum of this duration with the given.
+     * 
+     * @param duration another duration
+     * @return a new duration
+     */
     public TimeDuration plus(TimeDuration duration) {
         return createWithCarry(sec + duration.getSec(), nanoSec + duration.getNanoSec());
     }
     
+    /**
+     * Returns the difference between this duration and the given.
+     * 
+     * @param duration another duration
+     * @return a new duration
+     */
     public TimeDuration minus(TimeDuration duration) {
         return createWithCarry(sec - duration.getSec(), nanoSec - duration.getNanoSec());
     }
