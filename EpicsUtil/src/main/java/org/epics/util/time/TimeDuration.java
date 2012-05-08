@@ -153,6 +153,10 @@ public class TimeDuration {
     public TimeDuration plus(TimeDuration duration) {
         return createWithCarry(sec + duration.getSec(), nanoSec + duration.getNanoSec());
     }
+    
+    public TimeDuration minus(TimeDuration duration) {
+        return createWithCarry(sec - duration.getSec(), nanoSec - duration.getNanoSec());
+    }
 
     /**
      * Returns a time interval that lasts this duration and is centered
