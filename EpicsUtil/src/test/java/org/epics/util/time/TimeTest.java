@@ -55,38 +55,4 @@ public class TimeTest {
         assertEquals(10000000, reference.durationFrom(reference.plus(TimeDuration.ofMillis(10))).getNanoSec());
         assertEquals(10000000, reference.durationFrom(reference.minus(TimeDuration.ofMillis(10))).getNanoSec());
     }
-
-    @Test
-    public void testHour() {
-        assertThat(ofHours(1), equalTo(ofMinutes(60)));
-        assertThat(ofHours(2), equalTo(ofSeconds(7200)));
-        assertThat(ofHours(1.0), equalTo(ofMillis(3600000)));
-        assertThat(ofHours(0.5), equalTo(ofMinutes(30.0)));
-    }
-
-    @Test
-    public void testMin() {
-        assertThat(ofMinutes(1.0), equalTo(ofSeconds(60.0)));
-        assertThat(ofMinutes(1.0), equalTo(ofMillis(60000)));
-        assertThat(ofMinutes(0.5), equalTo(ofSeconds(30.0)));
-    }
-
-    @Test
-    public void testSec() {
-        TimeDuration duration = TimeDuration.ofSeconds(1.0);
-        assertThat(duration.getNanoSec(), equalTo(0));
-        assertThat(duration.getSec(), equalTo(1L));
-        
-        assertThat(TimeDuration.ofSeconds(0.1), equalTo(TimeDuration.ofMillis(100)));
-    }
-
-    @Test
-    public void testHz() {
-        TimeDuration duration = TimeDuration.ofHertz(1.0);
-        assertThat(duration.getNanoSec(), equalTo(0));
-        assertThat(duration.getSec(), equalTo(1L));
-        
-        assertTrue(TimeDuration.ofMillis(100).equals(TimeDuration.ofHertz(10)));
-        assertTrue(TimeDuration.ofMillis(1).equals(TimeDuration.ofHertz(1000)));
-    }
 }
