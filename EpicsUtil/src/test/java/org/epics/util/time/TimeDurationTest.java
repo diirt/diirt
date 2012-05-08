@@ -78,4 +78,25 @@ public class TimeDurationTest {
         assertThat(duration.getSec(), equalTo(-13L));
     }
 
+    @Test
+    public void sec1() {
+        TimeDuration duration = TimeDuration.sec(1.0);
+        assertThat(duration.getNanoSec(), equalTo(0));
+        assertThat(duration.getSec(), equalTo(1L));
+    }
+
+    @Test
+    public void sec2() {
+        TimeDuration duration = TimeDuration.sec(0.123456789);
+        assertThat(duration.getNanoSec(), equalTo(123456789));
+        assertThat(duration.getSec(), equalTo(0L));
+    }
+
+    @Test
+    public void sec3() {
+        TimeDuration duration = TimeDuration.sec(-1.23456789);
+        assertThat(duration.getNanoSec(), equalTo(765432110));
+        assertThat(duration.getSec(), equalTo(-2L));
+    }
+
 }
