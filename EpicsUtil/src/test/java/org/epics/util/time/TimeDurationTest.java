@@ -42,4 +42,11 @@ public class TimeDurationTest {
         assertThat(duration.getNanoSec(), equalTo(234567890));
         assertThat(duration.getSec(), equalTo(1L));
     }
+
+    @Test
+    public void nanos3() {
+        TimeDuration duration = TimeDuration.nanos(123456789012L);
+        assertThat(duration.getNanoSec(), equalTo(456789012));
+        assertThat(duration.getSec(), equalTo(123L));
+    }
 }
