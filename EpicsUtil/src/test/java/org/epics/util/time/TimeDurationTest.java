@@ -308,4 +308,16 @@ public class TimeDurationTest {
         assertThat(duration.toString(), equalTo("0.010000000"));
     }
     
+    @Test
+    public void toString2() {
+        TimeDuration duration = TimeDuration.ofSeconds(1.2345);
+        assertThat(duration.toString(), equalTo("1.234500000"));
+    }
+    
+    @Test
+    public void toString3() {
+        TimeDuration duration = TimeDuration.ofSeconds(1234.56789);
+        assertThat(duration.toString(), equalTo("1234.567890000"));
+    }
+    
 }
