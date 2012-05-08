@@ -30,6 +30,7 @@ public class TimeStampTest {
         TimeStamp.time(100, 1000000000);
     }
     
+    @Test
     public void ofDate1() {
         Date date = new Date(123456789);
         TimeStamp time = TimeStamp.of(date);
@@ -37,9 +38,17 @@ public class TimeStampTest {
         assertThat(time.getNanoSec(), equalTo(789000000));
     }
     
+    @Test
     public void toDate1() {
         TimeStamp time = TimeStamp.time(123456, 789000000);
         assertThat(time.toDate(), equalTo(new Date(123456789)));
+    }
+    
+    @Test
+    public void plus1() {
+        TimeStamp time = TimeStamp.time(0, 0).plus(TimeDuration.ofMillis(100));
+        assertThat(time.getSec(), equalTo(0L));
+        assertThat(time.getNanoSec(), equalTo(100000000));
     }
     
 }
