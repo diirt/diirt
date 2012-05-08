@@ -120,4 +120,25 @@ public class TimeDurationTest {
         assertThat(duration.getSec(), equalTo(-75L));
     }
 
+    @Test
+    public void hour1() {
+        TimeDuration duration = TimeDuration.hour(1.0);
+        assertThat(duration.getNanoSec(), equalTo(0));
+        assertThat(duration.getSec(), equalTo(3600L));
+    }
+
+    @Test
+    public void hour2() {
+        TimeDuration duration = TimeDuration.hour(0.123456789);
+        assertThat(duration.getNanoSec(), equalTo(444440399));
+        assertThat(duration.getSec(), equalTo(444L));
+    }
+
+    @Test
+    public void hour3() {
+        TimeDuration duration = TimeDuration.hour(-1.23456789);
+        assertThat(duration.getNanoSec(), equalTo(555596001));
+        assertThat(duration.getSec(), equalTo(-4445L));
+    }
+
 }
