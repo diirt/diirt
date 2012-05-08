@@ -141,4 +141,25 @@ public class TimeDurationTest {
         assertThat(duration.getSec(), equalTo(-4445L));
     }
 
+    @Test
+    public void hz1() {
+        TimeDuration duration = TimeDuration.hz(1.0);
+        assertThat(duration.getNanoSec(), equalTo(0));
+        assertThat(duration.getSec(), equalTo(1L));
+    }
+
+    @Test
+    public void hz2() {
+        TimeDuration duration = TimeDuration.hz(100.0);
+        assertThat(duration.getNanoSec(), equalTo(10000000));
+        assertThat(duration.getSec(), equalTo(0L));
+    }
+
+    @Test
+    public void hz3() {
+        TimeDuration duration = TimeDuration.hz(0.123456789);
+        assertThat(duration.getNanoSec(), equalTo(100000073));
+        assertThat(duration.getSec(), equalTo(8L));
+    }
+
 }
