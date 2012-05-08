@@ -17,7 +17,7 @@ public class TimeTest {
 
     public TimeTest() {
     }
-
+    
     @Test
     public void nanoSecCarry() {
         TimeStamp time = TimeStamp.time(100, 100000000);
@@ -67,7 +67,7 @@ public class TimeTest {
     @Test
     public void testMin() {
         assertThat(min(1.0), equalTo(sec(60.0)));
-        assertThat(min(1.0), equalTo(ms(60000.0)));
+        assertThat(min(1.0), equalTo(ms(60000)));
         assertThat(min(0.5), equalTo(sec(30.0)));
     }
 
@@ -88,12 +88,5 @@ public class TimeTest {
         
         assertTrue(TimeDuration.ms(100).equals(TimeDuration.hz(10)));
         assertTrue(TimeDuration.ms(1).equals(TimeDuration.hz(1000)));
-    }
-
-    @Test
-    public void testDoubleMs() {
-        assertTrue(TimeDuration.ms(100.0).equals(TimeDuration.ms(100)));
-        assertTrue(TimeDuration.ms(2.5).equals(TimeDuration.hz(400)));
-        assertTrue(TimeDuration.ms(0.2).equals(TimeDuration.nanos(200000)));
     }
 }

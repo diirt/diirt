@@ -95,16 +95,6 @@ public class TimeDuration {
         return nanos(((long) ms) * 1000000);
     }
 
-    /**
-     * A new duration in milliseconds.
-     * @param ms milliseconds of the duration
-     * @return a new duration
-     * @throws IllegalArgumentException if the duration is negative
-     */
-    public static TimeDuration ms(double ms) {
-        return nanos(ms * 1000000);
-    }
-
     private static TimeDuration nanos(double durationInNanos) {
         long sec = (long) (durationInNanos / NANOSEC_IN_SEC);
         int nanoSec = (int) (durationInNanos - sec * NANOSEC_IN_SEC);
