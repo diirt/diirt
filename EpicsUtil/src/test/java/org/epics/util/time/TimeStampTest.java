@@ -72,4 +72,25 @@ public class TimeStampTest {
         assertThat(newTime, equalTo(TimeStamp.time(95, 000000000)));
     }
     
+    @Test
+    public void minus1() {
+        TimeStamp time = TimeStamp.time(0, 0);
+        TimeStamp newTime = time.minus(TimeDuration.ofMillis(100));
+        assertThat(newTime, equalTo(TimeStamp.time(-1, 900000000)));
+    }
+    
+    @Test
+    public void minus2() {
+        TimeStamp time = TimeStamp.time(0, 0);
+        TimeStamp newTime = time.minus(TimeDuration.ofMillis(100));
+        assertThat(newTime, equalTo(TimeStamp.time(-1, 900000000)));
+    }
+    
+    @Test
+    public void minus3() {
+        TimeStamp time = TimeStamp.time(0, 0);
+        TimeStamp newTime = time.minus(TimeDuration.ofMillis(100));
+        assertThat(newTime, equalTo(TimeStamp.time(-1, 900000000)));
+    }
+    
 }
