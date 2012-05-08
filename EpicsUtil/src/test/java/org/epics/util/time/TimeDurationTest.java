@@ -278,4 +278,10 @@ public class TimeDurationTest {
         assertThat(duration.multipliedBy(-5), equalTo(TimeDuration.ofSeconds(-52.5)));
     }
     
+    @Test
+    public void dividedBy1() {
+        TimeDuration duration = TimeDuration.ofMillis(600);
+        assertThat(duration.dividedBy(3), equalTo(TimeDuration.ofSeconds(0.2)));
+    }
+    
 }
