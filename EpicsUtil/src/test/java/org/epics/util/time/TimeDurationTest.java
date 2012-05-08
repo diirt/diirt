@@ -190,5 +190,14 @@ public class TimeDurationTest {
         assertThat(duration, equalTo(TimeDuration.ofMinutes(1)));
         assertThat(duration, equalTo(TimeDuration.ofHours(0.0166666666667)));
     }
+    
+    @Test
+    public void equals4() {
+        TimeDuration duration = TimeDuration.ofNanos(3600000000000L);
+        assertThat(duration, equalTo(TimeDuration.ofMillis(3600000)));
+        assertThat(duration, equalTo(TimeDuration.ofSeconds(3600)));
+        assertThat(duration, equalTo(TimeDuration.ofMinutes(6)));
+        assertThat(duration, equalTo(TimeDuration.ofHours(1)));
+    }
 
 }
