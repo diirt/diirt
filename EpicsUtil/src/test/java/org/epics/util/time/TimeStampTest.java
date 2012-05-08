@@ -23,4 +23,9 @@ public class TimeStampTest {
         assertThat(time.getSec(), equalTo(100L));
         assertThat(time.getNanoSec(), equalTo(10000000));
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void time2() {
+        TimeStamp time = TimeStamp.time(100, 1000000000);
+    }
 }
