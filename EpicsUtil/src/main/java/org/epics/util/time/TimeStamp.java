@@ -89,8 +89,8 @@ public class TimeStamp implements Comparable<TimeStamp> {
     public static TimeStamp of(Date date) {
         long time = date.getTime();
         int nanoSec = (int) (time % 1000) * 1000000;
-        long epicsSec = (time / 1000);
-        return time(epicsSec, nanoSec);
+        long epochSec = (time / 1000);
+        return time(epochSec, nanoSec);
     }
 
     /**
