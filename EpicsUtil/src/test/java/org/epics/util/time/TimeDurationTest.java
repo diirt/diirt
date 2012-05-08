@@ -99,4 +99,25 @@ public class TimeDurationTest {
         assertThat(duration.getSec(), equalTo(-2L));
     }
 
+    @Test
+    public void min1() {
+        TimeDuration duration = TimeDuration.min(1.0);
+        assertThat(duration.getNanoSec(), equalTo(0));
+        assertThat(duration.getSec(), equalTo(60L));
+    }
+
+    @Test
+    public void min2() {
+        TimeDuration duration = TimeDuration.min(0.123456789);
+        assertThat(duration.getNanoSec(), equalTo(407407340));
+        assertThat(duration.getSec(), equalTo(7L));
+    }
+
+    @Test
+    public void min3() {
+        TimeDuration duration = TimeDuration.min(-1.23456789);
+        assertThat(duration.getNanoSec(), equalTo(925926601));
+        assertThat(duration.getSec(), equalTo(-75L));
+    }
+
 }
