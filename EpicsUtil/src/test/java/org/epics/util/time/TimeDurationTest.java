@@ -199,5 +199,11 @@ public class TimeDurationTest {
         assertThat(duration, equalTo(TimeDuration.ofMinutes(6)));
         assertThat(duration, equalTo(TimeDuration.ofHours(1)));
     }
+    
+    @Test
+    public void plus1() {
+        TimeDuration duration = TimeDuration.ofMillis(800);
+        assertThat(duration.plus(TimeDuration.ofMillis(300)), equalTo(TimeDuration.ofSeconds(1.1)));
+    }
 
 }

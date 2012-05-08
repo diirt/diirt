@@ -149,6 +149,10 @@ public class TimeDuration {
 
         return new TimeDuration(seconds, (int) nanos);
     }
+    
+    public TimeDuration plus(TimeDuration duration) {
+        return createWithCarry(sec + duration.getSec(), nanoSec + duration.getNanoSec());
+    }
 
     /**
      * Returns a time interval that lasts this duration and is centered
