@@ -65,4 +65,11 @@ public class TimeStampTest {
         assertThat(newTime, equalTo(TimeStamp.time(106, 500000000)));
     }
     
+    @Test
+    public void plus4() {
+        TimeStamp time = TimeStamp.time(100, 750000000);
+        TimeStamp newTime = time.plus(TimeDuration.ofSeconds(-5.750));
+        assertThat(newTime, equalTo(TimeStamp.time(95, 000000000)));
+    }
+    
 }
