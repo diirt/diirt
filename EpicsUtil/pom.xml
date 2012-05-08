@@ -30,7 +30,33 @@
             <layout>default</layout>
             <name>Repository for library Library[junit_4]</name>
         </repository>
+        <repository>
+            <id>epics</id>
+            <name>EPICS Repository</name>
+            <url>http://epics.sourceforge.net/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+    	<!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
+    	(id values there should match ids below) -->
+        <site>
+            <id>pvmanager.sf.net</id>
+            <name>PVManager Sourceforge site</name>
+            <url>scp://shell.sourceforge.net/home/project-web/pvmanager/htdocs/EpicsUtil</url>
+        </site>
+        <repository>
+            <id>epics.releases</id>
+            <name>EPICS Repository</name>
+            <url>scp://shell.sourceforge.net/home/project-web/epics/htdocs/maven2</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
