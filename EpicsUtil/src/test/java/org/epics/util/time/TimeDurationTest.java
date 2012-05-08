@@ -205,5 +205,17 @@ public class TimeDurationTest {
         TimeDuration duration = TimeDuration.ofMillis(800);
         assertThat(duration.plus(TimeDuration.ofMillis(300)), equalTo(TimeDuration.ofSeconds(1.1)));
     }
+    
+    @Test
+    public void plus2() {
+        TimeDuration duration = TimeDuration.ofMillis(-100);
+        assertThat(duration.plus(TimeDuration.ofMillis(300)), equalTo(TimeDuration.ofSeconds(0.2)));
+    }
+    
+    @Test
+    public void plus3() {
+        TimeDuration duration = TimeDuration.ofMillis(100);
+        assertThat(duration.plus(TimeDuration.ofMillis(-200)), equalTo(TimeDuration.ofSeconds(-0.1)));
+    }
 
 }
