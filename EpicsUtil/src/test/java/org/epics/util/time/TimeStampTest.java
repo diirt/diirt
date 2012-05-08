@@ -37,4 +37,9 @@ public class TimeStampTest {
         assertThat(time.getNanoSec(), equalTo(789000000));
     }
     
+    public void toDate1() {
+        TimeStamp time = TimeStamp.time(123456, 789000000);
+        assertThat(time.toDate(), equalTo(new Date(123456789)));
+    }
+    
 }
