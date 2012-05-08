@@ -257,7 +257,7 @@ public class TimeDurationTest {
     @Test
     public void minus5() {
         TimeDuration duration = TimeDuration.ofSeconds(10.250);
-        assertThat(duration.minus(TimeDuration.ofMillis(130)), equalTo(TimeDuration.ofSeconds(-0.5)));
+        assertThat(duration.minus(TimeDuration.ofMillis(1750)), equalTo(TimeDuration.ofSeconds(8.5)));
     }
-
+    
 }
