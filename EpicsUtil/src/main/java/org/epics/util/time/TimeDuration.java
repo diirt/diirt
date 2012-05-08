@@ -131,7 +131,7 @@ public class TimeDuration {
      * @throws IllegalArgumentException if factor is negative
      */
     public TimeDuration multipliedBy(int factor) {
-        return createWithCarry(sec * factor, nanoSec * factor);
+        return createWithCarry(sec * factor, ((long) nanoSec) * factor);
     }
 
     private static TimeDuration createWithCarry(long seconds, long nanos) {

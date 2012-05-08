@@ -265,6 +265,12 @@ public class TimeDurationTest {
         TimeDuration duration = TimeDuration.ofMillis(300);
         assertThat(duration.multipliedBy(5), equalTo(TimeDuration.ofSeconds(1.5)));
     }
+    
+    @Test
+    public void multipliedBy2() {
+        TimeDuration duration = TimeDuration.ofSeconds(10.500);
+        assertThat(duration.multipliedBy(5), equalTo(TimeDuration.ofSeconds(52.5)));
+    }
 
     
 }
