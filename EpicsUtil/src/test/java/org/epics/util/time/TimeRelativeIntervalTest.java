@@ -25,6 +25,6 @@ public class TimeRelativeIntervalTest {
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
         assertThat(interval.getAbsoluteStart(), equalTo(TimeStamp.of(0, 0)));
         assertThat(interval.getAbsoluteEnd(), equalTo(TimeStamp.of(3600, 0)));
-//        assertThat(interval.toAbsoluteInterval(TimeStamp.now()), equalTo(TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0))));
+        assertThat(interval.toAbsoluteInterval(TimeStamp.now()), equalTo(TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0))));
     }
 }
