@@ -4,8 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.IteratorDouble;
-import org.epics.util.array.IteratorNumber;
+import org.epics.util.array.*;
 
 /**
  *
@@ -24,8 +23,23 @@ public class Dataset1DArray implements Dataset1D {
     }
 
     @Override
-    public IteratorDouble getValues() {
-        return Iterators.arrayIterator(data, startOffset, endOffset);
+    public CollectionNumber getValues() {
+        return new CollectionDouble() {
+
+            @Override
+            public IteratorDouble iterator() {
+                return Iterators.arrayIterator(data, startOffset, endOffset);
+            }
+
+            @Override
+            public int size() {
+                int size = endOffset - startOffset;
+                if (size < 0) {
+                    size += data.length;
+                }
+                return size;
+            }
+        };
     }
 
     @Override
@@ -61,13 +75,13 @@ public class Dataset1DArray implements Dataset1D {
             addValue(iteratorDouble.nextDouble());
         }
 
-        double[] minMax = NumberUtil.minMax(getValues());
+        CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(getValues());
         if (minMax == null) {
             minValue = Double.NaN;
             maxValue = Double.NaN;
         } else {
-            minValue = minMax[0];
-            maxValue = minMax[1];
+            minValue = minMax.min.doubleValue();
+            maxValue = minMax.max.doubleValue();
         }
     }
 }

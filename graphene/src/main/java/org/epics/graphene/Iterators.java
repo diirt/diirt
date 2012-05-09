@@ -58,21 +58,6 @@ public class Iterators {
         };
     }
     
-    public static double[] toArray(IteratorNumber iterator) {
-        double[] buffer = new double[256];
-        int offset = 0;
-        while (iterator.hasNext()) {
-            if (offset == buffer.length) {
-                double[] newBuffer = new double[buffer.length * 2];
-                System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                buffer = newBuffer;
-            }
-            buffer[offset] = iterator.nextDouble();
-            offset++;
-        }
-        return Arrays.copyOf(buffer, offset);
-    }
-    
     public static IteratorDouble combine(final Collection<IteratorNumber> iterators) {
         return new IteratorDouble() {
             

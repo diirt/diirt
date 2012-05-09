@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.IteratorNumber;
+import org.epics.util.array.CollectionNumber;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.epics.util.array.IteratorNumber;
  */
 public interface Dataset1D {
     
-    public IteratorNumber getValues();
+    public CollectionNumber getValues();
     
     public double getMinValue();
     
