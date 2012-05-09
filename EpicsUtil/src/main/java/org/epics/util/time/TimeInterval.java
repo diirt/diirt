@@ -4,8 +4,6 @@
  */
 package org.epics.util.time;
 
-import java.util.Objects;
-
 /**
  * A period of time that spans two instances (included) at the nanosecond
  * precision.
