@@ -23,4 +23,11 @@ public class TimeIntervalTest {
         assertThat(interval.getStart(), equalTo(TimeStamp.of(0, 0)));
         assertThat(interval.getEnd(), equalTo(TimeStamp.of(3600, 0)));
     }
+
+    @Test
+    public void interval2() {
+        TimeInterval interval = TimeInterval.between(TimeStamp.of(3600, 0), TimeStamp.of(7200, 0));
+        assertThat(interval.getStart(), equalTo(TimeStamp.of(3600, 0)));
+        assertThat(interval.getEnd(), equalTo(TimeStamp.of(7200, 0)));
+    }
 }
