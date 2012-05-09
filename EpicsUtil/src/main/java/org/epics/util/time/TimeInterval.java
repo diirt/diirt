@@ -4,6 +4,8 @@
  */
 package org.epics.util.time;
 
+import java.util.Objects;
+
 /**
  * A period of time that spans two instances (included) at the nanosecond
  * precision.
@@ -72,6 +74,26 @@ public class TimeInterval {
     @Override
     public String toString() {
         return start.toString() + " - " + end.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TimeInterval) {
+            TimeInterval other = (TimeInterval) obj;
+            boolean startEqual = (getStart() == other.getStart()) || (getStart() != null && getStart().equals(other.getStart()));
+            boolean endEqual = (getEnd() == other.getEnd()) || (getEnd() != null && getEnd().equals(other.getEnd()));
+            return startEqual && endEqual;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + (this.start != null ? this.start.hashCode() : 0);
+        hash = 29 * hash + (this.end != null ? this.end.hashCode() : 0);
+        return hash;
     }
 
 }
