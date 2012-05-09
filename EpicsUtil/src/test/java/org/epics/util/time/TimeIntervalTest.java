@@ -32,6 +32,20 @@ public class TimeIntervalTest {
     }
 
     @Test
+    public void interval3() {
+        TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), null);
+        assertThat(interval.getStart(), equalTo(TimeStamp.of(0, 0)));
+        assertThat(interval.getEnd(), nullValue());
+    }
+
+    @Test
+    public void interval4() {
+        TimeInterval interval = TimeInterval.between(null, TimeStamp.of(0, 0));
+        assertThat(interval.getStart(), nullValue());
+        assertThat(interval.getEnd(), equalTo(TimeStamp.of(0, 0)));
+    }
+
+    @Test
     public void equals1() {
         TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0));
         assertThat(interval, equalTo(TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0))));
@@ -50,6 +64,18 @@ public class TimeIntervalTest {
     }
 
     @Test
+    public void equals4() {
+        TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), null);
+        assertThat(interval, equalTo(TimeInterval.between(TimeStamp.of(0, 0), null)));
+    }
+
+    @Test
+    public void equals5() {
+        TimeInterval interval = TimeInterval.between(null, TimeStamp.of(0, 0));
+        assertThat(interval, equalTo(TimeInterval.between(null, TimeStamp.of(0, 0))));
+    }
+
+    @Test
     public void contains1() {
         TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 1));
         assertThat(interval.contains(TimeStamp.of(3,0)), is(true));
@@ -57,5 +83,25 @@ public class TimeIntervalTest {
         assertThat(interval.contains(TimeStamp.of(3600,0)), is(true));
         assertThat(interval.contains(TimeStamp.of(-1,110)), is(false));
         assertThat(interval.contains(TimeStamp.of(3600,2)), is(false));
+    }
+
+    @Test
+    public void contains2() {
+        TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), null);
+        assertThat(interval.contains(TimeStamp.of(-3600,2)), is(false));
+        assertThat(interval.contains(TimeStamp.of(-1,110)), is(false));
+        assertThat(interval.contains(TimeStamp.of(0,110)), is(true));
+        assertThat(interval.contains(TimeStamp.of(3,0)), is(true));
+        assertThat(interval.contains(TimeStamp.of(3600,0)), is(true));
+    }
+
+    @Test
+    public void contains3() {
+        TimeInterval interval = TimeInterval.between(null, TimeStamp.of(0, 0));
+        assertThat(interval.contains(TimeStamp.of(-3600,2)), is(true));
+        assertThat(interval.contains(TimeStamp.of(-1,110)), is(true));
+        assertThat(interval.contains(TimeStamp.of(0,110)), is(false));
+        assertThat(interval.contains(TimeStamp.of(3,0)), is(false));
+        assertThat(interval.contains(TimeStamp.of(3600,0)), is(false));
     }
 }

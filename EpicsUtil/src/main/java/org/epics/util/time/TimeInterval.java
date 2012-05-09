@@ -29,7 +29,7 @@ public class TimeInterval {
      * @return true if inside the interval
      */
     public boolean contains(TimeStamp instant) {
-        return start.compareTo(instant) <= 0 && end.compareTo(instant) >= 0;
+        return (start == null || start.compareTo(instant) <= 0) && (end == null || end.compareTo(instant) >= 0);
     }
 
     /**
