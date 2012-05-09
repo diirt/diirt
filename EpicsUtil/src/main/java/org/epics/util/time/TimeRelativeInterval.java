@@ -27,11 +27,11 @@ public class TimeRelativeInterval {
     }
     
     public boolean isStartAbsolute() {
-        return start instanceof TimeStamp;
+        return start instanceof TimeStamp || start == null;
     }
     
     public boolean isEndAbsolute() {
-        return end instanceof TimeStamp;
+        return end instanceof TimeStamp || end == null;
     }
 
     public Object getStart() {

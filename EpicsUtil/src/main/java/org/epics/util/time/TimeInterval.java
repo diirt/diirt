@@ -73,7 +73,7 @@ public class TimeInterval {
 
     @Override
     public String toString() {
-        return start.toString() + " - " + end.toString();
+        return String.valueOf(start) + " - " + String.valueOf(end);
     }
 
     @Override
