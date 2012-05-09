@@ -48,4 +48,14 @@ public class TimeIntervalTest {
         TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 1));
         assertThat(interval, not(equalTo(TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0)))));
     }
+
+    @Test
+    public void contains1() {
+        TimeInterval interval = TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 1));
+        assertThat(interval.contains(TimeStamp.of(3,0)), is(true));
+        assertThat(interval.contains(TimeStamp.of(0,110)), is(true));
+        assertThat(interval.contains(TimeStamp.of(3600,0)), is(true));
+        assertThat(interval.contains(TimeStamp.of(-1,110)), is(false));
+        assertThat(interval.contains(TimeStamp.of(3600,2)), is(false));
+    }
 }
