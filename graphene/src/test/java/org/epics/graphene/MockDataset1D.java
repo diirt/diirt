@@ -39,12 +39,12 @@ public class MockDataset1D implements Dataset1D {
     }
 
     @Override
-    public double getMinValue() {
+    public Number getMinValue() {
         return minValue;
     }
 
     @Override
-    public double getMaxValue() {
+    public Number getMaxValue() {
         return maxValue;
     }
     

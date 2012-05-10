@@ -43,12 +43,12 @@ public class Dataset1DArray implements Dataset1D {
     }
 
     @Override
-    public double getMinValue() {
+    public Number getMinValue() {
         return minValue;
     }
 
     @Override
-    public double getMaxValue() {
+    public Number getMaxValue() {
         return maxValue;
     }
     

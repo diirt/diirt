@@ -36,18 +36,18 @@ public class Dataset1DArrayTest {
     public void createAndAddData1() throws Exception {
         Dataset1D dataset = new Dataset1DArray(10);
         assertArrayEquals(new double[] {}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.0001);
-        assertEquals(Double.NaN, dataset.getMinValue(), 0.0001);
-        assertEquals(Double.NaN, dataset.getMaxValue(), 0.0001);
+        assertEquals(Double.NaN, dataset.getMinValue().doubleValue(), 0.0001);
+        assertEquals(Double.NaN, dataset.getMaxValue().doubleValue(), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(0.0));
         assertArrayEquals(new double[] {0.0}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.0001);
-        assertEquals(0.0, dataset.getMinValue(), 0.0001);
-        assertEquals(0.0, dataset.getMaxValue(), 0.0001);
+        assertEquals(0.0, dataset.getMinValue().doubleValue(), 0.0001);
+        assertEquals(0.0, dataset.getMaxValue().doubleValue(), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(1.0).addData(2.0));
         assertArrayEquals(new double[] {0.0, 1.0, 2.0}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(new double[] {3.0, 4.0, 5.0}));
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.0001);
-        assertEquals(0.0, dataset.getMinValue(), 0.0);
-        assertEquals(0.0, dataset.getMaxValue(), 5.0);
+        assertEquals(0.0, dataset.getMinValue().doubleValue(), 0.0);
+        assertEquals(5.0, dataset.getMaxValue().doubleValue(), 0.0);
         dataset.update(new Dataset1DUpdate().clearData());
         assertArrayEquals(new double[] {}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.0001);
         dataset.update(new Dataset1DUpdate().addData(0.0).clearData());
@@ -70,8 +70,8 @@ public class Dataset1DArrayTest {
         Dataset1D dataset = new Dataset1DArray(10);
         dataset.update(new Dataset1DUpdate().addData(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}));
         assertArrayEquals(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}, CollectionNumbers.toDoubleArray(dataset.getValues()), 0.000000001);
-        assertEquals(0.000000111, dataset.getMinValue(), 0.000000001);
-        assertEquals(0.000000168, dataset.getMaxValue(), 0.000000001);
+        assertEquals(0.000000111, dataset.getMinValue().doubleValue(), 0.000000001);
+        assertEquals(0.000000168, dataset.getMaxValue().doubleValue(), 0.000000001);
     }
     
 }

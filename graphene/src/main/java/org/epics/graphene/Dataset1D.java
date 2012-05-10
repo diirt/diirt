@@ -14,9 +14,9 @@ public interface Dataset1D {
     
     public CollectionNumber getValues();
     
-    public double getMinValue();
+    public Number getMinValue();
     
-    public double getMaxValue();
+    public Number getMaxValue();
     
     public void update(Dataset1DUpdate update);
 }
