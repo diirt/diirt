@@ -26,7 +26,7 @@ import org.epics.pvmanager.util.TimeDuration;
  *
  * @author carcassi
  */
-public class TestCloseChannelPVManager {
+public class VerifyCloseChannelPVManager {
     public static void main(String[] args) throws Exception {
         //System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "20000000");
         PVManager.setDefaultDataSource(new SimulationDataSource());
