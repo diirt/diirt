@@ -1,16 +1,11 @@
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
 package org.epics.pvmanager.tests;
 
 
-import gov.aps.jca.*;
-import gov.aps.jca.dbr.DBRType;
-import gov.aps.jca.event.ConnectionEvent;
-import gov.aps.jca.event.ConnectionListener;
-import gov.aps.jca.event.MonitorEvent;
-import gov.aps.jca.event.MonitorListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderListener;
