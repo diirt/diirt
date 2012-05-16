@@ -5,6 +5,19 @@
 package org.epics.util.time;
 
 /**
+ * A period of time where each end can either be an absolute moment in time
+ * (e.g. 5/16/2012 11:30 AM) or a relative moment from a reference (e.g. 30 seconds before)
+ * which typically is going to be "now".
+ * <p>
+ * This class stores a reference for start and a reference for end. Each reference
+ * can either be absolute, in which case it's a TimeStamp, or relative, in
+ * which case it's a TimeDuration. The {@link #toAbsoluteInterval(org.epics.util.time.TimeStamp) }
+ * can be used to transform the relative interval into an absolute one
+ * calculated from the reference. This allows to keep the relative interval,
+ * and then to convert multiple time to an absolute interval every time
+ * that one needs to calculate. For example, one can keep the range of a plot
+ * from 1 minute ago to now, and then get a specific moment the absolute range
+ * of that plot.
  *
  * @author carcassi
  */
