@@ -4,18 +4,8 @@
  */
 package org.epics.util.time;
 
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.text.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +29,7 @@ public class TimestampFormat extends Format {
     private Pattern matchNanoField = Pattern.compile("(?:(?:'')+|(?:'[^']+')|(N+))");
     private List<NumberFormat> nanoFieldFormats = new ArrayList<NumberFormat>();
     private List<String> nanoFieldStrings = new ArrayList<String>();
+    private boolean nanoPattern = false;
 
 
     /**
@@ -94,6 +85,7 @@ public class TimestampFormat extends Format {
                 nanoFieldFormats.add(new DecimalFormat(match.replace('N', '0')));
                 nanoFieldStrings.add(nanoFieldString);
                 m.appendReplacement(newPattern, "'" + nanoFieldString + "'");
+                nanoPattern = true;
             }
         }
         m.appendTail(newPattern);
@@ -147,13 +139,28 @@ public class TimestampFormat extends Format {
     public String format(Timestamp Timestamp) {
         return format((Object) Timestamp);
     }
-
+    
+    public Timestamp parse(String source, ParsePosition pos) {
+        if (nanoPattern)
+            throw new UnsupportedOperationException("Not supporting parsing of nanosecond field.");
+        return Timestamp.of(dateFormat.parse(source, pos));
+    }
+    
     /**
      * NB: Not supported
      */
     @Override
     public Object parseObject(String source, ParsePosition pos) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return parse(source, pos);
+    }
+    
+    public Timestamp parse(String source) throws ParseException {
+        ParsePosition pos = new ParsePosition(0);
+        Timestamp result = parse(source, pos);
+        if (pos.getIndex() == 0)
+            throw new ParseException("Unparseable date: \"" + source + "\"" ,
+                pos.getErrorIndex());
+        return result;
     }
 
 }
