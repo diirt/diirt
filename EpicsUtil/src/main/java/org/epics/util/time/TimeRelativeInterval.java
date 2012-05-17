@@ -18,7 +18,7 @@ public class TimeRelativeInterval {
         this.end = end;
     }
 
-    public static TimeRelativeInterval of(TimeStamp start, TimeStamp end) {
+    public static TimeRelativeInterval of(Timestamp start, Timestamp end) {
         return new TimeRelativeInterval(start, end);
     }
     
@@ -27,11 +27,11 @@ public class TimeRelativeInterval {
     }
     
     public boolean isStartAbsolute() {
-        return start instanceof TimeStamp || start == null;
+        return start instanceof Timestamp || start == null;
     }
     
     public boolean isEndAbsolute() {
-        return end instanceof TimeStamp || end == null;
+        return end instanceof Timestamp || end == null;
     }
 
     public Object getStart() {
@@ -42,12 +42,12 @@ public class TimeRelativeInterval {
         return end;
     }
 
-    public TimeStamp getAbsoluteStart() {
-        return (TimeStamp) start;
+    public Timestamp getAbsoluteStart() {
+        return (Timestamp) start;
     }
     
-    public TimeStamp getAbsoluteEnd() {
-        return (TimeStamp) end;
+    public Timestamp getAbsoluteEnd() {
+        return (Timestamp) end;
     }
     
     public TimeDuration getRelativeStart() {
@@ -58,14 +58,14 @@ public class TimeRelativeInterval {
         return (TimeDuration) end;
     }
     
-    public TimeInterval toAbsoluteInterval(TimeStamp reference) {
-        TimeStamp absoluteStart;
+    public TimeInterval toAbsoluteInterval(Timestamp reference) {
+        Timestamp absoluteStart;
         if (isStartAbsolute()) {
             absoluteStart = getAbsoluteStart();
         } else {
             absoluteStart = reference.plus(getRelativeStart());
         }
-        TimeStamp absoluteEnd;
+        Timestamp absoluteEnd;
         if (isEndAbsolute()) {
             absoluteEnd = getAbsoluteEnd();
         } else {

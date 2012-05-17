@@ -21,28 +21,28 @@ public class TimeRelativeIntervalTest {
     // create aa/ar/ra/rr
     @Test
     public void interval1() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(TimeStamp.of(0, 0), TimeStamp.of(3600, 0));
+        TimeRelativeInterval interval = TimeRelativeInterval.of(Timestamp.of(0, 0), Timestamp.of(3600, 0));
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
-        assertThat(interval.getAbsoluteStart(), equalTo(TimeStamp.of(0, 0)));
-        assertThat(interval.getAbsoluteEnd(), equalTo(TimeStamp.of(3600, 0)));
-        assertThat(interval.toAbsoluteInterval(TimeStamp.now()), equalTo(TimeInterval.between(TimeStamp.of(0, 0), TimeStamp.of(3600, 0))));
+        assertThat(interval.getAbsoluteStart(), equalTo(Timestamp.of(0, 0)));
+        assertThat(interval.getAbsoluteEnd(), equalTo(Timestamp.of(3600, 0)));
+        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(Timestamp.of(0, 0), Timestamp.of(3600, 0))));
     }
     
     @Test
     public void interval2() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(TimeStamp.of(0, 0), null);
+        TimeRelativeInterval interval = TimeRelativeInterval.of(Timestamp.of(0, 0), null);
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
-        assertThat(interval.getAbsoluteStart(), equalTo(TimeStamp.of(0, 0)));
+        assertThat(interval.getAbsoluteStart(), equalTo(Timestamp.of(0, 0)));
         assertThat(interval.getAbsoluteEnd(), nullValue());
-        assertThat(interval.toAbsoluteInterval(TimeStamp.now()), equalTo(TimeInterval.between(TimeStamp.of(0, 0), null)));
+        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(Timestamp.of(0, 0), null)));
     }
     
     @Test
     public void interval3() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(null, TimeStamp.of(0, 0));
+        TimeRelativeInterval interval = TimeRelativeInterval.of(null, Timestamp.of(0, 0));
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
         assertThat(interval.getAbsoluteStart(), nullValue());
-        assertThat(interval.getAbsoluteEnd(), equalTo(TimeStamp.of(0, 0)));
-        assertThat(interval.toAbsoluteInterval(TimeStamp.now()), equalTo(TimeInterval.between(null, TimeStamp.of(0, 0))));
+        assertThat(interval.getAbsoluteEnd(), equalTo(Timestamp.of(0, 0)));
+        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(null, Timestamp.of(0, 0))));
     }
 }

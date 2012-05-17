@@ -191,7 +191,7 @@ public class TimeDuration {
      * @param reference a timestamp
      * @return a new time interval
      */
-    public TimeInterval around(TimeStamp reference) {
+    public TimeInterval around(Timestamp reference) {
         TimeDuration half = this.dividedBy(2);
         return TimeInterval.between(reference.minus(half), reference.plus(half));
     }
@@ -203,7 +203,7 @@ public class TimeDuration {
      * @param reference a timestamp
      * @return a new time interval
      */
-    public TimeInterval after(TimeStamp reference) {
+    public TimeInterval after(Timestamp reference) {
         return TimeInterval.between(reference, reference.plus(this));
     }
 
@@ -214,7 +214,7 @@ public class TimeDuration {
      * @param reference a timestamp
      * @return a new time interval
      */
-    public TimeInterval before(TimeStamp reference) {
+    public TimeInterval before(Timestamp reference) {
         return TimeInterval.between(reference.minus(this), reference);
     }
 

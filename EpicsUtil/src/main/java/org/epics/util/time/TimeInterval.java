@@ -12,10 +12,10 @@ package org.epics.util.time;
  */
 public class TimeInterval {
 
-    private final TimeStamp start;
-    private final TimeStamp end;
+    private final Timestamp start;
+    private final Timestamp end;
 
-    private TimeInterval(TimeStamp start, TimeStamp end) {
+    private TimeInterval(Timestamp start, Timestamp end) {
         this.start = start;
         this.end = end;
     }
@@ -26,7 +26,7 @@ public class TimeInterval {
      * @param instant a time stamp
      * @return true if inside the interval
      */
-    public boolean contains(TimeStamp instant) {
+    public boolean contains(Timestamp instant) {
         return (start == null || start.compareTo(instant) <= 0) && (end == null || end.compareTo(instant) >= 0);
     }
 
@@ -37,7 +37,7 @@ public class TimeInterval {
      * @param end the end of the interval
      * @return a new interval
      */
-    public static TimeInterval between(TimeStamp start, TimeStamp end) {
+    public static TimeInterval between(Timestamp start, Timestamp end) {
         return new TimeInterval(start, end);
     }
 
@@ -56,7 +56,7 @@ public class TimeInterval {
      *
      * @return the initial instant
      */
-    public TimeStamp getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
@@ -65,7 +65,7 @@ public class TimeInterval {
      *
      * @return the final instant
      */
-    public TimeStamp getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 

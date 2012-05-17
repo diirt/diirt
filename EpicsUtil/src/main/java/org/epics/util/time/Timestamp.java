@@ -26,13 +26,13 @@ import java.util.Date;
  *
  * @author carcassi
  */
-public class TimeStamp implements Comparable<TimeStamp> {
+public class Timestamp implements Comparable<Timestamp> {
 
     /*
      * When the class is initialized, get the current timestamp and nanotime,
      * so that future instances can be calculated from this reference.
      */
-    private static final TimeStamp base = TimeStamp.of(new Date());
+    private static final Timestamp base = Timestamp.of(new Date());
     private static final long baseNano = System.nanoTime();
 
     /**
@@ -45,7 +45,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      */
     private final int nanoSec;
 
-    private TimeStamp(long unixSec, int nanoSec) {
+    private Timestamp(long unixSec, int nanoSec) {
         if (nanoSec < 0 || nanoSec > 999999999)
             throw new IllegalArgumentException("Nanoseconds must be between 0 and 999,999,999");
         this.unixSec = unixSec;
@@ -75,8 +75,8 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param nanoSec nanoseconds past the given seconds (must be 0 < nanoSec < 999,999,999)
      * @return a new timestamp
      */
-    public static TimeStamp of(long epochSec, int nanoSec) {
-        return new TimeStamp(epochSec, nanoSec);
+    public static Timestamp of(long epochSec, int nanoSec) {
+        return new Timestamp(epochSec, nanoSec);
     }
 
     /**
@@ -86,7 +86,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param date the date to convert
      * @return a new timestamp
      */
-    public static TimeStamp of(Date date) {
+    public static Timestamp of(Date date) {
         long time = date.getTime();
         int nanoSec = (int) (time % 1000) * 1000000;
         long epochSec = (time / 1000);
@@ -100,7 +100,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      *
      * @return a new timestamp
      */
-    public static TimeStamp now() {
+    public static Timestamp now() {
         return base.plus(TimeDuration.ofNanos(System.nanoTime() - baseNano));
     }
 
@@ -121,8 +121,8 @@ public class TimeStamp implements Comparable<TimeStamp> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TimeStamp) {
-            TimeStamp other = (TimeStamp) obj;
+        if (obj instanceof Timestamp) {
+            Timestamp other = (Timestamp) obj;
             return other.nanoSec == nanoSec && other.unixSec == unixSec;
         }
 
@@ -136,7 +136,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @return comparison result
      */
     @Override
-    public int compareTo(TimeStamp other) {
+    public int compareTo(Timestamp other) {
 	if (unixSec < other.unixSec) {
             return -1;
         } else if (unixSec == other.unixSec) {
@@ -157,7 +157,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param duration a time duration
      * @return a new timestamp
      */
-    public TimeStamp plus(TimeDuration duration) {
+    public Timestamp plus(TimeDuration duration) {
         return createWithCarry(unixSec + duration.getSec(), nanoSec + duration.getNanoSec());
     }
 
@@ -168,7 +168,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param ofNanos new nanoseconds (can be the whole long range)
      * @return the new timestamp
      */
-    private static TimeStamp createWithCarry(long seconds, long nanos) {
+    private static Timestamp createWithCarry(long seconds, long nanos) {
         if (nanos > 999999999) {
             seconds = seconds + nanos / 1000000000;
             nanos = nanos % 1000000000;
@@ -181,7 +181,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
             nanos -= pastSec * 1000000000;
         }
 
-        return new TimeStamp(seconds, (int) nanos);
+        return new Timestamp(seconds, (int) nanos);
     }
 
     /**
@@ -189,7 +189,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param duration a time duration
      * @return a new timestamp
      */
-    public TimeStamp minus(TimeDuration duration) {
+    public Timestamp minus(TimeDuration duration) {
         return createWithCarry(unixSec - duration.getSec(), nanoSec - duration.getNanoSec());
     }
 
@@ -206,7 +206,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param time another time stamp
      * @return the duration between the two timeStamps
      */
-    public TimeDuration durationBetween(TimeStamp time) {
+    public TimeDuration durationBetween(Timestamp time) {
         long nanoSecDiff = time.nanoSec - nanoSec;
         nanoSecDiff += (time.unixSec - unixSec) * 1000000000;
         nanoSecDiff = Math.abs(nanoSecDiff);
@@ -221,7 +221,7 @@ public class TimeStamp implements Comparable<TimeStamp> {
      * @param reference another time stamp
      * @return the duration from the reference to this
      */
-    public TimeDuration durationFrom(TimeStamp reference) {
+    public TimeDuration durationFrom(Timestamp reference) {
         long nanoSecDiff = nanoSec - reference.nanoSec;
         nanoSecDiff += (unixSec - reference.unixSec) * 1000000000;
         return TimeDuration.ofNanos(nanoSecDiff);
