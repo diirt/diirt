@@ -4,6 +4,7 @@
  */
 package org.epics.util.time;
 
+import java.text.ParseException;
 import java.util.TimeZone;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -80,6 +81,13 @@ public class TimestampFormatTest {
         format.setTimeZome(TimeZone.getTimeZone("GMT"));
         Timestamp time = format.parse("1976-01-01T00:00:00");
         assertThat(time, equalTo(Timestamp.of(189302400, 0)));
+    }
+    
+    @Test(expected=ParseException.class)
+    public void parse2() throws Exception {
+        TimestampFormat format = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss");
+        format.setTimeZome(TimeZone.getTimeZone("GMT"));
+        Timestamp time = format.parse("1976-NN-01T00:00:00");
     }
 
 }
