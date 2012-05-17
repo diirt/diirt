@@ -5,7 +5,10 @@
 package org.epics.util.time;
 
 import java.text.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +19,7 @@ import java.util.regex.Pattern;
  * <p>
  * For example, the pattern "yyyy-MM-dd'T'HH:mm:ss.NNNNNNNNNZ" formats to 2001-07-04T12:08:56.012345678-0700
  * <p>
- * Parsing is not currently supported.
+ * Parsing is not currently supported if nanosecond field is used.
  *
  * @author carcassi
  */
@@ -146,14 +149,18 @@ public class TimestampFormat extends Format {
         return Timestamp.of(dateFormat.parse(source, pos));
     }
     
-    /**
-     * NB: Not supported
-     */
     @Override
     public Object parseObject(String source, ParsePosition pos) {
         return parse(source, pos);
     }
     
+    /**
+     * Parses a String and converts it to a Timestamp.
+     * 
+     * @param source the string to parse
+     * @return the parsed object
+     * @throws ParseException if the string does not match the pattern
+     */
     public Timestamp parse(String source) throws ParseException {
         ParsePosition pos = new ParsePosition(0);
         Timestamp result = parse(source, pos);
