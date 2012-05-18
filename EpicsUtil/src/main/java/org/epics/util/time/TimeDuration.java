@@ -139,6 +139,20 @@ public class TimeDuration {
     }
 
     /**
+     * Returns the number of times the given duration is present in this duration.
+     * 
+     * @param duration another duration
+     * @return the result of the division
+     */
+    public int dividedBy(TimeDuration duration) {
+        // (a + b)/(c + d) = 1 / ((c + d) / a) + 1 / ((c + d) / b)
+        // XXX This will not have the precision it should
+        double thisDuration = (double) getSec() * (double) NANOSEC_IN_SEC + (double) getNanoSec();
+        double otherDuration = (double) duration.getSec() * (double) NANOSEC_IN_SEC + (double) duration.getNanoSec();
+        return (int) (thisDuration / otherDuration);
+    }
+
+    /**
      * Returns a new duration which is bigger by the given factor.
      *
      * @param factor constant to multiply

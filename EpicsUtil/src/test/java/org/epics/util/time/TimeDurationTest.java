@@ -296,6 +296,20 @@ public class TimeDurationTest {
     }
     
     @Test
+    public void dividedBy5() {
+        TimeDuration duration1 = TimeDuration.ofSeconds(10.4);
+        TimeDuration duration2 = TimeDuration.ofMillis(100);
+        assertThat(duration1.dividedBy(duration2), equalTo(104));
+    }
+    
+    @Test
+    public void dividedBy6() {
+        TimeDuration duration1 = TimeDuration.ofSeconds(10.4);
+        TimeDuration duration2 = TimeDuration.ofSeconds(2.5);
+        assertThat(duration1.dividedBy(duration2), equalTo(4));
+    }
+    
+    @Test
     public void toString1() {
         TimeDuration duration = TimeDuration.ofMillis(10);
         assertThat(duration.toString(), equalTo("0.010000000"));
