@@ -185,4 +185,11 @@ public class TimeDuration {
         return false;
     }
 
+    
+    public static org.epics.util.time.TimeDuration asTimeDuration(TimeDuration duration) {
+        if (duration == null)
+            return null;
+        
+        return org.epics.util.time.TimeDuration.ofNanos(duration.getNanoSec());
+    }
 }
