@@ -10,6 +10,7 @@ import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Time;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -43,6 +44,11 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
             return null;
         
         return DataUtils.fromEpics(dbrValue.getTimeStamp());
+    }
+
+    @Override
+    public Timestamp getTimestamp() {
+        return DataUtils.timestampOf(dbrValue.getTimeStamp());
     }
 
     @Override

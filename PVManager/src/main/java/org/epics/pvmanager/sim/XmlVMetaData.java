@@ -11,6 +11,7 @@ import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Time;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -43,6 +44,11 @@ class XmlVMetaData extends ReplayValue implements Time, Alarm {
     @Override
     public boolean isTimeValid() {
         return true;
+    }
+
+    @Override
+    public Timestamp getTimestamp() {
+        return getTimeStamp().asTimestamp();
     }
 
 }

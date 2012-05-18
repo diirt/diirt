@@ -72,6 +72,19 @@ class DataUtils {
     static org.epics.pvmanager.util.TimeStamp fromEpics(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
         return org.epics.pvmanager.util.TimeStamp.time(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, (int) epicsTimeStamp.nsec());
     }
+    
+    /**
+     * Converts a JCA timestamp to an epics.util timestamp.
+     * 
+     * @param epicsTimeStamp the epics timestamp
+     * @return a new epics.util timestamp
+     */
+    static org.epics.util.time.Timestamp timestampOf(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
+        if (epicsTimeStamp == null)
+            return null;
+        
+        return org.epics.util.time.Timestamp.of(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, (int) epicsTimeStamp.nsec());
+    }
 
     /**
      * Converts an alarm severity from JCA to VData.

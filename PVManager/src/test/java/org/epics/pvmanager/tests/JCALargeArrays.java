@@ -19,13 +19,13 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  */
 public class JCALargeArrays {
    static     long  start = System.currentTimeMillis();
-    public static void main(String[] args) {
-        System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "20000000");
+    public static void main(String[] args) throws Exception {
+        System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "1");
 //        System.setProperty("gov.aps.jca.jni.JNIContext.max_array_bytes", "10000000");
         JCADataSource source = new JCADataSource();
         source.getContext().printInfo();
         PVManager.setDefaultDataSource(source);
-        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample")).every(hz(50));
+        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2")).every(hz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -45,5 +45,7 @@ public class JCALargeArrays {
                   
             }
         });
+        
+        Thread.sleep(30000);
     }
 }

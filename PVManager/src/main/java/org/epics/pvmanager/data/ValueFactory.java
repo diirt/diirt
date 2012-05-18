@@ -8,6 +8,7 @@ import org.epics.pvmanager.util.TimeStamp;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Set;
+import org.epics.util.time.Timestamp;
 
 /**
  * Factory class for all concrete implementation of the types.
@@ -21,10 +22,16 @@ import java.util.Set;
  */
 public class ValueFactory {
     
+    private static Timestamp toTimestamp(TimeStamp timeStamp) {
+        if (timeStamp == null)
+            return null;
+        return timeStamp.asTimestamp();
+    }
+    
     public static VString newVString(String value, AlarmSeverity alarmSeverity,
             AlarmStatus alarmStatus,
             TimeStamp timeStamp, Integer timeUserTag) {
-        return new IVString(value, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true);
+        return new IVString(value, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true);
     }
 
     public static VMultiDouble newVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
@@ -34,7 +41,7 @@ public class ValueFactory {
             String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
             Double upperCtrlLimit, Double upperDisplayLimit) {
         return new IVMultiDouble(values, alarmSeverity, alarmStatus,
-                timeStamp, timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit,
+                toTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit,
                 units, format, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
 
@@ -48,7 +55,7 @@ public class ValueFactory {
             final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
-        return new IVInt(value, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
+        return new IVInt(value, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
 
     /**
@@ -121,6 +128,11 @@ public class ValueFactory {
             @Override
             public TimeStamp getTimeStamp() {
                 return timeStamp;
+            }
+
+            @Override
+            public Timestamp getTimestamp() {
+                return toTimestamp(timeStamp);
             }
 
             @Override
@@ -211,7 +223,7 @@ public class ValueFactory {
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
         return new IVStatistics(average, stdDev, min, max, nSamples, alarmSeverity,
-                alarmStatus, timeStamp, timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit,
+                alarmStatus, toTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit,
                 lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit,
                 upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
@@ -244,7 +256,7 @@ public class ValueFactory {
             final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
-        return new IVInt(value, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true, lowerDisplayLimit,
+        return new IVInt(value, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit,
                 lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit,
                 upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
@@ -272,7 +284,7 @@ public class ValueFactory {
             final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
-        return new IVDoubleArray(values, sizes, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true,
+        return new IVDoubleArray(values, sizes, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true,
                 lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat,
                 upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
@@ -288,7 +300,7 @@ public class ValueFactory {
             final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
-        return new IVIntArray(values, sizes, alarmSeverity, alarmStatus, timeStamp, timeUserTag, true,
+        return new IVIntArray(values, sizes, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true,
                 lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat,
                 upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
