@@ -18,8 +18,10 @@ import org.epics.util.time.Timestamp;
  * takes into account leap seconds, all the math operations on TimeStamps do
  * not take leap seconds into account.
  *
+ * @deprecated this class is being retired in favor of {@link Timestamp}
  * @author carcassi
  */
+@Deprecated
 public class TimeStamp implements Comparable<TimeStamp> {
 
     /*
@@ -117,6 +119,18 @@ public class TimeStamp implements Comparable<TimeStamp> {
      */
     public Timestamp asTimestamp() {
         return Timestamp.of(unixSec, nanoSec);
+    }
+    
+    /**
+     * Null safe way of converting to the epics common definition of time.
+     * 
+     * @param timeStamp the timeStamp to convert
+     * @return a new timestamp
+     */
+    public static Timestamp asTimestamp(TimeStamp timeStamp) {
+        if (timeStamp == null)
+            return null;
+        return timeStamp.asTimestamp();
     }
 
     @Override
