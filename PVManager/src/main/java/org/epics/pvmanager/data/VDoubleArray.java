@@ -16,6 +16,6 @@ public interface VDoubleArray extends Array<Double>, VNumberArray {
     double[] getArray();
     
     @Override
-    ListDouble getListNumber();
+    ListDouble getData();
     
 }

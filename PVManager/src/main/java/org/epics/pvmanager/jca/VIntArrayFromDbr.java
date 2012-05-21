@@ -33,7 +33,7 @@ class VIntArrayFromDbr extends VNumberMetadata<DBR_TIME_Int, DBR_CTRL_Double> im
     }
 
     @Override
-    public ListInt getListNumber() {
+    public ListInt getData() {
         return new ArrayInt(dbrValue.getIntValue());
     }
 

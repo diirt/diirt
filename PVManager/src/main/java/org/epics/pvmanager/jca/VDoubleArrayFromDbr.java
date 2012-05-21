@@ -28,7 +28,7 @@ class VDoubleArrayFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Doub
     }
 
     @Override
-    public ListDouble getListNumber() {
+    public ListDouble getData() {
         return new ArrayDouble(dbrValue.getDoubleValue());
     }
 

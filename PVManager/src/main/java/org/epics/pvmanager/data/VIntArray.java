@@ -16,5 +16,5 @@ public interface VIntArray extends Array<Integer>, VNumberArray {
     int[] getArray();
     
     @Override
-    ListInt getListNumber();
+    ListInt getData();
 }

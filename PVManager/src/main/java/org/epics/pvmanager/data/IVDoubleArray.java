@@ -43,7 +43,7 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
     }
 
     @Override
-    public ListDouble getListNumber() {
+    public ListDouble getData() {
         return new ArrayDouble(array);
     }
 

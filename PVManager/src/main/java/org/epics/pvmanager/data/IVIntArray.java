@@ -43,7 +43,7 @@ class IVIntArray extends IVNumeric implements VIntArray {
     }
 
     @Override
-    public ListInt getListNumber() {
+    public ListInt getData() {
         return new ArrayInt(array);
     }
 
