@@ -11,7 +11,7 @@ import org.epics.util.array.ListByte;
  *
  * @author carcassi
  */
-public interface VByteArray extends Array<Integer>, VNumberArray {
+public interface VByteArray extends Array<Integer>, VNumberArray, VType {
     @Override
     byte[] getArray();
     

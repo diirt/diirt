@@ -4,12 +4,11 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.util.array.ListNumber;
-
 /**
+ * Tag interface to mark all the members of the value classes.
  *
  * @author carcassi
  */
-public interface VNumberArray extends Alarm, Time, Display, VType {
-    ListNumber getData();
+public interface VType {
+    
 }

@@ -11,7 +11,7 @@ import org.epics.util.array.ListFloat;
  *
  * @author carcassi
  */
-public interface VFloatArray extends Array<Double>, VNumberArray {
+public interface VFloatArray extends Array<Double>, VNumberArray, VType {
     @Override
     float[] getArray();
     

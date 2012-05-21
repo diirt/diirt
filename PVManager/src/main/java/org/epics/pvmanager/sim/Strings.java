@@ -4,11 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import java.util.Random;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VString;
 import org.epics.pvmanager.data.ValueFactory;
 
