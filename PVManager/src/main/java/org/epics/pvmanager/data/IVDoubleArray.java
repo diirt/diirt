@@ -6,6 +6,8 @@ package org.epics.pvmanager.data;
 
 import java.text.NumberFormat;
 import java.util.List;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -38,6 +40,11 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
     @Override
     public List<Integer> getSizes() {
         return sizes;
+    }
+
+    @Override
+    public ListDouble getListNumber() {
+        return new ArrayDouble(array);
     }
 
 }
