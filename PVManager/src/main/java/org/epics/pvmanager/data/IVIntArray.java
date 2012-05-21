@@ -6,6 +6,8 @@ package org.epics.pvmanager.data;
 
 import java.text.NumberFormat;
 import java.util.List;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -38,6 +40,11 @@ class IVIntArray extends IVNumeric implements VIntArray {
     @Override
     public List<Integer> getSizes() {
         return sizes;
+    }
+
+    @Override
+    public ListInt getListNumber() {
+        return new ArrayInt(array);
     }
 
 }
