@@ -12,14 +12,25 @@ package org.epics.util.array;
 public final class ArrayDouble extends ListDouble {
     
     private final double[] array;
+    private final boolean writeable;
+
+    /**
+     * A new read-only {@code ArrayDouble} that wraps around the given array.
+     * 
+     * @param array an array
+     */
+    public ArrayDouble(double[] array) {
+        this(array, false);
+    }
 
     /**
      * A new {@code ArrayDouble} that wraps around the given array.
      * 
      * @param array an array
      */
-    public ArrayDouble(double[] array) {
+    public ArrayDouble(double[] array, boolean writeable) {
         this.array = array;
+        this.writeable = writeable;
     }
 
     @Override
@@ -48,6 +59,15 @@ public final class ArrayDouble extends ListDouble {
     @Override
     public double getDouble(int index) {
         return array[index];
+    }
+
+    @Override
+    public void setDouble(int index, double value) {
+        if (writeable) {
+            array[index] = value;
+        } else {
+            throw new UnsupportedOperationException("Read only list.");
+        }
     }
     
 }
