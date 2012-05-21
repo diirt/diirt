@@ -53,5 +53,35 @@ public abstract class ListByte implements ListNumber, CollectionByte {
     public short getShort(int index) {
         return (short) getByte(index);
     }
+
+    @Override
+    public void setDouble(int index, double value) {
+        setByte(index, (byte) value);
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        setByte(index, (byte) value);
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        setByte(index, (byte) value);
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        setByte(index, (byte) value);
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        setByte(index, (byte) value);
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
     
 }

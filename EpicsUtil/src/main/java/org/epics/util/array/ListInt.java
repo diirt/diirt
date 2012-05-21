@@ -53,5 +53,34 @@ public abstract class ListInt implements ListNumber, CollectionInt {
     public byte getByte(int index) {
         return (byte) getInt(index);
     }
+    @Override
+    public void setDouble(int index, double value) {
+        setInt(index, (int) value);
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        setInt(index, (int) value);
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        setInt(index, (int) value);
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        setInt(index, (int) value);
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        setInt(index, (int) value);
+    }
     
 }

@@ -54,4 +54,34 @@ public abstract class ListShort implements ListNumber, CollectionShort {
         return (byte) getShort(index);
     }
     
+    @Override
+    public void setDouble(int index, double value) {
+        setShort(index, (short) value);
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        setShort(index, (short) value);
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        setShort(index, (short) value);
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        setShort(index, (short) value);
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        setShort(index, (short) value);
+    }
+    
 }

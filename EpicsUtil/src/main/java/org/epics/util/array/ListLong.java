@@ -54,4 +54,34 @@ public abstract class ListLong implements ListNumber, CollectionLong {
         return (byte) getLong(index);
     }
     
+    @Override
+    public void setDouble(int index, double value) {
+        setLong(index, (long) value);
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        setLong(index, (long) value);
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        setLong(index, (long) value);
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        setLong(index, (long) value);
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        setLong(index, (long) value);
+    }
+
 }

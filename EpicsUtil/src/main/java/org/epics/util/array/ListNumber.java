@@ -71,4 +71,16 @@ public interface ListNumber extends CollectionNumber {
      */
     byte getByte(int index);
     
+    void setDouble(int index, double value);
+    
+    void setFloat(int index, float value);
+    
+    void setLong(int index, long value);
+    
+    void setInt(int index, int value);
+    
+    void setShort(int index, short value);
+    
+    void setByte(int index, byte value);
+    
 }

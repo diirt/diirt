@@ -54,4 +54,34 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
         return (byte) getFloat(index);
     }
     
+    @Override
+    public void setDouble(int index, double value) {
+        setFloat(index, (float) value);
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        setFloat(index, (float) value);
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        setFloat(index, (float) value);
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        setFloat(index, (float) value);
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        setFloat(index, (float) value);
+    }
+    
 }

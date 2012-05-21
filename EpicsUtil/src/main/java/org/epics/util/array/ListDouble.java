@@ -53,5 +53,35 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
     public byte getByte(int index) {
         return (byte) getDouble(index);
     }
-    
+
+    @Override
+    public void setDouble(int index, double value) {
+        throw new UnsupportedOperationException("Read only list.");
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        setDouble(index, (double) value);
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        setDouble(index, (double) value);
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        setDouble(index, (double) value);
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        setDouble(index, (double) value);
+    }
+
+    @Override
+    public void setByte(int index, byte value) {
+        setDouble(index, (double) value);
+    }
+
 }
