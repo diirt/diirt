@@ -41,12 +41,6 @@ public class MockProbe extends javax.swing.JFrame {
 
     /** Creates new form MockPVFrame */
     public MockProbe() {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("ca", new JCADataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
         initComponents();
         borders.put(AlarmSeverity.NONE, pvTextValue.getBorder());
         borders.put(AlarmSeverity.MINOR, new LineBorder(Color.YELLOW));
@@ -250,6 +244,7 @@ public class MockProbe extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MockProbe().setVisible(true);
