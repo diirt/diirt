@@ -27,7 +27,7 @@ import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.jca.JCADataSource;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
@@ -174,7 +174,7 @@ public class MockProbe extends javax.swing.JFrame {
         if (pv != null)
             pv.close();
 
-        pv = PVManager.read(channel(pvName.getText())).every(hz(10));
+        pv = PVManager.read(vType(pvName.getText())).every(hz(10));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
