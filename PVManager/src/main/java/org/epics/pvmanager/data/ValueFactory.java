@@ -48,6 +48,7 @@ public class ValueFactory {
     /**
      * Creates new immutable VInt.
      */
+    @Deprecated
     public static VInt newVInt(final Integer value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
@@ -56,6 +57,131 @@ public class ValueFactory {
             final Double upperAlarmLimit, final Double upperDisplayLimit,
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
         return new IVInt(value, alarmSeverity, alarmStatus, toTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
+    }
+    
+    /**
+     * Creates new immutable VInt.
+     */
+    public static VInt newVInt(final Integer value, final Alarm alarm, final Time time, final Display display) {
+        return new IVInt(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getLowerWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+    }
+    
+    public static Alarm newAlarm(final AlarmSeverity alarmSeverity, final AlarmStatus alarmStatus) {
+        return new Alarm() {
+
+            @Override
+            public AlarmSeverity getAlarmSeverity() {
+                return alarmSeverity;
+            }
+
+            @Override
+            public AlarmStatus getAlarmStatus() {
+                return alarmStatus;
+            }
+        };
+    }
+    
+    public static Alarm alarmNone() {
+        return newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
+    }
+    
+    public static Time newTime(final Timestamp timestamp, final Integer timeUserTag, final boolean timeValid) {
+        return new Time() {
+
+            @Override
+            public TimeStamp getTimeStamp() {
+                return TimeStamp.timestampOf(timestamp);
+            }
+
+            @Override
+            public Timestamp getTimestamp() {
+                return timestamp;
+            }
+
+            @Override
+            public Integer getTimeUserTag() {
+                return timeUserTag;
+            }
+
+            @Override
+            public boolean isTimeValid() {
+                return timeValid;
+            }
+        };
+    }
+    
+    public static Time newTime(final Timestamp timestamp) {
+        return newTime(timestamp, null, true);
+    }
+    
+    public static Time timeNow() {
+        return newTime(Timestamp.now(), null, true);
+    }
+    
+    public static Display newDisplay(final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
+            final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
+            final Double upperAlarmLimit, final Double upperDisplayLimit,
+            final Double lowerCtrlLimit, final Double upperCtrlLimit) {
+        return new Display() {
+            @Override
+            public Double getLowerCtrlLimit() {
+                return lowerCtrlLimit;
+            }
+
+            @Override
+            public Double getUpperCtrlLimit() {
+                return upperCtrlLimit;
+            }
+
+            @Override
+            public Double getLowerDisplayLimit() {
+                return lowerDisplayLimit;
+            }
+
+            @Override
+            public Double getLowerAlarmLimit() {
+                return lowerAlarmLimit;
+            }
+
+            @Override
+            public Double getLowerWarningLimit() {
+                return lowerWarningLimit;
+            }
+
+            @Override
+            public String getUnits() {
+                return units;
+            }
+
+            @Override
+            public NumberFormat getFormat() {
+                return numberFormat;
+            }
+
+            @Override
+            public Double getUpperWarningLimit() {
+                return upperWarningLimit;
+            }
+
+            @Override
+            public Double getUpperAlarmLimit() {
+                return upperAlarmLimit;
+            }
+
+            @Override
+            public Double getUpperDisplayLimit() {
+                return upperDisplayLimit;
+            }
+
+        };
+    }
+    
+    public static Display displayNone() {
+        return newDisplay(null, null, null, null, null, null, null, null, null, null);
     }
 
     /**

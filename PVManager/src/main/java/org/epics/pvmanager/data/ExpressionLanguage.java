@@ -21,6 +21,8 @@ import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.util.TimeDuration;
 import org.epics.pvmanager.util.TimeStamp;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.time.Timestamp;
 
 /**
  * PVManager expression language support for EPICS types.
@@ -194,7 +196,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VInt> vIntConstants(List<Integer> values) {
         DesiredRateExpressionList<VInt> list = new DesiredRateExpressionListImpl<VInt>();
         for (Integer value : values) {
-            list.and(constant(ValueFactory.newVInt(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null, null, null, null, null, null, null, null, null, null, null)));
+            list.and(constant(newVInt(value, alarmNone(), timeNow(), displayNone())));
         }
         return list;
     }
