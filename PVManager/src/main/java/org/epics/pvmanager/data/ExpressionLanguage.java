@@ -168,6 +168,16 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name that returns any of the value type.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VType, Object> vType(String name) {
+        return channel(name, VType.class, Object.class);
+    }
+
+    /**
      * A list of constant expressions of type VDouble.
      */
     public static DesiredRateExpressionList<VDouble> vDoubleConstants(List<Double> values) {
