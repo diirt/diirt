@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListByte implements ListNumber, CollectionByte {
 
     @Override
+    public IteratorByte iterator() {
+        return new IteratorByte() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public byte nextByte() {
+                return getByte(index++);
+            }
+        };
+    }
+    
+    @Override
     public double getDouble(int index) {
         return (float) getByte(index);
     }

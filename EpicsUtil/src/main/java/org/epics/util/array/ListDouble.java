@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListDouble implements ListNumber, CollectionDouble {
 
     @Override
+    public IteratorDouble iterator() {
+        return new IteratorDouble() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public double nextDouble() {
+                return getDouble(index++);
+            }
+        };
+    }
+
+    @Override
     public float getFloat(int index) {
         return (float) getDouble(index);
     }

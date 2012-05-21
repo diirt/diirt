@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListInt implements ListNumber, CollectionInt {
 
     @Override
+    public IteratorInt iterator() {
+        return new IteratorInt() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public int nextInt() {
+                return getInt(index++);
+            }
+        };
+    }
+
+    @Override
     public double getDouble(int index) {
         return (float) getInt(index);
     }

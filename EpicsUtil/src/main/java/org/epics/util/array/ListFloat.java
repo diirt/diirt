@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListFloat implements ListNumber, CollectionFloat {
 
     @Override
+    public IteratorFloat iterator() {
+        return new IteratorFloat() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public float nextFloat() {
+                return getFloat(index++);
+            }
+        };
+    }
+
+    @Override
     public double getDouble(int index) {
         return (double) getFloat(index);
     }

@@ -29,22 +29,6 @@ public class ListTest {
     public void testListDouble() {
         ListDouble coll = new ListDouble() {
 
-            public IteratorDouble iterator() {
-                return new IteratorDouble() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public double nextDouble() {
-                        n++;
-                        return 1.0;
-                    }
-                };
-            }
-
             public int size() {
                 return 10;
             }
@@ -61,22 +45,6 @@ public class ListTest {
     public void testListFloat() {
         ListFloat coll = new ListFloat() {
 
-            public IteratorFloat iterator() {
-                return new IteratorFloat() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public float nextFloat() {
-                        n++;
-                        return (float) 1.0;
-                    }
-                };
-            }
-
             public int size() {
                 return 10;
             }
@@ -91,22 +59,6 @@ public class ListTest {
     @Test
     public void testListLong() {
         ListLong coll = new ListLong() {
-
-            public IteratorLong iterator() {
-                return new IteratorLong() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public long nextLong() {
-                        n++;
-                        return 1L;
-                    }
-                };
-            }
 
             public int size() {
                 return 10;
@@ -125,22 +77,6 @@ public class ListTest {
     public void testListInt() {
         ListInt coll = new ListInt() {
 
-            public IteratorInt iterator() {
-                return new IteratorInt() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public int nextInt() {
-                        n++;
-                        return 1;
-                    }
-                };
-            }
-
             public int size() {
                 return 10;
             }
@@ -157,22 +93,6 @@ public class ListTest {
     public void testListShort() {
         ListShort coll = new ListShort() {
 
-            public IteratorShort iterator() {
-                return new IteratorShort() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public short nextShort() {
-                        n++;
-                        return (short) 1;
-                    }
-                };
-            }
-
             public int size() {
                 return 10;
             }
@@ -188,22 +108,6 @@ public class ListTest {
     @Test
     public void testListByte() {
         ListByte coll = new ListByte() {
-
-            public IteratorByte iterator() {
-                return new IteratorByte() {
-                    
-                    int n=0;
-
-                    public boolean hasNext() {
-                        return n < 10;
-                    }
-
-                    public byte nextByte() {
-                        n++;
-                        return (byte) 1;
-                    }
-                };
-            }
 
             public int size() {
                 return 10;

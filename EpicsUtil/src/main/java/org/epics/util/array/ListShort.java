@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListShort implements ListNumber, CollectionShort {
 
     @Override
+    public IteratorShort iterator() {
+        return new IteratorShort() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public short nextShort() {
+                return getShort(index++);
+            }
+        };
+    }
+
+    @Override
     public double getDouble(int index) {
         return (float) getShort(index);
     }

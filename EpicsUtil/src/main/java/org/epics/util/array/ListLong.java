@@ -12,6 +12,24 @@ package org.epics.util.array;
 public abstract class ListLong implements ListNumber, CollectionLong {
 
     @Override
+    public IteratorLong iterator() {
+        return new IteratorLong() {
+            
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index < size();
+            }
+
+            @Override
+            public long nextLong() {
+                return getLong(index++);
+            }
+        };
+    }
+
+    @Override
     public double getDouble(int index) {
         return (float) getLong(index);
     }
