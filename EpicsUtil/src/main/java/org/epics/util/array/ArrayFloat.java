@@ -12,14 +12,27 @@ package org.epics.util.array;
 public final class ArrayFloat extends ListFloat {
     
     private final float[] array;
+    private final boolean readOnly;
+
+    /**
+     * A new read-only {@code ArrayFloat} that wraps around the given array.
+     * 
+     * @param array an array
+     */
+
+    public ArrayFloat(float[] array) {
+        this(array, true);
+    }
 
     /**
      * A new {@code ArrayFloat} that wraps around the given array.
      * 
      * @param array an array
+     * @param readOnly if false the wrapper allows writes to the array
      */
-    public ArrayFloat(float[] array) {
+    public ArrayFloat(float[] array, boolean readOnly) {
         this.array = array;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -48,6 +61,15 @@ public final class ArrayFloat extends ListFloat {
     @Override
     public float getFloat(int index) {
         return array[index];
+    }
+
+    @Override
+    public void setFloat(int index, float value) {
+        if (!readOnly) {
+            array[index] = value;
+        } else {
+            throw new UnsupportedOperationException("Read only list.");
+        }
     }
     
 }
