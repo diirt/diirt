@@ -27,6 +27,7 @@ public final class ArrayDouble extends ListDouble {
      * A new {@code ArrayDouble} that wraps around the given array.
      * 
      * @param array an array
+     * @param readOnly if false the wrapper allows writes to the array
      */
     public ArrayDouble(double[] array, boolean readOnly) {
         this.array = array;
