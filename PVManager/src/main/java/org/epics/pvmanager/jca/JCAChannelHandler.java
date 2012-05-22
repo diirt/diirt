@@ -82,7 +82,6 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
 	    // If it's a large array, connect using lower priority
 	    if (largeArray) {
                 channel = context.createChannel(getChannelName(), connectionListener, Channel.PRIORITY_MIN);
-		System.out.println("Connect as large");
 	    } else {
                 channel = context.createChannel(getChannelName(), connectionListener, (short) (Channel.PRIORITY_MIN + 1));
 	    }
