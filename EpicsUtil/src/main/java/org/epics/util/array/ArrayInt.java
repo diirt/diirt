@@ -12,6 +12,7 @@ package org.epics.util.array;
 public final class ArrayInt extends ListInt {
     
     private final int[] array;
+    private final boolean readOnly;
 
     /**
      * A new {@code ArrayInt} that wraps around the given array.
@@ -19,7 +20,18 @@ public final class ArrayInt extends ListInt {
      * @param array an array
      */
     public ArrayInt(int[] array) {
+        this(array, true);
+    }
+
+    /**
+     * A new {@code ArrayInt} that wraps around the given array.
+     * 
+     * @param array an array
+     * @param readOnly if false the wrapper allows writes to the array
+     */
+    public ArrayInt(int[] array, boolean readOnly) {
         this.array = array;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -48,6 +60,15 @@ public final class ArrayInt extends ListInt {
     @Override
     public int getInt(int index) {
         return array[index];
+    }
+
+    @Override
+    public void setInt(int index, int value) {
+        if (!readOnly) {
+            array[index] = value;
+        } else {
+            throw new UnsupportedOperationException("Read only list.");
+        }
     }
     
 }
