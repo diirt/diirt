@@ -12,6 +12,7 @@ package org.epics.util.array;
 public final class ArrayLong extends ListLong {
     
     private final long[] array;
+    private final boolean readOnly;
 
     /**
      * A new {@code ArrayLong} that wraps around the given array.
@@ -19,7 +20,18 @@ public final class ArrayLong extends ListLong {
      * @param array an array
      */
     public ArrayLong(long[] array) {
+        this(array, true);
+    }
+
+    /**
+     * A new {@code ArrayLong} that wraps around the given array.
+     * 
+     * @param array an array
+     * @param readOnly if false the wrapper allows writes to the array
+     */
+    public ArrayLong(long[] array, boolean readOnly) {
         this.array = array;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -48,6 +60,15 @@ public final class ArrayLong extends ListLong {
     @Override
     public long getLong(int index) {
         return array[index];
+    }
+
+    @Override
+    public void setLong(int index, long value) {
+        if (!readOnly) {
+            array[index] = value;
+        } else {
+            throw new UnsupportedOperationException("Read only list.");
+        }
     }
     
 }
