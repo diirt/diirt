@@ -12,6 +12,8 @@ package org.epics.util.array;
 public final class ArrayShort extends ListShort {
     
     private final short[] array;
+    private final boolean readOnly;
+    
     /**
      * A new {@code ArrayShort} that wraps around the given array.
      * 
@@ -19,7 +21,19 @@ public final class ArrayShort extends ListShort {
      */
 
     public ArrayShort(short[] array) {
+        this(array, true);
+    }
+    
+    /**
+     * A new {@code ArrayShort} that wraps around the given array.
+     * 
+     * @param array an array
+     * @param readOnly if false the wrapper allows writes to the array
+     */
+
+    public ArrayShort(short[] array, boolean readOnly) {
         this.array = array;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -48,6 +62,15 @@ public final class ArrayShort extends ListShort {
     @Override
     public short getShort(int index) {
         return array[index];
+    }
+
+    @Override
+    public void setShort(int index, short value) {
+        if (!readOnly) {
+            array[index] = value;
+        } else {
+            throw new UnsupportedOperationException("Read only list.");
+        }
     }
     
 }
