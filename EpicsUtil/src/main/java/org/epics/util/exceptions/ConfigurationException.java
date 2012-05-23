@@ -10,20 +10,20 @@ package org.epics.util.exceptions;
  *
  * @author carcassi
  */
-public class MisconfigurationException extends RuntimeException {
+public class ConfigurationException extends RuntimeException {
 
-    public MisconfigurationException() {
+    public ConfigurationException() {
     }
     
-    public MisconfigurationException(String message) {
+    public ConfigurationException(String message) {
         super(message);
     }
 
-    public MisconfigurationException(Throwable cause) {
+    public ConfigurationException(Throwable cause) {
         super(cause);
     }
 
-    public MisconfigurationException(String message, Throwable cause) {
+    public ConfigurationException(String message, Throwable cause) {
         super(message, cause);
     }
     
