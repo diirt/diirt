@@ -46,6 +46,8 @@ public class JCALargeArrays {
             }
         });
         
-        Thread.sleep(30000);
+        Thread.sleep(5000);
+        pv.close();
+        PVManager.getDefaultDataSource().close();
     }
 }
