@@ -221,6 +221,24 @@ public class JCAVTypeAdapterSetTest {
 
     @Test
     public void DBRFloatToVDouble2() {
+        ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRFloatToVDouble3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRFloatToVDouble4() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
         
@@ -249,7 +267,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble3() {
+    public void DBRFloatToVDouble5() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
         
