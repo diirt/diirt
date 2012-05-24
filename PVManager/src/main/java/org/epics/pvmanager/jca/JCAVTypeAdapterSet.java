@@ -80,6 +80,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
 
+    // DBR_TIME_String -> VString
+    final static JCATypeAdapter DBREnumToVEnum = new JCATypeAdapter(VEnum.class, DBR_TIME_Enum.TYPE, DBR_LABELS_Enum.TYPE, false) {
+
+            @Override
+            public VEnum createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VEnumFromDbr((DBR_TIME_Enum) value, (DBR_LABELS_Enum) metadata, disconnected);
+            }
+        };
+
     private static final Set<JCATypeAdapter> converters;
     
     static {
@@ -91,14 +100,8 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
         newFactories.add(DBRShortToVInt);
         newFactories.add(DBRIntToVInt);
         newFactories.add(DBRStringToVString);
+        newFactories.add(DBREnumToVEnum);
         
-        newFactories.add(new JCATypeAdapter(VEnum.class, DBR_TIME_Enum.TYPE, DBR_LABELS_Enum.TYPE, false) {
-
-            @Override
-            public VEnum createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VEnumFromDbr((DBR_TIME_Enum) value, (DBR_LABELS_Enum) metadata, disconnected);
-            }
-        });
         newFactories.add(new JCATypeAdapter(VDoubleArray.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, true) {
 
             @Override
