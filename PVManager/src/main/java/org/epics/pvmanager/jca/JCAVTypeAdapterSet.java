@@ -71,6 +71,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
 
+    // DBR_TIME_String -> VString
+    final static JCATypeAdapter DBRStringToVString = new JCATypeAdapter(VString.class, DBR_TIME_String.TYPE, null, false) {
+
+            @Override
+            public VString createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VStringFromDbr((DBR_TIME_String) value, disconnected);
+            }
+        };
+
     private static final Set<JCATypeAdapter> converters;
     
     static {
@@ -81,13 +90,8 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
         newFactories.add(DBRByteToVInt);
         newFactories.add(DBRShortToVInt);
         newFactories.add(DBRIntToVInt);
-        newFactories.add(new JCATypeAdapter(VString.class, DBR_TIME_String.TYPE, null, false) {
-
-            @Override
-            public VString createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VStringFromDbr((DBR_TIME_String) value, disconnected);
-            }
-        });
+        newFactories.add(DBRStringToVString);
+        
         newFactories.add(new JCATypeAdapter(VEnum.class, DBR_TIME_Enum.TYPE, DBR_LABELS_Enum.TYPE, false) {
 
             @Override

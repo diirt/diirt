@@ -18,10 +18,7 @@ import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.*;
 import java.util.Date;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VInt;
+import org.epics.pvmanager.data.*;
 import org.epics.util.time.Timestamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -636,6 +633,73 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
     }
 
+    @Test
+    public void DBRStringToVString1() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVString2() {
+        ValueCache<VString> cache = new ValueCache<VString>(VString.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVString3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVString4() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
+        
+        Channel channel = mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(null, event));
+        
+        assertThat(cache.getValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.getValue();
+        assertThat(converted.getValue(), equalTo("32"));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+    }
+
+    @Test
+    public void DBRStringToVString5() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
+        
+        Channel channel = mockChannel(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(null, event));
+        
+        assertThat(cache.getValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.getValue();
+        assertThat(converted.getValue(), equalTo("32"));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+    }
+
     private DBR_CTRL_Double createMetadata() {
         DBR_CTRL_Double meta = new DBR_CTRL_Double();
         meta.setUpperDispLimit(10);
@@ -683,6 +747,14 @@ public class JCAVTypeAdapterSetTest {
 
     private DBR_TIME_Int createDBRTimeInt(int[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Int value = new DBR_TIME_Int(data);
+        value.setSeverity(severity);
+        value.setStatus(status);
+        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        return value;
+    }
+
+    private DBR_TIME_String createDBRTimeString(String[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+        DBR_TIME_String value = new DBR_TIME_String(data);
         value.setSeverity(severity);
         value.setStatus(status);
         value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
