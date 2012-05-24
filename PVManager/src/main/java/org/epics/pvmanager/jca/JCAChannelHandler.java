@@ -256,6 +256,10 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
 
     @Override
     public boolean isConnected() {
+        return isConnected(channel);
+    }
+    
+    static boolean isConnected(Channel channel) {
         return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
     }
 }
