@@ -61,7 +61,7 @@ class DataUtils {
      * of seconds for 20 years, 5 of which leap years. It does _not_ count the
      * number of leap seconds (which should have been 15).
      */
-    private static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
+    static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
 
     /**
      * Converts a JCA timestamp to a pvmanager timestamp.

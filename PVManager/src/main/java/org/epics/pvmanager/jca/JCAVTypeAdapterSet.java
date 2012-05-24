@@ -21,24 +21,26 @@ import org.epics.pvmanager.data.*;
  */
 public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
     
-    private static final Set<JCATypeAdapter> converters;
-    
     @Override
     public Set<JCATypeAdapter> getConverters() {
         return converters;
     }
     
-    static {
-        Set<JCATypeAdapter> newFactories = new HashSet<JCATypeAdapter>();
-        // Add all SCALARs
-        // DBR_TIME_Float -> VDouble
-        newFactories.add(new JCATypeAdapter(VDouble.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, false) {
+    // DBR_TIME_Float -> VDouble
+    static JCATypeAdapter DBRFloatToVDouble = new JCATypeAdapter(VDouble.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
             public VDouble createValue(DBR value, DBR metadata, boolean disconnected) {
                 return new VDoubleFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, disconnected);
             }
-        });
+        };
+    
+    private static final Set<JCATypeAdapter> converters;
+    
+    static {
+        Set<JCATypeAdapter> newFactories = new HashSet<JCATypeAdapter>();
+        // Add all SCALARs
+        newFactories.add(DBRFloatToVDouble);
         // DBR_CTRL_Double -> VDouble
         newFactories.add(new JCATypeAdapter(VDouble.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, false) {
 
