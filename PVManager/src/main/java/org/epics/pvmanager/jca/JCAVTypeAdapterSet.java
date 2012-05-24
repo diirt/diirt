@@ -35,7 +35,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
 
-    // DBR_CTRL_Double -> VDouble
+    // DBR_TIME_Double -> VDouble
     final static JCATypeAdapter DBRDoubleToVDouble = new JCATypeAdapter(VDouble.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
@@ -53,7 +53,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
     
-    // DBR_CTRL_Short -> VInt
+    // DBR_TIME_Short -> VInt
     final static JCATypeAdapter DBRShortToVInt = new JCATypeAdapter(VInt.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
@@ -62,7 +62,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
 
-        // DBR_CTRL_Int -> VInt
+    // DBR_TIME_Int -> VInt
     final static JCATypeAdapter DBRIntToVInt = new JCATypeAdapter(VInt.class, DBR_TIME_Int.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
