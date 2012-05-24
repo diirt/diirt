@@ -208,21 +208,9 @@ public class JCAVTypeAdapterSetTest {
 
     @Test
     public void DBRFloatToVDouble1() {
-        DBR_TIME_Float value = new DBR_TIME_Float(new float[]{3.25f});
-        value.setSeverity(Severity.MINOR_ALARM);
-        value.setStatus(Status.HIGH_ALARM);
         Timestamp timestamp = Timestamp.of(1234567,1234);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
-        
-        DBR_CTRL_Double meta = new DBR_CTRL_Double();
-        meta.setUpperDispLimit(10);
-        meta.setUpperCtrlLimit(8);
-        meta.setUpperAlarmLimit(6);
-        meta.setUpperWarningLimit(4);
-        meta.setLowerWarningLimit(-4);
-        meta.setLowerAlarmLimit(-6);
-        meta.setLowerCtrlLimit(-8);
-        meta.setLowerDispLimit(-10);
+        DBR_TIME_Float value = createDBRTimeFloat(3.25F, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createMetadata();
         
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
@@ -248,5 +236,26 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
+    private DBR_CTRL_Double createMetadata() {
+        DBR_CTRL_Double meta = new DBR_CTRL_Double();
+        meta.setUpperDispLimit(10);
+        meta.setUpperCtrlLimit(8);
+        meta.setUpperAlarmLimit(6);
+        meta.setUpperWarningLimit(4);
+        meta.setLowerWarningLimit(-4);
+        meta.setLowerAlarmLimit(-6);
+        meta.setLowerCtrlLimit(-8);
+        meta.setLowerDispLimit(-10);
+        return meta;
+    }
+
+    private DBR_TIME_Float createDBRTimeFloat(float number, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+        DBR_TIME_Float value = new DBR_TIME_Float(new float[]{number});
+        value.setSeverity(severity);
+        value.setStatus(status);
+        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        return value;
     }
 }
