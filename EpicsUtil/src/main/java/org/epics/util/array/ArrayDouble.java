@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * Wraps a {@code double[]} into a {@link ListDouble}.
  *
@@ -32,6 +34,14 @@ public final class ArrayDouble extends ListDouble {
     public ArrayDouble(double[] array, boolean readOnly) {
         this.array = array;
         this.readOnly = readOnly;
+    }
+
+    @Override
+    public boolean deepEquals(ListNumber other) {
+        if (other instanceof ArrayDouble)
+            return Arrays.equals(array, ((ArrayDouble) other).array);
+        
+        return super.deepEquals(other);
     }
 
     @Override

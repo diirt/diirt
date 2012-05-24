@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * Wraps a {@code float[]} into a {@link ListFloat}.
  *
@@ -33,6 +35,14 @@ public final class ArrayFloat extends ListFloat {
     public ArrayFloat(float[] array, boolean readOnly) {
         this.array = array;
         this.readOnly = readOnly;
+    }
+
+    @Override
+    public boolean deepEquals(ListNumber other) {
+        if (other instanceof ArrayDouble)
+            return Arrays.equals(array, ((ArrayFloat) other).array);
+        
+        return super.deepEquals(other);
     }
 
     @Override

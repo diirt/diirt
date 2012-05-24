@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * Wraps a {@code int[]} into a {@link ListInt}.
  *
@@ -32,6 +34,14 @@ public final class ArrayInt extends ListInt {
     public ArrayInt(int[] array, boolean readOnly) {
         this.array = array;
         this.readOnly = readOnly;
+    }
+
+    @Override
+    public boolean deepEquals(ListNumber other) {
+        if (other instanceof ArrayDouble)
+            return Arrays.equals(array, ((ArrayInt) other).array);
+        
+        return super.deepEquals(other);
     }
 
     @Override

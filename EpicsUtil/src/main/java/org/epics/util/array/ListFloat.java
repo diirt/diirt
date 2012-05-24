@@ -10,6 +10,22 @@ package org.epics.util.array;
  * @author Gabriele Carcassi
  */
 public abstract class ListFloat implements ListNumber, CollectionFloat {
+    
+    @Override
+    public boolean deepEquals(ListNumber other) {
+        if (other == null)
+            return false;
+        
+        if (size() != other.size())
+            return false;
+        
+        for (int i = 0; i < size(); i++) {
+            if (getFloat(i) != other.getFloat(i))
+                return false;
+        }
+        
+        return true;
+    }
 
     @Override
     public IteratorFloat iterator() {

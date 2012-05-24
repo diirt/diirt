@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * Wraps a {@code short[]} into a {@link ListShort}.
  *
@@ -34,6 +36,14 @@ public final class ArrayShort extends ListShort {
     public ArrayShort(short[] array, boolean readOnly) {
         this.array = array;
         this.readOnly = readOnly;
+    }
+
+    @Override
+    public boolean deepEquals(ListNumber other) {
+        if (other instanceof ArrayDouble)
+            return Arrays.equals(array, ((ArrayShort) other).array);
+        
+        return super.deepEquals(other);
     }
 
     @Override
