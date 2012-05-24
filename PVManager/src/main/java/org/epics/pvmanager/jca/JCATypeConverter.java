@@ -1,9 +1,14 @@
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package org.epics.pvmanager.jca;
 
+import org.epics.pvmanager.DataSourceTypeAdapter;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
