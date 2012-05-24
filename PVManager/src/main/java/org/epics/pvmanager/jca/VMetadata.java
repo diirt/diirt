@@ -35,6 +35,8 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
 
     @Override
     public AlarmStatus getAlarmStatus() {
+        if (disconnected)
+            return AlarmStatus.CLIENT;
         return DataUtils.fromEpics(dbrValue.getStatus());
     }
 
