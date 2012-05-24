@@ -16,7 +16,7 @@ import org.epics.pvmanager.data.*;
  *
  * @author carcassi
  */
-public class JCAVTypeSupport implements DataSourceTypeSupport {
+public class JCAVTypeSupport implements DataSourceTypeAdapterSet {
     
     private static final Set<JCATypeConverter> converters;
     

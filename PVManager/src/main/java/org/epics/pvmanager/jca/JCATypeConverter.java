@@ -13,7 +13,7 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-public abstract class JCATypeConverter implements PayloadToTypeConverter<Channel, JCAMessagePayload> {
+public abstract class JCATypeConverter implements DataSourceTypeAdapter<Channel, JCAMessagePayload> {
 
     private final Class<?> typeClass;
     private final DBRType epicsValueType;

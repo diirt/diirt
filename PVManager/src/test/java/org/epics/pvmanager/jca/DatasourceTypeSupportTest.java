@@ -16,13 +16,13 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class PayloadToTypeMatcherTest {
+public class DatasourceTypeSupportTest {
 
-    public PayloadToTypeMatcherTest() {
+    public DatasourceTypeSupportTest() {
     }
 
-    public static PayloadToTypeConverter<Class<?>, Object> createMockConverter(final Class<?> clazz) {
-        return new PayloadToTypeConverter<Class<?>, Object>() {
+    public static DataSourceTypeAdapter<Class<?>, Object> createMockConverter(final Class<?> clazz) {
+        return new DataSourceTypeAdapter<Class<?>, Object>() {
 
             @Override
             public int match(ValueCache<?> cache, Class<?> connection) {
@@ -47,20 +47,20 @@ public class PayloadToTypeMatcherTest {
 
     @Test
     public void find1() {
-        PayloadToTypeMatcher matcher = new PayloadToTypeMatcher();
-        Collection<PayloadToTypeConverter<Class<?>, Object>> converters = new ArrayList<PayloadToTypeConverter<Class<?>, Object>>();
-        PayloadToTypeConverter<Class<?>, Object> converter = createMockConverter(Double.class);
+        DataSourceTypeSupport matcher = new DataSourceTypeSupport();
+        Collection<DataSourceTypeAdapter<Class<?>, Object>> converters = new ArrayList<DataSourceTypeAdapter<Class<?>, Object>>();
+        DataSourceTypeAdapter<Class<?>, Object> converter = createMockConverter(Double.class);
         converters.add(converter);
-        PayloadToTypeConverter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), Double.class);
+        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), Double.class);
         assertThat(matched, sameInstance(converter));
     }
 
     @Test(expected=IllegalStateException.class)
     public void find2() {
-        PayloadToTypeMatcher matcher = new PayloadToTypeMatcher();
-        Collection<PayloadToTypeConverter<Class<?>, Object>> converters = new ArrayList<PayloadToTypeConverter<Class<?>, Object>>();
-        PayloadToTypeConverter<Class<?>, Object> converter = createMockConverter(Double.class);
+        DataSourceTypeSupport matcher = new DataSourceTypeSupport();
+        Collection<DataSourceTypeAdapter<Class<?>, Object>> converters = new ArrayList<DataSourceTypeAdapter<Class<?>, Object>>();
+        DataSourceTypeAdapter<Class<?>, Object> converter = createMockConverter(Double.class);
         converters.add(converter);
-        PayloadToTypeConverter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), String.class);
+        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), String.class);
     }
 }

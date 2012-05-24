@@ -10,7 +10,7 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-public interface PayloadToTypeConverter<ConnectionPayload, MessagePayload> {
+public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
     
     /**
      * Determines whether the converter can take values from the channel
