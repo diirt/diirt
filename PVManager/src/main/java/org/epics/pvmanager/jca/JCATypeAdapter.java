@@ -18,14 +18,14 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-public abstract class JCATypeConverter implements DataSourceTypeAdapter<Channel, JCAMessagePayload> {
+public abstract class JCATypeAdapter implements DataSourceTypeAdapter<Channel, JCAMessagePayload> {
 
     private final Class<?> typeClass;
     private final DBRType epicsValueType;
     private final DBRType epicsMetaType;
     private final boolean array;
 
-    public JCATypeConverter(Class<?> typeClass, DBRType epicsValueType, DBRType epicsMetaType, boolean array) {
+    public JCATypeAdapter(Class<?> typeClass, DBRType epicsValueType, DBRType epicsMetaType, boolean array) {
         this.typeClass = typeClass;
         this.epicsValueType = epicsValueType;
         this.epicsMetaType = epicsMetaType;
