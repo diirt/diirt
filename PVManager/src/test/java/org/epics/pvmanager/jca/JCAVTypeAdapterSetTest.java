@@ -244,7 +244,7 @@ public class JCAVTypeAdapterSetTest {
         
         Channel channel = mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
-        DBR_TIME_Float value = createDBRTimeFloat(3.25F, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createMetadata();
         MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
         
@@ -273,7 +273,7 @@ public class JCAVTypeAdapterSetTest {
         
         Channel channel = mockChannel(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
-        DBR_TIME_Float value = createDBRTimeFloat(3.25F, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_TIME_Float value = createDBRTimeFloat(new float{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createMetadata();
         MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
         
@@ -393,8 +393,8 @@ public class JCAVTypeAdapterSetTest {
         return meta;
     }
 
-    private DBR_TIME_Float createDBRTimeFloat(float number, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
-        DBR_TIME_Float value = new DBR_TIME_Float(new float[]{number});
+    private DBR_TIME_Float createDBRTimeFloat(float[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+        DBR_TIME_Float value = new DBR_TIME_Float(data);
         value.setSeverity(severity);
         value.setStatus(status);
         value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
