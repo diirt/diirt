@@ -9,12 +9,10 @@
 package org.epics.pvmanager.jca;
 
 import org.epics.pvmanager.DataSourceTypeAdapterSet;
-import edu.emory.mathcs.backport.java.util.Collections;
-import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.*;
 
 /**
