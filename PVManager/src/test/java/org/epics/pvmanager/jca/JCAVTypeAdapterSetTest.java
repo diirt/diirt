@@ -466,6 +466,91 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
     }
 
+    @Test
+    public void DBRShortToVInt1() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRShortToVInt2() {
+        ValueCache<VInt> cache = new ValueCache<VInt>(VInt.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRShortToVInt3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRShortToVInt4() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        
+        Channel channel = mockChannel(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VInt.class));
+        VInt converted = (VInt) cache.getValue();
+        assertThat(converted.getValue(), equalTo(32));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
+    @Test
+    public void DBRShortToVInt5() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        
+        Channel channel = mockChannel(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VInt.class));
+        VInt converted = (VInt) cache.getValue();
+        assertThat(converted.getValue(), equalTo(32));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
     private DBR_CTRL_Double createMetadata() {
         DBR_CTRL_Double meta = new DBR_CTRL_Double();
         meta.setUpperDispLimit(10);
@@ -497,6 +582,14 @@ public class JCAVTypeAdapterSetTest {
 
     private DBR_TIME_Byte createDBRTimeByte(byte[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Byte value = new DBR_TIME_Byte(data);
+        value.setSeverity(severity);
+        value.setStatus(status);
+        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        return value;
+    }
+
+    private DBR_TIME_Short createDBRTimeShort(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+        DBR_TIME_Short value = new DBR_TIME_Short(data);
         value.setSeverity(severity);
         value.setStatus(status);
         value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
