@@ -8,8 +8,6 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.ValueCache;
-
 /**
  *
  * @author carcassi
