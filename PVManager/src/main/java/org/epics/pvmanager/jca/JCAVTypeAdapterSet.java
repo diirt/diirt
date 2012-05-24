@@ -44,6 +44,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
             }
         };
     
+    // DBR_TIME_Byte -> VInt
+    static JCATypeAdapter DBRByteToVInt = new JCATypeAdapter(VInt.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, false) {
+
+            @Override
+            public VInt createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VIntFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, disconnected);
+            }
+        };
+    
     private static final Set<JCATypeAdapter> converters;
     
     static {
@@ -51,14 +60,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
         // Add all SCALARs
         newFactories.add(DBRFloatToVDouble);
         newFactories.add(DBRDoubleToVDouble);
-        // DBR_TIME_Byte -> VInt
-        newFactories.add(new JCATypeAdapter(VInt.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, false) {
-
-            @Override
-            public VInt createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VIntFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, disconnected);
-            }
-        });
+        newFactories.add(DBRByteToVInt);
         // DBR_CTRL_Short -> VInt
         newFactories.add(new JCATypeAdapter(VInt.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, false) {
 
