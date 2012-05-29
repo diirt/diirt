@@ -6,6 +6,7 @@ package org.epics.util.array;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import static org.epics.util.array.CollectionTest.testCollection;
 import static org.epics.util.array.ListTest.testList;
 
@@ -34,6 +35,25 @@ public class ListDoubleTest {
         };
         testCollection(coll);
         testList(coll);
+    }
+    
+    @Test
+    public void equals1() {
+        ListDouble coll = new ListDouble() {
+
+            @Override
+            public int size() {
+                return 10;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return index;
+            }
+        };
+        ListDouble other = new ArrayDouble(new double[] {0,1,2,3,4,5,6,7,8,9});
+        assertThat(coll, equalTo(other));
+        assertThat(other, equalTo(coll));
     }
     
 }

@@ -100,4 +100,26 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
         setDouble(index, (double) value);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        if (obj instanceof ListNumber) {
+            ListNumber other = (ListNumber) obj;
+
+            if (size() != other.size())
+                return false;
+
+            for (int i = 0; i < size(); i++) {
+                if (getDouble(i) != other.getDouble(i))
+                    return false;
+            }
+
+            return true;
+        }
+        
+        return false;
+    }
+
 }
