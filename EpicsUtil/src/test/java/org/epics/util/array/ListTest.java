@@ -26,22 +26,6 @@ public class ListTest {
     }
     
     @Test
-    public void testListDouble() {
-        ListDouble coll = new ListDouble() {
-
-            public int size() {
-                return 10;
-            }
-
-            public double getDouble(int index) {
-                return 1.0;
-            }
-        };
-        testCollection(coll);
-        testList(coll);
-    }
-    
-    @Test
     public void testListFloat() {
         ListFloat coll = new ListFloat() {
 
