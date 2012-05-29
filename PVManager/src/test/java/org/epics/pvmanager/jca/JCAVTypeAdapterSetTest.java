@@ -1196,6 +1196,75 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
     }
 
+    @Test
+    public void DBRStringToVStringArray1() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVStringArray2() {
+        ValueCache<VStringArray> cache = new ValueCache<VStringArray>(VStringArray.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVStringArray3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRStringToVStringArray4() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
+        
+        Channel channel = mockChannel(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_String value = createDBRTimeString(new String[]{"Zero", "One", "Two"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VStringArray.class));
+        VStringArray converted = (VStringArray) cache.getValue();
+        assertThat(converted.getArray(), equalTo(new String[]{"Zero", "One", "Two"}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+    }
+
+    @Test
+    public void DBRStringToVStringArray5() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
+        
+        Channel channel = mockChannel(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_String value = createDBRTimeString(new String[]{"Only"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VStringArray.class));
+        VStringArray converted = (VStringArray) cache.getValue();
+        assertThat(converted.getArray(), equalTo(new String[]{"Only"}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+    }
+
     private DBR_CTRL_Double createNumericMetadata() {
         DBR_CTRL_Double meta = new DBR_CTRL_Double();
         meta.setUpperDispLimit(10);

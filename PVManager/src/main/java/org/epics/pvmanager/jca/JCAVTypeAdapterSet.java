@@ -133,6 +133,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
                 return new VIntArrayFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, disconnected);
             }
         };
+    
+    // DBR_TIME_String -> VStringArray
+    final static JCATypeAdapter DBRStringToVStringArray = new JCATypeAdapter(VStringArray.class, DBR_TIME_String.TYPE, null, true) {
+
+            @Override
+            public VStringArray createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VStringArrayFromDbr((DBR_TIME_String) value, disconnected);
+            }
+        };
 
     private static final Set<JCATypeAdapter> converters;
     
@@ -153,13 +162,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
         newFactories.add(DBRByteToVByteArray);
         newFactories.add(DBRShortToVShortArray);
         newFactories.add(DBRIntToVIntArray);
-        newFactories.add(new JCATypeAdapter(VStringArray.class, DBR_TIME_String.TYPE, null, true) {
-
-            @Override
-            public VStringArray createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VStringArrayFromDbr((DBR_TIME_String) value, disconnected);
-            }
-        });
+        newFactories.add(DBRStringToVStringArray);
         converters = Collections.unmodifiableSet(newFactories);
     }
     
