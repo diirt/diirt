@@ -20,6 +20,7 @@ import java.util.AbstractList;
 import java.util.Date;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.*;
+import org.epics.util.array.CollectionNumbers;
 import org.epics.util.time.Timestamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -768,6 +769,91 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
+    }
+
+    @Test
+    public void DBRFloatToVFloatArray1() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRFloatToVFloatArray2() {
+        ValueCache<VFloatArray> cache = new ValueCache<VFloatArray>(VFloatArray.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRFloatToVFloatArray3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRFloatToVFloatArray4() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
+        
+        Channel channel = mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F, 3.75F, 4.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VFloatArray.class));
+        VFloatArray converted = (VFloatArray) cache.getValue();
+        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
+    @Test
+    public void DBRFloatToVFloatArray5() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
+        
+        Channel channel = mockChannel(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VFloatArray.class));
+        VFloatArray converted = (VFloatArray) cache.getValue();
+        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
     }
 
     private DBR_CTRL_Double createNumericMetadata() {
