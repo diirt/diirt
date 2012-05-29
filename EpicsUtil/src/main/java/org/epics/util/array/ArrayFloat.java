@@ -38,14 +38,6 @@ public final class ArrayFloat extends ListFloat {
     }
 
     @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other instanceof ArrayDouble)
-            return Arrays.equals(array, ((ArrayFloat) other).array);
-        
-        return super.deepEquals(other);
-    }
-
-    @Override
     public final IteratorFloat iterator() {
         return new IteratorFloat() {
             

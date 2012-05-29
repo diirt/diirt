@@ -4,30 +4,12 @@
  */
 package org.epics.util.array;
 
-import java.util.Arrays;
-
 /**
  * An ordered collection of {@code int}s.
  *
  * @author Gabriele Carcassi
  */
 public abstract class ListInt implements ListNumber, CollectionInt {
-    
-    @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other == null)
-            return false;
-        
-        if (size() != other.size())
-            return false;
-        
-        for (int i = 0; i < size(); i++) {
-            if (getInt(i) != other.getInt(i))
-                return false;
-        }
-        
-        return true;
-    }
 
     @Override
     public IteratorInt iterator() {

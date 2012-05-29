@@ -39,14 +39,6 @@ public final class ArrayShort extends ListShort {
     }
 
     @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other instanceof ArrayDouble)
-            return Arrays.equals(array, ((ArrayShort) other).array);
-        
-        return super.deepEquals(other);
-    }
-
-    @Override
     public final IteratorShort iterator() {
         return new IteratorShort() {
             

@@ -4,30 +4,12 @@
  */
 package org.epics.util.array;
 
-import java.util.Arrays;
-
 /**
  * An ordered collection of {@code long}s.
  *
  * @author Gabriele Carcassi
  */
 public abstract class ListLong implements ListNumber, CollectionLong {
-    
-    @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other == null)
-            return false;
-        
-        if (size() != other.size())
-            return false;
-        
-        for (int i = 0; i < size(); i++) {
-            if (getLong(i) != other.getLong(i))
-                return false;
-        }
-        
-        return true;
-    }
 
     @Override
     public IteratorLong iterator() {

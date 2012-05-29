@@ -137,12 +137,4 @@ public interface ListNumber extends CollectionNumber {
      */
     void setByte(int index, byte value);
     
-    /**
-     * Checks whether the content of this list is the same of the other.
-     * 
-     * @param otherList another list
-     * @return true if all elements are the same, in the same order
-     */
-    boolean deepEquals(ListNumber otherList);
-    
 }

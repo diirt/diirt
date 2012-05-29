@@ -37,14 +37,6 @@ public final class ArrayLong extends ListLong {
     }
 
     @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other instanceof ArrayDouble)
-            return Arrays.equals(array, ((ArrayLong) other).array);
-        
-        return super.deepEquals(other);
-    }
-
-    @Override
     public final IteratorLong iterator() {
         return new IteratorLong() {
             

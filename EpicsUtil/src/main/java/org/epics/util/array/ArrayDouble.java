@@ -37,14 +37,6 @@ public final class ArrayDouble extends ListDouble {
     }
 
     @Override
-    public boolean deepEquals(ListNumber other) {
-        if (other instanceof ArrayDouble)
-            return Arrays.equals(array, ((ArrayDouble) other).array);
-        
-        return super.deepEquals(other);
-    }
-
-    @Override
     public final IteratorDouble iterator() {
         return new IteratorDouble() {
             
