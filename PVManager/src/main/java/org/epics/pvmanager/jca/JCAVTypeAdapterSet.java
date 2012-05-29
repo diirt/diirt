@@ -97,6 +97,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
                 return new VFloatArrayFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, disconnected);
             }
         };
+    
+    // DBR_TIME_Double -> VDoubleArray
+    final static JCATypeAdapter DBRDoubleToVDoubleArray = new JCATypeAdapter(VDoubleArray.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            public VDoubleArray createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VDoubleArrayFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, disconnected);
+            }
+        };
 
     private static final Set<JCATypeAdapter> converters;
     
@@ -113,13 +122,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
 
         // ADd all ARRAYs
         newFactories.add(DBRFloatToVFloatArray);
-        newFactories.add(new JCATypeAdapter(VDoubleArray.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, true) {
-
-            @Override
-            public VDoubleArray createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VDoubleArrayFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, disconnected);
-            }
-        });
+        newFactories.add(DBRDoubleToVDoubleArray);
         newFactories.add(new JCATypeAdapter(VByteArray.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, true) {
 
             @Override

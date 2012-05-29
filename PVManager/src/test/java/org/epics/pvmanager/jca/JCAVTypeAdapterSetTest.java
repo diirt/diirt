@@ -856,6 +856,91 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
     }
 
+    @Test
+    public void DBRDoubleToVDoubleArray1() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRDoubleToVDoubleArray2() {
+        ValueCache<VDoubleArray> cache = new ValueCache<VDoubleArray>(VDoubleArray.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRDoubleToVDoubleArray3() {
+        ValueCache<String> cache = new ValueCache<String>(String.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Double.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+    }
+
+    @Test
+    public void DBRDoubleToVDoubleArray4() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
+        
+        Channel channel = mockChannel(DBR_Double.TYPE, 1, ConnectionState.CONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25, 3.75, 4.25}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
+        VDoubleArray converted = (VDoubleArray) cache.getValue();
+        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
+    @Test
+    public void DBRDoubleToVDoubleArray5() {
+        ValueCache<Object> cache = new ValueCache<Object>(Object.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
+        
+        Channel channel = mockChannel(DBR_Double.TYPE, 1, ConnectionState.DISCONNECTED);
+        Timestamp timestamp = Timestamp.of(1234567,1234);
+        DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        DBR_CTRL_Double meta = createNumericMetadata();
+        MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
+        
+        adapter.updateCache(cache, channel, new JCAMessagePayload(meta, event));
+        
+        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
+        VDoubleArray converted = (VDoubleArray) cache.getValue();
+        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25}));
+        assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
+        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
+        assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
+        assertThat(converted.getUpperWarningLimit(), equalTo(4.0));
+        assertThat(converted.getLowerWarningLimit(), equalTo(-4.0));
+        assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
+        assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
+        assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+    }
+
     private DBR_CTRL_Double createNumericMetadata() {
         DBR_CTRL_Double meta = new DBR_CTRL_Double();
         meta.setUpperDispLimit(10);
