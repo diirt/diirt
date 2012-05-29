@@ -126,8 +126,17 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
     public int hashCode() {
         int result = 1;
         for (int i = 0; i < size(); i++) {
-            long bits = Double.doubleToLongBits(getDouble(i));
-            result = 31 * result + (int)(bits ^ (bits >>> 32));
+            // The preferred solution would be to use
+            // long bits = Double.doubleToLongBits(getDouble(i));
+            // result = 31 * result + (int)(bits ^ (bits >>> 32));
+            // which is the same logic than Arrays.hashCode(double[])
+            // The problem: it's not going to be the same value
+            // for equals arrays of integer types.
+            
+            // We use the long representation instead
+            long element = getLong(i);
+            int elementHash = (int)(element ^ (element >>> 32));
+            result = 31 * result + elementHash;
         }
         return result;
     }

@@ -91,4 +91,15 @@ public class ListDoubleTest {
         assertThat(coll.hashCode(), equalTo(other.hashCode()));
     }
     
+    @Test
+    public void allEqualHashcode() {
+        ListNumber doubles = new ArrayDouble(new double[] {0,1,2,3,4,5,6,7,8,9});
+        ListNumber floats = new ArrayFloat(new float[] {0,1,2,3,4,5,6,7,8,9});
+        ListNumber longs = new ArrayLong(new long[] {0,1,2,3,4,5,6,7,8,9});
+        ListNumber ints = new ArrayInt(new int[] {0,1,2,3,4,5,6,7,8,9});
+        assertThat(ints.hashCode(), equalTo(doubles.hashCode()));
+        assertThat(ints.hashCode(), equalTo(floats.hashCode()));
+        assertThat(ints.hashCode(), equalTo(longs.hashCode()));
+    }
+    
 }

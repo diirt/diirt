@@ -133,7 +133,17 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     public int hashCode() {
         int result = 1;
         for (int i = 0; i < size(); i++) {
-            result = 31 * result + Float.floatToIntBits(getFloat(i));
+            // The preferred solution would be to use
+            // result = 31 * result + Float.floatToIntBits(getFloat(i));
+            // which is the same logic than Arrays.hashCode(float[])
+            // The problem: it's not going to be the same value
+            // for equals arrays of integer types.
+            
+            // We use the long representation instead
+            long element = getLong(i);
+            int elementHash = (int)(element ^ (element >>> 32));
+            result = 31 * result + elementHash;
+            
         }
         return result;
     }
