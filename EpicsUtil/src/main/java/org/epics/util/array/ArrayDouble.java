@@ -80,5 +80,17 @@ public final class ArrayDouble extends ListDouble {
             throw new UnsupportedOperationException("Read only list.");
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        if (obj instanceof ArrayDouble) {
+            return Arrays.equals(array, ((ArrayDouble) obj).array);
+        }
+        
+        return super.equals(obj);
+    }
     
 }
