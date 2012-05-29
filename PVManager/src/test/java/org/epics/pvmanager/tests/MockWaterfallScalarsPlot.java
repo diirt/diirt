@@ -45,13 +45,6 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
 
     /** Creates new form MockWaterfallPlot */
     public MockWaterfallScalarsPlot() {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("epics", new JCADataSource());
-        dataSource.putDataSource("loc", new LocalDataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
         initComponents();
         WaterfallPlotParameters defaults = WaterfallPlotParameters.defaults();
         adaptiveRangeField.setSelected(defaults.isAdaptiveRange());
@@ -270,6 +263,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MockWaterfallScalarsPlot().setVisible(true);
