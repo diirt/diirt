@@ -115,6 +115,15 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
                 return new VByteArrayFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, disconnected);
             }
         };
+    
+    // DBR_TIME_Short -> VShortArray
+    final static JCATypeAdapter DBRShortToVShortArray = new JCATypeAdapter(VShortArray.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, true) {
+
+            @Override
+            public VShortArray createValue(DBR value, DBR metadata, boolean disconnected) {
+                return new VShortArrayFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, disconnected);
+            }
+        };
 
     private static final Set<JCATypeAdapter> converters;
     
@@ -133,13 +142,7 @@ public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
         newFactories.add(DBRFloatToVFloatArray);
         newFactories.add(DBRDoubleToVDoubleArray);
         newFactories.add(DBRByteToVByteArray);
-        newFactories.add(new JCATypeAdapter(VShortArray.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, true) {
-
-            @Override
-            public VShortArray createValue(DBR value, DBR metadata, boolean disconnected) {
-                return new VShortArrayFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, disconnected);
-            }
-        });
+        newFactories.add(DBRShortToVShortArray);
         newFactories.add(new JCATypeAdapter(VIntArray.class, DBR_TIME_Int.TYPE, DBR_CTRL_Double.TYPE, true) {
 
             @Override
