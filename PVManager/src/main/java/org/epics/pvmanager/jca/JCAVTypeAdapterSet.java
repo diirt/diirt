@@ -22,7 +22,7 @@ import org.epics.pvmanager.data.*;
 public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
     
     @Override
-    public Set<JCATypeAdapter> getConverters() {
+    public Set<JCATypeAdapter> getAdapters() {
         return converters;
     }
     

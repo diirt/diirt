@@ -15,5 +15,5 @@ import java.util.Collection;
  * @author carcassi
  */
 public interface DataSourceTypeAdapterSet {
-    Collection<? extends DataSourceTypeAdapter<?, ?>> getConverters();
+    Collection<? extends DataSourceTypeAdapter<?, ?>> getAdapters();
 }
