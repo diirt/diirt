@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * An ordered collection of {@code float}s.
  *
@@ -100,4 +102,35 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
         setFloat(index, (float) value);
     }
     
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        if (obj instanceof ListNumber) {
+            ListNumber other = (ListNumber) obj;
+
+            if (size() != other.size())
+                return false;
+
+            for (int i = 0; i < size(); i++) {
+                if (getFloat(i) != other.getFloat(i))
+                    return false;
+            }
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < size(); i++) {
+            result = 31 * result + Float.floatToIntBits(getFloat(i));
+        }
+        return result;
+    }
 }
