@@ -58,6 +58,22 @@ public class ListDoubleTest {
     }
     
     @Test
+    public void equals2() {
+        ListNumber coll = new ArrayDouble(new double[] {0,1,2,3,4,5,6,7,8,9});
+        ListNumber other = new ArrayFloat(new float[] {0,1,2,3,4,5,6,7,8,9});
+        assertThat(other, equalTo(coll));
+        assertThat(coll, equalTo(other));
+    }
+    
+    @Test
+    public void equals3() {
+        ListNumber coll = new ArrayDouble(new double[] {Double.MIN_VALUE});
+        ListNumber other = new ArrayFloat(new float[] {(float) Double.MIN_VALUE});
+        assertThat(coll, not(equalTo(other)));
+        assertThat(other, not(equalTo(coll)));
+    }
+    
+    @Test
     public void hashcode1() {
         ListDouble coll = new ListDouble() {
 

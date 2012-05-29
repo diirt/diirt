@@ -108,6 +108,11 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
         if (obj == this)
             return true;
         
+        // Should compare to the higher precision if needed
+        if (obj instanceof ListDouble) {
+            return obj.equals(this);
+        }
+        
         if (obj instanceof ListNumber) {
             ListNumber other = (ListNumber) obj;
 
