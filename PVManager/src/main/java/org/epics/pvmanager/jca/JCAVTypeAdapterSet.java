@@ -8,7 +8,6 @@
  */
 package org.epics.pvmanager.jca;
 
-import org.epics.pvmanager.DataSourceTypeAdapterSet;
 import gov.aps.jca.dbr.*;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,7 +18,7 @@ import org.epics.pvmanager.data.*;
  *
  * @author carcassi
  */
-public class JCAVTypeAdapterSet implements DataSourceTypeAdapterSet {
+public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
     
     @Override
     public Set<JCATypeAdapter> getAdapters() {
