@@ -83,8 +83,6 @@ public final class ArrayDouble extends ListDouble {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
         
         if (obj instanceof ArrayDouble) {
             return Arrays.equals(array, ((ArrayDouble) obj).array);

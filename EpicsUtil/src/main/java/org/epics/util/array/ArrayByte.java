@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * Wraps a {@code byte[]} into a {@link ListByte}.
  *
@@ -69,6 +71,16 @@ public final class ArrayByte extends ListByte {
         } else {
             throw new UnsupportedOperationException("Read only list.");
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj instanceof ArrayByte) {
+            return Arrays.equals(array, ((ArrayByte) obj).array);
+        }
+        
+        return super.equals(obj);
     }
     
 }

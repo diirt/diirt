@@ -80,5 +80,14 @@ public final class ArrayLong extends ListLong {
             throw new UnsupportedOperationException("Read only list.");
         }
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj instanceof ArrayLong) {
+            return Arrays.equals(array, ((ArrayLong) obj).array);
+        }
+        
+        return super.equals(obj);
+    }    
 }

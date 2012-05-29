@@ -81,5 +81,14 @@ public final class ArrayFloat extends ListFloat {
             throw new UnsupportedOperationException("Read only list.");
         }
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj instanceof ArrayFloat) {
+            return Arrays.equals(array, ((ArrayFloat) obj).array);
+        }
+        
+        return super.equals(obj);
+    }    
 }

@@ -80,5 +80,14 @@ public final class ArrayInt extends ListInt {
             throw new UnsupportedOperationException("Read only list.");
         }
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj instanceof ArrayInt) {
+            return Arrays.equals(array, ((ArrayInt) obj).array);
+        }
+        
+        return super.equals(obj);
+    }    
 }

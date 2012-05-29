@@ -82,5 +82,14 @@ public final class ArrayShort extends ListShort {
             throw new UnsupportedOperationException("Read only list.");
         }
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        if (obj instanceof ArrayShort) {
+            return Arrays.equals(array, ((ArrayShort) obj).array);
+        }
+        
+        return super.equals(obj);
+    }    
 }
