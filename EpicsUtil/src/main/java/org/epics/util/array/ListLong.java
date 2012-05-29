@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
+
 /**
  * An ordered collection of {@code long}s.
  *
@@ -98,6 +100,44 @@ public abstract class ListLong implements ListNumber, CollectionLong {
     @Override
     public void setByte(int index, byte value) {
         setLong(index, (long) value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        // Should compare to the higher precision if needed
+        if (obj instanceof ListDouble || obj instanceof ListFloat) {
+            return obj.equals(this);
+        }
+        
+        if (obj instanceof ListNumber) {
+            ListNumber other = (ListNumber) obj;
+
+            if (size() != other.size())
+                return false;
+
+            for (int i = 0; i < size(); i++) {
+                if (getLong(i) != other.getLong(i))
+                    return false;
+            }
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < size(); i++) {
+            long element = getLong(i);
+            int elementHash = (int)(element ^ (element >>> 32));
+            result = 31 * result + elementHash;
+        }
+        return result;
     }
 
 }

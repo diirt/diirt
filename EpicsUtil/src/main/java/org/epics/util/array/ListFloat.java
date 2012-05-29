@@ -101,7 +101,6 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     public void setByte(int index, byte value) {
         setFloat(index, (float) value);
     }
-    
 
     @Override
     public boolean equals(Object obj) {
