@@ -122,4 +122,14 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < size(); i++) {
+            long bits = Double.doubleToLongBits(getDouble(i));
+            result = 31 * result + (int)(bits ^ (bits >>> 32));
+        }
+        return result;
+    }
+
 }

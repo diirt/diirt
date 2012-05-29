@@ -4,6 +4,7 @@
  */
 package org.epics.util.array;
 
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -54,6 +55,24 @@ public class ListDoubleTest {
         ListDouble other = new ArrayDouble(new double[] {0,1,2,3,4,5,6,7,8,9});
         assertThat(coll, equalTo(other));
         assertThat(other, equalTo(coll));
+    }
+    
+    @Test
+    public void hashcode1() {
+        ListDouble coll = new ListDouble() {
+
+            @Override
+            public int size() {
+                return 10;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return index;
+            }
+        };
+        ListDouble other = new ArrayDouble(new double[] {0,1,2,3,4,5,6,7,8,9});
+        assertThat(coll.hashCode(), equalTo(other.hashCode()));
     }
     
 }
