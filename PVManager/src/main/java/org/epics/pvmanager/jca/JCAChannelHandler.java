@@ -43,15 +43,17 @@ public class JCAChannelHandler extends ChannelHandler<MonitorEvent> {
     private static final int LARGE_ARRAY = 100000;
     private final Context context;
     private final int monitorMask;
+    private final JCATypeSupport typeSupport;
     private volatile Channel channel;
     private volatile ExceptionHandler connectionExceptionHandler;
     private volatile boolean needsMonitor;
     private volatile boolean largeArray = false;
 
-    public JCAChannelHandler(String channelName, Context context, int monitorMask) {
+    public JCAChannelHandler(String channelName, Context context, int monitorMask, JCATypeSupport typeSupport) {
         super(channelName);
         this.context = context;
         this.monitorMask = monitorMask;
+        this.typeSupport = typeSupport;
     }
 
     @Override
