@@ -40,6 +40,7 @@ public class JCADataSource extends DataSource {
 
     private volatile Context ctxt = null;
     private final int monitorMask;
+    private final JCATypeSupport typeSupport;
 
     static final JCADataSource INSTANCE = new JCADataSource();
 
@@ -58,9 +59,7 @@ public class JCADataSource extends DataSource {
      * @param monitorMask Monitor.VALUE, ...
      */
     public JCADataSource(Context jcaContext, int monitorMask) {
-        super(true);
-        this.ctxt = jcaContext;
-        this.monitorMask = monitorMask;
+        this(jcaContext, monitorMask, new JCATypeSupport(new JCAVTypeAdapterSet()));
     }
 
     /**
@@ -70,15 +69,24 @@ public class JCADataSource extends DataSource {
      * @param monitorMask Monitor.VALUE, ...
      */
     public JCADataSource(String className, int monitorMask) {
-        super(true);
+        this(createContext(className), monitorMask);
+    }
+    
+    private static Context createContext(String className) {
         try {
             JCALibrary jca = JCALibrary.getInstance();
-            this.ctxt = jca.createContext(className);
+            return jca.createContext(className);
         } catch (CAException ex) {
             log.log(Level.SEVERE, "JCA context creation failed", ex);
             throw new RuntimeException("JCA context creation failed", ex);
         }
+    }
+    
+    public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport) {
+        super(true);
+        this.ctxt = jcaContext;
         this.monitorMask = monitorMask;
+        this.typeSupport = typeSupport;
     }
 
     @Override
