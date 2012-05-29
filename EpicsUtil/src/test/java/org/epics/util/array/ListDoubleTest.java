@@ -4,7 +4,6 @@
  */
 package org.epics.util.array;
 
-import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -67,10 +66,22 @@ public class ListDoubleTest {
     
     @Test
     public void equals3() {
-        ListNumber coll = new ArrayDouble(new double[] {Double.MIN_VALUE});
-        ListNumber other = new ArrayFloat(new float[] {(float) Double.MIN_VALUE});
-        assertThat(coll, not(equalTo(other)));
-        assertThat(other, not(equalTo(coll)));
+        ListNumber doubles = new ArrayDouble(new double[] {Double.MIN_VALUE});
+        ListNumber floats = new ArrayFloat(new float[] {(float) Double.MIN_VALUE});
+        ListNumber longs = new ArrayLong(new long[] {(long) Double.MIN_VALUE});
+        ListNumber ints = new ArrayInt(new int[] {(int) Double.MIN_VALUE});
+        ListNumber shorts = new ArrayShort(new short[] {(short) Double.MIN_VALUE});
+        ListNumber bytes = new ArrayByte(new byte[] {(byte) Double.MIN_VALUE});
+        assertThat(doubles, not(equalTo(floats)));
+        assertThat(floats, not(equalTo(doubles)));
+        assertThat(doubles, not(equalTo(longs)));
+        assertThat(longs, not(equalTo(doubles)));
+        assertThat(doubles, not(equalTo(ints)));
+        assertThat(ints, not(equalTo(doubles)));
+        assertThat(doubles, not(equalTo(shorts)));
+        assertThat(shorts, not(equalTo(doubles)));
+        assertThat(doubles, not(equalTo(bytes)));
+        assertThat(bytes, not(equalTo(doubles)));
     }
     
     @Test
