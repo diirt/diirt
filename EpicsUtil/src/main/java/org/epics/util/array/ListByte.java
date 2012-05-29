@@ -99,5 +99,43 @@ public abstract class ListByte implements ListNumber, CollectionByte {
     public void setByte(int index, byte value) {
         throw new UnsupportedOperationException("Read only list.");
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        // Should compare to the higher precision if needed
+        if (obj instanceof ListDouble || obj instanceof ListFloat ||
+                obj instanceof ListLong || obj instanceof ListInt ||
+                obj instanceof ListShort) {
+            return obj.equals(this);
+        }
+        
+        if (obj instanceof ListNumber) {
+            ListNumber other = (ListNumber) obj;
+
+            if (size() != other.size())
+                return false;
+
+            for (int i = 0; i < size(); i++) {
+                if (getByte(i) != other.getByte(i))
+                    return false;
+            }
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < size(); i++) {
+            result = 31 * result + getShort(i);
+        }
+        return result;
+    }
     
 }
