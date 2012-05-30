@@ -27,7 +27,10 @@ public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
     
     /**
      * The parameters required to open a monitor for the channel. The
-     * type of the parameters will be datasource specific.
+     * type of the parameters will be datasource specific
+     * <p>
+     * For channels multiplexed on a single subscription, this method
+     * is never used.
      * 
      * @param cache the cache where data will need to be written
      * @param connPayload the connection information
