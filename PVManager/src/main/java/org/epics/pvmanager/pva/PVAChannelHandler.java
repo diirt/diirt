@@ -22,7 +22,7 @@ import org.epics.pvmanager.*;
  *
  * @author carcassi
  */
-public class PVAChannelHandler extends MultiplexedChannelHandler<MonitorEvent> {
+public class PVAChannelHandler extends MultiplexedChannelHandler<Object, MonitorEvent> {
 
     private final Context pvaContext;
     private final short priority;
@@ -266,5 +266,10 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<MonitorEvent> {
     @Override
     public boolean isConnected() {
         return channel != null && channel.isConnected();
+    }
+
+    @Override
+    protected DataSourceTypeAdapter<Object, MonitorEvent> findTypeAdapter(ValueCache<?> cache, Object connection) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

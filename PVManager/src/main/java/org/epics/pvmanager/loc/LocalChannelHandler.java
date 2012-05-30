@@ -15,7 +15,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class LocalChannelHandler extends MultiplexedChannelHandler<Object> {
+class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     
     private final Object initialValue;
 
@@ -31,8 +31,9 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object> {
 
     @Override
     public void connect(ExceptionHandler handler) {
+        processConnection(new Object());
         if (initialValue != null)
-            processValue(initialValue);
+            processMessage(initialValue);
     }
 
     @Override
@@ -82,7 +83,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object> {
     public void write(Object newValue, ChannelWriteCallback callback) {
         try {
             newValue = wrapValue(newValue);
-            processValue(newValue);
+            processMessage(newValue);
             callback.channelWritten(null);
         } catch (Exception ex) {
             callback.channelWritten(ex);
@@ -101,6 +102,31 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object> {
     @Override
     public boolean isConnected() {
         return getUsageCounter() != 0;
+    }
+
+    @Override
+    protected DataSourceTypeAdapter<Object, Object> findTypeAdapter(ValueCache<?> cache, Object connection) {
+        return new DataSourceTypeAdapter<Object, Object>() {
+
+            @Override
+            public int match(ValueCache<?> cache, Object connection) {
+                return 1;
+            }
+
+            @Override
+            public Object getSubscriptionParameter(ValueCache<?> cache, Object connection) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public boolean updateCache(ValueCache cache, Object connection, Object message) {
+                Object oldValue = cache.getValue();
+                cache.setValue(message);
+                if ((message == oldValue) || (message != null && message.equals(oldValue)))
+                    return false;
+                return true;
+            }
+        };
     }
     
 }

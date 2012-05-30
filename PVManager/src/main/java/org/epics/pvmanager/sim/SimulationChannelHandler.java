@@ -10,10 +10,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.*;
 import org.epics.pvmanager.util.TimeInterval;
 import org.epics.pvmanager.util.TimeStamp;
 
@@ -21,7 +18,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class SimulationChannelHandler<T> extends MultiplexedChannelHandler<T> {
+class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T>, T> {
 
     private final Simulation<T> simulation;
     private final ScheduledExecutorService exec;
@@ -37,7 +34,7 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<T> {
                 List<T> newValues = simulation.createValues(TimeInterval.between(simulation.lastTime, TimeStamp.now()));
 
                 for (T newValue : newValues) {
-                    processValue(newValue);
+                    processMessage(newValue);
                 }
             } catch (Exception ex) {
                 log.log(Level.WARNING, "Data simulation problem", ex);
@@ -55,6 +52,7 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<T> {
 
     @Override
     public void connect(ExceptionHandler handler) {
+        processConnection(simulation);
         simulation.lastTime = TimeStamp.now();
         taskFuture = exec.scheduleWithFixedDelay(task, 0, 10, TimeUnit.MILLISECONDS);
     }
@@ -80,5 +78,28 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<T> {
     @Override
     public boolean isConnected() {
         return taskFuture != null;
+    }
+
+    @Override
+    protected DataSourceTypeAdapter<Simulation<T>, T> findTypeAdapter(ValueCache<?> cache, Simulation<T> connection) {
+        return new DataSourceTypeAdapter<Simulation<T>, T>() {
+
+            @Override
+            public int match(ValueCache<?> cache, Simulation<T> connection) {
+                // TODO whould match the type
+                return 1;
+            }
+
+            @Override
+            public Object getSubscriptionParameter(ValueCache<?> cache, Simulation<T> connection) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public boolean updateCache(ValueCache cache, Simulation<T> connection, T message) {
+                cache.setValue(message);
+                return true;
+            }
+        };
     }
 }

@@ -15,12 +15,13 @@ import java.util.logging.Logger;
  * @param MessagePayload type of the payload for each message
  * @author carcassi
  */
-public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelHandler {
+public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayload> extends ChannelHandler {
 
     private static final Logger log = Logger.getLogger(MultiplexedChannelHandler.class.getName());
     private int readUsageCounter = 0;
     private int writeUsageCounter = 0;
-    private volatile MessagePayload lastMessage;
+    private MessagePayload lastMessage;
+    private ConnectionPayload connectionPayload;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
 
     private class MonitorHandler {
@@ -28,6 +29,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
         private final Collector<?> collector;
         private final ValueCache<?> cache;
         private final ExceptionHandler exceptionHandler;
+        private DataSourceTypeAdapter<ConnectionPayload, MessagePayload> typeAdapter;
 
         public MonitorHandler(Collector<?> collector, ValueCache<?> cache, ExceptionHandler exceptionHandler) {
             this.collector = collector;
@@ -36,10 +38,13 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
         }
 
         public final void processValue(MessagePayload payload) {
+            if (typeAdapter == null)
+                return;
+            
             // Lock the collector and prepare the new value.
             synchronized (collector) {
                 try {
-                    if (updateCache(payload, cache)) {
+                    if (typeAdapter.updateCache(cache, getConnectionPayload(), payload)) {
                         collector.collect();
                     }
                 } catch (RuntimeException e) {
@@ -47,7 +52,34 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
                 }
             }
         }
+        
+        public final void findTypeAdapter() {
+            if (getConnectionPayload() == null) {
+                typeAdapter = null;
+            } else {
+                try {
+                    typeAdapter = MultiplexedChannelHandler.this.findTypeAdapter(cache, getConnectionPayload());
+                } catch(RuntimeException ex) {
+                    exceptionHandler.handleException(ex);
+                }
+            }
+        }
+        
     }
+
+    protected final ConnectionPayload getConnectionPayload() {
+        return connectionPayload;
+    }
+
+    protected final void processConnection(ConnectionPayload connectionPayload) {
+        this.connectionPayload = connectionPayload;
+        
+        for (MonitorHandler monitor : monitors.values()) {
+            monitor.findTypeAdapter();
+        }
+    }
+    
+    protected abstract DataSourceTypeAdapter<ConnectionPayload, MessagePayload> findTypeAdapter(ValueCache<?> cache, ConnectionPayload connection);
     
     /**
      * Creates a new channel handler.
@@ -64,6 +96,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @return the number of open read/writes
      */
+    @Override
     public synchronized int getUsageCounter() {
         return readUsageCounter + writeUsageCounter;
     }
@@ -73,6 +106,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @return the number of open reads
      */
+    @Override
     public synchronized int getReadUsageCounter() {
         return readUsageCounter;
     }
@@ -82,6 +116,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @return the number of open writes
      */
+    @Override
     public synchronized int getWriteUsageCounter() {
         return writeUsageCounter;
     }
@@ -94,10 +129,12 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * @param cache cache to contain the new value
      * @param handler to be notified in case of errors
      */
+    @Override
     protected synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, final ExceptionHandler handler) {
         readUsageCounter++;
         MonitorHandler monitor = new MonitorHandler(collector, cache, handler);
         monitors.put(collector, monitor);
+        monitor.findTypeAdapter();
         guardedConnect(handler);
         if (readUsageCounter > 1 && lastMessage != null) {
             monitor.processValue(lastMessage);
@@ -109,6 +146,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @param collector the collector that does not need to be notified anymore
      */
+    @Override
     protected synchronized void removeMonitor(Collector<?> collector) {
         monitors.remove(collector);
         readUsageCounter--;
@@ -127,6 +165,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @param handler to be notified in case of errors
      */
+    @Override
     protected synchronized void addWriter(ExceptionHandler handler) {
         writeUsageCounter++;
         guardedConnect(handler);
@@ -137,6 +176,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @param exceptionHandler to be notified in case of errors
      */
+    @Override
     protected synchronized void removeWrite(ExceptionHandler exceptionHandler) {
         writeUsageCounter--;
         guardedDisconnect(exceptionHandler);
@@ -150,7 +190,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @param payload the payload of for this type of channel
      */
-    protected final void processValue(MessagePayload payload) {
+    protected final void processMessage(MessagePayload payload) {
         lastMessage = payload;
         for (MonitorHandler monitor : monitors.values()) {
             monitor.processValue(payload);
@@ -192,6 +232,7 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * @param newValue new value to be written
      * @param callback called when done or on error
      */
+    @Override
     protected abstract void write(Object newValue, ChannelWriteCallback callback);
 
     /**
@@ -209,5 +250,6 @@ public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelH
      * 
      * @return true if underlying channel is connected
      */
+    @Override
     public abstract boolean isConnected();
 }

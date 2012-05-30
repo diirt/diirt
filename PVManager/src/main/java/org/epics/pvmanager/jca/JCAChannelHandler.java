@@ -32,7 +32,7 @@ import org.epics.pvmanager.*;
  *
  * @author carcassi
  */
-public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePayload> {
+public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePayload> {
 
     private static final int LARGE_ARRAY = 100000;
     private final JCADataSource jcaDataSource;
@@ -54,7 +54,8 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePaylo
         super.addMonitor(collector, cache, handler);
     }
  
-    private JCATypeAdapter matchAdapterFor(ValueCache<?> cache, Channel channel) {
+    @Override
+    protected JCATypeAdapter findTypeAdapter(ValueCache<?> cache, Channel channel) {
         return jcaDataSource.getTypeSupport().find(cache, channel);
     }
 
@@ -77,6 +78,8 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePaylo
 
     // protected (not private) to allow different type factory
     protected void setup(Channel channel) throws CAException {
+        processConnection(channel);
+        
         DBRType metaType = metadataFor(channel);
 
         // If metadata is needed, get it
@@ -103,8 +106,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePaylo
             channel.addMonitor(valueTypeFor(channel), channel.getElementCount(), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
-        
-        typeAdapter = matchAdapterFor(firstMonitorCache, channel);
 
         // Flush the entire context (it's the best we can do)
         channel.getContext().flushIO();
@@ -163,7 +164,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePaylo
     };
     
     private synchronized void dispatchValue() {
-        processValue(new JCAMessagePayload(metadata, event));
+        processMessage(new JCAMessagePayload(metadata, event));
     }
 
     @Override
