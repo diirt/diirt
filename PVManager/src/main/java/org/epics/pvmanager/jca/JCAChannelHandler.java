@@ -8,7 +8,7 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
-import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
 import gov.aps.jca.event.GetEvent;
@@ -83,15 +83,14 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
 
     // protected (not private) to allow different type factory
     protected void setup(Channel channel) throws CAException {
-        typeAdapter = matchAdapterFor(firstMonitorCache, channel);
-        JCASubscriptionParameters subParameters = typeAdapter.getSubscriptionParameter(firstMonitorCache, channel);
+        DBRType metaType = metadataFor(channel);
 
         // If metadata is needed, get it
-        if (subParameters.getEpicsMetaType() != null) {
+        if (metaType != null) {
             // Need to use callback for the listener instead of doing a synchronous get
             // (which seemed to perform better) because JCA (JNI implementation)
             // would return an empty list of labels for the Enum metadata
-            channel.get(subParameters.getEpicsMetaType(), 1, new GetListener() {
+            channel.get(metaType, 1, new GetListener() {
 
                 @Override
                 public void getCompleted(GetEvent ev) {
@@ -107,9 +106,11 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
         // Start the monitor only if the channel was (re)created, and
         // not because a disconnection/reconnection
         if (needsMonitor) {
-            channel.addMonitor(subParameters.getEpicsValueType(), subParameters.getCount(), jcaDataSource.getMonitorMask(), monitorListener);
+            channel.addMonitor(valueTypeFor(channel), channel.getElementCount(), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
+        
+        typeAdapter = matchAdapterFor(firstMonitorCache, channel);
 
         // Flush the entire context (it's the best we can do)
         channel.getContext().flushIO();
@@ -239,5 +240,47 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
     
     static boolean isConnected(Channel channel) {
         return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
+    }
+
+    static DBRType metadataFor(Channel channel) {
+        DBRType type = channel.getFieldType();
+        
+        if (type.isBYTE() || type.isSHORT() || type.isINT() || type.isFLOAT() || type.isDOUBLE())
+            return DBR_CTRL_Double.TYPE;
+        
+        if (type.isENUM())
+            return DBR_LABELS_Enum.TYPE;
+        
+        return null;
+    }
+
+    static DBRType valueTypeFor(Channel channel) {
+        DBRType type = channel.getFieldType();
+        
+        // For scalar numbers, only use Double or Int
+        if (channel.getElementCount() == 1) {
+            if (type.isBYTE() || type.isSHORT() || type.isINT())
+                return DBR_TIME_Int.TYPE;
+            if (type.isFLOAT() || type.isDOUBLE())
+                return DBR_TIME_Double.TYPE;
+        }
+        
+        if (type.isBYTE()) {
+            return DBR_TIME_Byte.TYPE;
+        } else if (type.isSHORT()) {
+            return DBR_TIME_Short.TYPE;
+        } else if (type.isINT()) {
+            return DBR_TIME_Int.TYPE;
+        } else if (type.isFLOAT()) {
+            return DBR_TIME_Float.TYPE;
+        } else if (type.isDOUBLE()) {
+            return DBR_TIME_Double.TYPE;
+        } else if (type.isENUM()) {
+            return DBR_TIME_Enum.TYPE;
+        } else if (type.isSTRING()) {
+            return DBR_TIME_String.TYPE;
+        }
+        
+        throw new IllegalArgumentException("Unsupported type " + type);
     }
 }
