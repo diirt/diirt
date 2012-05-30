@@ -20,12 +20,7 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.data.Alarm;
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.SimpleValueFormat;
-import org.epics.pvmanager.data.ValueFormat;
-import org.epics.pvmanager.data.Time;
-import org.epics.pvmanager.data.ValueUtil;
+import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
@@ -72,6 +67,8 @@ public class MockProbe extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         pvTime = new javax.swing.JTextField();
         indicator = new javax.swing.JSlider();
+        jLabel6 = new javax.swing.JLabel();
+        metadata = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,40 +98,43 @@ public class MockProbe extends javax.swing.JFrame {
 
         indicator.setEnabled(false);
 
+        jLabel6.setText("Metadata:");
+
+        metadata.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(indicator, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pvName, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
+                    .addComponent(indicator, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pvTextValue, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE))
+                        .addComponent(pvTextValue, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pvTime, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
+                        .addComponent(pvTime, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pvType, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+                        .addComponent(pvType, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lastError, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)))
+                        .addComponent(lastError, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(metadata)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -164,7 +164,11 @@ public class MockProbe extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lastError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(metadata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -186,6 +190,7 @@ public class MockProbe extends javax.swing.JFrame {
                 setAlarm(ValueUtil.alarmOf(value));
                 setTime(ValueUtil.timeOf(value));
                 setIndicator(ValueUtil.normalizedNumericValueOf(value));
+                setMetadata(ValueUtil.displayOf(value));
             }
         });
 
@@ -224,6 +229,14 @@ public class MockProbe extends javax.swing.JFrame {
         }
     }
 
+    private void setMetadata(Display display) {
+        if (display == null) {
+            metadata.setText("");
+        } else {
+            metadata.setText(display.getUpperDisplayLimit() + " - " + display.getLowerDisplayLimit());
+        }
+    }
+
     private void setLastError(Exception ex) {
         if (ex != null)
             lastError.setText(ex.getMessage());
@@ -259,8 +272,10 @@ public class MockProbe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
+    private javax.swing.JTextField metadata;
     private javax.swing.JTextField pvName;
     private javax.swing.JTextField pvTextValue;
     private javax.swing.JTextField pvTime;
