@@ -45,14 +45,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         super(channelName);
         this.jcaDataSource = jcaDataSource;
     }
-
-    @Override
-    public synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, ExceptionHandler handler) {
-        if (firstMonitorCache == null) {
-            firstMonitorCache = cache;
-        }
-        super.addMonitor(collector, cache, handler);
-    }
  
     @Override
     protected JCATypeAdapter findTypeAdapter(ValueCache<?> cache, Channel channel) {
@@ -76,8 +68,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         }
     }
 
-    // protected (not private) to allow different type factory
-    protected void setup(Channel channel) throws CAException {
+    private void setup(Channel channel) throws CAException {
         processConnection(channel);
         
         DBRType metaType = metadataFor(channel);
@@ -92,9 +83,12 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
                 @Override
                 public void getCompleted(GetEvent ev) {
                     synchronized(JCAChannelHandler.this) {
-                        metadata = ev.getDBR();
                         // In case the metadata arrives after the monitor
-                        dispatchValue();
+                        MonitorEvent event = null;
+                        if (getLastMessagePayload() != null) {
+                            event = getLastMessagePayload().getEvent();
+                        }
+                        processMessage(new JCAMessagePayload(ev.getDBR(), event));
                     }
                 }
             });
@@ -110,9 +104,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         // Flush the entire context (it's the best we can do)
         channel.getContext().flushIO();
     }
-    
-    protected volatile ValueCache<?> firstMonitorCache;
-    protected volatile JCATypeAdapter typeAdapter;
     
     private final ConnectionListener connectionListener = new ConnectionListener() {
 
@@ -135,9 +126,9 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
                     // Setup monitors on connection
                     if (ev.isConnected()) {
                         setup(channel);
-                        dispatchValue();
+                        processMessage(getLastMessagePayload());
                     } else {
-                        dispatchValue();
+                        processMessage(getLastMessagePayload());
                     }
                 } catch (Exception ex) {
                     connectionExceptionHandler.handleException(ex);
@@ -145,27 +136,19 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
             }
         };;
     
-    // The change in metadata and even has to be atomic
-    // so they are both guarded by this
-    // protected (not private) to allow different type factory
-    protected DBR metadata;
-    private MonitorEvent event;
-    
-    // protected (not private) to allow different type factory
-    protected final MonitorListener monitorListener = new MonitorListener() {
+    private final MonitorListener monitorListener = new MonitorListener() {
 
         @Override
         public void monitorChanged(MonitorEvent event) {
             synchronized(JCAChannelHandler.this) {
-                JCAChannelHandler.this.event = event;
-                dispatchValue();
+                DBR metadata = null;
+                if (getLastMessagePayload() != null) {
+                    metadata = getLastMessagePayload().getMetadata();
+                }
+                processMessage(new JCAMessagePayload(metadata, event));
             }
         }
     };
-    
-    private synchronized void dispatchValue() {
-        processMessage(new JCAMessagePayload(metadata, event));
-    }
 
     @Override
     public void disconnect(ExceptionHandler handler) {
@@ -177,8 +160,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         } finally {
             channel = null;
             synchronized(this) {
-                metadata = null;
-                event = null;
+                processMessage(null);
             }
         }
     }

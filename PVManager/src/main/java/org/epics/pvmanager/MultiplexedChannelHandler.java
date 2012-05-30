@@ -72,6 +72,10 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     protected final ConnectionPayload getConnectionPayload() {
         return connectionPayload;
     }
+    
+    protected final MessagePayload getLastMessagePayload() {
+        return lastMessage;
+    }
 
     protected final void processConnection(ConnectionPayload connectionPayload) {
         this.connectionPayload = connectionPayload;
@@ -192,7 +196,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * 
      * @param payload the payload of for this type of channel
      */
-    protected final void processMessage(MessagePayload payload) {
+    protected synchronized final void processMessage(MessagePayload payload) {
         lastMessage = payload;
         for (MonitorHandler monitor : monitors.values()) {
             monitor.processValue(payload);
