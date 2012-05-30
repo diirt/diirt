@@ -10,9 +10,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.util.TimeInterval;
 import org.epics.pvmanager.util.TimeStamp;
@@ -21,7 +21,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class SimulationChannelHandler<T> extends ChannelHandler<T> {
+class SimulationChannelHandler<T> extends MultiplexedChannelHandler<T> {
 
     private final Simulation<T> simulation;
     private final ScheduledExecutorService exec;

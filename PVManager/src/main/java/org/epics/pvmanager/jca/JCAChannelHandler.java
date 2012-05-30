@@ -6,8 +6,6 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
-import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.ConnectionEvent;
 import gov.aps.jca.event.ConnectionListener;
@@ -17,11 +15,7 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import gov.aps.jca.event.PutEvent;
 import gov.aps.jca.event.PutListener;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.*;
 
 /**
  * A ChannelHandler for the JCADataSource.
@@ -38,7 +32,7 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
+public class JCAChannelHandler extends MultiplexedChannelHandler<JCAMessagePayload> {
 
     private static final int LARGE_ARRAY = 100000;
     private final JCADataSource jcaDataSource;

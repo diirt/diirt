@@ -4,11 +4,7 @@
  */
 package org.epics.pvmanager.loc;
 
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.ValueFactory;
@@ -19,7 +15,7 @@ import org.epics.pvmanager.util.TimeStamp;
  *
  * @author carcassi
  */
-class LocalChannelHandler extends ChannelHandler<Object> {
+class LocalChannelHandler extends MultiplexedChannelHandler<Object> {
     
     private final Object initialValue;
 

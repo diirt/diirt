@@ -5,8 +5,8 @@
 package org.epics.pvmanager.test;
 
 import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.ValueCache;
 
 /**
@@ -14,7 +14,7 @@ import org.epics.pvmanager.ValueCache;
  *
  * @author carcassi
  */
-class DelayedConnectionChannel extends ChannelHandler<Object> {
+class DelayedConnectionChannel extends MultiplexedChannelHandler<Object> {
 
     DelayedConnectionChannel(String channelName) {
         super(channelName);
