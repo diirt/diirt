@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 /**
  * Manages the connection for each channel of a data source.
  *
- * @param <EType> type of the connection payload
+ * @param MessagePayload type of the payload for each message
  * @author carcassi
  */
-public abstract class MultiplexedChannelHandler<EType> extends ChannelHandler<EType> {
+public abstract class MultiplexedChannelHandler<MessagePayload> extends ChannelHandler {
 
     private static final Logger log = Logger.getLogger(MultiplexedChannelHandler.class.getName());
     private int readUsageCounter = 0;
     private int writeUsageCounter = 0;
-    private volatile EType lastValue;
+    private volatile MessagePayload lastMessage;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
 
     private class MonitorHandler {
@@ -35,7 +35,7 @@ public abstract class MultiplexedChannelHandler<EType> extends ChannelHandler<ET
             this.exceptionHandler = exceptionHandler;
         }
 
-        public final void processValue(EType payload) {
+        public final void processValue(MessagePayload payload) {
             // Lock the collector and prepare the new value.
             synchronized (collector) {
                 try {
@@ -99,8 +99,8 @@ public abstract class MultiplexedChannelHandler<EType> extends ChannelHandler<ET
         MonitorHandler monitor = new MonitorHandler(collector, cache, handler);
         monitors.put(collector, monitor);
         guardedConnect(handler);
-        if (readUsageCounter > 1 && lastValue != null) {
-            monitor.processValue(lastValue);
+        if (readUsageCounter > 1 && lastMessage != null) {
+            monitor.processValue(lastMessage);
         } 
     }
 
@@ -150,8 +150,8 @@ public abstract class MultiplexedChannelHandler<EType> extends ChannelHandler<ET
      * 
      * @param payload the payload of for this type of channel
      */
-    protected final void processValue(EType payload) {
-        lastValue = payload;
+    protected final void processValue(MessagePayload payload) {
+        lastMessage = payload;
         for (MonitorHandler monitor : monitors.values()) {
             monitor.processValue(payload);
         }
@@ -202,7 +202,7 @@ public abstract class MultiplexedChannelHandler<EType> extends ChannelHandler<ET
      * @param cache the cache where to store the new value
      * @return true if a new value was stored
      */
-    protected abstract boolean updateCache(EType event, ValueCache<?> cache);
+    protected abstract boolean updateCache(MessagePayload event, ValueCache<?> cache);
 
     /**
      * Returns true if it is connected.

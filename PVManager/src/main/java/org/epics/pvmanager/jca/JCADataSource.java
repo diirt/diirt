@@ -114,7 +114,7 @@ public class JCADataSource extends DataSource {
     }
 
     @Override
-    protected ChannelHandler<?> createChannel(String channelName) {
+    protected ChannelHandler createChannel(String channelName) {
         return new JCAChannelHandler(channelName, this);
     }
 

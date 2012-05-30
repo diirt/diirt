@@ -4,18 +4,14 @@
  */
 package org.epics.pvmanager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Manages the connection for each channel of a data source.
  *
- * @param <EType> type of the connection payload
  * @author carcassi
  */
-public abstract class ChannelHandler<EType> {
+public abstract class ChannelHandler {
 
     private static final Logger log = Logger.getLogger(ChannelHandler.class.getName());
     private final String channelName;

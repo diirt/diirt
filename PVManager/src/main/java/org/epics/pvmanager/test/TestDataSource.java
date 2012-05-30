@@ -29,7 +29,7 @@ public final class TestDataSource extends DataSource {
     }
 
     @Override
-    protected ChannelHandler<?> createChannel(String channelName) {
+    protected ChannelHandler createChannel(String channelName) {
         if ("delayedWrite".equals(channelName)) {
             return new DelayedWriteChannel(channelName);
         }
