@@ -73,6 +73,7 @@ public class ListFloatTest {
         };
         ListFloat other = new ArrayFloat(new float[] {0,1,2,3,4,5,6,7,8,9});
         assertThat(coll.hashCode(), equalTo(other.hashCode()));
+        assertThat(coll.hashCode(), equalTo(Arrays.hashCode(new float[] {0,1,2,3,4,5,6,7,8,9})));
     }
     
 }

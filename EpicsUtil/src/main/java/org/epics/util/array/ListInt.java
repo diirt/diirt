@@ -88,13 +88,8 @@ public abstract class ListInt implements ListNumber, CollectionInt {
         if (obj == this)
             return true;
         
-        // Should compare to the higher precision if needed
-        if (obj instanceof ListDouble || obj instanceof ListFloat || obj instanceof ListLong) {
-            return obj.equals(this);
-        }
-        
-        if (obj instanceof ListNumber) {
-            ListNumber other = (ListNumber) obj;
+        if (obj instanceof ListInt) {
+            ListInt other = (ListInt) obj;
 
             if (size() != other.size())
                 return false;

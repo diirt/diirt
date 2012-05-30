@@ -89,19 +89,14 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
         if (obj == this)
             return true;
         
-        // Should compare to the higher precision if needed
-        if (obj instanceof ListDouble) {
-            return obj.equals(this);
-        }
-        
-        if (obj instanceof ListNumber) {
-            ListNumber other = (ListNumber) obj;
+        if (obj instanceof ListFloat) {
+            ListFloat other = (ListFloat) obj;
 
             if (size() != other.size())
                 return false;
 
             for (int i = 0; i < size(); i++) {
-                if (getFloat(i) != other.getFloat(i))
+                if (Float.floatToIntBits(getFloat(i)) != Float.floatToIntBits(other.getFloat(i)))
                     return false;
             }
 
@@ -115,17 +110,7 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     public int hashCode() {
         int result = 1;
         for (int i = 0; i < size(); i++) {
-            // The preferred solution would be to use
-            // result = 31 * result + Float.floatToIntBits(getFloat(i));
-            // which is the same logic than Arrays.hashCode(float[])
-            // The problem: it's not going to be the same value
-            // for equals arrays of integer types.
-            
-            // We use the long representation instead
-            long element = getLong(i);
-            int elementHash = (int)(element ^ (element >>> 32));
-            result = 31 * result + elementHash;
-            
+            result = 31 * result + Float.floatToIntBits(getFloat(i));
         }
         return result;
     }

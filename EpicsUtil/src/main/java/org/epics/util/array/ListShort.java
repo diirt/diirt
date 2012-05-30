@@ -89,20 +89,14 @@ public abstract class ListShort implements ListNumber, CollectionShort {
         if (obj == this)
             return true;
         
-        // Should compare to the higher precision if needed
-        if (obj instanceof ListDouble || obj instanceof ListFloat ||
-                obj instanceof ListLong || obj instanceof ListInt) {
-            return obj.equals(this);
-        }
-        
-        if (obj instanceof ListNumber) {
-            ListNumber other = (ListNumber) obj;
+        if (obj instanceof ListShort) {
+            ListShort other = (ListShort) obj;
 
             if (size() != other.size())
                 return false;
 
             for (int i = 0; i < size(); i++) {
-                if (getInt(i) != other.getInt(i))
+                if (getShort(i) != other.getShort(i))
                     return false;
             }
 

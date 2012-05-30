@@ -89,14 +89,14 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
         if (obj == this)
             return true;
         
-        if (obj instanceof ListNumber) {
-            ListNumber other = (ListNumber) obj;
+        if (obj instanceof ListDouble) {
+            ListDouble other = (ListDouble) obj;
 
             if (size() != other.size())
                 return false;
 
             for (int i = 0; i < size(); i++) {
-                if (getDouble(i) != other.getDouble(i))
+                if (Double.doubleToLongBits(getDouble(i)) != Double.doubleToLongBits(other.getDouble(i)))
                     return false;
             }
 
@@ -110,17 +110,8 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
     public int hashCode() {
         int result = 1;
         for (int i = 0; i < size(); i++) {
-            // The preferred solution would be to use
-            // long bits = Double.doubleToLongBits(getDouble(i));
-            // result = 31 * result + (int)(bits ^ (bits >>> 32));
-            // which is the same logic than Arrays.hashCode(double[])
-            // The problem: it's not going to be the same value
-            // for equals arrays of integer types.
-            
-            // We use the long representation instead
-            long element = getLong(i);
-            int elementHash = (int)(element ^ (element >>> 32));
-            result = 31 * result + elementHash;
+            long bits = Double.doubleToLongBits(getDouble(i));
+            result = 31 * result + (int)(bits ^ (bits >>> 32));
         }
         return result;
     }
