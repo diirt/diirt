@@ -91,15 +91,6 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public boolean updateCache(Object event, ValueCache<?> cache) {
-        Object oldValue = cache.getValue();
-        cache.setValue(event);
-        if ((event == oldValue) || (event != null && event.equals(oldValue)))
-            return false;
-        return true;
-    }
-
-    @Override
     public boolean isConnected() {
         return getUsageCounter() != 0;
     }

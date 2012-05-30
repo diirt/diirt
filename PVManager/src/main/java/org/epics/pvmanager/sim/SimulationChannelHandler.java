@@ -70,12 +70,6 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
     }
 
     @Override
-    public boolean updateCache(T event, ValueCache<?> cache) {
-        cache.setValue(event);
-        return true;
-    }
-
-    @Override
     public boolean isConnected() {
         return taskFuture != null;
     }

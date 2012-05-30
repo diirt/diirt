@@ -10,8 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Manages the connection for each channel of a data source.
+ * Implements a {@link ChannelHandler} on top of a single subscription and
+ * multiplexes all reads on top of it.
  *
+ * @param ConnectionPayload type of the payload for the connection
  * @param MessagePayload type of the payload for each message
  * @author carcassi
  */
@@ -234,16 +236,6 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      */
     @Override
     protected abstract void write(Object newValue, ChannelWriteCallback callback);
-
-    /**
-     * Used by the handler to forward values. Extracts the value form the
-     * payload and stores it in the cache.
-     * 
-     * @param event the payload
-     * @param cache the cache where to store the new value
-     * @return true if a new value was stored
-     */
-    protected abstract boolean updateCache(MessagePayload event, ValueCache<?> cache);
 
     /**
      * Returns true if it is connected.

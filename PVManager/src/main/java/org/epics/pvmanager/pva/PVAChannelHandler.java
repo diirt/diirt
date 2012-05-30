@@ -255,15 +255,6 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<Object, Monitor
     }
 
     @Override
-    public boolean updateCache(MonitorEvent event, ValueCache<?> cache) {
-//        DBR rawvalue = event.getDBR();
-//        @SuppressWarnings("unchecked")
-//        Object newValue = cacheType.cast(vTypeFactory.createValue(rawvalue, metadata, !isConnected()));
-//        cache.setValue(newValue);
-        return true;
-    }
-
-    @Override
     public boolean isConnected() {
         return channel != null && channel.isConnected();
     }

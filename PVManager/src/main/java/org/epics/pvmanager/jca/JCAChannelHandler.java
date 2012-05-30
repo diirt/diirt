@@ -224,11 +224,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     }
 
     @Override
-    public boolean updateCache(JCAMessagePayload message, ValueCache<?> cache) {
-        return typeAdapter.updateCache(cache, channel, message);
-    }
-
-    @Override
     public boolean isConnected() {
         return isConnected(channel);
     }
