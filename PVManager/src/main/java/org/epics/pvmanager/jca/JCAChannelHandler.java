@@ -41,19 +41,15 @@ import org.epics.pvmanager.ValueCache;
 public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
 
     private static final int LARGE_ARRAY = 100000;
-    private final Context context;
-    private final int monitorMask;
-    private final JCATypeSupport typeSupport;
+    private final JCADataSource jcaDataSource;
     private volatile Channel channel;
     private volatile ExceptionHandler connectionExceptionHandler;
     private volatile boolean needsMonitor;
     private volatile boolean largeArray = false;
 
-    public JCAChannelHandler(String channelName, Context context, int monitorMask, JCATypeSupport typeSupport) {
+    public JCAChannelHandler(String channelName, JCADataSource jcaDataSource) {
         super(channelName);
-        this.context = context;
-        this.monitorMask = monitorMask;
-        this.typeSupport = typeSupport;
+        this.jcaDataSource = jcaDataSource;
     }
 
     @Override
@@ -65,7 +61,7 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
     }
  
     private JCATypeAdapter matchAdapterFor(ValueCache<?> cache, Channel channel) {
-        return typeSupport.find(cache, channel);
+        return jcaDataSource.getTypeSupport().find(cache, channel);
     }
 
     @Override
@@ -75,9 +71,9 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
             // Give the listener right away so that no event gets lost
 	    // If it's a large array, connect using lower priority
 	    if (largeArray) {
-                channel = context.createChannel(getChannelName(), connectionListener, Channel.PRIORITY_MIN);
+                channel = jcaDataSource.getContext().createChannel(getChannelName(), connectionListener, Channel.PRIORITY_MIN);
 	    } else {
-                channel = context.createChannel(getChannelName(), connectionListener, (short) (Channel.PRIORITY_MIN + 1));
+                channel = jcaDataSource.getContext().createChannel(getChannelName(), connectionListener, (short) (Channel.PRIORITY_MIN + 1));
 	    }
             needsMonitor = true;
         } catch (CAException ex) {
@@ -111,7 +107,7 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
         // Start the monitor only if the channel was (re)created, and
         // not because a disconnection/reconnection
         if (needsMonitor) {
-            channel.addMonitor(subParameters.getEpicsValueType(), subParameters.getCount(), monitorMask, monitorListener);
+            channel.addMonitor(subParameters.getEpicsValueType(), subParameters.getCount(), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
 
@@ -225,7 +221,7 @@ public class JCAChannelHandler extends ChannelHandler<JCAMessagePayload> {
             } else {
                 throw new RuntimeException("Unsupported type for CA: " + newValue.getClass());
             }
-            context.flushIO();
+            jcaDataSource.getContext().flushIO();
         } catch (CAException ex) {
             callback.channelWritten(ex);
         }

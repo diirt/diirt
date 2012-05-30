@@ -38,7 +38,7 @@ public class JCADataSource extends DataSource {
 
     private static final Logger log = Logger.getLogger(JCADataSource.class.getName());
 
-    private volatile Context ctxt = null;
+    private final Context ctxt;
     private final int monitorMask;
     private final JCATypeSupport typeSupport;
 
@@ -115,7 +115,11 @@ public class JCADataSource extends DataSource {
 
     @Override
     protected ChannelHandler<?> createChannel(String channelName) {
-        return new JCAChannelHandler(channelName, ctxt, monitorMask, typeSupport);
+        return new JCAChannelHandler(channelName, this);
     }
 
+    JCATypeSupport getTypeSupport() {
+        return typeSupport;
+    }
+    
 }
