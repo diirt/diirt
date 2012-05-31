@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.*;
-import org.epics.pvmanager.util.TimeInterval;
-import org.epics.pvmanager.util.TimeStamp;
+import org.epics.util.time.TimeInterval;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -29,9 +29,9 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
             // Protect the timer thread for possible problems.
             try {
                 if (simulation.lastTime == null) {
-                    simulation.lastTime = TimeStamp.now();
+                    simulation.lastTime = Timestamp.now();
                 }
-                List<T> newValues = simulation.createValues(TimeInterval.between(simulation.lastTime, TimeStamp.now()));
+                List<T> newValues = simulation.createValues(TimeInterval.between(simulation.lastTime, Timestamp.now()));
 
                 for (T newValue : newValues) {
                     processMessage(newValue);
@@ -53,7 +53,7 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
     @Override
     public void connect() {
         processConnection(simulation);
-        simulation.lastTime = TimeStamp.now();
+        simulation.lastTime = Timestamp.now();
         taskFuture = exec.scheduleWithFixedDelay(task, 0, 10, TimeUnit.MILLISECONDS);
     }
 

@@ -5,13 +5,11 @@
 package org.epics.pvmanager.sim;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Time;
-import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -47,8 +45,8 @@ class XmlVMetaData extends ReplayValue implements Time, Alarm {
     }
 
     @Override
-    public Timestamp getTimestamp() {
-        return getTimeStamp().asTimestamp();
+    public TimeStamp getTimeStamp() {
+        return TimeStamp.timestampOf(getTimestamp());
     }
 
 }

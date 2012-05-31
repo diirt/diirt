@@ -4,16 +4,14 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.AlarmSeverity;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.util.TimeStamp;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
+import org.epics.util.time.Timestamp;
 
 /**
  * Test simulated pv function names parsing
@@ -117,12 +115,12 @@ public class NameParserTest {
 
     @Test
     public void replay() {
-        TimeStamp start = TimeStamp.now();
+        Timestamp start = Timestamp.now();
         Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse1.xml\")");
-        List<VDouble> values = replay.createValues(ms(1000).after(start));
+        List<VDouble> values = replay.createValues(ofMillis(1000).after(start));
         assertThat(values.size(), equalTo(4));
 
-        values = replay.createValues(ms(100).after(start));
+        values = replay.createValues(ofMillis(100).after(start));
         assertThat(values.size(), equalTo(1));
     }
 

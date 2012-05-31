@@ -9,9 +9,9 @@ import java.util.Random;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.ValueFactory;
+import org.epics.util.time.Timestamp;
 
 /**
  * Function to simulate a waveform containing a gaussian that moves to the
@@ -92,9 +92,9 @@ public class GaussianWaveform extends SimFunction<VDoubleArray> {
     @Override
     VDoubleArray nextValue() {
         if (lastTime == null)
-            lastTime = TimeStamp.now();
+            lastTime = Timestamp.now();
         return ValueFactory.newVDoubleArray(generateNewValue(), Collections.singletonList(buffer.length), AlarmSeverity.NONE, AlarmStatus.NONE,
-                lastTime, null,
+                TimeStamp.timestampOf(lastTime), null,
                 -0.5, -0.35, -0.25, "x", Constants.DOUBLE_FORMAT,
                 1.0, 1.10, 1.25, -0.5, 1.25);
     }
