@@ -68,6 +68,12 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         }
         
     }
+    
+    protected final void notifyAllReaders(Exception ex) {
+        for (MonitorHandler monitor : monitors.values()) {
+            monitor.exceptionHandler.handleException(ex);
+        }
+    }
 
     protected final ConnectionPayload getConnectionPayload() {
         return connectionPayload;
