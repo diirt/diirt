@@ -199,6 +199,7 @@ public class ValueFactory {
     /**
      * Creates new immutable VDouble.
      */
+    @Deprecated
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
@@ -298,6 +299,7 @@ public class ValueFactory {
     /**
      * Creates new immutable new VDouble by using the metadata from the old value.
      */
+    @Deprecated
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
             Display display) {
@@ -320,6 +322,7 @@ public class ValueFactory {
      * @param display metadata
      * @return new value
      */
+    @Deprecated
     public static VDouble newVDouble(double value, TimeStamp timeStamp, Display display) {
         // Calculate new AlarmSeverity, using oldValue ranges
         AlarmSeverity severity = AlarmSeverity.NONE;
