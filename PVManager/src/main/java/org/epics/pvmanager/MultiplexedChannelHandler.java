@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -25,6 +27,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     private MessagePayload lastMessage;
     private ConnectionPayload connectionPayload;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
+    private List<ExceptionHandler> writeExceptionHandlers = new ArrayList<ExceptionHandler>();
 
     private class MonitorHandler {
 
@@ -170,7 +173,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
             }
         });
     }
-
+    
     /**
      * Used by the data source to prepare the channel managed by this handler
      * for write.
@@ -211,7 +214,23 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
 
     private void guardedConnect(final ExceptionHandler handler) {
         if (getUsageCounter() == 1) {
-            connect(handler);
+            try {
+                connect();
+            } catch(RuntimeException ex) {
+                notifyAllReaders(ex);
+                if (handler != null)
+                    handler.handleException(ex);
+            }
+        }
+    }
+
+    private void guardedConnect() {
+        if (getUsageCounter() == 1) {
+            try {
+                connect();
+            } catch(RuntimeException ex) {
+                notifyAllReaders(ex);
+            }
         }
     }
 
@@ -224,11 +243,20 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     /**
      * Used by the handler to open the connection. This is called whenever
      * the first read or write request is made.
-     * 
-     * @param handler to be notified in case of errors
      */
-    protected abstract void connect(final ExceptionHandler handler);
+    protected void connect() {
+        connect(new ExceptionHandler(){
 
+            @Override
+            public void handleException(Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            
+        });
+    }
+    
+    protected abstract void connect(final ExceptionHandler handler);
+    
     /**
      * Used by the handler to close the connection. This is called whenever
      * the last reader or writer is de-registered.
