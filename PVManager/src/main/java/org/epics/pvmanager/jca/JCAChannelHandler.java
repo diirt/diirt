@@ -37,7 +37,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     private static final int LARGE_ARRAY = 100000;
     private final JCADataSource jcaDataSource;
     private volatile Channel channel;
-    private volatile ExceptionHandler connectionExceptionHandler;
     private volatile boolean needsMonitor;
     private volatile boolean largeArray = false;
 
@@ -158,9 +157,6 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
             throw new RuntimeException("JCA Disconnect fail", ex);
         } finally {
             channel = null;
-            synchronized(this) {
-                processMessage(null);
-            }
         }
     }
 
@@ -213,7 +209,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
     }
 
-    static DBRType metadataFor(Channel channel) {
+    protected DBRType metadataFor(Channel channel) {
         DBRType type = channel.getFieldType();
         
         if (type.isBYTE() || type.isSHORT() || type.isINT() || type.isFLOAT() || type.isDOUBLE())
@@ -225,7 +221,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         return null;
     }
 
-    static DBRType valueTypeFor(Channel channel) {
+    protected DBRType valueTypeFor(Channel channel) {
         DBRType type = channel.getFieldType();
         
         // For scalar numbers, only use Double or Int
