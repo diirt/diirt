@@ -64,6 +64,13 @@ public class ValueFactory {
                 display.getLowerWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
     }
     
+    /**
+     * New alarm with the given severity and status.
+     * 
+     * @param alarmSeverity the alarm severity
+     * @param alarmStatus the alarm status
+     * @return the new alarm
+     */
     public static Alarm newAlarm(final AlarmSeverity alarmSeverity, final AlarmStatus alarmStatus) {
         return new Alarm() {
 
@@ -79,6 +86,11 @@ public class ValueFactory {
         };
     }
     
+    /**
+     * No alarm.
+     * 
+     * @return severity and status NONE
+     */
     public static Alarm alarmNone() {
         return newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
     }
