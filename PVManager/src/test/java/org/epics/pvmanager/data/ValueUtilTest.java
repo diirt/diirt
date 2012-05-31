@@ -7,6 +7,8 @@ package org.epics.pvmanager.data;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -21,7 +23,7 @@ public class ValueUtilTest {
     public void testTypeOf() {
         assertThat(ValueUtil.typeOf(ValueFactory.newVString(null, AlarmSeverity.NONE, AlarmStatus.DEVICE, null, Integer.MIN_VALUE)),
                 equalTo((Class) VString.class));
-        assertThat(ValueUtil.typeOf(ValueFactory.newVDouble(Double.NaN, AlarmSeverity.NONE, AlarmStatus.DEVICE, null, Integer.MIN_VALUE, Double.NaN, Double.MAX_VALUE, Double.NaN, null, null, Double.NaN, Double.MAX_VALUE, Double.NaN, Double.MAX_VALUE, Double.MAX_VALUE)),
+        assertThat(ValueUtil.typeOf(newVDouble(Double.NaN, alarmNone(), newTime(Timestamp.now()), displayNone())),
                 equalTo((Class) VDouble.class));
     }
 
