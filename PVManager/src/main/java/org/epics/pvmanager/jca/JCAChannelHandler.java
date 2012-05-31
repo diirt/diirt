@@ -116,7 +116,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
 		    // Check whether the channel is large and was opened
 		    // as large. Reconnect if does not match
 		    if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
-			disconnect(connectionExceptionHandler);
+			disconnect();
 			largeArray = true;
 			connect();
 			return;
@@ -150,13 +150,12 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     };
 
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         try {
             // Close the channel
             channel.destroy();
         } catch (CAException ex) {
-            if (handler != null)
-                handler.handleException(ex);
+            throw new RuntimeException("JCA Disconnect fail", ex);
         } finally {
             channel = null;
             synchronized(this) {

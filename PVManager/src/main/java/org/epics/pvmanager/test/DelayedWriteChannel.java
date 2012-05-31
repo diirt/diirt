@@ -23,7 +23,7 @@ class DelayedWriteChannel extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
     }
 
     @Override

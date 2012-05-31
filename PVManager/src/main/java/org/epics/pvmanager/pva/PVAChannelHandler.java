@@ -204,7 +204,7 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<Object, Monitor
 //    }
 //
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         // Close the channel
         try {
             channel.destroy();

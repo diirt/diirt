@@ -236,7 +236,15 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
 
     private void guardedDisconnect(final ExceptionHandler handler) {
         if (getUsageCounter() == 0) {
-            disconnect(handler);
+            try {
+                disconnect();
+                lastMessage = null;
+                connectionPayload = null;
+            } catch (RuntimeException ex) {
+                notifyAllReaders(ex);
+                if (handler != null)
+                    handler.handleException(ex);
+            }
         }
     }
 
@@ -249,10 +257,8 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     /**
      * Used by the handler to close the connection. This is called whenever
      * the last reader or writer is de-registered.
-     * 
-     * @param handler to be notified in case of errors
      */
-    protected abstract void disconnect(final ExceptionHandler handler);
+    protected abstract void disconnect();
 
     /**
      * Implements a write operation. Write the newValues to the channel

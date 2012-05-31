@@ -37,7 +37,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         // Nothing to be done
     }
 

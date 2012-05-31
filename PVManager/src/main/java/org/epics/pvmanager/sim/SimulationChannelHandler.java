@@ -58,7 +58,7 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
     }
 
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         taskFuture.cancel(false);
         taskFuture = null;
         simulation.lastTime = null;

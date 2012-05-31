@@ -29,7 +29,7 @@ class DelayedConnectionChannel extends MultiplexedChannelHandler<Object, Object>
     }
 
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         processConnection(null);
     }
 
