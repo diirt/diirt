@@ -150,7 +150,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         MonitorHandler monitor = new MonitorHandler(collector, cache, handler);
         monitors.put(collector, monitor);
         monitor.findTypeAdapter();
-        guardedConnect(handler);
+        guardedConnect();
         if (readUsageCounter > 1 && lastMessage != null) {
             monitor.processValue(lastMessage);
         } 
