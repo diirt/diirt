@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.ValueFactory;
-import org.epics.pvmanager.util.TimeStamp;
+import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -84,7 +83,7 @@ abstract class SimFunction<T> extends Simulation<T> {
         if (lastTime == null)
             lastTime = Timestamp.now();
         
-        return ValueFactory.newVDouble(value, TimeStamp.timestampOf(lastTime), oldValue);
+        return newVDouble(value, newTime(Timestamp.now()), oldValue);
     }
 
 }
