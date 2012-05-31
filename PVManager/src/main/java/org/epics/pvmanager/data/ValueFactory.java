@@ -368,6 +368,19 @@ public class ValueFactory {
     }
     
     /**
+     * Creates a new VDouble using the given value, time, display and
+     * generating the alarm from the value and display information.
+     * 
+     * @param value the new value
+     * @param time the time
+     * @param display the display information
+     * @return the new value
+     */
+    public static VDouble newVDouble(Double value, Time time, Display display) {
+        return newVDouble(value, newAlarm(value, display), time, display);
+    }
+    
+    /**
      * Creates new immutable VDouble by using metadata from the old value,
      * now as timestamp and computing alarm from the metadata range.
      * 
