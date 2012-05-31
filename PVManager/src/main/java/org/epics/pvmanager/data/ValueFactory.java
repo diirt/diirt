@@ -183,6 +183,18 @@ public class ValueFactory {
     public static Display displayNone() {
         return newDisplay(null, null, null, null, null, null, null, null, null, null);
     }
+    
+    
+    /**
+     * Creates new immutable VDouble.
+     */
+    public static VDouble newVDouble(final Double value, final Alarm alarm, final Time time, final Display display) {
+        return new IVDouble(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getLowerWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+    }
 
     /**
      * Creates new immutable VDouble.
