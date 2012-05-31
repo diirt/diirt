@@ -388,8 +388,21 @@ public class ValueFactory {
      * @param display metadata
      * @return new value
      */
+    @Deprecated
     public static VDouble newVDouble(double value, Display display) {
-        return newVDouble(value, TimeStamp.now(), display);
+        return newVDouble(value, newTime(Timestamp.now()), display);
+    }
+    
+    /**
+     * Creates new immutable VDouble by using metadata from the old value,
+     * now as timestamp and computing alarm from the metadata range.
+     * 
+     * @param value new numeric value
+     * @param display metadata
+     * @return new value
+     */
+    public static VDouble newVDouble(Double value, Display display) {
+        return newVDouble(value, newTime(Timestamp.now()), display);
     }
 
     /**
