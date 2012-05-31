@@ -51,7 +51,7 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
     }
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         processConnection(simulation);
         simulation.lastTime = TimeStamp.now();
         taskFuture = exec.scheduleWithFixedDelay(task, 0, 10, TimeUnit.MILLISECONDS);

@@ -70,7 +70,7 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<Object, Monitor
     };
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         //channel = pvaContext.getProvider().createChannel(getChannelName(), channelRequester, priority);
     }
 //

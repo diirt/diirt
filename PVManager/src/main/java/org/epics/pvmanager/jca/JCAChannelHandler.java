@@ -52,8 +52,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     }
 
     @Override
-    public void connect(ExceptionHandler handler) {
-        connectionExceptionHandler = handler;
+    public void connect() {
         try {
             // Give the listener right away so that no event gets lost
 	    // If it's a large array, connect using lower priority
@@ -64,7 +63,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
 	    }
             needsMonitor = true;
         } catch (CAException ex) {
-            handler.handleException(ex);
+            throw new RuntimeException("JCA Connection failed", ex);
         }
     }
 
@@ -119,7 +118,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
 		    if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
 			disconnect(connectionExceptionHandler);
 			largeArray = true;
-			connect(connectionExceptionHandler);
+			connect();
 			return;
 		    }
                     
@@ -131,7 +130,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
                         processMessage(getLastMessagePayload());
                     }
                 } catch (Exception ex) {
-                    connectionExceptionHandler.handleException(ex);
+                    notifyAllReaders(ex);
                 }
             }
         };;
@@ -156,7 +155,8 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
             // Close the channel
             channel.destroy();
         } catch (CAException ex) {
-            handler.handleException(ex);
+            if (handler != null)
+                handler.handleException(ex);
         } finally {
             channel = null;
             synchronized(this) {

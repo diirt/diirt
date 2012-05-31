@@ -244,18 +244,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * Used by the handler to open the connection. This is called whenever
      * the first read or write request is made.
      */
-    protected void connect() {
-        connect(new ExceptionHandler(){
-
-            @Override
-            public void handleException(Exception ex) {
-                throw new RuntimeException(ex);
-            }
-            
-        });
-    }
-    
-    protected abstract void connect(final ExceptionHandler handler);
+    protected abstract void connect();
     
     /**
      * Used by the handler to close the connection. This is called whenever

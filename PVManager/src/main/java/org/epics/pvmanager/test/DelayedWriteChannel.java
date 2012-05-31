@@ -18,7 +18,7 @@ class DelayedWriteChannel extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         processConnection(new Object());
     }
 

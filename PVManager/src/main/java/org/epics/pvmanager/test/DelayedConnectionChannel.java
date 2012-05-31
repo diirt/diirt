@@ -18,7 +18,7 @@ class DelayedConnectionChannel extends MultiplexedChannelHandler<Object, Object>
     }
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         try {
             Thread.sleep(1000);
         } catch(Exception ex) {

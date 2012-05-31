@@ -30,7 +30,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         processConnection(new Object());
         if (initialValue != null)
             processMessage(initialValue);
