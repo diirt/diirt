@@ -185,7 +185,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VDouble> vDoubleConstants(List<Double> values) {
         DesiredRateExpressionList<VDouble> list = new DesiredRateExpressionListImpl<VDouble>();
         for (Double value : values) {
-            list.and(constant(ValueFactory.newVDouble(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null, null, null, null, null, null, null, null, null, null, null)));
+            list.and(constant(newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone())));
         }
         return list;
     }
