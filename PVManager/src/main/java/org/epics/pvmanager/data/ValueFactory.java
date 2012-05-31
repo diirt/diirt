@@ -83,6 +83,28 @@ public class ValueFactory {
         return newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
     }
     
+    /**
+     * Alarm based on the value and the display ranges.
+     * 
+     * @param value the value
+     * @param display the display information
+     * @return the new alarm
+     */
+    public static Alarm newAlarm(Number value, Display display) {
+        // Calculate new AlarmSeverity, using display ranges
+        AlarmSeverity severity = AlarmSeverity.NONE;
+        AlarmStatus status = AlarmStatus.NONE;
+        if (value.doubleValue() <= display.getLowerAlarmLimit() || value.doubleValue() >= display.getUpperAlarmLimit()) {
+            status = AlarmStatus.RECORD;
+            severity = AlarmSeverity.MAJOR;
+        } else if (value.doubleValue() <= display.getLowerWarningLimit() || value.doubleValue() >= display.getUpperWarningLimit()) {
+            status = AlarmStatus.RECORD;
+            severity = AlarmSeverity.MINOR;
+        }
+        
+        return newAlarm(severity, status);
+    }
+    
     public static Time newTime(final Timestamp timestamp, final Integer timeUserTag, final boolean timeValid) {
         return new Time() {
 
