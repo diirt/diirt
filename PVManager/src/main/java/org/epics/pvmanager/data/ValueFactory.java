@@ -193,7 +193,7 @@ public class ValueFactory {
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
-                display.getLowerWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
     }
 
     /**
