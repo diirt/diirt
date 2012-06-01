@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager.data;
 
-import static org.epics.pvmanager.data.DataUtils.createValue;
 import static org.epics.util.time.TimeDuration.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.junit.Assert.assertEquals;

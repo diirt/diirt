@@ -21,11 +21,14 @@ public class FormattingTest {
         Display display = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
                 Double.MIN_VALUE, "", NumberFormats.format(3), Double.MAX_VALUE,
                 Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
+        Display displayInt = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
+                Double.MIN_VALUE, "", NumberFormats.format(0), Double.MAX_VALUE,
+                Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
         ValueFormat f = new SimpleValueFormat(3);
         assertThat(f.format(newVDouble(1234.5678, display)), equalTo("1234.568"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3})), equalTo("[1, 2, 3]"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1})), equalTo("[1]"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3, 4, 5})), equalTo("[1, 2, 3, ...]"));
+        assertThat(f.format(newVIntArray(new int[] {1, 2, 3}, displayInt)), equalTo("[1, 2, 3]"));
+        assertThat(f.format(newVIntArray(new int[] {1}, displayInt)), equalTo("[1]"));
+        assertThat(f.format(newVIntArray(new int[] {1, 2, 3, 4, 5}, displayInt)), equalTo("[1, 2, 3, ...]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.000, 2.000, 3.000]"));
         assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.000]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.000, 2.000, 3.000, ...]"));
@@ -36,12 +39,15 @@ public class FormattingTest {
         Display display = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
                 Double.MIN_VALUE, "", NumberFormats.format(3), Double.MAX_VALUE,
                 Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
+        Display displayInt = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
+                Double.MIN_VALUE, "", NumberFormats.format(0), Double.MAX_VALUE,
+                Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
         ValueFormat f = new SimpleValueFormat(3);
         f.setNumberFormat(NumberFormats.format(2));
         assertThat(f.format(newVDouble(1234.5678, display)), equalTo("1234.57"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3})), equalTo("[1.00, 2.00, 3.00]"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1})), equalTo("[1.00]"));
-        assertThat(f.format(DataUtils.createValue(null, new int[] {1, 2, 3, 4, 5})), equalTo("[1.00, 2.00, 3.00, ...]"));
+        assertThat(f.format(newVIntArray(new int[] {1, 2, 3}, displayInt)), equalTo("[1.00, 2.00, 3.00]"));
+        assertThat(f.format(newVIntArray(new int[] {1}, displayInt)), equalTo("[1.00]"));
+        assertThat(f.format(newVIntArray(new int[] {1, 2, 3, 4, 5}, displayInt)), equalTo("[1.00, 2.00, 3.00, ...]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.00, 2.00, 3.00]"));
         assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.00]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.00, 2.00, 3.00, ...]"));
