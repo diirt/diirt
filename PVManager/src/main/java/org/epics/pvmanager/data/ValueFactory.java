@@ -404,6 +404,14 @@ public class ValueFactory {
     public static VDouble newVDouble(Double value, Display display) {
         return newVDouble(value, newTime(Timestamp.now()), display);
     }
+    
+    public static VDouble newVDouble(Double value) {
+        return newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone());
+    }
+    
+    public static VDouble newVDouble(Double value, Time time) {
+        return newVDouble(value, alarmNone(), time, displayNone());
+    }
 
     /**
      * Creates a new immutable VStatistics.

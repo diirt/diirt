@@ -17,13 +17,6 @@ import org.epics.pvmanager.util.NumberFormats;
  */
 public class DataUtils {
 
-    public static VDouble createValue(TimeStamp time, double aValue) {
-        return ValueFactory.newVDouble(aValue, AlarmSeverity.NONE, AlarmStatus.NONE,
-                time, null, Double.MIN_VALUE, Double.MIN_VALUE,
-                Double.MIN_VALUE, "", NumberFormats.format(3), Double.MAX_VALUE,
-                Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
-    }
-
     public static VDoubleArray createValue(TimeStamp time, double[] values) {
         return ValueFactory.newVDoubleArray(values, Collections.singletonList(values.length), AlarmSeverity.NONE, AlarmStatus.NONE,
                 time, null, Double.MIN_VALUE, Double.MIN_VALUE,

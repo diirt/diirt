@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.PrivateFactory;
-import org.epics.pvmanager.TimeSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.data.DataUtils.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.time.Timestamp;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -45,38 +47,38 @@ public class SynchronizedArrayTest {
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.nanos(10));
 
-        TimeStamp reference = TimeStamp.now();
-        TimeStamp secondPass = reference.plus(ms(1));
-        TimeStamp thirdPass = reference.plus(ms(2));
+        Timestamp reference = Timestamp.now();
+        Timestamp secondPass = reference.plus(ofMillis(1));
+        Timestamp thirdPass = reference.plus(ofMillis(2));
 
         // Set values
-        caches.get(0).setValue(createValue(reference, 0.0));
+        caches.get(0).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(0).collect();
-        caches.get(0).setValue(createValue(secondPass, 1.0));
+        caches.get(0).setValue(newVDouble(1.0, newTime(secondPass)));
         collectors.get(0).collect();
 
         // Set values
-        caches.get(1).setValue(createValue(reference, 0.0));
+        caches.get(1).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(1).collect();
-        caches.get(1).setValue(createValue(secondPass, 1.0));
+        caches.get(1).setValue(newVDouble(1.0, newTime(secondPass)));
         collectors.get(1).collect();
-        caches.get(1).setValue(createValue(thirdPass, 2.0));
+        caches.get(1).setValue(newVDouble(2.0, newTime(thirdPass)));
         collectors.get(1).collect();
 
         // Set values
-        caches.get(2).setValue(createValue(secondPass, 1.0));
+        caches.get(2).setValue(newVDouble(1.0, newTime(secondPass)));
         collectors.get(2).collect();
-        caches.get(2).setValue(createValue(thirdPass, 2.0));
+        caches.get(2).setValue(newVDouble(2.0, newTime(thirdPass)));
         collectors.get(2).collect();
 
         // Set values
-        caches.get(3).setValue(createValue(reference, 0.0));
+        caches.get(3).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(3).collect();
-        caches.get(3).setValue(createValue(thirdPass, 2.0));
+        caches.get(3).setValue(newVDouble(2.0, newTime(thirdPass)));
         collectors.get(3).collect();
 
         // Set values
-        caches.get(4).setValue(createValue(reference, 0.0));
+        caches.get(4).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(4).collect();
 
         VMultiDouble array = aggregator.getValue();
@@ -103,39 +105,39 @@ public class SynchronizedArrayTest {
         SynchronizedVDoubleAggregator aggregator =
                 new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.ms(5));
 
-        TimeStamp reference = TimeStamp.now();
-        TimeStamp future1 = reference.plus(TimeDuration.ms(1));
-        TimeStamp past1 = reference.minus(TimeDuration.ms(1));
-        TimeStamp past2 = reference.minus(TimeDuration.ms(2));
+        Timestamp reference = Timestamp.now();
+        Timestamp future1 = reference.plus(ofMillis(1));
+        Timestamp past1 = reference.minus(ofMillis(1));
+        Timestamp past2 = reference.minus(ofMillis(2));
 
         // Set values
-        caches.get(0).setValue(createValue(reference, 0.0));
+        caches.get(0).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(0).collect();
-        caches.get(0).setValue(createValue(future1, 1.0));
+        caches.get(0).setValue(newVDouble(1.0, newTime(future1)));
         collectors.get(0).collect();
 
         // Set values
-        caches.get(1).setValue(createValue(past2, 1.0));
+        caches.get(1).setValue(newVDouble(1.0, newTime(past2)));
         collectors.get(1).collect();
-        caches.get(1).setValue(createValue(past1, 1.0));
+        caches.get(1).setValue(newVDouble(1.0, newTime(past1)));
         collectors.get(1).collect();
-        caches.get(1).setValue(createValue(reference, 0.0));
+        caches.get(1).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(1).collect();
 
         // Set values
-        caches.get(2).setValue(createValue(past1, 1.0));
+        caches.get(2).setValue(newVDouble(1.0, newTime(past1)));
         collectors.get(2).collect();
-        caches.get(2).setValue(createValue(reference, 0.0));
+        caches.get(2).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(2).collect();
 
         // Set values
-        caches.get(3).setValue(createValue(reference, 0.0));
+        caches.get(3).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(3).collect();
-        caches.get(3).setValue(createValue(future1, 2.0));
+        caches.get(3).setValue(newVDouble(2.0, newTime(future1)));
         collectors.get(3).collect();
 
         // Set values
-        caches.get(4).setValue(createValue(reference, 0.0));
+        caches.get(4).setValue(newVDouble(0.0, newTime(reference)));
         collectors.get(4).collect();
 
         VMultiDouble array = aggregator.getValue();
