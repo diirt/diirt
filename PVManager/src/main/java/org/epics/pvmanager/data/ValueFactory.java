@@ -513,6 +513,22 @@ public class ValueFactory {
     public static VImage newVImage(int height, int width, byte[] data) {
         return new IVImage(height, width, data);
     }
+    
+    public static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
+        return new IVIntArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+    }
+    
+    public static VIntArray newVIntArray(final int[] values, Alarm alarm, Time time, Display display) {
+        return newVIntArray(values, Collections.singletonList(values.length), alarm, time, display);
+    }
+    
+    public static VIntArray newVIntArray(final int[] values, Display display) {
+        return newVIntArray(values, Collections.singletonList(values.length), alarmNone(), newTime(Timestamp.now()), display);
+    }
 
     static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
