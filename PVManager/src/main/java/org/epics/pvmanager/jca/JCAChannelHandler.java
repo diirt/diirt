@@ -107,29 +107,31 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
 
             @Override
             public void connectionChanged(ConnectionEvent ev) {
-                try {
-                    // Take the channel from the event so that there is no
-                    // synchronization problem
-                    Channel channel = (Channel) ev.getSource();
-		    
-		    // Check whether the channel is large and was opened
-		    // as large. Reconnect if does not match
-		    if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
-			disconnect();
-			largeArray = true;
-			connect();
-			return;
-		    }
-                    
-                    // Setup monitors on connection
-                    if (ev.isConnected()) {
-                        setup(channel);
-                        processMessage(getLastMessagePayload());
-                    } else {
-                        processMessage(getLastMessagePayload());
+                synchronized(JCAChannelHandler.this) {
+                    try {
+                        // Take the channel from the event so that there is no
+                        // synchronization problem
+                        Channel channel = (Channel) ev.getSource();
+
+                        // Check whether the channel is large and was opened
+                        // as large. Reconnect if does not match
+                        if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
+                            disconnect();
+                            largeArray = true;
+                            connect();
+                            return;
+                        }
+
+                        // Setup monitors on connection
+                        if (ev.isConnected()) {
+                            setup(channel);
+                            processMessage(getLastMessagePayload());
+                        } else {
+                            processMessage(getLastMessagePayload());
+                        }
+                    } catch (Exception ex) {
+                        notifyAllReaders(ex);
                     }
-                } catch (Exception ex) {
-                    notifyAllReaders(ex);
                 }
             }
         };;
