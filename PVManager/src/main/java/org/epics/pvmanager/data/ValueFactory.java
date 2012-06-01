@@ -497,6 +497,7 @@ public class ValueFactory {
         return newVDoubleArray(values, Collections.singletonList(values.length), alarmNone(), newTime(Timestamp.now()), display);
     }
 
+    @Deprecated
     public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
