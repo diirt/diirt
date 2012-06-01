@@ -6,6 +6,7 @@ package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.util.TimeStamp;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.epics.util.time.Timestamp;
@@ -478,6 +479,22 @@ public class ValueFactory {
                 oldValue.getFormat(), oldValue.getUpperWarningLimit(),
                 oldValue.getUpperAlarmLimit(), oldValue.getUpperDisplayLimit(),
                 oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
+    }
+    
+    public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
+        return new IVDoubleArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+    }
+    
+    public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
+        return newVDoubleArray(values, Collections.singletonList(values.length), alarm, time, display);
+    }
+    
+    public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
+        return newVDoubleArray(values, Collections.singletonList(values.length), alarmNone(), newTime(Timestamp.now()), display);
     }
 
     public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
