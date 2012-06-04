@@ -4,6 +4,7 @@
  */
 package org.epics.util.array;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -11,7 +12,9 @@ import java.util.Arrays;
  *
  * @author Gabriele Carcassi
  */
-public final class ArrayDouble extends ListDouble {
+public final class ArrayDouble extends ListDouble implements Serializable {
+    
+    private static final long serialVersionUID = 7493025761455302917L;
     
     private final double[] array;
     private final boolean readOnly;

@@ -4,6 +4,10 @@
  */
 package org.epics.util.array;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -61,5 +65,17 @@ public class ArrayDoubleTest {
         ArrayDouble array = new ArrayDouble(new double[] {Double.MIN_VALUE}, false);
         ArrayDouble array2 = new ArrayDouble(new double[] {Double.MAX_VALUE}, false);
         assertThat(array, not(equalTo(array2)));
+    }
+    
+    @Test
+    public void serialization1() throws Exception {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        ObjectOutputStream stream = new ObjectOutputStream(buffer);
+        ArrayDouble array = new ArrayDouble(new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+        stream.writeObject(array);
+        ObjectInputStream inStream = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+        ArrayDouble read = (ArrayDouble) inStream.readObject();
+        assertThat(read, not(sameInstance(array)));
+        assertThat(read, equalTo(array));
     }
 }
