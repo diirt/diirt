@@ -4,6 +4,7 @@
  */
 package org.epics.util.array;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -11,7 +12,9 @@ import java.util.Arrays;
  *
  * @author Gabriele Carcassi
  */
-public final class ArrayShort extends ListShort {
+public final class ArrayShort extends ListShort implements Serializable {
+    
+    private static final long serialVersionUID = 7493025761455302921L;
     
     private final short[] array;
     private final boolean readOnly;
