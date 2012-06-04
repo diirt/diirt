@@ -72,7 +72,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         
     }
     
-    protected final void notifyAllReaders(Exception ex) {
+    protected synchronized final void notifyAllReaders(Exception ex) {
         for (MonitorHandler monitor : monitors.values()) {
             monitor.exceptionHandler.handleException(ex);
         }

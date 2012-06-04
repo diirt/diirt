@@ -289,4 +289,36 @@ public class TestDataSourceTest {
         Thread.sleep(30);
         waitForChannelToClose(dataSource, "delayedConnection");
     }
+    
+    @Test
+    public void delayedMultipleReadWithConnectionError() throws Exception {
+        PVReader<Object> pv1 = PVManager.read(channel("delayedConnectionError")).from(dataSource).every(ms(50));
+        pv1.addPVReaderListener(readListener);
+        PVReader<Object> pv2 = PVManager.read(channel("delayedConnectionError")).from(dataSource).every(ms(50));
+        pv2.addPVReaderListener(readListener);
+        
+        Thread.sleep(50);
+        
+        RuntimeException ex = (RuntimeException) pv1.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, never()).pvChanged();
+        ex = (RuntimeException) pv2.lastException();
+        assertThat(ex, nullValue());
+        verify(readListener, never()).pvChanged();
+        
+        Thread.sleep(1100);
+        
+        ex = (RuntimeException) pv1.lastException();
+        assertThat(ex, instanceOf(RuntimeException.class));
+        assertThat(ex.getMessage(), equalTo("Connection error"));
+        ex = (RuntimeException) pv2.lastException();
+        assertThat(ex, instanceOf(RuntimeException.class));
+        assertThat(ex.getMessage(), equalTo("Connection error"));
+        verify(readListener, times(2)).pvChanged();
+        
+        pv1.close();
+        pv2.close();
+        Thread.sleep(30);
+        waitForChannelToClose(dataSource, "delayedConnection");
+    }
 }
