@@ -4,6 +4,7 @@
  */
 package org.epics.util.array;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -11,7 +12,9 @@ import java.util.Arrays;
  *
  * @author Gabriele Carcassi
  */
-public final class ArrayLong extends ListLong {
+public final class ArrayLong extends ListLong implements Serializable {
+    
+    private static final long serialVersionUID = 7493025761455302920L;
     
     private final long[] array;
     private final boolean readOnly;
