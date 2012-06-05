@@ -15,8 +15,8 @@ import java.util.logging.Logger;
  * Implements a {@link ChannelHandler} on top of a single subscription and
  * multiplexes all reads on top of it.
  *
- * @param ConnectionPayload type of the payload for the connection
- * @param MessagePayload type of the payload for each message
+ * @param <ConnectionPayload> type of the payload for the connection
+ * @param <MessagePayload> type of the payload for each message
  * @author carcassi
  */
 public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayload> extends ChannelHandler {
@@ -72,20 +72,41 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         
     }
     
+    /**
+     * Notifies all readers of an error condition.
+     * 
+     * @param ex the exception to notify
+     */
     protected synchronized final void notifyAllReaders(Exception ex) {
         for (MonitorHandler monitor : monitors.values()) {
             monitor.exceptionHandler.handleException(ex);
         }
     }
 
+    /**
+     * The last processes connection payload.
+     * 
+     * @return the connection payload or null
+     */
     protected synchronized final ConnectionPayload getConnectionPayload() {
         return connectionPayload;
     }
-    
+
+    /**
+     * The last processed message payload.
+     * 
+     * @return the message payload or null
+     */
     protected synchronized final MessagePayload getLastMessagePayload() {
         return lastMessage;
     }
 
+    /**
+     * Process the next connection payload. This should be called whenever
+     * the connection state has changed.
+     * 
+     * @param connectionPayload 
+     */
     protected synchronized final void processConnection(ConnectionPayload connectionPayload) {
         this.connectionPayload = connectionPayload;
         
@@ -116,6 +137,17 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
             }
         };
     
+    /**
+     * Finds the right adapter to use for the particular cache given the information
+     * of the channels in the connection payload. By overriding this method
+     * a datasource can implement their own matching logic. One
+     * can use the logic provided in {@link DataSourceTypeSupport} as
+     * a good first implementation.
+     * 
+     * @param cache the cache that will store the data
+     * @param connection the connection payload
+     * @return the matched type adapter
+     */
     @SuppressWarnings("unchecked")
     protected DataSourceTypeAdapter<ConnectionPayload, MessagePayload> findTypeAdapter(ValueCache<?> cache, ConnectionPayload connection) {
         return (DataSourceTypeAdapter<ConnectionPayload, MessagePayload>) (DataSourceTypeAdapter) defaultTypeAdapter;
