@@ -20,7 +20,7 @@ public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
      * type required by the cache.
      * 
      * @param cache the cache where data will need to be written
-     * @param connPayload the connection information
+     * @param connection the connection information
      * @return zero if there is no match, or the position of the type matched
      */
     int match(ValueCache<?> cache, ConnectionPayload connection);
@@ -33,7 +33,7 @@ public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
      * is never used.
      * 
      * @param cache the cache where data will need to be written
-     * @param connPayload the connection information
+     * @param connection the connection information
      * @return datasource specific subscription information
      */
     Object getSubscriptionParameter(ValueCache<?> cache, ConnectionPayload connection);
