@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager;
 
+import com.sun.org.apache.bcel.internal.generic.DSTORE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -225,7 +226,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     /**
      * Process the payload for this channel. This should be called whenever
      * a new value needs to be processed. The handler will take care of
-     * calling {@link #updateCache(java.lang.Object, org.epics.pvmanager.ValueCache) }
+     * using the correct {@link DataSourceTypeAdapter}
      * for each read monitor that was setup.
      * 
      * @param payload the payload of for this type of channel
