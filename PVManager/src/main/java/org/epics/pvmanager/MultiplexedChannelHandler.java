@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import com.sun.org.apache.bcel.internal.generic.DSTORE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,15 +78,15 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         }
     }
 
-    protected final ConnectionPayload getConnectionPayload() {
+    protected synchronized final ConnectionPayload getConnectionPayload() {
         return connectionPayload;
     }
     
-    protected final MessagePayload getLastMessagePayload() {
+    protected synchronized final MessagePayload getLastMessagePayload() {
         return lastMessage;
     }
 
-    protected final void processConnection(ConnectionPayload connectionPayload) {
+    protected synchronized final void processConnection(ConnectionPayload connectionPayload) {
         this.connectionPayload = connectionPayload;
         
         for (MonitorHandler monitor : monitors.values()) {
