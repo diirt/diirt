@@ -78,7 +78,11 @@ public class ExpressionLanguage {
      * A channel with the given name and type. This expression can be
      * used both in a read and a write expression.
      *
+     * @param <R> read payload
+     * @param <W> write payload
      * @param name the channel name
+     * @param readType type being read
+     * @param writeType type being written
      * @return an expression representing the channel
      */
     public static <R, W> ChannelExpression<R, W> channel(String name, Class<R> readType, Class<W> writeType) {
@@ -104,6 +108,10 @@ public class ExpressionLanguage {
      * A list of channels with the given names and type. This expression can be
      * used both in a read and a write expression.
      *
+     * @param <R> read payload
+     * @param <W> write payload
+     * @param readType type being read
+     * @param writeType type being written
      * @param names the channel names; can't be null
      * @return an list of expressions representing the channels
      */
@@ -478,6 +486,7 @@ public class ExpressionLanguage {
     /**
      * Converts a list of expressions to an expression that returns the list of results.
      * 
+     * @param <T> type being read
      * @param expressions a list of expressions
      * @return an expression representing the list of results
      */
@@ -498,6 +507,7 @@ public class ExpressionLanguage {
      * Converts a list of expressions to an expression that returns the map from
      * the name to the results.
      * 
+     * @param <T> type being read
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
@@ -520,6 +530,7 @@ public class ExpressionLanguage {
      * Converts a list of expressions to an expression that returns the map from
      * the name to the results.
      * 
+     * @param <T> type being read
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
@@ -542,6 +553,8 @@ public class ExpressionLanguage {
      * Converts a list of expressions to an expression that returns the map from
      * the name to the results.
      * 
+     * @param <R> read payload
+     * @param <W> write payload
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
