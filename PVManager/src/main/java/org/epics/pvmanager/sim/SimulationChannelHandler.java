@@ -73,27 +73,4 @@ class SimulationChannelHandler<T> extends MultiplexedChannelHandler<Simulation<T
     public boolean isConnected() {
         return taskFuture != null;
     }
-
-    @Override
-    protected DataSourceTypeAdapter<Simulation<T>, T> findTypeAdapter(ValueCache<?> cache, Simulation<T> connection) {
-        return new DataSourceTypeAdapter<Simulation<T>, T>() {
-
-            @Override
-            public int match(ValueCache<?> cache, Simulation<T> connection) {
-                // TODO whould match the type
-                return 1;
-            }
-
-            @Override
-            public Object getSubscriptionParameter(ValueCache<?> cache, Simulation<T> connection) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public boolean updateCache(ValueCache cache, Simulation<T> connection, T message) {
-                cache.setValue(message);
-                return true;
-            }
-        };
-    }
 }
