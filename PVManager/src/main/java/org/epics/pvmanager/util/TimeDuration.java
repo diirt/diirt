@@ -15,6 +15,7 @@ package org.epics.pvmanager.util;
  * 
  * @author carcassi
  */
+@Deprecated
 public class TimeDuration {
 
     private long nanoSec;
@@ -185,6 +186,11 @@ public class TimeDuration {
         return false;
     }
 
+    public static TimeDuration durationOf(org.epics.util.time.TimeDuration duration) {
+        if (duration == null)
+            return null;
+        return nanos(duration.getSec() * 1000000000 + duration.getNanoSec());
+    }
     
     public static org.epics.util.time.TimeDuration asTimeDuration(TimeDuration duration) {
         if (duration == null)

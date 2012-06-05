@@ -7,7 +7,7 @@ package org.epics.pvmanager;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.util.Executors;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -38,6 +38,18 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
 
     @Override
     public PVReaderConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
+        super.timeout(timeout, timeoutMessage);
+        return this;
+    }
+
+    @Override
+    public PVReaderConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout) {
+        super.timeout(timeout);
+        return this;
+    }
+
+    @Override
+    public PVReaderConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
         return this;
     }
@@ -78,7 +90,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param period the minimum time distance (i.e. the maximum rate) at which notifications should be sent
      * @return the PVReader
      */
-    public PVReader<T> every(TimeDuration period) {
+    public PVReader<T> every(org.epics.pvmanager.util.TimeDuration period) {
         //int scanPeriodMs = (int) (period.getNanoSec() / 1000000);
         
         if (period.getNanoSec() < 5000000) {
@@ -101,7 +113,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         if (timeout != null) {
             if (timeoutMessage == null)
                 timeoutMessage = "Read timeout";
-            notifier.timeout(timeout, timeoutMessage);
+            notifier.timeout(org.epics.pvmanager.util.TimeDuration.durationOf(timeout), timeoutMessage);
         }
         try {
             source.connect(dataRecipe);

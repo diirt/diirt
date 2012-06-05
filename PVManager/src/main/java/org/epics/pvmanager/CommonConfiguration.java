@@ -5,7 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 
 /**
  *
@@ -55,6 +55,19 @@ class CommonConfiguration {
     }
     
     public CommonConfiguration timeout(TimeDuration timeout, String timeoutMessage) {
+        timeout(timeout);
+        this.timeoutMessage = timeoutMessage;
+        return this;
+    }
+    
+    public CommonConfiguration timeout(org.epics.pvmanager.util.TimeDuration timeout) {
+        if (this.timeout != null)
+            throw new IllegalStateException("Timeout already set");
+        this.timeout = org.epics.pvmanager.util.TimeDuration.asTimeDuration(timeout);
+        return this;
+    }
+    
+    public CommonConfiguration timeout(org.epics.pvmanager.util.TimeDuration timeout, String timeoutMessage) {
         timeout(timeout);
         this.timeoutMessage = timeoutMessage;
         return this;
