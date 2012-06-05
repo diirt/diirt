@@ -9,7 +9,12 @@
 package org.epics.pvmanager;
 
 /**
+ * Matches and fills a cache with the data from connection and message payloads.
+ * This optional class helps the writer of a datasource to manage the
+ * type matching and conversions.
  *
+ * @param <ConnectionPayload> the type of payload given at connection
+ * @param <MessagePayload> the type of payload for each message
  * @author carcassi
  */
 public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
@@ -39,7 +44,7 @@ public interface DataSourceTypeAdapter<ConnectionPayload, MessagePayload> {
     Object getSubscriptionParameter(ValueCache<?> cache, ConnectionPayload connection);
     
     /**
-     * Takes the information in the message and updates the cache.
+     * Takes the information in the message and updates the cache. 
      * 
      * @param cache cache to be updated
      * @param connection the connection information
