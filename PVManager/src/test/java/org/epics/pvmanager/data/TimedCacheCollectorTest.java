@@ -13,7 +13,7 @@ import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.PrivateFactory;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,7 +53,7 @@ public class TimedCacheCollectorTest {
         ValueCache<VDouble> cache =
                 new ValueCache<VDouble>(VDouble.class);
         Collector<VDouble> collector =
-                PrivateFactory.newTimeCacheCollector(cache, TimeDuration.ms(100));
+                PrivateFactory.newTimeCacheCollector(cache, TimeDuration.ofMillis(100));
         monitorRecipe = new DataRecipe();
         monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.01)", cache));
         SimulationDataSource.simulatedData().connect(monitorRecipe);

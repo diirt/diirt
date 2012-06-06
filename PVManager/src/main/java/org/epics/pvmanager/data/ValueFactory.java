@@ -39,6 +39,14 @@ public class ValueFactory {
                 TimeStamp.asTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit,
                 units, format, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
+    
+    public static VMultiDouble newVMultiDouble(List<VDouble> values, final Alarm alarm, final Time time, final Display display) {
+        return new IVMultiDouble(values, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+    }
 
     /**
      * Creates new immutable VInt.

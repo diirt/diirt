@@ -60,6 +60,7 @@ class CommonConfiguration {
         return this;
     }
     
+    @Deprecated
     public CommonConfiguration timeout(org.epics.pvmanager.util.TimeDuration timeout) {
         if (this.timeout != null)
             throw new IllegalStateException("Timeout already set");
@@ -67,6 +68,7 @@ class CommonConfiguration {
         return this;
     }
     
+    @Deprecated
     public CommonConfiguration timeout(org.epics.pvmanager.util.TimeDuration timeout, String timeoutMessage) {
         timeout(timeout);
         this.timeoutMessage = timeoutMessage;

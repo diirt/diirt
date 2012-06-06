@@ -282,13 +282,13 @@ public class ExpressionLanguage {
         List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
         DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
         for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
-            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, org.epics.pvmanager.util.TimeDuration.durationOf(cacheDepth));
+            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
             desiredRateExpressions.and(collectorExp);
             collectors.add(collectorExp.getFunction());
             names.add(expression.getName());
         }
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, org.epics.pvmanager.util.TimeDuration.durationOf(tolerance));
+                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
         return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
                 (Function<VMultiDouble>) aggregator, "syncArray");
     }

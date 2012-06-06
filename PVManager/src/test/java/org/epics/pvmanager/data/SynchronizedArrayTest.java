@@ -4,22 +4,18 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.Function;
-import org.epics.pvmanager.util.TimeDuration;
-import org.epics.pvmanager.util.TimeStamp;
-import org.epics.pvmanager.ValueCache;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.Collector;
+import org.epics.pvmanager.Function;
 import org.epics.pvmanager.PrivateFactory;
+import org.epics.pvmanager.ValueCache;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.epics.util.time.TimeDuration.*;
+import org.epics.util.time.Timestamp;
+import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.epics.pvmanager.data.DataUtils.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
-import static org.epics.pvmanager.data.ValueFactory.*;
-import org.epics.util.time.Timestamp;
-import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -40,12 +36,12 @@ public class SynchronizedArrayTest {
         List<Collector<VDouble>> collectors = new ArrayList<Collector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
             caches.add(new ValueCache<VDouble>(VDouble.class));
-            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), TimeDuration.ms(10)));
+            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), ofMillis(10)));
             names.add("pv" + i);
         }
         @SuppressWarnings("unchecked")
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.nanos(10));
+                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, ofNanos(10));
 
         Timestamp reference = Timestamp.now();
         Timestamp secondPass = reference.plus(ofMillis(1));
@@ -98,12 +94,12 @@ public class SynchronizedArrayTest {
         List<Collector<VDouble>> collectors = new ArrayList<Collector<VDouble>>();
         for (int i = 0; i < nPvs; i++) {
             caches.add(new ValueCache<VDouble>(VDouble.class));
-            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), TimeDuration.ms(10)));
+            collectors.add(PrivateFactory.newTimeCacheCollector(caches.get(i), ofMillis(10)));
             names.add("pv" + i);
         }
         @SuppressWarnings("unchecked")
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, TimeDuration.ms(5));
+                new SynchronizedVDoubleAggregator(names, (List<Function<List<VDouble>>>) (List) collectors, ofMillis(5));
 
         Timestamp reference = Timestamp.now();
         Timestamp future1 = reference.plus(ofMillis(1));

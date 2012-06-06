@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 
 /**
  * Exports package private constructors for testing purposes.
@@ -12,6 +12,6 @@ import org.epics.pvmanager.util.TimeDuration;
  */
 public class PrivateFactory {
     public static <T> Collector<T> newTimeCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
-        return new TimedCacheCollector<T>(function, TimeDuration.asTimeDuration(cachedPeriod));
+        return new TimedCacheCollector<T>(function, cachedPeriod);
     }
 }

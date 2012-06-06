@@ -13,6 +13,7 @@ import java.util.List;
 import org.epics.pvmanager.util.TimeDuration;
 
 import org.epics.pvmanager.util.TimeStamp;
+import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.Timestamp;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class SynchronizedVDoubleAggregatorTest {
         data.add(newVDouble(0.0, newTime(reference)));
         data.add(newVDouble(1.0, newTime(reference.plus(ofMillis(2)))));
         data.add(newVDouble(2.0, newTime(reference.plus(ofMillis(3)))));
-        VDouble result = SynchronizedVDoubleAggregator.closestElement(data, TimeDuration.ms(10).around(TimeStamp.timestampOf(reference)), TimeStamp.timestampOf(reference));
+        VDouble result = SynchronizedVDoubleAggregator.closestElement(data, ofMillis(10).around(reference), reference);
         assertEquals(0.0, result.getValue(), 0.000001);
     }
 
@@ -52,7 +53,7 @@ public class SynchronizedVDoubleAggregatorTest {
         data.add(newVDouble(-1.0, newTime(reference.minus(ofMillis(1)))));
         data.add(newVDouble(1.0, newTime(reference.plus(ofMillis(2)))));
         data.add(newVDouble(2.0, newTime(reference.plus(ofMillis(3)))));
-        VDouble result = SynchronizedVDoubleAggregator.closestElement(data, TimeDuration.ms(10).around(TimeStamp.timestampOf(reference)), TimeStamp.timestampOf(reference));
+        VDouble result = SynchronizedVDoubleAggregator.closestElement(data, ofMillis(10).around(reference), reference);
         assertEquals(-1.0, result.getValue(), 0.000001);
     }
 }
