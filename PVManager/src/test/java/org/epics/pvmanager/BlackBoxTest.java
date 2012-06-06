@@ -6,14 +6,14 @@ package org.epics.pvmanager;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VString;
 import org.epics.pvmanager.loc.LocalDataSource;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -26,7 +26,7 @@ public class BlackBoxTest {
         String channelName = "test";
         DataSource dataSource = new LocalDataSource();
         
-        PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndReadEvery(hz(50));
+        PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(0.0));
@@ -46,7 +46,7 @@ public class BlackBoxTest {
         
         final PV<Map<String, Object>, Map<String, Object>> pv =
                 PVManager.readAndWrite(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))))
-                .from(dataSource).synchWriteAndReadEvery(hz(50));
+                .from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
         assertThat(pv.getValue(), nullValue());
 
         Map<String, Object> newValues = new HashMap<String, Object>();
