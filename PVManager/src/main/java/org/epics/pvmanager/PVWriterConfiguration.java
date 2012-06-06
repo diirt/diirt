@@ -44,12 +44,14 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     }
 
     @Override
+    @Deprecated
     public PVWriterConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout) {
         super.timeout(timeout);
         return this;
     }
 
     @Override
+    @Deprecated
     public PVWriterConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
         return this;
