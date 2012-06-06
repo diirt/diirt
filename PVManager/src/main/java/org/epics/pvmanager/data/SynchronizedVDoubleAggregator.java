@@ -4,14 +4,12 @@
  */
 package org.epics.pvmanager.data;
 
-import java.util.logging.Logger;
 import java.util.ArrayList;
-import java.util.Collections;
-import org.epics.pvmanager.Function;
 import java.util.List;
 import java.util.logging.Level;
-import static org.epics.pvmanager.TimeSupport.timestampOf;
-import org.epics.pvmanager.util.TimeStamp;
+import java.util.logging.Logger;
+import org.epics.pvmanager.Function;
+import static org.epics.pvmanager.TimeSupport.*;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -72,7 +70,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
         for (Function<List<T>> collector : collectors) {
             List<T> data = collector.getValue();
             if (data.size() > 1) {
-                Timestamp time = TimeStamp.asTimestamp(timestampOf(data.get(data.size() - 2)));
+                Timestamp time = toTimestamp(data.get(data.size() - 2));
                 if (time != null)
                     return time;
             }
@@ -85,7 +83,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
         T latest = null;
         long latestDistance = Long.MAX_VALUE;
         for (T value : data) {
-            Timestamp newTime = TimeStamp.asTimestamp(timestampOf(value));
+            Timestamp newTime = toTimestamp(value);
             if (log.isLoggable(Level.FINEST)) {
                 buffer.append(newTime.getNanoSec()).append(", ");
             }
@@ -104,7 +102,7 @@ class SynchronizedVDoubleAggregator extends Function<VMultiDouble> {
             }
         }
         if (log.isLoggable(Level.FINEST)) {
-            buffer.append("[").append(timestampOf(latest).getNanoSec()).append("|").append(reference.getNanoSec()).append("]");
+            buffer.append("[").append(toTimestamp(latest).getNanoSec()).append("|").append(reference.getNanoSec()).append("]");
             log.finest(buffer.toString());
         }
         return latest;
