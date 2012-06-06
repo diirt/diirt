@@ -21,6 +21,7 @@ import org.epics.pvmanager.expression.SourceRateExpressionList;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.pvmanager.util.TimeStamp;
+import org.epics.util.array.ListNumber;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
@@ -41,9 +42,11 @@ public class ExpressionLanguage {
      * Expects a numeric scalar (VDouble or VInt) and converts it to
      * a VDouble.
      * 
+     * @deprecated use {@link #vNumber(java.lang.String) }
      * @param expression an expression that returns a numeric scalar
      * @return a new expression
      */
+    @Deprecated
     public static SourceRateExpression<VDouble> vDoubleOf(SourceRateExpression<?> expression) {
         return new SourceRateExpressionImpl<VDouble>(expression, new ConverterVDoubleFunction(expression.getFunction()), expression.getName());
     }
@@ -52,11 +55,33 @@ public class ExpressionLanguage {
      * Expects a numeric array (VDoubleArray, VFloatArray, VIntArray, VShortArray
      * or VByteArray) and converts it to a VDoubleArray.
      * 
+     * @deprecated use {@link #vNumberArray(java.lang.String) }
      * @param expression an expression that returns a numeric array
      * @return a new expression
      */
+    @Deprecated
     public static SourceRateExpression<VDoubleArray> vDoubleArrayOf(SourceRateExpression<?> expression) {
         return new SourceRateExpressionImpl<VDoubleArray>(expression, new ConverterVDoubleArrayFunction(expression.getFunction()), expression.getName());
+    }
+
+    /**
+     * A channel with the given name of type VNumber.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VNumber, Number> vNumber(String name) {
+        return channel(name, VNumber.class, Number.class);
+    }
+
+    /**
+     * A channel with the given name of type VNumberArray.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VNumberArray, ListNumber> vNumberArray(String name) {
+        return channel(name, VNumberArray.class, ListNumber.class);
     }
 
     /**
