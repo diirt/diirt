@@ -14,7 +14,6 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.WriteExpression;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
-import org.epics.pvmanager.util.TimeDuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,6 +26,7 @@ import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.WriteExpressionList;
+import org.epics.util.time.TimeDuration;
 
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
@@ -189,6 +189,20 @@ public class ExpressionLanguage {
         return new DesiredRateExpressionImpl<List<T>>(expression,
                 new TimedCacheCollector<T>(expression.getFunction(), maxIntervalBetweenSamples),
                 expression.getName());
+    }
+
+    /**
+     * Returns all the values starting the latest value and older up to
+     * the time different given by the interval.
+     * 
+     * @param <T> type being read
+     * @param expression expression to read
+     * @param maxIntervalBetweenSamples maximum time difference between values
+     * @return a new expression
+     */
+    public static <T> DesiredRateExpression<List<T>>
+            timedCacheOf(SourceRateExpression<T> expression, org.epics.pvmanager.util.TimeDuration maxIntervalBetweenSamples) {
+        return timedCacheOf(expression, org.epics.pvmanager.util.TimeDuration.asTimeDuration(maxIntervalBetweenSamples));
     }
 
     /**
