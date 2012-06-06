@@ -18,10 +18,10 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
-import org.epics.pvmanager.util.TimeDuration;
-import org.epics.pvmanager.util.TimeStamp;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.pvmanager.util.TimeStamp;
+import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -261,7 +261,7 @@ public class ExpressionLanguage {
      */
     public static DesiredRateExpression<VMultiDouble>
             synchronizedArrayOf(TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
-        return synchronizedArrayOf(tolerance, tolerance.multiplyBy(10), expressions);
+        return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
     }
 
     /**
@@ -276,22 +276,53 @@ public class ExpressionLanguage {
      */
     public static DesiredRateExpression<VMultiDouble>
             synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
-        if (cacheDepth.equals(TimeDuration.ms(0)))
-            throw new IllegalArgumentException("Distance between samples must be non-zero");
+        if (cacheDepth.equals(TimeDuration.ofMillis(0)) && cacheDepth.getSec() > 0)
+            throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
         List<String> names = new ArrayList<String>();
         List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
         DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
         for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
-            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
+            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, org.epics.pvmanager.util.TimeDuration.durationOf(cacheDepth));
             desiredRateExpressions.and(collectorExp);
             collectors.add(collectorExp.getFunction());
             names.add(expression.getName());
         }
         SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
+                new SynchronizedVDoubleAggregator(names, collectors, org.epics.pvmanager.util.TimeDuration.durationOf(tolerance));
         return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
                 (Function<VMultiDouble>) aggregator, "syncArray");
     }
+
+    /**
+     * A synchronized array from the given expression.
+     *
+     * @param tolerance maximum time difference between samples
+     * @param expressions the expressions from which to reconstruct the array
+     * @return an expression for the array
+     */
+    @Deprecated
+    public static DesiredRateExpression<VMultiDouble>
+            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
+        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance), expressions);
+    }
+
+    /**
+     * A synchronized array from the given expression.
+     *
+     * @param tolerance maximum time difference between samples in the
+     * reconstructed array
+     * @param cacheDepth maximum time difference between samples in the caches
+     * used to reconstruct the array
+     * @param expressions the expressions from which to reconstruct the array
+     * @return an expression for the array
+     */
+    @Deprecated
+    public static DesiredRateExpression<VMultiDouble>
+            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, org.epics.pvmanager.util.TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
+        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance),
+                org.epics.pvmanager.util.TimeDuration.asTimeDuration(cacheDepth), expressions);
+    }
+
 
     /**
      * A column for an aggregated vTable.
