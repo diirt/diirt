@@ -4,21 +4,18 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.expression.SourceRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.SourceRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.TimeDuration;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
+import org.epics.pvmanager.expression.SourceRateExpression;
+import org.epics.pvmanager.expression.SourceRateExpressionImpl;
+import org.epics.pvmanager.sim.SimulationDataSource;
+import org.epics.util.time.TimeDuration;
+import static org.junit.Assert.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
@@ -59,7 +56,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).every(TimeDuration.hz(10));
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).maxRate(TimeDuration.ofHertz(10));
         notificationReceived = false;
 
         pv.addPVReaderListener(new PVReaderListener() {
@@ -95,7 +92,7 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionSourceRateFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).every(TimeDuration.hz(10));
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).maxRate(TimeDuration.ofHertz(10));
         notificationReceived = false;
 
         pv.addPVReaderListener(new PVReaderListener() {
