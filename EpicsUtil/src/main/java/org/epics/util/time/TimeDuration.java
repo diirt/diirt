@@ -231,6 +231,20 @@ public class TimeDuration {
     public TimeInterval before(Timestamp reference) {
         return TimeInterval.between(reference.minus(this), reference);
     }
+    
+    /**
+     * Returns the duration in nanoseconds. If the duration exceeds the
+     * range of a long, an exception is thrown.
+     * 
+     * @return the duration in nanoseconds
+     */
+    public long toNanosLong() {
+        if (Math.abs(getSec()) >= (Long.MAX_VALUE / NANOSEC_IN_SEC)) {
+            throw new ArithmeticException("Overflow: duration cannot be represented in nanoseconds as long");
+        }
+        
+        return getSec() * NANOSEC_IN_SEC + getNanoSec();
+    }
 
     private static final DecimalFormat format = new DecimalFormat("000000000");
 
