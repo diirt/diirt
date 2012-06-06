@@ -43,12 +43,14 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
 
     @Override
+    @Deprecated
     public PVReaderConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout) {
         super.timeout(timeout);
         return this;
     }
 
     @Override
+    @Deprecated
     public PVReaderConfiguration<T> timeout(org.epics.pvmanager.util.TimeDuration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
         return this;
@@ -91,21 +93,10 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @return the PVReader
      */
     public PVReader<T> maxRate(TimeDuration rate) {
-        return every(org.epics.pvmanager.util.TimeDuration.durationOf(rate));
-    }
-
-    /**
-     * Sets the rate of scan of the expression and creates the actual {@link PVReader}
-     * object that can be monitored through listeners.
-     * 
-     * @param period the minimum time distance (i.e. the maximum rate) at which notifications should be sent
-     * @return the PVReader
-     */
-    public PVReader<T> every(org.epics.pvmanager.util.TimeDuration period) {
         //int scanPeriodMs = (int) (period.getNanoSec() / 1000000);
         
-        if (period.getNanoSec() < 5000000) {
-            throw new IllegalArgumentException("Current implementation limits the rate to >5ms or <200Hz (requested " + (period.getNanoSec() / 1000000) + "ms)");
+        if (rate.getSec() < 0 && rate.getNanoSec() < 5000000) {
+            throw new IllegalArgumentException("Current implementation limits the rate to >5ms or <200Hz (requested " + rate + "s)");
         }
 
         checkDataSourceAndThreadSwitch();
@@ -120,7 +111,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         }
         Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
         Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(), notificationExecutor, dataRecipe.getExceptionHandler());
-        notifier.startScan(period);
+        notifier.startScan(org.epics.pvmanager.util.TimeDuration.durationOf(rate));
         if (timeout != null) {
             if (timeoutMessage == null)
                 timeoutMessage = "Read timeout";
@@ -134,5 +125,17 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         PVRecipe recipe = new PVRecipe(dataRecipe, source, notifier);
         notifier.setPvRecipe(recipe);
         return pv;
+    }
+
+    /**
+     * Sets the rate of scan of the expression and creates the actual {@link PVReader}
+     * object that can be monitored through listeners.
+     * 
+     * @param period the minimum time distance (i.e. the maximum rate) at which notifications should be sent
+     * @return the PVReader
+     */
+    @Deprecated
+    public PVReader<T> every(org.epics.pvmanager.util.TimeDuration period) {
+        return maxRate(org.epics.pvmanager.util.TimeDuration.asTimeDuration(period));
     }
 }
