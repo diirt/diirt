@@ -39,6 +39,24 @@ public class TimeDuration {
         this.nanoSec = nanoSec;
         this.sec = sec;
     }
+    
+    /**
+     * True if the duration is non-zero and positive.
+     * 
+     * @return true if positive
+     */
+    public boolean isPositive() {
+        return getSec() > 0 || (getSec() == 0 && getNanoSec() > 0);
+    }
+    
+    /**
+     * True if the duration is zero or positive.
+     * 
+     * @return true if non negative
+     */
+    public boolean isNegative() {
+        return getSec() < 0;
+    }
 
     /**
      * The amount of nanoseconds for the duration. This value is guaranteed to be between

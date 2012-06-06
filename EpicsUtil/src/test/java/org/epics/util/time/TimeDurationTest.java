@@ -339,4 +339,76 @@ public class TimeDurationTest {
         assertThat(duration.toNanosLong(), equalTo(1500000000L));
     }
     
+    @Test
+    public void isPositive1() {
+        TimeDuration duration = TimeDuration.ofSeconds(0);
+        assertThat(duration.isPositive(), equalTo(false));
+    }
+    
+    @Test
+    public void isPositive2() {
+        TimeDuration duration = TimeDuration.ofSeconds(1.3);
+        assertThat(duration.isPositive(), equalTo(true));
+    }
+    
+    @Test
+    public void isPositive3() {
+        TimeDuration duration = TimeDuration.ofSeconds(0.5);
+        assertThat(duration.isPositive(), equalTo(true));
+    }
+    
+    @Test
+    public void isPositive4() {
+        TimeDuration duration = TimeDuration.ofSeconds(5.0);
+        assertThat(duration.isPositive(), equalTo(true));
+    }
+    
+    @Test
+    public void isPositive5() {
+        TimeDuration duration = TimeDuration.ofSeconds(-0.5);
+        assertThat(duration.isPositive(), equalTo(false));
+    }
+    
+    @Test
+    public void isPositive6() {
+        TimeDuration duration = TimeDuration.ofSeconds(-5.5);
+        assertThat(duration.isPositive(), equalTo(false));
+    }
+    
+    @Test
+    public void isNegative1() {
+        TimeDuration duration = TimeDuration.ofSeconds(0);
+        assertThat(duration.isNegative(), equalTo(false));
+    }
+    
+    @Test
+    public void isNegative2() {
+        TimeDuration duration = TimeDuration.ofSeconds(1.3);
+        assertThat(duration.isNegative(), equalTo(false));
+    }
+    
+    @Test
+    public void isNegative3() {
+        TimeDuration duration = TimeDuration.ofSeconds(0.5);
+        assertThat(duration.isNegative(), equalTo(false));
+    }
+    
+    @Test
+    public void isNegative4() {
+        TimeDuration duration = TimeDuration.ofSeconds(5.0);
+        assertThat(duration.isNegative(), equalTo(false));
+    }
+    
+    @Test
+    public void isNegative5() {
+        TimeDuration duration = TimeDuration.ofSeconds(-0.5);
+        assertThat(duration.isNegative(), equalTo(true));
+    }
+    
+    @Test
+    public void isNegative6() {
+        TimeDuration duration = TimeDuration.ofSeconds(-5.5);
+        assertThat(duration.isNegative(), equalTo(true));
+    }
+    
 }
