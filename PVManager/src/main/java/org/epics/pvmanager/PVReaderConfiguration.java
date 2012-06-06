@@ -111,11 +111,11 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         }
         Function<T> aggregatedFunction = aggregatedPVExpression.getFunction();
         Notifier<T> notifier = new Notifier<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(), notificationExecutor, dataRecipe.getExceptionHandler());
-        notifier.startScan(org.epics.pvmanager.util.TimeDuration.durationOf(rate));
+        notifier.startScan(rate);
         if (timeout != null) {
             if (timeoutMessage == null)
                 timeoutMessage = "Read timeout";
-            notifier.timeout(org.epics.pvmanager.util.TimeDuration.durationOf(timeout), timeoutMessage);
+            notifier.timeout(timeout, timeoutMessage);
         }
         try {
             source.connect(dataRecipe);
