@@ -99,7 +99,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
             if (timeoutMessage == null)
                 timeoutMessage = "Write timeout";
             pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), exceptionHandler,
-                    org.epics.pvmanager.util.TimeDuration.durationOf(timeout), timeoutMessage));
+                    timeout, timeoutMessage));
         } catch (Exception ex) {
             exceptionHandler.handleException(ex);
         }
