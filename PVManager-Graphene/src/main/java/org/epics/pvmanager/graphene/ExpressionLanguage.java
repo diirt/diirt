@@ -30,8 +30,8 @@ public class ExpressionLanguage {
         BasicTypeSupport.install();
     }
 
-    public static Histogram1DPlot histogramOf(SourceRateExpression<VDouble> vDoubles) {
-        DesiredRateExpression<List<VDouble>> queue = newValuesOf(vDoubles);
+    public static Histogram1DPlot histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {
+        DesiredRateExpression<? extends List<? extends VNumber>> queue = newValuesOf(vDoubles);
         return new Histogram1DPlot(queue, new Histogram1DFunction(queue.getFunction()), "histogram");
     }
 
