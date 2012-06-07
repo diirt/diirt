@@ -55,6 +55,48 @@ public class Arrays {
         };
     }
 
+    public static OrderedDataset2D lineData(final ListNumber data) {
+        return new OrderedDataset2D() {
+            
+            private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
+
+            @Override
+            public double getXValue(int index) {
+                return index;
+            }
+
+            @Override
+            public double getYValue(int index) {
+                return data.getDouble(index);
+            }
+
+            @Override
+            public double getXMinValue() {
+                return 0;
+            }
+
+            @Override
+            public double getXMaxValue() {
+                return data.size() - 1;
+            }
+
+            @Override
+            public double getYMinValue() {
+                return minMax.min.doubleValue();
+            }
+
+            @Override
+            public double getYMaxValue() {
+                return minMax.max.doubleValue();
+            }
+
+            @Override
+            public int getCount() {
+                return data.size();
+            }
+        };
+    }
+
     public static OrderedDataset2D lineData(final double[] data, final double xInitialOffset, final double xIncrementSize) {
         return new OrderedDataset2D() {
             
@@ -93,6 +135,48 @@ public class Arrays {
             @Override
             public int getCount() {
                 return data.length;
+            }
+        };
+    }
+
+    public static OrderedDataset2D lineData(final ListNumber data, final double xInitialOffset, final double xIncrementSize) {
+        return new OrderedDataset2D() {
+            
+            private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
+
+            @Override
+            public double getXValue(int index) {
+                return index;
+            }
+
+            @Override
+            public double getYValue(int index) {
+                return data.getDouble(index);
+            }
+
+            @Override
+            public double getXMinValue() {
+                return getXValue(0);
+            }
+
+            @Override
+            public double getXMaxValue() {
+                return getXValue(data.size());
+            }
+
+            @Override
+            public double getYMinValue() {
+                return minMax.min.doubleValue();
+            }
+
+            @Override
+            public double getYMaxValue() {
+                return minMax.max.doubleValue();
+            }
+
+            @Override
+            public int getCount() {
+                return data.size();
             }
         };
     }
