@@ -145,7 +145,7 @@ public class MockHistogram extends javax.swing.JFrame {
             return;
         }
 
-        plot = ExpressionLanguage.histogramOf(vDouble(pvName.getText()));
+        plot = ExpressionLanguage.histogramOf(vNumber(pvName.getText()));
         plot.update(new Histogram1DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
         pv = PVManager.read(plot).notifyOn(swingEDT()).every(hz(50));
         pv.addPVReaderListener(new PVReaderListener() {
