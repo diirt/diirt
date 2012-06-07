@@ -48,4 +48,9 @@ public class CircularBufferDouble extends ListDouble {
             startOffset = 0;
     }
     
+    public void clear() {
+        startOffset = 0;
+        endOffset = 0;
+    }
+    
 }
