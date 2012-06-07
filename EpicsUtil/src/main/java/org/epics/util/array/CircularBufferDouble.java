@@ -15,7 +15,7 @@ public class CircularBufferDouble extends ListDouble {
     private int endOffset;
 
     public CircularBufferDouble(int capacity) {
-        data = new double[capacity];
+        data = new double[capacity+1];
     }
 
     @Override
