@@ -29,7 +29,7 @@ public class ArrayLongTest {
 
     @Test(expected=UnsupportedOperationException.class)
     public void wrap2() {
-        ArrayLong array = new ArrayLong(new long[] {0, 1, 2, 3, 4, 5});
+        ArrayLong array = new ArrayLong(0, 1, 2, 3, 4, 5);
         array.setDouble(0, 0);
     }
 

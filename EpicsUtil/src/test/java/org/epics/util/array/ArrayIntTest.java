@@ -29,7 +29,7 @@ public class ArrayIntTest {
 
     @Test(expected=UnsupportedOperationException.class)
     public void wrap2() {
-        ArrayInt array = new ArrayInt(new int[] {0, 1, 2, 3, 4, 5});
+        ArrayInt array = new ArrayInt(0, 1, 2, 3, 4, 5);
         array.setDouble(0, 0);
     }
 

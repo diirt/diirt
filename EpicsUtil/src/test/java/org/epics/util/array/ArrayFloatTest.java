@@ -29,7 +29,7 @@ public class ArrayFloatTest {
 
     @Test(expected=UnsupportedOperationException.class)
     public void wrap2() {
-        ArrayFloat array = new ArrayFloat(new float[] {0, 1, 2, 3, 4, 5});
+        ArrayFloat array = new ArrayFloat(0, 1, 2, 3, 4, 5);
         array.setDouble(0, 0);
     }
 
