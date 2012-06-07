@@ -12,34 +12,17 @@ import org.epics.util.array.*;
  */
 public class Dataset1DArray implements Dataset1D {
 
-    private double[] data;
-    private int startOffset;
-    private int endOffset;
+    private final CircularBufferDouble buffer;
     private double minValue = Double.NaN;
     private double maxValue = Double.NaN;
     
     public Dataset1DArray(int capacity) {
-        data = new double[capacity+1];
+        buffer = new CircularBufferDouble(capacity);
     }
 
     @Override
     public CollectionNumber getValues() {
-        return new CollectionDouble() {
-
-            @Override
-            public IteratorDouble iterator() {
-                return Iterators.arrayIterator(data, startOffset, endOffset);
-            }
-
-            @Override
-            public int size() {
-                int size = endOffset - startOffset;
-                if (size < 0) {
-                    size += data.length;
-                }
-                return size;
-            }
-        };
+        return buffer;
     }
 
     @Override
@@ -51,28 +34,15 @@ public class Dataset1DArray implements Dataset1D {
     public Number getMaxValue() {
         return maxValue;
     }
-    
-    private void addValue(double value) {
-        data[endOffset] = value;
-        endOffset++;
-        if (endOffset == data.length) {
-            endOffset = 0;
-        }
-        if (endOffset == startOffset)
-            startOffset++;
-        if (startOffset == data.length)
-            startOffset = 0;
-    }
 
     @Override
     public void update(Dataset1DUpdate update) {
         if (update.isToClear()) {
-            startOffset = 0;
-            endOffset = 0;
+            buffer.clear();
         }
         IteratorNumber iteratorDouble = update.getNewData();
         while (iteratorDouble.hasNext()) {
-            addValue(iteratorDouble.nextDouble());
+            buffer.addDouble(iteratorDouble.nextDouble());
         }
 
         CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(getValues());
