@@ -210,7 +210,7 @@
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>epics-util</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
