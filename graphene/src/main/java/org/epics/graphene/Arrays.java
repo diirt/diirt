@@ -4,6 +4,9 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListNumber;
+
 /**
  *
  * @author carcassi
@@ -137,6 +140,53 @@ public class Arrays {
             @Override
             public int getCount() {
                 return x.length;
+            }
+        };
+    }
+
+    public static OrderedDataset2D lineData(final ListNumber x, final ListNumber y) {
+        if (x.size() != y.size()) {
+            throw new IllegalArgumentException("Arrays length don't match: " + x.size() + " - " + y.size());
+        }
+        
+        return new OrderedDataset2D() {
+            
+            private final CollectionNumbers.MinMax xMinMax = CollectionNumbers.minMaxDouble(x);
+            private final CollectionNumbers.MinMax yMinMax = CollectionNumbers.minMaxDouble(y);
+
+            @Override
+            public double getXValue(int index) {
+                return x.getDouble(index);
+            }
+
+            @Override
+            public double getYValue(int index) {
+                return y.getDouble(index);
+            }
+
+            @Override
+            public double getXMinValue() {
+                return xMinMax.min.doubleValue();
+            }
+
+            @Override
+            public double getXMaxValue() {
+                return xMinMax.max.doubleValue();
+            }
+
+            @Override
+            public double getYMinValue() {
+                return yMinMax.min.doubleValue();
+            }
+
+            @Override
+            public double getYMaxValue() {
+                return yMinMax.max.doubleValue();
+            }
+
+            @Override
+            public int getCount() {
+                return x.size();
             }
         };
     }
