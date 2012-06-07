@@ -146,7 +146,7 @@ public class Arrays {
 
             @Override
             public double getXValue(int index) {
-                return index;
+                return xInitialOffset + xIncrementSize *index;
             }
 
             @Override
