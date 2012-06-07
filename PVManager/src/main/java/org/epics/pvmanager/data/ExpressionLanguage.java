@@ -63,6 +63,19 @@ public class ExpressionLanguage {
     public static SourceRateExpression<VDoubleArray> vDoubleArrayOf(SourceRateExpression<?> expression) {
         return new SourceRateExpressionImpl<VDoubleArray>(expression, new ConverterVDoubleArrayFunction(expression.getFunction()), expression.getName());
     }
+    
+    
+    public static DesiredRateExpression<VDoubleArray>
+            vDoubleArrayOf(DesiredRateExpressionList<? extends VNumber> expressions) {
+        // TODO - there should be a common function to extract the list of functions
+        List<Function<? extends VNumber>> functions = new ArrayList<Function<? extends VNumber>>();
+        for (DesiredRateExpression<? extends VNumber> expression : expressions.getDesiredRateExpressions()) {
+            functions.add(expression.getFunction());
+        }
+        VNumbersToVDoubleArrayConverter converter =
+                new VNumbersToVDoubleArrayConverter(functions);
+        return new DesiredRateExpressionImpl<VDoubleArray>(expressions, converter, "syncArray");
+    }
 
     /**
      * A channel with the given name of type VNumber.

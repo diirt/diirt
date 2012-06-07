@@ -9,6 +9,7 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.epics.util.array.ListDouble;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -499,6 +500,11 @@ public class ValueFactory {
     
     public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
         return newVDoubleArray(values, Collections.singletonList(values.length), alarm, time, display);
+    }
+    
+    public static VDoubleArray newVDoubleArray(ListDouble data, Alarm alarm, Time time, Display display) {
+        return new IVDoubleArray(data, Collections.singletonList(data.size()), alarm,
+                time, display);
     }
     
     public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
