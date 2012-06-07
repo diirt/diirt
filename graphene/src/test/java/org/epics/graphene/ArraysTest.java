@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ public class ArraysTest {
 
     @Test
     public void testArrayLineData() {
-        OrderedDataset2D dataset = Arrays.lineData(new double[] {1, 2, 3});
+        OrderedDataset2D dataset = Arrays.lineData(new ArrayDouble(1, 2, 3));
         assertEquals(3, dataset.getCount());
         assertEquals(0.0, dataset.getXValue(0), 0.001);
         assertEquals(1.0, dataset.getXValue(1), 0.001);
@@ -40,7 +41,7 @@ public class ArraysTest {
 
     @Test
     public void testArrayScaledLineData() {
-        OrderedDataset2D dataset = Arrays.lineData(new double[] {1, 2, 3}, 10, 5);
+        OrderedDataset2D dataset = Arrays.lineData(new ArrayDouble(1, 2, 3), 10, 5);
         assertEquals(3, dataset.getCount());
         assertEquals(10.0, dataset.getXValue(0), 0.001);
         assertEquals(15.0, dataset.getXValue(1), 0.001);
@@ -52,7 +53,7 @@ public class ArraysTest {
 
     @Test
     public void testDoubleArrayLineData() {
-        OrderedDataset2D dataset = Arrays.lineData(new double[] {1, 2, 3}, new double[] {3,7,5});
+        OrderedDataset2D dataset = Arrays.lineData(new ArrayDouble(1, 2, 3), new ArrayDouble(3,7,5));
         assertEquals(3, dataset.getCount());
         assertEquals(1.0, dataset.getXValue(0), 0.001);
         assertEquals(2.0, dataset.getXValue(1), 0.001);
