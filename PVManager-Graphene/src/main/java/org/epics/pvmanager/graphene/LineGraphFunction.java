@@ -11,10 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import org.epics.graphene.*;
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VDoubleArray;
-import org.epics.pvmanager.data.VImage;
-import org.epics.pvmanager.data.ValueUtil;
+import org.epics.pvmanager.data.*;
 
 /**
  *
@@ -24,8 +21,8 @@ class LineGraphFunction extends Function<VImage> {
     
     private Function<VDoubleArray> yArray;
     private Function<VDoubleArray> xArray;
-    private Function<VDouble> xInitialOffset;
-    private Function<VDouble> xIncrementSize;
+    private Function<? extends VNumber> xInitialOffset;
+    private Function<? extends VNumber> xIncrementSize;
     
     private LineGraphRenderer renderer = new LineGraphRenderer();
     
@@ -41,7 +38,7 @@ class LineGraphFunction extends Function<VImage> {
         this.yArray = yArray;
     }
 
-    public LineGraphFunction(Function<VDoubleArray> yArray, Function<VDouble> xInitialOffset, Function<VDouble> xIncrementSize) {
+    public LineGraphFunction(Function<VDoubleArray> yArray, Function<? extends VNumber> xInitialOffset, Function<? extends VNumber> xIncrementSize) {
         this.xInitialOffset = xInitialOffset;
         this.xIncrementSize = xIncrementSize;
         this.yArray = yArray;
@@ -71,12 +68,12 @@ class LineGraphFunction extends Function<VImage> {
             
         } else if (xInitialOffset != null && xIncrementSize != null) {
             // Plot with one array rescaled
-            VDouble initialOffet = xInitialOffset.getValue();
-            VDouble incrementSize = xIncrementSize.getValue();
+            VNumber initialOffet = xInitialOffset.getValue();
+            VNumber incrementSize = xIncrementSize.getValue();
             
             if (initialOffet != null && initialOffet.getValue() != null &&
                     incrementSize != null && incrementSize.getValue() != null) {
-                dataset = org.epics.graphene.Arrays.lineData(newData.getArray(), initialOffet.getValue(), incrementSize.getValue());
+                dataset = org.epics.graphene.Arrays.lineData(newData.getArray(), initialOffet.getValue().doubleValue(), incrementSize.getValue().doubleValue());
             }
         }
         

@@ -41,11 +41,11 @@ public class ExpressionLanguage {
     }
 
     public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> yArray,
-            SourceRateExpression<VDouble> xInitialOffset,
-            SourceRateExpression<VDouble> xIncrementSize) {
+            SourceRateExpression<? extends VNumber> xInitialOffset,
+            SourceRateExpression<? extends VNumber> xIncrementSize) {
         DesiredRateExpression<VDoubleArray> yCache = latestValueOf(yArray);
-        DesiredRateExpression<VDouble> xInitialOffsetCache = latestValueOf(xInitialOffset);
-        DesiredRateExpression<VDouble> xIncrementSizeCache = latestValueOf(xIncrementSize);
+        DesiredRateExpression<? extends VNumber> xInitialOffsetCache = latestValueOf(xInitialOffset);
+        DesiredRateExpression<? extends VNumber> xIncrementSizeCache = latestValueOf(xIncrementSize);
         return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(yCache).and(xInitialOffsetCache).and(xIncrementSizeCache),
                 new LineGraphFunction(yCache.getFunction(), xInitialOffsetCache.getFunction(), xIncrementSizeCache.getFunction()), "lineGraph");
     }
