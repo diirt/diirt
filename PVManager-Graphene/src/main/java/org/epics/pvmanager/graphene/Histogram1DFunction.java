@@ -50,8 +50,8 @@ class Histogram1DFunction extends Function<VImage> {
         
         // Update the dataset
         Dataset1DUpdate update = new Dataset1DUpdate();
-        for (VNumber vDouble : newData) {
-            update.addData(vDouble.getValue().doubleValue());
+        for (VNumber vNumber : newData) {
+            update.addData(vNumber.getValue().doubleValue());
         }
         dataset.update(update);
         
