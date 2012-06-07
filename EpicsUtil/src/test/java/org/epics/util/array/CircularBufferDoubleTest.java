@@ -57,4 +57,14 @@ public class CircularBufferDoubleTest {
         ListDouble reference = new ArrayDouble(new double[] {1,2,3,4,5,6,7,8,9,10});
         assertThat(coll, equalTo(reference));
     }
+    
+    @Test
+    public void add3() {
+        CircularBufferDouble coll = new CircularBufferDouble(10);
+        for (int i = 0; i < 5; i++) {
+            coll.addDouble(i);
+        }
+        ListDouble reference = new ArrayDouble(new double[] {0,1,2,3,4});
+        assertThat(coll, equalTo(reference));
+    }
 }
