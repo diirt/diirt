@@ -19,8 +19,8 @@ import org.epics.pvmanager.data.*;
  */
 class LineGraphFunction extends Function<VImage> {
     
-    private Function<VDoubleArray> yArray;
-    private Function<VDoubleArray> xArray;
+    private Function<? extends VNumberArray> yArray;
+    private Function<? extends VNumberArray> xArray;
     private Function<? extends VNumber> xInitialOffset;
     private Function<? extends VNumber> xIncrementSize;
     
@@ -29,16 +29,16 @@ class LineGraphFunction extends Function<VImage> {
     private VImage previousImage;
     private final List<LineGraphRendererUpdate> rendererUpdates = Collections.synchronizedList(new ArrayList<LineGraphRendererUpdate>());
 
-    public LineGraphFunction(Function<VDoubleArray> argument) {
+    public LineGraphFunction(Function<? extends VNumberArray> argument) {
         this.yArray = argument;
     }
 
-    public LineGraphFunction(Function<VDoubleArray> xArray, Function<VDoubleArray> yArray) {
+    public LineGraphFunction(Function<? extends VNumberArray> xArray, Function<? extends VNumberArray> yArray) {
         this.xArray = xArray;
         this.yArray = yArray;
     }
 
-    public LineGraphFunction(Function<VDoubleArray> yArray, Function<? extends VNumber> xInitialOffset, Function<? extends VNumber> xIncrementSize) {
+    public LineGraphFunction(Function<? extends VNumberArray> yArray, Function<? extends VNumber> xInitialOffset, Function<? extends VNumber> xIncrementSize) {
         this.xInitialOffset = xInitialOffset;
         this.xIncrementSize = xIncrementSize;
         this.yArray = yArray;
@@ -51,19 +51,19 @@ class LineGraphFunction extends Function<VImage> {
 
     @Override
     public VImage getValue() {
-        VDoubleArray newData = yArray.getValue();
+        VNumberArray newData = yArray.getValue();
         
         // No data, no plot
-        if (newData == null || newData.getArray() == null)
+        if (newData == null || newData.getData() == null)
             return null;
         
         // Re-create the dataset
         OrderedDataset2D dataset = null;
         if (xArray != null) {
             // Plot with two arrays
-            VDoubleArray xData = xArray.getValue();
-            if (xData != null && newData.getArray() != null) {
-                dataset = org.epics.graphene.Arrays.lineData(xData.getArray(), newData.getArray());
+            VNumberArray xData = xArray.getValue();
+            if (xData != null && newData.getData() != null) {
+                dataset = org.epics.graphene.Arrays.lineData(xData.getData(), newData.getData());
             }
             
         } else if (xInitialOffset != null && xIncrementSize != null) {
@@ -73,13 +73,13 @@ class LineGraphFunction extends Function<VImage> {
             
             if (initialOffet != null && initialOffet.getValue() != null &&
                     incrementSize != null && incrementSize.getValue() != null) {
-                dataset = org.epics.graphene.Arrays.lineData(newData.getArray(), initialOffet.getValue().doubleValue(), incrementSize.getValue().doubleValue());
+                dataset = org.epics.graphene.Arrays.lineData(newData.getData(), initialOffet.getValue().doubleValue(), incrementSize.getValue().doubleValue());
             }
         }
         
         if (dataset == null) {
             // Default to single array not rescaled
-            dataset = org.epics.graphene.Arrays.lineData(newData.getArray());
+            dataset = org.epics.graphene.Arrays.lineData(newData.getData());
         }
 
         // Process all renderer updates

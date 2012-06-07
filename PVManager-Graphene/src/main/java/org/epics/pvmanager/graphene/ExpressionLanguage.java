@@ -35,25 +35,25 @@ public class ExpressionLanguage {
         return new Histogram1DPlot(queue, new Histogram1DFunction(queue.getFunction()), "histogram");
     }
 
-    public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> vDoubleArray) {
-        DesiredRateExpression<VDoubleArray> queue = latestValueOf(vDoubleArray);
+    public static LineGraphPlot lineGraphOf(SourceRateExpression<? extends VNumberArray> vDoubleArray) {
+        DesiredRateExpression<? extends VNumberArray> queue = latestValueOf(vDoubleArray);
         return new LineGraphPlot(queue, new LineGraphFunction(queue.getFunction()), "lineGraph");
     }
 
-    public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> yArray,
+    public static LineGraphPlot lineGraphOf(SourceRateExpression<? extends VNumberArray> yArray,
             SourceRateExpression<? extends VNumber> xInitialOffset,
             SourceRateExpression<? extends VNumber> xIncrementSize) {
-        DesiredRateExpression<VDoubleArray> yCache = latestValueOf(yArray);
+        DesiredRateExpression<? extends VNumberArray> yCache = latestValueOf(yArray);
         DesiredRateExpression<? extends VNumber> xInitialOffsetCache = latestValueOf(xInitialOffset);
         DesiredRateExpression<? extends VNumber> xIncrementSizeCache = latestValueOf(xIncrementSize);
         return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(yCache).and(xInitialOffsetCache).and(xIncrementSizeCache),
                 new LineGraphFunction(yCache.getFunction(), xInitialOffsetCache.getFunction(), xIncrementSizeCache.getFunction()), "lineGraph");
     }
 
-    public static LineGraphPlot lineGraphOf(SourceRateExpression<VDoubleArray> xVDoubleArray, SourceRateExpression<VDoubleArray> yVDoubleArray) {
-        DesiredRateExpression<VDoubleArray> yQueue = latestValueOf(yVDoubleArray);
-        DesiredRateExpression<VDoubleArray> xQueue = latestValueOf(xVDoubleArray);
-        return new LineGraphPlot(xQueue.and(yQueue), new LineGraphFunction(xQueue.getFunction(), yQueue.getFunction()), "lineGraph");
+    public static LineGraphPlot lineGraphOf(SourceRateExpression<? extends VNumberArray> xVDoubleArray, SourceRateExpression<? extends VNumberArray> yVDoubleArray) {
+        DesiredRateExpression<? extends VNumberArray> yQueue = latestValueOf(yVDoubleArray);
+        DesiredRateExpression<? extends VNumberArray> xQueue = latestValueOf(xVDoubleArray);
+        return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(xQueue).and(yQueue), new LineGraphFunction(xQueue.getFunction(), yQueue.getFunction()), "lineGraph");
     }
 
 }
