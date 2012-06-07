@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>EpicsUtil</artifactId>
+            <artifactId>epics-util</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
