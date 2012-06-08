@@ -111,6 +111,17 @@ public class ExpressionLanguageTest {
         ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
         assertThat(cache.getValue().getData(), equalTo(reference));
     }
+    
+    @Test
+    public void vDoubleArrayConstant2() {
+        DesiredRateExpression<VDoubleArray> exp = vConst(new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4));
+        assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) exp.getFunction();
+        assertThat(cache.getValue(), not(nullValue()));
+        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
+        ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
+        assertThat(cache.getValue().getData(), equalTo(reference));
+    }
 
     @Test
     public void vAverageOf1() {
