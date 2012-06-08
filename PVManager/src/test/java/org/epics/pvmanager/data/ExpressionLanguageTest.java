@@ -19,10 +19,16 @@ import static org.hamcrest.CoreMatchers.*;
  * @author carcassi
  */
 public class ExpressionLanguageTest {
+    
+    // Testing channel expressions
 
     @Test
     public void vDouble1() {
-        SourceRateExpression<VDouble> myPv = vDouble("my pv");
+        ChannelExpression<VDouble, Double> myPv = vDouble("my pv");
+        assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VDouble> cache = (ValueCache<VDouble>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VDouble.class));
+        assertThat(cache.getValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
 
