@@ -88,6 +88,16 @@ public class ExpressionLanguageTest {
         assertThat(cache.getValue(), instanceOf(VDouble.class));
         assertThat(cache.getValue().getValue(), equalTo(3.14));
     }
+    
+    @Test
+    public void vIntConstant1() {
+        DesiredRateExpression<VInt> exp = vConst(314);
+        assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VInt> cache = (ValueCache<VInt>) exp.getFunction();
+        assertThat(cache.getValue(), not(nullValue()));
+        assertThat(cache.getValue(), instanceOf(VInt.class));
+        assertThat(cache.getValue().getValue(), equalTo(314));
+    }
 
     @Test
     public void vAverageOf1() {
