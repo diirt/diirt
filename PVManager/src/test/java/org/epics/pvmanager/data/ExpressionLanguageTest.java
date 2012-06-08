@@ -11,6 +11,7 @@ import org.epics.pvmanager.expression.SourceRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
+import org.epics.util.array.ListNumber;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -58,6 +59,16 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VInt> cache = (ValueCache<VInt>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VInt.class));
+        assertThat(cache.getValue(), nullValue());
+        assertThat(myPv.getName(), equalTo("my pv"));
+    }
+
+    @Test
+    public void vNumberArray1() {
+        ChannelExpression<VNumberArray, ListNumber> myPv = vNumberArray("my pv");
+        assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VNumberArray> cache = (ValueCache<VNumberArray>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VNumberArray.class));
         assertThat(cache.getValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
