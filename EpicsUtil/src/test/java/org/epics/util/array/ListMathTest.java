@@ -32,10 +32,18 @@ public class ListMathTest {
     }
 
     @Test
-    public void limit() {
-        ArrayDouble array1 = new ArrayDouble(0, 1, 2, 3, 4, 5);
+    public void limit1() {
+        ListDouble array1 = new ArrayDouble(0, 1, 2, 3, 4, 5);
         ListDouble limit = ListMath.limit(array1, 1, 5);
         ListDouble reference = new ArrayDouble(1, 2, 3, 4);
+        assertThat(limit, equalTo(reference));
+    }
+
+    @Test
+    public void limit2() {
+        ListLong array1 = new ArrayLong(0, 1, 2, 3, 4, 5);
+        ListLong limit = ListMath.limit(array1, 1, 5);
+        ListLong reference = new ArrayLong(1, 2, 3, 4);
         assertThat(limit, equalTo(reference));
     }
 }
