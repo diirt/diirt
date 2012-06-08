@@ -11,6 +11,10 @@ import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import org.epics.graphene.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListLong;
+import org.epics.util.array.ListMath;
 
 /**
  *
@@ -19,6 +23,10 @@ import org.epics.graphene.*;
 public class ProfileLineGraph {
 
     public static void main(String[] args) {
+        // Using array, 3.855865984000003, 100 samples, 15000 tries, 600x400
+        // Using ArrayDouble, 3.9436457209999842 ms, 100 samples, 10000 tries, 600x400
+        // Using array, 19.336473031333334 ms, 1000 samples, 1500 tries, 600x400
+        // Using ArrayDouble, 17.84245149399999 ms, 1000 samples, 1500 tries, 600x400
         int nSamples = 100;
         int nTries = 5000;
         int imageWidth = 600;
@@ -29,7 +37,8 @@ public class ProfileLineGraph {
         for (int i = 0; i < nSamples; i++) {
             waveform[i] = rand.nextGaussian();
         }
-        OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(waveform);
+        //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(waveform);
+        OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
         LineGraphRenderer renderer = new LineGraphRenderer(imageWidth, imageHeight);
         renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.CUBIC));
@@ -49,9 +58,18 @@ public class ProfileLineGraph {
         }
         
         System.out.println("average " + stopWatch.getAverageMs() + " ms");
+        System.out.println("total " + stopWatch.getTotalMs() + " ms");
+        
+        ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
+        ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
+        
         Dataset1D timings = new Dataset1DArray(nTries);
-        timings.update(new Dataset1DUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
+        timings.update(new Dataset1DUpdate().addData(timingsExcludeFirst));
         Histogram1D hist = Histograms.createHistogram(timings);
-        ShowResizableImage.showHistogram(hist);
+        OrderedDataset2D line = org.epics.graphene.Arrays.lineData(timingsExcludeFirst);
+        OrderedDataset2D averagedLine = org.epics.graphene.Arrays.lineData(averages);
+        ShowResizableGraph.showHistogram(hist);
+        ShowResizableGraph.showLineGraph(line);
+        ShowResizableGraph.showLineGraph(averagedLine);
     }
 }
