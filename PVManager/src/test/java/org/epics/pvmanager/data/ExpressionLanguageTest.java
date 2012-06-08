@@ -33,6 +33,16 @@ public class ExpressionLanguageTest {
     }
 
     @Test
+    public void vNumber1() {
+        ChannelExpression<VNumber, Number> myPv = vNumber("my pv");
+        assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VNumber> cache = (ValueCache<VNumber>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VNumber.class));
+        assertThat(cache.getValue(), nullValue());
+        assertThat(myPv.getName(), equalTo("my pv"));
+    }
+
+    @Test
     public void vAverageOf1() {
         DesiredRateExpression<VDouble> avgOfMyPV = averageOf(vDouble("my pv"));
         assertThat(avgOfMyPV.getName(), equalTo("avg(my pv)"));
