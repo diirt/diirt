@@ -13,6 +13,21 @@ public class ListMath {
     private ListMath() {
     }
     
+    public static ListDouble limit(final ListDouble data, final int start, final int end) {
+        return new ListDouble() {
+
+            @Override
+            public double getDouble(int index) {
+                return data.getDouble(index + start);
+            }
+
+            @Override
+            public int size() {
+                return end - start;
+            }
+        };
+    }
+    
     public static ListDouble rescale(final ListNumber data, final double factor, final double offset) {
         if (offset == 1.0)
             return sum(data, offset);

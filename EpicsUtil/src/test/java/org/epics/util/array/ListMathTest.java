@@ -30,4 +30,12 @@ public class ListMathTest {
         ListDouble summed = ListMath.sum(array1, ListMath.rescale(array1, -1.0, 0.0));
         assertThat(CollectionNumbers.toDoubleArray(summed), equalTo(new double[] {0, 0, 0, 0, 0, 0}));
     }
+
+    @Test
+    public void limit() {
+        ArrayDouble array1 = new ArrayDouble(0, 1, 2, 3, 4, 5);
+        ListDouble limit = ListMath.limit(array1, 1, 5);
+        ListDouble reference = new ArrayDouble(1, 2, 3, 4);
+        assertThat(limit, equalTo(reference));
+    }
 }
