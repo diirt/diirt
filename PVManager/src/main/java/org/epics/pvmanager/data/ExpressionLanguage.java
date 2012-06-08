@@ -22,6 +22,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
@@ -240,6 +241,14 @@ public class ExpressionLanguage {
     
     public static DesiredRateExpression<VDoubleArray> vConst(ListDouble values) {
         return constant(newVDoubleArray(values, alarmNone(), newTime(Timestamp.now()), displayNone()));
+    }
+    
+    public static DesiredRateExpression<VIntArray> vConst(int... values) {
+        return constant(newVIntArray(values, alarmNone(), newTime(Timestamp.now()), displayNone()));
+    }
+    
+    public static DesiredRateExpression<VIntArray> vConst(ListInt values) {
+        return constant(newVIntArray(values, alarmNone(), newTime(Timestamp.now()), displayNone()));
     }
 
     /**
