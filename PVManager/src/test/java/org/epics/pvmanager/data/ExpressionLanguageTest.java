@@ -11,9 +11,7 @@ import org.epics.pvmanager.expression.SourceRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListNumber;
+import org.epics.util.array.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -120,6 +118,28 @@ public class ExpressionLanguageTest {
         assertThat(cache.getValue(), not(nullValue()));
         assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
         ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
+        assertThat(cache.getValue().getData(), equalTo(reference));
+    }
+    
+    @Test
+    public void vIntArrayConstant1() {
+        DesiredRateExpression<VIntArray> exp = vConst(0, 1, 2, 3, 4);
+        assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
+        assertThat(cache.getValue(), not(nullValue()));
+        assertThat(cache.getValue(), instanceOf(VIntArray.class));
+        ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
+        assertThat(cache.getValue().getData(), equalTo(reference));
+    }
+    
+    @Test
+    public void vIntArrayConstant2() {
+        DesiredRateExpression<VIntArray> exp = vConst(new ArrayInt(0, 1, 2, 3, 4));
+        assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
+        assertThat(cache.getValue(), not(nullValue()));
+        assertThat(cache.getValue(), instanceOf(VIntArray.class));
+        ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
         assertThat(cache.getValue().getData(), equalTo(reference));
     }
 
