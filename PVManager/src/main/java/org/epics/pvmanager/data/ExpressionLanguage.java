@@ -232,6 +232,10 @@ public class ExpressionLanguage {
     public static DesiredRateExpression<VInt> vConst(int value) {
         return constant(newVInt(value, alarmNone(), newTime(Timestamp.now()), displayNone()));
     }
+    
+    public static DesiredRateExpression<VDoubleArray> vConst(double... values) {
+        return constant(newVDoubleArray(values, alarmNone(), newTime(Timestamp.now()), displayNone()));
+    }
 
     /**
      * A list of constant expressions of type VDouble.
