@@ -23,6 +23,16 @@ public class ExpressionLanguageTest {
     // Testing channel expressions
 
     @Test
+    public void vType1() {
+        ChannelExpression<VType, Object> myPv = vType("my pv");
+        assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VType> cache = (ValueCache<VType>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VType.class));
+        assertThat(cache.getValue(), nullValue());
+        assertThat(myPv.getName(), equalTo("my pv"));
+    }
+
+    @Test
     public void vDouble1() {
         ChannelExpression<VDouble, Double> myPv = vDouble("my pv");
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
@@ -52,14 +62,5 @@ public class ExpressionLanguageTest {
     public void statisticsOf1() {
         DesiredRateExpression<VStatistics> statsOfMyPV = statisticsOf(vDouble("my pv"));
         assertThat(statsOfMyPV.getName(), equalTo("stats(my pv)"));
-    }
-
-    @Test
-    public void vType1() {
-        ChannelExpression<VType, Object> vType = vType("my pv");
-        assertThat(vType.getName(), equalTo("my pv"));
-        Function<VType> function = vType.getFunction();
-        assertThat(function, instanceOf(ValueCache.class));
-        assertThat(((ValueCache<VType>) function).getType(), equalTo(VType.class));
     }
 }
