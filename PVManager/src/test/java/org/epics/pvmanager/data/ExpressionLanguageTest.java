@@ -21,7 +21,9 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class ExpressionLanguageTest {
     
+    //
     // Testing channel expressions
+    //
 
     @Test
     public void vType1() {
@@ -71,6 +73,20 @@ public class ExpressionLanguageTest {
         assertThat(cache.getType(), equalTo(VNumberArray.class));
         assertThat(cache.getValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
+    }
+    
+    //
+    // Testing constant expressions
+    //
+    
+    @Test
+    public void vDoubleConstant1() {
+        DesiredRateExpression<VDouble> exp = vConst(3.14);
+        assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VDouble> cache = (ValueCache<VDouble>) exp.getFunction();
+        assertThat(cache.getValue(), not(nullValue()));
+        assertThat(cache.getValue(), instanceOf(VDouble.class));
+        assertThat(cache.getValue().getValue(), equalTo(3.14));
     }
 
     @Test

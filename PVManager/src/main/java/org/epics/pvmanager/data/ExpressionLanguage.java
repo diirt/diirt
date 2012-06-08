@@ -220,6 +220,14 @@ public class ExpressionLanguage {
     public static ChannelExpressionList<VDouble, Double> vDoubles(List<String> names) {
         return channels(names, VDouble.class, Double.class);
     }
+    
+    //
+    // Constant expressions
+    //
+    
+    public static DesiredRateExpression<VDouble> vConst(double value) {
+        return constant(newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone()));
+    }
 
     /**
      * A list of constant expressions of type VDouble.
