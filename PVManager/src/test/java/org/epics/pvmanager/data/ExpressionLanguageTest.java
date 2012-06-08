@@ -33,6 +33,16 @@ public class ExpressionLanguageTest {
     }
 
     @Test
+    public void vNumber1() {
+        ChannelExpression<VNumber, Number> myPv = vNumber("my pv");
+        assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
+        ValueCache<VNumber> cache = (ValueCache<VNumber>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VNumber.class));
+        assertThat(cache.getValue(), nullValue());
+        assertThat(myPv.getName(), equalTo("my pv"));
+    }
+
+    @Test
     public void vDouble1() {
         ChannelExpression<VDouble, Double> myPv = vDouble("my pv");
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
@@ -43,11 +53,11 @@ public class ExpressionLanguageTest {
     }
 
     @Test
-    public void vNumber1() {
-        ChannelExpression<VNumber, Number> myPv = vNumber("my pv");
+    public void vInt1() {
+        ChannelExpression<VInt, Integer> myPv = vInt("my pv");
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
-        ValueCache<VNumber> cache = (ValueCache<VNumber>) myPv.getFunction();
-        assertThat(cache.getType(), equalTo(VNumber.class));
+        ValueCache<VInt> cache = (ValueCache<VInt>) myPv.getFunction();
+        assertThat(cache.getType(), equalTo(VInt.class));
         assertThat(cache.getValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
