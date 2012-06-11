@@ -10,7 +10,7 @@ import org.epics.util.array.*;
  *
  * @author carcassi
  */
-public class Arrays {
+public class Point2DDatasets {
 
     public static Point2DDataset lineData(final double[] data) {
         return lineData(new ArrayDouble(data));

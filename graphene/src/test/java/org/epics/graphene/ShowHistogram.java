@@ -88,7 +88,7 @@ public class ShowHistogram extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws Exception {
-        Dataset1D dataset = MockDataset1D.gaussian(30000);
+        Point1DDataset dataset = MockDataset1D.gaussian(30000);
         Histogram1D hist = Histograms.createHistogram(dataset);
         showHistogram(hist);
     }

@@ -34,9 +34,9 @@ public class ProfileParallelHistogram1D {
             @Override
             public void run() {
 
-                final Dataset1D dataset = new Dataset1DArray(nSamples);
+                final Point1DDataset dataset = new Point1DCircularBuffer(nSamples);
                 Random rand = new Random();
-                Dataset1DUpdate update = new Dataset1DUpdate();
+                Point1DDatasetUpdate update = new Point1DDatasetUpdate();
                 for (int i = 0; i < nSamples; i++) {
                     update.addData(rand.nextGaussian());
                 }

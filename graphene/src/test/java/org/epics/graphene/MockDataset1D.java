@@ -14,7 +14,7 @@ import org.epics.util.array.IteratorDouble;
  *
  * @author carcassi
  */
-public class MockDataset1D implements Dataset1D {
+public class MockDataset1D implements Point1DDataset {
     
     private double[] data;
     private double minValue = Double.POSITIVE_INFINITY;
@@ -49,11 +49,11 @@ public class MockDataset1D implements Dataset1D {
     }
     
     
-    public static Dataset1D uniform(double minValue, double maxValue, int nSamples) {
+    public static Point1DDataset uniform(double minValue, double maxValue, int nSamples) {
         return new MockDataset1D(RangeUtil.createBins(minValue, maxValue, nSamples));
     }
     
-    public static Dataset1D gaussian(int nSamples) {
+    public static Point1DDataset gaussian(int nSamples) {
         Random rand = new Random();
         double[] values = new double[nSamples];
         for (int i = 0; i < values.length; i++) {
@@ -63,7 +63,7 @@ public class MockDataset1D implements Dataset1D {
     }
 
     @Override
-    public void update(Dataset1DUpdate update) {
+    public void update(Point1DDatasetUpdate update) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

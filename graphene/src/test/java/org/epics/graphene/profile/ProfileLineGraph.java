@@ -37,7 +37,7 @@ public class ProfileLineGraph {
         for (int i = 0; i < nSamples; i++) {
             waveform[i] = rand.nextGaussian();
         }
-        Point2DDataset dataset = org.epics.graphene.Arrays.lineData(waveform);
+        Point2DDataset dataset = org.epics.graphene.Point2DDatasets.lineData(waveform);
         //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
         LineGraphRenderer renderer = new LineGraphRenderer(imageWidth, imageHeight);
@@ -63,11 +63,11 @@ public class ProfileLineGraph {
         ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
         ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
         
-        Dataset1D timings = new Dataset1DArray(nTries);
-        timings.update(new Dataset1DUpdate().addData(timingsExcludeFirst));
+        Point1DDataset timings = new Point1DCircularBuffer(nTries);
+        timings.update(new Point1DDatasetUpdate().addData(timingsExcludeFirst));
         Histogram1D hist = Histograms.createHistogram(timings);
-        Point2DDataset line = org.epics.graphene.Arrays.lineData(timingsExcludeFirst);
-        Point2DDataset averagedLine = org.epics.graphene.Arrays.lineData(averages);
+        Point2DDataset line = org.epics.graphene.Point2DDatasets.lineData(timingsExcludeFirst);
+        Point2DDataset averagedLine = org.epics.graphene.Point2DDatasets.lineData(averages);
         ShowResizableGraph.showHistogram(hist);
         ShowResizableGraph.showLineGraph(line);
         ShowResizableGraph.showLineGraph(averagedLine);

@@ -33,7 +33,7 @@ public class Histogram1DTest {
     
     @Test
     public void computeHistogram() throws Exception {
-        Dataset1D dataset = MockDataset1D.uniform(0.0, 100.0, 300);
+        Point1DDataset dataset = MockDataset1D.uniform(0.0, 100.0, 300);
         Histogram1D h = Histograms.createHistogram(dataset);
         assertEquals(100, h.getNBins());
         assertEquals(0.0, h.getMinValueRange(), 0.0000001);
@@ -50,7 +50,7 @@ public class Histogram1DTest {
     
     @Test
     public void computeHistogram2() throws Exception {
-        Dataset1D dataset = MockDataset1D.uniform(10.0, 10.1, 300);
+        Point1DDataset dataset = MockDataset1D.uniform(10.0, 10.1, 300);
         Histogram1D h = Histograms.createHistogram(dataset);
         assertEquals(100, h.getNBins());
         assertEquals(10.0, h.getMinValueRange(), 0.0000001);

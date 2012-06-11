@@ -32,8 +32,8 @@ public class ProfileHistogram1D {
         int imageHeight = 400;
         Random rand = new Random();
                 
-        Dataset1D dataset = new Dataset1DArray(nSamples);
-        Dataset1DUpdate update = new Dataset1DUpdate();
+        Point1DDataset dataset = new Point1DCircularBuffer(nSamples);
+        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
@@ -58,8 +58,8 @@ public class ProfileHistogram1D {
         }
         
         System.out.println("average " + stopWatch.getAverageMs() + " ms");
-        Dataset1D timings = new Dataset1DArray(nTries);
-        timings.update(new Dataset1DUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
+        Point1DDataset timings = new Point1DCircularBuffer(nTries);
+        timings.update(new Point1DDatasetUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
         Histogram1D hist = Histograms.createHistogram(timings);
         ShowResizableImage.showHistogram(hist);
     }

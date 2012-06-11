@@ -10,13 +10,13 @@ import org.epics.util.array.*;
  *
  * @author carcassi
  */
-public class Dataset1DArray implements Dataset1D {
+public class Point1DCircularBuffer implements Point1DDataset {
 
     private final CircularBufferDouble buffer;
     private double minValue = Double.NaN;
     private double maxValue = Double.NaN;
     
-    public Dataset1DArray(int capacity) {
+    public Point1DCircularBuffer(int capacity) {
         buffer = new CircularBufferDouble(capacity);
     }
 
@@ -36,7 +36,7 @@ public class Dataset1DArray implements Dataset1D {
     }
 
     @Override
-    public void update(Dataset1DUpdate update) {
+    public void update(Point1DDatasetUpdate update) {
         if (update.isToClear()) {
             buffer.clear();
         }
