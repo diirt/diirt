@@ -58,7 +58,7 @@ class LineGraphFunction extends Function<VImage> {
             return null;
         
         // Re-create the dataset
-        OrderedDataset2D dataset = null;
+        Point2DDataset dataset = null;
         if (xArray != null) {
             // Plot with two arrays
             VNumberArray xData = xArray.getValue();
