@@ -4,8 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.CollectionNumbers;
-import org.epics.util.array.ListNumber;
+import org.epics.util.array.*;
 
 /**
  *
@@ -13,50 +12,12 @@ import org.epics.util.array.ListNumber;
  */
 public class Arrays {
 
-    public static OrderedDataset2D lineData(final double[] data) {
-        return new OrderedDataset2D() {
-            
-            private final double[] minMax = NumberUtil.minMax(data);
-
-            @Override
-            public double getXValue(int index) {
-                return index;
-            }
-
-            @Override
-            public double getYValue(int index) {
-                return data[index];
-            }
-
-            @Override
-            public double getXMinValue() {
-                return 0;
-            }
-
-            @Override
-            public double getXMaxValue() {
-                return data.length - 1;
-            }
-
-            @Override
-            public double getYMinValue() {
-                return minMax[0];
-            }
-
-            @Override
-            public double getYMaxValue() {
-                return minMax[1];
-            }
-
-            @Override
-            public int getCount() {
-                return data.length;
-            }
-        };
+    public static Point2DDataset lineData(final double[] data) {
+        return lineData(new ArrayDouble(data));
     }
 
-    public static OrderedDataset2D lineData(final ListNumber data) {
-        return new OrderedDataset2D() {
+    public static Point2DDataset lineData(final ListNumber data) {
+        return new Point2DDataset() {
             
             private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
 
@@ -66,8 +27,29 @@ public class Arrays {
             }
 
             @Override
+            public ListNumber getXValues() {
+                return new ListInt() {
+
+                    @Override
+                    public int getInt(int index) {
+                        return index;
+                    }
+
+                    @Override
+                    public int size() {
+                        return getCount();
+                    }
+                };
+            }
+
+            @Override
             public double getYValue(int index) {
                 return data.getDouble(index);
+            }
+
+            @Override
+            public ListNumber getYValues() {
+                return data;
             }
 
             @Override
@@ -97,50 +79,12 @@ public class Arrays {
         };
     }
 
-    public static OrderedDataset2D lineData(final double[] data, final double xInitialOffset, final double xIncrementSize) {
-        return new OrderedDataset2D() {
-            
-            private final double[] minMax = NumberUtil.minMax(data);
-
-            @Override
-            public double getXValue(int index) {
-                return xInitialOffset + xIncrementSize *index;
-            }
-
-            @Override
-            public double getYValue(int index) {
-                return data[index];
-            }
-
-            @Override
-            public double getXMinValue() {
-                return getXValue(0);
-            }
-
-            @Override
-            public double getXMaxValue() {
-                return getXValue(data.length);
-            }
-
-            @Override
-            public double getYMinValue() {
-                return minMax[0];
-            }
-
-            @Override
-            public double getYMaxValue() {
-                return minMax[1];
-            }
-
-            @Override
-            public int getCount() {
-                return data.length;
-            }
-        };
+    public static Point2DDataset lineData(final double[] data, final double xInitialOffset, final double xIncrementSize) {
+        return lineData(new ArrayDouble(data), xInitialOffset, xIncrementSize);
     }
 
-    public static OrderedDataset2D lineData(final ListNumber data, final double xInitialOffset, final double xIncrementSize) {
-        return new OrderedDataset2D() {
+    public static Point2DDataset lineData(final ListNumber data, final double xInitialOffset, final double xIncrementSize) {
+        return new Point2DDataset() {
             
             private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
 
@@ -150,8 +94,29 @@ public class Arrays {
             }
 
             @Override
+            public ListNumber getXValues() {
+                return new ListDouble() {
+
+                    @Override
+                    public double getDouble(int index) {
+                        return xInitialOffset + xIncrementSize *index;
+                    }
+
+                    @Override
+                    public int size() {
+                        return getCount();
+                    }
+                };
+            }
+
+            @Override
             public double getYValue(int index) {
                 return data.getDouble(index);
+            }
+
+            @Override
+            public ListNumber getYValues() {
+                return data;
             }
 
             @Override
@@ -181,59 +146,16 @@ public class Arrays {
         };
     }
 
-    public static OrderedDataset2D lineData(final double[] x, final double[] y) {
-        if (x.length != y.length) {
-            throw new IllegalArgumentException("Arrays length don't match: " + x.length + " - " + y.length);
-        }
-        
-        return new OrderedDataset2D() {
-            
-            private final double[] xMinMax = NumberUtil.minMax(x);
-            private final double[] yMinMax = NumberUtil.minMax(y);
-
-            @Override
-            public double getXValue(int index) {
-                return x[index];
-            }
-
-            @Override
-            public double getYValue(int index) {
-                return y[index];
-            }
-
-            @Override
-            public double getXMinValue() {
-                return xMinMax[0];
-            }
-
-            @Override
-            public double getXMaxValue() {
-                return xMinMax[1];
-            }
-
-            @Override
-            public double getYMinValue() {
-                return yMinMax[0];
-            }
-
-            @Override
-            public double getYMaxValue() {
-                return yMinMax[1];
-            }
-
-            @Override
-            public int getCount() {
-                return x.length;
-            }
-        };
+    public static Point2DDataset lineData(final double[] x, final double[] y) {
+        return lineData(new ArrayDouble(x), new ArrayDouble(y));
     }
 
-    public static OrderedDataset2D lineData(final ListNumber x, final ListNumber y) {
+    public static Point2DDataset lineData(final ListNumber x, final ListNumber y) {
         if (x.size() != y.size()) {
             throw new IllegalArgumentException("Arrays length don't match: " + x.size() + " - " + y.size());
         }
         
-        return new OrderedDataset2D() {
+        return new Point2DDataset() {
             
             private final CollectionNumbers.MinMax xMinMax = CollectionNumbers.minMaxDouble(x);
             private final CollectionNumbers.MinMax yMinMax = CollectionNumbers.minMaxDouble(y);
@@ -244,8 +166,18 @@ public class Arrays {
             }
 
             @Override
+            public ListNumber getXValues() {
+                return x;
+            }
+
+            @Override
             public double getYValue(int index) {
                 return y.getDouble(index);
+            }
+
+            @Override
+            public ListNumber getYValues() {
+                return y;
             }
 
             @Override

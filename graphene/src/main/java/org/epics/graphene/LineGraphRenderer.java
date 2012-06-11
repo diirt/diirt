@@ -54,7 +54,7 @@ public class LineGraphRenderer {
         }
     }
 
-    public void draw(Graphics2D g, OrderedDataset2D data) {
+    public void draw(Graphics2D g, Point2DDataset data) {
         int dataCount = data.getCount();
         double startX = data.getXMinValue();
         double startY = data.getYMinValue();

@@ -4,11 +4,14 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
+
 /**
  *
  * @author carcassi
  */
-public class MockOrderedDataset2D implements OrderedDataset2D {
+public class MockOrderedDataset2D implements Point2DDataset {
     
     private double[] xValues;
     private double[] yValues;
@@ -28,8 +31,18 @@ public class MockOrderedDataset2D implements OrderedDataset2D {
     }
 
     @Override
+    public ListNumber getXValues() {
+        return new ArrayDouble(xValues);
+    }
+
+    @Override
     public double getYValue(int index) {
         return yValues[index];
+    }
+
+    @Override
+    public ListNumber getYValues() {
+        return new ArrayDouble(yValues);
     }
 
     @Override

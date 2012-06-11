@@ -95,7 +95,7 @@ public class ShowResizableGraph extends javax.swing.JFrame {
         });
     }
     
-    public static void showLineGraph(final OrderedDataset2D dataset) {
+    public static void showLineGraph(final Point2DDataset dataset) {
         final LineGraphRenderer renderer = new LineGraphRenderer(200, 300);
         showGraph(new Renderer() {
 

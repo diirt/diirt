@@ -26,9 +26,9 @@ public class ProfileLineGraph {
         // Using array, 3.855865984000003, 100 samples, 15000 tries, 600x400
         // Using ArrayDouble, 3.9436457209999842 ms, 100 samples, 10000 tries, 600x400
         // Using array, 19.336473031333334 ms, 1000 samples, 1500 tries, 600x400
-        // Using ArrayDouble, 17.84245149399999 ms, 1000 samples, 1500 tries, 600x400
-        int nSamples = 100;
-        int nTries = 5000;
+        // Using ArrayDouble, 17.84245149399999 ms, 1000 samples, 1500 tries, 600x400 18.67990659599997
+        int nSamples = 1000;
+        int nTries = 1500;
         int imageWidth = 600;
         int imageHeight = 400;
         Random rand = new Random();
@@ -37,8 +37,8 @@ public class ProfileLineGraph {
         for (int i = 0; i < nSamples; i++) {
             waveform[i] = rand.nextGaussian();
         }
-        //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(waveform);
-        OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
+        Point2DDataset dataset = org.epics.graphene.Arrays.lineData(waveform);
+        //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
         LineGraphRenderer renderer = new LineGraphRenderer(imageWidth, imageHeight);
         renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.CUBIC));
@@ -66,8 +66,8 @@ public class ProfileLineGraph {
         Dataset1D timings = new Dataset1DArray(nTries);
         timings.update(new Dataset1DUpdate().addData(timingsExcludeFirst));
         Histogram1D hist = Histograms.createHistogram(timings);
-        OrderedDataset2D line = org.epics.graphene.Arrays.lineData(timingsExcludeFirst);
-        OrderedDataset2D averagedLine = org.epics.graphene.Arrays.lineData(averages);
+        Point2DDataset line = org.epics.graphene.Arrays.lineData(timingsExcludeFirst);
+        Point2DDataset averagedLine = org.epics.graphene.Arrays.lineData(averages);
         ShowResizableGraph.showHistogram(hist);
         ShowResizableGraph.showLineGraph(line);
         ShowResizableGraph.showLineGraph(averagedLine);
