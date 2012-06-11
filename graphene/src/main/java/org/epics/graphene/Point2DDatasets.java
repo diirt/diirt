@@ -19,7 +19,7 @@ public class Point2DDatasets {
     public static Point2DDataset lineData(final ListNumber data) {
         return new Point2DDataset() {
             
-            private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
+            private final Statistics statistics = StatisticsUtil.statisticsOf(data);
 
             @Override
             public ListNumber getXValues() {
@@ -54,12 +54,12 @@ public class Point2DDatasets {
 
             @Override
             public double getYMinValue() {
-                return minMax.min.doubleValue();
+                return statistics.getMinimum().doubleValue();
             }
 
             @Override
             public double getYMaxValue() {
-                return minMax.max.doubleValue();
+                return statistics.getMaximum().doubleValue();
             }
 
             @Override
@@ -76,7 +76,7 @@ public class Point2DDatasets {
     public static Point2DDataset lineData(final ListNumber data, final double xInitialOffset, final double xIncrementSize) {
         return new Point2DDataset() {
             
-            private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
+            private final Statistics statistics = StatisticsUtil.statisticsOf(data);
 
             @Override
             public ListNumber getXValues() {
@@ -111,12 +111,12 @@ public class Point2DDatasets {
 
             @Override
             public double getYMinValue() {
-                return minMax.min.doubleValue();
+                return statistics.getMinimum().doubleValue();
             }
 
             @Override
             public double getYMaxValue() {
-                return minMax.max.doubleValue();
+                return statistics.getMaximum().doubleValue();
             }
 
             @Override
@@ -137,8 +137,8 @@ public class Point2DDatasets {
         
         return new Point2DDataset() {
             
-            private final CollectionNumbers.MinMax xMinMax = CollectionNumbers.minMaxDouble(x);
-            private final CollectionNumbers.MinMax yMinMax = CollectionNumbers.minMaxDouble(y);
+            private final Statistics xStatistics = StatisticsUtil.statisticsOf(x);
+            private final Statistics yStatistics = StatisticsUtil.statisticsOf(y);
 
             @Override
             public ListNumber getXValues() {
@@ -152,22 +152,22 @@ public class Point2DDatasets {
 
             @Override
             public double getXMinValue() {
-                return xMinMax.min.doubleValue();
+                return xStatistics.getMinimum().doubleValue();
             }
 
             @Override
             public double getXMaxValue() {
-                return xMinMax.max.doubleValue();
+                return xStatistics.getMaximum().doubleValue();
             }
 
             @Override
             public double getYMinValue() {
-                return yMinMax.min.doubleValue();
+                return yStatistics.getMinimum().doubleValue();
             }
 
             @Override
             public double getYMaxValue() {
-                return yMinMax.max.doubleValue();
+                return yStatistics.getMaximum().doubleValue();
             }
 
             @Override
