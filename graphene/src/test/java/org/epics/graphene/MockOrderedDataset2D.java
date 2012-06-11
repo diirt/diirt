@@ -26,18 +26,8 @@ public class MockOrderedDataset2D implements Point2DDataset {
     }
 
     @Override
-    public double getXValue(int index) {
-        return xValues[index];
-    }
-
-    @Override
     public ListNumber getXValues() {
         return new ArrayDouble(xValues);
-    }
-
-    @Override
-    public double getYValue(int index) {
-        return yValues[index];
     }
 
     @Override

@@ -22,11 +22,6 @@ public class Arrays {
             private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
 
             @Override
-            public double getXValue(int index) {
-                return index;
-            }
-
-            @Override
             public ListNumber getXValues() {
                 return new ListInt() {
 
@@ -40,11 +35,6 @@ public class Arrays {
                         return getCount();
                     }
                 };
-            }
-
-            @Override
-            public double getYValue(int index) {
-                return data.getDouble(index);
             }
 
             @Override
@@ -89,11 +79,6 @@ public class Arrays {
             private final CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(data);
 
             @Override
-            public double getXValue(int index) {
-                return xInitialOffset + xIncrementSize *index;
-            }
-
-            @Override
             public ListNumber getXValues() {
                 return new ListDouble() {
 
@@ -110,23 +95,18 @@ public class Arrays {
             }
 
             @Override
-            public double getYValue(int index) {
-                return data.getDouble(index);
-            }
-
-            @Override
             public ListNumber getYValues() {
                 return data;
             }
 
             @Override
             public double getXMinValue() {
-                return getXValue(0);
+                return getXValues().getDouble(0);
             }
 
             @Override
             public double getXMaxValue() {
-                return getXValue(data.size());
+                return getXValues().getDouble(data.size() - 1);
             }
 
             @Override
@@ -161,18 +141,8 @@ public class Arrays {
             private final CollectionNumbers.MinMax yMinMax = CollectionNumbers.minMaxDouble(y);
 
             @Override
-            public double getXValue(int index) {
-                return x.getDouble(index);
-            }
-
-            @Override
             public ListNumber getXValues() {
                 return x;
-            }
-
-            @Override
-            public double getYValue(int index) {
-                return y.getDouble(index);
             }
 
             @Override

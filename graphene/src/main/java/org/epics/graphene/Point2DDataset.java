@@ -12,11 +12,7 @@ import org.epics.util.array.ListNumber;
  */
 public interface Point2DDataset {
     
-    public double getXValue(int index);
-    
     public ListNumber getXValues();
-    
-    public double getYValue(int index);
     
     public ListNumber getYValues();
     
