@@ -5,16 +5,15 @@
 
 package org.epics.pvmanager.graphene;
 
-import org.epics.pvmanager.data.*;
 import java.util.List;
 import org.epics.pvmanager.BasicTypeSupport;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.SourceRateExpression;
-import org.epics.pvmanager.expression.SourceRateExpressionList;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
+import org.epics.pvmanager.data.DataTypeSupport;
+import org.epics.pvmanager.data.VNumber;
+import org.epics.pvmanager.data.VNumberArray;
+import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.epics.pvmanager.expression.SourceRateExpression;
 
 /**
  *
