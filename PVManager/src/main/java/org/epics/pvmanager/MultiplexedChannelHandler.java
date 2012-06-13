@@ -238,7 +238,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param handler to be notified in case of errors
      */
     @Override
-    protected synchronized void addWriter(ExceptionHandler handler) {
+    protected synchronized void addWriter(WriteCache<?> cache, ExceptionHandler handler) {
         writeUsageCounter++;
         guardedConnect(handler);
     }
@@ -249,7 +249,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param exceptionHandler to be notified in case of errors
      */
     @Override
-    protected synchronized void removeWrite(ExceptionHandler exceptionHandler) {
+    protected synchronized void removeWrite(WriteCache<?> cache, ExceptionHandler exceptionHandler) {
         writeUsageCounter--;
         guardedDisconnect(exceptionHandler);
     }

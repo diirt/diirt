@@ -4,10 +4,7 @@
  */
 package org.epics.pvmanager.loc;
 
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +52,8 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(true));
 
         // Adding a writer
-        channel.addWriter(exceptionHandler);
+        WriteCache<?> cache = new WriteCache<Object>();
+        channel.addWriter(cache, exceptionHandler);
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 
@@ -64,7 +62,7 @@ public class LocChannelHandlerTest {
         
         // Removing all readers and writers
         channel.removeMonitor(vDoubleCollector1);
-        channel.removeWrite(exceptionHandler);
+        channel.removeWrite(cache, exceptionHandler);
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
         
@@ -97,7 +95,8 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(true));
 
         // Adding a writer
-        channel.addWriter(exceptionHandler);
+        WriteCache<?> cache = new WriteCache<Object>();
+        channel.addWriter(cache, exceptionHandler);
         assertThat(channel.getUsageCounter(), equalTo(3));
         assertThat(channel.isConnected(), is(true));
 
@@ -105,7 +104,7 @@ public class LocChannelHandlerTest {
         channel.write(16.28, channelWriteCallback);
         
         // Remove reader/writers
-        channel.removeWrite(exceptionHandler);
+        channel.removeWrite(cache, exceptionHandler);
         channel.removeMonitor(vDoubleCollector1);
         channel.removeMonitor(vDoubleCollector2);
         assertThat(channel.getUsageCounter(), equalTo(0));
