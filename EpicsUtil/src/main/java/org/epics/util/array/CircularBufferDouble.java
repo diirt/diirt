@@ -17,7 +17,7 @@ public class CircularBufferDouble extends ListDouble {
     private boolean reachedMax;
 
     public CircularBufferDouble(int maxCapacity) {
-        this(10, maxCapacity);
+        this(Math.min(10, maxCapacity), maxCapacity);
     }
 
     public CircularBufferDouble(int initialCapacity, int maxCapacity) {

@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -65,6 +67,16 @@ public class CircularBufferDoubleTest {
             coll.addDouble(i);
         }
         ListDouble reference = new ArrayDouble(new double[] {0,1,2,3,4});
+        assertThat(coll, equalTo(reference));
+    }
+    
+    @Test
+    public void add4() {
+        CircularBufferDouble coll = new CircularBufferDouble(3);
+        for (int i = 0; i < 5; i++) {
+            coll.addDouble(i);
+        }
+        ListDouble reference = new ArrayDouble(new double[] {2,3,4});
         assertThat(coll, equalTo(reference));
     }
     
