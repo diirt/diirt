@@ -79,6 +79,6 @@ public class CircularBufferDouble extends ListDouble {
     }
     
     public int getCurrentCapacity() {
-        return data.length;
+        return reachedMax ? maxCapacity : data.length;
     }
 }

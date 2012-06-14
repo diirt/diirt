@@ -81,6 +81,26 @@ public class CircularBufferDoubleTest {
     }
     
     @Test
+    public void add5() {
+        CircularBufferDouble coll = new CircularBufferDouble(25);
+        for (int i = 0; i < 5; i++) {
+            coll.addDouble(i);
+        }
+        assertThat(coll.size(), equalTo(5));
+        assertThat(coll.getCurrentCapacity(), equalTo(10));
+        for (int i = 0; i < 5; i++) {
+            coll.addDouble(i);
+        }
+        assertThat(coll.size(), equalTo(10));
+        assertThat(coll.getCurrentCapacity(), equalTo(20));
+        for (int i = 0; i < 10; i++) {
+            coll.addDouble(i);
+        }
+        assertThat(coll.size(), equalTo(20));
+        assertThat(coll.getCurrentCapacity(), equalTo(25));
+    }
+    
+    @Test
     public void clear1() {
         CircularBufferDouble coll = new CircularBufferDouble(10);
         for (int i = 0; i < 5; i++) {
