@@ -184,8 +184,13 @@ public class LineGraphRenderer {
         line.moveTo(scaledX[0], scaledY[0]);
         for (int i = 1; i < scaledY.length; i++) {
             double halfX = scaledX[i - 1] + (scaledX[i] - scaledX[i - 1]) / 2;
-            line.lineTo(halfX, scaledY[i - 1]);
-            line.lineTo(halfX, scaledY[i]);
+            if (!java.lang.Double.isNaN(scaledY[i-1])) {
+                line.lineTo(halfX, scaledY[i - 1]);
+                if (!java.lang.Double.isNaN(scaledY[i]))
+                    line.lineTo(halfX, scaledY[i]);
+            } else {
+                line.moveTo(halfX, scaledY[i]);
+            }
         }
         line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
         return line;
