@@ -75,4 +75,15 @@ public class LineGraphRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.4", image);
     }
+    
+    @Test
+    public void test5() throws Exception {
+        Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1, Double.NaN, 3, Double.NaN, 4, 5, 6), 50, 10);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
+        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraph.5", image);
+    }
 }
