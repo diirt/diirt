@@ -87,6 +87,67 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         }
     }
 
+    private void putWithCallback(Object newValue, final ChannelWriteCallback callback) throws CAException {
+        PutListener listener = new PutListener() {
+
+            @Override
+            public void putCompleted(PutEvent ev) {
+                if (ev.getStatus().isSuccessful()) {
+                    callback.channelWritten(null);
+                } else {
+                    callback.channelWritten(new Exception(ev.toString()));
+                }
+            }
+        };
+        if (newValue instanceof String) {
+            channel.put(newValue.toString(), listener);
+        } else if (newValue instanceof byte[]) {
+            channel.put((byte[]) newValue, listener);
+        } else if (newValue instanceof short[]) {
+            channel.put((short[]) newValue, listener);
+        } else if (newValue instanceof int[]) {
+            channel.put((int[]) newValue, listener);
+        } else if (newValue instanceof float[]) {
+            channel.put((float[]) newValue, listener);
+        } else if (newValue instanceof double[]) {
+            channel.put((double[]) newValue, listener);
+        } else if (newValue instanceof Byte || newValue instanceof Short
+                || newValue instanceof Integer || newValue instanceof Long) {
+            channel.put(((Number) newValue).longValue(), listener);
+        } else if (newValue instanceof Float || newValue instanceof Double) {
+            channel.put(((Number) newValue).doubleValue(), listener);
+        } else {
+            throw new RuntimeException("Unsupported type for CA: " + newValue.getClass());
+        }
+        jcaDataSource.getContext().flushIO();
+    }
+
+    private void put(Object newValue, final ChannelWriteCallback callback) throws CAException {
+        if (newValue instanceof String) {
+            channel.put(newValue.toString());
+        } else if (newValue instanceof byte[]) {
+            channel.put((byte[]) newValue);
+        } else if (newValue instanceof short[]) {
+            channel.put((short[]) newValue);
+        } else if (newValue instanceof int[]) {
+            channel.put((int[]) newValue);
+        } else if (newValue instanceof float[]) {
+            channel.put((float[]) newValue);
+        } else if (newValue instanceof double[]) {
+            channel.put((double[]) newValue);
+        } else if (newValue instanceof Byte || newValue instanceof Short
+                || newValue instanceof Integer || newValue instanceof Long) {
+            channel.put(((Number) newValue).longValue());
+        } else if (newValue instanceof Float || newValue instanceof Double) {
+            channel.put(((Number) newValue).doubleValue());
+        } else {
+            callback.channelWritten(new Exception(new RuntimeException("Unsupported type for CA: " + newValue.getClass())));
+            return;
+        }
+        jcaDataSource.getContext().flushIO();
+        callback.channelWritten(null);
+    }
+
     private void setup(Channel channel) throws CAException {
         processConnection(channel);
         
@@ -186,38 +247,10 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     @Override
     public void write(Object newValue, final ChannelWriteCallback callback) {
         try {
-            PutListener listener = new PutListener() {
-
-                @Override
-                public void putCompleted(PutEvent ev) {
-                    if (ev.getStatus().isSuccessful()) {
-                        callback.channelWritten(null);
-                    } else {
-                        callback.channelWritten(new Exception(ev.toString()));
-                    }
-                }
-            };
-            if (newValue instanceof String) {
-                channel.put(newValue.toString(), listener);
-            } else if (newValue instanceof byte[]) {
-                channel.put((byte[]) newValue, listener);
-            } else if (newValue instanceof short[]) {
-                channel.put((short[]) newValue, listener);
-            } else if (newValue instanceof int[]) {
-                channel.put((int[]) newValue, listener);
-            } else if (newValue instanceof float[]) {
-                channel.put((float[]) newValue, listener);
-            } else if (newValue instanceof double[]) {
-                channel.put((double[]) newValue, listener);
-            } else if (newValue instanceof Byte || newValue instanceof Short
-                    || newValue instanceof Integer || newValue instanceof Long) {
-                channel.put(((Number) newValue).longValue(), listener);
-            } else if (newValue instanceof Float || newValue instanceof Double) {
-                channel.put(((Number) newValue).doubleValue(), listener);
-            } else {
-                throw new RuntimeException("Unsupported type for CA: " + newValue.getClass());
-            }
-            jcaDataSource.getContext().flushIO();
+            if (isPutCallback())
+                putWithCallback(newValue, callback);
+            else
+                put(newValue, callback);
         } catch (CAException ex) {
             callback.channelWritten(ex);
         }
