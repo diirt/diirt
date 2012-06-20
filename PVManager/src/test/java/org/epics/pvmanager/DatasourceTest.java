@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -61,29 +62,27 @@ public class DatasourceTest {
     public void connect1() {
         // A simple recipe with one channel
         
-        DataRecipe dataRecipe = latestValueOf(channel("first")).getDataRecipe();
+        ExpressionTester exp = new ExpressionTester(latestValueOf(channel("first")));
+        DataRecipe dataRecipe = exp.getDataRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
-        
         doReturn(channel1).when(dataSource).createChannel("first");
         
         dataSource.connect(dataRecipe);
         
         verify(dataSource).channel("first");
-        verify(channel1).addMonitor(dataRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
-                dataRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), dataRecipe.getExceptionHandler());
+        verify(channel1).addMonitor(exp.collectorFor("first"), 
+                exp.cacheFor("first"), dataRecipe.getExceptionHandler());
     }
 
     @Test
     public void connect2() {
         // A recipe with two channels
         
-        DesiredRateReadWriteExpression<Map<String, Object>, Map<String, Object>> exp = mapOf(latestValueOf(channel("first").and(channel("second"))));
+        ExpressionTester exp = new ExpressionTester(mapOf(latestValueOf(channel("first").and(channel("second")))));
         DataRecipe dataRecipe = exp.getDataRecipe();
-        ExpressionTester expHelper = new ExpressionTester(exp);
         
         DataSource dataSource = spy(new MockDataSource(true));
-        
         doReturn(channel1).when(dataSource).createChannel("first");
         doReturn(channel2).when(dataSource).createChannel("second");
         
@@ -91,33 +90,32 @@ public class DatasourceTest {
         
         verify(dataSource).channel("first");
         verify(dataSource).channel("second");
-        verify(channel1).addMonitor(expHelper.collectorFor("first"), 
-                expHelper.cacheFor("first"), dataRecipe.getExceptionHandler());
-        verify(channel2).addMonitor(expHelper.collectorFor("second"), 
-                expHelper.cacheFor("second"), dataRecipe.getExceptionHandler());
+        verify(channel1).addMonitor(exp.collectorFor("first"), 
+                exp.cacheFor("first"), dataRecipe.getExceptionHandler());
+        verify(channel2).addMonitor(exp.collectorFor("second"), 
+                exp.cacheFor("second"), dataRecipe.getExceptionHandler());
     }
 
     @Test
     public void connect3() {
         // Two recipe with the same channel: create only one
         
-        DataRecipe firstRecipe = latestValueOf(channel("first")).getDataRecipe();
+        ExpressionTester exp1 = new ExpressionTester(latestValueOf(channel("first")));
+        ExpressionTester exp2 = new ExpressionTester(latestValueOf(channel("first")));
+        DataRecipe dataRecipe1 = exp1.getDataRecipe();
+        DataRecipe dataRecipe2 = exp2.getDataRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
-        
         doReturn(channel1).when(dataSource).createChannel("first");
         
-        dataSource.connect(firstRecipe);
-        
-        DataRecipe secondRecipe = latestValueOf(channel("first")).getDataRecipe();
-        
-        dataSource.connect(secondRecipe);
+        dataSource.connect(dataRecipe1);
+        dataSource.connect(dataRecipe2);
         
         verify(dataSource, times(2)).channel("first");
         verify(dataSource).createChannel("first");
-        verify(channel1).addMonitor(firstRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
-                firstRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), firstRecipe.getExceptionHandler());
-        verify(channel1).addMonitor(secondRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
-                secondRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), secondRecipe.getExceptionHandler());
+        verify(channel1).addMonitor(exp1.collectorFor("first"), 
+                exp1.cacheFor("first"), dataRecipe1.getExceptionHandler());
+        verify(channel1).addMonitor(exp2.collectorFor("first"), 
+                exp2.cacheFor("first"), dataRecipe2.getExceptionHandler());
     }
 }

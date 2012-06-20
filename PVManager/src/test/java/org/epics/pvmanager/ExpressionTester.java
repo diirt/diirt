@@ -58,4 +58,8 @@ public class ExpressionTester {
         
         return null;
     }
+    
+    public DataRecipe getDataRecipe() {
+        return expression.getDataRecipe();
+    }
 }
