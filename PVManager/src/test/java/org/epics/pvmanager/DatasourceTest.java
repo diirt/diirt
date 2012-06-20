@@ -49,6 +49,13 @@ public class DatasourceTest {
         }
 
         @Override
+        String channelHandlerFor(String channelName) {
+            if ("changeit".equals(channelName))
+                return "first";
+            return channelName;
+        }
+
+        @Override
         protected ChannelHandler createChannel(String channelName) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
@@ -117,5 +124,23 @@ public class DatasourceTest {
                 exp1.cacheFor("first"), dataRecipe1.getExceptionHandler());
         verify(channel1).addMonitor(exp2.collectorFor("first"), 
                 exp2.cacheFor("first"), dataRecipe2.getExceptionHandler());
+    }
+
+    @Test
+    public void connect4() {
+        // A simple recipe with one channel
+        
+        ExpressionTester exp = new ExpressionTester(latestValueOf(channel("changeit")));
+        DataRecipe dataRecipe = exp.getDataRecipe();
+        
+        DataSource dataSource = spy(new MockDataSource(true));
+        doReturn(channel1).when(dataSource).createChannel("first");
+        
+        dataSource.connect(dataRecipe);
+        
+        verify(dataSource).channel("changeit");
+        verify(dataSource).createChannel("first");
+        verify(channel1).addMonitor(exp.collectorFor("changeit"), 
+                exp.cacheFor("changeit"), dataRecipe.getExceptionHandler());
     }
 }
