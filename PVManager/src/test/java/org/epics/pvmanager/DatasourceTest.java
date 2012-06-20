@@ -13,6 +13,7 @@ import org.epics.pvmanager.DataSourceTypeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import org.epics.pvmanager.ValueCache;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -22,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
@@ -53,9 +55,10 @@ public class DatasourceTest {
     };
     
     @Mock ChannelHandler channel1;
+    @Mock ChannelHandler channel2;
 
     @Test
-    public void find1() {
+    public void connect1() {
         DataRecipe dataRecipe = latestValueOf(channel("first")).getDataRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
@@ -67,5 +70,26 @@ public class DatasourceTest {
         verify(dataSource).channel("first");
         verify(channel1).addMonitor(dataRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
                 dataRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), dataRecipe.getExceptionHandler());
+    }
+
+    @Test
+    public void connect2() {
+        DesiredRateReadWriteExpression<Map<String, Object>, Map<String, Object>> exp = mapOf(latestValueOf(channel("first").and(channel("second"))));
+        DataRecipe dataRecipe = exp.getDataRecipe();
+        ExpressionTester expHelper = new ExpressionTester(exp);
+        
+        DataSource dataSource = spy(new MockDataSource(true));
+        
+        doReturn(channel1).when(dataSource).createChannel("first");
+        doReturn(channel2).when(dataSource).createChannel("second");
+        
+        dataSource.connect(dataRecipe);
+        
+        verify(dataSource).channel("first");
+        verify(dataSource).channel("second");
+        verify(channel1).addMonitor(expHelper.collectorFor("first"), 
+                expHelper.cacheFor("first"), dataRecipe.getExceptionHandler());
+        verify(channel2).addMonitor(expHelper.collectorFor("second"), 
+                expHelper.cacheFor("second"), dataRecipe.getExceptionHandler());
     }
 }
