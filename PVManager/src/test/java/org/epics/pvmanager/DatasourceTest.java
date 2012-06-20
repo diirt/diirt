@@ -59,6 +59,8 @@ public class DatasourceTest {
 
     @Test
     public void connect1() {
+        // A simple recipe with one channel
+        
         DataRecipe dataRecipe = latestValueOf(channel("first")).getDataRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
@@ -74,6 +76,8 @@ public class DatasourceTest {
 
     @Test
     public void connect2() {
+        // A recipe with two channels
+        
         DesiredRateReadWriteExpression<Map<String, Object>, Map<String, Object>> exp = mapOf(latestValueOf(channel("first").and(channel("second"))));
         DataRecipe dataRecipe = exp.getDataRecipe();
         ExpressionTester expHelper = new ExpressionTester(exp);
@@ -91,5 +95,29 @@ public class DatasourceTest {
                 expHelper.cacheFor("first"), dataRecipe.getExceptionHandler());
         verify(channel2).addMonitor(expHelper.collectorFor("second"), 
                 expHelper.cacheFor("second"), dataRecipe.getExceptionHandler());
+    }
+
+    @Test
+    public void connect3() {
+        // Two recipe with the same channel: create only one
+        
+        DataRecipe firstRecipe = latestValueOf(channel("first")).getDataRecipe();
+        
+        DataSource dataSource = spy(new MockDataSource(true));
+        
+        doReturn(channel1).when(dataSource).createChannel("first");
+        
+        dataSource.connect(firstRecipe);
+        
+        DataRecipe secondRecipe = latestValueOf(channel("first")).getDataRecipe();
+        
+        dataSource.connect(secondRecipe);
+        
+        verify(dataSource, times(2)).channel("first");
+        verify(dataSource).createChannel("first");
+        verify(channel1).addMonitor(firstRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
+                firstRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), firstRecipe.getExceptionHandler());
+        verify(channel1).addMonitor(secondRecipe.getChannelsPerCollectors().keySet().iterator().next(), 
+                secondRecipe.getChannelsPerCollectors().values().iterator().next().values().iterator().next(), secondRecipe.getExceptionHandler());
     }
 }
