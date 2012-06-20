@@ -15,6 +15,7 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import gov.aps.jca.event.PutEvent;
 import gov.aps.jca.event.PutListener;
+import java.util.regex.Pattern;
 import org.epics.pvmanager.*;
 
 /**
@@ -39,10 +40,30 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
     private volatile Channel channel;
     private volatile boolean needsMonitor;
     private volatile boolean largeArray = false;
+    private boolean putCallback = false;
+    
+    private final static Pattern hasOptions = Pattern.compile(".* \\{.*\\}");
 
     public JCAChannelHandler(String channelName, JCADataSource jcaDataSource) {
         super(channelName);
         this.jcaDataSource = jcaDataSource;
+        parseParameters();
+    }
+    
+    private void parseParameters() {
+        if (hasOptions.matcher(getChannelName()).matches()) {
+            if (getChannelName().endsWith("{\"putCallback\":true}")) {
+                putCallback = true;
+            } else if (getChannelName().endsWith("{\"putCallback\":false}")) {
+                putCallback = false;
+            } else {
+                throw new IllegalArgumentException("Option not recognized for " + getChannelName());
+            }
+        }
+    }
+
+    public boolean isPutCallback() {
+        return putCallback;
     }
  
     @Override
