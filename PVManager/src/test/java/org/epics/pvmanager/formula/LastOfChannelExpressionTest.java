@@ -21,7 +21,14 @@ public class LastOfChannelExpressionTest {
     }
 
     @Test
-    public void testCast() {
+    public void testCast1() {
+        LastOfChannelExpression<Object> exp = new LastOfChannelExpression<Object>("test", Object.class);
+        LastOfChannelExpression<Object> exp2 = exp.cast(Object.class);
+        assertThat(exp2, sameInstance(exp));
+    }
+
+    @Test
+    public void testCast2() {
         LastOfChannelExpression<Object> exp = new LastOfChannelExpression<Object>("test", Object.class);
         LastOfChannelExpression<VDouble> vDoubleExp = exp.cast(VDouble.class);
         assertThat(vDoubleExp.getType(), equalTo(VDouble.class));
