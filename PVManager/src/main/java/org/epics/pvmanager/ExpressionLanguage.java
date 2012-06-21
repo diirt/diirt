@@ -335,11 +335,11 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <R, A1, A2> DesiredRateExpression<R> resultOf(final TwoArgFunction<R, A1, A2> function,
-            DesiredRateExpression<A1> arg1Expression, DesiredRateExpression<A2> arg2Expression) {
+            DesiredRateExpression<? extends A1> arg1Expression, DesiredRateExpression<? extends A2> arg2Expression) {
         String name = function.getClass().getSimpleName() + "(" + arg1Expression.getName() +
                 ", " + arg2Expression.getName() + ")";
-        final Function<A1> arg1 = arg1Expression.getFunction();
-        final Function<A2> arg2 = arg2Expression.getFunction();
+        final Function<? extends A1> arg1 = arg1Expression.getFunction();
+        final Function<? extends A2> arg2 = arg2Expression.getFunction();
         @SuppressWarnings("unchecked")
         DesiredRateExpressionList<? extends Object> argExpressions =
                 new DesiredRateExpressionListImpl<Object>().and(arg1Expression).and(arg2Expression);
