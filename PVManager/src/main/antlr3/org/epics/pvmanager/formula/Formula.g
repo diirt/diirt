@@ -50,7 +50,7 @@ parExpression returns [DesiredRateExpression<?> result]
 
 pv returns [DesiredRateExpression<?> result]
     :   ID {result = cachedPv($ID.text);}
-    |   QUOTED_ID
+    |   QUOTED_ID {result = cachedPv(($QUOTED_ID.text).substring(1,($QUOTED_ID.text).length() - 1));}
     ;
 
 numericLiteral returns [DesiredRateExpression<?> result]
