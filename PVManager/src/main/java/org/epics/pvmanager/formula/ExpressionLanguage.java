@@ -22,8 +22,8 @@ public class ExpressionLanguage {
         // No instances
     }
     
-    static DesiredRateExpression<?> channel(String channelName) {
-        return null;
+    static DesiredRateExpression<?> cachedPv(String channelName) {
+        return new LastOfChannelExpression<Object>(channelName, Object.class);
     }
     
     static DesiredRateExpression<VDouble> add(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {

@@ -49,7 +49,7 @@ parExpression returns [DesiredRateExpression<?> result]
     ;
 
 pv returns [DesiredRateExpression<?> result]
-    :   ID
+    :   ID {result = cachedPv($ID.text);}
     |   QUOTED_ID
     ;
 

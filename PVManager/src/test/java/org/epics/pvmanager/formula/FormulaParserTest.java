@@ -34,5 +34,7 @@ public class FormulaParserTest {
     @Test
     public void pv1() throws RecognitionException {
         DesiredRateExpression<?> exp = createParser("mypv").pv();
+        assertThat(exp, not(nullValue()));
+        assertThat(exp.getName(), equalTo("mypv"));
     }
 }
