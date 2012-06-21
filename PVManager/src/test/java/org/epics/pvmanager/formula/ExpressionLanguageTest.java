@@ -24,9 +24,16 @@ import static org.hamcrest.CoreMatchers.*;
 public class ExpressionLanguageTest {
 
     @Test
-    public void statisticsOf1() {
+    public void add1() {
         DesiredRateExpression<VDouble> exp = add(vConst(3.0), vConst(4.0));
         VDouble result = exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(7.0));
+    }
+
+    @Test
+    public void substract1() {
+        DesiredRateExpression<VDouble> exp = subtract(vConst(3.0), vConst(4.0));
+        VDouble result = exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(-1.0));
     }
 }
