@@ -6,27 +6,30 @@ options {
 
 @header {
   package org.epics.pvmanager.formula;
+  import org.epics.pvmanager.expression.*;
+  import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+  import static org.epics.pvmanager.ExpressionLanguage.*;
 }
 
 @lexer::header {
   package org.epics.pvmanager.formula;
 }
 
-formula
+formula returns [DesiredRateExpression<?> result]
     :   expression EOF
     ;
 
-expression
+expression returns [DesiredRateExpression<?> result]
     :   additiveExpression;
 
-additiveExpression 
+additiveExpression returns [DesiredRateExpression<?> result]
     :   multiplicativeExpression
         (   '+' multiplicativeExpression
         |   '-' multiplicativeExpression
         )*
     ;
 
-multiplicativeExpression 
+multiplicativeExpression returns [DesiredRateExpression<?> result]
     :   primary
         (   '*' primary
         |   '/' primary
@@ -34,27 +37,28 @@ multiplicativeExpression
         )*
     ;
     
-primary
+primary returns [DesiredRateExpression<?> result]
     :   parExpression
     |   pv 
     |   numericLiteral
     |   stringLiteral
     ;
 
-parExpression 
+parExpression returns [DesiredRateExpression<?> result]
     :   '(' expression ')'
     ;
 
-pv  :   ID
+pv returns [DesiredRateExpression<?> result]
+    :   ID
     |   QUOTED_ID
     ;
 
-numericLiteral
+numericLiteral returns [DesiredRateExpression<?> result]
     :   INT
     |   FLOAT
     ;
 
-stringLiteral
+stringLiteral returns [DesiredRateExpression<?> result]
     :	STRING
     ;
 
