@@ -62,7 +62,7 @@ public class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
     }
     
     public <N> LastOfChannelExpression<N> cast(Class<N> clazz) {
-        if (this.clazz.equals(clazz)) {
+        if (clazz.isAssignableFrom(this.clazz)) {
             @SuppressWarnings("unchecked")
             LastOfChannelExpression<N> result = (LastOfChannelExpression<N>) this;
             return result;

@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -32,5 +34,14 @@ public class LastOfChannelExpressionTest {
         LastOfChannelExpression<Object> exp = new LastOfChannelExpression<Object>("test", Object.class);
         LastOfChannelExpression<VDouble> vDoubleExp = exp.cast(VDouble.class);
         assertThat(vDoubleExp.getType(), equalTo(VDouble.class));
+        assertThat(vDoubleExp.getName(), equalTo("test"));
+    }
+
+    @Test
+    public void testCast3() {
+        LastOfChannelExpression<VDouble> exp = new LastOfChannelExpression<VDouble>("test", VDouble.class);
+        LastOfChannelExpression<?> exp2 = exp.cast(Object.class);
+        assertThat(exp2 == exp, equalTo(true));
+        assertThat(exp2.getName(), equalTo("test"));
     }
 }
