@@ -56,7 +56,7 @@ pv returns [DesiredRateExpression<?> result]
 
 numericLiteral returns [DesiredRateExpression<?> result]
     :   INT {result = vConst(Integer.parseInt($INT.text));}
-    |   FLOAT
+    |   FLOAT {result = vConst(Double.parseDouble($FLOAT.text));}
     ;
 
 stringLiteral returns [DesiredRateExpression<?> result]

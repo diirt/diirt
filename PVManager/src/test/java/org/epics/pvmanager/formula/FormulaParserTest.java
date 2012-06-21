@@ -52,4 +52,12 @@ public class FormulaParserTest {
         VInt result = (VInt) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(3));
     }
+
+    @Test
+    public void numericLiteral2() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("3.14").numericLiteral();
+        assertThat(exp, not(nullValue()));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(3.14));
+    }
 }
