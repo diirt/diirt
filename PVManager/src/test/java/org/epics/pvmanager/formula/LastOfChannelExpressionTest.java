@@ -7,6 +7,7 @@ package org.epics.pvmanager.formula;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VString;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -43,5 +44,11 @@ public class LastOfChannelExpressionTest {
         LastOfChannelExpression<?> exp2 = exp.cast(Object.class);
         assertThat(exp2 == exp, equalTo(true));
         assertThat(exp2.getName(), equalTo("test"));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testCast4() {
+        LastOfChannelExpression<VDouble> exp = new LastOfChannelExpression<VDouble>("test", VDouble.class);
+        LastOfChannelExpression<?> exp2 = exp.cast(VString.class);
     }
 }

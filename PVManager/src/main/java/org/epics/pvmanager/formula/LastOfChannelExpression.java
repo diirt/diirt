@@ -71,7 +71,8 @@ public class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
         if (this.clazz.isAssignableFrom(clazz)) {
             return new LastOfChannelExpression<N>(getName(), clazz);
         }
-        return null;
+        
+        throw new IllegalArgumentException("Cannot cast expression of type " + this.clazz + " to type " + clazz);
     }
 
     public Class<T> getType() {
