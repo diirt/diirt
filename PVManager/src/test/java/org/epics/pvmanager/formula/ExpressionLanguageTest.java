@@ -36,4 +36,11 @@ public class ExpressionLanguageTest {
         VDouble result = exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(-1.0));
     }
+
+    @Test
+    public void multiply1() {
+        DesiredRateExpression<VDouble> exp = multiply(vConst(3.0), vConst(4.0));
+        VDouble result = exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(12.0));
+    }
 }
