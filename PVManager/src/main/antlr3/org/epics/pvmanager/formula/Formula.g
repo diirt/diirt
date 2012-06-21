@@ -7,8 +7,9 @@ options {
 @header {
   package org.epics.pvmanager.formula;
   import org.epics.pvmanager.expression.*;
-  import static org.epics.pvmanager.formula.ExpressionLanguage.*;
   import static org.epics.pvmanager.ExpressionLanguage.*;
+  import static org.epics.pvmanager.data.ExpressionLanguage.*;
+  import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 }
 
 @lexer::header {
@@ -54,7 +55,7 @@ pv returns [DesiredRateExpression<?> result]
     ;
 
 numericLiteral returns [DesiredRateExpression<?> result]
-    :   INT
+    :   INT {result = vConst(Integer.parseInt($INT.text));}
     |   FLOAT
     ;
 

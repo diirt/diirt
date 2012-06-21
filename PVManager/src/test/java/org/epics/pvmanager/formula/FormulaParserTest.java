@@ -44,4 +44,12 @@ public class FormulaParserTest {
         assertThat(exp, not(nullValue()));
         assertThat(exp.getName(), equalTo("mypv"));
     }
+
+    @Test
+    public void numericLiteral1() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("3").numericLiteral();
+        assertThat(exp, not(nullValue()));
+        VInt result = (VInt) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(3));
+    }
 }
