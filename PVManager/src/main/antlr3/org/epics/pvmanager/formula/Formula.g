@@ -24,9 +24,9 @@ expression returns [DesiredRateExpression<?> result]
     :   additiveExpression;
 
 additiveExpression returns [DesiredRateExpression<?> result]
-    :   multiplicativeExpression
-        (   '+' multiplicativeExpression
-        |   '-' multiplicativeExpression
+    :   op1=multiplicativeExpression {result = $op1.result;}
+        (   '+' op2=multiplicativeExpression {result = addCast($op1.result, $op2.result);}
+        |   '-' op2=multiplicativeExpression
         )*
     ;
 
