@@ -60,4 +60,12 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(3.14));
     }
+
+    @Test
+    public void multiplicativeExpression1() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("2*3").multiplicativeExpression();
+        assertThat(exp, not(nullValue()));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(6.0));
+    }
 }

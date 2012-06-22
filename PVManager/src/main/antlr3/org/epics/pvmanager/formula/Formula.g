@@ -31,18 +31,18 @@ additiveExpression returns [DesiredRateExpression<?> result]
     ;
 
 multiplicativeExpression returns [DesiredRateExpression<?> result]
-    :   primary
-        (   '*' primary
-        |   '/' primary
-        |   '%' primary
+    :   op1=primary {result = $op1.result;}
+        (   '*' op2=primary {result = multiplyCast($op1.result, $op2.result);}
+        |   '/' op2=primary
+        |   '%' op2=primary
         )*
     ;
     
 primary returns [DesiredRateExpression<?> result]
-    :   parExpression
-    |   pv 
-    |   numericLiteral
-    |   stringLiteral
+    :   parExpression {result = $parExpression.result;}
+    |   pv {result = $pv.result;}
+    |   numericLiteral {result = $numericLiteral.result;}
+    |   stringLiteral {result = $stringLiteral.result;}
     ;
 
 parExpression returns [DesiredRateExpression<?> result]
