@@ -66,4 +66,8 @@ public class ExpressionTester {
     public Function<?> getFunction() {
         return expression.getFunction();
     }
+    
+    public DesiredRateExpression<?> getExpression() {
+        return expression;
+    }
 }

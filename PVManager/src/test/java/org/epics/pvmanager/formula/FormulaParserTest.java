@@ -135,6 +135,7 @@ public class FormulaParserTest {
     public void additiveExpression2() throws RecognitionException {
         ExpressionTester exp = new ExpressionTester(createParser("2+x").additiveExpression());
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
+        assertThat(exp.getExpression().getName(), equalTo("(2 + x)"));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(12.0));
 
