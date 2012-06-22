@@ -42,7 +42,7 @@ public class ExpressionLanguage {
             double calculate(double arg1, double arg2) {
                 return arg1 + arg2;
             }
-        }, arg1, arg2);
+        }, arg1, arg2, "(" + arg1.getName() + " + " + arg2.getName() + ")");
     }
     
     static DesiredRateExpression<VDouble> addCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {

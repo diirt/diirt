@@ -17,11 +17,12 @@ options {
 }
 
 formula returns [DesiredRateExpression<?> result]
-    :   expression EOF
+    :   expression EOF {result = $expression.result;}
     ;
 
 expression returns [DesiredRateExpression<?> result]
-    :   additiveExpression;
+    :   additiveExpression {result = $additiveExpression.result;}
+    ;
 
 additiveExpression returns [DesiredRateExpression<?> result]
     :   op1=multiplicativeExpression {result = $op1.result;}
@@ -46,7 +47,7 @@ primary returns [DesiredRateExpression<?> result]
     ;
 
 parExpression returns [DesiredRateExpression<?> result]
-    :   '(' expression ')'
+    :   '(' expression ')' {result = $expression.result;}
     ;
 
 pv returns [DesiredRateExpression<?> result]

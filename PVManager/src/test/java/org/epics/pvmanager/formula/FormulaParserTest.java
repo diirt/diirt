@@ -126,6 +126,7 @@ public class FormulaParserTest {
     public void additiveExpression1() throws RecognitionException {
         DesiredRateExpression<?> exp = createParser("2+3").additiveExpression();
         assertThat(exp, not(nullValue()));
+        assertThat(exp.getName(), equalTo("(2 + 3)"));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(5.0));
     }
@@ -161,4 +162,14 @@ public class FormulaParserTest {
         result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(-3.0));
     }
+//
+//    @Test
+//    public void formula1() throws RecognitionException {
+//        ExpressionTester exp = new ExpressionTester(createParser("(3+x)*(5-y)/z").additiveExpression());
+//        exp.writeValue("x", ValueFactory.newVDouble(5.0));
+//        exp.writeValue("y", ValueFactory.newVDouble(2.0));
+//        exp.writeValue("z", ValueFactory.newVDouble(4.0));
+//        VDouble result = (VDouble) exp.getFunction().getValue();
+//        assertThat(result.getValue(), equalTo(6.0));
+//    }
 }
