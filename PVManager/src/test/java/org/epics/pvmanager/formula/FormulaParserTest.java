@@ -81,4 +81,24 @@ public class FormulaParserTest {
         result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(10.0));
     }
+
+    @Test
+    public void multiplicativeExpression3() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("10/2").multiplicativeExpression();
+        assertThat(exp, not(nullValue()));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(5.0));
+    }
+
+    @Test
+    public void multiplicativeExpression4() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("x/2").multiplicativeExpression());
+        exp.writeValue("x", ValueFactory.newVDouble(10.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(5.0));
+
+        exp.writeValue("x", ValueFactory.newVDouble(20.0));
+        result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(10.0));
+    }
 }

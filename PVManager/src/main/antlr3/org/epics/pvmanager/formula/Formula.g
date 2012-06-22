@@ -33,7 +33,7 @@ additiveExpression returns [DesiredRateExpression<?> result]
 multiplicativeExpression returns [DesiredRateExpression<?> result]
     :   op1=primary {result = $op1.result;}
         (   '*' op2=primary {result = multiplyCast($op1.result, $op2.result);}
-        |   '/' op2=primary
+        |   '/' op2=primary {result = divideCast($op1.result, $op2.result);}
         |   '%' op2=primary
         )*
     ;

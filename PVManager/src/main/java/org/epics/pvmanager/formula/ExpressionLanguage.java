@@ -56,18 +56,21 @@ public class ExpressionLanguage {
         }, arg1, arg2);
     }
     
-    static DesiredRateExpression<VDouble> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        @SuppressWarnings("unchecked")
-        DesiredRateExpression<? extends VNumber> op1 = (DesiredRateExpression<? extends VNumber>) arg1;
+    static <T> DesiredRateExpression<? extends T> cast(Class<T> clazz, DesiredRateExpression<?> arg1) {
         if (arg1 instanceof LastOfChannelExpression) {
-            op1 = ((LastOfChannelExpression<?>)arg1).cast(VNumber.class);
+            return ((LastOfChannelExpression<?>)arg1).cast(clazz);
         }
         @SuppressWarnings("unchecked")
-        DesiredRateExpression<? extends VNumber> op2 = (DesiredRateExpression<? extends VNumber>) arg2;
-        if (arg2 instanceof LastOfChannelExpression) {
-            op2 = ((LastOfChannelExpression<?>)arg2).cast(VNumber.class);
-        }
-        return multiply(op1, op2);
+        DesiredRateExpression<? extends T> op1 = (DesiredRateExpression<? extends T>) arg1;
+        return op1;
+    }
+    
+    static DesiredRateExpression<VDouble> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return multiply(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    }
+    
+    static DesiredRateExpression<VDouble> divideCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return divide(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
     }
     
     static DesiredRateExpression<VDouble> divide(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
