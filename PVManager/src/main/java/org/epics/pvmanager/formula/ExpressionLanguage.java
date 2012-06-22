@@ -88,7 +88,7 @@ public class ExpressionLanguage {
             double calculate(double arg1, double arg2) {
                 return arg1 / arg2;
             }
-        }, arg1, arg2);
+        }, arg1, arg2, opName(" / ", arg1, arg2));
     }
     
     static DesiredRateExpression<VDouble> divideCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
