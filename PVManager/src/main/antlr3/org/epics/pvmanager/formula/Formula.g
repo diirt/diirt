@@ -26,16 +26,16 @@ expression returns [DesiredRateExpression<?> result]
 
 additiveExpression returns [DesiredRateExpression<?> result]
     :   op1=multiplicativeExpression {result = $op1.result;}
-        (   '+' op2=multiplicativeExpression {result = addCast($op1.result, $op2.result);}
-        |   '-' op2=multiplicativeExpression {result = subtractCast($op1.result, $op2.result);}
+        (   '+' op2=multiplicativeExpression {result = addCast($result, $op2.result);}
+        |   '-' op2=multiplicativeExpression {result = subtractCast($result, $op2.result);}
         )*
     ;
 
 multiplicativeExpression returns [DesiredRateExpression<?> result]
     :   op1=primary {result = $op1.result;}
-        (   '*' op2=primary {result = multiplyCast($op1.result, $op2.result);}
-        |   '/' op2=primary {result = divideCast($op1.result, $op2.result);}
-        |   '%' op2=primary {result = reminderCast($op1.result, $op2.result);}
+        (   '*' op2=primary {result = multiplyCast($result, $op2.result);}
+        |   '/' op2=primary {result = divideCast($result, $op2.result);}
+        |   '%' op2=primary {result = reminderCast($result, $op2.result);}
         )*
     ;
     

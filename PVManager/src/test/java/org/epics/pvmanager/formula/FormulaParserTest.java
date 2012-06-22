@@ -169,14 +169,15 @@ public class FormulaParserTest {
         result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(-3.0));
     }
-//
-//    @Test
-//    public void formula1() throws RecognitionException {
-//        ExpressionTester exp = new ExpressionTester(createParser("(3+x)*(5-y)/z").additiveExpression());
-//        exp.writeValue("x", ValueFactory.newVDouble(5.0));
-//        exp.writeValue("y", ValueFactory.newVDouble(2.0));
-//        exp.writeValue("z", ValueFactory.newVDouble(4.0));
-//        VDouble result = (VDouble) exp.getFunction().getValue();
-//        assertThat(result.getValue(), equalTo(6.0));
-//    }
+
+    @Test
+    public void formula1() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("(3+2+x)*(5-y)/z").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
+        exp.writeValue("x", ValueFactory.newVDouble(3.0));
+        exp.writeValue("y", ValueFactory.newVDouble(2.0));
+        exp.writeValue("z", ValueFactory.newVDouble(4.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(6.0));
+    }
 }
