@@ -62,4 +62,8 @@ public class ExpressionTester {
     public DataRecipe getDataRecipe() {
         return expression.getDataRecipe();
     }
+    
+    public Function<?> getFunction() {
+        return expression.getFunction();
+    }
 }

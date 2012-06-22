@@ -5,6 +5,7 @@
 package org.epics.pvmanager.formula;
 
 import org.antlr.runtime.*;
+import org.epics.pvmanager.ExpressionTester;
 import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.ValueCache;
@@ -67,5 +68,17 @@ public class FormulaParserTest {
         assertThat(exp, not(nullValue()));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(6.0));
+    }
+
+    @Test
+    public void multiplicativeExpression2() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("2*x").multiplicativeExpression());
+        exp.writeValue("x", ValueFactory.newVDouble(10.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(20.0));
+
+        exp.writeValue("x", ValueFactory.newVDouble(5.0));
+        result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(10.0));
     }
 }
