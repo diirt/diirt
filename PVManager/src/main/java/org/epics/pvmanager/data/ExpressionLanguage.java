@@ -232,7 +232,7 @@ public class ExpressionLanguage {
     }
     
     public static DesiredRateExpression<VInt> vConst(int value) {
-        return constant(newVInt(value, alarmNone(), newTime(Timestamp.now()), displayNone()));
+        return constant(newVInt(value, alarmNone(), newTime(Timestamp.now()), displayNone()), Integer.toString(value));
     }
     
     public static DesiredRateExpression<VDoubleArray> vConst(double... values) {
