@@ -66,6 +66,7 @@ public class FormulaParserTest {
     public void multiplicativeExpression1() throws RecognitionException {
         DesiredRateExpression<?> exp = createParser("2*3").multiplicativeExpression();
         assertThat(exp, not(nullValue()));
+        assertThat(exp.getName(), equalTo("(2 * 3)"));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(6.0));
     }
@@ -73,6 +74,7 @@ public class FormulaParserTest {
     @Test
     public void multiplicativeExpression2() throws RecognitionException {
         ExpressionTester exp = new ExpressionTester(createParser("2*x").multiplicativeExpression());
+        assertThat(exp.getExpression().getName(), equalTo("(2 * x)"));
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(20.0));
