@@ -83,6 +83,7 @@ public class ExpressionLanguageTest {
     public void vDoubleConstant1() {
         DesiredRateExpression<VDouble> exp = vConst(3.14);
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
+        assertThat(exp.getName(), equalTo("3.14"));
         ValueCache<VDouble> cache = (ValueCache<VDouble>) exp.getFunction();
         assertThat(cache.getValue(), not(nullValue()));
         assertThat(cache.getValue(), instanceOf(VDouble.class));
