@@ -147,6 +147,7 @@ public class FormulaParserTest {
     @Test
     public void additiveExpression3() throws RecognitionException {
         DesiredRateExpression<?> exp = createParser("2-3").additiveExpression();
+        assertThat(exp.getName(), equalTo("(2 - 3)"));
         assertThat(exp, not(nullValue()));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(-1.0));
@@ -155,6 +156,7 @@ public class FormulaParserTest {
     @Test
     public void additiveExpression4() throws RecognitionException {
         ExpressionTester exp = new ExpressionTester(createParser("2-x").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("(2 - x)"));
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(-8.0));
