@@ -89,9 +89,12 @@ public class ValueUtil {
      * @return the display information for the object
      */
     public static Display displayOf(Object obj) {
-        if (obj instanceof Display)
-            return (Display) obj;
-        return null;
+        if (!(obj instanceof Display))
+            return null;
+        Display display = (Display) obj;
+        if (display.getLowerAlarmLimit() == null || display.getLowerDisplayLimit() == null)
+            return null;
+        return display;
     }
     
     /**
