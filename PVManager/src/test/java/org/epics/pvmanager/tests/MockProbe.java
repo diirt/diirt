@@ -22,7 +22,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.jca.JCADataSource;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
@@ -178,21 +178,25 @@ public class MockProbe extends javax.swing.JFrame {
         if (pv != null)
             pv.close();
 
-        pv = PVManager.read(vType(pvName.getText())).every(hz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
+        try {
+            pv = PVManager.read(formula(pvName.getText())).every(hz(10));
+            pv.addPVReaderListener(new PVReaderListener() {
 
-            @Override
-            public void pvChanged() {
-                setLastError(pv.lastException());
-                Object value = pv.getValue();
-                setTextValue(format.format(value));
-                setType(ValueUtil.typeOf(value));
-                setAlarm(ValueUtil.alarmOf(value));
-                setTime(ValueUtil.timeOf(value));
-                setIndicator(ValueUtil.normalizedNumericValueOf(value));
-                setMetadata(ValueUtil.displayOf(value));
-            }
-        });
+                @Override
+                public void pvChanged() {
+                    setLastError(pv.lastException());
+                    Object value = pv.getValue();
+                    setTextValue(format.format(value));
+                    setType(ValueUtil.typeOf(value));
+                    setAlarm(ValueUtil.alarmOf(value));
+                    setTime(ValueUtil.timeOf(value));
+                    setIndicator(ValueUtil.normalizedNumericValueOf(value));
+                    setMetadata(ValueUtil.displayOf(value));
+                }
+            });
+        } catch (RuntimeException ex) {
+            setLastError(ex);
+        }
 
     }//GEN-LAST:event_pvNameActionPerformed
 
