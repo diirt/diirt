@@ -26,7 +26,7 @@ expression returns [DesiredRateExpression<?> result]
 additiveExpression returns [DesiredRateExpression<?> result]
     :   op1=multiplicativeExpression {result = $op1.result;}
         (   '+' op2=multiplicativeExpression {result = addCast($op1.result, $op2.result);}
-        |   '-' op2=multiplicativeExpression
+        |   '-' op2=multiplicativeExpression {result = subtractCast($op1.result, $op2.result);}
         )*
     ;
 

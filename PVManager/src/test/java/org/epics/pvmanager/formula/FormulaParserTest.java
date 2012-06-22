@@ -141,4 +141,24 @@ public class FormulaParserTest {
         result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(7.0));
     }
+
+    @Test
+    public void additiveExpression3() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("2-3").additiveExpression();
+        assertThat(exp, not(nullValue()));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(-1.0));
+    }
+
+    @Test
+    public void additiveExpression4() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("2-x").additiveExpression());
+        exp.writeValue("x", ValueFactory.newVDouble(10.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(-8.0));
+
+        exp.writeValue("x", ValueFactory.newVDouble(5.0));
+        result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(-3.0));
+    }
 }
