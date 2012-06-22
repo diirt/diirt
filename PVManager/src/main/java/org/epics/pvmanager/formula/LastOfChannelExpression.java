@@ -20,7 +20,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
  *
  * @author carcassi
  */
-public class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
+class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
     
     private final DesiredRateExpression<T> expression;
     private final Class<T> clazz;
