@@ -24,13 +24,6 @@ import static org.hamcrest.CoreMatchers.*;
  * @author carcassi
  */
 public class FormulaParserTest {
-    
-    public static FormulaParser createParser(String text) {
-        CharStream stream = new ANTLRStringStream(text);
-        FormulaLexer lexer = new FormulaLexer(stream);
-        TokenStream tokenStream = new CommonTokenStream(lexer);
-        return new FormulaParser(tokenStream);
-    }
 
     @Test
     public void pv1() throws RecognitionException {

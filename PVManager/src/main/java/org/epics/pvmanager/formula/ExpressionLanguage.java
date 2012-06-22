@@ -8,6 +8,9 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.antlr.runtime.*;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VNumber;
 import org.epics.pvmanager.expression.DesiredRateExpression;
@@ -20,6 +23,21 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 public class ExpressionLanguage {
     private ExpressionLanguage() {
         // No instances
+    }
+    
+    static FormulaParser createParser(String text) {
+        CharStream stream = new ANTLRStringStream(text);
+        FormulaLexer lexer = new FormulaLexer(stream);
+        TokenStream tokenStream = new CommonTokenStream(lexer);
+        return new FormulaParser(tokenStream);
+    }
+    
+    public static DesiredRateExpression<?> formula(String formula) {
+        try {
+            return createParser(formula).formula();
+        } catch (RecognitionException ex) {
+            throw new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
+        }
     }
     
     static DesiredRateExpression<?> cachedPv(String channelName) {

@@ -57,4 +57,11 @@ public class ExpressionLanguageTest {
         VDouble result = exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(1.0));
     }
+    
+    @Test
+    public void formula1() {
+        DesiredRateExpression<?> test = formula("1+2-3");
+        VDouble result = (VDouble) test.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(0.0));
+    }
 }
