@@ -89,7 +89,7 @@ STRING
     ;
 
 QUOTED_ID
-    :  '\'' ( ESC_SEQ | ~('\\'|'"') )* '\''
+    :  '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
     ;
 
 fragment

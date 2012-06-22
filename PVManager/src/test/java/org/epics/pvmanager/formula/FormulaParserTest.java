@@ -173,4 +173,13 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(6.0));
     }
+
+    @Test
+    public void formula2() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("'x' + 2").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("(x + 2)"));
+        exp.writeValue("x", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(5.0));
+    }
 }
