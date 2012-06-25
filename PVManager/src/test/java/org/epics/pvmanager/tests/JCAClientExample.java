@@ -21,7 +21,6 @@ import org.epics.pvmanager.data.VIntArray;
 import org.epics.pvmanager.data.VShortArray;
 import org.epics.pvmanager.data.VStringArray;
 import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
