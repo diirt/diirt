@@ -17,15 +17,8 @@ import org.epics.pvmanager.data.DataTypeSupport;
 /**
  * A data source that uses jca.
  * <p>
- * NOTE: this class is extensible as per Bastian request so that DESY can hook
- * a different type factory. This is a temporary measure until the problem
- * is solved in better, more general way, so that data sources
- * can work only with data source specific types, while allowing
- * conversions to normalized type through operators. The contract of this
- * class is, therefore, expected to change.
- * <p>
- * Related changes are marked so that they are not accidentally removed in the
- * meantime, and can be intentionally removed when a better solution is implemented.
+ * Type support can be configured by passing a custom {@link JCATypeSupport}
+ * to the constructor.
  * 
  * @author carcassi
  */
@@ -82,6 +75,15 @@ public class JCADataSource extends DataSource {
         }
     }
     
+    /**
+     * Creates a new data source using the given context. The context will
+     * never be closed. The type mapping con be configured with a custom
+     * type support.
+     * 
+     * @param jcaContext the context to be used
+     * @param monitorMask Monitor.VALUE, ...
+     * @param typeSupport type support to be used
+     */
     public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport) {
         super(true);
         this.ctxt = jcaContext;
