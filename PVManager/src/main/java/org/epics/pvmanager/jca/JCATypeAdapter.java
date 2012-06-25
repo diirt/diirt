@@ -15,6 +15,8 @@ import gov.aps.jca.dbr.DBRType;
 import org.epics.pvmanager.ValueCache;
 
 /**
+ * Type adapter for JCA data source. Will match a channel based on the value
+ * type provided and the array flag. Will match the cache based on the type class.
  *
  * @author carcassi
  */
@@ -25,6 +27,14 @@ public abstract class JCATypeAdapter implements DataSourceTypeAdapter<Channel, J
     private final DBRType epicsMetaType;
     private final boolean array;
 
+    /**
+     * Creates a new type adapter.
+     * 
+     * @param typeClass the java type this adapter will create
+     * @param epicsValueType the epics type used for the monitor
+     * @param epicsMetaType the epics type for the get at connection time; null if no metadata is needed
+     * @param array true whether this will require an array type
+     */
     public JCATypeAdapter(Class<?> typeClass, DBRType epicsValueType, DBRType epicsMetaType, boolean array) {
         this.typeClass = typeClass;
         this.epicsValueType = epicsValueType;
@@ -87,7 +97,15 @@ public abstract class JCATypeAdapter implements DataSourceTypeAdapter<Channel, J
         cache.setValue(value);
         return true;
     }
-    
+
+    /**
+     * Given the value and the (optional) metadata, will create the new value.
+     * 
+     * @param value the value taken from the monitor
+     * @param metadata the value taken as metadata
+     * @param disconnected true if the value should report the channel is currently disconnected
+     * @return the new value
+     */
     public abstract Object createValue(DBR value, DBR metadata, boolean disconnected);
     
 }
