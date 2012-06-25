@@ -37,6 +37,14 @@ public class JCATypeSupport extends DataSourceTypeSupport {
         this.adapters = adapters;
     }
     
+    /**
+     * Returns a matching type adapter for the given
+     * cache and channel.
+     * 
+     * @param cache the cache that will store the data
+     * @param channel the jca channel
+     * @return the matched type adapter
+     */
     protected JCATypeAdapter find(ValueCache<?> cache, Channel channel) {
         return find(adapters.getAdapters(), cache, channel);
     }
