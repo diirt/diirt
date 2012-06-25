@@ -8,7 +8,7 @@ package org.epics.pvmanager.data;
  * Scalar number with alarm, timestamp, display and control information.
  * <p>
  * This class allows to use any scalar number (i.e. {@link VInt} or
- * {@link VDouble}).
+ * {@link VDouble}) through the same interface.
  *
  * @author carcassi
  */
