@@ -16,7 +16,7 @@ import java.awt.Graphics2D;
 class HorizontalAxisRenderer {
     
     private ValueAxis axis;
-    private static Font defaultAxisFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+    private static Font defaultAxisFont = new Font("Lucida Sans", Font.PLAIN, 10);
     private Font axisFont = defaultAxisFont;
     private int axisHeight;
     private int bottomMargin = 3;
