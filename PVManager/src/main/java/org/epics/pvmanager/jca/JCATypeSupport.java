@@ -16,11 +16,6 @@ import org.epics.pvmanager.ValueCache;
  * 
  * Given a set of {@link JCATypeAdapter} prepares type support for the 
  * JCA data source.
- * <p>
- * Given that the datasource uses multiplexed channel, the type support need to
- * be consistent. This mean that all the type that will match the same channel,
- * will need to request the same metadata (or some requests will be given
- * the wrong value to convert).
  *
  * @author carcassi
  */

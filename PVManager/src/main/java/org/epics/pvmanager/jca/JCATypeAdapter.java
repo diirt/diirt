@@ -76,11 +76,8 @@ public abstract class JCATypeAdapter implements DataSourceTypeAdapter<Channel, J
     }
 
     @Override
-    public JCASubscriptionParameters getSubscriptionParameter(ValueCache cache, Channel channel) {
-        int count = 1;
-        if (array)
-            count = channel.getElementCount();
-        return new JCASubscriptionParameters(epicsValueType, epicsMetaType, count);
+    public Object getSubscriptionParameter(ValueCache cache, Channel channel) {
+        throw new UnsupportedOperationException("Not implemented: JCAChannelHandler is multiplexed, will not use this method");
     }
 
     @Override
