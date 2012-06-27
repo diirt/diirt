@@ -25,12 +25,56 @@ import org.epics.util.time.Timestamp;
  */
 public class ValueFactory {
     
+    /**
+     * @deprecated 
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @return
+     * @deprecated
+     */
+    @Deprecated
     public static VString newVString(String value, AlarmSeverity alarmSeverity,
             AlarmStatus alarmStatus,
             TimeStamp timeStamp, Integer timeUserTag) {
         return new IVString(value, alarmSeverity, alarmStatus, TimeStamp.asTimestamp(timeStamp), timeUserTag, true);
     }
+    
+    /**
+     * Creates a new VString.
+     * 
+     * @param value the string value
+     * @param alarm the alarm
+     * @param time the time
+     * @return  the new value
+     */
+    public static VString newVString(final String value, final Alarm alarm, final Time time) {
+        return new IVString(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid());
+    }
 
+    /**
+     * @deprecated
+     * @param values
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerCtrlLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param format
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperCtrlLimit
+     * @param upperDisplayLimit
+     * @return 
+     */
+    @Deprecated
     public static VMultiDouble newVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
             AlarmStatus alarmStatus,
             TimeStamp timeStamp, Integer timeUserTag, Double lowerDisplayLimit,
@@ -42,6 +86,15 @@ public class ValueFactory {
                 units, format, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
     
+    /**
+     * Creates a new VMultiDouble.
+     * 
+     * @param values the values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
     public static VMultiDouble newVMultiDouble(List<VDouble> values, final Alarm alarm, final Time time, final Display display) {
         return new IVMultiDouble(values, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
@@ -52,6 +105,7 @@ public class ValueFactory {
 
     /**
      * Creates new immutable VInt.
+     * @deprecated 
      */
     @Deprecated
     public static VInt newVInt(final Integer value, final AlarmSeverity alarmSeverity,
@@ -63,9 +117,15 @@ public class ValueFactory {
             final Double lowerCtrlLimit, final Double upperCtrlLimit) {
         return new IVInt(value, alarmSeverity, alarmStatus, TimeStamp.asTimestamp(timeStamp), timeUserTag, true, lowerDisplayLimit, lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, numberFormat, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
     }
-    
+
     /**
-     * Creates new immutable VInt.
+     * Creates a new VInt.
+     * 
+     * @param values the values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
      */
     public static VInt newVInt(final Integer value, final Alarm alarm, final Time time, final Display display) {
         return new IVInt(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
@@ -97,13 +157,15 @@ public class ValueFactory {
         };
     }
     
+    private static final Alarm alarmNone = newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
+    
     /**
      * No alarm.
      * 
      * @return severity and status NONE
      */
     public static Alarm alarmNone() {
-        return newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
+        return alarmNone;
     }
     
     /**
@@ -360,6 +422,7 @@ public class ValueFactory {
      * @param timeStamp time stamp
      * @param display metadata
      * @return new value
+     * @deprecated
      */
     @Deprecated
     public static VDouble newVDouble(double value, TimeStamp timeStamp, Display display) {
@@ -416,6 +479,12 @@ public class ValueFactory {
         return newVDouble(value, newTime(Timestamp.now()), display);
     }
     
+    /**
+     * 
+     * 
+     * @param value
+     * @return 
+     */
     public static VDouble newVDouble(Double value) {
         return newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone());
     }
@@ -461,7 +530,7 @@ public class ValueFactory {
     }
 
     /**
-     * Creates new immutable VInt.
+     * @deprecated use {@link #newVInt(java.lang.Integer, org.epics.pvmanager.data.Alarm, org.epics.pvmanager.data.Time, org.epics.pvmanager.data.Display) }.
      */
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
@@ -476,8 +545,9 @@ public class ValueFactory {
     }
 
     /**
-     * Creates new immutable newDbrCtrlInt by using the metadata from the old value.
+     * @deprecated use {@link #newVInt(java.lang.Integer, org.epics.pvmanager.data.Alarm, org.epics.pvmanager.data.Time, org.epics.pvmanager.data.Display) }.
      */
+    @Deprecated
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
             VInt oldValue) {
