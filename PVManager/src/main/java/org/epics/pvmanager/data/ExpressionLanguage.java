@@ -258,7 +258,7 @@ public class ExpressionLanguage {
      * A constant representing a double array. Alarm will be none, timestamp now
      * and no display information.
      * 
-     * @param value the constant value
+     * @param values the constant values
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(double... values) {
@@ -269,7 +269,7 @@ public class ExpressionLanguage {
      * A constant representing a double array. Alarm will be none, timestamp now
      * and no display information.
      * 
-     * @param value the constant value
+     * @param values the constant values
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(ListDouble values) {
@@ -280,7 +280,7 @@ public class ExpressionLanguage {
      * A constant representing an int array. Alarm will be none, timestamp now
      * and no display information.
      * 
-     * @param value the constant value
+     * @param values the constant values
      * @return an int array expression
      */
     public static DesiredRateExpression<VIntArray> vConst(int... values) {
@@ -291,7 +291,7 @@ public class ExpressionLanguage {
      * A constant representing an int array. Alarm will be none, timestamp now
      * and no display information.
      * 
-     * @param value the constant value
+     * @param values the constant values
      * @return an int array expression
      */
     public static DesiredRateExpression<VIntArray> vConst(ListInt values) {
@@ -300,6 +300,9 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VDouble.
+     * 
+     * @param values the list of constants
+     * @return a list of double expression
      */
     public static DesiredRateExpressionList<VDouble> vDoubleConstants(List<Double> values) {
         DesiredRateExpressionList<VDouble> list = new DesiredRateExpressionListImpl<VDouble>();
@@ -311,6 +314,9 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VDouble.
+     * 
+     * @param values the list of constants
+     * @return a list of int expression
      */
     public static DesiredRateExpressionList<VInt> vIntConstants(List<Integer> values) {
         DesiredRateExpressionList<VInt> list = new DesiredRateExpressionListImpl<VInt>();
@@ -322,6 +328,9 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VString.
+     * 
+     * @param values the list of constants
+     * @return a list of string expression
      */
     public static DesiredRateExpressionList<VString> vStringConstants(List<String> values) {
         DesiredRateExpressionList<VString> list = new DesiredRateExpressionListImpl<VString>();
@@ -333,6 +342,7 @@ public class ExpressionLanguage {
 
     /**
      * Aggregates the sample at the scan rate and takes the average.
+     * 
      * @param doublePv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
@@ -418,6 +428,7 @@ public class ExpressionLanguage {
      * @param tolerance maximum time difference between samples
      * @param expressions the expressions from which to reconstruct the array
      * @return an expression for the array
+     * @deprecated use {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
      */
     @Deprecated
     public static DesiredRateExpression<VMultiDouble>
@@ -434,6 +445,7 @@ public class ExpressionLanguage {
      * used to reconstruct the array
      * @param expressions the expressions from which to reconstruct the array
      * @return an expression for the array
+     * @deprecated {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
      */
     @Deprecated
     public static DesiredRateExpression<VMultiDouble>
