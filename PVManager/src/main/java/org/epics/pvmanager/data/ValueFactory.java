@@ -26,7 +26,6 @@ import org.epics.util.time.Timestamp;
 public class ValueFactory {
     
     /**
-     * @deprecated 
      * @param value
      * @param alarmSeverity
      * @param alarmStatus
@@ -105,7 +104,23 @@ public class ValueFactory {
 
     /**
      * Creates new immutable VInt.
-     * @deprecated 
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param numberFormat
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperDisplayLimit
+     * @param lowerCtrlLimit
+     * @param upperCtrlLimit
+     * @return
+     * @deprecated
      */
     @Deprecated
     public static VInt newVInt(final Integer value, final AlarmSeverity alarmSeverity,
@@ -121,7 +136,7 @@ public class ValueFactory {
     /**
      * Creates a new VInt.
      * 
-     * @param values the values
+     * @param value the value
      * @param alarm the alarm
      * @param time the time
      * @param display the display
@@ -330,7 +345,7 @@ public class ValueFactory {
     /**
      * Creates a new VDouble.
      * 
-     * @param values the values
+     * @param value the value
      * @param alarm the alarm
      * @param time the time
      * @param display the display
@@ -345,7 +360,6 @@ public class ValueFactory {
     }
 
     /**
-     * @deprecated
      * @param value
      * @param alarmSeverity
      * @param alarmStatus
@@ -462,7 +476,6 @@ public class ValueFactory {
     }
 
     /**
-     * @deprecated
      * @param value
      * @param alarmSeverity
      * @param alarmStatus
@@ -622,11 +635,9 @@ public class ValueFactory {
      * @param min minimum
      * @param max maximum
      * @param nSamples number of samples
-     * @param alarmSeverity
-     * @param alarmStatus
-     * @param timeUserTag
-     * @param timeStamp
-     * @param aValue
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
      * @return 
      */
     public static VStatistics newVStatistics(final double average, final double stdDev,
@@ -642,7 +653,24 @@ public class ValueFactory {
 
     /**
      * @deprecated use {@link #newVInt(java.lang.Integer, org.epics.pvmanager.data.Alarm, org.epics.pvmanager.data.Time, org.epics.pvmanager.data.Display) }.
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param numberFormat
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperDisplayLimit
+     * @param lowerCtrlLimit
+     * @param upperCtrlLimit
+     * @return 
      */
+    @Deprecated
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
             final Integer timeUserTag,
@@ -657,6 +685,13 @@ public class ValueFactory {
 
     /**
      * @deprecated use {@link #newVInt(java.lang.Integer, org.epics.pvmanager.data.Alarm, org.epics.pvmanager.data.Time, org.epics.pvmanager.data.Display) }.
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeUserTag
+     * @param timeStamp
+     * @param oldValue
+     * @return
      */
     @Deprecated
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
@@ -672,6 +707,16 @@ public class ValueFactory {
                 oldValue.getLowerCtrlLimit(), oldValue.getUpperCtrlLimit());
     }
     
+    /**
+     * Creates a new VDoubleArray.
+     * 
+     * @param values array values
+     * @param sizes sizes
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
     public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
         return new IVDoubleArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
@@ -680,19 +725,65 @@ public class ValueFactory {
                 display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
     }
     
+    /**
+     * Creates a new VDoubleArray.
+     * 
+     * @param values array values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
     public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
         return newVDoubleArray(values, Collections.singletonList(values.length), alarm, time, display);
     }
     
+    /**
+     * Creates a new VDoubleArray.
+     * 
+     * @param data array data
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
     public static VDoubleArray newVDoubleArray(ListDouble data, Alarm alarm, Time time, Display display) {
         return new IVDoubleArray(data, Collections.singletonList(data.size()), alarm,
                 time, display);
     }
     
+    /**
+     * Creates a new VDoubleArray.
+     * 
+     * @param values array values
+     * @param display the display
+     * @return the new value
+     */
     public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
-        return newVDoubleArray(values, Collections.singletonList(values.length), alarmNone(), newTime(Timestamp.now()), display);
+        return newVDoubleArray(values, Collections.singletonList(values.length), alarmNone(), timeNow(), display);
     }
 
+    /**
+     * 
+     * @param values
+     * @param sizes
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param numberFormat
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperDisplayLimit
+     * @param lowerCtrlLimit
+     * @param upperCtrlLimit
+     * @return
+     * @deprecated
+     */
     @Deprecated
     public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
             final AlarmStatus alarmStatus, final TimeStamp timeStamp,
