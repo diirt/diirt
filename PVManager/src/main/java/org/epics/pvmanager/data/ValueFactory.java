@@ -328,7 +328,13 @@ public class ValueFactory {
     
     
     /**
-     * Creates new immutable VDouble.
+     * Creates a new VDouble.
+     * 
+     * @param values the values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
      */
     public static VDouble newVDouble(final Double value, final Alarm alarm, final Time time, final Display display) {
         return new IVDouble(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
@@ -339,7 +345,24 @@ public class ValueFactory {
     }
 
     /**
-     * Creates new immutable VDouble.
+     * @deprecated
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param numberFormat
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperDisplayLimit
+     * @param lowerCtrlLimit
+     * @param upperCtrlLimit
+     * @return
+     * @deprecated
      */
     @Deprecated
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
@@ -439,7 +462,15 @@ public class ValueFactory {
     }
 
     /**
-     * Creates new immutable new VDouble by using the metadata from the old value.
+     * @deprecated
+     * @param value
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeUserTag
+     * @param timeStamp
+     * @param display
+     * @return
+     * @deprecated
      */
     @Deprecated
     public static VDouble newVDouble(final Double value, final AlarmSeverity alarmSeverity,
@@ -502,6 +533,7 @@ public class ValueFactory {
      * @param value new numeric value
      * @param display metadata
      * @return new value
+     * @deprecated
      */
     @Deprecated
     public static VDouble newVDouble(double value, Display display) {
@@ -521,22 +553,52 @@ public class ValueFactory {
     }
     
     /**
+     * Creates a new VDouble, no alarm, time now, no display.
      * 
-     * 
-     * @param value
-     * @return 
+     * @param value the value
+     * @return the new value
      */
     public static VDouble newVDouble(Double value) {
         return newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone());
     }
     
+    /**
+     * Creates a new VDouble, no alarm, no display.
+     * 
+     * @param value the value
+     * @param time the time
+     * @return the new value
+     */
     public static VDouble newVDouble(Double value, Time time) {
         return newVDouble(value, alarmNone(), time, displayNone());
     }
 
     /**
      * Creates a new immutable VStatistics.
+     * 
+     * @param average
+     * @param stdDev
+     * @param min
+     * @param max
+     * @param nSamples
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeStamp
+     * @param timeUserTag
+     * @param lowerDisplayLimit
+     * @param lowerAlarmLimit
+     * @param lowerWarningLimit
+     * @param units
+     * @param numberFormat
+     * @param upperWarningLimit
+     * @param upperAlarmLimit
+     * @param upperDisplayLimit
+     * @param lowerCtrlLimit
+     * @param upperCtrlLimit
+     * @return 
+     * @deprecated 
      */
+    @Deprecated
     public static VStatistics newVStatistics(final double average, final double stdDev,
             final double min, final double max, final int nSamples,
             final AlarmSeverity alarmSeverity,
@@ -553,21 +615,29 @@ public class ValueFactory {
     }
 
     /**
-     * Creates a new VStatistics by taking the metadata from a VDouble.
+     * Creates a new VStatistics.
+     * 
+     * @param average average
+     * @param stdDev standard deviation
+     * @param min minimum
+     * @param max maximum
+     * @param nSamples number of samples
+     * @param alarmSeverity
+     * @param alarmStatus
+     * @param timeUserTag
+     * @param timeStamp
+     * @param aValue
+     * @return 
      */
     public static VStatistics newVStatistics(final double average, final double stdDev,
-            final double min, final double max, final int nSamples, final AlarmSeverity alarmSeverity,
-            final AlarmStatus alarmStatus, final Integer timeUserTag, final TimeStamp timeStamp,
-            VDouble aValue) {
-        return newVStatistics(average, stdDev, min, max, nSamples,
-                alarmSeverity, alarmStatus,
-                timeStamp,
-                timeUserTag,
-                aValue.getLowerDisplayLimit(), aValue.getLowerAlarmLimit(),
-                aValue.getLowerWarningLimit(), aValue.getUnits(),
-                aValue.getFormat(), aValue.getUpperWarningLimit(),
-                aValue.getUpperAlarmLimit(), aValue.getUpperDisplayLimit(),
-                aValue.getLowerCtrlLimit(), aValue.getUpperCtrlLimit());
+            final double min, final double max, final int nSamples, final Alarm alarm,
+            final Time time, final Display display) {
+        return new IVStatistics(average, stdDev, min, max, nSamples,
+                alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
+                display.getUnits(), display.getFormat(),
+                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
     }
 
     /**
