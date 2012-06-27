@@ -4,11 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VString;
-import org.epics.pvmanager.data.ValueFactory;
-import org.epics.pvmanager.util.TimeStamp;
+import static org.epics.pvmanager.data.ValueFactory.*;
 
 /**
  * Function to simulate a signal that generates Strings.
@@ -44,7 +41,7 @@ public class Strings extends SimFunction<VString> {
 
     @Override
     VString nextValue() {
-        return ValueFactory.newVString(nextString(), AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.timestampOf(lastTime), null);
+        return newVString(nextString(), alarmNone(), timeNow());
     }
 
     String nextString() {
