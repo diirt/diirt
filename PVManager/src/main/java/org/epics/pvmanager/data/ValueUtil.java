@@ -215,7 +215,7 @@ public class ValueUtil {
      * Currently, only TYPE_3BYTE_BGR is supported
      * 
      * @param image
-     * @return
+     * @return a new image
      */
     public static VImage toVImage(BufferedImage image) {
         if (image.getType() != BufferedImage.TYPE_3BYTE_BGR) {
