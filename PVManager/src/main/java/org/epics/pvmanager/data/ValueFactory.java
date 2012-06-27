@@ -550,7 +550,7 @@ public class ValueFactory {
      */
     @Deprecated
     public static VDouble newVDouble(double value, Display display) {
-        return newVDouble(value, newTime(Timestamp.now()), display);
+        return newVDouble(value, timeNow(), display);
     }
     
     /**
@@ -562,7 +562,7 @@ public class ValueFactory {
      * @return new value
      */
     public static VDouble newVDouble(Double value, Display display) {
-        return newVDouble(value, newTime(Timestamp.now()), display);
+        return newVDouble(value, timeNow(), display);
     }
     
     /**
@@ -572,7 +572,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDouble newVDouble(Double value) {
-        return newVDouble(value, alarmNone(), newTime(Timestamp.now()), displayNone());
+        return newVDouble(value, alarmNone(), timeNow(), displayNone());
     }
     
     /**
@@ -819,7 +819,7 @@ public class ValueFactory {
     }
     
     public static VIntArray newVIntArray(final int[] values, Display display) {
-        return newVIntArray(values, Collections.singletonList(values.length), alarmNone(), newTime(Timestamp.now()), display);
+        return newVIntArray(values, Collections.singletonList(values.length), alarmNone(), timeNow(), display);
     }
 
     static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, final AlarmSeverity alarmSeverity,
