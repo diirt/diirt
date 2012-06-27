@@ -190,6 +190,14 @@ public class ValueFactory {
         return newAlarm(severity, status);
     }
     
+    /**
+     * Creates a new time.
+     * 
+     * @param timestamp the timestamp
+     * @param timeUserTag the user tag
+     * @param timeValid whether the time is valid
+     * @return the new time
+     */
     public static Time newTime(final Timestamp timestamp, final Integer timeUserTag, final boolean timeValid) {
         return new Time() {
 
@@ -215,14 +223,40 @@ public class ValueFactory {
         };
     }
     
+    /**
+     * New time, with no user tag and valid data.
+     * 
+     * @param timestamp the timestamp
+     * @return the new time
+     */
     public static Time newTime(final Timestamp timestamp) {
         return newTime(timestamp, null, true);
     }
     
+    /**
+     * New time with the current timestamp, no user tag and valid data.
+     * 
+     * @return the new time
+     */
     public static Time timeNow() {
         return newTime(Timestamp.now(), null, true);
     }
     
+    /**
+     * Creates a new display
+     * 
+     * @param lowerDisplayLimit lower display limit
+     * @param lowerAlarmLimit lower alarm limit
+     * @param lowerWarningLimit lower warning limit
+     * @param units the units
+     * @param numberFormat the formatter
+     * @param upperWarningLimit the upper warning limit
+     * @param upperAlarmLimit the upper alarm limit
+     * @param upperDisplayLimit the upper display limit
+     * @param lowerCtrlLimit the lower control limit
+     * @param upperCtrlLimit the upper control limit
+     * @return the new display
+     */
     public static Display newDisplay(final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
             final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
             final Double upperAlarmLimit, final Double upperDisplayLimit,
@@ -281,8 +315,15 @@ public class ValueFactory {
         };
     }
     
+    private static final Display displayNone = newDisplay(null, null, null, null, null, null, null, null, null, null);
+    
+    /**
+     * Empty display information.
+     * 
+     * @return no display
+     */
     public static Display displayNone() {
-        return newDisplay(null, null, null, null, null, null, null, null, null, null);
+        return displayNone;
     }
     
     
