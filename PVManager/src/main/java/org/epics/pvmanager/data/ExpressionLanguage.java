@@ -335,7 +335,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VString> vStringConstants(List<String> values) {
         DesiredRateExpressionList<VString> list = new DesiredRateExpressionListImpl<VString>();
         for (String value : values) {
-            list.and(constant(ValueFactory.newVString(value, AlarmSeverity.NONE, AlarmStatus.NONE, TimeStamp.now(), null)));
+            list.and(constant(newVString(value, alarmNone(), timeNow())));
         }
         return list;
     }
