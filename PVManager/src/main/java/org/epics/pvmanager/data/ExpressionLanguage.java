@@ -367,7 +367,7 @@ public class ExpressionLanguage {
     }
 
     /**
-     * Applies {@link #statisticsOf(org.epics.pvmanager.SourceRateExpression)} to all
+     * Applies {@link #statisticsOf(org.epics.pvmanager.expression.SourceRateExpression)} to all
      * arguments.
      *
      * @param doubleExpressions a list of double expressions
