@@ -28,8 +28,6 @@ public class Strings extends SimFunction<VString> {
      * Creates a signal uniformly distributed between min and max, updating
      * every interval seconds.
      *
-     * @param min minimum value
-     * @param max maximum value
      * @param interval interval between samples in seconds
      */
     public Strings(Double interval) {
