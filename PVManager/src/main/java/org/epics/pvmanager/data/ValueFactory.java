@@ -31,7 +31,7 @@ public class ValueFactory {
      * @param alarmStatus
      * @param timeStamp
      * @param timeUserTag
-     * @return
+     * @return the new value
      * @deprecated
      */
     @Deprecated
@@ -47,7 +47,7 @@ public class ValueFactory {
      * @param value the string value
      * @param alarm the alarm
      * @param time the time
-     * @return  the new value
+     * @return the new value
      */
     public static VString newVString(final String value, final Alarm alarm, final Time time) {
         return new IVString(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
@@ -71,7 +71,7 @@ public class ValueFactory {
      * @param upperAlarmLimit
      * @param upperCtrlLimit
      * @param upperDisplayLimit
-     * @return 
+     * @return the new value 
      */
     @Deprecated
     public static VMultiDouble newVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
@@ -119,7 +119,7 @@ public class ValueFactory {
      * @param upperDisplayLimit
      * @param lowerCtrlLimit
      * @param upperCtrlLimit
-     * @return
+     * @return the new value
      * @deprecated
      */
     @Deprecated
@@ -375,7 +375,7 @@ public class ValueFactory {
      * @param upperDisplayLimit
      * @param lowerCtrlLimit
      * @param upperCtrlLimit
-     * @return
+     * @return the new value
      * @deprecated
      */
     @Deprecated
@@ -482,7 +482,7 @@ public class ValueFactory {
      * @param timeUserTag
      * @param timeStamp
      * @param display
-     * @return
+     * @return the new value
      * @deprecated
      */
     @Deprecated
@@ -608,7 +608,7 @@ public class ValueFactory {
      * @param upperDisplayLimit
      * @param lowerCtrlLimit
      * @param upperCtrlLimit
-     * @return 
+     * @return the new value 
      * @deprecated 
      */
     @Deprecated
@@ -638,7 +638,7 @@ public class ValueFactory {
      * @param alarm the alarm
      * @param time the time
      * @param display the display
-     * @return 
+     * @return the new value 
      */
     public static VStatistics newVStatistics(final double average, final double stdDev,
             final double min, final double max, final int nSamples, final Alarm alarm,
@@ -668,7 +668,7 @@ public class ValueFactory {
      * @param upperDisplayLimit
      * @param lowerCtrlLimit
      * @param upperCtrlLimit
-     * @return 
+     * @return the new value 
      */
     @Deprecated
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
@@ -691,7 +691,7 @@ public class ValueFactory {
      * @param timeUserTag
      * @param timeStamp
      * @param oldValue
-     * @return
+     * @return the new value
      */
     @Deprecated
     public static VInt newEInt(final Integer value, final AlarmSeverity alarmSeverity,
@@ -781,7 +781,7 @@ public class ValueFactory {
      * @param upperDisplayLimit
      * @param lowerCtrlLimit
      * @param upperCtrlLimit
-     * @return
+     * @return the new value
      * @deprecated
      */
     @Deprecated
