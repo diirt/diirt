@@ -419,7 +419,6 @@
  * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(10));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
- *     @Override
  *     public void pvChanged() {
  *         Object value = pvReader.getValue();
  *         // We can extract the different aspect of the read object,
@@ -449,7 +448,6 @@
  * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
- *     @Override
  *     public void pvChanged() {
  *         // We can switch on the full type
  *         if (pvReader.getValue() instanceof VDouble) {
@@ -468,7 +466,6 @@
  * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
  * pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
  * 
- *     @Override
  *     public void pvChanged() {
  *         // We are already guaranteed that the cast succeeds
  *         // and that the value is not null
@@ -494,7 +491,6 @@
  *         .every(ms(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
- *     @Override
  *     public void pvChanged() {
  *         VTable vTable = pvReader.getValue();
  *         // First column is the names
