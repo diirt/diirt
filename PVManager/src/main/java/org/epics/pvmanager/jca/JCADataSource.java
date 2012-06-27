@@ -101,6 +101,7 @@ public class JCADataSource extends DataSource {
      * @param jcaContext the context to be used
      * @param monitorMask Monitor.VALUE, ...
      * @param typeSupport type support to be used
+     * @param varArraySupported true if var array should be used 
      */
     public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport, boolean varArraySupported) {
         super(true);
