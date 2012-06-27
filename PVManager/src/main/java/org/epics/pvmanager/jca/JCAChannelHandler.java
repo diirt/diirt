@@ -177,7 +177,7 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
         // Start the monitor only if the channel was (re)created, and
         // not because a disconnection/reconnection
         if (needsMonitor) {
-            channel.addMonitor(valueTypeFor(channel), channel.getElementCount(), jcaDataSource.getMonitorMask(), monitorListener);
+            channel.addMonitor(valueTypeFor(channel), countFor(channel), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
 
@@ -275,6 +275,16 @@ public class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMes
             return DBR_LABELS_Enum.TYPE;
         
         return null;
+    }
+
+    protected int countFor(Channel channel) {
+        if (channel.getElementCount() == 1)
+            return 1;
+        
+        if (jcaDataSource.isVarArraySupported())
+            return 0;
+        else
+            return channel.getElementCount();
     }
 
     protected DBRType valueTypeFor(Channel channel) {
