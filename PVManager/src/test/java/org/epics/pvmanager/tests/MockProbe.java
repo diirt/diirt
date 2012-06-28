@@ -13,13 +13,11 @@ package org.epics.pvmanager.tests;
 import java.awt.Color;
 import java.util.EnumMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import org.epics.pvmanager.CompositeDataSource;
+import org.epics.pvmanager.*;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
@@ -69,6 +67,7 @@ public class MockProbe extends javax.swing.JFrame {
         indicator = new javax.swing.JSlider();
         jLabel6 = new javax.swing.JLabel();
         metadata = new javax.swing.JTextField();
+        channelDetailsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +101,13 @@ public class MockProbe extends javax.swing.JFrame {
 
         metadata.setEditable(false);
 
+        channelDetailsButton.setText("Channel details...");
+        channelDetailsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                channelDetailsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +140,10 @@ public class MockProbe extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(metadata)))
+                        .addComponent(metadata))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(channelDetailsButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,7 +177,9 @@ public class MockProbe extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(metadata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(channelDetailsButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,6 +210,25 @@ public class MockProbe extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_pvNameActionPerformed
+
+    private void channelDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_channelDetailsButtonActionPerformed
+        try {
+            ChannelHandler handler = PVManager.getDefaultDataSource().getChannels().get(pvName.getText());
+            if (handler != null) {
+                Map<String, Object> properties = handler.getProperties();
+                StringBuilder builder = new StringBuilder();
+                builder.append("Channel properties:\n");
+                for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                    String string = entry.getKey();
+                    Object object = entry.getValue();
+                    builder.append(string).append(" = ").append(object).append("\n");
+                }
+                JOptionPane.showMessageDialog(this, builder.toString());
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_channelDetailsButtonActionPerformed
 
     PVReader<?> pv;
 
@@ -270,6 +300,7 @@ public class MockProbe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton channelDetailsButton;
     private javax.swing.JSlider indicator;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
