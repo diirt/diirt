@@ -15,6 +15,8 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import gov.aps.jca.event.PutEvent;
 import gov.aps.jca.event.PutListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 import org.epics.pvmanager.*;
 
@@ -263,6 +265,21 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
     
     static boolean isConnected(Channel channel) {
         return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
+    }
+
+    @Override
+    public synchronized Map<String, Object> getProperties() {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        if (channel != null) {
+            properties.put("Channel name", channel.getName());
+            properties.put("Hostname", channel.getHostName());
+            properties.put("Channel type", channel.getFieldType().getName());
+            properties.put("Connection state", channel.getConnectionState().getName());
+            properties.put("Element count", channel.getElementCount());
+            properties.put("Read access", channel.getReadAccess());
+            properties.put("Write access", channel.getWriteAccess());
+        }
+        return properties;
     }
 
     protected DBRType metadataFor(Channel channel) {
