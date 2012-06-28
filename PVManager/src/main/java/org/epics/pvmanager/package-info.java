@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 /**
- * <p align="center"><img src="doc-files/PVManagerLogo150.png"/></p>
+ * <p align="center"><img alt="pvManager" src="http://pvmanager.sourceforge.net/images/PVManagerLogo150.png"/></p>
  * <div style="float: right; margin-top: -170px" id="contents"></div>
  * 
  * 
