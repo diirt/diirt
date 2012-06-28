@@ -76,7 +76,7 @@
  * import static org.epics.pvmanager.util.Executors.*;
  * 
  * // Route notification for this pv on the Swing EDT
- * PVReader&lt;?&gt; pvReader = PVManager.read(...).notifyOn(swingEDT()).every(ms(100));
+ * PVReader&lt;?&gt; pvReader = PVManager.read(...).notifyOn(swingEDT()).maxRate(ofMillis(100));
  * 
  * // Or you can change the default
  * PVManager.setDefaultNotificationExecutor(swingEDT());
@@ -124,7 +124,7 @@
  * import static org.epics.pvmanager.util.TimeDuration.*;
  * 
  * // Read channel "channelName" up to every 100 ms
- * final {@link org.epics.pvmanager.PVReader}&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * final {@link org.epics.pvmanager.PVReader}&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -145,7 +145,7 @@
  * <pre>
  * // Read channel "channelName" up to every 100 ms, and get all
  * // the new values from the last notification.
- * final PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read({@link org.epics.pvmanager.ExpressionLanguage#newValuesOf(org.epics.pvmanager.expression.SourceRateExpression) newValuesOf}(channel("channelName"))).every(ms(100));
+ * final PVReader&lt;List&lt;Object&gt;&gt; pvReader = PVManager.read({@link org.epics.pvmanager.ExpressionLanguage#newValuesOf(org.epics.pvmanager.expression.SourceRateExpression) newValuesOf}(channel("channelName"))).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -195,7 +195,7 @@
  * 
  * <pre>
  * // A PV is both a PVReader and a PVWriter
- * final PV&lt;Object, Object&gt; pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndReadEvery(ms(10));
+ * final PV&lt;Object, Object&gt; pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndMaxReadRate(ofMillis(10));
  * pv.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Do something with each value
@@ -213,7 +213,7 @@
  * <h3 id="b5">Handling read errors on notifications</h3>
  * 
  * <pre>
- * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -258,7 +258,7 @@
  * // then a timeout is sent. PVManager will _still_ try to connect,
  * // until pvReader.close() is called.
  * // The timeout will be notified only on the first connection.
- * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).timeout(sec(5)).every(ms(100));
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).timeout(sec(5)).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -277,7 +277,7 @@
  * 
  * <pre>
  * // Read a map with the channels named "one", "two" and "three"
- * final PVReader&lt;Map&lt;String, Object&gt;&gt; pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).every(ms(100));
+ * final PVReader&lt;Map&lt;String, Object&gt;&gt; pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  *     public void pvChanged() {
  *         // Print the values if any
@@ -325,7 +325,7 @@
  * <pre>
  * // Read and write a map to the channels named "one", "two" and "three"
  * PV&lt;Map&lt;String, Object&gt;, Map&lt;String, Object&gt;&gt; pv = PVManager.readAndWrite(
- *         mapOf(latestValueOf(channels("one", "two", "three")))).asynchWriteAndReadEvery(ms(100));
+ *         mapOf(latestValueOf(channels("one", "two", "three")))).asynchWriteAndMaxReadRate(ofMillis(100));
  * 
  * // Do something
  * // ...
@@ -341,7 +341,7 @@
  * // Read a map with the channels "one", "two" and "three"
  * // reffered in the map as "setpoint", "readback" and "difference"
  * final PVReader&lt;Map&lt;String, Object&gt;&gt; pvReader = PVManager.read(mapOf(
- *         latestValueOf(channel("one").as("setpoint").and(channel("two").as("readback")).and(channel("three").as("difference"))))).every(ms(100));
+ *         latestValueOf(channel("one").as("setpoint").and(channel("two").as("readback")).and(channel("three").as("difference"))))).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -392,7 +392,7 @@
  * 
  * // Read and Write a vDouble
  * // Note that the read type is different form the write type
- * final PV&lt;VDouble, Double&gt; pv = PVManager.readAndWrite(vDouble("currentRB")).asynchWriteAndReadEvery(ms(10));
+ * final PV&lt;VDouble, Double&gt; pv = PVManager.readAndWrite(vDouble("currentRB")).asynchWriteAndMaxReadRate(ofMillis(100));
  * pv.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -416,7 +416,7 @@
  * <pre>
  * // We connect to a channel that produces a VType, but we
  * // don't know which one
- * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(10));
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -445,7 +445,7 @@
  * <h3 id="v3">Working with an unknown type: switch on the type</h3>
  * 
  * <pre>
- * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -463,7 +463,7 @@
  * <h3 id="v4">Working with an unknown type: register listener on type</h3>
  * 
  * <pre>
- * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).every(ms(100));
+ * final PVReader&lt;Object&gt; pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
  * 
  *     public void pvChanged() {
@@ -488,7 +488,7 @@
  * final PVReader&lt;VTable&gt; pvReader = PVManager.read(vTable(
  *         column("Names", vStringConstants(names)),
  *         column("Values", latestValueOf(channels(names)))))
- *         .every(ms(100));
+ *         .maxRate(ofMillis(100));
  * pvReader.addPVReaderListener(new PVReaderListener() {
  * 
  *     public void pvChanged() {
