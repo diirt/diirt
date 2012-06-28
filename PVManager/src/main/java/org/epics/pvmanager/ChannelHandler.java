@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Logger;
 
