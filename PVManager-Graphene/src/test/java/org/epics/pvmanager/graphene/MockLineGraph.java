@@ -59,7 +59,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             }
         });
     }
-    private PVReader<VImage> pv;
+    private PVReader<Plot2DResult> pv;
     private LineGraphPlot plot;
 
     /**
@@ -228,7 +228,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             public void pvChanged() {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue());
+                    BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());
                     plotView.setImage(image);
                 }
             }
