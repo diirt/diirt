@@ -30,6 +30,16 @@ public class StatisticsUtilTest {
     
     @Test
     public void statisticsOf2() {
+        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, -1, 7));
+        assertThat(stats.getAverage(), equalTo(3.0));
+        assertThat(stats.getStdDev(), equalTo(2.8284271247461903));
+        assertThat(stats.getMinimum(), equalTo((Number) (-1.0)));
+        assertThat(stats.getMaximum(), equalTo((Number) 7.0));
+        assertThat(stats.getCount(), equalTo(5));
+    }
+    
+    @Test
+    public void statisticsOf3() {
         List<Statistics> list = new ArrayList<Statistics>();
         for (int i = 0; i < 10; i++) {
             list.add(StatisticsUtil.statisticsOf(new ArrayDouble(i)));
