@@ -52,4 +52,19 @@ public class Scatter2DGraphRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.1", image);
     }
+    
+    @Test
+    public void test2() throws Exception {
+        Random rand = new Random(0);
+        int size = 1000;
+        double[] x = new double[] {0,10,20,30,40,50};
+        double[] y = new double[] {0,10,20,30,40,50};
+        
+        Point2DDataset data = Point2DDatasets.lineData(x,y);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(300, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("scatter2D.2", image);
+    }
 }
