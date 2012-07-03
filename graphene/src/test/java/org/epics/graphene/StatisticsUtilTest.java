@@ -4,11 +4,11 @@
  */
 package org.epics.graphene;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.epics.util.array.ArrayDouble;
-import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import static org.hamcrest.CoreMatchers.*;
 
 
@@ -26,5 +26,19 @@ public class StatisticsUtilTest {
         assertThat(stats.getMinimum(), equalTo((Number) 1.0));
         assertThat(stats.getMaximum(), equalTo((Number) 1.0));
         assertThat(stats.getCount(), equalTo(1));
+    }
+    
+    @Test
+    public void statisticsOf2() {
+        List<Statistics> list = new ArrayList<Statistics>();
+        for (int i = 0; i < 10; i++) {
+            list.add(StatisticsUtil.statisticsOf(new ArrayDouble(i)));
+        }
+        Statistics stats = StatisticsUtil.statisticsOf(list);
+        assertThat(stats.getAverage(), equalTo(4.5));
+        assertThat(stats.getStdDev(), equalTo(2.8722813232690143));
+        assertThat(stats.getMinimum(), equalTo((Number) 0.0));
+        assertThat(stats.getMaximum(), equalTo((Number) 9.0));
+        assertThat(stats.getCount(), equalTo(10));
     }
 }

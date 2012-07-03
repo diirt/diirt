@@ -108,13 +108,13 @@ public class StatisticsUtil {
         
         while (iterator.hasNext()) {
             Statistics stats = iterator.next();
-            //double value = iterator.nextDouble();
             if (stats.getMaximum().doubleValue() > max)
                 max = stats.getMaximum().doubleValue();
             if (stats.getMinimum().doubleValue() < min)
                 min = stats.getMinimum().doubleValue();
             total += stats.getAverage() * stats.getCount();
             totalSquare += stats.getStdDev() * stats.getStdDev() * stats.getCount() + stats.getAverage() * stats.getAverage();
+            count += stats.getCount();
         }
         
         double average = total/count;
