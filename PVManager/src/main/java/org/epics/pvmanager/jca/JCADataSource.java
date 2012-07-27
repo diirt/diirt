@@ -17,6 +17,8 @@ import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.jni.JNIContext;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * A data source that uses jca.
@@ -174,8 +176,17 @@ public class JCADataSource extends DataSource {
         if (context instanceof JNIContext) {
             try {
                 Class<?> jniClazz = Class.forName("gov.aps.jca.jni.JNI");
-                Method method = jniClazz.getDeclaredMethod("_ca_getRevision", new Class<?>[0]);
-                method.setAccessible(true);
+                final Method method = jniClazz.getDeclaredMethod("_ca_getRevision", new Class<?>[0]);
+                // The field is actually private, so we need to make it accessible
+                AccessController.doPrivileged(new PrivilegedAction<Object>() {
+
+                    @Override
+                    public Object run() {
+                        method.setAccessible(true);
+                        return null;
+                    }
+                    
+                });
                 Integer integer = (Integer) method.invoke(null, new Object[0]);
                 return (integer >= 13);
             } catch (ClassNotFoundException ex) {
