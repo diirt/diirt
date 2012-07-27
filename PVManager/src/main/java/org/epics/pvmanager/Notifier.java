@@ -167,7 +167,12 @@ class Notifier<T> {
     }
     
     void stopScan() {
-        scanTaskHandle.cancel(false);
+        if (scanTaskHandle != null) {
+            scanTaskHandle.cancel(false);
+            scanTaskHandle = null;
+        } else {
+            throw new IllegalStateException("Scan was never started");
+        }
     }
 
 }
