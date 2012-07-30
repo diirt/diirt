@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.test;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.PVWriterListener;
 import org.junit.Before;
 import org.mockito.Mock;
@@ -75,14 +77,22 @@ public class TestDataSourceTest {
     
     @Test
     public void channelDoesNotExist1() throws Exception {
-        PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).every(ms(10));
-        pvReader.addPVReaderListener(readListener);
+        final CountDownLatch latch = new CountDownLatch(1);
+        PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).maxRate(org.epics.util.time.TimeDuration.ofMillis(10));
+        pvReader.addPVReaderListener(new PVReaderListener() {
+
+            @Override
+            public void pvChanged() {
+                latch.countDown();
+            }
+        });
         
-        Thread.sleep(50);
+        if (!latch.await(100, TimeUnit.MILLISECONDS)) {
+            fail("No callback before timeout");
+        }
         
         ReadFailException ex = (ReadFailException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
-        verify(readListener).pvChanged();
         pvReader.close();
     }
     
