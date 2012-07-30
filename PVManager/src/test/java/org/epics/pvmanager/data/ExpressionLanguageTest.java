@@ -125,7 +125,7 @@ public class ExpressionLanguageTest {
     
     @Test
     public void vIntArrayConstant1() {
-        DesiredRateExpression<VIntArray> exp = vConst(0, 1, 2, 3, 4);
+        DesiredRateExpression<VIntArray> exp = vConst(new int[] {0, 1, 2, 3, 4});
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
         assertThat(cache.getValue(), not(nullValue()));
