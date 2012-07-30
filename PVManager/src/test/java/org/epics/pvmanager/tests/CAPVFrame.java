@@ -14,9 +14,7 @@ import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.jca.JCASupport;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
 /**
@@ -28,8 +26,6 @@ public class CAPVFrame extends javax.swing.JFrame {
     /** Creates new form MockPVFrame */
     public CAPVFrame() {
         initComponents();
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        PVManager.setDefaultDataSource(JCASupport.jca());
     }
 
     /** This method is called from within the constructor to
@@ -156,6 +152,7 @@ public class CAPVFrame extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

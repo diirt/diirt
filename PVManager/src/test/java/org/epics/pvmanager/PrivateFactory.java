@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 
 /**
  * Exports package private constructors for testing purposes.

@@ -151,6 +151,18 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr3-maven-plugin</artifactId>
+                <version>3.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -210,8 +222,13 @@
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>epics-util</artifactId>
             <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr-runtime</artifactId>
+            <version>3.4</version>
         </dependency>
     </dependencies>
     <properties>

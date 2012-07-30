@@ -11,37 +11,34 @@ import java.util.Collections;
 import java.util.List;
 import org.epics.graphene.*;
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VDoubleArray;
-import org.epics.pvmanager.data.VImage;
-import org.epics.pvmanager.data.ValueUtil;
+import org.epics.pvmanager.data.*;
 
 /**
  *
  * @author carcassi
  */
-class LineGraphFunction extends Function<VImage> {
+class LineGraphFunction extends Function<Plot2DResult> {
     
-    private Function<VDoubleArray> yArray;
-    private Function<VDoubleArray> xArray;
-    private Function<VDouble> xInitialOffset;
-    private Function<VDouble> xIncrementSize;
+    private Function<? extends VNumberArray> yArray;
+    private Function<? extends VNumberArray> xArray;
+    private Function<? extends VNumber> xInitialOffset;
+    private Function<? extends VNumber> xIncrementSize;
     
     private LineGraphRenderer renderer = new LineGraphRenderer();
     
     private VImage previousImage;
     private final List<LineGraphRendererUpdate> rendererUpdates = Collections.synchronizedList(new ArrayList<LineGraphRendererUpdate>());
 
-    public LineGraphFunction(Function<VDoubleArray> argument) {
+    public LineGraphFunction(Function<? extends VNumberArray> argument) {
         this.yArray = argument;
     }
 
-    public LineGraphFunction(Function<VDoubleArray> xArray, Function<VDoubleArray> yArray) {
+    public LineGraphFunction(Function<? extends VNumberArray> xArray, Function<? extends VNumberArray> yArray) {
         this.xArray = xArray;
         this.yArray = yArray;
     }
 
-    public LineGraphFunction(Function<VDoubleArray> yArray, Function<VDouble> xInitialOffset, Function<VDouble> xIncrementSize) {
+    public LineGraphFunction(Function<? extends VNumberArray> yArray, Function<? extends VNumber> xInitialOffset, Function<? extends VNumber> xIncrementSize) {
         this.xInitialOffset = xInitialOffset;
         this.xIncrementSize = xIncrementSize;
         this.yArray = yArray;
@@ -53,36 +50,36 @@ class LineGraphFunction extends Function<VImage> {
     }
 
     @Override
-    public VImage getValue() {
-        VDoubleArray newData = yArray.getValue();
+    public Plot2DResult getValue() {
+        VNumberArray newData = yArray.getValue();
         
         // No data, no plot
-        if (newData == null || newData.getArray() == null)
+        if (newData == null || newData.getData() == null)
             return null;
         
         // Re-create the dataset
-        OrderedDataset2D dataset = null;
+        Point2DDataset dataset = null;
         if (xArray != null) {
             // Plot with two arrays
-            VDoubleArray xData = xArray.getValue();
-            if (xData != null && newData.getArray() != null) {
-                dataset = org.epics.graphene.Arrays.lineData(xData.getArray(), newData.getArray());
+            VNumberArray xData = xArray.getValue();
+            if (xData != null && newData.getData() != null) {
+                dataset = org.epics.graphene.Point2DDatasets.lineData(xData.getData(), newData.getData());
             }
             
         } else if (xInitialOffset != null && xIncrementSize != null) {
             // Plot with one array rescaled
-            VDouble initialOffet = xInitialOffset.getValue();
-            VDouble incrementSize = xIncrementSize.getValue();
+            VNumber initialOffet = xInitialOffset.getValue();
+            VNumber incrementSize = xIncrementSize.getValue();
             
             if (initialOffet != null && initialOffet.getValue() != null &&
                     incrementSize != null && incrementSize.getValue() != null) {
-                dataset = org.epics.graphene.Arrays.lineData(newData.getArray(), initialOffet.getValue(), incrementSize.getValue());
+                dataset = org.epics.graphene.Point2DDatasets.lineData(newData.getData(), initialOffet.getValue().doubleValue(), incrementSize.getValue().doubleValue());
             }
         }
         
         if (dataset == null) {
             // Default to single array not rescaled
-            dataset = org.epics.graphene.Arrays.lineData(newData.getArray());
+            dataset = org.epics.graphene.Point2DDatasets.lineData(newData.getData());
         }
 
         // Process all renderer updates
@@ -101,7 +98,9 @@ class LineGraphFunction extends Function<VImage> {
         renderer.draw(image.createGraphics(), dataset);
         
         previousImage = ValueUtil.toVImage(image);
-        return previousImage;
+        return new Plot2DResult(previousImage,
+                new PlotDataRange(renderer.getStartPlotX(), renderer.getEndPlotX(), dataset.getXMinValue(), dataset.getXMaxValue(), renderer.getIntegratedMinX(), renderer.getIntegratedMaxX()),
+                new PlotDataRange(renderer.getStartPlotY(), renderer.getEndPlotY(), dataset.getYMinValue(), dataset.getYMaxValue(), renderer.getIntegratedMinY(), renderer.getIntegratedMaxY()));
     }
     
 }

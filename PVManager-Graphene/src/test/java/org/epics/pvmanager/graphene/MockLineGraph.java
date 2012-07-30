@@ -59,7 +59,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             }
         });
     }
-    private PVReader<VImage> pv;
+    private PVReader<Plot2DResult> pv;
     private LineGraphPlot plot;
 
     /**
@@ -207,17 +207,17 @@ public class MockLineGraph extends javax.swing.JFrame {
         }
         
         if (xPv.getText() != null && !xPv.getText().trim().isEmpty()) {
-            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(xPv.getText())),
-                    vDoubleArrayOf(channel(yPv.getText())));
+            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(xPv.getText())),
+                    latestValueOf(vNumberArray(yPv.getText())));
         } else if (xInitialOffset.getText() != null && !xInitialOffset.getText().trim().isEmpty()
                 && xIncrementSize.getText() != null && !xIncrementSize.getText().trim().isEmpty()) {
-            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(yPv.getText())),
-                    vDoubleOf(channel(xInitialOffset.getText())),
-                    vDoubleOf(channel(xIncrementSize.getText())));
+            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(yPv.getText())),
+                    latestValueOf(vNumber(xInitialOffset.getText())),
+                    latestValueOf(vNumber(xIncrementSize.getText())));
         }
 
         if (plot == null) {
-            plot = ExpressionLanguage.lineGraphOf(vDoubleArrayOf(channel(yPv.getText())));
+            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(yPv.getText())));
         }
         
         plot.update(new LineGraphRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
@@ -228,7 +228,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             public void pvChanged() {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue());
+                    BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());
                     plotView.setImage(image);
                 }
             }

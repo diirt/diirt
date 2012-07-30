@@ -57,7 +57,7 @@ public class CompositeDataSourceTest {
     DataSource mock1 = new DataSource(true) {
 
         @Override
-        protected ChannelHandler<?> createChannel(String channelName) {
+        protected ChannelHandler createChannel(String channelName) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -77,7 +77,7 @@ public class CompositeDataSourceTest {
     DataSource mock2 = new DataSource(true) {
 
         @Override
-        protected ChannelHandler<?> createChannel(String channelName) {
+        protected ChannelHandler createChannel(String channelName) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

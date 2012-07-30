@@ -54,7 +54,7 @@ public class PVADataSource extends DataSource {
     }
 
     @Override
-    protected ChannelHandler<?> createChannel(String channelName) {
+    protected ChannelHandler createChannel(String channelName) {
         return new PVAChannelHandler(channelName, pvaContext, defaultPriority);
     }
 

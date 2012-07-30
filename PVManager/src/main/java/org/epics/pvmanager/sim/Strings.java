@@ -4,10 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VString;
-import org.epics.pvmanager.data.ValueFactory;
+import static org.epics.pvmanager.data.ValueFactory.*;
 
 /**
  * Function to simulate a signal that generates Strings.
@@ -30,8 +28,6 @@ public class Strings extends SimFunction<VString> {
      * Creates a signal uniformly distributed between min and max, updating
      * every interval seconds.
      *
-     * @param min minimum value
-     * @param max maximum value
      * @param interval interval between samples in seconds
      */
     public Strings(Double interval) {
@@ -43,7 +39,7 @@ public class Strings extends SimFunction<VString> {
 
     @Override
     VString nextValue() {
-        return ValueFactory.newVString(nextString(), AlarmSeverity.NONE, AlarmStatus.NONE, lastTime, null);
+        return newVString(nextString(), alarmNone(), timeNow());
     }
 
     String nextString() {

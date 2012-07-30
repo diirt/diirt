@@ -5,32 +5,24 @@
 package org.epics.pvmanager.pva;
 
 import gov.aps.jca.event.MonitorEvent;
-import org.epics.ca.CAException;
 import org.epics.ca.client.Channel;
 import org.epics.ca.client.Channel.ConnectionState;
 import org.epics.ca.client.ChannelRequester;
-import org.epics.ca.client.CreateRequestFactory;
-import org.epics.ca.client.GetFieldRequester;
 import org.epics.ca.impl.remote.Context;
 import org.epics.pvData.monitor.Monitor;
 import org.epics.pvData.monitor.MonitorElement;
 import org.epics.pvData.monitor.MonitorRequester;
-import org.epics.pvData.pv.Field;
 import org.epics.pvData.pv.MessageType;
 import org.epics.pvData.pv.PVStructure;
 import org.epics.pvData.pv.Status;
 import org.epics.pvData.pv.Structure;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.*;
 
 /**
  *
  * @author carcassi
  */
-public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
+public class PVAChannelHandler extends MultiplexedChannelHandler<Object, MonitorEvent> {
 
     private final Context pvaContext;
     private final short priority;
@@ -78,7 +70,7 @@ public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
     };
 
     @Override
-    public void connect(ExceptionHandler handler) {
+    public void connect() {
         //channel = pvaContext.getProvider().createChannel(getChannelName(), channelRequester, priority);
     }
 //
@@ -212,7 +204,7 @@ public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
 //    }
 //
     @Override
-    public void disconnect(ExceptionHandler handler) {
+    public void disconnect() {
         // Close the channel
         try {
             channel.destroy();
@@ -263,16 +255,12 @@ public class PVAChannelHandler extends ChannelHandler<MonitorEvent> {
     }
 
     @Override
-    public boolean updateCache(MonitorEvent event, ValueCache<?> cache) {
-//        DBR rawvalue = event.getDBR();
-//        @SuppressWarnings("unchecked")
-//        Object newValue = cacheType.cast(vTypeFactory.createValue(rawvalue, metadata, !isConnected()));
-//        cache.setValue(newValue);
-        return true;
+    public boolean isConnected() {
+        return channel != null && channel.isConnected();
     }
 
     @Override
-    public boolean isConnected() {
-        return channel != null && channel.isConnected();
+    protected DataSourceTypeAdapter<Object, MonitorEvent> findTypeAdapter(ValueCache<?> cache, Object connection) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

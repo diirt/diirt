@@ -30,7 +30,7 @@ public interface PVATypeRegistry {
      * @param <T> the normative type
      * @param type the normative type to convert
      * @param pvField the desired pvData serialization; can be null
-     * @return 
+     * @return null if no match is found
      */
     public <T> PVATypeConverter<? extends T> findConverter(Class<T> type, PVField pvField);
 }
