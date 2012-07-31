@@ -49,7 +49,7 @@ class ConnectionCollector extends Collector<Boolean> {
     protected boolean calculate(List<String> names, List<Boolean> connections) {
         for (Boolean conn : connections) {
             if (!conn) {
-                return conn;
+                return false;
             }
         }
         return true;
