@@ -43,9 +43,9 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    protected synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, ExceptionHandler handler) {
+    protected synchronized void addMonitor(ChannelHandlerReadSubscription subscription) {
         // Override for test visibility purposes
-        super.addMonitor(collector, cache, handler);
+        super.addMonitor(subscription);
     }
 
     @Override

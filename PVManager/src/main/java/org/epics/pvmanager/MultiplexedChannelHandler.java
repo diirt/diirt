@@ -31,15 +31,11 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
 
     private class MonitorHandler {
 
-        private final Collector<?> collector;
-        private final ValueCache<?> cache;
-        private final ExceptionHandler exceptionHandler;
+        private final ChannelHandlerReadSubscription subscription;
         private DataSourceTypeAdapter<ConnectionPayload, MessagePayload> typeAdapter;
 
-        public MonitorHandler(Collector<?> collector, ValueCache<?> cache, ExceptionHandler exceptionHandler) {
-            this.collector = collector;
-            this.cache = cache;
-            this.exceptionHandler = exceptionHandler;
+        public MonitorHandler(ChannelHandlerReadSubscription subscription) {
+            this.subscription = subscription;
         }
 
         public final void processValue(MessagePayload payload) {
@@ -47,13 +43,13 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
                 return;
             
             // Lock the collector and prepare the new value.
-            synchronized (collector) {
+            synchronized (subscription.getCollector()) {
                 try {
-                    if (typeAdapter.updateCache(cache, getConnectionPayload(), payload)) {
-                        collector.collect();
+                    if (typeAdapter.updateCache(subscription.getCache(), getConnectionPayload(), payload)) {
+                        subscription.getCollector().collect();
                     }
                 } catch (RuntimeException e) {
-                    exceptionHandler.handleException(e);
+                    subscription.getHandler().handleException(e);
                 }
             }
         }
@@ -63,9 +59,9 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
                 typeAdapter = null;
             } else {
                 try {
-                    typeAdapter = MultiplexedChannelHandler.this.findTypeAdapter(cache, getConnectionPayload());
+                    typeAdapter = MultiplexedChannelHandler.this.findTypeAdapter(subscription.getCache(), getConnectionPayload());
                 } catch(RuntimeException ex) {
-                    exceptionHandler.handleException(ex);
+                    subscription.getHandler().handleException(ex);
                 }
             }
         }
@@ -79,7 +75,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      */
     protected synchronized final void reportExceptionToAllReadersAndWriters(Exception ex) {
         for (MonitorHandler monitor : monitors.values()) {
-            monitor.exceptionHandler.handleException(ex);
+            monitor.subscription.getHandler().handleException(ex);
         }
         for (ExceptionHandler exHandler : writeCaches.values()) {
             exHandler.handleException(ex);
@@ -200,15 +196,13 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * Used by the data source to add a read request on the channel managed
      * by this handler.
      * 
-     * @param collector collector to be notified at each update
-     * @param cache cache to contain the new value
-     * @param handler to be notified in case of errors
+     * @param subscription the data required for a subscription
      */
     @Override
-    protected synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, final ExceptionHandler handler) {
+    protected synchronized void addMonitor(ChannelHandlerReadSubscription subscription) {
         readUsageCounter++;
-        MonitorHandler monitor = new MonitorHandler(collector, cache, handler);
-        monitors.put(collector, monitor);
+        MonitorHandler monitor = new MonitorHandler(subscription);
+        monitors.put(subscription.getCollector(), monitor);
         monitor.findTypeAdapter();
         guardedConnect();
         if (readUsageCounter > 1 && lastMessage != null) {

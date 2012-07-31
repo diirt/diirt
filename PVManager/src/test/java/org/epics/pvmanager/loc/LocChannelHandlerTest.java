@@ -34,6 +34,10 @@ public class LocChannelHandlerTest {
     @Mock Collector<VDouble> vDoubleCollector1;
     @Mock ValueCache<VDouble> vDoubleCache2;
     @Mock Collector<VDouble> vDoubleCollector2;
+    @Mock ValueCache<Boolean> vDoubleConnCache1;
+    @Mock Collector<Boolean> vDoubleConnCollector1;
+    @Mock ValueCache<Boolean> vDoubleConnCache2;
+    @Mock Collector<Boolean> vDoubleConnCollector2;
     @Mock ChannelWriteCallback channelWriteCallback;
     @Mock ExceptionHandler exceptionHandler;
 
@@ -47,7 +51,7 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(false));
 
         // Attaching a monitor cache/collector
-        channel.addMonitor(vDoubleCollector1, vDoubleCache1, exceptionHandler);
+        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector1, vDoubleCache1, exceptionHandler, vDoubleConnCollector1, vDoubleConnCache1));
         assertThat(channel.getUsageCounter(), equalTo(1));
         assertThat(channel.isConnected(), is(true));
 
@@ -85,12 +89,12 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(false));
 
         // Attaching a monitor cache/collector
-        channel.addMonitor(vDoubleCollector1, vDoubleCache1, exceptionHandler);
+        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector1, vDoubleCache1, exceptionHandler, vDoubleConnCollector1, vDoubleConnCache1));
         assertThat(channel.getUsageCounter(), equalTo(1));
         assertThat(channel.isConnected(), is(true));
 
         // Attaching a monitor cache/collector
-        channel.addMonitor(vDoubleCollector2, vDoubleCache2, exceptionHandler);
+        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector2, vDoubleCache2, exceptionHandler, vDoubleConnCollector2, vDoubleConnCache2));
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 

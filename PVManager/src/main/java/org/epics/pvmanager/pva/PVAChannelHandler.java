@@ -36,11 +36,11 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<Object, Monitor
     }
 
     @Override
-    public synchronized void addMonitor(Collector<?> collector, ValueCache<?> cache, ExceptionHandler handler) {
+    public synchronized void addMonitor(ChannelHandlerReadSubscription subscription) {
 //        if (cacheType == null) {
 //            cacheType = cache.getType();
 //        }
-        super.addMonitor(collector, cache, handler);
+        super.addMonitor(subscription);
     }
     private final ChannelRequester channelRequester = new ChannelRequester() {
 
