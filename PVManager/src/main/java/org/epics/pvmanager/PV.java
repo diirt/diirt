@@ -85,5 +85,15 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     public Exception lastException() {
         return reader.lastException();
     }
+
+    @Override
+    public boolean isPaused() {
+        return reader.isPaused();
+    }
+
+    @Override
+    public void setPaused(boolean paused) {
+        reader.setPaused(paused);
+    }
     
 }

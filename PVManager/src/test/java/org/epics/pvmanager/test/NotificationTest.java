@@ -54,4 +54,29 @@ public class NotificationTest {
             fail("listener received wrong notifications");
         reader.close();
     }
+
+    @Test
+    public void pause() throws Exception{
+        PVReader<VInt> reader = PVManager.read(counter()).from(new TestDataSource()).maxRate(ofMillis(10));
+        CounterTestListener listener = new CounterTestListener(reader);
+        reader.addPVReaderListener(listener);
+        assertThat(reader.isPaused(), equalTo(false));
+        Thread.sleep(100);
+        
+        // Pause
+        reader.setPaused(true);
+        assertThat(reader.isPaused(), equalTo(true));
+        int currentCounter = listener.getNextExpected();
+        Thread.sleep(100);
+        assertThat("Notifications were sent when paused.", listener.getNextExpected(), equalTo(currentCounter));
+        
+        // Resume
+        reader.setPaused(false);
+        assertThat(reader.isPaused(), equalTo(false));
+        Thread.sleep(100);
+        assertThat("Notifications were not resumed.", listener.getNextExpected(), not(equalTo(currentCounter)));
+        if (listener.isFailed())
+            fail("listener received wrong notifications");
+        reader.close();
+    }
 }

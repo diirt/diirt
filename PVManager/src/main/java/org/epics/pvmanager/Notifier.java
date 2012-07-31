@@ -70,6 +70,20 @@ class Notifier<T> {
         }
     }
     
+    /**
+     * Checks whether the pv is paused
+     * 
+     * @return true if paused
+     */
+    boolean isPaused() {
+        final PVReader<T> pv = pvRef.get();
+        if (pv == null || pv.isPaused()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     private volatile boolean notificationInFlight = false;
     
     /**
@@ -145,7 +159,10 @@ class Notifier<T> {
             @Override
             public void run() {
                 if (isActive()) {
-                    notifyPv();
+                    // If paused, simply skip without stopping the scan
+                    if (!isPaused()) {
+                        notifyPv();
+                    }
                 } else {
                     stopScan();
                 }

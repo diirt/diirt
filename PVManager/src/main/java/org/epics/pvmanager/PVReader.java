@@ -77,4 +77,8 @@ public interface PVReader<T> {
      * @return the last generated exception or null
      */
     public Exception lastException();
+
+    public void setPaused(boolean paused);
+    
+    public boolean isPaused();
 }

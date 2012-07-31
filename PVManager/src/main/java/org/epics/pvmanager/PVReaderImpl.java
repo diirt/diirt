@@ -198,6 +198,22 @@ class PVReaderImpl<T> implements PVReader<T> {
         return closed;
     }
     
+    // This needs to be modified on the client thread (i.e. UI)
+    // and read on the timer thread (so it knows to skip)
+    private volatile boolean paused = false;
+
+    @Override
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    @Override
+    public boolean isPaused() {
+        return paused;
+    }
+    
+    
+    
     private AtomicReference<Exception> lastException = new AtomicReference<Exception>();
     private volatile boolean lastExceptionToNotify = false;
 
