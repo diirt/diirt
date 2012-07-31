@@ -5,6 +5,7 @@
 package org.epics.pvmanager.test;
 
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.data.DataTypeSupport;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.data.ValueFactory;
 import org.epics.pvmanager.expression.DesiredRateExpression;
@@ -17,6 +18,11 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  * @author carcassi
  */
 public class ExpressionLanguage {
+    
+    static {
+        DataTypeSupport.install();
+    }
+    
     public static DesiredRateExpression<VInt> counter() {
         return new DesiredRateExpressionImpl<VInt>((DesiredRateExpressionList<?>) null, new Function<VInt>() {
             private int counter = 0;
