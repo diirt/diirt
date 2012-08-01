@@ -40,6 +40,7 @@ public class JCADataSource extends DataSource {
     private final Context ctxt;
     private final int monitorMask;
     private final boolean varArraySupported;
+    private final boolean dbePropertySupported;
     private final JCATypeSupport typeSupport;
 
     static final JCADataSource INSTANCE = new JCADataSource();
@@ -92,7 +93,7 @@ public class JCADataSource extends DataSource {
      * @param typeSupport type support to be used
      */
     public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport) {
-        this(jcaContext, monitorMask, typeSupport, isVarArraySupported(jcaContext));
+        this(jcaContext, monitorMask, typeSupport, false, isVarArraySupported(jcaContext));
     }
     
     /**
@@ -103,13 +104,15 @@ public class JCADataSource extends DataSource {
      * @param jcaContext the context to be used
      * @param monitorMask Monitor.VALUE, ...
      * @param typeSupport type support to be used
+     * @param dbePropertySupported whether metadata monitors should be used
      * @param varArraySupported true if var array should be used 
      */
-    public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport, boolean varArraySupported) {
+    public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport, boolean dbePropertySupported, boolean varArraySupported) {
         super(true);
         this.ctxt = jcaContext;
         this.monitorMask = monitorMask;
         this.typeSupport = typeSupport;
+        this.dbePropertySupported = dbePropertySupported;
         this.varArraySupported = varArraySupported;
     }
 
@@ -135,6 +138,15 @@ public class JCADataSource extends DataSource {
      */
     public int getMonitorMask() {
         return monitorMask;
+    }
+
+    /**
+     * Whether the metadata monitor should be established.
+     * 
+     * @return true if using metadata monitors
+     */
+    public boolean isDbePropertySupported() {
+        return dbePropertySupported;
     }
 
     @Override
