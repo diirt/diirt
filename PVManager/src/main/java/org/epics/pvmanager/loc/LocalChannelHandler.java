@@ -39,7 +39,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
 
     @Override
     public void disconnect() {
-        // Nothing to be done
+        processConnection(null);
     }
 
     @Override
@@ -88,11 +88,6 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         } catch (Exception ex) {
             callback.channelWritten(ex);
         }
-    }
-
-    @Override
-    public boolean isConnected() {
-        return getUsageCounter() != 0;
     }
     
 }

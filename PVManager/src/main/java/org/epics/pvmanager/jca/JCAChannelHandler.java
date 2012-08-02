@@ -263,6 +263,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
             throw new RuntimeException("JCA Disconnect fail", ex);
         } finally {
             channel = null;
+            processConnection(null);
         }
     }
 
@@ -277,13 +278,14 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
             callback.channelWritten(ex);
         }
     }
-
+    
     @Override
-    public boolean isConnected() {
-        return isConnected(channel);
+    protected boolean isConnected(Channel channel) {
+        return isChannelConnected(channel);
     }
     
-    static boolean isConnected(Channel channel) {
+    
+    static boolean isChannelConnected(Channel channel) {
         return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
     }
 

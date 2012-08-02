@@ -255,7 +255,7 @@ public class PVAChannelHandler extends MultiplexedChannelHandler<Object, Monitor
     }
 
     @Override
-    public boolean isConnected() {
+    public boolean isConnected(Object obj) {
         return channel != null && channel.isConnected();
     }
 

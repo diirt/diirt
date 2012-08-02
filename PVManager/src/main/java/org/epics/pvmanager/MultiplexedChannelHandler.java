@@ -24,6 +24,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     private static final Logger log = Logger.getLogger(MultiplexedChannelHandler.class.getName());
     private int readUsageCounter = 0;
     private int writeUsageCounter = 0;
+    private boolean connected = false;
     private MessagePayload lastMessage;
     private ConnectionPayload connectionPayload;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
@@ -81,6 +82,15 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
             exHandler.handleException(ex);
         }
     }
+    
+    private void reportConnectionStatus(boolean connected) {
+        for (MonitorHandler monitor : monitors.values()) {
+            synchronized (monitor.subscription.getConnCollector()) {
+                monitor.subscription.getConnCache().setValue(connected);
+                monitor.subscription.getConnCollector().collect();
+            }
+        }
+    }
 
     /**
      * The last processes connection payload.
@@ -108,6 +118,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      */
     protected synchronized final void processConnection(ConnectionPayload connectionPayload) {
         this.connectionPayload = connectionPayload;
+        setConnected(isConnected(connectionPayload));
         
         for (MonitorHandler monitor : monitors.values()) {
             monitor.findTypeAdapter();
@@ -307,11 +318,33 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected abstract void write(Object newValue, ChannelWriteCallback callback);
 
+    private void setConnected(boolean connected) {
+        this.connected = connected;
+        reportConnectionStatus(connected);
+    }
+    
+    /**
+     * Determines from the payload whether the channel is connected or not.
+     * <p>
+     * By default, this uses the usage counter to determine whether it's
+     * connected or not. One should override this to use the actual
+     * connection payload to check whether the actual protocol connection
+     * has been established.
+     * 
+     * @param payload the connection payload
+     * @return true if connected
+     */
+    protected boolean isConnected(ConnectionPayload  payload) {
+        return getUsageCounter() > 0;
+    }
+    
     /**
      * Returns true if it is connected.
      * 
      * @return true if underlying channel is connected
      */
     @Override
-    public abstract boolean isConnected();
+    public synchronized final boolean isConnected() {
+        return connected;
+    }
 }

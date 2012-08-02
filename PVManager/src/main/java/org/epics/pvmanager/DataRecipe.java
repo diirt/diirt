@@ -43,7 +43,7 @@ public class DataRecipe {
         this.exceptionHandler = exceptionHandler;
     }
 
-    DataRecipe(ExceptionHandler exceptionHandler) {
+    public DataRecipe(ExceptionHandler exceptionHandler) {
         channelsPerCollector = Collections.emptyMap();
         this.exceptionHandler = exceptionHandler;
     }
