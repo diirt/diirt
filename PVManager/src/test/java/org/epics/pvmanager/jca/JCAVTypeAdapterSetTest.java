@@ -17,6 +17,7 @@ import gov.aps.jca.Monitor;
 import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.*;
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Date;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.data.*;
@@ -713,6 +714,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(adapter.match(cache, mockChannel("mypv.NAME$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockChannel("mypv.NAME", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockChannel("mypv$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockChannel("mypv.$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockChannel("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockChannel("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
@@ -742,7 +744,9 @@ public class JCAVTypeAdapterSetTest {
         
         Channel channel = mockChannel("mypv.NAME$", DBR_Byte.TYPE, 20, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
-        DBR_TIME_Byte value = createDBRTimeByte("Testing".getBytes(), Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        byte[] data = "Testing".getBytes();
+        data = Arrays.copyOf(data, data.length + 1);
+        DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
         
         adapter.updateCache(cache, channel, new JCAMessagePayload(null, event));
@@ -762,7 +766,9 @@ public class JCAVTypeAdapterSetTest {
         
         Channel channel = mockChannel("mypv.NAME$", DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
-        DBR_TIME_Byte value = createDBRTimeByte("Testing".getBytes(), Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
+        byte[] data = "Testing".getBytes();
+        data = Arrays.copyOf(data, data.length + 1);
+        DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(channel, value, CAStatus.NORMAL);
         
         adapter.updateCache(cache, channel, new JCAMessagePayload(null, event));
