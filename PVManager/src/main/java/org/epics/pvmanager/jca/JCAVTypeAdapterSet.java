@@ -185,6 +185,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
         newFactories.add(DBRShortToVInt);
         newFactories.add(DBRIntToVInt);
         newFactories.add(DBRStringToVString);
+        newFactories.add(DBRByteToVString);
         newFactories.add(DBREnumToVEnum);
 
         // Add all ARRAYs
