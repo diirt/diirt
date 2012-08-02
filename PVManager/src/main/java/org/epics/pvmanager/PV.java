@@ -95,5 +95,10 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     public void setPaused(boolean paused) {
         reader.setPaused(paused);
     }
+
+    @Override
+    public boolean isConnected() {
+        return reader.isConnected();
+    }
     
 }

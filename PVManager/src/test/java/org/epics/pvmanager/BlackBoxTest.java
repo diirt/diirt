@@ -27,8 +27,10 @@ public class BlackBoxTest {
         DataSource dataSource = new LocalDataSource();
         
         PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
+        assertThat(pv.isConnected(), equalTo(false));
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
+        assertThat(pv.isConnected(), equalTo(true));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(0.0));
         
         pv.write(10);

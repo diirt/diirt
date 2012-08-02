@@ -131,7 +131,9 @@ public class DataRecipe {
             for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : channelsPerCollector.entrySet()) {
                 for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
                     String name = entry.getKey();
-                    newCaches.put(name, new ValueCache<Boolean>(Boolean.class));
+                    ValueCache<Boolean> cache = new ValueCache<Boolean>(Boolean.class);
+                    cache.setValue(false);
+                    newCaches.put(name, cache);
                 }
             }
             connectionCaches = newCaches;

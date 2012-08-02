@@ -28,7 +28,7 @@ class ConnectionCollector extends Collector<Boolean> {
     }
 
     @Override
-    public void collect() {
+    public synchronized void collect() {
         connected = null;
     }
 
@@ -48,7 +48,7 @@ class ConnectionCollector extends Collector<Boolean> {
     
     protected boolean calculate(List<String> names, List<Boolean> connections) {
         for (Boolean conn : connections) {
-            if (!conn) {
+            if (conn != Boolean.TRUE) {
                 return false;
             }
         }

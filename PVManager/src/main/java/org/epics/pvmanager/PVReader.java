@@ -81,4 +81,6 @@ public interface PVReader<T> {
     public void setPaused(boolean paused);
     
     public boolean isPaused();
+    
+    public boolean isConnected();
 }
