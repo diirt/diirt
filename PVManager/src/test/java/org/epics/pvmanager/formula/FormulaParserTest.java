@@ -182,4 +182,22 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().getValue();
         assertThat(result.getValue(), equalTo(5.0));
     }
+
+    @Test
+    public void formula3() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("mypv.FIELD").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD"));
+        exp.writeValue("mypv.FIELD", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(3.0));
+    }
+
+    @Test
+    public void formula4() throws RecognitionException {
+        ExpressionTester exp = new ExpressionTester(createParser("mypv.FIELD$").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD$"));
+        exp.writeValue("mypv.FIELD$", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().getValue();
+        assertThat(result.getValue(), equalTo(3.0));
+    }
 }
