@@ -10,8 +10,8 @@
     <url>http://pvmanager.sourceforge.net</url>
     <description>Client utility library to manage complex objects retrival and scanning.</description>
     <issueManagement>
-        <system>trac</system>
-        <url>http://sourceforge.net/apps/trac/pvmanager/</url>
+        <system>JIRA</system>
+        <url>http://java.net/jira/browse/PVMANAGER</url>
     </issueManagement>
     <licenses>
         <license>
@@ -55,8 +55,8 @@
     </repositories>
 
     <distributionManagement>
-    	<!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
-    	(id values there should match ids below) -->
+        <!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
+       	(id values there should match ids below) -->
         <site>
             <id>pvmanager.sf.net</id>
             <name>PVManager Sourceforge site</name>
@@ -261,7 +261,19 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.3</version>
             </plugin>
-<!--            <plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.7.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>jira-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.0.1</version>
