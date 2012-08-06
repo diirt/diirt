@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
  * 
  * @author carcassi
  */
-public class TimeDuration {
+public class TimeDuration implements Comparable<TimeDuration> {
 
     private final long sec;
     private final int nanoSec;
@@ -299,6 +299,23 @@ public class TimeDuration {
         }
 
         return false;
+    }
+
+    @Override
+    public int compareTo(TimeDuration other) {
+	if (sec < other.sec) {
+            return -1;
+        } else if (sec == other.sec) {
+            if (nanoSec < other.nanoSec) {
+                return -1;
+            } else if (nanoSec == other.nanoSec) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 1;
+        }
     }
 
 }

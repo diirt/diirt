@@ -5,7 +5,7 @@
 package org.epics.util.time;
 
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -409,6 +409,56 @@ public class TimeDurationTest {
     public void isNegative6() {
         TimeDuration duration = TimeDuration.ofSeconds(-5.5);
         assertThat(duration.isNegative(), equalTo(true));
+    }
+    
+    @Test
+    public void compare1() {
+        TimeDuration duration1 = TimeDuration.ofMillis(500);
+        TimeDuration duration2 = TimeDuration.ofMillis(300);
+        assertThat(duration1, greaterThan(duration2));
+        assertThat(duration2, lessThan(duration1));
+        assertThat(duration1, not(comparesEqualTo(duration2)));
+        assertThat(duration2, not(comparesEqualTo(duration1)));
+    }
+    
+    @Test
+    public void compare2() {
+        TimeDuration duration1 = TimeDuration.ofMillis(500);
+        TimeDuration duration2 = TimeDuration.ofMillis(500);
+        assertThat(duration1, not(greaterThan(duration2)));
+        assertThat(duration2, not(lessThan(duration1)));
+        assertThat(duration1, comparesEqualTo(duration2));
+        assertThat(duration2, comparesEqualTo(duration1));
+    }
+    
+    @Test
+    public void compare3() {
+        TimeDuration duration1 = TimeDuration.ofMillis(1500);
+        TimeDuration duration2 = TimeDuration.ofMillis(500);
+        assertThat(duration1, greaterThan(duration2));
+        assertThat(duration2, lessThan(duration1));
+        assertThat(duration1, not(comparesEqualTo(duration2)));
+        assertThat(duration2, not(comparesEqualTo(duration1)));
+    }
+    
+    @Test
+    public void compare4() {
+        TimeDuration duration1 = TimeDuration.ofMillis(1300);
+        TimeDuration duration2 = TimeDuration.ofMillis(500);
+        assertThat(duration1, greaterThan(duration2));
+        assertThat(duration2, lessThan(duration1));
+        assertThat(duration1, not(comparesEqualTo(duration2)));
+        assertThat(duration2, not(comparesEqualTo(duration1)));
+    }
+    
+    @Test
+    public void compare5() {
+        TimeDuration duration1 = TimeDuration.ofMillis(2500);
+        TimeDuration duration2 = TimeDuration.ofMillis(1500);
+        assertThat(duration1, greaterThan(duration2));
+        assertThat(duration2, lessThan(duration1));
+        assertThat(duration1, not(comparesEqualTo(duration2)));
+        assertThat(duration2, not(comparesEqualTo(duration1)));
     }
     
 }
