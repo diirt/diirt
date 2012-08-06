@@ -19,8 +19,8 @@ import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ReadFailException;
 import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.WriteFailException;
-import org.epics.pvmanager.util.TimeDuration;
-import org.epics.pvmanager.util.TimeStamp;
+import org.epics.util.time.TimeDuration;
+import org.epics.util.time.Timestamp;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +29,8 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
+import org.epics.util.time.TimeInterval;
 
 /**
  *
@@ -41,9 +42,9 @@ public class TestDataSourceTest {
     }
     
     public static void waitForChannelToClose(DataSource source, String channelName) {
-        TimeStamp startTime = TimeStamp.now();
-        TimeDuration timeout = ms(5000);
-        while (TimeStamp.now().durationFrom(startTime).getNanoSec() < timeout.getNanoSec()) {
+        TimeDuration timeout = ofMillis(5000);
+        TimeInterval timeoutInterval = timeout.after(Timestamp.now());
+        while (timeoutInterval.contains(Timestamp.now())) {
             if (!source.getChannels().get(channelName).isConnected()) {
                 return;
             }
@@ -78,7 +79,7 @@ public class TestDataSourceTest {
     @Test
     public void channelDoesNotExist1() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
-        PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).maxRate(org.epics.util.time.TimeDuration.ofMillis(10));
+        PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).maxRate(ofMillis(10));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -134,7 +135,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ms(500)).from(dataSource).async();
+        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
         pvWriter.write("test");
         
@@ -163,7 +164,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout2() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ms(500)).from(dataSource).async();
+        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
         pvWriter.addPVWriterListener(writeListener);
         pvWriter.write("test");
         
@@ -213,7 +214,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadConnectionWithTimeout() throws Exception {
-        PVReader<Object> pvReader = PVManager.read(channel("delayedConnection")).timeout(ms(500)).from(dataSource).every(ms(50));
+        PVReader<Object> pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500)).from(dataSource).maxRate(ofMillis(50));
         pvReader.addPVReaderListener(readListener);
         
         Thread.sleep(15);
@@ -242,7 +243,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadOnPVWithTimeout() throws Exception {
-        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ms(500)).from(dataSource).asynchWriteAndReadEvery(ms(50));
+        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ofMillis(500)).from(dataSource).asynchWriteAndMaxReadRate(ofMillis(50));
         pv.addPVReaderListener(readListener);
         
         Thread.sleep(50);
@@ -272,7 +273,7 @@ public class TestDataSourceTest {
     @Test
     public void delayedReadOnPVWithTimeoutAndCustomMessage() throws Exception {
         String message = "Ouch! Timeout!";
-        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ms(500), message).from(dataSource).asynchWriteAndReadEvery(ms(50));
+        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ofMillis(500), message).from(dataSource).asynchWriteAndMaxReadRate(ofMillis(50));
         pv.addPVReaderListener(readListener);
         
         Thread.sleep(50);
@@ -302,9 +303,9 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedMultipleReadWithConnectionError() throws Exception {
-        PVReader<Object> pv1 = PVManager.read(channel("delayedConnectionError")).from(dataSource).every(ms(50));
+        PVReader<Object> pv1 = PVManager.read(channel("delayedConnectionError")).from(dataSource).maxRate(ofMillis(50));
         pv1.addPVReaderListener(readListener);
-        PVReader<Object> pv2 = PVManager.read(channel("delayedConnectionError")).from(dataSource).every(ms(50));
+        PVReader<Object> pv2 = PVManager.read(channel("delayedConnectionError")).from(dataSource).maxRate(ofMillis(50));
         pv2.addPVReaderListener(readListener);
         
         Thread.sleep(50);
