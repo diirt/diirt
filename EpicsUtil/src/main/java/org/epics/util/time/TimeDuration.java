@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 /**
  * A duration of time (such as 3 seconds, 30 ms, 1 nanosec) at the nanosecond precision.
  * The duration is stored as 96 bits, 64 for seconds and 32 for nanoseconds within
- * the second. This makes the representation equivalent to the {@link TimeStamp} class.
+ * the second. This makes the representation equivalent to the {@link Timestamp} class.
  * <p>
  * This class can be used both to represent a span of time, or
  * as a relative timestamp (e.g. 3 seconds before or after a reference). As such,
@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
  * is positive. For example, -1.5 seconds will be stored as -2 seconds and
  * 500,000,000 nanoseconds.
  * <p>
- * Note that while TimeStamp are usually created according to system clocks which
+ * Note that while Timestamp are usually created according to system clocks which
  * takes into account leap seconds, all the math operations on TimeStamps do
  * not take leap seconds into account.
  * <h3>JSR 310 compatibility</h3>
