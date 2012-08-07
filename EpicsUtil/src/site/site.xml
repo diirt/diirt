@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PVManager">
+  <bannerLeft>
+    <name>Epics Utilities</name>
+    <href>http://epics-util.sourceforge.net</href>
+  </bannerLeft>
+  <body>
+    <links>
+      <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
+      <item name="pvManager" href="http://pvmanager.sourceforge.net/"/>
+      <item name="CSS" href="http://cs-studio.sourceforge.net"/>
+    </links>
+
+    <menu name="Epcis Utilities">
+      <item name="About" href="index.html"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/epics-util/"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+  </body>
+  <poweredBy>
+    <logo name="Cloudbees" href="https://openepics.ci.cloudbees.com/"
+          img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>    
+</project>
+
