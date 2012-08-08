@@ -10,6 +10,7 @@ package org.epics.graphene;
 
 import java.util.Iterator;
 import java.util.List;
+import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.CollectionNumbers;
 import org.epics.util.array.IteratorNumber;
 import org.epics.util.array.ListNumber;
@@ -63,7 +64,7 @@ public class StatisticsUtil {
         
     }
     
-    public static Statistics statisticsOf(ListNumber data) {
+    public static Statistics statisticsOf(CollectionNumber data) {
         IteratorNumber iterator = data.iterator();
         if (!iterator.hasNext()) {
             return null;
