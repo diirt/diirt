@@ -14,6 +14,7 @@ UI itself.
 
 Download
 
-  {{{http://epics.sourceforge.net/maven2/epics/PVManager/}Latest release}}
-  {{{https://irmis-dev.bnl.gov/hudson/job/PVManager%20-%20Build/}Latest development build}}
+  {{{http://epics.sourceforge.net/maven2/epics/PVManager/}All releases and development snapshots}}
+
+  {{{https://openepics.ci.cloudbees.com/job/PVManager%20-%20Build/}Latest build}}
 

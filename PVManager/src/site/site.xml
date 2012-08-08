@@ -25,5 +25,11 @@
     <menu ref="reports"/>
 
   </body>
+  <poweredBy>
+    <logo name="Cloudbees" href="https://openepics.ci.cloudbees.com/"
+          img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>    
 </project>
 
