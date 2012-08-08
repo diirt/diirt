@@ -11,9 +11,85 @@ package org.epics.util.array;
  */
 public class CollectionNumbers {
     
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
+    public static float[] wrappedFloatArray(CollectionNumber coll) {
+        if (coll instanceof ArrayFloat) {
+            return ((ArrayFloat) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
     public static double[] wrappedDoubleArray(CollectionNumber coll) {
         if (coll instanceof ArrayDouble) {
             return ((ArrayDouble) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
+    public static byte[] wrappedByteArray(CollectionNumber coll) {
+        if (coll instanceof ArrayByte) {
+            return ((ArrayByte) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
+    public static short[] wrappedShortArray(CollectionNumber coll) {
+        if (coll instanceof ArrayShort) {
+            return ((ArrayShort) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
+    public static int[] wrappedIntArray(CollectionNumber coll) {
+        if (coll instanceof ArrayInt) {
+            return ((ArrayInt) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * If available, return the double[] wrapped by the collection.
+     * 
+     * @param coll the collection
+     * @return the array or null
+     */
+    public static long[] wrappedLongArray(CollectionNumber coll) {
+        if (coll instanceof ArrayLong) {
+            return ((ArrayLong) coll).wrappedArray();
         }
         
         return null;
