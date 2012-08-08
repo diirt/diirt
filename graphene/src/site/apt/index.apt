@@ -1,0 +1,20 @@
+   ----
+   Home
+   ----
+   Gabriele Carcassi
+   ----
+
+Epics Utilties
+
+  This library contains basic utility class that should, in an ideal world,
+be part of the JDK. They handle basic things like a read-only interface for
+arrays or representation for nanosecond precision time instants and periods.
+
+  When suitable replacement will be available, these classes will be deprecated.
+
+Download
+
+  {{{http://epics.sourceforge.net/maven2/org/epics/epics-util/}All releases and development snapshots}}
+
+  {{{https://openepics.ci.cloudbees.com/job/EpicsUtil%20-%20Build/}Latest build}}
+

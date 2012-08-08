@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>Graphene</name>
-    <url>http://maven.apache.org</url>
+    <description>Graph library for real time.</description>
     <licenses>
         <license>
             <name>GNU General Public License 2 with the Classpath Exception</name>
@@ -18,6 +18,17 @@
     </licenses>
     <build>
         <plugins>
+            <plugin> 
+                <artifactId>maven-deploy-plugin</artifactId> 
+                <version>2.7</version> 
+                <dependencies> 
+                    <dependency> 
+                        <groupId>org.apache.maven.wagon</groupId> 
+                        <artifactId>wagon-ssh</artifactId> 
+                        <version>2.2</version> 
+                    </dependency> 
+                </dependencies> 
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -87,6 +98,21 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <distributionManagement>
+    	<!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
+    	(id values there should match ids below) -->
+        <site>
+            <id>graphene.sf.net</id>
+            <name>Graphene Sourceforge site</name>
+            <url>scp://shell.sourceforge.net/home/project-web/graphene/htdocs</url>
+        </site>
+        <repository>
+            <id>epics.releases</id>
+            <name>EPICS Repository</name>
+            <url>scp://shell.sourceforge.net/home/project-web/epics/htdocs/maven2</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -95,7 +121,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.6</version>
+            <version>4.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
