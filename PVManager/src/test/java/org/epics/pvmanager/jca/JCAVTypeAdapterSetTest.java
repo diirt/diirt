@@ -892,7 +892,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VFloatArray.class));
         VFloatArray converted = (VFloatArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -921,7 +921,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VFloatArray.class));
         VFloatArray converted = (VFloatArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -977,7 +977,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
         VDoubleArray converted = (VDoubleArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1006,7 +1006,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
         VDoubleArray converted = (VDoubleArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3.25}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1063,7 +1063,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VByteArray.class));
         VByteArray converted = (VByteArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3, 4, 5}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1092,7 +1092,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VByteArray.class));
         VByteArray converted = (VByteArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1148,7 +1148,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VShortArray.class));
         VShortArray converted = (VShortArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3, 4, 5}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1177,7 +1177,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VShortArray.class));
         VShortArray converted = (VShortArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1233,7 +1233,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VIntArray.class));
         VIntArray converted = (VIntArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3, 4, 5}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1262,7 +1262,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.getValue(), instanceOf(VIntArray.class));
         VIntArray converted = (VIntArray) cache.getValue();
-        assertThat(CollectionNumbers.toDoubleArray(converted.getData()), equalTo(new double[]{3}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
         assertThat(converted.getTimestamp(), equalTo(timestamp));

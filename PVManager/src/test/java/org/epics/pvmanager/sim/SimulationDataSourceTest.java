@@ -49,6 +49,7 @@ public class SimulationDataSourceTest {
         // After 10s, expect about 20 samples
         assertTrue("Less than 19 calls", sampleCounter.get() >= 19);
         assertTrue("More than 21 calls", sampleCounter.get() <= 21);
+        System.out.println(sampleCounter.get());
         pv.removePVReaderListener(null);
     }
 
@@ -75,6 +76,7 @@ public class SimulationDataSourceTest {
         // After 10s, expect about 10 samples
         assertTrue("Less than 9 calls", sampleCounter.get() >= 9);
         assertTrue("More than 11 calls", sampleCounter.get() <= 11);
+        System.out.println(sampleCounter.get());
     }
 
     @Test
@@ -116,5 +118,6 @@ public class SimulationDataSourceTest {
         assertTrue("There were " + failedComparisons.get() + " failed comparisons", failedComparisons.get() < 20);
         assertTrue("Less than 9 calls", sampleCounter.get() >= 9);
         assertTrue("More than 11 calls", sampleCounter.get() <= 11);
+        System.out.println(sampleCounter.get());
     }
 }
