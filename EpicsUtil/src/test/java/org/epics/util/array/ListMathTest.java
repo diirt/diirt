@@ -21,14 +21,14 @@ public class ListMathTest {
     public void rescale1() {
         ArrayDouble array1 = new ArrayDouble(new double[] {0, 1, 2, 3, 4, 5});
         ListDouble rescaled = ListMath.rescale(array1, 2.5, -5.0);
-        assertThat(CollectionNumbers.toDoubleArray(rescaled), equalTo(new double[] {-5.0, -2.5, 0, 2.5, 5.0, 7.5}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(rescaled), equalTo(new double[] {-5.0, -2.5, 0, 2.5, 5.0, 7.5}));
     }
 
     @Test
     public void sum1() {
         ArrayDouble array1 = new ArrayDouble(new double[] {0, 1, 2, 3, 4, 5});
         ListDouble summed = ListMath.sum(array1, ListMath.rescale(array1, -1.0, 0.0));
-        assertThat(CollectionNumbers.toDoubleArray(summed), equalTo(new double[] {0, 0, 0, 0, 0, 0}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(summed), equalTo(new double[] {0, 0, 0, 0, 0, 0}));
     }
 
     @Test

@@ -21,17 +21,7 @@ public class CollectionNumbersTest {
     public void toDoubleArray1() {
         double[] data = new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         ArrayDouble coll = new ArrayDouble(data);
-        assertThat(CollectionNumbers.toDoubleArray(coll), equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(coll), equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
     }
-    
-    @Test
-    public void minMaxDouble1() {
-        double[] data = new double[] {4, 1, 2, 3, 0, 5, 6, 7, 8, 9};
-        ArrayDouble coll = new ArrayDouble(data);
-        CollectionNumbers.MinMax minMax = CollectionNumbers.minMaxDouble(coll);
-        assertThat((Double) minMax.min, equalTo(0.0));
-        assertThat((Double) minMax.max, equalTo(9.0));
-    }
-    
     
 }

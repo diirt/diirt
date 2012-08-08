@@ -24,7 +24,7 @@ public class ArrayLongTest {
     @Test
     public void wrap1() {
         ArrayLong array = new ArrayLong(new long[] {0, 1, 2, 3, 4, 5});
-        assertThat(CollectionNumbers.toDoubleArray(array), equalTo(new double[] {0, 1, 2, 3, 4, 5}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(array), equalTo(new double[] {0, 1, 2, 3, 4, 5}));
     }
 
     @Test(expected=UnsupportedOperationException.class)
@@ -38,7 +38,7 @@ public class ArrayLongTest {
         ArrayLong array = new ArrayLong(new long[] {0, 1, 2, 3, 4, 5}, false);
         array.setDouble(0, 5);
         array.setDouble(5, 0);
-        assertThat(CollectionNumbers.toDoubleArray(array), equalTo(new double[] {5, 1, 2, 3, 4, 0}));
+        assertThat(CollectionNumbers.doubleArrayCopyOf(array), equalTo(new double[] {5, 1, 2, 3, 4, 0}));
     }
     
     @Test

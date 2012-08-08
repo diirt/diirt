@@ -5,11 +5,27 @@
 package org.epics.util.array;
 
 /**
+ * Utilities to work with number collections.
  *
  * @author carcassi
  */
 public class CollectionNumbers {
-    public static double[] toDoubleArray(CollectionNumber coll) {
+    
+    public static double[] wrappedDoubleArray(CollectionNumber coll) {
+        if (coll instanceof ArrayDouble) {
+            return ((ArrayDouble) coll).wrappedArray();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Copies the content of the collection to an array.
+     * 
+     * @param coll the collection
+     * @return the array
+     */
+    public static double[] doubleArrayCopyOf(CollectionNumber coll) {
         double[] data = new double[coll.size()];
         IteratorNumber iter = coll.iterator();
         int index = 0;
@@ -18,35 +34,5 @@ public class CollectionNumbers {
             index++;
         }
         return data;
-    }
-    
-    public static class MinMax {
-        public final Number min;
-        public final Number max;
-
-        private MinMax(double min, double max) {
-            this.min = min;
-            this.max = max;
-        }
-        
-    }
-    
-    public static MinMax minMaxDouble(CollectionNumber coll) {
-        IteratorNumber iterator = coll.iterator();
-        if (!iterator.hasNext()) {
-            return null;
-        }
-        double min = iterator.nextDouble();
-        double max = min;
-        
-        while (iterator.hasNext()) {
-            double value = iterator.nextDouble();
-            if (value > max)
-                max = value;
-            if (value < min)
-                min = value;
-        }
-        
-        return new MinMax(min, max);
     }
 }
