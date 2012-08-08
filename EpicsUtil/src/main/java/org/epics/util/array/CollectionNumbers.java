@@ -12,7 +12,11 @@ package org.epics.util.array;
 public class CollectionNumbers {
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
@@ -26,7 +30,11 @@ public class CollectionNumbers {
     }
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
@@ -40,7 +48,11 @@ public class CollectionNumbers {
     }
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
@@ -54,7 +66,11 @@ public class CollectionNumbers {
     }
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
@@ -68,7 +84,11 @@ public class CollectionNumbers {
     }
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
@@ -82,7 +102,11 @@ public class CollectionNumbers {
     }
     
     /**
-     * If available, return the double[] wrapped by the collection.
+     * If available, return the array wrapped by the collection - USE WITH
+     * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
+     * is provided in case an external routine for computation
+     * requires you to use array, and you want to avoid the copy
+     * for performance reason.
      * 
      * @param coll the collection
      * @return the array or null
