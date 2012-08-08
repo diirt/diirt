@@ -9,6 +9,12 @@
     <name>Epics Utilities</name>
     <url>http://maven.apache.org</url>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
+    <licenses>
+        <license>
+            <name>GNU General Public License 2 with the Classpath Exception</name>
+            <url>LICENSE.TXT</url>
+        </license>
+    </licenses>
     <build>
         <plugins>
             <plugin> 
@@ -78,7 +84,7 @@
     	(id values there should match ids below) -->
         <site>
             <id>epics-util.sf.net</id>
-            <name>PVManager Sourceforge site</name>
+            <name>Epics Utilities Sourceforge site</name>
             <url>scp://shell.sourceforge.net/home/project-web/epics-util/htdocs</url>
         </site>
         <repository>
