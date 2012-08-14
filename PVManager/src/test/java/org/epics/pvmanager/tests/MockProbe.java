@@ -276,6 +276,7 @@ public class MockProbe extends javax.swing.JFrame {
 
     private void setLastError(Exception ex) {
         if (ex != null) {
+            ex.printStackTrace();
             lastError.setText(ex.getClass().getSimpleName() + " " + ex.getMessage());
         } else {
         }
