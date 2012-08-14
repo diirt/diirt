@@ -21,6 +21,7 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
 
@@ -186,11 +187,13 @@ public class MockProbe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pvNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pvNameActionPerformed
-        if (pv != null)
+        if (pv != null) {
             pv.close();
-
+            lastError.setText("");
+        }
+        
         try {
-            pv = PVManager.read(formula(pvName.getText())).every(hz(10));
+            pv = PVManager.read(channel(pvName.getText())).every(hz(10));
             pv.addPVReaderListener(new PVReaderListener() {
 
                 @Override
@@ -272,10 +275,10 @@ public class MockProbe extends javax.swing.JFrame {
     }
 
     private void setLastError(Exception ex) {
-        if (ex != null)
-            lastError.setText(ex.getMessage());
-        else
-            lastError.setText("");
+        if (ex != null) {
+            lastError.setText(ex.getClass().getSimpleName() + " " + ex.getMessage());
+        } else {
+        }
     }
 
     private void setIndicator(Double value) {
