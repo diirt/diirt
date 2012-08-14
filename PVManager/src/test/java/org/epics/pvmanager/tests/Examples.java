@@ -31,6 +31,7 @@ import org.epics.pvmanager.data.ValueUtil;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.data.VType;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -312,12 +313,12 @@ public class Examples {
     }
     
     public void v2() {
-        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(10));
+        final PVReader<VType> pvReader = PVManager.read(vType("channelName")).maxRate(ofMillis(10));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
             public void pvChanged() {
-                Object value = pvReader.getValue();
+                VType value = pvReader.getValue();
                 // We can extract the different aspect of the read object,
                 // so that we can work on them separately
                 
@@ -339,7 +340,7 @@ public class Examples {
     }
     
     public void v3() {
-        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
+        final PVReader<VType> pvReader = PVManager.read(vType("channelName")).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -355,7 +356,7 @@ public class Examples {
     }
     
     public void v4() {
-        final PVReader<Object> pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
+        final PVReader<VType> pvReader = PVManager.read(vType("channelName")).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
 
             @Override
