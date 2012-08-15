@@ -56,6 +56,17 @@ public class DataRecipe {
         this(Collections.<Collector<?>, Map<String, ValueCache>>emptyMap(), exceptionHandler);
     }
 
+    DataRecipe(Collection<ChannelRecipe> channelRecipes) {
+        if (channelRecipes.isEmpty()) {
+            throw new IllegalArgumentException("Channel recipes can't be empty");
+        }
+        this.channelRecipes = channelRecipes;
+        this.channelsPerCollector = null;
+        this.exceptionHandler = channelRecipes.iterator().next().getReadSubscription().getHandler();
+        connectionCaches = null;
+        connectionCollector = channelRecipes.iterator().next().getReadSubscription().getConnCollector();
+    }
+
     /**
      * Creates a new recipe by adding the new collector and the new caches.
      * <p>

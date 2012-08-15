@@ -4,8 +4,11 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -110,7 +113,7 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connect(recipe);
-        assertThat(mock1Recipe.getChannelsPerCollectors(), equalTo(recipe.getChannelsPerCollectors()));
+        assertThat(mock1Recipe.getChannelRecipes(), equalTo(recipe.getChannelRecipes()));
         assertThat(mock2Recipe, nullValue());
     }
 
@@ -135,12 +138,12 @@ public class CompositeDataSourceTest {
         
         // Call and check
         composite.connect(recipe);
-        Map<String, ValueCache> mock1Caches = mock1Recipe.getChannelsPerCollectors().values().iterator().next();
-        Map<String, ValueCache> mock2Caches = mock2Recipe.getChannelsPerCollectors().values().iterator().next();
+        Collection<ChannelRecipe> mock1Caches = mock1Recipe.getChannelRecipes();
+        Collection<ChannelRecipe> mock2Caches = mock2Recipe.getChannelRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
-        assertThat(mock1Caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
-        assertThat(mock2Caches.keySet(), hasItem("pv04"));
+        assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
+        assertThat(channelNames(mock2Caches), hasItem("pv04"));
 
         // Check close
         DataRecipe mock1Connect = mock1Recipe;
@@ -148,6 +151,14 @@ public class CompositeDataSourceTest {
         composite.disconnect(recipe);
         assertSame(mock1Connect, mock1Recipe);
         assertSame(mock2Connect, mock2Recipe);
+    }
+    
+    private Set<String> channelNames(Collection<ChannelRecipe> channelRecipes) {
+        Set<String> names = new HashSet<String>();
+        for (ChannelRecipe channelRecipe : channelRecipes) {
+            names.add(channelRecipe.getChannelName());
+        }
+        return names;
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -202,12 +213,12 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connect(recipe);
-        Map<String, ValueCache> mock1Caches = mock1Recipe.getChannelsPerCollectors().values().iterator().next();
-        Map<String, ValueCache> mock2Caches = mock2Recipe.getChannelsPerCollectors().values().iterator().next();
+        Collection<ChannelRecipe> mock1Caches = mock1Recipe.getChannelRecipes();
+        Collection<ChannelRecipe> mock2Caches = mock2Recipe.getChannelRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
-        assertThat(mock1Caches.keySet(), hasItems("pv01", "pv02", "pv03", "pv05"));
-        assertThat(mock2Caches.keySet(), hasItem("pv04"));
+        assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
+        assertThat(channelNames(mock2Caches), hasItem("pv04"));
     }
 
     @Test (expected=IllegalArgumentException.class)
