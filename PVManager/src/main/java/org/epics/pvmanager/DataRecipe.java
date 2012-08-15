@@ -29,7 +29,7 @@ public class DataRecipe {
         channelsPerCollector = Collections.emptyMap();
         exceptionHandler = new ExceptionHandler();
         connectionCaches = generateConnectionCaches();
-        connectionCollector = new ConnectionCollector(getConnectionCaches());
+        connectionCollector = new ConnectionCollector(connectionCaches);
     }
 
     /**
@@ -42,21 +42,21 @@ public class DataRecipe {
         this.channelsPerCollector = Collections.unmodifiableMap(new HashMap<Collector<?>, Map<String, ValueCache>>(channelsPerCollector));
         exceptionHandler = new ExceptionHandler();
         connectionCaches = generateConnectionCaches();
-        connectionCollector = new ConnectionCollector(getConnectionCaches());
+        connectionCollector = new ConnectionCollector(connectionCaches);
     }
 
     private DataRecipe(Map<Collector<?>, Map<String, ValueCache>> channelsPerCollector, ExceptionHandler exceptionHandler) {
         this.channelsPerCollector = channelsPerCollector;
         this.exceptionHandler = exceptionHandler;
         connectionCaches = generateConnectionCaches();
-        connectionCollector = new ConnectionCollector(getConnectionCaches());
+        connectionCollector = new ConnectionCollector(connectionCaches);
     }
 
     public DataRecipe(ExceptionHandler exceptionHandler) {
         channelsPerCollector = Collections.emptyMap();
         this.exceptionHandler = exceptionHandler;
         connectionCaches = generateConnectionCaches();
-        connectionCollector = new ConnectionCollector(getConnectionCaches());
+        connectionCollector = new ConnectionCollector(connectionCaches);
     }
 
     /**
