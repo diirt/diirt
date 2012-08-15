@@ -18,6 +18,9 @@ public class DataRecipe {
 
     private final Map<Collector<?>, Map<String, ValueCache>> channelsPerCollector;
     private final ExceptionHandler exceptionHandler;
+    
+    private final Collector<Boolean> connectionCollector;
+    private final Map<String, ValueCache<Boolean>> connectionCaches;
 
     /**
      * Creates an empty data recipe.
@@ -25,6 +28,8 @@ public class DataRecipe {
     public DataRecipe() {
         channelsPerCollector = Collections.emptyMap();
         exceptionHandler = new ExceptionHandler();
+        connectionCaches = generateConnectionCaches();
+        connectionCollector = new ConnectionCollector(getConnectionCaches());
     }
 
     /**
@@ -36,16 +41,22 @@ public class DataRecipe {
     DataRecipe(Map<Collector<?>, Map<String, ValueCache>> channelsPerCollector) {
         this.channelsPerCollector = Collections.unmodifiableMap(new HashMap<Collector<?>, Map<String, ValueCache>>(channelsPerCollector));
         exceptionHandler = new ExceptionHandler();
+        connectionCaches = generateConnectionCaches();
+        connectionCollector = new ConnectionCollector(getConnectionCaches());
     }
 
     private DataRecipe(Map<Collector<?>, Map<String, ValueCache>> channelsPerCollector, ExceptionHandler exceptionHandler) {
         this.channelsPerCollector = channelsPerCollector;
         this.exceptionHandler = exceptionHandler;
+        connectionCaches = generateConnectionCaches();
+        connectionCollector = new ConnectionCollector(getConnectionCaches());
     }
 
     public DataRecipe(ExceptionHandler exceptionHandler) {
         channelsPerCollector = Collections.emptyMap();
         this.exceptionHandler = exceptionHandler;
+        connectionCaches = generateConnectionCaches();
+        connectionCollector = new ConnectionCollector(getConnectionCaches());
     }
 
     /**
@@ -114,31 +125,25 @@ public class DataRecipe {
         return new DataRecipe(channelsPerCollector, handler);
     }
 
-    synchronized Collector<Boolean> getConnectionCollector() {
-        if (connectionCollector == null) {
-            connectionCollector = new ConnectionCollector(getConnectionCaches());
-        }
+    public Collector<Boolean> getConnectionCollector() {
         return connectionCollector;
     }
-    
-    private Collector<Boolean> connectionCollector;
-    private Map<String, ValueCache<Boolean>> connectionCaches;
 
-    synchronized Map<String, ValueCache<Boolean>> getConnectionCaches() {
-        // TODO do in constructor to avoid synch (and make final)
-        if (connectionCaches == null) {
-            Map<String, ValueCache<Boolean>> newCaches = new HashMap<String, ValueCache<Boolean>>();
-            for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : channelsPerCollector.entrySet()) {
-                for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
-                    String name = entry.getKey();
-                    ValueCache<Boolean> cache = new ValueCache<Boolean>(Boolean.class);
-                    cache.setValue(false);
-                    newCaches.put(name, cache);
-                }
-            }
-            connectionCaches = newCaches;
-        }
+    public Map<String, ValueCache<Boolean>> getConnectionCaches() {
         return connectionCaches;
+    }
+    
+    private Map<String, ValueCache<Boolean>> generateConnectionCaches() {
+        Map<String, ValueCache<Boolean>> newCaches = new HashMap<String, ValueCache<Boolean>>();
+        for (Map.Entry<Collector<?>, Map<String, ValueCache>> collEntry : channelsPerCollector.entrySet()) {
+            for (Map.Entry<String, ValueCache> entry : collEntry.getValue().entrySet()) {
+                String name = entry.getKey();
+                ValueCache<Boolean> cache = new ValueCache<Boolean>(Boolean.class);
+                cache.setValue(false);
+                newCaches.put(name, cache);
+            }
+        }
+        return newCaches;
     }
 
 }
