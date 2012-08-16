@@ -12,6 +12,7 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.data.VNumber;
 import org.epics.pvmanager.data.VNumberArray;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
@@ -26,13 +27,13 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
         super(expression, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubleArray(expression.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
 
-    WaterfallPlot(DesiredRateExpressionList<List<VDouble>> expressions, String name) {
+    <T extends VNumber> WaterfallPlot(DesiredRateExpressionList<List<T>> expressions, String name) {
         super(expressions, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubles(getFunctions(expressions)), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
     
-    private static List<Function<List<VDouble>>> getFunctions(DesiredRateExpressionList<List<VDouble>> exp) {
-        List<Function<List<VDouble>>> functions = new ArrayList<Function<List<VDouble>>>();
-        for (DesiredRateExpression<List<VDouble>> desiredRateExpression : exp.getDesiredRateExpressions()) {
+    private static <T extends VNumber> List<Function<List<T>>> getFunctions(DesiredRateExpressionList<List<T>> exp) {
+        List<Function<List<T>>> functions = new ArrayList<Function<List<T>>>();
+        for (DesiredRateExpression<List<T>> desiredRateExpression : exp.getDesiredRateExpressions()) {
             functions.add(desiredRateExpression.getFunction());
         }
         return functions;

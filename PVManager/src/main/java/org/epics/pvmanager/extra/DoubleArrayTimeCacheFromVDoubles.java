@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.data.VNumber;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.CollectionNumbers;
 import org.epics.util.array.ListNumber;
@@ -29,11 +30,11 @@ import org.epics.util.time.Timestamp;
 public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
     
     private NavigableMap<Timestamp, ArrayDouble> cache = new TreeMap<Timestamp, ArrayDouble>();
-    private List<Function<List<VDouble>>> functions;
+    private List<? extends Function<? extends List<? extends VNumber>>> functions;
     private Display display;
     private TimeDuration tolerance = TimeDuration.ofMillis(1);
 
-    public DoubleArrayTimeCacheFromVDoubles(List<Function<List<VDouble>>> functions) {
+    public DoubleArrayTimeCacheFromVDoubles(List<? extends Function<? extends List<? extends VNumber>>> functions) {
         this.functions = functions;
     }
     
@@ -123,19 +124,19 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
     public DoubleArrayTimeCache.Data getData(Timestamp begin, Timestamp end) {
         // Let's do it in a crappy way first...
         for (int n = 0; n < functions.size(); n++) {
-            List<VDouble> vDoubles = functions.get(n).getValue();
-            for (VDouble vDouble : vDoubles) {
+            List<? extends VNumber> vDoubles = functions.get(n).getValue();
+            for (VNumber vNumber : vDoubles) {
                 if (display == null)
-                    display = vDouble;
-                ArrayDouble array = arrayFor(vDouble.getTimestamp());
+                    display = vNumber;
+                ArrayDouble array = arrayFor(vNumber.getTimestamp());
                 double oldValue = array.getDouble(n);
-                array.setDouble(n, vDouble.getValue());
+                array.setDouble(n, vNumber.getValue().doubleValue());
                 
                 // Fix the following values
-                for (Map.Entry<Timestamp, ArrayDouble> en : cache.tailMap(vDouble.getTimestamp().plus(tolerance)).entrySet()) {
+                for (Map.Entry<Timestamp, ArrayDouble> en : cache.tailMap(vNumber.getTimestamp().plus(tolerance)).entrySet()) {
                     // If no value or same value as before, replace it
                     if (Double.isNaN(en.getValue().getDouble(n)) || en.getValue().getDouble(n) == oldValue)
-                        en.getValue().setDouble(n, vDouble.getValue());
+                        en.getValue().setDouble(n, vNumber.getValue().doubleValue());
                 }
             }
         }
@@ -157,27 +158,27 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         Timestamp firstChange = null;
         Timestamp lastChange = null;
         for (int n = 0; n < functions.size(); n++) {
-            List<VDouble> vDoubles = functions.get(n).getValue();
-            for (VDouble vDouble : vDoubles) {
+            List<? extends VNumber> vNumbers = functions.get(n).getValue();
+            for (VNumber vNumber : vNumbers) {
                 if (display == null)
-                    display = vDouble;
-                ArrayDouble array = arrayFor(vDouble.getTimestamp());
+                    display = vNumber;
+                ArrayDouble array = arrayFor(vNumber.getTimestamp());
                 double oldValue = array.getDouble(n);
-                array.setDouble(n, vDouble.getValue());
+                array.setDouble(n, vNumber.getValue().doubleValue());
                 if (firstChange == null) {
-                    firstChange = vDouble.getTimestamp();
+                    firstChange = vNumber.getTimestamp();
                 }
                 if (lastChange == null) {
-                    lastChange = vDouble.getTimestamp();
+                    lastChange = vNumber.getTimestamp();
                 }
-                firstChange = min(firstChange, vDouble.getTimestamp());
-                lastChange = max(lastChange, vDouble.getTimestamp());
+                firstChange = min(firstChange, vNumber.getTimestamp());
+                lastChange = max(lastChange, vNumber.getTimestamp());
                 
                 // Fix the following values
-                for (Map.Entry<Timestamp, ArrayDouble> en : cache.tailMap(vDouble.getTimestamp().plus(tolerance)).entrySet()) {
+                for (Map.Entry<Timestamp, ArrayDouble> en : cache.tailMap(vNumber.getTimestamp().plus(tolerance)).entrySet()) {
                     // If no value or same value as before, replace it
                     if (Double.isNaN(en.getValue().getDouble(n)) || en.getValue().getDouble(n) == oldValue)
-                        en.getValue().setDouble(n, vDouble.getValue());
+                        en.getValue().setDouble(n, vNumber.getValue().doubleValue());
                 }
             }
         }
