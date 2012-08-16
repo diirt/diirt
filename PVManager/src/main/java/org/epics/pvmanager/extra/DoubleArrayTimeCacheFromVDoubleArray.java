@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.pvmanager.data.VNumberArray;
 import org.epics.util.array.ListNumber;
 import org.epics.util.time.Timestamp;
 
@@ -23,11 +24,11 @@ import org.epics.util.time.Timestamp;
  */
 public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCache {
     
-    private NavigableMap<Timestamp, VDoubleArray> cache = new TreeMap<Timestamp, VDoubleArray>();
-    private Function<List<VDoubleArray>> function;
+    private NavigableMap<Timestamp, VNumberArray> cache = new TreeMap<Timestamp, VNumberArray>();
+    private Function<? extends List<? extends VNumberArray>> function;
     private Display display;
 
-    public DoubleArrayTimeCacheFromVDoubleArray(Function<List<VDoubleArray>> function) {
+    public DoubleArrayTimeCacheFromVDoubleArray(Function<? extends List<? extends VNumberArray>> function) {
         this.function = function;
     }
     
@@ -38,10 +39,10 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         private Timestamp begin;
         private Timestamp end;
 
-        private Data(SortedMap<Timestamp, VDoubleArray> subMap, Timestamp begin, Timestamp end) {
+        private Data(SortedMap<Timestamp, VNumberArray> subMap, Timestamp begin, Timestamp end) {
             this.begin = begin;
             this.end = end;
-            for (Map.Entry<Timestamp, VDoubleArray> en : subMap.entrySet()) {
+            for (Map.Entry<Timestamp, VNumberArray> en : subMap.entrySet()) {
                 times.add(en.getKey());
                 arrays.add(en.getValue().getData());
             }
@@ -98,8 +99,8 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
 
     @Override
     public DoubleArrayTimeCache.Data getData(Timestamp begin, Timestamp end) {
-        List<VDoubleArray> newValues = function.getValue();
-        for (VDoubleArray value : newValues) {
+        List<? extends VNumberArray> newValues = function.getValue();
+        for (VNumberArray value : newValues) {
             cache.put(value.getTimestamp(), value);
         }
         if (cache.isEmpty())
@@ -119,7 +120,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
 
     @Override
     public List<DoubleArrayTimeCache.Data> newData(Timestamp beginUpdate, Timestamp endUpdate, Timestamp beginNew, Timestamp endNew) {
-        List<VDoubleArray> newValues = function.getValue();
+        List<? extends VNumberArray> newValues = function.getValue();
         
         // No new values, just return the last value
         if (newValues.isEmpty()) {
@@ -127,7 +128,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
         
         List<Timestamp> newTimestamps = new ArrayList<Timestamp>();
-        for (VDoubleArray value : newValues) {
+        for (VNumberArray value : newValues) {
             cache.put(value.getTimestamp(), value);
             newTimestamps.add(value.getTimestamp());
         }

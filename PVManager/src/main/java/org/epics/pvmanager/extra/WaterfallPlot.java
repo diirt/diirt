@@ -12,6 +12,7 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.data.VNumberArray;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
 /**
@@ -21,7 +22,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  */
 public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
 
-    WaterfallPlot(DesiredRateExpression<List<VDoubleArray>> expression, String name) {
+    WaterfallPlot(DesiredRateExpression<? extends List<? extends VNumberArray>> expression, String name) {
         super(expression, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubleArray(expression.getFunction()), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
 

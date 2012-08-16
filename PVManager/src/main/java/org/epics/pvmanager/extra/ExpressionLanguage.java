@@ -34,8 +34,8 @@ public class ExpressionLanguage {
      * @param arrayPv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
-    public static WaterfallPlot waterfallPlotOf(SourceRateExpression<VDoubleArray> arrayPv) {
-        DesiredRateExpression<List<VDoubleArray>> queue = newValuesOf(arrayPv);
+    public static <T extends VNumberArray> WaterfallPlot  waterfallPlotOf(SourceRateExpression<T> arrayPv) {
+        DesiredRateExpression<List<T>> queue = newValuesOf(arrayPv);
         return new WaterfallPlot(queue, "waterfallOf(" + arrayPv.getName() + ")");
     }
 
