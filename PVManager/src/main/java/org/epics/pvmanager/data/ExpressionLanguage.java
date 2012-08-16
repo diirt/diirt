@@ -109,6 +109,16 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A list of channels with the given names, all of type VNumber.
+     *
+     * @param names the channel names; can't be null
+     * @return a list of expressions representing the channels
+     */
+    public static ChannelExpressionList<VNumber, Number> vNumbers(List<String> name) {
+        return channels(name, VNumber.class, Number.class);
+    }
+
+    /**
      * A channel with the given name of type VDouble.
      *
      * @param name the channel name; can't be null
