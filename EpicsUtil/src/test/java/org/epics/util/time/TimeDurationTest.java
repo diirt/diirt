@@ -340,6 +340,17 @@ public class TimeDurationTest {
     }
     
     @Test
+    public void toSeconds1() {
+        TimeDuration duration = TimeDuration.ofSeconds(1.5);
+        assertThat(duration.toSeconds(), equalTo(1.5));
+    }
+    
+    public void toSeconds2() {
+        TimeDuration duration = TimeDuration.ofNanos(1234567890123L);
+        assertThat(duration.toSeconds(), equalTo(1234.567890123));
+    }
+    
+    @Test
     public void isPositive1() {
         TimeDuration duration = TimeDuration.ofSeconds(0);
         assertThat(duration.isPositive(), equalTo(false));
