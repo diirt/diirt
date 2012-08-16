@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.util.array.ListNumber;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -33,7 +34,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     public class Data implements DoubleArrayTimeCache.Data {
         
         private List<Timestamp> times = new ArrayList<Timestamp>();
-        private List<double[]> arrays = new ArrayList<double[]>();
+        private List<ListNumber> arrays = new ArrayList<ListNumber>();
         private Timestamp begin;
         private Timestamp end;
 
@@ -42,7 +43,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
             this.end = end;
             for (Map.Entry<Timestamp, VDoubleArray> en : subMap.entrySet()) {
                 times.add(en.getKey());
-                arrays.add(en.getValue().getArray());
+                arrays.add(en.getValue().getData());
             }
         }
 
@@ -62,7 +63,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
 
         @Override
-        public double[] getArray(int index) {
+        public ListNumber getArray(int index) {
             return arrays.get(index);
         }
 
