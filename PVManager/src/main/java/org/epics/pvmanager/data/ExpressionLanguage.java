@@ -69,9 +69,11 @@ public class ExpressionLanguage {
     /**
      * Transforms a list of numeric scalar into a double array.
      * 
+     * @deprecated use {@link #vNumberArray(java.lang.String) }
      * @param expressions a list of numeric expressions
      * @return a new double array expression
      */
+    @Deprecated
     public static DesiredRateExpression<VDoubleArray>
             vDoubleArrayOf(DesiredRateExpressionList<? extends VNumber> expressions) {
         // TODO - there should be a common function to extract the list of functions
