@@ -27,12 +27,12 @@ import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.extra.WaterfallPlotParameters;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -192,15 +192,15 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         if (pv != null)
             pv.close();
 
-        plot = waterfallPlotOf(vDoubleArray(pvName.getText())).with(
+        plot = waterfallPlotOf(vNumberArray(pvName.getText())).with(
                 colorScheme(ColorScheme.multipleRangeGradient(Color.RED, Color.YELLOW, Color.BLACK, Color.WHITE, Color.YELLOW, Color.RED)),
                 backgroundColor(getBackground().getRGB()),
                 adaptiveRange(adaptiveRangeField.isSelected()),
                 scrollDown(scrollDownField.isSelected()),
                 height(plotView.getHeight()),
-                pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
+                pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
-                .every(hz(50));
+                .maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -216,7 +216,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged
         if (plot != null) {
-            plot.with(pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
+            plot.with(pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
         }
     }//GEN-LAST:event_pixelDurationFieldStateChanged
 
