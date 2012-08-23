@@ -4,17 +4,16 @@
  */
 package org.epics.pvmanager.pva;
 
-import gov.aps.jca.Channel;
+import org.epics.pvaccess.CAException;
+import org.epics.pvaccess.client.ChannelProvider;
+import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
-import java.util.logging.Logger;
-import org.epics.ca.client.impl.remote.ClientContextImpl;
-import org.epics.ca.impl.remote.Context;
 import org.epics.pvmanager.data.DataTypeSupport;
 
 /**
  * 
- * @author carcassi
+ * @author msekoranja
  */
 public class PVADataSource extends DataSource {
 
@@ -23,26 +22,40 @@ public class PVADataSource extends DataSource {
         DataTypeSupport.install();
     }
 
-    private static final Logger logger = Logger.getLogger(PVADataSource.class.getName());
+    //private static final Logger logger = Logger.getLogger(PVADataSource.class.getName());
 
-    private volatile Context pvaContext;
     private final short defaultPriority;
-
-    public PVADataSource() {
-        this(new ClientContextImpl(), Channel.PRIORITY_DEFAULT);
-    }
-
-    public PVADataSource(Context pvaContext, short defaultPriority) {
-        super(true);
-        this.pvaContext = pvaContext;
-        // TODO Do I need to call this or not?
-        // pvaContext.initialize();
-        this.defaultPriority = defaultPriority;
-    }
-
+    private final ChannelProvider pvaChannelProvider;
     
-    protected Context getContext() {
-        return pvaContext;
+    // this grabs internal implementation (and does not get ChannelProvider via ChannelAccess)
+    // to allow clean shutdown (no such API for now)
+    private final ClientContextImpl pvaContext;
+    
+    private final PVATypeSupport pvaTypeSupport = new PVATypeSupport(new PVAVTypeAdapterSet());
+    
+    public PVADataSource() {
+    	this(ChannelProvider.PRIORITY_DEFAULT);  	
+    }
+    
+    public PVADataSource(short defaultPriority) {
+    	super(true);
+        this.pvaContext = new ClientContextImpl();
+        this.pvaChannelProvider = pvaContext.getProvider();
+        this.defaultPriority = defaultPriority;
+        
+        // force initialization now
+        try {
+			pvaContext.initialize();
+		} catch (CAException e) {
+			throw new RuntimeException("Failed to intialize pvAccess context.", e);
+		}
+    }
+
+    public PVADataSource(ChannelProvider channelProvider, short defaultPriority) {
+        super(true);
+        this.pvaContext = null;
+        this.pvaChannelProvider = channelProvider;
+        this.defaultPriority = defaultPriority;
     }
 
     public short getDefaultPriority() {
@@ -50,12 +63,14 @@ public class PVADataSource extends DataSource {
     }
     
     public void close() {
-        //pvaContext.dispose();
+    	// TODO destroy via ChannelProvider when API supports it
+    	if (pvaContext != null)
+    		pvaContext.dispose();
     }
 
     @Override
     protected ChannelHandler createChannel(String channelName) {
-        return new PVAChannelHandler(channelName, pvaContext, defaultPriority);
+        return new PVAChannelHandler(channelName, pvaChannelProvider, defaultPriority, pvaTypeSupport);
     }
 
 }
