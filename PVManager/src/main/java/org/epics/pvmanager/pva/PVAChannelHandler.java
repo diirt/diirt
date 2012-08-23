@@ -141,11 +141,13 @@ public class PVAChannelHandler extends
 	public void channelStateChange(Channel channel, ConnectionState connectionState) {
 		try {
 
-			processConnection(this);
-
 			// introspect
 			if (connectionState == ConnectionState.CONNECTED) {
 				channel.getField(this, "value");
+			}
+			else
+			{
+				processConnection(this);
 			}
 
 		} catch (Exception ex) {
@@ -162,6 +164,8 @@ public class PVAChannelHandler extends
 		
 		if (status.isSuccess())
 			channelValueType = field;
+		
+		processConnection(this);
 	}
 
 	@Override
