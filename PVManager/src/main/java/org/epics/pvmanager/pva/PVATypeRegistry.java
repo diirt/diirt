@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.pva;
 
-import org.epics.pvData.pv.PVField;
+import org.epics.pvdata.pv.PVField;
 
 /**
  *
