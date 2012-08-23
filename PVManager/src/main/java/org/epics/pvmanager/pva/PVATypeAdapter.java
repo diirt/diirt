@@ -39,15 +39,16 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     @Override
     public int match(ValueCache<?> cache, PVAChannelHandler channel) {
-        
-        // If the generated type can't be put in the cache, no match
+
+    	// If the generated type can't be put in the cache, no match
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
-        
-        // If the type of the channel does not match, no match
-        if (!pvValueType.equals(channel.getChannelValueType()))
-            return 0;
 
+        // If the type of the channel does not match, no match
+        Field channelValueType = channel.getChannelValueType();
+        if (channelValueType == null || !pvValueType.equals(channelValueType))
+            return 0;
+        
         // Everything matches
         return 1;
     }
@@ -59,6 +60,18 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     @Override
     public boolean updateCache(ValueCache cache, PVAChannelHandler channel, PVStructure message) {
-    	return false;
+        Object value = createValue(message, channel.getChannelValueType(), !channel.isConnected());
+        cache.setValue(value);
+        return true;
     }
+
+    /**
+     * Given the value and the (optional) metadata, will create the new value.
+     * 
+     * @param value the value taken from the monitor
+     * @param metadata the value taken as metadata
+     * @param disconnected true if the value should report the channel is currently disconnected
+     * @return the new value
+     */
+    public abstract Object createValue(PVStructure message, Field valueType, boolean disconnected);
 }
