@@ -14,8 +14,6 @@ import java.util.List;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -28,14 +26,12 @@ import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.extra.WaterfallPlotParameters;
-import org.epics.pvmanager.loc.LocalDataSource;
-import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -197,7 +193,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
 
     private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged
         if (plot != null) {
-            plot.with(pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
+            plot.with(pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
         }
     }//GEN-LAST:event_pixelDurationFieldStateChanged
 
@@ -225,15 +221,15 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
             }
         }
 
-        plot = waterfallPlotOf(vDoubles(names)).with(
+        plot = waterfallPlotOf(vNumbers(names)).with(
                 colorScheme(ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE, getBackground())),
                 backgroundColor(getBackground().getRGB()),
                 adaptiveRange(adaptiveRangeField.isSelected()),
                 scrollDown(scrollDownField.isSelected()),
                 height(plotView.getHeight()),
-                pixelDuration(TimeDuration.ms(((Number) pixelDurationField.getValue()).intValue())));
+                pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
-                .every(hz(50));
+                .maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
