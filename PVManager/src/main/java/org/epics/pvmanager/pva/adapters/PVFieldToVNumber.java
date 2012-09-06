@@ -78,8 +78,8 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 		PVStructure timeStampStructure = pvField.getStructureField("timeStamp");
 		if (timeStampStructure != null)
 		{
-			PVLong secsField = timeStampStructure.getLongField("secsPastEpoch");
-			PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
+			PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
+			PVInt nanosField = timeStampStructure.getIntField("nanoSeconds");
 			
 			if (secsField == null || nanosField == null)
 				timeStamp = null;
@@ -136,8 +136,8 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 		PVStructure controlStructure = pvField.getStructureField("control");
 		if (controlStructure != null)
 		{
-			lowerCtrlLimit = getDoubleValue(displayStructure, "limitLow");
-			upperCtrlLimit = getDoubleValue(displayStructure, "limitHigh");
+			lowerCtrlLimit = getDoubleValue(controlStructure, "limitLow");
+			upperCtrlLimit = getDoubleValue(controlStructure, "limitHigh");
 		}
 		else
 		{
@@ -150,10 +150,10 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 		PVStructure valueAlarmStructure = pvField.getStructureField("valueAlarm");
 		if (valueAlarmStructure != null)
 		{
-			lowerAlarmLimit = getDoubleValue(displayStructure, "lowAlarmLimit");
-			lowerWarningLimit = getDoubleValue(displayStructure, "lowWarningLimit");
-			upperWarningLimit = getDoubleValue(displayStructure, "highWarningLimit");
-			upperAlarmLimit = getDoubleValue(displayStructure, "highAlarmLimit");
+			lowerAlarmLimit = getDoubleValue(valueAlarmStructure, "lowAlarmLimit");
+			lowerWarningLimit = getDoubleValue(valueAlarmStructure, "lowWarningLimit");
+			upperWarningLimit = getDoubleValue(valueAlarmStructure, "highWarningLimit");
+			upperAlarmLimit = getDoubleValue(valueAlarmStructure, "highAlarmLimit");
 		}
 		else
 		{
@@ -286,6 +286,24 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 	@Override
 	public Number getValue() {
 		return value;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "PVFieldToVNumber [alarmSeverity=" + alarmSeverity
+				+ ", alarmStatus=" + alarmStatus + ", timeStamp=" + timeStamp
+				+ ", timeUserTag=" + timeUserTag + ", isTimeValid="
+				+ isTimeValid + ", lowerDisplayLimit=" + lowerDisplayLimit
+				+ ", lowerCtrlLimit=" + lowerCtrlLimit + ", lowerAlarmLimit="
+				+ lowerAlarmLimit + ", lowerWarningLimit=" + lowerWarningLimit
+				+ ", units=" + units + ", format=" + format
+				+ ", upperWarningLimit=" + upperWarningLimit
+				+ ", upperAlarmLimit=" + upperAlarmLimit + ", upperCtrlLimit="
+				+ upperCtrlLimit + ", upperDisplayLimit=" + upperDisplayLimit
+				+ ", value=" + value + "]";
 	}
 
 }

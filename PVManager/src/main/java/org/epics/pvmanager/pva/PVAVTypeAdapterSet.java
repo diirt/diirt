@@ -32,7 +32,8 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         return converters;
     }
     
-    final static PVATypeAdapter ToVDouble = new PVATypeAdapter(VDouble.class, FieldFactory.getFieldCreate().createScalar(ScalarType.pvDouble)) {
+    //  -> VDouble
+    final static PVATypeAdapter ToVDouble = new PVATypeAdapter(VDouble.class, new String[] { "NTScalar", "scalar_t", "structure" }, FieldFactory.getFieldCreate().createScalar(ScalarType.pvDouble)) {
 
             @Override
             public VDouble createValue(PVStructure message, Field valueType, boolean disconnected) {
@@ -41,7 +42,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VInt
-    final static PVATypeAdapter ToVInt = new PVATypeAdapter(VInt.class, FieldFactory.getFieldCreate().createScalar(ScalarType.pvInt)) {
+    final static PVATypeAdapter ToVInt = new PVATypeAdapter(VInt.class, new String[] { "NTScalar", "scalar_t", "structure" }, FieldFactory.getFieldCreate().createScalar(ScalarType.pvInt)) {
 
             @Override
             public VInt createValue(final PVStructure message, Field valueType, boolean disconnected) {

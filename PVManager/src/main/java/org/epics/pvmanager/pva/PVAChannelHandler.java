@@ -51,9 +51,9 @@ public class PVAChannelHandler extends
 	private volatile Channel channel = null;
 
 	private final AtomicBoolean monitorCreated = new AtomicBoolean(false);
-	private volatile Monitor monitor = null;
+	//private volatile Monitor monitor = null;
 	
-	private volatile Field channelValueType = null;
+	private volatile Field channelType = null;
 	
 	private final AtomicBoolean channelPutCreated = new AtomicBoolean(false);
 	private volatile ChannelPut channelPut = null;
@@ -79,10 +79,10 @@ public class PVAChannelHandler extends
 	}
 
 	/**
-	 * @return the channelValueType
+	 * @return the channelType
 	 */
-	public Field getChannelValueType() {
-		return channelValueType;
+	public Field getChannelType() {
+		return channelType;
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class PVAChannelHandler extends
 
 			// introspect
 			if (connectionState == ConnectionState.CONNECTED) {
-				channel.getField(this, "value");
+				channel.getField(this, null);
 			}
 			else
 			{
@@ -163,7 +163,7 @@ public class PVAChannelHandler extends
 		reportStatus("Failed to instrospect channel '" + channel.getChannelName() + "'", status);
 		
 		if (status.isSuccess())
-			channelValueType = field;
+			channelType = field;
 		
 		processConnection(this);
 	}
@@ -182,10 +182,10 @@ public class PVAChannelHandler extends
 		} finally {
 			channel = null;
 			
-			monitor = null;
+			//monitor = null;
 			monitorCreated.set(false);
 			
-			channelValueType = null;
+			channelType = null;
 			
 			channelPut = null;
 			channelPutValueField = null;
@@ -384,7 +384,7 @@ public class PVAChannelHandler extends
 		
 		if (status.isSuccess())
 		{
-			this.monitor = monitor;
+			//this.monitor = monitor;
 			monitor.start();
 		}
 	}

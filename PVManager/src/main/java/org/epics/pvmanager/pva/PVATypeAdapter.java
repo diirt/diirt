@@ -10,6 +10,7 @@ package org.epics.pvmanager.pva;
 
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.Structure;
 import org.epics.pvmanager.DataSourceTypeAdapter;
 import org.epics.pvmanager.ValueCache;
 
@@ -17,23 +18,26 @@ import org.epics.pvmanager.ValueCache;
  * Type adapter for PVA data source. Will match a channel based on the value
  * type provided and the array flag. Will match the cache based on the type class.
  *
- * @author carcassi
+ * @author msekoranja
  */
 public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannelHandler, PVStructure> {
 
 	// e.g. VDouble.class
     private final Class<?> typeClass;
     
+    private final String[] ntIds;
     private final Field pvValueType;
 
     /**
      * Creates a new type adapter.
      * 
      * @param typeClass the java type this adapter will create
+     * @param ntIds optional array of IDs this instance supports
      * @param pvType <code>Field</code> instance this this adapter will convert
      */
-    public PVATypeAdapter(Class<?> typeClass, Field pvValueType) {
+    public PVATypeAdapter(Class<?> typeClass, String[] ntIds, Field pvValueType) {
         this.typeClass = typeClass;
+        this.ntIds = ntIds;
         this.pvValueType = pvValueType;
     }
 
@@ -44,10 +48,30 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
 
+        // If one of the IDs does not match, no match
+        if (ntIds != null)
+        {
+        	boolean match = false;
+        	String ntId = channel.getChannelType().getID();
+        	for (String id : ntIds)
+        		if (ntId.equals(id))
+        		{
+        			match = true;
+        			break;
+        		}
+        	
+        	if (!match)
+        		return 0;
+        }
+        
         // If the type of the channel does not match, no match
-        Field channelValueType = channel.getChannelValueType();
-        if (channelValueType == null || !pvValueType.equals(channelValueType))
-            return 0;
+        if (pvValueType != null)
+        {
+        	// we assume Structure here
+        	Field channelValueType = ((Structure)channel.getChannelType()).getField("value");
+        	if (channelValueType == null || !pvValueType.equals(channelValueType))
+        		return 0;
+        }
         
         // Everything matches
         return 1;
@@ -60,7 +84,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     @Override
     public boolean updateCache(ValueCache cache, PVAChannelHandler channel, PVStructure message) {
-        Object value = createValue(message, channel.getChannelValueType(), !channel.isConnected());
+        Object value = createValue(message, channel.getChannelType(), !channel.isConnected());
         cache.setValue(value);
         return true;
     }
