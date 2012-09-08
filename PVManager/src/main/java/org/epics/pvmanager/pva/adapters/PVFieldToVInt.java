@@ -3,6 +3,8 @@
  */
 package org.epics.pvmanager.pva.adapters;
 
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvmanager.data.VInt;
 
@@ -10,14 +12,22 @@ import org.epics.pvmanager.data.VInt;
  * @author msekoranja
  *
  */
-public class PVFieldToVInt extends PVFieldToVNumber implements VInt {
+public class PVFieldToVInt extends AlarmTimeDisplayExtractor implements VInt {
 
+	protected final Integer value;
+	
 	/**
 	 * @param pvField
 	 * @param disconnected
 	 */
 	public PVFieldToVInt(PVStructure pvField, boolean disconnected) {
 		super(pvField, disconnected);
+		
+		PVField field = pvField.getSubField("value");
+		if (field instanceof PVScalar)
+			value = convert.toInt((PVScalar)field);
+		else
+			value = null;
 	}
 
 	/* (non-Javadoc)
@@ -26,7 +36,7 @@ public class PVFieldToVInt extends PVFieldToVNumber implements VInt {
 	@Override
     public Integer getValue()
     {
-    	return value.intValue();
+    	return value;
     }
 
 }

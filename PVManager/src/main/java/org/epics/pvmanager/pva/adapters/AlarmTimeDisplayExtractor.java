@@ -10,35 +10,34 @@ import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
-import org.epics.pvmanager.data.Scalar;
-import org.epics.pvmanager.data.VNumber;
-import org.epics.pvmanager.data.VType;
+import org.epics.pvmanager.data.Display;
+import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.util.NumberFormats;
 import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.time.Timestamp;
 
-public class PVFieldToVNumber implements VNumber, VType, Scalar {
+public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 	
-	private final AlarmSeverity alarmSeverity;
-	private final AlarmStatus alarmStatus;
-	private final Timestamp timeStamp;
-	private final Integer timeUserTag;
-	private final boolean isTimeValid;
-	private final Double lowerDisplayLimit;
-	private final Double lowerCtrlLimit;
-	private final Double lowerAlarmLimit;
-	private final Double lowerWarningLimit;
-	private final String units;
-	private final NumberFormat format;
-	private final Double upperWarningLimit;
-	private final Double upperAlarmLimit;
-	private final Double upperCtrlLimit;
-	private final Double upperDisplayLimit;
-	protected final Double value;
+	protected final AlarmSeverity alarmSeverity;
+	protected final AlarmStatus alarmStatus;
+	protected final Timestamp timeStamp;
+	protected final Integer timeUserTag;
+	protected final boolean isTimeValid;
+	protected final Double lowerDisplayLimit;
+	protected final Double lowerCtrlLimit;
+	protected final Double lowerAlarmLimit;
+	protected final Double lowerWarningLimit;
+	protected final String units;
+	protected final NumberFormat format;
+	protected final Double upperWarningLimit;
+	protected final Double upperAlarmLimit;
+	protected final Double upperCtrlLimit;
+	protected final Double upperDisplayLimit;
 	
-	public PVFieldToVNumber(PVStructure pvField, boolean disconnected)
+	public AlarmTimeDisplayExtractor(PVStructure pvField, boolean disconnected)
 	{
 		// alarm_t
 		if (disconnected)
@@ -162,14 +161,11 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 			upperWarningLimit = null;
 			upperAlarmLimit = null;
 		}
-		
-		// just go via Double
-		value = getDoubleValue(pvField, "value");
 	}
 	
-	private static final Convert convert = ConvertFactory.getConvert();
+	protected static final Convert convert = ConvertFactory.getConvert();
 	
-	private static final Double getDoubleValue(PVStructure structure, String fieldName)
+	protected static final Double getDoubleValue(PVStructure structure, String fieldName)
 	{
 		PVField field = structure.getSubField(fieldName);
 		if (field instanceof PVScalar)
@@ -181,7 +177,7 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 	}
 	
 	// org.epics.pvdata.property.AlarmSeverity to pvmanager.AlarmSeverity
-	private static final AlarmSeverity alarmSeverityMapLUT[] =
+	protected static final AlarmSeverity alarmSeverityMapLUT[] =
 	{
 		AlarmSeverity.NONE,
 		AlarmSeverity.MINOR,
@@ -191,7 +187,7 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 	};
 	
 	// org.epics.pvdata.property.AlarmStatus to pvmanager.AlarmStatus
-	private static final AlarmStatus alarmStatusMapLUT[] =
+	protected static final AlarmStatus alarmStatusMapLUT[] =
 	{
 		AlarmStatus.NONE,
 		AlarmStatus.DEVICE,
@@ -282,28 +278,4 @@ public class PVFieldToVNumber implements VNumber, VType, Scalar {
 	public Double getUpperDisplayLimit() {
 		return upperDisplayLimit;
 	}
-
-	@Override
-	public Number getValue() {
-		return value;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "PVFieldToVNumber [alarmSeverity=" + alarmSeverity
-				+ ", alarmStatus=" + alarmStatus + ", timeStamp=" + timeStamp
-				+ ", timeUserTag=" + timeUserTag + ", isTimeValid="
-				+ isTimeValid + ", lowerDisplayLimit=" + lowerDisplayLimit
-				+ ", lowerCtrlLimit=" + lowerCtrlLimit + ", lowerAlarmLimit="
-				+ lowerAlarmLimit + ", lowerWarningLimit=" + lowerWarningLimit
-				+ ", units=" + units + ", format=" + format
-				+ ", upperWarningLimit=" + upperWarningLimit
-				+ ", upperAlarmLimit=" + upperAlarmLimit + ", upperCtrlLimit="
-				+ upperCtrlLimit + ", upperDisplayLimit=" + upperDisplayLimit
-				+ ", value=" + value + "]";
-	}
-
 }

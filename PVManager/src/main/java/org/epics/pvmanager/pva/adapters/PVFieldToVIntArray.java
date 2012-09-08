@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+package org.epics.pvmanager.pva.adapters;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.epics.pvdata.pv.IntArrayData;
+import org.epics.pvdata.pv.PVIntArray;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvmanager.data.VIntArray;
+import org.epics.util.array.ListInt;
+
+/**
+ * @author msekoranja
+ *
+ */
+public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIntArray {
+
+	private final int[] array;
+	private final ListInt list;
+	
+	/**
+	 * @param pvField
+	 * @param disconnected
+	 */
+	public PVFieldToVIntArray(PVStructure pvField, boolean disconnected) {
+		super(pvField, disconnected);
+		
+		PVIntArray valueField =
+			(PVIntArray)pvField.getScalarArrayField("value", ScalarType.pvInt);
+		if (valueField != null)
+		{
+			IntArrayData data = new IntArrayData();
+			valueField.get(0, valueField.getLength(), data);
+			
+			this.array = data.data;
+			this.list = new ListInt() {
+				
+				@Override
+				public int size() {
+					return array.length;
+				}
+				
+				@Override
+				public int getInt(int index) {
+					return array[index];
+				}
+			};
+		}
+		else
+		{
+			array = null;
+			list = null;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.epics.pvmanager.data.Array#getSizes()
+	 */
+	@Override
+	public List<Integer> getSizes() {
+		return Collections.singletonList(array.length);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.epics.pvmanager.data.VIntArray#getArray()
+	 */
+	@Override
+	public int[] getArray() {
+		return array;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.epics.pvmanager.data.VIntArray#getData()
+	 */
+	@Override
+	public ListInt getData() {
+		return list;
+	}
+
+}
