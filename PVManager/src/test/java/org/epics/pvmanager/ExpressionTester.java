@@ -70,4 +70,8 @@ public class ExpressionTester {
     public DesiredRateExpression<?> getExpression() {
         return expression;
     }
+    
+    public Object getValue() {
+        return expression.getFunction().getValue();
+    }
 }

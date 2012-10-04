@@ -7,9 +7,11 @@ package org.epics.pvmanager.data;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.ExpressionTester;
 import org.epics.pvmanager.PrivateFactory;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.sim.SimulationDataSource;
@@ -18,6 +20,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -34,42 +42,29 @@ public class TimedCacheCollectorTest {
         DataTypeSupport.install();
     }
 
-    @Before
-    public void setUp() {
-        monitorRecipe = null;
-    }
-
-    @After
-    public void tearDown() {
-        // Always disconnect
-        if (monitorRecipe != null)
-            SimulationDataSource.simulatedData().disconnect(monitorRecipe);
-    }
-
-    DataRecipe monitorRecipe;
-
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        ValueCache<VDouble> cache =
-                new ValueCache<VDouble>(VDouble.class);
-        Collector<VDouble> collector =
-                PrivateFactory.newTimeCacheCollector(cache, TimeDuration.ofMillis(100));
-        monitorRecipe = new DataRecipe();
-        monitorRecipe = monitorRecipe.includeCollector(collector, Collections.<String, ValueCache>singletonMap("gaussian(0.0, 1.0, 0.01)", cache));
-        SimulationDataSource.simulatedData().connect(monitorRecipe);
-
-        // After 100 ms there should be one element
-        Thread.sleep(10);
-        assertTrue(Math.abs(1 - collector.getValue().size()) < 2);
-
-        // After another second there should be 10 or 11 samples
-        Thread.sleep(100);
-        assertTrue("Was " + collector.getValue().size(), Math.abs(10 - collector.getValue().size()) < 2);
+        ExpressionTester exp = new ExpressionTester(timedCacheOf(channel("x"), TimeDuration.ofMillis(100)));
         
-        // After another second there should be 10 or 11 samples
-        Thread.sleep(100);
-        assertTrue("Was " + collector.getValue().size(), Math.abs(10 - collector.getValue().size()) < 2);
+        Timestamp reference = Timestamp.now();
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(0)))));
+        assertThat(((List) exp.getValue()).size(), equalTo(1));
 
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(10)))));
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(20)))));
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(30)))));
+        assertThat(((List) exp.getValue()).size(), equalTo(4));
+
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(40)))));
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(50)))));
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(60)))));
+        assertThat(((List) exp.getValue()).size(), equalTo(7));
+
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(115)))));
+        assertThat(((List) exp.getValue()).size(), equalTo(6));
+
+        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(155)))));
+        assertThat(((List) exp.getValue()).size(), equalTo(3));
     }
 
 }
