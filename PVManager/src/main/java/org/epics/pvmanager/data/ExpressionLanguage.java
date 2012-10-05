@@ -428,6 +428,21 @@ public class ExpressionLanguage {
 //                org.epics.pvmanager.util.TimeDuration.asTimeDuration(cacheDepth), expressions);
 //    }
 
+    /**
+     * Returns all the values starting the latest value and older up to
+     * the time difference given by the interval.
+     * 
+     * @param <T> type being read
+     * @param expression expression to read
+     * @param maxIntervalBetweenSamples maximum time difference between values
+     * @return a new expression
+     */
+    public static <T extends Time> DesiredRateExpression<List<T>>
+            timedCacheOf(SourceRateExpression<T> expression, TimeDuration maxIntervalBetweenSamples) {
+        return new DesiredRateExpressionImpl<List<T>>(expression,
+                new TimedCacheCollector<T>(expression.getFunction(), maxIntervalBetweenSamples),
+                expression.getName());
+    }
 
     /**
      * A column for an aggregated vTable.
