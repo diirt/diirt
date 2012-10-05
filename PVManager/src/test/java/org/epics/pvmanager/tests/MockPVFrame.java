@@ -17,7 +17,7 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -123,7 +123,7 @@ public class MockPVFrame extends javax.swing.JFrame {
         double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
         String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(vDouble(pvName)).every(hz(scanRate));
+        pv = PVManager.read(vDouble(pvName)).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override

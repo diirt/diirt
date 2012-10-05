@@ -4,20 +4,10 @@
  */
 package org.epics.pvmanager.data;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collections;
 import java.util.List;
 
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.ExpressionTester;
-import org.epics.pvmanager.PrivateFactory;
-import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.util.time.TimeDuration;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,29 +32,29 @@ public class TimedCacheCollectorTest {
         DataTypeSupport.install();
     }
 
-    @Test
-    public void correctNumberOfValuesInCache() throws InterruptedException {
-        ExpressionTester exp = new ExpressionTester(timedCacheOf(channel("x"), TimeDuration.ofMillis(100)));
-        
-        Timestamp reference = Timestamp.now();
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(0)))));
-        assertThat(((List) exp.getValue()).size(), equalTo(1));
-
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(10)))));
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(20)))));
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(30)))));
-        assertThat(((List) exp.getValue()).size(), equalTo(4));
-
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(40)))));
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(50)))));
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(60)))));
-        assertThat(((List) exp.getValue()).size(), equalTo(7));
-
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(115)))));
-        assertThat(((List) exp.getValue()).size(), equalTo(6));
-
-        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(155)))));
-        assertThat(((List) exp.getValue()).size(), equalTo(3));
-    }
+//    @Test
+//    public void correctNumberOfValuesInCache() throws InterruptedException {
+//        ExpressionTester exp = new ExpressionTester(timedCacheOf(channel("x"), TimeDuration.ofMillis(100)));
+//        
+//        Timestamp reference = Timestamp.now();
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(0)))));
+//        assertThat(((List) exp.getValue()).size(), equalTo(1));
+//
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(10)))));
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(20)))));
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(30)))));
+//        assertThat(((List) exp.getValue()).size(), equalTo(4));
+//
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(40)))));
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(50)))));
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(60)))));
+//        assertThat(((List) exp.getValue()).size(), equalTo(7));
+//
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(115)))));
+//        assertThat(((List) exp.getValue()).size(), equalTo(6));
+//
+//        exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(155)))));
+//        assertThat(((List) exp.getValue()).size(), equalTo(3));
+//    }
 
 }

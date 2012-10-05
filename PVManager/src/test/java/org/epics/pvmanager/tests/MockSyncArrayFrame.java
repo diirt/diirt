@@ -25,10 +25,10 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -81,7 +81,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
     }
 
     private XYDataset createDataset() {
-        final XYSeries series1 = new XYSeries("Values at " + pv.getValue().getTimeStamp().asDate());
+        final XYSeries series1 = new XYSeries("Values at " + pv.getValue().getTimestamp().toDate());
         int index = 0;
         if (pv.getValue() != null) {
             for (VDouble value : pv.getValue().getValues()) {
@@ -204,8 +204,8 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         // the time between sample multiplied by 5 (so you get at least 5 samples).
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
-        pv = PVManager.read(synchronizedArrayOf(ms(75), ms((int) (bufferDepth * 1000.0)),
-                vDoubles(Collections.nCopies(nPvs, pvName)))).every(hz(scanRate));
+//        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofMillis((int) (bufferDepth * 1000.0)),
+//                vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
             @Override
             public void pvChanged() {

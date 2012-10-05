@@ -11,7 +11,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VShortArray;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -25,7 +25,7 @@ public class JCALargeArrays {
         JCADataSource source = new JCADataSource();
         source.getContext().printInfo();
         PVManager.setDefaultDataSource(source);
-        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2")).every(hz(50));
+        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2")).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override

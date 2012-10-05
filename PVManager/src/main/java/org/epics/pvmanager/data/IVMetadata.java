@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.time.Timestamp;
 
 
@@ -38,11 +37,6 @@ class IVMetadata implements Alarm, Time {
     @Override
     public AlarmStatus getAlarmStatus() {
         return alarmStatus;
-    }
-
-    @Override
-    public TimeStamp getTimeStamp() {
-        return TimeStamp.timestampOf(timestamp);
     }
 
     @Override

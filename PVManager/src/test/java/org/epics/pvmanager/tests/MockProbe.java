@@ -23,7 +23,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -208,7 +208,7 @@ public class MockProbe extends javax.swing.JFrame {
         }
         
         try {
-            pv = PVManager.read(channel(pvName.getText())).timeout(TimeDuration.ofSeconds(5)).every(hz(10));
+            pv = PVManager.read(channel(pvName.getText())).timeout(TimeDuration.ofSeconds(5)).maxRate(ofHertz(10));
             pv.addPVReaderListener(new PVReaderListener() {
 
                 @Override
@@ -278,7 +278,7 @@ public class MockProbe extends javax.swing.JFrame {
         if (time == null) {
             pvTime.setText("");
         } else {
-            pvTime.setText(time.getTimeStamp().asDate().toString());
+            pvTime.setText(time.getTimestamp().toDate().toString());
         }
     }
 

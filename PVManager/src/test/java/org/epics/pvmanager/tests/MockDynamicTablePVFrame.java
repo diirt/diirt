@@ -33,7 +33,7 @@ import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -42,7 +42,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     
     private DynamicGroup group = group();
-    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).every(hz(2));
+    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).maxRate(ofHertz(2));
     private List<Object> latestValue = null;
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
@@ -124,7 +124,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         private String timeStampOf(Object value) {
             if (value == null)
                 return "";
-            return ValueUtil.timeOf(value).getTimeStamp().toString();
+            return ValueUtil.timeOf(value).getTimestamp().toString();
         }
 
         @Override

@@ -5,13 +5,13 @@
 package org.epics.pvmanager.sim;
 
 import java.net.URI;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -32,7 +32,7 @@ public class ReplayParserTest {
         // Check first value
         XmlVDouble value = (XmlVDouble) values.getValues().get(0);
         assertThat(value.getValue(), equalTo(0.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0)));
+        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0)));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -48,7 +48,7 @@ public class ReplayParserTest {
         // Check second value
         value = (XmlVDouble) values.getValues().get(1);
         assertThat(value.getValue(), equalTo(1.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(100))));
+        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(100))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
         assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -56,7 +56,7 @@ public class ReplayParserTest {
         // Check third value
         value = (XmlVDouble) values.getValues().get(2);
         assertThat(value.getValue(), equalTo(2.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(200))));
+        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(200))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -64,7 +64,7 @@ public class ReplayParserTest {
         // Check fourth value
         value = (XmlVDouble) values.getValues().get(3);
         assertThat(value.getValue(), equalTo(3.0));
-        assertThat(value.getTimeStamp(), equalTo(TimeStamp.time(0, 0).plus(ms(500))));
+        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(500))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
         assertThat(value.getTimeUserTag(), equalTo(0));

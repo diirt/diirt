@@ -5,7 +5,6 @@
 package org.epics.pvmanager.data;
 
 import java.util.List;
-import org.epics.pvmanager.TimeSupport;
 
 /**
  *
@@ -29,7 +28,7 @@ public class DataUtils {
             if (value == null)
                 System.out.print("null");
             else
-                System.out.print(TimeSupport.timestampOf(value));// + " - " + value.getDoubleValue()[0]);
+                System.out.print(value.getTimestamp());// + " - " + value.getDoubleValue()[0]);
         }
         System.out.println("]");
     }

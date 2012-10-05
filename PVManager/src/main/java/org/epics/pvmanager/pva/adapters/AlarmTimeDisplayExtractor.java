@@ -20,7 +20,6 @@ import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.util.NumberFormats;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.time.Timestamp;
 
 public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
@@ -211,11 +210,6 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 	@Override
 	public AlarmStatus getAlarmStatus() {
 		return alarmStatus;
-	}
-
-	@Override
-	public TimeStamp getTimeStamp() {
-		return null;
 	}
 
 	@Override

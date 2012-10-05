@@ -20,7 +20,6 @@ import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
@@ -38,52 +37,6 @@ public class ExpressionLanguage {
     static {
         // Add support for Epics types.
         DataTypeSupport.install();
-    }
-    
-    /**
-     * Expects a numeric scalar (VDouble or VInt) and converts it to
-     * a VDouble.
-     * 
-     * @deprecated use {@link #vNumber(java.lang.String) }
-     * @param expression an expression that returns a numeric scalar
-     * @return a new expression
-     */
-    @Deprecated
-    public static SourceRateExpression<VDouble> vDoubleOf(SourceRateExpression<?> expression) {
-        return new SourceRateExpressionImpl<VDouble>(expression, new ConverterVDoubleFunction(expression.getFunction()), expression.getName());
-    }
-    
-    /**
-     * Expects a numeric array (VDoubleArray, VFloatArray, VIntArray, VShortArray
-     * or VByteArray) and converts it to a VDoubleArray.
-     * 
-     * @deprecated use {@link #vNumberArray(java.lang.String) }
-     * @param expression an expression that returns a numeric array
-     * @return a new expression
-     */
-    @Deprecated
-    public static SourceRateExpression<VDoubleArray> vDoubleArrayOf(SourceRateExpression<?> expression) {
-        return new SourceRateExpressionImpl<VDoubleArray>(expression, new ConverterVDoubleArrayFunction(expression.getFunction()), expression.getName());
-    }
-    
-    /**
-     * Transforms a list of numeric scalar into a double array.
-     * 
-     * @deprecated use {@link #vNumberArray(java.lang.String) }
-     * @param expressions a list of numeric expressions
-     * @return a new double array expression
-     */
-    @Deprecated
-    public static DesiredRateExpression<VDoubleArray>
-            vDoubleArrayOf(DesiredRateExpressionList<? extends VNumber> expressions) {
-        // TODO - there should be a common function to extract the list of functions
-        List<Function<? extends VNumber>> functions = new ArrayList<Function<? extends VNumber>>();
-        for (DesiredRateExpression<? extends VNumber> expression : expressions.getDesiredRateExpressions()) {
-            functions.add(expression.getFunction());
-        }
-        VNumbersToVDoubleArrayConverter converter =
-                new VNumbersToVDoubleArrayConverter(functions);
-        return new DesiredRateExpressionImpl<VDoubleArray>(expressions, converter, "syncArray");
     }
     
     //
@@ -402,78 +355,78 @@ public class ExpressionLanguage {
         return expressions;
     }
 
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     */
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
-        return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
-    }
-
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples in the
-     * reconstructed array
-     * @param cacheDepth maximum time difference between samples in the caches
-     * used to reconstruct the array
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     */
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
-        if (cacheDepth.equals(TimeDuration.ofMillis(0)) && cacheDepth.getSec() > 0)
-            throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
-        List<String> names = new ArrayList<String>();
-        List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
-        DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
-        for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
-            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
-            desiredRateExpressions.and(collectorExp);
-            collectors.add(collectorExp.getFunction());
-            names.add(expression.getName());
-        }
-        SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
-        return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
-                (Function<VMultiDouble>) aggregator, "syncArray");
-    }
-
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     * @deprecated use {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
-     */
-    @Deprecated
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
-        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance), expressions);
-    }
-
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples in the
-     * reconstructed array
-     * @param cacheDepth maximum time difference between samples in the caches
-     * used to reconstruct the array
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     * @deprecated {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
-     */
-    @Deprecated
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, org.epics.pvmanager.util.TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
-        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance),
-                org.epics.pvmanager.util.TimeDuration.asTimeDuration(cacheDepth), expressions);
-    }
+//    /**
+//     * A synchronized array from the given expression.
+//     *
+//     * @param tolerance maximum time difference between samples
+//     * @param expressions the expressions from which to reconstruct the array
+//     * @return an expression for the array
+//     */
+//    public static DesiredRateExpression<VMultiDouble>
+//            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
+//        return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
+//    }
+//
+//    /**
+//     * A synchronized array from the given expression.
+//     *
+//     * @param tolerance maximum time difference between samples in the
+//     * reconstructed array
+//     * @param cacheDepth maximum time difference between samples in the caches
+//     * used to reconstruct the array
+//     * @param expressions the expressions from which to reconstruct the array
+//     * @return an expression for the array
+//     */
+//    public static DesiredRateExpression<VMultiDouble>
+//            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
+//        if (cacheDepth.equals(TimeDuration.ofMillis(0)) && cacheDepth.getSec() > 0)
+//            throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
+//        List<String> names = new ArrayList<String>();
+//        List<Function<List<VDouble>>> collectors = new ArrayList<Function<List<VDouble>>>();
+//        DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
+//        for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
+//            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
+//            desiredRateExpressions.and(collectorExp);
+//            collectors.add(collectorExp.getFunction());
+//            names.add(expression.getName());
+//        }
+//        SynchronizedVDoubleAggregator aggregator =
+//                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
+//        return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
+//                (Function<VMultiDouble>) aggregator, "syncArray");
+//    }
+////
+////    /**
+////     * A synchronized array from the given expression.
+////     *
+////     * @param tolerance maximum time difference between samples
+////     * @param expressions the expressions from which to reconstruct the array
+////     * @return an expression for the array
+////     * @deprecated use {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
+////     */
+////    @Deprecated
+////    public static DesiredRateExpression<VMultiDouble>
+////            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
+////        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance), expressions);
+////    }
+//
+//    /**
+//     * A synchronized array from the given expression.
+//     *
+//     * @param tolerance maximum time difference between samples in the
+//     * reconstructed array
+//     * @param cacheDepth maximum time difference between samples in the caches
+//     * used to reconstruct the array
+//     * @param expressions the expressions from which to reconstruct the array
+//     * @return an expression for the array
+//     * @deprecated {@link #synchronizedArrayOf(org.epics.util.time.TimeDuration, org.epics.util.time.TimeDuration, org.epics.pvmanager.expression.SourceRateExpressionList) }
+//     */
+//    @Deprecated
+//    public static DesiredRateExpression<VMultiDouble>
+//            synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration tolerance, org.epics.pvmanager.util.TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
+//        return synchronizedArrayOf(org.epics.pvmanager.util.TimeDuration.asTimeDuration(tolerance),
+//                org.epics.pvmanager.util.TimeDuration.asTimeDuration(cacheDepth), expressions);
+//    }
 
 
     /**

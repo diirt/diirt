@@ -15,7 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -34,7 +34,7 @@ public class TypeNotificationTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(vDouble("gaussian()")).every(hz(10));
+        final PVReader<VDouble> pv = PVManager.read(vDouble("gaussian()")).maxRate(ofHertz(10));
         final AtomicInteger noTypeCounter = new AtomicInteger();
         final AtomicInteger doubleCounter = new AtomicInteger();
         final AtomicInteger intCounter = new AtomicInteger();

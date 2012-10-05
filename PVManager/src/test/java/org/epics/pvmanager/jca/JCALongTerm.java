@@ -15,7 +15,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -42,7 +42,7 @@ public class JCALongTerm {
             int index = rand.nextInt(names.size());
             PVReader<?> pv = pvs.get(index);
             if (pv == null) {
-                pv = PVManager.read(channel(names.get(index))).every(hz(rand.nextInt(20) + 1));
+                pv = PVManager.read(channel(names.get(index))).maxRate(ofHertz(rand.nextInt(20) + 1));
                 pv.addPVReaderListener(new PVReaderListener() {
 
                     @Override

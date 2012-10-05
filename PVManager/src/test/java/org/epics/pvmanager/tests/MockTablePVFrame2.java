@@ -17,7 +17,7 @@ import javax.swing.table.TableModel;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -156,7 +156,7 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
 
-        pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).every(hz(scanRate));
+        pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
             @Override
             public void pvChanged() {

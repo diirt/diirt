@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -32,14 +32,14 @@ public class PVManagerTest {
     public void lackDataSource() {
         PVManager.setDefaultDataSource(null);
 
-        PVManager.read(channel("test")).every(hz(10));
+        PVManager.read(channel("test")).maxRate(ofHertz(10));
     }
 
     @Test
     public void overrideDataSource() {
         PVManager.setDefaultDataSource(new JCADataSource());
 
-        PVManager.read(channel("test")).from(SimulationDataSource.simulatedData()).every(hz(10));
+        PVManager.read(channel("test")).from(SimulationDataSource.simulatedData()).maxRate(ofHertz(10));
     }
 
     @Test(expected=IllegalStateException.class)
@@ -47,14 +47,14 @@ public class PVManagerTest {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
         PVManager.setDefaultNotificationExecutor(null);
 
-        PVManager.read(channel("test")).every(hz(10));
+        PVManager.read(channel("test")).maxRate(ofHertz(10));
     }
 
     @Test
     public void overrideThreadSwitch() {
         PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
 
-        PVManager.read(channel("test")).notifyOn(swingEDT()).every(hz(10));
+        PVManager.read(channel("test")).notifyOn(swingEDT()).maxRate(ofHertz(10));
     }
 
 }

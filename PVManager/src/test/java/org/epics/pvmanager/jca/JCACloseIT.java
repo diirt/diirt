@@ -14,7 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -30,7 +30,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testSingleOpenAndClose() throws Exception{
         final PVReader<Object> pv =PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -53,7 +53,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -62,7 +62,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -71,7 +71,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -80,7 +80,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -106,7 +106,7 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleDifferentOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -115,7 +115,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -124,7 +124,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -133,7 +133,7 @@ public class JCACloseIT extends JCABase {
             }
         });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
-                .every(hz(10));
+                .maxRate(ofHertz(10));
         pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override

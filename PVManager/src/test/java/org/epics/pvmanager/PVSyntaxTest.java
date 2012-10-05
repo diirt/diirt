@@ -16,7 +16,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -31,7 +31,7 @@ public class PVSyntaxTest {
         PVReader<Map<String, Object>> pvReader =
                 PVManager.read(mapOf(latestValueOf(channel("channel1"))
                                     .and(latestValueOf(channel("channel2")))))
-                .from(dataSource).every(hz(50));
+                .from(dataSource).maxRate(ofHertz(50));
         pvReader.close();
     }
 

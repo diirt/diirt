@@ -10,7 +10,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.TimeDuration;
+import org.epics.util.time.TimeDuration;
 
 /*
  * Copyright 2011 Brookhaven National Laboratory
@@ -25,7 +25,7 @@ public class VerifyCloseChannelPVManager {
     public static void main(String[] args) throws Exception {
         //System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "20000000");
         PVManager.setDefaultDataSource(new SimulationDataSource());
-        final PVReader<Object> reader = PVManager.read(channel("gaussian()")).every(TimeDuration.ms(10));
+        final PVReader<Object> reader = PVManager.read(channel("gaussian()")).maxRate(TimeDuration.ofMillis(10));
         reader.addPVReaderListener(new PVReaderListener() {
 
             @Override

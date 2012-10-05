@@ -13,7 +13,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.util.time.TimeDuration.*;
 import static org.epics.pvmanager.TimeMatchers.*;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.time.Timestamp;
 import org.junit.BeforeClass;
 

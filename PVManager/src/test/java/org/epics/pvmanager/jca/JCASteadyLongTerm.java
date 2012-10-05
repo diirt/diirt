@@ -17,7 +17,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -29,7 +29,7 @@ public class JCASteadyLongTerm {
         PVManager.setDefaultDataSource(jca);
         final AtomicInteger count = new AtomicInteger();
         
-        PVReader<?> pv = PVManager.read(channel("counter1")).every(hz(50));
+        PVReader<?> pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
@@ -38,7 +38,7 @@ public class JCASteadyLongTerm {
             }
         });
         
-        pv = PVManager.read(channel("counter1")).every(hz(50));
+        pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override

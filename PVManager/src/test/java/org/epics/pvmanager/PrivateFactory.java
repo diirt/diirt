@@ -11,7 +11,7 @@ import org.epics.util.time.TimeDuration;
  * @author carcassi
  */
 public class PrivateFactory {
-    public static <T> Collector<T> newTimeCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
-        return new TimedCacheCollector<T>(function, cachedPeriod);
-    }
+//    public static <T> Collector<T> newTimeCacheCollector(Function<T> function, TimeDuration cachedPeriod) {
+//        return new TimedCacheCollector<T>(function, cachedPeriod);
+//    }
 }

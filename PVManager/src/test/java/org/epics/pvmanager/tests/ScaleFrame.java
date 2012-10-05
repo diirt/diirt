@@ -24,7 +24,7 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ScaleFrame extends javax.swing.JFrame {
     private void addPV(final String name) {
         final JTextField field = new JTextField();
         getContentPane().add(field);
-        final PVReader<Object> pv = PVManager.read(channel(name)).every(hz(50));
+        final PVReader<Object> pv = PVManager.read(channel(name)).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override

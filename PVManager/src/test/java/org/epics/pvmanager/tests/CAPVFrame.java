@@ -15,7 +15,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -137,7 +137,7 @@ public class CAPVFrame extends javax.swing.JFrame {
             pv.close();
 
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).every(hz(scanRate));
+        pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override

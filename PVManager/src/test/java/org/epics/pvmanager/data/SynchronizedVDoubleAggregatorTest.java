@@ -4,15 +4,11 @@
  */
 package org.epics.pvmanager.data;
 
-import static org.epics.util.time.TimeDuration.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.util.TimeDuration;
-
-import org.epics.pvmanager.util.TimeStamp;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.Timestamp;
 import org.junit.BeforeClass;

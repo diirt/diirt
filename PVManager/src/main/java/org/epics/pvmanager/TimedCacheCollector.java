@@ -9,16 +9,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import org.epics.pvmanager.util.TimeStamp;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
+import org.epics.util.time.Timestamp;
 
 /**
  *
  * @author carcassi
  */
-@Deprecated
-class TimedCacheCollector<T> extends Collector<T> {
+public abstract class TimedCacheCollector<T> extends Collector<T> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final Function<T> function;
@@ -43,6 +42,8 @@ class TimedCacheCollector<T> extends Collector<T> {
             }
         }
     }
+    
+    protected abstract Timestamp timestampOf(T value);
 
     /**
      * Returns all values since last check and removes values from the queue.
@@ -55,8 +56,8 @@ class TimedCacheCollector<T> extends Collector<T> {
                 return Collections.emptyList();
 
             // period allowed time = latest - msCache / 1000
-            TimeInterval periodAllowed = cachedPeriod.before(TimeStamp.asTimestamp(TimeSupport.timestampOf(buffer.getLast())));
-            while (!buffer.isEmpty() && !periodAllowed.contains(TimeStamp.asTimestamp(TimeSupport.timestampOf(buffer.getFirst())))) {
+            TimeInterval periodAllowed = cachedPeriod.before(timestampOf(buffer.getLast()));
+            while (!buffer.isEmpty() && !periodAllowed.contains(timestampOf(buffer.getFirst()))) {
                 // Discard value
                 buffer.removeFirst();
             }
