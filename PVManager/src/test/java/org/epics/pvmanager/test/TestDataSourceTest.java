@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.test;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.PVWriterListener;
@@ -29,6 +30,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.MockPVWriteListener;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
 
@@ -73,7 +75,6 @@ public class TestDataSourceTest {
     }
     
     private static DataSource dataSource;
-    @Mock PVWriterListener writeListener;
     @Mock PVReaderListener readListener;
     
     @Test
@@ -100,62 +101,71 @@ public class TestDataSourceTest {
     @Test
     public void channelDoesNotExist2() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
-        pvWriter.addPVWriterListener(writeListener);
+        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
         
         Thread.sleep(15);
         
         WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
-        verify(writeListener).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(1));
         pvWriter.close();
     }
     
     @Test
     public void delayedWrite() throws Exception {
         PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).from(dataSource).async();
-        pvWriter.addPVWriterListener(writeListener);
+        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
         pvWriter.write("test");
         
         Thread.sleep(15);
         
         WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        verify(writeListener, never()).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(0));
         
         Thread.sleep(1100);
         
         ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        verify(writeListener).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(1));
         
         pvWriter.close();
         Thread.sleep(30);
         waitForChannelToClose(dataSource, "delayedWrite");
     }
     
+    private static <T> T waitFor(Callable<T> task, TimeDuration timeout) 
+    throws Exception {
+        TimeInterval runInterval = timeout.after(Timestamp.now());
+        while (runInterval.contains(Timestamp.now())) {
+            T value = task.call();
+            if (value != null)
+                return value;
+        }
+        return null;
+    }
+    
     @Test
     public void delayedWriteWithTimeout() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
-        pvWriter.addPVWriterListener(writeListener);
+        final PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
+        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
         pvWriter.write("test");
         
-        Thread.sleep(15);
+        Callable<TimeoutException> getWriteException = new Callable<TimeoutException>() {
+
+            @Override
+            public TimeoutException call() throws Exception {
+                return (TimeoutException) pvWriter.lastWriteException();
+            }
+        };
         
-        TimeoutException ex = (TimeoutException) pvWriter.lastWriteException();
-        assertThat(ex, nullValue());
-        verify(writeListener, never()).pvWritten();
-        
-        Thread.sleep(500);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        TimeoutException ex = waitFor(getWriteException, TimeDuration.ofMillis(600)); 
         assertThat(ex, not(nullValue()));
-        verify(writeListener).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(1));
         
-        Thread.sleep(600);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
         assertThat(ex, nullValue());
-        verify(writeListener, times(2)).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(2));
         
         pvWriter.close();
         Thread.sleep(30);
@@ -164,48 +174,40 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout2() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
-        pvWriter.addPVWriterListener(writeListener);
+        final PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
+        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
         pvWriter.write("test");
         
-        Thread.sleep(15);
+        Callable<TimeoutException> getWriteException = new Callable<TimeoutException>() {
+
+            @Override
+            public TimeoutException call() throws Exception {
+                return (TimeoutException) pvWriter.lastWriteException();
+            }
+        };
         
-        TimeoutException ex = (TimeoutException) pvWriter.lastWriteException();
-        assertThat(ex, nullValue());
-        verify(writeListener, never()).pvWritten();
-        
-        Thread.sleep(500);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        TimeoutException ex = waitFor(getWriteException, TimeDuration.ofMillis(600)); 
         assertThat(ex, not(nullValue()));
-        verify(writeListener).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(1));
         
-        Thread.sleep(500);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
         assertThat(ex, nullValue());
-        verify(writeListener, times(2)).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(2));
         
         // Write again
         pvWriter.write("test2");
         
-        Thread.sleep(15);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        ex = waitFor(getWriteException, TimeDuration.ofMillis(400)); 
         assertThat(ex, nullValue());
-        verify(writeListener, times(2)).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(2));
         
-        Thread.sleep(500);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        ex = waitFor(getWriteException, TimeDuration.ofMillis(200)); 
         assertThat(ex, not(nullValue()));
-        verify(writeListener, times(3)).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(3));
         
-        Thread.sleep(500);
-        
-        ex = (TimeoutException) pvWriter.lastWriteException();
+        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
         assertThat(ex, nullValue());
-        verify(writeListener, times(4)).pvWritten();
+        assertThat(writeListener.getCounter(), equalTo(4));
         
         pvWriter.close();
         Thread.sleep(30);
@@ -217,7 +219,7 @@ public class TestDataSourceTest {
         PVReader<Object> pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500)).from(dataSource).maxRate(ofMillis(50));
         pvReader.addPVReaderListener(readListener);
         
-        Thread.sleep(15);
+        Thread.sleep(50);
         
         TimeoutException ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
