@@ -226,8 +226,8 @@ public class CollectionNumbers {
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
      * 
-     * @param coll
-     * @return 
+     * @param coll the collection
+     * @return the array
      */
     public static float[] floatArrayWrappedOrCopy(CollectionNumber coll) {
         float[] array = wrappedFloatArray(coll);
@@ -235,5 +235,21 @@ public class CollectionNumbers {
             return array;
         }
         return floatArrayCopyOf(coll);
+    }
+    
+    /**
+     * Returns either the wrapped array (if exists and matches the type)
+     * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
+     * OF THE COLLECTION.
+     * 
+     * @param coll the collection
+     * @return the array
+     */
+    public static double[] doubleArrayWrappedOrCopy(CollectionNumber coll) {
+        double[] array = wrappedDoubleArray(coll);
+        if (array != null) {
+            return array;
+        }
+        return doubleArrayCopyOf(coll);
     }
 }

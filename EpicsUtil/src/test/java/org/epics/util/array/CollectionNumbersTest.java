@@ -18,13 +18,6 @@ public class CollectionNumbersTest {
     }
     
     @Test
-    public void toDoubleArray1() {
-        double[] data = new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        ArrayDouble coll = new ArrayDouble(data);
-        assertThat(CollectionNumbers.doubleArrayCopyOf(coll), equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
-    }
-    
-    @Test
     public void wrappedFloatArray1() {
         float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         ListNumber coll = new ArrayFloat(array);
@@ -73,5 +66,56 @@ public class CollectionNumbersTest {
         ListNumber coll = new ArrayDouble(array);
         float[] array2 = CollectionNumbers.floatArrayWrappedOrCopy(coll);
         assertThat(array2, equalTo(new float[] {0,1,2,3,4,5,6,7,8,9}));
+    }
+    
+    @Test
+    public void wrappedDoubleArray1() {
+        double[] array = new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayDouble(array);
+        double[] array2 = CollectionNumbers.wrappedDoubleArray(coll);
+        assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void wrappedDoubleArray2() {
+        float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayFloat(array);
+        double[] array2 = CollectionNumbers.wrappedDoubleArray(coll);
+        assertThat(array2, nullValue());
+    }
+    
+    @Test
+    public void doubleArrayCopyOf1(){
+        double[] array = new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayDouble(array);
+        double[] array2 = CollectionNumbers.doubleArrayCopyOf(coll);
+        assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, not(sameInstance(array)));
+    }
+    
+    @Test
+    public void doubleArrayCopyOf2(){
+        float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayFloat(array);
+        double[] array2 = CollectionNumbers.doubleArrayCopyOf(coll);
+        assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
+    }
+    
+    @Test
+    public void doubleArrayWrappedOrCopy1(){
+        double[] array = new double[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayDouble(array);
+        double[] array2 = CollectionNumbers.doubleArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void doubleArrayWrappedOrCopy2(){
+        float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayFloat(array);
+        double[] array2 = CollectionNumbers.doubleArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
     }
 }
