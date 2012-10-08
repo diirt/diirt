@@ -118,4 +118,55 @@ public class CollectionNumbersTest {
         double[] array2 = CollectionNumbers.doubleArrayWrappedOrCopy(coll);
         assertThat(array2, equalTo(new double[] {0,1,2,3,4,5,6,7,8,9}));
     }
+    
+    @Test
+    public void wrappedByteArray1() {
+        byte[] array = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayByte(array);
+        byte[] array2 = CollectionNumbers.wrappedByteArray(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void wrappedByteArray2() {
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        byte[] array2 = CollectionNumbers.wrappedByteArray(coll);
+        assertThat(array2, nullValue());
+    }
+    
+    @Test
+    public void byteArrayCopyOf1(){
+        byte[] array = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayByte(array);
+        byte[] array2 = CollectionNumbers.byteArrayCopyOf(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, not(sameInstance(array)));
+    }
+    
+    @Test
+    public void byteArrayCopyOf2(){
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        byte[] array2 = CollectionNumbers.byteArrayCopyOf(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+    }
+    
+    @Test
+    public void byteArrayWrappedOrCopy1(){
+        byte[] array = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayByte(array);
+        byte[] array2 = CollectionNumbers.byteArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void byteArrayWrappedOrCopy2(){
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        byte[] array2 = CollectionNumbers.byteArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+    }
 }
