@@ -162,6 +162,7 @@ public class TimeDurationTest {
         assertThat(duration, equalTo(TimeDuration.ofSeconds(0.001)));
         assertThat(duration, equalTo(TimeDuration.ofMinutes(0.0000166666666667)));
         assertThat(duration, equalTo(TimeDuration.ofHours(0.0000002777777778)));
+        assertThat(duration, not(equalTo(TimeDuration.ofMillis(0))));
     }
     
     @Test
@@ -171,6 +172,7 @@ public class TimeDurationTest {
         assertThat(duration, equalTo(TimeDuration.ofSeconds(1)));
         assertThat(duration, equalTo(TimeDuration.ofMinutes(0.0166666666667)));
         assertThat(duration, equalTo(TimeDuration.ofHours(0.0002777777778)));
+        assertThat(duration, not(equalTo(TimeDuration.ofMillis(0))));
     }
     
     @Test
@@ -187,7 +189,7 @@ public class TimeDurationTest {
         TimeDuration duration = TimeDuration.ofNanos(3600000000000L);
         assertThat(duration, equalTo(TimeDuration.ofMillis(3600000)));
         assertThat(duration, equalTo(TimeDuration.ofSeconds(3600)));
-        assertThat(duration, equalTo(TimeDuration.ofMinutes(6)));
+        assertThat(duration, equalTo(TimeDuration.ofMinutes(60)));
         assertThat(duration, equalTo(TimeDuration.ofHours(1)));
     }
     
