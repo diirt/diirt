@@ -212,6 +212,13 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 		return alarmStatus;
 	}
 
+    @Override
+    public String getAlarmName() {
+        return alarmStatus.toString();
+    }
+        
+        
+
 	@Override
 	public Timestamp getTimestamp() {
 		return timeStamp;

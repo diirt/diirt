@@ -40,6 +40,13 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
     }
 
     @Override
+    public String getAlarmName() {
+        if (disconnected)
+            return "Disconnected";
+        return dbrValue.getStatus().getName();
+    }
+
+    @Override
     public Timestamp getTimestamp() {
         return DataUtils.timestampOf(dbrValue.getTimeStamp());
     }

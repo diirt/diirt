@@ -26,7 +26,7 @@ public interface Alarm {
      *
      * @return the alarm status
      */
-    //String getAlarmName();
+    String getAlarmName();
     
     /**
      * Returns the alarm status of the highest currently active alarm.

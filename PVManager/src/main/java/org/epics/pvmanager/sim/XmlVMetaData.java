@@ -39,6 +39,11 @@ class XmlVMetaData extends ReplayValue implements Time, Alarm {
     }
 
     @Override
+    public String getAlarmName() {
+        return alarmStatus.name();
+    }
+
+    @Override
     public boolean isTimeValid() {
         return true;
     }

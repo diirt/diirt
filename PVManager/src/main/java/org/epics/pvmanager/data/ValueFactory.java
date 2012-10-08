@@ -91,6 +91,33 @@ public class ValueFactory {
             public AlarmStatus getAlarmStatus() {
                 return alarmStatus;
             }
+
+            @Override
+            public String getAlarmName() {
+                return alarmStatus.name();
+            }
+            
+        };
+    }
+    
+    public static Alarm newAlarm(final AlarmSeverity alarmSeverity, final String alarmName) {
+        return new Alarm() {
+
+            @Override
+            public AlarmSeverity getAlarmSeverity() {
+                return alarmSeverity;
+            }
+
+            @Override
+            public AlarmStatus getAlarmStatus() {
+                return AlarmStatus.UNDEFINED;
+            }
+
+            @Override
+            public String getAlarmName() {
+                return alarmName;
+            }
+            
         };
     }
     
