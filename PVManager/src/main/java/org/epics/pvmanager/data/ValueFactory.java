@@ -296,20 +296,6 @@ public class ValueFactory {
      * @param value new numeric value
      * @param display metadata
      * @return new value
-     * @deprecated
-     */
-    @Deprecated
-    public static VDouble newVDouble(double value, Display display) {
-        return newVDouble(value, timeNow(), display);
-    }
-    
-    /**
-     * Creates new immutable VDouble by using metadata from the old value,
-     * now as timestamp and computing alarm from the metadata range.
-     * 
-     * @param value new numeric value
-     * @param display metadata
-     * @return new value
      */
     public static VDouble newVDouble(Double value, Display display) {
         return newVDouble(value, timeNow(), display);
