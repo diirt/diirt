@@ -268,4 +268,20 @@ public class CollectionNumbers {
         }
         return byteArrayCopyOf(coll);
     }
+    
+    /**
+     * Returns either the wrapped array (if exists and matches the type)
+     * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
+     * OF THE COLLECTION.
+     * 
+     * @param coll the collection
+     * @return the array
+     */
+    public static short[] shortArrayWrappedOrCopy(CollectionNumber coll) {
+        short[] array = wrappedShortArray(coll);
+        if (array != null) {
+            return array;
+        }
+        return shortArrayCopyOf(coll);
+    }
 }
