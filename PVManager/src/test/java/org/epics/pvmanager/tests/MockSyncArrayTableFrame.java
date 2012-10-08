@@ -142,8 +142,8 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         // the time between sample multiplied by 5 (so you get at least 5 samples).
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
-//        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofMillis((int) (bufferDepth * 1000.0)),
-//                vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
+        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofSeconds(bufferDepth),
+                vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
             @Override
             public void pvChanged() {
