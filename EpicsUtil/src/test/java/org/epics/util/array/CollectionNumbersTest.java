@@ -271,4 +271,55 @@ public class CollectionNumbersTest {
         int[] array2 = CollectionNumbers.intArrayWrappedOrCopy(coll);
         assertThat(array2, equalTo(new int[] {0,1,2,3,4,5,6,7,8,9}));
     }
+    
+    @Test
+    public void wrappedLongArray1() {
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        long[] array2 = CollectionNumbers.wrappedLongArray(coll);
+        assertThat(array2, equalTo(new long[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void wrappedLongArray2() {
+        int[] array = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayInt(array);
+        long[] array2 = CollectionNumbers.wrappedLongArray(coll);
+        assertThat(array2, nullValue());
+    }
+    
+    @Test
+    public void longArrayCopyOf1(){
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        long[] array2 = CollectionNumbers.longArrayCopyOf(coll);
+        assertThat(array2, equalTo(new long[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, not(sameInstance(array)));
+    }
+    
+    @Test
+    public void longArrayCopyOf2(){
+        int[] array = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayInt(array);
+        long[] array2 = CollectionNumbers.longArrayCopyOf(coll);
+        assertThat(array2, equalTo(new long[] {0,1,2,3,4,5,6,7,8,9}));
+    }
+    
+    @Test
+    public void longArrayWrappedOrCopy1(){
+        long[] array = new long[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayLong(array);
+        long[] array2 = CollectionNumbers.longArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new long[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void longArrayWrappedOrCopy2(){
+        int[] array = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayInt(array);
+        long[] array2 = CollectionNumbers.longArrayWrappedOrCopy(coll);
+        assertThat(array2, equalTo(new long[] {0,1,2,3,4,5,6,7,8,9}));
+    }
 }

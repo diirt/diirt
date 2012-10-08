@@ -300,4 +300,20 @@ public class CollectionNumbers {
         }
         return intArrayCopyOf(coll);
     }
+    
+    /**
+     * Returns either the wrapped array (if exists and matches the type)
+     * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
+     * OF THE COLLECTION.
+     * 
+     * @param coll the collection
+     * @return the array
+     */
+    public static long[] longArrayWrappedOrCopy(CollectionNumber coll) {
+        long[] array = wrappedLongArray(coll);
+        if (array != null) {
+            return array;
+        }
+        return longArrayCopyOf(coll);
+    }
 }
