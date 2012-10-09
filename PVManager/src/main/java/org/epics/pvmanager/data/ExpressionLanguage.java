@@ -6,6 +6,7 @@ package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.ChannelExpressionList;
@@ -58,7 +59,7 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return a list of expressions representing the channels
      */
-    public static ChannelExpressionList<VType, Object> vTypes(List<String> name) {
+    public static ChannelExpressionList<VType, Object> vTypes(Collection<String> name) {
         return channels(name, VType.class, Object.class);
     }
 
@@ -78,7 +79,7 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return a list of expressions representing the channels
      */
-    public static ChannelExpressionList<VNumber, Number> vNumbers(List<String> name) {
+    public static ChannelExpressionList<VNumber, Number> vNumbers(Collection<String> name) {
         return channels(name, VNumber.class, Number.class);
     }
 
@@ -216,7 +217,7 @@ public class ExpressionLanguage {
      * @param names the channel names; can't be null
      * @return a list of expressions representing the channels
      */
-    public static ChannelExpressionList<VDouble, Double> vDoubles(List<String> names) {
+    public static ChannelExpressionList<VDouble, Double> vDoubles(Collection<String> names) {
         return channels(names, VDouble.class, Double.class);
     }
     
