@@ -259,7 +259,7 @@ public class JCAVTypeAdapterSetTest {
         VDouble converted = (VDouble) cache.getValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -288,7 +288,7 @@ public class JCAVTypeAdapterSetTest {
         VDouble converted = (VDouble) cache.getValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -344,7 +344,7 @@ public class JCAVTypeAdapterSetTest {
         VDouble converted = (VDouble) cache.getValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -373,7 +373,7 @@ public class JCAVTypeAdapterSetTest {
         VDouble converted = (VDouble) cache.getValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -429,7 +429,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -458,7 +458,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -514,7 +514,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -543,7 +543,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -599,7 +599,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -628,7 +628,7 @@ public class JCAVTypeAdapterSetTest {
         VInt converted = (VInt) cache.getValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -683,7 +683,7 @@ public class JCAVTypeAdapterSetTest {
         VString converted = (VString) cache.getValue();
         assertThat(converted.getValue(), equalTo("32"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -703,7 +703,7 @@ public class JCAVTypeAdapterSetTest {
         VString converted = (VString) cache.getValue();
         assertThat(converted.getValue(), equalTo("32"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -755,7 +755,7 @@ public class JCAVTypeAdapterSetTest {
         VString converted = (VString) cache.getValue();
         assertThat(converted.getValue(), equalTo("Testing"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -777,7 +777,7 @@ public class JCAVTypeAdapterSetTest {
         VString converted = (VString) cache.getValue();
         assertThat(converted.getValue(), equalTo("Testing"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -825,7 +825,7 @@ public class JCAVTypeAdapterSetTest {
         VEnum converted = (VEnum) cache.getValue();
         assertThat(converted.getValue(), equalTo("Two"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -846,7 +846,7 @@ public class JCAVTypeAdapterSetTest {
         VEnum converted = (VEnum) cache.getValue();
         assertThat(converted.getValue(), equalTo("Two"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -894,7 +894,7 @@ public class JCAVTypeAdapterSetTest {
         VFloatArray converted = (VFloatArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -923,7 +923,7 @@ public class JCAVTypeAdapterSetTest {
         VFloatArray converted = (VFloatArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -979,7 +979,7 @@ public class JCAVTypeAdapterSetTest {
         VDoubleArray converted = (VDoubleArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1008,7 +1008,7 @@ public class JCAVTypeAdapterSetTest {
         VDoubleArray converted = (VDoubleArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1065,7 +1065,7 @@ public class JCAVTypeAdapterSetTest {
         VByteArray converted = (VByteArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1094,7 +1094,7 @@ public class JCAVTypeAdapterSetTest {
         VByteArray converted = (VByteArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1150,7 +1150,7 @@ public class JCAVTypeAdapterSetTest {
         VShortArray converted = (VShortArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1179,7 +1179,7 @@ public class JCAVTypeAdapterSetTest {
         VShortArray converted = (VShortArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1235,7 +1235,7 @@ public class JCAVTypeAdapterSetTest {
         VIntArray converted = (VIntArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1264,7 +1264,7 @@ public class JCAVTypeAdapterSetTest {
         VIntArray converted = (VIntArray) cache.getValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
@@ -1320,7 +1320,7 @@ public class JCAVTypeAdapterSetTest {
         VStringArray converted = (VStringArray) cache.getValue();
         assertThat(converted.getArray(), equalTo(new String[]{"Zero", "One", "Two"}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
@@ -1341,7 +1341,7 @@ public class JCAVTypeAdapterSetTest {
         VStringArray converted = (VStringArray) cache.getValue();
         assertThat(converted.getArray(), equalTo(new String[]{"Only"}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
-        assertThat(converted.getAlarmStatus(), equalTo(AlarmStatus.CLIENT));
+        assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
