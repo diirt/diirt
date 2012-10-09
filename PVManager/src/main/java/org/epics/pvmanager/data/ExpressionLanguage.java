@@ -111,6 +111,24 @@ public class ExpressionLanguage {
     public static ChannelExpression<VNumberArray, ListNumber> vNumberArray(String name) {
         return channel(name, VNumberArray.class, ListNumber.class);
     }
+    
+    /**
+     * Transforms a list of numeric scalar into an array.
+     * 
+     * @param expressions a list of numeric expressions
+     * @return a new numeric array expression
+     */
+    public static DesiredRateExpression<VNumberArray>
+            vNumberArrayOf(DesiredRateExpressionList<? extends VNumber> expressions) {
+        // TODO - there should be a common function to extract the list of functions
+        List<Function<? extends VNumber>> functions = new ArrayList<Function<? extends VNumber>>();
+        for (DesiredRateExpression<? extends VNumber> expression : expressions.getDesiredRateExpressions()) {
+            functions.add(expression.getFunction());
+        }
+        VNumbersToVNumberArrayConverter converter =
+                new VNumbersToVNumberArrayConverter(functions);
+        return new DesiredRateExpressionImpl<VNumberArray>(expressions, converter, "numberArrayOf");
+    }
 
     /**
      * A channel with the given name of type VFloatArray.
