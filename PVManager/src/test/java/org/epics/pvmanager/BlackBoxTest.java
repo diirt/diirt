@@ -40,6 +40,31 @@ public class BlackBoxTest {
     }
 
     @Test
+    public void readAndWriteBlackBox2() throws Exception {
+        String channelName = "test";
+        DataSource dataSource = new LocalDataSource();
+        
+        PV<Object, Object> pv1 = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
+        PV<Object, Object> pv2 = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
+        Thread.sleep(50);
+        assertThat(pv1.getValue(), not(nullValue()));
+        assertThat(pv2.getValue(), not(nullValue()));
+        assertThat(pv1.isConnected(), equalTo(true));
+        assertThat(pv2.isConnected(), equalTo(true));
+        assertThat(((VDouble) pv1.getValue()).getValue(), equalTo(0.0));
+        assertThat(((VDouble) pv2.getValue()).getValue(), equalTo(0.0));
+        
+        pv1.write(10);
+        Thread.sleep(50);
+        assertThat(pv1.getValue(), not(nullValue()));
+        assertThat(pv2.getValue(), not(nullValue()));
+        assertThat(((VDouble) pv1.getValue()).getValue(), equalTo(10.0));
+        assertThat(((VDouble) pv2.getValue()).getValue(), equalTo(10.0));
+        pv1.close();
+        pv2.close();
+    }
+
+    @Test
     public void readAndWriteMap() throws Exception {
         String channel1 = "channel1";
         String channel2 = "channel2";
