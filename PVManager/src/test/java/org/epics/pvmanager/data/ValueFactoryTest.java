@@ -20,16 +20,16 @@ public class ValueFactoryTest {
 
     @Test
     public void newAlarm1() {
-        Alarm alarm = newAlarm(AlarmSeverity.MAJOR, AlarmStatus.DEVICE);
+        Alarm alarm = newAlarm(AlarmSeverity.MAJOR, "DEVICE");
         assertThat(alarm.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(alarm.getAlarmStatus(), equalTo(AlarmStatus.DEVICE));
+        assertThat(alarm.getAlarmName(), equalTo("DEVICE"));
     }
 
     @Test
     public void alarmNone1() {
         Alarm alarm = alarmNone();
         assertThat(alarm.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(alarm.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(alarm.getAlarmName(), equalTo("NONE"));
     }
 
 }
