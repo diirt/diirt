@@ -44,12 +44,11 @@ public class JCADataSource extends DataSource {
     private final JCATypeSupport typeSupport;
 
     /**
-     * Creates a new data source using pure Java implementation
-     * @deprecated use {@link JCADataSourceBuilder}
+     * Creates a new data source using pure Java implementation and all the
+     * defaults described in {@link JCADataSourceBuilder}.
      */
-    @Deprecated
     public JCADataSource() {
-        this(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM);
+        this(new JCADataSourceBuilder());
     }
     
     /**
@@ -62,7 +61,7 @@ public class JCADataSource extends DataSource {
      */
     @Deprecated
     public JCADataSource(Context jcaContext, int monitorMask) {
-        this(jcaContext, monitorMask, new JCATypeSupport(new JCAVTypeAdapterSet()));
+        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask));
     }
 
     /**
@@ -74,11 +73,7 @@ public class JCADataSource extends DataSource {
      */
     @Deprecated
     public JCADataSource(String className, int monitorMask) {
-        this(createContext(className), monitorMask);
-    }
-    
-    private static Context createContext(String className) {
-        return JCADataSourceBuilder.createContext(className);
+        this(new JCADataSourceBuilder().jcaContextClass(className).monitorMask(monitorMask));
     }
     
     /**
@@ -93,7 +88,8 @@ public class JCADataSource extends DataSource {
      */
     @Deprecated
     public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport) {
-        this(jcaContext, monitorMask, typeSupport, false, isVarArraySupported(jcaContext));
+        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask)
+                .typeSupport(typeSupport));
     }
     
     /**
@@ -110,12 +106,39 @@ public class JCADataSource extends DataSource {
      */
     @Deprecated
     public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport, boolean dbePropertySupported, boolean varArraySupported) {
+        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask)
+                .typeSupport(typeSupport).dbePropertySupported(dbePropertySupported)
+                .varArraySupported(varArraySupported));
+    }
+    
+    JCADataSource(JCADataSourceBuilder builder) {
         super(true);
-        this.ctxt = jcaContext;
-        this.monitorMask = monitorMask;
-        this.typeSupport = typeSupport;
-        this.dbePropertySupported = dbePropertySupported;
-        this.varArraySupported = varArraySupported;
+        // Some properties are not pre-initialized to the default,
+        // so if they were not set, we should initialize them.
+        
+        // Default JCA context is pure Java
+        if (builder.jcaContext == null) {
+            ctxt = JCADataSourceBuilder.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
+        } else {
+            ctxt = builder.jcaContext;
+        }
+        
+        // Default type support are the VTypes
+        if (builder.typeSupport == null) {
+            typeSupport = new JCATypeSupport(new JCAVTypeAdapterSet());
+        } else {
+            typeSupport = builder.typeSupport;
+        }
+
+        // Default support for var array needs to be detected
+        if (builder.varArraySupported == null) {
+            varArraySupported = JCADataSourceBuilder.isVarArraySupported(ctxt);
+        } else {
+            varArraySupported = builder.varArraySupported;
+        }
+        
+        monitorMask = builder.monitorMask;
+        dbePropertySupported = builder.dbePropertySupported;
     }
 
     @Override

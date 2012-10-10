@@ -27,11 +27,11 @@ import java.util.logging.Logger;
 public class JCADataSourceBuilder {
     private static final Logger log = Logger.getLogger(JCADataSource.class.getName());
     
-    private Context jcaContext;
-    private int monitorMask = Monitor.VALUE | Monitor.ALARM;
-    private JCATypeSupport typeSupport;
-    private boolean dbePropertySupported  = false;
-    private Boolean varArraySupported;
+    Context jcaContext;
+    int monitorMask = Monitor.VALUE | Monitor.ALARM;
+    JCATypeSupport typeSupport;
+    boolean dbePropertySupported  = false;
+    Boolean varArraySupported;
 
     /**
      * The class name for the implementation of JCA.
@@ -130,25 +130,7 @@ public class JCADataSourceBuilder {
      * @return a new data source
      */
     public JCADataSource build() {
-        // Some properties are not pre-initialized to the default,
-        // so if they were not set, we should initialize them.
-        
-        // Default JCA context is pure Java
-        if (jcaContext == null) {
-            jcaContext = createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        }
-        
-        // Default type support are the VTypes
-        if (typeSupport == null) {
-            typeSupport = new JCATypeSupport(new JCAVTypeAdapterSet());
-        }
-
-        // Default support for var array needs to be detected
-        if (varArraySupported == null) {
-            varArraySupported = JCADataSource.isVarArraySupported(jcaContext);
-        }
-        
-        return new JCADataSource(jcaContext, monitorMask, typeSupport, dbePropertySupported, varArraySupported);
+        return new JCADataSource(this);
     }
     
     /**
