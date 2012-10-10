@@ -111,7 +111,7 @@ public class JCADataSource extends DataSource {
                 .varArraySupported(varArraySupported));
     }
     
-    JCADataSource(JCADataSourceBuilder builder) {
+    protected JCADataSource(JCADataSourceBuilder builder) {
         super(true);
         // Some properties are not pre-initialized to the default,
         // so if they were not set, we should initialize them.
