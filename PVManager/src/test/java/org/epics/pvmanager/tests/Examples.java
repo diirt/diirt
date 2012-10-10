@@ -32,6 +32,7 @@ import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import org.epics.pvmanager.data.VType;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -55,10 +56,13 @@ public class Examples {
         // monitoring both value and alarm changes
         PVManager.setDefaultDataSource(new JCADataSource());
 
-        // For utltimate control, you can create the JCA context yourself
-        // and pass it to the data source
+        // For ultimate control, you can modify all the parameters, 
+        // and even create the JCA context yourself
         Context jcaContext = null;
-        PVManager.setDefaultDataSource(new JCADataSource(jcaContext, Monitor.VALUE | Monitor.ALARM));
+        PVManager.setDefaultDataSource(new JCADataSourceBuilder()
+                .monitorMask(Monitor.VALUE | Monitor.ALARM)
+                .jcaContext(jcaContext)
+                .build());
     }
 
     public void c4() {
