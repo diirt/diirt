@@ -42,6 +42,7 @@ public class JCADataSource extends DataSource {
     private final boolean varArraySupported;
     private final boolean dbePropertySupported;
     private final JCATypeSupport typeSupport;
+    private final boolean rtypValueOnly;
 
     /**
      * Creates a new data source using pure Java implementation and all the
@@ -139,6 +140,7 @@ public class JCADataSource extends DataSource {
         
         monitorMask = builder.monitorMask;
         dbePropertySupported = builder.dbePropertySupported;
+        rtypValueOnly = builder.rtypValueOnly;
     }
 
     @Override
