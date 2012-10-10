@@ -11,6 +11,7 @@ package org.epics.pvmanager.jca;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR;
+import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_String;
 import gov.aps.jca.dbr.DBR_TIME_String;
 import gov.aps.jca.dbr.Severity;
@@ -65,5 +66,35 @@ public class JCARTYPTest {
         JCAMessagePayload payload = new JCAMessagePayload(null, event);
         assertThat(payload.getEvent().getDBR(), not(sameInstance((DBR) value)));
         assertThat(payload.getEvent().getDBR(), instanceOf(DBR_TIME_String.class));
+    }
+
+    @Test
+    public void dataTypeRequired1() {
+        JCAChannelHandler handler = new JCAChannelHandler("test", dataSource);
+        when(dataSource.isRtypValueOnly()).thenReturn(Boolean.TRUE);
+        when(channel.getFieldType()).thenReturn(DBR_String.TYPE);
+        when(channel.getName()).thenReturn("test");
+        DBRType type = handler.valueTypeFor(channel);
+        assertThat(type, equalTo(DBR_TIME_String.TYPE));
+    }
+
+    @Test
+    public void dataTypeRequired2() {
+        JCAChannelHandler handler = new JCAChannelHandler("test.RTYP", dataSource);
+        when(dataSource.isRtypValueOnly()).thenReturn(Boolean.TRUE);
+        when(channel.getFieldType()).thenReturn(DBR_String.TYPE);
+        when(channel.getName()).thenReturn("test.RTYPE");
+        DBRType type = handler.valueTypeFor(channel);
+        assertThat(type, equalTo(DBR_String.TYPE));
+    }
+
+    @Test
+    public void dataTypeRequired3() {
+        JCAChannelHandler handler = new JCAChannelHandler("test.RTYP", dataSource);
+        when(dataSource.isRtypValueOnly()).thenReturn(Boolean.FALSE);
+        when(channel.getFieldType()).thenReturn(DBR_String.TYPE);
+        when(channel.getName()).thenReturn("test.RTYPE");
+        DBRType type = handler.valueTypeFor(channel);
+        assertThat(type, equalTo(DBR_TIME_String.TYPE));
     }
 }

@@ -324,11 +324,11 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
         else
             return channel.getElementCount();
     }
+    
+    static Pattern rtypeStringPattern = Pattern.compile(".+\\.RTYP.*");
 
     protected DBRType valueTypeFor(Channel channel) {
         DBRType type = channel.getFieldType();
-        
-        // TODO: .RTYP should not request the time
         
         // For scalar numbers, only use Double or Int
         if (channel.getElementCount() == 1) {
@@ -351,6 +351,10 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
         } else if (type.isENUM()) {
             return DBR_TIME_Enum.TYPE;
         } else if (type.isSTRING()) {
+            if (jcaDataSource.isRtypValueOnly() &&
+                    rtypeStringPattern.matcher(channel.getName()).matches()) {
+                return DBR_String.TYPE;
+            }
             return DBR_TIME_String.TYPE;
         }
         

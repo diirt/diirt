@@ -194,6 +194,15 @@ public class JCADataSource extends DataSource {
     public boolean isVarArraySupported() {
         return varArraySupported;
     }
+
+    /**
+     * True if should only ask value for RTYP fields.
+     * 
+     * @return true if asking for value only
+     */
+    public boolean isRtypValueOnly() {
+        return rtypValueOnly;
+    }
     
     /**
      * Determines whether the context supports variable arrays
