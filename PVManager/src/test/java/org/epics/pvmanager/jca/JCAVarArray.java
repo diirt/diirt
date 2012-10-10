@@ -14,12 +14,12 @@ import gov.aps.jca.Monitor;
 public class JCAVarArray {
     public static void main(String[] args) {
         // Test CAJ
-        JCADataSource jcaDataSource = new JCADataSource();
+        JCADataSource jcaDataSource = new JCADataSourceBuilder().build();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
         
         // Test JCA
-        jcaDataSource = new JCADataSource(JCALibrary.JNI_THREAD_SAFE, Monitor.VALUE | Monitor.ALARM);
+        jcaDataSource = new JCADataSourceBuilder().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).build();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
     }

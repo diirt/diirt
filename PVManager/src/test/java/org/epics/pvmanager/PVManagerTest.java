@@ -37,6 +37,7 @@ public class PVManagerTest {
 
     @Test
     public void overrideDataSource() {
+        // XXX: this should not use the JCA data source
         PVManager.setDefaultDataSource(new JCADataSource());
 
         PVManager.read(channel("test")).from(SimulationDataSource.simulatedData()).maxRate(ofHertz(10));

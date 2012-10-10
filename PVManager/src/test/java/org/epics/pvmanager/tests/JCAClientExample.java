@@ -23,6 +23,7 @@ import org.epics.pvmanager.data.VStringArray;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -41,7 +42,7 @@ public class JCAClientExample {
         System.out.println("Test");
         System.out.println(System.getProperty("java.library.path"));
         
-        PVManager.setDefaultDataSource(new JCADataSource(JCALibrary.JNI_THREAD_SAFE, Monitor.VALUE));
+        PVManager.setDefaultDataSource(new JCADataSourceBuilder().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).build());
 
         testNativeTypeSupport();
         testVDoubleSupport();

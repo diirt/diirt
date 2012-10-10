@@ -26,7 +26,7 @@ public class JCABase {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        jca = new JCADataSource(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM);
+        jca = new JCADataSource();
         PVManager.setDefaultDataSource(jca);
     }
 

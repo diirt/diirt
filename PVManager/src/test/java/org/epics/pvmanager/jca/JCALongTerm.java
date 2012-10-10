@@ -23,7 +23,7 @@ import static org.epics.util.time.TimeDuration.*;
  */
 public class JCALongTerm {
     public static void main(String[] args) throws Exception {
-        JCADataSource jca = new JCADataSource(JCALibrary.CHANNEL_ACCESS_JAVA, Monitor.VALUE | Monitor.ALARM);
+        JCADataSource jca = new JCADataSource();
         PVManager.setDefaultDataSource(jca);
         
         List<String> names = new ArrayList<String>();
