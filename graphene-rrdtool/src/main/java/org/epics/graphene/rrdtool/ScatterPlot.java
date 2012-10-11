@@ -10,6 +10,7 @@ package org.epics.graphene.rrdtool;
 
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.Scatter2DGraphRenderer;
@@ -28,7 +29,7 @@ public class ScatterPlot extends javax.swing.JFrame {
         initComponents();
     }
     
-    SimpleDateFormat format = new SimpleDateFormat();
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * This method is called from within the constructor to initialize the form.
