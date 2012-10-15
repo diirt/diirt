@@ -50,7 +50,7 @@ public class JCAVTypeAdapterSetTest {
     @Test
     public void DBRFloatToVDouble1() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
@@ -58,8 +58,8 @@ public class JCAVTypeAdapterSetTest {
 
     @Test
     public void DBRFloatToVDouble2() {
-        ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        ValueCache<VFloat> cache = new ValueCache<VFloat>(VFloat.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
@@ -68,7 +68,7 @@ public class JCAVTypeAdapterSetTest {
     @Test
     public void DBRFloatToVDouble3() {
         ValueCache<String> cache = new ValueCache<String>(String.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
@@ -77,7 +77,7 @@ public class JCAVTypeAdapterSetTest {
     @Test
     public void DBRFloatToVDouble4() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -87,9 +87,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDouble.class));
-        VDouble converted = (VDouble) cache.getValue();
-        assertThat(converted.getValue(), equalTo(3.25));
+        assertThat(cache.getValue(), instanceOf(VFloat.class));
+        VFloat converted = (VFloat) cache.getValue();
+        assertThat(converted.getValue(), equalTo(3.25F));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -106,7 +106,7 @@ public class JCAVTypeAdapterSetTest {
     @Test
     public void DBRFloatToVDouble5() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVDouble;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -116,9 +116,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDouble.class));
-        VDouble converted = (VDouble) cache.getValue();
-        assertThat(converted.getValue(), equalTo(3.25));
+        assertThat(cache.getValue(), instanceOf(VFloat.class));
+        VFloat converted = (VFloat) cache.getValue();
+        assertThat(converted.getValue(), equalTo(3.25F));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));

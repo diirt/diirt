@@ -29,11 +29,11 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
     }
     
     // DBR_TIME_Float -> VDouble
-    final static JCATypeAdapter DBRFloatToVDouble = new JCATypeAdapter(VDouble.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, false) {
+    final static JCATypeAdapter DBRFloatToVFloat = new JCATypeAdapter(VFloat.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
-            public VDouble createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VDoubleFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload);
+            public VFloat createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
+                return new VFloatFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
 
@@ -179,7 +179,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
     static {
         Set<JCATypeAdapter> newFactories = new HashSet<JCATypeAdapter>();
         // Add all SCALARs
-        newFactories.add(DBRFloatToVDouble);
+        newFactories.add(DBRFloatToVFloat);
         newFactories.add(DBRDoubleToVDouble);
         newFactories.add(DBRByteToVInt);
         newFactories.add(DBRShortToVInt);

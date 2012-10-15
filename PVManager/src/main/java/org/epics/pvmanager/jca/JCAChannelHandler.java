@@ -329,8 +329,6 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         if (channel.getElementCount() == 1) {
             if (type.isBYTE() || type.isSHORT() || type.isINT())
                 return DBR_TIME_Int.TYPE;
-            if (type.isFLOAT() || type.isDOUBLE())
-                return DBR_TIME_Double.TYPE;
         }
         
         if (type.isBYTE()) {
