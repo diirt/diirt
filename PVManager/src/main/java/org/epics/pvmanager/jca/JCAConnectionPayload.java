@@ -44,4 +44,13 @@ public class JCAConnectionPayload {
         return channel;
     }
     
+    /**
+     * True if the channel is not null and the connection state is connected.
+     * 
+     * @return ture if channel exists and is connected
+     */
+    public boolean isChannelConnected() {
+        return channel != null && channel.getConnectionState() == Channel.ConnectionState.CONNECTED;
+    }
+    
 }

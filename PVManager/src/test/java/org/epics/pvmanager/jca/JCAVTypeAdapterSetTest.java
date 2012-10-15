@@ -37,15 +37,14 @@ public class JCAVTypeAdapterSetTest {
     }
     
     public static JCAConnectionPayload mockJCAConnectionPayload(final String name, final DBRType dbrType, final int count, final ConnectionState connState) {
-        JCAConnectionPayload connPayload = mock(JCAConnectionPayload.class);
         Channel channel = mock(Channel.class);
         when(channel.getName()).thenReturn(name);
         when(channel.getFieldType()).thenReturn(dbrType);
         when(channel.getElementCount()).thenReturn(count);
         when(channel.getConnectionState()).thenReturn(connState);
-        when(connPayload.getChannel()).thenReturn(channel);
+        JCADataSource dataSource = mock(JCADataSource.class);
 
-        return connPayload;
+        return new JCAConnectionPayload(dataSource, channel);
     }
 
     @Test
