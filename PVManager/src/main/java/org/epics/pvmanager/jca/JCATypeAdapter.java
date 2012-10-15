@@ -93,7 +93,7 @@ public abstract class JCATypeAdapter implements DataSourceTypeAdapter<JCAConnect
         if (message.getEvent() == null)
             return false;
         
-        Object value = createValue(message.getEvent().getDBR(), message.getMetadata(), !connPayload.isChannelConnected());
+        Object value = createValue(message.getEvent().getDBR(), message.getMetadata(), connPayload);
         cache.setValue(value);
         return true;
     }
@@ -103,9 +103,9 @@ public abstract class JCATypeAdapter implements DataSourceTypeAdapter<JCAConnect
      * 
      * @param value the value taken from the monitor
      * @param metadata the value taken as metadata
-     * @param disconnected true if the value should report the channel is currently disconnected
+     * @param connPayload the connection payload
      * @return the new value
      */
-    public abstract Object createValue(DBR value, DBR metadata, boolean disconnected);
+    public abstract Object createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload);
     
 }

@@ -20,8 +20,8 @@ class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMeta
 
     private final TMetadata metadata;
 
-    VNumberMetadata(TValue dbrValue, TMetadata metadata, boolean disconnected) {
-        super(dbrValue, disconnected);
+    VNumberMetadata(TValue dbrValue, TMetadata metadata, JCAConnectionPayload connPayload) {
+        super(dbrValue, connPayload);
         this.metadata = metadata;
     }
 
