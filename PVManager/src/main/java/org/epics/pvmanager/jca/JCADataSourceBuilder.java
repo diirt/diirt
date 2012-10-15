@@ -33,6 +33,7 @@ public class JCADataSourceBuilder {
     boolean dbePropertySupported  = false;
     Boolean varArraySupported;
     boolean rtypValueOnly = false;
+    boolean honorZeroPrecision = false;
 
     /**
      * The class name for the implementation of JCA.
@@ -138,6 +139,21 @@ public class JCADataSourceBuilder {
      */
     public JCADataSourceBuilder rtypValueOnly(boolean rtypValueOnly) {
         this.rtypValueOnly = rtypValueOnly;
+        return this;
+    }
+    
+    /**
+     * If true, the formatter returned by the VType will show
+     * no decimal digits (assumes it was configured);
+     * if false, it will return all the digit (assumes it wasn't configured).
+     * <p>
+     * Default is true.
+     * 
+     * @param honorZeroPrecision whether the formatter should treat 0 precision as meaningful
+     * @return this
+     */
+    public JCADataSourceBuilder honorZeroPrecision(boolean honorZeroPrecision) {
+        this.honorZeroPrecision = honorZeroPrecision;
         return this;
     }
     

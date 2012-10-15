@@ -43,6 +43,7 @@ public class JCADataSource extends DataSource {
     private final boolean dbePropertySupported;
     private final JCATypeSupport typeSupport;
     private final boolean rtypValueOnly;
+    private final boolean honorZeroPrecision;
 
     /**
      * Creates a new data source using pure Java implementation and all the
@@ -141,6 +142,7 @@ public class JCADataSource extends DataSource {
         monitorMask = builder.monitorMask;
         dbePropertySupported = builder.dbePropertySupported;
         rtypValueOnly = builder.rtypValueOnly;
+        honorZeroPrecision = builder.honorZeroPrecision;
     }
 
     @Override
@@ -202,6 +204,15 @@ public class JCADataSource extends DataSource {
      */
     public boolean isRtypValueOnly() {
         return rtypValueOnly;
+    }
+
+    /**
+     * True if zero precision should be honored, or disregarded.
+     * 
+     * @return true if zero precision setting is honored
+     */
+    public boolean isHonorZeroPrecision() {
+        return honorZeroPrecision;
     }
     
     /**
