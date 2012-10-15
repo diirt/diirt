@@ -1177,7 +1177,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getTimestamp(), equalTo(timestamp));
     }
 
-    private DBR_CTRL_Double createNumericMetadata() {
+    public static DBR_CTRL_Double createNumericMetadata() {
         DBR_CTRL_Double meta = new DBR_CTRL_Double();
         meta.setUpperDispLimit(10);
         meta.setUpperCtrlLimit(8);
@@ -1190,13 +1190,13 @@ public class JCAVTypeAdapterSetTest {
         return meta;
     }
 
-    private DBR_LABELS_Enum createMetadata() {
+    public static DBR_LABELS_Enum createMetadata() {
         DBR_LABELS_Enum meta = new DBR_LABELS_Enum();
         meta.setLabels(new String[] {"Zero", "One", "Two", "Three"});
         return meta;
     }
 
-    private DBR_TIME_Float createDBRTimeFloat(float[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Float createDBRTimeFloat(float[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Float value = new DBR_TIME_Float(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1204,7 +1204,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_Double createDBRTimeDouble(double[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Double createDBRTimeDouble(double[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Double value = new DBR_TIME_Double(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1212,7 +1212,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_Byte createDBRTimeByte(byte[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Byte createDBRTimeByte(byte[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Byte value = new DBR_TIME_Byte(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1220,7 +1220,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_Short createDBRTimeShort(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Short createDBRTimeShort(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Short value = new DBR_TIME_Short(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1228,7 +1228,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_Int createDBRTimeInt(int[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Int createDBRTimeInt(int[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Int value = new DBR_TIME_Int(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1236,7 +1236,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_String createDBRTimeString(String[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_String createDBRTimeString(String[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_String value = new DBR_TIME_String(data);
         value.setSeverity(severity);
         value.setStatus(status);
@@ -1244,7 +1244,7 @@ public class JCAVTypeAdapterSetTest {
         return value;
     }
 
-    private DBR_TIME_Enum createDBRTimeEnum(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Enum createDBRTimeEnum(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.epics.util.time.Timestamp timestamp) {
         DBR_TIME_Enum value = new DBR_TIME_Enum(data);
         value.setSeverity(severity);
         value.setStatus(status);
