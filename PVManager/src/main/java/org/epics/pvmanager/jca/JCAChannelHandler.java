@@ -37,7 +37,7 @@ import org.epics.pvmanager.*;
  *
  * @author carcassi
  */
-class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePayload> {
+class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, JCAMessagePayload> {
 
     private static final int LARGE_ARRAY = 100000;
     private final JCADataSource jcaDataSource;
@@ -71,8 +71,8 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
     }
  
     @Override
-    protected JCATypeAdapter findTypeAdapter(ValueCache<?> cache, Channel channel) {
-        return jcaDataSource.getTypeSupport().find(cache, channel);
+    protected JCATypeAdapter findTypeAdapter(ValueCache<?> cache, JCAConnectionPayload connPayload) {
+        return jcaDataSource.getTypeSupport().find(cache, connPayload);
     }
 
     @Override
@@ -225,7 +225,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
                         }
 
                         // Setup monitors on connection
-                        processConnection(channel);
+                        processConnection(new JCAConnectionPayload(jcaDataSource, channel));
                         if (ev.isConnected()) {
                             setup(channel);
                         }
@@ -277,8 +277,8 @@ class JCAChannelHandler extends MultiplexedChannelHandler<Channel, JCAMessagePay
     }
     
     @Override
-    protected boolean isConnected(Channel channel) {
-        return isChannelConnected(channel);
+    protected boolean isConnected(JCAConnectionPayload connPayload) {
+        return isChannelConnected(connPayload.getChannel());
     }
     
     

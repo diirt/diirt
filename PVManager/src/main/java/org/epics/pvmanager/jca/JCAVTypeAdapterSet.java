@@ -86,12 +86,12 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
     final static JCATypeAdapter DBRByteToVString = new JCATypeAdapter(VString.class, DBR_TIME_Byte.TYPE, null, null) {
 
             @Override
-            public int match(ValueCache<?> cache, Channel channel) {
-                if (!longStringPattern.matcher(channel.getName()).matches()) {
+            public int match(ValueCache<?> cache, JCAConnectionPayload connPayload) {
+                if (!longStringPattern.matcher(connPayload.getChannel().getName()).matches()) {
                     return 0;
                 }
                 
-                return super.match(cache, channel);
+                return super.match(cache, connPayload);
             }
 
             @Override
@@ -131,12 +131,12 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
     final static JCATypeAdapter DBRByteToVByteArray = new JCATypeAdapter(VByteArray.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, true) {
 
             @Override
-            public int match(ValueCache<?> cache, Channel channel) {
-                if (longStringPattern.matcher(channel.getName()).matches()) {
+            public int match(ValueCache<?> cache, JCAConnectionPayload connPayload) {
+                if (longStringPattern.matcher(connPayload.getChannel().getName()).matches()) {
                     return 0;
                 }
                 
-                return super.match(cache, channel);
+                return super.match(cache, connPayload);
             }
         
             @Override
