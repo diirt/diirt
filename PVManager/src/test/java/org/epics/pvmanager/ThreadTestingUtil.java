@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager;
 
@@ -33,9 +33,29 @@ public class ThreadTestingUtil {
             if (value != null) {
                 return value;
             }
-            Thread.sleep(1);
+            try {
+                Thread.sleep(1);
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+            }
         }
         return null;
     }
+    
+    public static TimeDuration waitForValue(PVReader<?> pvReader, TimeDuration timeout)  {
+        TimeInterval runInterval = timeout.after(Timestamp.now());
+        while (runInterval.contains(Timestamp.now())) {
+            if (pvReader.getValue() != null) {
+                return runInterval.getStart().durationBetween(Timestamp.now());
+            }
+            try {
+                Thread.sleep(1);
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        return null;
+    }
+    
     
 }

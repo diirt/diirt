@@ -4,12 +4,14 @@
  */
 package org.epics.pvmanager.sim;
 
+import java.util.concurrent.Callable;
 import org.epics.pvmanager.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
+import static org.epics.pvmanager.ThreadTestingUtil.*;
 
 /**
  *
@@ -24,7 +26,8 @@ public class BlackBoxTest {
         
         PVReader<Object> pv1 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
         PVReader<Object> pv2 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
-        Thread.sleep(50);
+        waitForValue(pv1, ofMillis(100));
+
         assertThat(pv1.getValue(), not(nullValue()));
         assertThat(pv2.getValue(), not(nullValue()));
         assertThat(pv1.isConnected(), equalTo(true));
