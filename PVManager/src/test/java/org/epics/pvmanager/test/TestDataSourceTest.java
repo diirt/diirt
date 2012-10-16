@@ -33,6 +33,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.MockPVWriteListener;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
+import static org.epics.pvmanager.ThreadTestingUtil.*;
 
 /**
  *
@@ -132,17 +133,6 @@ public class TestDataSourceTest {
         pvWriter.close();
         Thread.sleep(30);
         waitForChannelToClose(dataSource, "delayedWrite");
-    }
-    
-    private static <T> T waitFor(Callable<T> task, TimeDuration timeout) 
-    throws Exception {
-        TimeInterval runInterval = timeout.after(Timestamp.now());
-        while (runInterval.contains(Timestamp.now())) {
-            T value = task.call();
-            if (value != null)
-                return value;
-        }
-        return null;
     }
     
     @Test
