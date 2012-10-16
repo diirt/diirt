@@ -278,7 +278,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     
     @Override
     protected boolean isConnected(JCAConnectionPayload connPayload) {
-        return connPayload.isChannelConnected();
+        return connPayload != null && connPayload.isChannelConnected();
     }
 
     @Override
