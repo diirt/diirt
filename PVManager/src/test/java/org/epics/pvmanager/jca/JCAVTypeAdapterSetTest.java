@@ -48,7 +48,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble1() {
+    public void DBRFloatToVFloat1() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
@@ -57,7 +57,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble2() {
+    public void DBRFloatToVFloat2() {
         ValueCache<VFloat> cache = new ValueCache<VFloat>(VFloat.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
@@ -66,7 +66,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble3() {
+    public void DBRFloatToVFloat3() {
         ValueCache<String> cache = new ValueCache<String>(String.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
@@ -75,7 +75,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble4() {
+    public void DBRFloatToVFloat4() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
@@ -104,7 +104,7 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRFloatToVDouble5() {
+    public void DBRFloatToVFloat5() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
@@ -218,36 +218,36 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRByteToVInt1() {
+    public void DBRByteToVByte1() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRByteToVInt2() {
-        ValueCache<VInt> cache = new ValueCache<VInt>(VInt.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVInt;
+    public void DBRByteToVByte2() {
+        ValueCache<VByte> cache = new ValueCache<VByte>(VByte.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRByteToVInt3() {
+    public void DBRByteToVByte3() {
         ValueCache<String> cache = new ValueCache<String>(String.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRByteToVInt4() {
+    public void DBRByteToVByte4() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -257,9 +257,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
-        assertThat(converted.getValue(), equalTo(32));
+        assertThat(cache.getValue(), instanceOf(VByte.class));
+        VByte converted = (VByte) cache.getValue();
+        assertThat(converted.getValue(), equalTo((byte) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -274,9 +274,9 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRByteToVInt5() {
+    public void DBRByteToVByte5() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -286,9 +286,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
-        assertThat(converted.getValue(), equalTo(32));
+        assertThat(cache.getValue(), instanceOf(VByte.class));
+        VByte converted = (VByte) cache.getValue();
+        assertThat(converted.getValue(), equalTo((byte) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -303,36 +303,36 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRShortToVInt1() {
+    public void DBRShortToVShort1() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRShortToVInt2() {
-        ValueCache<VInt> cache = new ValueCache<VInt>(VInt.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+    public void DBRShortToVShort2() {
+        ValueCache<VShort> cache = new ValueCache<VShort>(VShort.class);
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRShortToVInt3() {
+    public void DBRShortToVShort3() {
         ValueCache<String> cache = new ValueCache<String>(String.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Short.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 
     @Test
-    public void DBRShortToVInt4() {
+    public void DBRShortToVShort4() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -342,9 +342,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
-        assertThat(converted.getValue(), equalTo(32));
+        assertThat(cache.getValue(), instanceOf(VShort.class));
+        VShort converted = (VShort) cache.getValue();
+        assertThat(converted.getValue(), equalTo((short) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -359,9 +359,9 @@ public class JCAVTypeAdapterSetTest {
     }
 
     @Test
-    public void DBRShortToVInt5() {
+    public void DBRShortToVShort5() {
         ValueCache<Object> cache = new ValueCache<Object>(Object.class);
-        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVInt;
+        JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
@@ -371,9 +371,9 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
-        assertThat(converted.getValue(), equalTo(32));
+        assertThat(cache.getValue(), instanceOf(VShort.class));
+        VShort converted = (VShort) cache.getValue();
+        assertThat(converted.getValue(), equalTo((short) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));

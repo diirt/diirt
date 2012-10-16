@@ -2,10 +2,6 @@
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.Channel;
@@ -47,20 +43,20 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
         };
     
     // DBR_TIME_Byte -> VInt
-    final static JCATypeAdapter DBRByteToVInt = new JCATypeAdapter(VInt.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, false) {
+    final static JCATypeAdapter DBRByteToVByte = new JCATypeAdapter(VByte.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
-            public VInt createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VIntFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
+            public VByte createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
+                return new VByteFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
     
     // DBR_TIME_Short -> VInt
-    final static JCATypeAdapter DBRShortToVInt = new JCATypeAdapter(VInt.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, false) {
+    final static JCATypeAdapter DBRShortToVShort = new JCATypeAdapter(VShort.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, false) {
 
             @Override
-            public VInt createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VIntFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload);
+            public VShort createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
+                return new VShortFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
 
@@ -181,8 +177,8 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
         // Add all SCALARs
         newFactories.add(DBRFloatToVFloat);
         newFactories.add(DBRDoubleToVDouble);
-        newFactories.add(DBRByteToVInt);
-        newFactories.add(DBRShortToVInt);
+        newFactories.add(DBRByteToVByte);
+        newFactories.add(DBRShortToVShort);
         newFactories.add(DBRIntToVInt);
         newFactories.add(DBRStringToVString);
         newFactories.add(DBRByteToVString);

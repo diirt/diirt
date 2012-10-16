@@ -325,12 +325,6 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     protected DBRType valueTypeFor(Channel channel) {
         DBRType type = channel.getFieldType();
         
-        // For scalar numbers, only use Double or Int
-        if (channel.getElementCount() == 1) {
-            if (type.isBYTE() || type.isSHORT() || type.isINT())
-                return DBR_TIME_Int.TYPE;
-        }
-        
         if (type.isBYTE()) {
             return DBR_TIME_Byte.TYPE;
         } else if (type.isSHORT()) {
