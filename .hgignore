@@ -1,3 +1,5 @@
-graphene/target/
 syntax: glob
+**/target/
 *.failed.png
+*~
+
