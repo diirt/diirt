@@ -141,8 +141,8 @@ public class ScatterPlot extends javax.swing.JFrame {
             TimeSeries xData = reader.readFile(xFilename.getText(), "AVERAGE", start, end);
             TimeSeries yData = reader.readFile(yFilename.getText(), "AVERAGE", start, end);
             Point2DDataset dataset = Point2DDatasets.lineData(xData.getValues(), yData.getValues());
-            BufferedImage image = new BufferedImage(imagePanel1.getHeight(), imagePanel1.getWidth(), BufferedImage.TYPE_3BYTE_BGR);
-            Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imagePanel1.getHeight(), imagePanel1.getWidth());
+            BufferedImage image = new BufferedImage(imagePanel1.getWidth(), imagePanel1.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imagePanel1.getWidth(), imagePanel1.getHeight());
             renderer.draw(image.createGraphics(), dataset);
             imagePanel1.setImage(image);
         } catch(Exception ex) {
