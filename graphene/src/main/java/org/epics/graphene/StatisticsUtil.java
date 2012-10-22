@@ -63,7 +63,13 @@ public class StatisticsUtil {
         }
         
     }
-    
+
+    /**
+     * Calculates data statistics, excluding NaN values.
+     * 
+     * @param data the data
+     * @return the calculated statistics
+     */
     public static Statistics statisticsOf(CollectionNumber data) {
         IteratorNumber iterator = data.iterator();
         if (!iterator.hasNext()) {
@@ -71,18 +77,27 @@ public class StatisticsUtil {
         }
         int count = data.size();
         double min = iterator.nextDouble();
+        while (Double.isNaN(min)) {
+            if (!iterator.hasNext()) {
+                return null;
+            } else {
+                min = iterator.nextDouble();
+            }
+        }
         double max = min;
         double total = min;
         double totalSquare = min*min;
         
         while (iterator.hasNext()) {
             double value = iterator.nextDouble();
-            if (value > max)
-                max = value;
-            if (value < min)
-                min = value;
-            total += value;
-            totalSquare += value*value;
+            if (!Double.isNaN(value)) {
+                if (value > max)
+                    max = value;
+                if (value < min)
+                    min = value;
+                total += value;
+                totalSquare += value*value;
+            }
         }
         
         double average = total/count;

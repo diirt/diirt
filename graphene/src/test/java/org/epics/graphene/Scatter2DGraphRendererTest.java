@@ -67,4 +67,17 @@ public class Scatter2DGraphRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.2", image);
     }
+    
+    @Test
+    public void test3() throws Exception {
+        double[] x = new double[] {Double.NaN,10, 20,30,40,50};
+        double[] y = new double[] {Double.NaN,10,20, 30,40,50};
+        
+        Point2DDataset data = Point2DDatasets.lineData(x,y);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(300, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("scatter2D.3", image);
+    }
 }
