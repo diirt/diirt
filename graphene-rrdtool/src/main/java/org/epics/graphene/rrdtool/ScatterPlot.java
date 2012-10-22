@@ -14,6 +14,8 @@ import java.util.Date;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.Scatter2DGraphRenderer;
+import org.epics.util.array.CollectionNumber;
+import org.epics.util.array.IteratorNumber;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -50,6 +52,10 @@ public class ScatterPlot extends javax.swing.JFrame {
         endDate = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         imagePanel1 = new org.epics.graphene.rrdtool.ImagePanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        valuesX = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        valuesY = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,9 +63,17 @@ public class ScatterPlot extends javax.swing.JFrame {
 
         jLabel2.setText("y filename:");
 
+        xFilename.setText("/media/sf_Shared/dc2-5-17_cpu_system_54823.rrd");
+
+        yFilename.setText("/media/sf_Shared/dc2-5-17_cpu_user_54824.rrd");
+
         jLabel3.setText("Start date:");
 
+        startDate.setText("01/10/2012");
+
         jLabel4.setText("End date:");
+
+        endDate.setText("11/10/2012");
 
         jButton1.setText("Plot");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -76,8 +90,16 @@ public class ScatterPlot extends javax.swing.JFrame {
         );
         imagePanel1Layout.setVerticalGroup(
             imagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
+            .addGap(0, 350, Short.MAX_VALUE)
         );
+
+        valuesX.setColumns(20);
+        valuesX.setRows(5);
+        jScrollPane3.setViewportView(valuesX);
+
+        valuesY.setColumns(20);
+        valuesY.setRows(5);
+        jScrollPane4.setViewportView(valuesY);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,45 +108,55 @@ public class ScatterPlot extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(endDate, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
-                            .addComponent(yFilename)
-                            .addComponent(startDate, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(xFilename, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(xFilename, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                                    .addComponent(yFilename, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(startDate, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(endDate, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(xFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(yFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(endDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(xFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(yFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(endDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -137,10 +169,12 @@ public class ScatterPlot extends javax.swing.JFrame {
         try {
             RrdToolReader reader = new RrdToolReader();
             Timestamp start = Timestamp.of(format.parse(startDate.getText()));
-            Timestamp end = Timestamp.of(format.parse(startDate.getText()));
+            Timestamp end = Timestamp.of(format.parse(endDate.getText()));
             TimeSeries xData = reader.readFile(xFilename.getText(), "AVERAGE", start, end);
             TimeSeries yData = reader.readFile(yFilename.getText(), "AVERAGE", start, end);
             Point2DDataset dataset = Point2DDatasets.lineData(xData.getValues(), yData.getValues());
+            valuesX.setText(toText(xData.getValues()));
+            valuesY.setText(toText(yData.getValues()));
             BufferedImage image = new BufferedImage(imagePanel1.getWidth(), imagePanel1.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
             Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imagePanel1.getWidth(), imagePanel1.getHeight());
             renderer.draw(image.createGraphics(), dataset);
@@ -151,6 +185,16 @@ public class ScatterPlot extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private String toText(CollectionNumber coll) {
+        StringBuilder builder = new StringBuilder();
+        IteratorNumber iter = coll.iterator();
+        while (iter.hasNext()) {
+            builder.append(iter.nextDouble()).append("\n");
+        }
+        
+        return builder.toString();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -193,7 +237,11 @@ public class ScatterPlot extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField startDate;
+    private javax.swing.JTextArea valuesX;
+    private javax.swing.JTextArea valuesY;
     private javax.swing.JTextField xFilename;
     private javax.swing.JTextField yFilename;
     // End of variables declaration//GEN-END:variables

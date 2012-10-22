@@ -36,7 +36,7 @@ public class RrdToolOutputParser {
                 Timestamp timestamp = Timestamp.of(Integer.parseInt(line.substring(0, colon)), 0);
                 String valueText = line.substring(colon+1).trim();
                 Double value;
-                if ("nan".equals(valueText)) {
+                if ("nan".equals(valueText) || "-nan".equals(valueText)) {
                     value = Double.NaN;
                 } else {
                     value = Double.parseDouble(valueText);

@@ -28,6 +28,7 @@ public class RrdToolReader {
         List<String> args = new ArrayList<>();
         args.add("rrdtool");
         args.add("fetch");
+        args.add(filename);
         args.add(cf);
         if (start != null) {
             args.add("-s");
