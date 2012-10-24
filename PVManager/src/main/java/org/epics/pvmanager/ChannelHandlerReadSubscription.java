@@ -15,6 +15,7 @@ package org.epics.pvmanager;
  */
 public class ChannelHandlerReadSubscription {
 
+    // TODO: Does not need to be public if tests use mock
     public ChannelHandlerReadSubscription(Collector<?> collector, ValueCache<?> cache, ExceptionHandler handler, Collector<Boolean> connCollector, ValueCache<Boolean> connCache) {
         this.collector = collector;
         this.cache = cache;
