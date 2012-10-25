@@ -146,4 +146,8 @@ class PVWriterImpl<T> implements PVWriter<T> {
         return writeConnected;
     }
     
+    public void setWriteConnected(boolean writeConnected) {
+        this.writeConnected = writeConnected;
+    }
+    
 }

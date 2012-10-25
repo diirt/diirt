@@ -88,5 +88,10 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
             callback.channelWritten(ex);
         }
     }
+
+    @Override
+    protected boolean isWriteConnected(Object payload) {
+        return isConnected(payload);
+    }
     
 }

@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.loc;
 
+import java.util.List;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
@@ -40,6 +41,8 @@ public class LocChannelHandlerTest {
     @Mock Collector<Boolean> vDoubleConnCollector2;
     @Mock ChannelWriteCallback channelWriteCallback;
     @Mock ExceptionHandler exceptionHandler;
+    @Mock ValueCache<Boolean> vDoubleWriteConnCache1;
+    @Mock Collector<Boolean> vDoubleWriteConnCollector1;
 
     @Test
     public void writeToLocalChannelSingleMonitor() {
@@ -57,7 +60,7 @@ public class LocChannelHandlerTest {
 
         // Adding a writer
         WriteCache<?> cache = new WriteCache<Object>();
-        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
+        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 
@@ -66,7 +69,7 @@ public class LocChannelHandlerTest {
         
         // Removing all readers and writers
         channel.removeMonitor(vDoubleCollector1);
-        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
+        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
         
@@ -100,7 +103,7 @@ public class LocChannelHandlerTest {
 
         // Adding a writer
         WriteCache<?> cache = new WriteCache<Object>();
-        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
+        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
         assertThat(channel.getUsageCounter(), equalTo(3));
         assertThat(channel.isConnected(), is(true));
 
@@ -108,7 +111,7 @@ public class LocChannelHandlerTest {
         channel.write(16.28, channelWriteCallback);
         
         // Remove reader/writers
-        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
+        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
         channel.removeMonitor(vDoubleCollector1);
         channel.removeMonitor(vDoubleCollector2);
         assertThat(channel.getUsageCounter(), equalTo(0));

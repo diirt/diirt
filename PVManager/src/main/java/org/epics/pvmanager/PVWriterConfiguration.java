@@ -107,6 +107,10 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         } catch (Exception ex) {
             exceptionHandler.handleException(ex);
         }
+        
+        WriteNotifier<T> notifier = new WriteNotifier<T>(pvWriter, new LastValueAggregator<Boolean>(writeBuffer.getConnectionCollector()), 
+                PVManager.getReadScannerExecutorService(), notificationExecutor, exceptionHandler);
+        notifier.startScan(TimeDuration.ofMillis(100));
         return pvWriter;
     }
 

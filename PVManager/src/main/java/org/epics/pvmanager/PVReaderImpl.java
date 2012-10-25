@@ -261,7 +261,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         return lastException.getAndSet(null);
     }
     
-    void setConnectd(boolean connected) {
+    void setConnected(boolean connected) {
         if (this.connected == connected) {
             return;
         }

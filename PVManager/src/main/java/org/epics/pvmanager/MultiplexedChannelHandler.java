@@ -268,6 +268,12 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         writeUsageCounter++;
         writeCaches.put(subscription.getCache(), subscription);
         guardedConnect();
+        if (connectionPayload != null) {
+            synchronized(subscription.getConnectionCollector()) {
+                subscription.getConnectionCache().setValue(isWriteConnected());
+                subscription.getConnectionCollector().collect();
+            }
+        }
     }
 
     /**
