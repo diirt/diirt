@@ -66,6 +66,16 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         pvWriterConfiguration.timeout(timeout, writeMessage);
         return this;
     }
+    
+    public PVConfiguration<R, W>  listeners(PVReaderListener... listeners) {
+        pvReaderConfiguration.listeners(listeners);
+        return this;
+    }
+    
+    public PVConfiguration<R, W>  listeners(PVWriterListener... listeners) {
+        pvWriterConfiguration.listeners(listeners);
+        return this;
+    }
 
     /**
      * Forwards exception to the given exception handler. No thread switch

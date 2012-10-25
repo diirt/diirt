@@ -100,5 +100,10 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     public boolean isConnected() {
         return reader.isConnected();
     }
+
+    @Override
+    public boolean isWriteConnected() {
+        return writer.isWriteConnected();
+    }
     
 }

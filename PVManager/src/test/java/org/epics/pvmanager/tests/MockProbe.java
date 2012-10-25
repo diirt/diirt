@@ -72,6 +72,8 @@ public class MockProbe extends javax.swing.JFrame {
         channelDetailsButton = new javax.swing.JButton();
         connected = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        writeConnected = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +118,10 @@ public class MockProbe extends javax.swing.JFrame {
 
         jLabel7.setText("Connected:");
 
+        jLabel8.setText("Write Connected:");
+
+        writeConnected.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,12 +156,16 @@ public class MockProbe extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(metadata))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(connected))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(channelDetailsButton)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(connected)))
+                        .addComponent(writeConnected)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -194,6 +204,10 @@ public class MockProbe extends javax.swing.JFrame {
                     .addComponent(connected, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(writeConnected, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(channelDetailsButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -208,7 +222,7 @@ public class MockProbe extends javax.swing.JFrame {
         }
 
         try {
-            pv = PVManager.read(channel(pvName.getText()))
+            pv = PVManager.readAndWrite(channel(pvName.getText()))
                     .timeout(TimeDuration.ofSeconds(5))
                     .listeners(new PVReaderListener() {
                             @Override
@@ -224,7 +238,14 @@ public class MockProbe extends javax.swing.JFrame {
                                 setConnected(pv.isConnected());
                             }
                         })
-                    .maxRate(ofHertz(10));
+                    .listeners(new PVWriterListener() {
+
+                        @Override
+                        public void pvWritten() {
+                            setWriteConnected(pv.isWriteConnected());
+                        }
+                    })
+                    .asynchWriteAndMaxReadRate(ofHertz(10));
         } catch (RuntimeException ex) {
             setLastError(ex);
         }
@@ -249,7 +270,7 @@ public class MockProbe extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_channelDetailsButtonActionPerformed
-    PVReader<?> pv;
+    PV<?,?> pv;
 
     private void setTextValue(String value) {
         if (value == null) {
@@ -307,6 +328,14 @@ public class MockProbe extends javax.swing.JFrame {
         }
     }
 
+    private void setWriteConnected(Boolean connected) {
+        if (connected != null) {
+            this.writeConnected.setText(connected.toString());
+        } else {
+            this.writeConnected.setText("");
+        }
+    }
+
     private void setIndicator(Double value) {
         int range = indicator.getMaximum() - indicator.getMinimum();
         int position = range / 2;
@@ -338,6 +367,7 @@ public class MockProbe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
     private javax.swing.JTextField metadata;
@@ -345,5 +375,6 @@ public class MockProbe extends javax.swing.JFrame {
     private javax.swing.JTextField pvTextValue;
     private javax.swing.JTextField pvTime;
     private javax.swing.JTextField pvType;
+    private javax.swing.JTextField writeConnected;
     // End of variables declaration//GEN-END:variables
 }
