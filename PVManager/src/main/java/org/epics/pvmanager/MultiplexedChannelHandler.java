@@ -25,10 +25,11 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     private int readUsageCounter = 0;
     private int writeUsageCounter = 0;
     private boolean connected = false;
+    private boolean writeConnected = false;
     private MessagePayload lastMessage;
     private ConnectionPayload connectionPayload;
     private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
-    private Map<WriteCache<?>, ExceptionHandler> writeCaches = new ConcurrentHashMap<WriteCache<?>, ExceptionHandler>();
+    private Map<WriteCache<?>, ChannelHandlerWriteSubscription> writeCaches = new ConcurrentHashMap<WriteCache<?>, ChannelHandlerWriteSubscription>();
 
     private class MonitorHandler {
 
@@ -85,14 +86,23 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         for (MonitorHandler monitor : monitors.values()) {
             monitor.subscription.getHandler().handleException(ex);
         }
-        for (ExceptionHandler exHandler : writeCaches.values()) {
-            exHandler.handleException(ex);
+        for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
+            subscription.getHandler().handleException(ex);
         }
     }
     
     private void reportConnectionStatus(boolean connected) {
         for (MonitorHandler monitor : monitors.values()) {
             monitor.processConnection(connected);
+        }
+    }
+    
+    private void reportWriteConnectionStatus(boolean writeConnected) {
+        for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
+            synchronized(subscription.getConnectionCollector()) {
+                subscription.getConnectionCache().setValue(writeConnected);
+                subscription.getConnectionCollector().collect();
+            }
         }
     }
 
@@ -123,6 +133,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     protected synchronized final void processConnection(ConnectionPayload connectionPayload) {
         this.connectionPayload = connectionPayload;
         setConnected(isConnected(connectionPayload));
+        setWriteConnected(isWriteConnected(connectionPayload));
         
         for (MonitorHandler monitor : monitors.values()) {
             monitor.findTypeAdapter();
@@ -255,7 +266,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected synchronized void addWriter(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter++;
-        writeCaches.put(subscription.getCache(), subscription.getHandler());
+        writeCaches.put(subscription.getCache(), subscription);
         guardedConnect();
     }
 
@@ -336,6 +347,11 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         reportConnectionStatus(connected);
     }
     
+    private void setWriteConnected(boolean writeConnected) {
+        this.writeConnected = writeConnected;
+        reportWriteConnectionStatus(writeConnected);
+    }
+    
     /**
      * Determines from the payload whether the channel is connected or not.
      * <p>
@@ -352,6 +368,19 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     }
     
     /**
+     * Determines from the payload whether the channel can be written to.
+     * <p>
+     * By default, this always return false. One should override this
+     * if it's implementing a write-able data source.
+     * 
+     * @param payload
+     * @return 
+     */
+    protected boolean isWriteConnected(ConnectionPayload payload) {
+        return false;
+    }
+    
+    /**
      * Returns true if it is connected.
      * 
      * @return true if underlying channel is connected
@@ -359,5 +388,15 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     public synchronized final boolean isConnected() {
         return connected;
+    }
+    
+    /**
+     * Returns true if it is channel can be written to.
+     * 
+     * @return true if underlying channel is write ready
+     */
+    public synchronized final boolean isWriteConnected() {
+        // TODO: push this in ChannleHandler?
+        return writeConnected;
     }
 }

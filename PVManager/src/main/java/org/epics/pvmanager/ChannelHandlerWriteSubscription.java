@@ -11,7 +11,7 @@ package org.epics.pvmanager;
  */
 public class ChannelHandlerWriteSubscription {
 
-    public ChannelHandlerWriteSubscription(WriteCache<?> cache, ExceptionHandler handler, Function<Boolean> connectionCache, Collector<Boolean> connectionCollector) {
+    public ChannelHandlerWriteSubscription(WriteCache<?> cache, ExceptionHandler handler, ValueCache<Boolean> connectionCache, Collector<Boolean> connectionCollector) {
         this.cache = cache;
         this.handler = handler;
         this.connectionCache = connectionCache;
@@ -20,7 +20,7 @@ public class ChannelHandlerWriteSubscription {
     
     private final WriteCache<?> cache;
     private final ExceptionHandler handler;
-    private final Function<Boolean> connectionCache;
+    private final ValueCache<Boolean> connectionCache;
     private final Collector<Boolean> connectionCollector;
 
     /**
@@ -46,7 +46,7 @@ public class ChannelHandlerWriteSubscription {
      * 
      * @return the cache
      */
-    public Function<Boolean> getConnectionCache() {
+    public ValueCache<Boolean> getConnectionCache() {
         return connectionCache;
     }
 
