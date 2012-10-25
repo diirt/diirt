@@ -57,7 +57,7 @@ public class LocChannelHandlerTest {
 
         // Adding a writer
         WriteCache<?> cache = new WriteCache<Object>();
-        channel.addWriter(cache, exceptionHandler);
+        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 
@@ -66,7 +66,7 @@ public class LocChannelHandlerTest {
         
         // Removing all readers and writers
         channel.removeMonitor(vDoubleCollector1);
-        channel.removeWrite(cache, exceptionHandler);
+        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
         
@@ -100,7 +100,7 @@ public class LocChannelHandlerTest {
 
         // Adding a writer
         WriteCache<?> cache = new WriteCache<Object>();
-        channel.addWriter(cache, exceptionHandler);
+        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
         assertThat(channel.getUsageCounter(), equalTo(3));
         assertThat(channel.isConnected(), is(true));
 
@@ -108,7 +108,7 @@ public class LocChannelHandlerTest {
         channel.write(16.28, channelWriteCallback);
         
         // Remove reader/writers
-        channel.removeWrite(cache, exceptionHandler);
+        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, null, null));
         channel.removeMonitor(vDoubleCollector1);
         channel.removeMonitor(vDoubleCollector2);
         assertThat(channel.getUsageCounter(), equalTo(0));

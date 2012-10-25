@@ -184,7 +184,7 @@ public abstract class DataSource {
             @Override
             public void run() {
                 for (int i = 0; i < handlers.size(); i++) {
-                    handlers.get(i).addWriter(caches.get(i), exceptionHandler);
+                    handlers.get(i).addWriter(new ChannelHandlerWriteSubscription(caches.get(i), exceptionHandler, null, null));
                 }
             }
         });
@@ -222,7 +222,7 @@ public abstract class DataSource {
             @Override
             public void run() {
                 for (int i = 0; i < handlers.size(); i++) {
-                    handlers.get(i).removeWrite(caches.get(i), exceptionHandler);
+                    handlers.get(i).removeWrite(new ChannelHandlerWriteSubscription(caches.get(i), exceptionHandler, null, null));
                 }
             }
         });

@@ -253,9 +253,9 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param handler to be notified in case of errors
      */
     @Override
-    protected synchronized void addWriter(WriteCache<?> cache, ExceptionHandler handler) {
+    protected synchronized void addWriter(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter++;
-        writeCaches.put(cache, handler);
+        writeCaches.put(subscription.getCache(), subscription.getHandler());
         guardedConnect();
     }
 
@@ -265,9 +265,9 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param exceptionHandler to be notified in case of errors
      */
     @Override
-    protected synchronized void removeWrite(WriteCache<?> cache, ExceptionHandler exceptionHandler) {
+    protected synchronized void removeWrite(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter--;
-        writeCaches.remove(cache);
+        writeCaches.remove(subscription.getCache());
         guardedDisconnect();
     }
 
