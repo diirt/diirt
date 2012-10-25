@@ -168,14 +168,12 @@ public abstract class DataSource {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
-        final List<ChannelHandler> handlers = new ArrayList<ChannelHandler>();
-        final List<WriteCache<?>> caches = new ArrayList<WriteCache<?>>();
+        final Map<String, ChannelHandler> handlers = new HashMap<String, ChannelHandler>();
         for (String channelName : writeBuffer.getWriteCaches().keySet()) {
             ChannelHandler handler = channel(channelName);
             if (handler == null)
                 throw new WriteFailException("Channel " + channelName + " does not exist");
-            handlers.add(handler);
-            caches.add(writeBuffer.getWriteCaches().get(channelName));
+            handlers.put(channelName, handler);
         }
 
         // Connect using another thread
@@ -183,8 +181,11 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (int i = 0; i < handlers.size(); i++) {
-                    handlers.get(i).addWriter(new ChannelHandlerWriteSubscription(caches.get(i), exceptionHandler, null, null));
+                for (Map.Entry<String, ChannelHandler> entry : handlers.entrySet()) {
+                    String channelName = entry.getKey();
+                    ChannelHandler channelHandler = entry.getValue();
+                    channelHandler.addWriter(new ChannelHandlerWriteSubscription(writeBuffer.getWriteCaches().get(channelName), exceptionHandler,
+                            writeBuffer.getConnectionCaches().get(channelName), writeBuffer.getConnectionCollector()));
                 }
             }
         });
