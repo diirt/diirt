@@ -58,5 +58,39 @@ public class ChannelHandlerWriteSubscription {
     public Collector<Boolean> getConnectionCollector() {
         return connectionCollector;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (this.cache != null ? this.cache.hashCode() : 0);
+        hash = 11 * hash + (this.handler != null ? this.handler.hashCode() : 0);
+        hash = 11 * hash + (this.connectionCache != null ? this.connectionCache.hashCode() : 0);
+        hash = 11 * hash + (this.connectionCollector != null ? this.connectionCollector.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ChannelHandlerWriteSubscription other = (ChannelHandlerWriteSubscription) obj;
+        if (this.cache != other.cache && (this.cache == null || !this.cache.equals(other.cache))) {
+            return false;
+        }
+        if (this.handler != other.handler && (this.handler == null || !this.handler.equals(other.handler))) {
+            return false;
+        }
+        if (this.connectionCache != other.connectionCache && (this.connectionCache == null || !this.connectionCache.equals(other.connectionCache))) {
+            return false;
+        }
+        if (this.connectionCollector != other.connectionCollector && (this.connectionCollector == null || !this.connectionCollector.equals(other.connectionCollector))) {
+            return false;
+        }
+        return true;
+    }
     
 }
