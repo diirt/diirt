@@ -19,16 +19,22 @@ import org.epics.pvmanager.WriteCache;
  * @author carcassi
  */
 public class WriteBuffer {
-    private final Map<String, WriteCache<?>> caches;
     private final Collector<Boolean> connectionCollector;
-    private final Map<String, ValueCache<Boolean>> connectionCaches;
     private final Collection<ChannelWriteBuffer> channelWriteBuffers;
 
     WriteBuffer(Map<String, WriteCache<?>> caches, ExceptionHandler exceptionHandler) {
-        this.caches = Collections.unmodifiableMap(caches);
-        this.connectionCaches = generateConnectionCaches();
+        Map<String, ValueCache<Boolean>> connectionCaches = generateConnectionCaches(caches);
         this.connectionCollector = new ConnectionCollector(connectionCaches);
         this.channelWriteBuffers = generateChannelWriteBuffers(caches, connectionCollector, connectionCaches, exceptionHandler);
+    }
+
+    WriteBuffer(Collection<ChannelWriteBuffer> channelWriteBuffers) {
+        this.channelWriteBuffers = channelWriteBuffers;
+        if (channelWriteBuffers.isEmpty()) {
+            this.connectionCollector = null;
+        } else {
+            this.connectionCollector = channelWriteBuffers.iterator().next().getWriteSubscription().getConnectionCollector();
+        }
     }
     
     private static Collection<ChannelWriteBuffer> generateChannelWriteBuffers(Map<String, WriteCache<?>> caches, Collector<Boolean> connectionCollector, Map<String, ValueCache<Boolean>> connectionCaches, ExceptionHandler exceptionHandler) {
@@ -41,15 +47,8 @@ public class WriteBuffer {
         }
         return channelRecipes;
     }
-
-    WriteBuffer(Collection<ChannelWriteBuffer> val) {
-        channelWriteBuffers = val;
-        this.caches = null;
-        this.connectionCaches = null;
-        this.connectionCollector = null;
-    }
     
-    private Map<String, ValueCache<Boolean>> generateConnectionCaches() {
+    private static Map<String, ValueCache<Boolean>> generateConnectionCaches(Map<String, WriteCache<?>> caches) {
         // TODO: should refactor with similar method in DataRecipe
         Map<String, ValueCache<Boolean>> newCaches = new HashMap<String, ValueCache<Boolean>>();
         for (String name : caches.keySet()) {
@@ -68,15 +67,6 @@ public class WriteBuffer {
      */
     public Collector<Boolean> getConnectionCollector() {
         return connectionCollector;
-    }
-
-    /**
-     * The caches that will hold the connection flag.
-     * 
-     * @return a map from the pv name to the connection cache
-     */
-    public Map<String, ValueCache<Boolean>> getConnectionCaches() {
-        return connectionCaches;
     }
 
     public Collection<ChannelWriteBuffer> getChannelWriteBuffers() {
