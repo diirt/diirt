@@ -39,7 +39,7 @@ public class PVSyntaxTest {
     public void readWriteMap() throws Exception {
         DesiredRateReadWriteExpression<Map<String, Object>, Map<String, Object>> map =
                 mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2"))));
-        WriteBuffer buffer = map.createWriteBuffer();
+        WriteBuffer buffer = map.createWriteBuffer().build();
         assertThat(buffer.getWriteCaches().size(), equalTo(2));
         assertThat(buffer.getWriteCaches().keySet(), containsInAnyOrder("channel1", "channel2"));
     }
@@ -49,7 +49,7 @@ public class PVSyntaxTest {
         ChannelExpressionList<Object, Object> exp =
                 channels("channel1", "channel2", "channel3").after("master1");
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteBuffer buffer = writeExp.createWriteBuffer();
+            WriteBuffer buffer = writeExp.createWriteBuffer().build();
             assertThat(buffer.getWriteCaches().size(), equalTo(1));
             String key = buffer.getWriteCaches().keySet().iterator().next();
             assertThat(Arrays.asList("channel1", "channel2", "channel3"), hasItem(key));
@@ -63,7 +63,7 @@ public class PVSyntaxTest {
         ChannelExpressionList<Object, Object> exp =
                 channels(Arrays.asList("channel1", "channel2", "channel3")).after("master1");
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteBuffer buffer = writeExp.createWriteBuffer();
+            WriteBuffer buffer = writeExp.createWriteBuffer().build();
             assertThat(buffer.getWriteCaches().size(), equalTo(1));
             String key = buffer.getWriteCaches().keySet().iterator().next();
             assertThat(Arrays.asList("channel1", "channel2", "channel3"), hasItem(key));
@@ -81,7 +81,7 @@ public class PVSyntaxTest {
     @Test
     public void writeMap1() {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
-        WriteBuffer buffer = mapOf.createWriteBuffer();
+        WriteBuffer buffer = mapOf.createWriteBuffer().build();
         assertThat(buffer.getWriteCaches().keySet(), hasSize(3));
         assertThat(buffer.getWriteCaches().get("first").getPrecedingChannels(), hasSize(0));
         assertThat(buffer.getWriteCaches().get("second").getPrecedingChannels(), contains("first"));

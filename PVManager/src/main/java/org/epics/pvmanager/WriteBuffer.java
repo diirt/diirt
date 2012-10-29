@@ -4,9 +4,12 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import org.epics.pvmanager.WriteCache;
 
 /**
@@ -19,11 +22,24 @@ public class WriteBuffer {
     private final Map<String, WriteCache<?>> caches;
     private final Collector<Boolean> connectionCollector;
     private final Map<String, ValueCache<Boolean>> connectionCaches;
+    private final Collection<ChannelWriteBuffer> channelWriteBuffers;
 
-    WriteBuffer(Map<String, WriteCache<?>> caches) {
+    WriteBuffer(Map<String, WriteCache<?>> caches, ExceptionHandler exceptionHandler) {
         this.caches = Collections.unmodifiableMap(caches);
         this.connectionCaches = generateConnectionCaches();
         this.connectionCollector = new ConnectionCollector(connectionCaches);
+        this.channelWriteBuffers = generateChannelWriteBuffers(caches, connectionCollector, connectionCaches, exceptionHandler);
+    }
+    
+    private static Collection<ChannelWriteBuffer> generateChannelWriteBuffers(Map<String, WriteCache<?>> caches, Collector<Boolean> connectionCollector, Map<String, ValueCache<Boolean>> connectionCaches, ExceptionHandler exceptionHandler) {
+        Set<ChannelWriteBuffer> channelRecipes = new HashSet<ChannelWriteBuffer>();
+        for (Map.Entry<String, WriteCache<?>> entry : caches.entrySet()) {
+            String channelName = entry.getKey();
+            WriteCache<? extends Object> writeCache = entry.getValue();
+            ValueCache<Boolean> connectionCache = connectionCaches.get(channelName);
+            channelRecipes.add(new ChannelWriteBuffer(channelName, new ChannelHandlerWriteSubscription(writeCache, exceptionHandler, connectionCache, connectionCollector)));
+        }
+        return channelRecipes;
     }
     
     /**
