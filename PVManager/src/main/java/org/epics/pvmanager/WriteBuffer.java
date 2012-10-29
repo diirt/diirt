@@ -80,5 +80,9 @@ public class WriteBuffer {
     public Map<String, ValueCache<Boolean>> getConnectionCaches() {
         return connectionCaches;
     }
+
+    public Collection<ChannelWriteBuffer> getChannelWriteBuffers() {
+        return channelWriteBuffers;
+    }
     
 }

@@ -168,12 +168,13 @@ public abstract class DataSource {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
-        final Map<String, ChannelHandler> handlers = new HashMap<String, ChannelHandler>();
-        for (String channelName : writeBuffer.getWriteCaches().keySet()) {
+        final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
+        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+            String channelName = channelWriteBuffer.getChannelName();
             ChannelHandler handler = channel(channelName);
             if (handler == null)
                 throw new WriteFailException("Channel " + channelName + " does not exist");
-            handlers.put(channelName, handler);
+            handlers.put(handler, channelWriteBuffer.getWriteSubscription());
         }
 
         // Connect using another thread
@@ -181,11 +182,10 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (Map.Entry<String, ChannelHandler> entry : handlers.entrySet()) {
-                    String channelName = entry.getKey();
-                    ChannelHandler channelHandler = entry.getValue();
-                    channelHandler.addWriter(new ChannelHandlerWriteSubscription(writeBuffer.getWriteCaches().get(channelName), exceptionHandler,
-                            writeBuffer.getConnectionCaches().get(channelName), writeBuffer.getConnectionCollector()));
+                for (Map.Entry<ChannelHandler, ChannelHandlerWriteSubscription> entry : handlers.entrySet()) {
+                    ChannelHandler channelHandler = entry.getKey();
+                    ChannelHandlerWriteSubscription subscription = entry.getValue();
+                    channelHandler.addWriter(subscription);
                 }
             }
         });
@@ -210,11 +210,11 @@ public abstract class DataSource {
         }
 
         registeredBuffers.remove(writeBuffer);
-        final List<ChannelHandler> handlers = new ArrayList<ChannelHandler>();
-        final List<WriteCache<?>> caches = new ArrayList<WriteCache<?>>();
-        for (String channelName : writeBuffer.getWriteCaches().keySet()) {
-            handlers.add(channel(channelName));
-            caches.add(writeBuffer.getWriteCaches().get(channelName));
+        final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
+        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+            String channelName = channelWriteBuffer.getChannelName();
+            ChannelHandler handler = channel(channelName);
+            handlers.put(handler, channelWriteBuffer.getWriteSubscription());
         }
 
         // Connect using another thread
@@ -222,8 +222,10 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (int i = 0; i < handlers.size(); i++) {
-                    handlers.get(i).removeWrite(new ChannelHandlerWriteSubscription(caches.get(i), exceptionHandler, null, null));
+                for (Map.Entry<ChannelHandler, ChannelHandlerWriteSubscription> entry : handlers.entrySet()) {
+                    ChannelHandler channelHandler = entry.getKey();
+                    ChannelHandlerWriteSubscription channelHandlerWriteSubscription = entry.getValue();
+                    channelHandler.removeWrite(channelHandlerWriteSubscription);
                 }
             }
         });
@@ -245,9 +247,10 @@ public abstract class DataSource {
             throw new UnsupportedOperationException("This data source is read only");
         
         final WritePlanner planner = new WritePlanner();
-        for (Map.Entry<String, WriteCache<?>> entry : writeBuffer.getWriteCaches().entrySet()) {
-            ChannelHandler channel = channel(entry.getKey());
-            planner.addChannel(channel, entry.getValue().getValue(), entry.getValue().getPrecedingChannels());
+        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+            ChannelHandler channel = channel(channelWriteBuffer.getChannelName());
+            planner.addChannel(channel, channelWriteBuffer.getWriteSubscription().getCache().getValue(),
+                    channelWriteBuffer.getWriteSubscription().getCache().getPrecedingChannels());
         }
 
         // Connect using another thread

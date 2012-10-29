@@ -4,8 +4,12 @@
  */
 package org.epics.pvmanager.loc;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.epics.pvmanager.ChannelHandlerWriteSubscription;
+import org.epics.pvmanager.ChannelWriteBuffer;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.DataRecipe;
@@ -61,12 +65,16 @@ public class LocalDataSourceTest {
     public void writeToLocalDataSource() throws Exception {
         // Prepare mock write buffer
         {
-            Map<String, WriteCache<?>> caches = new HashMap<String, WriteCache<?>>();
-            caches.put(channelName1, writeCache1);
+            Collection<ChannelWriteBuffer> channelWriteBuffers = new ArrayList<ChannelWriteBuffer>();
+            //Map<String, WriteCache<?>> caches = new HashMap<String, WriteCache<?>>();
+            //caches.put(channelName1, writeCache1);
             when(writeCache1.getValue()).thenReturn(6.28);
-            caches.put(channelName2, writeCache2);
+            channelWriteBuffers.add(new ChannelWriteBuffer(channelName1, new ChannelHandlerWriteSubscription(writeCache1, exceptionHandler, null, null)));
+            //caches.put(channelName2, writeCache2);
             when(writeCache2.getValue()).thenReturn(16.28);
-            when(writeBuffer.getWriteCaches()).thenReturn(caches);
+            channelWriteBuffers.add(new ChannelWriteBuffer(channelName2, new ChannelHandlerWriteSubscription(writeCache2, exceptionHandler, null, null)));
+            //when(writeBuffer.getWriteCaches()).thenReturn(caches);
+            when(writeBuffer.getChannelWriteBuffers()).thenReturn(channelWriteBuffers);
         }
         
         DataRecipe recipe;

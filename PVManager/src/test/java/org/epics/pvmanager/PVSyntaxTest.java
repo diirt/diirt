@@ -6,10 +6,14 @@ package org.epics.pvmanager;
 
 import org.epics.pvmanager.expression.ChannelExpressionList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.WriteExpression;
 import java.util.Map;
+import java.util.Set;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.junit.Test;
@@ -40,35 +44,56 @@ public class PVSyntaxTest {
         DesiredRateReadWriteExpression<Map<String, Object>, Map<String, Object>> map =
                 mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2"))));
         WriteBuffer buffer = map.createWriteBuffer().build();
-        assertThat(buffer.getWriteCaches().size(), equalTo(2));
-        assertThat(buffer.getWriteCaches().keySet(), containsInAnyOrder("channel1", "channel2"));
+        assertThat(buffer.getChannelWriteBuffers().size(), equalTo(2));
+        assertThat(channelNames(buffer), containsInAnyOrder("channel1", "channel2"));
+    }
+    
+    private static Collection<String> channelNames(WriteBuffer buffer) {
+        Set<String> names = new HashSet<String>();
+        for (ChannelWriteBuffer channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+            names.add(channelWriteBuffer.getChannelName());
+        }
+        return names;
+    }
+    
+    private static ChannelWriteBuffer channelWriteBuffer(String channelName, WriteBuffer buffer) {
+        for (ChannelWriteBuffer channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+            if (channelWriteBuffer.getChannelName().equals(channelName)) {
+                return channelWriteBuffer;
+            }
+        }
+        return null;
     }
     
     @Test
     public void channelList1() {
+        List<String> names = Arrays.asList("channel1", "channel2", "channel3");
         ChannelExpressionList<Object, Object> exp =
                 channels("channel1", "channel2", "channel3").after("master1");
+        int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteBuffer buffer = writeExp.createWriteBuffer().build();
-            assertThat(buffer.getWriteCaches().size(), equalTo(1));
-            String key = buffer.getWriteCaches().keySet().iterator().next();
-            assertThat(Arrays.asList("channel1", "channel2", "channel3"), hasItem(key));
-            assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), hasSize(1));
-            assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), contains("master1"));
+            assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
+            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getCache();
+            assertThat(writeCache.getPrecedingChannels(), hasSize(1));
+            assertThat(writeCache.getPrecedingChannels(), contains("master1"));
+            index++;
         }
     }
     
     @Test
     public void channelList2() {
+        List<String> names = Arrays.asList("channel1", "channel2", "channel3");
         ChannelExpressionList<Object, Object> exp =
-                channels(Arrays.asList("channel1", "channel2", "channel3")).after("master1");
+                channels(names).after("master1");
+        int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteBuffer buffer = writeExp.createWriteBuffer().build();
-            assertThat(buffer.getWriteCaches().size(), equalTo(1));
-            String key = buffer.getWriteCaches().keySet().iterator().next();
-            assertThat(Arrays.asList("channel1", "channel2", "channel3"), hasItem(key));
-            assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), hasSize(1));
-            assertThat(buffer.getWriteCaches().get(key).getPrecedingChannels(), contains("master1"));
+            assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
+            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getCache();
+            assertThat(writeCache.getPrecedingChannels(), hasSize(1));
+            assertThat(writeCache.getPrecedingChannels(), contains("master1"));
+            index++;
         }
     }
     
@@ -82,10 +107,10 @@ public class PVSyntaxTest {
     public void writeMap1() {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
         WriteBuffer buffer = mapOf.createWriteBuffer().build();
-        assertThat(buffer.getWriteCaches().keySet(), hasSize(3));
-        assertThat(buffer.getWriteCaches().get("first").getPrecedingChannels(), hasSize(0));
-        assertThat(buffer.getWriteCaches().get("second").getPrecedingChannels(), contains("first"));
-        assertThat(buffer.getWriteCaches().get("third").getPrecedingChannels(), contains("first"));
+        assertThat(buffer.getChannelWriteBuffers(), hasSize(3));
+        assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getCache().getPrecedingChannels(), hasSize(0));
+        assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getCache().getPrecedingChannels(), contains("first"));
+        assertThat(channelWriteBuffer("third", buffer).getWriteSubscription().getCache().getPrecedingChannels(), contains("first"));
     }
     
     @Test
