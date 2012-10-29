@@ -41,14 +41,12 @@ public class WriteBuffer {
         }
         return channelRecipes;
     }
-    
-    /**
-     * Returns the write caches used by this buffer.
-     * 
-     * @return the caches for each channel
-     */
-    public Map<String, WriteCache<?>> getWriteCaches() {
-        return caches;
+
+    WriteBuffer(Collection<ChannelWriteBuffer> val) {
+        channelWriteBuffers = val;
+        this.caches = null;
+        this.connectionCaches = null;
+        this.connectionCollector = null;
     }
     
     private Map<String, ValueCache<Boolean>> generateConnectionCaches() {
