@@ -30,14 +30,13 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testSingleOpenAndClose() throws Exception{
         final PVReader<Object> pv =PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         
         Thread.sleep(1000);
         
@@ -53,41 +52,37 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv1.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv2.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv3.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv4.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         
         Thread.sleep(1000);
         
@@ -106,41 +101,37 @@ public class JCACloseIT extends JCABase {
     @Test
     public void testMultipleDifferentOpenAndClose() throws Exception{
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv1.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv2.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv3.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        counter.incrementAndGet();
+                    }
+                })
                 .maxRate(ofHertz(10));
-        pv4.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                counter.incrementAndGet();
-            }
-        });
         
         Thread.sleep(1000);
         

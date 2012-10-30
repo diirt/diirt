@@ -132,15 +132,15 @@ public class MockSimPVFrame extends javax.swing.JFrame {
             pv.close();
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         try {
-            pv = PVManager.read(vDouble(pvNameField.getText())).maxRate(ofHertz(scanRate));
-            pv.addPVReaderListener(new PVReaderListener() {
-
-                @Override
-                public void pvChanged(PVReader pvReader) {
-                    valueLabel.setText(Double.toString(pv.getValue().getValue()));
-                    valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
-                }
-            });
+            pv = PVManager.read(vDouble(pvNameField.getText()))
+                    .readListener(new PVReaderListener<VDouble>() {
+                        @Override
+                        public void pvChanged(PVReader<VDouble> pvReader) {
+                            valueLabel.setText(Double.toString(pv.getValue().getValue()));
+                            valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
+                        }
+                    })
+                    .maxRate(ofHertz(scanRate));
         } catch(Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }

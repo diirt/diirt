@@ -224,9 +224,9 @@ public class MockProbe extends javax.swing.JFrame {
         try {
             pv = PVManager.readAndWrite(channel(pvName.getText()))
                     .timeout(TimeDuration.ofSeconds(5))
-                    .readListener(new PVReaderListener() {
+                    .readListener(new PVReaderListener<Object>() {
                             @Override
-                            public void pvChanged(PVReader pvReader) {
+                            public void pvChanged(PVReader<Object> pvReader) {
                                 setLastError(pv.lastException());
                                 Object value = pv.getValue();
                                 setTextValue(format.format(value));

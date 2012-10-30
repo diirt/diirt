@@ -143,48 +143,49 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
         pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofSeconds(bufferDepth),
-                vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
-        pv.addPVReaderListener(new PVReaderListener() {
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                final List<VDouble> values = pv.getValue().getValues();
-                if (values != null) {
-                    TableModel model = new AbstractTableModel() {
+                     vDoubles(Collections.nCopies(nPvs, pvName))))
+                .readListener(new PVReaderListener<VMultiDouble>() {
+                    @Override
+                    public void pvChanged(PVReader<VMultiDouble> pvReader) {
+                        final List<VDouble> values = pv.getValue().getValues();
+                        if (values != null) {
+                            TableModel model = new AbstractTableModel() {
 
-                        List<String> names = Arrays.asList("Value", "Timestamp");
+                                List<String> names = Arrays.asList("Value", "Timestamp");
 
-                        @Override
-                        public int getRowCount() {
-                            return values.size();
+                                @Override
+                                public int getRowCount() {
+                                    return values.size();
+                                }
+
+                                @Override
+                                public int getColumnCount() {
+                                    return names.size();
+                                }
+
+                                @Override
+                                public String getColumnName(int column) {
+                                    return names.get(column);
+                                }
+
+                                @Override
+                                public Object getValueAt(int rowIndex, int columnIndex) {
+                                    if (values.get(rowIndex) == null)
+                                        return null;
+                                    switch(columnIndex) {
+                                        case 0:
+                                            return values.get(rowIndex).getValue();
+                                        case 1:
+                                            return values.get(rowIndex).getTimestamp();
+                                    }
+                                    throw new IllegalStateException();
+                                }
+                            };
+                            pvTable.setModel(model);
                         }
-
-                        @Override
-                        public int getColumnCount() {
-                            return names.size();
-                        }
-
-                        @Override
-                        public String getColumnName(int column) {
-                            return names.get(column);
-                        }
-
-                        @Override
-                        public Object getValueAt(int rowIndex, int columnIndex) {
-                            if (values.get(rowIndex) == null)
-                                return null;
-                            switch(columnIndex) {
-                                case 0:
-                                    return values.get(rowIndex).getValue();
-                                case 1:
-                                    return values.get(rowIndex).getTimestamp();
-                            }
-                            throw new IllegalStateException();
-                        }
-                    };
-                    pvTable.setModel(model);
-                }
-            }
-        });
+                    }
+                })
+                .maxRate(ofHertz(scanRate));
 
     }//GEN-LAST:event_createPVButtonActionPerformed
 
