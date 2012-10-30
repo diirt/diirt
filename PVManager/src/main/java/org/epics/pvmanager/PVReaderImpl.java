@@ -103,7 +103,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         pvReaderListeners.add(new ListenerDelegate<T>(clazz, listener));
     }
 
-    private class ListenerDelegate<T> implements PVReaderListener<T> {
+    private class ListenerDelegate<E> implements PVReaderListener<T> {
 
         private Class<?> clazz;
         private PVReaderListener delegate;
@@ -114,6 +114,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void pvChanged(PVReader pvReader) {
             // forward the change if the value is of the right type
             if (clazz.isInstance(getValue()))
@@ -147,7 +148,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     public void removePVReaderListener(PVReaderListener<? super T> listener) {
         // Removing a delegate will cause the proper comparisons
         // so that it removes either the direct or the delegate
-        pvReaderListeners.remove(new ListenerDelegate<T>(Object.class, listener));
+        pvReaderListeners.remove(new ListenerDelegate<Object>(Object.class, listener));
     }
 
     private final String name;

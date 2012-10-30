@@ -33,7 +33,11 @@ public interface PVReader<T> {
      *
      * @param clazz type to filter notifications for
      * @param listener a new listener
+     * @deprecated this method was rarely used and the functionalities
+     * can be replicated with an ad-hoc listener; with the addition of generic
+     * typing in the listener, this pollutes the interface for the remove
      */
+    @Deprecated
     public void addPVReaderListener(final Class<?> clazz, final PVReaderListener listener);
 
     /**
