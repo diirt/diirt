@@ -25,26 +25,26 @@ public class JCALargeArrays {
         JCADataSource source = new JCADataSource();
         source.getContext().printInfo();
         PVManager.setDefaultDataSource(source);
-        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2")).maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                long pause = System.currentTimeMillis() - start;
-                start = System.currentTimeMillis();
-                if (pv.getValue() instanceof VShortArray)
-                    System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VShortArray) pv.getValue()).getArray().length);
-                else if (pv.getValue() instanceof VDoubleArray)
-                    System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VDoubleArray) pv.getValue()).getArray().length);
-                else
-                    System.out.println(pause + " ms - " + pv.getValue());
-                Exception ex = pv.lastException();
-                if (ex != null) {
-                    ex.printStackTrace();
-                }
-                  
-            }
-        });
+        final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pv) {
+                        long pause = System.currentTimeMillis() - start;
+                        start = System.currentTimeMillis();
+                        if (pv.getValue() instanceof VShortArray) {
+                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VShortArray) pv.getValue()).getArray().length);
+                        } else if (pv.getValue() instanceof VDoubleArray) {
+                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VDoubleArray) pv.getValue()).getArray().length);
+                        } else {
+                            System.out.println(pause + " ms - " + pv.getValue());
+                        }
+                        Exception ex = pv.lastException();
+                        if (ex != null) {
+                            ex.printStackTrace();
+                        }
+                    }
+                })
+                .maxRate(ofHertz(50));
         
         Thread.sleep(5000);
         pv.close();

@@ -121,14 +121,14 @@ public class MockStatsPVFrame extends javax.swing.JFrame {
         double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
         String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-        pv = PVManager.read(statisticsOf(vDouble(pvName))).maxRate(ofHertz(scanRate));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
-            }
-        });
+        pv = PVManager.read(statisticsOf(vDouble(pvName)))
+                .readListener(new PVReaderListener<VStatistics>() {
+                    @Override
+                    public void pvChanged(PVReader<VStatistics> pvReader) {
+                        valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
+                    }
+                })
+                .maxRate(ofHertz(scanRate));
     }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**

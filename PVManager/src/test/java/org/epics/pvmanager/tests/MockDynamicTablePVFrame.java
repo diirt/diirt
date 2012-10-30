@@ -42,7 +42,8 @@ import static org.epics.util.time.TimeDuration.*;
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     
     private DynamicGroup group = group();
-    private PVReader<List<Object>> pv = PVManager.read(group).notifyOn(swingEDT()).maxRate(ofHertz(2));
+    private PVReader<List<Object>> pv = PVManager.read(group)
+            .notifyOn(swingEDT()).maxRate(ofHertz(2));
     private List<Object> latestValue = null;
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
@@ -53,10 +54,10 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         private List<String> titles = Arrays.asList("PV name", "Value", "Alarm", "Time");
         
         {
-            pv.addPVReaderListener(new PVReaderListener() {
+            pv.addPVReaderListener(new PVReaderListener<List<Object>>() {
 
                 @Override
-                public void pvChanged(PVReader pvReader) {
+                public void pvChanged(PVReader<List<Object>> pvReader) {
                     latestValue = pv.getValue();
                     latestExceptions = group.lastExceptions();
                     fireTableRowsUpdated(0, getRowCount());

@@ -228,19 +228,19 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
                 scrollDown(scrollDownField.isSelected()),
                 height(plotView.getHeight()),
                 pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
-        pv = PVManager.read(plot).notifyOn(swingEDT())
+        pv = PVManager.read(plot)
+                .readListener(new PVReaderListener<VImage>() {
+                    @Override
+                    public void pvChanged(PVReader<VImage> pvReader) {
+                        setLastError(pv.lastException());
+                        if (pv.getValue() != null) {
+                            BufferedImage image = ValueUtil.toImage(pv.getValue());
+                            plotView.setImage(image);
+                        }
+                    }
+                })
+                .notifyOn(swingEDT())
                 .maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                setLastError(pv.lastException());
-                if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue());
-                    plotView.setImage(image);
-                }
-            }
-        });
     }//GEN-LAST:event_goButtonActionPerformed
 
 

@@ -205,14 +205,15 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
         pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofMillis((int) (bufferDepth * 1000.0)),
-                vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
-        pv.addPVReaderListener(new PVReaderListener() {
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                //printArray(pv.getValue());
-                updateChart();
-            }
-        });
+                vDoubles(Collections.nCopies(nPvs, pvName))))
+                .readListener(new PVReaderListener<VMultiDouble>() {
+                    @Override
+                    public void pvChanged(PVReader<VMultiDouble> pvReader) {
+                        //printArray(pv.getValue());
+                        updateChart();
+                    }
+                })
+                .maxRate(ofHertz(scanRate));
     }//GEN-LAST:event_createPVButtonActionPerformed
 
 

@@ -200,18 +200,17 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                 height(plotView.getHeight()),
                 pixelDuration(ofMillis(((Number) pixelDurationField.getValue()).intValue())));
         pv = PVManager.read(plot).notifyOn(swingEDT())
+                .readListener(new PVReaderListener<VImage>() {
+                    @Override
+                    public void pvChanged(PVReader<VImage> pvReader) {
+                        setLastError(pv.lastException());
+                        if (pv.getValue() != null) {
+                            BufferedImage image = ValueUtil.toImage(pv.getValue());
+                            plotView.setImage(image);
+                        }
+                    }
+                })
                 .maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                setLastError(pv.lastException());
-                if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue());
-                    plotView.setImage(image);
-                }
-            }
-        });
     }//GEN-LAST:event_pvNameActionPerformed
 
     private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged
