@@ -30,19 +30,19 @@ public class JCASteadyLongTerm {
         final AtomicInteger count = new AtomicInteger();
         
         PVReader<?> pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<Object> pvReader) {
                 count.incrementAndGet();
             }
         });
         
         pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<Object> pvReader) {
                 count.incrementAndGet();
             }
         });

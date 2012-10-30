@@ -124,10 +124,10 @@ public class MockPVFrame extends javax.swing.JFrame {
         String pvName = "gaussian(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         pv = PVManager.read(vDouble(pvName)).maxRate(ofHertz(scanRate));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<Object> pvReader) {
                 valueLabel.setText(Double.toString(pv.getValue().getValue()));
             }
         });

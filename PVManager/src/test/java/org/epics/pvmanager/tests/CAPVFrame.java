@@ -138,10 +138,10 @@ public class CAPVFrame extends javax.swing.JFrame {
 
         int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
         pv = PVManager.read(statisticsOf(vDouble(pvNameField.getText()))).maxRate(ofHertz(scanRate));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv.addPVReaderListener(new PVReaderListener<VStatistics>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<VStatistics> pvReader) {
                 if (pv.getValue() != null)
                     valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
             }

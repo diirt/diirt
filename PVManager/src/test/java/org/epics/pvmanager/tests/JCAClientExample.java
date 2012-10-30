@@ -107,32 +107,32 @@ public class JCAClientExample {
     }
 
     private static void testVFloatArraySupport() throws Exception {
-        final PVReader<VFloatArray> pv = PVManager.read(vFloatArray(doublePV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
-
+        PVReader<VFloatArray> pv = PVManager.read(vFloatArray(doublePV))
+                .listeners(new PVReaderListener<VFloatArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VFloatArray> pv) {
+                        System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
+        
         Thread.sleep(10000);
 
         pv.close();
     }
 
     private static void testVDoubleArraySupport() throws Exception {
-        final PVReader<VDoubleArray> pv = PVManager.read(vDoubleArray(doubleArrayPV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                logException(pv.lastException());
-                if (pv.getValue() != null) {
-                    System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-                }
-            }
-        });
+        PVReader<VDoubleArray> pv = PVManager.read(vDoubleArray(doubleArrayPV))
+                .listeners(new PVReaderListener<VDoubleArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VDoubleArray> pv) {
+                        logException(pv.lastException());
+                        if (pv.getValue() != null) {
+                            System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                        }
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 
@@ -140,14 +140,14 @@ public class JCAClientExample {
     }
 
     private static void testVByteArraySupport() throws Exception {
-        final PVReader<VByteArray> pv = PVManager.read(vByteArray(doublePV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
+        PVReader<VByteArray> pv = PVManager.read(vByteArray(doublePV))
+                .listeners(new PVReaderListener<VByteArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VByteArray> pv) {
+                        System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 
@@ -155,45 +155,45 @@ public class JCAClientExample {
     }
 
     private static void testVShortArraySupport() throws Exception {
-        final PVReader<VShortArray> pv = PVManager.read(vShortArray(doublePV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
-
+        final PVReader<VShortArray> pv = PVManager.read(vShortArray(doublePV))
+                .listeners(new PVReaderListener<VShortArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VShortArray> pv) {
+                        System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
+        
         Thread.sleep(10000);
 
         pv.close();
     }
 
     private static void testVIntArraySupport() throws Exception {
-        final PVReader<VIntArray> pv = PVManager.read(vIntArray(doublePV)).maxRate(ofHertz(10));
-        logException(pv.lastException());
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
-
+        final PVReader<VIntArray> pv = PVManager.read(vIntArray(doublePV))
+                .listeners(new PVReaderListener<VIntArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VIntArray> pv) {
+                        logException(pv.lastException());
+                        System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
+        
         Thread.sleep(10000);
 
         pv.close();
     }
 
     private static void testVStringArraySupport() throws Exception {
-        final PVReader<VStringArray> pv = PVManager.read(vStringArray(doublePV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
+        final PVReader<VStringArray> pv = PVManager.read(vStringArray(doublePV))
+                .listeners(new PVReaderListener<VStringArray>() {
+                    @Override
+                    public void pvChanged(PVReader<VStringArray> pv) {
+                        System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 
@@ -201,14 +201,14 @@ public class JCAClientExample {
     }
 
     private static void testVDoubleSupport() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(vDouble(doublePV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-            }
-        });
+        final PVReader<VDouble> pv = PVManager.read(vDouble(doublePV))
+                .listeners(new PVReaderListener<VDouble>() {
+                    @Override
+                    public void pvChanged(PVReader<VDouble> pv) {
+                        System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 
@@ -216,14 +216,14 @@ public class JCAClientExample {
     }
 
     private static void testVIntSupport() throws Exception {
-            final PVReader<VInt> pv = PVManager.read(vInt(intPV)).maxRate(ofHertz(10));
-            pv.addPVReaderListener(new PVReaderListener() {
-
-                @Override
-                public void pvChanged(PVReader pvReader) {
-                    System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-                }
-            });
+            final PVReader<VInt> pv = PVManager.read(vInt(intPV))
+                .listeners(new PVReaderListener<VInt>() {
+                    @Override
+                    public void pvChanged(PVReader<VInt> pv) {
+                            System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                    }
+                })
+                .maxRate(ofHertz(10));
 
             Thread.sleep(10000);
 
@@ -231,17 +231,18 @@ public class JCAClientExample {
     }
 
     private static void testVStringSupport() throws Exception {
-        final PVReader<VString> pv = PVManager.read(vString(stringPV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
+        final PVReader<VString> pv = PVManager.read(vString(stringPV))
+                .listeners(new PVReaderListener<VString>() {
 
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                logException(pv.lastException());
-                if (pv.getValue() != null) {
-                    System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-                }
-            }
-        });
+                    @Override
+                    public void pvChanged(PVReader<VString> pv) {
+                        logException(pv.lastException());
+                        if (pv.getValue() != null) {
+                            System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                        }
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 
@@ -249,17 +250,17 @@ public class JCAClientExample {
     }
 
     private static void testVEnumSupport() throws Exception {
-        final PVReader<VEnum> pv = PVManager.read(vEnum(enumPV)).maxRate(ofHertz(10));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                logException(pv.lastException());
-                if (pv.getValue() != null) {
-                    System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
-                }
-            }
-        });
+        final PVReader<VEnum> pv = PVManager.read(vEnum(enumPV))
+                .listeners(new PVReaderListener<VEnum>() {
+                    @Override
+                    public void pvChanged(PVReader<VEnum> pv) {
+                        logException(pv.lastException());
+                        if (pv.getValue() != null) {
+                            System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
+                        }
+                    }
+                })
+                .maxRate(ofHertz(10));
 
         Thread.sleep(10000);
 

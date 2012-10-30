@@ -162,9 +162,9 @@ public class MockTablePVFrame extends javax.swing.JFrame {
         for (int n = 0; n < nPvs; n++) {
             final PVReader<VStatistics> pv = PVManager.read(statisticsOf(vDouble(pvName))).maxRate(ofHertz(scanRate));
             final int nRow = n;
-            pv.addPVReaderListener(new PVReaderListener() {
+            pv.addPVReaderListener(new PVReaderListener<VStatistics>() {
             @Override
-                public void pvChanged(PVReader pvReader) {
+                public void pvChanged(PVReader<VStatistics> pvReader) {
                     model.setValueAt(pv.getValue().getAverage(), nRow, 0);
                     model.setValueAt(pv.getValue().getStdDev(), nRow, 1);
                     model.setValueAt(pv.getValue().getMin(), nRow, 2);

@@ -76,16 +76,16 @@ public class TestDataSourceTest {
     }
     
     private static DataSource dataSource;
-    @Mock PVReaderListener readListener;
+    @Mock PVReaderListener<Object> readListener;
     
     @Test
     public void channelDoesNotExist1() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).maxRate(ofMillis(10));
-        pvReader.addPVReaderListener(new PVReaderListener() {
+        pvReader.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<Object> pvReader) {
                 latch.countDown();
             }
         });

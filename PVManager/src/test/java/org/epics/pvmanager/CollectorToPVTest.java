@@ -75,10 +75,10 @@ public class CollectorToPVTest {
             @Override
             public void run() {
                 pv = new PVReaderImpl<VDouble>("My pv", false);
-                pv.addPVReaderListener(new PVReaderListener() {
+                pv.addPVReaderListener(new PVReaderListener<Object>() {
 
                     @Override
-                    public void pvChanged(PVReader pvReader) {
+                    public void pvChanged(PVReader<Object> pvReader) {
                         counter.incrementAndGet();
                     }
                 });
@@ -117,10 +117,10 @@ public class CollectorToPVTest {
             @Override
             public void run() {
                 pv = new PVReaderImpl<VDouble>("My pv", false);
-                pv.addPVReaderListener(new PVReaderListener() {
+                pv.addPVReaderListener(new PVReaderListener<Object>() {
 
                     @Override
-                    public void pvChanged(PVReader pvReader) {
+                    public void pvChanged(PVReader<Object> pvReader) {
                         counter.incrementAndGet();
                     }
                 });
