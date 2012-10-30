@@ -29,7 +29,7 @@ public class CounterTestListener implements PVReaderListener {
     private volatile boolean failed;
 
     @Override
-    public void pvChanged() {
+    public void pvChanged(PVReader pvReader) {
         if (pv.getValue() == null) {
             System.out.println("Fail: expected " + nextExpected + " was null");
             failed = true;

@@ -29,7 +29,7 @@ public class JCALargeArrays {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 long pause = System.currentTimeMillis() - start;
                 start = System.currentTimeMillis();
                 if (pv.getValue() instanceof VShortArray)

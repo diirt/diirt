@@ -46,7 +46,7 @@ public class JCALongTerm {
                 pv.addPVReaderListener(new PVReaderListener() {
 
                     @Override
-                    public void pvChanged() {
+                    public void pvChanged(PVReader pvReader) {
                         int value = count.incrementAndGet();
                         if (value % 1000 == 0) {
                             System.out.println(System.currentTimeMillis());

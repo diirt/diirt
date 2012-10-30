@@ -34,7 +34,7 @@ public class JCACloseIT extends JCABase {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -57,7 +57,7 @@ public class JCACloseIT extends JCABase {
         pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -66,7 +66,7 @@ public class JCACloseIT extends JCABase {
         pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -75,7 +75,7 @@ public class JCACloseIT extends JCABase {
         pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -84,7 +84,7 @@ public class JCACloseIT extends JCABase {
         pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -110,7 +110,7 @@ public class JCACloseIT extends JCABase {
         pv1.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -119,7 +119,7 @@ public class JCACloseIT extends JCABase {
         pv2.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -128,7 +128,7 @@ public class JCACloseIT extends JCABase {
         pv3.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });
@@ -137,7 +137,7 @@ public class JCACloseIT extends JCABase {
         pv4.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 counter.incrementAndGet();
             }
         });

@@ -159,7 +159,7 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 final List<VStatistics> values = pv.getValue();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {

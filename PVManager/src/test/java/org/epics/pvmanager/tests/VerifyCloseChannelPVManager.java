@@ -29,7 +29,7 @@ public class VerifyCloseChannelPVManager {
         reader.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 System.out.println("Monitor called");
             }
         });

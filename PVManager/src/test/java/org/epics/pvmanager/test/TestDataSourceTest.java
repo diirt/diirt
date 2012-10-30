@@ -85,7 +85,7 @@ public class TestDataSourceTest {
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 latch.countDown();
             }
         });
@@ -213,19 +213,19 @@ public class TestDataSourceTest {
         
         TimeoutException ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged();
+        verify(readListener, never()).pvChanged(pvReader);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
-        verify(readListener).pvChanged();
+        verify(readListener).pvChanged(pvReader);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, times(2)).pvChanged();
+        verify(readListener, times(2)).pvChanged(pvReader);
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
         
         pvReader.close();
@@ -242,19 +242,19 @@ public class TestDataSourceTest {
         
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged();
+        verify(readListener, never()).pvChanged(pv);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
-        verify(readListener).pvChanged();
+        verify(readListener).pvChanged(pv);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, times(2)).pvChanged();
+        verify(readListener, times(2)).pvChanged(pv);
         assertThat((String) pv.getValue(), equalTo("Initial value"));
         
         pv.close();
@@ -272,20 +272,20 @@ public class TestDataSourceTest {
         
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged();
+        verify(readListener, never()).pvChanged(pv);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
         assertThat(ex.getMessage(), equalTo(message));
-        verify(readListener).pvChanged();
+        verify(readListener).pvChanged(pv);
         
         Thread.sleep(600);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, times(2)).pvChanged();
+        verify(readListener, times(2)).pvChanged(pv);
         assertThat((String) pv.getValue(), equalTo("Initial value"));
         
         pv.close();
@@ -304,10 +304,10 @@ public class TestDataSourceTest {
         
         RuntimeException ex = (RuntimeException) pv1.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged();
+        verify(readListener, never()).pvChanged(pv1);
         ex = (RuntimeException) pv2.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged();
+        verify(readListener, never()).pvChanged(pv1);
         
         Thread.sleep(1100);
         
@@ -317,7 +317,8 @@ public class TestDataSourceTest {
         ex = (RuntimeException) pv2.lastException();
         assertThat(ex, instanceOf(RuntimeException.class));
         assertThat(ex.getMessage(), equalTo("Connection error"));
-        verify(readListener, times(2)).pvChanged();
+        verify(readListener, times(1)).pvChanged(pv1);
+        verify(readListener, times(1)).pvChanged(pv2);
         
         pv1.close();
         pv2.close();

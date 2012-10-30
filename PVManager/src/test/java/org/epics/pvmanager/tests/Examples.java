@@ -85,7 +85,7 @@ public class Examples {
         final PVReader<Object> pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // Do something with each value
                 Object newValue = pvReader.getValue();
                 System.out.println(newValue);
@@ -102,7 +102,7 @@ public class Examples {
         final PVReader<List<Object>> pvReader = PVManager.read(newValuesOf(channel("channelName"))).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader reader) {
                 // Do something with each value
                 for (Object newValue : pvReader.getValue()) {
                     System.out.println(newValue);
@@ -145,7 +145,7 @@ public class Examples {
         final PV<Object, Object> pv = PVManager.readAndWrite(channel("channelName")).asynchWriteAndMaxReadRate(ofMillis(10));
         pv.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // Do something with each value
                 Object newValue = pv.getValue();
                 System.out.println(newValue);
@@ -161,7 +161,7 @@ public class Examples {
         final PVReader<Object> pvReader = PVManager.read(channel("channelName")).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // By default, read exceptions are made available
                 // on the reader itself.
                 // This will give you only the last exception, so if
@@ -200,7 +200,7 @@ public class Examples {
         final PVReader<Object> pvReader = PVManager.read(channel("channelName")).timeout(ofSeconds(5)).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // Timeout are passed as exceptions. This allows you to
                 // treat them as any other error conditions.
                 Exception ex = pvReader.lastException();
@@ -216,7 +216,7 @@ public class Examples {
         final PVReader<Map<String, Object>> pvReader = PVManager.read(mapOf(latestValueOf(channels("one", "two", "three")))).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader reader) {
                 // Print the values if any
                 Map<String, Object> map = pvReader.getValue();
                 if (map != null) {
@@ -267,7 +267,7 @@ public class Examples {
                 latestValueOf(channel("one").as("setpoint").and(channel("two").as("readback")).and(channel("three").as("difference"))))).maxRate(ofMillis(100));
         pvReader.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader reader) {
                 // Print the values if any
                 Map<String, Object> map = pvReader.getValue();
                 if (map != null) {
@@ -303,7 +303,7 @@ public class Examples {
         final PV<VDouble, Double> pv = PVManager.readAndWrite(vDouble("currentRB")).asynchWriteAndMaxReadRate(ofMillis(10));
         pv.addPVReaderListener(new PVReaderListener() {
 
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 VDouble value = pv.getValue();
                 if (value != null) {
                     System.out.println(value.getValue() + " " + value.getAlarmSeverity());
@@ -321,7 +321,7 @@ public class Examples {
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader reader) {
                 VType value = pvReader.getValue();
                 // We can extract the different aspect of the read object,
                 // so that we can work on them separately
@@ -348,7 +348,7 @@ public class Examples {
         pvReader.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // We can switch on the full type
                 if (pvReader.getValue() instanceof VDouble) {
                     VDouble vDouble = (VDouble) pvReader.getValue();
@@ -364,7 +364,7 @@ public class Examples {
         pvReader.addPVReaderListener(VDouble.class, new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 // We are already guaranteed that the cast succeeds
                 // and that the value is not null
                 VDouble vDouble = (VDouble) pvReader.getValue();
@@ -380,10 +380,10 @@ public class Examples {
                 column("Names", vStringConstants(names)),
                 column("Values", latestValueOf(channels(names)))))
                 .maxRate(ofMillis(100));
-        pvReader.addPVReaderListener(new PVReaderListener() {
+        pvReader.addPVReaderListener(new PVReaderListener<VTable>() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader reader) {
                 VTable vTable = pvReader.getValue();
                 // First column is the names
                 String[] names = (String[]) vTable.getColumnArray(0);

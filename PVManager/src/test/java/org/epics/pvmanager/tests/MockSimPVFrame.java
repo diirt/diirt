@@ -136,7 +136,7 @@ public class MockSimPVFrame extends javax.swing.JFrame {
             pv.addPVReaderListener(new PVReaderListener() {
 
                 @Override
-                public void pvChanged() {
+                public void pvChanged(PVReader pvReader) {
                     valueLabel.setText(Double.toString(pv.getValue().getValue()));
                     valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
                 }

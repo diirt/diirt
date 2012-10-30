@@ -204,7 +204,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 setLastError(pv.lastException());
                 if (pv.getValue() != null) {
                     BufferedImage image = ValueUtil.toImage(pv.getValue());

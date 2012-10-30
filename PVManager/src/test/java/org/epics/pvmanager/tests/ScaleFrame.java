@@ -56,7 +56,7 @@ public class ScaleFrame extends javax.swing.JFrame {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 field.setText(format.format(pv.getValue()));
             }
         });

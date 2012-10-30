@@ -33,7 +33,7 @@ public class JCASteadyLongTerm {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 count.incrementAndGet();
             }
         });
@@ -42,7 +42,7 @@ public class JCASteadyLongTerm {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 count.incrementAndGet();
             }
         });

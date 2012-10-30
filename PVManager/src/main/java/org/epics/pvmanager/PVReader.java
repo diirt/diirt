@@ -25,7 +25,7 @@ public interface PVReader<T> {
      *
      * @param listener a new listener
      */
-    public void addPVReaderListener(PVReaderListener listener);
+    public void addPVReaderListener(PVReaderListener<? super T> listener);
 
     /**
      * Adds a listener to the value, which is notified only if the value is

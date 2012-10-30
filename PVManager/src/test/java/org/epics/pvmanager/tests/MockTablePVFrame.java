@@ -164,7 +164,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
             final int nRow = n;
             pv.addPVReaderListener(new PVReaderListener() {
             @Override
-                public void pvChanged() {
+                public void pvChanged(PVReader pvReader) {
                     model.setValueAt(pv.getValue().getAverage(), nRow, 0);
                     model.setValueAt(pv.getValue().getStdDev(), nRow, 1);
                     model.setValueAt(pv.getValue().getMin(), nRow, 2);

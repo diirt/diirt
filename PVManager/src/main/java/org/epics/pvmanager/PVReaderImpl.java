@@ -46,13 +46,19 @@ class PVReaderImpl<T> implements PVReader<T> {
     private List<PVReaderListener> pvReaderListeners = new CopyOnWriteArrayList<PVReaderListener>();
     private final boolean notifyFirstListener;
     private volatile boolean missedNotification = false;
+    
+    private volatile PVReader<T> readerForNotification = this;
+
+    void setReaderForNotification(PVReader<T> readerForNotification) {
+        this.readerForNotification = readerForNotification;
+    }
 
     void firePvValueChanged() {
         lastExceptionToNotify = false;
         readConnectionToNotify = false;
         boolean missed = true;
         for (PVReaderListener listener : pvReaderListeners) {
-            listener.pvChanged();
+            listener.pvChanged(readerForNotification);
             missed = false;
         }
         if (missed)
@@ -106,10 +112,10 @@ class PVReaderImpl<T> implements PVReader<T> {
         }
 
         @Override
-        public void pvChanged() {
+        public void pvChanged(PVReader pvReader) {
             // forward the change if the value is of the right type
             if (clazz.isInstance(getValue()))
-                delegate.pvChanged();
+                delegate.pvChanged(pvReader);
         }
 
         @Override

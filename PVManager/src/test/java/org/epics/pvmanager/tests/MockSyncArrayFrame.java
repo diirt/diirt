@@ -208,7 +208,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
                 vDoubles(Collections.nCopies(nPvs, pvName)))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener() {
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 //printArray(pv.getValue());
                 updateChart();
             }

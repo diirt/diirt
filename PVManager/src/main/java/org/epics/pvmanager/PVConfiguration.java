@@ -119,7 +119,9 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
     public PV<R, W> asynchWriteAndMaxReadRate(TimeDuration period) {
         PVReader<R> pvReader = pvReaderConfiguration.maxRate(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.async();
-        return new PV<R, W>(pvReader, pvWriter);
+        PV<R, W> pv = new PV<R, W>(pvReader, pvWriter);
+        PVReaderImpl.implOf(pvReader).setReaderForNotification(pv);
+        return pv;
     }
     
 }

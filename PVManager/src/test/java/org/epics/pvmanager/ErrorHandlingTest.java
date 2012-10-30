@@ -62,7 +62,7 @@ public class ErrorHandlingTest {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 notificationReceived = true;
                 Exception ex = pv.lastException();
                 if (ex == null) {
@@ -98,7 +98,7 @@ public class ErrorHandlingTest {
         pv.addPVReaderListener(new PVReaderListener() {
 
             @Override
-            public void pvChanged() {
+            public void pvChanged(PVReader pvReader) {
                 notificationReceived = true;
                 Exception ex = pv.lastException();
                 if (ex == null) {

@@ -56,7 +56,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             pv.addPVReaderListener(new PVReaderListener() {
 
                 @Override
-                public void pvChanged() {
+                public void pvChanged(PVReader pvReader) {
                     latestValue = pv.getValue();
                     latestExceptions = group.lastExceptions();
                     fireTableRowsUpdated(0, getRowCount());
