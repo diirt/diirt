@@ -22,7 +22,7 @@ public class NotificationTest {
     @Test
     public void sequentialNotifications() throws Exception{
         PVReader<VInt> reader = PVManager.read(counter()).from(new TestDataSource()).maxRate(ofMillis(10));
-        CounterTestListener listener = new CounterTestListener(reader);
+        CounterTestListener listener = new CounterTestListener();
         reader.addPVReaderListener(listener);
         Thread.sleep(100);
         if (listener.isFailed())
@@ -33,7 +33,7 @@ public class NotificationTest {
     @Test
     public void pause() throws Exception{
         PVReader<VInt> reader = PVManager.read(counter()).from(new TestDataSource()).maxRate(ofMillis(10));
-        CounterTestListener listener = new CounterTestListener(reader);
+        CounterTestListener listener = new CounterTestListener();
         reader.addPVReaderListener(listener);
         assertThat(reader.isPaused(), equalTo(false));
         Thread.sleep(100);

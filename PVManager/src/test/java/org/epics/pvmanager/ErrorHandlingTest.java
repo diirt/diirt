@@ -56,29 +56,28 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionInFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).maxRate(TimeDuration.ofHertz(10));
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()"))))
+                .readListener(new PVReaderListener<VDouble>() {
+                    @Override
+                    public void pvChanged(PVReader<VDouble> pv) {
+                        notificationReceived = true;
+                        Exception ex = pv.lastException();
+                        if (ex == null) {
+                            pv.close();
+                            error = "Didn't get exception";
+                        }
+                        if (pv.lastException() != null) {
+                            pv.close();
+                            error = "Exception was not cleared";
+                        }
+                        if (!ex.getMessage().equals("Mistakes were made")) {
+                            pv.close();
+                            error = "Didn't get right exception";
+                        }
+                    }
+                })
+                .maxRate(TimeDuration.ofHertz(10));
         notificationReceived = false;
-
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                notificationReceived = true;
-                Exception ex = pv.lastException();
-                if (ex == null) {
-                    pv.close();
-                    error = "Didn't get exception";
-                }
-                if (pv.lastException() != null) {
-                    pv.close();
-                    error = "Exception was not cleared";
-                }
-                if (!ex.getMessage().equals("Mistakes were made")) {
-                    pv.close();
-                    error = "Didn't get right exception";
-                }
-            }
-        });
 
         Thread.sleep(1000);
         pv.close();
@@ -92,29 +91,28 @@ public class ErrorHandlingTest {
 
     @Test
     public void exceptionSourceRateFunction() throws Exception {
-        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()")))).maxRate(TimeDuration.ofHertz(10));
         notificationReceived = false;
-
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                notificationReceived = true;
-                Exception ex = pv.lastException();
-                if (ex == null) {
-                    pv.close();
-                    error = "Didn't get exception";
-                }
-                if (pv.lastException() != null) {
-                    pv.close();
-                    error = "Exception was not cleared";
-                }
-                if (!ex.getMessage().equals("Mistakes were made")) {
-                    pv.close();
-                    error = "Didn't get right exception";
-                }
-            }
-        });
+        final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()"))))
+                .readListener(new PVReaderListener<VDouble>() {
+                    @Override
+                    public void pvChanged(PVReader<VDouble> pv) {
+                        notificationReceived = true;
+                        Exception ex = pv.lastException();
+                        if (ex == null) {
+                            pv.close();
+                            error = "Didn't get exception";
+                        }
+                        if (pv.lastException() != null) {
+                            pv.close();
+                            error = "Exception was not cleared";
+                        }
+                        if (!ex.getMessage().equals("Mistakes were made")) {
+                            pv.close();
+                            error = "Didn't get right exception";
+                        }
+                    }
+                })
+                .maxRate(TimeDuration.ofHertz(10));
 
         Thread.sleep(1000);
         pv.close();

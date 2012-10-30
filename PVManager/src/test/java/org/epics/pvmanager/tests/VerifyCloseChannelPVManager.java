@@ -25,14 +25,14 @@ public class VerifyCloseChannelPVManager {
     public static void main(String[] args) throws Exception {
         //System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "20000000");
         PVManager.setDefaultDataSource(new SimulationDataSource());
-        final PVReader<Object> reader = PVManager.read(channel("gaussian()")).maxRate(TimeDuration.ofMillis(10));
-        reader.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                System.out.println("Monitor called");
-            }
-        });
+        final PVReader<Object> reader = PVManager.read(channel("gaussian()"))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        System.out.println("Monitor called");
+                    }
+                })
+                .maxRate(TimeDuration.ofMillis(10));
 	
 	Thread.sleep(10000);
         reader.close();

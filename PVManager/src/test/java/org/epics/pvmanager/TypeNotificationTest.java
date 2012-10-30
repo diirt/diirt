@@ -39,26 +39,26 @@ public class TypeNotificationTest {
         final AtomicInteger doubleCounter = new AtomicInteger();
         final AtomicInteger intCounter = new AtomicInteger();
 
-        PVReaderListener noTypeListener = new PVReaderListener() {
+        PVReaderListener<Object> noTypeListener = new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<Object> pvReader) {
                 noTypeCounter.incrementAndGet();
             }
         };
 
-        PVReaderListener doubleListener = new PVReaderListener() {
+        PVReaderListener<VDouble> doubleListener = new PVReaderListener<VDouble>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<VDouble> pvReader) {
                 doubleCounter.incrementAndGet();
             }
         };
 
-        PVReaderListener intListener = new PVReaderListener() {
+        PVReaderListener<VInt> intListener = new PVReaderListener<VInt>() {
 
             @Override
-            public void pvChanged(PVReader pvReader) {
+            public void pvChanged(PVReader<VInt> pvReader) {
                 intCounter.incrementAndGet();
             }
         };

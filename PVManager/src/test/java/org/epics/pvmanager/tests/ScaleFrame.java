@@ -52,14 +52,14 @@ public class ScaleFrame extends javax.swing.JFrame {
     private void addPV(final String name) {
         final JTextField field = new JTextField();
         getContentPane().add(field);
-        final PVReader<Object> pv = PVManager.read(channel(name)).maxRate(ofHertz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
-
-            @Override
-            public void pvChanged(PVReader pvReader) {
-                field.setText(format.format(pv.getValue()));
-            }
-        });
+        final PVReader<Object> pv = PVManager.read(channel(name))
+                .readListener(new PVReaderListener<Object>() {
+                    @Override
+                    public void pvChanged(PVReader<Object> pvReader) {
+                        field.setText(format.format(pvReader.getValue()));
+                    }
+                })
+                .maxRate(ofHertz(50));
         pvs.add(pv);
     }
 

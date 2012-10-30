@@ -18,18 +18,13 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class CounterTestListener implements PVReaderListener {
+public class CounterTestListener implements PVReaderListener<VInt> {
 
-    public CounterTestListener(PVReader<VInt> pv) {
-        this.pv = pv;
-    }
-    
-    private final PVReader<VInt> pv;
     private volatile int nextExpected = 0;
     private volatile boolean failed;
 
     @Override
-    public void pvChanged(PVReader pvReader) {
+    public void pvChanged(PVReader<VInt> pv) {
         if (pv.getValue() == null) {
             System.out.println("Fail: expected " + nextExpected + " was null");
             failed = true;

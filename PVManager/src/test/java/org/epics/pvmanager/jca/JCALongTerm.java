@@ -42,17 +42,17 @@ public class JCALongTerm {
             int index = rand.nextInt(names.size());
             PVReader<?> pv = pvs.get(index);
             if (pv == null) {
-                pv = PVManager.read(channel(names.get(index))).maxRate(ofHertz(rand.nextInt(20) + 1));
-                pv.addPVReaderListener(new PVReaderListener() {
-
-                    @Override
-                    public void pvChanged(PVReader pvReader) {
-                        int value = count.incrementAndGet();
-                        if (value % 1000 == 0) {
-                            System.out.println(System.currentTimeMillis());
-                        }
-                    }
-                });
+                pv = PVManager.read(channel(names.get(index)))
+                        .readListener(new PVReaderListener<Object>() {
+                            @Override
+                            public void pvChanged(PVReader<Object> pvReader) {
+                                int value = count.incrementAndGet();
+                                if (value % 1000 == 0) {
+                                    System.out.println(System.currentTimeMillis());
+                                }
+                            }
+                        })
+                        .maxRate(ofHertz(rand.nextInt(20) + 1));
                 pvs.set(index, pv);
             } else {
                 pv.close();
