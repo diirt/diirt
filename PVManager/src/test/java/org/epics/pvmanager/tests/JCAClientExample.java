@@ -108,7 +108,7 @@ public class JCAClientExample {
 
     private static void testVFloatArraySupport() throws Exception {
         PVReader<VFloatArray> pv = PVManager.read(vFloatArray(doublePV))
-                .listeners(new PVReaderListener<VFloatArray>() {
+                .readListener(new PVReaderListener<VFloatArray>() {
                     @Override
                     public void pvChanged(PVReader<VFloatArray> pv) {
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -123,7 +123,7 @@ public class JCAClientExample {
 
     private static void testVDoubleArraySupport() throws Exception {
         PVReader<VDoubleArray> pv = PVManager.read(vDoubleArray(doubleArrayPV))
-                .listeners(new PVReaderListener<VDoubleArray>() {
+                .readListener(new PVReaderListener<VDoubleArray>() {
                     @Override
                     public void pvChanged(PVReader<VDoubleArray> pv) {
                         logException(pv.lastException());
@@ -141,7 +141,7 @@ public class JCAClientExample {
 
     private static void testVByteArraySupport() throws Exception {
         PVReader<VByteArray> pv = PVManager.read(vByteArray(doublePV))
-                .listeners(new PVReaderListener<VByteArray>() {
+                .readListener(new PVReaderListener<VByteArray>() {
                     @Override
                     public void pvChanged(PVReader<VByteArray> pv) {
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -156,7 +156,7 @@ public class JCAClientExample {
 
     private static void testVShortArraySupport() throws Exception {
         final PVReader<VShortArray> pv = PVManager.read(vShortArray(doublePV))
-                .listeners(new PVReaderListener<VShortArray>() {
+                .readListener(new PVReaderListener<VShortArray>() {
                     @Override
                     public void pvChanged(PVReader<VShortArray> pv) {
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -171,7 +171,7 @@ public class JCAClientExample {
 
     private static void testVIntArraySupport() throws Exception {
         final PVReader<VIntArray> pv = PVManager.read(vIntArray(doublePV))
-                .listeners(new PVReaderListener<VIntArray>() {
+                .readListener(new PVReaderListener<VIntArray>() {
                     @Override
                     public void pvChanged(PVReader<VIntArray> pv) {
                         logException(pv.lastException());
@@ -187,7 +187,7 @@ public class JCAClientExample {
 
     private static void testVStringArraySupport() throws Exception {
         final PVReader<VStringArray> pv = PVManager.read(vStringArray(doublePV))
-                .listeners(new PVReaderListener<VStringArray>() {
+                .readListener(new PVReaderListener<VStringArray>() {
                     @Override
                     public void pvChanged(PVReader<VStringArray> pv) {
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -202,7 +202,7 @@ public class JCAClientExample {
 
     private static void testVDoubleSupport() throws Exception {
         final PVReader<VDouble> pv = PVManager.read(vDouble(doublePV))
-                .listeners(new PVReaderListener<VDouble>() {
+                .readListener(new PVReaderListener<VDouble>() {
                     @Override
                     public void pvChanged(PVReader<VDouble> pv) {
                         System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -217,7 +217,7 @@ public class JCAClientExample {
 
     private static void testVIntSupport() throws Exception {
             final PVReader<VInt> pv = PVManager.read(vInt(intPV))
-                .listeners(new PVReaderListener<VInt>() {
+                .readListener(new PVReaderListener<VInt>() {
                     @Override
                     public void pvChanged(PVReader<VInt> pv) {
                             System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -232,7 +232,7 @@ public class JCAClientExample {
 
     private static void testVStringSupport() throws Exception {
         final PVReader<VString> pv = PVManager.read(vString(stringPV))
-                .listeners(new PVReaderListener<VString>() {
+                .readListener(new PVReaderListener<VString>() {
 
                     @Override
                     public void pvChanged(PVReader<VString> pv) {
@@ -251,7 +251,7 @@ public class JCAClientExample {
 
     private static void testVEnumSupport() throws Exception {
         final PVReader<VEnum> pv = PVManager.read(vEnum(enumPV))
-                .listeners(new PVReaderListener<VEnum>() {
+                .readListener(new PVReaderListener<VEnum>() {
                     @Override
                     public void pvChanged(PVReader<VEnum> pv) {
                         logException(pv.lastException());

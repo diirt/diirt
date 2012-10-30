@@ -57,12 +57,10 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param listeners
      * @return 
      */
-    public PVReaderConfiguration<T> listeners(PVReaderListener<? super T>... listeners) {
-        for (PVReaderListener pVReaderListener : listeners) {
-            @SuppressWarnings("unchecked")
-            PVReaderListener<T> convertedListener = (PVReaderListener<T>) pVReaderListener;
-            readListeners.add(convertedListener);
-        }
+    public PVReaderConfiguration<T> readListener(PVReaderListener<? super T> listener) {
+        @SuppressWarnings("unchecked")
+        PVReaderListener<T> convertedListener = (PVReaderListener<T>) listener;
+        readListeners.add(convertedListener);
         return this;
     }
 

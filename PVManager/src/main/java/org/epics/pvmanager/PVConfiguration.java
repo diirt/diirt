@@ -67,8 +67,8 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         return this;
     }
     
-    public PVConfiguration<R, W>  listeners(PVReaderListener<? super R>... listeners) {
-        pvReaderConfiguration.listeners(listeners);
+    public PVConfiguration<R, W>  readListener(PVReaderListener<? super R> listener) {
+        pvReaderConfiguration.readListener(listener);
         return this;
     }
     
