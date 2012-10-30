@@ -41,7 +41,7 @@ public interface PVReader<T> {
      *
      * @param listener the old listener
      */
-    public void removePVReaderListener(PVReaderListener listener);
+    public void removePVReaderListener(PVReaderListener<? super T> listener);
 
     /**
      * Returns the name of the PVReader. This method is thread safe.

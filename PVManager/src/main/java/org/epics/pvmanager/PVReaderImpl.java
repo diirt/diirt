@@ -43,7 +43,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         this.notifyFirstListener = notifyFirstListener;
     }
 
-    private List<PVReaderListener> pvReaderListeners = new CopyOnWriteArrayList<PVReaderListener>();
+    private List<PVReaderListener<T>> pvReaderListeners = new CopyOnWriteArrayList<PVReaderListener<T>>();
     private final boolean notifyFirstListener;
     private volatile boolean missedNotification = false;
     
@@ -57,7 +57,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         lastExceptionToNotify = false;
         readConnectionToNotify = false;
         boolean missed = true;
-        for (PVReaderListener listener : pvReaderListeners) {
+        for (PVReaderListener<T> listener : pvReaderListeners) {
             listener.pvChanged(readerForNotification);
             missed = false;
         }
@@ -71,7 +71,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @param listener a new listener
      */
     @Override
-    public void addPVReaderListener(PVReaderListener listener) {
+    public void addPVReaderListener(PVReaderListener<? super T> listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -83,11 +83,13 @@ class PVReaderImpl<T> implements PVReader<T> {
         // arrives, but if the notification is done on the same thread
         // the notification would be lost.
         boolean notify = notifyFirstListener && missedNotification;
-        pvReaderListeners.add(listener);
+        @SuppressWarnings("unchecked")
+        PVReaderListener<T> convertedListener = (PVReaderListener<T>) listener;
+        pvReaderListeners.add(convertedListener);
         if (notify)
             firePvValueChanged();
     }
-
+    
     /**
      * Adds a listener to the value, which is notified only if the value is
      * of a given type. This method is thread safe.
@@ -101,7 +103,7 @@ class PVReaderImpl<T> implements PVReader<T> {
         pvReaderListeners.add(new ListenerDelegate<T>(clazz, listener));
     }
 
-    private class ListenerDelegate<T> implements PVReaderListener {
+    private class ListenerDelegate<T> implements PVReaderListener<T> {
 
         private Class<?> clazz;
         private PVReaderListener delegate;
@@ -142,7 +144,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @param listener the old listener
      */
     @Override
-    public void removePVReaderListener(PVReaderListener listener) {
+    public void removePVReaderListener(PVReaderListener<? super T> listener) {
         // Removing a delegate will cause the proper comparisons
         // so that it removes either the direct or the delegate
         pvReaderListeners.remove(new ListenerDelegate<T>(Object.class, listener));
