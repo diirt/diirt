@@ -4,39 +4,30 @@
  */
 package org.epics.pvmanager.test;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.CountDownPVReaderListener;
 import org.epics.pvmanager.CountDownPVWriterListener;
-import org.epics.pvmanager.PVWriterListener;
-import org.junit.Before;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.epics.pvmanager.DataSource;
+import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.MockPVWriteListener;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ReadFailException;
 import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.WriteFailException;
 import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
-import org.hamcrest.Matchers;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.MockPVWriteListener;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
-import static org.epics.pvmanager.ThreadTestingUtil.*;
+import org.epics.util.time.Timestamp;
+import static org.hamcrest.Matchers.*;
 import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
@@ -80,7 +71,6 @@ public class TestDataSourceTest {
     }
     
     private static DataSource dataSource;
-    @Mock PVReaderListener<Object> readListener;
     
     PV<Object, Object> pv;
     PVReader<Object> pvReader;
@@ -142,25 +132,24 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWrite() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).from(dataSource).async();
-        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
+        CountDownPVWriterListener listener = new CountDownPVWriterListener(1);
+        pvWriter = PVManager.write(channel("delayedWrite"))
+                .listeners(listener)
+                .from(dataSource).async();
         pvWriter.write("test");
-        
-        Thread.sleep(15);
+
+        listener.await(TimeDuration.ofMillis(15));
+        assertThat(listener.getCount(), equalTo(1));
         
         WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(0));
         
-        Thread.sleep(1100);
+        listener.await(TimeDuration.ofMillis(1100));
+        assertThat(listener.getCount(), equalTo(0));
+        listener.resetCount(1);
         
         ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(1));
-        
-        pvWriter.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
