@@ -8,7 +8,6 @@ import org.epics.pvmanager.CountDownPVReaderListener;
 import org.epics.pvmanager.CountDownPVWriterListener;
 import org.epics.pvmanager.DataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.MockPVWriteListener;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
@@ -24,10 +23,8 @@ import static org.hamcrest.Matchers.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 
 /**
  *
@@ -63,11 +60,6 @@ public class TestDataSourceTest {
     public static void tearDownClass() throws Exception {
         dataSource.close();
         dataSource = null;
-    }
-
-    @Before
-    public void initMocks() {
-        MockitoAnnotations.initMocks(this);
     }
     
     private static DataSource dataSource;
