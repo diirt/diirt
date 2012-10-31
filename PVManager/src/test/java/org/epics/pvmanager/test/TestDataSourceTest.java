@@ -153,38 +153,33 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout() throws Exception {
-        final PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
-        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
+        CountDownPVWriterListener writerListener = new CountDownPVWriterListener(1);
+        pvWriter = PVManager.write(channel("delayedWrite"))
+                .listeners(writerListener)
+                .timeout(ofMillis(500)).from(dataSource).async();
         pvWriter.write("test");
-        
-        Callable<TimeoutException> getWriteException = new Callable<TimeoutException>() {
 
-            @Override
-            public TimeoutException call() throws Exception {
-                return (TimeoutException) pvWriter.lastWriteException();
-            }
-        };
-        
-        TimeoutException ex = waitFor(getWriteException, TimeDuration.ofMillis(600)); 
+        writerListener.await(TimeDuration.ofMillis(600));
+        assertThat(writerListener.getCount(), equalTo(0));
+        writerListener.resetCount(1);
+        Exception ex = pvWriter.lastWriteException(); 
         assertThat(ex, not(nullValue()));
-        assertThat(writeListener.getCounter(), equalTo(1));
+        assertThat(ex, instanceOf(TimeoutException.class));
         
-        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
+        writerListener.await(TimeDuration.ofMillis(2000));
+        assertThat(writerListener.getCount(), equalTo(0));
+        ex = pvWriter.lastWriteException(); 
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(2));
-        
-        pvWriter.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
     public void delayedWriteWithTimeout2() throws Exception {
         // Test a write that happens 2 seconds late
         // Checks whether we get a timeout beforehand
-        pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
         CountDownPVWriterListener writerListener = new CountDownPVWriterListener(1);
-        pvWriter.addPVWriterListener(writerListener);
+        pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500))
+                .listeners(writerListener)
+                .from(dataSource).async();
         pvWriter.write("test");
 
         // Wait for the first notification, should be the timeout
@@ -219,6 +214,7 @@ public class TestDataSourceTest {
         writerListener.resetCount(1);
         ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
+        assertThat(ex, instanceOf(TimeoutException.class));
         
         writerListener.await(TimeDuration.ofMillis(2000));
         assertThat(writerListener.getCount(), equalTo(0));
