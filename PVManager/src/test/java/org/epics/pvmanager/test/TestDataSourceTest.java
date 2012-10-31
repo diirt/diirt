@@ -188,7 +188,7 @@ public class TestDataSourceTest {
         pvWriter.write("test");
 
         // Wait for the first notification, should be the timeout
-        writerListener.await(TimeDuration.ofMillis(1000));
+        writerListener.await(TimeDuration.ofMillis(600));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
         
