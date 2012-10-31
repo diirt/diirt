@@ -91,6 +91,8 @@ public abstract class DataSource {
     // The executor used by the data source to perform asynchronous operations,
     // such as connections and writes. I am current using a single thread for
     // all data sources, which can be changed if needed.
+    // Since it's a single executor for all data sources, it should not be
+    // shut down at data source close.
     private static ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("PVMgr DataSource Worker "));
     
     // Keeps track of the recipes and buffers that were opened with
@@ -108,22 +110,50 @@ public abstract class DataSource {
      * @param recipe the instructions for the data connection
      */
     public void connect(final DataRecipe recipe) {
+        // Add the recipe first, so that if a problem comes out
+        // while processing the request, we still keep
+        // track of it.
+        recipes.add(recipe);
+
+        // Let's go through all the recipes first, so if something
+        // breaks unexpectadely, either everything works or nothing works
+        final Map<ChannelHandler, ChannelRecipe> handlersWithSubscriptions =
+                new HashMap<ChannelHandler, ChannelRecipe>();
         for (final ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
-            String channelName = channelRecipe.getChannelName();
-            final ChannelHandler channelHandler = channel(channelName);
-            if (channelHandler == null) {
-                throw new ReadFailException();
+            try {
+                String channelName = channelRecipe.getChannelName();
+                ChannelHandler channelHandler = channel(channelName);
+                if (channelHandler == null) {
+                    throw new ReadFailException("Channel named '" + channelName + "' not found");
+                }
+                handlersWithSubscriptions.put(channelHandler, channelRecipe);
+            } catch (Exception ex) {
+                // If any error happens while creating the channel,
+                // report it to the exception handler of that channel
+                channelRecipe.getReadSubscription().getHandler().handleException(ex);
             }
             
-            exec.execute(new Runnable() {
-
-                @Override
-                public void run() {
-                    channelHandler.addMonitor(channelRecipe.getReadSubscription());
-                }
-            });
         }
-        recipes.add(recipe);
+        
+        // Now that we went through all channels,
+        // add a monitor to the ones that were found
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                for (Map.Entry<ChannelHandler, ChannelRecipe> entry : handlersWithSubscriptions.entrySet()) {
+                    ChannelHandler channelHandler = entry.getKey();
+                    ChannelRecipe channelRecipe = entry.getValue();
+                    try {
+                        channelHandler.addMonitor(channelRecipe.getReadSubscription());
+                    } catch(Exception ex) {
+                        // If an error happens while adding the read subscription,
+                        // notify the appropriate handler
+                        channelRecipe.getReadSubscription().getHandler().handleException(ex);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -297,7 +327,6 @@ public abstract class DataSource {
      * Closes the DataSource and the resources associated with it.
      */
     public void close() {
-        exec.shutdown();
     }
     
 }
