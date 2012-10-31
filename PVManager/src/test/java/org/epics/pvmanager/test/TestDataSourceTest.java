@@ -51,7 +51,7 @@ public class TestDataSourceTest {
         TimeDuration timeout = ofMillis(5000);
         TimeInterval timeoutInterval = timeout.after(Timestamp.now());
         while (timeoutInterval.contains(Timestamp.now())) {
-            if (!source.getChannels().get(channelName).isConnected()) {
+            if (source.getChannels().get(channelName) == null || !source.getChannels().get(channelName).isConnected()) {
                 return;
             }
             try {
@@ -94,6 +94,8 @@ public class TestDataSourceTest {
         if (pvWriter != null) {
             pvWriter.close();
         }
+
+        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
@@ -178,44 +180,50 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout2() throws Exception {
-        final PVWriter<Object> pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
-        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
+        // Test a write that happens 2 seconds late
+        // Checks whether we get a timeout beforehand
+        pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500)).from(dataSource).async();
+        CountDownPVWriterListener writerListener = new CountDownPVWriterListener(1);
+        pvWriter.addPVWriterListener(writerListener);
         pvWriter.write("test");
-        
-        Callable<TimeoutException> getWriteException = new Callable<TimeoutException>() {
 
-            @Override
-            public TimeoutException call() throws Exception {
-                return (TimeoutException) pvWriter.lastWriteException();
-            }
-        };
+        // Wait for the first notification, should be the timeout
+        writerListener.await(TimeDuration.ofMillis(1000));
+        assertThat(writerListener.getCount(), equalTo(0));
+        writerListener.resetCount(1);
         
-        TimeoutException ex = waitFor(getWriteException, TimeDuration.ofMillis(600)); 
+        Exception ex = pvWriter.lastWriteException(); 
         assertThat(ex, not(nullValue()));
-        assertThat(writeListener.getCounter(), equalTo(1));
+        assertThat(ex, instanceOf(TimeoutException.class));
+
+        // Wait for the second notification, should be
+        // the success notification
+        writerListener.await(TimeDuration.ofMillis(2000));
+        assertThat(writerListener.getCount(), equalTo(0));
+        writerListener.resetCount(1);
         
-        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
+        ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(2));
         
         // Write again
         pvWriter.write("test2");
         
-        ex = waitFor(getWriteException, TimeDuration.ofMillis(400)); 
+        // Wait for a notification: should not come
+        writerListener.await(TimeDuration.ofMillis(400));
+        assertThat(writerListener.getCount(), equalTo(1));
+        ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(2));
         
-        ex = waitFor(getWriteException, TimeDuration.ofMillis(200)); 
+        writerListener.await(TimeDuration.ofMillis(200));
+        assertThat(writerListener.getCount(), equalTo(0));
+        writerListener.resetCount(1);
+        ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
-        assertThat(writeListener.getCounter(), equalTo(3));
         
-        ex = waitFor(getWriteException, TimeDuration.ofMillis(2000)); 
+        writerListener.await(TimeDuration.ofMillis(2000));
+        assertThat(writerListener.getCount(), equalTo(0));
+        ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        assertThat(writeListener.getCounter(), equalTo(4));
-        
-        pvWriter.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedWrite");
     }
     
     @Test
