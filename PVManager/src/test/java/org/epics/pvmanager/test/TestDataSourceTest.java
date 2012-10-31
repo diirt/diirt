@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.CountDownPVReaderListener;
+import org.epics.pvmanager.CountDownPVWriterListener;
 import org.epics.pvmanager.PVWriterListener;
 import org.junit.Before;
 import org.mockito.Mock;
@@ -82,10 +83,17 @@ public class TestDataSourceTest {
     @Mock PVReaderListener<Object> readListener;
     
     PVReader<Object> pvReader;
+    PVWriter<Object> pvWriter;
+    
     @After
     public void closePVs() {
-        if (pvReader != null)
+        if (pvReader != null) {
             pvReader.close();
+        }
+        
+        if (pvWriter != null) {
+            pvWriter.close();
+        }
     }
     
     @Test
@@ -105,15 +113,17 @@ public class TestDataSourceTest {
     
     @Test
     public void channelDoesNotExist2() throws Exception {
-        PVWriter<Object> pvWriter = PVManager.write(channel("nothing")).from(dataSource).async();
-        MockPVWriteListener<Object> writeListener = MockPVWriteListener.addPVWriteListener(pvWriter);
-        
-        Thread.sleep(15);
+        // Requesting a channel that does not exist
+        // Making sure that the excecption is properly notified
+        CountDownPVWriterListener listener = new CountDownPVWriterListener(1);
+        pvWriter = PVManager.write(channel("nothing"))
+                .listeners(listener)
+                .from(dataSource).async();
+
+        listener.await(TimeDuration.ofMillis(100));
         
         WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
-        assertThat(writeListener.getCounter(), equalTo(1));
-        pvWriter.close();
     }
     
     @Test
