@@ -229,31 +229,30 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadConnectionWithTimeout() throws Exception {
-        PVReader<Object> pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500)).from(dataSource).maxRate(ofMillis(50));
-        pvReader.addPVReaderListener(readListener);
+        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1);
+        pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500))
+                .readListener(readListener)
+                .from(dataSource).maxRate(ofMillis(50));
         
-        Thread.sleep(50);
+        readListener.await(TimeDuration.ofMillis(50));
+        assertThat(readListener.getCount(), equalTo(1));
         
         TimeoutException ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged(pvReader);
         
-        Thread.sleep(600);
+        readListener.await(TimeDuration.ofMillis(600));
+        assertThat(readListener.getCount(), equalTo(0));
+        readListener.resetCount(1);
         
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
-        verify(readListener).pvChanged(pvReader);
         
-        Thread.sleep(600);
+        readListener.await(TimeDuration.ofMillis(600));
+        assertThat(readListener.getCount(), equalTo(0));
         
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, times(2)).pvChanged(pvReader);
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
-        
-        pvReader.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedConnection");
     }
     
     @Test
