@@ -83,6 +83,7 @@ public class TestDataSourceTest {
     @Mock PVReaderListener<Object> readListener;
     
     PVReader<Object> pvReader;
+    PVReader<Object> pvReader2;
     PVWriter<Object> pvWriter;
     
     @After
@@ -90,12 +91,16 @@ public class TestDataSourceTest {
         if (pvReader != null) {
             pvReader.close();
         }
+        if (pvReader2 != null) {
+            pvReader2.close();
+        }
         
         if (pvWriter != null) {
             pvWriter.close();
         }
 
         waitForChannelToClose(dataSource, "delayedWrite");
+        waitForChannelToClose(dataSource, "delayedConnection");
     }
     
     @Test
@@ -313,34 +318,34 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedMultipleReadWithConnectionError() throws Exception {
-        PVReader<Object> pv1 = PVManager.read(channel("delayedConnectionError")).from(dataSource).maxRate(ofMillis(50));
-        pv1.addPVReaderListener(readListener);
-        PVReader<Object> pv2 = PVManager.read(channel("delayedConnectionError")).from(dataSource).maxRate(ofMillis(50));
-        pv2.addPVReaderListener(readListener);
+        CountDownPVReaderListener readListener1 = new CountDownPVReaderListener(1);
+        CountDownPVReaderListener readListener2 = new CountDownPVReaderListener(1);
+        pvReader = PVManager.read(channel("delayedConnectionError"))
+                .readListener(readListener1)
+                .from(dataSource).maxRate(ofMillis(50));
+        pvReader2 = PVManager.read(channel("delayedConnectionError"))
+                .readListener(readListener2)
+                .from(dataSource).maxRate(ofMillis(50));
         
         Thread.sleep(50);
         
-        RuntimeException ex = (RuntimeException) pv1.lastException();
+        RuntimeException ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged(pv1);
-        ex = (RuntimeException) pv2.lastException();
+        assertThat(readListener1.getCount(), equalTo(1));
+        ex = (RuntimeException) pvReader2.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged(pv1);
+        assertThat(readListener2.getCount(), equalTo(1));
         
-        Thread.sleep(1100);
+        readListener1.await(TimeDuration.ofMillis(1500));
+        readListener1.resetCount(1);
+        readListener2.await(TimeDuration.ofMillis(1500));
+        readListener2.resetCount(1);
         
-        ex = (RuntimeException) pv1.lastException();
+        ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, instanceOf(RuntimeException.class));
         assertThat(ex.getMessage(), equalTo("Connection error"));
-        ex = (RuntimeException) pv2.lastException();
+        ex = (RuntimeException) pvReader2.lastException();
         assertThat(ex, instanceOf(RuntimeException.class));
         assertThat(ex.getMessage(), equalTo("Connection error"));
-        verify(readListener, times(1)).pvChanged(pv1);
-        verify(readListener, times(1)).pvChanged(pv2);
-        
-        pv1.close();
-        pv2.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedConnection");
     }
 }

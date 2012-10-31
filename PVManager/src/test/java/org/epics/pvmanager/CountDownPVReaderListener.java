@@ -15,7 +15,7 @@ import org.epics.util.time.TimeDuration;
  */
 public class CountDownPVReaderListener implements PVReaderListener<Object> {
 
-    private final CountDownLatch latch;
+    private volatile CountDownLatch latch;
     
     public CountDownPVReaderListener(int count) {
         latch = new CountDownLatch(count);
@@ -24,6 +24,24 @@ public class CountDownPVReaderListener implements PVReaderListener<Object> {
     @Override
     public void pvChanged(PVReader<Object> pvReader) {
         latch.countDown();
+    }
+
+    /**
+     * Changes the count back to count.
+     * 
+     * @param count new value for count
+     */
+    public void resetCount(int count) {
+        latch = new CountDownLatch(count);
+    }
+    
+    /**
+     * Current count.
+     * 
+     * @return current count
+     */
+    public int getCount() {
+        return (int) latch.getCount();
     }
     
     /**
