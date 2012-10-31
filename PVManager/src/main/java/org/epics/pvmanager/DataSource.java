@@ -198,13 +198,23 @@ public abstract class DataSource {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
+        // Register right away, so that if a failure happen
+        // we still keep track of it
+        registeredBuffers.add(writeBuffer);
+        
+        // Let's go through the whole request first, so if something
+        // breaks unexpectadely, either everything works or nothing works
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
         for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
-            String channelName = channelWriteBuffer.getChannelName();
-            ChannelHandler handler = channel(channelName);
-            if (handler == null)
-                throw new WriteFailException("Channel " + channelName + " does not exist");
-            handlers.put(handler, channelWriteBuffer.getWriteSubscription());
+            try {
+                String channelName = channelWriteBuffer.getChannelName();
+                ChannelHandler handler = channel(channelName);
+                if (handler == null)
+                    throw new WriteFailException("Channel " + channelName + " does not exist");
+                handlers.put(handler, channelWriteBuffer.getWriteSubscription());
+            } catch (Exception ex) {
+                channelWriteBuffer.getWriteSubscription().getHandler().handleException(ex);
+            }
         }
 
         // Connect using another thread
@@ -213,13 +223,18 @@ public abstract class DataSource {
             @Override
             public void run() {
                 for (Map.Entry<ChannelHandler, ChannelHandlerWriteSubscription> entry : handlers.entrySet()) {
-                    ChannelHandler channelHandler = entry.getKey();
-                    ChannelHandlerWriteSubscription subscription = entry.getValue();
-                    channelHandler.addWriter(subscription);
+                    try {
+                        ChannelHandler channelHandler = entry.getKey();
+                        ChannelHandlerWriteSubscription subscription = entry.getValue();
+                        channelHandler.addWriter(subscription);
+                    } catch (Exception ex) {
+                        // If an error happens while adding the write subscription,
+                        // notify the appropriate handler
+                        entry.getValue().getHandler().handleException(ex);
+                    }
                 }
             }
         });
-        registeredBuffers.add(writeBuffer);
     }
     
     /**
