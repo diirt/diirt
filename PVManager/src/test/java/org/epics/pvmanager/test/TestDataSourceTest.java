@@ -82,21 +82,28 @@ public class TestDataSourceTest {
     private static DataSource dataSource;
     @Mock PVReaderListener<Object> readListener;
     
+    PV<Object, Object> pv;
     PVReader<Object> pvReader;
     PVReader<Object> pvReader2;
     PVWriter<Object> pvWriter;
     
     @After
     public void closePVs() {
+        if (pv != null) {
+            pv.close();
+            pv = null;
+        }
         if (pvReader != null) {
             pvReader.close();
+            pvReader = null;
         }
         if (pvReader2 != null) {
             pvReader2.close();
+            pvReader2 = null;
         }
-        
         if (pvWriter != null) {
             pvWriter.close();
+            pvWriter = null;
         }
 
         waitForChannelToClose(dataSource, "delayedWrite");
@@ -257,31 +264,32 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadOnPVWithTimeout() throws Exception {
-        PV<Object, Object> pv = PVManager.readAndWrite(channel("delayedConnection")).timeout(ofMillis(500)).from(dataSource).asynchWriteAndMaxReadRate(ofMillis(50));
-        pv.addPVReaderListener(readListener);
-        
-        Thread.sleep(50);
+        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1);
+        pv = PVManager.readAndWrite(channel("delayedConnection"))
+                .timeout(ofMillis(500))
+                .readListener(readListener)
+                .from(dataSource)
+                .asynchWriteAndMaxReadRate(ofMillis(50));
+
+        readListener.await(TimeDuration.ofMillis(50));
+        assertThat(readListener.getCount(), equalTo(1));
         
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, never()).pvChanged(pv);
         
-        Thread.sleep(600);
+        readListener.await(TimeDuration.ofMillis(600));
+        assertThat(readListener.getCount(), equalTo(0));
+        readListener.resetCount(1);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
-        verify(readListener).pvChanged(pv);
         
-        Thread.sleep(600);
+        readListener.await(TimeDuration.ofMillis(600));
+        assertThat(readListener.getCount(), equalTo(0));
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        verify(readListener, times(2)).pvChanged(pv);
         assertThat((String) pv.getValue(), equalTo("Initial value"));
-        
-        pv.close();
-        Thread.sleep(30);
-        waitForChannelToClose(dataSource, "delayedConnection");
     }
     
     @Test
