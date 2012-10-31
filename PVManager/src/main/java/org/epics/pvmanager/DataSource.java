@@ -176,10 +176,12 @@ public abstract class DataSource {
             Collector<?> collector = channelRecipe.getReadSubscription().getCollector();
             String channelName = channelRecipe.getChannelName();
             ChannelHandler channelHandler = usedChannels.get(channelName);
-            if (channelHandler == null) {
-                log.log(Level.WARNING, "Channel {0} should have been connected, but is not found during disconnection. Ignoring it.", channelName);
+            // If the channel is not found, it means it was not found during
+            // connection and a proper notification was sent then. Silently
+            // ignore it.
+            if (channelHandler != null) {
+                channelHandler.removeMonitor(collector);
             }
-            channelHandler.removeMonitor(collector);
         }
 
         recipes.remove(recipe);
@@ -257,9 +259,20 @@ public abstract class DataSource {
         registeredBuffers.remove(writeBuffer);
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
         for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
-            String channelName = channelWriteBuffer.getChannelName();
-            ChannelHandler handler = channel(channelName);
-            handlers.put(handler, channelWriteBuffer.getWriteSubscription());
+            try {
+                String channelName = channelWriteBuffer.getChannelName();
+                ChannelHandler handler = channel(channelName);
+                // If the channel does not exist, simply skip it: it must have
+                // not be there while preparing the write, so an appropriate
+                // notification has already been sent
+                if (handler != null) {
+                    handlers.put(handler, channelWriteBuffer.getWriteSubscription());
+                }
+            } catch (Exception ex) {
+                // No point in sending the exception through the exception handler:
+                // nothing will be listening by now. Just log the exception
+                log.log(Level.WARNING, "Error while preparing channel '" + channelWriteBuffer.getChannelName() + "' for closing.", ex);
+            }
         }
 
         // Connect using another thread
