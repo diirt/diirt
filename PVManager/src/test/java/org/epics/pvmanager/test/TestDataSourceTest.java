@@ -7,6 +7,7 @@ package org.epics.pvmanager.test;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import org.epics.pvmanager.CountDownPVReaderListener;
 import org.epics.pvmanager.PVWriterListener;
 import org.junit.Before;
 import org.mockito.Mock;
@@ -34,6 +35,7 @@ import org.epics.pvmanager.MockPVWriteListener;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
 import static org.epics.pvmanager.ThreadTestingUtil.*;
+import org.junit.After;
 
 /**
  *
@@ -67,6 +69,7 @@ public class TestDataSourceTest {
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        dataSource.close();
         dataSource = null;
     }
 
@@ -78,25 +81,26 @@ public class TestDataSourceTest {
     private static DataSource dataSource;
     @Mock PVReaderListener<Object> readListener;
     
+    PVReader<Object> pvReader;
+    @After
+    public void closePVs() {
+        if (pvReader != null)
+            pvReader.close();
+    }
+    
     @Test
     public void channelDoesNotExist1() throws Exception {
-        final CountDownLatch latch = new CountDownLatch(1);
-        PVReader<Object> pvReader = PVManager.read(channel("nothing")).from(dataSource).maxRate(ofMillis(10));
-        pvReader.addPVReaderListener(new PVReaderListener<Object>() {
-
-            @Override
-            public void pvChanged(PVReader<Object> pvReader) {
-                latch.countDown();
-            }
-        });
+        // Requesting a channel that does not exist
+        // Making sure that the exception is properly notified
+        CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
+        pvReader = PVManager.read(channel("nothing"))
+                .readListener(listener)
+                .from(dataSource).maxRate(ofMillis(10));
         
-        if (!latch.await(100, TimeUnit.MILLISECONDS)) {
-            fail("No callback before timeout");
-        }
+        listener.await(TimeDuration.ofMillis(100));
         
         ReadFailException ex = (ReadFailException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
-        pvReader.close();
     }
     
     @Test
