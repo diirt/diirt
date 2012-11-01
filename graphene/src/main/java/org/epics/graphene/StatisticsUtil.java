@@ -75,7 +75,7 @@ public class StatisticsUtil {
         if (!iterator.hasNext()) {
             return null;
         }
-        int count = data.size();
+        int count = 0;
         double min = iterator.nextDouble();
         while (Double.isNaN(min)) {
             if (!iterator.hasNext()) {
@@ -87,6 +87,7 @@ public class StatisticsUtil {
         double max = min;
         double total = min;
         double totalSquare = min*min;
+        count++;
         
         while (iterator.hasNext()) {
             double value = iterator.nextDouble();
@@ -97,6 +98,7 @@ public class StatisticsUtil {
                     min = value;
                 total += value;
                 totalSquare += value*value;
+                count++;
             }
         }
         

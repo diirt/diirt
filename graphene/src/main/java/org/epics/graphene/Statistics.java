@@ -9,6 +9,11 @@
 package org.epics.graphene;
 
 /**
+ * The statistics of a given series of numbers. For the purpose of 
+ * statistics calulations, NaNs should be skipped. That is,
+ * they should not appear as minimum, maximum, average or stdDev, and shouldn't
+ * even be included in the count. The number of elements (including NaNs)
+ * will be available from the number set itself.
  *
  * @author carcassi
  */
