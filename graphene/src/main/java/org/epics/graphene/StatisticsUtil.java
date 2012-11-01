@@ -116,13 +116,18 @@ public class StatisticsUtil {
         if (!iterator.hasNext()) {
             return null;
         }
-        Statistics first = iterator.next();
+        Statistics first = null;
+        while (first == null && iterator.hasNext()) {
+            first = iterator.next();
+        }
+        if (first == null)
+            return null;
         
         int count = first.getCount();
         double min = first.getMinimum().doubleValue();
-        double max = first.getMinimum().doubleValue();
+        double max = first.getMaximum().doubleValue();
         double total = first.getAverage() * first.getCount();
-        double totalSquare = first.getStdDev() * first.getStdDev() * first.getCount() + first.getAverage() * first.getAverage();
+        double totalSquare = (first.getStdDev() * first.getStdDev() + first.getAverage() * first.getAverage()) * first.getCount();
         
         while (iterator.hasNext()) {
             Statistics stats = iterator.next();
@@ -131,7 +136,7 @@ public class StatisticsUtil {
             if (stats.getMinimum().doubleValue() < min)
                 min = stats.getMinimum().doubleValue();
             total += stats.getAverage() * stats.getCount();
-            totalSquare += stats.getStdDev() * stats.getStdDev() * stats.getCount() + stats.getAverage() * stats.getAverage();
+            totalSquare += ( stats.getStdDev() * stats.getStdDev() + stats.getAverage() * stats.getAverage() ) * stats.getCount();
             count += stats.getCount();
         }
         

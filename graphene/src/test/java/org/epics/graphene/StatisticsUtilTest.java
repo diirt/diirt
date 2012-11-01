@@ -5,6 +5,7 @@
 package org.epics.graphene;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
 import org.junit.Test;
@@ -55,6 +56,17 @@ public class StatisticsUtilTest {
     @Test
     public void statisticsOf4() {
         Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, Double.NaN, -1, 7));
+        assertThat(stats.getAverage(), equalTo(3.0));
+        assertThat(stats.getStdDev(), equalTo(2.8284271247461903));
+        assertThat(stats.getMinimum(), equalTo((Number) (-1.0)));
+        assertThat(stats.getMaximum(), equalTo((Number) 7.0));
+        assertThat(stats.getCount(), equalTo(5));
+    }
+    
+    @Test
+    public void statisticsOf5() {
+        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, -1, 7));
+        stats = StatisticsUtil.statisticsOf(Arrays.asList(stats));
         assertThat(stats.getAverage(), equalTo(3.0));
         assertThat(stats.getStdDev(), equalTo(2.8284271247461903));
         assertThat(stats.getMinimum(), equalTo((Number) (-1.0)));
