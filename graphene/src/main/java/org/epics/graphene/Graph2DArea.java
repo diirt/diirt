@@ -37,5 +37,7 @@ public interface Graph2DArea {
     List<String> getYTicksLabels();
     Font getYTicksFont();
     Color getYTicksFontColor();
+    double getYTickSize();
+    double getYTickMargin();
      
 }

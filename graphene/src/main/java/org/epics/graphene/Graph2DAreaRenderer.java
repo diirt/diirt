@@ -38,6 +38,18 @@ public class Graph2DAreaRenderer {
             Shape line = new Line2D.Double(data.getStartX(), yTicks.getDouble(i), data.getEndX(), yTicks.getDouble(i));
             g.draw(line);
         }
+
+        // Draw Y labels
+        //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setColor(data.getYTicksFontColor());
+        g.setFont(data.getYTicksFont());
+        FontMetrics metrics = g.getFontMetrics();
+        for (int i = 0; i < data.getYTicksLabels().size(); i++) {
+            String label = data.getYTicksLabels().get(i);
+            int halfHeight = (metrics.getAscent()) / 2 - 1;
+            int labelWidth = metrics.stringWidth(label);
+            g.drawString(label, (float) (data.getStartX() - labelWidth - data.getYTickMargin() - data.getYTickSize()), (float) Math.floor(yTicks.getDouble(i) + halfHeight));
+        }
         
     }
 
