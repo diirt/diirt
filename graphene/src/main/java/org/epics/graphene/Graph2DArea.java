@@ -4,13 +4,18 @@
  */
 package org.epics.graphene;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.util.List;
+import org.epics.util.array.ListNumber;
+
 /**
  *
  * @author carcassi
  */
 public interface Graph2DArea {
     
-    int getBackgroundColor();
+    Color getBackgroundColor();
     
     int getWidth();
     int getHeight();
@@ -24,4 +29,13 @@ public interface Graph2DArea {
     double getEndY();
     double getStartYValue();
     double getEndYValue();
+    
+    ListNumber getXTicks();
+    
+    ListNumber getYTicks();
+    ListNumber getYTicksValues();
+    List<String> getYTicksLabels();
+    Font getYTicksFont();
+    Color getYTicksFontColor();
+     
 }
