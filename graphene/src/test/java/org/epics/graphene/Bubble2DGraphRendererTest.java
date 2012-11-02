@@ -7,6 +7,7 @@ package org.epics.graphene;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.epics.util.array.ArrayDouble;
@@ -54,4 +55,36 @@ public class Bubble2DGraphRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("bubble2D.1", image);
     }
+//    
+//    @Test
+//    public void test2() throws Exception {
+//        ArrayDouble x = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+//        ArrayDouble y = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+//        ArrayDouble z = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+//        List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
+//                "First", "Second", "Third", "Fourth", "Fifth");
+//        
+//        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
+//        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
+//        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(600, 399);
+//        Graphics2D graphics = (Graphics2D) image.getGraphics();
+//        renderer.draw(graphics, data);
+//        ImageAssert.compareImages("bubble2D.2", image);
+//    }
+//    
+//    @Test
+//    public void test3() throws Exception {
+//        ArrayDouble x = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+//        ArrayDouble y = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+//        ArrayDouble z = new ArrayDouble(1,4,9,16,25,36,49,64,81,100);
+//        List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
+//                "First", "Second", "Third", "Fourth", "Fifth");
+//        
+//        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
+//        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
+//        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(600, 400);
+//        Graphics2D graphics = (Graphics2D) image.getGraphics();
+//        renderer.draw(graphics, data);
+//        ImageAssert.compareImages("bubble2D.3", image);
+//    }
 }
