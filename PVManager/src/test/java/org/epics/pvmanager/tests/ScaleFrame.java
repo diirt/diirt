@@ -23,6 +23,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 
@@ -55,8 +56,8 @@ public class ScaleFrame extends javax.swing.JFrame {
         final PVReader<Object> pv = PVManager.read(channel(name))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
-                        field.setText(format.format(pvReader.getValue()));
+                    public void pvChanged(PVReaderEvent<Object> event) {
+                        field.setText(format.format(event.getPvReader().getValue()));
                     }
                 })
                 .maxRate(ofHertz(50));

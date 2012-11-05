@@ -5,7 +5,6 @@
 package org.epics.pvmanager.tests;
 
 import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import java.util.Arrays;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.VString;
@@ -20,8 +19,8 @@ import org.epics.pvmanager.data.VFloatArray;
 import org.epics.pvmanager.data.VIntArray;
 import org.epics.pvmanager.data.VShortArray;
 import org.epics.pvmanager.data.VStringArray;
-import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import static org.epics.util.time.TimeDuration.*;
@@ -110,7 +109,8 @@ public class JCAClientExample {
         PVReader<VFloatArray> pv = PVManager.read(vFloatArray(doublePV))
                 .readListener(new PVReaderListener<VFloatArray>() {
                     @Override
-                    public void pvChanged(PVReader<VFloatArray> pv) {
+                    public void pvChanged(PVReaderEvent<VFloatArray> event) {
+                        PVReader<VFloatArray> pv = event.getPvReader();
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -125,7 +125,8 @@ public class JCAClientExample {
         PVReader<VDoubleArray> pv = PVManager.read(vDoubleArray(doubleArrayPV))
                 .readListener(new PVReaderListener<VDoubleArray>() {
                     @Override
-                    public void pvChanged(PVReader<VDoubleArray> pv) {
+                    public void pvChanged(PVReaderEvent<VDoubleArray> event) {
+                        PVReader<VDoubleArray> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
                             System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -143,7 +144,8 @@ public class JCAClientExample {
         PVReader<VByteArray> pv = PVManager.read(vByteArray(doublePV))
                 .readListener(new PVReaderListener<VByteArray>() {
                     @Override
-                    public void pvChanged(PVReader<VByteArray> pv) {
+                    public void pvChanged(PVReaderEvent<VByteArray> event) {
+                        PVReader<VByteArray> pv = event.getPvReader();
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -158,7 +160,8 @@ public class JCAClientExample {
         final PVReader<VShortArray> pv = PVManager.read(vShortArray(doublePV))
                 .readListener(new PVReaderListener<VShortArray>() {
                     @Override
-                    public void pvChanged(PVReader<VShortArray> pv) {
+                    public void pvChanged(PVReaderEvent<VShortArray> event) {
+                        PVReader<VShortArray> pv = event.getPvReader();
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -173,7 +176,8 @@ public class JCAClientExample {
         final PVReader<VIntArray> pv = PVManager.read(vIntArray(doublePV))
                 .readListener(new PVReaderListener<VIntArray>() {
                     @Override
-                    public void pvChanged(PVReader<VIntArray> pv) {
+                    public void pvChanged(PVReaderEvent<VIntArray> event) {
+                        PVReader<VIntArray> pv = event.getPvReader();
                         logException(pv.lastException());
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
@@ -189,7 +193,8 @@ public class JCAClientExample {
         final PVReader<VStringArray> pv = PVManager.read(vStringArray(doublePV))
                 .readListener(new PVReaderListener<VStringArray>() {
                     @Override
-                    public void pvChanged(PVReader<VStringArray> pv) {
+                    public void pvChanged(PVReaderEvent<VStringArray> event) {
+                        PVReader<VStringArray> pv = event.getPvReader();
                         System.out.println(Arrays.toString(pv.getValue().getArray()) + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -204,7 +209,8 @@ public class JCAClientExample {
         final PVReader<VDouble> pv = PVManager.read(vDouble(doublePV))
                 .readListener(new PVReaderListener<VDouble>() {
                     @Override
-                    public void pvChanged(PVReader<VDouble> pv) {
+                    public void pvChanged(PVReaderEvent<VDouble> event) {
+                        PVReader<VDouble> pv = event.getPvReader();
                         System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -219,7 +225,8 @@ public class JCAClientExample {
             final PVReader<VInt> pv = PVManager.read(vInt(intPV))
                 .readListener(new PVReaderListener<VInt>() {
                     @Override
-                    public void pvChanged(PVReader<VInt> pv) {
+                    public void pvChanged(PVReaderEvent<VInt> event) {
+                        PVReader<VInt> pv = event.getPvReader();
                             System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
                     }
                 })
@@ -235,7 +242,8 @@ public class JCAClientExample {
                 .readListener(new PVReaderListener<VString>() {
 
                     @Override
-                    public void pvChanged(PVReader<VString> pv) {
+                    public void pvChanged(PVReaderEvent<VString> event) {
+                        PVReader<VString> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
                             System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());
@@ -253,7 +261,8 @@ public class JCAClientExample {
         final PVReader<VEnum> pv = PVManager.read(vEnum(enumPV))
                 .readListener(new PVReaderListener<VEnum>() {
                     @Override
-                    public void pvChanged(PVReader<VEnum> pv) {
+                    public void pvChanged(PVReaderEvent<VEnum> event) {
+                        PVReader<VEnum> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
                             System.out.println(pv.getValue().getValue() + " " + pv.getValue().getTimestamp().toDate() + " " + pv.getValue().getAlarmSeverity());

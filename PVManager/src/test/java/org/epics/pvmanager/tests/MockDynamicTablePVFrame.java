@@ -31,6 +31,7 @@ import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.extra.DynamicGroup;
 import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -57,7 +58,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             pv.addPVReaderListener(new PVReaderListener<List<Object>>() {
 
                 @Override
-                public void pvChanged(PVReader<List<Object>> pvReader) {
+                public void pvChanged(PVReaderEvent<List<Object>> event) {
                     latestValue = pv.getValue();
                     latestExceptions = group.lastExceptions();
                     fireTableRowsUpdated(0, getRowCount());

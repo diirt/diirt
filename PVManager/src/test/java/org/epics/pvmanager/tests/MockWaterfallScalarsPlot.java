@@ -20,13 +20,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.extra.WaterfallPlotParameters;
-import org.epics.util.time.TimeDuration;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
@@ -231,7 +231,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
         pv = PVManager.read(plot)
                 .readListener(new PVReaderListener<VImage>() {
                     @Override
-                    public void pvChanged(PVReader<VImage> pvReader) {
+                    public void pvChanged(PVReaderEvent<VImage> event) {
                         setLastError(pv.lastException());
                         if (pv.getValue() != null) {
                             BufferedImage image = ValueUtil.toImage(pv.getValue());

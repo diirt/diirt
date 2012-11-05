@@ -4,19 +4,12 @@
  */
 package org.epics.pvmanager.jca;
 
-import java.util.ArrayList;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -33,7 +26,7 @@ public class JCASteadyLongTerm {
         pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader<Object> pvReader) {
+            public void pvChanged(PVReaderEvent<Object> event) {
                 count.incrementAndGet();
             }
         });
@@ -42,7 +35,7 @@ public class JCASteadyLongTerm {
         pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader<Object> pvReader) {
+            public void pvChanged(PVReaderEvent<Object> event) {
                 count.incrementAndGet();
             }
         });

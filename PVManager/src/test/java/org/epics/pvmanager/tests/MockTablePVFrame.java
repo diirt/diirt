@@ -12,6 +12,7 @@ import org.epics.pvmanager.PVReaderListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -164,7 +165,7 @@ public class MockTablePVFrame extends javax.swing.JFrame {
             final int nRow = n;
             pv.addPVReaderListener(new PVReaderListener<VStatistics>() {
             @Override
-                public void pvChanged(PVReader<VStatistics> pvReader) {
+                public void pvChanged(PVReaderEvent<VStatistics> event) {
                     model.setValueAt(pv.getValue().getAverage(), nRow, 0);
                     model.setValueAt(pv.getValue().getStdDev(), nRow, 1);
                     model.setValueAt(pv.getValue().getMin(), nRow, 2);

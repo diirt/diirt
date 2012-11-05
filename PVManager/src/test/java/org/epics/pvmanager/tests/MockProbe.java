@@ -226,7 +226,7 @@ public class MockProbe extends javax.swing.JFrame {
                     .timeout(TimeDuration.ofSeconds(5))
                     .readListener(new PVReaderListener<Object>() {
                             @Override
-                            public void pvChanged(PVReader<Object> pvReader) {
+                            public void pvChanged(PVReaderEvent<Object> event) {
                                 setLastError(pv.lastException());
                                 Object value = pv.getValue();
                                 setTextValue(format.format(value));

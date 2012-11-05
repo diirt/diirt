@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -159,7 +160,7 @@ public class MockTablePVFrame2 extends javax.swing.JFrame {
         pv = PVManager.read(listOf(statisticsOf(vDoubles(Collections.nCopies(nPvs, pvName))))).maxRate(ofHertz(scanRate));
         pv.addPVReaderListener(new PVReaderListener<Object>() {
             @Override
-            public void pvChanged(PVReader<Object> pvReader) {
+            public void pvChanged(PVReaderEvent<Object> event) {
                 final List<VStatistics> values = pv.getValue();
                 if (values != null) {
                     TableModel model = new AbstractTableModel() {

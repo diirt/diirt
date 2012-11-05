@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -135,7 +136,7 @@ public class MockSimPVFrame extends javax.swing.JFrame {
             pv = PVManager.read(vDouble(pvNameField.getText()))
                     .readListener(new PVReaderListener<VDouble>() {
                         @Override
-                        public void pvChanged(PVReader<VDouble> pvReader) {
+                        public void pvChanged(PVReaderEvent<VDouble> event) {
                             valueLabel.setText(Double.toString(pv.getValue().getValue()));
                             valueLabel.setForeground(severityColor.get(pv.getValue().getAlarmSeverity()));
                         }

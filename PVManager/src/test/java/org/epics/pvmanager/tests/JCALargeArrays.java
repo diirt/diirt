@@ -8,6 +8,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VShortArray;
@@ -28,7 +29,8 @@ public class JCALargeArrays {
         final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pv) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
+                        PVReader<Object> pv = event.getPvReader();
                         long pause = System.currentTimeMillis() - start;
                         start = System.currentTimeMillis();
                         if (pv.getValue() instanceof VShortArray) {

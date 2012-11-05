@@ -13,6 +13,7 @@ package org.epics.pvmanager.tests;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VDouble;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
@@ -127,7 +128,7 @@ public class MockPVFrame extends javax.swing.JFrame {
         pv.addPVReaderListener(new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader<Object> pvReader) {
+            public void pvChanged(PVReaderEvent<Object> event) {
                 valueLabel.setText(Double.toString(pv.getValue().getValue()));
             }
         });

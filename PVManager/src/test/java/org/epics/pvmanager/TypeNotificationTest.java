@@ -42,7 +42,7 @@ public class TypeNotificationTest {
         PVReaderListener<Object> noTypeListener = new PVReaderListener<Object>() {
 
             @Override
-            public void pvChanged(PVReader<Object> pvReader) {
+            public void pvChanged(PVReaderEvent<Object> event) {
                 noTypeCounter.incrementAndGet();
             }
         };
@@ -50,7 +50,7 @@ public class TypeNotificationTest {
         PVReaderListener<VDouble> doubleListener = new PVReaderListener<VDouble>() {
 
             @Override
-            public void pvChanged(PVReader<VDouble> pvReader) {
+            public void pvChanged(PVReaderEvent<VDouble> event) {
                 doubleCounter.incrementAndGet();
             }
         };
@@ -58,7 +58,7 @@ public class TypeNotificationTest {
         PVReaderListener<VInt> intListener = new PVReaderListener<VInt>() {
 
             @Override
-            public void pvChanged(PVReader<VInt> pvReader) {
+            public void pvChanged(PVReaderEvent<VInt> event) {
                 intCounter.incrementAndGet();
             }
         };

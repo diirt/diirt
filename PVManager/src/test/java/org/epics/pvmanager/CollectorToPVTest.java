@@ -78,7 +78,7 @@ public class CollectorToPVTest {
                 pv.addPVReaderListener(new PVReaderListener<Object>() {
 
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 });
@@ -120,7 +120,7 @@ public class CollectorToPVTest {
                 pv.addPVReaderListener(new PVReaderListener<Object>() {
 
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 });

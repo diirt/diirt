@@ -8,11 +8,9 @@
  */
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.VInt;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -24,12 +22,12 @@ public class CounterTestListener implements PVReaderListener<VInt> {
     private volatile boolean failed;
 
     @Override
-    public void pvChanged(PVReader<VInt> pv) {
-        if (pv.getValue() == null) {
+    public void pvChanged(PVReaderEvent<VInt> event) {
+        if (event.getPvReader().getValue() == null) {
             System.out.println("Fail: expected " + nextExpected + " was null");
             failed = true;
-        } else if (pv.getValue().getValue() != nextExpected) {
-            System.out.println("Fail: expected " + nextExpected + " was " + pv.getValue().getValue());
+        } else if (event.getPvReader().getValue().getValue() != nextExpected) {
+            System.out.println("Fail: expected " + nextExpected + " was " + event.getPvReader().getValue().getValue());
             failed = true;
         }
         nextExpected++;

@@ -13,8 +13,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * to all PVs of all type. The payload is specified by the generic type,
  * and is returned by {@link #getValue()}. Changes in
  * values are notified through the {@link PVReaderListener}. Listeners
- * can be registered from any thread. The value can only be accessed on the
- * thread on which the listeners is called.
+ * can be registered from any thread.
+ * <p>
+ * The value/connection/exception can be accessed from any the thread,
+ * but there is no guarantee on the atomicity. The only way to work on a consistent
+ * snapshot is to use a listener.
  *
  * @author carcassi
  * @param <T> the type of the PVReader.
@@ -43,22 +46,51 @@ class PVReaderImpl<T> implements PVReader<T> {
         this.notifyFirstListener = notifyFirstListener;
     }
 
-    private List<PVReaderListener<T>> pvReaderListeners = new CopyOnWriteArrayList<PVReaderListener<T>>();
-    private final boolean notifyFirstListener;
-    private volatile boolean missedNotification = false;
+    // PVReader state
     
-    private volatile PVReader<T> readerForNotification = this;
+    // Immutable part, no need to syncronize
+    private final String name;
+    private final boolean notifyFirstListener;
+
+    // ReaderListener have their own syncronization, which allows
+    // adding/removing listeners while iterating.
+    private List<PVReaderListener<T>> pvReaderListeners = new CopyOnWriteArrayList<>();
+
+    // guarded by this
+    private boolean closed = false;
+    private boolean paused = false;
+    private boolean connected = false;
+    private T value;
+    private PVReader<T> readerForNotification = this;
+    private Exception lastException;
+    
+    private boolean missedNotification = false;
+    private boolean exceptionToNotify = false;
+    private boolean connectionToNotify = false;
+    private boolean valueToNotify = false;
 
     void setReaderForNotification(PVReader<T> readerForNotification) {
         this.readerForNotification = readerForNotification;
     }
 
-    void firePvValueChanged() {
-        lastExceptionToNotify = false;
-        readConnectionToNotify = false;
+    synchronized void firePvValueChanged() {
+        int notificationMask = 0;
+        if (connectionToNotify) {
+            notificationMask += PVReaderEvent.CONNECTION_MASK;
+        }
+        if (valueToNotify) {
+            notificationMask += PVReaderEvent.VALUE_MASK;
+        }
+        if (exceptionToNotify) {
+            notificationMask += PVReaderEvent.EXCEPTION_MASK;
+        }
+        connectionToNotify = false;
+        valueToNotify = false;
+        exceptionToNotify = false;
         boolean missed = true;
+        PVReaderEvent<T> event = new PVReaderEvent<>(notificationMask, readerForNotification);
         for (PVReaderListener<T> listener : pvReaderListeners) {
-            listener.pvChanged(readerForNotification);
+            listener.pvChanged(event);
             missed = false;
         }
         if (missed)
@@ -71,7 +103,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @param listener a new listener
      */
     @Override
-    public void addPVReaderListener(PVReaderListener<? super T> listener) {
+    public synchronized void addPVReaderListener(PVReaderListener<? super T> listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -115,10 +147,10 @@ class PVReaderImpl<T> implements PVReader<T> {
 
         @Override
         @SuppressWarnings("unchecked")
-        public void pvChanged(PVReader pvReader) {
+        public void pvChanged(PVReaderEvent<T> event) {
             // forward the change if the value is of the right type
             if (clazz.isInstance(getValue()))
-                delegate.pvChanged(pvReader);
+                delegate.pvChanged(event);
         }
 
         @Override
@@ -151,7 +183,6 @@ class PVReaderImpl<T> implements PVReader<T> {
         pvReaderListeners.remove(new ListenerDelegate<Object>(Object.class, listener));
     }
 
-    private final String name;
 
     /**
      * Returns the name of the PVReader. This method is thread safe.
@@ -163,7 +194,6 @@ class PVReaderImpl<T> implements PVReader<T> {
         return name;
     }
 
-    private T value;
 
     /**
      * Returns the value of the PVReader. Not thread safe: can be safely accessed only
@@ -172,19 +202,15 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return the value of value
      */
     @Override
-    public T getValue() {
+    public synchronized T getValue() {
         return value;
     }
 
-    void setValue(T value) {
+    synchronized void setValue(T value) {
         this.value = value;
+        valueToNotify = true;
         firePvValueChanged();
     }
-
-    // This needs to be modified on client thread (i.e. UI) and
-    // read on the timer thread (so that actual closing happens in the
-    // background)
-    private volatile boolean closed = false;
 
     /**
      * De-registers all listeners, stops all notifications and closes all
@@ -195,7 +221,9 @@ class PVReaderImpl<T> implements PVReader<T> {
     @Override
     public void close() {
         pvReaderListeners.clear();
-        closed = true;
+        synchronized(this) {
+            closed = true;
+        }
     }
 
     /**
@@ -204,30 +232,19 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return true if closed
      */
     @Override
-    public boolean isClosed() {
+    public synchronized boolean isClosed() {
         return closed;
     }
-    
-    // This needs to be modified on the client thread (i.e. UI)
-    // and read on the timer thread (so it knows to skip)
-    private volatile boolean paused = false;
 
     @Override
-    public void setPaused(boolean paused) {
+    public synchronized void setPaused(boolean paused) {
         this.paused = paused;
     }
 
     @Override
-    public boolean isPaused() {
+    public synchronized boolean isPaused() {
         return paused;
     }
-    
-    
-    
-    private AtomicReference<Exception> lastException = new AtomicReference<Exception>();
-    private volatile boolean lastExceptionToNotify = false;
-    private volatile boolean connected = false;
-    private volatile boolean readConnectionToNotify = false;
 
     /**
      * Whether there is an exception that needs to be notified to the client.
@@ -235,8 +252,8 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @return true if this pvReader needs to notify an exception
      */
-    boolean isLastExceptionToNotify() {
-        return lastExceptionToNotify;
+    synchronized boolean isLastExceptionToNotify() {
+        return exceptionToNotify;
     }
     
     /**
@@ -245,8 +262,8 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @return true if this pvReader needs to notify a connection state
      */
-    boolean isReadConnectionToNotify() {
-        return readConnectionToNotify;
+    synchronized boolean isReadConnectionToNotify() {
+        return connectionToNotify;
     }
     
     /**
@@ -254,9 +271,9 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @param ex the new exception
      */
-    void setLastException(Exception ex) {
-        lastException.set(ex);
-        lastExceptionToNotify = true;
+    synchronized void setLastException(Exception ex) {
+        lastException = ex;
+        exceptionToNotify = true;
     }
 
     /**
@@ -266,21 +283,23 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return the last generated exception or null
      */
     @Override
-    public Exception lastException() {
-        return lastException.getAndSet(null);
+    public synchronized Exception lastException() {
+        Exception ex = lastException;
+        lastException = null;
+        return ex;
     }
     
-    void setConnected(boolean connected) {
+    synchronized void setConnected(boolean connected) {
         if (this.connected == connected) {
             return;
         }
         
         this.connected = connected;
-        readConnectionToNotify = true;
+        connectionToNotify = true;
     }
 
     @Override
-    public boolean isConnected() {
+    public synchronized boolean isConnected() {
         return connected;
     }
 }

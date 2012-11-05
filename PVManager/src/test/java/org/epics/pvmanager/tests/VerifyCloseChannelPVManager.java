@@ -8,6 +8,7 @@ package org.epics.pvmanager.tests;
 import org.epics.pvmanager.PVManager;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.util.time.TimeDuration;
@@ -28,7 +29,7 @@ public class VerifyCloseChannelPVManager {
         final PVReader<Object> reader = PVManager.read(channel("gaussian()"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         System.out.println("Monitor called");
                     }
                 })

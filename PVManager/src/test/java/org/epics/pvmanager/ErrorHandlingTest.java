@@ -59,7 +59,8 @@ public class ErrorHandlingTest {
         final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()"))))
                 .readListener(new PVReaderListener<VDouble>() {
                     @Override
-                    public void pvChanged(PVReader<VDouble> pv) {
+                    public void pvChanged(PVReaderEvent<VDouble> event) {
+                        PVReader<VDouble> pv = event.getPvReader();
                         notificationReceived = true;
                         Exception ex = pv.lastException();
                         if (ex == null) {
@@ -95,7 +96,8 @@ public class ErrorHandlingTest {
         final PVReader<VDouble> pv = PVManager.read(exception(latestValueOf(vDouble("gaussian()"))))
                 .readListener(new PVReaderListener<VDouble>() {
                     @Override
-                    public void pvChanged(PVReader<VDouble> pv) {
+                    public void pvChanged(PVReaderEvent<VDouble> event) {
+                        PVReader<VDouble> pv = event.getPvReader();
                         notificationReceived = true;
                         Exception ex = pv.lastException();
                         if (ex == null) {

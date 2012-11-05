@@ -8,12 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -32,7 +29,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv =PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -54,7 +51,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -62,7 +59,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -70,7 +67,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -78,7 +75,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -103,7 +100,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv1 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -111,7 +108,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv2 = PVManager.read(channel("carcassi2"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -119,7 +116,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv3 = PVManager.read(channel("carcassi"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })
@@ -127,7 +124,7 @@ public class JCACloseIT extends JCABase {
         final PVReader<Object> pv4 = PVManager.read(channel("carcassi2"))
                 .readListener(new PVReaderListener<Object>() {
                     @Override
-                    public void pvChanged(PVReader<Object> pvReader) {
+                    public void pvChanged(PVReaderEvent<Object> event) {
                         counter.incrementAndGet();
                     }
                 })

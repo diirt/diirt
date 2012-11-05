@@ -17,6 +17,6 @@ public interface PVReaderListener<T> {
     /**
      * Notified when the value of the PV has changed.
      */
-    void pvChanged(PVReader<T> pvReader);
+    void pvChanged(PVReaderEvent<T> event);
 
 }

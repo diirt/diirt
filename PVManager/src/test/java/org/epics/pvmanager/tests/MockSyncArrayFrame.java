@@ -11,6 +11,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import java.util.Collections;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VMultiDouble;
 import org.jfree.chart.ChartPanel;
@@ -25,7 +26,6 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import static org.epics.util.time.TimeDuration.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -208,7 +208,7 @@ public class MockSyncArrayFrame extends javax.swing.JFrame {
                 vDoubles(Collections.nCopies(nPvs, pvName))))
                 .readListener(new PVReaderListener<VMultiDouble>() {
                     @Override
-                    public void pvChanged(PVReader<VMultiDouble> pvReader) {
+                    public void pvChanged(PVReaderEvent<VMultiDouble> event) {
                         //printArray(pv.getValue());
                         updateChart();
                     }

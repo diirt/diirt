@@ -13,6 +13,7 @@ package org.epics.pvmanager.tests;
 import org.epics.pvmanager.data.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -141,7 +142,7 @@ public class CAPVFrame extends javax.swing.JFrame {
         pv.addPVReaderListener(new PVReaderListener<VStatistics>() {
 
             @Override
-            public void pvChanged(PVReader<VStatistics> pvReader) {
+            public void pvChanged(PVReaderEvent<VStatistics> event) {
                 if (pv.getValue() != null)
                     valueLabel.setText(Double.toString(pv.getValue().getAverage()) + " \u00b1 " + Double.toString(pv.getValue().getStdDev()));
             }

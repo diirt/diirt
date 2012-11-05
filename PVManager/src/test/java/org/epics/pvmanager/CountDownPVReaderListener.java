@@ -22,7 +22,7 @@ public class CountDownPVReaderListener implements PVReaderListener<Object> {
     }
 
     @Override
-    public void pvChanged(PVReader<Object> pvReader) {
+    public void pvChanged(PVReaderEvent<Object> event) {
         latch.countDown();
     }
 
