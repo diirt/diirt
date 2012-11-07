@@ -69,7 +69,7 @@ public class CompositeDataSourceTest {
         assertThat(mock1.getDataRecipe().getChannelRecipes(), equalTo(recipe.getChannelRecipes()));
         assertThat(mock2.getDataRecipe(), nullValue());
     }
-
+    
     @Test
     public void testMixedCall() {
         // Setup composite
@@ -110,6 +110,14 @@ public class CompositeDataSourceTest {
         Set<String> names = new HashSet<String>();
         for (ChannelRecipe channelRecipe : channelRecipes) {
             names.add(channelRecipe.getChannelName());
+        }
+        return names;
+    }
+    
+    private Set<String> channelWriteNames(Collection<ChannelWriteBuffer> channelWriteBuffers) {
+        Set<String> names = new HashSet<String>();
+        for (ChannelWriteBuffer channelWriteBuffer : channelWriteBuffers) {
+            names.add(channelWriteBuffer.getChannelName());
         }
         return names;
     }
@@ -203,6 +211,41 @@ public class CompositeDataSourceTest {
 
         // Should cause error
         composite.prepareWrite(buffer, new ExceptionHandler());
+    }
+
+    @Test
+    public void testWriteMixedCall() {
+        // Setup composite
+        CompositeDataSource composite = new CompositeDataSource();
+        composite.putDataSource("mock1", mock1);
+        composite.putDataSource("mock2", mock2);
+        composite.setDefaultDataSource("mock1");
+
+        Map<String, WriteCache<?>> caches = new HashMap<>();
+        caches.put("pv01", new WriteCache<>("pv01"));
+        caches.put("pv03", new WriteCache<>("pv03"));
+        caches.put("mock1://pv02", new WriteCache<>("mock1://pv02"));
+        caches.put("mock2://pv04", new WriteCache<>("mock2://pv04"));
+        caches.put("mock1://pv05", new WriteCache<>("mock1://pv05"));
+        WriteBuffer buffer = new WriteBufferBuilder()
+                .addCaches(caches)
+                .build();
+        
+        // Call and check
+        composite.prepareWrite(buffer, new ExceptionHandler());
+        Collection<ChannelWriteBuffer> mock1Buffers = mock1.getWriteBuffer().getChannelWriteBuffers();
+        Collection<ChannelWriteBuffer> mock2Buffers = mock2.getWriteBuffer().getChannelWriteBuffers();
+        assertThat(mock1Buffers.size(), equalTo(4));
+        assertThat(mock2Buffers.size(), equalTo(1));
+        assertThat(channelWriteNames(mock1Buffers), hasItems("pv01", "pv02", "pv03", "pv05"));
+        assertThat(channelWriteNames(mock2Buffers), hasItem("pv04"));
+
+        // Check close
+        WriteBuffer mock1Connect = mock1.getWriteBuffer();
+        WriteBuffer mock2Connect = mock2.getWriteBuffer();
+        composite.concludeWrite(buffer, new ExceptionHandler());
+        assertSame(mock1Connect, mock1.getWriteBuffer());
+        assertSame(mock2Connect, mock2.getWriteBuffer());
     }
 
 }
