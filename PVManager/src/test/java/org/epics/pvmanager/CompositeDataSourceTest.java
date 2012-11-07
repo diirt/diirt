@@ -34,66 +34,19 @@ public class CompositeDataSourceTest {
 
     };
 
-    public CompositeDataSourceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
     @Before
     public void setUp() {
-        mock1Recipe = null;
-        mock2Recipe = null;
+        mock1 = new MockDataSource();
+        mock2 = new MockDataSource();
     }
 
     @After
     public void tearDown() {
     }
 
-    private DataRecipe mock1Recipe;
-    private DataRecipe mock2Recipe;
-    DataSource mock1 = new DataSource(true) {
+    MockDataSource mock1;
 
-        @Override
-        protected ChannelHandler createChannel(String channelName) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void connect(DataRecipe recipe) {
-            mock1Recipe = recipe;
-        }
-
-        @Override
-        public void disconnect(DataRecipe recipe) {
-            mock1Recipe = recipe;
-        }
-
-
-    };
-
-    DataSource mock2 = new DataSource(true) {
-
-        @Override
-        protected ChannelHandler createChannel(String channelName) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void connect(DataRecipe recipe) {
-            mock2Recipe = recipe;
-        }
-
-        @Override
-        public void disconnect(DataRecipe recipe) {
-            mock2Recipe = recipe;
-        }
-    };
+    MockDataSource mock2;
 
     @Test
     public void testAllDefault() {
@@ -113,8 +66,8 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connect(recipe);
-        assertThat(mock1Recipe.getChannelRecipes(), equalTo(recipe.getChannelRecipes()));
-        assertThat(mock2Recipe, nullValue());
+        assertThat(mock1.getDataRecipe().getChannelRecipes(), equalTo(recipe.getChannelRecipes()));
+        assertThat(mock2.getDataRecipe(), nullValue());
     }
 
     @Test
@@ -138,19 +91,19 @@ public class CompositeDataSourceTest {
         
         // Call and check
         composite.connect(recipe);
-        Collection<ChannelRecipe> mock1Caches = mock1Recipe.getChannelRecipes();
-        Collection<ChannelRecipe> mock2Caches = mock2Recipe.getChannelRecipes();
+        Collection<ChannelRecipe> mock1Caches = mock1.getDataRecipe().getChannelRecipes();
+        Collection<ChannelRecipe> mock2Caches = mock2.getDataRecipe().getChannelRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
         assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
         assertThat(channelNames(mock2Caches), hasItem("pv04"));
 
         // Check close
-        DataRecipe mock1Connect = mock1Recipe;
-        DataRecipe mock2Connect = mock2Recipe;
+        DataRecipe mock1Connect = mock1.getDataRecipe();
+        DataRecipe mock2Connect = mock2.getDataRecipe();
         composite.disconnect(recipe);
-        assertSame(mock1Connect, mock1Recipe);
-        assertSame(mock2Connect, mock2Recipe);
+        assertSame(mock1Connect, mock1.getDataRecipe());
+        assertSame(mock2Connect, mock2.getDataRecipe());
     }
     
     private Set<String> channelNames(Collection<ChannelRecipe> channelRecipes) {
@@ -213,8 +166,8 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connect(recipe);
-        Collection<ChannelRecipe> mock1Caches = mock1Recipe.getChannelRecipes();
-        Collection<ChannelRecipe> mock2Caches = mock2Recipe.getChannelRecipes();
+        Collection<ChannelRecipe> mock1Caches = mock1.getDataRecipe().getChannelRecipes();
+        Collection<ChannelRecipe> mock2Caches = mock2.getDataRecipe().getChannelRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
         assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
