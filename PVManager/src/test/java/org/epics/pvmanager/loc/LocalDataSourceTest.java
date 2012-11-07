@@ -118,7 +118,7 @@ public class LocalDataSourceTest {
         writer.addPVWriterListener(listener);
         writer.write(10);
         
-        verify(listener).pvWritten();
+        verify(listener).pvChanged(null);
         Thread.sleep(50);
         pv.close();
         writer.close();
@@ -139,7 +139,7 @@ public class LocalDataSourceTest {
         writer.addPVWriterListener(listener);
         writer.write(10);
         
-        verify(listener).pvWritten();
+        verify(listener).pvChanged(null);
         Thread.sleep(50);
         pv1.close();
         writer.close();
@@ -156,13 +156,13 @@ public class LocalDataSourceTest {
         writer.write(10);
         // On some machines, the local write is fast enough that it may already
         // be done
-        verify(listener, atMost(1)).pvWritten();
+        verify(listener, atMost(1)).pvChanged(null);
         
         Thread.sleep(50);
         pv.close();
         writer.close();
         
-        verify(listener).pvWritten();
+        verify(listener).pvChanged(null);
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
     }
 

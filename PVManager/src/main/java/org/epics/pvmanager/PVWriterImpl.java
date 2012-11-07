@@ -38,7 +38,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     
     void firePvWritten() {
         for (PVWriterListener listener : pvWriterListeners) {
-            listener.pvWritten();
+            listener.pvChanged(null);
         }
     }
 
@@ -68,7 +68,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
                 lastWriteException.get() != null;
         pvWriterListeners.add(listener);
         if (notify)
-            listener.pvWritten();
+            listener.pvChanged(null);
     }
 
     /**

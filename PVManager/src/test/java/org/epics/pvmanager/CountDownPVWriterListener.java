@@ -22,7 +22,7 @@ public class CountDownPVWriterListener implements PVWriterListener {
     }
 
     @Override
-    public void pvWritten() {
+    public void pvChanged(PVWriterEvent event) {
         latch.countDown();
     }
 

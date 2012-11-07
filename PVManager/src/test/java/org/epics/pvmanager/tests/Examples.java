@@ -30,6 +30,7 @@ import org.epics.pvmanager.data.ValueUtil;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
+import org.epics.pvmanager.PVWriterEvent;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import org.epics.pvmanager.data.VType;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
@@ -122,7 +123,7 @@ public class Examples {
         PVWriter<Object> pvWriter = PVManager.write(channel("channelName")).async();
         pvWriter.addPVWriterListener(new PVWriterListener() {
 
-            public void pvWritten() {
+            public void pvChanged(PVWriterEvent event) {
                 System.out.println("Write finished");
             }
         });

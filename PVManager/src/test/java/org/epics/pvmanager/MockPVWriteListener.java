@@ -28,7 +28,7 @@ public class MockPVWriteListener<T> implements PVWriterListener {
     }
 
     @Override
-    public synchronized void pvWritten() {
+    public synchronized void pvChanged(PVWriterEvent event) {
         counter++;
     }
 

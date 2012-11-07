@@ -241,7 +241,7 @@ public class MockProbe extends javax.swing.JFrame {
                     .listeners(new PVWriterListener() {
 
                         @Override
-                        public void pvWritten() {
+                        public void pvChanged(PVWriterEvent event) {
                             setWriteConnected(pv.isWriteConnected());
                         }
                     })
