@@ -175,11 +175,10 @@ public class CompositeDataSourceTest {
     }
 
     @Test (expected=IllegalArgumentException.class)
-    public void testEmpty() {
+    public void testReadEmpty() {
         // Setup composite
         CompositeDataSource composite = new CompositeDataSource();
 
-        // Call only default
         DataRecipe recipe = new DataRecipe(rethrow);
         Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
         caches.put("mock://pv03", new ValueCache<Double>(Double.class));
@@ -188,6 +187,22 @@ public class CompositeDataSourceTest {
 
         // Should cause error
         composite.connect(recipe);
+    }
+
+    @Test (expected=IllegalArgumentException.class)
+    public void testWriteEmpty() {
+        // Setup composite
+        CompositeDataSource composite = new CompositeDataSource();
+
+        // Write pv with no datasource match
+        Map<String, WriteCache<?>> caches = new HashMap<>();
+        caches.put("mock://pv03", new WriteCache<>("mock://pv03"));
+        WriteBuffer buffer = new WriteBufferBuilder()
+                .addCaches(caches)
+                .build();
+
+        // Should cause error
+        composite.prepareWrite(buffer, new ExceptionHandler());
     }
 
 }
