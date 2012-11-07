@@ -166,4 +166,17 @@ public class LocalDataSourceTest {
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
     }
 
+    @Test
+    public void writeMultipleNamesForSameChannel() throws Exception {
+        
+        DataRecipe recipe = mapOf(latestValueOf(channels("foo", "foo(2.0)"))).getDataRecipe();
+        
+        // Connect and make sure only one channel is created
+        LocalDataSource dataSource = new LocalDataSource();
+        dataSource.connect(recipe);
+        assertThat(dataSource.getChannels().size(), equalTo(1));
+        dataSource.disconnect(recipe);
+        dataSource.close();
+    }
+
 }

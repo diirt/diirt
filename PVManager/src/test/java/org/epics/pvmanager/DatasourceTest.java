@@ -49,7 +49,7 @@ public class DatasourceTest {
         }
 
         @Override
-        String channelHandlerFor(String channelName) {
+        protected String channelHandlerLookupName(String channelName) {
             if ("changeit".equals(channelName))
                 return "first";
             return channelName;
@@ -134,13 +134,15 @@ public class DatasourceTest {
         DataRecipe dataRecipe = exp.getDataRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
-        doReturn(channel1).when(dataSource).createChannel("first");
+        doReturn(channel1).when(dataSource).createChannel("changeit");
         
         dataSource.connect(dataRecipe);
         
         verify(dataSource).channel("changeit");
-        verify(dataSource).createChannel("first");
+        verify(dataSource).createChannel("changeit");
         verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp.collectorFor("changeit"), 
                 exp.cacheFor("changeit"), dataRecipe.getExceptionHandler(), dataRecipe.getConnectionCollector(), dataRecipe.getConnectionCaches().get("changeit")));
+        assertThat(dataSource.getChannels().get("first"), not(equalTo(null)));
+        assertThat(dataSource.getChannels().get("changeit"), equalTo(null));
     }
 }
