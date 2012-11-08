@@ -108,9 +108,9 @@ public class TestDataSourceTest {
     public void channelDoesNotExist2() throws Exception {
         // Requesting a channel that does not exist
         // Making sure that the excecption is properly notified
-        CountDownPVWriterListener listener = new CountDownPVWriterListener(1);
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("nothing"))
-                .listeners(listener)
+                .writeListener(listener)
                 .from(dataSource).async();
 
         listener.await(TimeDuration.ofMillis(100));
@@ -121,9 +121,9 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWrite() throws Exception {
-        CountDownPVWriterListener listener = new CountDownPVWriterListener(1);
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("delayedWrite"))
-                .listeners(listener)
+                .writeListener(listener)
                 .from(dataSource).async();
         pvWriter.write("test");
 
@@ -143,9 +143,9 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedWriteWithTimeout() throws Exception {
-        CountDownPVWriterListener writerListener = new CountDownPVWriterListener(1);
+        CountDownPVWriterListener<Object> writerListener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("delayedWrite"))
-                .listeners(writerListener)
+                .writeListener(writerListener)
                 .timeout(ofMillis(500)).from(dataSource).async();
         pvWriter.write("test");
 
@@ -166,9 +166,9 @@ public class TestDataSourceTest {
     public void delayedWriteWithTimeout2() throws Exception {
         // Test a write that happens 2 seconds late
         // Checks whether we get a timeout beforehand
-        CountDownPVWriterListener writerListener = new CountDownPVWriterListener(1);
+        CountDownPVWriterListener<Object> writerListener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("delayedWrite")).timeout(ofMillis(500))
-                .listeners(writerListener)
+                .writeListener(writerListener)
                 .from(dataSource).async();
         pvWriter.write("test");
 

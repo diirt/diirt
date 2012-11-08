@@ -121,9 +121,9 @@ public class Examples {
 
     public void b2() {
         PVWriter<Object> pvWriter = PVManager.write(channel("channelName")).async();
-        pvWriter.addPVWriterListener(new PVWriterListener() {
+        pvWriter.addPVWriterListener(new PVWriterListener<Object>() {
 
-            public void pvChanged(PVWriterEvent event) {
+            public void pvChanged(PVWriterEvent<Object> event) {
                 System.out.println("Write finished");
             }
         });

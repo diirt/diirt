@@ -34,7 +34,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     private boolean closed = false;
     private boolean writeConnected = false;
     private Exception lastWriteException;
-    private List<PVWriterListener> pvWriterListeners = new CopyOnWriteArrayList<PVWriterListener>();
+    private List<PVWriterListener<T>> pvWriterListeners = new CopyOnWriteArrayList<PVWriterListener<T>>();
     private WriteDirector<T> writeDirector;
 
     PVWriterImpl(boolean syncWrite, boolean notifyFirstListener) {
@@ -43,7 +43,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     }
     
     synchronized void firePvWritten() {
-        for (PVWriterListener listener : pvWriterListeners) {
+        for (PVWriterListener<T> listener : pvWriterListeners) {
             listener.pvChanged(null);
         }
     }
@@ -59,7 +59,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param listener a new listener
      */
     @Override
-    public synchronized void addPVWriterListener(PVWriterListener listener) {
+    public synchronized void addPVWriterListener(PVWriterListener<? extends T> listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -72,7 +72,9 @@ class PVWriterImpl<T> implements PVWriter<T> {
         // the notification would be lost.
         boolean notify = pvWriterListeners.isEmpty() && notifyFirstListener &&
                 lastWriteException != null;
-        pvWriterListeners.add(listener);
+        @SuppressWarnings("unchecked")
+        PVWriterListener<T> convertedListener = (PVWriterListener<T>) listener;
+        pvWriterListeners.add(convertedListener);
         if (notify)
             listener.pvChanged(null);
     }
@@ -83,8 +85,10 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param listener the old listener
      */
     @Override
-    public void removePVWriterListener(PVWriterListener listener) {
-        pvWriterListeners.remove(listener);
+    public void removePVWriterListener(PVWriterListener<? extends T> listener) {
+        @SuppressWarnings("unchecked")
+        PVWriterListener<T> convertedListener = (PVWriterListener<T>) listener;
+        pvWriterListeners.remove(convertedListener);
     }
     
     

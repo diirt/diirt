@@ -13,7 +13,7 @@ import org.epics.util.time.TimeDuration;
  *
  * @author carcassi
  */
-public class CountDownPVWriterListener implements PVWriterListener {
+public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     private volatile CountDownLatch latch;
     
@@ -22,7 +22,7 @@ public class CountDownPVWriterListener implements PVWriterListener {
     }
 
     @Override
-    public void pvChanged(PVWriterEvent event) {
+    public void pvChanged(PVWriterEvent<T> event) {
         latch.countDown();
     }
 

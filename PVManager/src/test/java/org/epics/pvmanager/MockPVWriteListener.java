@@ -12,7 +12,7 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public class MockPVWriteListener<T> implements PVWriterListener {
+public class MockPVWriteListener<T> implements PVWriterListener<T> {
     
     public static <V> MockPVWriteListener<V> addPVWriteListener(PVWriter<V> pvWriter) {
         MockPVWriteListener<V> listener = new MockPVWriteListener<V>(pvWriter);

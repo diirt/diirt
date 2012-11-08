@@ -57,7 +57,7 @@ public class LocalDataSourceTest {
     @Mock ValueCache<VDouble> valueCache1;
     @Mock ValueCache<VDouble> valueCache2;
     @Mock Collector collector;
-    @Mock PVWriterListener listener;
+    @Mock PVWriterListener<Object> listener;
     String channelName1 = "test1";
     String channelName2 = "test2";
 

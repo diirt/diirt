@@ -47,7 +47,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     
     private WriteExpression<T> writeExpression;
     private ExceptionHandler exceptionHandler;
-    private List<PVWriterListener> writeListeners = new ArrayList<PVWriterListener>();
+    private List<PVWriterListener<T>> writeListeners = new ArrayList<>();
 
     PVWriterConfiguration(WriteExpression<T> writeExpression) {
         this.writeExpression = writeExpression;
@@ -58,10 +58,10 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
      * @param listeners
      * @return 
      */
-    public PVWriterConfiguration<T> listeners(PVWriterListener... listeners) {
-        for (PVWriterListener pVWriterListener : listeners) {
-            writeListeners.add(pVWriterListener);
-        }
+    public PVWriterConfiguration<T> writeListener(PVWriterListener<? extends T> listener) {
+        @SuppressWarnings("unchecked")
+        PVWriterListener<T> convertedListener = (PVWriterListener<T>) listener;
+        writeListeners.add(convertedListener);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
 
         // Create PVReader and connect
         PVWriterImpl<T> pvWriter = new PVWriterImpl<T>(syncWrite, Executors.localThread() == notificationExecutor);
-        for (PVWriterListener pVWriterListener : writeListeners) {
+        for (PVWriterListener<T> pVWriterListener : writeListeners) {
             pvWriter.addPVWriterListener(pVWriterListener);
         }
         if (exceptionHandler == null) {
