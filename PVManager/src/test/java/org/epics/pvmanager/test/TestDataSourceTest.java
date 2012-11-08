@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,27 +51,21 @@ public class TestDataSourceTest {
         }
         fail("Channel " + channelName + " didn't close after 5 seconds");
     }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        dataSource = new TestDataSource();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        dataSource.close();
-        dataSource = null;
-    }
     
-    private static DataSource dataSource;
+    private DataSource dataSource;
     
     PV<Object, Object> pv;
     PVReader<Object> pvReader;
     PVReader<Object> pvReader2;
     PVWriter<Object> pvWriter;
+
+    @Before
+    public void setupDataSource() throws Exception {
+        dataSource = new TestDataSource();
+    }
     
     @After
-    public void closePVs() {
+    public void closePVsAndDataSource() {
         if (pv != null) {
             pv.close();
             pv = null;
@@ -90,6 +85,8 @@ public class TestDataSourceTest {
 
         waitForChannelToClose(dataSource, "delayedWrite");
         waitForChannelToClose(dataSource, "delayedConnection");
+        dataSource.close();
+        dataSource = null;
     }
     
     @Test
@@ -297,7 +294,7 @@ public class TestDataSourceTest {
         assertThat(ex, not(nullValue()));
         assertThat(ex.getMessage(), equalTo(message));
         
-        readListener.await(TimeDuration.ofMillis(600));
+        readListener.await(TimeDuration.ofMillis(1000));
         assertThat(readListener.getCount(), equalTo(0));
         
         ex = (TimeoutException) pv.lastException();
