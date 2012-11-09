@@ -142,6 +142,7 @@ public class PVWriterFullTest {
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
         assertThat(pvWriter.lastWriteException(), equalTo(null));
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
+        assertThat(listener.getNotificationCount(), equalTo(1));
     }
     
     @Test
@@ -165,6 +166,7 @@ public class PVWriterFullTest {
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
         assertThat(pvWriter.lastWriteException(), equalTo(null));
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
+        assertThat(listener.getNotificationCount(), equalTo(2));
     }
     
     @Test
@@ -190,6 +192,7 @@ public class PVWriterFullTest {
         assertThat(ex, not(equalTo(null)));
         assertThat(ex.getMessage(), equalTo("Total failure"));
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
+        assertThat(listener.getNotificationCount(), equalTo(2));
     }
     
     @Test

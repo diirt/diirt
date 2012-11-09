@@ -6,6 +6,7 @@ package org.epics.pvmanager;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -18,6 +19,7 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
     private volatile CountDownLatch latch;
     private volatile PVWriterEvent<T> event;
     private volatile String threadName;
+    private AtomicInteger notificationCount = new AtomicInteger();
     
     public CountDownPVWriterListener(int count) {
         latch = new CountDownLatch(count);
@@ -26,6 +28,7 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
     @Override
     public void pvChanged(PVWriterEvent<T> event) {
         this.event = event;
+        notificationCount.incrementAndGet();
         this.threadName = Thread.currentThread().getName();
         latch.countDown();
     }
@@ -64,6 +67,15 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
      */
     public String getThreadName() {
         return threadName;
+    }
+    
+    /**
+     * The total number of notifications on this listener.
+     * 
+     * @return the number of notifications
+     */
+    public int getNotificationCount() {
+        return notificationCount.get();
     }
     
     /**
