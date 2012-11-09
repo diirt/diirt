@@ -94,38 +94,6 @@ public class PVWriterFullTest {
         dataSource = null;
     }
     
-//    @Test
-//    public void exceptionOnWrite() throws Exception {
-//        CountDownPVWriterListener<Object> readListener = new CountDownPVWriterListener<>(1);
-//        pvWriter = PVManager.write(channel("brokenWrite"))
-//                .writeListener(readListener)
-//                .notifyOn(executor)
-//                .from(dataSource)
-//                .async();
-//        
-//        // Wait for the connection notification
-//        readListener.await(TimeDuration.ofMillis(50));
-//        //assertThat(readListener.getCount(), equalTo(0));
-//        //readListener.resetCount(1);
-//        
-//        pvWriter.write("Something");
-//        
-//        readListener.await(TimeDuration.ofMillis(100));
-//        assertThat(readListener.getCount(), equalTo(0));
-//        readListener.resetCount(1);
-//        
-//        RuntimeException ex = (RuntimeException) pv.lastException();
-//        assertThat(ex.getMessage(), equalTo("BrokenWriteChannel"));
-//    }
-    
-        
-    // We should really have a test write completely
-    
-    // test that notification happen on the right thread (create executor with special name, and check that the name thread in the notification is right)
-    // test notification for success and failure write
-    // test for errors on connection
-    // test for connection notifications
-    
     @Test
     public void writerConnected() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
