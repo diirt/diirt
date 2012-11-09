@@ -69,10 +69,6 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
      * Forwards exception to the given exception handler. No thread switch
      * is done, so the handler is notified on the thread where the exception
      * was thrown.
-     * <p>
-     * Giving a custom exception handler will disable the default handler,
-     * so {@link PVWriter#lastWriteException() } is no longer set and no notification
-     * is done.
      *
      * @param exceptionHandler an exception handler
      * @return this

@@ -84,9 +84,16 @@ class WriteDirector<T> {
                     @Override
                     public void run() {
                         done = true;
-                        pvWriter.firePvWritten();
+                        pvWriter.fireWriteSuccess();
                     }
-                }, exceptionHandler);
+                }, new ExceptionHandler() {
+
+                    @Override
+                    public void handleException(Exception ex) {
+                        super.handleException(ex);
+                    }
+                    
+                });
             }
         }
     

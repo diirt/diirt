@@ -16,6 +16,8 @@ import org.epics.util.time.TimeDuration;
 public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     private volatile CountDownLatch latch;
+    private volatile PVWriterEvent<T> event;
+    private volatile String threadName;
     
     public CountDownPVWriterListener(int count) {
         latch = new CountDownLatch(count);
@@ -23,6 +25,8 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     @Override
     public void pvChanged(PVWriterEvent<T> event) {
+        this.event = event;
+        this.threadName = Thread.currentThread().getName();
         latch.countDown();
     }
 
@@ -42,6 +46,24 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
      */
     public int getCount() {
         return (int) latch.getCount();
+    }
+
+    /**
+     * The last notified event.
+     * 
+     * @return the event
+     */
+    public PVWriterEvent<T> getEvent() {
+        return event;
+    }
+
+    /**
+     * The thread name for the last notification.
+     * 
+     * @return the thread name
+     */
+    public String getThreadName() {
+        return threadName;
     }
     
     /**

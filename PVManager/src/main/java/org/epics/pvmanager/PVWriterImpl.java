@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +37,9 @@ class PVWriterImpl<T> implements PVWriter<T> {
     private Exception lastWriteException;
     private List<PVWriterListener<T>> pvWriterListeners = new CopyOnWriteArrayList<PVWriterListener<T>>();
     private WriteDirector<T> writeDirector;
+    private PVWriter<T> writerForNotification = this;
+    private boolean needsConnectionNotification = false;
+    private boolean needsExceptionNotification = false;
 
     PVWriterImpl(boolean syncWrite, boolean notifyFirstListener) {
         this.syncWrite = syncWrite;
@@ -43,8 +47,37 @@ class PVWriterImpl<T> implements PVWriter<T> {
     }
     
     synchronized void firePvWritten() {
+        int mask = 0;
+        if (needsConnectionNotification) {
+            mask += PVWriterEvent.CONNECTION_MASK;
+        }
+        if (needsExceptionNotification) {
+            mask += PVWriterEvent.EXCEPTION_MASK;
+        }
+        // Nothing to notify
+        if (mask == 0) {
+            return;
+        }
+        needsConnectionNotification = false;
+        needsExceptionNotification = false;
+        PVWriterEvent<T> event = new PVWriterEvent<>(mask, writerForNotification);
         for (PVWriterListener<T> listener : pvWriterListeners) {
-            listener.pvChanged(null);
+            listener.pvChanged(event);
+        }
+    }
+    
+    synchronized void fireWriteSuccess() {
+        PVWriterEvent<T> event = new PVWriterEvent<>(PVWriterEvent.WRITE_SUCCEEDED_MASK, writerForNotification);
+        for (PVWriterListener<T> listener : pvWriterListeners) {
+            listener.pvChanged(event);
+        }
+    }
+    
+    synchronized void fireWriteFailure(Exception ex) {
+        setLastWriteException(ex);
+        PVWriterEvent<T> event = new PVWriterEvent<>(PVWriterEvent.WRITE_FAILED_MASK, writerForNotification);
+        for (PVWriterListener<T> listener : pvWriterListeners) {
+            listener.pvChanged(event);
         }
     }
 
@@ -140,7 +173,10 @@ class PVWriterImpl<T> implements PVWriter<T> {
      * @param ex the new exception
      */
     synchronized void setLastWriteException(Exception ex) {
-        lastWriteException = ex;
+        if (!Objects.equals(ex, lastWriteException)) {
+            lastWriteException = ex;
+            needsExceptionNotification = true;
+        }
     }
 
     /**
@@ -162,7 +198,13 @@ class PVWriterImpl<T> implements PVWriter<T> {
     }
     
     public synchronized void setWriteConnected(boolean writeConnected) {
-        this.writeConnected = writeConnected;
+        if (this.writeConnected != writeConnected) {
+            this.writeConnected = writeConnected;
+            needsConnectionNotification = true;
+        }
     }
     
+    void setWriterForNotification(PVWriter<T> writerForNotification) {
+        this.writerForNotification = writerForNotification;
+    }
 }
