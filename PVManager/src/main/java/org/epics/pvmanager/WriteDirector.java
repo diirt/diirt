@@ -135,16 +135,28 @@ class WriteDirector<T> {
                             @Override
                             public void run() {
                                 log.finest("Writing done, releasing latch");
-                                pvWriter.firePvWritten();
-                                latch.countDown();
+                                notificationExecutor.execute(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        pvWriter.fireWriteSuccess();
+                                        latch.countDown();
+                                    }
+                                });
                             }
                         }, new ExceptionHandler() {
 
                             @Override
-                            public void handleException(Exception ex) {
+                            public void handleException(final Exception ex) {
                                 exception.set(ex);
-                                exceptionHandler.handleException(ex);
-                                latch.countDown();
+                                notificationExecutor.execute(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        pvWriter.fireWriteFailure(ex);
+                                        latch.countDown();
+                                    }
+                                });
                             }
 
                         });
