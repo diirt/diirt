@@ -186,6 +186,38 @@ public class PVWriterFullTest {
     }
     
     @Test
+    public void writerSyncWriteFailed() throws Exception {
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
+        pvWriter = PVManager.write(channel("normal"))
+                .writeListener(listener)
+                .notifyOn(executor)
+                .from(dataSource)
+                .sync();
+        
+        // Wait for the connection notification
+        listener.await(TimeDuration.ofMillis(200));
+        assertThat(listener.getCount(), equalTo(0));
+        
+        Throwable cause = null;
+        try {
+            pvWriter.write("Fail");
+        } catch(Exception ex) {
+            assertThat(ex, instanceOf(RuntimeException.class));
+            assertThat(ex.getMessage(), equalTo("Write failed"));
+            cause = ex.getCause();
+        }
+
+        assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_FAILED_MASK));
+        assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
+        Exception ex = pvWriter.lastWriteException();
+        assertThat(ex, not(equalTo(null)));
+        assertThat(ex.getMessage(), equalTo("Total failure"));
+        assertThat(ex, sameInstance(cause));
+        assertThat(pvWriter.isWriteConnected(), equalTo(true));
+        assertThat(listener.getNotificationCount(), equalTo(2));
+    }
+    
+    @Test
     public void writerConnectionTimeout() {
         // create writer with timeout and delayed connection
         // wait for notification
