@@ -88,6 +88,7 @@ public class PVWriterFullTest {
 
         waitForChannelToClose(dataSource, "delayedWrite");
         waitForChannelToClose(dataSource, "BrokenWrite");
+        waitForChannelToClose(dataSource, "normal");
         waitForChannelToClose(dataSource, "delayedConnection");
         dataSource.close();
         dataSource = null;
@@ -141,12 +142,29 @@ public class PVWriterFullTest {
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
         assertThat(pvWriter.lastWriteException(), equalTo(null));
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
+    }
+    
+    @Test
+    public void writerWriteSuccessful() throws Exception {
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
+        pvWriter = PVManager.write(channel("normal"))
+                .writeListener(listener)
+                .notifyOn(executor)
+                .from(dataSource)
+                .async();
         
-        // create writer with delayed connection
-        // wait for notification
-        // check notification type
-        // check thread for notification
-        // check writer state
+        // Wait for the connection notification
+        listener.await(TimeDuration.ofMillis(50));
+        assertThat(listener.getCount(), equalTo(0));
+        listener.resetCount(1);
+        
+        pvWriter.write("Value");
+        listener.await(TimeDuration.ofMillis(50));
+        assertThat(listener.getCount(), equalTo(0));
+        assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_SUCCEEDED_MASK));
+        assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
+        assertThat(pvWriter.lastWriteException(), equalTo(null));
+        assertThat(pvWriter.isWriteConnected(), equalTo(true));
     }
     
     @Test

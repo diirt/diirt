@@ -25,18 +25,20 @@ class WriteDirector<T> {
     private final WriteBuffer writeBuffer;
     private final DataSource dataSource;
     private final ScheduledExecutorService executor;
+    private final Executor notificationExecutor;
     private final ExceptionHandler exceptionHandler;
     private final TimeDuration timeout;
     private final String timeoutMessage;
 
     public WriteDirector(WriteFunction<T> writeFunction, WriteBuffer writeBuffer, DataSource dataSource,
-            ScheduledExecutorService executor, ExceptionHandler exceptionHandler,
+            ScheduledExecutorService executor, Executor notificationExecutor, ExceptionHandler exceptionHandler,
             TimeDuration timeout, String timeoutMessage) {
         this.writeFunction = writeFunction;
         this.writeBuffer = writeBuffer;
         this.dataSource = dataSource;
         this.executor = executor;
         this.exceptionHandler = exceptionHandler;
+        this.notificationExecutor = notificationExecutor;
         this.timeout = timeout;
         this.timeoutMessage = timeoutMessage;
     }
@@ -84,7 +86,13 @@ class WriteDirector<T> {
                     @Override
                     public void run() {
                         done = true;
-                        pvWriter.fireWriteSuccess();
+                        notificationExecutor.execute(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                pvWriter.fireWriteSuccess();
+                            }
+                        });
                     }
                 }, new ExceptionHandler() {
 
