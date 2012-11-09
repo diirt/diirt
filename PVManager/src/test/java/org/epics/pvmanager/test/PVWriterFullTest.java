@@ -154,16 +154,41 @@ public class PVWriterFullTest {
                 .async();
         
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(50));
+        listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
         
         pvWriter.write("Value");
-        listener.await(TimeDuration.ofMillis(50));
+        listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_SUCCEEDED_MASK));
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
         assertThat(pvWriter.lastWriteException(), equalTo(null));
+        assertThat(pvWriter.isWriteConnected(), equalTo(true));
+    }
+    
+    @Test
+    public void writerWriteFailed() throws Exception {
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
+        pvWriter = PVManager.write(channel("normal"))
+                .writeListener(listener)
+                .notifyOn(executor)
+                .from(dataSource)
+                .async();
+        
+        // Wait for the connection notification
+        listener.await(TimeDuration.ofMillis(200));
+        assertThat(listener.getCount(), equalTo(0));
+        listener.resetCount(1);
+        
+        pvWriter.write("Fail");
+        listener.await(TimeDuration.ofMillis(400));
+        assertThat(listener.getCount(), equalTo(0));
+        assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_FAILED_MASK));
+        assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
+        Exception ex = pvWriter.lastWriteException();
+        assertThat(ex, not(equalTo(null)));
+        assertThat(ex.getMessage(), equalTo("Total failure"));
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
     }
     

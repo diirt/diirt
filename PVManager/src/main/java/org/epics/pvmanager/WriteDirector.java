@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import org.epics.util.time.TimeDuration;
@@ -58,7 +59,7 @@ class WriteDirector<T> {
     private class WriteTask implements Runnable {
         final PVWriterImpl<T> pvWriter;
         final T newValue;
-        private volatile boolean done = false;
+        private AtomicBoolean done = new AtomicBoolean();
 
         public WriteTask(PVWriterImpl<T> pvWriter, T newValue) {
             this.pvWriter = pvWriter;
@@ -70,7 +71,7 @@ class WriteDirector<T> {
 
                 @Override
                 public void run() {
-                    if (!done) {
+                    if (!done.get()) {
                         exceptionHandler.handleException(new TimeoutException(timeoutMessage));
                     }
                 }
@@ -85,7 +86,7 @@ class WriteDirector<T> {
 
                     @Override
                     public void run() {
-                        done = true;
+                        done.set(true);
                         notificationExecutor.execute(new Runnable() {
 
                             @Override
@@ -97,8 +98,19 @@ class WriteDirector<T> {
                 }, new ExceptionHandler() {
 
                     @Override
-                    public void handleException(Exception ex) {
-                        super.handleException(ex);
+                    public void handleException(final Exception ex) {
+                        boolean previousDone = done.getAndSet(true);
+                        if (!previousDone) {
+                            notificationExecutor.execute(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    pvWriter.fireWriteFailure(ex);
+                                }
+                            });
+                        } else {
+                            pvWriter.setLastWriteException(ex);
+                        }
                     }
                     
                 });

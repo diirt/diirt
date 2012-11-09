@@ -29,7 +29,11 @@ class NormalChannel extends MultiplexedChannelHandler<Object, Object> {
 
     @Override
     public void write(Object newValue, ChannelWriteCallback callback) {
-        callback.channelWritten(null);
+        if ("Fail".equals(newValue)) {
+            callback.channelWritten(new RuntimeException("Total failure"));
+        } else {
+            callback.channelWritten(null);
+        }
     }
 
     @Override
