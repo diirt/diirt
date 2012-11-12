@@ -20,13 +20,14 @@ import java.util.logging.Logger;
 import org.epics.graphene.Histogram1DRendererUpdate;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -147,18 +148,20 @@ public class MockHistogram extends javax.swing.JFrame {
 
         plot = ExpressionLanguage.histogramOf(vNumber(pvName.getText()));
         plot.update(new Histogram1DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
-        pv = PVManager.read(plot).notifyOn(swingEDT()).every(hz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv = PVManager.read(plot)
+                .notifyOn(swingEDT())
+                .readListener(new PVReaderListener<VImage>() {
 
-            @Override
-            public void pvChanged() {
-                setLastError(pv.lastException());
-                if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue());
-                    plotView.setImage(image);
-                }
-            }
-        });
+                    @Override
+                    public void pvChanged(PVReaderEvent<VImage> event) {
+                        setLastError(pv.lastException());
+                        if (pv.getValue() != null) {
+                            BufferedImage image = ValueUtil.toImage(pv.getValue());
+                            plotView.setImage(image);
+                        }
+                    }
+                })
+                .maxRate(ofHertz(50));
     }//GEN-LAST:event_pvNameActionPerformed
 
     private void setLastError(Exception ex) {

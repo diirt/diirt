@@ -27,9 +27,10 @@ import org.epics.pvmanager.data.ValueUtil;
 import org.epics.pvmanager.data.VImage;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+import static org.epics.util.time.TimeDuration.*;
 
 /**
  *
@@ -221,18 +222,20 @@ public class MockLineGraph extends javax.swing.JFrame {
         }
         
         plot.update(new LineGraphRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
-        pv = PVManager.read(plot).notifyOn(swingEDT()).every(hz(50));
-        pv.addPVReaderListener(new PVReaderListener() {
+        pv = PVManager.read(plot)
+                .notifyOn(swingEDT())
+                .readListener(new PVReaderListener<Plot2DResult>() {
 
-            @Override
-            public void pvChanged() {
-                setLastError(pv.lastException());
-                if (pv.getValue() != null) {
-                    BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());
-                    plotView.setImage(image);
-                }
-            }
-        });
+                    @Override
+                    public void pvChanged(PVReaderEvent<Plot2DResult> event) {
+                        setLastError(pv.lastException());
+                        if (pv.getValue() != null) {
+                            BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());
+                            plotView.setImage(image);
+                        }
+                    }
+                })
+                .maxRate(ofHertz(50));
     }//GEN-LAST:event_yPvActionPerformed
 
     private void xInitialOffsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xInitialOffsetActionPerformed
