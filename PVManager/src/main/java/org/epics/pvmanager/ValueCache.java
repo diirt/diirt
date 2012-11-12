@@ -10,7 +10,7 @@ package org.epics.pvmanager;
  * @param <T> the type of the value held by the cache
  * @author carcassi
  */
-public class ValueCache<T> extends Function<T> {
+public class ValueCache<T> implements Function<T> {
 
     /**
      * The value cached

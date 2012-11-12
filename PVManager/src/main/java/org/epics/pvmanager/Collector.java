@@ -21,7 +21,7 @@ import java.util.List;
  * @param <T> type being collected
  * @author carcassi
  */
-public abstract class Collector<T> extends Function<List<T>> {
+public abstract class Collector<T> implements Function<List<T>> {
 
     /**
      * Calculates the next value and puts it in the queue.

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-class ListOfFunction extends Function<List> {
+class ListOfFunction implements Function<List> {
 
     List<Function> functions;
 

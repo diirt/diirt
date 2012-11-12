@@ -15,7 +15,7 @@ import java.util.List;
  * @param <T> the payload type to be held in the cache
  * @author carcassi
  */
-public class WriteCache<T> extends WriteFunction<T> {
+public class WriteCache<T> implements WriteFunction<T> {
 
     /**
      * The value cached.
