@@ -52,4 +52,12 @@ public class NewConnectionCollectorTest {
         NewConnectionCollector collector = new NewConnectionCollector();
         collector.removeChannel("never");
     }
+    
+    @Test(expected=IllegalStateException.class)
+    public void usingDeregisteredWriteFunction() {
+        NewConnectionCollector collector = new NewConnectionCollector();
+        WriteFunction<Boolean> channelWriteFunction = collector.addChannel("first");
+        collector.removeChannel("first");
+        channelWriteFunction.setValue(true);
+    }
 }
