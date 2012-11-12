@@ -23,7 +23,7 @@ public class NewConnectionCollectorTest {
     }
 
     @Test
-    public void inputOutput() throws InterruptedException {
+    public void inputOutput() {
         NewConnectionCollector collector = new NewConnectionCollector();
         assertThat(collector.getValue(), equalTo(true));
         
@@ -45,5 +45,11 @@ public class NewConnectionCollectorTest {
         
         secondWriteFunction = collector.addChannel("second");
         assertThat(collector.getValue(), equalTo(false));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void removingUnknownChannel() {
+        NewConnectionCollector collector = new NewConnectionCollector();
+        collector.removeChannel("never");
     }
 }

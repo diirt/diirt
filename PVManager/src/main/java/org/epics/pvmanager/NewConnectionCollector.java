@@ -57,7 +57,9 @@ class NewConnectionCollector implements Function<Boolean> {
     public void removeChannel(String channelName) {
         synchronized(lock) {
             channelConnected.remove(channelName);
-            writeFunctions.remove(channelName);
+            if (writeFunctions.remove(channelName) == null) {
+                throw new IllegalArgumentException("Trying to remove channel '" + channelName + "' from ConnectionCollector, but it was already removed or never added.");
+            }
         }
     }
 }
