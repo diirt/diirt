@@ -232,7 +232,7 @@ public class TestDataSourceTest {
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
         
-        readListener.await(TimeDuration.ofMillis(600));
+        readListener.await(TimeDuration.ofMillis(1000));
         assertThat(readListener.getCount(), equalTo(0));
         
         ex = (TimeoutException) pvReader.lastException();
