@@ -8,6 +8,10 @@
     <version>2.0-SNAPSHOT</version>
     <name>PVManager</name>
     <url>http://pvmanager.sourceforge.net</url>
+    <organization>
+        <name>Brookhaven National Laboratory</name>
+    </organization>
+    <inceptionYear>2010</inceptionYear>    
     <description>Client utility library to manage complex objects retrival and scanning.</description>
     <issueManagement>
         <system>JIRA</system>
@@ -161,7 +165,24 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+<!--                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                    <licenseName>gpl_v2_cpe</licenseName>
+                    <licenseResolver>file://${basedir}/src/license</licenseResolver>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                            <goal>update-project-license</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>-->
+            </plugin>            
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr3-maven-plugin</artifactId>
