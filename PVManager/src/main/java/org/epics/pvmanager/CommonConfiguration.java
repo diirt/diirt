@@ -14,7 +14,7 @@ import org.epics.util.time.TimeDuration;
 class CommonConfiguration {
 
     Executor notificationExecutor;
-    DataSource source;
+    DataSource dataSource;
     TimeDuration timeout;
     String timeoutMessage;
 
@@ -28,7 +28,7 @@ class CommonConfiguration {
         if (dataSource == null) {
             throw new IllegalArgumentException("dataSource can't be null");
         }
-        source = dataSource;
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -62,15 +62,15 @@ class CommonConfiguration {
 
     void checkDataSourceAndThreadSwitch() {
         // Get defaults
-        if (source == null) {
-            source = PVManager.getDefaultDataSource();
+        if (dataSource == null) {
+            dataSource = PVManager.getDefaultDataSource();
         }
         if (notificationExecutor == null) {
             notificationExecutor = PVManager.getDefaultNotificationExecutor();
         }
 
         // Check that a data source has been specified
-        if (source == null) {
+        if (dataSource == null) {
             throw new IllegalStateException("You need to specify a source either "
                     + "using PVManager.setDefaultDataSource or by using "
                     + "read(...).from(dataSource).");

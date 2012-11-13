@@ -4,9 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 
 /**
@@ -16,51 +13,38 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 public class ExpressionTester {
 
     private DesiredRateExpression<?> expression;
+    private DataRecipe recipe;
+    private NewQueueCollector<Exception> exceptionCollector = new NewQueueCollector<>(10);
+    private NewConnectionCollector connCollector = new NewConnectionCollector();
 
     public ExpressionTester(DesiredRateExpression<?> expression) {
         this.expression = expression;
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        expression.fillDataRecipe(null, builder);
+        this.recipe = builder.build(exceptionCollector, connCollector);
     }
 
     public void writeValue(String name, Object value) {
-        for (Collector<?> collector : expression.getDataRecipe().getChannelsPerCollectors().keySet()) {
-            @SuppressWarnings("unchecked")
-            ValueCache<Object> cache = expression.getDataRecipe().getChannelsPerCollectors().get(collector).get(name);
-            if (cache != null) {
+        for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+            if (channelRecipe.getChannelName().equals(name)) {
+                @SuppressWarnings("unchecked")
+                ValueCache<Object> cache = (ValueCache<Object>) channelRecipe.getReadSubscription().getValueCache();
                 cache.setValue(value);
-                collector.collect();
             }
         }
     }
     
-    public Collector<?> collectorFor(String channelName) {
-        for (Entry<Collector<?>, Map<String, ValueCache>> entry : expression.getDataRecipe().getChannelsPerCollectors().entrySet()) {
-            Collector<?> collector = entry.getKey();
-            Map<String, ValueCache> map = entry.getValue();
-            for (String name : map.keySet()) {
-                if (channelName.equals(name))
-                    return collector;
+    public ChannelRecipe recipeFor(String channelName) {
+        for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+            if (channelRecipe.getChannelName().equals(channelName)) {
+                return channelRecipe;
             }
         }
-        
-        return null;
-    }
-    
-    public ValueCache cacheFor(String channelName) {
-        for (Map<String, ValueCache> maps : expression.getDataRecipe().getChannelsPerCollectors().values()) {
-            for (Entry<String, ValueCache> entry : maps.entrySet()) {
-                String name = entry.getKey();
-                ValueCache valueCache = entry.getValue();
-                if (channelName.equals(name)) {
-                    return valueCache;
-                }
-            }
-        }
-        
         return null;
     }
     
     public DataRecipe getDataRecipe() {
-        return expression.getDataRecipe();
+        return recipe;
     }
     
     public Function<?> getFunction() {

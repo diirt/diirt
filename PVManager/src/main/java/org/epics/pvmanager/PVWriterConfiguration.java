@@ -98,7 +98,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         try {
             if (timeoutMessage == null)
                 timeoutMessage = "Write timeout";
-            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, source, PVManager.getAsyncWriteExecutor(), notificationExecutor, exceptionHandler,
+            pvWriter.setWriteDirector(new WriteDirector<T>(writeFunction, writeBuffer, dataSource, PVManager.getAsyncWriteExecutor(), notificationExecutor, exceptionHandler,
                     timeout, timeoutMessage));
         } catch (Exception ex) {
             exceptionHandler.handleException(ex);

@@ -10,34 +10,20 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
-import gov.aps.jca.dbr.DBR;
-import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_Double;
-import gov.aps.jca.dbr.DBR_String;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import gov.aps.jca.dbr.DBR_TIME_String;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import gov.aps.jca.event.MonitorEvent;
-import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.ValueCacheImpl;
 import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.util.time.Timestamp;
-import org.junit.Before;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import static org.epics.pvmanager.jca.JCAVTypeAdapterSetTest.*;
 
 /**
@@ -48,7 +34,7 @@ public class JCAZeroPrecisionTest {
 
     @Test
     public void honorZeroPrecision1() {
-        ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
+        ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
@@ -67,7 +53,7 @@ public class JCAZeroPrecisionTest {
 
     @Test
     public void honorZeroPrecision2() {
-        ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
+        ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);

@@ -60,4 +60,24 @@ public class NewConnectionCollectorTest {
         collector.removeChannel("first");
         channelWriteFunction.setValue(true);
     }
+    
+    @Test
+    public void sameChannelMultipleTimes() {
+        NewConnectionCollector collector = new NewConnectionCollector();
+        WriteFunction<Boolean> channelWriteFunction1 = collector.addChannel("first");
+        WriteFunction<Boolean> channelWriteFunction2 = collector.addChannel("first");
+        assertThat(collector.getValue(), equalTo(false));
+        
+        channelWriteFunction1.setValue(true);
+        assertThat(channelWriteFunction1, sameInstance(channelWriteFunction2));
+        assertThat(collector.getValue(), equalTo(true));
+        
+        collector.removeChannel("first");
+        assertThat(collector.getValue(), equalTo(true));
+        channelWriteFunction1.setValue(false);
+        assertThat(collector.getValue(), equalTo(false));
+
+        collector.removeChannel("first");
+        assertThat(collector.getValue(), equalTo(true));
+    }
 }

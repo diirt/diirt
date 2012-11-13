@@ -58,88 +58,88 @@ public class CollectorToPVTest {
     private volatile PVReaderImpl<VDouble> pv;
     private AtomicInteger counter;
 
-    @Test
-    public void testFasterRate() throws Exception {
-        long testTimeMs = 1000;
-        long scanPeriodMs = 40;
-        double notificationPeriodMs = 0.1;
-        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
-        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
-        int targetNotifications = Math.min(nNotifications, maxNotifications);
+//    @Test
+//    public void testFasterRate() throws Exception {
+//        long testTimeMs = 1000;
+//        long scanPeriodMs = 40;
+//        double notificationPeriodMs = 0.1;
+//        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+//        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+//        int targetNotifications = Math.min(nNotifications, maxNotifications);
+//
+//        final ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
+//        final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
+//        counter = new AtomicInteger();
+//        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
+//        SwingUtilities.invokeAndWait(new Runnable() {
+//            @Override
+//            public void run() {
+//                pv = new PVReaderImpl<VDouble>("My pv", false);
+//                pv.addPVReaderListener(new PVReaderListener<Object>() {
+//
+//                    @Override
+//                    public void pvChanged(PVReaderEvent<Object> event) {
+//                        counter.incrementAndGet();
+//                    }
+//                });
+//            }
+//        });
+//        ValueCache<Boolean> conn = new ValueCacheImpl<Boolean>(Boolean.class);
+//        conn.setValue(false);
+//        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, conn, scanExecService, swingEDT(), new ExceptionHandler());
+//        notifier.startScan(TimeDuration.ofMillis((int) scanPeriodMs));
+//        DataRecipe connRecipe = new DataRecipe();
+//        double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
+//        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
+//        SimulationDataSource.simulatedData().connect(connRecipe);
+//        Thread.sleep(testTimeMs);
+//        pv.close();
+//        int actualNotification = counter.get();
+//        if (actualNotification > targetNotifications) {
+//            fail("Expected " + targetNotifications + " but got " + actualNotification);
+//        }
+//    }
 
-        final ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
-        final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
-        counter = new AtomicInteger();
-        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                pv = new PVReaderImpl<VDouble>("My pv", false);
-                pv.addPVReaderListener(new PVReaderListener<Object>() {
-
-                    @Override
-                    public void pvChanged(PVReaderEvent<Object> event) {
-                        counter.incrementAndGet();
-                    }
-                });
-            }
-        });
-        ValueCache<Boolean> conn = new ValueCache<Boolean>(Boolean.class);
-        conn.setValue(false);
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, conn, scanExecService, swingEDT(), new ExceptionHandler());
-        notifier.startScan(TimeDuration.ofMillis((int) scanPeriodMs));
-        DataRecipe connRecipe = new DataRecipe();
-        double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
-        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
-        SimulationDataSource.simulatedData().connect(connRecipe);
-        Thread.sleep(testTimeMs);
-        pv.close();
-        int actualNotification = counter.get();
-        if (actualNotification > targetNotifications) {
-            fail("Expected " + targetNotifications + " but got " + actualNotification);
-        }
-    }
-
-    @Test
-    public void testSlowerRate() throws Exception {
-        long testTimeMs = 1000;
-        long scanPeriodMs = 40;
-        double notificationPeriodMs = 100;
-        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
-        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
-        int targetNotifications = Math.min(nNotifications, maxNotifications);
-
-        final ValueCache<VDouble> cache = new ValueCache<VDouble>(VDouble.class);
-        final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
-        counter = new AtomicInteger();
-        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                pv = new PVReaderImpl<VDouble>("My pv", false);
-                pv.addPVReaderListener(new PVReaderListener<Object>() {
-
-                    @Override
-                    public void pvChanged(PVReaderEvent<Object> event) {
-                        counter.incrementAndGet();
-                    }
-                });
-            }
-        });
-        ValueCache<Boolean> conn = new ValueCache<Boolean>(Boolean.class);
-        conn.setValue(false);
-        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, conn, scanExecService, swingEDT(), new ExceptionHandler());
-        notifier.startScan(TimeDuration.ofMillis((int) scanPeriodMs));
-        DataRecipe connRecipe = new DataRecipe();
-        double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
-        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
-        SimulationDataSource.simulatedData().connect(connRecipe);
-        Thread.sleep(testTimeMs);
-        int actualNotification = counter.get();
-        if (Math.abs(actualNotification - targetNotifications) > 2) {
-            fail("Expected " + targetNotifications + " but got " + actualNotification);
-        }
-    }
+//    @Test
+//    public void testSlowerRate() throws Exception {
+//        long testTimeMs = 1000;
+//        long scanPeriodMs = 40;
+//        double notificationPeriodMs = 100;
+//        final int nNotifications = (int) (testTimeMs / notificationPeriodMs);
+//        int maxNotifications = (int) (testTimeMs / scanPeriodMs);
+//        int targetNotifications = Math.min(nNotifications, maxNotifications);
+//
+//        final ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
+//        final Collector<VDouble> collector = new QueueCollector<VDouble>(cache);
+//        counter = new AtomicInteger();
+//        LastValueAggregator<VDouble> aggregator = new LastValueAggregator<VDouble>(collector);
+//        SwingUtilities.invokeAndWait(new Runnable() {
+//            @Override
+//            public void run() {
+//                pv = new PVReaderImpl<VDouble>("My pv", false);
+//                pv.addPVReaderListener(new PVReaderListener<Object>() {
+//
+//                    @Override
+//                    public void pvChanged(PVReaderEvent<Object> event) {
+//                        counter.incrementAndGet();
+//                    }
+//                });
+//            }
+//        });
+//        ValueCache<Boolean> conn = new ValueCacheImpl<Boolean>(Boolean.class);
+//        conn.setValue(false);
+//        Notifier<VDouble> notifier = new Notifier<VDouble>(pv, aggregator, conn, scanExecService, swingEDT(), new ExceptionHandler());
+//        notifier.startScan(TimeDuration.ofMillis((int) scanPeriodMs));
+//        DataRecipe connRecipe = new DataRecipe();
+//        double secBetweenSamples = ((double) notificationPeriodMs / 1000.0);
+//        connRecipe = connRecipe.includeCollector(collector, Collections.<String,ValueCache>singletonMap("gaussian(0.0, 1.0, " + secBetweenSamples + ")", cache));
+//        SimulationDataSource.simulatedData().connect(connRecipe);
+//        Thread.sleep(testTimeMs);
+//        int actualNotification = counter.get();
+//        if (Math.abs(actualNotification - targetNotifications) > 2) {
+//            fail("Expected " + targetNotifications + " but got " + actualNotification);
+//        }
+//    }
 
 
 //    @Test

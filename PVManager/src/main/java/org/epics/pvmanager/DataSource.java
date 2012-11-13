@@ -147,7 +147,7 @@ public abstract class DataSource {
             } catch (Exception ex) {
                 // If any error happens while creating the channel,
                 // report it to the exception handler of that channel
-                channelRecipe.getReadSubscription().getHandler().handleException(ex);
+                channelRecipe.getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
             
         }
@@ -166,7 +166,7 @@ public abstract class DataSource {
                     } catch(Exception ex) {
                         // If an error happens while adding the read subscription,
                         // notify the appropriate handler
-                        channelRecipe.getReadSubscription().getHandler().handleException(ex);
+                        channelRecipe.getReadSubscription().getExceptionWriteFunction().setValue(ex);
                     }
                 }
             }
@@ -190,14 +190,13 @@ public abstract class DataSource {
 
         
         for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
-            Collector<?> collector = channelRecipe.getReadSubscription().getCollector();
             String channelName = channelRecipe.getChannelName();
             ChannelHandler channelHandler = usedChannels.get(channelName);
             // If the channel is not found, it means it was not found during
             // connection and a proper notification was sent then. Silently
             // ignore it.
             if (channelHandler != null) {
-                channelHandler.removeMonitor(collector);
+                channelHandler.removeMonitor(channelRecipe.getReadSubscription());
             }
         }
 

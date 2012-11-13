@@ -72,7 +72,7 @@ public class ExpressionLanguage {
         if (value != null)
             clazz = value.getClass();
         @SuppressWarnings("unchecked")
-        ValueCache<T> cache = (ValueCache<T>) new ValueCache(clazz);
+        ValueCache<T> cache = (ValueCache<T>) new ValueCacheImpl(clazz);
         if (value != null)
             cache.setValue(value);
         return new DesiredRateExpressionImpl<T>(new DesiredRateExpressionListImpl<T>(), cache, name);
@@ -171,7 +171,7 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
-                new QueueCollector<T>(expression.getFunction()),
+                new NewQueueCollector<T>(10),
                 expression.getName());
     }
 
@@ -186,7 +186,7 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression, int maxValues) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
-                new QueueCollector<T>(expression.getFunction(), maxValues),
+                new NewQueueCollector<T>(maxValues),
                 expression.getName());
     }
 
@@ -199,9 +199,8 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <T> DesiredRateExpression<T> latestValueOf(SourceRateExpression<T> expression) {
-        DesiredRateExpression<List<T>> queue = newValuesOf(expression, 1);
-        return new DesiredRateExpressionImpl<T>(queue,
-                new LastValueAggregator<T>((Collector<T>) queue.getFunction()),
+        return new DesiredRateExpressionImpl<T>(expression,
+                new NewLatestValueCollector<T>(),
                 expression.getName());
     }
 

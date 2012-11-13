@@ -83,7 +83,7 @@ public abstract class ChannelHandler {
      * 
      * @param collector the collector that does not need to be notified anymore
      */
-    protected abstract void removeMonitor(Collector<?> collector);
+    protected abstract void removeMonitor(ChannelHandlerReadSubscription subscription);
 
     /**
      * Used by the data source to prepare the channel managed by this handler

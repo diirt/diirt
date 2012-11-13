@@ -7,14 +7,16 @@ package org.epics.pvmanager.data;
 import java.util.*;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.NewCollector;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 
-/**
+
+    /**
  *
  * @author carcassi
  */
-class TimedCacheCollector<T extends Time> extends Collector<T> {
+class TimedCacheCollector<T extends Time> implements NewCollector<T, List<T>> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final Function<T> function;
@@ -24,14 +26,9 @@ class TimedCacheCollector<T extends Time> extends Collector<T> {
         this.function = function;
         this.cachedPeriod = cachedPeriod;
     }
-    /**
-     * Calculates the next value and puts it in the queue.
-     */
-    @Override
-    public synchronized void collect() {
-        // Calculation may take time, and is locked by this
-        T newValue = function.getValue();
 
+    @Override
+    public void setValue(T newValue) {
         // Buffer is locked and updated
         if (newValue != null) {
             synchronized(buffer) {

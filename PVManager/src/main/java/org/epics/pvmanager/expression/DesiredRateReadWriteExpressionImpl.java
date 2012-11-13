@@ -5,7 +5,9 @@
 package org.epics.pvmanager.expression;
 
 import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.PVReaderDirector;
 import org.epics.pvmanager.WriteBufferBuilder;
 import org.epics.pvmanager.WriteFunction;
 
@@ -65,8 +67,8 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public final DataRecipe getDataRecipe() {
-        return desiredRateExpression.getDataRecipe();
+    public void fillDataRecipe(PVReaderDirector director, DataRecipeBuilder builder) {
+        desiredRateExpression.fillDataRecipe(director, builder);
     }
 
     @Override

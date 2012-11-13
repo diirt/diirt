@@ -10,9 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -57,12 +55,10 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        DataRecipe recipe = new DataRecipe();
-        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
-        caches.put("pv01", new ValueCache<Double>(Double.class));
-        caches.put("pv03", new ValueCache<Double>(Double.class));
-        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
-                caches);
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
 
         // Call and check
         composite.connect(recipe);
@@ -79,15 +75,13 @@ public class CompositeDataSourceTest {
         composite.setDefaultDataSource("mock1");
 
         // Call only default
-        DataRecipe recipe = new DataRecipe();
-        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
-        caches.put("pv01", new ValueCache<Double>(Double.class));
-        caches.put("pv03", new ValueCache<Double>(Double.class));
-        caches.put("mock1://pv02", new ValueCache<Double>(Double.class));
-        caches.put("mock2://pv04", new ValueCache<Double>(Double.class));
-        caches.put("mock1://pv05", new ValueCache<Double>(Double.class));
-        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
-                caches);
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock1://pv02", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock2://pv04", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock1://pv05", new ValueCacheImpl<Double>(Double.class));
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
         
         // Call and check
         composite.connect(recipe);
@@ -130,12 +124,10 @@ public class CompositeDataSourceTest {
         composite.putDataSource("mock2", mock2);
 
         // Call only default
-        DataRecipe recipe = new DataRecipe();
-        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
-        caches.put("pv01", new ValueCache<Double>(Double.class));
-        caches.put("pv03", new ValueCache<Double>(Double.class));
-        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
-                caches);
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
 
         // Should cause error
         composite.connect(recipe);
@@ -162,15 +154,13 @@ public class CompositeDataSourceTest {
         composite.setDelimiter("?");
 
         // Call only default
-        DataRecipe recipe = new DataRecipe();
-        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
-        caches.put("pv01", new ValueCache<Double>(Double.class));
-        caches.put("pv03", new ValueCache<Double>(Double.class));
-        caches.put("mock1?pv02", new ValueCache<Double>(Double.class));
-        caches.put("mock2?pv04", new ValueCache<Double>(Double.class));
-        caches.put("mock1?pv05", new ValueCache<Double>(Double.class));
-        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
-                caches);
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock1?pv02", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock2?pv04", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("mock1?pv05", new ValueCacheImpl<Double>(Double.class));
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
 
         // Call and check
         composite.connect(recipe);
@@ -187,11 +177,9 @@ public class CompositeDataSourceTest {
         // Setup composite
         CompositeDataSource composite = new CompositeDataSource();
 
-        DataRecipe recipe = new DataRecipe(rethrow);
-        Map<String, ValueCache> caches = new HashMap<String, ValueCache>();
-        caches.put("mock://pv03", new ValueCache<Double>(Double.class));
-        recipe = recipe.includeCollector(new QueueCollector<Double>(new ValueCache<Double>(Double.class)),
-                caches);
+        DataRecipeBuilder builder = new DataRecipeBuilder();
+        builder.addChannel("mock://pv03", new ValueCacheImpl<Double>(Double.class));
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
 
         // Should cause error
         composite.connect(recipe);

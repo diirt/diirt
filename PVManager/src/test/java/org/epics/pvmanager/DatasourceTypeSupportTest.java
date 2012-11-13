@@ -45,7 +45,7 @@ public class DatasourceTypeSupportTest {
             }
 
             @Override
-            public boolean updateCache(ValueCache cache, Class<?> connection, Object message) {
+            public boolean updateCache(ValueCache<?> cache, Class<?> connection, Object message) {
                 return false;
             }
         };
@@ -57,7 +57,7 @@ public class DatasourceTypeSupportTest {
         Collection<DataSourceTypeAdapter<Class<?>, Object>> converters = new ArrayList<DataSourceTypeAdapter<Class<?>, Object>>();
         DataSourceTypeAdapter<Class<?>, Object> converter = createMockConverter(Double.class);
         converters.add(converter);
-        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), Double.class);
+        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCacheImpl<Number>(Number.class), Double.class);
         assertThat(matched, sameInstance(converter));
     }
 
@@ -67,6 +67,6 @@ public class DatasourceTypeSupportTest {
         Collection<DataSourceTypeAdapter<Class<?>, Object>> converters = new ArrayList<DataSourceTypeAdapter<Class<?>, Object>>();
         DataSourceTypeAdapter<Class<?>, Object> converter = createMockConverter(Double.class);
         converters.add(converter);
-        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCache<Number>(Number.class), String.class);
+        DataSourceTypeAdapter<Class<?>, Object> matched = matcher.find(converters, new ValueCacheImpl<Number>(Number.class), String.class);
     }
 }

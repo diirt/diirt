@@ -78,8 +78,7 @@ public class DatasourceTest {
         dataSource.connect(dataRecipe);
         
         verify(dataSource).channel("first");
-        verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp.collectorFor("first"), 
-                exp.cacheFor("first"), dataRecipe.getExceptionHandler(), dataRecipe.getConnectionCollector(), dataRecipe.getConnectionCaches().get("first")));
+        verify(channel1).addMonitor(exp.recipeFor("first").getReadSubscription());
     }
 
     @Test
@@ -97,10 +96,8 @@ public class DatasourceTest {
         
         verify(dataSource).channel("first");
         verify(dataSource).channel("second");
-        verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp.collectorFor("first"), 
-                exp.cacheFor("first"), dataRecipe.getExceptionHandler(), dataRecipe.getConnectionCollector(), dataRecipe.getConnectionCaches().get("first")));
-        verify(channel2).addMonitor(new ChannelHandlerReadSubscription(exp.collectorFor("second"), 
-                exp.cacheFor("second"), dataRecipe.getExceptionHandler(), dataRecipe.getConnectionCollector(), dataRecipe.getConnectionCaches().get("second")));
+        verify(channel1).addMonitor(exp.recipeFor("first").getReadSubscription());
+        verify(channel2).addMonitor(exp.recipeFor("second").getReadSubscription());
     }
 
     @Test
@@ -120,10 +117,8 @@ public class DatasourceTest {
         
         verify(dataSource, times(2)).channel("first");
         verify(dataSource).createChannel("first");
-        verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp1.collectorFor("first"), 
-                exp1.cacheFor("first"), dataRecipe1.getExceptionHandler(), dataRecipe1.getConnectionCollector(), dataRecipe1.getConnectionCaches().get("first")));
-        verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp2.collectorFor("first"), 
-                exp2.cacheFor("first"), dataRecipe2.getExceptionHandler(), dataRecipe2.getConnectionCollector(), dataRecipe2.getConnectionCaches().get("first")));
+        verify(channel1).addMonitor(exp1.recipeFor("first").getReadSubscription());
+        verify(channel1).addMonitor(exp2.recipeFor("first").getReadSubscription());
     }
 
     @Test
@@ -140,8 +135,7 @@ public class DatasourceTest {
         
         verify(dataSource).channel("changeit");
         verify(dataSource).createChannel("changeit");
-        verify(channel1).addMonitor(new ChannelHandlerReadSubscription(exp.collectorFor("changeit"), 
-                exp.cacheFor("changeit"), dataRecipe.getExceptionHandler(), dataRecipe.getConnectionCollector(), dataRecipe.getConnectionCaches().get("changeit")));
+        verify(channel1).addMonitor(exp.recipeFor("changeit").getReadSubscription());
         assertThat(dataSource.getChannels().get("first"), not(equalTo(null)));
         assertThat(dataSource.getChannels().get("changeit"), equalTo(null));
     }

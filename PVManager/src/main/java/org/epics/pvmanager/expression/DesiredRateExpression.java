@@ -5,7 +5,9 @@
 package org.epics.pvmanager.expression;
 
 import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
+import org.epics.pvmanager.PVReaderDirector;
 
 /**
  * An expression to read at the desired rate.
@@ -37,7 +39,7 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R> {
      *
      * @return a data recipe
      */
-    public DataRecipe getDataRecipe();
+    public void fillDataRecipe(PVReaderDirector director, DataRecipeBuilder builder);
     
     /**
      * The function that calculates this expression.

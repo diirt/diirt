@@ -43,9 +43,6 @@ public class CustomFunctionTest {
         tester.writeValue("test", 123.0);
         assertEquals((Object) (-123.0), function.getValue());
 
-        tester.writeValue("test", null);
-        assertEquals((Object) (-123.0), function.getValue());
-
         tester.writeValue("test", 1.0);
         tester.writeValue("test", 2.0);
         tester.writeValue("test", 3.0);

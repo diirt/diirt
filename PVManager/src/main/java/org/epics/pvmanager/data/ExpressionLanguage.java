@@ -341,9 +341,8 @@ public class ExpressionLanguage {
      */
     public static DesiredRateExpression<VDouble> averageOf(SourceRateExpression<VDouble> doublePv) {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
-        Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
         return new DesiredRateExpressionImpl<VDouble>(queue,
-                new AverageAggregator(collector), "avg(" + doublePv.getName() + ")");
+                new AverageAggregator(queue.getFunction()), "avg(" + doublePv.getName() + ")");
     }
 
     /**
@@ -354,9 +353,8 @@ public class ExpressionLanguage {
      */
     public static DesiredRateExpression<VStatistics> statisticsOf(SourceRateExpression<VDouble> doublePv) {
         DesiredRateExpression<List<VDouble>> queue = newValuesOf(doublePv);
-        Collector<VDouble> collector = (Collector<VDouble>) queue.getFunction();
         return new DesiredRateExpressionImpl<VStatistics>(queue,
-                new StatisticsDoubleAggregator(collector), "stats(" + doublePv.getName() + ")");
+                new StatisticsDoubleAggregator(queue.getFunction()), "stats(" + doublePv.getName() + ")");
     }
 
     /**

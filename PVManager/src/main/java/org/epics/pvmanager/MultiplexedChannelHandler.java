@@ -28,8 +28,8 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     private boolean writeConnected = false;
     private MessagePayload lastMessage;
     private ConnectionPayload connectionPayload;
-    private Map<Collector<?>, MonitorHandler> monitors = new ConcurrentHashMap<Collector<?>, MonitorHandler>();
-    private Map<WriteCache<?>, ChannelHandlerWriteSubscription> writeCaches = new ConcurrentHashMap<WriteCache<?>, ChannelHandlerWriteSubscription>();
+    private Map<ValueCache<?>, MonitorHandler> monitors = new ConcurrentHashMap<>();
+    private Map<WriteCache<?>, ChannelHandlerWriteSubscription> writeCaches = new ConcurrentHashMap<>();
 
     private class MonitorHandler {
 
@@ -41,10 +41,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         }
         
         public final void processConnection(boolean connection) {
-            synchronized (subscription.getConnCollector()) {
-                subscription.getConnCache().setValue(connection);
-                subscription.getConnCollector().collect();
-            }
+            subscription.getConnWriteFunction().setValue(connection);
         }
 
         public final void processValue(MessagePayload payload) {
@@ -52,14 +49,10 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
                 return;
             
             // Lock the collector and prepare the new value.
-            synchronized (subscription.getCollector()) {
-                try {
-                    if (typeAdapter.updateCache(subscription.getCache(), getConnectionPayload(), payload)) {
-                        subscription.getCollector().collect();
-                    }
-                } catch (RuntimeException e) {
-                    subscription.getHandler().handleException(e);
-                }
+            try {
+                typeAdapter.updateCache(subscription.getValueCache(), getConnectionPayload(), payload);
+            } catch (RuntimeException e) {
+                subscription.getExceptionWriteFunction().setValue(e);
             }
         }
         
@@ -68,9 +61,9 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
                 typeAdapter = null;
             } else {
                 try {
-                    typeAdapter = MultiplexedChannelHandler.this.findTypeAdapter(subscription.getCache(), getConnectionPayload());
+                    typeAdapter = MultiplexedChannelHandler.this.findTypeAdapter(subscription.getValueCache(), getConnectionPayload());
                 } catch(RuntimeException ex) {
-                    subscription.getHandler().handleException(ex);
+                    subscription.getExceptionWriteFunction().setValue(ex);
                 }
             }
         }
@@ -84,7 +77,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      */
     protected synchronized final void reportExceptionToAllReadersAndWriters(Exception ex) {
         for (MonitorHandler monitor : monitors.values()) {
-            monitor.subscription.getHandler().handleException(ex);
+            monitor.subscription.getExceptionWriteFunction().setValue(ex);
         }
         for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
             subscription.getHandler().handleException(ex);
@@ -232,7 +225,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     protected synchronized void addMonitor(ChannelHandlerReadSubscription subscription) {
         readUsageCounter++;
         MonitorHandler monitor = new MonitorHandler(subscription);
-        monitors.put(subscription.getCollector(), monitor);
+        monitors.put(subscription.getValueCache(), monitor);
         monitor.findTypeAdapter();
         guardedConnect();
         if (readUsageCounter > 1) {
@@ -248,11 +241,11 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     /**
      * Used by the data source to remove a read request.
      * 
-     * @param collector the collector that does not need to be notified anymore
+     * @param subscription the collector that does not need to be notified anymore
      */
     @Override
-    protected synchronized void removeMonitor(Collector<?> collector) {
-        monitors.remove(collector);
+    protected synchronized void removeMonitor(ChannelHandlerReadSubscription subscription) {
+        monitors.remove(subscription);
         readUsageCounter--;
         guardedDisconnect();
     }

@@ -52,7 +52,7 @@ public class WriteBuffer {
         // TODO: should refactor with similar method in DataRecipe
         Map<String, ValueCache<Boolean>> newCaches = new HashMap<String, ValueCache<Boolean>>();
         for (String name : caches.keySet()) {
-            ValueCache<Boolean> cache = new ValueCache<Boolean>(Boolean.class);
+            ValueCache<Boolean> cache = new ValueCacheImpl<Boolean>(Boolean.class);
             cache.setValue(false);
             newCaches.put(name, cache);
         }

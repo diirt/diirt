@@ -140,8 +140,9 @@ public class CompositeDataSource extends DataSource {
                 throw new IllegalArgumentException("Channel " + name + " uses the default data source but one was never set.");
 
             // Add recipe for the target dataSource
-            if (routingRecipes.get(dataSource) == null)
+            if (routingRecipes.get(dataSource) == null) {
                 routingRecipes.put(dataSource, new HashSet<ChannelRecipe>());
+            }
             routingRecipes.get(dataSource).add(new ChannelRecipe(name, channelRecipe.getReadSubscription()));
         }
         
@@ -161,7 +162,7 @@ public class CompositeDataSource extends DataSource {
                 dataSource.connect(entry.getValue());
             } catch (RuntimeException ex) {
                 // If data source fail, still go and connect the others
-                recipe.getExceptionHandler().handleException(ex);
+                recipe.getChannelRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
     }
@@ -180,7 +181,7 @@ public class CompositeDataSource extends DataSource {
                 dataSources.get(entry.getKey()).disconnect(entry.getValue());
             } catch(RuntimeException ex) {
                 // If a data source fails, still go and disconnect the others
-                recipe.getExceptionHandler().handleException(ex);
+                recipe.getChannelRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
 

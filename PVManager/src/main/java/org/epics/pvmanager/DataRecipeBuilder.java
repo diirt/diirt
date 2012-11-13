@@ -5,7 +5,9 @@
 package org.epics.pvmanager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Builder class for {@link DataRecipe}.
@@ -14,14 +16,8 @@ import java.util.Map;
  */
 public class DataRecipeBuilder {
 
-    private final Map<Collector<?>, Map<String, ValueCache>> channelsPerCollector;
-
-    /**
-     * New builder.
-     */
-    public DataRecipeBuilder() {
-        channelsPerCollector = new HashMap<Collector<?>, Map<String, ValueCache>>();
-    }
+    private final Map<String, ValueCache<?>> channelCaches
+            = new HashMap<>();
 
     /**
      * Add a collector and the channel/caches this collector will get values from.
@@ -29,17 +25,8 @@ public class DataRecipeBuilder {
      * @param collector a collector
      * @param caches the channel/caches
      */
-    public void addCollector(Collector<?> collector, Map<String, ValueCache> caches) {
-        channelsPerCollector.put(collector, caches);
-    }
-
-    /**
-     * Add all elements from another builder.
-     * 
-     * @param recipe another recipse
-     */
-    public void addAll(DataRecipeBuilder recipe) {
-        channelsPerCollector.putAll(recipe.channelsPerCollector);
+    public void addChannel(String channelName, ValueCache<?> caches) {
+        channelCaches.put(channelName, caches);
     }
 
     /**
@@ -47,7 +34,14 @@ public class DataRecipeBuilder {
      * 
      * @return a new recipe
      */
-    public DataRecipe build() {
-        return new DataRecipe(channelsPerCollector);
+    public DataRecipe build(WriteFunction<Exception> exceptionWriteFunction, NewConnectionCollector connectionCollector) {
+        Set<ChannelRecipe> recipes = new HashSet<>();
+        for (Map.Entry<String, ValueCache<?>> entry : channelCaches.entrySet()) {
+            String channelName = entry.getKey();
+            ValueCache<?> valueCache = entry.getValue();
+            recipes.add(new ChannelRecipe(channelName, 
+                    new ChannelHandlerReadSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
+        }
+        return new DataRecipe(recipes);
     }
 }

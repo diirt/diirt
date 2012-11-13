@@ -117,11 +117,10 @@ public class PVSyntaxTest {
     public void rename1() {
         SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
         assertThat(exp.getName(), equalTo("myName"));
-        DesiredRateReadWriteExpression<Object, Object> finalExp = latestValueOf(exp);
+        ExpressionTester finalExp = new ExpressionTester(latestValueOf(exp));
         DataRecipe recipe = finalExp.getDataRecipe();
-        assertThat(recipe.getChannelsPerCollectors().values(), hasSize(1));
-        Map<String, ValueCache> caches = recipe.getChannelsPerCollectors().values().iterator().next();
-        assertThat(caches.keySet(), contains("myChannel"));
+        assertThat(recipe.getChannelRecipes(), hasSize(1));
+        assertThat(finalExp.recipeFor("myChannel"), notNullValue());
     }
     
 }
