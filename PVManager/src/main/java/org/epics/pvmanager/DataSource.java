@@ -212,7 +212,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will contain the write data
      * @param exceptionHandler where to report the exceptions
      */
-    public void prepareWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
+    public void prepareWrite(final WriteBuffer writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
@@ -231,7 +231,7 @@ public abstract class DataSource {
                     throw new WriteFailException("Channel " + channelName + " does not exist");
                 handlers.put(handler, channelWriteBuffer.getWriteSubscription());
             } catch (Exception ex) {
-                channelWriteBuffer.getWriteSubscription().getHandler().handleException(ex);
+                channelWriteBuffer.getWriteSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
 
@@ -248,7 +248,7 @@ public abstract class DataSource {
                     } catch (Exception ex) {
                         // If an error happens while adding the write subscription,
                         // notify the appropriate handler
-                        entry.getValue().getHandler().handleException(ex);
+                        entry.getValue().getExceptionWriteFunction().setValue(ex);
                     }
                 }
             }
@@ -263,7 +263,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will no longer be used
      * @param exceptionHandler where to report the exceptions
      */
-    public void concludeWrite(final WriteBuffer writeBuffer, final ExceptionHandler exceptionHandler) {
+    public void concludeWrite(final WriteBuffer writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         

@@ -189,7 +189,7 @@ public class CompositeDataSource extends DataSource {
     }
 
     @Override
-    public void prepareWrite(WriteBuffer writeBuffer, ExceptionHandler exceptionHandler) {
+    public void prepareWrite(WriteBuffer writeBuffer) {
         // Chop the buffer along different data sources
         Map<String, Collection<ChannelWriteBuffer>> buffers = new HashMap<String, Collection<ChannelWriteBuffer>>();
         for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
@@ -209,14 +209,14 @@ public class CompositeDataSource extends DataSource {
             Collection<ChannelWriteBuffer> val = en.getValue();
             WriteBuffer newWriteBuffer = new WriteBuffer(val);
             splitBuffers.put(dataSource, newWriteBuffer);
-            dataSources.get(dataSource).prepareWrite(newWriteBuffer, exceptionHandler);
+            dataSources.get(dataSource).prepareWrite(newWriteBuffer);
         }
         
         writeBuffers.put(writeBuffer, splitBuffers);
     }
 
     @Override
-    public void concludeWrite(WriteBuffer writeBuffer, ExceptionHandler exceptionHandler) {
+    public void concludeWrite(WriteBuffer writeBuffer) {
         Map<String, WriteBuffer> splitBuffer = writeBuffers.remove(writeBuffer);
         if (splitBuffer == null) {
             log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
@@ -226,7 +226,7 @@ public class CompositeDataSource extends DataSource {
         for (Map.Entry<String, WriteBuffer> en : splitBuffer.entrySet()) {
             String dataSource = en.getKey();
             WriteBuffer splitWriteBuffer = en.getValue();
-            dataSources.get(dataSource).concludeWrite(splitWriteBuffer, exceptionHandler);
+            dataSources.get(dataSource).concludeWrite(splitWriteBuffer);
         }
     }
     

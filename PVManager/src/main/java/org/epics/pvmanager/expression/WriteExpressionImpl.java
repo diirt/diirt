@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.PVWriterDirector;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.WriteFunction;
@@ -105,16 +106,13 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
         return writeFunction;
     }
 
-    /**
-     * Creates a data recipe for the given expression.
-     *
-     * @return a data recipe
-     */
     @Override
-    public final WriteBufferBuilder createWriteBuffer() {
-        WriteBufferBuilder buffer = new WriteBufferBuilder();
-        buffer.addCaches(writeCaches);
-        return buffer;
+    public void fillWriteBuffer(PVWriterDirector director, WriteBufferBuilder builder) {
+        for (Map.Entry<String, WriteCache<?>> entry : writeCaches.entrySet()) {
+            String channelName = entry.getKey();
+            WriteCache<? extends Object> writeCache = entry.getValue();
+            builder.addChannel(channelName, writeCache);
+        }
     }
 
     @Override

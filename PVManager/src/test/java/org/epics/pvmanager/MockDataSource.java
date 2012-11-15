@@ -37,12 +37,12 @@ public class MockDataSource extends DataSource {
     }
 
     @Override
-    public void prepareWrite(WriteBuffer writeBuffer, ExceptionHandler exceptionHandler) {
+    public void prepareWrite(WriteBuffer writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 
     @Override
-    public void concludeWrite(WriteBuffer writeBuffer, ExceptionHandler exceptionHandler) {
+    public void concludeWrite(WriteBuffer writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 

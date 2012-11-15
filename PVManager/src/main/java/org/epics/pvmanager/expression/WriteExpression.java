@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
+import org.epics.pvmanager.PVWriterDirector;
 import org.epics.pvmanager.WriteBuffer;
 import org.epics.pvmanager.WriteBufferBuilder;
 import org.epics.pvmanager.WriteFunction;
@@ -32,12 +33,8 @@ public interface WriteExpression<W> extends WriteExpressionList<W> {
      */
     public WriteFunction<W> getWriteFunction();
     
-    /**
-     * The buffer that will contain the data to write.
-     *
-     * @return the data buffer
-     */
-    public WriteBufferBuilder createWriteBuffer();
+    public void fillWriteBuffer(PVWriterDirector director, WriteBufferBuilder builder);
+
     
     /**
      * The implementation of this expression.

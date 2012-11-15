@@ -5,7 +5,9 @@
 package org.epics.pvmanager;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A builder for {@link WriteBuffer }.
@@ -15,39 +17,16 @@ import java.util.Map;
 public class WriteBufferBuilder {
 
     private final Map<String, WriteCache<?>> caches;
-    private ExceptionHandler exceptionHandler;
 
     /**
      * A new builder
      */
     public WriteBufferBuilder() {
-        caches = new HashMap<String, WriteCache<?>>();
-    }
-
-    /**
-     * Adds a set of channel/write caches.
-     * 
-     * @param newCaches the channels/write chaches to add
-     * @return this
-     */
-    public WriteBufferBuilder addCaches(Map<String, WriteCache<?>> newCaches) {
-        caches.putAll(newCaches);
-        return this;
-    }
-
-    /**
-     * Adds another builder
-     * 
-     * @param buffer builder to add
-     * @return this
-     */
-    public WriteBufferBuilder addBuffer(WriteBufferBuilder buffer) {
-        caches.putAll(buffer.caches);
-        return this;
+        caches = new HashMap<>();
     }
     
-    public WriteBufferBuilder exceptionHandler(ExceptionHandler handler) {
-        this.exceptionHandler = handler;
+    public WriteBufferBuilder addChannel(String channelName, WriteCache<?> writeCache) {
+        caches.put(channelName, writeCache);
         return this;
     }
 
@@ -56,7 +35,15 @@ public class WriteBufferBuilder {
      * 
      * @return a new WriteBuffer
      */
-    public WriteBuffer build() {
-        return new WriteBuffer(new HashMap<String, WriteCache<?>>(caches), exceptionHandler);
+    public WriteBuffer build(WriteFunction<Exception> exceptionWriteFunction, NewConnectionCollector connectionCollector) {
+        Set<ChannelWriteBuffer> recipes = new HashSet<>();
+        for (Map.Entry<String, WriteCache<?>> entry : caches.entrySet()) {
+            String channelName = entry.getKey();
+            WriteCache<?> valueCache = entry.getValue();
+            recipes.add(new ChannelWriteBuffer(channelName, 
+                    new ChannelHandlerWriteSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
+        }
+        return new WriteBuffer(recipes);
     }
+    
 }

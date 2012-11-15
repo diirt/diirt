@@ -26,20 +26,32 @@ public class PVReaderDirector<T> {
     
     private static final Logger log = Logger.getLogger(PVReaderDirector.class.getName());
 
+    // Required for connection and exception notification
+
+    /** Executor used to notify of new values/connection/exception */
+    private final Executor notificationExecutor;
+    /** Executor used to scan the connection/exception queues */
+    private final ScheduledExecutorService scannerExecutor;
+    private volatile ScheduledFuture<?> scanTaskHandle;
+    /** PVReader to update during the notification */
     private final WeakReference<PVReaderImpl<T>> pvRef;
+    /** Function for the new value */
     private final Function<T> function;
+    
+    // Required to connect/disconnect expressions
     private final DataSource dataSource;
-    private final NewConnectionCollector connCollector =
-            new NewConnectionCollector();
-    private final NewQueueCollector<Exception> exceptionCollector =
-            new NewQueueCollector<>(1);
+    private final Object lock = new Object();
     private final Map<DesiredRateExpression<?>, DataRecipe> recipes =
             new HashMap<>();
+
+    // Required for multiple operations
+    /** Connection collector required to connect/disconnect expressions and for connection notification */
+    private final NewConnectionCollector connCollector =
+            new NewConnectionCollector();
+    /** Exception queue to be used to connect/disconnect expression and for exception notification */
+    private final NewQueueCollector<Exception> exceptionCollector =
+            new NewQueueCollector<>(1);
     
-    private final Executor notificationExecutor;
-    private final ScheduledExecutorService scannerExecutor;
-    
-    private volatile ScheduledFuture<?> scanTaskHandle;
     
     /**
      * Calculate the recipes and connects the channel to the datasource.
@@ -50,7 +62,7 @@ public class PVReaderDirector<T> {
         DataRecipeBuilder builder = new DataRecipeBuilder();
         expression.fillDataRecipe(this, builder);
         DataRecipe recipe = builder.build(exceptionCollector, connCollector);
-        synchronized(this) {
+        synchronized(lock) {
             recipes.put(expression, recipe);
         }
         if (!recipe.getChannelRecipes().isEmpty()) {
@@ -64,7 +76,7 @@ public class PVReaderDirector<T> {
     
     public void disconnectExpression(DesiredRateExpression<?> expression) {
         DataRecipe recipe;
-        synchronized(this) {
+        synchronized(lock) {
             recipe = recipes.remove(expression);
         }
         if (recipe == null) {
@@ -81,9 +93,11 @@ public class PVReaderDirector<T> {
     }
     
     public void close() {
-        while (!recipes.isEmpty()) {
-            DesiredRateExpression<?> expression = recipes.keySet().iterator().next();
-            disconnectExpression(expression);
+        synchronized(lock) {
+            while (!recipes.isEmpty()) {
+                DesiredRateExpression<?> expression = recipes.keySet().iterator().next();
+                disconnectExpression(expression);
+            }
         }
     }
 
@@ -124,7 +138,6 @@ public class PVReaderDirector<T> {
         if (pv != null && !pv.isClosed()) {
             return true;
         } else {
-            close();
             return false;
         }
     }
@@ -234,6 +247,7 @@ public class PVReaderDirector<T> {
                     }
                 } else {
                     stopScan();
+                    close();
                 }
             }
         }, 0, duration.toNanosLong(), TimeUnit.NANOSECONDS);

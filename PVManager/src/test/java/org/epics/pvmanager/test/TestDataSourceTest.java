@@ -107,7 +107,7 @@ public class TestDataSourceTest {
     @Test
     public void channelDoesNotExist2() throws Exception {
         // Requesting a channel that does not exist
-        // Making sure that the excecption is properly notified
+        // Making sure that the exception is properly notified
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("nothing"))
                 .writeListener(listener)

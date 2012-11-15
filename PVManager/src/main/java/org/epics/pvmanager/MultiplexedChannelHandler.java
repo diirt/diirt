@@ -80,7 +80,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
             monitor.subscription.getExceptionWriteFunction().setValue(ex);
         }
         for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
-            subscription.getHandler().handleException(ex);
+            subscription.getExceptionWriteFunction().setValue(ex);
         }
     }
     
@@ -92,10 +92,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     
     private void reportWriteConnectionStatus(boolean writeConnected) {
         for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
-            synchronized(subscription.getConnectionCollector()) {
-                subscription.getConnectionCache().setValue(writeConnected);
-                subscription.getConnectionCollector().collect();
-            }
+            subscription.getConnectionWriteFunction().setValue(writeConnected);
         }
     }
 
@@ -150,6 +147,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             public boolean updateCache(ValueCache cache, Object connection, Object message) {
                 Object oldValue = cache.getValue();
                 cache.setValue(message);
@@ -262,10 +260,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         writeCaches.put(subscription.getCache(), subscription);
         guardedConnect();
         if (connectionPayload != null) {
-            synchronized(subscription.getConnectionCollector()) {
-                subscription.getConnectionCache().setValue(isWriteConnected());
-                subscription.getConnectionCollector().collect();
-            }
+            subscription.getConnectionWriteFunction().setValue(isWriteConnected());
         }
     }
 

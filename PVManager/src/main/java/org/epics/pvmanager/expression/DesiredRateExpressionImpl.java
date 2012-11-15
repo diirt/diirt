@@ -45,9 +45,6 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
      * @param defaultName the display name of the expression
      */
     public DesiredRateExpressionImpl(SourceRateExpression<?> expression, NewCollector<?, R> collector, String defaultName) {
-        if (!(collector instanceof NewCollector)){
-            throw new IllegalArgumentException("collector must be of type Collector");
-        }
         this.sourceRateChild = expression;
         this.desiredRateChildren = null;
         this.function = collector;
@@ -81,6 +78,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void fillDataRecipe(PVReaderDirector director, DataRecipeBuilder builder) {
         if (sourceRateChild != null) {
             sourceRateChild.getSourceRateExpressionImpl().fillDataRecipe(director, (NewCollector) function, builder);

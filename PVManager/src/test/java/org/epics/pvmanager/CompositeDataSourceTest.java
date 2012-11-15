@@ -191,14 +191,12 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
 
         // Write pv with no datasource match
-        Map<String, WriteCache<?>> caches = new HashMap<>();
-        caches.put("mock://pv03", new WriteCache<>("mock://pv03"));
-        WriteBuffer buffer = new WriteBufferBuilder()
-                .addCaches(caches)
-                .build();
+        WriteBufferBuilder builder = new WriteBufferBuilder();
+        builder.addChannel("mock://pv03", new WriteCache<>("mock://pv03"));
+        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
 
         // Should cause error
-        composite.prepareWrite(buffer, new ExceptionHandler());
+        composite.prepareWrite(buffer);
     }
 
     @Test
@@ -209,18 +207,16 @@ public class CompositeDataSourceTest {
         composite.putDataSource("mock2", mock2);
         composite.setDefaultDataSource("mock1");
 
-        Map<String, WriteCache<?>> caches = new HashMap<>();
-        caches.put("pv01", new WriteCache<>("pv01"));
-        caches.put("pv03", new WriteCache<>("pv03"));
-        caches.put("mock1://pv02", new WriteCache<>("mock1://pv02"));
-        caches.put("mock2://pv04", new WriteCache<>("mock2://pv04"));
-        caches.put("mock1://pv05", new WriteCache<>("mock1://pv05"));
-        WriteBuffer buffer = new WriteBufferBuilder()
-                .addCaches(caches)
-                .build();
+        WriteBufferBuilder builder = new WriteBufferBuilder();
+        builder.addChannel("pv01", new WriteCache<>("pv01"));
+        builder.addChannel("pv03", new WriteCache<>("pv03"));
+        builder.addChannel("mock1://pv02", new WriteCache<>("mock1://pv02"));
+        builder.addChannel("mock2://pv04", new WriteCache<>("mock2://pv04"));
+        builder.addChannel("mock1://pv05", new WriteCache<>("mock1://pv05"));
+        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
         
         // Call and check
-        composite.prepareWrite(buffer, new ExceptionHandler());
+        composite.prepareWrite(buffer);
         Collection<ChannelWriteBuffer> mock1Buffers = mock1.getWriteBuffer().getChannelWriteBuffers();
         Collection<ChannelWriteBuffer> mock2Buffers = mock2.getWriteBuffer().getChannelWriteBuffers();
         assertThat(mock1Buffers.size(), equalTo(4));
@@ -231,7 +227,7 @@ public class CompositeDataSourceTest {
         // Check close
         WriteBuffer mock1Connect = mock1.getWriteBuffer();
         WriteBuffer mock2Connect = mock2.getWriteBuffer();
-        composite.concludeWrite(buffer, new ExceptionHandler());
+        composite.concludeWrite(buffer);
         assertSame(mock1Connect, mock1.getWriteBuffer());
         assertSame(mock2Connect, mock2.getWriteBuffer());
     }

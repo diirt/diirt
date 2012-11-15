@@ -110,6 +110,7 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
     void fillDataRecipe(PVReaderDirector director, NewCollector<R, ?> collector, DataRecipeBuilder builder) {
         for (Map.Entry<String, ValueCache<?>> entry : caches.entrySet()) {
             String channelName = entry.getKey();
+            @SuppressWarnings("unchecked")
             ValueCache<Object> valueCache = (ValueCache<Object>) entry.getValue();
             builder.addChannel(channelName, new ForwardCache<Object, R>(valueCache, getFunction(), collector));
         }

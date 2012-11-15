@@ -8,6 +8,7 @@ import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.PVReaderDirector;
+import org.epics.pvmanager.PVWriterDirector;
 import org.epics.pvmanager.WriteBufferBuilder;
 import org.epics.pvmanager.WriteFunction;
 
@@ -77,9 +78,8 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public final WriteBufferBuilder createWriteBuffer() {
-        return writeExpression.createWriteBuffer();
+    public void fillWriteBuffer(PVWriterDirector director, WriteBufferBuilder builder) {
+        writeExpression.fillWriteBuffer(director, builder);
     }
-    
     
 }

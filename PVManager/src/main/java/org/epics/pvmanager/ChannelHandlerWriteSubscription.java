@@ -11,17 +11,15 @@ package org.epics.pvmanager;
  */
 public class ChannelHandlerWriteSubscription {
 
-    public ChannelHandlerWriteSubscription(WriteCache<?> cache, ExceptionHandler handler, ValueCache<Boolean> connectionCache, Collector<Boolean> connectionCollector) {
+    public ChannelHandlerWriteSubscription(WriteCache<?> cache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connectionWriteFunction) {
         this.cache = cache;
-        this.handler = handler;
-        this.connectionCache = connectionCache;
-        this.connectionCollector = connectionCollector;
+        this.exceptionWriteFunction = exceptionWriteFunction;
+        this.connectionWriteFunction = connectionWriteFunction;
     }
     
     private final WriteCache<?> cache;
-    private final ExceptionHandler handler;
-    private final ValueCache<Boolean> connectionCache;
-    private final Collector<Boolean> connectionCollector;
+    private final WriteFunction<Exception> exceptionWriteFunction;
+    private final WriteFunction<Boolean> connectionWriteFunction;
 
     /**
      * The cache to get the value to write.
@@ -37,17 +35,8 @@ public class ChannelHandlerWriteSubscription {
      * 
      * @return the exception handler
      */
-    public ExceptionHandler getHandler() {
-        return handler;
-    }
-
-    /**
-     * The cache to hold the connection flag.
-     * 
-     * @return the cache
-     */
-    public ValueCache<Boolean> getConnectionCache() {
-        return connectionCache;
+    public WriteFunction<Exception> getExceptionWriteFunction() {
+        return exceptionWriteFunction;
     }
 
     /**
@@ -55,17 +44,16 @@ public class ChannelHandlerWriteSubscription {
      * 
      * @return the collector
      */
-    public Collector<Boolean> getConnectionCollector() {
-        return connectionCollector;
+    public WriteFunction<Boolean> getConnectionWriteFunction() {
+        return connectionWriteFunction;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
         hash = 11 * hash + (this.cache != null ? this.cache.hashCode() : 0);
-        hash = 11 * hash + (this.handler != null ? this.handler.hashCode() : 0);
-        hash = 11 * hash + (this.connectionCache != null ? this.connectionCache.hashCode() : 0);
-        hash = 11 * hash + (this.connectionCollector != null ? this.connectionCollector.hashCode() : 0);
+        hash = 11 * hash + (this.exceptionWriteFunction != null ? this.exceptionWriteFunction.hashCode() : 0);
+        hash = 11 * hash + (this.connectionWriteFunction != null ? this.connectionWriteFunction.hashCode() : 0);
         return hash;
     }
 
@@ -81,13 +69,10 @@ public class ChannelHandlerWriteSubscription {
         if (this.cache != other.cache && (this.cache == null || !this.cache.equals(other.cache))) {
             return false;
         }
-        if (this.handler != other.handler && (this.handler == null || !this.handler.equals(other.handler))) {
+        if (this.exceptionWriteFunction != other.exceptionWriteFunction && (this.exceptionWriteFunction == null || !this.exceptionWriteFunction.equals(other.exceptionWriteFunction))) {
             return false;
         }
-        if (this.connectionCache != other.connectionCache && (this.connectionCache == null || !this.connectionCache.equals(other.connectionCache))) {
-            return false;
-        }
-        if (this.connectionCollector != other.connectionCollector && (this.connectionCollector == null || !this.connectionCollector.equals(other.connectionCollector))) {
+        if (this.connectionWriteFunction != other.connectionWriteFunction && (this.connectionWriteFunction == null || !this.connectionWriteFunction.equals(other.connectionWriteFunction))) {
             return false;
         }
         return true;
