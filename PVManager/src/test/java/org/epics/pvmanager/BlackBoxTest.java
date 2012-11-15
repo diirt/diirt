@@ -73,7 +73,6 @@ public class BlackBoxTest {
         final PV<Map<String, Object>, Map<String, Object>> pv =
                 PVManager.readAndWrite(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))))
                 .from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
-        assertThat(pv.getValue(), nullValue());
 
         Map<String, Object> newValues = new HashMap<String, Object>();
         newValues.put(channel1, "test");

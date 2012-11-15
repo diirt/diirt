@@ -13,7 +13,7 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public class NewLatestValueCollector<T> implements NewCollector<T, T> {
+public class LatestValueCollector<T> implements Collector<T, T> {
     
     private T value;
 

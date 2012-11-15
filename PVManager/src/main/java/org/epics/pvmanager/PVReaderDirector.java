@@ -46,11 +46,11 @@ public class PVReaderDirector<T> {
 
     // Required for multiple operations
     /** Connection collector required to connect/disconnect expressions and for connection notification */
-    private final NewConnectionCollector connCollector =
-            new NewConnectionCollector();
+    private final ConnectionCollector connCollector =
+            new ConnectionCollector();
     /** Exception queue to be used to connect/disconnect expression and for exception notification */
-    private final NewQueueCollector<Exception> exceptionCollector =
-            new NewQueueCollector<>(1);
+    private final QueueCollector<Exception> exceptionCollector =
+            new QueueCollector<>(1);
     
     
     /**

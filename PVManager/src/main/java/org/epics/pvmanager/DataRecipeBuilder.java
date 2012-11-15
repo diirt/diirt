@@ -34,7 +34,7 @@ public class DataRecipeBuilder {
      * 
      * @return a new recipe
      */
-    public DataRecipe build(WriteFunction<Exception> exceptionWriteFunction, NewConnectionCollector connectionCollector) {
+    public DataRecipe build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
         Set<ChannelRecipe> recipes = new HashSet<>();
         for (Map.Entry<String, ValueCache<?>> entry : channelCaches.entrySet()) {
             String channelName = entry.getKey();

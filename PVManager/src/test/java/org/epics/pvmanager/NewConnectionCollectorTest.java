@@ -24,7 +24,7 @@ public class NewConnectionCollectorTest {
 
     @Test
     public void inputOutput() {
-        NewConnectionCollector collector = new NewConnectionCollector();
+        ConnectionCollector collector = new ConnectionCollector();
         assertThat(collector.getValue(), equalTo(true));
         
         WriteFunction<Boolean> firstWriteFunction = collector.addChannel("first");
@@ -49,13 +49,13 @@ public class NewConnectionCollectorTest {
     
     @Test(expected=IllegalArgumentException.class)
     public void removingUnknownChannel() {
-        NewConnectionCollector collector = new NewConnectionCollector();
+        ConnectionCollector collector = new ConnectionCollector();
         collector.removeChannel("never");
     }
     
     @Test(expected=IllegalStateException.class)
     public void usingDeregisteredWriteFunction() {
-        NewConnectionCollector collector = new NewConnectionCollector();
+        ConnectionCollector collector = new ConnectionCollector();
         WriteFunction<Boolean> channelWriteFunction = collector.addChannel("first");
         collector.removeChannel("first");
         channelWriteFunction.setValue(true);
@@ -63,7 +63,7 @@ public class NewConnectionCollectorTest {
     
     @Test
     public void sameChannelMultipleTimes() {
-        NewConnectionCollector collector = new NewConnectionCollector();
+        ConnectionCollector collector = new ConnectionCollector();
         WriteFunction<Boolean> channelWriteFunction1 = collector.addChannel("first");
         WriteFunction<Boolean> channelWriteFunction2 = collector.addChannel("first");
         assertThat(collector.getValue(), equalTo(false));

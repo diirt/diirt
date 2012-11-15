@@ -23,7 +23,7 @@ public class NewLatestValueCollectorTest {
 
     @Test
     public void inputOutput() throws InterruptedException {
-        NewLatestValueCollector<Integer> collector = new NewLatestValueCollector<>();
+        LatestValueCollector<Integer> collector = new LatestValueCollector<>();
         for (int i = 0; i < 1000; i++) {
             collector.setValue(i);
             assertThat(collector.getValue(), equalTo(i));

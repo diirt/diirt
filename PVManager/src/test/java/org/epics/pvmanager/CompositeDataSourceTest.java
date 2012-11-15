@@ -58,7 +58,7 @@ public class CompositeDataSourceTest {
         DataRecipeBuilder builder = new DataRecipeBuilder();
         builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
-        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Call and check
         composite.connect(recipe);
@@ -81,7 +81,7 @@ public class CompositeDataSourceTest {
         builder.addChannel("mock1://pv02", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("mock2://pv04", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("mock1://pv05", new ValueCacheImpl<Double>(Double.class));
-        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
         
         // Call and check
         composite.connect(recipe);
@@ -127,7 +127,7 @@ public class CompositeDataSourceTest {
         DataRecipeBuilder builder = new DataRecipeBuilder();
         builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
-        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
         composite.connect(recipe);
@@ -160,7 +160,7 @@ public class CompositeDataSourceTest {
         builder.addChannel("mock1?pv02", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("mock2?pv04", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("mock1?pv05", new ValueCacheImpl<Double>(Double.class));
-        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Call and check
         composite.connect(recipe);
@@ -179,7 +179,7 @@ public class CompositeDataSourceTest {
 
         DataRecipeBuilder builder = new DataRecipeBuilder();
         builder.addChannel("mock://pv03", new ValueCacheImpl<Double>(Double.class));
-        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        DataRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
         composite.connect(recipe);
@@ -193,7 +193,7 @@ public class CompositeDataSourceTest {
         // Write pv with no datasource match
         WriteBufferBuilder builder = new WriteBufferBuilder();
         builder.addChannel("mock://pv03", new WriteCache<>("mock://pv03"));
-        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
         composite.prepareWrite(buffer);
@@ -213,7 +213,7 @@ public class CompositeDataSourceTest {
         builder.addChannel("mock1://pv02", new WriteCache<>("mock1://pv02"));
         builder.addChannel("mock2://pv04", new WriteCache<>("mock2://pv04"));
         builder.addChannel("mock1://pv05", new WriteCache<>("mock1://pv05"));
-        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new NewConnectionCollector());
+        WriteBuffer buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
         
         // Call and check
         composite.prepareWrite(buffer);

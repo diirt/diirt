@@ -35,7 +35,7 @@ public class WriteBufferBuilder {
      * 
      * @return a new WriteBuffer
      */
-    public WriteBuffer build(WriteFunction<Exception> exceptionWriteFunction, NewConnectionCollector connectionCollector) {
+    public WriteBuffer build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
         Set<ChannelWriteBuffer> recipes = new HashSet<>();
         for (Map.Entry<String, WriteCache<?>> entry : caches.entrySet()) {
             String channelName = entry.getKey();

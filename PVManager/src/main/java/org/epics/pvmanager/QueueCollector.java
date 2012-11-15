@@ -13,26 +13,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A collector the keeps the last n elements.
  *
  * @author carcassi
  */
-public class NewCacheCollector<T> implements NewCollector<T, List<T>> {
+public class QueueCollector<T> implements Collector<T, List<T>> {
     
     private final Object lock = new Object();
-    private final List<T> readBuffer = new ArrayList<>();
-    private final List<T> writeBuffer = new LinkedList<>();
-    private final int nElements;
+    private List<T> readBuffer;
+    private List<T> writeBuffer;
+    private final int maxElements;
 
-    public NewCacheCollector(int nElements) {
-        this.nElements = nElements;
+    public QueueCollector(int maxElements) {
+        this.maxElements = maxElements;
+        synchronized(lock) {
+            readBuffer = new ArrayList<>();
+            writeBuffer = new ArrayList<>();
+        }
     }
 
     @Override
     public void setValue(T newValue) {
         synchronized(lock) {
             writeBuffer.add(newValue);
-            if (writeBuffer.size() > nElements) {
+            if (writeBuffer.size() > maxElements) {
                 writeBuffer.remove(0);
             }
         }
@@ -40,9 +43,11 @@ public class NewCacheCollector<T> implements NewCollector<T, List<T>> {
 
     @Override
     public List<T> getValue() {
-        readBuffer.clear();
         synchronized(lock) {
-            readBuffer.addAll(writeBuffer);
+            List<T> data = writeBuffer;
+            writeBuffer = readBuffer;
+            writeBuffer.clear();
+            readBuffer = data;
         }
         return readBuffer;
     }

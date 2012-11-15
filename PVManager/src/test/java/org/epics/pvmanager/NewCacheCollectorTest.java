@@ -24,7 +24,7 @@ public class NewCacheCollectorTest {
 
     @Test
     public void inputOutput() throws InterruptedException {
-        NewCacheCollector<Integer> collector = new NewCacheCollector<>(5);
+        CacheCollector<Integer> collector = new CacheCollector<>(5);
         assertThat(collector.getValue().size(), equalTo(0));
         collector.setValue(0);
         assertThat(collector.getValue(), equalTo(Arrays.asList(0)));

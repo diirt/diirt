@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author carcassi
  */
-class NewConnectionCollector implements Function<Boolean> {
+class ConnectionCollector implements Function<Boolean> {
 
     private final Object lock = new Object();
     private final Map<String, Boolean> channelConnected = new HashMap<>();

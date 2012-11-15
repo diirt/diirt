@@ -171,7 +171,7 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
-                new NewQueueCollector<T>(10),
+                new QueueCollector<T>(10),
                 expression.getName());
     }
 
@@ -186,7 +186,7 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<List<T>>
             newValuesOf(SourceRateExpression<T> expression, int maxValues) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
-                new NewQueueCollector<T>(maxValues),
+                new QueueCollector<T>(maxValues),
                 expression.getName());
     }
 
@@ -200,7 +200,7 @@ public class ExpressionLanguage {
      */
     public static <T> DesiredRateExpression<T> latestValueOf(SourceRateExpression<T> expression) {
         return new DesiredRateExpressionImpl<T>(expression,
-                new NewLatestValueCollector<T>(),
+                new LatestValueCollector<T>(),
                 expression.getName());
     }
 

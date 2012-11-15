@@ -24,7 +24,7 @@ public class NewQueueCollectorTest {
 
     @Test
     public void inputOutput() throws InterruptedException {
-        NewQueueCollector<Integer> collector = new NewQueueCollector<>(5);
+        QueueCollector<Integer> collector = new QueueCollector<>(5);
         assertThat(collector.getValue().size(), equalTo(0));
         collector.setValue(0);
         assertThat(collector.getValue(), equalTo(Arrays.asList(0)));

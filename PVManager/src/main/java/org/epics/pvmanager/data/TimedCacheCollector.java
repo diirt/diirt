@@ -6,7 +6,7 @@ package org.epics.pvmanager.data;
 
 import java.util.*;
 import org.epics.pvmanager.Function;
-import org.epics.pvmanager.NewCollector;
+import org.epics.pvmanager.Collector;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 
@@ -15,7 +15,7 @@ import org.epics.util.time.TimeInterval;
  *
  * @author carcassi
  */
-class TimedCacheCollector<T extends Time> implements NewCollector<T, List<T>> {
+class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final Function<T> function;

@@ -40,10 +40,10 @@ public class PVWriterDirector<T> {
     private final ScheduledExecutorService scannerExecutor;
     private volatile ScheduledFuture<?> scanTaskHandle;
     private final WeakReference<PVWriterImpl<T>> pvRef;
-    private final NewConnectionCollector connCollector =
-            new NewConnectionCollector();
-    private final NewQueueCollector<Exception> exceptionCollector =
-            new NewQueueCollector<>(1);
+    private final ConnectionCollector connCollector =
+            new ConnectionCollector();
+    private final QueueCollector<Exception> exceptionCollector =
+            new QueueCollector<>(1);
     
     // Required to process the write
     

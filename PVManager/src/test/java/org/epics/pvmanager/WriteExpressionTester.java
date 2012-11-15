@@ -15,8 +15,8 @@ public class WriteExpressionTester {
 
     private WriteExpression<?> expression;
     private WriteBuffer recipe;
-    private NewQueueCollector<Exception> exceptionCollector = new NewQueueCollector<>(10);
-    private NewConnectionCollector connCollector = new NewConnectionCollector();
+    private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
+    private ConnectionCollector connCollector = new ConnectionCollector();
 
     public WriteExpressionTester(WriteExpression<?> expression) {
         this.expression = expression;
