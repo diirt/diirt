@@ -4,9 +4,6 @@
  */
 package org.epics.pvmanager.expression;
 
-import java.util.List;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.DataRecipe;
 import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.NewCollector;

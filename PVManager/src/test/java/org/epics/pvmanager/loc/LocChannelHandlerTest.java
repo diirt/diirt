@@ -4,18 +4,11 @@
  */
 package org.epics.pvmanager.loc;
 
-import java.util.List;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
 
 /**
  *
@@ -32,17 +25,12 @@ public class LocChannelHandlerTest {
     }
     
     @Mock ValueCache<VDouble> vDoubleCache1;
-    @Mock Collector<VDouble> vDoubleCollector1;
     @Mock ValueCache<VDouble> vDoubleCache2;
-    @Mock Collector<VDouble> vDoubleCollector2;
     @Mock ValueCache<Boolean> vDoubleConnCache1;
-    @Mock Collector<Boolean> vDoubleConnCollector1;
     @Mock ValueCache<Boolean> vDoubleConnCache2;
-    @Mock Collector<Boolean> vDoubleConnCollector2;
     @Mock ChannelWriteCallback channelWriteCallback;
     @Mock ExceptionHandler exceptionHandler;
     @Mock ValueCache<Boolean> vDoubleWriteConnCache1;
-    @Mock Collector<Boolean> vDoubleWriteConnCollector1;
 //
 //    @Test
 //    public void writeToLocalChannelSingleMonitor() {

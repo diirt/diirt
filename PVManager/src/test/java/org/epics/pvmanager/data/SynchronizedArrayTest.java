@@ -4,17 +4,10 @@
  */
 package org.epics.pvmanager.data;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.ExpressionTester;
-import org.epics.pvmanager.Function;
-import org.epics.pvmanager.PrivateFactory;
-import org.epics.pvmanager.ValueCache;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.Timestamp;
 import static org.junit.Assert.*;

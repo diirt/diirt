@@ -4,16 +4,8 @@
  */
 package org.epics.pvmanager.loc;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import org.epics.pvmanager.ChannelHandlerWriteSubscription;
-import org.epics.pvmanager.ChannelWriteBuffer;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.DataRecipe;
-import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
@@ -25,7 +17,6 @@ import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.*;
@@ -57,7 +48,6 @@ public class LocalDataSourceTest {
     @Mock ExceptionHandler exceptionHandler;
     @Mock ValueCache<VDouble> valueCache1;
     @Mock ValueCache<VDouble> valueCache2;
-    @Mock Collector collector;
     @Mock PVWriterListener<Object> listener;
     String channelName1 = "test1";
     String channelName2 = "test2";

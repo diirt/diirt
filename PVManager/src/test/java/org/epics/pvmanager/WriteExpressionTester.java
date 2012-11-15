@@ -49,6 +49,7 @@ public class WriteExpressionTester {
         return recipe;
     }
     
+    @SuppressWarnings("unchecked")
     public WriteFunction<Object> getWriteFunction() {
         return (WriteFunction<Object>) expression.getWriteFunction();
     }

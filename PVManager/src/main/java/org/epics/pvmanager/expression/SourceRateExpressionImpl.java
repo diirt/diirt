@@ -4,11 +4,8 @@
  */
 package org.epics.pvmanager.expression;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.DataRecipeBuilder;
 import org.epics.pvmanager.ForwardCache;
 import org.epics.pvmanager.Function;

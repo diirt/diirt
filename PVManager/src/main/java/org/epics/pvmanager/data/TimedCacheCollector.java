@@ -5,7 +5,6 @@
 package org.epics.pvmanager.data;
 
 import java.util.*;
-import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.NewCollector;
 import org.epics.util.time.TimeDuration;
