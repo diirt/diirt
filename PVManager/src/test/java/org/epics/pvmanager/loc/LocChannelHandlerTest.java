@@ -36,7 +36,6 @@ public class LocChannelHandlerTest {
     @Mock WriteFunction<Boolean> vDoubleConnCache2;
     @Mock ChannelWriteCallback channelWriteCallback;
     @Mock WriteFunction<Exception> exceptionHandler;
-    @Mock WriteCache<Object> vDoubleWriteCache1;
     @Mock ValueCache<Boolean> vDoubleWriteConnCache1;
 
     @Test
@@ -57,7 +56,7 @@ public class LocChannelHandlerTest {
         // Adding a writer
         WriteCache<?> cache = new WriteCache<Object>();
         ChannelHandlerWriteSubscription writeSubscription =
-                new ChannelHandlerWriteSubscription(vDoubleWriteCache1, exceptionHandler, vDoubleWriteConnCache1);
+                new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1);
         channel.addWriter(writeSubscription);
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
@@ -78,53 +77,54 @@ public class LocChannelHandlerTest {
         inOrder.verify(channelWriteCallback).channelWritten(null);
         inOrder.verifyNoMoreInteractions();
     }
-//
-//    @Test
-//    public void writeToLocalChannelTwoMonitors() {
-//        
-//        // Creating a test local channel
-//        LocalChannelHandler channel = new LocalChannelHandler("test2", 0.0);
-//        assertThat(channel.getChannelName(), equalTo("test2"));
-//        assertThat(channel.getUsageCounter(), equalTo(0));
-//        assertThat(channel.isConnected(), is(false));
-//
-//        // Attaching a monitor cache/collector
-//        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector1, vDoubleCache1, exceptionHandler, vDoubleConnCollector1, vDoubleConnCache1));
-//        assertThat(channel.getUsageCounter(), equalTo(1));
-//        assertThat(channel.isConnected(), is(true));
-//
-//        // Attaching a monitor cache/collector
-//        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector2, vDoubleCache2, exceptionHandler, vDoubleConnCollector2, vDoubleConnCache2));
-//        assertThat(channel.getUsageCounter(), equalTo(2));
-//        assertThat(channel.isConnected(), is(true));
-//
-//        // Adding a writer
-//        WriteCache<?> cache = new WriteCache<Object>();
-//        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
-//        assertThat(channel.getUsageCounter(), equalTo(3));
-//        assertThat(channel.isConnected(), is(true));
-//
-//        // Writing a number and see if it is converted to a VDouble
-//        channel.write(16.28, channelWriteCallback);
-//        
-//        // Remove reader/writers
-//        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
-//        channel.removeMonitor(vDoubleCollector1);
-//        channel.removeMonitor(vDoubleCollector2);
-//        assertThat(channel.getUsageCounter(), equalTo(0));
-//        assertThat(channel.isConnected(), is(false));
-//        
-//        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-//        verify(vDoubleCache1, times(2)).setValue(newValue.capture());
-//        assertThat(newValue.getAllValues().get(0).getValue(), equalTo(0.0));
-//        assertThat(newValue.getAllValues().get(1).getValue(), equalTo(16.28));
-//        verify(vDoubleCollector1, times(2)).collect();
-//        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
-//        verify(vDoubleCache2, times(2)).setValue(newValue2.capture());
-//        assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
-//        assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));
-//        verify(vDoubleCollector2, times(2)).collect();
-//        verify(channelWriteCallback).channelWritten(null);
-//        verifyZeroInteractions(channelWriteCallback, exceptionHandler);
-//    }
+
+    @Test
+    public void writeToLocalChannelTwoMonitors() {
+        
+        // Creating a test local channel
+        LocalChannelHandler channel = new LocalChannelHandler("test2", 0.0);
+        assertThat(channel.getChannelName(), equalTo("test2"));
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+
+        // Attaching a monitor cache/collector
+        ChannelHandlerReadSubscription readSubscription1 = new ChannelHandlerReadSubscription(vDoubleCache1, exceptionHandler, vDoubleConnCache1);
+        channel.addMonitor(readSubscription1);
+        assertThat(channel.getUsageCounter(), equalTo(1));
+        assertThat(channel.isConnected(), is(true));
+        ChannelHandlerReadSubscription readSubscription2 = new ChannelHandlerReadSubscription(vDoubleCache2, exceptionHandler, vDoubleConnCache2);
+
+        // Attaching a monitor cache/collector
+        channel.addMonitor(readSubscription2);
+        assertThat(channel.getUsageCounter(), equalTo(2));
+        assertThat(channel.isConnected(), is(true));
+
+        // Adding a writer
+        WriteCache<?> cache = new WriteCache<Object>();
+        ChannelHandlerWriteSubscription writeSubscription = new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1);
+        channel.addWriter(writeSubscription);
+        assertThat(channel.getUsageCounter(), equalTo(3));
+        assertThat(channel.isConnected(), is(true));
+
+        // Writing a number and see if it is converted to a VDouble
+        channel.write(16.28, channelWriteCallback);
+        
+        // Remove reader/writers
+        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1));
+        channel.removeMonitor(readSubscription1);
+        channel.removeMonitor(readSubscription2);
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+        
+        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
+        verify(vDoubleCache1, times(2)).setValue(newValue.capture());
+        assertThat(newValue.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue.getAllValues().get(1).getValue(), equalTo(16.28));
+        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
+        verify(vDoubleCache2, times(2)).setValue(newValue2.capture());
+        assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
+        assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));
+        verify(channelWriteCallback).channelWritten(null);
+        verifyZeroInteractions(channelWriteCallback, exceptionHandler);
+    }
 }
