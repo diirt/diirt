@@ -7,8 +7,14 @@ package org.epics.pvmanager.loc;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 
 /**
  *
@@ -26,49 +32,52 @@ public class LocChannelHandlerTest {
     
     @Mock ValueCache<VDouble> vDoubleCache1;
     @Mock ValueCache<VDouble> vDoubleCache2;
-    @Mock ValueCache<Boolean> vDoubleConnCache1;
-    @Mock ValueCache<Boolean> vDoubleConnCache2;
+    @Mock WriteFunction<Boolean> vDoubleConnCache1;
+    @Mock WriteFunction<Boolean> vDoubleConnCache2;
     @Mock ChannelWriteCallback channelWriteCallback;
-    @Mock ExceptionHandler exceptionHandler;
+    @Mock WriteFunction<Exception> exceptionHandler;
+    @Mock WriteCache<Object> vDoubleWriteCache1;
     @Mock ValueCache<Boolean> vDoubleWriteConnCache1;
-//
-//    @Test
-//    public void writeToLocalChannelSingleMonitor() {
-//        
-//        // Creating a test local channel
-//        LocalChannelHandler channel = new LocalChannelHandler("test1");
-//        assertThat(channel.getChannelName(), equalTo("test1"));
-//        assertThat(channel.getUsageCounter(), equalTo(0));
-//        assertThat(channel.isConnected(), is(false));
-//
-//        // Attaching a monitor cache/collector
-//        channel.addMonitor(new ChannelHandlerReadSubscription(vDoubleCollector1, vDoubleCache1, exceptionHandler, vDoubleConnCollector1, vDoubleConnCache1));
-//        assertThat(channel.getUsageCounter(), equalTo(1));
-//        assertThat(channel.isConnected(), is(true));
-//
-//        // Adding a writer
-//        WriteCache<?> cache = new WriteCache<Object>();
-//        channel.addWriter(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
-//        assertThat(channel.getUsageCounter(), equalTo(2));
-//        assertThat(channel.isConnected(), is(true));
-//
-//        // Writing a number and see if it is converted to a VDouble
-//        channel.write(6.28, channelWriteCallback);
-//        
-//        // Removing all readers and writers
-//        channel.removeMonitor(vDoubleCollector1);
-//        channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1, vDoubleWriteConnCollector1));
-//        assertThat(channel.getUsageCounter(), equalTo(0));
-//        assertThat(channel.isConnected(), is(false));
-//        
-//        InOrder inOrder = inOrder(vDoubleCache1, vDoubleCollector1, channelWriteCallback, exceptionHandler);
-//        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-//        inOrder.verify(vDoubleCache1).setValue(newValue.capture());
-//        assertThat(newValue.getValue().getValue(), equalTo(6.28));
-//        inOrder.verify(vDoubleCollector1).collect();
-//        inOrder.verify(channelWriteCallback).channelWritten(null);
-//        inOrder.verifyNoMoreInteractions();
-//    }
+
+    @Test
+    public void writeToLocalChannelSingleMonitor() {
+        
+        // Creating a test local channel
+        LocalChannelHandler channel = new LocalChannelHandler("test1");
+        assertThat(channel.getChannelName(), equalTo("test1"));
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+
+        // Attaching a monitor cache/collector
+        ChannelHandlerReadSubscription readSubscription = new ChannelHandlerReadSubscription(vDoubleCache1, exceptionHandler, vDoubleConnCache1);
+        channel.addMonitor(readSubscription);
+        assertThat(channel.getUsageCounter(), equalTo(1));
+        assertThat(channel.isConnected(), is(true));
+
+        // Adding a writer
+        WriteCache<?> cache = new WriteCache<Object>();
+        ChannelHandlerWriteSubscription writeSubscription =
+                new ChannelHandlerWriteSubscription(vDoubleWriteCache1, exceptionHandler, vDoubleWriteConnCache1);
+        channel.addWriter(writeSubscription);
+        assertThat(channel.getUsageCounter(), equalTo(2));
+        assertThat(channel.isConnected(), is(true));
+
+        // Writing a number and see if it is converted to a VDouble
+        channel.write(6.28, channelWriteCallback);
+        
+        // Removing all readers and writers
+        channel.removeMonitor(readSubscription);
+        channel.removeWrite(writeSubscription);
+        assertThat(channel.getUsageCounter(), equalTo(0));
+        assertThat(channel.isConnected(), is(false));
+        
+        InOrder inOrder = inOrder(vDoubleCache1, channelWriteCallback, exceptionHandler);
+        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
+        inOrder.verify(vDoubleCache1).setValue(newValue.capture());
+        assertThat(newValue.getValue().getValue(), equalTo(6.28));
+        inOrder.verify(channelWriteCallback).channelWritten(null);
+        inOrder.verifyNoMoreInteractions();
+    }
 //
 //    @Test
 //    public void writeToLocalChannelTwoMonitors() {
