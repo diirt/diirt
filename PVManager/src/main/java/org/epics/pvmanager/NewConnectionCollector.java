@@ -16,7 +16,6 @@ class NewConnectionCollector implements Function<Boolean> {
     private final Object lock = new Object();
     private final Map<String, Boolean> channelConnected = new HashMap<>();
     private final Map<String, ConnectionWriteFunction> writeFunctions = new HashMap<>();
-    private final Map<String, Integer> channelCount = new HashMap<>();
     private Boolean connected;
     
     private class ConnectionWriteFunction implements WriteFunction<Boolean> {
