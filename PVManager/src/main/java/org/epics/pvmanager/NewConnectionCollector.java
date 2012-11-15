@@ -29,11 +29,13 @@ class NewConnectionCollector implements Function<Boolean> {
 
         @Override
         public void setValue(Boolean newValue) {
-            if (isClosed()) {
-                throw new IllegalStateException("ConnectionCollector for '" + name + "' was closed.");
+            synchronized(lock) {
+                if (isClosed()) {
+                    throw new IllegalStateException("ConnectionCollector for '" + name + "' was closed.");
+                }
+                channelConnected.put(name, newValue);
+                connected = null;
             }
-            channelConnected.put(name, newValue);
-            connected = null;
         }
         
         private void open() {
