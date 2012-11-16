@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -18,7 +19,7 @@ public class Java2DStringUtilities {
         RIGHT, CENTER, LEFT,
         BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT;
         
-        public int stringRightSide(Rectangle2D stringBounds, int x) {
+        private int stringRightSide(Rectangle2D stringBounds, int x) {
             switch(this) {
                 case BOTTOM:
                 case CENTER:
@@ -32,12 +33,16 @@ public class Java2DStringUtilities {
             throw new UnsupportedOperationException("Unsupported case");
         }
         
-        public int stringBaseline(Rectangle2D stringBounds, int y) {
+        private int stringBaseline(Rectangle2D stringBounds, int y) {
             switch(this) {
                 case RIGHT:
                 case CENTER:
                 case LEFT:
                     return y - (int) Math.ceil(stringBounds.getCenterY()) + 1;
+                case BOTTOM_RIGHT:
+                case BOTTOM:
+                case BOTTOM_LEFT:
+                    return y + 1;
             }
             throw new UnsupportedOperationException("Unsupported case");
         }
