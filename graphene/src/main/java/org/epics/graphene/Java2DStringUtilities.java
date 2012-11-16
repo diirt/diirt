@@ -19,11 +19,27 @@ public class Java2DStringUtilities {
         BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT;
         
         public int stringRightSide(Rectangle2D stringBounds, int x) {
-            return x - (int) Math.floor(stringBounds.getCenterX() - 0.5);
+            switch(this) {
+                case BOTTOM:
+                case CENTER:
+                case TOP:
+                    return x - (int) Math.floor(stringBounds.getCenterX() - 0.5);
+                case BOTTOM_RIGHT:
+                case RIGHT:
+                case TOP_RIGHT:
+                    return x - (int) Math.floor(stringBounds.getWidth() - 1.5);
+            }
+            throw new UnsupportedOperationException("Unsupported case");
         }
         
         public int stringBaseline(Rectangle2D stringBounds, int y) {
-            return y - (int) Math.ceil(stringBounds.getCenterY()) + 1;
+            switch(this) {
+                case RIGHT:
+                case CENTER:
+                case LEFT:
+                    return y - (int) Math.ceil(stringBounds.getCenterY()) + 1;
+            }
+            throw new UnsupportedOperationException("Unsupported case");
         }
     }
     
