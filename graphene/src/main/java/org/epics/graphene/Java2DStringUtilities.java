@@ -35,6 +35,10 @@ public class Java2DStringUtilities {
         
         private int stringBaseline(Rectangle2D stringBounds, int y) {
             switch(this) {
+                case TOP_RIGHT:
+                case TOP:
+                case TOP_LEFT:
+                    return y - (int) Math.ceil(stringBounds.getCenterY() * 2 - 0.5);
                 case RIGHT:
                 case CENTER:
                 case LEFT:

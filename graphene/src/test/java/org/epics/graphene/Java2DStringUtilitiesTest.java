@@ -90,4 +90,17 @@ public class Java2DStringUtilitiesTest {
         Java2DStringUtilities.drawString(graphics, BOTTOM_RIGHT, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.6", image);
     }
+    
+    @Test
+    public void drawTopRightText1() throws Exception {
+        Java2DStringUtilities.drawString(graphics, TOP_RIGHT, x, y, "ABCD");
+        ImageAssert.compareImages("textUtilities.7", image);
+    }
+    
+    @Test
+    public void drawTopRightText2() throws Exception {
+        graphics.setFont(FontUtil.getLiberationSansRegular().deriveFont(Font.PLAIN, 10));
+        Java2DStringUtilities.drawString(graphics, TOP_RIGHT, x, y, "ABCD");
+        ImageAssert.compareImages("textUtilities.8", image);
+    }
 }
