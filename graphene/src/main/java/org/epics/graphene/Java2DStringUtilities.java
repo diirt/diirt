@@ -13,11 +13,22 @@ import java.awt.geom.Rectangle2D;
  */
 public class Java2DStringUtilities {
     
-    public static void drawCenteredString(Graphics2D g, int x, int y, String text) {
+    public enum Alignment {
+        TOP_RIGHT, TOP, TOP_LEFT,
+        RIGHT, CENTER, LEFT,
+        BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT;
+        
+        public int stringRightSide(Rectangle2D stringBounds, int x) {
+            return x - (int) Math.floor(stringBounds.getCenterX() - 0.5);
+        }
+        
+        public int stringBaseline(Rectangle2D stringBounds, int y) {
+            return y - (int) Math.ceil(stringBounds.getCenterY()) + 1;
+        }
+    }
+    
+    public static void drawString(Graphics2D g, Alignment alignment, int x, int y, String text) {
         Rectangle2D stringBounds = g.getFontMetrics().getStringBounds(text, g);
-        int stringRightSide = x - (int) Math.floor(stringBounds.getCenterX() - 0.5);
-        int stringBaseline = y - (int) Math.ceil(stringBounds.getCenterY()) + 1;
-//        int stringBaseline = y + (int) Math.floor((g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() ) / 2.0);
-        g.drawString(text, stringRightSide, stringBaseline);
+        g.drawString(text, alignment.stringRightSide(stringBounds, x), alignment.stringBaseline(stringBounds, y));
     }
 }

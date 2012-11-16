@@ -18,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.BeforeClass;
+import static org.epics.graphene.Java2DStringUtilities.Alignment.*;
 
 /**
  *
@@ -53,14 +54,14 @@ public class Java2DStringUtilitiesTest {
     
     @Test
     public void drawCenteredText1() throws Exception {
-        Java2DStringUtilities.drawCenteredString(graphics, x, y, "ABCD");
+        Java2DStringUtilities.drawString(graphics, CENTER, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.1", image);
     }
     
     @Test
     public void drawCenteredText2() throws Exception {
         graphics.setFont(FontUtil.getLiberationSansRegular().deriveFont(Font.PLAIN, 10));
-        Java2DStringUtilities.drawCenteredString(graphics, x, y, "0");
+        Java2DStringUtilities.drawString(graphics, CENTER, x, y, "0");
         ImageAssert.compareImages("textUtilities.2", image);
     }
 }
