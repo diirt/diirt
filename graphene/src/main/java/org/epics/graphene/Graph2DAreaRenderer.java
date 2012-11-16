@@ -44,8 +44,8 @@ public class Graph2DAreaRenderer {
             g.draw(line);
         }
 
+        // Draw Y labels
         if (data.getYReferenceLabels() != null && !data.getYReferenceLabels().isEmpty()) {
-            // Draw Y labels
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g.setColor(data.getYReferenceLabelColor());
             g.setFont(data.getYReferenceLabelFont());
@@ -54,14 +54,35 @@ public class Graph2DAreaRenderer {
             // Draw first and last label
             int[] drawRange = new int[] {(int) data.getEndY(), (int) data.getStartY()};
             int xRightLabel = (int) (data.getStartX() - data.getYReferenceLabelMargin() - 1);
-            drawVerticalAxisLabel(g, metrics, data.getYReferenceLabels().get(0), (int) Math.floor(yTicks.getDouble(0)),
+            drawHorizontalReferencesLabel(g, metrics, data.getYReferenceLabels().get(0), (int) Math.floor(yTicks.getDouble(0)),
                 drawRange, xRightLabel, true, false);
-            drawVerticalAxisLabel(g, metrics, data.getYReferenceLabels().get(data.getYReferenceLabels().size() - 1), (int) Math.floor(yTicks.getDouble(data.getYReferenceLabels().size() - 1)),
+            drawHorizontalReferencesLabel(g, metrics, data.getYReferenceLabels().get(data.getYReferenceLabels().size() - 1), (int) Math.floor(yTicks.getDouble(data.getYReferenceLabels().size() - 1)),
                 drawRange, xRightLabel, false, false);
             
             for (int i = 1; i < data.getYReferenceLabels().size() - 1; i++) {
-                drawVerticalAxisLabel(g, metrics, data.getYReferenceLabels().get(i), (int) Math.floor(yTicks.getDouble(i)),
+                drawHorizontalReferencesLabel(g, metrics, data.getYReferenceLabels().get(i), (int) Math.floor(yTicks.getDouble(i)),
                     drawRange, xRightLabel, true, false);
+            }
+        }
+        
+        // Draw X labels
+        if (data.getXReferenceLabels() != null && !data.getXReferenceLabels().isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(data.getXReferenceLabelColor());
+            g.setFont(data.getXReferenceLabelFont());
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {(int) data.getStartX(), (int) data.getEndX()};
+            int yTop = (int) (data.getStartY() + data.getXReferenceLabelMargin() + 1);
+            drawVerticalReferenceLabel(g, metrics, data.getXReferenceLabels().get(0), (int) Math.floor(xTicks.getDouble(0)),
+                drawRange, yTop, true, false);
+            drawVerticalReferenceLabel(g, metrics, data.getXReferenceLabels().get(data.getXReferenceLabels().size() - 1), (int) Math.floor(xTicks.getDouble(data.getXReferenceLabels().size() - 1)),
+                drawRange, yTop, false, false);
+            
+            for (int i = 1; i < data.getXReferenceLabels().size() - 1; i++) {
+                drawVerticalReferenceLabel(g, metrics, data.getXReferenceLabels().get(i), (int) Math.floor(xTicks.getDouble(i)),
+                    drawRange, yTop, true, false);
             }
         }
         
@@ -70,7 +91,7 @@ public class Graph2DAreaRenderer {
     private static final int MIN = 0;
     private static final int MAX = 1;
     
-    private static void drawVerticalAxisLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
+    private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
@@ -102,6 +123,41 @@ public class Graph2DAreaRenderer {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
+        }
+    }
+    
+    private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
+        int targetX = xCenter;
+        int halfWidth = metrics.stringWidth(text) / 2;
+        if (xCenter < drawRange[MIN] + halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_LEFT;
+            targetX = drawRange[MIN];
+        } else if (xCenter > drawRange[MAX] - halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+            targetX = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
+        
+        if (updateMin) {
+            drawRange[MIN] = targetX + metrics.getHeight();
+        } else {
+            drawRange[MAX] = targetX - metrics.getHeight();
         }
     }
 

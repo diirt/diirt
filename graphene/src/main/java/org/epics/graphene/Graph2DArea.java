@@ -58,7 +58,7 @@ public interface Graph2DArea {
     List<String> getXReferenceLabels();
     Font getXReferenceLabelFont();
     Color getXReferenceLabelColor();
-    double getXReferenceLabelMargin();
+    int getXReferenceLabelMargin();
     
     ListNumber getYReferences();
     ListNumber getYReferenceValues();

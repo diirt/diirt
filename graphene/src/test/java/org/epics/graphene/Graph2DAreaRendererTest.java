@@ -96,10 +96,10 @@ public class Graph2DAreaRendererTest {
         when(data.getEndY()).thenReturn(4.5);
         
         when(data.getXReferences()).thenReturn(new ArrayDouble(50, 100, 150, 200, 250));
-        when(data.getXReferenceLabels()).thenReturn(Arrays.asList("0", "50", "100", "150"));
+        when(data.getXReferenceLabels()).thenReturn(null);
         when(data.getXReferenceLabelColor()).thenReturn(Color.BLACK);
         when(data.getXReferenceLabelFont()).thenReturn(FontUtil.getLiberationSansRegular());
-        when(data.getXReferenceLabelMargin()).thenReturn(1.0);
+        when(data.getXReferenceLabelMargin()).thenReturn(1);
         when(data.getYReferences()).thenReturn(new ArrayDouble(160, 120, 80, 40));
         when(data.getYReferenceLabels()).thenReturn(Arrays.asList("0", "50", "100", "150"));
         when(data.getYReferenceLabelColor()).thenReturn(Color.BLACK);
@@ -111,5 +111,34 @@ public class Graph2DAreaRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("graph2DArea.3", image);
+    }
+
+    @Test
+    public void render4() throws Exception {
+        Graph2DArea data = mock(Graph2DArea.class);
+        when(data.getBackgroundColor()).thenReturn(Color.WHITE);
+        when(data.getWidth()).thenReturn(300);
+        when(data.getHeight()).thenReturn(200);
+        
+        when(data.getStartX()).thenReturn(4.5);
+        when(data.getEndX()).thenReturn(295.5);
+        when(data.getStartY()).thenReturn(185.5);
+        when(data.getEndY()).thenReturn(4.5);
+        
+        when(data.getXReferences()).thenReturn(new ArrayDouble(50, 100, 150, 200, 250));
+        when(data.getXReferenceLabels()).thenReturn(Arrays.asList("0", "50", "100", "150", "200"));
+        when(data.getXReferenceLabelColor()).thenReturn(Color.BLACK);
+        when(data.getXReferenceLabelFont()).thenReturn(FontUtil.getLiberationSansRegular());
+        when(data.getXReferenceLabelMargin()).thenReturn(1);
+        when(data.getYReferences()).thenReturn(new ArrayDouble(160, 120, 80, 40));
+        when(data.getYReferenceLabelColor()).thenReturn(Color.BLACK);
+        when(data.getYReferenceLabelFont()).thenReturn(FontUtil.getLiberationSansRegular());
+        when(data.getYReferenceLabelMargin()).thenReturn(1);
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graph2DAreaRenderer renderer = new Graph2DAreaRenderer();
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("graph2DArea.4", image);
     }
 }
