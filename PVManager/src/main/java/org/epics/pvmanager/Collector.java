@@ -10,7 +10,7 @@ package org.epics.pvmanager;
 
 /**
  * A collector can be written from one thread and read from another and provides
- * the point where two subsystems and their rate can be decoupled..
+ * the point where two subsystems and their rate can be decoupled.
  *
  * @author carcassi
  */

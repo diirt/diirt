@@ -21,17 +21,6 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class CompositeDataSourceTest {
 
-    private static ExceptionHandler rethrow = new ExceptionHandler() {
-
-        @Override
-        public void handleException(Exception ex) {
-            if (ex instanceof RuntimeException)
-                throw (RuntimeException) ex;
-            throw new RuntimeException("rethrown", ex);
-        }
-
-    };
-
     @Before
     public void setUp() {
         mock1 = new MockDataSource();

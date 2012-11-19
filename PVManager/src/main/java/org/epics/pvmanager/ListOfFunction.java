@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.Function;
 import java.util.ArrayList;
 import java.util.List;
 

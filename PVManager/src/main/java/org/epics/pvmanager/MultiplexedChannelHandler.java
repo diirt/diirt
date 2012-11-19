@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -29,7 +27,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     private MessagePayload lastMessage;
     private ConnectionPayload connectionPayload;
     private Map<ValueCache<?>, MonitorHandler> monitors = new ConcurrentHashMap<>();
-    private Map<WriteCache<?>, ChannelHandlerWriteSubscription> writeCaches = new ConcurrentHashMap<>();
+    private Map<WriteCache<?>, ChannelHandlerWriteSubscription> writeSubscriptions = new ConcurrentHashMap<>();
 
     private class MonitorHandler {
 
@@ -79,7 +77,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         for (MonitorHandler monitor : monitors.values()) {
             monitor.subscription.getExceptionWriteFunction().setValue(ex);
         }
-        for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
+        for (ChannelHandlerWriteSubscription subscription : writeSubscriptions.values()) {
             subscription.getExceptionWriteFunction().setValue(ex);
         }
     }
@@ -91,7 +89,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     }
     
     private void reportWriteConnectionStatus(boolean writeConnected) {
-        for (ChannelHandlerWriteSubscription subscription : writeCaches.values()) {
+        for (ChannelHandlerWriteSubscription subscription : writeSubscriptions.values()) {
             subscription.getConnectionWriteFunction().setValue(writeConnected);
         }
     }
@@ -257,7 +255,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected synchronized void addWriter(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter++;
-        writeCaches.put(subscription.getWriteCache(), subscription);
+        writeSubscriptions.put(subscription.getWriteCache(), subscription);
         guardedConnect();
         if (connectionPayload != null) {
             subscription.getConnectionWriteFunction().setValue(isWriteConnected());
@@ -272,7 +270,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected synchronized void removeWrite(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter--;
-        writeCaches.remove(subscription.getWriteCache());
+        writeSubscriptions.remove(subscription.getWriteCache());
         guardedDisconnect();
     }
 

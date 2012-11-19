@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A specialized collector to handle multiple channels that can be added/removed
+ * dynamically and which gets translated to a single connection flag for a
+ * reader or writer.
  *
  * @author carcassi
  */

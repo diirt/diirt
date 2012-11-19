@@ -2,13 +2,15 @@
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.pvmanager;
 
 /**
+ * A cache that, after a value is put in the given value cache, calculates
+ * the value of the forward function and stores it in the forward writer, while
+ * locking on the forward function.
+ * <p>
+ * This can be used to connect a function of multiple values to a single
+ * collector.
  *
  * @author carcassi
  */

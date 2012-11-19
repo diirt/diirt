@@ -8,6 +8,7 @@ import java.util.concurrent.Executor;
 import org.epics.util.time.TimeDuration;
 
 /**
+ * Includes parameters that are common for both reader and write configuration.
  *
  * @author carcassi
  */
