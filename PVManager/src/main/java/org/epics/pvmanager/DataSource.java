@@ -323,8 +323,8 @@ public abstract class DataSource {
         final WritePlanner planner = new WritePlanner();
         for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
             ChannelHandler channel = channel(channelWriteBuffer.getChannelName());
-            planner.addChannel(channel, channelWriteBuffer.getWriteSubscription().getCache().getValue(),
-                    channelWriteBuffer.getWriteSubscription().getCache().getPrecedingChannels());
+            planner.addChannel(channel, channelWriteBuffer.getWriteSubscription().getWriteCache().getValue(),
+                    channelWriteBuffer.getWriteSubscription().getWriteCache().getPrecedingChannels());
         }
 
         // Connect using another thread

@@ -73,7 +73,7 @@ public class PVSyntaxTest {
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteBuffer buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
-            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getCache();
+            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
             assertThat(writeCache.getPrecedingChannels(), contains("master1"));
             index++;
@@ -89,7 +89,7 @@ public class PVSyntaxTest {
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteBuffer buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
-            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getCache();
+            WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
             assertThat(writeCache.getPrecedingChannels(), contains("master1"));
             index++;
@@ -108,9 +108,9 @@ public class PVSyntaxTest {
         WriteExpressionTester exp = new WriteExpressionTester(mapOf);
         WriteBuffer buffer = exp.getWriteBuffer();
         assertThat(buffer.getChannelWriteBuffers(), hasSize(3));
-        assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getCache().getPrecedingChannels(), hasSize(0));
-        assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getCache().getPrecedingChannels(), contains("first"));
-        assertThat(channelWriteBuffer("third", buffer).getWriteSubscription().getCache().getPrecedingChannels(), contains("first"));
+        assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), hasSize(0));
+        assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
+        assertThat(channelWriteBuffer("third", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
     }
     
     @Test

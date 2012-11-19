@@ -41,7 +41,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
         }
         
         public final void processConnection(boolean connection) {
-            subscription.getConnWriteFunction().setValue(connection);
+            subscription.getConnectionWriteFunction().setValue(connection);
         }
 
         public final void processValue(MessagePayload payload) {
@@ -257,7 +257,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected synchronized void addWriter(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter++;
-        writeCaches.put(subscription.getCache(), subscription);
+        writeCaches.put(subscription.getWriteCache(), subscription);
         guardedConnect();
         if (connectionPayload != null) {
             subscription.getConnectionWriteFunction().setValue(isWriteConnected());
@@ -272,7 +272,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
     @Override
     protected synchronized void removeWrite(ChannelHandlerWriteSubscription subscription) {
         writeUsageCounter--;
-        writeCaches.remove(subscription.getCache());
+        writeCaches.remove(subscription.getWriteCache());
         guardedDisconnect();
     }
 

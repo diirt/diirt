@@ -29,7 +29,7 @@ public class WriteExpressionTester {
         for (ChannelWriteBuffer channelBuffer : recipe.getChannelWriteBuffers()) {
             if (channelBuffer.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
-                ValueCache<Object> cache = (ValueCache<Object>) channelBuffer.getWriteSubscription().getCache();
+                ValueCache<Object> cache = (ValueCache<Object>) channelBuffer.getWriteSubscription().getWriteCache();
                 return cache.getValue();
             }
         }

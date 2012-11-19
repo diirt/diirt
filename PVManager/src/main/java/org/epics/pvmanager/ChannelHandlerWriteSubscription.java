@@ -22,27 +22,27 @@ public class ChannelHandlerWriteSubscription {
     private final WriteFunction<Boolean> connectionWriteFunction;
 
     /**
-     * The cache to get the value to write.
+     * The cache to hold the value to write.
      * 
      * @return the write cache
      */
-    public WriteCache<?> getCache() {
+    public WriteCache<?> getWriteCache() {
         return cache;
     }
 
     /**
-     * The exception handler for connection/disconnection errors.
+     * The write function for connection/disconnection errors.
      * 
-     * @return the exception handler
+     * @return the write function; never null
      */
     public WriteFunction<Exception> getExceptionWriteFunction() {
         return exceptionWriteFunction;
     }
 
     /**
-     * The collector to notify when the connection changes.
+     * The write function for the connection flag.
      * 
-     * @return the collector
+     * @return the write function; never null
      */
     public WriteFunction<Boolean> getConnectionWriteFunction() {
         return connectionWriteFunction;
