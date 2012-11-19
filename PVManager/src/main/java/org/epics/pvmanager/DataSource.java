@@ -162,7 +162,7 @@ public abstract class DataSource {
                     ChannelHandler channelHandler = entry.getKey();
                     ChannelRecipe channelRecipe = entry.getValue();
                     try {
-                        channelHandler.addMonitor(channelRecipe.getReadSubscription());
+                        channelHandler.addReader(channelRecipe.getReadSubscription());
                     } catch(Exception ex) {
                         // If an error happens while adding the read subscription,
                         // notify the appropriate handler
@@ -196,7 +196,7 @@ public abstract class DataSource {
             // connection and a proper notification was sent then. Silently
             // ignore it.
             if (channelHandler != null) {
-                channelHandler.removeMonitor(channelRecipe.getReadSubscription());
+                channelHandler.removeReader(channelRecipe.getReadSubscription());
             }
         }
 

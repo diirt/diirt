@@ -49,7 +49,7 @@ public class LocChannelHandlerTest {
 
         // Attaching a monitor cache/collector
         ChannelHandlerReadSubscription readSubscription = new ChannelHandlerReadSubscription(vDoubleCache1, exceptionHandler, vDoubleConnCache1);
-        channel.addMonitor(readSubscription);
+        channel.addReader(readSubscription);
         assertThat(channel.getUsageCounter(), equalTo(1));
         assertThat(channel.isConnected(), is(true));
 
@@ -65,7 +65,7 @@ public class LocChannelHandlerTest {
         channel.write(6.28, channelWriteCallback);
         
         // Removing all readers and writers
-        channel.removeMonitor(readSubscription);
+        channel.removeReader(readSubscription);
         channel.removeWrite(writeSubscription);
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
@@ -89,13 +89,13 @@ public class LocChannelHandlerTest {
 
         // Attaching a monitor cache/collector
         ChannelHandlerReadSubscription readSubscription1 = new ChannelHandlerReadSubscription(vDoubleCache1, exceptionHandler, vDoubleConnCache1);
-        channel.addMonitor(readSubscription1);
+        channel.addReader(readSubscription1);
         assertThat(channel.getUsageCounter(), equalTo(1));
         assertThat(channel.isConnected(), is(true));
         ChannelHandlerReadSubscription readSubscription2 = new ChannelHandlerReadSubscription(vDoubleCache2, exceptionHandler, vDoubleConnCache2);
 
         // Attaching a monitor cache/collector
-        channel.addMonitor(readSubscription2);
+        channel.addReader(readSubscription2);
         assertThat(channel.getUsageCounter(), equalTo(2));
         assertThat(channel.isConnected(), is(true));
 
@@ -111,8 +111,8 @@ public class LocChannelHandlerTest {
         
         // Remove reader/writers
         channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1));
-        channel.removeMonitor(readSubscription1);
-        channel.removeMonitor(readSubscription2);
+        channel.removeReader(readSubscription1);
+        channel.removeReader(readSubscription2);
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
         

@@ -220,7 +220,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param subscription the data required for a subscription
      */
     @Override
-    protected synchronized void addMonitor(ChannelHandlerReadSubscription subscription) {
+    protected synchronized void addReader(ChannelHandlerReadSubscription subscription) {
         readUsageCounter++;
         MonitorHandler monitor = new MonitorHandler(subscription);
         monitors.put(subscription.getValueCache(), monitor);
@@ -242,7 +242,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * @param subscription the collector that does not need to be notified anymore
      */
     @Override
-    protected synchronized void removeMonitor(ChannelHandlerReadSubscription subscription) {
+    protected synchronized void removeReader(ChannelHandlerReadSubscription subscription) {
         monitors.remove(subscription);
         readUsageCounter--;
         guardedDisconnect();

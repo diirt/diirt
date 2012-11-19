@@ -358,8 +358,8 @@ public class PVAChannelHandler extends
 	}
 
 	@Override
-	public void addMonitor(ChannelHandlerReadSubscription subscription) {
-		super.addMonitor(subscription);
+	public void addReader(ChannelHandlerReadSubscription subscription) {
+		super.addReader(subscription);
 		
 		if (!monitorCreated.getAndSet(true))
 		{
