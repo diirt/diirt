@@ -169,13 +169,12 @@ public class ValueAxisTest {
                 new String[]{"1e-4","2e-4","3e-4","4e-4"}, axis);
     }
 
-    // TODO: review auto ticks to make this pass
-//    @Test
-//    public void testTicksForRange20() {
-//        ValueAxis axis = ValueAxis.createAutoAxis(-2.644, 3.3689, 3);
-//        assertAxisEquals(-2.644, 3.3689, new double[]{-2.0, 0.0, 2.0},
-//                new String[]{"-2","0","2"}, axis);
-//    }
+    @Test
+    public void testTicksForRange20() {
+        ValueAxis axis = ValueAxis.createAutoAxis(-2.644, 3.3689, 3);
+        assertAxisEquals(-2.644, 3.3689, new double[]{-2.0, 0.0, 2.0},
+                new String[]{"-2","0","2"}, axis);
+    }
 
     private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
         assertEquals(minValue, axis.getMinValue(), 0.000001);
