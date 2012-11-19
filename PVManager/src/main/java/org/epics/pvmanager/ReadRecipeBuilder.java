@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public class DataRecipeBuilder {
+public class ReadRecipeBuilder {
 
     private final Map<String, ValueCache<?>> channelCaches
             = new HashMap<>();
@@ -34,14 +34,14 @@ public class DataRecipeBuilder {
      * 
      * @return a new recipe
      */
-    public DataRecipe build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
-        Set<ChannelRecipe> recipes = new HashSet<>();
+    public ReadRecipe build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
+        Set<ChannelReadRecipe> recipes = new HashSet<>();
         for (Map.Entry<String, ValueCache<?>> entry : channelCaches.entrySet()) {
             String channelName = entry.getKey();
             ValueCache<?> valueCache = entry.getValue();
-            recipes.add(new ChannelRecipe(channelName, 
+            recipes.add(new ChannelReadRecipe(channelName, 
                     new ChannelHandlerReadSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
         }
-        return new DataRecipe(recipes);
+        return new ReadRecipe(recipes);
     }
 }

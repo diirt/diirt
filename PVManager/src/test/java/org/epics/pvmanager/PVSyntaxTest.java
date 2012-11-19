@@ -42,21 +42,21 @@ public class PVSyntaxTest {
     @Test
     public void readWriteMap() throws Exception {
         WriteExpressionTester exp = new WriteExpressionTester(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))));
-        WriteBuffer buffer = exp.getWriteBuffer();
+        WriteRecipe buffer = exp.getWriteBuffer();
         assertThat(buffer.getChannelWriteBuffers().size(), equalTo(2));
         assertThat(channelNames(buffer), containsInAnyOrder("channel1", "channel2"));
     }
     
-    private static Collection<String> channelNames(WriteBuffer buffer) {
+    private static Collection<String> channelNames(WriteRecipe buffer) {
         Set<String> names = new HashSet<String>();
-        for (ChannelWriteBuffer channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteBuffers()) {
             names.add(channelWriteBuffer.getChannelName());
         }
         return names;
     }
     
-    private static ChannelWriteBuffer channelWriteBuffer(String channelName, WriteBuffer buffer) {
-        for (ChannelWriteBuffer channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+    private static ChannelWriteRecipe channelWriteBuffer(String channelName, WriteRecipe buffer) {
+        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteBuffers()) {
             if (channelWriteBuffer.getChannelName().equals(channelName)) {
                 return channelWriteBuffer;
             }
@@ -71,7 +71,7 @@ public class PVSyntaxTest {
                 channels("channel1", "channel2", "channel3").after("master1");
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteBuffer buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
+            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
@@ -87,7 +87,7 @@ public class PVSyntaxTest {
                 channels(names).after("master1");
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteBuffer buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
+            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
@@ -106,7 +106,7 @@ public class PVSyntaxTest {
     public void writeMap1() {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
         WriteExpressionTester exp = new WriteExpressionTester(mapOf);
-        WriteBuffer buffer = exp.getWriteBuffer();
+        WriteRecipe buffer = exp.getWriteBuffer();
         assertThat(buffer.getChannelWriteBuffers(), hasSize(3));
         assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), hasSize(0));
         assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
@@ -118,8 +118,8 @@ public class PVSyntaxTest {
         SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
         assertThat(exp.getName(), equalTo("myName"));
         ExpressionTester finalExp = new ExpressionTester(latestValueOf(exp));
-        DataRecipe recipe = finalExp.getDataRecipe();
-        assertThat(recipe.getChannelRecipes(), hasSize(1));
+        ReadRecipe recipe = finalExp.getDataRecipe();
+        assertThat(recipe.getChannelReadRecipes(), hasSize(1));
         assertThat(finalExp.recipeFor("myChannel"), notNullValue());
     }
     

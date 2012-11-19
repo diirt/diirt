@@ -5,12 +5,6 @@
 package org.epics.pvmanager;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import org.epics.pvmanager.WriteCache;
 
 /**
  * Represents all the values, channel names and ordering information needed
@@ -18,14 +12,14 @@ import org.epics.pvmanager.WriteCache;
  *
  * @author carcassi
  */
-public class WriteBuffer {
-    private final Collection<ChannelWriteBuffer> channelWriteBuffers;
+public class WriteRecipe {
+    private final Collection<ChannelWriteRecipe> channelWriteBuffers;
 
-    WriteBuffer(Collection<ChannelWriteBuffer> channelWriteBuffers) {
+    WriteRecipe(Collection<ChannelWriteRecipe> channelWriteBuffers) {
         this.channelWriteBuffers = channelWriteBuffers;
     }
 
-    public Collection<ChannelWriteBuffer> getChannelWriteBuffers() {
+    public Collection<ChannelWriteRecipe> getChannelWriteBuffers() {
         return channelWriteBuffers;
     }
     

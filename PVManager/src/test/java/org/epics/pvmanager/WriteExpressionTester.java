@@ -14,19 +14,19 @@ import org.epics.pvmanager.expression.WriteExpression;
 public class WriteExpressionTester {
 
     private WriteExpression<?> expression;
-    private WriteBuffer recipe;
+    private WriteRecipe recipe;
     private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
     private ConnectionCollector connCollector = new ConnectionCollector();
 
     public WriteExpressionTester(WriteExpression<?> expression) {
         this.expression = expression;
-        WriteBufferBuilder builder = new WriteBufferBuilder();
-        expression.fillWriteBuffer(null, builder);
+        WriteRecipeBuilder builder = new WriteRecipeBuilder();
+        expression.fillWriteRecipe(null, builder);
         this.recipe = builder.build(exceptionCollector, connCollector);
     }
 
     public Object readValue(String name) {
-        for (ChannelWriteBuffer channelBuffer : recipe.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelBuffer : recipe.getChannelWriteBuffers()) {
             if (channelBuffer.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = (ValueCache<Object>) channelBuffer.getWriteSubscription().getWriteCache();
@@ -36,8 +36,8 @@ public class WriteExpressionTester {
         throw new IllegalStateException("Can't find buffer for channel '" + name + "'");
     }
     
-    public ChannelWriteBuffer recipeFor(String channelName) {
-        for (ChannelWriteBuffer channelBuffer : recipe.getChannelWriteBuffers()) {
+    public ChannelWriteRecipe recipeFor(String channelName) {
+        for (ChannelWriteRecipe channelBuffer : recipe.getChannelWriteBuffers()) {
             if (channelBuffer.getChannelName().equals(channelName)) {
                 return channelBuffer;
             }
@@ -45,7 +45,7 @@ public class WriteExpressionTester {
         return null;
     }
     
-    public WriteBuffer getWriteBuffer() {
+    public WriteRecipe getWriteBuffer() {
         return recipe;
     }
     

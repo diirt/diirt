@@ -13,19 +13,19 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 public class ExpressionTester {
 
     private DesiredRateExpression<?> expression;
-    private DataRecipe recipe;
+    private ReadRecipe recipe;
     private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
     private ConnectionCollector connCollector = new ConnectionCollector();
 
     public ExpressionTester(DesiredRateExpression<?> expression) {
         this.expression = expression;
-        DataRecipeBuilder builder = new DataRecipeBuilder();
-        expression.fillDataRecipe(null, builder);
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        expression.fillReadRecipe(null, builder);
         this.recipe = builder.build(exceptionCollector, connCollector);
     }
 
     public void writeValue(String name, Object value) {
-        for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = (ValueCache<Object>) channelRecipe.getReadSubscription().getValueCache();
@@ -34,8 +34,8 @@ public class ExpressionTester {
         }
     }
     
-    public ChannelRecipe recipeFor(String channelName) {
-        for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+    public ChannelReadRecipe recipeFor(String channelName) {
+        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(channelName)) {
                 return channelRecipe;
             }
@@ -43,7 +43,7 @@ public class ExpressionTester {
         return null;
     }
     
-    public DataRecipe getDataRecipe() {
+    public ReadRecipe getDataRecipe() {
         return recipe;
     }
     

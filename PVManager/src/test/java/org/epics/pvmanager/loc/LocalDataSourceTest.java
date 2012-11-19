@@ -5,14 +5,14 @@
 package org.epics.pvmanager.loc;
 
 import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.ReadRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVWriterListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.WriteBuffer;
+import org.epics.pvmanager.WriteRecipe;
 import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Before;
@@ -40,8 +40,8 @@ public class LocalDataSourceTest {
         MockitoAnnotations.initMocks(this);
     }
     
-    @Mock WriteBuffer writeBuffer;
-    @Mock DataRecipe dataRecipe;
+    @Mock WriteRecipe writeBuffer;
+    @Mock ReadRecipe dataRecipe;
     @Mock WriteCache<?> writeCache1;
     @Mock WriteCache<?> writeCache2;
     @Mock Runnable callback;
@@ -162,7 +162,7 @@ public class LocalDataSourceTest {
     @Test
     public void writeMultipleNamesForSameChannel() throws Exception {
         ExpressionTester exp = new ExpressionTester(mapOf(latestValueOf(channels("foo", "foo(2.0)"))));
-        DataRecipe recipe = exp.getDataRecipe();
+        ReadRecipe recipe = exp.getDataRecipe();
         
         // Connect and make sure only one channel is created
         LocalDataSource dataSource = new LocalDataSource();

@@ -55,7 +55,7 @@ public class PVWriterDirector<T> {
     
     // Required to connect/disconnect expressions
     
-    private final Map<WriteExpression<?>, WriteBuffer> recipes =
+    private final Map<WriteExpression<?>, WriteRecipe> recipes =
             new HashMap<>();
     
     // Required for multiple operations
@@ -65,7 +65,7 @@ public class PVWriterDirector<T> {
     private final Executor notificationExecutor;
     /** DataSource to use for connect/disconnect expression and for write */
     private final DataSource dataSource;
-    private WriteBuffer writeBuffer;
+    private WriteRecipe writeBuffer;
 
     PVWriterDirector(PVWriterImpl<T> pvWriter, WriteFunction<T> writeFunction, DataSource dataSource,
             ScheduledExecutorService writeExecutor, Executor notificationExecutor,
@@ -81,9 +81,9 @@ public class PVWriterDirector<T> {
     }
     
     public void connectExpression(WriteExpression<?> expression) {
-        WriteBufferBuilder builder = new WriteBufferBuilder();
-        expression.fillWriteBuffer(this, builder);
-        WriteBuffer recipe = builder.build(exceptionCollector, connCollector);
+        WriteRecipeBuilder builder = new WriteRecipeBuilder();
+        expression.fillWriteRecipe(this, builder);
+        WriteRecipe recipe = builder.build(exceptionCollector, connCollector);
         synchronized(lock) {
             recipes.put(expression, recipe);
         }
@@ -98,7 +98,7 @@ public class PVWriterDirector<T> {
     }
     
     public void disconnectExpression(WriteExpression<?> expression) {
-        WriteBuffer recipe;
+        WriteRecipe recipe;
         synchronized(lock) {
             recipe = recipes.remove(expression);
         }
@@ -118,11 +118,11 @@ public class PVWriterDirector<T> {
     
     private void updateWriteBuffer() {
         synchronized(lock) {
-            Set<ChannelWriteBuffer> channelBuffers = new HashSet<>();
-            for (WriteBuffer writeBuffer1 : recipes.values()) {
+            Set<ChannelWriteRecipe> channelBuffers = new HashSet<>();
+            for (WriteRecipe writeBuffer1 : recipes.values()) {
                 channelBuffers.addAll(writeBuffer1.getChannelWriteBuffers());
             }
-            writeBuffer = new WriteBuffer(channelBuffers);
+            writeBuffer = new WriteRecipe(channelBuffers);
         }
     }
     

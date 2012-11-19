@@ -6,7 +6,7 @@ package org.epics.pvmanager.extra;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.DataRecipe;
+import org.epics.pvmanager.ReadRecipe;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
@@ -25,7 +25,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     private final DataSource dataSource = PVManager.getDefaultDataSource();
-    private final List<DataRecipe> recipes = new ArrayList<DataRecipe>();
+    private final List<ReadRecipe> recipes = new ArrayList<ReadRecipe>();
 
     /**
      * Creates a new group.
@@ -56,7 +56,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
      */
     public synchronized DynamicGroup clear() {
         for (int index = recipes.size() - 1; index >= 0; index--) {
-            DataRecipe recipe = recipes.remove(index);
+            ReadRecipe recipe = recipes.remove(index);
             dataSource.disconnect(recipe);
             synchronized (getGroup()) {
                 getGroup().getArguments().remove(index);
@@ -102,7 +102,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
      * @return this
      */
     public synchronized DynamicGroup remove(int index) {
-        DataRecipe recipe = recipes.remove(index);
+        ReadRecipe recipe = recipes.remove(index);
         dataSource.disconnect(recipe);
         synchronized (getGroup()) {
             getGroup().getArguments().remove(index);
@@ -122,7 +122,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
     public synchronized DynamicGroup set(int index, DesiredRateExpression<?> expression) {
 //        DataRecipe recipe = expression.getDataRecipe();
 //        recipe = recipe.withExceptionHandler(handlerFor(index));
-        DataRecipe oldRecipe = recipes.get(index);
+        ReadRecipe oldRecipe = recipes.get(index);
         dataSource.disconnect(oldRecipe);
 
         synchronized (getGroup()) {

@@ -5,11 +5,6 @@
 package org.epics.pvmanager;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Represents all the information necessary to connect to a {@link DataSource}.
@@ -17,15 +12,20 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public class DataRecipe {
+public class ReadRecipe {
     
-    private final Collection<ChannelRecipe> channelRecipes;
+    private final Collection<ChannelReadRecipe> channelRecipes;
 
-    DataRecipe(Collection<ChannelRecipe> channelRecipes) {
+    ReadRecipe(Collection<ChannelReadRecipe> channelRecipes) {
         this.channelRecipes = channelRecipes;
     }
 
-    public Collection<ChannelRecipe> getChannelRecipes() {
+    /**
+     * The recipes for each channel to connect.
+     * 
+     * @return a set of channel recipes
+     */
+    public Collection<ChannelReadRecipe> getChannelReadRecipes() {
         return channelRecipes;
     }
 }

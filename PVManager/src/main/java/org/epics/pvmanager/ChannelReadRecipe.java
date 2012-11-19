@@ -8,11 +8,11 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public class ChannelRecipe {
+public class ChannelReadRecipe {
     private final String channelName;
     private final ChannelHandlerReadSubscription readSubscription;
 
-    public ChannelRecipe(String channelName, ChannelHandlerReadSubscription readSubscription) {
+    public ChannelReadRecipe(String channelName, ChannelHandlerReadSubscription readSubscription) {
         this.channelName = channelName;
         this.readSubscription = readSubscription;
     }
@@ -40,7 +40,7 @@ public class ChannelRecipe {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ChannelRecipe other = (ChannelRecipe) obj;
+        final ChannelReadRecipe other = (ChannelReadRecipe) obj;
         if (this.readSubscription != other.readSubscription && (this.readSubscription == null || !this.readSubscription.equals(other.readSubscription))) {
             return false;
         }

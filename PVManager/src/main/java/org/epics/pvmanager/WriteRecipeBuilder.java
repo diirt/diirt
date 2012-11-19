@@ -14,18 +14,18 @@ import java.util.Set;
  *
  * @author carcassi
  */
-public class WriteBufferBuilder {
+public class WriteRecipeBuilder {
 
     private final Map<String, WriteCache<?>> caches;
 
     /**
      * A new builder
      */
-    public WriteBufferBuilder() {
+    public WriteRecipeBuilder() {
         caches = new HashMap<>();
     }
     
-    public WriteBufferBuilder addChannel(String channelName, WriteCache<?> writeCache) {
+    public WriteRecipeBuilder addChannel(String channelName, WriteCache<?> writeCache) {
         caches.put(channelName, writeCache);
         return this;
     }
@@ -35,15 +35,15 @@ public class WriteBufferBuilder {
      * 
      * @return a new WriteBuffer
      */
-    public WriteBuffer build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
-        Set<ChannelWriteBuffer> recipes = new HashSet<>();
+    public WriteRecipe build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
+        Set<ChannelWriteRecipe> recipes = new HashSet<>();
         for (Map.Entry<String, WriteCache<?>> entry : caches.entrySet()) {
             String channelName = entry.getKey();
             WriteCache<?> valueCache = entry.getValue();
-            recipes.add(new ChannelWriteBuffer(channelName, 
+            recipes.add(new ChannelWriteRecipe(channelName, 
                     new ChannelHandlerWriteSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
         }
-        return new WriteBuffer(recipes);
+        return new WriteRecipe(recipes);
     }
     
 }

@@ -41,7 +41,7 @@ public class PVReaderDirector<T> {
     // Required to connect/disconnect expressions
     private final DataSource dataSource;
     private final Object lock = new Object();
-    private final Map<DesiredRateExpression<?>, DataRecipe> recipes =
+    private final Map<DesiredRateExpression<?>, ReadRecipe> recipes =
             new HashMap<>();
 
     // Required for multiple operations
@@ -59,23 +59,23 @@ public class PVReaderDirector<T> {
      * @param expression 
      */
     public void connectExpression(DesiredRateExpression<?> expression) {
-        DataRecipeBuilder builder = new DataRecipeBuilder();
-        expression.fillDataRecipe(this, builder);
-        DataRecipe recipe = builder.build(exceptionCollector, connCollector);
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        expression.fillReadRecipe(this, builder);
+        ReadRecipe recipe = builder.build(exceptionCollector, connCollector);
         synchronized(lock) {
             recipes.put(expression, recipe);
         }
-        if (!recipe.getChannelRecipes().isEmpty()) {
+        if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
                 dataSource.connect(recipe);
             } catch(Exception ex) {
-                recipe.getChannelRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
     }
     
     public void disconnectExpression(DesiredRateExpression<?> expression) {
-        DataRecipe recipe;
+        ReadRecipe recipe;
         synchronized(lock) {
             recipe = recipes.remove(expression);
         }
@@ -83,11 +83,11 @@ public class PVReaderDirector<T> {
             log.log(Level.SEVERE, "Director was asked to disconnect expression '" + expression + "' which was not found.");
         }
         
-        if (!recipe.getChannelRecipes().isEmpty()) {
+        if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
                 dataSource.disconnect(recipe);
             } catch(Exception ex) {
-                recipe.getChannelRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
     }

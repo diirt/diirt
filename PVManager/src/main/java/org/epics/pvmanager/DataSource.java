@@ -114,8 +114,8 @@ public abstract class DataSource {
     
     // Keeps track of the recipes and buffers that were opened with
     // this data source.
-    private Set<DataRecipe> recipes = new CopyOnWriteArraySet<DataRecipe>();
-    private Set<WriteBuffer> registeredBuffers = new CopyOnWriteArraySet<WriteBuffer>();
+    private Set<ReadRecipe> recipes = new CopyOnWriteArraySet<ReadRecipe>();
+    private Set<WriteRecipe> registeredBuffers = new CopyOnWriteArraySet<WriteRecipe>();
 
     /**
      * Connects to a set of channels based on the given recipe.
@@ -126,7 +126,7 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public void connect(final DataRecipe recipe) {
+    public void connect(final ReadRecipe recipe) {
         // Add the recipe first, so that if a problem comes out
         // while processing the request, we still keep
         // track of it.
@@ -134,9 +134,9 @@ public abstract class DataSource {
 
         // Let's go through all the recipes first, so if something
         // breaks unexpectadely, either everything works or nothing works
-        final Map<ChannelHandler, ChannelRecipe> handlersWithSubscriptions =
-                new HashMap<ChannelHandler, ChannelRecipe>();
-        for (final ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+        final Map<ChannelHandler, ChannelReadRecipe> handlersWithSubscriptions =
+                new HashMap<ChannelHandler, ChannelReadRecipe>();
+        for (final ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
             try {
                 String channelName = channelRecipe.getChannelName();
                 ChannelHandler channelHandler = channel(channelName);
@@ -158,9 +158,9 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (Map.Entry<ChannelHandler, ChannelRecipe> entry : handlersWithSubscriptions.entrySet()) {
+                for (Map.Entry<ChannelHandler, ChannelReadRecipe> entry : handlersWithSubscriptions.entrySet()) {
                     ChannelHandler channelHandler = entry.getKey();
-                    ChannelRecipe channelRecipe = entry.getValue();
+                    ChannelReadRecipe channelRecipe = entry.getValue();
                     try {
                         channelHandler.addReader(channelRecipe.getReadSubscription());
                     } catch(Exception ex) {
@@ -182,14 +182,14 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public void disconnect(DataRecipe recipe) {
+    public void disconnect(ReadRecipe recipe) {
         if (!recipes.contains(recipe)) {
             log.log(Level.WARNING, "DataRecipe {0} was disconnected but was never connected. Ignoring it.", recipe);
             return;
         }
 
         
-        for (ChannelRecipe channelRecipe : recipe.getChannelRecipes()) {
+        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
             String channelName = channelRecipe.getChannelName();
             ChannelHandler channelHandler = usedChannels.get(channelName);
             // If the channel is not found, it means it was not found during
@@ -212,7 +212,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will contain the write data
      * @param exceptionHandler where to report the exceptions
      */
-    public void prepareWrite(final WriteBuffer writeBuffer) {
+    public void prepareWrite(final WriteRecipe writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
@@ -223,7 +223,7 @@ public abstract class DataSource {
         // Let's go through the whole request first, so if something
         // breaks unexpectadely, either everything works or nothing works
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
-        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
             try {
                 String channelName = channelWriteBuffer.getChannelName();
                 ChannelHandler handler = channel(channelName);
@@ -263,7 +263,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will no longer be used
      * @param exceptionHandler where to report the exceptions
      */
-    public void concludeWrite(final WriteBuffer writeBuffer) {
+    public void concludeWrite(final WriteRecipe writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
@@ -274,7 +274,7 @@ public abstract class DataSource {
 
         registeredBuffers.remove(writeBuffer);
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
-        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
             try {
                 String channelName = channelWriteBuffer.getChannelName();
                 ChannelHandler handler = channel(channelName);
@@ -316,12 +316,12 @@ public abstract class DataSource {
      * @param callback function to call when the write is concluded
      * @param exceptionHandler where to report the exceptions
      */
-    public void write(final WriteBuffer writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
+    public void write(final WriteRecipe writeBuffer, final Runnable callback, final ExceptionHandler exceptionHandler) {
         if (!isWriteable())
             throw new UnsupportedOperationException("This data source is read only");
         
         final WritePlanner planner = new WritePlanner();
-        for (ChannelWriteBuffer channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
             ChannelHandler channel = channel(channelWriteBuffer.getChannelName());
             planner.addChannel(channel, channelWriteBuffer.getWriteSubscription().getWriteCache().getValue(),
                     channelWriteBuffer.getWriteSubscription().getWriteCache().getPrecedingChannels());

@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
-import org.epics.pvmanager.DataRecipeBuilder;
+import org.epics.pvmanager.ReadRecipeBuilder;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.PVReaderDirector;
@@ -76,12 +76,12 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     @Override
     @SuppressWarnings("unchecked")
-    public void fillDataRecipe(PVReaderDirector director, DataRecipeBuilder builder) {
+    public void fillReadRecipe(PVReaderDirector director, ReadRecipeBuilder builder) {
         if (sourceRateChild != null) {
             sourceRateChild.getSourceRateExpressionImpl().fillDataRecipe(director, (Collector) function, builder);
         } else if (desiredRateChildren != null) {
             for (DesiredRateExpression<?> desiredRateExpression : desiredRateChildren.getDesiredRateExpressions()) {
-                desiredRateExpression.fillDataRecipe(director, builder);
+                desiredRateExpression.fillReadRecipe(director, builder);
             }
         }
     }

@@ -4,12 +4,12 @@
  */
 package org.epics.pvmanager.expression;
 
-import org.epics.pvmanager.DataRecipe;
-import org.epics.pvmanager.DataRecipeBuilder;
+import org.epics.pvmanager.ReadRecipe;
+import org.epics.pvmanager.ReadRecipeBuilder;
 import org.epics.pvmanager.Function;
 import org.epics.pvmanager.PVReaderDirector;
 import org.epics.pvmanager.PVWriterDirector;
-import org.epics.pvmanager.WriteBufferBuilder;
+import org.epics.pvmanager.WriteRecipeBuilder;
 import org.epics.pvmanager.WriteFunction;
 
 /**
@@ -68,8 +68,8 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public void fillDataRecipe(PVReaderDirector director, DataRecipeBuilder builder) {
-        desiredRateExpression.fillDataRecipe(director, builder);
+    public void fillReadRecipe(PVReaderDirector director, ReadRecipeBuilder builder) {
+        desiredRateExpression.fillReadRecipe(director, builder);
     }
 
     @Override
@@ -78,8 +78,8 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     }
 
     @Override
-    public void fillWriteBuffer(PVWriterDirector director, WriteBufferBuilder builder) {
-        writeExpression.fillWriteBuffer(director, builder);
+    public void fillWriteRecipe(PVWriterDirector director, WriteRecipeBuilder builder) {
+        writeExpression.fillWriteRecipe(director, builder);
     }
     
 }

@@ -13,7 +13,7 @@ package org.epics.pvmanager;
  */
 class PVRecipe {
 
-    private final DataRecipe dataSourceRecipe;
+    private final ReadRecipe dataSourceRecipe;
     private final DataSource dataSource;
     private final Notifier notifier;
 
@@ -24,7 +24,7 @@ class PVRecipe {
      * @param dataSourceRecipe the list of all channels needed by each collector
      * @param notifier
      */
-    PVRecipe(DataRecipe dataSourceRecipe, DataSource dataSource, Notifier notifier) {
+    PVRecipe(ReadRecipe dataSourceRecipe, DataSource dataSource, Notifier notifier) {
         this.dataSourceRecipe = dataSourceRecipe;
         this.dataSource = dataSource;
         this.notifier = notifier;
@@ -35,7 +35,7 @@ class PVRecipe {
      *
      * @return the data recipe
      */
-    DataRecipe getDataSourceRecipe() {
+    ReadRecipe getDataSourceRecipe() {
         return dataSourceRecipe;
     }
 

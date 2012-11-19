@@ -14,8 +14,8 @@ package org.epics.pvmanager;
  */
 public class MockDataSource extends DataSource {
     
-    private DataRecipe dataRecipe;
-    private WriteBuffer writeBuffer;
+    private ReadRecipe dataRecipe;
+    private WriteRecipe writeBuffer;
 
     public MockDataSource() {
         super(true);
@@ -27,30 +27,30 @@ public class MockDataSource extends DataSource {
     }
 
     @Override
-    public void connect(DataRecipe recipe) {
+    public void connect(ReadRecipe recipe) {
         this.dataRecipe = recipe;
     }
 
     @Override
-    public void disconnect(DataRecipe recipe) {
+    public void disconnect(ReadRecipe recipe) {
         this.dataRecipe = recipe;
     }
 
     @Override
-    public void prepareWrite(WriteBuffer writeBuffer) {
+    public void prepareWrite(WriteRecipe writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 
     @Override
-    public void concludeWrite(WriteBuffer writeBuffer) {
+    public void concludeWrite(WriteRecipe writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 
-    public DataRecipe getDataRecipe() {
+    public ReadRecipe getDataRecipe() {
         return dataRecipe;
     }
 
-    public WriteBuffer getWriteBuffer() {
+    public WriteRecipe getWriteBuffer() {
         return writeBuffer;
     }
     
