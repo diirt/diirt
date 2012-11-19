@@ -126,7 +126,7 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public void connect(final ReadRecipe recipe) {
+    public void connectRead(final ReadRecipe recipe) {
         // Add the recipe first, so that if a problem comes out
         // while processing the request, we still keep
         // track of it.
@@ -182,7 +182,7 @@ public abstract class DataSource {
      *
      * @param recipe the instructions for the data connection
      */
-    public void disconnect(ReadRecipe recipe) {
+    public void disconnectRead(ReadRecipe recipe) {
         if (!recipes.contains(recipe)) {
             log.log(Level.WARNING, "DataRecipe {0} was disconnected but was never connected. Ignoring it.", recipe);
             return;
@@ -212,7 +212,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will contain the write data
      * @param exceptionHandler where to report the exceptions
      */
-    public void prepareWrite(final WriteRecipe writeBuffer) {
+    public void connectWrite(final WriteRecipe writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
@@ -263,7 +263,7 @@ public abstract class DataSource {
      * @param writeBuffer the buffer that will no longer be used
      * @param exceptionHandler where to report the exceptions
      */
-    public void concludeWrite(final WriteRecipe writeBuffer) {
+    public void disconnectWrite(final WriteRecipe writeBuffer) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         

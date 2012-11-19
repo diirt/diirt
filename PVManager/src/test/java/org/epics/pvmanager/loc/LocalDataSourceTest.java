@@ -166,9 +166,9 @@ public class LocalDataSourceTest {
         
         // Connect and make sure only one channel is created
         LocalDataSource dataSource = new LocalDataSource();
-        dataSource.connect(recipe);
+        dataSource.connectRead(recipe);
         assertThat(dataSource.getChannels().size(), equalTo(1));
-        dataSource.disconnect(recipe);
+        dataSource.disconnectRead(recipe);
         dataSource.close();
     }
 

@@ -65,7 +65,7 @@ class Notifier<T> {
             return true;
         } else {
             if (pvRecipe != null) {
-                pvRecipe.getDataSource().disconnect(pvRecipe.getDataSourceRecipe());
+                pvRecipe.getDataSource().disconnectRead(pvRecipe.getDataSourceRecipe());
                 pvRecipe = null;
             }
             return false;

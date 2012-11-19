@@ -61,7 +61,7 @@ public class CompositeDataSourceTest {
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Call and check
-        composite.connect(recipe);
+        composite.connectRead(recipe);
         assertThat(mock1.getDataRecipe().getChannelReadRecipes(), equalTo(recipe.getChannelReadRecipes()));
         assertThat(mock2.getDataRecipe(), nullValue());
     }
@@ -84,7 +84,7 @@ public class CompositeDataSourceTest {
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
         
         // Call and check
-        composite.connect(recipe);
+        composite.connectRead(recipe);
         Collection<ChannelReadRecipe> mock1Caches = mock1.getDataRecipe().getChannelReadRecipes();
         Collection<ChannelReadRecipe> mock2Caches = mock2.getDataRecipe().getChannelReadRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
@@ -95,7 +95,7 @@ public class CompositeDataSourceTest {
         // Check close
         ReadRecipe mock1Connect = mock1.getDataRecipe();
         ReadRecipe mock2Connect = mock2.getDataRecipe();
-        composite.disconnect(recipe);
+        composite.disconnectRead(recipe);
         assertSame(mock1Connect, mock1.getDataRecipe());
         assertSame(mock2Connect, mock2.getDataRecipe());
     }
@@ -130,7 +130,7 @@ public class CompositeDataSourceTest {
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
-        composite.connect(recipe);
+        composite.connectRead(recipe);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -163,7 +163,7 @@ public class CompositeDataSourceTest {
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Call and check
-        composite.connect(recipe);
+        composite.connectRead(recipe);
         Collection<ChannelReadRecipe> mock1Caches = mock1.getDataRecipe().getChannelReadRecipes();
         Collection<ChannelReadRecipe> mock2Caches = mock2.getDataRecipe().getChannelReadRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
@@ -182,7 +182,7 @@ public class CompositeDataSourceTest {
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
-        composite.connect(recipe);
+        composite.connectRead(recipe);
     }
 
     @Test (expected=IllegalArgumentException.class)
@@ -196,7 +196,7 @@ public class CompositeDataSourceTest {
         WriteRecipe buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
-        composite.prepareWrite(buffer);
+        composite.connectWrite(buffer);
     }
 
     @Test
@@ -216,7 +216,7 @@ public class CompositeDataSourceTest {
         WriteRecipe buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
         
         // Call and check
-        composite.prepareWrite(buffer);
+        composite.connectWrite(buffer);
         Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteBuffer().getChannelWriteBuffers();
         Collection<ChannelWriteRecipe> mock2Buffers = mock2.getWriteBuffer().getChannelWriteBuffers();
         assertThat(mock1Buffers.size(), equalTo(4));
@@ -227,7 +227,7 @@ public class CompositeDataSourceTest {
         // Check close
         WriteRecipe mock1Connect = mock1.getWriteBuffer();
         WriteRecipe mock2Connect = mock2.getWriteBuffer();
-        composite.concludeWrite(buffer);
+        composite.disconnectWrite(buffer);
         assertSame(mock1Connect, mock1.getWriteBuffer());
         assertSame(mock2Connect, mock2.getWriteBuffer());
     }

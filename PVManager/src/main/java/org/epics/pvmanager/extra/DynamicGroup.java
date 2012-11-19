@@ -57,7 +57,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
     public synchronized DynamicGroup clear() {
         for (int index = recipes.size() - 1; index >= 0; index--) {
             ReadRecipe recipe = recipes.remove(index);
-            dataSource.disconnect(recipe);
+            dataSource.disconnectRead(recipe);
             synchronized (getGroup()) {
                 getGroup().getArguments().remove(index);
                 getGroup().getExceptions().remove(index);
@@ -103,7 +103,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
      */
     public synchronized DynamicGroup remove(int index) {
         ReadRecipe recipe = recipes.remove(index);
-        dataSource.disconnect(recipe);
+        dataSource.disconnectRead(recipe);
         synchronized (getGroup()) {
             getGroup().getArguments().remove(index);
             getGroup().getExceptions().remove(index);
@@ -123,7 +123,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 //        DataRecipe recipe = expression.getDataRecipe();
 //        recipe = recipe.withExceptionHandler(handlerFor(index));
         ReadRecipe oldRecipe = recipes.get(index);
-        dataSource.disconnect(oldRecipe);
+        dataSource.disconnectRead(oldRecipe);
 
         synchronized (getGroup()) {
             getGroup().getArguments().set(index, expression.getFunction());

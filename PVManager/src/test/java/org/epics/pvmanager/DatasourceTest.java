@@ -75,7 +75,7 @@ public class DatasourceTest {
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("first");
         
-        dataSource.connect(dataRecipe);
+        dataSource.connectRead(dataRecipe);
         
         verify(dataSource).channel("first");
         verify(channel1).addReader(exp.recipeFor("first").getReadSubscription());
@@ -92,7 +92,7 @@ public class DatasourceTest {
         doReturn(channel1).when(dataSource).createChannel("first");
         doReturn(channel2).when(dataSource).createChannel("second");
         
-        dataSource.connect(dataRecipe);
+        dataSource.connectRead(dataRecipe);
         
         verify(dataSource).channel("first");
         verify(dataSource).channel("second");
@@ -112,8 +112,8 @@ public class DatasourceTest {
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("first");
         
-        dataSource.connect(dataRecipe1);
-        dataSource.connect(dataRecipe2);
+        dataSource.connectRead(dataRecipe1);
+        dataSource.connectRead(dataRecipe2);
         
         verify(dataSource, times(2)).channel("first");
         verify(dataSource).createChannel("first");
@@ -131,7 +131,7 @@ public class DatasourceTest {
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("changeit");
         
-        dataSource.connect(dataRecipe);
+        dataSource.connectRead(dataRecipe);
         
         verify(dataSource).channel("changeit");
         verify(dataSource).createChannel("changeit");

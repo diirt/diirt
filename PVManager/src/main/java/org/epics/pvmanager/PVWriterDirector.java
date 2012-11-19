@@ -89,7 +89,7 @@ public class PVWriterDirector<T> {
         }
         if (!recipe.getChannelWriteBuffers().isEmpty()) {
             try {
-                dataSource.prepareWrite(recipe);
+                dataSource.connectWrite(recipe);
             } catch(Exception ex) {
                 exceptionCollector.setValue(ex);
             }
@@ -108,7 +108,7 @@ public class PVWriterDirector<T> {
         
         if (!recipe.getChannelWriteBuffers().isEmpty()) {
             try {
-                dataSource.concludeWrite(recipe);
+                dataSource.disconnectWrite(recipe);
             } catch(Exception ex) {
                 exceptionCollector.setValue(ex);
             }

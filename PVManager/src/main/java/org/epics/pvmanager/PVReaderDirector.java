@@ -67,7 +67,7 @@ public class PVReaderDirector<T> {
         }
         if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
-                dataSource.connect(recipe);
+                dataSource.connectRead(recipe);
             } catch(Exception ex) {
                 recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
@@ -85,7 +85,7 @@ public class PVReaderDirector<T> {
         
         if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
-                dataSource.disconnect(recipe);
+                dataSource.disconnectRead(recipe);
             } catch(Exception ex) {
                 recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }

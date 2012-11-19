@@ -27,22 +27,22 @@ public class MockDataSource extends DataSource {
     }
 
     @Override
-    public void connect(ReadRecipe recipe) {
+    public void connectRead(ReadRecipe recipe) {
         this.dataRecipe = recipe;
     }
 
     @Override
-    public void disconnect(ReadRecipe recipe) {
+    public void disconnectRead(ReadRecipe recipe) {
         this.dataRecipe = recipe;
     }
 
     @Override
-    public void prepareWrite(WriteRecipe writeBuffer) {
+    public void connectWrite(WriteRecipe writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 
     @Override
-    public void concludeWrite(WriteRecipe writeBuffer) {
+    public void disconnectWrite(WriteRecipe writeBuffer) {
         this.writeBuffer = writeBuffer;
     }
 
