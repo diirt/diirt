@@ -11,26 +11,48 @@ package org.epics.pvmanager;
  */
 public class ChannelHandlerReadSubscription {
 
-    public ChannelHandlerReadSubscription(ValueCache<?> valueCache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connWriteFunction) {
+    /**
+     * Creates the parameters for a new subscription.
+     * 
+     * @param valueCache the cache where to write the value
+     * @param exceptionWriteFunction the write function to dispatch exceptions
+     * @param connectionWriteFunction the connection write function to dispatch exceptions
+     */
+    public ChannelHandlerReadSubscription(ValueCache<?> valueCache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connectionWriteFunction) {
         this.valueCache = valueCache;
         this.exceptionWriteFunction = exceptionWriteFunction;
-        this.connWriteFunction = connWriteFunction;
+        this.connectionWriteFunction = connectionWriteFunction;
     }
     
     private final ValueCache<?> valueCache;
     private final WriteFunction<Exception> exceptionWriteFunction;
-    private final WriteFunction<Boolean> connWriteFunction;
+    private final WriteFunction<Boolean> connectionWriteFunction;
 
+    /**
+     * The cache where to write the value.
+     * 
+     * @return never null
+     */
     public ValueCache<?> getValueCache() {
         return valueCache;
     }
 
+    /**
+     * The write function for exceptions.
+     * 
+     * @return never null
+     */
     public WriteFunction<Exception> getExceptionWriteFunction() {
         return exceptionWriteFunction;
     }
 
-    public WriteFunction<Boolean> getConnWriteFunction() {
-        return connWriteFunction;
+    /**
+     * The write function for the connection flag.
+     * 
+     * @return never null
+     */
+    public WriteFunction<Boolean> getConnectionWriteFunction() {
+        return connectionWriteFunction;
     }
     
     @Override
@@ -38,7 +60,7 @@ public class ChannelHandlerReadSubscription {
         int hash = 5;
         hash = 67 * hash + (this.valueCache != null ? this.valueCache.hashCode() : 0);
         hash = 67 * hash + (this.exceptionWriteFunction != null ? this.exceptionWriteFunction.hashCode() : 0);
-        hash = 67 * hash + (this.connWriteFunction != null ? this.connWriteFunction.hashCode() : 0);
+        hash = 67 * hash + (this.connectionWriteFunction != null ? this.connectionWriteFunction.hashCode() : 0);
         return hash;
     }
 
@@ -57,7 +79,7 @@ public class ChannelHandlerReadSubscription {
         if (this.exceptionWriteFunction != other.exceptionWriteFunction && (this.exceptionWriteFunction == null || !this.exceptionWriteFunction.equals(other.exceptionWriteFunction))) {
             return false;
         }
-        if (this.connWriteFunction != other.connWriteFunction && (this.connWriteFunction == null || !this.connWriteFunction.equals(other.connWriteFunction))) {
+        if (this.connectionWriteFunction != other.connectionWriteFunction && (this.connectionWriteFunction == null || !this.connectionWriteFunction.equals(other.connectionWriteFunction))) {
             return false;
         }
         return true;
