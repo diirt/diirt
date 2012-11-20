@@ -286,6 +286,16 @@
                             <report>javadoc</report>
                         </reports>
                     </reportSet>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <testDoctitle>Tests for ${project.name} ${project.version}</testDoctitle>
+                            <testWindowtitle>Tests for ${project.name} ${project.version}</testWindowtitle>
+                        </configuration>
+                        <reports>
+                            <report>test-javadoc</report>
+                        </reports>
+                    </reportSet>
                 </reportSets>
             </plugin>
             <plugin>
