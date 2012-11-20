@@ -47,14 +47,14 @@ public class PVManagerTest {
 
     @Test(expected=IllegalStateException.class)
     public void lackDataSource() {
-        PVManager.read(channel("test")).maxRate(ofHertz(10));
+        pvReader = PVManager.read(channel("test")).maxRate(ofHertz(10));
     }
 
     @Test(expected=IllegalStateException.class)
     public void lackNotificationExecutor() {
         PVManager.setDefaultDataSource(new MockDataSource());
         PVManager.setDefaultNotificationExecutor(null);
-        PVManager.read(channel("test")).maxRate(ofHertz(10));
+        pvReader = PVManager.read(channel("test")).maxRate(ofHertz(10));
     }
 
     @Test
