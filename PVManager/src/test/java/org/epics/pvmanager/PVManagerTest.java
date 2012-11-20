@@ -4,16 +4,17 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.sim.SimulationDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
+ * Tests PVManager defaults are overrides are honored.
  *
  * @author carcassi
  */
@@ -27,35 +28,84 @@ public class PVManagerTest {
         PVManager.setDefaultDataSource(null);
         PVManager.setDefaultNotificationExecutor(localThread());
     }
+    
+    private PV<?, ?> pv;
+    private PVReader<?> pvReader;
+    
+    @After
+    public void closePVs() {
+        if (pv != null) {
+            pv.close();
+            pv = null;
+        }
+        
+        if (pvReader != null) {
+            pvReader.close();
+            pvReader = null;
+        }
+    }
 
     @Test(expected=IllegalStateException.class)
     public void lackDataSource() {
-        PVManager.setDefaultDataSource(null);
-
         PVManager.read(channel("test")).maxRate(ofHertz(10));
+    }
+
+    @Test(expected=IllegalStateException.class)
+    public void lackNotificationExecutor() {
+        PVManager.setDefaultDataSource(new MockDataSource());
+        PVManager.setDefaultNotificationExecutor(null);
+        PVManager.read(channel("test")).maxRate(ofHertz(10));
+    }
+
+    @Test
+    public void defaultDataSource() {
+        MockDataSource defaultDataSource = new MockDataSource();
+        
+        PVManager.setDefaultDataSource(defaultDataSource);
+        pv = PVManager.readAndWrite(channel("test")).asynchWriteAndMaxReadRate(ofHertz(10));
+        
+        assertThat(defaultDataSource.getReadRecipe(), not(equalTo(null)));
+        assertThat(defaultDataSource.getWriteRecipe(), not(equalTo(null)));
+    }
+
+    @Test
+    public void defaultThreadSwitch() throws Exception {
+        PVManager.setDefaultDataSource(new MockDataSource());
+        MockExecutor defaultExecutor = new MockExecutor();
+
+        PVManager.setDefaultNotificationExecutor(defaultExecutor);
+        pvReader = PVManager.read(constant("Test")).maxRate(ofHertz(10));
+        Thread.sleep(100);
+        
+        assertThat(defaultExecutor.getCommand(), not(equalTo(null)));
     }
 
     @Test
     public void overrideDataSource() {
-        // XXX: this should not use the JCA data source
-        PVManager.setDefaultDataSource(new JCADataSource());
-
-        PVManager.read(channel("test")).from(SimulationDataSource.simulatedData()).maxRate(ofHertz(10));
-    }
-
-    @Test(expected=IllegalStateException.class)
-    public void lackThreadSwitch() {
-        PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
-        PVManager.setDefaultNotificationExecutor(null);
-
-        PVManager.read(channel("test")).maxRate(ofHertz(10));
+        MockDataSource defaultDataSource = new MockDataSource();
+        MockDataSource overrideDataSource = new MockDataSource();
+        
+        PVManager.setDefaultDataSource(defaultDataSource);
+        pvReader = PVManager.readAndWrite(channel("test")).from(overrideDataSource).asynchWriteAndMaxReadRate(ofHertz(10));
+        
+        assertThat(defaultDataSource.getReadRecipe(), equalTo(null));
+        assertThat(defaultDataSource.getWriteRecipe(), equalTo(null));
+        assertThat(overrideDataSource.getReadRecipe(), not(equalTo(null)));
+        assertThat(overrideDataSource.getWriteRecipe(), not(equalTo(null)));
     }
 
     @Test
-    public void overrideThreadSwitch() {
-        PVManager.setDefaultDataSource(SimulationDataSource.simulatedData());
+    public void overrideThreadSwitch() throws Exception {
+        PVManager.setDefaultDataSource(new MockDataSource());
+        MockExecutor defaultExecutor = new MockExecutor();
+        MockExecutor overrideExecutor = new MockExecutor();
 
-        PVManager.read(channel("test")).notifyOn(swingEDT()).maxRate(ofHertz(10));
+        PVManager.setDefaultNotificationExecutor(defaultExecutor);
+        pvReader = PVManager.read(constant("Test")).notifyOn(overrideExecutor).maxRate(ofHertz(10));
+        Thread.sleep(100);
+        
+        assertThat(defaultExecutor.getCommand(), equalTo(null));
+        assertThat(overrideExecutor.getCommand(), not(equalTo(null)));
     }
 
 }

@@ -51,8 +51,8 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connectRead(recipe);
-        assertThat(mock1.getDataRecipe().getChannelReadRecipes(), equalTo(recipe.getChannelReadRecipes()));
-        assertThat(mock2.getDataRecipe(), nullValue());
+        assertThat(mock1.getReadRecipe().getChannelReadRecipes(), equalTo(recipe.getChannelReadRecipes()));
+        assertThat(mock2.getReadRecipe(), nullValue());
     }
     
     @Test
@@ -74,19 +74,19 @@ public class CompositeDataSourceTest {
         
         // Call and check
         composite.connectRead(recipe);
-        Collection<ChannelReadRecipe> mock1Caches = mock1.getDataRecipe().getChannelReadRecipes();
-        Collection<ChannelReadRecipe> mock2Caches = mock2.getDataRecipe().getChannelReadRecipes();
+        Collection<ChannelReadRecipe> mock1Caches = mock1.getReadRecipe().getChannelReadRecipes();
+        Collection<ChannelReadRecipe> mock2Caches = mock2.getReadRecipe().getChannelReadRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
         assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
         assertThat(channelNames(mock2Caches), hasItem("pv04"));
 
         // Check close
-        ReadRecipe mock1Connect = mock1.getDataRecipe();
-        ReadRecipe mock2Connect = mock2.getDataRecipe();
+        ReadRecipe mock1Connect = mock1.getReadRecipe();
+        ReadRecipe mock2Connect = mock2.getReadRecipe();
         composite.disconnectRead(recipe);
-        assertSame(mock1Connect, mock1.getDataRecipe());
-        assertSame(mock2Connect, mock2.getDataRecipe());
+        assertSame(mock1Connect, mock1.getReadRecipe());
+        assertSame(mock2Connect, mock2.getReadRecipe());
     }
     
     private Set<String> channelNames(Collection<ChannelReadRecipe> channelRecipes) {
@@ -153,8 +153,8 @@ public class CompositeDataSourceTest {
 
         // Call and check
         composite.connectRead(recipe);
-        Collection<ChannelReadRecipe> mock1Caches = mock1.getDataRecipe().getChannelReadRecipes();
-        Collection<ChannelReadRecipe> mock2Caches = mock2.getDataRecipe().getChannelReadRecipes();
+        Collection<ChannelReadRecipe> mock1Caches = mock1.getReadRecipe().getChannelReadRecipes();
+        Collection<ChannelReadRecipe> mock2Caches = mock2.getReadRecipe().getChannelReadRecipes();
         assertThat(mock1Caches.size(), equalTo(4));
         assertThat(mock2Caches.size(), equalTo(1));
         assertThat(channelNames(mock1Caches), hasItems("pv01", "pv02", "pv03", "pv05"));
@@ -206,19 +206,19 @@ public class CompositeDataSourceTest {
         
         // Call and check
         composite.connectWrite(buffer);
-        Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteBuffer().getChannelWriteBuffers();
-        Collection<ChannelWriteRecipe> mock2Buffers = mock2.getWriteBuffer().getChannelWriteBuffers();
+        Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteRecipe().getChannelWriteBuffers();
+        Collection<ChannelWriteRecipe> mock2Buffers = mock2.getWriteRecipe().getChannelWriteBuffers();
         assertThat(mock1Buffers.size(), equalTo(4));
         assertThat(mock2Buffers.size(), equalTo(1));
         assertThat(channelWriteNames(mock1Buffers), hasItems("pv01", "pv02", "pv03", "pv05"));
         assertThat(channelWriteNames(mock2Buffers), hasItem("pv04"));
 
         // Check close
-        WriteRecipe mock1Connect = mock1.getWriteBuffer();
-        WriteRecipe mock2Connect = mock2.getWriteBuffer();
+        WriteRecipe mock1Connect = mock1.getWriteRecipe();
+        WriteRecipe mock2Connect = mock2.getWriteRecipe();
         composite.disconnectWrite(buffer);
-        assertSame(mock1Connect, mock1.getWriteBuffer());
-        assertSame(mock2Connect, mock2.getWriteBuffer());
+        assertSame(mock1Connect, mock1.getWriteRecipe());
+        assertSame(mock2Connect, mock2.getWriteRecipe());
     }
 
 }
