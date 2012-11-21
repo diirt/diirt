@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.epics.pvmanager.expression.Cache;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
@@ -592,8 +593,11 @@ public class ExpressionLanguage {
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
     }
     
-    
     public static <T> Queue<T> queueOf(Class<T> clazz) {
         return new Queue<>(10);
+    }
+    
+    public static <T> Cache<T> cacheOf(Class<T> clazz) {
+        return new Cache<>(10);
     }
 }

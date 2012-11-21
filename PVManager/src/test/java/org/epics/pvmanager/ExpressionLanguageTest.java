@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.expression.Cache;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
@@ -54,5 +55,25 @@ public class ExpressionLanguageTest {
         queue.add("six");
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
         assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
+    }
+    
+    @Test
+    public void cache1() {
+        Cache<String> cache = cacheOf(String.class).maxSize(5);
+        ExpressionTester exp = new ExpressionTester(cache);
+        assertThat(exp.getReadRecipe().getChannelReadRecipes().isEmpty(), equalTo(true));
+        assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
+        cache.add("one");
+        cache.add("two");
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("one", "two")));
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("one", "two")));
+        cache.add("one");
+        cache.add("two");
+        cache.add("three");
+        cache.add("four");
+        cache.add("five");
+        cache.add("six");
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
     }
 }
