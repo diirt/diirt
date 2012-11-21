@@ -103,4 +103,14 @@ public class ExpressionLanguageTest {
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
     }
     
+    @Test
+    public void mapOf2() {
+        MapExpression<Double> map = newMapOf(constant(1.0).as("SETPOINT").and(constant(2.0).as("READBACK")));
+        ExpressionTester exp = new ExpressionTester(map);
+        Map<String, Double> referenceValue = new HashMap<String, Double>();
+        referenceValue.put("READBACK", 2.0);
+        referenceValue.put("SETPOINT", 1.0);
+        assertThat(exp.getValue(), equalTo((Object) referenceValue));
+    }
+    
 }

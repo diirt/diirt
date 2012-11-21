@@ -82,7 +82,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
      * @param expression the expression to be added
      * @return this
      */
-    public synchronized MapExpression<T> add(DesiredRateExpression<T> expression) {
+    public MapExpression<T> add(DesiredRateExpression<T> expression) {
         synchronized(lock) {
             if (expression.getName() == null) {
                 throw new NullPointerException("Expression has a null name");
@@ -99,6 +99,15 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
             return this;
         }
     }
+    
+    public MapExpression<T> add(DesiredRateExpressionList<T> expressions) {
+        synchronized(lock) {
+            for (DesiredRateExpression<T> desiredRateExpression : expressions.getDesiredRateExpressions()) {
+                add(desiredRateExpression);
+            }
+            return this;
+        }
+    }
 
     /**
      * Removes the expression at the given location.
@@ -106,7 +115,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
      * @param index the position to remove
      * @return this
      */
-    public synchronized MapExpression<T> remove(String name) {
+    public MapExpression<T> remove(String name) {
         synchronized(lock) {
             if (!expressions.containsKey(name)) {
                 throw new IllegalArgumentException("MapExpression does not contain an expression named '" + name + "'");
@@ -116,6 +125,15 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
             DesiredRateExpression<T> expression = expressions.remove(name);
             if (director != null) {
                 director.disconnectExpression(expression);
+            }
+            return this;
+        }
+    }
+    
+    public MapExpression<T> remove(List<String> names) {
+        synchronized(lock) {
+            for (String name : names) {
+                remove(name);
             }
             return this;
         }
