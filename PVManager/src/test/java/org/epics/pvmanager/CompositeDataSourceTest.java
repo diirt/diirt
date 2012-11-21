@@ -5,8 +5,6 @@
 package org.epics.pvmanager;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
@@ -16,6 +14,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
+ * Tests CompositeDataSource.
  *
  * @author carcassi
  */
