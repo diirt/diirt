@@ -8,12 +8,18 @@
  */
 package org.epics.pvmanager;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  *
  * @author carcassi
  */
 public class MockDataSource extends DataSource {
     
+    private final List<ChannelReadRecipe> connectedReadRecipes = new CopyOnWriteArrayList<>();
+    private final List<ChannelWriteRecipe> connectedWriteRecipes = new CopyOnWriteArrayList<>();
     private volatile ReadRecipe readRecipe;
     private volatile WriteRecipe writeRecipe;
 
@@ -29,21 +35,25 @@ public class MockDataSource extends DataSource {
     @Override
     public void connectRead(ReadRecipe recipe) {
         this.readRecipe = recipe;
+        connectedReadRecipes.addAll(recipe.getChannelReadRecipes());
     }
 
     @Override
     public void disconnectRead(ReadRecipe recipe) {
         this.readRecipe = recipe;
+        connectedReadRecipes.removeAll(recipe.getChannelReadRecipes());
     }
 
     @Override
     public void connectWrite(WriteRecipe writeRecipe) {
         this.writeRecipe = writeRecipe;
+        connectedWriteRecipes.addAll(writeRecipe.getChannelWriteBuffers());
     }
 
     @Override
     public void disconnectWrite(WriteRecipe writeRecipe) {
         this.writeRecipe = writeRecipe;
+        connectedWriteRecipes.removeAll(writeRecipe.getChannelWriteBuffers());
     }
 
     public ReadRecipe getReadRecipe() {
@@ -52,6 +62,14 @@ public class MockDataSource extends DataSource {
 
     public WriteRecipe getWriteRecipe() {
         return writeRecipe;
+    }
+
+    public List<ChannelReadRecipe> getConnectedReadRecipes() {
+        return connectedReadRecipes;
+    }
+
+    public List<ChannelWriteRecipe> getConnectedWriteRecipes() {
+        return connectedWriteRecipes;
     }
     
 }
