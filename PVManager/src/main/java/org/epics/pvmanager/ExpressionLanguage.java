@@ -23,6 +23,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
+import org.epics.pvmanager.expression.Queue;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.WriteExpressionList;
@@ -189,7 +190,7 @@ public class ExpressionLanguage {
                 new QueueCollector<T>(maxValues),
                 expression.getName());
     }
-
+    
     /**
      * Expression that returns (only) the latest value computed
      * from a {@code SourceRateExpression}.
@@ -591,4 +592,8 @@ public class ExpressionLanguage {
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
     }
     
+    
+    public static <T> Queue<T> queueOf(Class clazz, int maxElements) {
+        return new Queue<>(maxElements);
+    }
 }

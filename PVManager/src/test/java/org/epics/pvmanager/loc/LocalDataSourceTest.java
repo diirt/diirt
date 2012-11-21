@@ -162,7 +162,7 @@ public class LocalDataSourceTest {
     @Test
     public void writeMultipleNamesForSameChannel() throws Exception {
         ExpressionTester exp = new ExpressionTester(mapOf(latestValueOf(channels("foo", "foo(2.0)"))));
-        ReadRecipe recipe = exp.getDataRecipe();
+        ReadRecipe recipe = exp.getReadRecipe();
         
         // Connect and make sure only one channel is created
         LocalDataSource dataSource = new LocalDataSource();

@@ -51,8 +51,10 @@ public class CollectorToPVTest {
 
     @After
     public void tearDown() {
-        if (pv == null)
+        if (pv != null) {
             pv.close();
+            pv = null;
+        }
     }
 
     private volatile PVReaderImpl<VDouble> pv;

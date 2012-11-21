@@ -4,15 +4,12 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.data.*;
-import org.epics.pvmanager.Function;
-import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.SourceRateExpression;
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
-import org.epics.util.array.*;
+import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -27,7 +24,7 @@ public class ExpressionLanguageTest {
     //
 
     @Test
-    public void vType1() {
+    public void channel1() {
         ChannelExpression<Object, Object> exp = channel("my pv");
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         assertThat(exp.getName(), equalTo("my pv"));
@@ -38,5 +35,24 @@ public class ExpressionLanguageTest {
         assertThat(writeCache.getPrecedingChannels().isEmpty(), equalTo(true));
         assertThat(writeCache.getValue(), nullValue());
         assertThat(writeCache.getChannelName(), equalTo("my pv"));
+    }
+    
+    @Test
+    public void queue1() {
+        Queue<Object> queue = queueOf(String.class, 5);
+        ExpressionTester exp = new ExpressionTester(queue);
+        assertThat(exp.getReadRecipe().getChannelReadRecipes().isEmpty(), equalTo(true));
+        assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
+        queue.add("one");
+        queue.add("two");
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("one", "two")));
+        queue.add("one");
+        queue.add("two");
+        queue.add("three");
+        queue.add("four");
+        queue.add("five");
+        queue.add("six");
+        assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
+        assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
     }
 }

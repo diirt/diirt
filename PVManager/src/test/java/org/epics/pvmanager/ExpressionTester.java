@@ -13,7 +13,7 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 public class ExpressionTester {
 
     private DesiredRateExpression<?> expression;
-    private ReadRecipe recipe;
+    private ReadRecipe readRecipe;
     private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
     private ConnectionCollector connCollector = new ConnectionCollector();
 
@@ -21,11 +21,11 @@ public class ExpressionTester {
         this.expression = expression;
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
         expression.fillReadRecipe(null, builder);
-        this.recipe = builder.build(exceptionCollector, connCollector);
+        this.readRecipe = builder.build(exceptionCollector, connCollector);
     }
 
     public void writeValue(String name, Object value) {
-        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = (ValueCache<Object>) channelRecipe.getReadSubscription().getValueCache();
@@ -35,7 +35,7 @@ public class ExpressionTester {
     }
     
     public ChannelReadRecipe recipeFor(String channelName) {
-        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(channelName)) {
                 return channelRecipe;
             }
@@ -43,8 +43,8 @@ public class ExpressionTester {
         return null;
     }
     
-    public ReadRecipe getDataRecipe() {
-        return recipe;
+    public ReadRecipe getReadRecipe() {
+        return readRecipe;
     }
     
     public Function<?> getFunction() {

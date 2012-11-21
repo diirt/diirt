@@ -70,7 +70,7 @@ public class DatasourceTest {
         // A simple recipe with one channel
         
         ExpressionTester exp = new ExpressionTester(latestValueOf(channel("first")));
-        ReadRecipe dataRecipe = exp.getDataRecipe();
+        ReadRecipe dataRecipe = exp.getReadRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("first");
@@ -86,7 +86,7 @@ public class DatasourceTest {
         // A recipe with two channels
         
         ExpressionTester exp = new ExpressionTester(mapOf(latestValueOf(channel("first").and(channel("second")))));
-        ReadRecipe dataRecipe = exp.getDataRecipe();
+        ReadRecipe dataRecipe = exp.getReadRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("first");
@@ -106,8 +106,8 @@ public class DatasourceTest {
         
         ExpressionTester exp1 = new ExpressionTester(latestValueOf(channel("first")));
         ExpressionTester exp2 = new ExpressionTester(latestValueOf(channel("first")));
-        ReadRecipe dataRecipe1 = exp1.getDataRecipe();
-        ReadRecipe dataRecipe2 = exp2.getDataRecipe();
+        ReadRecipe dataRecipe1 = exp1.getReadRecipe();
+        ReadRecipe dataRecipe2 = exp2.getReadRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("first");
@@ -126,7 +126,7 @@ public class DatasourceTest {
         // A simple recipe with one channel
         
         ExpressionTester exp = new ExpressionTester(latestValueOf(channel("changeit")));
-        ReadRecipe dataRecipe = exp.getDataRecipe();
+        ReadRecipe dataRecipe = exp.getReadRecipe();
         
         DataSource dataSource = spy(new MockDataSource(true));
         doReturn(channel1).when(dataSource).createChannel("changeit");
