@@ -39,7 +39,7 @@ public class ExpressionLanguageTest {
     
     @Test
     public void queue1() {
-        Queue<Object> queue = queueOf(String.class, 5);
+        Queue<Object> queue = queueOf(String.class).maxSize(5);
         ExpressionTester exp = new ExpressionTester(queue);
         assertThat(exp.getReadRecipe().getChannelReadRecipes().isEmpty(), equalTo(true));
         assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));

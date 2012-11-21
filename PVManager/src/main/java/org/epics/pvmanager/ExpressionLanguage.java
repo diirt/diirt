@@ -593,7 +593,7 @@ public class ExpressionLanguage {
     }
     
     
-    public static <T> Queue<T> queueOf(Class clazz, int maxElements) {
-        return new Queue<>(maxElements);
+    public static <T> Queue<T> queueOf(Class<T> clazz) {
+        return new Queue<>(10);
     }
 }

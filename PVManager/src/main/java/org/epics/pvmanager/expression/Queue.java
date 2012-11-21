@@ -28,9 +28,18 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
         super(sourceExpression, Queue.<T>createQueue(maxElements), "queue");
     }
     
-    @SuppressWarnings("unchecked")
     public WriteFunction<T> getWriteFunction() {
-        return (WriteFunction<T>) getFunction();
+        return getCollector();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private QueueCollector<T> getCollector() {
+        return (QueueCollector<T>) getFunction();
+    }
+    
+    public Queue<T> maxSize(int maxSize) {
+        getCollector().setMaxSize(maxSize);
+        return this;
     }
     
     public void add(T newValue) {

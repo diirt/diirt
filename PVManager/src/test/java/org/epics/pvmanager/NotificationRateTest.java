@@ -52,7 +52,7 @@ public class NotificationRateTest {
     
     @Test
     public void rateThrottling1() throws Exception {
-        Queue<Integer> queue = queueOf(Integer.class, 10);
+        Queue<Integer> queue = queueOf(Integer.class).maxSize(10);
         CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
         pv = PVManager.read(queue).from(new MockDataSource())
                 .notifyOn(delayedExecutor)
@@ -94,7 +94,7 @@ public class NotificationRateTest {
     
     @Test
     public void rateDecoupling() throws Exception {
-        Queue<Integer> queue = queueOf(Integer.class, 10);
+        Queue<Integer> queue = queueOf(Integer.class).maxSize(10);
         CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
         pv = PVManager.read(queue).from(new MockDataSource()).readListener(listener).maxRate(ofMillis(100));
         
