@@ -16,16 +16,16 @@ import org.epics.pvmanager.WriteFunction;
  */
 public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
     
-    private static <T> QueueCollector<T> createQueue(int maxElements) {
-        return new QueueCollector<>(maxElements);
+    private static <T> QueueCollector<T> createQueue(int maxSize) {
+        return new QueueCollector<>(maxSize);
     }
 
-    public Queue(int maxElements) {
-        super(new DesiredRateExpressionListImpl<Object>(), Queue.<T>createQueue(maxElements), "queue");
+    public Queue(int maxSize) {
+        super(new DesiredRateExpressionListImpl<Object>(), Queue.<T>createQueue(maxSize), "queue");
     }
 
-    public Queue(SourceRateExpression<T> sourceExpression, int maxElements) {
-        super(sourceExpression, Queue.<T>createQueue(maxElements), "queue");
+    public Queue(SourceRateExpression<T> sourceExpression, int maxSize) {
+        super(sourceExpression, Queue.<T>createQueue(maxSize), "queue");
     }
     
     public WriteFunction<T> getWriteFunction() {
