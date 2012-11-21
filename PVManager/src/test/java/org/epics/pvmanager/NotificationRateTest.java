@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Arrays;
+import java.util.concurrent.Executor;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
@@ -35,9 +37,63 @@ public class NotificationRateTest {
     }
 
     private volatile PVReader<?> pv;
+    private final Executor delayedExecutor = new Executor() {
+
+        @Override
+        public void execute(Runnable command) {
+            try {
+                Thread.sleep(500);
+                command.run();
+            } catch(InterruptedException ex) {
+                Thread.interrupted();
+            }
+        }
+    };
     
     @Test
-    public void testRateDecoupling() throws Exception {
+    public void rateThrottling1() throws Exception {
+        Queue<Integer> queue = queueOf(Integer.class, 10);
+        CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
+        pv = PVManager.read(queue).from(new MockDataSource())
+                .notifyOn(delayedExecutor)
+                .readListener(listener)
+                .maxRate(ofMillis(10));
+        
+        // Wait for connection
+        listener.await(ofMillis(700));
+        assertThat(listener.getCount(), equalTo(0));
+        listener.resetCount(1);
+        
+        // No new values, should get no new notification
+        listener.await(ofMillis(500));
+        assertThat(listener.getCount(), equalTo(1));
+        
+        // Add one value, notification should not come right away
+        queue.add(1);
+        listener.await(ofMillis(100));
+        assertThat(listener.getCount(), equalTo(1));
+        
+        // Add a few other values, still no new notification
+        queue.add(2);
+        queue.add(3);
+        listener.await(ofMillis(100));
+        assertThat(listener.getCount(), equalTo(1));
+        queue.add(4);
+        
+        // Wait longer for first notification
+        listener.await(ofMillis(500));
+        assertThat(listener.getCount(), equalTo(0));
+        assertThat(pv.getValue(), equalTo((Object) Arrays.asList(1)));
+        listener.resetCount(1);
+        
+        // Wait for second notification
+        listener.await(ofMillis(700));
+        assertThat(listener.getCount(), equalTo(0));
+        assertThat(pv.getValue(), equalTo((Object) Arrays.asList(2,3,4)));
+    }
+    
+    @Test
+    public void rateDecoupling() throws Exception {
         Queue<Integer> queue = queueOf(Integer.class, 10);
         CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
         pv = PVManager.read(queue).from(new MockDataSource()).readListener(listener).maxRate(ofMillis(100));
@@ -71,7 +127,6 @@ public class NotificationRateTest {
         listener.await(ofMillis(500));
         assertThat(listener.getCount(), not(equalTo(3)));
         assertThat(listener.getCount(), not(equalTo(0)));
-        
     }
 
 
