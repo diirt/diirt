@@ -18,17 +18,19 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
     private final Object lock = new Object();
     private final List<T> readBuffer = new ArrayList<>();
     private final List<T> writeBuffer = new LinkedList<>();
-    private final int nElements;
+    private int maxSize;
 
-    public CacheCollector(int nElements) {
-        this.nElements = nElements;
+    public CacheCollector(int maxSize) {
+        synchronized(lock) {
+            this.maxSize = maxSize;
+        }
     }
 
     @Override
     public void setValue(T newValue) {
         synchronized(lock) {
             writeBuffer.add(newValue);
-            if (writeBuffer.size() > nElements) {
+            if (writeBuffer.size() > maxSize) {
                 writeBuffer.remove(0);
             }
         }
@@ -41,6 +43,21 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
             readBuffer.addAll(writeBuffer);
         }
         return readBuffer;
+    }
+
+    public void setMaxSize(int maxSize) {
+        synchronized(lock){
+            this.maxSize = maxSize;
+            while (writeBuffer.size() > maxSize) {
+                writeBuffer.remove(0);
+            }
+        }
+    }
+
+    public int getMaxSize() {
+        synchronized(lock) {
+            return maxSize;
+        }
     }
     
 }
