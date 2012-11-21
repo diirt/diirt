@@ -6,10 +6,13 @@ package org.epics.pvmanager;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.Cache;
 import org.epics.pvmanager.expression.ChannelExpression;
+import org.epics.pvmanager.expression.MapExpression;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -76,4 +79,28 @@ public class ExpressionLanguageTest {
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
     }
+    
+    //
+    // Testing collection expressions
+    //
+    
+    @Test
+    public void mapOf1() {
+        // Dynamically adding constant expressions (i.e. that don't require connection)
+        MapExpression<String> map = newMapOf(String.class);
+        ExpressionTester exp = new ExpressionTester(map);
+        Map<String, String> referenceValue = new HashMap<String, String>();
+        assertThat(exp.getValue(), equalTo((Object) referenceValue));
+        map.add(constant("Gabriele").as("name"));
+        referenceValue.put("name", "Gabriele");
+        assertThat(exp.getValue(), equalTo((Object) referenceValue));
+        map.add(constant("Carcassi").as("surname"));
+        referenceValue.put("surname", "Carcassi");
+        assertThat(exp.getValue(), equalTo((Object) referenceValue));
+        assertThat(exp.getValue(), sameInstance(exp.getValue()));
+        map.remove("name");
+        referenceValue.remove("name");
+        assertThat(exp.getValue(), equalTo((Object) referenceValue));
+    }
+    
 }

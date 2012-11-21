@@ -24,6 +24,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
+import org.epics.pvmanager.expression.MapExpression;
 import org.epics.pvmanager.expression.Queue;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
@@ -591,6 +592,10 @@ public class ExpressionLanguage {
                 new MapOfWriteFunction<W>(names, writefunctions), null);
         
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
+    }
+    
+    public static <T> MapExpression<T> newMapOf(Class<T> clazz){
+        return new MapExpression<>();
     }
     
     public static <T> Queue<T> queueOf(Class<T> clazz) {
