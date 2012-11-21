@@ -149,7 +149,7 @@ public class TestDataSourceTest {
                 .timeout(ofMillis(500)).from(dataSource).async();
         pvWriter.write("test");
 
-        writerListener.await(TimeDuration.ofMillis(600));
+        writerListener.await(TimeDuration.ofMillis(750));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
         Exception ex = pvWriter.lastWriteException(); 
