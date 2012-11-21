@@ -17,7 +17,7 @@ import org.junit.Test;
 public class QueueCollectorTest {
 
     @Test
-    public void inputOutput() throws InterruptedException {
+    public void inputOutput() {
         QueueCollector<Integer> collector = new QueueCollector<>(5);
         assertThat(collector.getValue().size(), equalTo(0));
         collector.setValue(0);
@@ -31,6 +31,30 @@ public class QueueCollectorTest {
         collector.setValue(1);
         collector.setValue(2);
         collector.setValue(3);
+        collector.setValue(4);
+        collector.setValue(5);
+        collector.setValue(6);
+        assertThat(collector.getValue(), equalTo(Arrays.asList(2,3,4,5,6)));
+        assertThat(collector.getValue().size(), equalTo(0));
+    }
+
+    @Test
+    public void setMaxSize() {
+        QueueCollector<Integer> collector = new QueueCollector<>(5);
+        assertThat(collector.getValue().size(), equalTo(0));
+        collector.setValue(1);
+        collector.setValue(2);
+        collector.setValue(3);
+        collector.setValue(4);
+        collector.setValue(5);
+        collector.setValue(6);
+        collector.setMaxSize(2);
+        assertThat(collector.getValue(), equalTo(Arrays.asList(5,6)));
+        assertThat(collector.getValue().size(), equalTo(0));
+        collector.setValue(1);
+        collector.setValue(2);
+        collector.setValue(3);
+        collector.setMaxSize(5);
         collector.setValue(4);
         collector.setValue(5);
         collector.setValue(6);

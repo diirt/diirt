@@ -17,11 +17,11 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     private final Object lock = new Object();
     private List<T> readBuffer;
     private List<T> writeBuffer;
-    private final int maxElements;
+    private int maxSize;
 
-    public QueueCollector(int maxElements) {
-        this.maxElements = maxElements;
+    public QueueCollector(int maxSize) {
         synchronized(lock) {
+            this.maxSize = maxSize;
             readBuffer = new ArrayList<>();
             writeBuffer = new ArrayList<>();
         }
@@ -31,7 +31,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     public void setValue(T newValue) {
         synchronized(lock) {
             writeBuffer.add(newValue);
-            if (writeBuffer.size() > maxElements) {
+            if (writeBuffer.size() > maxSize) {
                 writeBuffer.remove(0);
             }
         }
@@ -46,6 +46,21 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
             readBuffer = data;
         }
         return readBuffer;
+    }
+
+    public void setMaxSize(int maxSize) {
+        synchronized(lock) {
+            this.maxSize = maxSize;
+            while (writeBuffer.size() > maxSize) {
+                writeBuffer.remove(0);
+            }
+        }
+    }
+
+    public int getMaxSize() {
+        synchronized(lock) {
+            return maxSize;
+        }
     }
     
 }
