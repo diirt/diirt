@@ -14,6 +14,7 @@ import org.epics.pvmanager.expression.Cache;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.ReadMap;
 import org.epics.pvmanager.expression.Queue;
+import org.epics.pvmanager.expression.ReadWriteMap;
 import org.epics.pvmanager.expression.WriteMap;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -135,6 +136,27 @@ public class ExpressionLanguageTest {
         exp.setValue(value);
         assertThat(exp.readValue("READBACK"), equalTo(null));
         assertThat(exp.readValue("SETPOINT"), equalTo((Object) 1.0));
+    }
+    
+    @Test
+    public void mapOf5() throws Exception {
+        ReadWriteMap<Double, Double> map = newMapOf(latestValueOf(channels(Arrays.asList("SETPOINT", "READBACK"), Double.class, Double.class)));
+        ExpressionTester readExp = new ExpressionTester(map);
+        WriteExpressionTester writeExp = new WriteExpressionTester(map);
+        
+        Map<String, Double> referenceValue = new HashMap<String, Double>();
+        referenceValue.put("READBACK", 2.0);
+        referenceValue.put("SETPOINT", 5.0);
+        readExp.writeValue("READBACK", 2.0);
+        readExp.writeValue("SETPOINT", 5.0);
+        assertThat(readExp.getValue(), equalTo((Object) referenceValue));
+        
+        Map<String, Double> value = new HashMap<String, Double>();
+        value.put("SETPOINT", 1.0);
+        value.put("READBACK", 3.0);
+        writeExp.setValue(value);
+        assertThat(writeExp.readValue("SETPOINT"), equalTo((Object) 1.0));
+        assertThat(writeExp.readValue("READBACK"), equalTo((Object) 3.0));
     }
     
 }

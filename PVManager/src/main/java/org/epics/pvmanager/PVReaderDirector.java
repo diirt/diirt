@@ -53,6 +53,17 @@ public class PVReaderDirector<T> {
             new QueueCollector<>(1);
     
     
+    ReadRecipe getCurrentReadRecipe() {
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        for (Map.Entry<DesiredRateExpression<?>, ReadRecipe> entry : recipes.entrySet()) {
+            ReadRecipe readRecipe = entry.getValue();
+            for (ChannelReadRecipe channelReadRecipe : readRecipe.getChannelReadRecipes()) {
+                builder.addChannel(channelReadRecipe.getChannelName(), channelReadRecipe.getReadSubscription().getValueCache());
+            }
+        }
+        return builder.build(exceptionCollector, connCollector);
+    }
+    
     /**
      * Calculate the recipes and connects the channel to the datasource.
      * 

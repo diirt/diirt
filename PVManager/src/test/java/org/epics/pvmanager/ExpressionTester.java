@@ -14,20 +14,20 @@ public class ExpressionTester {
 
     private DesiredRateExpression<?> expression;
     private ReadRecipe readRecipe;
-    private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
-    private ConnectionCollector connCollector = new ConnectionCollector();
     private PVReaderDirector<?> pvReaderDirector = new PVReaderDirector<Object>(null, null, null, null, null);
 
     public ExpressionTester(DesiredRateExpression<?> expression) {
         this.expression = expression;
-        ReadRecipeBuilder builder = new ReadRecipeBuilder();
-        expression.fillReadRecipe(null, builder);
-        this.readRecipe = builder.build(exceptionCollector, connCollector);
+        pvReaderDirector.connectExpression(expression);
+    }
+    
+    public ReadRecipe getCurrentReadRecipe() {
+        return pvReaderDirector.getCurrentReadRecipe();
     }
 
     public void writeValue(String name, Object value) {
         boolean written = false;
-        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
+        for (ChannelReadRecipe channelRecipe : getCurrentReadRecipe().getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = (ValueCache<Object>) channelRecipe.getReadSubscription().getValueCache();
@@ -41,7 +41,7 @@ public class ExpressionTester {
     }
     
     public ChannelReadRecipe recipeFor(String channelName) {
-        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
+        for (ChannelReadRecipe channelRecipe : getCurrentReadRecipe().getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(channelName)) {
                 return channelRecipe;
             }
@@ -50,7 +50,7 @@ public class ExpressionTester {
     }
     
     public ReadRecipe getReadRecipe() {
-        return readRecipe;
+        return getCurrentReadRecipe();
     }
     
     public Function<?> getFunction() {

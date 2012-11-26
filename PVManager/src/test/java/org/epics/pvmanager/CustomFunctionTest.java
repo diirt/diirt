@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Arrays;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpression;
@@ -82,9 +83,6 @@ public class CustomFunctionTest {
     public void nArgFunction() {
         // Sets up a pipeline where we put data in the cache, and apply
         // a function to it
-        SourceRateExpression<Integer> value1 = new SourceRateExpressionImpl<>("test1", Integer.class);
-        SourceRateExpression<Integer> value2 = new SourceRateExpressionImpl<>("test2", Integer.class);
-        SourceRateExpression<Integer> value3 = new SourceRateExpressionImpl<>("test3", Integer.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<Double> expression = resultOf(new OneArgFunction<Double, List<Integer>>() {
             @Override
@@ -95,7 +93,7 @@ public class CustomFunctionTest {
                 }
                 return average / numbers.size();
             }
-        }, listOf(latestValueOf(value1).and(latestValueOf(value2)).and(latestValueOf(value3))));
+        }, listOf(latestValueOf(channels(Arrays.asList("test1", "test2", "test3"), Integer.class, Integer.class))));
         ExpressionTester tester = new ExpressionTester(expression);
         Function<Double> function = expression.getFunction();
 

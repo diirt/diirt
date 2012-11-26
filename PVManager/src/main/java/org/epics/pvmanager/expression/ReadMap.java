@@ -140,9 +140,14 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void fillReadRecipe(PVReaderDirector director, ReadRecipeBuilder builder) {
         synchronized(lock) {
             this.director = director;
+            for (Map.Entry<String, DesiredRateExpression<T>> entry : expressions.entrySet()) {
+                DesiredRateExpression<T> readExpression = entry.getValue();
+                director.connectExpression(readExpression);
+            }
         }
     }
     
