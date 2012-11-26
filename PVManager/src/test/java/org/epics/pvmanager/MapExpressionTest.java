@@ -11,7 +11,7 @@ import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.expression.MapExpression;
+import org.epics.pvmanager.expression.ReadMap;
 import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 
@@ -49,7 +49,7 @@ public class MapExpressionTest {
 
     @Test
     public void map1() {
-        MapExpression<Object> map = newMapOf(Object.class);
+        ReadMap<Object> map = newMapOf(Object.class);
         pv = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         assertThat(dataSource.getReadRecipe(), not(equalTo(null)));
@@ -61,7 +61,7 @@ public class MapExpressionTest {
 
     @Test
     public void map2() {
-        MapExpression<Object> map = newMapOf(Object.class);
+        ReadMap<Object> map = newMapOf(Object.class);
         pv = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         map.add(latestValueOf(channel("test2")));

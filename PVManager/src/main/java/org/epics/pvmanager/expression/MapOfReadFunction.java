@@ -17,13 +17,13 @@ import java.util.Objects;
  *
  * @author carcassi
  */
-class MapOfFunction<T> implements Function<Map<String, T>> {
+class MapOfReadFunction<T> implements Function<Map<String, T>> {
 
     private final Map<String, Function<T>> functions = new HashMap<>();
     private final QueueCollector<MapUpdate<T>> mapUpdateCollector;
     private Map<String, T> previousValue;
 
-    public MapOfFunction(QueueCollector<MapUpdate<T>> mapUpdateCollector) {
+    public MapOfReadFunction(QueueCollector<MapUpdate<T>> mapUpdateCollector) {
         this.mapUpdateCollector = mapUpdateCollector;
     }
 

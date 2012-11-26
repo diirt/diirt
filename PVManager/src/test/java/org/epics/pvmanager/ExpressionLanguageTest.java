@@ -12,7 +12,7 @@ import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.Cache;
 import org.epics.pvmanager.expression.ChannelExpression;
-import org.epics.pvmanager.expression.MapExpression;
+import org.epics.pvmanager.expression.ReadMap;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -87,7 +87,7 @@ public class ExpressionLanguageTest {
     @Test
     public void mapOf1() {
         // Dynamically adding constant expressions (i.e. that don't require connection)
-        MapExpression<String> map = newMapOf(String.class);
+        ReadMap<String> map = newMapOf(String.class);
         ExpressionTester exp = new ExpressionTester(map);
         Map<String, String> referenceValue = new HashMap<String, String>();
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
@@ -105,7 +105,7 @@ public class ExpressionLanguageTest {
     
     @Test
     public void mapOf2() {
-        MapExpression<Double> map = newMapOf(constant(1.0).as("SETPOINT").and(constant(2.0).as("READBACK")));
+        ReadMap<Double> map = newMapOf(constant(1.0).as("SETPOINT").and(constant(2.0).as("READBACK")));
         ExpressionTester exp = new ExpressionTester(map);
         Map<String, Double> referenceValue = new HashMap<String, Double>();
         referenceValue.put("READBACK", 2.0);

@@ -30,7 +30,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
  *
  * @author carcassi
  */
-public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> {
+public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
 
     private final Object lock = new Object();
     private final Map<String, DesiredRateExpression<T>> expressions = new HashMap<>();
@@ -39,12 +39,12 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
     /**
      * Creates a new group.
      */
-    public MapExpression() {
-        super(new DesiredRateExpressionListImpl<Object>(), new MapOfFunction<T>(new QueueCollector<MapUpdate<T>>(1000)), "map");
+    public ReadMap() {
+        super(new DesiredRateExpressionListImpl<Object>(), new MapOfReadFunction<T>(new QueueCollector<MapUpdate<T>>(1000)), "map");
     }
 
-    MapOfFunction<T> getMapOfFunction() {
-        return (MapOfFunction<T>) getFunction();
+    MapOfReadFunction<T> getMapOfFunction() {
+        return (MapOfReadFunction<T>) getFunction();
     }
 
     /**
@@ -52,7 +52,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
      * 
      * @return this
      */
-    public MapExpression<T> clear() {
+    public ReadMap<T> clear() {
         synchronized(lock) {
             getMapOfFunction().getMapUpdateCollector().setValue(MapUpdate.<T>clear());
             if (director != null) {
@@ -82,7 +82,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
      * @param expression the expression to be added
      * @return this
      */
-    public MapExpression<T> add(DesiredRateExpression<T> expression) {
+    public ReadMap<T> add(DesiredRateExpression<T> expression) {
         synchronized(lock) {
             if (expression.getName() == null) {
                 throw new NullPointerException("Expression has a null name");
@@ -100,7 +100,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
         }
     }
     
-    public MapExpression<T> add(DesiredRateExpressionList<T> expressions) {
+    public ReadMap<T> add(DesiredRateExpressionList<T> expressions) {
         synchronized(lock) {
             for (DesiredRateExpression<T> desiredRateExpression : expressions.getDesiredRateExpressions()) {
                 add(desiredRateExpression);
@@ -115,7 +115,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
      * @param index the position to remove
      * @return this
      */
-    public MapExpression<T> remove(String name) {
+    public ReadMap<T> remove(String name) {
         synchronized(lock) {
             if (!expressions.containsKey(name)) {
                 throw new IllegalArgumentException("MapExpression does not contain an expression named '" + name + "'");
@@ -130,7 +130,7 @@ public class MapExpression<T> extends DesiredRateExpressionImpl<Map<String, T>> 
         }
     }
     
-    public MapExpression<T> remove(List<String> names) {
+    public ReadMap<T> remove(List<String> names) {
         synchronized(lock) {
             for (String name : names) {
                 remove(name);
