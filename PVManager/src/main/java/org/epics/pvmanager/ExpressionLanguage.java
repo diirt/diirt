@@ -29,6 +29,7 @@ import org.epics.pvmanager.expression.Queue;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
 import org.epics.pvmanager.expression.WriteExpressionList;
+import org.epics.pvmanager.expression.WriteMap;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -600,6 +601,10 @@ public class ExpressionLanguage {
     
     public static <R> ReadMap<R> newMapOf(DesiredRateExpressionList<R> expressions){
         return new ReadMap<R>().add(expressions);
+    }
+    
+    public static <R> WriteMap<R> newMapOf(WriteExpressionList<R> expressions){
+        return new WriteMap<R>().add(expressions);
     }
     
     public static <T> Queue<T> queueOf(Class<T> clazz) {

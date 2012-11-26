@@ -65,7 +65,7 @@ public class PVWriterDirector<T> {
     private final Executor notificationExecutor;
     /** DataSource to use for connect/disconnect expression and for write */
     private final DataSource dataSource;
-    private WriteRecipe writeBuffer;
+    private WriteRecipe currentWriteRecipe;
 
     PVWriterDirector(PVWriterImpl<T> pvWriter, WriteFunction<T> writeFunction, DataSource dataSource,
             ScheduledExecutorService writeExecutor, Executor notificationExecutor,
@@ -122,7 +122,7 @@ public class PVWriterDirector<T> {
             for (WriteRecipe writeBuffer1 : recipes.values()) {
                 channelBuffers.addAll(writeBuffer1.getChannelWriteBuffers());
             }
-            writeBuffer = new WriteRecipe(channelBuffers);
+            currentWriteRecipe = new WriteRecipe(channelBuffers);
         }
     }
     
@@ -169,7 +169,7 @@ public class PVWriterDirector<T> {
         public void run() {
             synchronized(lock) {
                 writeFunction.setValue(newValue);
-                dataSource.write(writeBuffer, new Runnable() {
+                dataSource.write(currentWriteRecipe, new Runnable() {
 
                     @Override
                     public void run() {
@@ -217,7 +217,7 @@ public class PVWriterDirector<T> {
                 try {
                     synchronized(lock) {
                         writeFunction.setValue(newValue);
-                        dataSource.write(writeBuffer, new Runnable() {
+                        dataSource.write(currentWriteRecipe, new Runnable() {
 
                             @Override
                             public void run() {
@@ -353,6 +353,10 @@ public class PVWriterDirector<T> {
         } else {
             throw new IllegalStateException("Scan was never started");
         }
+    }
+
+    public WriteRecipe getCurrentWriteRecipe() {
+        return currentWriteRecipe;
     }
     
 }

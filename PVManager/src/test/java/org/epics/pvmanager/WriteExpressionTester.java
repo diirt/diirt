@@ -17,19 +17,21 @@ public class WriteExpressionTester {
     private WriteRecipe recipe;
     private QueueCollector<Exception> exceptionCollector = new QueueCollector<>(10);
     private ConnectionCollector connCollector = new ConnectionCollector();
+    private PVWriterDirector<?> pvWriterDirector = new PVWriterDirector<Object>(null, null, null, null, null, null, null, null);
 
     public WriteExpressionTester(WriteExpression<?> expression) {
         this.expression = expression;
         WriteRecipeBuilder builder = new WriteRecipeBuilder();
-        expression.fillWriteRecipe(null, builder);
+        expression.fillWriteRecipe(pvWriterDirector, builder);
+        pvWriterDirector.connectExpression(expression);
         this.recipe = builder.build(exceptionCollector, connCollector);
     }
 
     public Object readValue(String name) {
-        for (ChannelWriteRecipe channelBuffer : recipe.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelBuffer : pvWriterDirector.getCurrentWriteRecipe().getChannelWriteBuffers()) {
             if (channelBuffer.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
-                ValueCache<Object> cache = (ValueCache<Object>) channelBuffer.getWriteSubscription().getWriteCache();
+                WriteCache<Object> cache = (WriteCache<Object>) channelBuffer.getWriteSubscription().getWriteCache();
                 return cache.getValue();
             }
         }
@@ -37,7 +39,7 @@ public class WriteExpressionTester {
     }
     
     public ChannelWriteRecipe recipeFor(String channelName) {
-        for (ChannelWriteRecipe channelBuffer : recipe.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelBuffer : pvWriterDirector.getCurrentWriteRecipe().getChannelWriteBuffers()) {
             if (channelBuffer.getChannelName().equals(channelName)) {
                 return channelBuffer;
             }

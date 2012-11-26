@@ -6,12 +6,15 @@ package org.epics.pvmanager;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ReadMap;
+import org.epics.pvmanager.expression.WriteMap;
 import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 
@@ -27,15 +30,19 @@ public class MapExpressionTest {
 
     @Before
     public void setUp() {
-        pv = null;
+        pvReader = null;
         dataSource = new MockDataSource();
     }
 
     @After
     public void tearDown() throws InterruptedException {
-        if (pv != null) {
-            pv.close();
-            pv = null;
+        if (pvReader != null) {
+            pvReader.close();
+            pvReader = null;
+        }
+        if (pvWriter != null) {
+            pvWriter.close();
+            pvWriter = null;
         }
         
         Thread.sleep(400);
@@ -44,13 +51,14 @@ public class MapExpressionTest {
         assertThat(dataSource.getConnectedWriteRecipes(), equalTo(Collections.<ChannelWriteRecipe>emptyList()));
     }
 
-    private volatile PVReader<?> pv;
+    private PVReader<?> pvReader;
+    private PVWriter<?> pvWriter;
     private MockDataSource dataSource;
 
     @Test
     public void map1() {
         ReadMap<Object> map = newMapOf(Object.class);
-        pv = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
+        pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         assertThat(dataSource.getReadRecipe(), not(equalTo(null)));
         assertThat(dataSource.getConnectedReadRecipes(), hasSize(1));
@@ -62,7 +70,7 @@ public class MapExpressionTest {
     @Test
     public void map2() {
         ReadMap<Object> map = newMapOf(Object.class);
-        pv = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
+        pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         map.add(latestValueOf(channel("test2")));
         assertThat(dataSource.getReadRecipe(), not(equalTo(null)));
@@ -70,5 +78,6 @@ public class MapExpressionTest {
         map.remove("test2");
         assertThat(dataSource.getConnectedReadRecipes(), hasSize(1));
     }
+    
 
 }

@@ -33,7 +33,7 @@ class MapOfReadFunction<T> implements Function<Map<String, T>> {
             for (String name : mapUpdate.getExpressionsToDelete()) {
                 functions.remove(name);
             }
-            functions.putAll(mapUpdate.getExpressionsToAdd());
+            functions.putAll(mapUpdate.getReadFunctionsToAdd());
             previousValue = null;
         }
         
