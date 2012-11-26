@@ -46,7 +46,7 @@ public class ExpressionLanguageTest {
     @Test
     public void queue1() {
         Queue<String> queue = queueOf(String.class).maxSize(5);
-        ExpressionTester exp = new ExpressionTester(queue);
+        ReadExpressionTester exp = new ReadExpressionTester(queue);
         assertThat(exp.getReadRecipe().getChannelReadRecipes().isEmpty(), equalTo(true));
         assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
         queue.add("one");
@@ -65,7 +65,7 @@ public class ExpressionLanguageTest {
     @Test
     public void cache1() {
         Cache<String> cache = cacheOf(String.class).maxSize(5);
-        ExpressionTester exp = new ExpressionTester(cache);
+        ReadExpressionTester exp = new ReadExpressionTester(cache);
         assertThat(exp.getReadRecipe().getChannelReadRecipes().isEmpty(), equalTo(true));
         assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
         cache.add("one");
@@ -90,7 +90,7 @@ public class ExpressionLanguageTest {
     public void mapOf1() {
         // Dynamically adding constant expressions (i.e. that don't require connection)
         ReadMap<String> map = newMapOf(String.class);
-        ExpressionTester exp = new ExpressionTester(map);
+        ReadExpressionTester exp = new ReadExpressionTester(map);
         Map<String, String> referenceValue = new HashMap<String, String>();
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
         map.add(constant("Gabriele").as("name"));
@@ -108,7 +108,7 @@ public class ExpressionLanguageTest {
     @Test
     public void mapOf2() {
         ReadMap<Double> map = newMapOf(constant(1.0).as("SETPOINT").and(constant(2.0).as("READBACK")));
-        ExpressionTester exp = new ExpressionTester(map);
+        ReadExpressionTester exp = new ReadExpressionTester(map);
         Map<String, Double> referenceValue = new HashMap<String, Double>();
         referenceValue.put("READBACK", 2.0);
         referenceValue.put("SETPOINT", 1.0);
@@ -141,7 +141,7 @@ public class ExpressionLanguageTest {
     @Test
     public void mapOf5() throws Exception {
         ReadWriteMap<Double, Double> map = newMapOf(latestValueOf(channels(Arrays.asList("SETPOINT", "READBACK"), Double.class, Double.class)));
-        ExpressionTester readExp = new ExpressionTester(map);
+        ReadExpressionTester readExp = new ReadExpressionTester(map);
         WriteExpressionTester writeExp = new WriteExpressionTester(map);
         
         Map<String, Double> referenceValue = new HashMap<String, Double>();

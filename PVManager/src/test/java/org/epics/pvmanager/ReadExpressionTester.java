@@ -10,13 +10,13 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
  *
  * @author carcassi
  */
-public class ExpressionTester {
+public class ReadExpressionTester {
 
     private DesiredRateExpression<?> expression;
     private ReadRecipe readRecipe;
     private PVReaderDirector<?> pvReaderDirector = new PVReaderDirector<Object>(null, null, null, null, null);
 
-    public ExpressionTester(DesiredRateExpression<?> expression) {
+    public ReadExpressionTester(DesiredRateExpression<?> expression) {
         this.expression = expression;
         pvReaderDirector.connectExpression(expression);
     }

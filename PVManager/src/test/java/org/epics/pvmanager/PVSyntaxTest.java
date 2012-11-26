@@ -117,7 +117,7 @@ public class PVSyntaxTest {
     public void rename1() {
         SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
         assertThat(exp.getName(), equalTo("myName"));
-        ExpressionTester finalExp = new ExpressionTester(latestValueOf(exp));
+        ReadExpressionTester finalExp = new ReadExpressionTester(latestValueOf(exp));
         ReadRecipe recipe = finalExp.getReadRecipe();
         assertThat(recipe.getChannelReadRecipes(), hasSize(1));
         assertThat(finalExp.recipeFor("myChannel"), notNullValue());

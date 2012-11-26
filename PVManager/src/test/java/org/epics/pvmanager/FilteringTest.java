@@ -43,7 +43,7 @@ public class FilteringTest {
         SourceRateExpression<Integer> vInteger = new SourceRateExpressionImpl<Integer>("test", Integer.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Integer>> expression = filterBy(monotonic, newValuesOf(vInteger));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<List<Integer>> function = expression.getFunction();
 
         // Test values
@@ -85,7 +85,7 @@ public class FilteringTest {
         SourceRateExpression<Number> vInteger = new SourceRateExpressionImpl<Number>("test", Number.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Number>> expression = filterBy(monotonic, newValuesOf(vInteger));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<List<Number>> function = expression.getFunction();
 
         // Test values
@@ -127,7 +127,7 @@ public class FilteringTest {
         SourceRateExpression<Object> vInteger = new SourceRateExpressionImpl<Object>("test", Object.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<List<Object>> function = expression.getFunction();
 
         // Test values
@@ -169,7 +169,7 @@ public class FilteringTest {
         SourceRateExpression<Object> vInteger = new SourceRateExpressionImpl<Object>("test", Object.class);
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<List<Object>> function = expression.getFunction();
 
         // Test values

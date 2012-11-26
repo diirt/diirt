@@ -34,7 +34,7 @@ public class CustomFunctionTest {
                 return - arg;
             }
         }, latestValueOf(vDouble));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<Double> function = expression.getFunction();
 
         // Test values
@@ -62,7 +62,7 @@ public class CustomFunctionTest {
                 return name + "(" + number + ")";
             }
         }, latestValueOf(value1), latestValueOf(value2));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<String> function = expression.getFunction();
 
         // Test values
@@ -94,7 +94,7 @@ public class CustomFunctionTest {
                 return average / numbers.size();
             }
         }, listOf(latestValueOf(channels(Arrays.asList("test1", "test2", "test3"), Integer.class, Integer.class))));
-        ExpressionTester tester = new ExpressionTester(expression);
+        ReadExpressionTester tester = new ReadExpressionTester(expression);
         Function<Double> function = expression.getFunction();
 
         // Test values

@@ -5,7 +5,7 @@
 package org.epics.pvmanager.data;
 
 import java.util.Arrays;
-import org.epics.pvmanager.ExpressionTester;
+import org.epics.pvmanager.ReadExpressionTester;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
@@ -27,7 +27,7 @@ public class SynchronizedArrayTest {
 
     @Test
     public void missingValues() throws InterruptedException {
-        ExpressionTester exp = new ExpressionTester(synchronizedArrayOf(ofNanos(10), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
+        ReadExpressionTester exp = new ReadExpressionTester(synchronizedArrayOf(ofNanos(10), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
 
         Timestamp reference = Timestamp.now();
         Timestamp secondPass = reference.plus(ofMillis(1));
@@ -64,7 +64,7 @@ public class SynchronizedArrayTest {
 
     @Test
     public void reconstructArray() throws InterruptedException {
-        ExpressionTester exp = new ExpressionTester(synchronizedArrayOf(ofMillis(5), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
+        ReadExpressionTester exp = new ReadExpressionTester(synchronizedArrayOf(ofMillis(5), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
         
         Timestamp reference = Timestamp.now();
         Timestamp future1 = reference.plus(ofMillis(1));
