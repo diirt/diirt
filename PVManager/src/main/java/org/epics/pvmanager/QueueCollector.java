@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Collects value at read rate and puts them in a queue.
  * <p>
+ * Always returns new value as every read clears the cache.
  * The values are returned oldest value first. When maxSize is reached,
  * the oldest values are discarded.
  *
@@ -23,7 +24,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     private int maxSize;
 
     /**
-     * New class with the given max size for the queue.
+     * New queue collector with the given max size for the queue.
      * 
      * @param maxSize maximum number of elements in the queue
      */
@@ -60,7 +61,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
      * Changes the number of maximum values in the queue.
      * <p>
      * If new maxSize is less than the current number of element in the queue,
-     * the oldes values are discarded.
+     * the old values are discarded.
      * 
      * @param maxSize the maximum number of elements in the queue
      */
