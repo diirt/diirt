@@ -199,7 +199,7 @@ public class TestDataSourceTest {
         ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
         
-        writerListener.await(TimeDuration.ofMillis(200));
+        writerListener.await(TimeDuration.ofMillis(250));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
         ex = pvWriter.lastWriteException();
