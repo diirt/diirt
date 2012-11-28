@@ -20,7 +20,7 @@ public class WriteRecipe {
         this.channelWriteRecipes = channelWriteRecipes;
     }
 
-    public Collection<ChannelWriteRecipe> getChannelWriteBuffers() {
+    public Collection<ChannelWriteRecipe> getChannelWriteRecipes() {
         return channelWriteRecipes;
     }
 

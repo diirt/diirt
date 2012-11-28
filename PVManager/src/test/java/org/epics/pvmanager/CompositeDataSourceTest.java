@@ -205,8 +205,8 @@ public class CompositeDataSourceTest {
         
         // Call and check
         composite.connectWrite(buffer);
-        Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteRecipe().getChannelWriteBuffers();
-        Collection<ChannelWriteRecipe> mock2Buffers = mock2.getWriteRecipe().getChannelWriteBuffers();
+        Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteRecipe().getChannelWriteRecipes();
+        Collection<ChannelWriteRecipe> mock2Buffers = mock2.getWriteRecipe().getChannelWriteRecipes();
         assertThat(mock1Buffers.size(), equalTo(4));
         assertThat(mock2Buffers.size(), equalTo(1));
         assertThat(channelWriteNames(mock1Buffers), hasItems("pv01", "pv02", "pv03", "pv05"));

@@ -181,25 +181,25 @@ public class CompositeDataSource extends DataSource {
     }
     
     private Map<String, WriteRecipe> splitRecipe(WriteRecipe writeRecipe) {
-        // Chop the buffer along different data sources
-        Map<String, Collection<ChannelWriteRecipe>> buffers = new HashMap<String, Collection<ChannelWriteRecipe>>();
-        for (ChannelWriteRecipe channelWriteBuffer : writeRecipe.getChannelWriteBuffers()) {
-            String channelName = nameOf(channelWriteBuffer.getChannelName());
-            String dataSource = sourceOf(channelWriteBuffer.getChannelName());
-            Collection<ChannelWriteRecipe> buffer = buffers.get(dataSource);
-            if (buffer == null) {
-                buffer = new ArrayList<ChannelWriteRecipe>();
-                buffers.put(dataSource, buffer);
+        // Chop the recipe along different data sources
+        Map<String, Collection<ChannelWriteRecipe>> recipes = new HashMap<String, Collection<ChannelWriteRecipe>>();
+        for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
+            String channelName = nameOf(channelWriteRecipe.getChannelName());
+            String dataSource = sourceOf(channelWriteRecipe.getChannelName());
+            Collection<ChannelWriteRecipe> channelWriteRecipes = recipes.get(dataSource);
+            if (channelWriteRecipes == null) {
+                channelWriteRecipes = new ArrayList<ChannelWriteRecipe>();
+                recipes.put(dataSource, channelWriteRecipes);
             }
-            buffer.add(new ChannelWriteRecipe(channelName, channelWriteBuffer.getWriteSubscription()));
+            channelWriteRecipes.add(new ChannelWriteRecipe(channelName, channelWriteRecipe.getWriteSubscription()));
         }
         
         Map<String, WriteRecipe> splitRecipes = new HashMap<String, WriteRecipe>();
-        for (Map.Entry<String, Collection<ChannelWriteRecipe>> en : buffers.entrySet()) {
+        for (Map.Entry<String, Collection<ChannelWriteRecipe>> en : recipes.entrySet()) {
             String dataSource = en.getKey();
             Collection<ChannelWriteRecipe> val = en.getValue();
-            WriteRecipe newWriteBuffer = new WriteRecipe(val);
-            splitRecipes.put(dataSource, newWriteBuffer);
+            WriteRecipe newWriteRecipe = new WriteRecipe(val);
+            splitRecipes.put(dataSource, newWriteRecipe);
         }
         
         return splitRecipes;
@@ -221,8 +221,8 @@ public class CompositeDataSource extends DataSource {
         
         for (Map.Entry<String, WriteRecipe> en : splitRecipe.entrySet()) {
             String dataSource = en.getKey();
-            WriteRecipe splitWriteBuffer = en.getValue();
-            dataSources.get(dataSource).disconnectWrite(splitWriteBuffer);
+            WriteRecipe splitWriteRecipe = en.getValue();
+            dataSources.get(dataSource).disconnectWrite(splitWriteRecipe);
         }
     }
     

@@ -43,20 +43,20 @@ public class PVSyntaxTest {
     public void readWriteMap() throws Exception {
         WriteExpressionTester exp = new WriteExpressionTester(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))));
         WriteRecipe buffer = exp.getWriteRecipe();
-        assertThat(buffer.getChannelWriteBuffers().size(), equalTo(2));
+        assertThat(buffer.getChannelWriteRecipes().size(), equalTo(2));
         assertThat(channelNames(buffer), containsInAnyOrder("channel1", "channel2"));
     }
     
     private static Collection<String> channelNames(WriteRecipe buffer) {
         Set<String> names = new HashSet<String>();
-        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteRecipes()) {
             names.add(channelWriteBuffer.getChannelName());
         }
         return names;
     }
     
     private static ChannelWriteRecipe channelWriteBuffer(String channelName, WriteRecipe buffer) {
-        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteRecipes()) {
             if (channelWriteBuffer.getChannelName().equals(channelName)) {
                 return channelWriteBuffer;
             }
@@ -72,7 +72,7 @@ public class PVSyntaxTest {
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteRecipe();
-            assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
+            assertThat(buffer.getChannelWriteRecipes().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
             assertThat(writeCache.getPrecedingChannels(), contains("master1"));
@@ -88,7 +88,7 @@ public class PVSyntaxTest {
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
             WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteRecipe();
-            assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
+            assertThat(buffer.getChannelWriteRecipes().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
             assertThat(writeCache.getPrecedingChannels(), contains("master1"));
@@ -107,7 +107,7 @@ public class PVSyntaxTest {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
         WriteExpressionTester exp = new WriteExpressionTester(mapOf);
         WriteRecipe buffer = exp.getWriteRecipe();
-        assertThat(buffer.getChannelWriteBuffers(), hasSize(3));
+        assertThat(buffer.getChannelWriteRecipes(), hasSize(3));
         assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), hasSize(0));
         assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
         assertThat(channelWriteBuffer("third", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));

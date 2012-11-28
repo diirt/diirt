@@ -12,7 +12,7 @@ public class WriteRecipeUtil {
 
     public static ChannelWriteRecipe recipeFor(WriteRecipe writeRecipe, String channelName) {
         ChannelWriteRecipe foundRecipe = null;
-        for (ChannelWriteRecipe channelWriteRceipe : writeRecipe.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteRceipe : writeRecipe.getChannelWriteRecipes()) {
             if (channelWriteRceipe.getChannelName().equals(channelName)) {
                 if (foundRecipe != null) {
                     throw new IllegalStateException("Multiple recipe founds for channel '" + channelName + "'");

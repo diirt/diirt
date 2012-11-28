@@ -87,7 +87,7 @@ public class PVWriterDirector<T> {
         synchronized(lock) {
             recipes.put(expression, recipe);
         }
-        if (!recipe.getChannelWriteBuffers().isEmpty()) {
+        if (!recipe.getChannelWriteRecipes().isEmpty()) {
             try {
                 dataSource.connectWrite(recipe);
             } catch(Exception ex) {
@@ -106,7 +106,7 @@ public class PVWriterDirector<T> {
             log.log(Level.SEVERE, "Director was asked to disconnect expression '" + expression + "' which was not found.");
         }
         
-        if (!recipe.getChannelWriteBuffers().isEmpty()) {
+        if (!recipe.getChannelWriteRecipes().isEmpty()) {
             try {
                 dataSource.disconnectWrite(recipe);
             } catch(Exception ex) {
@@ -120,7 +120,7 @@ public class PVWriterDirector<T> {
         synchronized(lock) {
             Set<ChannelWriteRecipe> channelBuffers = new HashSet<>();
             for (WriteRecipe writeBuffer1 : recipes.values()) {
-                channelBuffers.addAll(writeBuffer1.getChannelWriteBuffers());
+                channelBuffers.addAll(writeBuffer1.getChannelWriteRecipes());
             }
             currentWriteRecipe = new WriteRecipe(channelBuffers);
         }

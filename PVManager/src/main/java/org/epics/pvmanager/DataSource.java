@@ -215,12 +215,12 @@ public abstract class DataSource {
         
         // Register right away, so that if a failure happen
         // we still keep track of it
-        writeRecipes.addAll(writeBuffer.getChannelWriteBuffers());
+        writeRecipes.addAll(writeBuffer.getChannelWriteRecipes());
         
         // Let's go through the whole request first, so if something
         // breaks unexpectadely, either everything works or nothing works
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
-        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteRecipes()) {
             try {
                 String channelName = channelWriteBuffer.getChannelName();
                 ChannelHandler handler = channel(channelName);
@@ -265,7 +265,7 @@ public abstract class DataSource {
             throw new WriteFailException("Data source is read only");
         
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
-        for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
             if (!writeRecipes.contains(channelWriteRecipe)) {
                 log.log(Level.WARNING, "ChannelWriteBuffer {0} was unregistered but was never registered. Ignoring it.", channelWriteRecipe);
             } else {
@@ -317,7 +317,7 @@ public abstract class DataSource {
             throw new UnsupportedOperationException("This data source is read only");
         
         final WritePlanner planner = new WritePlanner();
-        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteRecipes()) {
             ChannelHandler channel = channel(channelWriteBuffer.getChannelName());
             planner.addChannel(channel, channelWriteBuffer.getWriteSubscription().getWriteCache().getValue(),
                     channelWriteBuffer.getWriteSubscription().getWriteCache().getPrecedingChannels());

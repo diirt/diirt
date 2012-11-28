@@ -48,13 +48,13 @@ public class MockDataSource extends DataSource {
     @Override
     public void connectWrite(WriteRecipe writeRecipe) {
         this.writeRecipe = writeRecipe;
-        connectedWriteRecipes.addAll(writeRecipe.getChannelWriteBuffers());
+        connectedWriteRecipes.addAll(writeRecipe.getChannelWriteRecipes());
     }
 
     @Override
     public void disconnectWrite(WriteRecipe writeRecipe) {
         this.writeRecipe = writeRecipe;
-        connectedWriteRecipes.removeAll(writeRecipe.getChannelWriteBuffers());
+        connectedWriteRecipes.removeAll(writeRecipe.getChannelWriteRecipes());
     }
 
     @Override
