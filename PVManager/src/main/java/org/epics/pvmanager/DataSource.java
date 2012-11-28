@@ -15,6 +15,15 @@ import static org.epics.pvmanager.util.Executors.*;
  * A source for data that is going to be processed by the PVManager.
  * PVManager can work with more than one source at a time. Support
  * for each different source can be added by external libraries.
+ * <p>
+ * To implement a datasource, one has to implement the {@link #createChannel(java.lang.String) }
+ * method, and the requested will be forwarded to the channel accordingly.
+ * The channels are automatically cached and reused. The name under which
+ * the channels are looked up in the cache or registered in the cache is configurable.
+ * <p>
+ * Channel handlers can be implemented from scratch, or one can use the {@link MultiplexedChannelHandler}
+ * for handlers that want to open a single connection which is going to be
+ * shared by all readers and writers.
  *
  * @author carcassi
  */
@@ -124,19 +133,19 @@ public abstract class DataSource {
      * Before updating any cache, it must lock the collector relative to that
      * cache and after any update it must notify the collector.
      *
-     * @param recipe the instructions for the data connection
+     * @param readRecipe the instructions for the data connection
      */
-    public void connectRead(final ReadRecipe recipe) {
+    public void connectRead(final ReadRecipe readRecipe) {
         // Add the recipe first, so that if a problem comes out
         // while processing the request, we still keep
         // track of it.
-        readRecipes.addAll(recipe.getChannelReadRecipes());
+        readRecipes.addAll(readRecipe.getChannelReadRecipes());
 
         // Let's go through all the recipes first, so if something
         // breaks unexpectadely, either everything works or nothing works
         final Map<ChannelHandler, ChannelReadRecipe> handlersWithSubscriptions =
                 new HashMap<ChannelHandler, ChannelReadRecipe>();
-        for (final ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+        for (final ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             try {
                 String channelName = channelRecipe.getChannelName();
                 ChannelHandler channelHandler = channel(channelName);
@@ -180,10 +189,10 @@ public abstract class DataSource {
      * so that the recipe itself can be used as a key in a map to retrieve
      * the list of resources needed to be closed.
      *
-     * @param recipe the instructions for the data connection
+     * @param readRecipe the instructions for the data connection
      */
-    public void disconnectRead(ReadRecipe recipe) {
-        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+    public void disconnectRead(ReadRecipe readRecipe) {
+        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             if (!readRecipes.contains(channelRecipe)) {
                 log.log(Level.WARNING, "ChannelReadRecipe {0} was disconnected but was never connected. Ignoring it.", channelRecipe);
             } else {
@@ -207,7 +216,6 @@ public abstract class DataSource {
      * network connections with the underlying libraries.
      * 
      * @param writeRecipe the recipe that will contain the write data
-     * @param exceptionHandler where to report the exceptions
      */
     public void connectWrite(final WriteRecipe writeRecipe) {
         if (!isWriteable()) {
@@ -260,7 +268,6 @@ public abstract class DataSource {
      * Will close network channels and deallocate memory needed.
      * 
      * @param writeRecipe the recipe that will no longer be used
-     * @param exceptionHandler where to report the exceptions
      */
     public void disconnectWrite(final WriteRecipe writeRecipe) {
         if (!isWriteable()) {
