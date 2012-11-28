@@ -12,7 +12,6 @@ import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
-import org.epics.pvmanager.ReadFailException;
 import org.epics.pvmanager.TimeoutException;
 import org.epics.pvmanager.WriteFailException;
 import org.epics.util.time.TimeDuration;
@@ -21,10 +20,8 @@ import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
 import static org.hamcrest.Matchers.*;
 import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -100,7 +97,7 @@ public class TestDataSourceTest {
         
         listener.await(TimeDuration.ofMillis(100));
         
-        ReadFailException ex = (ReadFailException) pvReader.lastException();
+        RuntimeException ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
     }
     

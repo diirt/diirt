@@ -141,7 +141,7 @@ public abstract class DataSource {
                 String channelName = channelRecipe.getChannelName();
                 ChannelHandler channelHandler = channel(channelName);
                 if (channelHandler == null) {
-                    throw new ReadFailException("Channel named '" + channelName + "' not found");
+                    throw new RuntimeException("Channel named '" + channelName + "' not found");
                 }
                 handlersWithSubscriptions.put(channelHandler, channelRecipe);
             } catch (Exception ex) {
