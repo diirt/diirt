@@ -37,7 +37,7 @@ class StatisticsDoubleAggregator extends Aggregator<VStatistics, VDouble> {
         double totalSum = 0;
         double totalSquareSum = 0;
         double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double max = - Double.MAX_VALUE;
         int nElements = 0;
 
         void includeValue(double value) {
