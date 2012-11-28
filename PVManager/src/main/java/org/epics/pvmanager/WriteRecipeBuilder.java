@@ -31,9 +31,9 @@ public class WriteRecipeBuilder {
     }
 
     /**
-     * Creates a new WriteBuffer.
+     * Creates a new WriteRecipe.
      * 
-     * @return a new WriteBuffer
+     * @return a new WriteRecipe
      */
     public WriteRecipe build(WriteFunction<Exception> exceptionWriteFunction, ConnectionCollector connectionCollector) {
         Set<ChannelWriteRecipe> recipes = new HashSet<>();
