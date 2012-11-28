@@ -42,7 +42,7 @@ public class PVSyntaxTest {
     @Test
     public void readWriteMap() throws Exception {
         WriteExpressionTester exp = new WriteExpressionTester(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))));
-        WriteRecipe buffer = exp.getWriteBuffer();
+        WriteRecipe buffer = exp.getWriteRecipe();
         assertThat(buffer.getChannelWriteBuffers().size(), equalTo(2));
         assertThat(channelNames(buffer), containsInAnyOrder("channel1", "channel2"));
     }
@@ -71,7 +71,7 @@ public class PVSyntaxTest {
                 channels("channel1", "channel2", "channel3").after("master1");
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
+            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteRecipe();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
@@ -87,7 +87,7 @@ public class PVSyntaxTest {
                 channels(names).after("master1");
         int index = 0;
         for (WriteExpression<Object> writeExp : exp.getWriteExpressions()) {
-            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteBuffer();
+            WriteRecipe buffer = new WriteExpressionTester(writeExp).getWriteRecipe();
             assertThat(buffer.getChannelWriteBuffers().size(), equalTo(1));
             WriteCache<?> writeCache = channelWriteBuffer(names.get(index), buffer).getWriteSubscription().getWriteCache();
             assertThat(writeCache.getPrecedingChannels(), hasSize(1));
@@ -106,7 +106,7 @@ public class PVSyntaxTest {
     public void writeMap1() {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
         WriteExpressionTester exp = new WriteExpressionTester(mapOf);
-        WriteRecipe buffer = exp.getWriteBuffer();
+        WriteRecipe buffer = exp.getWriteRecipe();
         assertThat(buffer.getChannelWriteBuffers(), hasSize(3));
         assertThat(channelWriteBuffer("first", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), hasSize(0));
         assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
