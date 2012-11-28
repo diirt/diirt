@@ -93,7 +93,7 @@ public class PVWriterDirector<T> {
             } catch(Exception ex) {
                 exceptionCollector.setValue(ex);
             }
-            updateWriteBuffer();
+            updateWriteRecipe();
         }
     }
     
@@ -112,17 +112,17 @@ public class PVWriterDirector<T> {
             } catch(Exception ex) {
                 exceptionCollector.setValue(ex);
             }
-            updateWriteBuffer();
+            updateWriteRecipe();
         }
     }
     
-    private void updateWriteBuffer() {
+    private void updateWriteRecipe() {
         synchronized(lock) {
-            Set<ChannelWriteRecipe> channelBuffers = new HashSet<>();
-            for (WriteRecipe writeBuffer1 : recipes.values()) {
-                channelBuffers.addAll(writeBuffer1.getChannelWriteRecipes());
+            Set<ChannelWriteRecipe> channelRecipe = new HashSet<>();
+            for (WriteRecipe writeRecipe : recipes.values()) {
+                channelRecipe.addAll(writeRecipe.getChannelWriteRecipes());
             }
-            currentWriteRecipe = new WriteRecipe(channelBuffers);
+            currentWriteRecipe = new WriteRecipe(channelRecipe);
         }
     }
     
