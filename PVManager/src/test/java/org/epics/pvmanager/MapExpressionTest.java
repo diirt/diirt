@@ -52,12 +52,12 @@ public class MapExpressionTest {
     }
 
     private PVReader<?> pvReader;
-    private PVWriter<?> pvWriter;
+    private PVWriter<Map<String, Object>> pvWriter;
     private MockDataSource dataSource;
 
     @Test
     public void map1() {
-        ReadMap<Object> map = newMapOf(Object.class);
+        ReadMap<Object> map = newReadMapOf(Object.class);
         pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         assertThat(dataSource.getReadRecipe(), not(equalTo(null)));
@@ -69,7 +69,7 @@ public class MapExpressionTest {
 
     @Test
     public void map2() {
-        ReadMap<Object> map = newMapOf(Object.class);
+        ReadMap<Object> map = newReadMapOf(Object.class);
         pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         map.add(latestValueOf(channel("test2")));
@@ -77,6 +77,27 @@ public class MapExpressionTest {
         assertThat(dataSource.getConnectedReadRecipes(), hasSize(2));
         map.remove("test2");
         assertThat(dataSource.getConnectedReadRecipes(), hasSize(1));
+    }
+
+    @Test
+    public void map3() throws Exception {
+        WriteMap<Object> map = newWriteMapOf(Object.class);
+        pvWriter = PVManager.write(map).from(dataSource).async();
+        map.add(latestValueOf(channel("test1")));
+        map.add(latestValueOf(channel("test2")));
+        assertThat(dataSource.getWriteRecipe(), not(equalTo(null)));
+        assertThat(dataSource.getConnectedWriteRecipes(), hasSize(2));
+        Map<String, Object> values = new HashMap<>();
+        values.put("test1", "testing1");
+        values.put("test2", "testing2");
+        pvWriter.write(values);
+        Thread.sleep(100);
+        assertThat(dataSource.getWriteRecipeForWrite(), not(equalTo(null)));
+        assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
+        assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
+        
+        map.remove("test2");
+        assertThat(dataSource.getConnectedWriteRecipes(), hasSize(1));
     }
     
 

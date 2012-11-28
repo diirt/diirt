@@ -22,6 +22,7 @@ public class MockDataSource extends DataSource {
     private final List<ChannelWriteRecipe> connectedWriteRecipes = new CopyOnWriteArrayList<>();
     private volatile ReadRecipe readRecipe;
     private volatile WriteRecipe writeRecipe;
+    private volatile WriteRecipe writeRecipeForWrite;
 
     public MockDataSource() {
         super(true);
@@ -56,12 +57,21 @@ public class MockDataSource extends DataSource {
         connectedWriteRecipes.removeAll(writeRecipe.getChannelWriteBuffers());
     }
 
+    @Override
+    public void write(WriteRecipe writeRecipe, Runnable callback, ExceptionHandler exceptionHandler) {
+        this.writeRecipeForWrite = writeRecipe;
+    }
+
     public ReadRecipe getReadRecipe() {
         return readRecipe;
     }
 
     public WriteRecipe getWriteRecipe() {
         return writeRecipe;
+    }
+
+    public WriteRecipe getWriteRecipeForWrite() {
+        return writeRecipeForWrite;
     }
 
     public List<ChannelReadRecipe> getConnectedReadRecipes() {

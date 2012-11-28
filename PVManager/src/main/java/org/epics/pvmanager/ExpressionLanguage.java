@@ -596,8 +596,16 @@ public class ExpressionLanguage {
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
     }
     
-    public static <R> ReadMap<R> newMapOf(Class<R> clazz){
+    public static <R> ReadMap<R> newReadMapOf(Class<R> clazz){
         return new ReadMap<>();
+    }
+    
+    public static <W> WriteMap<W> newWriteMapOf(Class<W> clazz){
+        return new WriteMap<>();
+    }
+    
+    public static <R, W> ReadWriteMap<R, W> newMapOf(Class<R> readClass, Class<W> writeClass){
+        return new ReadWriteMap<>();
     }
     
     public static <R> ReadMap<R> newMapOf(DesiredRateExpressionList<R> expressions){

@@ -89,7 +89,7 @@ public class ExpressionLanguageTest {
     @Test
     public void mapOf1() {
         // Dynamically adding constant expressions (i.e. that don't require connection)
-        ReadMap<String> map = newMapOf(String.class);
+        ReadMap<String> map = newReadMapOf(String.class);
         ReadExpressionTester exp = new ReadExpressionTester(map);
         Map<String, String> referenceValue = new HashMap<String, String>();
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
