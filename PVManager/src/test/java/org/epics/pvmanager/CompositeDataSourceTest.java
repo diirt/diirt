@@ -84,8 +84,8 @@ public class CompositeDataSourceTest {
         ReadRecipe mock1Connect = mock1.getReadRecipe();
         ReadRecipe mock2Connect = mock2.getReadRecipe();
         composite.disconnectRead(recipe);
-        assertSame(mock1Connect, mock1.getReadRecipe());
-        assertSame(mock2Connect, mock2.getReadRecipe());
+        assertEquals(mock1Connect, mock1.getReadRecipe());
+        assertEquals(mock2Connect, mock2.getReadRecipe());
     }
     
     private Set<String> channelNames(Collection<ChannelReadRecipe> channelRecipes) {
@@ -216,8 +216,8 @@ public class CompositeDataSourceTest {
         WriteRecipe mock1Connect = mock1.getWriteRecipe();
         WriteRecipe mock2Connect = mock2.getWriteRecipe();
         composite.disconnectWrite(buffer);
-        assertSame(mock1Connect, mock1.getWriteRecipe());
-        assertSame(mock2Connect, mock2.getWriteRecipe());
+        assertEquals(mock1Connect, mock1.getWriteRecipe());
+        assertEquals(mock2Connect, mock2.getWriteRecipe());
     }
 
 }

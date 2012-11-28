@@ -112,10 +112,10 @@ public abstract class DataSource {
     // shut down at data source close.
     private static ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("PVMgr DataSource Worker "));
     
-    // Keeps track of the recipes and buffers that were opened with
+    // Keeps track of the recipes that were opened with
     // this data source.
-    private Set<ReadRecipe> recipes = new CopyOnWriteArraySet<ReadRecipe>();
-    private Set<WriteRecipe> registeredBuffers = new CopyOnWriteArraySet<WriteRecipe>();
+    private Set<ChannelReadRecipe> readRecipes = new CopyOnWriteArraySet<ChannelReadRecipe>();
+    private Set<ChannelWriteRecipe> writeRecipes = new CopyOnWriteArraySet<ChannelWriteRecipe>();
 
     /**
      * Connects to a set of channels based on the given recipe.
@@ -130,7 +130,7 @@ public abstract class DataSource {
         // Add the recipe first, so that if a problem comes out
         // while processing the request, we still keep
         // track of it.
-        recipes.add(recipe);
+        readRecipes.addAll(recipe.getChannelReadRecipes());
 
         // Let's go through all the recipes first, so if something
         // breaks unexpectadely, either everything works or nothing works
@@ -183,24 +183,21 @@ public abstract class DataSource {
      * @param recipe the instructions for the data connection
      */
     public void disconnectRead(ReadRecipe recipe) {
-        if (!recipes.contains(recipe)) {
-            log.log(Level.WARNING, "DataRecipe {0} was disconnected but was never connected. Ignoring it.", recipe);
-            return;
-        }
-
-        
         for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
-            String channelName = channelRecipe.getChannelName();
-            ChannelHandler channelHandler = usedChannels.get(channelName);
-            // If the channel is not found, it means it was not found during
-            // connection and a proper notification was sent then. Silently
-            // ignore it.
-            if (channelHandler != null) {
-                channelHandler.removeReader(channelRecipe.getReadSubscription());
+            if (!readRecipes.contains(channelRecipe)) {
+                log.log(Level.WARNING, "ChannelReadRecipe {0} was disconnected but was never connected. Ignoring it.", channelRecipe);
+            } else {
+                String channelName = channelRecipe.getChannelName();
+                ChannelHandler channelHandler = usedChannels.get(channelName);
+                // If the channel is not found, it means it was not found during
+                // connection and a proper notification was sent then. Silently
+                // ignore it.
+                if (channelHandler != null) {
+                    channelHandler.removeReader(channelRecipe.getReadSubscription());
+                }
+                readRecipes.remove(channelRecipe);
             }
         }
-
-        recipes.remove(recipe);
     }
     
     /**
@@ -218,7 +215,7 @@ public abstract class DataSource {
         
         // Register right away, so that if a failure happen
         // we still keep track of it
-        registeredBuffers.add(writeBuffer);
+        writeRecipes.addAll(writeBuffer.getChannelWriteBuffers());
         
         // Let's go through the whole request first, so if something
         // breaks unexpectadely, either everything works or nothing works
@@ -260,34 +257,33 @@ public abstract class DataSource {
      * <p>
      * Will close network channels and deallocate memory needed.
      * 
-     * @param writeBuffer the buffer that will no longer be used
+     * @param writeRecipe the buffer that will no longer be used
      * @param exceptionHandler where to report the exceptions
      */
-    public void disconnectWrite(final WriteRecipe writeBuffer) {
+    public void disconnectWrite(final WriteRecipe writeRecipe) {
         if (!isWriteable())
             throw new WriteFailException("Data source is read only");
         
-        if (!registeredBuffers.contains(writeBuffer)) {
-            log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
-            return;
-        }
-
-        registeredBuffers.remove(writeBuffer);
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
-        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
-            try {
-                String channelName = channelWriteBuffer.getChannelName();
-                ChannelHandler handler = channel(channelName);
-                // If the channel does not exist, simply skip it: it must have
-                // not be there while preparing the write, so an appropriate
-                // notification has already been sent
-                if (handler != null) {
-                    handlers.put(handler, channelWriteBuffer.getWriteSubscription());
+        for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteBuffers()) {
+            if (!writeRecipes.contains(channelWriteRecipe)) {
+                log.log(Level.WARNING, "ChannelWriteBuffer {0} was unregistered but was never registered. Ignoring it.", channelWriteRecipe);
+            } else {
+                try {
+                    String channelName = channelWriteRecipe.getChannelName();
+                    ChannelHandler handler = channel(channelName);
+                    // If the channel does not exist, simply skip it: it must have
+                    // not be there while preparing the write, so an appropriate
+                    // notification has already been sent
+                    if (handler != null) {
+                        handlers.put(handler, channelWriteRecipe.getWriteSubscription());
+                    }
+                } catch (Exception ex) {
+                    // No point in sending the exception through the exception handler:
+                    // nothing will be listening by now. Just log the exception
+                    log.log(Level.WARNING, "Error while preparing channel '" + channelWriteRecipe.getChannelName() + "' for closing.", ex);
                 }
-            } catch (Exception ex) {
-                // No point in sending the exception through the exception handler:
-                // nothing will be listening by now. Just log the exception
-                log.log(Level.WARNING, "Error while preparing channel '" + channelWriteBuffer.getChannelName() + "' for closing.", ex);
+                writeRecipes.remove(channelWriteRecipe);
             }
         }
 

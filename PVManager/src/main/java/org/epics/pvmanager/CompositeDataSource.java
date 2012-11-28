@@ -94,13 +94,6 @@ public class CompositeDataSource extends DataSource {
 
         this.defaultDataSource = defaultDataSource;
     }
-
-    // Need to remember how the recipes where split, so that they can be
-    // re-sent for disconnection
-    private Map<ReadRecipe, Map<String, ReadRecipe>> splitRecipes =
-            new ConcurrentHashMap<ReadRecipe, Map<String, ReadRecipe>>();
-    private Map<WriteRecipe, Map<String, WriteRecipe>> writeBuffers =
-            new ConcurrentHashMap<WriteRecipe, Map<String, WriteRecipe>>();
     
     private String nameOf(String channelName) {
         int indexDelimiter = channelName.indexOf(delimiter);
@@ -124,15 +117,14 @@ public class CompositeDataSource extends DataSource {
             throw new IllegalArgumentException("Data source " + source + " for " + channelName + " was not configured.");
         }
     }
-
-    @Override
-    public void connectRead(ReadRecipe recipe) {
+    
+    private Map<String, ReadRecipe> splitRecipe(ReadRecipe readRecipe) {
         Map<String, ReadRecipe> splitRecipe = new HashMap<String, ReadRecipe>();
 
         // Iterate through the recipe to understand how to distribute
         // the calls
         Map<String, Collection<ChannelReadRecipe>> routingRecipes = new HashMap<String, Collection<ChannelReadRecipe>>();
-        for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+        for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             String name = nameOf(channelRecipe.getChannelName());
             String dataSource = sourceOf(channelRecipe.getChannelName());
 
@@ -150,30 +142,32 @@ public class CompositeDataSource extends DataSource {
         for (Entry<String, Collection<ChannelReadRecipe>> entry : routingRecipes.entrySet()) {
             splitRecipe.put(entry.getKey(), new ReadRecipe(entry.getValue()));
         }
+        
+        return splitRecipe;
+    }
 
-        splitRecipes.put(recipe, splitRecipe);
+    @Override
+    public void connectRead(ReadRecipe readRecipe) {
+        Map<String, ReadRecipe> splitRecipe = splitRecipe(readRecipe);
 
         // Dispatch calls to all the data sources
         for (Map.Entry<String, ReadRecipe> entry : splitRecipe.entrySet()) {
             try {
                 DataSource dataSource = dataSources.get(entry.getKey());
-                if (dataSource == null)
-                    throw new IllegalArgumentException("DataSource '" + entry.getKey() + "://' was not configured.");
+                if (dataSource == null) {
+                    throw new IllegalArgumentException("DataSource '" + entry.getKey() + delimiter + "' was not configured.");
+                }
                 dataSource.connectRead(entry.getValue());
             } catch (RuntimeException ex) {
                 // If data source fail, still go and connect the others
-                recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                readRecipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
     }
 
     @Override
-    public void disconnectRead(ReadRecipe recipe) {
-        Map<String, ReadRecipe> splitRecipe = splitRecipes.get(recipe);
-        if (splitRecipe == null) {
-            log.log(Level.WARNING, "DataRecipe {0} was disconnected but was never connected. Ignoring it.", recipe);
-            return;
-        }
+    public void disconnectRead(ReadRecipe readRecipe) {
+        Map<String, ReadRecipe> splitRecipe = splitRecipe(readRecipe);
 
         // Dispatch calls to all the data sources
         for (Map.Entry<String, ReadRecipe> entry : splitRecipe.entrySet()) {
@@ -181,18 +175,15 @@ public class CompositeDataSource extends DataSource {
                 dataSources.get(entry.getKey()).disconnectRead(entry.getValue());
             } catch(RuntimeException ex) {
                 // If a data source fails, still go and disconnect the others
-                recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                readRecipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().setValue(ex);
             }
         }
-
-        splitRecipes.remove(recipe);
     }
-
-    @Override
-    public void connectWrite(WriteRecipe writeBuffer) {
+    
+    private Map<String, WriteRecipe> splitRecipe(WriteRecipe writeRecipe) {
         // Chop the buffer along different data sources
         Map<String, Collection<ChannelWriteRecipe>> buffers = new HashMap<String, Collection<ChannelWriteRecipe>>();
-        for (ChannelWriteRecipe channelWriteBuffer : writeBuffer.getChannelWriteBuffers()) {
+        for (ChannelWriteRecipe channelWriteBuffer : writeRecipe.getChannelWriteBuffers()) {
             String channelName = nameOf(channelWriteBuffer.getChannelName());
             String dataSource = sourceOf(channelWriteBuffer.getChannelName());
             Collection<ChannelWriteRecipe> buffer = buffers.get(dataSource);
@@ -203,27 +194,32 @@ public class CompositeDataSource extends DataSource {
             buffer.add(new ChannelWriteRecipe(channelName, channelWriteBuffer.getWriteSubscription()));
         }
         
-        Map<String, WriteRecipe> splitBuffers = new HashMap<String, WriteRecipe>();
+        Map<String, WriteRecipe> splitRecipes = new HashMap<String, WriteRecipe>();
         for (Map.Entry<String, Collection<ChannelWriteRecipe>> en : buffers.entrySet()) {
             String dataSource = en.getKey();
             Collection<ChannelWriteRecipe> val = en.getValue();
             WriteRecipe newWriteBuffer = new WriteRecipe(val);
-            splitBuffers.put(dataSource, newWriteBuffer);
-            dataSources.get(dataSource).connectWrite(newWriteBuffer);
+            splitRecipes.put(dataSource, newWriteBuffer);
         }
         
-        writeBuffers.put(writeBuffer, splitBuffers);
+        return splitRecipes;
     }
 
     @Override
-    public void disconnectWrite(WriteRecipe writeBuffer) {
-        Map<String, WriteRecipe> splitBuffer = writeBuffers.remove(writeBuffer);
-        if (splitBuffer == null) {
-            log.log(Level.WARNING, "WriteBuffer {0} was unregistered but was never registered. Ignoring it.", writeBuffer);
-            return;
+    public void connectWrite(WriteRecipe writeRecipe) {
+        Map<String, WriteRecipe> splitRecipes = splitRecipe(writeRecipe);
+        for (Entry<String, WriteRecipe> entry : splitRecipes.entrySet()) {
+            String dataSource = entry.getKey();
+            WriteRecipe splitWriteRecipe = entry.getValue();
+            dataSources.get(dataSource).connectWrite(splitWriteRecipe);
         }
+    }
+
+    @Override
+    public void disconnectWrite(WriteRecipe writeRecipe) {
+        Map<String, WriteRecipe> splitRecipe = splitRecipe(writeRecipe);
         
-        for (Map.Entry<String, WriteRecipe> en : splitBuffer.entrySet()) {
+        for (Map.Entry<String, WriteRecipe> en : splitRecipe.entrySet()) {
             String dataSource = en.getKey();
             WriteRecipe splitWriteBuffer = en.getValue();
             dataSources.get(dataSource).disconnectWrite(splitWriteBuffer);

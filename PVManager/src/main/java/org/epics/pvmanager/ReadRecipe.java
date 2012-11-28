@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents all the information necessary to connect to a {@link DataSource}.
@@ -14,10 +15,10 @@ import java.util.Collection;
  */
 public class ReadRecipe {
     
-    private final Collection<ChannelReadRecipe> channelRecipes;
+    private final Collection<ChannelReadRecipe> channelReadRecipes;
 
-    ReadRecipe(Collection<ChannelReadRecipe> channelRecipes) {
-        this.channelRecipes = channelRecipes;
+    ReadRecipe(Collection<ChannelReadRecipe> channelReadRecipes) {
+        this.channelReadRecipes = channelReadRecipes;
     }
 
     /**
@@ -26,6 +27,29 @@ public class ReadRecipe {
      * @return a set of channel recipes
      */
     public Collection<ChannelReadRecipe> getChannelReadRecipes() {
-        return channelRecipes;
+        return channelReadRecipes;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.channelReadRecipes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ReadRecipe other = (ReadRecipe) obj;
+        if (!Objects.equals(this.channelReadRecipes, other.channelReadRecipes)) {
+            return false;
+        }
+        return true;
+    }
+    
 }
