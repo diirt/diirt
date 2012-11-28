@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Collects value at read rate and puts them in a queue.
+ * <p>
+ * The values are returned oldest value first. When maxSize is reached,
+ * the oldest values are discarded.
  *
  * @author carcassi
  */
@@ -19,6 +22,11 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     private List<T> writeBuffer;
     private int maxSize;
 
+    /**
+     * New class with the given max size for the queue.
+     * 
+     * @param maxSize maximum number of elements in the queue
+     */
     public QueueCollector(int maxSize) {
         synchronized(lock) {
             this.maxSize = maxSize;
@@ -48,6 +56,14 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
         return readBuffer;
     }
 
+    /**
+     * Changes the number of maximum values in the queue.
+     * <p>
+     * If new maxSize is less than the current number of element in the queue,
+     * the oldes values are discarded.
+     * 
+     * @param maxSize the maximum number of elements in the queue
+     */
     public void setMaxSize(int maxSize) {
         synchronized(lock) {
             this.maxSize = maxSize;
@@ -57,6 +73,11 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
         }
     }
 
+    /**
+     * The maximum number of elements in the queue.
+     * 
+     * @return the maximum number of elements in the queue
+     */
     public int getMaxSize() {
         synchronized(lock) {
             return maxSize;
