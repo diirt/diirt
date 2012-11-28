@@ -210,8 +210,9 @@ public abstract class DataSource {
      * @param exceptionHandler where to report the exceptions
      */
     public void connectWrite(final WriteRecipe writeRecipe) {
-        if (!isWriteable())
-            throw new WriteFailException("Data source is read only");
+        if (!isWriteable()) {
+            throw new RuntimeException("Data source is read only");
+        }
         
         // Register right away, so that if a failure happen
         // we still keep track of it
@@ -224,8 +225,9 @@ public abstract class DataSource {
             try {
                 String channelName = channelWriteRecipe.getChannelName();
                 ChannelHandler handler = channel(channelName);
-                if (handler == null)
-                    throw new WriteFailException("Channel " + channelName + " does not exist");
+                if (handler == null) {
+                    throw new RuntimeException("Channel " + channelName + " does not exist");
+                }
                 handlers.put(handler, channelWriteRecipe.getWriteSubscription());
             } catch (Exception ex) {
                 channelWriteRecipe.getWriteSubscription().getExceptionWriteFunction().writeValue(ex);
@@ -261,8 +263,9 @@ public abstract class DataSource {
      * @param exceptionHandler where to report the exceptions
      */
     public void disconnectWrite(final WriteRecipe writeRecipe) {
-        if (!isWriteable())
-            throw new WriteFailException("Data source is read only");
+        if (!isWriteable()) {
+            throw new RuntimeException("Data source is read only");
+        }
         
         final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
         for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {

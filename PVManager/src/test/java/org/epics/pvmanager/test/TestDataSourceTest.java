@@ -13,7 +13,6 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.TimeoutException;
-import org.epics.pvmanager.WriteFailException;
 import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
@@ -112,7 +111,7 @@ public class TestDataSourceTest {
 
         listener.await(TimeDuration.ofMillis(100));
         
-        WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
+        RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
     }
     
@@ -127,14 +126,14 @@ public class TestDataSourceTest {
         listener.await(TimeDuration.ofMillis(15));
         assertThat(listener.getCount(), equalTo(1));
         
-        WriteFailException ex = (WriteFailException) pvWriter.lastWriteException();
+        RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
         
         listener.await(TimeDuration.ofMillis(1100));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
         
-        ex = (WriteFailException) pvWriter.lastWriteException();
+        ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
     }
     
