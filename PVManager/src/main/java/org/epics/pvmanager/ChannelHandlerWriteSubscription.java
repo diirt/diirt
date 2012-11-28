@@ -14,17 +14,17 @@ public class ChannelHandlerWriteSubscription {
     /**
      * Creates a new subscription.
      * 
-     * @param cache the cache where to read the value from
+     * @param writeCache the cache where to read the value from
      * @param exceptionWriteFunction the write function to notify to process errors
      * @param connectionWriteFunction the write function to notify for connection updates
      */
-    public ChannelHandlerWriteSubscription(WriteCache<?> cache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connectionWriteFunction) {
-        this.cache = cache;
+    public ChannelHandlerWriteSubscription(WriteCache<?> writeCache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connectionWriteFunction) {
+        this.writeCache = writeCache;
         this.exceptionWriteFunction = exceptionWriteFunction;
         this.connectionWriteFunction = connectionWriteFunction;
     }
     
-    private final WriteCache<?> cache;
+    private final WriteCache<?> writeCache;
     private final WriteFunction<Exception> exceptionWriteFunction;
     private final WriteFunction<Boolean> connectionWriteFunction;
 
@@ -34,7 +34,7 @@ public class ChannelHandlerWriteSubscription {
      * @return the write cache
      */
     public WriteCache<?> getWriteCache() {
-        return cache;
+        return writeCache;
     }
 
     /**
@@ -58,7 +58,7 @@ public class ChannelHandlerWriteSubscription {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 11 * hash + (this.cache != null ? this.cache.hashCode() : 0);
+        hash = 11 * hash + (this.writeCache != null ? this.writeCache.hashCode() : 0);
         hash = 11 * hash + (this.exceptionWriteFunction != null ? this.exceptionWriteFunction.hashCode() : 0);
         hash = 11 * hash + (this.connectionWriteFunction != null ? this.connectionWriteFunction.hashCode() : 0);
         return hash;
@@ -73,7 +73,7 @@ public class ChannelHandlerWriteSubscription {
             return false;
         }
         final ChannelHandlerWriteSubscription other = (ChannelHandlerWriteSubscription) obj;
-        if (this.cache != other.cache && (this.cache == null || !this.cache.equals(other.cache))) {
+        if (this.writeCache != other.writeCache && (this.writeCache == null || !this.writeCache.equals(other.writeCache))) {
             return false;
         }
         if (this.exceptionWriteFunction != other.exceptionWriteFunction && (this.exceptionWriteFunction == null || !this.exceptionWriteFunction.equals(other.exceptionWriteFunction))) {
