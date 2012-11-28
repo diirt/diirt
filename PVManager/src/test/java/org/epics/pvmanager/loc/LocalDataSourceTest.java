@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.ExpressionTester;
+import org.epics.pvmanager.ReadExpressionTester;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -161,7 +161,7 @@ public class LocalDataSourceTest {
 
     @Test
     public void writeMultipleNamesForSameChannel() throws Exception {
-        ExpressionTester exp = new ExpressionTester(mapOf(latestValueOf(channels("foo", "foo(2.0)"))));
+        ReadExpressionTester exp = new ReadExpressionTester(mapOf(latestValueOf(channels("foo", "foo(2.0)"))));
         ReadRecipe recipe = exp.getReadRecipe();
         
         // Connect and make sure only one channel is created

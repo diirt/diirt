@@ -6,7 +6,7 @@ package org.epics.pvmanager.data;
 
 import java.util.List;
 
-import org.epics.pvmanager.ExpressionTester;
+import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.util.time.TimeDuration;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class TimedCacheCollectorTest {
 
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
-        ExpressionTester exp = new ExpressionTester(timedCacheOf(vDouble("x"), TimeDuration.ofMillis(100)));
+        ReadExpressionTester exp = new ReadExpressionTester(timedCacheOf(vDouble("x"), TimeDuration.ofMillis(100)));
         
         Timestamp reference = Timestamp.now();
         exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(TimeDuration.ofMillis(0)))));
