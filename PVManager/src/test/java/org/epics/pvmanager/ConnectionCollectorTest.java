@@ -19,26 +19,26 @@ public class ConnectionCollectorTest {
     @Test
     public void inputOutput() {
         ConnectionCollector collector = new ConnectionCollector();
-        assertThat(collector.getValue(), equalTo(true));
+        assertThat(collector.readValue(), equalTo(true));
         
         WriteFunction<Boolean> firstWriteFunction = collector.addChannel("first");
-        assertThat(collector.getValue(), equalTo(false));
+        assertThat(collector.readValue(), equalTo(false));
 
-        firstWriteFunction.setValue(false);
-        assertThat(collector.getValue(), equalTo(false));
+        firstWriteFunction.writeValue(false);
+        assertThat(collector.readValue(), equalTo(false));
         
         WriteFunction<Boolean> secondWriteFunction = collector.addChannel("second");
-        secondWriteFunction.setValue(true);
-        assertThat(collector.getValue(), equalTo(false));
+        secondWriteFunction.writeValue(true);
+        assertThat(collector.readValue(), equalTo(false));
         
-        firstWriteFunction.setValue(true);
-        assertThat(collector.getValue(), equalTo(true));
+        firstWriteFunction.writeValue(true);
+        assertThat(collector.readValue(), equalTo(true));
         
         collector.removeChannel("second");
-        assertThat(collector.getValue(), equalTo(true));
+        assertThat(collector.readValue(), equalTo(true));
         
         secondWriteFunction = collector.addChannel("second");
-        assertThat(collector.getValue(), equalTo(false));
+        assertThat(collector.readValue(), equalTo(false));
     }
     
     @Test(expected=IllegalArgumentException.class)
@@ -52,7 +52,7 @@ public class ConnectionCollectorTest {
         ConnectionCollector collector = new ConnectionCollector();
         WriteFunction<Boolean> channelWriteFunction = collector.addChannel("first");
         collector.removeChannel("first");
-        channelWriteFunction.setValue(true);
+        channelWriteFunction.writeValue(true);
     }
     
     @Test
@@ -60,18 +60,18 @@ public class ConnectionCollectorTest {
         ConnectionCollector collector = new ConnectionCollector();
         WriteFunction<Boolean> channelWriteFunction1 = collector.addChannel("first");
         WriteFunction<Boolean> channelWriteFunction2 = collector.addChannel("first");
-        assertThat(collector.getValue(), equalTo(false));
+        assertThat(collector.readValue(), equalTo(false));
         
-        channelWriteFunction1.setValue(true);
+        channelWriteFunction1.writeValue(true);
         assertThat(channelWriteFunction1, sameInstance(channelWriteFunction2));
-        assertThat(collector.getValue(), equalTo(true));
+        assertThat(collector.readValue(), equalTo(true));
         
         collector.removeChannel("first");
-        assertThat(collector.getValue(), equalTo(true));
-        channelWriteFunction1.setValue(false);
-        assertThat(collector.getValue(), equalTo(false));
+        assertThat(collector.readValue(), equalTo(true));
+        channelWriteFunction1.writeValue(false);
+        assertThat(collector.readValue(), equalTo(false));
 
         collector.removeChannel("first");
-        assertThat(collector.getValue(), equalTo(true));
+        assertThat(collector.readValue(), equalTo(true));
     }
 }

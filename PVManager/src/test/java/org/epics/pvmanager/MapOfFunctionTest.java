@@ -19,12 +19,12 @@ public class MapOfFunctionTest {
     @Test(expected=IllegalArgumentException.class)
     public void duplicatedNames() {
         @SuppressWarnings("unchecked")
-        MapOfFunction<Object> map = new MapOfFunction<Object>(Arrays.asList("name", "name"), Arrays.<Function<Object>>asList(null, null));
+        MapOfFunction<Object> map = new MapOfFunction<Object>(Arrays.asList("name", "name"), Arrays.<ReadFunction<Object>>asList(null, null));
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void wrongArgumentNumber() {
         @SuppressWarnings("unchecked")
-        MapOfFunction<Object> map = new MapOfFunction<Object>(Arrays.asList("name", "name2"), Arrays.<Function<Object>>asList(null, null, null));
+        MapOfFunction<Object> map = new MapOfFunction<Object>(Arrays.asList("name", "name2"), Arrays.<ReadFunction<Object>>asList(null, null, null));
     }
 }

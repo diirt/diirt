@@ -36,7 +36,7 @@ public class ExpressionLanguageTest {
         assertThat(exp.getName(), equalTo("my pv"));
         ValueCache<Object> cache = (ValueCache<Object>) exp.getFunction();
         assertThat(cache.getType(), equalTo(Object.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         WriteCache<Object> writeCache = (WriteCache<Object>) exp.getWriteFunction();
         assertThat(writeCache.getPrecedingChannels().isEmpty(), equalTo(true));
         assertThat(writeCache.getValue(), nullValue());

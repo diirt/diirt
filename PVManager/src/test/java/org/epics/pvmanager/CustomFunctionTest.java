@@ -35,19 +35,19 @@ public class CustomFunctionTest {
             }
         }, latestValueOf(vDouble));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<Double> function = expression.getFunction();
+        ReadFunction<Double> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test", 1.0);
-        assertEquals((Object) (-1.0), function.getValue());
+        assertEquals((Object) (-1.0), function.readValue());
 
         tester.writeValue("test", 123.0);
-        assertEquals((Object) (-123.0), function.getValue());
+        assertEquals((Object) (-123.0), function.readValue());
 
         tester.writeValue("test", 1.0);
         tester.writeValue("test", 2.0);
         tester.writeValue("test", 3.0);
-        assertEquals((Object) (-3.0), function.getValue());
+        assertEquals((Object) (-3.0), function.readValue());
     }
 
     @Test
@@ -63,20 +63,20 @@ public class CustomFunctionTest {
             }
         }, latestValueOf(value1), latestValueOf(value2));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<String> function = expression.getFunction();
+        ReadFunction<String> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test1", "test");
         tester.writeValue("test2", 1);
-        assertEquals("test(1)", function.getValue());
+        assertEquals("test(1)", function.readValue());
 
         tester.writeValue("test2", 2);
-        assertEquals("test(2)", function.getValue());
+        assertEquals("test(2)", function.readValue());
 
         tester.writeValue("test1", "A");
         tester.writeValue("test1", "B");
         tester.writeValue("test1", "C");
-        assertEquals("C(2)", function.getValue());
+        assertEquals("C(2)", function.readValue());
     }
 
     @Test
@@ -95,17 +95,17 @@ public class CustomFunctionTest {
             }
         }, listOf(latestValueOf(channels(Arrays.asList("test1", "test2", "test3"), Integer.class, Integer.class))));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<Double> function = expression.getFunction();
+        ReadFunction<Double> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test1", 0);
         tester.writeValue("test2", 1);
         tester.writeValue("test3", 2);
-        assertEquals((Object) (1.0), function.getValue());
+        assertEquals((Object) (1.0), function.readValue());
 
         // Test values
         tester.writeValue("test3", 5);
-        assertEquals((Object) (2.0), function.getValue());
+        assertEquals((Object) (2.0), function.readValue());
     }
 
 }

@@ -19,46 +19,46 @@ public class QueueCollectorTest {
     @Test
     public void inputOutput() {
         QueueCollector<Integer> collector = new QueueCollector<>(5);
-        assertThat(collector.getValue().size(), equalTo(0));
-        collector.setValue(0);
-        assertThat(collector.getValue(), equalTo(Arrays.asList(0)));
-        assertThat(collector.getValue().size(), equalTo(0));
-        collector.setValue(1);
-        collector.setValue(2);
-        collector.setValue(3);
-        assertThat(collector.getValue(), equalTo(Arrays.asList(1,2,3)));
-        assertThat(collector.getValue().size(), equalTo(0));
-        collector.setValue(1);
-        collector.setValue(2);
-        collector.setValue(3);
-        collector.setValue(4);
-        collector.setValue(5);
-        collector.setValue(6);
-        assertThat(collector.getValue(), equalTo(Arrays.asList(2,3,4,5,6)));
-        assertThat(collector.getValue().size(), equalTo(0));
+        assertThat(collector.readValue().size(), equalTo(0));
+        collector.writeValue(0);
+        assertThat(collector.readValue(), equalTo(Arrays.asList(0)));
+        assertThat(collector.readValue().size(), equalTo(0));
+        collector.writeValue(1);
+        collector.writeValue(2);
+        collector.writeValue(3);
+        assertThat(collector.readValue(), equalTo(Arrays.asList(1,2,3)));
+        assertThat(collector.readValue().size(), equalTo(0));
+        collector.writeValue(1);
+        collector.writeValue(2);
+        collector.writeValue(3);
+        collector.writeValue(4);
+        collector.writeValue(5);
+        collector.writeValue(6);
+        assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
+        assertThat(collector.readValue().size(), equalTo(0));
     }
 
     @Test
     public void setMaxSize() {
         QueueCollector<Integer> collector = new QueueCollector<>(5);
-        assertThat(collector.getValue().size(), equalTo(0));
-        collector.setValue(1);
-        collector.setValue(2);
-        collector.setValue(3);
-        collector.setValue(4);
-        collector.setValue(5);
-        collector.setValue(6);
+        assertThat(collector.readValue().size(), equalTo(0));
+        collector.writeValue(1);
+        collector.writeValue(2);
+        collector.writeValue(3);
+        collector.writeValue(4);
+        collector.writeValue(5);
+        collector.writeValue(6);
         collector.setMaxSize(2);
-        assertThat(collector.getValue(), equalTo(Arrays.asList(5,6)));
-        assertThat(collector.getValue().size(), equalTo(0));
-        collector.setValue(1);
-        collector.setValue(2);
-        collector.setValue(3);
+        assertThat(collector.readValue(), equalTo(Arrays.asList(5,6)));
+        assertThat(collector.readValue().size(), equalTo(0));
+        collector.writeValue(1);
+        collector.writeValue(2);
+        collector.writeValue(3);
         collector.setMaxSize(5);
-        collector.setValue(4);
-        collector.setValue(5);
-        collector.setValue(6);
-        assertThat(collector.getValue(), equalTo(Arrays.asList(2,3,4,5,6)));
-        assertThat(collector.getValue().size(), equalTo(0));
+        collector.writeValue(4);
+        collector.writeValue(5);
+        collector.writeValue(6);
+        assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
+        assertThat(collector.readValue().size(), equalTo(0));
     }
 }

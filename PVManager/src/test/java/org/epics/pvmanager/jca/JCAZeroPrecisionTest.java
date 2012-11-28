@@ -48,7 +48,7 @@ public class JCAZeroPrecisionTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue().getFormat().format(cache.getValue().getValue()), equalTo("3"));
+        assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3"));
     }
 
     @Test
@@ -67,6 +67,6 @@ public class JCAZeroPrecisionTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue().getFormat().format(cache.getValue().getValue()), equalTo("3.25"));
+        assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3.25"));
     }
 }

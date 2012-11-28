@@ -88,8 +88,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VFloat.class));
-        VFloat converted = (VFloat) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VFloat.class));
+        VFloat converted = (VFloat) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25F));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -117,8 +117,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VFloat.class));
-        VFloat converted = (VFloat) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VFloat.class));
+        VFloat converted = (VFloat) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25F));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -173,8 +173,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDouble.class));
-        VDouble converted = (VDouble) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VDouble.class));
+        VDouble converted = (VDouble) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -202,8 +202,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDouble.class));
-        VDouble converted = (VDouble) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VDouble.class));
+        VDouble converted = (VDouble) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -258,8 +258,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VByte.class));
-        VByte converted = (VByte) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VByte.class));
+        VByte converted = (VByte) cache.readValue();
         assertThat(converted.getValue(), equalTo((byte) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -287,8 +287,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VByte.class));
-        VByte converted = (VByte) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VByte.class));
+        VByte converted = (VByte) cache.readValue();
         assertThat(converted.getValue(), equalTo((byte) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -343,8 +343,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VShort.class));
-        VShort converted = (VShort) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VShort.class));
+        VShort converted = (VShort) cache.readValue();
         assertThat(converted.getValue(), equalTo((short) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -372,8 +372,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VShort.class));
-        VShort converted = (VShort) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VShort.class));
+        VShort converted = (VShort) cache.readValue();
         assertThat(converted.getValue(), equalTo((short) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -428,8 +428,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VInt.class));
+        VInt converted = (VInt) cache.readValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -457,8 +457,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        VInt converted = (VInt) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VInt.class));
+        VInt converted = (VInt) cache.readValue();
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -512,8 +512,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
         
-        assertThat(cache.getValue(), instanceOf(VString.class));
-        VString converted = (VString) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("32"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -532,8 +532,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
         
-        assertThat(cache.getValue(), instanceOf(VString.class));
-        VString converted = (VString) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("32"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -584,8 +584,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
         
-        assertThat(cache.getValue(), instanceOf(VString.class));
-        VString converted = (VString) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("Testing"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -606,8 +606,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
         
-        assertThat(cache.getValue(), instanceOf(VString.class));
-        VString converted = (VString) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VString.class));
+        VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("Testing"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -654,8 +654,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VEnum.class));
-        VEnum converted = (VEnum) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VEnum.class));
+        VEnum converted = (VEnum) cache.readValue();
         assertThat(converted.getValue(), equalTo("Two"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -675,8 +675,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VEnum.class));
-        VEnum converted = (VEnum) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VEnum.class));
+        VEnum converted = (VEnum) cache.readValue();
         assertThat(converted.getValue(), equalTo("Two"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -723,8 +723,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VFloatArray.class));
-        VFloatArray converted = (VFloatArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VFloatArray.class));
+        VFloatArray converted = (VFloatArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -752,8 +752,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VFloatArray.class));
-        VFloatArray converted = (VFloatArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VFloatArray.class));
+        VFloatArray converted = (VFloatArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -808,8 +808,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
-        VDoubleArray converted = (VDoubleArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
+        VDoubleArray converted = (VDoubleArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -837,8 +837,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
-        VDoubleArray converted = (VDoubleArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
+        VDoubleArray converted = (VDoubleArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -894,8 +894,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VByteArray.class));
-        VByteArray converted = (VByteArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VByteArray.class));
+        VByteArray converted = (VByteArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -923,8 +923,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VByteArray.class));
-        VByteArray converted = (VByteArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VByteArray.class));
+        VByteArray converted = (VByteArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -979,8 +979,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VShortArray.class));
-        VShortArray converted = (VShortArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VShortArray.class));
+        VShortArray converted = (VShortArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -1008,8 +1008,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VShortArray.class));
-        VShortArray converted = (VShortArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VShortArray.class));
+        VShortArray converted = (VShortArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -1064,8 +1064,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VIntArray.class));
-        VIntArray converted = (VIntArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VIntArray.class));
+        VIntArray converted = (VIntArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -1093,8 +1093,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VIntArray.class));
-        VIntArray converted = (VIntArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VIntArray.class));
+        VIntArray converted = (VIntArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
@@ -1149,8 +1149,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VStringArray.class));
-        VStringArray converted = (VStringArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VStringArray.class));
+        VStringArray converted = (VStringArray) cache.readValue();
         assertThat(converted.getArray(), equalTo(new String[]{"Zero", "One", "Two"}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
@@ -1170,8 +1170,8 @@ public class JCAVTypeAdapterSetTest {
         
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
         
-        assertThat(cache.getValue(), instanceOf(VStringArray.class));
-        VStringArray converted = (VStringArray) cache.getValue();
+        assertThat(cache.readValue(), instanceOf(VStringArray.class));
+        VStringArray converted = (VStringArray) cache.readValue();
         assertThat(converted.getArray(), equalTo(new String[]{"Only"}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));

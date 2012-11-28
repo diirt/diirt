@@ -20,9 +20,9 @@ public class ExpressionLanguageTest {
     @Test
     public void vType1() {
         DesiredRateExpression<VInt> counter = counter();
-        assertThat(counter.getFunction().getValue().getValue(), equalTo(0));
-        assertThat(counter.getFunction().getValue().getValue(), equalTo(1));
-        assertThat(counter.getFunction().getValue().getValue(), equalTo(2));
-        assertThat(counter.getFunction().getValue().getValue(), equalTo(3));
+        assertThat(counter.getFunction().readValue().getValue(), equalTo(0));
+        assertThat(counter.getFunction().readValue().getValue(), equalTo(1));
+        assertThat(counter.getFunction().readValue().getValue(), equalTo(2));
+        assertThat(counter.getFunction().readValue().getValue(), equalTo(3));
     }
 }

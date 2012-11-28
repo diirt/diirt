@@ -42,6 +42,6 @@ public class WriteExpressionTester {
     }
     
     public void setValue(Object value) {
-        getWriteFunction().setValue(value);
+        getWriteFunction().writeValue(value);
     }
 }

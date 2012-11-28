@@ -8,7 +8,7 @@
  */
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.Function;
+import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.data.DataTypeSupport;
 import org.epics.pvmanager.data.VInt;
 import org.epics.pvmanager.data.ValueFactory;
@@ -28,11 +28,11 @@ public class ExpressionLanguage {
     }
     
     public static DesiredRateExpression<VInt> counter() {
-        return new DesiredRateExpressionImpl<VInt>((DesiredRateExpressionList<?>) null, new Function<VInt>() {
+        return new DesiredRateExpressionImpl<VInt>((DesiredRateExpressionList<?>) null, new ReadFunction<VInt>() {
             private int counter = 0;
 
             @Override
-            public VInt getValue() {
+            public VInt readValue() {
                 return newVInt(counter++, alarmNone(), timeNow(), displayNone());
             }
         }, "counter");

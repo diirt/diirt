@@ -27,7 +27,7 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
     }
 
     @Override
-    public void setValue(T newValue) {
+    public void writeValue(T newValue) {
         synchronized(lock) {
             writeBuffer.add(newValue);
             if (writeBuffer.size() > maxSize) {
@@ -37,7 +37,7 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
     }
 
     @Override
-    public List<T> getValue() {
+    public List<T> readValue() {
         readBuffer.clear();
         synchronized(lock) {
             readBuffer.addAll(writeBuffer);

@@ -32,20 +32,20 @@ public class ErrorHandlingTest {
     }
 
     public static DesiredRateExpression<VDouble> exception(DesiredRateExpression<VDouble> expression) {
-        return new DesiredRateExpressionImpl<VDouble>(expression, new Function<VDouble>() {
+        return new DesiredRateExpressionImpl<VDouble>(expression, new ReadFunction<VDouble>() {
 
             @Override
-            public VDouble getValue() {
+            public VDouble readValue() {
                 throw new UnsupportedOperationException("Mistakes were made");
             }
         }, "test");
     }
 
     public static SourceRateExpression<VDouble> exception(SourceRateExpression<VDouble> expression) {
-        return new SourceRateExpressionImpl<VDouble>(expression, new Function<VDouble>() {
+        return new SourceRateExpressionImpl<VDouble>(expression, new ReadFunction<VDouble>() {
 
             @Override
-            public VDouble getValue() {
+            public VDouble readValue() {
                 throw new UnsupportedOperationException("Mistakes were made");
             }
         }, "test");

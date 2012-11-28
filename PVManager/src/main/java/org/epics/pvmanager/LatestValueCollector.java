@@ -18,12 +18,12 @@ public class LatestValueCollector<T> implements Collector<T, T> {
     private T value;
 
     @Override
-    public void setValue(T newValue) {
+    public void writeValue(T newValue) {
         value = newValue;
     }
 
     @Override
-    public T getValue() {
+    public T readValue() {
         return value;
     }
     

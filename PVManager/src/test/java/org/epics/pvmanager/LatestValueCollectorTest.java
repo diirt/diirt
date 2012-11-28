@@ -19,8 +19,8 @@ public class LatestValueCollectorTest {
     public void inputOutput() throws InterruptedException {
         LatestValueCollector<Integer> collector = new LatestValueCollector<>();
         for (int i = 0; i < 1000; i++) {
-            collector.setValue(i);
-            assertThat(collector.getValue(), equalTo(i));
+            collector.writeValue(i);
+            assertThat(collector.readValue(), equalTo(i));
         }
     }
 }

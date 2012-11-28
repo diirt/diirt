@@ -72,7 +72,7 @@ public class LocChannelHandlerTest {
         
         InOrder inOrder = inOrder(vDoubleCache1, channelWriteCallback, exceptionHandler);
         ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-        inOrder.verify(vDoubleCache1).setValue(newValue.capture());
+        inOrder.verify(vDoubleCache1).writeValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(6.28));
         inOrder.verify(channelWriteCallback).channelWritten(null);
         inOrder.verifyNoMoreInteractions();
@@ -117,11 +117,11 @@ public class LocChannelHandlerTest {
         assertThat(channel.isConnected(), is(false));
         
         ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
-        verify(vDoubleCache1, times(2)).setValue(newValue.capture());
+        verify(vDoubleCache1, times(2)).writeValue(newValue.capture());
         assertThat(newValue.getAllValues().get(0).getValue(), equalTo(0.0));
         assertThat(newValue.getAllValues().get(1).getValue(), equalTo(16.28));
         ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
-        verify(vDoubleCache2, times(2)).setValue(newValue2.capture());
+        verify(vDoubleCache2, times(2)).writeValue(newValue2.capture());
         assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
         assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));
         verify(channelWriteCallback).channelWritten(null);

@@ -24,7 +24,7 @@ public class VTableAggegationTest {
         List<Double> values = Arrays.asList(1.0, 2.0, 3.0);
         List<Integer> counts = Arrays.asList(1, 2, 3);
         DesiredRateExpression<VTable> exp = vTable(column("Names", vStringConstants(names)), column("Values", vDoubleConstants(values)), column("Counts", vIntConstants(counts)));
-        VTable result = exp.getFunction().getValue();
+        VTable result = exp.getFunction().readValue();
         assertThat(result.getColumnCount(), equalTo(3));
         assertThat(result.getColumnName(0), equalTo("Names"));
         assertThat(result.getColumnType(0), equalTo((Class) String.class));

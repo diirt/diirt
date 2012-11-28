@@ -31,7 +31,7 @@ public class ReadExpressionTester {
             if (channelRecipe.getChannelName().equals(name)) {
                 @SuppressWarnings("unchecked")
                 ValueCache<Object> cache = (ValueCache<Object>) channelRecipe.getReadSubscription().getValueCache();
-                cache.setValue(value);
+                cache.writeValue(value);
                 written = true;
             }
         }
@@ -53,7 +53,7 @@ public class ReadExpressionTester {
         return getCurrentReadRecipe();
     }
     
-    public Function<?> getFunction() {
+    public ReadFunction<?> getFunction() {
         return expression.getFunction();
     }
     
@@ -62,6 +62,6 @@ public class ReadExpressionTester {
     }
     
     public Object getValue() {
-        return expression.getFunction().getValue();
+        return expression.getFunction().readValue();
     }
 }

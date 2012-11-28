@@ -14,6 +14,6 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public interface Collector<I, O> extends WriteFunction<I>, Function<O> {
+public interface Collector<I, O> extends WriteFunction<I>, ReadFunction<O> {
     
 }

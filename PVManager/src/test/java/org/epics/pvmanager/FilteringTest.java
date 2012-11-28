@@ -44,24 +44,24 @@ public class FilteringTest {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Integer>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<List<Integer>> function = expression.getFunction();
+        ReadFunction<List<Integer>> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test", 1);
-        List<Integer> values = function.getValue();
+        List<Integer> values = function.readValue();
         assertThat(values, equalTo(Arrays.asList(1)));
 
         tester.writeValue("test", 1);
         tester.writeValue("test", 2);
         tester.writeValue("test", 4);
         tester.writeValue("test", 3);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.asList(2, 4)));
 
         tester.writeValue("test", 5);
         tester.writeValue("test", 7);
         tester.writeValue("test", 3);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.asList(5, 7)));
     }
 
@@ -86,24 +86,24 @@ public class FilteringTest {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Number>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<List<Number>> function = expression.getFunction();
+        ReadFunction<List<Number>> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test", 1);
-        List<Number> values = function.getValue();
+        List<Number> values = function.readValue();
         assertThat(values, equalTo(Arrays.<Number>asList(1)));
 
         tester.writeValue("test", 1.0);
         tester.writeValue("test", 2);
         tester.writeValue("test", 4.0);
         tester.writeValue("test", 3);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Number>asList(2, 4.0)));
 
         tester.writeValue("test", 5.0);
         tester.writeValue("test", 7);
         tester.writeValue("test", 3.0);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Number>asList(5.0, 7)));
     }
 
@@ -128,24 +128,24 @@ public class FilteringTest {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<List<Object>> function = expression.getFunction();
+        ReadFunction<List<Object>> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test", 1);
-        List<Object> values = function.getValue();
+        List<Object> values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList(1)));
 
         tester.writeValue("test", "1.0");
         tester.writeValue("test", 2);
         tester.writeValue("test", 4.0);
         tester.writeValue("test", 3);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList("1.0", 2, 4.0)));
 
         tester.writeValue("test", 5.0);
         tester.writeValue("test", 7);
         tester.writeValue("test", "3.0");
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList(5.0, 7, "3.0")));
     }
 
@@ -170,24 +170,24 @@ public class FilteringTest {
         @SuppressWarnings("unchecked")
         DesiredRateExpression<List<Object>> expression = filterBy(monotonic, newValuesOf(vInteger));
         ReadExpressionTester tester = new ReadExpressionTester(expression);
-        Function<List<Object>> function = expression.getFunction();
+        ReadFunction<List<Object>> function = expression.getFunction();
 
         // Test values
         tester.writeValue("test", 1);
-        List<Object> values = function.getValue();
+        List<Object> values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList(1)));
 
         tester.writeValue("test", "1.0");
         tester.writeValue("test", 2);
         tester.writeValue("test", 4.0);
         tester.writeValue("test", 3);
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList(2, 4.0)));
 
         tester.writeValue("test", 5.0);
         tester.writeValue("test", 7);
         tester.writeValue("test", "3.0");
-        values = function.getValue();
+        values = function.readValue();
         assertThat(values, equalTo(Arrays.<Object>asList(5.0, 7)));
     }
 

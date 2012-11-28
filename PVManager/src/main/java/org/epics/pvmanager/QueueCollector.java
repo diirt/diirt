@@ -28,7 +28,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     }
 
     @Override
-    public void setValue(T newValue) {
+    public void writeValue(T newValue) {
         synchronized(lock) {
             writeBuffer.add(newValue);
             if (writeBuffer.size() > maxSize) {
@@ -38,7 +38,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     }
 
     @Override
-    public List<T> getValue() {
+    public List<T> readValue() {
         synchronized(lock) {
             List<T> data = writeBuffer;
             writeBuffer = readBuffer;

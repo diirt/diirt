@@ -147,7 +147,7 @@ public abstract class DataSource {
             } catch (Exception ex) {
                 // If any error happens while creating the channel,
                 // report it to the exception handler of that channel
-                channelRecipe.getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                channelRecipe.getReadSubscription().getExceptionWriteFunction().writeValue(ex);
             }
             
         }
@@ -166,7 +166,7 @@ public abstract class DataSource {
                     } catch(Exception ex) {
                         // If an error happens while adding the read subscription,
                         // notify the appropriate handler
-                        channelRecipe.getReadSubscription().getExceptionWriteFunction().setValue(ex);
+                        channelRecipe.getReadSubscription().getExceptionWriteFunction().writeValue(ex);
                     }
                 }
             }
@@ -228,7 +228,7 @@ public abstract class DataSource {
                     throw new WriteFailException("Channel " + channelName + " does not exist");
                 handlers.put(handler, channelWriteRecipe.getWriteSubscription());
             } catch (Exception ex) {
-                channelWriteRecipe.getWriteSubscription().getExceptionWriteFunction().setValue(ex);
+                channelWriteRecipe.getWriteSubscription().getExceptionWriteFunction().writeValue(ex);
             }
         }
 
@@ -245,7 +245,7 @@ public abstract class DataSource {
                     } catch (Exception ex) {
                         // If an error happens while adding the write subscription,
                         // notify the appropriate handler
-                        entry.getValue().getExceptionWriteFunction().setValue(ex);
+                        entry.getValue().getExceptionWriteFunction().writeValue(ex);
                     }
                 }
             }

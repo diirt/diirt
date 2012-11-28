@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.Function;
+import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpression;
@@ -31,7 +31,7 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VType> cache = (ValueCache<VType>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VType.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
 
@@ -41,7 +41,7 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VNumber> cache = (ValueCache<VNumber>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VNumber.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
 
@@ -51,7 +51,7 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VDouble> cache = (ValueCache<VDouble>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VDouble.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
 
@@ -61,7 +61,7 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VInt> cache = (ValueCache<VInt>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VInt.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
 
@@ -71,7 +71,7 @@ public class ExpressionLanguageTest {
         assertThat(myPv.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VNumberArray> cache = (ValueCache<VNumberArray>) myPv.getFunction();
         assertThat(cache.getType(), equalTo(VNumberArray.class));
-        assertThat(cache.getValue(), nullValue());
+        assertThat(cache.readValue(), nullValue());
         assertThat(myPv.getName(), equalTo("my pv"));
     }
     
@@ -85,9 +85,9 @@ public class ExpressionLanguageTest {
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         assertThat(exp.getName(), equalTo("3.14"));
         ValueCache<VDouble> cache = (ValueCache<VDouble>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VDouble.class));
-        assertThat(cache.getValue().getValue(), equalTo(3.14));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VDouble.class));
+        assertThat(cache.readValue().getValue(), equalTo(3.14));
     }
     
     @Test
@@ -96,9 +96,9 @@ public class ExpressionLanguageTest {
         assertThat(exp.getName(), equalTo("314"));
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VInt> cache = (ValueCache<VInt>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VInt.class));
-        assertThat(cache.getValue().getValue(), equalTo(314));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VInt.class));
+        assertThat(cache.readValue().getValue(), equalTo(314));
     }
     
     @Test
@@ -106,10 +106,10 @@ public class ExpressionLanguageTest {
         DesiredRateExpression<VDoubleArray> exp = vConst(0.0, 0.1, 0.2, 0.3, 0.4);
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
         ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
-        assertThat(cache.getValue().getData(), equalTo(reference));
+        assertThat(cache.readValue().getData(), equalTo(reference));
     }
     
     @Test
@@ -117,10 +117,10 @@ public class ExpressionLanguageTest {
         DesiredRateExpression<VDoubleArray> exp = vConst(new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4));
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VDoubleArray.class));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
         ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
-        assertThat(cache.getValue().getData(), equalTo(reference));
+        assertThat(cache.readValue().getData(), equalTo(reference));
     }
     
     @Test
@@ -128,10 +128,10 @@ public class ExpressionLanguageTest {
         DesiredRateExpression<VIntArray> exp = vConst(new int[] {0, 1, 2, 3, 4});
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VIntArray.class));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VIntArray.class));
         ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
-        assertThat(cache.getValue().getData(), equalTo(reference));
+        assertThat(cache.readValue().getData(), equalTo(reference));
     }
     
     @Test
@@ -139,10 +139,10 @@ public class ExpressionLanguageTest {
         DesiredRateExpression<VIntArray> exp = vConst(new ArrayInt(0, 1, 2, 3, 4));
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
-        assertThat(cache.getValue(), not(nullValue()));
-        assertThat(cache.getValue(), instanceOf(VIntArray.class));
+        assertThat(cache.readValue(), not(nullValue()));
+        assertThat(cache.readValue(), instanceOf(VIntArray.class));
         ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
-        assertThat(cache.getValue().getData(), equalTo(reference));
+        assertThat(cache.readValue().getData(), equalTo(reference));
     }
 
     @Test
