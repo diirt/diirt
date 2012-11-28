@@ -11,6 +11,13 @@ package org.epics.pvmanager;
  */
 public class ChannelHandlerWriteSubscription {
 
+    /**
+     * Creates a new subscription.
+     * 
+     * @param cache the cache where to read the value from
+     * @param exceptionWriteFunction the write function to notify to process errors
+     * @param connectionWriteFunction the write function to notify for connection updates
+     */
     public ChannelHandlerWriteSubscription(WriteCache<?> cache, WriteFunction<Exception> exceptionWriteFunction, WriteFunction<Boolean> connectionWriteFunction) {
         this.cache = cache;
         this.exceptionWriteFunction = exceptionWriteFunction;
