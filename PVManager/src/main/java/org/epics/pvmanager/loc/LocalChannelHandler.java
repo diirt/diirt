@@ -8,6 +8,7 @@ import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.AlarmStatus;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -74,7 +75,10 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
             // Special support for strings
             return newVString(((String) value),
                     alarmNone(), timeNow());
+        } else if (value instanceof double[]) {
+            return newVDoubleArray(new ArrayDouble((double[]) value), alarmNone(), timeNow(), displayNone());
         }
+        // TODO: need to implement all the other arrays
         return value;
     }
 
