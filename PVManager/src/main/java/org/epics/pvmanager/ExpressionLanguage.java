@@ -595,36 +595,128 @@ public class ExpressionLanguage {
         
         return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
     }
-    
+
+    /**
+     * An empty map that can manage expressions of the given type.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param <R> the type of the values
+     * @param clazz the type of the values
+     * @return an expression representing a map from name to results
+     */
     public static <R> ReadMap<R> newReadMapOf(Class<R> clazz){
         return new ReadMap<>();
     }
     
+    /**
+     * An empty map that can write expressions of the given type.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param <W> the type of the values
+     * @param clazz the type of the values
+     * @return an expression representing a map from name to results
+     */
     public static <W> WriteMap<W> newWriteMapOf(Class<W> clazz){
         return new WriteMap<>();
     }
     
+    /**
+     * An empty map that can read/write expressions of the given type.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param <W> the type of the values to read
+     * @param <W> the type of the values to write
+     * @param readClass the type of the values to read
+     * @param writeClass the type of the values to write
+     * @return an expression representing a map from name to results
+     */
     public static <R, W> ReadWriteMap<R, W> newMapOf(Class<R> readClass, Class<W> writeClass){
         return new ReadWriteMap<>();
     }
     
+    /**
+     * An expression that returns a key/value map where the key is the
+     * expression name and the value is the expression value.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param <R> the type of the values
+     * @param expressions a list of expressions
+     * @return an expression representing a map from name to results
+     */
     public static <R> ReadMap<R> newMapOf(DesiredRateExpressionList<R> expressions){
         return new ReadMap<R>().add(expressions);
     }
     
-    public static <R> WriteMap<R> newMapOf(WriteExpressionList<R> expressions){
-        return new WriteMap<R>().add(expressions);
+    /**
+     * An expression that expects a key/value map where the key is the
+     * expression name and the value is the expression value.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param W the type of the values
+     * @param expressions a list of expressions
+     * @return an expression representing a map from name to results
+     */
+    public static <W> WriteMap<W> newMapOf(WriteExpressionList<W> expressions){
+        return new WriteMap<W>().add(expressions);
     }
     
+    /**
+     * An expression that works on a key/value map where the key is the
+     * expression name and the value is the expression value.
+     * <p>
+     * The returned expression is dynamic, which means child expressions
+     * can be added or removed from the map.
+     * 
+     * @param <R> the type for the read values
+     * @param <W> the type for the write values
+     * @param expressions a list of expressions
+     * @return an expression representing a map from name to results
+     */
     public static <R, W> ReadWriteMap<R, W> newMapOf(DesiredRateReadWriteExpressionList<R, W> expressions){
         return new ReadWriteMap<R, W>().add(expressions);
     }
     
-    public static <T> Queue<T> queueOf(Class<T> clazz) {
+    /**
+     * A queue of objects of the given class. By default, it holds at maximum
+     * 10 elements.
+     * <p>
+     * This can be used to create expressions where the source of the data is
+     * not just pvmanager data sources. One can add new values to a queue
+     * from any thread, and in response to any event, such as user input,
+     * updates from time consuming tasks or responses from services.
+     * 
+     * @param R the type to be kept in the queue
+     * @param clazz the type for the values to be kept in the queue
+     * @return a new queue
+     */
+    public static <R> Queue<R> queueOf(Class<R> clazz) {
         return new Queue<>(10);
     }
     
-    public static <T> Cache<T> cacheOf(Class<T> clazz) {
+    /**
+     * A cache of objects of the given class. By default, it holds at maximum
+     * 10 elements.
+     * <p>
+     * This can be used to create expressions where the source of the data is
+     * not just pvmanager data sources. One can add new values to the cache
+     * from any thread, and in response to any event, such as user input,
+     * updates from time consuming tasks or responses from services.
+     * 
+     * @param R the type to be kept in the queue
+     * @param clazz the type for the values to be kept in the queue
+     * @return a new queue
+     */
+    public static <R> Cache<R> cacheOf(Class<R> clazz) {
         return new Cache<>(10);
     }
 }
