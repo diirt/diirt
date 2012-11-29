@@ -257,13 +257,24 @@ public class PVWriterDirector<T> {
         });
         log.finest("Write request submitted. Waiting.");
         
+        boolean done;
         try {
-            latch.await();
+            if (timeout != null) {
+                done = latch.await(timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+            } else {
+                latch.await();
+                done = true;
+            }
         } catch(InterruptedException ex) {
             throw new RuntimeException("Interrupted", ex);
         }
         if (exception.get() != null) {
             throw new RuntimeException("Write failed", exception.get());
+        }
+        if (done == false) {
+            TimeoutException ex = new TimeoutException(timeoutMessage);
+            exceptionCollector.writeValue(ex);
+            throw ex;
         }
         log.finest("Waiting done. No exceptions.");
     }
