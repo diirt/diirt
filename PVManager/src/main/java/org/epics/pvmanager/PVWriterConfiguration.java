@@ -33,12 +33,33 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         return this;
     }
 
+    /**
+     * Sets a timeout for write operation.
+     * <p>
+     * For more details, consult {@link #timeout(org.epics.util.time.TimeDuration, java.lang.String) }.
+     *
+     * @param timeout the duration of the timeout; can't be null
+     * @return this expression
+     */
     @Override
     public PVWriterConfiguration<T> timeout(TimeDuration timeout) {
         super.timeout(timeout);
         return this;
     }
 
+    /**
+     * Sets a timeout for write operations.
+     * <p>
+     * When a write operation lasts longer than the given timeout, a notification
+     * is sent with a {@link TimeoutException}. Note that, in the current implementation,
+     * the write is not cancelled and may still trigger a second notification.
+     * With a synch write, the method returns at the timeout expiration with
+     * the exception.
+     *
+     * @param timeout the duration of the timeout; can't be null
+     * @param timeoutMessage the message for the reported timeout
+     * @return this expression
+     */
     @Override
     public PVWriterConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
@@ -54,9 +75,12 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     }
     
     /**
+     * Adds a listener notified for any writer event (write result, connection and errors).
+     * <p>
+     * Registering a listener here guarantees that no event is ever missed.
      * 
-     * @param listeners
-     * @return 
+     * @param listener the listener to register
+     * @return this expression
      */
     public PVWriterConfiguration<T> writeListener(PVWriterListener<? extends T> listener) {
         @SuppressWarnings("unchecked")

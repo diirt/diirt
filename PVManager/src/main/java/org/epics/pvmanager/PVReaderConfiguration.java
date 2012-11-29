@@ -77,6 +77,8 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     
     /**
      * Adds a listener notified for any reader event (values, connection and errors).
+     * <p>
+     * Registering a listener here guarantees that no event is ever missed.
      * 
      * @param listener the listener to register
      * @return this expression
