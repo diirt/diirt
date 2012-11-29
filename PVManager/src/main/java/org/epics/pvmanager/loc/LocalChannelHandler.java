@@ -77,9 +77,10 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                     alarmNone(), timeNow());
         } else if (value instanceof double[]) {
             return newVDoubleArray(new ArrayDouble((double[]) value), alarmNone(), timeNow(), displayNone());
+        } else {
+            // TODO: need to implement all the other arrays
+            throw new UnsupportedOperationException("Type " + value.getClass().getName() + "  is not yet supported");
         }
-        // TODO: need to implement all the other arrays
-        return value;
     }
 
     @Override
