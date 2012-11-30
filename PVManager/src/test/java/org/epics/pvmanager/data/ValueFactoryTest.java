@@ -10,6 +10,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -39,6 +41,15 @@ public class ValueFactoryTest {
         VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
         assertThat(value.getValue(), equalTo("TWO"));
         assertThat(value.getIndex(), equalTo(1));
+        assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
+    }
+    
+    @Test
+    public void newVEnumArray1() {
+        VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
+        assertThat(value.getArray(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
+        assertThat(value.getIndexes(), equalTo((ListInt) new ArrayInt(1, 0, 2)));
+        assertThat(value.getSizes(), equalTo(Arrays.asList(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
     }
 

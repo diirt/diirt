@@ -435,4 +435,17 @@ public class ValueFactory {
         return new IVIntArray(values, Collections.singletonList(values.size()), alarm, time, display);
     }
 
+    /**
+     * Create a new VEnumArray.
+     * 
+     * @param index the index in the label array
+     * @param labels the labels
+     * @param alarm the alarm
+     * @param time the time
+     * @return the new value
+     */
+    public static VEnumArray newVEnumArray(ListInt indexes, List<String> labels, Alarm alarm, Time time) {
+        return new IVEnumArray(indexes, labels, Collections.singletonList(indexes.size()), alarm, time);
+    }
+
 }
