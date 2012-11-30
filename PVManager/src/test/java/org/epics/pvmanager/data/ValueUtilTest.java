@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.pvmanager.util.NumberFormats;
 
 /**
  *
@@ -24,6 +25,35 @@ public class ValueUtilTest {
                 equalTo((Class) VString.class));
         assertThat(ValueUtil.typeOf(newVDouble(Double.NaN, alarmNone(), timeNow(), displayNone())),
                 equalTo((Class) VDouble.class));
+    }
+    
+    @Test
+    public void displayEquals1() {
+        assertThat(ValueUtil.displayEquals(displayNone(), displayNone()), equalTo(true));
+        Display display1 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, displayNone()), equalTo(false));
+        Display display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(true));
+        display2 = newDisplay(0.1, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.1, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.1, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "a", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.format(2), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.1, 9.0, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.1, 10.0, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.1, 0.0, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.1, 10.0);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+        display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.1);
+        assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Various utility methods for runtime handling of the types defined in
@@ -224,6 +225,27 @@ public class ValueUtil {
 
         byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         return ValueFactory.newVImage(image.getHeight(), image.getWidth(), buffer);
+    }
+    
+    public static boolean displayEquals(Display d1, Display d2) {
+        if (d1 == d2) {
+            return true;
+        }
+        
+        if (Objects.equals(d1.getFormat(), d2.getFormat()) &&
+                Objects.equals(d1.getUnits(), d2.getUnits()) &&
+                Objects.equals(d1.getLowerDisplayLimit(), d2.getLowerDisplayLimit()) &&
+                Objects.equals(d1.getLowerAlarmLimit(), d2.getLowerAlarmLimit()) &&
+                Objects.equals(d1.getLowerWarningLimit(), d2.getLowerWarningLimit()) &&
+                Objects.equals(d1.getUpperWarningLimit(), d2.getUpperWarningLimit()) &&
+                Objects.equals(d1.getUpperAlarmLimit(), d2.getUpperAlarmLimit()) &&
+                Objects.equals(d1.getUpperDisplayLimit(), d2.getUpperDisplayLimit()) &&
+                Objects.equals(d1.getLowerCtrlLimit(), d2.getLowerCtrlLimit()) &&
+                Objects.equals(d1.getUpperCtrlLimit(), d2.getUpperCtrlLimit())) {
+            return true;
+        }
+        
+        return false;
     }
     
 }
