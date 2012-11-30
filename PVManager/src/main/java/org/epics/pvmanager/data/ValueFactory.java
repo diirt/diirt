@@ -319,6 +319,10 @@ public class ValueFactory {
         return newVDouble(value, alarmNone(), time, displayNone());
     }
 
+    public static VEnum newVEnum(int index, List<String> labels, Alarm alarm, Time time) {
+        return new IVEnum(index, labels, alarm, time);
+    }
+
     /**
      * Creates a new VStatistics.
      * 
