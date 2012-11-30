@@ -20,13 +20,15 @@ public class ReadRecipeBuilder {
             = new HashMap<>();
 
     /**
-     * Add channel and its read cache to the recipe.
+     * Adds a channel and its read cache to the recipe.
      * 
      * @param channelName the name of the channel
      * @param caches the cache that contains the value
+     * @return this builder
      */
-    public void addChannel(String channelName, ValueCache<?> caches) {
+    public ReadRecipeBuilder addChannel(String channelName, ValueCache<?> caches) {
         channelCaches.put(channelName, caches);
+        return this;
     }
 
     /**
