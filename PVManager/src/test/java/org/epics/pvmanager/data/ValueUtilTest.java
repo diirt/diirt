@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.epics.pvmanager.data.ValueUtil.*;
 import org.epics.pvmanager.util.NumberFormats;
 
 /**
@@ -54,6 +55,11 @@ public class ValueUtilTest {
         assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
         display2 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.1);
         assertThat(ValueUtil.displayEquals(display1, display2), equalTo(false));
+    }
+    
+    @Test
+    public void numericValueOf1() {
+        assertThat(numericValueOf(newVDouble(1.0)), equalTo(1.0));
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import org.epics.util.array.ListNumber;
 
 /**
  * Various utility methods for runtime handling of the types defined in
@@ -157,32 +158,10 @@ public class ValueUtil {
                 return ((Number) value).doubleValue();
         }
 
-        if (obj instanceof Array) {
-            Object array = ((Array) obj).getArray();
-            if (array instanceof byte[]) {
-                byte[] tArray = (byte[]) array;
-                if (tArray.length != 0)
-                    return (double) tArray[0];
-            }
-            if (array instanceof short[]) {
-                short[] tArray = (short[]) array;
-                if (tArray.length != 0)
-                    return (double) tArray[0];
-            }
-            if (array instanceof int[]) {
-                int[] tArray = (int[]) array;
-                if (tArray.length != 0)
-                    return (double) tArray[0];
-            }
-            if (array instanceof float[]) {
-                float[] tArray = (float[]) array;
-                if (tArray.length != 0)
-                    return (double) tArray[0];
-            }
-            if (array instanceof double[]) {
-                double[] tArray = (double[]) array;
-                if (tArray.length != 0)
-                    return (double) tArray[0];
+        if (obj instanceof VNumberArray) {
+            ListNumber data = ((VNumberArray) obj).getData();
+            if (data.size() != 0) {
+                return data.getDouble(0);
             }
         }
 
