@@ -319,6 +319,15 @@ public class ValueFactory {
         return newVDouble(value, alarmNone(), time, displayNone());
     }
 
+    /**
+     * Create a new VEnum.
+     * 
+     * @param index the index in the label array
+     * @param labels the labels
+     * @param alarm the alarm
+     * @param time the time
+     * @return the new value
+     */
     public static VEnum newVEnum(int index, List<String> labels, Alarm alarm, Time time) {
         return new IVEnum(index, labels, alarm, time);
     }
