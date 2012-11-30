@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.expression;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.epics.pvmanager.PVReaderDirector;
 import org.epics.pvmanager.QueueCollector;
@@ -132,7 +132,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
      * @param names the names of the expressions to remove
      * @return this expression
      */
-    public ReadMap<T> remove(List<String> names) {
+    public ReadMap<T> remove(Collection<String> names) {
         synchronized(lock) {
             for (String name : names) {
                 remove(name);

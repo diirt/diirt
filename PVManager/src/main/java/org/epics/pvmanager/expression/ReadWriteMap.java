@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.expression;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -96,7 +96,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
      * @param names the names of the expressions to remove
      * @return this expression
      */
-    public ReadWriteMap<R, W> remove(List<String> names) {
+    public ReadWriteMap<R, W> remove(Collection<String> names) {
         getReadMap().remove(names);
         getWriteMap().remove(names);
         return this;
