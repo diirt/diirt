@@ -157,6 +157,10 @@ public class ValueUtil {
             if (value instanceof Number)
                 return ((Number) value).doubleValue();
         }
+        
+        if (obj instanceof VEnum) {
+            return (double) ((VEnum) obj).getIndex();
+        }
 
         if (obj instanceof VNumberArray) {
             ListNumber data = ((VNumberArray) obj).getData();

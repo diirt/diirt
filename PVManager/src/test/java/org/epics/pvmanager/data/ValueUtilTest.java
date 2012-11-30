@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -64,6 +65,7 @@ public class ValueUtilTest {
     public void numericValueOf1() {
         assertThat(numericValueOf(newVDouble(1.0)), equalTo(1.0));
         assertThat(numericValueOf(newVInt(1, alarmNone(), timeNow(), displayNone())), equalTo(1.0));
+        assertThat(numericValueOf(newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow())), equalTo(1.0));
         assertThat(numericValueOf(newVDoubleArray(new ArrayDouble(1.0), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
         assertThat(numericValueOf(newVFloatArray(new ArrayFloat(1.0f), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
         assertThat(numericValueOf(newVIntArray(new ArrayInt(1), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
