@@ -35,9 +35,14 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R> {
     public String getName();
     
     /**
-     * The recipe for connect the channels for this expression.
+     * Prepares the recipe to connect the channels needed by this expression.
+     * <p>
+     * A dynamic expression, one for which the child expressions can change,
+     * can keep a reference to the director to connect/disconnect new child
+     * expressions.
      *
-     * @return a data recipe
+     * @param director the director for the reader
+     * @param builder the recipe to fill
      */
     public void fillReadRecipe(PVReaderDirector director, ReadRecipeBuilder builder);
     
