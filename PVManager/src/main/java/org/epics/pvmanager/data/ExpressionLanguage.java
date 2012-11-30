@@ -19,6 +19,7 @@ import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
@@ -275,7 +276,7 @@ public class ExpressionLanguage {
      * @return an int array expression
      */
     public static DesiredRateExpression<VIntArray> vConst(int... values) {
-        return constant(newVIntArray(values, alarmNone(), newTime(Timestamp.now()), displayNone()));
+        return constant(newVIntArray(new ArrayInt(values), alarmNone(), newTime(Timestamp.now()), displayNone()));
     }
     
     /**

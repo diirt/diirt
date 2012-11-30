@@ -413,13 +413,8 @@ public class ValueFactory {
         return new IVIntArray(new ArrayInt(values), sizes, alarm, time, display);
     }
     
-    public static VIntArray newVIntArray(final int[] values, Alarm alarm, Time time, Display display) {
-        return newVIntArray(values, Collections.singletonList(values.length), alarm, time, display);
-    }
-    
     public static VIntArray newVIntArray(final ListInt values, Alarm alarm, Time time, Display display) {
-        return new IVIntArray(values, Collections.singletonList(values.size()), alarm,
-                time, display);
+        return new IVIntArray(values, Collections.singletonList(values.size()), alarm, time, display);
     }
     
     public static VIntArray newVIntArray(final int[] values, Display display) {
