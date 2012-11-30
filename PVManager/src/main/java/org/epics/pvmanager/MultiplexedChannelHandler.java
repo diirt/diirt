@@ -344,7 +344,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * if it's implementing a write-able data source.
      * 
      * @param payload
-     * @return 
+     * @return true if ready for writes
      */
     protected boolean isWriteConnected(ConnectionPayload payload) {
         return false;

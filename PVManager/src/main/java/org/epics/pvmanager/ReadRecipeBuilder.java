@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Builder class for {@link DataRecipe}.
+ * Builder class for {@link ReadRecipe}.
  *
  * @author carcassi
  */

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A builder for {@link WriteBuffer }.
+ * A builder for {@link WriteRecipe }.
  *
  * @author carcassi
  */
