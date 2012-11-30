@@ -10,6 +10,9 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.epics.pvmanager.data.ValueUtil.*;
 import org.epics.pvmanager.util.NumberFormats;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayFloat;
+import org.epics.util.array.ArrayInt;
 
 /**
  *
@@ -60,6 +63,10 @@ public class ValueUtilTest {
     @Test
     public void numericValueOf1() {
         assertThat(numericValueOf(newVDouble(1.0)), equalTo(1.0));
+        assertThat(numericValueOf(newVInt(1, alarmNone(), timeNow(), displayNone())), equalTo(1.0));
+        assertThat(numericValueOf(newVDoubleArray(new ArrayDouble(1.0), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
+        assertThat(numericValueOf(newVFloatArray(new ArrayFloat(1.0f), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
+        assertThat(numericValueOf(newVIntArray(new ArrayInt(1), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
     }
 
 }
