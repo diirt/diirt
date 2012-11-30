@@ -4,34 +4,11 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.expression.ChannelExpressionList;
-import org.epics.pvmanager.expression.ChannelExpression;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.WriteExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.WriteExpression;
-import org.epics.pvmanager.expression.SourceRateExpression;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpression;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import org.epics.pvmanager.expression.Cache;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionListImpl;
-import org.epics.pvmanager.expression.ReadMap;
-import org.epics.pvmanager.expression.Queue;
-import org.epics.pvmanager.expression.ReadWriteMap;
-import org.epics.pvmanager.expression.SourceRateExpressionList;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpressionList;
-import org.epics.pvmanager.expression.WriteExpressionList;
-import org.epics.pvmanager.expression.WriteMap;
-import org.epics.util.time.TimeDuration;
+import org.epics.pvmanager.expression.*;
 
 /**
  * Operators to constructs expression of PVs that the {@link PVManager} will
@@ -500,7 +477,7 @@ public class ExpressionLanguage {
                 }, name);
     }
     
-    // Static collections (no change after expression creation
+    // Static collections
 
     /**
      * Converts a list of expressions to an expression that returns the list of results.
@@ -521,6 +498,8 @@ public class ExpressionLanguage {
                 (ReadFunction<List<T>>) (ReadFunction) new ListOfFunction(functions), null);
         return expression;
     }
+    
+    // Dynamic collections (change after expression creation)
     
     /**
      * An empty map that can manage expressions of the given type.
@@ -611,6 +590,8 @@ public class ExpressionLanguage {
     public static <R, W> ReadWriteMap<R, W> mapOf(DesiredRateReadWriteExpressionList<R, W> expressions){
         return new ReadWriteMap<R, W>().add(expressions);
     }
+    
+    // Collectors for external sources
     
     /**
      * A queue of objects of the given class. By default, it holds at maximum
