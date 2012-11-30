@@ -416,9 +416,5 @@ public class ValueFactory {
     public static VIntArray newVIntArray(final ListInt values, Alarm alarm, Time time, Display display) {
         return new IVIntArray(values, Collections.singletonList(values.size()), alarm, time, display);
     }
-    
-    public static VIntArray newVIntArray(final int[] values, Display display) {
-        return newVIntArray(values, Collections.singletonList(values.length), alarmNone(), timeNow(), display);
-    }
 
 }

@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayFloat;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListFloat;
 
 /**
@@ -29,9 +30,9 @@ public class SimpleValueFormatTest {
     public void defaultPrecision() {
         ValueFormat f = new SimpleValueFormat(3);
         assertThat(f.format(newVDouble(1234.5678, display)), equalTo("1234.568"));
-        assertThat(f.format(newVIntArray(new int[] {1, 2, 3}, displayInt)), equalTo("[1, 2, 3]"));
-        assertThat(f.format(newVIntArray(new int[] {1}, displayInt)), equalTo("[1]"));
-        assertThat(f.format(newVIntArray(new int[] {1, 2, 3, 4, 5}, displayInt)), equalTo("[1, 2, 3, ...]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1, 2, 3), alarmNone(), timeNow(), displayInt)), equalTo("[1, 2, 3]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1), alarmNone(), timeNow(), displayInt)), equalTo("[1]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1, 2, 3, 4, 5), alarmNone(), timeNow(), displayInt)), equalTo("[1, 2, 3, ...]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3}), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1}), alarmNone(), timeNow(), display)), equalTo("[1.000]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3, 4, 5}), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000, ...]"));
@@ -51,9 +52,9 @@ public class SimpleValueFormatTest {
         ValueFormat f = new SimpleValueFormat(3);
         f.setNumberFormat(NumberFormats.format(2));
         assertThat(f.format(newVDouble(1234.5678, display)), equalTo("1234.57"));
-        assertThat(f.format(newVIntArray(new int[] {1, 2, 3}, displayInt)), equalTo("[1.00, 2.00, 3.00]"));
-        assertThat(f.format(newVIntArray(new int[] {1}, displayInt)), equalTo("[1.00]"));
-        assertThat(f.format(newVIntArray(new int[] {1, 2, 3, 4, 5}, displayInt)), equalTo("[1.00, 2.00, 3.00, ...]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1, 2, 3), alarmNone(), timeNow(), displayInt)), equalTo("[1.00, 2.00, 3.00]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1), alarmNone(), timeNow(), displayInt)), equalTo("[1.00]"));
+        assertThat(f.format(newVIntArray(new ArrayInt(1, 2, 3, 4, 5), alarmNone(), timeNow(), displayInt)), equalTo("[1.00, 2.00, 3.00, ...]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3}), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1}), alarmNone(), timeNow(), display)), equalTo("[1.00]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3, 4, 5}), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00, ...]"));
