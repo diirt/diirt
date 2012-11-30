@@ -12,9 +12,15 @@ import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.WriteRecipeBuilder;
 
 /**
- * A write expression a dynamically managed group.
- * Once the group is created, any {@link WriteExpression} can be
- * added dynamically.
+ * A write expression for a key/value map.
+ * <p>
+ * This expression will take the values from the map and will write them
+ * to each child expression matching the key to the name of the child expression.
+ * The map is dynamic: the child expressions can be added and removed
+ * while the reader is active.
+ * <p>
+ * There is currently no way to retrieve the individual errors for each
+ * element of the map.
  *
  * @param <T> the type for the values in the map
  * @author carcassi
