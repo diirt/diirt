@@ -92,7 +92,7 @@ class StatisticsDoubleAggregator extends Aggregator<VStatistics, VDouble> {
         return newVStatistics(stats.totalSum / stats.nElements,
                 sqrt(stats.totalSquareSum / stats.nElements - (stats.totalSum * stats.totalSum) / (stats.nElements * stats.nElements)),
                 stats.min, stats.max, stats.nElements,
-                newAlarm(statSeverity, AlarmStatus.NONE), newTime(data.get(data.size() / 2).getTimestamp()), data.get(0));
+                newAlarm(statSeverity, "NONE"), newTime(data.get(data.size() / 2).getTimestamp()), data.get(0));
     }
 
 }

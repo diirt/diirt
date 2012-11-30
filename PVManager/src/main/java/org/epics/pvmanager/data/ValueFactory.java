@@ -7,6 +7,7 @@ package org.epics.pvmanager.data;
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -33,7 +34,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VString newVString(final String value, final Alarm alarm, final Time time) {
-        return new IVString(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+        return new IVString(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid());
     }
 
@@ -48,7 +49,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VMultiDouble newVMultiDouble(List<VDouble> values, final Alarm alarm, final Time time, final Display display) {
-        return new IVMultiDouble(values, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+        return new IVMultiDouble(values, alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
@@ -66,7 +67,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VInt newVInt(final Integer value, final Alarm alarm, final Time time, final Display display) {
-        return new IVInt(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+        return new IVInt(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
@@ -77,41 +78,15 @@ public class ValueFactory {
      * New alarm with the given severity and status.
      * 
      * @param alarmSeverity the alarm severity
-     * @param alarmStatus the alarm status
+     * @param alarmName the alarm name
      * @return the new alarm
      */
-    public static Alarm newAlarm(final AlarmSeverity alarmSeverity, final AlarmStatus alarmStatus) {
-        return new Alarm() {
-
-            @Override
-            public AlarmSeverity getAlarmSeverity() {
-                return alarmSeverity;
-            }
-
-            @Override
-            public AlarmStatus getAlarmStatus() {
-                return alarmStatus;
-            }
-
-            @Override
-            public String getAlarmName() {
-                return alarmStatus.name();
-            }
-            
-        };
-    }
-    
     public static Alarm newAlarm(final AlarmSeverity alarmSeverity, final String alarmName) {
         return new Alarm() {
 
             @Override
             public AlarmSeverity getAlarmSeverity() {
                 return alarmSeverity;
-            }
-
-            @Override
-            public AlarmStatus getAlarmStatus() {
-                return AlarmStatus.UNDEFINED;
             }
 
             @Override
@@ -122,7 +97,7 @@ public class ValueFactory {
         };
     }
     
-    private static final Alarm alarmNone = newAlarm(AlarmSeverity.NONE, AlarmStatus.NONE);
+    private static final Alarm alarmNone = newAlarm(AlarmSeverity.NONE, "NONE");
     
     /**
      * No alarm.
@@ -143,12 +118,18 @@ public class ValueFactory {
     public static Alarm newAlarm(Number value, Display display) {
         // Calculate new AlarmSeverity, using display ranges
         AlarmSeverity severity = AlarmSeverity.NONE;
-        AlarmStatus status = AlarmStatus.NONE;
-        if (value.doubleValue() <= display.getLowerAlarmLimit() || value.doubleValue() >= display.getUpperAlarmLimit()) {
-            status = AlarmStatus.RECORD;
+        String status = "NONE";
+        if (value.doubleValue() <= display.getLowerAlarmLimit()) {
+            status = "LOLO";
             severity = AlarmSeverity.MAJOR;
-        } else if (value.doubleValue() <= display.getLowerWarningLimit() || value.doubleValue() >= display.getUpperWarningLimit()) {
-            status = AlarmStatus.RECORD;
+        } else if (value.doubleValue() >= display.getUpperAlarmLimit()) {
+            status = "HIHI";
+            severity = AlarmSeverity.MAJOR;
+        } else if (value.doubleValue() <= display.getLowerWarningLimit()) {
+            status = "LOW";
+            severity = AlarmSeverity.MINOR;
+        } else if (value.doubleValue() >= display.getUpperWarningLimit()) {
+            status = "HIGH";
             severity = AlarmSeverity.MINOR;
         }
         
@@ -297,7 +278,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDouble newVDouble(final Double value, final Alarm alarm, final Time time, final Display display) {
-        return new IVDouble(value, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+        return new IVDouble(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
@@ -367,7 +348,7 @@ public class ValueFactory {
             final double min, final double max, final int nSamples, final Alarm alarm,
             final Time time, final Display display) {
         return new IVStatistics(average, stdDev, min, max, nSamples,
-                alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+                alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
@@ -385,11 +366,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
-        return new IVDoubleArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        return new IVDoubleArray(new ArrayDouble(values), sizes, alarm, time, display);
     }
     
     /**
@@ -449,7 +426,7 @@ public class ValueFactory {
     }
     
     public static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
-        return new IVIntArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmStatus(),
+        return new IVIntArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmName(),
                 time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),

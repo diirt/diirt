@@ -15,9 +15,9 @@ class IVString extends IVMetadata implements VString {
     private final String value;
 
     public IVString(String value,
-            AlarmSeverity alarmSeverity, AlarmStatus alarmStatus,
+            AlarmSeverity alarmSeverity, String alarmName,
             Timestamp timestamp, Integer timeUserTag, boolean timeValid) {
-        super(alarmSeverity, alarmStatus, timestamp, timeUserTag, timeValid);
+        super(alarmSeverity, alarmName, timestamp, timeUserTag, timeValid);
         this.value = value;
     }
 

@@ -6,7 +6,6 @@ package org.epics.pvmanager.sim;
 
 import java.util.List;
 import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -36,7 +35,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(0.0));
         assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0)));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
         assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
         assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
@@ -52,7 +51,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(1.0));
         assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(100))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(value.getAlarmName(), equalTo("RECORD"));
         assertThat(value.getTimeUserTag(), equalTo(0));
 
         // Check third value
@@ -60,7 +59,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(2.0));
         assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(200))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
 
         // Check fourth value
@@ -68,7 +67,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(3.0));
         assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(500))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
     }
     
@@ -92,7 +91,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(0.0));
         assertThat(value.getTimestamp(), within(ofMillis(1).around(start)));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
         assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
         assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
@@ -108,7 +107,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(1.0));
         assertThat(value.getTimestamp(), within(ofMillis(1).around(start.plus(ofMillis(1000)))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.RECORD));
+        assertThat(value.getAlarmName(), equalTo("RECORD"));
         assertThat(value.getTimeUserTag(), equalTo(0));
 
         // Check third value
@@ -116,7 +115,7 @@ public class ReplayTest {
         assertThat(value.getValue(), equalTo(2.0));
         assertThat(value.getTimestamp(), within(ofMillis(1).around(start.plus(ofMillis(2000)))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmStatus(), equalTo(AlarmStatus.NONE));
+        assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
     }
 }

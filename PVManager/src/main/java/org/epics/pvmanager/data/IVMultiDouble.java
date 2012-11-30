@@ -18,12 +18,12 @@ class IVMultiDouble extends IVNumeric implements VMultiDouble {
     private final List<VDouble> values;
 
     IVMultiDouble(List<VDouble> values, AlarmSeverity alarmSeverity,
-            AlarmStatus alarmStatus,
+            String alarmName,
             Timestamp timestamp, Integer timeUserTag, boolean timeValid, Double lowerDisplayLimit,
             Double lowerCtrlLimit, Double lowerAlarmLimit, Double lowerWarningLimit,
             String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
             Double upperCtrlLimit, Double upperDisplayLimit) {
-        super(alarmSeverity, alarmStatus, timestamp, timeUserTag, timeValid, lowerDisplayLimit, lowerCtrlLimit,
+        super(alarmSeverity, alarmName, timestamp, timeUserTag, timeValid, lowerDisplayLimit, lowerCtrlLimit,
                 lowerAlarmLimit, lowerWarningLimit, units, format, upperWarningLimit, upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
         this.values = values;
     }

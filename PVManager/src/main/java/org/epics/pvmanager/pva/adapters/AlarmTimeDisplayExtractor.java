@@ -16,7 +16,6 @@ import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
-import org.epics.pvmanager.data.AlarmStatus;
 import org.epics.pvmanager.data.Display;
 import org.epics.pvmanager.data.Time;
 import org.epics.pvmanager.util.NumberFormats;
@@ -25,7 +24,7 @@ import org.epics.util.time.Timestamp;
 public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 	
 	protected final AlarmSeverity alarmSeverity;
-	protected final AlarmStatus alarmStatus;
+	protected final String alarmStatus;
 	protected final Timestamp timeStamp;
 	protected final Integer timeUserTag;
 	protected final boolean isTimeValid;
@@ -46,7 +45,7 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 		if (disconnected)
 		{
 			alarmSeverity = AlarmSeverity.UNDEFINED;
-			alarmStatus = AlarmStatus.CLIENT;
+			alarmStatus = "CLIENT";
 		}
 		else
 		{
@@ -63,7 +62,7 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 				
 				PVInt statusField = alarmStructure.getIntField("status");
 				if (statusField == null)
-					alarmStatus = AlarmStatus.UNDEFINED;
+					alarmStatus = "UNDEFINED";
 				else
 					alarmStatus = alarmStatusMapLUT[statusField.get()];
 				// no explicit out-of-bounds check
@@ -72,7 +71,7 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 			else
 			{
 				alarmSeverity = AlarmSeverity.UNDEFINED;
-				alarmStatus = AlarmStatus.UNDEFINED;
+				alarmStatus = "UNDEFINED";
 			}
 		}
 		
@@ -190,26 +189,21 @@ public class AlarmTimeDisplayExtractor implements Alarm, Time, Display {
 	};
 	
 	// org.epics.pvdata.property.AlarmStatus to pvmanager.AlarmStatus
-	protected static final AlarmStatus alarmStatusMapLUT[] =
+	protected static final String alarmStatusMapLUT[] =
 	{
-		AlarmStatus.NONE,
-		AlarmStatus.DEVICE,
-		AlarmStatus.DRIVER,
-		AlarmStatus.RECORD,
-		AlarmStatus.DB,
-		AlarmStatus.CONF,
-		AlarmStatus.UNDEFINED,
-		AlarmStatus.CLIENT
+		"NONE",
+		"DEVICE",
+		"DRIVER",
+		"RECORD",
+		"DB",
+		"CONF",
+		"UNDEFINED",
+		"CLIENT"
 	};
  
 	@Override
 	public AlarmSeverity getAlarmSeverity() {
 		return alarmSeverity;
-	}
-
-	@Override
-	public AlarmStatus getAlarmStatus() {
-		return alarmStatus;
 	}
 
     @Override

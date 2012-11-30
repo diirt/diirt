@@ -22,12 +22,12 @@ class IVIntArray extends IVNumeric implements VIntArray {
     private final List<Integer> sizes;
 
     public IVIntArray(int[] array, List<Integer> sizes,
-            AlarmSeverity alarmSeverity, AlarmStatus alarmStatus,
+            AlarmSeverity alarmSeverity, String alarmName,
             Timestamp timestamp, Integer timeUserTag, boolean timeValid, Double lowerDisplayLimit,
             Double lowerCtrlLimit, Double lowerAlarmLimit, Double lowerWarningLimit,
             String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
             Double upperCtrlLimit, Double upperDisplayLimit) {
-        super(alarmSeverity, alarmStatus, timestamp, timeUserTag, timeValid, lowerDisplayLimit,
+        super(alarmSeverity, alarmName, timestamp, timeUserTag, timeValid, lowerDisplayLimit,
                 lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, format, upperWarningLimit,
                 upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
         this.array = array;
@@ -37,7 +37,7 @@ class IVIntArray extends IVNumeric implements VIntArray {
 
     public IVIntArray(ListInt data, List<Integer> sizes,
             Alarm alarm, Time time, Display display) {
-        super(alarm.getAlarmSeverity(), alarm.getAlarmStatus(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+        super(alarm.getAlarmSeverity(), alarm.getAlarmName(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
                 display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());

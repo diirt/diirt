@@ -4,13 +4,8 @@
  */
 package org.epics.pvmanager.data;
 
-import java.text.NumberFormat;
 import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
-import org.epics.util.array.ListNumber;
-import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -24,7 +19,7 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
 
     public IVFloatArray(ListFloat data, List<Integer> sizes,
             Alarm alarm, Time time, Display display) {
-        super(alarm.getAlarmSeverity(), alarm.getAlarmStatus(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
+        super(alarm.getAlarmSeverity(), alarm.getAlarmName(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
                 display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
                 display.getUnits(), display.getFormat(),
                 display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
