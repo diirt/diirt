@@ -630,7 +630,7 @@ public class ExpressionLanguage {
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
      * 
-     * @param <W> the type of the values to read
+     * @param <R> the type of the values to read
      * @param <W> the type of the values to write
      * @param readClass the type of the values to read
      * @param writeClass the type of the values to write
@@ -662,7 +662,7 @@ public class ExpressionLanguage {
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
      * 
-     * @param W the type of the values
+     * @param <W> the type of the values
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
@@ -695,7 +695,7 @@ public class ExpressionLanguage {
      * from any thread, and in response to any event, such as user input,
      * updates from time consuming tasks or responses from services.
      * 
-     * @param R the type to be kept in the queue
+     * @param <R> the type to be kept in the queue
      * @param clazz the type for the values to be kept in the queue
      * @return a new queue
      */
@@ -712,7 +712,7 @@ public class ExpressionLanguage {
      * from any thread, and in response to any event, such as user input,
      * updates from time consuming tasks or responses from services.
      * 
-     * @param R the type to be kept in the queue
+     * @param <R> the type to be kept in the queue
      * @param clazz the type for the values to be kept in the queue
      * @return a new queue
      */
