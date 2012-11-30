@@ -34,8 +34,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VString newVString(final String value, final Alarm alarm, final Time time) {
-        return new IVString(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid());
+        return new IVString(value, alarm, time);
     }
 
     
