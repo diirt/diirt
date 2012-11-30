@@ -18,7 +18,7 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.util.time.TimeDuration;
 
 /**
- * Object responsible to notify the PVReader of changes on the appropriate thread.
+ * Orchestrates the different elements of pvmanager to make a reader functional.
  * <p>
  * This class is responsible for the correct read operation, including:
  * <ul>
