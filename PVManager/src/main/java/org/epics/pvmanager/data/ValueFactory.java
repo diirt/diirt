@@ -409,10 +409,15 @@ public class ValueFactory {
         return new IVImage(height, width, data);
     }
     
-    public static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
-        return new IVIntArray(new ArrayInt(values), sizes, alarm, time, display);
-    }
-    
+    /**
+     * Creates a new VIntArray.
+     * 
+     * @param values array values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
     public static VIntArray newVIntArray(final ListInt values, Alarm alarm, Time time, Display display) {
         return new IVIntArray(values, Collections.singletonList(values.size()), alarm, time, display);
     }
