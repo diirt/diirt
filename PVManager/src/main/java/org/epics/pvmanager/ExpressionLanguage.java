@@ -523,80 +523,6 @@ public class ExpressionLanguage {
     }
     
     /**
-     * Converts a list of expressions to an expression that returns the map from
-     * the name to the results.
-     * 
-     * @param <T> type being read
-     * @param expressions a list of expressions
-     * @return an expression representing a map from name to results
-     */
-    public static <T> DesiredRateExpression<Map<String, T>> mapOf(DesiredRateExpressionList<T> expressions) {
-        // Calculate all the needed functions to combine
-        List<String> names = new ArrayList<String>();
-        List<ReadFunction<T>> functions = new ArrayList<ReadFunction<T>>();
-        for (DesiredRateExpression<T> expression : expressions.getDesiredRateExpressions()) {
-            names.add(expression.getName());
-            functions.add(expression.getFunction());
-        }
-
-        @SuppressWarnings("unchecked")
-        DesiredRateExpression<Map<String, T>> expression = new DesiredRateExpressionImpl<Map<String, T>>(expressions,
-                new MapOfFunction(names, functions), null);
-        return expression;
-    }
-    
-    /**
-     * Converts a list of expressions to an expression that returns the map from
-     * the name to the results.
-     * 
-     * @param <T> type being read
-     * @param expressions a list of expressions
-     * @return an expression representing a map from name to results
-     */
-    public static <T> WriteExpression<Map<String, T>> mapOf(WriteExpressionList<T> expressions) {
-        // Calculate all the needed functions to combine
-        List<String> names = new ArrayList<String>();
-        List<WriteFunction<T>> functions = new ArrayList<WriteFunction<T>>();
-        for (WriteExpression<T> expression : expressions.getWriteExpressions()) {
-            names.add(expression.getName());
-            functions.add(expression.getWriteFunction());
-        }
-
-        @SuppressWarnings("unchecked")
-        WriteExpression<Map<String, T>> expression = new WriteExpressionImpl<Map<String, T>>(expressions,
-                new MapOfWriteFunction<T>(names, functions), null);
-        return expression;
-    }
-
-    /**
-     * Converts a list of expressions to an expression that returns the map from
-     * the name to the results.
-     * 
-     * @param <R> read payload
-     * @param <W> write payload
-     * @param expressions a list of expressions
-     * @return an expression representing a map from name to results
-     */
-    public static <R, W> DesiredRateReadWriteExpression<Map<String, R>, Map<String, W>> mapOf(DesiredRateReadWriteExpressionList<R, W> expressions) {
-        // Calculate all the needed functions to combine
-        List<String> names = new ArrayList<String>();
-        List<ReadFunction<R>> functions = new ArrayList<ReadFunction<R>>();
-        List<WriteFunction<W>> writefunctions = new ArrayList<WriteFunction<W>>();
-        for (DesiredRateReadWriteExpression<R, W> expression : expressions.getDesiredRateReadWriteExpressions()) {
-            names.add(expression.getName());
-            functions.add(expression.getFunction());
-            writefunctions.add(expression.getWriteFunction());
-        }
-        
-        DesiredRateExpression<Map<String, R>> readExpression = new DesiredRateExpressionImpl<Map<String, R>>(expressions,
-                new MapOfFunction<R>(names, functions), null);
-        WriteExpression<Map<String, W>> writeExpression = new WriteExpressionImpl<Map<String, W>>(expressions,
-                new MapOfWriteFunction<W>(names, writefunctions), null);
-        
-        return new DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>>(readExpression, writeExpression);
-    }
-
-    /**
      * An empty map that can manage expressions of the given type.
      * <p>
      * The returned expression is dynamic, which means child expressions
@@ -606,7 +532,7 @@ public class ExpressionLanguage {
      * @param clazz the type of the values
      * @return an expression representing a map from name to results
      */
-    public static <R> ReadMap<R> newReadMapOf(Class<R> clazz){
+    public static <R> ReadMap<R> readMapOf(Class<R> clazz){
         return new ReadMap<>();
     }
     
@@ -620,7 +546,7 @@ public class ExpressionLanguage {
      * @param clazz the type of the values
      * @return an expression representing a map from name to results
      */
-    public static <W> WriteMap<W> newWriteMapOf(Class<W> clazz){
+    public static <W> WriteMap<W> writeMapOf(Class<W> clazz){
         return new WriteMap<>();
     }
     
@@ -636,7 +562,7 @@ public class ExpressionLanguage {
      * @param writeClass the type of the values to write
      * @return an expression representing a map from name to results
      */
-    public static <R, W> ReadWriteMap<R, W> newMapOf(Class<R> readClass, Class<W> writeClass){
+    public static <R, W> ReadWriteMap<R, W> mapOf(Class<R> readClass, Class<W> writeClass){
         return new ReadWriteMap<>();
     }
     
@@ -651,7 +577,7 @@ public class ExpressionLanguage {
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
-    public static <R> ReadMap<R> newMapOf(DesiredRateExpressionList<R> expressions){
+    public static <R> ReadMap<R> mapOf(DesiredRateExpressionList<R> expressions){
         return new ReadMap<R>().add(expressions);
     }
     
@@ -666,7 +592,7 @@ public class ExpressionLanguage {
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
-    public static <W> WriteMap<W> newMapOf(WriteExpressionList<W> expressions){
+    public static <W> WriteMap<W> mapOf(WriteExpressionList<W> expressions){
         return new WriteMap<W>().add(expressions);
     }
     
@@ -682,7 +608,7 @@ public class ExpressionLanguage {
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
      */
-    public static <R, W> ReadWriteMap<R, W> newMapOf(DesiredRateReadWriteExpressionList<R, W> expressions){
+    public static <R, W> ReadWriteMap<R, W> mapOf(DesiredRateReadWriteExpressionList<R, W> expressions){
         return new ReadWriteMap<R, W>().add(expressions);
     }
     

@@ -57,7 +57,7 @@ public class MapExpressionTest {
 
     @Test
     public void map1() {
-        ReadMap<Object> map = newReadMapOf(Object.class);
+        ReadMap<Object> map = readMapOf(Object.class);
         pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         assertThat(dataSource.getReadRecipe(), not(equalTo(null)));
@@ -69,7 +69,7 @@ public class MapExpressionTest {
 
     @Test
     public void map2() {
-        ReadMap<Object> map = newReadMapOf(Object.class);
+        ReadMap<Object> map = readMapOf(Object.class);
         pvReader = PVManager.read(map).from(dataSource).maxRate(ofMillis(100));
         map.add(latestValueOf(channel("test1")));
         map.add(latestValueOf(channel("test2")));
@@ -81,7 +81,7 @@ public class MapExpressionTest {
 
     @Test
     public void map3() throws Exception {
-        WriteMap<Object> map = newWriteMapOf(Object.class);
+        WriteMap<Object> map = writeMapOf(Object.class);
         pvWriter = PVManager.write(map).from(dataSource).async();
         map.add(latestValueOf(channel("test1")));
         map.add(latestValueOf(channel("test2")));
