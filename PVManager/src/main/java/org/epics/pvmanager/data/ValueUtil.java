@@ -152,10 +152,11 @@ public class ValueUtil {
      * @return the numeric value
      */
     public static Double numericValueOf(Object obj) {
-        if (obj instanceof Scalar) {
-            Object value = ((Scalar) obj).getValue();
-            if (value instanceof Number)
-                return ((Number) value).doubleValue();
+        if (obj instanceof VNumber) {
+            Number value = ((VNumber) obj).getValue();
+            if (value != null) {
+                return value.doubleValue();
+            }
         }
         
         if (obj instanceof VEnum) {
@@ -164,14 +165,14 @@ public class ValueUtil {
 
         if (obj instanceof VNumberArray) {
             ListNumber data = ((VNumberArray) obj).getData();
-            if (data.size() != 0) {
+            if (data != null && data.size() != 0) {
                 return data.getDouble(0);
             }
         }
         
         if (obj instanceof VEnumArray) {
             ListNumber data = ((VEnumArray) obj).getIndexes();
-            if (data.size() != 0) {
+            if (data != null && data.size() != 0) {
                 return data.getDouble(0);
             }
         }
