@@ -19,10 +19,7 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
 
     public IVDoubleArray(ListDouble data, List<Integer> sizes,
             Alarm alarm, Time time, Display display) {
-        super(alarm.getAlarmSeverity(), alarm.getAlarmName(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        super(alarm, time, display);
         this.array = null;
         this.sizes = sizes;
         this.data = data;

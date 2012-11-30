@@ -21,26 +21,9 @@ class IVIntArray extends IVNumeric implements VIntArray {
     private final ListInt data;
     private final List<Integer> sizes;
 
-    public IVIntArray(int[] array, List<Integer> sizes,
-            AlarmSeverity alarmSeverity, String alarmName,
-            Timestamp timestamp, Integer timeUserTag, boolean timeValid, Double lowerDisplayLimit,
-            Double lowerCtrlLimit, Double lowerAlarmLimit, Double lowerWarningLimit,
-            String units, NumberFormat format, Double upperWarningLimit, Double upperAlarmLimit,
-            Double upperCtrlLimit, Double upperDisplayLimit) {
-        super(alarmSeverity, alarmName, timestamp, timeUserTag, timeValid, lowerDisplayLimit,
-                lowerCtrlLimit, lowerAlarmLimit, lowerWarningLimit, units, format, upperWarningLimit,
-                upperAlarmLimit, upperCtrlLimit, upperDisplayLimit);
-        this.array = array;
-        this.sizes = sizes;
-        this.data = new ArrayInt(array);
-    }
-
     public IVIntArray(ListInt data, List<Integer> sizes,
             Alarm alarm, Time time, Display display) {
-        super(alarm.getAlarmSeverity(), alarm.getAlarmName(), time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        super(alarm, time, display);
         this.array = null;
         this.sizes = sizes;
         this.data = data;

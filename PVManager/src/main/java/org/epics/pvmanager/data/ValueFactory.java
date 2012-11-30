@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -48,11 +49,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VMultiDouble newVMultiDouble(List<VDouble> values, final Alarm alarm, final Time time, final Display display) {
-        return new IVMultiDouble(values, alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        return new IVMultiDouble(values, alarm, time, display);
     }
 
 
@@ -66,11 +63,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VInt newVInt(final Integer value, final Alarm alarm, final Time time, final Display display) {
-        return new IVInt(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        return new IVInt(value, alarm, time, display);
     }
     
     /**
@@ -277,11 +270,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDouble newVDouble(final Double value, final Alarm alarm, final Time time, final Display display) {
-        return new IVDouble(value, alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        return new IVDouble(value, alarm, time, display);
     }
 
     /**
@@ -347,11 +336,7 @@ public class ValueFactory {
             final double min, final double max, final int nSamples, final Alarm alarm,
             final Time time, final Display display) {
         return new IVStatistics(average, stdDev, min, max, nSamples,
-                alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+                alarm, time, display);
     }
     
     /**
@@ -425,11 +410,7 @@ public class ValueFactory {
     }
     
     public static VIntArray newVIntArray(final int[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
-        return new IVIntArray(values, sizes, alarm.getAlarmSeverity(), alarm.getAlarmName(),
-                time.getTimestamp(), time.getTimeUserTag(), time.isTimeValid(),
-                display.getLowerDisplayLimit(), display.getLowerCtrlLimit(), display.getLowerAlarmLimit(), display.getLowerWarningLimit(),
-                display.getUnits(), display.getFormat(),
-                display.getUpperWarningLimit(), display.getUpperAlarmLimit(), display.getUpperCtrlLimit(), display.getUpperDisplayLimit());
+        return new IVIntArray(new ArrayInt(values), sizes, alarm, time, display);
     }
     
     public static VIntArray newVIntArray(final int[] values, Alarm alarm, Time time, Display display) {
