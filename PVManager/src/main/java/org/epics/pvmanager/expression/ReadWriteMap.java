@@ -4,10 +4,8 @@
  */
 package org.epics.pvmanager.expression;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.epics.pvmanager.PVReaderDirector;
 
 /**
  * A expression that returns the result of a dynamically managed group.
@@ -20,10 +18,6 @@ import org.epics.pvmanager.PVReaderDirector;
  * @author carcassi
  */
 public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<String, R>, Map<String, W>> {
-
-    private final Object lock = new Object();
-    private final Map<String, DesiredRateExpression<R>> expressions = new HashMap<>();
-    private PVReaderDirector<?> director;
 
     /**
      * Creates a new group.
