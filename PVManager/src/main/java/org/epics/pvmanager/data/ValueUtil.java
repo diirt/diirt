@@ -168,6 +168,13 @@ public class ValueUtil {
                 return data.getDouble(0);
             }
         }
+        
+        if (obj instanceof VEnumArray) {
+            ListNumber data = ((VEnumArray) obj).getIndexes();
+            if (data.size() != 0) {
+                return data.getDouble(0);
+            }
+        }
 
         if (obj instanceof MultiScalar) {
             List values = ((MultiScalar) obj).getValues();
