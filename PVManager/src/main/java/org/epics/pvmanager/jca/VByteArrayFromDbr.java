@@ -6,11 +6,11 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Byte;
-import java.util.Collections;
-import java.util.List;
 import org.epics.pvmanager.data.VByteArray;
 import org.epics.util.array.ArrayByte;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListByte;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -23,8 +23,8 @@ class VByteArrayFromDbr extends VNumberMetadata<DBR_TIME_Byte, DBR_CTRL_Double> 
     }
 
     @Override
-    public List<Integer> getSizes() {
-        return Collections.singletonList(dbrValue.getByteValue().length);
+    public ListInt getSizes() {
+        return new ArrayInt(dbrValue.getByteValue().length);
     }
 
     @Override

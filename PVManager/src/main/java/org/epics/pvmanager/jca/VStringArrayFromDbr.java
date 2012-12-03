@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.epics.pvmanager.data.VStringArray;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -29,8 +31,8 @@ class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> implements VStringA
     }
 
     @Override
-    public List<Integer> getSizes() {
-        return Collections.singletonList(dbrValue.getStringValue().length);
+    public ListInt getSizes() {
+        return new ArrayInt(dbrValue.getStringValue().length);
     }
 
 }

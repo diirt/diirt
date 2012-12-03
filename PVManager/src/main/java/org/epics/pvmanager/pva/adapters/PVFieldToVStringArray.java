@@ -13,6 +13,8 @@ import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvmanager.data.VStringArray;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 
 /**
  * @author msekoranja
@@ -51,8 +53,8 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */
 	@Override
-	public List<Integer> getSizes() {
-		return Collections.singletonList(array.length);
+	public ListInt getSizes() {
+		return new ArrayInt(array.length);
 	}
 
 	/* (non-Javadoc)

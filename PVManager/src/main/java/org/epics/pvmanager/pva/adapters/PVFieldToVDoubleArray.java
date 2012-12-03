@@ -4,15 +4,15 @@
  */
 package org.epics.pvmanager.pva.adapters;
 
-import java.util.Collections;
-import java.util.List;
 
 import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 
 /**
  * @author msekoranja
@@ -62,8 +62,8 @@ public class PVFieldToVDoubleArray extends AlarmTimeDisplayExtractor implements 
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */
 	@Override
-	public List<Integer> getSizes() {
-		return Collections.singletonList(array.length);
+	public ListInt getSizes() {
+		return new ArrayInt(array.length);
 	}
 
 	/* (non-Javadoc)

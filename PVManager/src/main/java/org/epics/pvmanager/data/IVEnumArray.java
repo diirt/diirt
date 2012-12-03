@@ -16,10 +16,10 @@ class IVEnumArray extends IVMetadata implements VEnumArray {
     
     private final ListInt indexes;
     private final List<String> labels;
-    private final List<Integer> sizes;
+    private final ListInt sizes;
     private final List<String> array;
 
-    public IVEnumArray(ListInt indexes, List<String> labels, List<Integer> sizes, Alarm alarm, Time time) {
+    public IVEnumArray(ListInt indexes, List<String> labels, ListInt sizes, Alarm alarm, Time time) {
         super(alarm, time);
         List<String> tempArray = new ArrayList<>(indexes.size());
         for (int i = 0; i < indexes.size(); i++) {
@@ -51,7 +51,7 @@ class IVEnumArray extends IVMetadata implements VEnumArray {
     }
 
     @Override
-    public List<Integer> getSizes() {
+    public ListInt getSizes() {
         return sizes;
     }
     

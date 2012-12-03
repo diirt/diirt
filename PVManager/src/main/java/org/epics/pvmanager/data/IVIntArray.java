@@ -19,9 +19,9 @@ class IVIntArray extends IVNumeric implements VIntArray {
 
     private final int[] array;
     private final ListInt data;
-    private final List<Integer> sizes;
+    private final ListInt sizes;
 
-    public IVIntArray(ListInt data, List<Integer> sizes,
+    public IVIntArray(ListInt data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
         this.array = null;
@@ -30,7 +30,7 @@ class IVIntArray extends IVNumeric implements VIntArray {
     }
 
     @Override
-    public List<Integer> getSizes() {
+    public ListInt getSizes() {
         return sizes;
     }
 

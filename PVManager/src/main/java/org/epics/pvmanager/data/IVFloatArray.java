@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.data;
 
-import java.util.List;
 import org.epics.util.array.ListFloat;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -15,9 +15,9 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
 
     private final float[] array;
     private final ListFloat data;
-    private final List<Integer> sizes;
+    private final ListInt sizes;
 
-    public IVFloatArray(ListFloat data, List<Integer> sizes,
+    public IVFloatArray(ListFloat data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
         this.array = null;
@@ -26,7 +26,7 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
     }
 
     @Override
-    public List<Integer> getSizes() {
+    public ListInt getSizes() {
         return sizes;
     }
 

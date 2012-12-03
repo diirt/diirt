@@ -5,6 +5,7 @@
 package org.epics.pvmanager.data;
 
 import java.util.List;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 
 /**
@@ -32,5 +33,5 @@ public interface Array<T> {
      */
     Object getData();
 
-    List<Integer> getSizes();
+    ListInt getSizes();
 }

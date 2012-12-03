@@ -49,7 +49,7 @@ public class ValueFactoryTest {
         VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
         assertThat(value.getData(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
         assertThat(value.getIndexes(), equalTo((ListInt) new ArrayInt(1, 0, 2)));
-        assertThat(value.getSizes(), equalTo(Arrays.asList(3)));
+        assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
     }
 

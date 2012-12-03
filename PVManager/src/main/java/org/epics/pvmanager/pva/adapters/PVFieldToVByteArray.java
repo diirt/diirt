@@ -4,15 +4,15 @@
  */
 package org.epics.pvmanager.pva.adapters;
 
-import java.util.Collections;
-import java.util.List;
 
 import org.epics.pvdata.pv.ByteArrayData;
 import org.epics.pvdata.pv.PVByteArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvmanager.data.VByteArray;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListByte;
+import org.epics.util.array.ListInt;
 
 /**
  * @author msekoranja
@@ -62,8 +62,8 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */
 	@Override
-	public List<Integer> getSizes() {
-		return Collections.singletonList(array.length);
+	public ListInt getSizes() {
+		return new ArrayInt(array.length);
 	}
 
 	/* (non-Javadoc)

@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.data;
 
-import java.util.List;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -15,9 +15,9 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
 
     private final double[] array;
     private final ListDouble data;
-    private final List<Integer> sizes;
+    private final ListInt sizes;
 
-    public IVDoubleArray(ListDouble data, List<Integer> sizes,
+    public IVDoubleArray(ListDouble data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
         this.array = null;
@@ -26,7 +26,7 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
     }
 
     @Override
-    public List<Integer> getSizes() {
+    public ListInt getSizes() {
         return sizes;
     }
 

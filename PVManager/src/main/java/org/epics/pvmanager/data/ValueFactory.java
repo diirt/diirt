@@ -362,7 +362,7 @@ public class ValueFactory {
      * @param display the display
      * @return the new value
      */
-    public static VDoubleArray newVDoubleArray(final double[] values, final List<Integer> sizes, Alarm alarm, Time time, Display display) {
+    public static VDoubleArray newVDoubleArray(final double[] values, final ListInt sizes, Alarm alarm, Time time, Display display) {
         return new IVDoubleArray(new ArrayDouble(values), sizes, alarm, time, display);
     }
     
@@ -376,7 +376,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
-        return newVDoubleArray(values, Collections.singletonList(values.length), alarm, time, display);
+        return newVDoubleArray(values, new ArrayInt(values.length), alarm, time, display);
     }
     
     /**
@@ -389,7 +389,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDoubleArray newVDoubleArray(ListDouble data, Alarm alarm, Time time, Display display) {
-        return new IVDoubleArray(data, Collections.singletonList(data.size()), alarm,
+        return new IVDoubleArray(data, new ArrayInt(data.size()), alarm,
                 time, display);
     }
     
@@ -403,7 +403,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VFloatArray newVFloatArray(ListFloat data, Alarm alarm, Time time, Display display) {
-        return new IVFloatArray(data, Collections.singletonList(data.size()), alarm,
+        return new IVFloatArray(data, new ArrayInt(data.size()), alarm,
                 time, display);
     }
     
@@ -415,7 +415,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
-        return newVDoubleArray(values, Collections.singletonList(values.length), alarmNone(), timeNow(), display);
+        return newVDoubleArray(values, new ArrayInt(values.length), alarmNone(), timeNow(), display);
     }
 
     public static VImage newVImage(int height, int width, byte[] data) {
@@ -432,7 +432,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VIntArray newVIntArray(final ListInt values, Alarm alarm, Time time, Display display) {
-        return new IVIntArray(values, Collections.singletonList(values.size()), alarm, time, display);
+        return new IVIntArray(values, new ArrayInt(values.size()), alarm, time, display);
     }
 
     /**
@@ -445,7 +445,7 @@ public class ValueFactory {
      * @return the new value
      */
     public static VEnumArray newVEnumArray(ListInt indexes, List<String> labels, Alarm alarm, Time time) {
-        return new IVEnumArray(indexes, labels, Collections.singletonList(indexes.size()), alarm, time);
+        return new IVEnumArray(indexes, labels, new ArrayInt(indexes.size()), alarm, time);
     }
 
 }
