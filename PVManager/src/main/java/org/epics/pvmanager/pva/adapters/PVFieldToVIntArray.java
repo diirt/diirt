@@ -67,14 +67,6 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 	}
 
 	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VIntArray#getArray()
-	 */
-	@Override
-	public int[] getArray() {
-		return array;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.VIntArray#getData()
 	 */
 	@Override

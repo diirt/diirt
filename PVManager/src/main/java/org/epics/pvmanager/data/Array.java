@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface Array<T> {
 
-    Object getArray();
+    Object getData();
 
     List<Integer> getSizes();
 }

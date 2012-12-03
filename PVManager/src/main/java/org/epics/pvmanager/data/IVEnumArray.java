@@ -41,7 +41,7 @@ class IVEnumArray extends IVMetadata implements VEnumArray {
     }
 
     @Override
-    public List<String> getArray() {
+    public List<String> getData() {
         return array;
     }
 

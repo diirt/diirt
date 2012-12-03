@@ -67,14 +67,6 @@ public class PVFieldToVShortArray extends AlarmTimeDisplayExtractor implements V
 	}
 
 	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VShortArray#getArray()
-	 */
-	@Override
-	public short[] getArray() {
-		return array;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.VShortArray#getData()
 	 */
 	@Override

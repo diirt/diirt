@@ -101,56 +101,6 @@ public class SimpleValueFormat extends ValueFormat {
             return format((VNumberArray) array, toAppendTo, pos);
         }
         
-        // TODO: probably the rest is junk
-        
-        if (array == null || array.getArray() == null) {
-            return toAppendTo;
-        }
-
-        NumberFormat f = null;
-        if (array instanceof Display) {
-            f = nf(array);
-        }
-
-        toAppendTo.append("[");
-        boolean hasMore = false;
-
-        // To support all array types, there is no other way than
-        // implementing them one by one... curse non-reified generics!
-
-        // int array support
-        if (array.getArray() instanceof int[]) {
-            int[] data = (int[]) array.getArray();
-            if (data.length > maxElements) {
-                hasMore = true;
-            }
-            for (int i = 0; i < Math.min(data.length, maxElements); i++) {
-                if (i != 0) {
-                    toAppendTo.append(", ");
-                }
-                toAppendTo.append(f.format(data[i]));
-            }
-
-        // double array support
-        } else if (array.getArray() instanceof double[]) {
-            double[] data = (double[]) array.getArray();
-            if (data.length > maxElements) {
-                hasMore = true;
-            }
-            for (int i = 0; i < Math.min(data.length, maxElements); i++) {
-                if (i != 0) {
-                    toAppendTo.append(", ");
-                }
-                toAppendTo.append(f.format(data[i]));
-            }
-        } else {
-            throw new UnsupportedOperationException("Type " + array.getClass().getName() + " not yet supported.");
-        }
-
-        if (hasMore) {
-            toAppendTo.append(", ...");
-        }
-        toAppendTo.append("]");
-        return toAppendTo;
+        throw new UnsupportedOperationException("Type " + array.getClass().getName() + " not yet supported.");
     }
 }

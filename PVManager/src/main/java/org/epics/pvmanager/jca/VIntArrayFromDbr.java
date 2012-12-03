@@ -21,11 +21,6 @@ class VIntArrayFromDbr extends VNumberMetadata<DBR_TIME_Int, DBR_CTRL_Double> im
     public VIntArrayFromDbr(DBR_TIME_Int dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
     }
-    
-    @Override
-    public int[] getArray() {
-        return dbrValue.getIntValue();
-    }
 
     @Override
     public List<Integer> getSizes() {

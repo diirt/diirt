@@ -67,14 +67,6 @@ public class PVFieldToVDoubleArray extends AlarmTimeDisplayExtractor implements 
 	}
 
 	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VDoubleArray#getArray()
-	 */
-	@Override
-	public double[] getArray() {
-		return array;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.VDoubleArray#getData()
 	 */
 	@Override

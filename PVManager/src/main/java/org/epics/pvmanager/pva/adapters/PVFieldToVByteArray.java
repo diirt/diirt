@@ -67,14 +67,6 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 	}
 
 	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VByteArray#getArray()
-	 */
-	@Override
-	public byte[] getArray() {
-		return array;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.VByteArray#getData()
 	 */
 	@Override

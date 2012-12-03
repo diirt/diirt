@@ -67,14 +67,6 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
 	}
 
 	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VFloatArray#getArray()
-	 */
-	@Override
-	public float[] getArray() {
-		return array;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.VFloatArray#getData()
 	 */
 	@Override

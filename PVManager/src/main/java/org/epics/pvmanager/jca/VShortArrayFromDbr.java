@@ -21,11 +21,6 @@ class VShortArrayFromDbr extends VNumberMetadata<DBR_TIME_Short, DBR_CTRL_Double
     public VShortArrayFromDbr(DBR_TIME_Short dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
     }
-    
-    @Override
-    public short[] getArray() {
-        return dbrValue.getShortValue();
-    }
 
     @Override
     public List<Integer> getSizes() {

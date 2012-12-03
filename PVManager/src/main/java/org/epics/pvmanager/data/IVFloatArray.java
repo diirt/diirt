@@ -26,19 +26,6 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
     }
 
     @Override
-    public float[] getArray() {
-        if (array == null) {
-            float[] temp = new float[data.size()];
-            for (int i = 0; i < data.size(); i++) {
-                temp[i] = data.getFloat(i);
-            }
-            return temp;
-        }
-        
-        return array;
-    }
-
-    @Override
     public List<Integer> getSizes() {
         return sizes;
     }

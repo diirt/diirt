@@ -21,11 +21,6 @@ class VFloatArrayFromDbr extends VNumberMetadata<DBR_TIME_Float, DBR_CTRL_Double
     public VFloatArrayFromDbr(DBR_TIME_Float dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
     }
-    
-    @Override
-    public float[] getArray() {
-        return dbrValue.getFloatValue();
-    }
 
     @Override
     public List<Integer> getSizes() {

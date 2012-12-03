@@ -26,19 +26,6 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
     }
 
     @Override
-    public double[] getArray() {
-        if (array == null) {
-            double[] temp = new double[data.size()];
-            for (int i = 0; i < data.size(); i++) {
-                temp[i] = data.getDouble(i);
-            }
-            return temp;
-        }
-        
-        return array;
-    }
-
-    @Override
     public List<Integer> getSizes() {
         return sizes;
     }

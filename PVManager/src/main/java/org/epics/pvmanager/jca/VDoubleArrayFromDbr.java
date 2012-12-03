@@ -21,11 +21,6 @@ class VDoubleArrayFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Doub
     public VDoubleArrayFromDbr(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
     }
-    
-    @Override
-    public double[] getArray() {
-        return dbrValue.getDoubleValue();
-    }
 
     @Override
     public ListDouble getData() {

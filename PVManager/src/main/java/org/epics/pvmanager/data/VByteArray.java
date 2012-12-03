@@ -15,13 +15,6 @@ public interface VByteArray extends Array<Integer>, VNumberArray, VType {
     
     /**
      * {@inheritDoc }
-     * @return the byte array
-     */
-    @Override
-    byte[] getArray();
-    
-    /**
-     * {@inheritDoc }
      * @return the data
      */
     @Override

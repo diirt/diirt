@@ -30,19 +30,6 @@ class IVIntArray extends IVNumeric implements VIntArray {
     }
 
     @Override
-    public int[] getArray() {
-        if (array == null) {
-            int[] temp = new int[data.size()];
-            for (int i = 0; i < data.size(); i++) {
-                temp[i] = data.getInt(i);
-            }
-            return temp;
-        }
-        
-        return array;
-    }
-
-    @Override
     public List<Integer> getSizes() {
         return sizes;
     }

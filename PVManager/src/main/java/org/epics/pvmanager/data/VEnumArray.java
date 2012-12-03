@@ -13,7 +13,7 @@ import org.epics.util.array.ListInt;
  */
 public interface VEnumArray extends Array<String>, Enum, Alarm, Time, VType {
     @Override
-    List<String> getArray();
+    List<String> getData();
     
     /**
      * Returns the indexes instead of the labels.

@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.pva.adapters;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.epics.pvmanager.data.VStringArray;
 public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements VStringArray {
 
 	private final String[] array;
+        private final List<String> data;
 	
 	/**
 	 * @param pvField
@@ -36,10 +38,12 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 			valueField.get(0, valueField.getLength(), data);
 			
 			this.array = data.data;
+                        this.data = Collections.unmodifiableList(Arrays.asList(array));
 		}
 		else
 		{
 			this.array = null;
+                        this.data = null;
 		}
 	}
 
@@ -55,8 +59,8 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 	 * @see org.epics.pvmanager.data.VStringArray#getArray()
 	 */
 	@Override
-	public String[] getArray() {
-		return array;
+	public List<String> getData() {
+		return data;
 	}
 
 }

@@ -34,9 +34,9 @@ public class JCALargeArrays {
                         long pause = System.currentTimeMillis() - start;
                         start = System.currentTimeMillis();
                         if (pv.getValue() instanceof VShortArray) {
-                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VShortArray) pv.getValue()).getArray().length);
+                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VShortArray) pv.getValue()).getData().size());
                         } else if (pv.getValue() instanceof VDoubleArray) {
-                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VDoubleArray) pv.getValue()).getArray().length);
+                            System.out.println(pause + " ms - " + pv.getValue() + " - count " + ((VDoubleArray) pv.getValue()).getData().size());
                         } else {
                             System.out.println(pause + " ms - " + pv.getValue());
                         }

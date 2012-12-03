@@ -21,11 +21,6 @@ class VByteArrayFromDbr extends VNumberMetadata<DBR_TIME_Byte, DBR_CTRL_Double> 
     public VByteArrayFromDbr(DBR_TIME_Byte dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
     }
-    
-    @Override
-    public byte[] getArray() {
-        return dbrValue.getByteValue();
-    }
 
     @Override
     public List<Integer> getSizes() {

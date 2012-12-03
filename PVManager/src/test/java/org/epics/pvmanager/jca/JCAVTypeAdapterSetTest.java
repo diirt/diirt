@@ -1151,7 +1151,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.readValue(), instanceOf(VStringArray.class));
         VStringArray converted = (VStringArray) cache.readValue();
-        assertThat(converted.getArray(), equalTo(new String[]{"Zero", "One", "Two"}));
+        assertThat(converted.getData(), equalTo(Arrays.asList("Zero", "One", "Two")));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
@@ -1172,7 +1172,7 @@ public class JCAVTypeAdapterSetTest {
         
         assertThat(cache.readValue(), instanceOf(VStringArray.class));
         VStringArray converted = (VStringArray) cache.readValue();
-        assertThat(converted.getArray(), equalTo(new String[]{"Only"}));
+        assertThat(converted.getData(), equalTo(Arrays.asList("Only")));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
