@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
@@ -39,5 +40,13 @@ public class VTypeToStringTest {
                 equalTo("VString[\"Testing\", 1234567.123000000]"));
         assertThat(VTypeToString.toString(newVString("Testing", newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
                 equalTo("VString[\"Testing\", MINOR(HIGH), 1234567.123000000]"));
+    }
+
+    @Test
+    public void toStringVEnum() {
+        assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VEnum[\"B\"(1), 1234567.123000000]"));
+        assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VEnum[\"B\"(1), MINOR(HIGH), 1234567.123000000]"));
     }
 }
