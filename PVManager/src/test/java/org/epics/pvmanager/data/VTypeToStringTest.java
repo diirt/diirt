@@ -31,6 +31,13 @@ public class VTypeToStringTest {
                 equalTo("VInt[3, 1234567.123000000]"));
         assertThat(VTypeToString.toString(newVInt(4, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)), displayNone())),
                 equalTo("VInt[4, MINOR(HIGH), 1234567.123000000]"));
-        
+    }
+
+    @Test
+    public void toStringVString() {
+        assertThat(VTypeToString.toString(newVString("Testing", alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VString[\"Testing\", 1234567.123000000]"));
+        assertThat(VTypeToString.toString(newVString("Testing", newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VString[\"Testing\", MINOR(HIGH), 1234567.123000000]"));
     }
 }
