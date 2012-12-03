@@ -141,4 +141,28 @@ public class TimestampTest {
         assertThat(reference.durationBetween(reference.minus(TimeDuration.ofMillis(600))), equalTo(TimeDuration.ofMillis(600)));
     }
     
+    @Test
+    public void toString1() {
+        Timestamp timestamp = Timestamp.of(0, 10000000);
+        assertThat(timestamp.toString(), equalTo("0.010000000"));
+    }
+    
+    @Test
+    public void toString2() {
+        Timestamp timestamp = Timestamp.of(1, 234500000);
+        assertThat(timestamp.toString(), equalTo("1.234500000"));
+    }
+    
+    @Test
+    public void toString3() {
+        Timestamp timestamp = Timestamp.of(1234, 567890000);
+        assertThat(timestamp.toString(), equalTo("1234.567890000"));
+    }
+    
+    @Test
+    public void toString4() {
+        Timestamp timestamp = Timestamp.of(1234, 100);
+        assertThat(timestamp.toString(), equalTo("1234.000000100"));
+    }
+    
 }
