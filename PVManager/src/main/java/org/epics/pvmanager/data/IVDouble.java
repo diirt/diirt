@@ -23,4 +23,9 @@ class IVDouble extends IVNumeric implements VDouble {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
+
 }

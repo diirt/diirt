@@ -23,4 +23,9 @@ class IVInt extends IVNumeric implements VInt {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
+
 }
