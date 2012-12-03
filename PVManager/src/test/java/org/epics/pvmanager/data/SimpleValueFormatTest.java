@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
+import java.util.Arrays;
 import org.epics.pvmanager.util.NumberFormats;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -39,6 +40,9 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.000, 2.000, 3.000]"));
         assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.000]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.000, 2.000, 3.000, ...]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
     }
 
     @Test

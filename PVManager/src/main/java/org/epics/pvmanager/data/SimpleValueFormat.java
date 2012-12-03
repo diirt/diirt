@@ -7,6 +7,7 @@ package org.epics.pvmanager.data;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.util.List;
 import org.epics.pvmanager.util.NumberFormats;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListInt;
@@ -95,10 +96,36 @@ public class SimpleValueFormat extends ValueFormat {
         return toAppendTo;
     }
 
+    protected StringBuffer format(List<String> data, StringBuffer toAppendTo, FieldPosition pos) {
+        toAppendTo.append("[");
+        boolean hasMore = false;
+        
+        if (data.size() > maxElements) {
+            hasMore = true;
+        }
+        
+        for (int i = 0; i < Math.min(data.size(), maxElements); i++) {
+            if (i != 0) {
+                toAppendTo.append(", ");
+            }
+            toAppendTo.append(data.get(i));
+        }
+        
+        if (hasMore) {
+            toAppendTo.append(", ...");
+        }
+        toAppendTo.append("]");
+        return toAppendTo;
+    }
+
     @Override
     protected StringBuffer format(Array array, StringBuffer toAppendTo, FieldPosition pos) {
         if (array instanceof VNumberArray) {
             return format((VNumberArray) array, toAppendTo, pos);
+        }
+        
+        if (array instanceof VStringArray) {
+            return format(((VStringArray) array).getData(), toAppendTo, pos);
         }
         
         throw new UnsupportedOperationException("Type " + array.getClass().getName() + " not yet supported.");
