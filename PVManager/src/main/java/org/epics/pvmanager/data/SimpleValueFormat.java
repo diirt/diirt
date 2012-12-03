@@ -128,6 +128,10 @@ public class SimpleValueFormat extends ValueFormat {
             return format(((VStringArray) array).getData(), toAppendTo, pos);
         }
         
+        if (array instanceof VEnumArray) {
+            return format(((VEnumArray) array).getData(), toAppendTo, pos);
+        }
+        
         throw new UnsupportedOperationException("Type " + array.getClass().getName() + " not yet supported.");
     }
 }

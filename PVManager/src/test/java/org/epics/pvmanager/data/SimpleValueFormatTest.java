@@ -43,6 +43,9 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
+        assertThat(f.format(newVEnumArray(new ArrayInt(2, 0, 0), Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[C, A, A]"));
+        assertThat(f.format(newVEnumArray(new ArrayInt(2), Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[C]"));
+        assertThat(f.format(newVEnumArray(new ArrayInt(2, 0, 0, 1, 0), Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[C, A, A, ...]"));
     }
 
     @Test
@@ -65,6 +68,9 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.00, 2.00, 3.00]"));
         assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.00]"));
         assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.00, 2.00, 3.00, ...]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
+        assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
     }
 
 }
