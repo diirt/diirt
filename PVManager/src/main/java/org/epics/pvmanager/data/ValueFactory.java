@@ -448,4 +448,15 @@ public class ValueFactory {
         return new IVEnumArray(indexes, labels, new ArrayInt(indexes.size()), alarm, time);
     }
 
+    /**
+     * Creates a new VStringArray.
+     * 
+     * @param data the strings
+     * @param alarm the alarm
+     * @param time the time
+     * @return the new value
+     */
+    public static VStringArray newVStringArray(List<String> data, Alarm alarm, Time time) {
+        return new IVStringArray(data, new ArrayInt(data.size()), alarm, time);
+    }
 }

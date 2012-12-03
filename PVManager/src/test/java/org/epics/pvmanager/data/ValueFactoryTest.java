@@ -52,5 +52,12 @@ public class ValueFactoryTest {
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
     }
+    
+    @Test
+    public void newVStringArray1() {
+        VStringArray value = newVStringArray(Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
+        assertThat(value.getData(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
+        assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
+    }
 
 }
