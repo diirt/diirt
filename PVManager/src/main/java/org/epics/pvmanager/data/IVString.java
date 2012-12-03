@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.util.time.Timestamp;
-
 /**
  *
  * @author carcassi

@@ -6,7 +6,6 @@ package org.epics.pvmanager.expression;
 
 import java.util.List;
 import org.epics.pvmanager.CacheCollector;
-import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.WriteFunction;
 
 /**

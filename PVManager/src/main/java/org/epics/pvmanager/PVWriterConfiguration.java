@@ -6,9 +6,8 @@ package org.epics.pvmanager;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.expression.WriteExpressionImpl;
-import org.epics.pvmanager.expression.WriteExpression;
 import java.util.concurrent.Executor;
+import org.epics.pvmanager.expression.WriteExpression;
 import org.epics.pvmanager.util.Executors;
 import org.epics.util.time.TimeDuration;
 

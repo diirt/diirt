@@ -4,9 +4,6 @@
  */
 package org.epics.pvmanager.data;
 
-import java.text.NumberFormat;
-import org.epics.util.time.Timestamp;
-
 /**
  * Immutable VInt implementation.
  *

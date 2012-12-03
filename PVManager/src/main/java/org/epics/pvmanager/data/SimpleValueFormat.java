@@ -6,9 +6,7 @@ package org.epics.pvmanager.data;
 
 import java.text.FieldPosition;
 import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.List;
-import org.epics.pvmanager.util.NumberFormats;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;

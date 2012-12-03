@@ -4,9 +4,9 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.Aggregator;
-import java.util.List;
 import static java.lang.Math.*;
+import java.util.List;
+import org.epics.pvmanager.Aggregator;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.data.AlarmSeverity.*;
 import static org.epics.pvmanager.data.ValueFactory.*;

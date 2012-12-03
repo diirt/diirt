@@ -4,10 +4,9 @@
  */
 package org.epics.pvmanager.expression;
 
-import org.epics.pvmanager.ReadRecipe;
-import org.epics.pvmanager.ReadRecipeBuilder;
-import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.PVReaderDirector;
+import org.epics.pvmanager.ReadFunction;
+import org.epics.pvmanager.ReadRecipeBuilder;
 
 /**
  * An expression to read at the desired rate.

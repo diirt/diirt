@@ -5,7 +5,6 @@
 package org.epics.pvmanager.data;
 
 import java.text.NumberFormat;
-import java.util.Collections;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;

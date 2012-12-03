@@ -5,9 +5,8 @@
 package org.epics.pvmanager.expression;
 
 import org.epics.pvmanager.PVWriterDirector;
-import org.epics.pvmanager.WriteRecipe;
-import org.epics.pvmanager.WriteRecipeBuilder;
 import org.epics.pvmanager.WriteFunction;
+import org.epics.pvmanager.WriteRecipeBuilder;
 
 /**
  * An expression to write.

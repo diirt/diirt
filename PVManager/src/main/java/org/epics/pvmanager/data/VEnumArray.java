@@ -5,6 +5,7 @@
 package org.epics.pvmanager.data;
 
 import java.util.List;
+import org.epics.pvmanager.data.Enum;
 import org.epics.util.array.ListInt;
 
 /**
