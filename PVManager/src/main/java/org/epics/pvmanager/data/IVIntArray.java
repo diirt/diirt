@@ -4,12 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
-import java.text.NumberFormat;
-import java.util.List;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
-import org.epics.util.time.Timestamp;
 
 /**
  *

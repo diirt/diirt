@@ -96,7 +96,7 @@ public class SimpleValueFormat extends ValueFormat {
     }
 
     @Override
-    protected StringBuffer format(Array<?> array, StringBuffer toAppendTo, FieldPosition pos) {
+    protected StringBuffer format(Array array, StringBuffer toAppendTo, FieldPosition pos) {
         if (array instanceof VNumberArray) {
             return format((VNumberArray) array, toAppendTo, pos);
         }

@@ -14,10 +14,9 @@ import org.epics.util.array.ListNumber;
  * The data is stored in a linear structure. The sizes array gives the dimensionality
  * and size for each dimension.
  *
- * @param <T> the type for the multi channel values
  * @author carcassi
  */
-public interface Array<T> {
+public interface Array {
 
     /**
      * Return the object containing the array data.

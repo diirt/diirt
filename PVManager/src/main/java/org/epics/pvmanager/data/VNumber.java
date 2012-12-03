@@ -12,7 +12,7 @@ package org.epics.pvmanager.data;
  *
  * @author carcassi
  */
-public interface VNumber extends Alarm, Time, Display {
+public interface VNumber extends Alarm, Time, Display, VType {
     
     /**
      * The numeric value.

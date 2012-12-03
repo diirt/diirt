@@ -11,7 +11,7 @@ import org.epics.util.array.ListInt;
  *
  * @author carcassi
  */
-public interface VEnumArray extends Array<String>, Enum, Alarm, Time, VType {
+public interface VEnumArray extends Array, Enum, Alarm, Time, VType {
     @Override
     List<String> getData();
     

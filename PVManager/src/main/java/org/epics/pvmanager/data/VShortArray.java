@@ -11,7 +11,7 @@ import org.epics.util.array.ListShort;
  *
  * @author carcassi
  */
-public interface VShortArray extends Array<Integer>, VNumberArray, VType {
+public interface VShortArray extends VNumberArray, VType {
     
     @Override
     ListShort getData();
