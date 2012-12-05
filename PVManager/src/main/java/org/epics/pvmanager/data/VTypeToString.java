@@ -105,4 +105,18 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
+    
+    public static String toString(VEnumArray vEnumArray) {
+        StringBuilder builder = new StringBuilder();
+        Class type = ValueUtil.typeOf(vEnumArray);
+        builder.append(type.getSimpleName())
+                .append("[");
+        builder.append(format.format(vEnumArray));
+        builder.append(", size ")
+                .append(vEnumArray.getData().size());
+        appendAlarm(builder, vEnumArray);
+        appendTime(builder, vEnumArray);
+        builder.append(']');
+        return builder.toString();
+    }
 }

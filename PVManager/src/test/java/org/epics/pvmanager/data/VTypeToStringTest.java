@@ -9,6 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.time.Timestamp;
 import static org.hamcrest.Matchers.*;
 
@@ -65,5 +66,13 @@ public class VTypeToStringTest {
                 equalTo("VStringArray[[A, B, C, ...], size 4, 1970/01/15 01:56:07.123]"));
         assertThat(VTypeToString.toString(newVStringArray(Arrays.asList("A", "B", "C", "D"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
                 equalTo("VStringArray[[A, B, C, ...], size 4, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+    }
+
+    @Test
+    public void toStringVEnumArray() {
+        assertThat(VTypeToString.toString(newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VEnumArray[[TWO, ONE, THREE], size 3, 1970/01/15 01:56:07.123]"));
+        assertThat(VTypeToString.toString(newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VEnumArray[[TWO, ONE, THREE], size 3, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
 }
