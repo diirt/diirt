@@ -747,6 +747,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VFloatArray[[3.25, 3.75, 4.25], size 3, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -776,6 +777,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VFloatArray[[3.25], size 1, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -832,6 +834,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VDoubleArray[[3.25, 3.75, 4.25], size 3, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -861,6 +864,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VDoubleArray[[3.25], size 1, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -918,6 +922,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VByteArray[[3, 4, 5], size 3, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -1088,6 +1093,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo("VIntArray[[3, 4, 5], size 3, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
