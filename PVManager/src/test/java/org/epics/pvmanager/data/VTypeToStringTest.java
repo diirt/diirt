@@ -38,9 +38,9 @@ public class VTypeToStringTest {
     @Test
     public void toStringVString() {
         assertThat(VTypeToString.toString(newVString("Testing", alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
-                equalTo("VString[\"Testing\", 1970/01/15 01:56:07.123]"));
+                equalTo("VString[Testing, 1970/01/15 01:56:07.123]"));
         assertThat(VTypeToString.toString(newVString("Testing", newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
-                equalTo("VString[\"Testing\", MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+                equalTo("VString[Testing, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
 
     @Test

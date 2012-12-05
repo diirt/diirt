@@ -49,9 +49,8 @@ public class VTypeToString {
         StringBuilder builder = new StringBuilder();
         Class type = ValueUtil.typeOf(vString);
         builder.append(type.getSimpleName())
-                .append("[\"")
-                .append(vString.getValue())
-                .append('\"');
+                .append("[")
+                .append(vString.getValue());
         appendAlarm(builder, vString);
         appendTime(builder, vString);
         builder.append(']');
