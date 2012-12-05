@@ -18,6 +18,24 @@ public class CollectionNumbersTest {
     }
     
     @Test
+    public void wrappedArray1() {
+        float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayFloat(array);
+        float[] array2 = (float[]) CollectionNumbers.wrappedArray(coll);
+        assertThat(array2, equalTo(new float[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
+    public void wrappedArray2() {
+        byte[] array = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        ListNumber coll = new ArrayByte(array);
+        byte[] array2 = (byte[]) CollectionNumbers.wrappedArray(coll);
+        assertThat(array2, equalTo(new byte[] {0,1,2,3,4,5,6,7,8,9}));
+        assertThat(array2, sameInstance(array));
+    }
+    
+    @Test
     public void wrappedFloatArray1() {
         float[] array = new float[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         ListNumber coll = new ArrayFloat(array);
