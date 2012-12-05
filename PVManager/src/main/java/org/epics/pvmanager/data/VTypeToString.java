@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.data;
 
+import org.epics.pvmanager.util.NumberFormats;
+
 /**
  * Helper class that provides default implementation of toString for VTypes.
  *
@@ -71,6 +73,33 @@ public class VTypeToString {
         }
         builder.append(", ")
                 .append(vEnum.getTimestamp())
+                .append(']');
+        return builder.toString();
+    }
+    
+    private final static ValueFormat format = new SimpleValueFormat(3);
+    
+    static {
+        format.setNumberFormat(NumberFormats.toStringFormat());
+    }
+    
+    public static String toString(VNumberArray vNumberArray) {
+        StringBuilder builder = new StringBuilder();
+        Class type = ValueUtil.typeOf(vNumberArray);
+        builder.append(type.getSimpleName())
+                .append("[");
+        builder.append(format.format(vNumberArray));
+        builder.append(", size ")
+                .append(vNumberArray.getData().size());
+        if (!vNumberArray.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
+            builder.append(", ")
+                    .append(vNumberArray.getAlarmSeverity())
+                    .append("(")
+                    .append(vNumberArray.getAlarmName())
+                    .append(")");
+        }
+        builder.append(", ")
+                .append(vNumberArray.getTimestamp())
                 .append(']');
         return builder.toString();
     }

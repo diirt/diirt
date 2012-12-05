@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 import static org.hamcrest.Matchers.*;
 
@@ -48,5 +49,15 @@ public class VTypeToStringTest {
                 equalTo("VEnum[\"B\"(1), 1234567.123000000]"));
         assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
                 equalTo("VEnum[\"B\"(1), MINOR(HIGH), 1234567.123000000]"));
+    }
+
+    @Test
+    public void toStringVDoubleArray() {
+        assertThat(VTypeToString.toString(newVDoubleArray(new ArrayDouble(1.0, 2.0, 3.0, 4.0), alarmNone(), newTime(Timestamp.of(1234567, 123000000)), displayNone())),
+                equalTo("VDoubleArray[[1.0, 2.0, 3.0, ...], size 4, 1234567.123000000]"));
+        assertThat(VTypeToString.toString(newVDoubleArray(new ArrayDouble(1.0, 2.0, 3.0, 4.0), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)), displayNone())),
+                equalTo("VDoubleArray[[1.0, 2.0, 3.0, ...], size 4, MINOR(HIGH), 1234567.123000000]"));
+//        assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+//                equalTo("VEnum[\"B\"(1), MINOR(HIGH), 1234567.123000000]"));
     }
 }
