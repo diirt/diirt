@@ -19,7 +19,11 @@ import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
+import org.epics.util.array.ArrayByte;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayShort;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
@@ -136,8 +140,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VFloatArray, float[]> vFloatArray(String name) {
-        return channel(name, VFloatArray.class, float[].class);
+    public static ChannelExpression<VFloatArray, ArrayFloat> vFloatArray(String name) {
+        return channel(name, VFloatArray.class, ArrayFloat.class);
     }
 
     /**
@@ -146,8 +150,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VDoubleArray, float[]> vDoubleArray(String name) {
-        return channel(name, VDoubleArray.class, float[].class);
+    public static ChannelExpression<VDoubleArray, ArrayDouble> vDoubleArray(String name) {
+        return channel(name, VDoubleArray.class, ArrayDouble.class);
     }
 
     /**
@@ -156,8 +160,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VByteArray, byte[]> vByteArray(String name) {
-        return channel(name, VByteArray.class, byte[].class);
+    public static ChannelExpression<VByteArray, ArrayByte> vByteArray(String name) {
+        return channel(name, VByteArray.class, ArrayByte.class);
     }
 
     /**
@@ -166,8 +170,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VShortArray, short[]> vShortArray(String name) {
-        return channel(name, VShortArray.class, short[].class);
+    public static ChannelExpression<VShortArray, ArrayShort> vShortArray(String name) {
+        return channel(name, VShortArray.class, ArrayShort.class);
     }
 
     /**
@@ -176,8 +180,8 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VIntArray, int[]> vIntArray(String name) {
-        return channel(name, VIntArray.class, int[].class);
+    public static ChannelExpression<VIntArray, ArrayInt> vIntArray(String name) {
+        return channel(name, VIntArray.class, ArrayInt.class);
     }
 
     /**
@@ -196,8 +200,9 @@ public class ExpressionLanguage {
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VStringArray, String[]> vStringArray(String name) {
-        return channel(name, VStringArray.class, String[].class);
+    @SuppressWarnings("unchecked")
+    public static ChannelExpression<VStringArray, List<String>> vStringArray(String name) {
+        return (ChannelExpression<VStringArray, List<String>>) (ChannelExpression) channel(name, VStringArray.class, List.class);
     }
 
     /**
