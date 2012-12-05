@@ -16,19 +16,23 @@ public class VTypeToString {
         // Do not create
     }
     
+    private static void appendAlarm(StringBuilder builder, Alarm alarm) {
+        if (!alarm.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
+            builder.append(", ")
+                    .append(alarm.getAlarmSeverity())
+                    .append("(")
+                    .append(alarm.getAlarmName())
+                    .append(")");
+        }
+    }
+    
     public static String toString(VNumber vNumber) {
         StringBuilder builder = new StringBuilder();
         Class type = ValueUtil.typeOf(vNumber);
         builder.append(type.getSimpleName())
                 .append('[')
                 .append(vNumber.getValue());
-        if (!vNumber.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
-            builder.append(", ")
-                    .append(vNumber.getAlarmSeverity())
-                    .append("(")
-                    .append(vNumber.getAlarmName())
-                    .append(")");
-        }
+        appendAlarm(builder, vNumber);
         builder.append(", ")
                 .append(vNumber.getTimestamp())
                 .append(']');
@@ -42,13 +46,7 @@ public class VTypeToString {
                 .append("[\"")
                 .append(vString.getValue())
                 .append('\"');
-        if (!vString.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
-            builder.append(", ")
-                    .append(vString.getAlarmSeverity())
-                    .append("(")
-                    .append(vString.getAlarmName())
-                    .append(")");
-        }
+        appendAlarm(builder, vString);
         builder.append(", ")
                 .append(vString.getTimestamp())
                 .append(']');
@@ -64,13 +62,7 @@ public class VTypeToString {
                 .append("\"(")
                 .append(vEnum.getIndex())
                 .append(")");
-        if (!vEnum.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
-            builder.append(", ")
-                    .append(vEnum.getAlarmSeverity())
-                    .append("(")
-                    .append(vEnum.getAlarmName())
-                    .append(")");
-        }
+        appendAlarm(builder, vEnum);
         builder.append(", ")
                 .append(vEnum.getTimestamp())
                 .append(']');
@@ -91,13 +83,7 @@ public class VTypeToString {
         builder.append(format.format(vNumberArray));
         builder.append(", size ")
                 .append(vNumberArray.getData().size());
-        if (!vNumberArray.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
-            builder.append(", ")
-                    .append(vNumberArray.getAlarmSeverity())
-                    .append("(")
-                    .append(vNumberArray.getAlarmName())
-                    .append(")");
-        }
+        appendAlarm(builder, vNumberArray);
         builder.append(", ")
                 .append(vNumberArray.getTimestamp())
                 .append(']');
