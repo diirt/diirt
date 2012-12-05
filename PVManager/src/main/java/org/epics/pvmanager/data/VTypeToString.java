@@ -92,4 +92,18 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
+    
+    public static String toString(VStringArray vStringArray) {
+        StringBuilder builder = new StringBuilder();
+        Class type = ValueUtil.typeOf(vStringArray);
+        builder.append(type.getSimpleName())
+                .append("[");
+        builder.append(format.format(vStringArray));
+        builder.append(", size ")
+                .append(vStringArray.getData().size());
+        appendAlarm(builder, vStringArray);
+        appendTime(builder, vStringArray);
+        builder.append(']');
+        return builder.toString();
+    }
 }

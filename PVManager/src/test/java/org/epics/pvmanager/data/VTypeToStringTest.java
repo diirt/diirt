@@ -58,4 +58,12 @@ public class VTypeToStringTest {
         assertThat(VTypeToString.toString(newVDoubleArray(new ArrayDouble(1.0, 2.0, 3.0, 4.0), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)), displayNone())),
                 equalTo("VDoubleArray[[1.0, 2.0, 3.0, ...], size 4, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
+
+    @Test
+    public void toStringVStringArray() {
+        assertThat(VTypeToString.toString(newVStringArray(Arrays.asList("A", "B", "C", "D"), alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VStringArray[[A, B, C, ...], size 4, 1970/01/15 01:56:07.123]"));
+        assertThat(VTypeToString.toString(newVStringArray(Arrays.asList("A", "B", "C", "D"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VStringArray[[A, B, C, ...], size 4, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+    }
 }
