@@ -26,6 +26,10 @@ public class VTypeToString {
         }
     }
     
+    private static void appendTime(StringBuilder builder, Time time) {
+        builder.append(", ").append(time.getTimestamp());
+    }
+    
     public static String toString(VNumber vNumber) {
         StringBuilder builder = new StringBuilder();
         Class type = ValueUtil.typeOf(vNumber);
@@ -33,9 +37,8 @@ public class VTypeToString {
                 .append('[')
                 .append(vNumber.getValue());
         appendAlarm(builder, vNumber);
-        builder.append(", ")
-                .append(vNumber.getTimestamp())
-                .append(']');
+        appendTime(builder, vNumber);
+        builder.append(']');
         return builder.toString();
     }
     
@@ -47,9 +50,8 @@ public class VTypeToString {
                 .append(vString.getValue())
                 .append('\"');
         appendAlarm(builder, vString);
-        builder.append(", ")
-                .append(vString.getTimestamp())
-                .append(']');
+        appendTime(builder, vString);
+        builder.append(']');
         return builder.toString();
     }
     
@@ -63,9 +65,8 @@ public class VTypeToString {
                 .append(vEnum.getIndex())
                 .append(")");
         appendAlarm(builder, vEnum);
-        builder.append(", ")
-                .append(vEnum.getTimestamp())
-                .append(']');
+        appendTime(builder, vEnum);
+        builder.append(']');
         return builder.toString();
     }
     
@@ -84,9 +85,8 @@ public class VTypeToString {
         builder.append(", size ")
                 .append(vNumberArray.getData().size());
         appendAlarm(builder, vNumberArray);
-        builder.append(", ")
-                .append(vNumberArray.getTimestamp())
-                .append(']');
+        appendTime(builder, vNumberArray);
+        builder.append(']');
         return builder.toString();
     }
 }
