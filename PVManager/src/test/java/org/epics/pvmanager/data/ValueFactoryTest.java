@@ -86,9 +86,10 @@ public class ValueFactoryTest {
     
     @Test
     public void newVStringArray1() {
-        VStringArray value = newVStringArray(Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
+        VStringArray value = newVStringArray(Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getData(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
+        assertThat(value.toString(), equalTo("VStringArray[[ONE, TWO, THREE], size 3, 2012/12/05 09:57:21.521]"));
     }
 
 }
