@@ -12,6 +12,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListInt;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -38,10 +39,11 @@ public class ValueFactoryTest {
     
     @Test
     public void newVEnum1() {
-        VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
+        VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getValue(), equalTo("TWO"));
         assertThat(value.getIndex(), equalTo(1));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
+        assertThat(value.toString(), equalTo("VEnum[\"TWO\"(1), 1354719441.521786982]"));
     }
     
     @Test
