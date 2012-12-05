@@ -47,6 +47,15 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVDouble1() {
+        VDouble value = newVDouble(1.0, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        assertThat(value.getValue(), equalTo(1.0));
+        assertThat(value.getAlarmName(), equalTo("LOW"));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(value.toString(), equalTo("VDouble[1.0, MINOR(LOW), 1354719441.521786982]"));
+    }
+    
+    @Test
     public void newVEnumArray1() {
         VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
         assertThat(value.getData(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
