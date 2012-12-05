@@ -46,9 +46,9 @@ public class VTypeToStringTest {
     @Test
     public void toStringVEnum() {
         assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
-                equalTo("VEnum[\"B\"(1), 1970/01/15 01:56:07.123]"));
+                equalTo("VEnum[B(1), 1970/01/15 01:56:07.123]"));
         assertThat(VTypeToString.toString(newVEnum(1, Arrays.asList("A", "B", "C"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
-                equalTo("VEnum[\"B\"(1), MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+                equalTo("VEnum[B(1), MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
 
     @Test

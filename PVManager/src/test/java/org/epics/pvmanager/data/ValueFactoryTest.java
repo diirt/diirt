@@ -45,7 +45,7 @@ public class ValueFactoryTest {
         assertThat(value.getValue(), equalTo("TWO"));
         assertThat(value.getIndex(), equalTo(1));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
-        assertThat(value.toString(), equalTo("VEnum[\"TWO\"(1), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo("VEnum[TWO(1), 2012/12/05 09:57:21.521]"));
     }
     
     @Test

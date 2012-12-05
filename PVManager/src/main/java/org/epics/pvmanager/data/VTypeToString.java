@@ -61,9 +61,9 @@ public class VTypeToString {
         StringBuilder builder = new StringBuilder();
         Class type = ValueUtil.typeOf(vEnum);
         builder.append(type.getSimpleName())
-                .append("[\"")
+                .append("[")
                 .append(vEnum.getValue())
-                .append("\"(")
+                .append("(")
                 .append(vEnum.getIndex())
                 .append(")");
         appendAlarm(builder, vEnum);
