@@ -5,6 +5,7 @@
 package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.util.NumberFormats;
+import org.epics.util.time.TimestampFormat;
 
 /**
  * Helper class that provides default implementation of toString for VTypes.
@@ -26,8 +27,10 @@ public class VTypeToString {
         }
     }
     
+    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd hh:mm:ss.SSS");
+    
     private static void appendTime(StringBuilder builder, Time time) {
-        builder.append(", ").append(time.getTimestamp());
+        builder.append(", ").append(timeFormat.format(time.getTimestamp()));
     }
     
     public static String toString(VNumber vNumber) {

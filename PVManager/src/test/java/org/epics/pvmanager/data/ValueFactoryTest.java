@@ -45,7 +45,7 @@ public class ValueFactoryTest {
         assertThat(value.getValue(), equalTo("TWO"));
         assertThat(value.getIndex(), equalTo(1));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
-        assertThat(value.toString(), equalTo("VEnum[\"TWO\"(1), 1354719441.521786982]"));
+        assertThat(value.toString(), equalTo("VEnum[\"TWO\"(1), 2012/12/05 09:57:21.521]"));
     }
     
     @Test
@@ -54,7 +54,7 @@ public class ValueFactoryTest {
         assertThat(value.getValue(), equalTo(1.0));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDouble[1.0, MINOR(LOW), 1354719441.521786982]"));
+        assertThat(value.toString(), equalTo("VDouble[1.0, MINOR(LOW), 2012/12/05 09:57:21.521]"));
     }
     
     @Test
@@ -63,7 +63,7 @@ public class ValueFactoryTest {
         assertThat(value.getData(), equalTo((ListDouble) new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 1354719441.521786982]"));
+        assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
     }
     
     @Test
