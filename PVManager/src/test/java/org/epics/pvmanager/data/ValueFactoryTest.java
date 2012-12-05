@@ -40,6 +40,13 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVString1() {
+        VString value = newVString("Testing", alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        assertThat(value.getValue(), equalTo("Testing"));
+        assertThat(value.toString(), equalTo("VString[Testing, 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
     public void newVEnum1() {
         VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getValue(), equalTo("TWO"));
