@@ -77,11 +77,12 @@ public class ValueFactoryTest {
     
     @Test
     public void newVEnumArray1() {
-        VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
+        VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getData(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
         assertThat(value.getIndexes(), equalTo((ListInt) new ArrayInt(1, 0, 2)));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
+        assertThat(value.toString(), equalTo("VEnumArray[[TWO, ONE, THREE], size 3, 2012/12/05 09:57:21.521]"));
     }
     
     @Test
