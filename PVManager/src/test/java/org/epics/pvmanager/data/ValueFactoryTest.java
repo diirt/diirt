@@ -67,6 +67,15 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVIntArray1() {
+        VIntArray value = newVIntArray(new ArrayInt(3, 6, 1, 0, 1), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        assertThat(value.getData(), equalTo((ListInt) new ArrayInt(3, 6, 1, 0, 1)));
+        assertThat(value.getAlarmName(), equalTo("LOW"));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(value.toString(), equalTo("VIntArray[[3, 6, 1, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
     public void newVEnumArray1() {
         VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow());
         assertThat(value.getData(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
