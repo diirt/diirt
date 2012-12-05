@@ -528,6 +528,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.toString(), equalTo("VString[32, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -600,6 +601,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.toString(), equalTo("VString[Testing, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -670,6 +672,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.toString(), equalTo("VEnum[Two(2), MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
@@ -1171,6 +1174,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarmName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.toString(), equalTo("VStringArray[[Zero, One, Two], size 3, MINOR(HIGH_ALARM), 1970/01/15 01:56:07.000]"));
     }
 
     @Test
