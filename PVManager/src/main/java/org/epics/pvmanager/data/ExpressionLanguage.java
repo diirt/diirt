@@ -195,13 +195,26 @@ public class ExpressionLanguage {
     }
     
     /**
-     * An expression that formats the given expression to a string.
+     * An expression that formats the given expression to a string using the
+     * given format.
+     * 
+     * @param expression the expression to format
+     * @param valueFormat the format to use for the conversion
+     * @return an expression with the string representation of the argument
+     */
+    public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression, ValueFormat valueFormat) {
+        return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), valueFormat), expression.getName());
+    }
+    
+    /**
+     * An expression that formats the given expression to a string using the
+     * default format.
      * 
      * @param expression the expression to format
      * @return an expression with the string representation of the argument
      */
     public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression) {
-        return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction()), expression.getName());
+        return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), ValueUtil.getDefaultValueFormat()), expression.getName());
     }
 
     /**

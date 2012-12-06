@@ -16,9 +16,9 @@ class VStringOfFunction implements ReadFunction<VString> {
     private final ReadFunction<? extends VType> argument;
     private final ValueFormat format;
 
-    public VStringOfFunction(ReadFunction<? extends VType> argument) {
+    public VStringOfFunction(ReadFunction<? extends VType> argument, ValueFormat format) {
         this.argument = argument;
-        this.format = new SimpleValueFormat(3);
+        this.format = format;
     }
 
     @Override
