@@ -4,12 +4,14 @@
  */
 package org.epics.pvmanager.data;
 
-import org.epics.pvmanager.ReadFunction;
+import java.util.Arrays;
+import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.SourceRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.util.array.*;
 import static org.junit.Assert.*;
@@ -155,5 +157,25 @@ public class ExpressionLanguageTest {
     public void statisticsOf1() {
         DesiredRateExpression<VStatistics> statsOfMyPV = statisticsOf(vDouble("my pv"));
         assertThat(statsOfMyPV.getName(), equalTo("stats(my pv)"));
+    }
+
+    @Test
+    public void vStringOf1() {
+        ReadExpressionTester exp = new ReadExpressionTester(vStringOf(latestValueOf(vType("pv"))));
+        exp.writeValue("pv", newVDouble(3.0));
+        String string = ((VString) exp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "3.0"));
+        
+        exp.writeValue("pv", newVInt(5, alarmNone(), timeNow(), displayNone()));
+        string = ((VString) exp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "5"));
+        
+        exp.writeValue("pv", newVEnum(2, Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow()));
+        string = ((VString) exp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "C"));
+        
+        exp.writeValue("pv", newVString("Test", alarmNone(), timeNow()));
+        string = ((VString) exp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "Test"));
     }
 }

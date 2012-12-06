@@ -193,6 +193,16 @@ public class ExpressionLanguage {
     public static ChannelExpression<VString, String> vString(String name) {
         return channel(name, VString.class, String.class);
     }
+    
+    /**
+     * An expression that formats the given expression to a string.
+     * 
+     * @param expression the expression to format
+     * @return an expression with the string representation of the argument
+     */
+    public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression) {
+        return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction()), expression.getName());
+    }
 
     /**
      * A channel with the given name of type VStringArray.
