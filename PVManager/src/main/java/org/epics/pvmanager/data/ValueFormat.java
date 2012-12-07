@@ -115,6 +115,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VDouble) {
             return parseDouble(source);
         }
+        if (reference instanceof VFloat) {
+            return parseFloat(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -122,6 +125,15 @@ public abstract class ValueFormat extends Format {
     public double parseDouble(String source) {
         try {
             double value = Double.parseDouble(source);
+            return value;
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
+    }
+    
+    public float parseFloat(String source) {
+        try {
+            float value = Float.parseFloat(source);
             return value;
         } catch (NumberFormatException ex) {
             throw new RuntimeException(ex.getMessage(), ex);

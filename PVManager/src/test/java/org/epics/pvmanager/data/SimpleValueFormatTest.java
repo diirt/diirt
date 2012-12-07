@@ -14,6 +14,7 @@ import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListFloat;
+import org.mockito.Mockito;
 
 /**
  *
@@ -81,6 +82,15 @@ public class SimpleValueFormatTest {
         assertThat(f.parseObject("3.14", reference), equalTo((Object) 3.14));
         assertThat(f.parseDouble("3.14"), equalTo((Object) 3.14));
         assertThat(f.parseDouble("1333"), equalTo((Object) 1333.0));
+    }
+    
+    @Test
+    public void parseVFloat1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VFloat reference = Mockito.mock(VFloat.class);
+        assertThat(f.parseObject("3.14", reference), equalTo((Object) 3.14f));
+        assertThat(f.parseFloat("3.14"), equalTo((Object) 3.14f));
+        assertThat(f.parseFloat("1333"), equalTo((Object) 1333.0f));
     }
 
 }
