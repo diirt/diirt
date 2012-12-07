@@ -7,7 +7,11 @@ package org.epics.pvmanager.data;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static org.epics.pvmanager.data.ValueFactory.*;
 
 /**
  * Formats a data type to a String representation. This class provide default
@@ -105,6 +109,23 @@ public abstract class ValueFormat extends Format {
     @Override
     public Object parseObject(String source, ParsePosition pos) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public Object parseObject(String source, Object reference) {
+        if (reference instanceof VDouble) {
+            return parseDouble(source);
+        }
+        
+        throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
+    }
+    
+    public double parseDouble(String source) {
+        try {
+            double value = Double.parseDouble(source);
+            return value;
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
     }
 
 }

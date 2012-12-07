@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.data;
 
+import java.text.DateFormat;
 import java.util.Arrays;
 import org.epics.pvmanager.util.NumberFormats;
 import org.junit.Test;
@@ -71,6 +72,15 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
+    }
+    
+    @Test
+    public void parseVDouble1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VDouble reference = newVDouble(3.0);
+        assertThat(f.parseObject("3.14", reference), equalTo((Object) 3.14));
+        assertThat(f.parseDouble("3.14"), equalTo((Object) 3.14));
+        assertThat(f.parseDouble("1333"), equalTo((Object) 1333.0));
     }
 
 }
