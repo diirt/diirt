@@ -114,10 +114,10 @@ public class SimpleValueFormatTest {
     @Test
     public void parseVByte1() {
         ValueFormat f = new SimpleValueFormat(3);
-        VByte reference = Mockito.mock(VByte.class);
-        assertThat(f.parseObject("23", reference), equalTo((Object) (byte) 23));
-        assertThat(f.parseByte("23"), equalTo((Object) (byte) 23));
-        assertThat(f.parseByte("112"), equalTo((Object) (byte) 112));
+        VString reference = Mockito.mock(VString.class);
+        assertThat(f.parseObject("Testing", reference), equalTo((Object) "Testing"));
+        assertThat(f.parseString("Testing"), equalTo("Testing"));
+        assertThat(f.parseString("Foo"), equalTo("Foo"));
     }
 
 }

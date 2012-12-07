@@ -127,6 +127,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VByte) {
             return parseByte(source);
         }
+        if (reference instanceof VString) {
+            return parseString(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -174,6 +177,10 @@ public abstract class ValueFormat extends Format {
         } catch (NumberFormatException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
+    }
+    
+    public String parseString(String source) {
+        return source;
     }
 
 }
