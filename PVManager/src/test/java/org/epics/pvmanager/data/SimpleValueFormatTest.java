@@ -101,5 +101,14 @@ public class SimpleValueFormatTest {
         assertThat(f.parseInt("314"), equalTo((Object) 314));
         assertThat(f.parseInt("1333"), equalTo((Object) 1333));
     }
+    
+    @Test
+    public void parseVShort1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VShort reference = Mockito.mock(VShort.class);
+        assertThat(f.parseObject("314", reference), equalTo((Object) (short) 314));
+        assertThat(f.parseShort("314"), equalTo((Object) (short) 314));
+        assertThat(f.parseShort("1333"), equalTo((Object) (short) 1333));
+    }
 
 }

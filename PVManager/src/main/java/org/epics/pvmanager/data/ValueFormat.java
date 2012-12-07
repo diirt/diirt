@@ -121,6 +121,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VInt) {
             return parseInt(source);
         }
+        if (reference instanceof VShort) {
+            return parseShort(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -146,6 +149,15 @@ public abstract class ValueFormat extends Format {
     public int parseInt(String source) {
         try {
             int value = Integer.parseInt(source);
+            return value;
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
+    }
+    
+    public short parseShort(String source) {
+        try {
+            short value = Short.parseShort(source);
             return value;
         } catch (NumberFormatException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
