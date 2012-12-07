@@ -92,5 +92,14 @@ public class SimpleValueFormatTest {
         assertThat(f.parseFloat("3.14"), equalTo((Object) 3.14f));
         assertThat(f.parseFloat("1333"), equalTo((Object) 1333.0f));
     }
+    
+    @Test
+    public void parseVInt1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VInt reference = Mockito.mock(VInt.class);
+        assertThat(f.parseObject("314", reference), equalTo((Object) 314));
+        assertThat(f.parseInt("314"), equalTo((Object) 314));
+        assertThat(f.parseInt("1333"), equalTo((Object) 1333));
+    }
 
 }
