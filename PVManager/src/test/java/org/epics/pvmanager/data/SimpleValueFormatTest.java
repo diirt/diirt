@@ -6,6 +6,7 @@ package org.epics.pvmanager.data;
 
 import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.List;
 import org.epics.pvmanager.util.NumberFormats;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -127,6 +128,16 @@ public class SimpleValueFormatTest {
         assertThat(f.parseObject("Testing", reference), equalTo((Object) "Testing"));
         assertThat(f.parseString("Testing"), equalTo("Testing"));
         assertThat(f.parseString("Foo"), equalTo("Foo"));
+    }
+    
+    @Test
+    public void parseVEnum1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        List<String> labels = Arrays.asList("A", "B", "C");
+        VEnum reference = newVEnum(0, labels, alarmNone(), timeNow());
+        assertThat(f.parseObject("A", reference), equalTo((Object) 0));
+        assertThat(f.parseEnum("A", labels), equalTo(0));
+        assertThat(f.parseEnum("B", labels), equalTo(1));
     }
 
 }

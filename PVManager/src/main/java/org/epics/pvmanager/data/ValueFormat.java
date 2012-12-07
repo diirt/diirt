@@ -9,6 +9,7 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.epics.pvmanager.data.ValueFactory.*;
@@ -130,6 +131,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VString) {
             return parseString(source);
         }
+        if (reference instanceof VEnum) {
+            return parseEnum(source, ((VEnum) reference).getLabels());
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -181,6 +185,14 @@ public abstract class ValueFormat extends Format {
     
     public String parseString(String source) {
         return source;
+    }
+    
+    public int parseEnum(String source, List<String> labels) {
+        int index = labels.indexOf(source);
+        if (index != -1) {
+            return index;
+        }
+        throw new RuntimeException(source  + " is not part of enum " + labels);
     }
 
 }
