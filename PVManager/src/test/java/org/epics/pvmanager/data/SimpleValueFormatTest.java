@@ -80,8 +80,8 @@ public class SimpleValueFormatTest {
         ValueFormat f = new SimpleValueFormat(3);
         VDouble reference = newVDouble(3.0);
         assertThat(f.parseObject("3.14", reference), equalTo((Object) 3.14));
-        assertThat(f.parseDouble("3.14"), equalTo((Object) 3.14));
-        assertThat(f.parseDouble("1333"), equalTo((Object) 1333.0));
+        assertThat(f.parseDouble("3.14"), equalTo(3.14));
+        assertThat(f.parseDouble("1333"), equalTo(1333.0));
     }
     
     @Test
@@ -89,8 +89,8 @@ public class SimpleValueFormatTest {
         ValueFormat f = new SimpleValueFormat(3);
         VFloat reference = Mockito.mock(VFloat.class);
         assertThat(f.parseObject("3.14", reference), equalTo((Object) 3.14f));
-        assertThat(f.parseFloat("3.14"), equalTo((Object) 3.14f));
-        assertThat(f.parseFloat("1333"), equalTo((Object) 1333.0f));
+        assertThat(f.parseFloat("3.14"), equalTo(3.14f));
+        assertThat(f.parseFloat("1333"), equalTo(1333.0f));
     }
     
     @Test
@@ -98,8 +98,8 @@ public class SimpleValueFormatTest {
         ValueFormat f = new SimpleValueFormat(3);
         VInt reference = Mockito.mock(VInt.class);
         assertThat(f.parseObject("314", reference), equalTo((Object) 314));
-        assertThat(f.parseInt("314"), equalTo((Object) 314));
-        assertThat(f.parseInt("1333"), equalTo((Object) 1333));
+        assertThat(f.parseInt("314"), equalTo(314));
+        assertThat(f.parseInt("1333"), equalTo(1333));
     }
     
     @Test
@@ -107,8 +107,8 @@ public class SimpleValueFormatTest {
         ValueFormat f = new SimpleValueFormat(3);
         VShort reference = Mockito.mock(VShort.class);
         assertThat(f.parseObject("314", reference), equalTo((Object) (short) 314));
-        assertThat(f.parseShort("314"), equalTo((Object) (short) 314));
-        assertThat(f.parseShort("1333"), equalTo((Object) (short) 1333));
+        assertThat(f.parseShort("314"), equalTo((short) 314));
+        assertThat(f.parseShort("1333"), equalTo((short) 1333));
     }
     
     @Test
