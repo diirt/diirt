@@ -124,6 +124,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VShort) {
             return parseShort(source);
         }
+        if (reference instanceof VByte) {
+            return parseByte(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -158,6 +161,15 @@ public abstract class ValueFormat extends Format {
     public short parseShort(String source) {
         try {
             short value = Short.parseShort(source);
+            return value;
+        } catch (NumberFormatException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
+    }
+    
+    public byte parseByte(String source) {
+        try {
+            byte value = Byte.parseByte(source);
             return value;
         } catch (NumberFormatException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
