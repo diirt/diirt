@@ -134,6 +134,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VEnum) {
             return parseEnum(source, ((VEnum) reference).getLabels());
         }
+        if (reference instanceof VDoubleArray) {
+            return parseDoubleArray(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -193,6 +196,15 @@ public abstract class ValueFormat extends Format {
             return index;
         }
         throw new RuntimeException(source  + " is not part of enum " + labels);
+    }
+    
+    public double[] parseDoubleArray(String source) {
+        String[] tokens = source.split(",");
+        double[] values = new double[tokens.length];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = parseDouble(tokens[i].trim());
+        }
+        return values;
     }
 
 }
