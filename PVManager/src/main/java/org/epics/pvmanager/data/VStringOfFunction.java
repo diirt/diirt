@@ -5,6 +5,7 @@
 package org.epics.pvmanager.data;
 
 import org.epics.pvmanager.ReadFunction;
+import org.epics.pvmanager.WriteFunction;
 
 /**
  * Converts the value of the argument to a VString.
@@ -15,15 +16,24 @@ class VStringOfFunction implements ReadFunction<VString> {
     
     private final ReadFunction<? extends VType> argument;
     private final ValueFormat format;
+    private final WriteFunction<VType> forward;
 
-    public VStringOfFunction(ReadFunction<? extends VType> argument, ValueFormat format) {
+    public VStringOfFunction(ReadFunction<? extends VType> argument, ValueFormat format, WriteFunction<VType> forward) {
         this.argument = argument;
         this.format = format;
+        this.forward = forward;
+    }
+
+    public VStringOfFunction(ReadFunction<? extends VType> argument, ValueFormat format) {
+        this(argument, format, null);
     }
 
     @Override
     public VString readValue() {
         VType value = argument.readValue();
+        if (forward != null) {
+            forward.writeValue(value);
+        }
         if (value == null) {
             return null;
         }

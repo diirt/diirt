@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.LatestValueCollector;
 import org.epics.pvmanager.ReadFunction;
+import org.epics.pvmanager.WriteFunction;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.ChannelExpressionList;
@@ -16,9 +18,13 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpressionList;
+import org.epics.pvmanager.expression.WriteExpression;
+import org.epics.pvmanager.expression.WriteExpressionImpl;
 import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
@@ -215,6 +221,25 @@ public class ExpressionLanguage {
      */
     public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression) {
         return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), ValueUtil.getDefaultValueFormat()), expression.getName());
+    }
+    
+    /**
+     * An expression that formats the given expression to a string using the
+     * default format.
+     * 
+     * @param expression the expression to format
+     * @return an expression with the string representation of the argument
+     */
+    public static DesiredRateReadWriteExpression<VString, String> vStringOf(DesiredRateReadWriteExpression<? extends VType, ? extends Object> expression) {
+        LatestValueCollector<VType> forward = new LatestValueCollector<>();
+        DesiredRateExpression<VString> readExp = new DesiredRateExpressionImpl<>(expression,
+                new VStringOfFunction(expression.getFunction(), ValueUtil.getDefaultValueFormat(), forward)
+                , expression.getName());
+        @SuppressWarnings("unchecked")
+        WriteFunction<Object> writeFunction = (WriteFunction<Object>) (WriteFunction) expression.getWriteFunction();
+        WriteExpression<String> writeExp = new WriteExpressionImpl<>(expression,
+                new VStringOfWriteFunction(forward, ValueUtil.getDefaultValueFormat(), writeFunction), expression.getName());
+        return new DesiredRateReadWriteExpressionImpl<>(readExp, writeExp);
     }
 
     /**

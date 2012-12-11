@@ -12,7 +12,9 @@ import org.junit.Test;
 import static org.epics.pvmanager.data.ExpressionLanguage.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.WriteExpressionTester;
 import org.epics.pvmanager.expression.ChannelExpression;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.util.array.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -177,5 +179,42 @@ public class ExpressionLanguageTest {
         exp.writeValue("pv", newVString("Test", alarmNone(), timeNow()));
         string = ((VString) exp.getValue()).getValue();
         assertThat(string, equalTo((Object) "Test"));
+    }
+
+    @Test
+    public void vStringOf2() {
+        DesiredRateReadWriteExpression<VString, String> vStringOf = vStringOf(latestValueOf(vType("pv")));
+        ReadExpressionTester readExp = new ReadExpressionTester(vStringOf);
+        WriteExpressionTester writeExp = new WriteExpressionTester(vStringOf);
+        
+        // Read a VDouble
+        readExp.writeValue("pv", newVDouble(3.0));
+        String string = ((VString) readExp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "3.0"));
+        
+        // Write a string, and get a double
+        writeExp.setValue("3.14");
+        double value = (double) writeExp.readValue("pv");
+        assertThat(value, equalTo(3.14));
+        
+        // Read a VDoubleArray
+        readExp.writeValue("pv", newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow()));
+        string = ((VString) readExp.getValue()).getValue();
+        assertThat(string, equalTo((Object) "TWO"));
+        
+        // Write a string, and get a double
+        writeExp.setValue("THREE");
+        int intValue = (int) writeExp.readValue("pv");
+        assertThat(intValue, equalTo(2));        
+//        
+//        // Read a VDoubleArray
+//        readExp.writeValue("pv", newVDoubleArray(new double[] {1.0, 2.0, 3.0}, displayNone()));
+//        string = ((VString) readExp.getValue()).getValue();
+//        assertThat(string, equalTo((Object) "[1.0, 2.0, 3.0]"));
+//        
+//        // Write a string, and get a double
+//        writeExp.setValue("3.0, 2.0, 1.0");
+//        double[] values = (double[]) writeExp.readValue("pv");
+//        assertThat(values, equalTo(new double[] {3.0, 2.0, 1.0}));
     }
 }
