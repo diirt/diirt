@@ -12,10 +12,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -189,10 +191,10 @@ public class SimpleValueFormatTest {
     public void parseVByteArray1() {
         ValueFormat f = new SimpleValueFormat(3);
         VByteArray reference = Mockito.mock(VByteArray.class);
-        assertThat(f.parseObject("3", reference), equalTo((Object) new byte[] {3}));
-        assertThat(f.parseByteArray("3"), equalTo(new byte[] {3}));
-        assertThat(f.parseByteArray("113, 3"), equalTo(new byte[] {113, 3}));
-        assertThat(f.parseByteArray("1, 2, 3, 4"), equalTo(new byte[] {1, 2, 3, 4}));
+        assertThat(f.parseObject("3", reference), equalTo((Object) new ArrayByte(new byte[] {3})));
+        assertThat(f.parseByteArray("3"), equalTo((ListByte) new ArrayByte(new byte[] {3})));
+        assertThat(f.parseByteArray("113, 3"), equalTo((ListByte) new ArrayByte(new byte[] {113, 3})));
+        assertThat(f.parseByteArray("1, 2, 3, 4"), equalTo((ListByte) new ArrayByte(new byte[] {1, 2, 3, 4})));
     }
     
     @Test

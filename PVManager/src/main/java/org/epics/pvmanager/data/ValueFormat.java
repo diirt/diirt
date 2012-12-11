@@ -10,10 +10,12 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
+import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -254,13 +256,13 @@ public abstract class ValueFormat extends Format {
         return new ArrayShort(values);
     }
     
-    public byte[] parseByteArray(String source) {
+    public ListByte parseByteArray(String source) {
         String[] tokens = source.split(",");
         byte[] values = new byte[tokens.length];
         for (byte i = 0; i < values.length; i++) {
             values[i] = parseByte(tokens[i].trim());
         }
-        return values;
+        return new ArrayByte(values);
     }
     
     public List<String> parseStringArray(String source) {
