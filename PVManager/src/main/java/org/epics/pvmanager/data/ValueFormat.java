@@ -15,7 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListFloat;
 
 /**
  * Formats a data type to a String representation. This class provide default
@@ -225,13 +227,13 @@ public abstract class ValueFormat extends Format {
         return new ArrayDouble(values);
     }
     
-    public float[] parseFloatArray(String source) {
+    public ListFloat parseFloatArray(String source) {
         String[] tokens = source.split(",");
         float[] values = new float[tokens.length];
         for (int i = 0; i < values.length; i++) {
             values[i] = parseFloat(tokens[i].trim());
         }
-        return values;
+        return new ArrayFloat(values);
     }
     
     public int[] parseIntArray(String source) {
