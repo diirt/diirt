@@ -17,6 +17,7 @@ import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
+import org.epics.util.array.ListInt;
 import org.mockito.Mockito;
 
 /**
@@ -166,10 +167,10 @@ public class SimpleValueFormatTest {
     public void parseVIntArray1() {
         ValueFormat f = new SimpleValueFormat(3);
         VIntArray reference = Mockito.mock(VIntArray.class);
-        assertThat(f.parseObject("3", reference), equalTo((Object) new int[] {3}));
-        assertThat(f.parseIntArray("3"), equalTo(new int[] {3}));
-        assertThat(f.parseIntArray("1333, 3"), equalTo(new int[] {1333, 3}));
-        assertThat(f.parseIntArray("1, 2, 3, 4"), equalTo(new int[] {1, 2, 3, 4}));
+        assertThat(f.parseObject("3", reference), equalTo((Object) new ArrayInt(3)));
+        assertThat(f.parseIntArray("3"), equalTo((ListInt) new ArrayInt(3)));
+        assertThat(f.parseIntArray("1333, 3"), equalTo((ListInt) new ArrayInt(1333, 3)));
+        assertThat(f.parseIntArray("1, 2, 3, 4"), equalTo((ListInt) new ArrayInt(1, 2, 3, 4)));
     }
     
     @Test
