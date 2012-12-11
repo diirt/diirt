@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.loc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.ChannelHandler;
@@ -65,6 +66,19 @@ public final class LocalDataSource extends DataSource {
                 }
             }
             return Arrays.asList(parsedTokens.get(0), new ArrayDouble(data));
+        }
+        
+        if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof String) {
+            List<String> data = new ArrayList<>();
+            for (int i = 1; i < parsedTokens.size(); i++) {
+                Object value = parsedTokens.get(i);
+                if (value instanceof String) {
+                    data.add((String) value);
+                } else {
+                    throw new IllegalArgumentException(CHANNEL_SYNTAX_ERROR_MESSAGE);
+                }
+            }
+            return Arrays.asList(parsedTokens.get(0), data);
         }
         
         throw new IllegalArgumentException(CHANNEL_SYNTAX_ERROR_MESSAGE);

@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.loc;
 
+import java.util.Collections;
+import java.util.List;
 import org.epics.pvmanager.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
@@ -77,6 +79,21 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
             return newVDoubleArray(new ArrayDouble((double[]) value), alarmNone(), timeNow(), displayNone());
         } else if (value instanceof ListDouble) {
             return newVDoubleArray((ListDouble) value, alarmNone(), timeNow(), displayNone());
+        } else if (value instanceof List) {
+            boolean matches = true;
+            List list = (List) value;
+            for (Object object : list) {
+                if (!(object instanceof String)) {
+                    matches = false;
+                }
+            }
+            if (matches) {
+                @SuppressWarnings("unchecked")
+                List<String> newList = (List<String>) list;
+                return newVStringArray(Collections.unmodifiableList(newList), alarmNone(), timeNow());
+            } else {
+                throw new UnsupportedOperationException("Type " + value.getClass().getName() + " contains non Strings");
+            }
         } else {
             // TODO: need to implement all the other arrays
             throw new UnsupportedOperationException("Type " + value.getClass().getName() + "  is not yet supported");
