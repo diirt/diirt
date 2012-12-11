@@ -159,5 +159,15 @@ public class SimpleValueFormatTest {
         assertThat(f.parseFloatArray("1333, 3.14"), equalTo(new float[] {1333f, 3.14f}));
         assertThat(f.parseFloatArray("1.0, 2.0, 3.0, 4.0"), equalTo(new float[] {1.0f, 2.0f, 3.0f, 4.0f}));
     }
+    
+    @Test
+    public void parseVIntArray1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VIntArray reference = Mockito.mock(VIntArray.class);
+        assertThat(f.parseObject("3", reference), equalTo((Object) new int[] {3}));
+        assertThat(f.parseIntArray("3"), equalTo(new int[] {3}));
+        assertThat(f.parseIntArray("1333, 3"), equalTo(new int[] {1333, 3}));
+        assertThat(f.parseIntArray("1, 2, 3, 4"), equalTo(new int[] {1, 2, 3, 4}));
+    }
 
 }
