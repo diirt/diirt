@@ -159,6 +159,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VStringArray) {
             return parseStringArray(source);
         }
+        if (reference instanceof VEnumArray) {
+            return parseEnumArray(source, ((VEnumArray) reference).getLabels());
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -272,6 +275,15 @@ public abstract class ValueFormat extends Format {
             values.add(token.trim());
         }
         return values;
+    }
+    
+    public ListInt parseEnumArray(String source, List<String> labels) {
+        String[] tokens = source.split(",");
+        int[] values = new int[tokens.length];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = parseEnum(tokens[i].trim(), labels);
+        }
+        return new ArrayInt(values);
     }
 
 }

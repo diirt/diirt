@@ -206,5 +206,16 @@ public class SimpleValueFormatTest {
         assertThat(f.parseStringArray("a, b"), equalTo(Arrays.asList("a", "b")));
         assertThat(f.parseStringArray("a, b, c, d"), equalTo(Arrays.asList("a", "b", "c", "d")));
     }
+    
+    @Test
+    public void parseVEnumArray1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        List<String> labels = Arrays.asList("A", "B", "C");
+        VEnumArray reference = newVEnumArray(new ArrayInt(1), labels, alarmNone(), timeNow());
+        assertThat(f.parseObject("A", reference), equalTo((Object) new ArrayInt(0)));
+        assertThat(f.parseEnumArray("A", labels), equalTo((ListInt) new ArrayInt(0)));
+        assertThat(f.parseEnumArray("B, A", labels), equalTo((ListInt) new ArrayInt(1, 0)));
+        assertThat(f.parseEnumArray("B, A, C,A", labels), equalTo((ListInt) new ArrayInt(1, 0, 2, 0)));
+    }
 
 }
