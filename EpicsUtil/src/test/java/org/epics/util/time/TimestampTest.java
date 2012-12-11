@@ -39,6 +39,15 @@ public class TimestampTest {
     }
     
     @Test
+    public void ofDate2() {
+        Date date = new Date(-123456789);
+        Timestamp time = Timestamp.of(date);
+        assertThat(time.toDate(), equalTo(date));
+        assertThat(time.getSec(), equalTo(-123457L));
+        assertThat(time.getNanoSec(), equalTo(211000000));
+    }
+    
+    @Test
     public void toDate1() {
         Timestamp time = Timestamp.of(123456, 789000000);
         assertThat(time.toDate(), equalTo(new Date(123456789)));

@@ -93,7 +93,7 @@ public class Timestamp implements Comparable<Timestamp> {
         long time = date.getTime();
         int nanoSec = (int) (time % 1000) * 1000000;
         long epochSec = (time / 1000);
-        return of(epochSec, nanoSec);
+        return createWithCarry(epochSec, nanoSec);
     }
 
     /**
