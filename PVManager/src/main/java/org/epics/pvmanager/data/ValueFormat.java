@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 
 /**
  * Formats a data type to a String representation. This class provide default
@@ -214,13 +216,13 @@ public abstract class ValueFormat extends Format {
         throw new RuntimeException(source  + " is not part of enum " + labels);
     }
     
-    public double[] parseDoubleArray(String source) {
+    public ListDouble parseDoubleArray(String source) {
         String[] tokens = source.split(",");
         double[] values = new double[tokens.length];
         for (int i = 0; i < values.length; i++) {
             values[i] = parseDouble(tokens[i].trim());
         }
-        return values;
+        return new ArrayDouble(values);
     }
     
     public float[] parseFloatArray(String source) {

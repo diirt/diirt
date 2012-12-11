@@ -12,8 +12,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.mockito.Mockito;
 
@@ -144,10 +146,10 @@ public class SimpleValueFormatTest {
     public void parseVDoubleArray1() {
         ValueFormat f = new SimpleValueFormat(3);
         VDoubleArray reference = Mockito.mock(VDoubleArray.class);
-        assertThat(f.parseObject("3.14", reference), equalTo((Object) new double[] {3.14}));
-        assertThat(f.parseDoubleArray("3.14"), equalTo(new double[] {3.14}));
-        assertThat(f.parseDoubleArray("1333, 3.14"), equalTo(new double[] {1333, 3.14}));
-        assertThat(f.parseDoubleArray("1.0, 2.0, 3.0, 4.0"), equalTo(new double[] {1.0, 2.0, 3.0, 4.0}));
+        assertThat(f.parseObject("3.14", reference), equalTo((Object) new ArrayDouble(3.14)));
+        assertThat(f.parseDoubleArray("3.14"), equalTo((ListDouble) new ArrayDouble(3.14)));
+        assertThat(f.parseDoubleArray("1333, 3.14"), equalTo((ListDouble) new ArrayDouble(1333, 3.14)));
+        assertThat(f.parseDoubleArray("1.0, 2.0, 3.0, 4.0"), equalTo((ListDouble) new ArrayDouble(1.0, 2.0, 3.0, 4.0)));
     }
     
     @Test
