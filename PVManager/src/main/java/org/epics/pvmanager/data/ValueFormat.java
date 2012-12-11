@@ -146,6 +146,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VShortArray) {
             return parseShortArray(source);
         }
+        if (reference instanceof VByteArray) {
+            return parseByteArray(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -239,6 +242,15 @@ public abstract class ValueFormat extends Format {
         short[] values = new short[tokens.length];
         for (short i = 0; i < values.length; i++) {
             values[i] = parseShort(tokens[i].trim());
+        }
+        return values;
+    }
+    
+    public byte[] parseByteArray(String source) {
+        String[] tokens = source.split(",");
+        byte[] values = new byte[tokens.length];
+        for (byte i = 0; i < values.length; i++) {
+            values[i] = parseByte(tokens[i].trim());
         }
         return values;
     }
