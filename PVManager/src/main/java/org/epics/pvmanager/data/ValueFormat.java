@@ -137,6 +137,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VDoubleArray) {
             return parseDoubleArray(source);
         }
+        if (reference instanceof VFloatArray) {
+            return parseFloatArray(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -203,6 +206,15 @@ public abstract class ValueFormat extends Format {
         double[] values = new double[tokens.length];
         for (int i = 0; i < values.length; i++) {
             values[i] = parseDouble(tokens[i].trim());
+        }
+        return values;
+    }
+    
+    public float[] parseFloatArray(String source) {
+        String[] tokens = source.split(",");
+        float[] values = new float[tokens.length];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = parseFloat(tokens[i].trim());
         }
         return values;
     }
