@@ -7,19 +7,17 @@ package org.epics.pvmanager.data;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayShort;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
+import org.epics.util.array.ListShort;
 
 /**
  * Formats a data type to a String representation. This class provide default
@@ -247,13 +245,13 @@ public abstract class ValueFormat extends Format {
         return new ArrayInt(values);
     }
     
-    public short[] parseShortArray(String source) {
+    public ListShort parseShortArray(String source) {
         String[] tokens = source.split(",");
         short[] values = new short[tokens.length];
         for (short i = 0; i < values.length; i++) {
             values[i] = parseShort(tokens[i].trim());
         }
-        return values;
+        return new ArrayShort(values);
     }
     
     public byte[] parseByteArray(String source) {

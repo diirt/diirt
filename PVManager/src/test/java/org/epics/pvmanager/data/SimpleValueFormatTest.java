@@ -15,9 +15,11 @@ import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayShort;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
+import org.epics.util.array.ListShort;
 import org.mockito.Mockito;
 
 /**
@@ -177,10 +179,10 @@ public class SimpleValueFormatTest {
     public void parseVShortArray1() {
         ValueFormat f = new SimpleValueFormat(3);
         VShortArray reference = Mockito.mock(VShortArray.class);
-        assertThat(f.parseObject("3", reference), equalTo((Object) new short[] {3}));
-        assertThat(f.parseShortArray("3"), equalTo(new short[] {3}));
-        assertThat(f.parseShortArray("1333, 3"), equalTo(new short[] {1333, 3}));
-        assertThat(f.parseShortArray("1, 2, 3, 4"), equalTo(new short[] {1, 2, 3, 4}));
+        assertThat(f.parseObject("3", reference), equalTo((Object) new ArrayShort((short) 3)));
+        assertThat(f.parseShortArray("3"), equalTo((ListShort) new ArrayShort((short) 3)));
+        assertThat(f.parseShortArray("1333, 3"), equalTo((ListShort) new ArrayShort(new short[]{1333, 3})));
+        assertThat(f.parseShortArray("1, 2, 3, 4"), equalTo((ListShort) new ArrayShort(new short[]{1, 2, 3, 4})));
     }
     
     @Test
