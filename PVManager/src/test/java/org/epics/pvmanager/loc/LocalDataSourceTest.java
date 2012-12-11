@@ -5,6 +5,7 @@
 package org.epics.pvmanager.loc;
 
 import org.epics.pvmanager.CompositeDataSource;
+import org.epics.pvmanager.ConnectionCollector;
 import org.epics.pvmanager.ReadRecipe;
 import org.epics.pvmanager.ExceptionHandler;
 import org.epics.pvmanager.PVReader;
@@ -23,7 +24,12 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadExpressionTester;
+import org.epics.pvmanager.ReadRecipeBuilder;
+import org.epics.pvmanager.ValueCacheImpl;
+import org.epics.pvmanager.data.VString;
+import org.epics.pvmanager.expression.Queue;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -172,4 +178,55 @@ public class LocalDataSourceTest {
         dataSource.close();
     }
 
+    @Test
+    public void initialValue1() throws Exception {
+        LocalDataSource dataSource1 = new LocalDataSource();
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
+        builder.addChannel("iv1", valueCache);
+        ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
+        
+        dataSource1.connectRead(recipe);
+        Thread.sleep(100);
+        Object value = valueCache.readValue();
+        dataSource1.disconnectRead(recipe);
+        assertThat(value, instanceOf(VDouble.class));
+        VDouble vDouble = (VDouble) value;
+        assertThat(vDouble.getValue(), equalTo(0.0));
+    }
+
+    @Test
+    public void initialValue2() throws Exception {
+        LocalDataSource dataSource1 = new LocalDataSource();
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
+        builder.addChannel("iv2(\"this\")", valueCache);
+        ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
+        
+        dataSource1.connectRead(recipe);
+        Thread.sleep(100);
+        Object value = valueCache.readValue();
+        dataSource1.disconnectRead(recipe);
+        assertThat(value, instanceOf(VString.class));
+        VString vString = (VString) value;
+        assertThat(vString.getValue(), equalTo("this"));
+    }
+
+    @Test
+    public void initialValue3() throws Exception {
+        LocalDataSource dataSource1 = new LocalDataSource();
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
+        builder.addChannel("iv3(3.14)", valueCache);
+        ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
+        
+        dataSource1.connectRead(recipe);
+        Thread.sleep(100);
+        Object value = valueCache.readValue();
+        dataSource1.disconnectRead(recipe);
+        assertThat(value, instanceOf(VDouble.class));
+        VDouble vDouble = (VDouble) value;
+        assertThat(vDouble.getValue(), equalTo(3.14));
+    }
+    
 }
