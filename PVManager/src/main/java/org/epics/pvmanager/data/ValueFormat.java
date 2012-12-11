@@ -9,6 +9,7 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,6 +150,9 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VByteArray) {
             return parseByteArray(source);
         }
+        if (reference instanceof VStringArray) {
+            return parseStringArray(source);
+        }
         
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
@@ -251,6 +255,15 @@ public abstract class ValueFormat extends Format {
         byte[] values = new byte[tokens.length];
         for (byte i = 0; i < values.length; i++) {
             values[i] = parseByte(tokens[i].trim());
+        }
+        return values;
+    }
+    
+    public List<String> parseStringArray(String source) {
+        String[] tokens = source.split(",");
+        List<String> values = new ArrayList<>();
+        for (String token : tokens) {
+            values.add(token.trim());
         }
         return values;
     }

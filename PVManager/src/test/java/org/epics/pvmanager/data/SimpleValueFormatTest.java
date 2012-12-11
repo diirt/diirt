@@ -189,5 +189,15 @@ public class SimpleValueFormatTest {
         assertThat(f.parseByteArray("113, 3"), equalTo(new byte[] {113, 3}));
         assertThat(f.parseByteArray("1, 2, 3, 4"), equalTo(new byte[] {1, 2, 3, 4}));
     }
+    
+    @Test
+    public void parseVStringArray1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VStringArray reference = Mockito.mock(VStringArray.class);
+        assertThat(f.parseObject("test", reference), equalTo((Object) Arrays.asList("test")));
+        assertThat(f.parseStringArray("test"), equalTo(Arrays.asList("test")));
+        assertThat(f.parseStringArray("a, b"), equalTo(Arrays.asList("a", "b")));
+        assertThat(f.parseStringArray("a, b, c, d"), equalTo(Arrays.asList("a", "b", "c", "d")));
+    }
 
 }
