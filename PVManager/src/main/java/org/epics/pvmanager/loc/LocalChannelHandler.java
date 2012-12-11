@@ -7,6 +7,7 @@ package org.epics.pvmanager.loc;
 import org.epics.pvmanager.*;
 import static org.epics.pvmanager.data.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.
@@ -74,6 +75,8 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                     alarmNone(), timeNow());
         } else if (value instanceof double[]) {
             return newVDoubleArray(new ArrayDouble((double[]) value), alarmNone(), timeNow(), displayNone());
+        } else if (value instanceof ListDouble) {
+            return newVDoubleArray((ListDouble) value, alarmNone(), timeNow(), displayNone());
         } else {
             // TODO: need to implement all the other arrays
             throw new UnsupportedOperationException("Type " + value.getClass().getName() + "  is not yet supported");

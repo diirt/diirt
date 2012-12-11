@@ -28,8 +28,11 @@ import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.ReadRecipeBuilder;
 import org.epics.pvmanager.ValueCacheImpl;
+import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VString;
 import org.epics.pvmanager.expression.Queue;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -227,6 +230,23 @@ public class LocalDataSourceTest {
         assertThat(value, instanceOf(VDouble.class));
         VDouble vDouble = (VDouble) value;
         assertThat(vDouble.getValue(), equalTo(3.14));
+    }
+
+    @Test
+    public void initialValue4() throws Exception {
+        LocalDataSource dataSource1 = new LocalDataSource();
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
+        builder.addChannel("iv3(1.0,2.0,3.0)", valueCache);
+        ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
+        
+        dataSource1.connectRead(recipe);
+        Thread.sleep(100);
+        Object value = valueCache.readValue();
+        dataSource1.disconnectRead(recipe);
+        assertThat(value, instanceOf(VDoubleArray.class));
+        VDoubleArray vDouble = (VDoubleArray) value;
+        assertThat(vDouble.getData(), equalTo((ListNumber) new ArrayDouble(1.0, 2.0, 3.0)));
     }
     
 }
