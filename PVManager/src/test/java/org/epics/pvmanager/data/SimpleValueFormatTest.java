@@ -169,5 +169,15 @@ public class SimpleValueFormatTest {
         assertThat(f.parseIntArray("1333, 3"), equalTo(new int[] {1333, 3}));
         assertThat(f.parseIntArray("1, 2, 3, 4"), equalTo(new int[] {1, 2, 3, 4}));
     }
+    
+    @Test
+    public void parseVShortArray1() {
+        ValueFormat f = new SimpleValueFormat(3);
+        VShortArray reference = Mockito.mock(VShortArray.class);
+        assertThat(f.parseObject("3", reference), equalTo((Object) new short[] {3}));
+        assertThat(f.parseShortArray("3"), equalTo(new short[] {3}));
+        assertThat(f.parseShortArray("1333, 3"), equalTo(new short[] {1333, 3}));
+        assertThat(f.parseShortArray("1, 2, 3, 4"), equalTo(new short[] {1, 2, 3, 4}));
+    }
 
 }
