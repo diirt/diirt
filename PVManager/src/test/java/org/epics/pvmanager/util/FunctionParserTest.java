@@ -73,6 +73,8 @@ public class FunctionParserTest {
         assertThat(parameters, equalTo(Arrays.asList((Object) "ramp", -1.0, 0.5,  23.25)));
         parameters = FunctionParser.parseFunction("replay(\"test.xml\")");
         assertThat(parameters, equalTo(Arrays.asList((Object) "replay", "test.xml")));
+        parameters = FunctionParser.parsePvAndArguments("test(\"A\",\"B\")");
+        assertThat(parameters, equalTo(Arrays.asList((Object) "test", "A", "B")));
     }
 
 }
