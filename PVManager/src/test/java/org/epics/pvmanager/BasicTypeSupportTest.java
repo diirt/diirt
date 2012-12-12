@@ -6,7 +6,9 @@ package org.epics.pvmanager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -64,6 +66,51 @@ public class BasicTypeSupportTest {
         newValues.add("This");
         Notification<List<Object>> notification = NotificationSupport.notification(oldValues, newValues);
         assertThat(notification.isNotificationNeeded(), equalTo(false));
+    }
+
+    @Test
+    public void mapSupport1() {
+        Map<String, Object> oldValues = null;
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("a", "this");
+        Notification<Map<String, Object>> notification = NotificationSupport.notification(oldValues, newValues);
+        assertThat(notification.isNotificationNeeded(), equalTo(true));
+        assertThat(notification.getNewValue(), equalTo(newValues));
+        assertThat(notification.getNewValue(), not(sameInstance(newValues)));
+    }
+
+    @Test
+    public void mapSupport2() {
+        Map<String, Object> oldValues = new HashMap<>();
+        oldValues.put("a", "this");
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("a", "that");
+        Notification<Map<String, Object>> notification = NotificationSupport.notification(oldValues, newValues);
+        assertThat(notification.isNotificationNeeded(), equalTo(true));
+        assertThat(notification.getNewValue(), equalTo(newValues));
+        assertThat(notification.getNewValue(), not(sameInstance(newValues)));
+    }
+
+    @Test
+    public void mapSupport3() {
+        Map<String, Object> oldValues = new HashMap<>();
+        oldValues.put("a", "this");
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("a", "this");
+        Notification<Map<String, Object>> notification = NotificationSupport.notification(oldValues, newValues);
+        assertThat(notification.isNotificationNeeded(), equalTo(false));
+    }
+
+    @Test
+    public void mapSupport4() {
+        Map<String, Object> oldValues = new HashMap<>();
+        oldValues.put("a", "this");
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("b", "this");
+        Notification<Map<String, Object>> notification = NotificationSupport.notification(oldValues, newValues);
+        assertThat(notification.isNotificationNeeded(), equalTo(true));
+        assertThat(notification.getNewValue(), equalTo(newValues));
+        assertThat(notification.getNewValue(), not(sameInstance(newValues)));
     }
     
 }
