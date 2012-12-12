@@ -20,6 +20,7 @@ import java.util.List;
 public class QueueCollector<T> implements Collector<T, List<T>> {
     
     private final Object lock = new Object();
+    private List<T> readBuffer;
     private List<T> writeBuffer;
     private int maxSize;
 
@@ -31,6 +32,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     public QueueCollector(int maxSize) {
         synchronized(lock) {
             this.maxSize = maxSize;
+            readBuffer = new ArrayList<>();
             writeBuffer = new ArrayList<>();
         }
     }
@@ -48,10 +50,12 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
     @Override
     public List<T> readValue() {
         synchronized(lock) {
-            List<T> data = new ArrayList<>(writeBuffer);
+            List<T> data = writeBuffer;
+            writeBuffer = readBuffer;
             writeBuffer.clear();
-            return data;
+            readBuffer = data;
         }
+        return readBuffer;
     }
 
     /**
