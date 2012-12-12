@@ -5,6 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,36 +54,35 @@ public class BasicTypeSupport {
             @Override
             @SuppressWarnings({"unchecked", "rawtypes"})
             public Notification<List> prepareNotification(List oldValue, final List newValue) {
-                // Initialize value if never initialized
-                if (oldValue == null) {
-                    oldValue = new ArrayList();
-                }
-
-                boolean notificationNeeded = false;
-
                 // Check all the elements in the list and use StandardTypeSupport
                 // to understand whether any needs notification.
                 // Notification is done only if at least one element needs notification.
-                for (int index = 0; index < newValue.size(); index++) {
-                    if (oldValue.size() <= index) {
-                        oldValue.add(null);
-                    }
-
+                boolean notificationNeeded = false;
+                
+                if (oldValue == null || (oldValue.size() != newValue.size())) {
+                    notificationNeeded = true;
+                }
+                
+                if (newValue.isEmpty()) {
+                    notificationNeeded = false;
+                }
+                
+                int index = 0;
+                while (notificationNeeded == false && index < newValue.size()) {
                     if (newValue.get(index) != null) {
                         Notification itemNotification = NotificationSupport.notification(oldValue.get(index), newValue.get(index));
                         if (itemNotification.isNotificationNeeded()) {
                             notificationNeeded = true;
-                            oldValue.set(index, itemNotification.getNewValue());
                         }
                     }
+                    index++;
                 }
-
-                // Shrink the list if more elements are there
-                while (oldValue.size() > newValue.size()) {
-                    oldValue.remove(oldValue.size() - 1);
+                
+                if (notificationNeeded) {
+                    return new Notification<>(true, (List) Collections.unmodifiableList(new ArrayList<Object>(newValue)));
+                } else {
+                    return new Notification<>(false, oldValue);
                 }
-
-                return new Notification<List>(notificationNeeded, oldValue);
             }
         });
     }
