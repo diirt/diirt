@@ -22,7 +22,6 @@ public interface Display {
      *
      * @return lower display limit
      */
-    @Metadata
     Double getLowerDisplayLimit();
 
     /**
@@ -30,7 +29,6 @@ public interface Display {
      * 
      * @return lower limit
      */
-    @Metadata
     Double getLowerCtrlLimit();
 
     /**
@@ -38,7 +36,6 @@ public interface Display {
      *
      * @return lower alarm limit
      */
-    @Metadata
     Double getLowerAlarmLimit();
 
     /**
@@ -46,7 +43,6 @@ public interface Display {
      *
      * @return lower warning limit
      */
-    @Metadata
     Double getLowerWarningLimit();
 
     /**
@@ -55,7 +51,6 @@ public interface Display {
      *
      * @return units
      */
-    @Metadata
     String getUnits();
 
     /**
@@ -65,7 +60,6 @@ public interface Display {
      *
      * @return the default format for all values
      */
-    @Metadata
     NumberFormat getFormat();
 
     /**
@@ -73,7 +67,6 @@ public interface Display {
      *
      * @return upper warning limit
      */
-    @Metadata
     Double getUpperWarningLimit();
 
     /**
@@ -81,14 +74,12 @@ public interface Display {
      *
      * @return upper alarm limit
      */
-    @Metadata
     Double getUpperAlarmLimit();
 
     /**
      * Highest possible value (included). Never null.
      * @return upper limit
      */
-    @Metadata
     Double getUpperCtrlLimit();
 
     /**
@@ -96,6 +87,5 @@ public interface Display {
      *
      * @return upper display limit
      */
-    @Metadata
     Double getUpperDisplayLimit();
 }
