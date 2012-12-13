@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PVManager">
+<project name="pvmanager">
   <bannerLeft>
-    <name>PVManager</name>
+    <name>pvManager</name>
     <src>images/PVManagerLogo100.png</src>
     <href>http://pvmanager.sourceforge.net</href>
   </bannerLeft>

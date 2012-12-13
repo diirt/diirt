@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.epics</groupId>
-    <artifactId>pvmanager-base</artifactId>
+    <artifactId>pvmanager</artifactId>
     <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>http://pvmanager.sourceforge.net</url>
@@ -161,7 +161,7 @@
                         </goals>
                     </execution>
                 </executions>
-<!--                <groupId>org.codehaus.mojo</groupId>
+                <!--                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>1.2</version>
                 <configuration>
@@ -209,15 +209,75 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-  <modules>
-    <module>pvmanager-jca</module>
-    <module>pvmanager-sample</module>
-    <module>pvmanager-pva</module>
-    <module>pvmanager-loc</module>
-    <module>pvmanager-test</module>
-    <module>pvmanager-sim</module>
-    <module>pvmanager-extra</module>
-    <module>pvmanager-vtype</module>
-    <module>pvmanager-core</module>
-  </modules>
+    <modules>
+        <module>pvmanager-jca</module>
+        <module>pvmanager-sample</module>
+        <module>pvmanager-pva</module>
+        <module>pvmanager-loc</module>
+        <module>pvmanager-test</module>
+        <module>pvmanager-sim</module>
+        <module>pvmanager-extra</module>
+        <module>pvmanager-vtype</module>
+        <module>pvmanager-core</module>
+    </modules>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+<!--                <configuration>
+                    <docfilessubdirs>true</docfilessubdirs>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <doctitle>API for ${project.name} ${project.version}</doctitle>
+                            <windowtitle>API for ${project.name} ${project.version}</windowtitle>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <testDoctitle>Tests for ${project.name} ${project.version}</testDoctitle>
+                            <testWindowtitle>Tests for ${project.name} ${project.version}</testWindowtitle>
+                        </configuration>
+                        <reports>
+                            <report>test-javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+<!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.7.1</version>
+                <configuration>
+                    <columnNames>Fix Version,Priority,Type,Summary,Assignee,Key,Status,Resolution</columnNames>
+                    <sortColumnNames>Fix Version,Priority,Key DESC</sortColumnNames>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>jira-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>-->
+            <!--            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.0.1</version>
+            </plugin>-->
+        </plugins>
+    </reporting>
 </project>
