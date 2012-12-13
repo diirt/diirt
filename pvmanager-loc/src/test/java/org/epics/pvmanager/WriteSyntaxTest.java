@@ -4,6 +4,9 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVWriter;
+import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.pvmanager.expression.WriteExpression;
 import org.epics.pvmanager.expression.WriteExpressionImpl;

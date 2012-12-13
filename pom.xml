@@ -185,7 +185,7 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
-            <version>1.3.RC2</version>
+            <version>1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -215,5 +215,6 @@
     <module>pvmanager-pva</module>
     <module>pvmanager-loc</module>
     <module>pvmanager-test</module>
+    <module>pvmanager-sim</module>
   </modules>
 </project>

@@ -13,6 +13,8 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.test.CountDownPVWriterListener;
+import org.epics.pvmanager.test.CountDownPVWriterListener;
+import org.epics.pvmanager.test.TestDataSource;
 import org.epics.pvmanager.test.TestDataSource;
 import org.epics.pvmanager.util.Executors;
 import org.epics.util.time.TimeDuration;
