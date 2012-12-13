@@ -10,8 +10,8 @@ package org.epics.pvmanager.formula;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.data.VDouble;
-import org.epics.pvmanager.data.VString;
+import org.epics.pvmanager.vtype.VDouble;
+import org.epics.pvmanager.vtype.VString;
 import org.epics.pvmanager.formula.LastOfChannelExpression;
 import org.junit.AfterClass;
 import org.junit.Test;

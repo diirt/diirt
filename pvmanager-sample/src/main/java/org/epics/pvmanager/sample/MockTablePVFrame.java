@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
-import org.epics.pvmanager.data.VStatistics;
+import org.epics.pvmanager.vtype.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import org.epics.pvmanager.PVReaderEvent;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 

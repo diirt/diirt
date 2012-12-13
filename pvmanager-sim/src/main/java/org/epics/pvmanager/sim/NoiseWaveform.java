@@ -5,9 +5,9 @@
 package org.epics.pvmanager.sim;
 
 import java.util.Random;
-import org.epics.pvmanager.data.VDoubleArray;
-import org.epics.pvmanager.data.ValueFactory;
-import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.pvmanager.vtype.VDoubleArray;
+import org.epics.pvmanager.vtype.ValueFactory;
+import static org.epics.pvmanager.vtype.ValueFactory.*;
 import org.epics.util.time.Timestamp;
 
 /**

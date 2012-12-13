@@ -7,7 +7,7 @@ package org.epics.pvmanager.loc;
 import java.util.Collections;
 import java.util.List;
 import org.epics.pvmanager.*;
-import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.epics.pvmanager.vtype.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 

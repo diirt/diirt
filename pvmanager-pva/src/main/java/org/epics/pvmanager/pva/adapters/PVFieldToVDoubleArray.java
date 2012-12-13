@@ -9,7 +9,7 @@ import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvmanager.data.VDoubleArray;
+import org.epics.pvmanager.vtype.VDoubleArray;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;

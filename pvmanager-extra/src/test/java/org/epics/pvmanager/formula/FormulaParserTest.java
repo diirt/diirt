@@ -4,9 +4,11 @@
  */
 package org.epics.pvmanager.formula;
 
+import org.epics.pvmanager.vtype.ValueFactory;
+import org.epics.pvmanager.vtype.VInt;
+import org.epics.pvmanager.vtype.VDouble;
 import org.antlr.runtime.*;
 import org.epics.pvmanager.ReadExpressionTester;
-import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;

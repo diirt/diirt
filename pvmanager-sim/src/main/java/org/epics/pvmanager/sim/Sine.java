@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.data.VDouble;
-import static org.epics.pvmanager.data.ValueFactory.*;
+import org.epics.pvmanager.vtype.VDouble;
+import static org.epics.pvmanager.vtype.ValueFactory.*;
 import org.epics.util.time.Timestamp;
 
 /**

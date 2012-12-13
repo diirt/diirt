@@ -14,8 +14,8 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.data.VStatistics;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.vtype.VStatistics;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 

@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.test.ExpressionLanguage.*;
-import org.epics.pvmanager.data.VInt;
+import org.epics.pvmanager.vtype.VInt;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 
 /**

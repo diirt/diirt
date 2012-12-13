@@ -9,6 +9,13 @@
  */
 package org.epics.pvmanager.sample;
 
+import org.epics.pvmanager.vtype.AlarmSeverity;
+import org.epics.pvmanager.vtype.ValueFormat;
+import org.epics.pvmanager.vtype.ValueUtil;
+import org.epics.pvmanager.vtype.SimpleValueFormat;
+import org.epics.pvmanager.vtype.Alarm;
+import org.epics.pvmanager.vtype.Time;
+import org.epics.pvmanager.vtype.Display;
 import java.awt.Color;
 import java.util.EnumMap;
 import java.util.Map;
@@ -17,7 +24,6 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.data.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;

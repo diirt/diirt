@@ -8,15 +8,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.epics.pvmanager.data.VMultiDouble;
+import org.epics.pvmanager.vtype.VMultiDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
 import javax.swing.table.TableModel;
 import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.data.VDouble;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import org.epics.pvmanager.vtype.VDouble;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 

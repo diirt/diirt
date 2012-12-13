@@ -9,7 +9,7 @@ import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.data.DataTypeSupport;
+import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
  * 

@@ -8,6 +8,20 @@
  */
 package org.epics.pvmanager.jca;
 
+import org.epics.pvmanager.vtype.VEnum;
+import org.epics.pvmanager.vtype.VByteArray;
+import org.epics.pvmanager.vtype.VStringArray;
+import org.epics.pvmanager.vtype.VDouble;
+import org.epics.pvmanager.vtype.VShortArray;
+import org.epics.pvmanager.vtype.VFloatArray;
+import org.epics.pvmanager.vtype.VInt;
+import org.epics.pvmanager.vtype.VDoubleArray;
+import org.epics.pvmanager.vtype.VString;
+import org.epics.pvmanager.vtype.AlarmSeverity;
+import org.epics.pvmanager.vtype.VFloat;
+import org.epics.pvmanager.vtype.VByte;
+import org.epics.pvmanager.vtype.VShort;
+import org.epics.pvmanager.vtype.VIntArray;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Channel.ConnectionState;
@@ -16,7 +30,6 @@ import gov.aps.jca.event.*;
 import java.util.Arrays;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.ValueCacheImpl;
-import org.epics.pvmanager.data.*;
 import org.epics.util.array.CollectionNumbers;
 import org.epics.util.time.Timestamp;
 import org.junit.Test;

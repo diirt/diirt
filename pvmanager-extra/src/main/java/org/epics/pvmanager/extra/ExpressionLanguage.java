@@ -4,7 +4,9 @@
  */
 package org.epics.pvmanager.extra;
 
-import org.epics.pvmanager.data.*;
+import org.epics.pvmanager.vtype.VNumberArray;
+import org.epics.pvmanager.vtype.VNumber;
+import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.List;
 import org.epics.pvmanager.BasicTypeSupport;
 import org.epics.pvmanager.expression.DesiredRateExpression;

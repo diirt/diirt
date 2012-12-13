@@ -22,18 +22,18 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.data.ValueUtil;
-import org.epics.pvmanager.data.VImage;
+import org.epics.pvmanager.vtype.ValueUtil;
+import org.epics.pvmanager.vtype.VImage;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
-import org.epics.pvmanager.data.VInt;
-import org.epics.pvmanager.data.ValueFactory;
+import org.epics.pvmanager.vtype.VInt;
+import org.epics.pvmanager.vtype.ValueFactory;
 import org.epics.pvmanager.expression.Queue;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
-import static org.epics.pvmanager.data.ValueFactory.*;
+import static org.epics.pvmanager.vtype.ValueFactory.*;
 
 /**
  *

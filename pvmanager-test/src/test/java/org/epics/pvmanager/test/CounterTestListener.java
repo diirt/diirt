@@ -10,7 +10,7 @@ package org.epics.pvmanager.test;
 
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.data.VInt;
+import org.epics.pvmanager.vtype.VInt;
 
 /**
  *

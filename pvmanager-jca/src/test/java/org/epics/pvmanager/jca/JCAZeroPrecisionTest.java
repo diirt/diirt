@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.ValueCacheImpl;
-import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.vtype.VDouble;
 import org.epics.util.time.Timestamp;
 import static org.epics.pvmanager.jca.JCAVTypeAdapterSetTest.*;
 

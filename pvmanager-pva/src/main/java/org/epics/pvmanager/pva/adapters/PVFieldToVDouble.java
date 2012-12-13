@@ -5,7 +5,7 @@
 package org.epics.pvmanager.pva.adapters;
 
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.vtype.VDouble;
 
 /**
  * @author msekoranja

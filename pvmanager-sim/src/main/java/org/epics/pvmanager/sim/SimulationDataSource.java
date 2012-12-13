@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.data.DataTypeSupport;
+import org.epics.pvmanager.vtype.DataTypeSupport;
 import static org.epics.pvmanager.util.Executors.*;
 
 /**

@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.data.*;
+import org.epics.pvmanager.vtype.VDouble;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.junit.Test;
-import static org.epics.pvmanager.data.ExpressionLanguage.*;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.util.array.*;

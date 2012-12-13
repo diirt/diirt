@@ -9,7 +9,7 @@ import org.epics.pvdata.pv.ShortArrayData;
 import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvmanager.data.VShortArray;
+import org.epics.pvmanager.vtype.VShortArray;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListShort;

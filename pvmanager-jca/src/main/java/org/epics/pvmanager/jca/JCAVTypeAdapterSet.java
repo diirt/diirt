@@ -4,6 +4,19 @@
  */
 package org.epics.pvmanager.jca;
 
+import org.epics.pvmanager.vtype.VFloat;
+import org.epics.pvmanager.vtype.VInt;
+import org.epics.pvmanager.vtype.VString;
+import org.epics.pvmanager.vtype.VShort;
+import org.epics.pvmanager.vtype.VEnum;
+import org.epics.pvmanager.vtype.VIntArray;
+import org.epics.pvmanager.vtype.VByte;
+import org.epics.pvmanager.vtype.VByteArray;
+import org.epics.pvmanager.vtype.VStringArray;
+import org.epics.pvmanager.vtype.VShortArray;
+import org.epics.pvmanager.vtype.VDoubleArray;
+import org.epics.pvmanager.vtype.VDouble;
+import org.epics.pvmanager.vtype.VFloatArray;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.*;
 import java.util.Collections;
@@ -11,7 +24,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.data.*;
 
 /**
  *

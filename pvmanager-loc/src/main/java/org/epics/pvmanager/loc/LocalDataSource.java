@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.data.DataTypeSupport;
+import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.pvmanager.util.FunctionParser;
 import org.epics.util.array.ArrayDouble;
 
