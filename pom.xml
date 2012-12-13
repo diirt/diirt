@@ -212,5 +212,6 @@
   <modules>
     <module>pvmanager-jca</module>
     <module>pvmanager-sample</module>
+    <module>pvmanager-pva</module>
   </modules>
 </project>

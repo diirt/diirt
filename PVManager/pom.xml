@@ -241,18 +241,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>pvData</artifactId>
-            <version>1.2-SNAPSHOT</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>pvAccess</artifactId>
-            <version>1.2-SNAPSHOT</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
             <version>0.2-SNAPSHOT</version>
