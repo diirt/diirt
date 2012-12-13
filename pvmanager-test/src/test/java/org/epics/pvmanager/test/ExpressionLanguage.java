@@ -9,12 +9,8 @@
 package org.epics.pvmanager.test;
 
 import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.pvmanager.vtype.VInt;
-import org.epics.pvmanager.vtype.ValueFactory;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import static org.epics.pvmanager.vtype.ValueFactory.*;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
 /**
@@ -23,17 +19,13 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  */
 public class ExpressionLanguage {
     
-    static {
-        DataTypeSupport.install();
-    }
-    
-    public static DesiredRateExpression<VInt> counter() {
-        return new DesiredRateExpressionImpl<VInt>((DesiredRateExpressionList<?>) null, new ReadFunction<VInt>() {
+    public static DesiredRateExpression<Integer> counter() {
+        return new DesiredRateExpressionImpl<Integer>((DesiredRateExpressionList<?>) null, new ReadFunction<Integer>() {
             private int counter = 0;
 
             @Override
-            public VInt readValue() {
-                return newVInt(counter++, alarmNone(), timeNow(), displayNone());
+            public Integer readValue() {
+                return counter++;
             }
         }, "counter");
     }

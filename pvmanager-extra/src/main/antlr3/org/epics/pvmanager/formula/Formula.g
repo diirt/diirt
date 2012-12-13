@@ -8,7 +8,7 @@ options {
   package org.epics.pvmanager.formula;
   import org.epics.pvmanager.expression.*;
   import static org.epics.pvmanager.ExpressionLanguage.*;
-  import static org.epics.pvmanager.data.ExpressionLanguage.*;
+  import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
   import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 }
 
