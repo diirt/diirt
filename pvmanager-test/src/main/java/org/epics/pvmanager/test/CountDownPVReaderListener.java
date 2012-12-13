@@ -2,34 +2,31 @@
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.epics.pvmanager.PVReaderEvent;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.TimeDuration;
 
 /**
- * Write listener to wait that a certain number of notifications.
+ * Read listener to wait that a certain number of notifications.
  *
  * @author carcassi
  */
-public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
+public class CountDownPVReaderListener implements PVReaderListener<Object> {
 
     private volatile CountDownLatch latch;
-    private volatile PVWriterEvent<T> event;
-    private volatile String threadName;
-    private AtomicInteger notificationCount = new AtomicInteger();
+    private volatile PVReaderEvent<Object> event;
     
-    public CountDownPVWriterListener(int count) {
+    public CountDownPVReaderListener(int count) {
         latch = new CountDownLatch(count);
     }
 
     @Override
-    public void pvChanged(PVWriterEvent<T> event) {
+    public void pvChanged(PVReaderEvent<Object> event) {
         this.event = event;
-        notificationCount.incrementAndGet();
-        this.threadName = Thread.currentThread().getName();
         latch.countDown();
     }
 
@@ -50,33 +47,6 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
     public int getCount() {
         return (int) latch.getCount();
     }
-
-    /**
-     * The last notified event.
-     * 
-     * @return the event
-     */
-    public PVWriterEvent<T> getEvent() {
-        return event;
-    }
-
-    /**
-     * The thread name for the last notification.
-     * 
-     * @return the thread name
-     */
-    public String getThreadName() {
-        return threadName;
-    }
-    
-    /**
-     * The total number of notifications on this listener.
-     * 
-     * @return the number of notifications
-     */
-    public int getNotificationCount() {
-        return notificationCount.get();
-    }
     
     /**
      * Waits that the listener count goes to zero.
@@ -88,6 +58,10 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
     public boolean await(TimeDuration duration) 
     throws InterruptedException {
         return latch.await(duration.toNanosLong(), TimeUnit.NANOSECONDS);
+    }
+
+    public PVReaderEvent<Object> getEvent() {
+        return event;
     }
     
 }

@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.test.CountDownPVReaderListener;
+import org.epics.pvmanager.test.MockDataSource;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.expression.Queue;

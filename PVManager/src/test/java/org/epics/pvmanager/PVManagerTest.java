@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager;
 
+import org.epics.pvmanager.test.MockExecutor;
+import org.epics.pvmanager.test.MockDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

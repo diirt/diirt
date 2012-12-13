@@ -33,6 +33,8 @@ import org.epics.pvmanager.data.VDoubleArray;
 import org.epics.pvmanager.data.VString;
 import org.epics.pvmanager.data.VStringArray;
 import org.epics.pvmanager.expression.Queue;
+import org.epics.pvmanager.loc.LocalDataSource;
+import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
 import static org.epics.util.time.TimeDuration.*;

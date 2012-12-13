@@ -11,7 +11,7 @@ import static org.epics.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import static org.epics.pvmanager.ThreadTestingUtil.*;
+import static org.epics.pvmanager.test.ThreadTestingUtil.*;
 
 /**
  *

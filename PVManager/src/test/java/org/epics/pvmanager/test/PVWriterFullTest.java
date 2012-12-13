@@ -5,7 +5,6 @@
 package org.epics.pvmanager.test;
 
 import java.util.concurrent.Executor;
-import org.epics.pvmanager.CountDownPVWriterListener;
 import org.epics.pvmanager.DataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PV;
@@ -13,6 +12,8 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterEvent;
+import org.epics.pvmanager.test.CountDownPVWriterListener;
+import org.epics.pvmanager.test.TestDataSource;
 import org.epics.pvmanager.util.Executors;
 import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;

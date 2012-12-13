@@ -6,7 +6,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.test;
+
+import org.epics.pvmanager.PVWriter;
+import org.epics.pvmanager.PVWriterEvent;
+import org.epics.pvmanager.PVWriterListener;
 
 /**
  *

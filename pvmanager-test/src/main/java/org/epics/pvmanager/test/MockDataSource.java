@@ -6,11 +6,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.epics.pvmanager;
+package org.epics.pvmanager.test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.epics.pvmanager.ChannelHandler;
+import org.epics.pvmanager.ChannelReadRecipe;
+import org.epics.pvmanager.ChannelWriteRecipe;
+import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.ExceptionHandler;
+import org.epics.pvmanager.ReadRecipe;
+import org.epics.pvmanager.WriteRecipe;
 
 /**
  *

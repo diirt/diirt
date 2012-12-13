@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager.test;
 
-import org.epics.pvmanager.CountDownPVReaderListener;
-import org.epics.pvmanager.CountDownPVWriterListener;
 import org.epics.pvmanager.DataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PV;
@@ -13,6 +11,9 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.TimeoutException;
+import org.epics.pvmanager.test.CountDownPVReaderListener;
+import org.epics.pvmanager.test.CountDownPVWriterListener;
+import org.epics.pvmanager.test.TestDataSource;
 import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;

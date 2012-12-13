@@ -6,6 +6,7 @@ package org.epics.pvmanager.loc;
 
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.VDouble;
+import org.epics.pvmanager.loc.LocalChannelHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
