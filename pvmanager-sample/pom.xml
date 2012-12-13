@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.epics</groupId>
+        <artifactId>pvmanager-base</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>pvmanager-sample</artifactId>
+    <name>pvmanager-sample</name>
+    <dependencies>
+        <dependency>
+            <groupId>epics</groupId>
+            <artifactId>PVManager</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvmanager-jca</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>
