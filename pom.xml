@@ -216,5 +216,6 @@
     <module>pvmanager-loc</module>
     <module>pvmanager-test</module>
     <module>pvmanager-sim</module>
+    <module>pvmanager-extra</module>
   </modules>
 </project>

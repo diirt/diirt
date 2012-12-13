@@ -14,6 +14,8 @@ import org.antlr.runtime.*;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VNumber;
 import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.formula.FormulaLexer;
+import org.epics.pvmanager.formula.FormulaParser;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 
 /**

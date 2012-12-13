@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.data.VDouble;
 import org.epics.pvmanager.data.VString;
+import org.epics.pvmanager.formula.LastOfChannelExpression;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
