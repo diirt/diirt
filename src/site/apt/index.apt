@@ -1,0 +1,20 @@
+   ----
+   Home
+   ----
+   Gabriele Carcassi
+   ----
+
+PVManager
+
+  The PVManager a client utility library to manage complex objects retrival and scanning.
+It allows to decouple the rate of events on the network from the rate of refresh needed by the
+UI itself.
+
+  To get started, look at the {{{./apidocs/org/epics/pvmanager/package-summary.html#contents}examples and documentation}}.
+
+Download
+
+  {{{http://epics.sourceforge.net/maven2/epics/PVManager/}All releases and development snapshots}}
+
+  {{{https://openepics.ci.cloudbees.com/job/PVManager%20-%20Build/}Latest build}}
+

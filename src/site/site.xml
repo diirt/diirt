@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PVManager">
+  <bannerLeft>
+    <name>PVManager</name>
+    <src>images/PVManagerLogo100.png</src>
+    <href>http://pvmanager.sourceforge.net</href>
+  </bannerLeft>
+  <!--<bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>-->
+  <body>
+    <links>
+      <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
+      <item name="JCA-JCA" href="http://epics-jca.sourceforge.net/"/>
+      <item name="CSS" href="http://cs-studio.sourceforge.net"/>
+    </links>
+
+    <menu name="PVManager">
+      <item name="About" href="index.html"/>
+      <item name="Wiki(Trac)" href="http://apps.sourceforge.net/trac/pvmanager/"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/pvmanager/"/>
+      <item name="About" href="index.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+  </body>
+  <poweredBy>
+    <logo name="Cloudbees" href="https://openepics.ci.cloudbees.com/"
+          img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>    
+</project>
+
