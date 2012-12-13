@@ -4,6 +4,12 @@
  */
 package org.epics.pvmanager.loc;
 
+import org.epics.pvmanager.ValueCache;
+import org.epics.pvmanager.ChannelHandlerWriteSubscription;
+import org.epics.pvmanager.WriteFunction;
+import org.epics.pvmanager.WriteCache;
+import org.epics.pvmanager.ChannelWriteCallback;
+import org.epics.pvmanager.ChannelHandlerReadSubscription;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.vtype.VDouble;
 import org.epics.pvmanager.loc.LocalChannelHandler;

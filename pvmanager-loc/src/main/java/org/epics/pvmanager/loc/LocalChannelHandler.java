@@ -4,6 +4,10 @@
  */
 package org.epics.pvmanager.loc;
 
+import org.epics.pvmanager.ChannelWriteCallback;
+import org.epics.pvmanager.ChannelHandlerReadSubscription;
+import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.epics.pvmanager.ChannelHandlerWriteSubscription;
 import java.util.Collections;
 import java.util.List;
 import org.epics.pvmanager.*;

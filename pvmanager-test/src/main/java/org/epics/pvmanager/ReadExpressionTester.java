@@ -4,16 +4,6 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.ChannelReadRecipe;
-import org.epics.pvmanager.ChannelReadRecipe;
-import org.epics.pvmanager.PVReaderDirector;
-import org.epics.pvmanager.PVReaderDirector;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.ReadRecipe;
-import org.epics.pvmanager.ReadRecipe;
-import org.epics.pvmanager.ValueCache;
-import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 
 /**

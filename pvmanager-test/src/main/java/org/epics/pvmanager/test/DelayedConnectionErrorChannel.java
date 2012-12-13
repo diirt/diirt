@@ -4,6 +4,9 @@
  */
 package org.epics.pvmanager.test;
 
+import org.epics.pvmanager.ChannelWriteCallback;
+import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.epics.pvmanager.PVManager;
 import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.*;
 

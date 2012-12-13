@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.epics.pvmanager.ChannelWriteCallback;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

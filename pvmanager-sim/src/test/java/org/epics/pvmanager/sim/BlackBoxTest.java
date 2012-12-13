@@ -4,6 +4,9 @@
  */
 package org.epics.pvmanager.sim;
 
+import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.PVManager;
 import java.util.concurrent.Callable;
 import org.epics.pvmanager.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;

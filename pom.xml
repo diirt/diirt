@@ -218,5 +218,6 @@
     <module>pvmanager-sim</module>
     <module>pvmanager-extra</module>
     <module>pvmanager-vtype</module>
+    <module>pvmanager-core</module>
   </modules>
 </project>

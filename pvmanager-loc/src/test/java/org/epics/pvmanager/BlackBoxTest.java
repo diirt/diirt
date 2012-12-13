@@ -6,9 +6,6 @@ package org.epics.pvmanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVManager;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.vtype.VDouble;
 import org.epics.pvmanager.vtype.VString;

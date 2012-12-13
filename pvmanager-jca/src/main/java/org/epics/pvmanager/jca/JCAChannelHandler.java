@@ -4,6 +4,9 @@
  */
 package org.epics.pvmanager.jca;
 
+import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.epics.pvmanager.ChannelWriteCallback;
+import org.epics.pvmanager.ValueCache;
 import com.cosylab.epics.caj.CAJMonitor;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
