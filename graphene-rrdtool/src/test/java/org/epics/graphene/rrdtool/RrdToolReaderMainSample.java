@@ -13,6 +13,7 @@ public class RrdToolReaderMainSample {
         RrdToolReaderMain.main(new String[] {"/media/sf_Shared/aru41_setpoint_5602.rrd:Temp1:AVERAGE",
             "/media/sf_Shared/aru41_setpoint_5602.rrd:Temp2:AVERAGE",
             "/media/sf_Shared/aru41_setpoint_5602.rrd:Temp3:AVERAGE",
+            "/media/sf_Shared/dc2-5-17_cpu_system_54823.rrd:cpu_system:AVERAGE",
             "-s", "20121201000000", "-e", "20121215000000"});
     }
 }

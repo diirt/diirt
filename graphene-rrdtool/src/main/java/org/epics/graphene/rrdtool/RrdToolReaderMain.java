@@ -36,8 +36,10 @@ public class RrdToolReaderMain {
                 signals.add(arg);
             }
         }
-        TimeSeriesMulti data = RrdToolDB.fetchData(signals, start, end);
-        displayData(data);
+        List<TimeSeries> data = RrdToolDB.fetchData(signals, start, end);
+        for (TimeSeries timeSeries : data) {
+            displayData(timeSeries);
+        }
     }
     
     public static void displayData(TimeSeriesMulti data) {
@@ -48,5 +50,9 @@ public class RrdToolReaderMain {
             ListDouble values = entry.getValue();
             System.out.println("Series " + name + " has " + values.size() + " entries");
         }
+    }
+    
+    public static void displayData(TimeSeries data) {
+        System.out.println(data.getTime().size() + " samples from " + format.format(data.getTime().get(0)) + " to " + format.format(data.getTime().get(data.getTime().size() - 1)));
     }
 }

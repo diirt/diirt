@@ -18,9 +18,9 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class RrdToolDB {
-    public static TimeSeriesMulti fetchData(Collection<String> signals, Timestamp start, Timestamp end) {
+    public static List<TimeSeries> fetchData(Collection<String> signals, Timestamp start, Timestamp end) {
         Map<String, TimeSeriesMulti> cachedFileCFData = new HashMap<>();
-        Map<String, ListDouble> buffers = new HashMap<>();
+        List<TimeSeries> series = new ArrayList<>();
         List<Timestamp> timestamps = null;
         RrdToolReader reader = new RrdToolReader();
         for (String signal : signals) {
@@ -35,10 +35,9 @@ public class RrdToolDB {
             if (buffer == null) {
                 throw new IllegalArgumentException("Signal " + signal + " was not found");
             }
-            buffers.put(signal, buffer);
-            timestamps = data.getTime();
+            series.add(new TimeSeries(data.getTime(), buffer));
         }
         
-        return new TimeSeriesMulti(timestamps, buffers);
+        return series;
     }
 }
