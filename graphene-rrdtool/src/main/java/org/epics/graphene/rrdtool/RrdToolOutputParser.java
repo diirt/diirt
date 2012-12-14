@@ -24,7 +24,7 @@ import org.epics.util.time.Timestamp;
  */
 public class RrdToolOutputParser {
     
-    public TimeSeries parse(BufferedReader reader) {
+    public TimeSeriesMulti parse(BufferedReader reader) {
         try {
             // First line has the data name
             List<String> names = Arrays.asList(reader.readLine().trim().split("(\\s+)"));
@@ -58,7 +58,7 @@ public class RrdToolOutputParser {
                 values.put(names.get(i), buffers.get(i));
             }
             
-            return new TimeSeries(time, values);
+            return new TimeSeriesMulti(time, values);
         } catch(IOException ex) {
             throw new RuntimeException("Couldn't parse file", ex);
         }

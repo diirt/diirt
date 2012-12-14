@@ -32,7 +32,7 @@ public class RrdToolOutputParserTest {
     public void parse1() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("rrdtool1.out")));
         RrdToolOutputParser instance = new RrdToolOutputParser();
-        TimeSeries result = instance.parse(reader);
+        TimeSeriesMulti result = instance.parse(reader);
         assertThat(result.getTime().size(), equalTo(241));
         assertThat(result.getValues().size(), equalTo(1));
         ListDouble values = result.getValues().get("load_1min");
@@ -49,7 +49,7 @@ public class RrdToolOutputParserTest {
     public void parse2() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("rrdtool2.out")));
         RrdToolOutputParser instance = new RrdToolOutputParser();
-        TimeSeries result = instance.parse(reader);
+        TimeSeriesMulti result = instance.parse(reader);
         assertThat(result.getTime().size(), equalTo(241));
         assertThat(result.getValues().size(), equalTo(18));
         assertThat(result.getValues().keySet(), equalTo((Set<String>) new HashSet<String>(

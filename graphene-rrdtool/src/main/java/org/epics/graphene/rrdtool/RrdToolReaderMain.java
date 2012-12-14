@@ -36,11 +36,11 @@ public class RrdToolReaderMain {
                 signals.add(arg);
             }
         }
-        TimeSeries data = RrdToolDB.fetchData(signals, start, end);
+        TimeSeriesMulti data = RrdToolDB.fetchData(signals, start, end);
         displayData(data);
     }
     
-    public static void displayData(TimeSeries data) {
+    public static void displayData(TimeSeriesMulti data) {
         System.out.println("Data contains " + data.getValues().size() + " series");
         System.out.println("Time samples " + data.getTime().size() + " from " + format.format(data.getTime().get(0)) + " to " + format.format(data.getTime().get(data.getTime().size() - 1)));
         for (Map.Entry<String, ListDouble> entry : data.getValues().entrySet()) {

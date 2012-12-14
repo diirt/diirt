@@ -13,12 +13,12 @@ import org.epics.util.time.Timestamp;
  *
  * @author carcassi
  */
-public class TimeSeries {
+public class TimeSeriesMulti {
     
     private List<Timestamp> time;
     private Map<String, ListDouble> values;
 
-    public TimeSeries(List<Timestamp> time, Map<String, ListDouble>  values) {
+    public TimeSeriesMulti(List<Timestamp> time, Map<String, ListDouble>  values) {
         this.time = time;
         this.values = values;
     }

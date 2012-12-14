@@ -18,15 +18,15 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class RrdToolDB {
-    public static TimeSeries fetchData(Collection<String> signals, Timestamp start, Timestamp end) {
-        Map<String, TimeSeries> cachedFileCFData = new HashMap<>();
+    public static TimeSeriesMulti fetchData(Collection<String> signals, Timestamp start, Timestamp end) {
+        Map<String, TimeSeriesMulti> cachedFileCFData = new HashMap<>();
         Map<String, ListDouble> buffers = new HashMap<>();
         List<Timestamp> timestamps = null;
         RrdToolReader reader = new RrdToolReader();
         for (String signal : signals) {
             String[] tokens = signal.split(":");
             String cacheKey = tokens[0]+":"+tokens[2];
-            TimeSeries data = cachedFileCFData.get(cacheKey);
+            TimeSeriesMulti data = cachedFileCFData.get(cacheKey);
             if (data == null) {
                 data = reader.readFile(tokens[0], tokens[2], start, end);
                 cachedFileCFData.put(cacheKey, data);
@@ -39,6 +39,6 @@ public class RrdToolDB {
             timestamps = data.getTime();
         }
         
-        return new TimeSeries(timestamps, buffers);
+        return new TimeSeriesMulti(timestamps, buffers);
     }
 }
