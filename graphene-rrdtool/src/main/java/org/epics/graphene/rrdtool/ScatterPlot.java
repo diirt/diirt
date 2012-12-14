@@ -2,10 +2,6 @@
  * Copyright (C) 2012 University of Michigan
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.graphene.rrdtool;
 
 import java.awt.image.BufferedImage;
