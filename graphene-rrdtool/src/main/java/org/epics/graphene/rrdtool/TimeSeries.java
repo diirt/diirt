@@ -5,6 +5,7 @@
 package org.epics.graphene.rrdtool;
 
 import java.util.List;
+import java.util.Map;
 import org.epics.util.array.ListDouble;
 import org.epics.util.time.Timestamp;
 
@@ -17,7 +18,7 @@ public class TimeSeries {
     private List<Timestamp> time;
     private ListDouble values;
 
-    public TimeSeries(List<Timestamp> time, ListDouble values) {
+    public TimeSeries(List<Timestamp> time, ListDouble  values) {
         this.time = time;
         this.values = values;
     }

@@ -2,10 +2,6 @@
  * Copyright (C) 2012 University of Michigan
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.graphene.rrdtool;
 
 import java.awt.image.BufferedImage;
@@ -170,14 +166,14 @@ public class ScatterPlot extends javax.swing.JFrame {
             RrdToolReader reader = new RrdToolReader();
             Timestamp start = Timestamp.of(format.parse(startDate.getText()));
             Timestamp end = Timestamp.of(format.parse(endDate.getText()));
-            TimeSeries xData = reader.readFile(xFilename.getText(), "AVERAGE", start, end);
-            TimeSeries yData = reader.readFile(yFilename.getText(), "AVERAGE", start, end);
-            Point2DDataset dataset = Point2DDatasets.lineData(xData.getValues(), yData.getValues());
-            valuesX.setText(toText(xData.getValues()));
-            valuesY.setText(toText(yData.getValues()));
+            TimeSeriesMulti xData = reader.readFile(xFilename.getText(), "AVERAGE", start, end);
+            TimeSeriesMulti yData = reader.readFile(yFilename.getText(), "AVERAGE", start, end);
+//            Point2DDataset dataset = Point2DDatasets.lineData(xData.getValues(), yData.getValues());
+//            valuesX.setText(toText(xData.getValues()));
+//            valuesY.setText(toText(yData.getValues()));
             BufferedImage image = new BufferedImage(imagePanel1.getWidth(), imagePanel1.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
             Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imagePanel1.getWidth(), imagePanel1.getHeight());
-            renderer.draw(image.createGraphics(), dataset);
+//            renderer.draw(image.createGraphics(), dataset);
             imagePanel1.setImage(image);
         } catch(Exception ex) {
             ex.printStackTrace();

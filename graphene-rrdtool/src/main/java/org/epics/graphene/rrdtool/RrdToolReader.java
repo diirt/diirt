@@ -2,10 +2,6 @@
  * Copyright (C) 2012 University of Michigan
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.graphene.rrdtool;
 
 import java.io.BufferedReader;
@@ -24,7 +20,7 @@ import org.epics.util.time.Timestamp;
  */
 public class RrdToolReader {
     
-    public TimeSeries readFile(String filename, String cf, Timestamp start, Timestamp end) {
+    public TimeSeriesMulti readFile(String filename, String cf, Timestamp start, Timestamp end) {
         List<String> args = new ArrayList<>();
         args.add("rrdtool");
         args.add("fetch");
@@ -44,7 +40,7 @@ public class RrdToolReader {
             process = new ProcessBuilder(args.toArray(new String[args.size()])).start();
             input = process.getInputStream();
             RrdToolOutputParser parser = new RrdToolOutputParser();
-            TimeSeries data = parser.parse(new BufferedReader(new InputStreamReader(input)));
+            TimeSeriesMulti data = parser.parse(new BufferedReader(new InputStreamReader(input)));
             return data;
         } catch (IOException ex) {
             throw new RuntimeException("Couldn't read RRD data", ex);
