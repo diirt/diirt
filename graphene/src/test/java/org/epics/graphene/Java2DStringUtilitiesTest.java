@@ -54,6 +54,9 @@ public class Java2DStringUtilitiesTest {
     
     @Test
     public void drawCenteredText1() throws Exception {
+        if (!"Windows 7".equals(System.getProperty("os.name"))) {
+            return;
+        }
         Java2DStringUtilities.drawString(graphics, CENTER, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.1", image);
     }
@@ -67,6 +70,9 @@ public class Java2DStringUtilitiesTest {
     
     @Test
     public void drawRightText1() throws Exception {
+        if (!"Windows 7".equals(System.getProperty("os.name"))) {
+            return;
+        }
         Java2DStringUtilities.drawString(graphics, RIGHT, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.3", image);
     }
@@ -80,6 +86,9 @@ public class Java2DStringUtilitiesTest {
     
     @Test
     public void drawBottomRightText1() throws Exception {
+        if (!"Windows 7".equals(System.getProperty("os.name"))) {
+            return;
+        }
         Java2DStringUtilities.drawString(graphics, BOTTOM_RIGHT, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.5", image);
     }
@@ -93,6 +102,9 @@ public class Java2DStringUtilitiesTest {
     
     @Test
     public void drawTopRightText1() throws Exception {
+        if (!"Windows 7".equals(System.getProperty("os.name"))) {
+            return;
+        }
         Java2DStringUtilities.drawString(graphics, TOP_RIGHT, x, y, "ABCD");
         ImageAssert.compareImages("textUtilities.7", image);
     }
