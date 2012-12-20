@@ -2,12 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
     <groupId>org.epics</groupId>
     <artifactId>epics-util</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Epics Utilities</name>
-    <url>http://maven.apache.org</url>
+    <name>Epics utilities</name>
+    <url>http://epics-util.sourceforge.net</url>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
     <licenses>
         <license>
@@ -15,6 +20,20 @@
             <url>LICENSE.TXT</url>
         </license>
     </licenses>
+    <scm>
+        <connection>scm:hg:http://epics-util.hg.sourceforge.net:8000/hgroot/epics-util/epics-util</connection>
+        <developerConnection>scm:hg:ssh://username@epics-util.hg.sourceforge.net/hgroot/epics-util/epics-util</developerConnection>
+        <url>http://epics-util.hg.sourceforge.net/hgweb/epics-util/epics-util/</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>carcassi</id>
+            <name>Gabriele Carcassi</name>
+            <email>carcassi@bnl.gov</email>
+            <organization>BNL</organization>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
     <build>
         <plugins>
             <plugin> 
@@ -99,8 +118,8 @@
     </repositories>
 
     <distributionManagement>
-    	<!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
-    	(id values there should match ids below) -->
+        <!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
+       	(id values there should match ids below) -->
         <site>
             <id>epics-util.sf.net</id>
             <name>Epics Utilities Sourceforge site</name>
