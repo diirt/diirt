@@ -11,6 +11,10 @@ package org.epics.util.array;
  */
 public class CollectionNumbers {
     
+    private CollectionNumbers() {
+        // prevent instances
+    }
+    
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
