@@ -22,7 +22,7 @@
     </licenses>
     <scm>
         <connection>scm:hg:http://epics-util.hg.sourceforge.net:8000/hgroot/epics-util/epics-util</connection>
-        <developerConnection>scm:hg:ssh://epics-util.hg.sourceforge.net/hgroot/epics-util/epics-util</developerConnection>
+        <developerConnection>scm:hg:ssh://epics-jenkins@epics-util.hg.sourceforge.net/hgroot/epics-util/epics-util</developerConnection>
         <url>http://epics-util.hg.sourceforge.net/hgweb/epics-util/epics-util/</url>
     </scm>
     <developers>
@@ -104,15 +104,6 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <!-- To be able to deploy, set login/passwd in your m2 settings.xml, <servers> section
-       	(id values there should match ids below) -->
-        <site>
-            <id>epics-util.sf.net</id>
-            <name>Epics Utilities Sourceforge site</name>
-            <url>scp://shell.sourceforge.net/home/project-web/epics-util/htdocs</url>
-        </site>
-    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
