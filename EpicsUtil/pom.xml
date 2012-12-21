@@ -22,7 +22,7 @@
     </licenses>
     <scm>
         <connection>scm:hg:http://epics-util.hg.sourceforge.net:8000/hgroot/epics-util/epics-util</connection>
-        <developerConnection>scm:hg:ssh://username@epics-util.hg.sourceforge.net/hgroot/epics-util/epics-util</developerConnection>
+        <developerConnection>scm:hg:ssh://epics-util.hg.sourceforge.net/hgroot/epics-util/epics-util</developerConnection>
         <url>http://epics-util.hg.sourceforge.net/hgweb/epics-util/epics-util/</url>
     </scm>
     <developers>
