@@ -43,11 +43,11 @@
     </ciManagement>
     <repositories>
         <repository>
-            <id>epics</id>
-            <name>EPICS Repository</name>
-            <url>http://epics.sourceforge.net/maven2/</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <releases>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
@@ -219,15 +219,15 @@
         <module>pvmanager-extra</module>
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
-    <module>epics-vtype</module>
-  </modules>
+        <module>epics-vtype</module>
+    </modules>
     <reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9</version>
-<!--                <configuration>
+                <!--                <configuration>
                     <docfilessubdirs>true</docfilessubdirs>
                 </configuration>
                 <reportSets>
@@ -258,7 +258,7 @@
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.3</version>
             </plugin>
-<!--            <plugin>
+            <!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changes-plugin</artifactId>
                 <version>2.7.1</version>
