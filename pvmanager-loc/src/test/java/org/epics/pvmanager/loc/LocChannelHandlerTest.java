@@ -11,7 +11,7 @@ import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.ChannelHandlerReadSubscription;
 import org.epics.pvmanager.*;
-import org.epics.pvmanager.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.epics.pvmanager.loc.LocalChannelHandler;
 import org.junit.Before;
 import org.junit.Test;

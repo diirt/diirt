@@ -9,7 +9,7 @@ import org.epics.pvdata.pv.FloatArrayData;
 import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvmanager.vtype.VFloatArray;
+import org.epics.vtype.VFloatArray;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;

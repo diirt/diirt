@@ -14,10 +14,10 @@ import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvmanager.vtype.Alarm;
-import org.epics.pvmanager.vtype.AlarmSeverity;
-import org.epics.pvmanager.vtype.Display;
-import org.epics.pvmanager.vtype.Time;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
 import org.epics.pvmanager.util.NumberFormats;
 import org.epics.util.time.Timestamp;
 

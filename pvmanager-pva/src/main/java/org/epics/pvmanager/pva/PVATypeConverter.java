@@ -6,7 +6,7 @@ package org.epics.pvmanager.pva;
 
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvmanager.vtype.VDouble;
+import org.epics.vtype.VDouble;
 
 /**
  * Converts pvStructures into normative types and vice-versa. An instance

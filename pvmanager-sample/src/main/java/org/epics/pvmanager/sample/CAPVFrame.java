@@ -10,7 +10,7 @@
 
 package org.epics.pvmanager.sample;
 
-import org.epics.pvmanager.vtype.VStatistics;
+import org.epics.vtype.VStatistics;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;

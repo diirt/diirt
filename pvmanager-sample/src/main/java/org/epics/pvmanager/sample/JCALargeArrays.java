@@ -10,8 +10,8 @@ import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.vtype.VDoubleArray;
-import org.epics.pvmanager.vtype.VShortArray;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VShortArray;
 import static org.epics.util.time.TimeDuration.*;
 
 /**

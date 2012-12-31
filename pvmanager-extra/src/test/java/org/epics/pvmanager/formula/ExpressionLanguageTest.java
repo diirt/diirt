@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.expression.DesiredRateExpression;

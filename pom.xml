@@ -203,7 +203,7 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>
@@ -219,7 +219,8 @@
         <module>pvmanager-extra</module>
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
-    </modules>
+    <module>epics-vtype</module>
+  </modules>
     <reporting>
         <plugins>
             <plugin>

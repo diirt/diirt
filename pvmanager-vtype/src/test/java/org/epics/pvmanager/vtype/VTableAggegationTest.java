@@ -4,11 +4,11 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.pvmanager.vtype.VTable;
+import org.epics.vtype.VTable;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.vtype.VTable;
+import org.epics.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

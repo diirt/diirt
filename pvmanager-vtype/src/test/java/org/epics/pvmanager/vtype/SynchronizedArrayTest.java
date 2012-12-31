@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.pvmanager.vtype.VMultiDouble;
+import org.epics.vtype.VMultiDouble;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.Arrays;
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.pvmanager.vtype.VMultiDouble;
-import static org.epics.pvmanager.vtype.ValueFactory.*;
+import org.epics.vtype.VMultiDouble;
+import static org.epics.vtype.ValueFactory.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.Timestamp;

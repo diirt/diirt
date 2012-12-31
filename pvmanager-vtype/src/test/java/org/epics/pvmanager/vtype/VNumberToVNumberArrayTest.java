@@ -4,12 +4,12 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.pvmanager.vtype.VNumberArray;
+import org.epics.vtype.VNumberArray;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.vtype.VNumberArray;
+import org.epics.vtype.VNumberArray;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

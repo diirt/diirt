@@ -6,7 +6,7 @@ package org.epics.pvmanager.sim;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
