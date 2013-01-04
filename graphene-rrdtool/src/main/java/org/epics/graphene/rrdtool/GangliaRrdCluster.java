@@ -7,12 +7,16 @@ package org.epics.graphene.rrdtool;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.epics.graphene.Point3DWithLabelDataset;
+import org.epics.graphene.Point3DWithLabelDatasets;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
@@ -82,6 +86,43 @@ public class GangliaRrdCluster {
     }
     
     private RrdToolReader reader = new RrdToolReader();
+    
+    public Point3DWithLabelDataset dataset(List<String> machineNames, List<String> signals, Timestamp time) {
+        if (signals.size() != 3) {
+            throw new IllegalArgumentException("3 signal names are required");
+        }
+        
+        if (machineNames.isEmpty()) {
+            throw new IllegalArgumentException("Must provide at least one machine");
+        }
+        
+        return Point3DWithLabelDatasets.build(dataset(machineNames, signals.get(0), time),
+                dataset(machineNames, signals.get(1), time),
+                dataset(machineNames, signals.get(2), time),
+                signals);
+    }
+    
+    public Point3DWithLabelDataset dataset(List<String> signals, Timestamp time) {
+        List<String> machineNames = new ArrayList<>();
+        
+        for (Map.Entry<String, Set<String>> entry : machinesToSignals.entrySet()) {
+            String machine = entry.getKey();
+            Set<String> machineSignals = entry.getValue();
+            if (machineSignals.containsAll(signals)) {
+                machineNames.add(machine);
+            }
+        }
+        
+        return dataset(machineNames, signals, time);
+    }
+    
+    private ListDouble dataset(List<String> machineNames, String signal, Timestamp time) {
+        double[] values = new double[machineNames.size()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = getValue(machineNames.get(i), signal, time);
+        }
+        return new ArrayDouble(values);
+    }
     
     public double getValue(String machine, String signal, Timestamp time) {
         Set<String> machineSignals = machinesToSignals.get(machine);
