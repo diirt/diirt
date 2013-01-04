@@ -27,7 +27,6 @@ class Histogram1DFunction implements ReadFunction<VImage> {
     private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
     private VImage previousImage;
     private List<Histogram1DUpdate> histogramUpdates = Collections.synchronizedList(new ArrayList<Histogram1DUpdate>());
-    //private List<Histogram1DRendererUpdate> rendererUpdates = Collections.synchronizedList(new ArrayList<Histogram1DRendererUpdate>());
     private QueueCollector<Histogram1DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     public Histogram1DFunction(ReadFunction<? extends List<? extends VNumber>> argument) {
