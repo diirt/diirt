@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.epics.util.array.ListDouble;
+import org.epics.util.time.TimeDuration;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -76,6 +79,31 @@ public class GangliaRrdCluster {
 
     public Set<String> getSignals() {
         return signals;
+    }
+    
+    private RrdToolReader reader = new RrdToolReader();
+    
+    public double getValue(String machine, String signal, Timestamp time) {
+        Set<String> machineSignals = machinesToSignals.get(machine);
+        if (machineSignals == null || !machineSignals.contains(signal)) {
+            return Double.NaN;
+        }
+        TimeSeriesMulti data = reader.readFile(baseDir.getAbsolutePath() + File.pathSeparator + machine + File.pathSeparator + signal + ".rrd",
+                                           "AVERAGE", time.minus(TimeDuration.ofMinutes(30)), time.plus(TimeDuration.ofMinutes(30)));
+        ListDouble series = data.getValues().values().iterator().next();
+        List<Timestamp> times = data.getTime();
+        
+        // Get the value that is the one right before the time becomes
+        // greater
+        int i = 0;
+        while (i < times.size() && times.get(i).compareTo(time) <= 0) {
+            i++;
+        }
+        if (i != 0) {
+            i--;
+        }
+        
+        return series.getDouble(i);
     }
     
 }
