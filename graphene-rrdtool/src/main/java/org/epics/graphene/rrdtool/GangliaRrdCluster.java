@@ -33,7 +33,7 @@ public class GangliaRrdCluster {
         scanDirectory();
     }
     
-    private static Pattern rrdFilePattern = Pattern.compile(".rrd$", Pattern.CASE_INSENSITIVE);
+    private static Pattern rrdFilePattern = Pattern.compile(".*\\.rrd", Pattern.CASE_INSENSITIVE);
     
     private void scanDirectory() {
         // All the subdirectories are taken to be machine names
