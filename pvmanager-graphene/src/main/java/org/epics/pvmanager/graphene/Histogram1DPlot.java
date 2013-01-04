@@ -26,6 +26,6 @@ public class Histogram1DPlot extends DesiredRateExpressionImpl<VImage> {
     }
     
     public void update(Histogram1DRendererUpdate update) {
-        ((Histogram1DFunction) getFunction()).update(update);
+        ((Histogram1DFunction) getFunction()).getUpdateQueue().writeValue(update);
     }
 }
