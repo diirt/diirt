@@ -137,7 +137,7 @@ public class GangliaRrdCluster {
         if (machineSignals == null || !machineSignals.contains(signal)) {
             return Double.NaN;
         }
-        TimeSeriesMulti data = reader.readFile(baseDir.getAbsolutePath() + File.pathSeparator + machine + File.pathSeparator + signal + ".rrd",
+        TimeSeriesMulti data = reader.readFile(baseDir.getAbsolutePath() + File.separator + machine + File.separator + signal + ".rrd",
                                            "AVERAGE", time.minus(TimeDuration.ofMinutes(30)), time.plus(TimeDuration.ofMinutes(30)));
         ListDouble series = data.getValues().values().iterator().next();
         List<Timestamp> times = data.getTime();
