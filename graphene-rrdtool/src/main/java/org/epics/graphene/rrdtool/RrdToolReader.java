@@ -19,8 +19,12 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class RrdToolReader {
+
+    private static Logger log = Logger.getLogger(RrdToolReader.class.getName());
+    
     
     public TimeSeriesMulti readFile(String filename, String cf, Timestamp start, Timestamp end) {
+        log.fine("Read " + filename + " cf " + cf + " from " + start + " to " + end);
         List<String> args = new ArrayList<>();
         args.add("rrdtool");
         args.add("fetch");
@@ -37,6 +41,7 @@ public class RrdToolReader {
         InputStream input = null;
         Process process = null;
         try {
+            log.finest("Executing " + args);
             process = new ProcessBuilder(args.toArray(new String[args.size()])).start();
             input = process.getInputStream();
             RrdToolOutputParser parser = new RrdToolOutputParser();

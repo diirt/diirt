@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.graphene.Point3DWithLabelDatasets;
@@ -27,17 +28,21 @@ import org.epics.util.time.Timestamp;
  */
 public class GangliaRrdCluster {
     
+    private static Logger log = Logger.getLogger(GangliaRrdCluster.class.getName());
+    
     private final File baseDir;
     private Set<String> machines;
     private Set<String> signals;
     private Map<String, Set<String>> machinesToSignals;
     
     public GangliaRrdCluster(String baseDirectory) {
+        log.fine("Reading Ganglia directory at " + baseDirectory);
         baseDir = new File(baseDirectory);
         if (!baseDir.isDirectory()) {
             throw new IllegalArgumentException(baseDirectory + "is not a directory");
         }
         scanDirectory();
+        log.finest("Machines " + machines + "\nSignals " + signals);
     }
     
     private static Pattern rrdFilePattern = Pattern.compile(".*\\.rrd", Pattern.CASE_INSENSITIVE);
@@ -103,6 +108,7 @@ public class GangliaRrdCluster {
     }
     
     public Point3DWithLabelDataset dataset(List<String> signals, Timestamp time) {
+        log.fine("Creating dataset for signals " + signals + " at " + time);
         List<String> machineNames = new ArrayList<>();
         
         for (Map.Entry<String, Set<String>> entry : machinesToSignals.entrySet()) {
@@ -117,6 +123,7 @@ public class GangliaRrdCluster {
     }
     
     private ListDouble dataset(List<String> machineNames, String signal, Timestamp time) {
+        log.fine("Creating dataset for signal " + signal + " on machines " + machineNames + " at " + time);
         double[] values = new double[machineNames.size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = getValue(machineNames.get(i), signal, time);
@@ -125,6 +132,7 @@ public class GangliaRrdCluster {
     }
     
     public double getValue(String machine, String signal, Timestamp time) {
+        log.fine("Get value for signal " + signals + " on machine " + machine + " at " + time);
         Set<String> machineSignals = machinesToSignals.get(machine);
         if (machineSignals == null || !machineSignals.contains(signal)) {
             return Double.NaN;
