@@ -104,7 +104,7 @@ public class GangliaRrdCluster {
         return Point3DWithLabelDatasets.build(dataset(machineNames, signals.get(0), time),
                 dataset(machineNames, signals.get(1), time),
                 dataset(machineNames, signals.get(2), time),
-                signals);
+                machineNames);
     }
     
     public Point3DWithLabelDataset dataset(List<String> signals, Timestamp time) {
