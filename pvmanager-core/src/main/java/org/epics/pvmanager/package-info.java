@@ -23,7 +23,7 @@
  *     <li><a href="http://pvmanager.sourceforge.net/xref/org/epics/pvmanager/sample/MultipleChannelExamples.html">Multiple channel examples</a> - 
  * how to read/write multiple channels at a time.</li>
  *     <li><a href="http://pvmanager.sourceforge.net/xref/org/epics/pvmanager/sample/VTypeExamples.html">VType examples</a> - 
- * how to work with actual type and how to aggregate them in igger structures.</li>
+ * how to work with actual type and how to aggregate them in bigger structures.</li>
  * </ol>
  * 
  * <h1> Package description</h1>
