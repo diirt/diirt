@@ -82,7 +82,30 @@ public class ConfigurationExamples {
         // For more options, check CompositeDataSource.
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static Executor swtThread() {
+        // Mock method to make the examples compile
+        // This method will be in CSS
         return null;
     }
 }
