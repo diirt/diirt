@@ -197,7 +197,8 @@
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
         <module>epics-vtype</module>
-    </modules>
+    <module>pvmanager-sys</module>
+  </modules>
     <reporting>
         <plugins>
             <plugin>
