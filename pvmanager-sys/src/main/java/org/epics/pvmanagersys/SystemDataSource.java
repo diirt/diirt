@@ -52,6 +52,9 @@ public final class SystemDataSource extends DataSource {
         if ("used_mb".equals(channelName)) {
             return new UsedMemoryChannelHandler(channelName);
         }
+        if ("time".equals(channelName)) {
+            return new TimeChannelHandler(channelName);
+        }
         throw new IllegalArgumentException("Channel " + channelName + " does not exist");
     }
 
