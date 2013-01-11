@@ -55,6 +55,12 @@ public final class SystemDataSource extends DataSource {
         if ("time".equals(channelName)) {
             return new TimeChannelHandler(channelName);
         }
+        if ("host_name".equals(channelName)) {
+            return new HostnameChannelHandler(channelName);
+        }
+        if ("qualified_host_name".equals(channelName)) {
+            return new QualifiedHostnameChannelHandler(channelName);
+        }
         if (channelName.startsWith(SystemPropertyChannelHandler.PREFIX)) {
             return new SystemPropertyChannelHandler(channelName);
         }
