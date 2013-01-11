@@ -40,5 +40,15 @@
             <artifactId>caj</artifactId>
             <version>1.1.10</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvmanager-sim</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvmanager-sys</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

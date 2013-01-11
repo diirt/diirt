@@ -11,6 +11,7 @@ import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.epics.pvmanager.util.Executors;
+import org.epics.pvmanager.sys.SystemDataSource;
 
 /**
  *
@@ -22,6 +23,7 @@ public class SetupUtil {
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
         dataSource.putDataSource("ca", new JCADataSourceBuilder().build());
         dataSource.putDataSource("loc", new LocalDataSource());
+        dataSource.putDataSource("sys", new SystemDataSource());
         dataSource.setDefaultDataSource("ca");
         PVManager.setDefaultDataSource(dataSource);
     }
