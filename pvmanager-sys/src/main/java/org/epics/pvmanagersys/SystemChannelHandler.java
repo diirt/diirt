@@ -50,7 +50,9 @@ abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Ob
             try {
                 Object newValue = createValue();
 
-                processMessage(newValue);
+                if (newValue != null) {
+                    processMessage(newValue);
+                }
             } catch (Exception ex) {
                 log.log(Level.WARNING, "Data simulation problem", ex);
             }

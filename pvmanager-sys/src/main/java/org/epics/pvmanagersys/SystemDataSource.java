@@ -55,6 +55,9 @@ public final class SystemDataSource extends DataSource {
         if ("time".equals(channelName)) {
             return new TimeChannelHandler(channelName);
         }
+        if (channelName.startsWith(SystemPropertyChannelHandler.PREFIX)) {
+            return new SystemPropertyChannelHandler(channelName);
+        }
         throw new IllegalArgumentException("Channel " + channelName + " does not exist");
     }
 
