@@ -18,7 +18,7 @@ class FreeMemoryChannelHandler extends SystemChannelHandler {
 
     @Override
     protected Object createValue() {
-        return newVInt((int) Runtime.getRuntime().freeMemory(), alarmNone(), timeNow(), memoryDisplay);
+        return newVDouble(bytesToMebiByte(Runtime.getRuntime().freeMemory()), alarmNone(), timeNow(), memoryDisplay);
     }
     
 }

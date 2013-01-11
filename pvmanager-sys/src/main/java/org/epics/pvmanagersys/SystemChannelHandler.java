@@ -25,14 +25,22 @@ import org.epics.vtype.DisplayBuilder;
  */
 abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     
-    protected Display memoryDisplay = new DisplayBuilder().format(NumberFormats.toStringFormat())
-            .units("byte")
+    protected static Display memoryDisplay = new DisplayBuilder().format(NumberFormats.format(3))
+            .units("MiB")
             .lowerAlarmLimit(0.0).lowerCtrlLimit(0.0).lowerDisplayLimit(0.0).lowerWarningLimit(0.0)
-            .upperAlarmLimit((double) Runtime.getRuntime().maxMemory())
-            .upperCtrlLimit((double) Runtime.getRuntime().maxMemory())
-            .upperDisplayLimit((double) Runtime.getRuntime().maxMemory())
-            .upperWarningLimit((double) Runtime.getRuntime().maxMemory())
+            .upperAlarmLimit(maxMemory())
+            .upperCtrlLimit(maxMemory())
+            .upperDisplayLimit(maxMemory())
+            .upperWarningLimit(maxMemory())
             .build();
+    
+    protected static double bytesToMebiByte(long bytes) {
+        return ((double) bytes) / (1024.0 * 1024.0);
+    }
+    
+    private static double maxMemory() {
+        return bytesToMebiByte(Runtime.getRuntime().maxMemory());
+    }
 
     private final Runnable task = new Runnable() {
 

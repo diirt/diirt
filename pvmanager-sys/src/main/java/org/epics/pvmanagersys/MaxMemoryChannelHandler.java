@@ -18,7 +18,7 @@ class MaxMemoryChannelHandler extends SystemChannelHandler {
 
     @Override
     protected Object createValue() {
-        return newVInt((int) Runtime.getRuntime().maxMemory(), alarmNone(), timeNow(), memoryDisplay);
+        return newVDouble(bytesToMebiByte(Runtime.getRuntime().maxMemory()), alarmNone(), timeNow(), memoryDisplay);
     }
     
 }
