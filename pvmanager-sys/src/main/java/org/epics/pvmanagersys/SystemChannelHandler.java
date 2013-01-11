@@ -13,14 +13,26 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.*;
+import org.epics.util.text.NumberFormats;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.Display;
+import org.epics.vtype.DisplayBuilder;
 
 /**
  *
  * @author carcassi
  */
 abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Object> {
+    
+    protected Display memoryDisplay = new DisplayBuilder().format(NumberFormats.toStringFormat())
+            .units("byte")
+            .lowerAlarmLimit(0.0).lowerCtrlLimit(0.0).lowerDisplayLimit(0.0).lowerWarningLimit(0.0)
+            .upperAlarmLimit((double) Runtime.getRuntime().maxMemory())
+            .upperCtrlLimit((double) Runtime.getRuntime().maxMemory())
+            .upperDisplayLimit((double) Runtime.getRuntime().maxMemory())
+            .upperWarningLimit((double) Runtime.getRuntime().maxMemory())
+            .build();
 
     private final Runnable task = new Runnable() {
 

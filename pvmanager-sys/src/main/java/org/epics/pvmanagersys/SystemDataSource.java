@@ -46,6 +46,9 @@ public final class SystemDataSource extends DataSource {
         if ("free_mb".equals(channelName)) {
             return new FreeMemoryChannelHandler(channelName);
         }
+        if ("max_mb".equals(channelName)) {
+            return new MaxMemoryChannelHandler(channelName);
+        }
         throw new IllegalArgumentException("Channel " + channelName + " does not exist");
     }
 

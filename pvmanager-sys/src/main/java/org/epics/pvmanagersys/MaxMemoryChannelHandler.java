@@ -10,15 +10,15 @@ import static org.epics.vtype.ValueFactory.*;
  *
  * @author carcassi
  */
-class FreeMemoryChannelHandler extends SystemChannelHandler {
+class MaxMemoryChannelHandler extends SystemChannelHandler {
 
-    public FreeMemoryChannelHandler(String channelName) {
+    public MaxMemoryChannelHandler(String channelName) {
         super(channelName);
     }
 
     @Override
     protected Object createValue() {
-        return newVInt((int) Runtime.getRuntime().freeMemory(), alarmNone(), timeNow(), memoryDisplay);
+        return newVInt((int) Runtime.getRuntime().maxMemory(), alarmNone(), timeNow(), memoryDisplay);
     }
     
 }
