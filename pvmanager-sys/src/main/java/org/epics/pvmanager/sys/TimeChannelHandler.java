@@ -2,7 +2,7 @@
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-package org.epics.pvmanagersys;
+package org.epics.pvmanager.sys;
 
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
