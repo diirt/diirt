@@ -62,13 +62,13 @@ numericLiteral returns [DesiredRateExpression<?> result]
     ;
 
 stringLiteral returns [DesiredRateExpression<?> result]
-    :	STRING
+    :	STRING {result = vConst($STRING.text.substring(1, $STRING.text.length() - 1));}
     ;
 
 
 FULL_ID  :	(('a'..'z'|'A'..'Z')* ':' '/' '/' ) ('0'..'9')* ('a'..'z'|'A'..'Z'|'_') 
                  ( 'a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}' |
-                   '(' ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}'|','|' ')* ')')*
+                   '(' ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}'|','|' '|'-')* ')')*
     ;
 
 ID  :	('0'..'9')* ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}')*

@@ -12,6 +12,7 @@ import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import org.epics.vtype.VString;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -49,6 +50,14 @@ public class FormulaParserTest {
         assertThat(exp, not(nullValue()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.14));
+    }
+
+    @Test
+    public void stringLiteral1() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("\"test\"").formula();
+        assertThat(exp, not(nullValue()));
+        VString result = (VString) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo("test"));
     }
 
     @Test
