@@ -52,6 +52,7 @@ parExpression returns [DesiredRateExpression<?> result]
 
 pv returns [DesiredRateExpression<?> result]
     :   ID {result = cachedPv($ID.text);}
+    |   FULL_ID {result = cachedPv($FULL_ID.text);}
     |   QUOTED_ID {result = cachedPv(($QUOTED_ID.text).substring(1,($QUOTED_ID.text).length() - 1));}
     ;
 
@@ -65,7 +66,12 @@ stringLiteral returns [DesiredRateExpression<?> result]
     ;
 
 
-ID  :	(('a'..'z'|'A'..'Z')* ':' '/' '/' )? ('0'..'9')* ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}')*
+FULL_ID  :	(('a'..'z'|'A'..'Z')* ':' '/' '/' ) ('0'..'9')* ('a'..'z'|'A'..'Z'|'_') 
+                 ( 'a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}' |
+                   '(' ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}')* ')')*
+    ;
+
+ID  :	('0'..'9')* ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}')*
     ;
 
 INT :	'0'..'9'+
