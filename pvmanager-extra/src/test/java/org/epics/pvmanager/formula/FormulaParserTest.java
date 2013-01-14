@@ -214,4 +214,13 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(6.0));
     }
+
+    @Test
+    public void formula7() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0, 1, 2, 3)").additiveExpression());
+        assertThat(exp.getExpression().getName(), equalTo("loc://test(0, 1, 2, 3)"));
+        exp.writeValue("loc://test(0, 1, 2, 3)", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3.0));
+    }
 }
