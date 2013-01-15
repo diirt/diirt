@@ -21,8 +21,6 @@ import org.epics.util.array.ListDouble;
  * @author carcassi
  */
 class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
-    
-    private boolean initialized = false;
 
     LocalChannelHandler(String channelName) {
         super(channelName);
@@ -104,7 +102,6 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         try {
             newValue = wrapValue(newValue);
             processMessage(newValue);
-            initialized = true;
             callback.channelWritten(null);
         } catch (Exception ex) {
             callback.channelWritten(ex);
@@ -121,11 +118,8 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         return true;
     }
     
-    synchronized void setInitialValue(Object value) {
-        if (!initialized) {
-            processMessage(wrapValue(value));
-            initialized = true;
-        }
+    void setInitialValue(Object value) {
+        processMessage(wrapValue(value));
     }
     
 }
