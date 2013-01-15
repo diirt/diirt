@@ -22,23 +22,18 @@ import org.epics.util.array.ListDouble;
  */
 class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     
-    private final Object initialValue;
+    private boolean initialized = false;
 
     LocalChannelHandler(String channelName) {
         super(channelName);
-        initialValue = null;
-    }
-
-    LocalChannelHandler(String channelName, Object initialValue) {
-        super(channelName);
-        this.initialValue = wrapValue(initialValue);
     }
 
     @Override
     public void connect() {
         processConnection(new Object());
-        if (initialValue != null)
-            processMessage(initialValue);
+        if (getLastMessagePayload() == null) {
+            processMessage(wrapValue(0.0));
+        }
     }
 
     @Override
@@ -109,6 +104,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         try {
             newValue = wrapValue(newValue);
             processMessage(newValue);
+            initialized = true;
             callback.channelWritten(null);
         } catch (Exception ex) {
             callback.channelWritten(ex);
@@ -118,6 +114,18 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     @Override
     protected boolean isWriteConnected(Object payload) {
         return isConnected(payload);
+    }
+
+    @Override
+    protected boolean saveMessageAfterDisconnect() {
+        return true;
+    }
+    
+    synchronized void setInitialValue(Object value) {
+        if (!initialized) {
+            processMessage(wrapValue(value));
+            initialized = true;
+        }
     }
     
 }

@@ -42,9 +42,11 @@ public final class LocalDataSource extends DataSource {
         List<Object> parsedTokens = parseName(channelName);
         
         if (parsedTokens.size() == 1) {
-            return new LocalChannelHandler(parsedTokens.get(0).toString(), 0.0);
+            return new LocalChannelHandler(parsedTokens.get(0).toString());
         } else {
-            return new LocalChannelHandler(parsedTokens.get(0).toString(), parsedTokens.get(1));
+            LocalChannelHandler channel = new LocalChannelHandler(parsedTokens.get(0).toString());
+            channel.setInitialValue(parsedTokens.get(1));
+            return channel;
         }
     }
     
@@ -87,6 +89,16 @@ public final class LocalDataSource extends DataSource {
     @Override
     protected String channelHandlerLookupName(String channelName) {
         List<Object> parsedTokens = parseName(channelName);
+        
+        // If the channel is already there, we should try setting the
+        // initial value
+        if (parsedTokens.size() > 1) {
+            LocalChannelHandler channel = (LocalChannelHandler) getChannels().get(parsedTokens.get(0).toString());
+            if (channel != null) {
+                channel.setInitialValue(parsedTokens.get(1));
+            }
+        }
+        
         return parsedTokens.get(0).toString();
     }
 
