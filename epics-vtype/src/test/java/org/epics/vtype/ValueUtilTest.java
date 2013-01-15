@@ -72,5 +72,16 @@ public class ValueUtilTest {
         assertThat(numericValueOf(newVIntArray(new ArrayInt(1), alarmNone(), timeNow(), displayNone())), equalTo(1.0));
         assertThat(numericValueOf(newVEnumArray(new ArrayInt(1,0,2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow())), equalTo(1.0));
     }
+    
+    @Test
+    public void displayHasValidDisplayLimits1() {
+        assertThat(displayHasValidDisplayLimits(displayNone()), equalTo(false));
+    }
+    
+    @Test
+    public void displayHasValidDisplayLimits2() {
+        Display display1 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
+        assertThat(displayHasValidDisplayLimits(display1), equalTo(true));
+    }
 
 }
