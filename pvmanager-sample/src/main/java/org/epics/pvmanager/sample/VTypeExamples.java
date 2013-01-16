@@ -123,7 +123,24 @@ public class VTypeExamples {
             .maxRate(ofMillis(100));
     }
     
-    public void v5_assemblingTables() {
+    public void v5_assemblingNumericArrayFromScalars() {
+        List<String> channelNames = Arrays.asList("channel1", "channel2", "channel3", "channel4");
+        // Reads a list of different numeric channels as a single array.
+        // The channels can be of any numeric type (double, float, int, ...)
+        final PVReader<VNumberArray> pvReader = PVManager.read(
+                vNumberArrayOf(latestValueOf(vNumbers(channelNames))))
+            .readListener(new PVReaderListener<VNumberArray>() {
+                public void pvChanged(PVReaderEvent<VNumberArray> event) {
+                    if (event.isValueChanged()) {
+                        // Do something with the value
+                        System.out.println(event.getPvReader().getValue());
+                    }
+                }
+            })
+            .maxRate(ofMillis(100));
+    }
+    
+    public void v6_assemblingTables() {
         // You can assemble a table by giving a desired rate expression for each cell, 
         // organizing them by column. You can use constant expressions for 
         // labels or values that do not change. 
