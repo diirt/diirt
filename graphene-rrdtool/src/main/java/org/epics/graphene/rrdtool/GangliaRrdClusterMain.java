@@ -45,7 +45,6 @@ public class GangliaRrdClusterMain {
             Timestamp time = format.parse(args[5]);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
-            BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
             BubbleUtil.createBubblePlot(filename, dataset);
         } else {
             System.out.println("Command not found");
