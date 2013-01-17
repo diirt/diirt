@@ -182,6 +182,7 @@ public class Bubble2DGraphRenderer {
             double size = radiusScale(integratedZ.getMinimum().doubleValue(), data.getZValues().getDouble(i), integratedZ.getMaximum().doubleValue(),
                     3, 15);
             Shape bubble = createShape(scaledX[i], scaledY[i], size);
+            newValue(scaledX[i], scaledY[i], size, i);
             g.setColor(new Color(labelColor.getColor(data.getLabels().get(i))));
             g.fill(bubble);
             g.setColor(Color.BLACK);
@@ -201,6 +202,10 @@ public class Bubble2DGraphRenderer {
             return maxRadius;
         }
         return minRadius + NumberUtil.scale(Math.sqrt(value), Math.sqrt(minValue), Math.sqrt(maxValue), (maxRadius - minRadius));
+    }
+    
+    protected void newValue(double x, double y, double size, int index) {
+        // Do nothing
     }
     
     private Shape createShape(double x, double y, double size) {
