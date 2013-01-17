@@ -20,7 +20,7 @@ import org.epics.graphene.Point3DWithLabelDataset;
  * @author carcassi
  */
 public class BubbleUtil {
-    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype) throws IOException {
+    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype, String htmlText) throws IOException {
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         final StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n");
@@ -41,6 +41,7 @@ public class BubbleUtil {
         };
         renderer.draw(image.createGraphics(), dataset);
         html.append("        </map>\n");
+        html.append(htmlText);
         html.append("    </body>\n");
         html.append("</html>\n");
         BufferedWriter writer =

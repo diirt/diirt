@@ -64,7 +64,7 @@ public class RrdToolBubbleGraphMain {
                                                 correlated.getValues().get(signals.get(1)), 
                                                 correlated.getValues().get(signals.get(2)), 
                                                 Collections.nCopies(correlated.getValues().get(signals.get(0)).size(), "label"));
-        BubbleUtil.createBubblePlot(filename, dataset, "DATASETLABEL");
+        BubbleUtil.createBubblePlot(filename, dataset, "DATASETLABEL", "");
     }
 
 }
