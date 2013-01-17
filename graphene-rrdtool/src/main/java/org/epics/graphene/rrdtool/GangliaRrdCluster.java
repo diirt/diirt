@@ -48,6 +48,7 @@ public class GangliaRrdCluster {
 
     public void setFilePattern(Pattern filePattern) {
         this.filePattern = filePattern;
+        scanDirectory();
     }
 
     public Pattern getFilePattern() {
