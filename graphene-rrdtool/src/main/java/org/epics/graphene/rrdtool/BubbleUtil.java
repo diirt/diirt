@@ -31,7 +31,7 @@ public class BubbleUtil {
         html.append("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
         html.append("    </head>\n");
         html.append("    <body>\n");
-        html.append("        <img src=\"").append(filename.substring(0, filename.length() - 4)).append("\" usemap=\"#graph\">\n");
+        html.append("        <img src=\"").append(filename).append("\" usemap=\"#graph\">\n");
         Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
             protected void newValue(double x, double y, double size, int i) {
                 html.append("    <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"#" + dataset.getLabels().get(i) + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
@@ -42,11 +42,11 @@ public class BubbleUtil {
         html.append("</html>\n");
         BufferedWriter writer =
                 Files.newBufferedWriter(
-                FileSystems.getDefault().getPath(".", filename.substring(0, filename.length() - 4) + ".html"),
+                FileSystems.getDefault().getPath(".", filename + ".html"),
                 Charset.forName("US-ASCII"));
 
         writer.write(html.toString());
         writer.close();
-        ImageIO.write(image, "png", new File(filename));
+        ImageIO.write(image, "png", new File(filename + ".png"));
     }
 }
