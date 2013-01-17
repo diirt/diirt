@@ -32,7 +32,7 @@ public class GangliaRrdClusterMain {
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
     
     public static void main(String[] args) throws Exception {
-        Pattern filePattern = Pattern.compile(".*\\.local\\.rrd", Pattern.CASE_INSENSITIVE);
+        Pattern filePattern = Pattern.compile(".*\\.local", Pattern.CASE_INSENSITIVE);
         if ("list".equals(args[0])) {
             String path = args[1];
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
