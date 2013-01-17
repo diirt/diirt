@@ -41,14 +41,12 @@ public class GangliaRrdClusterMain {
             String signalX = args[2];
             String signalY = args[3];
             String signalZ = args[4];
-            String filename = "out.png";
+            String filename = "out";
             Timestamp time = format.parse(args[5]);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
             BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
-            Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600);
-            renderer.draw(image.createGraphics(), dataset);
-            ImageIO.write(image, "png", new File(filename));
+            BubbleUtil.createBubblePlot(filename, dataset);
         } else {
             System.out.println("Command not found");
         }
