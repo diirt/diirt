@@ -20,7 +20,7 @@ import org.epics.graphene.Point3DWithLabelDataset;
  * @author carcassi
  */
 public class BubbleUtil {
-    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset) throws IOException {
+    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype) throws IOException {
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         final StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n");
@@ -35,7 +35,8 @@ public class BubbleUtil {
         html.append("        <map name=\"graph\">\n");
         Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
             protected void newValue(double x, double y, double size, int i) {
-                html.append("            <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"#" + dataset.getLabels().get(i) + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
+                String url = urlPrototype.replaceAll("DATASETLABEL", dataset.getLabels().get(i));
+                html.append("            <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"" + url + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
             }
         };
         renderer.draw(image.createGraphics(), dataset);

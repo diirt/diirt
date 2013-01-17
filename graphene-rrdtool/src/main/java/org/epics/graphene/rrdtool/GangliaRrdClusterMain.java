@@ -45,7 +45,7 @@ public class GangliaRrdClusterMain {
             Timestamp time = format.parse(args[5]);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
-            BubbleUtil.createBubblePlot(filename, dataset);
+            BubbleUtil.createBubblePlot(filename, dataset, "http://ganglia-um.aglt2.org/ganglia/?m=load_one&r=day&s=ascending&c=UM-Worker-Nodes&h=DATASETLABEL&sh=1&hc=4&z=small");
         } else {
             System.out.println("Command not found");
         }
