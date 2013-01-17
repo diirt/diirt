@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import org.epics.graphene.Bubble2DGraphRenderer;
 import org.epics.graphene.Point3DWithLabelDataset;
@@ -31,9 +32,11 @@ public class GangliaRrdClusterMain {
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
     
     public static void main(String[] args) throws Exception {
+        Pattern filePattern = Pattern.compile(".*\\.local\\.rrd", Pattern.CASE_INSENSITIVE);
         if ("list".equals(args[0])) {
             String path = args[1];
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
+            cluster.setFilePattern(filePattern);
             System.out.println("Machines: " + cluster.getMachines());
             System.out.println("Signals: " + cluster.getSignals());
         } else if ("plot".equals(args[0])) {
@@ -44,6 +47,7 @@ public class GangliaRrdClusterMain {
             String filename = "out";
             Timestamp time = format.parse(args[5]);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
+            cluster.setFilePattern(filePattern);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
             BubbleUtil.createBubblePlot(filename, dataset, "http://ganglia-um.aglt2.org/ganglia/?m=load_one&r=day&s=ascending&c=UM-Worker-Nodes&h=DATASETLABEL&sh=1&hc=4&z=small");
         } else {
