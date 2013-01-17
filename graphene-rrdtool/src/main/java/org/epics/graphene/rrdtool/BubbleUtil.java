@@ -31,13 +31,15 @@ public class BubbleUtil {
         html.append("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
         html.append("    </head>\n");
         html.append("    <body>\n");
-        html.append("        <img src=\"").append(filename).append("\" usemap=\"#graph\">\n");
+        html.append("        <img src=\"").append(filename).append(".png\" usemap=\"#graph\">\n");
+        html.append("        <map name=\"graph\">\n");
         Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
             protected void newValue(double x, double y, double size, int i) {
-                html.append("    <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"#" + dataset.getLabels().get(i) + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
+                html.append("            <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"#" + dataset.getLabels().get(i) + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
             }
         };
         renderer.draw(image.createGraphics(), dataset);
+        html.append("        </map>\n");
         html.append("    </body>\n");
         html.append("</html>\n");
         BufferedWriter writer =
