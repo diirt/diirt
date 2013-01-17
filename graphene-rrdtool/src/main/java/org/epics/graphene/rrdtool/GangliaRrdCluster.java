@@ -35,6 +35,7 @@ public class GangliaRrdCluster {
     private Set<String> signals;
     private Map<String, Set<String>> machinesToSignals;
     private Pattern filePattern = rrdFilePattern;
+    private Pattern dirPattern = null;
     
     public GangliaRrdCluster(String baseDirectory) {
         log.fine("Reading Ganglia directory at " + baseDirectory);
@@ -46,13 +47,13 @@ public class GangliaRrdCluster {
         log.finest("Machines " + machines + "\nSignals " + signals);
     }
 
-    public void setFilePattern(Pattern filePattern) {
-        this.filePattern = filePattern;
+    public void setDirPattern(Pattern filePattern) {
+        this.dirPattern = filePattern;
         scanDirectory();
     }
 
-    public Pattern getFilePattern() {
-        return filePattern;
+    public Pattern getDirPattern() {
+        return dirPattern;
     }
     
     private static Pattern rrdFilePattern = Pattern.compile(".*\\.rrd", Pattern.CASE_INSENSITIVE);
@@ -62,7 +63,13 @@ public class GangliaRrdCluster {
         File[] subdirs = baseDir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
-                return pathname.isDirectory();
+                if (!pathname.isDirectory()) {
+                    return false;
+                }
+                if (dirPattern != null && !dirPattern.matcher(pathname.getName()).matches()) {
+                    return false;
+                }
+                return true;
             }
         });
         
