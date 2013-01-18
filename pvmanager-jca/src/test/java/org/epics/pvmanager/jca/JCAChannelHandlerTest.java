@@ -118,4 +118,25 @@ public class JCAChannelHandlerTest {
         JCAChannelHandler channel = new JCAChannelHandler("test.NAME$ {\"putCallback\":true}", dataSource);
         assertThat(channel.isLongString(), equalTo(true));
     }
+    
+    @Test
+    public void toBytes1() {
+        String test = "testing";
+        byte[] result = JCAChannelHandler.toBytes(test);
+        assertThat(new String(result), equalTo("testing\0"));
+    }
+    
+    @Test
+    public void toString1() {
+        byte[] test = new byte[] {97,98,99,0,100};
+        String result = JCAChannelHandler.toString(test);
+        assertThat(result, equalTo("abc"));
+    }
+    
+    @Test
+    public void toString2() {
+        byte[] test = new byte[] {97,98,99,100};
+        String result = JCAChannelHandler.toString(test);
+        assertThat(result, equalTo("abcd"));
+    }
 }

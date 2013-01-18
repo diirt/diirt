@@ -441,12 +441,12 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     }
     
     /**
-     * Convert String into byte array.
+     * Converts a String into byte array.
      * 
      * @param text the string to be converted
      * @return byte array, always including '\0' termination
      */
-    final public static byte[] toBytes(final String text) {
+    static byte[] toBytes(final String text) {
         // TODO: it's unclear what encoding is used and how
         
         // Write string as byte array WITH '\0' TERMINATION!
@@ -454,5 +454,20 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         System.arraycopy(text.getBytes(), 0, bytes, 0, text.length());
         bytes[text.length()] = '\0';
         return bytes;
+    }
+    
+    /**
+     * Converts a byte array into a String. It
+     * 
+     * @param data the array to be converted
+     * @return the string
+     */
+    static String toString(byte[] data) {
+        int index = 0;
+        while (index < data.length && data[index] != '\0') {
+            index++;
+        }
+        
+        return new String(data, 0, index);
     }
 }
