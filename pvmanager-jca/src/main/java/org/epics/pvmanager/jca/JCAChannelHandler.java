@@ -169,7 +169,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         };
         if (newValue instanceof String) {
             if (isLongString()) {
-                channel.put(newValue.toString().getBytes(), listener);
+                channel.put(toBytes(newValue.toString()), listener);
             } else {
                 channel.put(newValue.toString(), listener);
             }
@@ -208,7 +208,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         
         if (newValue instanceof String) {
             if (isLongString()) {
-                channel.put(newValue.toString().getBytes());
+                channel.put(toBytes(newValue.toString()));
             } else {
                 channel.put(newValue.toString());
             }
@@ -438,5 +438,21 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         }
         
         throw new IllegalArgumentException("Unsupported type " + type);
+    }
+    
+    /**
+     * Convert String into byte array.
+     * 
+     * @param text the string to be converted
+     * @return byte array, always including '\0' termination
+     */
+    final public static byte[] toBytes(final String text) {
+        // TODO: it's unclear what encoding is used and how
+        
+        // Write string as byte array WITH '\0' TERMINATION!
+        final byte[] bytes = new byte[text.length() + 1];
+        System.arraycopy(text.getBytes(), 0, bytes, 0, text.length());
+        bytes[text.length()] = '\0';
+        return bytes;
     }
 }
