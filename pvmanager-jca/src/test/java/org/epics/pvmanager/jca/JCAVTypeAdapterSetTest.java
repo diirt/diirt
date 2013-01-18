@@ -51,14 +51,21 @@ public class JCAVTypeAdapterSetTest {
     }
     
     public static JCAConnectionPayload mockJCAConnectionPayload(final String name, final DBRType dbrType, final int count, final ConnectionState connState) {
+        return mockJCAConnectionPayload(name, dbrType, count, connState, false);
+    }
+    
+    public static JCAConnectionPayload mockJCAConnectionPayload(final String name, final DBRType dbrType, final int count, final ConnectionState connState, final boolean longString) {
         Channel channel = mock(Channel.class);
         when(channel.getName()).thenReturn(name);
         when(channel.getFieldType()).thenReturn(dbrType);
         when(channel.getElementCount()).thenReturn(count);
         when(channel.getConnectionState()).thenReturn(connState);
         JCADataSource dataSource = mock(JCADataSource.class);
+        JCAChannelHandler handler = mock(JCAChannelHandler.class);
+        when(handler.getJcaDataSource()).thenReturn(dataSource);
+        when(handler.isLongString()).thenReturn(longString);
 
-        return new JCAConnectionPayload(dataSource, channel);
+        return new JCAConnectionPayload(handler, channel);
     }
 
     @Test
@@ -568,30 +575,31 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVString1() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, false)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, false)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(0));
     }
 
     @Test
     public void DBRByteToVString2() {
         ValueCache<VString> cache = new ValueCacheImpl<VString>(VString.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED, true)), equalTo(1));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(0));
     }
 
     @Test
     public void DBRByteToVString3() {
         ValueCache<VByteArray> cache = new ValueCacheImpl<VByteArray>(VByteArray.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 5, ConnectionState.CONNECTED, true)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Double.TYPE, 1, ConnectionState.CONNECTED, true)), equalTo(0));
     }
 
     @Test
@@ -599,7 +607,7 @@ public class JCAVTypeAdapterSetTest {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
         
-        JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 20, ConnectionState.CONNECTED);
+        JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 20, ConnectionState.CONNECTED, true);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         byte[] data = "Testing".getBytes();
         data = Arrays.copyOf(data, data.length + 1);
@@ -889,7 +897,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByteArray;
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(1));
-        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED)), equalTo(0));
+        assertThat(adapter.match(cache, mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 5, ConnectionState.CONNECTED, true)), equalTo(0));
         assertThat(adapter.match(cache, mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED)), equalTo(0));
     }
 

@@ -64,4 +64,58 @@ public class JCAChannelHandlerTest {
     public void new4() {
         JCAChannelHandler channel = new JCAChannelHandler("test {\"putCallback\":fase}", dataSource);
     }
+    
+    @Test
+    public void longString1() {
+        JCAChannelHandler channel = new JCAChannelHandler("test", dataSource);
+        assertThat(channel.isLongString(), equalTo(false));
+    }
+    
+    @Test
+    public void longString2() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.NAME$", dataSource);
+        assertThat(channel.isLongString(), equalTo(true));
+    }
+    
+    @Test
+    public void longString3() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.NAME", dataSource);
+        assertThat(channel.isLongString(), equalTo(false));
+    }
+    
+    @Test
+    public void longString4() {
+        JCAChannelHandler channel = new JCAChannelHandler("test$", dataSource);
+        assertThat(channel.isLongString(), equalTo(false));
+    }
+    
+    @Test
+    public void longString5() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.$", dataSource);
+        assertThat(channel.isLongString(), equalTo(true));
+    }
+    
+    @Test
+    public void longString6() {
+        JCAChannelHandler channel = new JCAChannelHandler("test {\"longString\":true}", dataSource);
+        assertThat(channel.isLongString(), equalTo(true));
+    }
+    
+    @Test
+    public void longString7() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.NAME$ {\"longString\":true}", dataSource);
+        assertThat(channel.isLongString(), equalTo(true));
+    }
+    
+    @Test
+    public void longString8() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.NAME$ {\"longString\":false}", dataSource);
+        assertThat(channel.isLongString(), equalTo(false));
+    }
+    
+    @Test
+    public void longString9() {
+        JCAChannelHandler channel = new JCAChannelHandler("test.NAME$ {\"putCallback\":true}", dataSource);
+        assertThat(channel.isLongString(), equalTo(true));
+    }
 }
