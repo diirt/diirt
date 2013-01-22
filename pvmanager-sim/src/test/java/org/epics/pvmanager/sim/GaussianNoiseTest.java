@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
  *
  * @author carcassi
  */
-public class GaussianTest {
+public class GaussianNoiseTest {
 
     /**
      * Tests values follow the right distribution
@@ -22,7 +22,7 @@ public class GaussianTest {
     @Test
     public void values() {
         // Creates the function
-        Gaussian gaussian = new Gaussian(10.0, 10.0, 1.0);
+        GaussianNoise gaussian = new GaussianNoise(10.0, 10.0, 1.0);
         VDouble firstValue = gaussian.nextValue();
 
         // Check limits
