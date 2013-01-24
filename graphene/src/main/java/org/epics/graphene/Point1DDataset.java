@@ -5,6 +5,7 @@
 package org.epics.graphene;
 
 import org.epics.util.array.CollectionNumber;
+import org.epics.util.array.ListNumber;
 
 /**
  *
@@ -12,11 +13,15 @@ import org.epics.util.array.CollectionNumber;
  */
 public interface Point1DDataset {
     
-    public CollectionNumber getValues();
+    public ListNumber getValues();
+    
+    public Statistics getStatistics();
     
     public Number getMinValue();
     
     public Number getMaxValue();
+    
+    public int getCount();
     
     public void update(Point1DDatasetUpdate update);
 }

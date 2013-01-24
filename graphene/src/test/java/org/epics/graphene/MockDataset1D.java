@@ -9,6 +9,7 @@ import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.CollectionDouble;
 import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.IteratorDouble;
+import org.epics.util.array.ListNumber;
 
 /**
  *
@@ -16,36 +17,39 @@ import org.epics.util.array.IteratorDouble;
  */
 public class MockDataset1D implements Point1DDataset {
     
-    private double[] data;
+    private ListNumber values;
     private double minValue = Double.POSITIVE_INFINITY;
     private double maxValue = Double.NEGATIVE_INFINITY;
+    private Statistics statistics;
 
     public MockDataset1D(double[] data) {
-        for (int i = 0; i < data.length; i++) {
-            double d = data[i];
-            if (d > maxValue)
-                maxValue = d;
-            if (d < minValue)
-                minValue = d;
-        }
-        this.data = data;
+        values = new ArrayDouble(data);
+        statistics = StatisticsUtil.statisticsOf(values);
     }
-    
-    
 
     @Override
-    public CollectionNumber getValues() {
-        return new ArrayDouble(data);
+    public Statistics getStatistics() {
+        return statistics;
+    }
+
+    @Override
+    public int getCount() {
+        return values.size();
+    }
+
+    @Override
+    public ListNumber getValues() {
+        return values;
     }
 
     @Override
     public Number getMinValue() {
-        return minValue;
+        return statistics.getMinimum();
     }
 
     @Override
     public Number getMaxValue() {
-        return maxValue;
+        return statistics.getMaximum();
     }
     
     
