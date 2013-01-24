@@ -42,6 +42,4 @@ public interface Point1DDataset {
      * @return the number of values in this dataset
      */
     public int getCount();
-    
-    public void update(Point1DDatasetUpdate update);
 }

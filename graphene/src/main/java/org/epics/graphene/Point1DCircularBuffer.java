@@ -34,7 +34,6 @@ public class Point1DCircularBuffer implements Point1DDataset {
         return statistics;
     }
 
-    @Override
     public void update(Point1DDatasetUpdate update) {
         if (update.isToClear()) {
             buffer.clear();

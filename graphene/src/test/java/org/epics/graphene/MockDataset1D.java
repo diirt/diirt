@@ -54,9 +54,4 @@ public class MockDataset1D implements Point1DDataset {
         }
         return new MockDataset1D(values);
     }
-
-    @Override
-    public void update(Point1DDatasetUpdate update) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

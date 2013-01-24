@@ -63,7 +63,7 @@ public class ProfileLineGraph {
         ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
         ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
         
-        Point1DDataset timings = new Point1DCircularBuffer(nTries);
+        Point1DCircularBuffer timings = new Point1DCircularBuffer(nTries);
         timings.update(new Point1DDatasetUpdate().addData(timingsExcludeFirst));
         Histogram1D hist = Histograms.createHistogram(timings);
         Point2DDataset line = org.epics.graphene.Point2DDatasets.lineData(timingsExcludeFirst);

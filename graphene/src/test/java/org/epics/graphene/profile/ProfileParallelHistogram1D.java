@@ -34,7 +34,7 @@ public class ProfileParallelHistogram1D {
             @Override
             public void run() {
 
-                final Point1DDataset dataset = new Point1DCircularBuffer(nSamples);
+                final Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
                 Random rand = new Random();
                 Point1DDatasetUpdate update = new Point1DDatasetUpdate();
                 for (int i = 0; i < nSamples; i++) {

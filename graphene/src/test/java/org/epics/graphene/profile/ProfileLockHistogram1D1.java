@@ -28,7 +28,7 @@ public class ProfileLockHistogram1D1 {
         
         int nThreads = 1;
                 
-        final Point1DDataset dataset = new Point1DCircularBuffer(nSamples);
+        final Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());

@@ -35,7 +35,7 @@ public class Dataset1DArrayTest {
     
     @Test
     public void createAndAddData1() throws Exception {
-        Point1DDataset dataset = new Point1DCircularBuffer(10);
+        Point1DCircularBuffer dataset = new Point1DCircularBuffer(10);
         assertArrayEquals(new double[] {}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
         assertThat(dataset.getStatistics(), nullValue());
         dataset.update(new Point1DDatasetUpdate().addData(0.0));
@@ -67,7 +67,7 @@ public class Dataset1DArrayTest {
     
     @Test
     public void createAndAddData2() throws Exception {
-        Point1DDataset dataset = new Point1DCircularBuffer(10);
+        Point1DCircularBuffer dataset = new Point1DCircularBuffer(10);
         dataset.update(new Point1DDatasetUpdate().addData(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}));
         assertArrayEquals(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.000000001);
         assertEquals(0.000000111, dataset.getStatistics().getMinimum().doubleValue(), 0.000000001);
