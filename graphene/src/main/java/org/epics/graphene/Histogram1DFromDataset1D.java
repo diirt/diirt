@@ -84,8 +84,8 @@ class Histogram1DFromDataset1D implements Histogram1D {
     public void setDataset(Point1DDataset dataset) {
         IteratorNumber values = dataset.getValues().iterator();
         if (autoValueRange) {
-            this.minValueRange = dataset.getMinValue().doubleValue();
-            this.maxValueRange = dataset.getMaxValue().doubleValue();
+            this.minValueRange = dataset.getStatistics().getMinimum().doubleValue();
+            this.maxValueRange = dataset.getStatistics().getMaximum().doubleValue();
             binValueBoundary = RangeUtil.createBins(minValueRange, maxValueRange, nBins);
         }
         binCount = new int[nBins];

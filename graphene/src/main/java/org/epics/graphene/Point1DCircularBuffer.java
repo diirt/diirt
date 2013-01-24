@@ -35,24 +35,6 @@ public class Point1DCircularBuffer implements Point1DDataset {
     }
 
     @Override
-    public Number getMinValue() {
-        if (statistics == null) {
-            return Double.NaN;
-        } else {
-            return statistics.getMinimum();
-        }
-    }
-
-    @Override
-    public Number getMaxValue() {
-        if (statistics == null) {
-            return Double.NaN;
-        } else {
-            return statistics.getMaximum();
-        }
-    }
-
-    @Override
     public void update(Point1DDatasetUpdate update) {
         if (update.isToClear()) {
             buffer.clear();

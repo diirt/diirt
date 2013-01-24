@@ -13,6 +13,7 @@ import org.epics.util.array.CollectionNumbers;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
 import org.junit.BeforeClass;
 
 /**
@@ -36,18 +37,17 @@ public class Dataset1DArrayTest {
     public void createAndAddData1() throws Exception {
         Point1DDataset dataset = new Point1DCircularBuffer(10);
         assertArrayEquals(new double[] {}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
-        assertEquals(Double.NaN, dataset.getMinValue().doubleValue(), 0.0001);
-        assertEquals(Double.NaN, dataset.getMaxValue().doubleValue(), 0.0001);
+        assertThat(dataset.getStatistics(), nullValue());
         dataset.update(new Point1DDatasetUpdate().addData(0.0));
         assertArrayEquals(new double[] {0.0}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
-        assertEquals(0.0, dataset.getMinValue().doubleValue(), 0.0001);
-        assertEquals(0.0, dataset.getMaxValue().doubleValue(), 0.0001);
+        assertEquals(0.0, dataset.getStatistics().getMinimum().doubleValue(), 0.0001);
+        assertEquals(0.0, dataset.getStatistics().getMaximum().doubleValue(), 0.0001);
         dataset.update(new Point1DDatasetUpdate().addData(1.0).addData(2.0));
         assertArrayEquals(new double[] {0.0, 1.0, 2.0}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
         dataset.update(new Point1DDatasetUpdate().addData(new double[] {3.0, 4.0, 5.0}));
         assertArrayEquals(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
-        assertEquals(0.0, dataset.getMinValue().doubleValue(), 0.0);
-        assertEquals(5.0, dataset.getMaxValue().doubleValue(), 0.0);
+        assertEquals(0.0, dataset.getStatistics().getMinimum().doubleValue(), 0.0);
+        assertEquals(5.0, dataset.getStatistics().getMaximum().doubleValue(), 0.0);
         dataset.update(new Point1DDatasetUpdate().clearData());
         assertArrayEquals(new double[] {}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.0001);
         dataset.update(new Point1DDatasetUpdate().addData(0.0).clearData());
@@ -70,8 +70,8 @@ public class Dataset1DArrayTest {
         Point1DDataset dataset = new Point1DCircularBuffer(10);
         dataset.update(new Point1DDatasetUpdate().addData(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}));
         assertArrayEquals(new double[] {0.000000145, 0.000000156, 0.000000130, 0.000000168, 0.000000111, 0.000000134}, CollectionNumbers.doubleArrayCopyOf(dataset.getValues()), 0.000000001);
-        assertEquals(0.000000111, dataset.getMinValue().doubleValue(), 0.000000001);
-        assertEquals(0.000000168, dataset.getMaxValue().doubleValue(), 0.000000001);
+        assertEquals(0.000000111, dataset.getStatistics().getMinimum().doubleValue(), 0.000000001);
+        assertEquals(0.000000168, dataset.getStatistics().getMaximum().doubleValue(), 0.000000001);
     }
     
 }

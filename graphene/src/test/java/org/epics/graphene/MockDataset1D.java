@@ -41,17 +41,6 @@ public class MockDataset1D implements Point1DDataset {
     public ListNumber getValues() {
         return values;
     }
-
-    @Override
-    public Number getMinValue() {
-        return statistics.getMinimum();
-    }
-
-    @Override
-    public Number getMaxValue() {
-        return statistics.getMaximum();
-    }
-    
     
     public static Point1DDataset uniform(double minValue, double maxValue, int nSamples) {
         return new MockDataset1D(RangeUtil.createBins(minValue, maxValue, nSamples));
