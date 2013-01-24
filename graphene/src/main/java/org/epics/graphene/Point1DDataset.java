@@ -28,9 +28,9 @@ public interface Point1DDataset {
     /**
      * The statistical information of the values.
      * <p>
-     * If the dataset is empty, it returns null.
+     * If the dataset is empty, or if it contains only NaN values, it returns null.
      * 
-     * @return statistical information; null if empty dataset
+     * @return statistical information; null if no actual values in the dataset
      */
     public Statistics getStatistics();
 
