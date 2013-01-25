@@ -315,4 +315,13 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(3.1415, 0.0001));
     }
+
+    @Test
+    public void formula18() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("sim://const(\"Hello!\")").formula());
+        assertThat(exp.getExpression().getName(), equalTo("sim://const(\"Hello!\")"));
+        exp.writeValue("sim://const(\"Hello!\")", ValueFactory.newVDouble(1.0));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(1.0));
+    }
 }
