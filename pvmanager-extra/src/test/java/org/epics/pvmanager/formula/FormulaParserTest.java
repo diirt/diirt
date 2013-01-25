@@ -37,6 +37,13 @@ public class FormulaParserTest {
     }
 
     @Test
+    public void pv3() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("ca://mypv").pv();
+        assertThat(exp, not(nullValue()));
+        assertThat(exp.getName(), equalTo("ca://mypv"));
+    }
+
+    @Test
     public void numericLiteral1() throws RecognitionException {
         DesiredRateExpression<?> exp = createParser("3").numericLiteral();
         assertThat(exp, not(nullValue()));
@@ -323,5 +330,14 @@ public class FormulaParserTest {
         exp.writeValue("sim://const(\"Hello!\")", ValueFactory.newVDouble(1.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(1.0));
+    }
+
+    @Test
+    public void formula19() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test").formula());
+        assertThat(exp.getExpression().getName(), equalTo("loc://test"));
+        exp.writeValue("loc://test", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3.0));
     }
 }

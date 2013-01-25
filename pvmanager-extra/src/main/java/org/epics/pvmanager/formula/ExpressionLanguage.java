@@ -37,9 +37,15 @@ public class ExpressionLanguage {
     
     public static DesiredRateExpression<?> formula(String formula) {
         try {
-            return createParser(formula).formula();
+            DesiredRateExpression<?> exp = createParser(formula).formula();
+            if (exp == null) {
+                throw new NullPointerException("Parsing failed");
+            }
+            return exp;
         } catch (RecognitionException ex) {
             throw new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Malformed formula '" + formula + "'", ex);
         }
     }
     
