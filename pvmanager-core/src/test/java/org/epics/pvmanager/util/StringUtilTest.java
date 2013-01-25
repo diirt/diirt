@@ -25,6 +25,13 @@ public class StringUtilTest {
     @Test
     public void unescapeString1() {
         assertThat(StringUtil.unescapeString("\\\""), equalTo("\""));
+        assertThat(StringUtil.unescapeString("\\\"hello\\\""), equalTo("\"hello\""));
+    }
+
+    @Test
+    public void unescapeString2() {
+        assertThat(StringUtil.unescapeString("\\\\"), equalTo("\\"));
+        assertThat(StringUtil.unescapeString("path\\\\to\\\\file"), equalTo("path\\to\\file"));
     }
 
 }
