@@ -170,7 +170,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula1() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("(3+2+x)*(5-y)/z").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("(3+2+x)*(5-y)/z").formula());
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
         exp.writeValue("x", ValueFactory.newVDouble(3.0));
         exp.writeValue("y", ValueFactory.newVDouble(2.0));
@@ -181,7 +181,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula2() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("'x' + 2").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("'x' + 2").formula());
         assertThat(exp.getExpression().getName(), equalTo("(x + 2)"));
         exp.writeValue("x", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -190,7 +190,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula3() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("mypv.FIELD").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("mypv.FIELD").formula());
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD"));
         exp.writeValue("mypv.FIELD", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -199,7 +199,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula4() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("mypv.FIELD$").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("mypv.FIELD$").formula());
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD$"));
         exp.writeValue("mypv.FIELD$", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -208,7 +208,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula5() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0)").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0)").formula());
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0)"));
         exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -217,7 +217,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula6() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0)+3").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0)+3").formula());
         assertThat(exp.getExpression().getName(), equalTo("(loc://test(0) + 3)"));
         exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -226,7 +226,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula7() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0, 1, 2, 3)").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(0, 1, 2, 3)").formula());
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0, 1, 2, 3)"));
         exp.writeValue("loc://test(0, 1, 2, 3)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -235,7 +235,7 @@ public class FormulaParserTest {
 
     @Test
     public void formula8() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(\"0\", \"1\", \"2\", \"3\")").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("loc://test(\"0\", \"1\", \"2\", \"3\")").formula());
         assertThat(exp.getExpression().getName(), equalTo("loc://test(\"0\", \"1\", \"2\", \"3\")"));
         exp.writeValue("loc://test(\"0\", \"1\", \"2\", \"3\")", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
