@@ -280,7 +280,21 @@ public class ExpressionLanguage {
      */
     public static <R, A> DesiredRateExpression<R> resultOf(final OneArgFunction<R, A> function,
             DesiredRateExpression<A> argExpression) {
-        String name = function.getClass().getSimpleName() + "(" + argExpression.getName() + ")";
+        return resultOf(function, argExpression, function.getClass().getSimpleName() + "(" + argExpression.getName() + ")");
+    }
+
+    /**
+     * An expression that represents the result of a user provided function.
+     *
+     * @param <R> result type
+     * @param <A> argument type
+     * @param function the user provided function
+     * @param argExpression expression for the function argument
+     * @param name expression name
+     * @return a new expression
+     */
+    public static <R, A> DesiredRateExpression<R> resultOf(final OneArgFunction<R, A> function,
+            DesiredRateExpression<A> argExpression, String name) {
         final ReadFunction<A> arg = argExpression.getFunction();
         return new DesiredRateExpressionImpl<R>(argExpression, new ReadFunction<R>() {
             @Override
