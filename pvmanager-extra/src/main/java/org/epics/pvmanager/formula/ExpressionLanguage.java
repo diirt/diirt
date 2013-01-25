@@ -17,6 +17,7 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.formula.FormulaLexer;
 import org.epics.pvmanager.formula.FormulaParser;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
 /**
  *
@@ -46,12 +47,12 @@ public class ExpressionLanguage {
         return new LastOfChannelExpression<Object>(channelName, Object.class);
     }
     
-    static <T> DesiredRateExpression<? extends T> cast(Class<T> clazz, DesiredRateExpression<?> arg1) {
+    static <T> DesiredRateExpression<T> cast(Class<T> clazz, DesiredRateExpression<?> arg1) {
         if (arg1 instanceof LastOfChannelExpression) {
             return ((LastOfChannelExpression<?>)arg1).cast(clazz);
         }
         @SuppressWarnings("unchecked")
-        DesiredRateExpression<? extends T> op1 = (DesiredRateExpression<? extends T>) arg1;
+        DesiredRateExpression<T> op1 = (DesiredRateExpression<T>) arg1;
         return op1;
     }
     
@@ -127,5 +128,44 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<VDouble> reminderCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return reminder(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    }
+    
+    static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
+        if ("log".equals(function)) {
+            return log(args);
+        } else if ("sin".equals(function)) {
+            return sin(args);
+        }
+        throw new IllegalArgumentException("No function named '" + function + "' is defined");
+    }
+    
+    static DesiredRateExpression<VDouble> log(DesiredRateExpressionList<?> args) {
+        if (args.getDesiredRateExpressions().size() != 1) {
+            throw new IllegalArgumentException("log function accepts only one argument");
+        }
+        DesiredRateExpression<VNumber> arg = cast(VNumber.class, args.getDesiredRateExpressions().get(0));
+        
+        return resultOf(new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.log(arg);
+            }
+        }, arg);
+    }
+    
+    static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
+        if (args.getDesiredRateExpressions().size() != 1) {
+            throw new IllegalArgumentException("log function accepts only one argument");
+        }
+        DesiredRateExpression<VNumber> arg = cast(VNumber.class, args.getDesiredRateExpressions().get(0));
+        
+        return resultOf(new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.sin(arg);
+            }
+        }, arg);
     }
 }
