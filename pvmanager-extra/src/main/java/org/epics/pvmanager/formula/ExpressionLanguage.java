@@ -160,6 +160,8 @@ public class ExpressionLanguage {
                 return sin(args);
             case "abs":
                 return abs(args);
+            case "acos":
+                return acos(args);
             case "sqrt":
                 return sqrt(args);
         }
@@ -200,6 +202,16 @@ public class ExpressionLanguage {
             @Override
             double calculate(double arg) {
                 return Math.abs(arg);
+            }
+        }, VNumber.class, args);
+    }
+    
+    static DesiredRateExpression<VDouble> acos(DesiredRateExpressionList<?> args) {
+        return function("acos", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.acos(arg);
             }
         }, VNumber.class, args);
     }

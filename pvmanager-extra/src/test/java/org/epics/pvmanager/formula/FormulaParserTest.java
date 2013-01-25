@@ -307,4 +307,12 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(2.0));
     }
+
+    @Test
+    public void formula17() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("2*acos(0)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("(2 * acos(0))"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(3.1415, 0.0001));
+    }
 }
