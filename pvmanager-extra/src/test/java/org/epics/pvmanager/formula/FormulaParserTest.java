@@ -14,7 +14,7 @@ import org.junit.Test;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.vtype.VString;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -257,5 +257,21 @@ public class FormulaParserTest {
         exp.writeValue("300abc", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
+    }
+
+    @Test
+    public void formula11() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("log(1)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("log(1)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(0.0));
+    }
+
+    @Test
+    public void formula12() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("sin(3.1415)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("sin(3.1415)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(0.0, 0.0001));
     }
 }

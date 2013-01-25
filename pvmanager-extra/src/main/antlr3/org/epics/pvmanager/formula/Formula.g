@@ -40,10 +40,17 @@ multiplicativeExpression returns [DesiredRateExpression<?> result]
     ;
     
 primary returns [DesiredRateExpression<?> result]
-    :   parExpression {result = $parExpression.result;}
+    :   functionExpression {result = $functionExpression.result;}
+    |   parExpression {result = $parExpression.result;}
     |   pv {result = $pv.result;}
     |   numericLiteral {result = $numericLiteral.result;}
     |   stringLiteral {result = $stringLiteral.result;}
+    ;
+
+functionExpression returns [DesiredRateExpression<?> result]
+    :   ID '(' op=expression {String name = $ID.text; DesiredRateExpressionList args = new DesiredRateExpressionListImpl().and($op.result);}
+        (   ',' op2=expression {args.and($op2.result);}
+        )* ')' {result = function(name, args);}
     ;
 
 parExpression returns [DesiredRateExpression<?> result]

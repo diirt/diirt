@@ -60,6 +60,10 @@ public class ExpressionLanguage {
         return "(" + arg1.getName() + op + arg2.getName() + ")";
     }
     
+    static String funName(String fun, DesiredRateExpression<?> arg) {
+        return fun + "(" + arg.getName()+ ")";
+    }
+    
     static DesiredRateExpression<VDouble> add(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
         return resultOf(new TwoArgNumericFunction() {
 
@@ -151,7 +155,7 @@ public class ExpressionLanguage {
             double calculate(double arg) {
                 return Math.log(arg);
             }
-        }, arg);
+        }, arg, funName("log", arg));
     }
     
     static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
@@ -166,6 +170,6 @@ public class ExpressionLanguage {
             double calculate(double arg) {
                 return Math.sin(arg);
             }
-        }, arg);
+        }, arg, funName("sin", arg));
     }
 }
