@@ -241,4 +241,12 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
+
+    @Test
+    public void formula9() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("3e3").formula());
+        assertThat(exp.getExpression().getName(), equalTo("3000.0"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3000.0));
+    }
 }
