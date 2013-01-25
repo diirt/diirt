@@ -22,7 +22,7 @@ import org.epics.vtype.ValueUtil;
 class Histogram1DFunction implements ReadFunction<VImage> {
     
     private ReadFunction<? extends List<? extends VNumber>> argument;
-    private Point1DDataset dataset = new Point1DCircularBuffer(1000000);
+    private Point1DCircularBuffer dataset = new Point1DCircularBuffer(1000000);
     private Histogram1D histogram = Histograms.createHistogram(dataset);
     private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
     private VImage previousImage;
