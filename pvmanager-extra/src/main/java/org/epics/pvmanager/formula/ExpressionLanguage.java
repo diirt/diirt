@@ -160,14 +160,14 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
         switch (function) {
-            case "log":
-                return log(args);
-            case "sin":
-                return sin(args);
             case "abs":
                 return abs(args);
             case "acos":
                 return acos(args);
+            case "log":
+                return log(args);
+            case "sin":
+                return sin(args);
             case "sqrt":
                 return sqrt(args);
         }
