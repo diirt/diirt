@@ -60,6 +60,10 @@ public class ExpressionLanguage {
         return "(" + arg1.getName() + op + arg2.getName() + ")";
     }
     
+    static String opName(String op, DesiredRateExpression<?> arg) {
+        return op + arg.getName();
+    }
+    
     static String funName(String fun, DesiredRateExpression<?> arg) {
         return fun + "(" + arg.getName()+ ")";
     }
@@ -90,6 +94,20 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<VDouble> subtractCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return subtract(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    }
+    
+    static DesiredRateExpression<VDouble> negate(DesiredRateExpression<? extends VNumber> arg) {
+        return resultOf(new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return - arg;
+            }
+        }, arg, opName("-", arg));
+    }
+    
+    static DesiredRateExpression<VDouble> negateCast(DesiredRateExpression<?> arg) {
+        return negate(cast(VNumber.class, arg));
     }
     
     static DesiredRateExpression<VDouble> multiply(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
@@ -135,41 +153,52 @@ public class ExpressionLanguage {
     }
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
-        if ("log".equals(function)) {
-            return log(args);
-        } else if ("sin".equals(function)) {
-            return sin(args);
+        switch (function) {
+            case "log":
+                return log(args);
+            case "sin":
+                return sin(args);
+            case "abs":
+                return abs(args);
         }
         throw new IllegalArgumentException("No function named '" + function + "' is defined");
     }
     
-    static DesiredRateExpression<VDouble> log(DesiredRateExpressionList<?> args) {
+    static <R, A> DesiredRateExpression<R> function(String name, OneArgFunction<R, A> function, Class<A> argClazz, DesiredRateExpressionList<?> args) {
         if (args.getDesiredRateExpressions().size() != 1) {
-            throw new IllegalArgumentException("log function accepts only one argument");
+            throw new IllegalArgumentException(name + " function accepts only one argument");
         }
-        DesiredRateExpression<VNumber> arg = cast(VNumber.class, args.getDesiredRateExpressions().get(0));
-        
-        return resultOf(new OneArgNumericFunction() {
+        DesiredRateExpression<A> arg = cast(argClazz, args.getDesiredRateExpressions().get(0));
+        return resultOf(function, arg, funName(name, arg));
+    }
+    
+    static DesiredRateExpression<VDouble> log(DesiredRateExpressionList<?> args) {
+        return function("log", new OneArgNumericFunction() {
 
             @Override
             double calculate(double arg) {
                 return Math.log(arg);
             }
-        }, arg, funName("log", arg));
+        }, VNumber.class, args);
     }
     
     static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
-        if (args.getDesiredRateExpressions().size() != 1) {
-            throw new IllegalArgumentException("log function accepts only one argument");
-        }
-        DesiredRateExpression<VNumber> arg = cast(VNumber.class, args.getDesiredRateExpressions().get(0));
-        
-        return resultOf(new OneArgNumericFunction() {
+        return function("sin", new OneArgNumericFunction() {
 
             @Override
             double calculate(double arg) {
                 return Math.sin(arg);
             }
-        }, arg, funName("sin", arg));
+        }, VNumber.class, args);
+    }
+    
+    static DesiredRateExpression<VDouble> abs(DesiredRateExpressionList<?> args) {
+        return function("abs", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.abs(arg);
+            }
+        }, VNumber.class, args);
     }
 }

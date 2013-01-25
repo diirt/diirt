@@ -283,4 +283,20 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(0.0));
     }
+
+    @Test
+    public void formula14() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("abs(-3)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("abs(-3)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3.0));
+    }
+
+    @Test
+    public void formula15() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("-10").formula());
+        assertThat(exp.getExpression().getName(), equalTo("-10"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(-10.0));
+    }
 }

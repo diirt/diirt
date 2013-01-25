@@ -32,13 +32,18 @@ additiveExpression returns [DesiredRateExpression<?> result]
     ;
 
 multiplicativeExpression returns [DesiredRateExpression<?> result]
-    :   op1=primary {result = $op1.result;}
-        (   '*' op2=primary {result = multiplyCast($result, $op2.result);}
-        |   '/' op2=primary {result = divideCast($result, $op2.result);}
-        |   '%' op2=primary {result = reminderCast($result, $op2.result);}
+    :   op1=unaryExpression {result = $op1.result;}
+        (   '*' op2=unaryExpression {result = multiplyCast($result, $op2.result);}
+        |   '/' op2=unaryExpression {result = divideCast($result, $op2.result);}
+        |   '%' op2=unaryExpression {result = reminderCast($result, $op2.result);}
         )*
     ;
-    
+
+unaryExpression returns [DesiredRateExpression<?> result]
+    :   '-' op=unaryExpression {result = negateCast($op.result);}
+    |   op=primary {result = $op.result;}
+    ;
+
 primary returns [DesiredRateExpression<?> result]
     :   functionExpression {result = $functionExpression.result;}
     |   parExpression {result = $parExpression.result;}
