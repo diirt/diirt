@@ -1,10 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2012 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.graphene;
 
-import java.util.ArrayList;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
 
