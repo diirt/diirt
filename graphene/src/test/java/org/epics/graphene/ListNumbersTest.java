@@ -66,4 +66,44 @@ public class ListNumbersTest {
         assertThat(list.getDouble(100), equalTo(0.0));
     }
     
+    @Test
+    public void linearList1() throws Exception {
+        ListNumber list = ListNumbers.linearList(0, 10, 101);
+        assertThat(list.getDouble(0), equalTo(0.0));
+        assertThat(list.getDouble(35), equalTo(350.0));
+        assertThat(list.getDouble(50), equalTo(500.0));
+        assertThat(list.getDouble(100), equalTo(1000.0));
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void linearList2() throws Exception {
+        ListNumber list = ListNumbers.linearList(0, 10, 101);
+        list.getDouble(-1);
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void linearList3() throws Exception {
+        ListNumber list = ListNumbers.linearList(0, 10, 101);
+        list.getDouble(1000);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void linearList4() throws Exception {
+        ListNumber list = ListNumbers.linearList(0, 10, 0);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void linearList5() throws Exception {
+        ListNumber list = ListNumbers.linearList(0, 10, -10);
+    }
+    
+    @Test
+    public void linearList6() throws Exception {
+        ListNumber list = ListNumbers.linearList(1000, -10, 101);
+        assertThat(list.getDouble(0), equalTo(1000.0));
+        assertThat(list.getDouble(35), equalTo(650.0));
+        assertThat(list.getDouble(50), equalTo(500.0));
+        assertThat(list.getDouble(100), equalTo(0.0));
+    }
+    
 }

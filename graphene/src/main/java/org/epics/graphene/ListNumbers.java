@@ -43,6 +43,9 @@ public class ListNumbers {
 
             @Override
             public double getDouble(int index) {
+                if (index < 0 || index >= size) {
+                    throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+                }
                 return initialValue + index * increment;
             }
 
