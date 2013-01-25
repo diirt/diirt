@@ -279,7 +279,7 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <R, A> DesiredRateExpression<R> resultOf(final OneArgFunction<R, A> function,
-            DesiredRateExpression<A> argExpression) {
+            DesiredRateExpression<? extends A> argExpression) {
         return resultOf(function, argExpression, function.getClass().getSimpleName() + "(" + argExpression.getName() + ")");
     }
 
@@ -294,8 +294,8 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <R, A> DesiredRateExpression<R> resultOf(final OneArgFunction<R, A> function,
-            DesiredRateExpression<A> argExpression, String name) {
-        final ReadFunction<A> arg = argExpression.getFunction();
+            DesiredRateExpression<? extends A> argExpression, String name) {
+        final ReadFunction<? extends A> arg = argExpression.getFunction();
         return new DesiredRateExpressionImpl<R>(argExpression, new ReadFunction<R>() {
             @Override
             public R readValue() {
