@@ -299,4 +299,12 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(-10.0));
     }
+
+    @Test
+    public void formula16() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("sqrt(4)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("sqrt(4)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(2.0));
+    }
 }

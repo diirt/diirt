@@ -160,6 +160,8 @@ public class ExpressionLanguage {
                 return sin(args);
             case "abs":
                 return abs(args);
+            case "sqrt":
+                return sqrt(args);
         }
         throw new IllegalArgumentException("No function named '" + function + "' is defined");
     }
@@ -198,6 +200,16 @@ public class ExpressionLanguage {
             @Override
             double calculate(double arg) {
                 return Math.abs(arg);
+            }
+        }, VNumber.class, args);
+    }
+    
+    static DesiredRateExpression<VDouble> sqrt(DesiredRateExpressionList<?> args) {
+        return function("sqrt", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.sqrt(arg);
             }
         }, VNumber.class, args);
     }
