@@ -10,6 +10,31 @@ package org.epics.graphene;
  */
 public class RangeUtil {
     
+    /**
+     * Range from given min and max.
+     * 
+     * @param minValue minimum value
+     * @param maxValue maximum value
+     * @return the range
+     */
+    public static Range range(final double minValue, final double maxValue) {
+        if (minValue >= maxValue) {
+            throw new IllegalArgumentException("minValue should be less then maxValue (" + minValue+ ", " + maxValue + ")");
+        }
+        return new Range() {
+
+            @Override
+            public Number getMinimum() {
+                return minValue;
+            }
+
+            @Override
+            public Number getMaximum() {
+                return maxValue;
+            }
+        };
+    }
+    
     public static double[] createBins(double min, double max, int nBins) {
         double increment = (max - min) / nBins;
         double[] boundary = new double[nBins+1];
