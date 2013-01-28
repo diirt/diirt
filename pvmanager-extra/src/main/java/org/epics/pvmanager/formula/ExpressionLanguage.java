@@ -161,7 +161,7 @@ public class ExpressionLanguage {
     }
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
-        if (oneArgNumericFunction.containsKey(function)) {
+        if (args.getDesiredRateExpressions().size() == 1 && oneArgNumericFunction.containsKey(function)) {
             return oneArgNumbericFunction(function, args);
         }
         throw new IllegalArgumentException("No function named '" + function + "' is defined");
