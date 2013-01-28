@@ -314,4 +314,12 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(1.0, 0.0001));
     }
+
+    @Test
+    public void formula29() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("exp(1.0)"));
+        assertThat(exp.getExpression().getName(), equalTo("exp(1.0)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(Math.E, 0.0001));
+    }
 }
