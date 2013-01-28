@@ -163,13 +163,13 @@ public class ExpressionLanguage {
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
         switch (function) {
             case "abs":
-                return abs(args);
+                return oneArgNumbericFunction(function, args);
             case "acos":
-                return acos(args);
+                return oneArgNumbericFunction(function, args);
             case "asin":
-                return asin(args);
+                return oneArgNumbericFunction(function, args);
             case "log":
-                return function(function, oneArgNumericFunction.get(function), VNumber.class, args);
+                return oneArgNumbericFunction(function, args);
             case "sin":
                 return sin(args);
             case "sqrt":
@@ -183,6 +183,30 @@ public class ExpressionLanguage {
     static {
         Map<String, OneArgNumericFunction> map = new HashMap<>();
         
+        map.put("abs", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.abs(arg);
+            }
+        });
+        
+        map.put("acos", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.acos(arg);
+            }
+        });
+        
+        map.put("asin", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.asin(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
@@ -194,6 +218,10 @@ public class ExpressionLanguage {
         oneArgNumericFunction = map;
     }
     
+    static DesiredRateExpression<VDouble> oneArgNumbericFunction(String name, DesiredRateExpressionList<?> args) {
+        return function(name, oneArgNumericFunction.get(name), VNumber.class, args);
+    }
+    
     static <R, A> DesiredRateExpression<R> function(String name, OneArgFunction<R, A> function, Class<A> argClazz, DesiredRateExpressionList<?> args) {
         if (args.getDesiredRateExpressions().size() != 1) {
             throw new IllegalArgumentException(name + " function accepts only one argument");
@@ -202,8 +230,20 @@ public class ExpressionLanguage {
         return resultOf(function, arg, funName(name, arg));
     }
     
+    static DesiredRateExpression<VDouble> abs(DesiredRateExpression<? extends VNumber> args) {
+        return oneArgNumbericFunction("abs", args);
+    }
+    
+    static DesiredRateExpression<VDouble> acos(DesiredRateExpression<? extends VNumber> args) {
+        return oneArgNumbericFunction("acos", args);
+    }
+    
+    static DesiredRateExpression<VDouble> asin(DesiredRateExpression<? extends VNumber> args) {
+        return oneArgNumbericFunction("asin", args);
+    }
+    
     static DesiredRateExpression<VDouble> log(DesiredRateExpression<? extends VNumber> args) {
-        return function("log", oneArgNumericFunction.get("log"), VNumber.class, args);
+        return oneArgNumbericFunction("log", args);
     }
     
     static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
@@ -212,36 +252,6 @@ public class ExpressionLanguage {
             @Override
             double calculate(double arg) {
                 return Math.sin(arg);
-            }
-        }, VNumber.class, args);
-    }
-    
-    static DesiredRateExpression<VDouble> abs(DesiredRateExpressionList<?> args) {
-        return function("abs", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.abs(arg);
-            }
-        }, VNumber.class, args);
-    }
-    
-    static DesiredRateExpression<VDouble> acos(DesiredRateExpressionList<?> args) {
-        return function("acos", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.acos(arg);
-            }
-        }, VNumber.class, args);
-    }
-    
-    static DesiredRateExpression<VDouble> asin(DesiredRateExpressionList<?> args) {
-        return function("asin", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.asin(arg);
             }
         }, VNumber.class, args);
     }
