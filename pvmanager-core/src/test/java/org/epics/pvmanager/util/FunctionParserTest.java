@@ -112,4 +112,11 @@ public class FunctionParserTest {
         assertThat(parameters.get(1), equalTo((Object) "It\'s an escaped parameter"));
     }
 
+    @Test
+    public void parseFunctionWithScalarOrArrayArguments6() {
+        List<Object> parameters = FunctionParser.parseFunctionWithScalarOrArrayArguments("foo(\"\\u0061\", \"b\", \"\\u0063\")", "error");
+        assertThat(parameters.get(0), equalTo((Object) "foo"));
+        assertThat(parameters.get(1), equalTo((Object) Arrays.asList("a", "b", "c")));
+    }
+
 }
