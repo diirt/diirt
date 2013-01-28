@@ -298,4 +298,12 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(3.0, 0.0001));
     }
+
+    @Test
+    public void formula27() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("cos(0.0)"));
+        assertThat(exp.getExpression().getName(), equalTo("cos(0.0)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(1.0, 0.0001));
+    }
 }

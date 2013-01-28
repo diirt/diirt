@@ -220,6 +220,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("cos", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.cos(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
