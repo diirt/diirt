@@ -357,4 +357,12 @@ public class FormulaParserTest {
         VString result = (VString) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo("I said \"Hi\""));
     }
+
+    @Test
+    public void formula22() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("asin(0)").formula());
+        assertThat(exp.getExpression().getName(), equalTo("asin(0)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(0.0, 0.0001));
+    }
 }
