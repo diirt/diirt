@@ -16,7 +16,9 @@ public class StringUtil {
     private StringUtil() {
     }
     
-    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7]))");
+    static final String escapeSequenceRegex = "(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7]))";
+    
+    static Pattern escapeSequence = Pattern.compile(escapeSequenceRegex);
     
     public static String unescapeString(String escapedString) {
         Matcher match = escapeSequence.matcher(escapedString);

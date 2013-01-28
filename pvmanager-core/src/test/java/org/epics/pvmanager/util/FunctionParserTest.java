@@ -119,4 +119,11 @@ public class FunctionParserTest {
         assertThat(parameters.get(1), equalTo((Object) Arrays.asList("a", "b", "c")));
     }
 
+    @Test
+    public void parseFunctionWithScalarOrArrayArguments7() {
+        List<Object> parameters = FunctionParser.parseFunctionWithScalarOrArrayArguments("foo(\"I said \\\"Right!\\\"\")", "error");
+        assertThat(parameters.get(0), equalTo((Object) "foo"));
+        assertThat(parameters.get(1), equalTo((Object) "I said \"Right!\""));
+    }
+
 }

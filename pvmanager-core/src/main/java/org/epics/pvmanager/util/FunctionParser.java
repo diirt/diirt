@@ -20,7 +20,7 @@ import org.epics.util.array.ArrayDouble;
 public class FunctionParser {
 
     static final Pattern doubleParameter = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*");
-    static final Pattern stringParameter = Pattern.compile("\\s*(\".*?\")\\s*");
+    static final Pattern stringParameter = Pattern.compile("\\s*(\"([^\"\\\\]|" + StringUtil.escapeSequenceRegex + ")*\")\\s*");
     static final Pattern commaSeparatedDoubles = Pattern.compile(doubleParameter + "(," + doubleParameter + ")*");
     static final Pattern commaSeparatedStrings = Pattern.compile(stringParameter + "(," + stringParameter + ")*");
     static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
