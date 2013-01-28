@@ -268,6 +268,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("signum", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.signum(arg);
+            }
+        });
+        
         map.put("sin", new OneArgNumericFunction() {
 
             @Override

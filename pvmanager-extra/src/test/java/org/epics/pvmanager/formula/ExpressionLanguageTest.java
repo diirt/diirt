@@ -338,4 +338,12 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(2.0, 0.0001));
     }
+
+    @Test
+    public void formula32() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("signum(100)"));
+        assertThat(exp.getExpression().getName(), equalTo("signum(100)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(1.0, 0.0001));
+    }
 }
