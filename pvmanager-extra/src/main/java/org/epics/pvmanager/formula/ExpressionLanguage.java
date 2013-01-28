@@ -300,6 +300,22 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("tan", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.tan(arg);
+            }
+        });
+        
+        map.put("tanh", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.tanh(arg);
+            }
+        });
+        
         oneArgNumericFunction = map;
     }
     

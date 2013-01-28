@@ -354,4 +354,20 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(1.175201, 0.0001));
     }
+
+    @Test
+    public void formula34() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("tan(0.78539)"));
+        assertThat(exp.getExpression().getName(), equalTo("tan(0.78539)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(1.0, 0.0001));
+    }
+
+    @Test
+    public void formula35() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("tanh(0.5493)"));
+        assertThat(exp.getExpression().getName(), equalTo("tanh(0.5493)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(0.5, 0.0001));
+    }
 }
