@@ -46,4 +46,10 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("This\\rThat"), equalTo("This\rThat"));
     }
 
+    @Test
+    public void unescapeString5() {
+        assertThat(StringUtil.unescapeString("\\n"), equalTo("\n"));
+        assertThat(StringUtil.unescapeString("This\\nThat"), equalTo("This\nThat"));
+    }
+
 }
