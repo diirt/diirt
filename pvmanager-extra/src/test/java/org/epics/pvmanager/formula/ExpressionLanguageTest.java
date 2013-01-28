@@ -377,4 +377,20 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(0.5, 0.0001));
     }
+
+    @Test
+    public void formula36() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("2^3"));
+        assertThat(exp.getExpression().getName(), equalTo("(2 ^ 3)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(8.0, 0.0001));
+    }
+
+    @Test
+    public void formula37() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("2**3"));
+        assertThat(exp.getExpression().getName(), equalTo("(2 ^ 3)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(8.0, 0.0001));
+    }
 }

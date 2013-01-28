@@ -33,10 +33,17 @@ additiveExpression returns [DesiredRateExpression<?> result]
     ;
 
 multiplicativeExpression returns [DesiredRateExpression<?> result]
+    :   op1=exponentialExpression {result = $op1.result;}
+        (   '*' op2=exponentialExpression {result = multiplyCast($result, $op2.result);}
+        |   '/' op2=exponentialExpression {result = divideCast($result, $op2.result);}
+        |   '%' op2=exponentialExpression {result = reminderCast($result, $op2.result);}
+        )*
+    ;
+
+exponentialExpression returns [DesiredRateExpression<?> result]
     :   op1=unaryExpression {result = $op1.result;}
-        (   '*' op2=unaryExpression {result = multiplyCast($result, $op2.result);}
-        |   '/' op2=unaryExpression {result = divideCast($result, $op2.result);}
-        |   '%' op2=unaryExpression {result = reminderCast($result, $op2.result);}
+        (   '^' op2=unaryExpression {result = powCast($result, $op2.result);}
+        |   '**' op2=unaryExpression {result = powCast($result, $op2.result);}
         )*
     ;
 
