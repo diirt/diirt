@@ -69,5 +69,11 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("\\u0061"), equalTo("\u0061"));
         assertThat(StringUtil.unescapeString("Th\\u0061t is w\\u006fnderfu\\u006C!"), equalTo("That is wonderful!"));
     }
+    
+    @Test
+    public void unescapeString9() {
+        assertThat(StringUtil.unescapeString("\\141"), equalTo("\141"));
+        assertThat(StringUtil.unescapeString("L\\141st \\612"), equalTo("Last 12"));
+    }
 
 }

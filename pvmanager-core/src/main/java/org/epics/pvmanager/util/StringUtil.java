@@ -16,7 +16,7 @@ public class StringUtil {
     private StringUtil() {
     }
     
-    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]))");
+    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7]))");
     
     public static String unescapeString(String escapedString) {
         Matcher match = escapeSequence.matcher(escapedString);
@@ -51,7 +51,7 @@ public class StringUtil {
             // Parsing myself
             return Character.toString((char) Long.parseLong(escapedToken.substring(2), 16));
         }
-        throw new IllegalArgumentException("Unknown escape token " + escapedToken);
+        return Character.toString((char) Long.parseLong(escapedToken.substring(1), 8));
     }
     
 }
