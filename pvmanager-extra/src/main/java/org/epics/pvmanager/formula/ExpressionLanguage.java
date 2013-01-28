@@ -8,6 +8,8 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.runtime.*;
@@ -167,13 +169,29 @@ public class ExpressionLanguage {
             case "asin":
                 return asin(args);
             case "log":
-                return log(args);
+                return function(function, oneArgNumericFunction.get(function), VNumber.class, args);
             case "sin":
                 return sin(args);
             case "sqrt":
                 return sqrt(args);
         }
         throw new IllegalArgumentException("No function named '" + function + "' is defined");
+    }
+    
+    private static final Map<String, OneArgNumericFunction> oneArgNumericFunction;
+    
+    static {
+        Map<String, OneArgNumericFunction> map = new HashMap<>();
+        
+        map.put("log", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.log(arg);
+            }
+        });
+        
+        oneArgNumericFunction = map;
     }
     
     static <R, A> DesiredRateExpression<R> function(String name, OneArgFunction<R, A> function, Class<A> argClazz, DesiredRateExpressionList<?> args) {
@@ -184,14 +202,8 @@ public class ExpressionLanguage {
         return resultOf(function, arg, funName(name, arg));
     }
     
-    static DesiredRateExpression<VDouble> log(DesiredRateExpressionList<?> args) {
-        return function("log", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.log(arg);
-            }
-        }, VNumber.class, args);
+    static DesiredRateExpression<VDouble> log(DesiredRateExpression<? extends VNumber> args) {
+        return function("log", oneArgNumericFunction.get("log"), VNumber.class, args);
     }
     
     static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
