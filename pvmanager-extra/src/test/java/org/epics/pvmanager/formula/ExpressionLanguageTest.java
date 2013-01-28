@@ -290,4 +290,12 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(2.0, 0.0001));
     }
+
+    @Test
+    public void formula26() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("ceil(2.6)"));
+        assertThat(exp.getExpression().getName(), equalTo("ceil(2.6)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(3.0, 0.0001));
+    }
 }

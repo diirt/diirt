@@ -212,6 +212,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("ceil", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.ceil(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
