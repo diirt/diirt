@@ -284,6 +284,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("sinh", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.sinh(arg);
+            }
+        });
+        
         map.put("sqrt", new OneArgNumericFunction() {
 
             @Override
