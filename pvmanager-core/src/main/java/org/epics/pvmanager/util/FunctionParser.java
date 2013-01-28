@@ -64,7 +64,7 @@ public class FunctionParser {
         List<Object> parameters = new ArrayList<Object>();
         while (matcher.find()) {
             String parameter = matcher.group(1);
-            parameters.add(parameter.substring(1, parameter.length() - 1));
+            parameters.add(StringUtil.unescapeString(parameter.substring(1, parameter.length() - 1)));
         }
 
         return parameters;
