@@ -55,7 +55,12 @@ public class StringUtilTest {
     @Test
     public void unescapeString6() {
         assertThat(StringUtil.unescapeString("\\b"), equalTo("\b"));
-        assertThat(StringUtil.unescapeString("Back\bspace"), equalTo("Back\bspace"));
+        assertThat(StringUtil.unescapeString("Back\\bspace"), equalTo("Back\bspace"));
+    }
+    @Test
+    public void unescapeString7() {
+        assertThat(StringUtil.unescapeString("\\t"), equalTo("\t"));
+        assertThat(StringUtil.unescapeString("Column one\\tColumn two"), equalTo("Column one\tColumn two"));
     }
 
 }
