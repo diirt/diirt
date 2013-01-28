@@ -228,6 +228,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("cosh", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.cosh(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
