@@ -16,7 +16,7 @@ public class StringUtil {
     private StringUtil() {
     }
     
-    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'|r|n|b|t))");
+    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]))");
     
     public static String unescapeString(String escapedString) {
         Matcher match = escapeSequence.matcher(escapedString);
@@ -44,6 +44,12 @@ public class StringUtil {
                 return "\b";
             case "\\t":
                 return "\t";
+        }
+        if (escapedToken.startsWith("\\u")) {
+            // It seems that you can't use replace with an escaped
+            // unicode sequence. Bug in Java?
+            // Parsing myself
+            return Character.toString((char) Long.parseLong(escapedToken.substring(2), 16));
         }
         throw new IllegalArgumentException("Unknown escape token " + escapedToken);
     }
