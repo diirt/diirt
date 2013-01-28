@@ -20,6 +20,10 @@ public class StringUtil {
     
     static Pattern escapeSequence = Pattern.compile(escapeSequenceRegex);
     
+    public static String unquote(String quotedString) {
+        return unescapeString(quotedString.substring(1, quotedString.length() - 1));
+    }
+    
     public static String unescapeString(String escapedString) {
         Matcher match = escapeSequence.matcher(escapedString);
         StringBuffer output = new StringBuffer();

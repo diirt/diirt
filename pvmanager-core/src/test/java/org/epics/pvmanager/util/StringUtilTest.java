@@ -75,5 +75,10 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("\\141"), equalTo("\141"));
         assertThat(StringUtil.unescapeString("L\\141st \\612"), equalTo("Last 12"));
     }
+    
+    @Test
+    public void unquoteString1() {
+        assertThat(StringUtil.unquote("\"I said \\\"Hi\\\"\""), equalTo("I said \"Hi\""));
+    }
 
 }
