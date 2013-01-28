@@ -8,6 +8,7 @@ options {
   package org.epics.pvmanager.formula;
   import org.epics.pvmanager.expression.*;
   import static org.epics.pvmanager.ExpressionLanguage.*;
+  import static org.epics.pvmanager.util.StringUtil.*;
   import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
   import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 }
@@ -65,7 +66,7 @@ parExpression returns [DesiredRateExpression<?> result]
 pv returns [DesiredRateExpression<?> result]
     :   ID {result = cachedPv($ID.text);}
     |   FULL_ID {result = cachedPv($FULL_ID.text);}
-    |   QUOTED_ID {result = cachedPv(($QUOTED_ID.text).substring(1,($QUOTED_ID.text).length() - 1));}
+    |   QUOTED_ID {result = cachedPv(unquote($QUOTED_ID.text));}
     ;
 
 numericLiteral returns [DesiredRateExpression<?> result]
@@ -74,7 +75,7 @@ numericLiteral returns [DesiredRateExpression<?> result]
     ;
 
 stringLiteral returns [DesiredRateExpression<?> result]
-    :	STRING {result = vConst($STRING.text.substring(1, $STRING.text.length() - 1));}
+    :	STRING {result = vConst(unquote($STRING.text));}
     ;
 
 

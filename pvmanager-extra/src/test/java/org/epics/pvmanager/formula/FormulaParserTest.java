@@ -340,4 +340,21 @@ public class FormulaParserTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
+
+    @Test
+    public void formula20() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("'escaped\\\"pv\\\"'").formula());
+        assertThat(exp.getExpression().getName(), equalTo("escaped\"pv\""));
+        exp.writeValue("escaped\"pv\"", ValueFactory.newVDouble(3.0));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3.0));
+    }
+
+    @Test
+    public void formula21() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("\"I said \\\"Hi\\\"\"").formula());
+        assertThat(exp.getExpression().getName(), equalTo("I said \"Hi\""));
+        VString result = (VString) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo("I said \"Hi\""));
+    }
 }
