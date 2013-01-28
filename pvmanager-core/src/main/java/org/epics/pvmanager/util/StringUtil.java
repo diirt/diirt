@@ -16,7 +16,8 @@ public class StringUtil {
     private StringUtil() {
     }
     
-    static final String escapeSequenceRegex = "(\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7]))";
+    static final String escapeSequenceRegex = "\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7])";
+    static final String quotedStringRegex = "\"([^\"\\\\]|" + StringUtil.escapeSequenceRegex + ")*\"";
     
     static Pattern escapeSequence = Pattern.compile(escapeSequenceRegex);
     
