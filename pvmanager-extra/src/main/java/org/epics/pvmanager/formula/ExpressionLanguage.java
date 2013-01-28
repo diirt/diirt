@@ -196,6 +196,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("atan", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.atan(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
