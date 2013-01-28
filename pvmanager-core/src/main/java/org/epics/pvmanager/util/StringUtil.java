@@ -16,7 +16,7 @@ public class StringUtil {
     private StringUtil() {
     }
     
-    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\))");
+    static Pattern escapeSequence = Pattern.compile("(\\\\(\"|\\\\|\'))");
     
     public static String unescapeString(String escapedString) {
         Matcher match = escapeSequence.matcher(escapedString);
@@ -34,6 +34,8 @@ public class StringUtil {
                 return "\"";
             case "\\\\":
                 return "\\\\";
+            case "\\\'":
+                return "\'";
         }
         throw new IllegalArgumentException("Unknown escape token " + escapedToken);
     }

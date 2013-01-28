@@ -34,4 +34,10 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("path\\\\to\\\\file"), equalTo("path\\to\\file"));
     }
 
+    @Test
+    public void unescapeString3() {
+        assertThat(StringUtil.unescapeString("\\\'"), equalTo("\'"));
+        assertThat(StringUtil.unescapeString("That\\\'s right!"), equalTo("That\'s right!"));
+    }
+
 }
