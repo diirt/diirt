@@ -40,4 +40,10 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("That\\\'s right!"), equalTo("That\'s right!"));
     }
 
+    @Test
+    public void unescapeString4() {
+        assertThat(StringUtil.unescapeString("\\r"), equalTo("\r"));
+        assertThat(StringUtil.unescapeString("This\\rThat"), equalTo("This\rThat"));
+    }
+
 }
