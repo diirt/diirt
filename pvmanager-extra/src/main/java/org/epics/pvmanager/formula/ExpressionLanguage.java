@@ -161,19 +161,8 @@ public class ExpressionLanguage {
     }
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
-        switch (function) {
-            case "abs":
-                return oneArgNumbericFunction(function, args);
-            case "acos":
-                return oneArgNumbericFunction(function, args);
-            case "asin":
-                return oneArgNumbericFunction(function, args);
-            case "log":
-                return oneArgNumbericFunction(function, args);
-            case "sin":
-                return sin(args);
-            case "sqrt":
-                return sqrt(args);
+        if (oneArgNumericFunction.containsKey(function)) {
+            return oneArgNumbericFunction(function, args);
         }
         throw new IllegalArgumentException("No function named '" + function + "' is defined");
     }
@@ -215,6 +204,22 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("sin", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.sin(arg);
+            }
+        });
+        
+        map.put("sqrt", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.sqrt(arg);
+            }
+        });
+        
         oneArgNumericFunction = map;
     }
     
@@ -246,23 +251,11 @@ public class ExpressionLanguage {
         return oneArgNumbericFunction("log", args);
     }
     
-    static DesiredRateExpression<VDouble> sin(DesiredRateExpressionList<?> args) {
-        return function("sin", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.sin(arg);
-            }
-        }, VNumber.class, args);
+    static DesiredRateExpression<VDouble> sin(DesiredRateExpression<? extends VNumber> args) {
+        return oneArgNumbericFunction("sin", args);
     }
     
-    static DesiredRateExpression<VDouble> sqrt(DesiredRateExpressionList<?> args) {
-        return function("sqrt", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.sqrt(arg);
-            }
-        }, VNumber.class, args);
+    static DesiredRateExpression<VDouble> sqrt(DesiredRateExpression<? extends VNumber> args) {
+        return oneArgNumbericFunction("sqrt", args);
     }
 }
