@@ -52,4 +52,10 @@ public class StringUtilTest {
         assertThat(StringUtil.unescapeString("This\\nThat"), equalTo("This\nThat"));
     }
 
+    @Test
+    public void unescapeString6() {
+        assertThat(StringUtil.unescapeString("\\b"), equalTo("\b"));
+        assertThat(StringUtil.unescapeString("Back\bspace"), equalTo("Back\bspace"));
+    }
+
 }
