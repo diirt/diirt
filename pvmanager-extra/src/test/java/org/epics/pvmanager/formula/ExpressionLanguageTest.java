@@ -282,4 +282,12 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(0.0, 0.0001));
     }
+
+    @Test
+    public void formula25() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("cbrt(8.0)"));
+        assertThat(exp.getExpression().getName(), equalTo("cbrt(8.0)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(2.0, 0.0001));
+    }
 }

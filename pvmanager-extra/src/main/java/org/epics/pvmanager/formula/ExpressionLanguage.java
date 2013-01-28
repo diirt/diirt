@@ -204,6 +204,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("cbrt", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.cbrt(arg);
+            }
+        });
+        
         map.put("log", new OneArgNumericFunction() {
 
             @Override
