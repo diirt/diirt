@@ -260,6 +260,14 @@ public class ExpressionLanguage {
             }
         });
         
+        map.put("log10", new OneArgNumericFunction() {
+
+            @Override
+            double calculate(double arg) {
+                return Math.log10(arg);
+            }
+        });
+        
         map.put("sin", new OneArgNumericFunction() {
 
             @Override
