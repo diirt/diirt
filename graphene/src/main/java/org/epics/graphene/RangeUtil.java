@@ -35,6 +35,19 @@ public class RangeUtil {
         };
     }
     
+    /**
+     * Determines whether the subrange is contained in the range or not.
+     * 
+     * @param range a range
+     * @param subrange a possible subrange
+     * @return true if subrange is contained in range
+     */
+    public static boolean contains(Range range, Range subrange) {
+        return range.getMinimum().doubleValue() <= subrange.getMinimum().doubleValue()
+                && range.getMaximum().doubleValue() >= subrange.getMaximum().doubleValue();
+        
+    }
+    
     public static double[] createBins(double min, double max, int nBins) {
         double increment = (max - min) / nBins;
         double[] boundary = new double[nBins+1];

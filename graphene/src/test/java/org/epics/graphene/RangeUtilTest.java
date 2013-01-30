@@ -42,4 +42,12 @@ public class RangeUtilTest {
         Range range = RangeUtil.range(10.0, 0.0);
     }
     
+    @Test
+    public void subrange1() {
+        assertThat(RangeUtil.contains(RangeUtil.range(0.0, 1.0), RangeUtil.range(0.5, 0.75)), equalTo(true));
+        assertThat(RangeUtil.contains(RangeUtil.range(0.0, 1.0), RangeUtil.range(0.5, 1.0)), equalTo(true));
+        assertThat(RangeUtil.contains(RangeUtil.range(0.0, 1.0), RangeUtil.range(0.0, 0.75)), equalTo(true));
+        assertThat(RangeUtil.contains(RangeUtil.range(0.0, 1.0), RangeUtil.range(-1.0, 0.75)), equalTo(false));
+        assertThat(RangeUtil.contains(RangeUtil.range(0.0, 1.0), RangeUtil.range(0.0, 1.75)), equalTo(false));
+    }
 }
