@@ -18,6 +18,11 @@ public class Bar1DChartRenderer extends Graph2DRenderer<Bar1DChartRendererUpdate
         super(imageWidth, imageHeight);
     }
 
+    @Override
+    public Bar1DChartRendererUpdate newUpdate() {
+        return new Bar1DChartRendererUpdate();
+    }
+
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
         int imageWidth = this.getImageWidth();
         int imageHeight = this.getImageHeight();

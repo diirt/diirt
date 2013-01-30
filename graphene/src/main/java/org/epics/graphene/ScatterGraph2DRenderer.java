@@ -28,6 +28,11 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         this(300, 200);
     }
 
+    @Override
+    public Graph2DRendererUpdate newUpdate() {
+        return new Graph2DRendererUpdate();
+    }
+
     public void draw(Graphics2D g, Point2DDataset data) {
         int dataCount = data.getCount();
         

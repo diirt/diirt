@@ -80,6 +80,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
+    public abstract T newUpdate();
+    
     protected void calculateRanges(Range xDataRange, Range yDataRange) {
         xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
         yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
