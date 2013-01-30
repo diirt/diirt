@@ -13,51 +13,42 @@ import org.epics.util.array.ListNumber;
  */
 public class MockOrderedDataset2D implements Point2DDataset {
     
-    private double[] xValues;
-    private double[] yValues;
-    private double[] xMinMax;
-    private double[] yMinMax;
+    private ListNumber xValues;
+    private ListNumber yValues;
+    private Statistics xStatistics;
+    private Statistics yStatistics;
 
     public MockOrderedDataset2D(double[] xValues, double[] yValues) {
-        this.xValues = xValues;
-        this.yValues = yValues;
-        xMinMax = NumberUtil.minMax(xValues);
-        yMinMax = NumberUtil.minMax(yValues);
+        this.xValues = new ArrayDouble(xValues);
+        this.yValues = new ArrayDouble(yValues);
+        xStatistics = StatisticsUtil.statisticsOf(this.xValues);
+        yStatistics = StatisticsUtil.statisticsOf(this.yValues);
     }
 
     @Override
     public ListNumber getXValues() {
-        return new ArrayDouble(xValues);
+        return xValues;
     }
 
     @Override
     public ListNumber getYValues() {
-        return new ArrayDouble(yValues);
+        return yValues;
     }
 
     @Override
-    public double getXMinValue() {
-        return xMinMax[0];
+    public Statistics getXStatistics() {
+        return xStatistics;
     }
 
     @Override
-    public double getXMaxValue() {
-        return xMinMax[1];
+    public Statistics getYStatistics() {
+        return yStatistics;
     }
-
-    @Override
-    public double getYMinValue() {
-        return yMinMax[0];
-    }
-
-    @Override
-    public double getYMaxValue() {
-        return yMinMax[1];
-    }
+    
 
     @Override
     public int getCount() {
-        return xValues.length;
+        return xValues.size();
     }
     
 }

@@ -118,10 +118,10 @@ public class LineGraphRenderer {
         int dataCount = data.getCount();
         
         // Retain the integrated min/max
-        integratedMinX = java.lang.Double.isNaN(data.getXMinValue()) ? integratedMinX : Math.min(integratedMinX, data.getXMinValue());
-        integratedMinY = java.lang.Double.isNaN(data.getYMinValue()) ? integratedMinY : Math.min(integratedMinY, data.getYMinValue());
-        integratedMaxX = java.lang.Double.isNaN(data.getXMaxValue()) ? integratedMaxX : Math.max(integratedMaxX, data.getXMaxValue());
-        integratedMaxY = java.lang.Double.isNaN(data.getYMaxValue()) ? integratedMaxY : Math.max(integratedMaxY, data.getYMaxValue());
+        integratedMinX = java.lang.Double.isNaN(data.getXStatistics().getMinimum().doubleValue()) ? integratedMinX : Math.min(integratedMinX, data.getXStatistics().getMinimum().doubleValue());
+        integratedMinY = java.lang.Double.isNaN(data.getYStatistics().getMinimum().doubleValue()) ? integratedMinY : Math.min(integratedMinY, data.getYStatistics().getMinimum().doubleValue());
+        integratedMaxX = java.lang.Double.isNaN(data.getXStatistics().getMaximum().doubleValue()) ? integratedMaxX : Math.max(integratedMaxX, data.getXStatistics().getMaximum().doubleValue());
+        integratedMaxY = java.lang.Double.isNaN(data.getYStatistics().getMaximum().doubleValue()) ? integratedMaxY : Math.max(integratedMaxY, data.getYStatistics().getMaximum().doubleValue());
         
         // Determine range of the plot.
         // If no range is set, use the one from the dataset

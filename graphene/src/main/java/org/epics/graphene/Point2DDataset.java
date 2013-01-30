@@ -34,13 +34,23 @@ public interface Point2DDataset {
      */
     public ListNumber getYValues();
     
-    public double getXMinValue();
+    /**
+     * The statistical information of x values.
+     * <p>
+     * If the dataset is empty, or if it contains only NaN values, it returns null.
+     * 
+     * @return x statistical information; null if no actual values in the dataset
+     */
+    public Statistics getXStatistics();
     
-    public double getXMaxValue();
-    
-    public double getYMinValue();
-    
-    public double getYMaxValue();
+    /**
+     * The statistical information of x values.
+     * <p>
+     * If the dataset is empty, or if it contains only NaN values, it returns null.
+     * 
+     * @return x statistical information; null if no actual values in the dataset
+     */
+    public Statistics getYStatistics();
     
     /**
      * The number of points in the dataset.

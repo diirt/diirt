@@ -37,7 +37,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         int dataCount = data.getCount();
         
         // Retain the integrated min/max
-        calculateRanges(RangeUtil.range(data.getXMinValue(), data.getXMaxValue()), RangeUtil.range(data.getYMinValue(), data.getYMaxValue()));
+        calculateRanges(data.getXStatistics(), data.getYStatistics());
         
         // Determine range of the plot.
         // If no range is set, use the one from the dataset
