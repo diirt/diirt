@@ -13,7 +13,7 @@ package org.epics.graphene;
  * @author carcassi
  */
 public class AxisRanges {
-
+    
     private AxisRanges() {
     }
     
@@ -24,6 +24,16 @@ public class AxisRanges {
             @Override
             public Range axisRange(Range range) {
                 return axisRange;
+            }
+        };
+    }
+    
+    public static AxisRange relative() {
+        return new AxisRange() {
+
+            @Override
+            public Range axisRange(Range range) {
+                return range;
             }
         };
     }
