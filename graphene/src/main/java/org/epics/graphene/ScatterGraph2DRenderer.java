@@ -15,7 +15,7 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-public class Scatter2DGraphRenderer {
+public class ScatterGraph2DRenderer {
 
     private int width = 300;
     private int height = 200;
@@ -31,12 +31,12 @@ public class Scatter2DGraphRenderer {
     private double integratedMaxX = java.lang.Double.MIN_VALUE;
     private double integratedMaxY = java.lang.Double.MIN_VALUE;
 
-    public Scatter2DGraphRenderer(int width, int height) {
+    public ScatterGraph2DRenderer(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    public Scatter2DGraphRenderer() {
+    public ScatterGraph2DRenderer() {
         this(300, 200);
     }
 

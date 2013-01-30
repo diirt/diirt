@@ -21,9 +21,9 @@ import org.junit.BeforeClass;
  *
  * @author carcassi
  */
-public class Scatter2DGraphRendererTest {
+public class ScatterGraph2DRendererTest {
     
-    public Scatter2DGraphRendererTest() {
+    public ScatterGraph2DRendererTest() {
     }
 
     @BeforeClass
@@ -47,7 +47,7 @@ public class Scatter2DGraphRendererTest {
         
         Point2DDataset data = Point2DDatasets.lineData(x,y);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(300, 200);
+        ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.1", image);
@@ -62,7 +62,7 @@ public class Scatter2DGraphRendererTest {
         
         Point2DDataset data = Point2DDatasets.lineData(x,y);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(300, 200);
+        ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.2", image);
@@ -75,7 +75,7 @@ public class Scatter2DGraphRendererTest {
         
         Point2DDataset data = Point2DDatasets.lineData(x,y);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(300, 200);
+        ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.3", image);

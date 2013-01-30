@@ -38,7 +38,7 @@ public class ProfileScatter2DGraph {
         Point2DDataset dataset = org.epics.graphene.Point2DDatasets.lineData(x,y);
         //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
-        Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imageWidth, imageHeight);
+        ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(imageWidth, imageHeight);
         
         StopWatch stopWatch = new StopWatch(nTries);
         
