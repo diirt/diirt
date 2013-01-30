@@ -13,5 +13,5 @@ package org.epics.graphene;
  * @author carcassi
  */
 public interface AxisRange {
-    public Range axisRange(Range range);
+    public Range axisRange(Range dataRange, Range aggregatedRange);
 }

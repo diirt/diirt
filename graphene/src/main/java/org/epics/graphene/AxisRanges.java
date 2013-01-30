@@ -22,7 +22,7 @@ public class AxisRanges {
         return new AxisRange() {
 
             @Override
-            public Range axisRange(Range range) {
+            public Range axisRange(Range dataRange, Range aggregatedRange) {
                 return axisRange;
             }
         };
@@ -32,8 +32,8 @@ public class AxisRanges {
         return new AxisRange() {
 
             @Override
-            public Range axisRange(Range range) {
-                return range;
+            public Range axisRange(Range dataRange, Range aggregatedRange) {
+                return dataRange;
             }
         };
     }
@@ -45,17 +45,10 @@ public class AxisRanges {
     //      in general
     public static AxisRange integrated() {
         return new AxisRange() {
-            private Range pastRange;
 
             @Override
-            public Range axisRange(Range range) {
-                if (pastRange == null) {
-                    pastRange = range;
-                    return range;
-                } else {
-                    pastRange = RangeUtil.sum(pastRange, range);
-                    return pastRange;
-                }
+            public Range axisRange(Range dataRange, Range aggregatedRange) {
+                return aggregatedRange;
             }
         };
     }

@@ -32,6 +32,10 @@ public class Bar1DChartRenderer {
     
     private AxisRange xAxisRange = AxisRanges.integrated();
     private AxisRange yAxisRange = AxisRanges.integrated();
+    private Range xAggregatedRange;
+    private Range yAggregatedRange;
+    private Range xPlotRange;
+    private Range yPlotRange;
 
     public void update(Bar1DChartRendererUpdate update) {
         if (update.getImageHeight() != null) {
@@ -47,6 +51,22 @@ public class Bar1DChartRenderer {
             yAxisRange = update.getYAxisRange();
         }
     }
+    
+    static Range aggregateRange(Range dataRange, Range aggregatedRange) {
+        if (aggregatedRange == null) {
+            return dataRange;
+        } else {
+            return RangeUtil.sum(dataRange, aggregatedRange);
+        }
+    }
+    
+    protected void calculateRanges(Range xDataRange, Range yDataRange) {
+        xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
+        yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
+        xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange);
+        yPlotRange = xAxisRange.axisRange(yDataRange, yAggregatedRange);
+    }
+    
 
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
         int imageWidth = this.getImageWidth();
@@ -63,16 +83,15 @@ public class Bar1DChartRenderer {
         int axisMargin = 3; // 3 px of margin all around
         int xAxisTickSize = 3;
         
-        Range xRange = xAxisRange.axisRange(dataset.getXRange());
-        Range yRange = yAxisRange.axisRange(dataset.getStatistics());
+        calculateRanges(dataset.getXRange(), dataset.getStatistics());
                 
-        double xValueMin = xRange.getMinimum().doubleValue();
-        double xValueMax = xRange.getMaximum().doubleValue();
+        double xValueMin = xPlotRange.getMinimum().doubleValue();
+        double xValueMax = xPlotRange.getMaximum().doubleValue();
         ValueAxis xAxis = ValueAxis.createAutoAxis(xValueMin, xValueMax, imageWidth / 60);
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, graphics);
         
-        double yValueMin = yRange.getMinimum().doubleValue();
-        double yValueMax = yRange.getMaximum().doubleValue();
+        double yValueMin = yPlotRange.getMinimum().doubleValue();
+        double yValueMax = yPlotRange.getMaximum().doubleValue();
         // In bigger plots, too many horizonal lines make it too confusing,
         // so distance between each vertical ticks is higher at smaller heights
         // and smaller at higher heights.
