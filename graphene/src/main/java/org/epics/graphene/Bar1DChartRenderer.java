@@ -12,61 +12,11 @@ import static org.epics.graphene.NumberUtil.normalize;
  *
  * @author carcassi
  */
-public class Bar1DChartRenderer {
+public class Bar1DChartRenderer extends Graph2DRenderer<Bar1DChartRendererUpdate> {
 
     public Bar1DChartRenderer(int imageWidth, int imageHeight) {
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
+        super(imageWidth, imageHeight);
     }
-    
-    private int imageWidth;
-    private int imageHeight;
-
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    public int getImageWidth() {
-        return imageWidth;
-    }
-    
-    private AxisRange xAxisRange = AxisRanges.integrated();
-    private AxisRange yAxisRange = AxisRanges.integrated();
-    private Range xAggregatedRange;
-    private Range yAggregatedRange;
-    private Range xPlotRange;
-    private Range yPlotRange;
-
-    public void update(Bar1DChartRendererUpdate update) {
-        if (update.getImageHeight() != null) {
-            imageHeight = update.getImageHeight();
-        }
-        if (update.getImageWidth() != null) {
-            imageWidth = update.getImageWidth();
-        }
-        if (update.getXAxisRange() != null) {
-            xAxisRange = update.getXAxisRange();
-        }
-        if (update.getYAxisRange() != null) {
-            yAxisRange = update.getYAxisRange();
-        }
-    }
-    
-    static Range aggregateRange(Range dataRange, Range aggregatedRange) {
-        if (aggregatedRange == null) {
-            return dataRange;
-        } else {
-            return RangeUtil.sum(dataRange, aggregatedRange);
-        }
-    }
-    
-    protected void calculateRanges(Range xDataRange, Range yDataRange) {
-        xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
-        yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
-        xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange);
-        yPlotRange = xAxisRange.axisRange(yDataRange, yAggregatedRange);
-    }
-    
 
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
         int imageWidth = this.getImageWidth();
@@ -85,13 +35,13 @@ public class Bar1DChartRenderer {
         
         calculateRanges(dataset.getXRange(), dataset.getStatistics());
                 
-        double xValueMin = xPlotRange.getMinimum().doubleValue();
-        double xValueMax = xPlotRange.getMaximum().doubleValue();
+        double xValueMin = getXPlotRange().getMinimum().doubleValue();
+        double xValueMax = getXPlotRange().getMaximum().doubleValue();
         ValueAxis xAxis = ValueAxis.createAutoAxis(xValueMin, xValueMax, imageWidth / 60);
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, graphics);
         
-        double yValueMin = yPlotRange.getMinimum().doubleValue();
-        double yValueMax = yPlotRange.getMaximum().doubleValue();
+        double yValueMin = getYPlotRange().getMinimum().doubleValue();
+        double yValueMax = getYPlotRange().getMaximum().doubleValue();
         // In bigger plots, too many horizonal lines make it too confusing,
         // so distance between each vertical ticks is higher at smaller heights
         // and smaller at higher heights.
