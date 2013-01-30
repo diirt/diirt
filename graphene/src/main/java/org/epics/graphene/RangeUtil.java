@@ -48,6 +48,23 @@ public class RangeUtil {
         
     }
     
+    public static Range sum(Range range1, Range range2) {
+        if (range1.getMinimum().doubleValue() <= range2.getMinimum().doubleValue()) {
+            if (range1.getMaximum().doubleValue() >= range2.getMaximum().doubleValue()) {
+                return range1;
+            } else {
+                return range(range1.getMinimum().doubleValue(), range2.getMaximum().doubleValue());
+            }
+        } else {
+            if (range1.getMaximum().doubleValue() >= range2.getMaximum().doubleValue()) {
+                return range(range2.getMinimum().doubleValue(), range1.getMaximum().doubleValue());
+            } else {
+                return range2;
+            }
+        }
+        
+    }
+    
     public static double[] createBins(double min, double max, int nBins) {
         double increment = (max - min) / nBins;
         double[] boundary = new double[nBins+1];
