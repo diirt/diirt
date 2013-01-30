@@ -29,12 +29,23 @@ public class Bar1DChartRenderer {
     public int getImageWidth() {
         return imageWidth;
     }
+    
+    private AxisRange xAxisRange = AxisRanges.integrated();
+    private AxisRange yAxisRange = AxisRanges.integrated();
 
-    public void update(Histogram1DRendererUpdate update) {
-        if (update.getImageHeight() != null)
+    public void update(Bar1DChartRendererUpdate update) {
+        if (update.getImageHeight() != null) {
             imageHeight = update.getImageHeight();
-        if (update.getImageWidth() != null)
+        }
+        if (update.getImageWidth() != null) {
             imageWidth = update.getImageWidth();
+        }
+        if (update.getXAxisRange() != null) {
+            xAxisRange = update.getXAxisRange();
+        }
+        if (update.getYAxisRange() != null) {
+            yAxisRange = update.getYAxisRange();
+        }
     }
 
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
@@ -52,13 +63,16 @@ public class Bar1DChartRenderer {
         int axisMargin = 3; // 3 px of margin all around
         int xAxisTickSize = 3;
         
-        double xValueMin = dataset.getXRange().getMinimum().doubleValue();
-        double xValueMax = dataset.getXRange().getMaximum().doubleValue();
+        Range xRange = xAxisRange.axisRange(dataset.getXRange());
+        Range yRange = yAxisRange.axisRange(dataset.getStatistics());
+                
+        double xValueMin = xRange.getMinimum().doubleValue();
+        double xValueMax = xRange.getMaximum().doubleValue();
         ValueAxis xAxis = ValueAxis.createAutoAxis(xValueMin, xValueMax, imageWidth / 60);
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, graphics);
         
-        double yValueMin = dataset.getStatistics().getMinimum().doubleValue();
-        double yValueMax = dataset.getStatistics().getMaximum().doubleValue();
+        double yValueMin = yRange.getMinimum().doubleValue();
+        double yValueMax = yRange.getMaximum().doubleValue();
         // In bigger plots, too many horizonal lines make it too confusing,
         // so distance between each vertical ticks is higher at smaller heights
         // and smaller at higher heights.
