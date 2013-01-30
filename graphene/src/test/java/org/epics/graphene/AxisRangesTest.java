@@ -27,4 +27,9 @@ public class AxisRangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 10.0));
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void axisRanges2() {
+        AxisRange axisRange = AxisRanges.absolute(10.0, 0.0);
+    }
 }
