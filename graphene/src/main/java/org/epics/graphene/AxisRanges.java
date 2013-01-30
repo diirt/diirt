@@ -37,4 +37,26 @@ public class AxisRanges {
             }
         };
     }
+    
+    
+    // TODO horrible name
+    // TODO we may need the integrated to "jump", so that the plot
+    //      gets stretched fewer times, but its unclear how to do it
+    //      in general
+    public static AxisRange integrated() {
+        return new AxisRange() {
+            private Range pastRange;
+
+            @Override
+            public Range axisRange(Range range) {
+                if (pastRange == null) {
+                    pastRange = range;
+                    return range;
+                } else {
+                    pastRange = RangeUtil.sum(pastRange, range);
+                    return pastRange;
+                }
+            }
+        };
+    }
 }
