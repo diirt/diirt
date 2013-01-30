@@ -46,46 +46,18 @@ public class Bar1DChartRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.1", image);
     }
-//    
-//    @Test
-//    public void test2() throws Exception {
-//        Histogram1D hist = new Hist1DT3();
-//        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-//        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
-//        Graphics2D graphics = (Graphics2D) image.getGraphics();
-//        renderer.draw(graphics, hist);
-//        compareImages("hist1D.3", image);
-//    }
-//    
-//    @Test
-//    public void test4() throws Exception {
-//        Histogram1D hist = new Hist1DT4();
-//        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-//        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
-//        Graphics2D graphics = (Graphics2D) image.getGraphics();
-//        renderer.draw(graphics, hist);
-//        compareImages("hist1D.4", image);
-//    }
-//    
-//    @Test
-//    public void test5() throws Exception {
-//        Histogram1D hist = new Hist1DT5();
-//        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-//        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
-//        Graphics2D graphics = (Graphics2D) image.getGraphics();
-//        renderer.draw(graphics, hist);
-//        compareImages("hist1D.5", image);
-//    }
-//    
-//    @Test
-//    public void test6() throws Exception {
-//        Histogram1D hist = new Hist1DT6();
-//        BufferedImage image = new BufferedImage(600, 200, BufferedImage.TYPE_3BYTE_BGR);
-//        Histogram1DRenderer renderer = new Histogram1DRenderer(600, 200);
-//        Graphics2D graphics = (Graphics2D) image.getGraphics();
-//        renderer.draw(graphics, hist);
-//        compareImages("hist1D.6", image);
-//    }
-//    
+    
+    @Test
+    public void test2() throws Exception {
+        Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,5,10,5,0,5,10,0,5,10), 0, 10);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, dataset);
+        compareImages("bar1DChart.2", image);
+        dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,2,3,0,4,5,0,6,7,0), 0, 10);
+        renderer.draw(graphics, dataset);
+        compareImages("bar1DChart.3", image);
+    }
 
 }
