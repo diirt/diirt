@@ -15,122 +15,31 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-public class ScatterGraph2DRenderer {
+public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate> {
 
     private int width = 300;
     private int height = 200;
-    
-    private boolean rangeFromDataset = true;
-    private double startPlotX = java.lang.Double.MIN_VALUE;
-    private double endPlotX = java.lang.Double.MAX_VALUE;
-    private double startPlotY = java.lang.Double.MIN_VALUE;
-    private double endPlotY = java.lang.Double.MAX_VALUE;
-    
-    private double integratedMinX = java.lang.Double.MAX_VALUE;
-    private double integratedMinY = java.lang.Double.MAX_VALUE;
-    private double integratedMaxX = java.lang.Double.MIN_VALUE;
-    private double integratedMaxY = java.lang.Double.MIN_VALUE;
 
     public ScatterGraph2DRenderer(int width, int height) {
-        this.width = width;
-        this.height = height;
+        super(width, height);
     }
 
     public ScatterGraph2DRenderer() {
         this(300, 200);
     }
 
-    public int getImageHeight() {
-        return height;
-    }
-
-    public int getImageWidth() {
-        return width;
-    }
-
-    public double getEndPlotX() {
-        return endPlotX;
-    }
-
-    public double getEndPlotY() {
-        return endPlotY;
-    }
-
-    public double getIntegratedMaxX() {
-        return integratedMaxX;
-    }
-
-    public double getIntegratedMaxY() {
-        return integratedMaxY;
-    }
-
-    public double getIntegratedMinX() {
-        return integratedMinX;
-    }
-
-    public double getIntegratedMinY() {
-        return integratedMinY;
-    }
-
-    public double getStartPlotX() {
-        return startPlotX;
-    }
-
-    public double getStartPlotY() {
-        return startPlotY;
-    }
-    
-    public void update(LineGraphRendererUpdate update) {
-        if (update.getImageHeight() != null) {
-            height = update.getImageHeight();
-        }
-        if (update.getImageWidth() != null) {
-            width = update.getImageWidth();
-        }
-        if (update.isRangeFromDataset() != null) {
-            rangeFromDataset = update.isRangeFromDataset();
-        }
-        if (update.getStartX() != null) {
-            startPlotX = update.getStartX();
-        }
-        if (update.getStartY() != null) {
-            startPlotY = update.getStartY();
-        }
-        if (update.getEndX() != null) {
-            endPlotX = update.getEndX();
-        }
-        if (update.getEndY() != null) {
-            endPlotY = update.getEndY();
-        }
-        
-    }
-
     public void draw(Graphics2D g, Point2DDataset data) {
         int dataCount = data.getCount();
         
         // Retain the integrated min/max
-        integratedMinX = java.lang.Double.isNaN(data.getXMinValue()) ? integratedMinX : Math.min(integratedMinX, data.getXMinValue());
-        integratedMinY = java.lang.Double.isNaN(data.getYMinValue()) ? integratedMinY : Math.min(integratedMinY, data.getYMinValue());
-        integratedMaxX = java.lang.Double.isNaN(data.getXMaxValue()) ? integratedMaxX : Math.max(integratedMaxX, data.getXMaxValue());
-        integratedMaxY = java.lang.Double.isNaN(data.getYMaxValue()) ? integratedMaxY : Math.max(integratedMaxY, data.getYMaxValue());
+        calculateRanges(RangeUtil.range(data.getXMinValue(), data.getXMaxValue()), RangeUtil.range(data.getYMinValue(), data.getYMaxValue()));
         
         // Determine range of the plot.
         // If no range is set, use the one from the dataset
-        double startXPlot;
-        double startYPlot;
-        double endXPlot;
-        double endYPlot;
-        if (rangeFromDataset) {
-            startXPlot = integratedMinX;
-            startYPlot = integratedMinY;
-            endXPlot = integratedMaxX;
-            endYPlot = integratedMaxY;
-        } else {
-            startXPlot = startPlotX;
-            startYPlot = startPlotY;
-            endXPlot = endPlotX;
-            endYPlot = endPlotY;
-        }
+        double startXPlot = getXPlotRange().getMinimum().doubleValue();
+        double startYPlot = getYPlotRange().getMinimum().doubleValue();
+        double endXPlot = getXPlotRange().getMaximum().doubleValue();
+        double endYPlot = getYPlotRange().getMaximum().doubleValue();
         int margin = 3;
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
