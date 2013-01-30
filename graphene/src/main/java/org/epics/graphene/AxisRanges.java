@@ -17,7 +17,14 @@ public class AxisRanges {
     private AxisRanges() {
     }
     
-    public static AxisRange axisRange(double min, double max) {
-        return new AxisRangeImpl(min, max);
+    public static AxisRange absolute(final double min, final double max) {
+        final Range axisRange = RangeUtil.range(min, max);
+        return new AxisRange() {
+
+            @Override
+            public Range axisRange(Range range) {
+                return axisRange;
+            }
+        };
     }
 }

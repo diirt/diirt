@@ -22,7 +22,7 @@ public class AxisRangesTest {
 
     @Test
     public void axisRanges1() {
-        AxisRange axisRange = AxisRanges.axisRange(0.0, 10.0);
+        AxisRange axisRange = AxisRanges.absolute(0.0, 10.0);
         Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0));
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 10.0));
