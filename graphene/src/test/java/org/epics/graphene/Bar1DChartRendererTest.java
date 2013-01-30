@@ -35,53 +35,13 @@ public class Bar1DChartRendererTest {
     public static void tearDownClass() throws Exception {
     }
     
-    public static Statistics mockStatistics(Number min, Number max, double avg, double stdDev, int count) {
-        Statistics stats = mock(Statistics.class);
-        when(stats.getMinimum()).thenReturn(min);
-        when(stats.getMaximum()).thenReturn(max);
-        when(stats.getAverage()).thenReturn(avg);
-        when(stats.getStdDev()).thenReturn(stdDev);
-        when(stats.getCount()).thenReturn(count);
-        return stats;
-    }
-    
-    public static Cell1DDataset mockCell1DDataset(final ListNumber values, final ListNumber boundaries, final Statistics valueStats, final Range range, final int count) {
-        return new Cell1DDataset() {
-
-            @Override
-            public double getValue(int x) {
-                return values.getDouble(x);
-            }
-
-            @Override
-            public Statistics getStatistics() {
-                return valueStats;
-            }
-
-            @Override
-            public ListNumber getXBoundaries() {
-                return boundaries;
-            }
-
-            @Override
-            public Range getXRange() {
-                return range;
-            }
-
-            @Override
-            public int getXCount() {
-                return count;
-            }
-        };
-    }
-    
     @Test
     public void test1() throws Exception {
-        Cell1DDataset dataset = mockCell1DDataset(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
-                                        350, 230, 180, 220, 170, 130, 80, 30, 40), ListNumbers.linearRange(0, 2, 21),
-                                        mockStatistics(0, 550, Double.NaN, Double.NaN, 21), RangeUtil.range(0.0, 2.0), 20);
+        Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+                                        350, 230, 180, 220, 170, 130, 80, 30, 40), 0, 2);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
+        renderer.update(new Bar1DChartRendererUpdate().yAxisRange(AxisRanges.absolute(0, 550)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.1", image);
