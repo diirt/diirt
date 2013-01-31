@@ -19,6 +19,12 @@ public class GangliaRrdClusterMain {
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
     
     public static void main(String[] args) throws Exception {
+        if (args.length == 0) {
+            System.out.println("Usage:  list directory (prints the machines and signals found)\n");
+            System.out.println("Usage:  plot directory signalX signalY signalSize date outputName (creates a bubble plot)\n");
+            System.exit(0);
+        }
+        
         Pattern filePattern = Pattern.compile(".*\\.local", Pattern.CASE_INSENSITIVE);
         if ("list".equals(args[0])) {
             String path = args[1];
