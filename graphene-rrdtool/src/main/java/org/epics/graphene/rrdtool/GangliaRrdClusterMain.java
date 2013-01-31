@@ -4,22 +4,9 @@
  */
 package org.epics.graphene.rrdtool;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import org.epics.graphene.Bubble2DGraphRenderer;
 import org.epics.graphene.Point3DWithLabelDataset;
-import org.epics.graphene.Point3DWithLabelDatasets;
-import org.epics.graphene.Scatter2DGraphRenderer;
-import org.epics.util.array.ListDouble;
-import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
 

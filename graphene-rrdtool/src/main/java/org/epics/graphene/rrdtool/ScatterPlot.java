@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
-import org.epics.graphene.Scatter2DGraphRenderer;
+import org.epics.graphene.ScatterGraph2DRenderer;
 import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.IteratorNumber;
 import org.epics.util.time.Timestamp;
@@ -172,7 +172,7 @@ public class ScatterPlot extends javax.swing.JFrame {
 //            valuesX.setText(toText(xData.getValues()));
 //            valuesY.setText(toText(yData.getValues()));
             BufferedImage image = new BufferedImage(imagePanel1.getWidth(), imagePanel1.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-            Scatter2DGraphRenderer renderer = new Scatter2DGraphRenderer(imagePanel1.getWidth(), imagePanel1.getHeight());
+            ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(imagePanel1.getWidth(), imagePanel1.getHeight());
 //            renderer.draw(image.createGraphics(), dataset);
             imagePanel1.setImage(image);
         } catch(Exception ex) {
