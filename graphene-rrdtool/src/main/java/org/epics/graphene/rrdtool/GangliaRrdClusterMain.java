@@ -17,6 +17,7 @@ import org.epics.util.time.TimestampFormat;
 public class GangliaRrdClusterMain {
     
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
+    private static TimestampFormat readFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss");
     
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -42,8 +43,12 @@ public class GangliaRrdClusterMain {
             String signalZ = args[4];
             String filename = args[6];
             Timestamp time = format.parse(args[5]);
+            String timeString = null;
+            if (time != null) {
+                timeString = readFormat.format(time);
+            }
             System.out.println("Plotting from " + path + " (" + signalX + ", " + signalY 
-                    + ", " + signalZ + ") at time " + time);
+                    + ", " + signalZ + ") at time " + timeString);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             cluster.setDirPattern(filePattern);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
