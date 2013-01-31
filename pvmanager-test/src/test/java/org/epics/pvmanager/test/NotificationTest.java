@@ -21,9 +21,10 @@ public class NotificationTest {
 
     @Test
     public void sequentialNotifications() throws Exception{
-        PVReader<Integer> reader = PVManager.read(counter()).from(new TestDataSource()).maxRate(ofMillis(10));
         CounterTestListener listener = new CounterTestListener();
-        reader.addPVReaderListener(listener);
+        PVReader<Integer> reader = PVManager.read(counter())
+                .readListener(listener)
+                .from(new TestDataSource()).maxRate(ofMillis(10));
         Thread.sleep(100);
         if (listener.isFailed())
             fail("listener received wrong notifications");
@@ -32,9 +33,10 @@ public class NotificationTest {
 
     @Test
     public void pause() throws Exception{
-        PVReader<Integer> reader = PVManager.read(counter()).from(new TestDataSource()).maxRate(ofMillis(10));
         CounterTestListener listener = new CounterTestListener();
-        reader.addPVReaderListener(listener);
+        PVReader<Integer> reader = PVManager.read(counter())
+                .readListener(listener)
+                .from(new TestDataSource()).maxRate(ofMillis(10));
         assertThat(reader.isPaused(), equalTo(false));
         Thread.sleep(100);
         

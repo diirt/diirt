@@ -63,7 +63,6 @@ class PVReaderImpl<T> implements PVReader<T> {
     private PVReader<T> readerForNotification = this;
     private Exception lastException;
     
-    private boolean missedNotification = false;
     private boolean exceptionToNotify = false;
     private boolean connectionToNotify = false;
     private boolean valueToNotify = false;
@@ -88,15 +87,9 @@ class PVReaderImpl<T> implements PVReader<T> {
             valueToNotify = false;
             exceptionToNotify = false;
         }
-        boolean missed = true;
         PVReaderEvent<T> event = new PVReaderEvent<>(notificationMask, readerForNotification);
         for (PVReaderListener<T> listener : pvReaderListeners) {
             listener.pvChanged(event);
-            missed = false;
-        }
-        synchronized(this) {
-            if (missed)
-                missedNotification = true;
         }
     }
 
@@ -110,19 +103,9 @@ class PVReaderImpl<T> implements PVReader<T> {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
-        // Check whether to notify when the first listener is added.
-        // This is done to make sure that exceptions thrown at pv creation
-        // are not lost since the listener is added after the pv is created.
-        // If the notification is done on a separate thread, the context switch
-        // is enough to make sure the listener is registerred before the event
-        // arrives, but if the notification is done on the same thread
-        // the notification would be lost.
-        boolean notify = notifyFirstListener && missedNotification;
         @SuppressWarnings("unchecked")
         PVReaderListener<T> convertedListener = (PVReaderListener<T>) listener;
         pvReaderListeners.add(convertedListener);
-        if (notify)
-            firePvValueChanged();
     }
     
     /**
