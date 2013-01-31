@@ -55,7 +55,8 @@ class PVReaderImpl<T> implements PVReader<T> {
     // adding/removing listeners while iterating.
     private List<PVReaderListener<T>> pvReaderListeners = new CopyOnWriteArrayList<>();
 
-    // guarded by this
+    private final Object lock = new Object();
+    // guarded by lock
     private boolean closed = false;
     private boolean paused = false;
     private boolean connected = false;
@@ -68,12 +69,15 @@ class PVReaderImpl<T> implements PVReader<T> {
     private boolean valueToNotify = false;
 
     void setReaderForNotification(PVReader<T> readerForNotification) {
-        this.readerForNotification = readerForNotification;
+        synchronized(lock) {
+            this.readerForNotification = readerForNotification;
+        }
     }
 
     void firePvValueChanged() {
         int notificationMask = 0;
-        synchronized(this) {
+        PVReaderEvent<T> event;
+        synchronized(lock) {
             if (connectionToNotify) {
                 notificationMask += PVReaderEvent.CONNECTION_MASK;
             }
@@ -86,8 +90,9 @@ class PVReaderImpl<T> implements PVReader<T> {
             connectionToNotify = false;
             valueToNotify = false;
             exceptionToNotify = false;
+            event = new PVReaderEvent<>(notificationMask, readerForNotification);
         }
-        PVReaderEvent<T> event = new PVReaderEvent<>(notificationMask, readerForNotification);
+        
         for (PVReaderListener<T> listener : pvReaderListeners) {
             listener.pvChanged(event);
         }
@@ -99,7 +104,7 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @param listener a new listener
      */
     @Override
-    public synchronized void addPVReaderListener(PVReaderListener<? super T> listener) {
+    public void addPVReaderListener(PVReaderListener<? super T> listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
         
@@ -188,13 +193,17 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return the value of value
      */
     @Override
-    public synchronized T getValue() {
-        return value;
+    public T getValue() {
+        synchronized(lock) {
+            return value;
+        }
     }
 
-    synchronized void setValue(T value) {
-        this.value = value;
-        valueToNotify = true;
+    void setValue(T value) {
+        synchronized(lock) {
+            this.value = value;
+            valueToNotify = true;
+        }
         firePvValueChanged();
     }
 
@@ -207,7 +216,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     @Override
     public void close() {
         pvReaderListeners.clear();
-        synchronized(this) {
+        synchronized(lock) {
             closed = true;
         }
     }
@@ -218,18 +227,24 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return true if closed
      */
     @Override
-    public synchronized boolean isClosed() {
-        return closed;
+    public boolean isClosed() {
+        synchronized(lock) {
+            return closed;
+        }
     }
 
     @Override
-    public synchronized void setPaused(boolean paused) {
-        this.paused = paused;
+    public void setPaused(boolean paused) {
+        synchronized(lock) {
+            this.paused = paused;
+        }
     }
 
     @Override
-    public synchronized boolean isPaused() {
-        return paused;
+    public boolean isPaused() {
+        synchronized(lock) {
+            return paused;
+        }
     }
 
     /**
@@ -238,8 +253,10 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @return true if this pvReader needs to notify an exception
      */
-    synchronized boolean isLastExceptionToNotify() {
-        return exceptionToNotify;
+    boolean isLastExceptionToNotify() {
+        synchronized(lock) {
+            return exceptionToNotify;
+        }
     }
     
     /**
@@ -248,8 +265,10 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @return true if this pvReader needs to notify a connection state
      */
-    synchronized boolean isReadConnectionToNotify() {
-        return connectionToNotify;
+    boolean isReadConnectionToNotify() {
+        synchronized(lock) {
+            return connectionToNotify;
+        }
     }
     
     /**
@@ -257,9 +276,11 @@ class PVReaderImpl<T> implements PVReader<T> {
      * 
      * @param ex the new exception
      */
-    synchronized void setLastException(Exception ex) {
-        lastException = ex;
-        exceptionToNotify = true;
+    void setLastException(Exception ex) {
+        synchronized(lock) {
+            lastException = ex;
+            exceptionToNotify = true;
+        }
     }
 
     /**
@@ -269,23 +290,29 @@ class PVReaderImpl<T> implements PVReader<T> {
      * @return the last generated exception or null
      */
     @Override
-    public synchronized Exception lastException() {
-        Exception ex = lastException;
-        lastException = null;
-        return ex;
+    public Exception lastException() {
+        synchronized(lock) {
+            Exception ex = lastException;
+            lastException = null;
+            return ex;
+        }
     }
     
-    synchronized void setConnected(boolean connected) {
-        if (this.connected == connected) {
-            return;
+    void setConnected(boolean connected) {
+        synchronized(lock) {
+            if (this.connected == connected) {
+                return;
+            }
+
+            this.connected = connected;
+            connectionToNotify = true;
         }
-        
-        this.connected = connected;
-        connectionToNotify = true;
     }
 
     @Override
-    public synchronized boolean isConnected() {
-        return connected;
+    public boolean isConnected() {
+        synchronized(lock) {
+            return connected;
+        }
     }
 }
