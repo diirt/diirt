@@ -33,12 +33,17 @@ public class GangliaRrdClusterMain {
             System.out.println("Machines: " + cluster.getMachines());
             System.out.println("Signals: " + cluster.getSignals());
         } else if ("plot".equals(args[0])) {
+            if (args.length != 6) {
+                System.out.println("Wrong syntax: needs 6 arguments");
+            }
             String path = args[1];
             String signalX = args[2];
             String signalY = args[3];
             String signalZ = args[4];
             String filename = args[6];
             Timestamp time = format.parse(args[5]);
+            System.out.println("Plotting from " + path + " (" + signalX + ", " + signalY 
+                    + ", " + signalZ + ") at time " + time);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             cluster.setDirPattern(filePattern);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
