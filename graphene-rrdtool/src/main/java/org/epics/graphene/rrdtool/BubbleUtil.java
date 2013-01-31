@@ -39,9 +39,8 @@ public class BubbleUtil {
         html.append("        <h1>AGLT2 node performance details</h1>\n");
         html.append("        <center>\n");
         html.append("           <p> <span class=\"rotated\"><b>" + signalY + "</b></span>\n");
-        html.append("           <img src=\"out.png\" usemap=\"#graph\"><br/><b>" + signalX + "</b></p>\n");
+        html.append("           <img src=\"").append(filename).append(".png\" usemap=\"#graph\"><br/><b>" + signalX + "</b></p>\n");
         html.append("        </center>\n");
-        html.append("        <img src=\"").append(filename).append(".png\" usemap=\"#graph\">\n");
         html.append("        <map name=\"graph\">\n");
         Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
             protected void newValue(double x, double y, double size, int i) {
