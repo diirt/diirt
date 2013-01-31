@@ -26,6 +26,18 @@ public class BubbleUtil {
     private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss");
     
     public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype, String path, String signalX, String signalY, String signalZ, Timestamp time) throws IOException {
+        if (dataset.getXStatistics() == null) {
+            System.out.println("Found no valid data for x");
+            return;
+        }
+        if (dataset.getYStatistics() == null) {
+            System.out.println("Found no valid data for y");
+            return;
+        }
+        if (dataset.getZStatistics() == null) {
+            System.out.println("Found no valid data for size");
+            return;
+        }
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         final StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n");
