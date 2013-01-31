@@ -31,7 +31,7 @@ public class GangliaRrdClusterMain {
             String signalX = args[2];
             String signalY = args[3];
             String signalZ = args[4];
-            String filename = "out";
+            String filename = args[6];
             Timestamp time = format.parse(args[5]);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             cluster.setDirPattern(filePattern);
