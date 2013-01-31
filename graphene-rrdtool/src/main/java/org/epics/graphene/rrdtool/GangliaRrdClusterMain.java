@@ -34,8 +34,8 @@ public class GangliaRrdClusterMain {
             System.out.println("Machines: " + cluster.getMachines());
             System.out.println("Signals: " + cluster.getSignals());
         } else if ("plot".equals(args[0])) {
-            if (args.length != 6) {
-                System.out.println("Wrong syntax: needs 6 arguments");
+            if (args.length != 7) {
+                System.out.println("Wrong number of arguments");
             }
             String path = args[1];
             String signalX = args[2];
