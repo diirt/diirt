@@ -14,13 +14,18 @@ import java.nio.file.Files;
 import javax.imageio.ImageIO;
 import org.epics.graphene.Bubble2DGraphRenderer;
 import org.epics.graphene.Point3DWithLabelDataset;
+import org.epics.util.time.Timestamp;
+import org.epics.util.time.TimestampFormat;
 
 /**
  *
  * @author carcassi
  */
 public class BubbleUtil {
-    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype, String htmlText) throws IOException {
+    
+    private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss");
+    
+    public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype, String path, String signalX, String signalY, String signalZ, Timestamp time) throws IOException {
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         final StringBuilder html = new StringBuilder();
         html.append("<!DOCTYPE html>\n");
@@ -31,6 +36,11 @@ public class BubbleUtil {
         html.append("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
         html.append("    </head>\n");
         html.append("    <body>\n");
+        html.append("        <h1>AGLT2 node performance details</h1>\n");
+        html.append("        <center>\n");
+        html.append("           <p> <span class=\"rotated\"><b>" + signalY + "</b></span>\n");
+        html.append("           <img src=\"out.png\" usemap=\"#graph\"><br/><b>" + signalX + "</b></p>\n");
+        html.append("        </center>\n");
         html.append("        <img src=\"").append(filename).append(".png\" usemap=\"#graph\">\n");
         html.append("        <map name=\"graph\">\n");
         Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
@@ -41,7 +51,16 @@ public class BubbleUtil {
         };
         renderer.draw(image.createGraphics(), dataset);
         html.append("        </map>\n");
-        html.append(htmlText);
+        html.append("        <p>Size of the bubble represents <b>bytes_in</b></p>\n");
+        html.append("        <p>Data gathered from directory " + path + ". Data timestamp " + format.format(time) + "</p>\n");
+        html.append("        <style>\n");
+        html.append("        .rotated {\n");
+        html.append("        display:block;\n");
+        html.append("        position:relative; top: 300px; right: 420px;\n");
+        html.append("        -webkit-transform: rotate(-90deg);\n");
+        html.append("        -moz-transform: rotate(-90deg);\n");
+        html.append("        }\n");
+        html.append("        </style>\n");
         html.append("    </body>\n");
         html.append("</html>\n");
         BufferedWriter writer =

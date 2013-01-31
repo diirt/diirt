@@ -37,13 +37,9 @@ public class GangliaRrdClusterMain {
             cluster.setDirPattern(filePattern);
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
             StringBuilder html = new StringBuilder();
-            html.append("<p>From directory: " + path + "</p>");
-            html.append("<p>X: " + signalX + "</p>");
-            html.append("<p>Y: " + signalY + "</p>");
-            html.append("<p>Size: " + signalZ + "</p>");
             BubbleUtil.createBubblePlot(filename, dataset,
                     "http://ganglia-um.aglt2.org/ganglia/?m=load_one&r=day&s=ascending&c=UM-Worker-Nodes&h=DATASETLABEL&sh=1&hc=4&z=small",
-                    html.toString());
+                    path, signalX, signalY, signalZ, time);
         } else {
             System.out.println("Command not found");
         }
