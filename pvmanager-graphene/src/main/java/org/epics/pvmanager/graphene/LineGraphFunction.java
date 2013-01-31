@@ -99,8 +99,8 @@ class LineGraphFunction implements ReadFunction<Plot2DResult> {
         
         previousImage = ValueUtil.toVImage(image);
         return new Plot2DResult(previousImage,
-                new PlotDataRange(renderer.getStartPlotX(), renderer.getEndPlotX(), dataset.getXMinValue(), dataset.getXMaxValue(), renderer.getIntegratedMinX(), renderer.getIntegratedMaxX()),
-                new PlotDataRange(renderer.getStartPlotY(), renderer.getEndPlotY(), dataset.getYMinValue(), dataset.getYMaxValue(), renderer.getIntegratedMinY(), renderer.getIntegratedMaxY()));
+                new PlotDataRange(renderer.getStartPlotX(), renderer.getEndPlotX(), dataset.getXStatistics().getMinimum().doubleValue(), dataset.getXStatistics().getMaximum().doubleValue(), renderer.getIntegratedMinX(), renderer.getIntegratedMaxX()),
+                new PlotDataRange(renderer.getStartPlotY(), renderer.getEndPlotY(), dataset.getYStatistics().getMinimum().doubleValue(), dataset.getYStatistics().getMaximum().doubleValue(), renderer.getIntegratedMinY(), renderer.getIntegratedMaxY()));
     }
     
 }
