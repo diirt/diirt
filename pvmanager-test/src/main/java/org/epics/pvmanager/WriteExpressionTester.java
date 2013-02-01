@@ -14,7 +14,7 @@ import org.epics.pvmanager.expression.WriteExpression;
 public class WriteExpressionTester {
 
     private WriteExpression<?> expression;
-    private PVWriterDirector<?> pvWriterDirector = new PVWriterDirector<Object>(null, null, null, null, null, null, null, null);
+    private PVWriterDirector<?> pvWriterDirector = new PVWriterDirector<Object>(null, null, null, null, null, null, null, null, null);
 
     public WriteExpressionTester(WriteExpression<?> expression) {
         this.expression = expression;

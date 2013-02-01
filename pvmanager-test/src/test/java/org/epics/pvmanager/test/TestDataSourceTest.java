@@ -11,12 +11,6 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.TimeoutException;
-import org.epics.pvmanager.test.CountDownPVReaderListener;
-import org.epics.pvmanager.test.CountDownPVReaderListener;
-import org.epics.pvmanager.test.CountDownPVWriterListener;
-import org.epics.pvmanager.test.CountDownPVWriterListener;
-import org.epics.pvmanager.test.TestDataSource;
-import org.epics.pvmanager.test.TestDataSource;
 import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
@@ -127,6 +121,21 @@ public class TestDataSourceTest {
         pvReader = PVManager.read(channel("nothing"))
                 .routeExceptionsTo(exceptionHandler)
                 .from(dataSource).maxRate(ofMillis(10));
+
+        exceptionHandler.await(TimeDuration.ofMillis(100));
+        
+        RuntimeException ex = (RuntimeException) exceptionHandler.getException();
+        assertThat(ex, not(nullValue()));
+    }
+    
+    @Test
+    public void channelDoesNotExist4() throws Exception {
+        // Requesting a channel that does not exist
+        // Making sure that the exception is properly notified
+        CountDownWriteFunction exceptionHandler = new CountDownWriteFunction(1);
+        pvWriter = PVManager.write(channel("nothing"))
+                .routeExceptionsTo(exceptionHandler)
+                .from(dataSource).async();
 
         exceptionHandler.await(TimeDuration.ofMillis(100));
         
