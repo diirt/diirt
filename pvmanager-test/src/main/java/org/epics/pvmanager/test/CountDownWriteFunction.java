@@ -6,9 +6,7 @@ package org.epics.pvmanager.test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.WriteFunction;
+import org.epics.pvmanager.ExceptionHandler;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -16,7 +14,7 @@ import org.epics.util.time.TimeDuration;
  *
  * @author carcassi
  */
-public class CountDownWriteFunction implements WriteFunction<Exception> {
+public class CountDownWriteFunction extends ExceptionHandler {
 
     private volatile CountDownLatch latch;
     private volatile Exception exception;
@@ -26,7 +24,7 @@ public class CountDownWriteFunction implements WriteFunction<Exception> {
     }
 
     @Override
-    public void writeValue(Exception esception) {
+    public void handleException(Exception esception) {
         this.exception = esception;
         latch.countDown();
     }

@@ -164,8 +164,8 @@ public class BasicExamples {
         // on the thread that it generates them. The handler, therefore,
         // must be thread safe.
         final PVReader<Object> pvReader = PVManager.read(channel("channelName"))
-                .routeExceptionsTo(new WriteFunction<Exception>() {
-                    public void writeValue(Exception ex) {
+                .routeExceptionsTo(new ExceptionHandler() {
+                    public void handleException(Exception ex) {
                         System.out.println("Error: " + ex.getMessage());
                     }
                 }).maxRate(ofMillis(100));

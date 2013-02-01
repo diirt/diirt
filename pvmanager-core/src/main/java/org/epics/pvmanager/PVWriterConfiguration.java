@@ -66,7 +66,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     }
     
     private WriteExpression<T> writeExpression;
-    private WriteFunction<Exception> exceptionHandler;
+    private ExceptionHandler exceptionHandler;
     private List<PVWriterListener<T>> writeListeners = new ArrayList<>();
 
     PVWriterConfiguration(WriteExpression<T> writeExpression) {
@@ -96,11 +96,11 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
      * @param exceptionHandler an exception handler
      * @return this
      */
-    public PVWriterConfiguration<T> routeExceptionsTo(WriteFunction<Exception> exceptionHandler) {
+    public PVWriterConfiguration<T> routeExceptionsTo(ExceptionHandler exceptionHandler) {
         if (this.exceptionHandler != null) {
             throw new IllegalArgumentException("Exception handler already set");
         }
-        this.exceptionHandler = new SafeWriteFunction<>(exceptionHandler);
+        this.exceptionHandler = ExceptionHandler.safeHandler(exceptionHandler);
         return this;
     }
 

@@ -68,7 +68,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
     
     private DesiredRateExpression<T> aggregatedPVExpression;
-    private WriteFunction<Exception> exceptionHandler;
+    private ExceptionHandler exceptionHandler;
     private List<PVReaderListener<T>> readListeners = new ArrayList<>();
 
     PVReaderConfiguration(DesiredRateExpression<T> aggregatedPVExpression) {
@@ -102,11 +102,11 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param exceptionHandler an exception handler
      * @return this
      */
-    public PVReaderConfiguration<T> routeExceptionsTo(WriteFunction<Exception> exceptionHandler) {
+    public PVReaderConfiguration<T> routeExceptionsTo(ExceptionHandler exceptionHandler) {
         if (this.exceptionHandler != null) {
             throw new IllegalArgumentException("Exception handler already set");
         }
-        this.exceptionHandler = new SafeWriteFunction<>(exceptionHandler);
+        this.exceptionHandler = ExceptionHandler.safeHandler(exceptionHandler);
         return this;
     }
     

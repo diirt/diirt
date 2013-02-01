@@ -11,9 +11,9 @@ package org.epics.pvmanager;
  */
 class LastExceptionCollector extends QueueCollector<Exception> {
 
-    private final WriteFunction<Exception> exceptionHandler;
+    private final ExceptionHandler exceptionHandler;
     
-    public LastExceptionCollector(int maxSize, WriteFunction<Exception> exceptionHandler) {
+    public LastExceptionCollector(int maxSize, ExceptionHandler exceptionHandler) {
         super(maxSize);
         this.exceptionHandler = exceptionHandler;
     }
@@ -21,7 +21,7 @@ class LastExceptionCollector extends QueueCollector<Exception> {
     @Override
     public void writeValue(Exception newValue) {
         super.writeValue(newValue);
-        exceptionHandler.writeValue(newValue);
+        exceptionHandler.handleException(newValue);
     }
     
 }

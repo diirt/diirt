@@ -81,7 +81,7 @@ public class PVWriterDirector<T> {
     PVWriterDirector(PVWriterImpl<T> pvWriter, WriteFunction<T> writeFunction, DataSource dataSource,
             ScheduledExecutorService writeExecutor, Executor notificationExecutor,
             ScheduledExecutorService scannerExecutor, TimeDuration timeout, String timeoutMessage,
-            WriteFunction<Exception> exceptionHandler) {
+            ExceptionHandler exceptionHandler) {
         this.pvRef = new WeakReference<>(pvWriter);
         this.writeFunction = writeFunction;
         this.dataSource = dataSource;

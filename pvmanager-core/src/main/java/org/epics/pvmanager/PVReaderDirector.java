@@ -151,7 +151,7 @@ public class PVReaderDirector<T> {
      * @param notificationExecutor the thread switching mechanism
      */
     PVReaderDirector(PVReaderImpl<T> pv, ReadFunction<T> function, ScheduledExecutorService scannerExecutor,
-            Executor notificationExecutor, DataSource dataSource, WriteFunction<Exception> exceptionHandler) {
+            Executor notificationExecutor, DataSource dataSource, ExceptionHandler exceptionHandler) {
         this.pvRef = new WeakReference<>(pv);
         this.function = function;
         this.notificationExecutor = notificationExecutor;

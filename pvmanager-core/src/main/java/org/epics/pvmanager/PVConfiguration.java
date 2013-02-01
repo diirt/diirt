@@ -115,7 +115,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @param exceptionHandler an exception handler
      * @return this
      */
-    public PVConfiguration<R, W> routeExceptionsTo(WriteFunction<Exception> exceptionHandler) {
+    public PVConfiguration<R, W> routeExceptionsTo(ExceptionHandler exceptionHandler) {
         pvReaderConfiguration.routeExceptionsTo(exceptionHandler);
         pvWriterConfiguration.routeExceptionsTo(exceptionHandler);
         return this;
