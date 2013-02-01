@@ -68,7 +68,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
     
     private DesiredRateExpression<T> aggregatedPVExpression;
-    private ExceptionHandler exceptionHandler;
+    private WriteFunction<Exception> exceptionHandler;
     private List<PVReaderListener<T>> readListeners = new ArrayList<>();
 
     PVReaderConfiguration(DesiredRateExpression<T> aggregatedPVExpression) {
@@ -102,11 +102,11 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param exceptionHandler an exception handler
      * @return this
      */
-    public PVReaderConfiguration<T> routeExceptionsTo(ExceptionHandler exceptionHandler) {
+    public PVReaderConfiguration<T> routeExceptionsTo(WriteFunction<Exception> exceptionHandler) {
         if (this.exceptionHandler != null) {
             throw new IllegalArgumentException("Exception handler already set");
         }
-        this.exceptionHandler = ExceptionHandler.safeHandler(exceptionHandler);
+        this.exceptionHandler = new SafeWriteFunction<>(exceptionHandler);
         return this;
     }
     
@@ -136,7 +136,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         // TODO: we are ignoring the exception handler for now
         
         PVReaderDirector<T> director = new PVReaderDirector<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(),
-                notificationExecutor, dataSource);
+                notificationExecutor, dataSource, exceptionHandler);
         if (timeout != null) {
             if (timeoutMessage == null)
                 timeoutMessage = "Read timeout";

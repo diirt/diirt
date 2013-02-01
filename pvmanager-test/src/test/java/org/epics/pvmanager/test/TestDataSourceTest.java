@@ -120,6 +120,21 @@ public class TestDataSourceTest {
     }
     
     @Test
+    public void channelDoesNotExist3() throws Exception {
+        // Requesting a channel that does not exist
+        // Making sure that the exception is routed
+        CountDownWriteFunction exceptionHandler = new CountDownWriteFunction(1);
+        pvReader = PVManager.read(channel("nothing"))
+                .routeExceptionsTo(exceptionHandler)
+                .from(dataSource).maxRate(ofMillis(10));
+
+        exceptionHandler.await(TimeDuration.ofMillis(100));
+        
+        RuntimeException ex = (RuntimeException) exceptionHandler.getException();
+        assertThat(ex, not(nullValue()));
+    }
+    
+    @Test
     public void delayedWrite() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
         pvWriter = PVManager.write(channel("delayedWrite"))

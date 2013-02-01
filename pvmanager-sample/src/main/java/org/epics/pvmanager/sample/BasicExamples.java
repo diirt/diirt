@@ -16,6 +16,7 @@ import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
 import org.epics.pvmanager.TimeoutException;
+import org.epics.pvmanager.WriteFunction;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -150,8 +151,27 @@ public class BasicExamples {
             })
             .maxRate(ofMillis(100));
     }
+
+    public void b7_logAllErrors() {
+        // Handling errors within the listener gives you all the advantages
+        // of pvmanager, but it throttles the errors you receive. In most cases
+        // this is good: if a reader connects to 100 broken channels, you
+        // don't get flooded with 100 exceptions. In cases where you
+        // want _all_ the exceptions, instead, you can route them to your
+        // exception handling mechanism.
+        
+        // In this example, all read exceptions will be passed to the exception handler
+        // on the thread that it generates them. The handler, therefore,
+        // must be thread safe.
+        final PVReader<Object> pvReader = PVManager.read(channel("channelName"))
+                .routeExceptionsTo(new WriteFunction<Exception>() {
+                    public void writeValue(Exception ex) {
+                        System.out.println("Error: " + ex.getMessage());
+                    }
+                }).maxRate(ofMillis(100));
+    }
     
-    public void b7_readTimeout() {
+    public void b8_readTimeout() {
         // If after 5 seconds no new value comes (i.e. pvReader.getValue() == null)
         // then a timeout is sent. PVManager will _still_ try to connect,
         // until pvReader.close() is called.
@@ -170,39 +190,5 @@ public class BasicExamples {
                     }
                 })
                 .maxRate(ofMillis(100));
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public void myNotWorkAtThisTime() {
-        // All read exceptions will be passed to the exception handler
-        // on the thread that it generates them. The handler, therefore,
-        // must be thread safe. Overriding the exception handling means
-        // disabling the default handling, so read exception will no longer
-        // be accessible with {@code pvReader.lastException()}
-        final PVReader<Object> pvReader = PVManager.read(channel("channelName"))
-                .routeExceptionsTo(new ExceptionHandler() {
-                    public void handleException(Exception ex) {
-                        System.out.println("Error: " + ex.getMessage());
-                    }
-                }).maxRate(ofMillis(100));
     }
 }
