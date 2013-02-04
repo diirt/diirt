@@ -39,40 +39,11 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         // Retain the integrated min/max
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         
-        // Determine range of the plot.
-        // If no range is set, use the one from the dataset
-        double startXPlot = getXPlotRange().getMinimum().doubleValue();
-        double startYPlot = getYPlotRange().getMinimum().doubleValue();
-        double endXPlot = getXPlotRange().getMaximum().doubleValue();
-        double endYPlot = getYPlotRange().getMaximum().doubleValue();
-        int margin = 3;
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, width, height);
+        drawBackground(g);
         g.setColor(Color.BLACK);
-
-        // Compute axis
-        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, width / 60));
-        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, height / 60));
-        HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
-        VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
-
-        // Compute graph area
-        int xStartGraph = yAxisRenderer.getAxisWidth();
-        int xEndGraph = width - margin;
-        int yStartGraph = margin;
-        int yEndGraph = height - xAxisRenderer.getAxisHeight();
-        int plotWidth = xEndGraph - xStartGraph;
-        int plotHeight = yEndGraph - yStartGraph;
-
-        // Draw axis
-        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
-        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
-
-
-        double rangeX = endXPlot - startXPlot;
-        double rangeY = endYPlot - startYPlot;
+        drawAxis(g);
 
         // Scale data
         int[] scaledX = new int[dataCount];
@@ -80,19 +51,8 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         ListNumber xValues = data.getXValues();
         ListNumber yValues = data.getYValues();
         for (int i = 0; i < scaledY.length; i++) {
-            scaledX[i] = (int) (xStartGraph + NumberUtil.scale(xValues.getDouble(i), startXPlot, endXPlot, plotWidth));
-            scaledY[i] = (int) (height - xAxisRenderer.getAxisHeight() - NumberUtil.scale(yValues.getDouble(i), startYPlot, endYPlot, plotHeight));
-        }
-        
-        // Draw reference lines
-        g.setColor(new Color(240, 240, 240));
-        int[] xTicks = xAxisRenderer.horizontalTickPositions();
-        for (int xTick : xTicks) {
-            g.drawLine(xTick, yStartGraph, xTick, yEndGraph);
-        }
-        int[] yTicks = yAxisRenderer.verticalTickPositions();
-        for (int yTick : yTicks) {
-            g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
+            scaledX[i] = (int) scaledX(xValues.getDouble(i));
+            scaledY[i] = (int) scaledY(yValues.getDouble(i));
         }
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -105,6 +65,14 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
 
     }
     
+    protected final double scaledX(double value) {
+        return (xStartGraph + NumberUtil.scale(value, startXPlot, endXPlot, plotWidth));
+    }
+    
+    protected final double scaledY(double value) {
+        return (yEndGraph - NumberUtil.scale(value, startYPlot, endYPlot, plotHeight));
+    }
+    
     private Shape createShape(double x, double y) {
         Path2D.Double path = new Path2D.Double();
         path.moveTo(x-2, y);
@@ -112,5 +80,64 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         path.moveTo(x, y-2);
         path.lineTo(x, y+2);
         return path;
+    }
+
+    private void drawBackground(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, width, height);
+    }
+    
+    private int xStartGraph;
+    private int xEndGraph;
+    private int yStartGraph;
+    private int yEndGraph;
+    private int plotWidth;
+    private int plotHeight;
+    private double startXPlot;
+    private double startYPlot;
+    private double endXPlot;
+    private double endYPlot;
+    
+    private void drawAxis(Graphics2D g) {
+        // Determine range of the plot.
+        // If no range is set, use the one from the dataset
+        startXPlot = getXPlotRange().getMinimum().doubleValue();
+        startYPlot = getYPlotRange().getMinimum().doubleValue();
+        endXPlot = getXPlotRange().getMaximum().doubleValue();
+        endYPlot = getYPlotRange().getMaximum().doubleValue();
+        int margin = 3;
+        
+        // Compute axis
+        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, width / 60));
+        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, height / 60));
+        HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
+        VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
+
+        // Compute graph area
+        xStartGraph = yAxisRenderer.getAxisWidth();
+        xEndGraph = width - margin;
+        yStartGraph = margin;
+        yEndGraph = height - xAxisRenderer.getAxisHeight();
+        plotWidth = xEndGraph - xStartGraph;
+        plotHeight = yEndGraph - yStartGraph;
+
+        // Draw axis
+        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
+        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
+
+
+        double rangeX = endXPlot - startXPlot;
+        double rangeY = endYPlot - startYPlot;
+        
+        // Draw reference lines
+        g.setColor(new Color(240, 240, 240));
+        int[] xTicks = xAxisRenderer.horizontalTickPositions();
+        for (int xTick : xTicks) {
+            g.drawLine(xTick, yStartGraph, xTick, yEndGraph);
+        }
+        int[] yTicks = yAxisRenderer.verticalTickPositions();
+        for (int yTick : yTicks) {
+            g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
+        }
     }
 }
