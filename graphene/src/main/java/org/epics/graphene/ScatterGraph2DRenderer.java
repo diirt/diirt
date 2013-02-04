@@ -5,10 +5,7 @@
 package org.epics.graphene;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.Path2D.Double;
-import java.awt.image.BufferedImage;
 import org.epics.util.array.ListNumber;
 
 /**
@@ -42,19 +39,22 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawBackground(g);
-        g.setColor(Color.BLACK);
         drawAxis(g);
 
         ListNumber xValues = data.getXValues();
         ListNumber yValues = data.getYValues();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        setClip(g);
         g.setColor(Color.BLACK);
-        // Make sure that the line does not go ouside the chart
-        g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
         for (int i = 0; i < xValues.size(); i++) {
             drawValue(g, xValues.getDouble(i), yValues.getDouble(i));
         }
 
+    }
+    
+    protected void setClip(Graphics2D g) {
+        // Make sure that the line does not go ouside the chart
+        g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
     }
     
     private void drawValue(Graphics2D g, double x, double y) {
@@ -95,6 +95,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
     private double endYPlot;
     
     private void drawAxis(Graphics2D g) {
+        g.setColor(Color.BLACK);
         // Determine range of the plot.
         // If no range is set, use the one from the dataset
         startXPlot = getXPlotRange().getMinimum().doubleValue();
