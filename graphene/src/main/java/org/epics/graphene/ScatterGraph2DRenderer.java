@@ -52,9 +52,13 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         // Make sure that the line does not go ouside the chart
         g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
         for (int i = 0; i < xValues.size(); i++) {
-            g.draw(createShape((int) scaledX(xValues.getDouble(i)), (int) scaledY(yValues.getDouble(i))));
+            drawValue(g, xValues.getDouble(i), yValues.getDouble(i));
         }
 
+    }
+    
+    private void drawValue(Graphics2D g, double x, double y) {
+        g.draw(createShape((int) scaledX(x), (int) scaledY(y)));
     }
     
     protected final double scaledX(double value) {
