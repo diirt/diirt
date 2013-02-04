@@ -14,9 +14,6 @@ import org.epics.util.array.ListNumber;
  */
 public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate> {
 
-    private int width = 300;
-    private int height = 200;
-
     public ScatterGraph2DRenderer(int width, int height) {
         super(width, height);
     }
@@ -31,16 +28,12 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
     }
 
     public void draw(Graphics2D g, Point2DDataset data) {
-        int dataCount = data.getCount();
-        
-        // Retain the integrated min/max
+        // Prepare the plot area
         calculateRanges(data.getXStatistics(), data.getYStatistics());
-        
-
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawBackground(g);
         drawAxis(g);
 
+        // Draw the plot
         ListNumber xValues = data.getXValues();
         ListNumber yValues = data.getYValues();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -80,7 +73,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
 
     private void drawBackground(Graphics2D g) {
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, getImageWidth(), getImageHeight());
     }
     
     private int xStartGraph;
@@ -95,6 +88,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
     private double endYPlot;
     
     private void drawAxis(Graphics2D g) {
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.BLACK);
         // Determine range of the plot.
         // If no range is set, use the one from the dataset
@@ -105,27 +99,23 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         int margin = 3;
         
         // Compute axis
-        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, width / 60));
-        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, height / 60));
+        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, getImageWidth() / 60));
+        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, getImageHeight() / 60));
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
         VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
 
         // Compute graph area
         xStartGraph = yAxisRenderer.getAxisWidth();
-        xEndGraph = width - margin;
+        xEndGraph = getImageWidth() - margin;
         yStartGraph = margin;
-        yEndGraph = height - xAxisRenderer.getAxisHeight();
+        yEndGraph = getImageHeight() - xAxisRenderer.getAxisHeight();
         plotWidth = xEndGraph - xStartGraph;
         plotHeight = yEndGraph - yStartGraph;
 
         // Draw axis
-        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
-        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
+        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, getImageWidth(), yEndGraph);
+        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, getImageHeight(), xStartGraph);
 
-
-        double rangeX = endXPlot - startXPlot;
-        double rangeY = endYPlot - startYPlot;
-        
         // Draw reference lines
         g.setColor(new Color(240, 240, 240));
         int[] xTicks = xAxisRenderer.horizontalTickPositions();
@@ -134,7 +124,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         }
         int[] yTicks = yAxisRenderer.verticalTickPositions();
         for (int yTick : yTicks) {
-            g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
+            g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
         }
     }
 }
