@@ -45,22 +45,14 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdat
         g.setColor(Color.BLACK);
         drawAxis(g);
 
-        // Scale data
-        int[] scaledX = new int[dataCount];
-        int[] scaledY = new int[dataCount];
         ListNumber xValues = data.getXValues();
         ListNumber yValues = data.getYValues();
-        for (int i = 0; i < scaledY.length; i++) {
-            scaledX[i] = (int) scaledX(xValues.getDouble(i));
-            scaledY[i] = (int) scaledY(yValues.getDouble(i));
-        }
-
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setColor(Color.BLACK);
         // Make sure that the line does not go ouside the chart
         g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
-        for (int i = 0; i < scaledY.length; i++) {
-            g.draw(createShape(scaledX[i], scaledY[i]));
+        for (int i = 0; i < xValues.size(); i++) {
+            g.draw(createShape((int) scaledX(xValues.getDouble(i)), (int) scaledY(yValues.getDouble(i))));
         }
 
     }
