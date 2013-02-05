@@ -151,9 +151,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
         }
     }
+    
+    protected Color backgroundColor = Color.WHITE;
 
     protected void drawBackground(Graphics2D g) {
-        g.setColor(Color.WHITE);
+        g.setColor(backgroundColor);
         g.fillRect(0, 0, getImageWidth(), getImageHeight());
     }
 
