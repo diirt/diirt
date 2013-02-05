@@ -226,7 +226,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
             // Draw first and last label
             int[] drawRange = new int[] {(int) xCoordRange.getMinimum().intValue(), (int) xCoordRange.getMaximum().intValue()};
-            int yTop = (int) (yCoordRange.getMinimum().doubleValue() + xLabelMargin + 1);
+            int yTop = (int) (yCoordRange.getMaximum().doubleValue() + xLabelMargin + 1);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),

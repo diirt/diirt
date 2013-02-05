@@ -103,6 +103,33 @@ public class Graph2DRendererTest {
     }
     
     @Test
+    public void graphArea4() throws Exception {
+        Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
+            
+            {
+                this.xCoordRange = RangeUtil.range(4.5, 295.5);
+                this.yCoordRange = RangeUtil.range(4.5, 185.5);
+                this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
+                this.xReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
+                this.xLabelMargin = 1.0;
+                this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
+                this.yLabelMargin = 1.0;
+            }
+
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+        };
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.drawGraphArea();
+        ImageAssert.compareImages("graph2DArea.4", image);
+    }
+    
+    @Test
     public void inheritance1() throws Exception {
         Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
         changeSize(renderer);
