@@ -7,6 +7,8 @@ package org.epics.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 
 /**
  *
@@ -23,6 +25,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int xStartGraph;
     protected int yEndGraph;
     protected int yStartGraph;
+    private ListInt verticalTickPositions;
 
     public Graph2DRenderer(int imageWidth, int imageHeight) {
         this.imageWidth = imageWidth;
@@ -117,7 +120,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, getImageWidth() / 60));
         ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, getImageHeight() / 60));
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
-        VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
+        yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
         // Compute graph area
         xStartGraph = yAxisRenderer.getAxisWidth();
         xEndGraph = getImageWidth() - margin;
@@ -139,6 +142,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
         }
     }
+    
+    private VerticalAxisRenderer yAxisRenderer;
+    
+    protected void drawHorizontalReferenceLines(Graphics2D g) {
+        int[] yTicks = yAxisRenderer.verticalTickPositions();
+        for (int yTick : yTicks) {
+            g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
+        }
+    }
 
     protected void drawBackground(Graphics2D g) {
         g.setColor(Color.WHITE);
@@ -152,7 +164,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected final double scaledY(double value) {
         return yEndGraph - NumberUtil.scale(value, startYPlot, endYPlot, plotHeight);
     }
-
+    
     protected void setClip(Graphics2D g) {
         // Make sure that the line does not go ouside the chart
         g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
