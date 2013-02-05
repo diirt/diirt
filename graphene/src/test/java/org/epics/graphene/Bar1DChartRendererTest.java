@@ -59,5 +59,15 @@ public class Bar1DChartRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.3", image);
     }
+    
+    @Test
+    public void test4() throws Exception {
+        Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,1,2,3,4,5,6,7,8,9,10), 0, 10);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Bar1DChartRenderer renderer = new Bar1DChartRenderer(640, 480);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, dataset);
+        compareImages("bar1DChart.4", image);
+    }
 
 }
