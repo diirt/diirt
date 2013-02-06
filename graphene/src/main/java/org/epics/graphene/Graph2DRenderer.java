@@ -33,7 +33,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int xStartGraph;
     protected int yEndGraph;
     protected int yStartGraph;
-    private ListInt verticalTickPositions;
 
     public Graph2DRenderer(int imageWidth, int imageHeight) {
         this.imageWidth = imageWidth;
@@ -113,50 +112,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange);
         yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange);
     }
-
-    protected void drawAxis(Graphics2D g) {
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.BLACK);
-        // Determine range of the plot.
-        // If no range is set, use the one from the dataset
-        startXPlot = getXPlotRange().getMinimum().doubleValue();
-        startYPlot = getYPlotRange().getMinimum().doubleValue();
-        endXPlot = getXPlotRange().getMaximum().doubleValue();
-        endYPlot = getYPlotRange().getMaximum().doubleValue();
-        int margin = 3;
-        // Compute axis
-        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, getImageWidth() / 60));
-        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, getImageHeight() / 60));
-        HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
-        yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
-        // Compute graph area
-        xStartGraph = yAxisRenderer.getAxisWidth();
-        xEndGraph = getImageWidth() - margin;
-        yStartGraph = margin;
-        yEndGraph = getImageHeight() - xAxisRenderer.getAxisHeight();
-        plotWidth = xEndGraph - xStartGraph;
-        plotHeight = yEndGraph - yStartGraph;
-        // Draw axis
-        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, getImageWidth(), yEndGraph);
-        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, getImageHeight(), xStartGraph);
-        // Draw reference lines
-        g.setColor(new Color(240, 240, 240));
-        int[] xTicks = xAxisRenderer.horizontalTickPositions();
-        for (int xTick : xTicks) {
-            g.drawLine(xTick, yStartGraph, xTick, yEndGraph);
-        }
-        int[] yTicks = yAxisRenderer.verticalTickPositions();
-        for (int yTick : yTicks) {
-            g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
-        }
-    }
-    
-    private VerticalAxisRenderer yAxisRenderer;
     
     protected void drawHorizontalReferenceLines() {
         ListNumber yTicks = yReferenceCoords;
         for (int i = 0; i < yTicks.size(); i++) {
             Shape line = new Line2D.Double(xCoordRange.getMinimum().doubleValue(), yTicks.getDouble(i), xCoordRange.getMaximum().doubleValue(), yTicks.getDouble(i));
+            g.draw(line);
+        }
+    }
+
+    protected void drawVerticalReferenceLines() {
+        ListNumber xTicks = xReferenceCoords;
+        for (int i = 0; i < xTicks.size(); i++) {
+            Shape line = new Line2D.Double(xTicks.getDouble(i), yCoordRange.getMinimum().doubleValue(), xTicks.getDouble(i), yCoordRange.getMaximum().doubleValue());
             g.draw(line);
         }
     }
@@ -227,23 +195,20 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         yReferenceCoords = new ArrayDouble(yRefCoords);
     }
-    
-    protected void drawGraphArea() {
-        // Draw background
+
+    protected void drawBackground() {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getImageWidth(), getImageHeight());
+    }
+    
+    protected void drawGraphArea() {
+        drawBackground();
         
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        // Draw reference lines
         // When drawing the reference line, align them to the pixel
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         g.setColor(new Color(240, 240, 240));
-        ListNumber xTicks = xReferenceCoords;
-        for (int i = 0; i < xTicks.size(); i++) {
-            Shape line = new Line2D.Double(xTicks.getDouble(i), yCoordRange.getMinimum().doubleValue(), xTicks.getDouble(i), yCoordRange.getMaximum().doubleValue());
-            g.draw(line);
-        }
+        drawVerticalReferenceLines();
         drawHorizontalReferenceLines();;
 
         // Draw Y labels
@@ -269,6 +234,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         
         // Draw X labels
+        ListNumber xTicks = xReferenceCoords;
         if (xReferenceLabels != null && !xReferenceLabels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g.setColor(labelColor);
@@ -364,11 +330,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
 
-    protected void drawBackground(Graphics2D g) {
-        g.setColor(backgroundColor);
-        g.fillRect(0, 0, getImageWidth(), getImageHeight());
-    }
-
     protected final double scaledX(double value) {
         return xStartGraph + NumberUtil.scale(value, startXPlot, endXPlot, plotWidth);
     }
@@ -378,7 +339,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
     protected void setClip(Graphics2D g) {
-        // Make sure that the line does not go ouside the chart
         g.setClip(xStartGraph, yCoordRange.getMinimum().intValue(), plotWidth + 1,  plotHeight + 1);
     }
 
