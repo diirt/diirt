@@ -12,15 +12,15 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-public class ScatterGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate> {
+public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRendererUpdate> {
 
     public ScatterGraph2DRenderer(int width, int height) {
         super(width, height);
     }
 
     @Override
-    public Graph2DRendererUpdate newUpdate() {
-        return new Graph2DRendererUpdate();
+    public ScatterGraph2DRendererUpdate newUpdate() {
+        return new ScatterGraph2DRendererUpdate();
     }
 
     public void draw(Graphics2D g, Point2DDataset data) {
