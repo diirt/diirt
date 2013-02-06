@@ -153,10 +153,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
     private VerticalAxisRenderer yAxisRenderer;
     
-    protected void drawHorizontalReferenceLines(Graphics2D g) {
-        int[] yTicks = yAxisRenderer.verticalTickPositions();
-        for (int yTick : yTicks) {
-            g.drawLine(xStartGraph, getImageHeight() - yTick, xEndGraph, getImageHeight() - yTick);
+    protected void drawHorizontalReferenceLines() {
+        ListNumber yTicks = yReferenceCoords;
+        for (int i = 0; i < yTicks.size(); i++) {
+            Shape line = new Line2D.Double(xCoordRange.getMinimum().doubleValue(), yTicks.getDouble(i), xCoordRange.getMaximum().doubleValue(), yTicks.getDouble(i));
+            g.draw(line);
         }
     }
     
@@ -243,13 +244,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             Shape line = new Line2D.Double(xTicks.getDouble(i), yCoordRange.getMinimum().doubleValue(), xTicks.getDouble(i), yCoordRange.getMaximum().doubleValue());
             g.draw(line);
         }
-        ListNumber yTicks = yReferenceCoords;
-        for (int i = 0; i < yTicks.size(); i++) {
-            Shape line = new Line2D.Double(xCoordRange.getMinimum().doubleValue(), yTicks.getDouble(i), xCoordRange.getMaximum().doubleValue(), yTicks.getDouble(i));
-            g.draw(line);
-        }
+        drawHorizontalReferenceLines();;
 
         // Draw Y labels
+        ListNumber yTicks = yReferenceCoords;
         if (yReferenceLabels != null && !yReferenceLabels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g.setColor(labelColor);

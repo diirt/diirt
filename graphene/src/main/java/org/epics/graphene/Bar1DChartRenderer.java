@@ -23,14 +23,14 @@ public class Bar1DChartRenderer extends Graph2DRenderer<Bar1DChartRendererUpdate
 
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
         
-        Color backgroundColor = Color.WHITE;
         Color dividerColor = new Color(196, 196, 196);
         Color lineColor = new Color(140, 140, 140);
         Color histogramColor = new Color(175, 175, 175);
-        
+
+        this.g = graphics;
         calculateRanges(dataset.getXRange(), dataset.getStatistics());
-        drawBackground(graphics);
-        drawAxis(graphics);
+        calculateGraphArea();
+        drawGraphArea();
 
         // Compute bin limits
         int[] binLimitsPx = new int[dataset.getXCount() + 1];
@@ -56,7 +56,7 @@ public class Bar1DChartRenderer extends Graph2DRenderer<Bar1DChartRendererUpdate
         
         // Draw horizontal reference lines
         graphics.setColor(backgroundColor);
-        drawHorizontalReferenceLines(graphics);
+        drawHorizontalReferenceLines();
         
         // Draw histogram contour
         int previousHeight = plotStart;
