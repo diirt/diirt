@@ -417,4 +417,29 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(4096.0, 0.0001));
     }
+
+    @Test
+    public void channelFromFormula1() {
+        assertThat(ExpressionLanguage.channelFromFormula("test"), equalTo("test"));
+    }
+
+    @Test
+    public void channelFromFormula2() {
+        assertThat(ExpressionLanguage.channelFromFormula("test()"), nullValue());
+    }
+
+    @Test
+    public void channelFromFormula3() {
+        assertThat(ExpressionLanguage.channelFromFormula("'test'"), equalTo("test"));
+    }
+
+    @Test
+    public void channelFromFormula4() {
+        assertThat(ExpressionLanguage.channelFromFormula("'2+3'"), equalTo("2+3"));
+    }
+
+    @Test
+    public void channelFromFormula5() {
+        assertThat(ExpressionLanguage.channelFromFormula("2+3"), nullValue());
+    }
 }

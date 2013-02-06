@@ -17,6 +17,17 @@ options {
   package org.epics.pvmanager.formula;
 }
 
+@members {
+  @Override
+public void reportError(RecognitionException e) {
+    throw new RuntimeException(e);
+}
+}
+
+singlePv returns [DesiredRateExpression<?> result]
+    :   pv EOF {result = $pv.result;}
+    ;
+
 formula returns [DesiredRateExpression<?> result]
     :   expression EOF {result = $expression.result;}
     ;
