@@ -22,9 +22,9 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-public class Bar1DChartRendererTest {
+public class AreaGraph2DRendererTest {
     
-    public Bar1DChartRendererTest() {
+    public AreaGraph2DRendererTest() {
     }
 
     @BeforeClass
@@ -40,8 +40,8 @@ public class Bar1DChartRendererTest {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
                                         350, 230, 180, 220, 170, 130, 80, 30, 40), 0, 2);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
-        renderer.update(new Bar1DChartRendererUpdate().yAxisRange(AxisRanges.absolute(0, 550)));
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
+        renderer.update(new AreaGraph2DRendererUpdate().yAxisRange(AxisRanges.absolute(0, 550)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.1", image);
@@ -51,7 +51,7 @@ public class Bar1DChartRendererTest {
     public void test2() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,5,10,5,0,5,10,0,5,10), 0, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.2", image);
@@ -64,7 +64,7 @@ public class Bar1DChartRendererTest {
     public void test4() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,1,2,3,4,5,6,7,8,9,10), 0, 10);
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        Bar1DChartRenderer renderer = new Bar1DChartRenderer(640, 480);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(640, 480);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.4", image);

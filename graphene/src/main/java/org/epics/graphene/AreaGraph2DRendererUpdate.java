@@ -8,6 +8,6 @@ package org.epics.graphene;
  *
  * @author carcassi
  */
-public class Bar1DChartRendererUpdate extends Graph2DRendererUpdate<Bar1DChartRendererUpdate> {
+public class AreaGraph2DRendererUpdate extends Graph2DRendererUpdate<AreaGraph2DRendererUpdate> {
     
 }

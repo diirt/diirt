@@ -153,7 +153,7 @@ public class Graph2DRendererTest {
     
     @Test
     public void inheritance1() throws Exception {
-        Bar1DChartRenderer renderer = new Bar1DChartRenderer(300, 200);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
         changeSize(renderer);
         assertThat(renderer.getImageWidth(), equalTo(200));
         assertThat(renderer.getImageHeight(), equalTo(100));

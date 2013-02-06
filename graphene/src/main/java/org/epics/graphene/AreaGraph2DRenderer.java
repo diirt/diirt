@@ -10,15 +10,15 @@ import java.awt.*;
  *
  * @author carcassi
  */
-public class Bar1DChartRenderer extends Graph2DRenderer<Bar1DChartRendererUpdate> {
+public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpdate> {
 
-    public Bar1DChartRenderer(int imageWidth, int imageHeight) {
+    public AreaGraph2DRenderer(int imageWidth, int imageHeight) {
         super(imageWidth, imageHeight);
     }
 
     @Override
-    public Bar1DChartRendererUpdate newUpdate() {
-        return new Bar1DChartRendererUpdate();
+    public AreaGraph2DRendererUpdate newUpdate() {
+        return new AreaGraph2DRendererUpdate();
     }
 
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
