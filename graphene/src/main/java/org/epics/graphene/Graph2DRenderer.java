@@ -381,7 +381,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
     protected void setClip(Graphics2D g) {
         // Make sure that the line does not go ouside the chart
-        g.setClip(xStartGraph - 1, yStartGraph - 1, plotWidth + 2, plotHeight + 2);
+        g.setClip(xStartGraph, yCoordRange.getMinimum().intValue(), plotWidth + 1,  plotHeight + 1);
     }
 
 }
