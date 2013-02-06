@@ -114,6 +114,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
     protected void drawHorizontalReferenceLines() {
+        g.setColor(referenceLineColor);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber yTicks = yReferenceCoords;
         for (int i = 0; i < yTicks.size(); i++) {
             Shape line = new Line2D.Double(xCoordRange.getMinimum().doubleValue(), yTicks.getDouble(i), xCoordRange.getMaximum().doubleValue(), yTicks.getDouble(i));
@@ -122,6 +124,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
 
     protected void drawVerticalReferenceLines() {
+        g.setColor(referenceLineColor);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber xTicks = xReferenceCoords;
         for (int i = 0; i < xTicks.size(); i++) {
             Shape line = new Line2D.Double(xTicks.getDouble(i), yCoordRange.getMinimum().doubleValue(), xTicks.getDouble(i), yCoordRange.getMaximum().doubleValue());
@@ -133,6 +137,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected Range xCoordRange;
     protected Range yCoordRange;
     protected Color labelColor = Color.BLACK;
+    protected Color referenceLineColor = new Color(240, 240, 240);
     protected Font labelFont = FontUtil.getLiberationSansRegular();
     protected FontMetrics labelFontMetrics;
     protected int xLabelMargin = 3;
@@ -206,8 +211,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // When drawing the reference line, align them to the pixel
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-        g.setColor(new Color(240, 240, 240));
         drawVerticalReferenceLines();
         drawHorizontalReferenceLines();;
 
