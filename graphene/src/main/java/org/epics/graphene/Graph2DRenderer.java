@@ -23,16 +23,19 @@ import org.epics.util.array.ListNumber;
  * @author carcassi
  */
 public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
-    protected double endXPlot;
-    protected double endYPlot;
-    protected int plotHeight;
-    protected int plotWidth;
-    protected double startXPlot;
-    protected double startYPlot;
-    protected int xEndGraph;
-    protected int xStartGraph;
-    protected int yEndGraph;
-    protected int yStartGraph;
+    
+    protected double xAreaValueStart;
+    protected double yAreaValueStart;
+    protected double xAreaValueEnd;
+    protected double yAreaValueEnd;
+    
+    protected int areaHeight;
+    protected int areaWidth;
+    
+    protected int xAreaStart;
+    protected int yAreaStart;
+    protected int yAreaEnd;
+    protected int xAreaEnd;
 
     public Graph2DRenderer(int imageWidth, int imageHeight) {
         this.imageWidth = imageWidth;
@@ -176,17 +179,20 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yLargestLabel = Math.max(yLargestLabel, yLabelWidths[i]);
         }
         double axisFromLeft = leftMargin + yLargestLabel + yLabelMargin;
+        
         xCoordRange = RangeUtil.range(axisFromLeft + 0.5, getImageWidth() - rightMargin - 0.5);
         yCoordRange = RangeUtil.range(topMargin + 0.5, getImageHeight() - axisFromBottom - 0.5);
 
-        startXPlot = getXPlotRange().getMinimum().doubleValue();
-        startYPlot = getYPlotRange().getMinimum().doubleValue();
-        endXPlot = getXPlotRange().getMaximum().doubleValue();
-        endYPlot = getYPlotRange().getMaximum().doubleValue();
-        plotWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
-        plotHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
-        xStartGraph = xCoordRange.getMinimum().intValue();
-        yEndGraph = yCoordRange.getMaximum().intValue();
+        xAreaValueStart = getXPlotRange().getMinimum().doubleValue();
+        yAreaValueStart = getYPlotRange().getMinimum().doubleValue();
+        xAreaValueEnd = getXPlotRange().getMaximum().doubleValue();
+        yAreaValueEnd = getYPlotRange().getMaximum().doubleValue();
+        areaWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
+        areaHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
+        xAreaStart = xCoordRange.getMinimum().intValue();
+        yAreaStart = yCoordRange.getMinimum().intValue();
+        xAreaEnd = xCoordRange.getMaximum().intValue();
+        yAreaEnd = yCoordRange.getMaximum().intValue();
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
@@ -334,15 +340,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
 
     protected final double scaledX(double value) {
-        return xStartGraph + NumberUtil.scale(value, startXPlot, endXPlot, plotWidth);
+        return xAreaStart + NumberUtil.scale(value, xAreaValueStart, xAreaValueEnd, areaWidth);
     }
 
     protected final double scaledY(double value) {
-        return yEndGraph - NumberUtil.scale(value, startYPlot, endYPlot, plotHeight);
+        return yAreaEnd - NumberUtil.scale(value, yAreaValueStart, yAreaValueEnd, areaHeight);
     }
     
     protected void setClip(Graphics2D g) {
-        g.setClip(xStartGraph, yCoordRange.getMinimum().intValue(), plotWidth + 1,  plotHeight + 1);
+        g.setClip(xAreaStart, yAreaStart, areaWidth + 1,  areaHeight + 1);
     }
 
 }

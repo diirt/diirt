@@ -132,9 +132,6 @@ public class Graph2DRendererTest {
     @Test
     public void graphArea5() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
-            
-            {
-            }
 
             @Override
             public Graph2DRendererUpdate newUpdate() {
