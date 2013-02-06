@@ -28,6 +28,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         Color histogramColor = new Color(175, 175, 175);
 
         this.g = graphics;
+        this.referenceLineColor = this.backgroundColor;
         calculateRanges(dataset.getXRange(), dataset.getStatistics());
         calculateGraphArea();
         drawGraphArea();
