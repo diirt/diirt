@@ -25,6 +25,10 @@ public class Java2DStringUtilities {
         
         private int stringRightSide(Rectangle2D stringBounds, int x) {
             switch(this) {
+                case BOTTOM_LEFT:
+                case LEFT:
+                case TOP_LEFT:
+                    return x;
                 case BOTTOM:
                 case CENTER:
                 case TOP:

@@ -32,6 +32,12 @@ public class RangeUtil {
             public Number getMaximum() {
                 return maxValue;
             }
+
+            @Override
+            public String toString() {
+                return toString(this);
+            }
+            
         };
     }
     
@@ -63,6 +69,10 @@ public class RangeUtil {
             }
         }
         
+    }
+    
+    public static String toString(Range range) {
+        return "[" + range.getMinimum() + " - " + range.getMaximum() + "]";
     }
     
     public static double normalize(Range range, double value) {

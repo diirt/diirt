@@ -11,8 +11,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.util.Arrays;
 import java.util.List;
-import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
@@ -164,8 +165,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected Range yCoordRange;
     protected Color labelColor = Color.BLACK;
     protected Font labelFont = FontUtil.getLiberationSansRegular();
-    protected double xLabelMargin = 3;
-    protected double yLabelMargin = 3;
+    protected FontMetrics labelFontMetrics;
+    protected int xLabelMargin = 3;
+    protected int yLabelMargin = 3;
     protected ListDouble xReferenceCoords;
     protected ListDouble xReferenceValues;
     protected List<String> xReferenceLabels;
@@ -173,6 +175,57 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected ListDouble yReferenceValues;
     protected List<String> yReferenceLabels;
     protected Graphics2D g;
+    
+    protected int bottomMargin = 2;
+    protected int topMargin = 2;
+    protected int leftMargin = 2;
+    protected int rightMargin = 2;
+    
+    protected void calculateGraphArea() {
+        ValueAxis xAxis = ValueAxis.createAutoAxis(xPlotRange.getMinimum().doubleValue(), xPlotRange.getMaximum().doubleValue(), Math.max(2, getImageWidth() / 60));
+        ValueAxis yAxis = ValueAxis.createAutoAxis(yPlotRange.getMinimum().doubleValue(), yPlotRange.getMaximum().doubleValue(), Math.max(2, getImageHeight() / 60));
+        xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
+        yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
+        xReferenceValues = new ArrayDouble(xAxis.getTickValues());
+        yReferenceValues = new ArrayDouble(yAxis.getTickValues());
+        
+        labelFontMetrics = g.getFontMetrics(labelFont);
+        
+        // Compute x axis spacing
+        double axisFromBottom = bottomMargin + labelFontMetrics.getHeight() - labelFontMetrics.getLeading() + xLabelMargin;
+        
+        // Compute y axis spacing
+        int[] yLabelWidths = new int[yReferenceLabels.size()];
+        int yLargestLabel = 0;
+        for (int i = 0; i < yLabelWidths.length; i++) {
+            yLabelWidths[i] = labelFontMetrics.stringWidth(yReferenceLabels.get(i));
+            yLargestLabel = Math.max(yLargestLabel, yLabelWidths[i]);
+        }
+        double axisFromLeft = leftMargin + yLargestLabel + yLabelMargin;
+        xCoordRange = RangeUtil.range(axisFromLeft + 0.5, getImageWidth() - rightMargin - 0.5);
+        yCoordRange = RangeUtil.range(topMargin + 0.5, getImageHeight() - axisFromBottom - 0.5);
+
+        startXPlot = getXPlotRange().getMinimum().doubleValue();
+        startYPlot = getYPlotRange().getMinimum().doubleValue();
+        endXPlot = getXPlotRange().getMaximum().doubleValue();
+        endYPlot = getYPlotRange().getMaximum().doubleValue();
+        plotWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
+        plotHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
+        xStartGraph = xCoordRange.getMinimum().intValue();
+        yEndGraph = yCoordRange.getMaximum().intValue();
+        
+        double[] xRefCoords = new double[xReferenceValues.size()];
+        for (int i = 0; i < xRefCoords.length; i++) {
+            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i)) + 0.5;
+        }
+        xReferenceCoords = new ArrayDouble(xRefCoords);
+        
+        double[] yRefCoords = new double[yReferenceValues.size()];
+        for (int i = 0; i < yRefCoords.length; i++) {
+            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i)) + 0.5;
+        }
+        yReferenceCoords = new ArrayDouble(yRefCoords);
+    }
     
     protected void drawGraphArea() {
         // Draw background
@@ -299,7 +352,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             // Can't be drawn in the center
             if (centeredOnly)
                 return;
-            alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
             targetX = drawRange[MAX];
         }
 
