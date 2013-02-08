@@ -143,8 +143,8 @@ public abstract class DataSource {
 
         // Let's go through all the recipes first, so if something
         // breaks unexpectadely, either everything works or nothing works
-        final Map<ChannelHandler, ChannelReadRecipe> handlersWithSubscriptions =
-                new HashMap<ChannelHandler, ChannelReadRecipe>();
+        final Map<ChannelHandler, Collection<ChannelReadRecipe>> handlersWithSubscriptions =
+                new HashMap<>();
         for (final ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             try {
                 String channelName = channelRecipe.getChannelName();
@@ -152,7 +152,12 @@ public abstract class DataSource {
                 if (channelHandler == null) {
                     throw new RuntimeException("Channel named '" + channelName + "' not found");
                 }
-                handlersWithSubscriptions.put(channelHandler, channelRecipe);
+                Collection<ChannelReadRecipe> channelSubscriptions = handlersWithSubscriptions.get(channelHandler);
+                if (channelSubscriptions == null) {
+                    channelSubscriptions = new HashSet<>();
+                    handlersWithSubscriptions.put(channelHandler, channelSubscriptions);
+                }
+                channelSubscriptions.add(channelRecipe);
             } catch (Exception ex) {
                 // If any error happens while creating the channel,
                 // report it to the exception handler of that channel
@@ -167,15 +172,17 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (Map.Entry<ChannelHandler, ChannelReadRecipe> entry : handlersWithSubscriptions.entrySet()) {
+                for (Map.Entry<ChannelHandler, Collection<ChannelReadRecipe>> entry : handlersWithSubscriptions.entrySet()) {
                     ChannelHandler channelHandler = entry.getKey();
-                    ChannelReadRecipe channelRecipe = entry.getValue();
-                    try {
-                        channelHandler.addReader(channelRecipe.getReadSubscription());
-                    } catch(Exception ex) {
-                        // If an error happens while adding the read subscription,
-                        // notify the appropriate handler
-                        channelRecipe.getReadSubscription().getExceptionWriteFunction().writeValue(ex);
+                    Collection<ChannelReadRecipe> channelRecipes = entry.getValue();
+                    for (ChannelReadRecipe channelRecipe : channelRecipes) {
+                        try {
+                            channelHandler.addReader(channelRecipe.getReadSubscription());
+                        } catch(Exception ex) {
+                            // If an error happens while adding the read subscription,
+                            // notify the appropriate handler
+                            channelRecipe.getReadSubscription().getExceptionWriteFunction().writeValue(ex);
+                        }
                     }
                 }
             }
