@@ -235,7 +235,7 @@ public abstract class DataSource {
         
         // Let's go through the whole request first, so if something
         // breaks unexpectadely, either everything works or nothing works
-        final Map<ChannelHandler, ChannelHandlerWriteSubscription> handlers = new HashMap<ChannelHandler, ChannelHandlerWriteSubscription>();
+        final Map<ChannelHandler, Collection<ChannelHandlerWriteSubscription>> handlers = new HashMap<>();
         for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
             try {
                 String channelName = channelWriteRecipe.getChannelName();
@@ -243,7 +243,12 @@ public abstract class DataSource {
                 if (handler == null) {
                     throw new RuntimeException("Channel " + channelName + " does not exist");
                 }
-                handlers.put(handler, channelWriteRecipe.getWriteSubscription());
+                Collection<ChannelHandlerWriteSubscription> channelSubscriptions = handlers.get(handler);
+                if (channelSubscriptions == null) {
+                    channelSubscriptions = new HashSet<>();
+                    handlers.put(handler, channelSubscriptions);
+                }
+                channelSubscriptions.add(channelWriteRecipe.getWriteSubscription());
             } catch (Exception ex) {
                 channelWriteRecipe.getWriteSubscription().getExceptionWriteFunction().writeValue(ex);
             }
@@ -254,15 +259,17 @@ public abstract class DataSource {
 
             @Override
             public void run() {
-                for (Map.Entry<ChannelHandler, ChannelHandlerWriteSubscription> entry : handlers.entrySet()) {
-                    try {
-                        ChannelHandler channelHandler = entry.getKey();
-                        ChannelHandlerWriteSubscription subscription = entry.getValue();
-                        channelHandler.addWriter(subscription);
-                    } catch (Exception ex) {
-                        // If an error happens while adding the write subscription,
-                        // notify the appropriate handler
-                        entry.getValue().getExceptionWriteFunction().writeValue(ex);
+                for (Map.Entry<ChannelHandler, Collection<ChannelHandlerWriteSubscription>> entry : handlers.entrySet()) {
+                    ChannelHandler channelHandler = entry.getKey();
+                    Collection<ChannelHandlerWriteSubscription> subscriptions = entry.getValue();
+                    for (ChannelHandlerWriteSubscription subscription : subscriptions) {
+                        try {
+                            channelHandler.addWriter(subscription);
+                        } catch (Exception ex) {
+                            // If an error happens while adding the write subscription,
+                            // notify the appropriate handler
+                            subscription.getExceptionWriteFunction().writeValue(ex);
+                        }
                     }
                 }
             }
