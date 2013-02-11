@@ -41,9 +41,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
     }
-    
-    private int imageWidth;
-    private int imageHeight;
 
     public int getImageHeight() {
         return imageHeight;
@@ -53,12 +50,45 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return imageWidth;
     }
     
+    protected Graphics2D g;
+    
+    // Renderer external parameter //
+    
+    // Size of the image
+    private int imageWidth;
+    private int imageHeight;
+    // Strategy for calculating the axis range
     private AxisRange xAxisRange = AxisRanges.integrated();
     private AxisRange yAxisRange = AxisRanges.integrated();
+    // Colors and fonts
+    protected Color backgroundColor = Color.WHITE;
+    protected Color labelColor = Color.BLACK;
+    protected Color referenceLineColor = new Color(240, 240, 240);
+    protected Font labelFont = FontUtil.getLiberationSansRegular();
+    // Image margins
+    protected int bottomMargin = 2;
+    protected int topMargin = 2;
+    protected int leftMargin = 2;
+    protected int rightMargin = 2;
+    // Axis label margins
+    protected int xLabelMargin = 3;
+    protected int yLabelMargin = 3;
+    
+    // Computed parameters, visible to outside //
+    
     private Range xAggregatedRange;
     private Range yAggregatedRange;
     private Range xPlotRange;
     private Range yPlotRange;
+    protected FontMetrics labelFontMetrics;
+    protected ListDouble xReferenceCoords;
+    protected ListDouble xReferenceValues;
+    protected List<String> xReferenceLabels;
+    protected ListDouble yReferenceCoords;
+    protected ListDouble yReferenceValues;
+    protected List<String> yReferenceLabels;
+    protected Range xCoordRange;
+    protected Range yCoordRange;
 
     public AxisRange getXAxisRange() {
         return xAxisRange;
@@ -136,28 +166,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
-    protected Color backgroundColor = Color.WHITE;
-    protected Range xCoordRange;
-    protected Range yCoordRange;
-    protected Color labelColor = Color.BLACK;
-    protected Color referenceLineColor = new Color(240, 240, 240);
-    protected Font labelFont = FontUtil.getLiberationSansRegular();
-    protected FontMetrics labelFontMetrics;
-    protected int xLabelMargin = 3;
-    protected int yLabelMargin = 3;
-    protected ListDouble xReferenceCoords;
-    protected ListDouble xReferenceValues;
-    protected List<String> xReferenceLabels;
-    protected ListDouble yReferenceCoords;
-    protected ListDouble yReferenceValues;
-    protected List<String> yReferenceLabels;
-    protected Graphics2D g;
-    
-    protected int bottomMargin = 2;
-    protected int topMargin = 2;
-    protected int leftMargin = 2;
-    protected int rightMargin = 2;
-    
     protected void calculateGraphArea() {
         ValueAxis xAxis = ValueAxis.createAutoAxis(xPlotRange.getMinimum().doubleValue(), xPlotRange.getMaximum().doubleValue(), Math.max(2, getImageWidth() / 60));
         ValueAxis yAxis = ValueAxis.createAutoAxis(yPlotRange.getMinimum().doubleValue(), yPlotRange.getMaximum().doubleValue(), Math.max(2, getImageHeight() / 60));
@@ -219,50 +227,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         // When drawing the reference line, align them to the pixel
         drawVerticalReferenceLines();
         drawHorizontalReferenceLines();;
-
-        // Draw Y labels
-        ListNumber yTicks = yReferenceCoords;
-        if (yReferenceLabels != null && !yReferenceLabels.isEmpty()) {
-            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            g.setColor(labelColor);
-            g.setFont(labelFont);
-            FontMetrics metrics = g.getFontMetrics();
-
-            // Draw first and last label
-            int[] drawRange = new int[] {(int) yCoordRange.getMinimum().intValue(), (int) yCoordRange.getMaximum().intValue()};
-            int xRightLabel = (int) (xCoordRange.getMinimum().doubleValue() - yLabelMargin - 1);
-            drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(0), (int) Math.floor(yTicks.getDouble(0)),
-                drawRange, xRightLabel, true, false);
-            drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(yReferenceLabels.size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.size() - 1)),
-                drawRange, xRightLabel, false, false);
-            
-            for (int i = 1; i < yReferenceLabels.size() - 1; i++) {
-                drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(i), (int) Math.floor(yTicks.getDouble(i)),
-                    drawRange, xRightLabel, true, false);
-            }
-        }
         
-        // Draw X labels
-        ListNumber xTicks = xReferenceCoords;
-        if (xReferenceLabels != null && !xReferenceLabels.isEmpty()) {
-            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-            g.setColor(labelColor);
-            g.setFont(labelFont);
-            FontMetrics metrics = g.getFontMetrics();
-
-            // Draw first and last label
-            int[] drawRange = new int[] {(int) xCoordRange.getMinimum().intValue(), (int) xCoordRange.getMaximum().intValue()};
-            int yTop = (int) (yCoordRange.getMaximum().doubleValue() + xLabelMargin + 1);
-            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
-                drawRange, yTop, true, false);
-            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
-                drawRange, yTop, false, false);
-            
-            for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
-                drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
-                    drawRange, yTop, true, false);
-            }
-        }
+        drawYLabels();
+        drawXLabels();
     }
     
     private static final int MIN = 0;
@@ -349,6 +316,54 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
     protected void setClip(Graphics2D g) {
         g.setClip(xAreaStart, yAreaStart, areaWidth + 1,  areaHeight + 1);
+    }
+
+    protected void drawYLabels() {
+        // Draw Y labels
+        ListNumber yTicks = yReferenceCoords;
+        if (yReferenceLabels != null && !yReferenceLabels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {(int) yCoordRange.getMinimum().intValue(), (int) yCoordRange.getMaximum().intValue()};
+            int xRightLabel = (int) (xCoordRange.getMinimum().doubleValue() - yLabelMargin - 1);
+            drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(0), (int) Math.floor(yTicks.getDouble(0)),
+                drawRange, xRightLabel, true, false);
+            drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(yReferenceLabels.size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.size() - 1)),
+                drawRange, xRightLabel, false, false);
+            
+            for (int i = 1; i < yReferenceLabels.size() - 1; i++) {
+                drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(i), (int) Math.floor(yTicks.getDouble(i)),
+                    drawRange, xRightLabel, true, false);
+            }
+        }
+    }
+
+    protected void drawXLabels() {
+        // Draw X labels
+        ListNumber xTicks = xReferenceCoords;
+        if (xReferenceLabels != null && !xReferenceLabels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {(int) xCoordRange.getMinimum().intValue(), (int) xCoordRange.getMaximum().intValue()};
+            int yTop = (int) (yCoordRange.getMaximum().doubleValue() + xLabelMargin + 1);
+            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
+                drawRange, yTop, true, false);
+            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
+                drawRange, yTop, false, false);
+            
+            for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
+                drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
+                    drawRange, yTop, true, false);
+            }
+        }
     }
 
 }
