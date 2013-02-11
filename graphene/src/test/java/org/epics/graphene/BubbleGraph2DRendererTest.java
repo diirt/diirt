@@ -19,18 +19,7 @@ import org.junit.BeforeClass;
  *
  * @author carcassi
  */
-public class Bubble2DGraphRendererTest {
-    
-    public Bubble2DGraphRendererTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+public class BubbleGraph2DRendererTest {
     
     @Test
     public void test1() throws Exception {
@@ -50,7 +39,7 @@ public class Bubble2DGraphRendererTest {
         
         Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(300, 200);
+        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("bubble2D.1", image);
@@ -66,7 +55,7 @@ public class Bubble2DGraphRendererTest {
 //        
 //        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
 //        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
-//        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(600, 399);
+//        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(600, 399);
 //        Graphics2D graphics = (Graphics2D) image.getGraphics();
 //        renderer.draw(graphics, data);
 //        ImageAssert.compareImages("bubble2D.2", image);
@@ -82,7 +71,7 @@ public class Bubble2DGraphRendererTest {
 //        
 //        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
 //        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
-//        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(600, 400);
+//        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(600, 400);
 //        Graphics2D graphics = (Graphics2D) image.getGraphics();
 //        renderer.draw(graphics, data);
 //        ImageAssert.compareImages("bubble2D.3", image);
