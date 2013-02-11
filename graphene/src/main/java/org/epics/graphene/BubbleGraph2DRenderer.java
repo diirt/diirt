@@ -43,6 +43,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate
         
 
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         LabelColorScheme labelColor = LabelColorSchemes.orderedHueColor(data.getLabels());
         // Make sure that the line does not go ouside the chart
         setClip(g);

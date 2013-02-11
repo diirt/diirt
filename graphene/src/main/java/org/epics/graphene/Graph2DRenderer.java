@@ -204,13 +204,13 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
-            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i)) + 0.5;
+            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
         }
         xReferenceCoords = new ArrayDouble(xRefCoords);
         
         double[] yRefCoords = new double[yReferenceValues.size()];
         for (int i = 0; i < yRefCoords.length; i++) {
-            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i)) + 0.5;
+            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
         }
         yReferenceCoords = new ArrayDouble(yRefCoords);
     }
@@ -307,11 +307,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
 
     protected final double scaledX(double value) {
-        return xAreaStart + NumberUtil.scale(value, xAreaValueStart, xAreaValueEnd, areaWidth);
+        return xAreaStart + NumberUtil.scale(value, xAreaValueStart, xAreaValueEnd, areaWidth) + 0.5;
     }
 
     protected final double scaledY(double value) {
-        return yAreaEnd - NumberUtil.scale(value, yAreaValueStart, yAreaValueEnd, areaHeight);
+        return yAreaEnd - NumberUtil.scale(value, yAreaValueStart, yAreaValueEnd, areaHeight) + 0.5;
     }
     
     protected void setClip(Graphics2D g) {
