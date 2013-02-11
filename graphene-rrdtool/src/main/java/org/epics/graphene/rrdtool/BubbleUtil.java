@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
-import org.epics.graphene.Bubble2DGraphRenderer;
+import org.epics.graphene.BubbleGraph2DRenderer;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
@@ -54,7 +54,7 @@ public class BubbleUtil {
         html.append("           <img src=\"").append(filename).append(".png\" usemap=\"#graph\"><br/><b>" + signalX + "</b></p>\n");
         html.append("        </center>\n");
         html.append("        <map name=\"graph\">\n");
-        Bubble2DGraphRenderer renderer = new Bubble2DGraphRenderer(800, 600) {
+        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(800, 600) {
             protected void newValue(double x, double y, double size, int i) {
                 String url = urlPrototype.replaceAll("DATASETLABEL", dataset.getLabels().get(i));
                 html.append("            <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"" + url + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
