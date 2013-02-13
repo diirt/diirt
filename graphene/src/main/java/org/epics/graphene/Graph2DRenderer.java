@@ -24,18 +24,18 @@ import org.epics.util.array.ListNumber;
  */
 public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
-    protected double xAreaValueStart;
-    protected double yAreaValueStart;
-    protected double xAreaValueEnd;
-    protected double yAreaValueEnd;
+    protected double xPlotValueStart;
+    protected double yPlotValueStart;
+    protected double xPlotValueEnd;
+    protected double yPlotValueEnd;
     
     protected int areaHeight;
     protected int areaWidth;
     
-    protected int xAreaStart;
-    protected int yAreaStart;
-    protected int yAreaEnd;
-    protected int xAreaEnd;
+    protected int xPlotCoordStart;
+    protected int yPlotCoordStart;
+    protected int yPlotCoordEnd;
+    protected int xPlotCoordEnd;
 
     public Graph2DRenderer(int imageWidth, int imageHeight) {
         this.imageWidth = imageWidth;
@@ -70,6 +70,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int topMargin = 2;
     protected int leftMargin = 2;
     protected int rightMargin = 2;
+    // area margins
+    protected int bottomAreaMargin = 0;
+    protected int topAreaMargin = 0;
+    protected int leftAreaMargin = 0;
+    protected int rightAreaMargin = 0;
     // Axis label margins
     protected int xLabelMargin = 3;
     protected int yLabelMargin = 3;
@@ -89,6 +94,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected List<String> yReferenceLabels;
     protected Range xCoordRange;
     protected Range yCoordRange;
+    private int xLabelMaxHeight;
+    private int yLabelMaxWidth;
 
     public AxisRange getXAxisRange() {
         return xAxisRange;
@@ -177,30 +184,31 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         labelFontMetrics = g.getFontMetrics(labelFont);
         
         // Compute x axis spacing
-        double axisFromBottom = bottomMargin + labelFontMetrics.getHeight() - labelFontMetrics.getLeading() + xLabelMargin;
+        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
+        int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         
         // Compute y axis spacing
         int[] yLabelWidths = new int[yReferenceLabels.size()];
-        int yLargestLabel = 0;
+        yLabelMaxWidth = 0;
         for (int i = 0; i < yLabelWidths.length; i++) {
             yLabelWidths[i] = labelFontMetrics.stringWidth(yReferenceLabels.get(i));
-            yLargestLabel = Math.max(yLargestLabel, yLabelWidths[i]);
+            yLabelMaxWidth = Math.max(yLabelMaxWidth, yLabelWidths[i]);
         }
-        double axisFromLeft = leftMargin + yLargestLabel + yLabelMargin;
+        int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
         
-        xCoordRange = RangeUtil.range(axisFromLeft + 0.5, getImageWidth() - rightMargin - 0.5);
-        yCoordRange = RangeUtil.range(topMargin + 0.5, getImageHeight() - axisFromBottom - 0.5);
+        xCoordRange = RangeUtil.range(areaFromLeft + 0.5, getImageWidth() - rightMargin - 0.5);
+        yCoordRange = RangeUtil.range(topMargin + 0.5, getImageHeight() - areaFromBottom - 0.5);
 
-        xAreaValueStart = getXPlotRange().getMinimum().doubleValue();
-        yAreaValueStart = getYPlotRange().getMinimum().doubleValue();
-        xAreaValueEnd = getXPlotRange().getMaximum().doubleValue();
-        yAreaValueEnd = getYPlotRange().getMaximum().doubleValue();
+        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
+        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
+        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
         areaWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
         areaHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
-        xAreaStart = xCoordRange.getMinimum().intValue();
-        yAreaStart = yCoordRange.getMinimum().intValue();
-        xAreaEnd = xCoordRange.getMaximum().intValue();
-        yAreaEnd = yCoordRange.getMaximum().intValue();
+        xPlotCoordStart = areaFromLeft;
+        yPlotCoordStart = topMargin;
+        xPlotCoordEnd = getImageWidth() - rightMargin - 1;
+        yPlotCoordEnd = getImageHeight() - areaFromBottom - 1;
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
@@ -307,15 +315,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
 
     protected final double scaledX(double value) {
-        return xAreaStart + NumberUtil.scale(value, xAreaValueStart, xAreaValueEnd, areaWidth) + 0.5;
+        return xPlotCoordStart + NumberUtil.scale(value, xPlotValueStart, xPlotValueEnd, areaWidth) + 0.5;
     }
 
     protected final double scaledY(double value) {
-        return yAreaEnd - NumberUtil.scale(value, yAreaValueStart, yAreaValueEnd, areaHeight) + 0.5;
+        return yPlotCoordEnd - NumberUtil.scale(value, yPlotValueStart, yPlotValueEnd, areaHeight) + 0.5;
     }
     
     protected void setClip(Graphics2D g) {
-        g.setClip(xAreaStart, yAreaStart, areaWidth + 1,  areaHeight + 1);
+        g.setClip(xPlotCoordStart, yPlotCoordStart, areaWidth + 1,  areaHeight + 1);
     }
 
     protected void drawYLabels() {
