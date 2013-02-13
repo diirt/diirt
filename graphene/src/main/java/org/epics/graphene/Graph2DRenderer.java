@@ -32,10 +32,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int areaHeight;
     protected int areaWidth;
     
-    protected int xPlotCoordStart;
-    protected int yPlotCoordStart;
-    protected int yPlotCoordEnd;
-    protected int xPlotCoordEnd;
+    protected double xPlotCoordStart;
+    protected double yPlotCoordStart;
+    protected double yPlotCoordEnd;
+    protected double xPlotCoordEnd;
     
     protected int xAreaStart;
     protected int yAreaStart;
@@ -332,7 +332,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
     protected void setClip(Graphics2D g) {
-        g.setClip(xPlotCoordStart, yPlotCoordStart, areaWidth + 1,  areaHeight + 1);
+        g.setClip(xAreaStart, yAreaStart, xAreaEnd - xAreaStart + 1, yAreaEnd - yAreaStart + 1);
     }
 
     protected void drawYLabels() {
