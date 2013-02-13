@@ -214,10 +214,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yAreaStart = topMargin;
         xAreaEnd = getImageWidth() - rightMargin - 1;
         yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin;
-        yPlotCoordStart = yAreaStart + leftAreaMargin;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin;
+        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
+        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
@@ -324,11 +324,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
 
     protected final double scaledX(double value) {
-        return xPlotCoordStart + NumberUtil.scale(value, xPlotValueStart, xPlotValueEnd, areaWidth) + 0.5;
+        return xPlotCoordStart + NumberUtil.scale(value, xPlotValueStart, xPlotValueEnd, areaWidth);
     }
 
     protected final double scaledY(double value) {
-        return yPlotCoordEnd - NumberUtil.scale(value, yPlotValueStart, yPlotValueEnd, areaHeight) + 0.5;
+        return yPlotCoordEnd - NumberUtil.scale(value, yPlotValueStart, yPlotValueEnd, areaHeight);
     }
     
     protected void setClip(Graphics2D g) {
