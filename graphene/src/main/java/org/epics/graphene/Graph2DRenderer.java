@@ -36,6 +36,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int yPlotCoordStart;
     protected int yPlotCoordEnd;
     protected int xPlotCoordEnd;
+    
+    protected int xAreaStart;
+    protected int yAreaStart;
+    protected int yAreaEnd;
+    protected int xAreaEnd;
 
     public Graph2DRenderer(int imageWidth, int imageHeight) {
         this.imageWidth = imageWidth;
@@ -205,10 +210,14 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
         areaWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
         areaHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
-        xPlotCoordStart = areaFromLeft;
-        yPlotCoordStart = topMargin;
-        xPlotCoordEnd = getImageWidth() - rightMargin - 1;
-        yPlotCoordEnd = getImageHeight() - areaFromBottom - 1;
+        xAreaStart = areaFromLeft;
+        yAreaStart = topMargin;
+        xAreaEnd = getImageWidth() - rightMargin - 1;
+        yAreaEnd = getImageHeight() - areaFromBottom - 1;
+        xPlotCoordStart = xAreaStart + topAreaMargin;
+        yPlotCoordStart = yAreaStart + leftAreaMargin;
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin;
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin;
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
