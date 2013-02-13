@@ -345,8 +345,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             FontMetrics metrics = g.getFontMetrics();
 
             // Draw first and last label
-            int[] drawRange = new int[] {(int) yCoordRange.getMinimum().intValue(), (int) yCoordRange.getMaximum().intValue()};
-            int xRightLabel = (int) (xCoordRange.getMinimum().doubleValue() - yLabelMargin - 1);
+            int[] drawRange = new int[] {yAreaStart, yAreaEnd};
+            int xRightLabel = (int) (xAreaStart - yLabelMargin - 1);
             drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(0), (int) Math.floor(yTicks.getDouble(0)),
                 drawRange, xRightLabel, true, false);
             drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(yReferenceLabels.size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.size() - 1)),
@@ -369,8 +369,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             FontMetrics metrics = g.getFontMetrics();
 
             // Draw first and last label
-            int[] drawRange = new int[] {(int) xCoordRange.getMinimum().intValue(), (int) xCoordRange.getMaximum().intValue()};
-            int yTop = (int) (yCoordRange.getMaximum().doubleValue() + xLabelMargin + 1);
+            int[] drawRange = new int[] {xAreaStart, xAreaEnd};
+            int yTop = (int) (yAreaEnd + xLabelMargin + 1);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
