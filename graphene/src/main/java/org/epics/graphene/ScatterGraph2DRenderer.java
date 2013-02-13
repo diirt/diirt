@@ -16,6 +16,10 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
 
     public ScatterGraph2DRenderer(int width, int height) {
         super(width, height);
+        topAreaMargin = 2;
+        bottomAreaMargin = 2;
+        leftAreaMargin = 2;
+        rightAreaMargin = 2;
     }
 
     @Override
