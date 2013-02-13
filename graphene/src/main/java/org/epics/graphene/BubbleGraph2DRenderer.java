@@ -48,7 +48,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate
         // Make sure that the line does not go ouside the chart
         setClip(g);
         for (int i = 0; i < data.getCount(); i++) {
-            double size = radiusScale(zAggregatedRange.getMinimum().doubleValue(), data.getZValues().getDouble(i), zAggregatedRange.getMaximum().doubleValue(),
+            double size = radiusScale(zPlotRange.getMinimum().doubleValue(), data.getZValues().getDouble(i), zPlotRange.getMaximum().doubleValue(),
                     3, 15);
             double x = scaledX(data.getXValues().getDouble(i));
             double y = scaledY(data.getYValues().getDouble(i));
