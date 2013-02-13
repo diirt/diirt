@@ -163,7 +163,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber yTicks = yReferenceCoords;
         for (int i = 0; i < yTicks.size(); i++) {
-            Shape line = new Line2D.Double(xCoordRange.getMinimum().doubleValue(), yTicks.getDouble(i), xCoordRange.getMaximum().doubleValue(), yTicks.getDouble(i));
+            Shape line = new Line2D.Double(xAreaStart, yTicks.getDouble(i), xAreaEnd, yTicks.getDouble(i));
             g.draw(line);
         }
     }
@@ -173,7 +173,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber xTicks = xReferenceCoords;
         for (int i = 0; i < xTicks.size(); i++) {
-            Shape line = new Line2D.Double(xTicks.getDouble(i), yCoordRange.getMinimum().doubleValue(), xTicks.getDouble(i), yCoordRange.getMaximum().doubleValue());
+            Shape line = new Line2D.Double(xTicks.getDouble(i), yAreaStart, xTicks.getDouble(i), yAreaEnd);
             g.draw(line);
         }
     }
