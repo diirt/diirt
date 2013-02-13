@@ -29,8 +29,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected double xPlotValueEnd;
     protected double yPlotValueEnd;
     
-    protected int areaHeight;
-    protected int areaWidth;
+    protected double yPlotCoordHeight;
+    protected double xPlotCoordWidth;
     
     protected double xPlotCoordStart;
     protected double yPlotCoordStart;
@@ -208,8 +208,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
         xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
         yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
-        areaWidth = (int) (xCoordRange.getMaximum().doubleValue() - xCoordRange.getMinimum().doubleValue());
-        areaHeight =  (int) (yCoordRange.getMaximum().doubleValue() - yCoordRange.getMinimum().doubleValue());
         xAreaStart = areaFromLeft;
         yAreaStart = topMargin;
         xAreaEnd = getImageWidth() - rightMargin - 1;
@@ -218,6 +216,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
         xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
         yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
+        yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
@@ -324,11 +324,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
 
     protected final double scaledX(double value) {
-        return xPlotCoordStart + NumberUtil.scale(value, xPlotValueStart, xPlotValueEnd, areaWidth);
+        return xPlotCoordStart + NumberUtil.scale(value, xPlotValueStart, xPlotValueEnd, xPlotCoordWidth);
     }
 
     protected final double scaledY(double value) {
-        return yPlotCoordEnd - NumberUtil.scale(value, yPlotValueStart, yPlotValueEnd, areaHeight);
+        return yPlotCoordEnd - NumberUtil.scale(value, yPlotValueStart, yPlotValueEnd, yPlotCoordHeight);
     }
     
     protected void setClip(Graphics2D g) {
