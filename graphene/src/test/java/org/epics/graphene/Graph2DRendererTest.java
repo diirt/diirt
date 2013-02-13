@@ -28,10 +28,8 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xCoordRange = RangeUtil.range(4.5, 295.5);
                 this.xAreaStart = 4;
                 this.xAreaEnd = 295;
-                this.yCoordRange = RangeUtil.range(4.5, 195.5);
                 this.yAreaStart = 4;
                 this.yAreaEnd = 195;
                 this.xReferenceCoords = new ArrayDouble(4.5, 150, 295.5);
@@ -58,10 +56,8 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xCoordRange = RangeUtil.range(24.5, 295.5);
                 this.xAreaStart = 24;
                 this.xAreaEnd = 295;
-                this.yCoordRange = RangeUtil.range(4.5, 195.5);
                 this.yAreaStart = 4;
                 this.yAreaEnd = 195;
                 this.xReferenceCoords = new ArrayDouble(24.5, 150, 295.5);
@@ -89,10 +85,8 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xCoordRange = RangeUtil.range(24.5, 295.5);
                 this.xAreaStart = 24;
                 this.xAreaEnd = 295;
-                this.yCoordRange = RangeUtil.range(4.5, 195.5);
                 this.yAreaStart = 4;
                 this.yAreaEnd = 195;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
@@ -119,10 +113,8 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xCoordRange = RangeUtil.range(4.5, 295.5);
                 this.xAreaStart = 4;
                 this.xAreaEnd = 295;
-                this.yCoordRange = RangeUtil.range(4.5, 185.5);
                 this.yAreaStart = 4;
                 this.yAreaEnd = 185;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);

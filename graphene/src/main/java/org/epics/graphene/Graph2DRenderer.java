@@ -97,8 +97,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected ListDouble yReferenceCoords;
     protected ListDouble yReferenceValues;
     protected List<String> yReferenceLabels;
-    protected Range xCoordRange;
-    protected Range yCoordRange;
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
 
@@ -200,9 +198,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yLabelMaxWidth = Math.max(yLabelMaxWidth, yLabelWidths[i]);
         }
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
-        
-        xCoordRange = RangeUtil.range(areaFromLeft + 0.5, getImageWidth() - rightMargin - 0.5);
-        yCoordRange = RangeUtil.range(topMargin + 0.5, getImageHeight() - areaFromBottom - 0.5);
 
         xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
