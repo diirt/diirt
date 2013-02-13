@@ -20,9 +20,9 @@ import org.junit.BeforeClass;
  *
  * @author carcassi
  */
-public class LineGraphRendererTest {
+public class LineGraph2DRendererTest {
     
-    public LineGraphRendererTest() {
+    public LineGraph2DRendererTest() {
     }
 
     @BeforeClass
@@ -37,7 +37,7 @@ public class LineGraphRendererTest {
     public void test1() throws Exception {
         Point2DDataset data = new OrderedDataset2DT1();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.1", image);
@@ -47,8 +47,8 @@ public class LineGraphRendererTest {
     public void test2() throws Exception {
         Point2DDataset data = new OrderedDataset2DT1();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
-        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.2", image);
@@ -58,8 +58,8 @@ public class LineGraphRendererTest {
     public void test3() throws Exception {
         Point2DDataset data = new OrderedDataset2DT1();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
-        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.3", image);
@@ -69,8 +69,8 @@ public class LineGraphRendererTest {
     public void test4() throws Exception {
         Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1, 2, 3, Double.NaN, 4, 5, 6), 50, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
-        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.4", image);
@@ -80,8 +80,8 @@ public class LineGraphRendererTest {
     public void test5() throws Exception {
         Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1, Double.NaN, 3, Double.NaN, 4, 5, 6), 50, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        LineGraphRenderer renderer = new LineGraphRenderer(300, 200);
-        renderer.update(new LineGraphRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.5", image);
