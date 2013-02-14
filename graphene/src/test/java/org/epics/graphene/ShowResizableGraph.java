@@ -82,12 +82,12 @@ public class ShowResizableGraph extends javax.swing.JFrame {
     }
     
     public static void showHistogram(final Histogram1D hist) {
-        final Histogram1DRenderer renderer = new Histogram1DRenderer(200, 300);
+        final AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(200, 300);
         showGraph(new Renderer() {
 
             @Override
             public void redrawHistogram(BufferedImage image) {
-                renderer.update(new Histogram1DRendererUpdate()
+                renderer.update(new AreaGraph2DRendererUpdate()
                         .imageHeight(image.getHeight())
                         .imageWidth(image.getWidth()));
                 renderer.draw(image.createGraphics(), hist);

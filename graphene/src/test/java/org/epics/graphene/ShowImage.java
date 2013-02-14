@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import org.epics.util.array.ArrayDouble;
 
 /**
  *
@@ -62,8 +63,9 @@ public class ShowImage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws Exception {
-        Histogram1D hist = new Hist1DT1();
-        Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
+        Cell1DDataset hist = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+                                        350, 230, 180, 220, 170, 130, 80, 30, 40), 0.0, 2.0);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
         BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, hist);

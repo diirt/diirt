@@ -88,4 +88,8 @@ public class RangeUtil {
         }
         return boundary;
     }
+
+    public static boolean contains(Range xRange, double value) {
+        return value >= xRange.getMinimum().doubleValue() && value <= xRange.getMaximum().doubleValue();
+    }
 }

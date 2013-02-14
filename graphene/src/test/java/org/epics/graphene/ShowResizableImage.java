@@ -11,6 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import org.epics.util.array.ArrayDouble;
 
 /**
  *
@@ -28,7 +29,7 @@ public class ShowResizableImage extends javax.swing.JFrame {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                renderer.update(new Histogram1DRendererUpdate()
+                renderer.update(new AreaGraph2DRendererUpdate()
                         .imageHeight(getRootPane().getHeight())
                         .imageWidth(getRootPane().getWidth()));
                 imagePanel.setImage(new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
@@ -57,10 +58,10 @@ public class ShowResizableImage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private Histogram1D hist;
-    private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
+    private Cell1DDataset hist;
+    private AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
 
-    public void setHistogram(Histogram1D hist) {
+    public void setHistogram(Cell1DDataset hist) {
         this.hist = hist;
         pack();
         redrawHistogram();
@@ -84,7 +85,7 @@ public class ShowResizableImage extends javax.swing.JFrame {
     
     
 
-    public static void showHistogram(final Histogram1D hist) {
+    public static void showHistogram(final Cell1DDataset hist) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -100,7 +101,8 @@ public class ShowResizableImage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws Exception {
-        Histogram1D hist = new Hist1DT2();
+        Cell1DDataset hist = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+                                        350, 230, 180, 220, 170, 130, 80, 30, 40), 0.0, 2.0);
         showHistogram(hist);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

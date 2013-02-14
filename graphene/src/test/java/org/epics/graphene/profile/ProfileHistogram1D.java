@@ -26,8 +26,12 @@ public class ProfileHistogram1D {
         // With 1000000 samples and 1000 tries, 25.4 ms
         // With 1000 samples and 100000 tries, 0.73 ms
         
-        int nSamples = 1000;
-        int nTries = 10000;
+        // After refactoring to Cell1DDataset and AreaGraph2DRenderer
+        // With 1000000 samples and 1000 tries, 13.5 ms
+        // with 1000 samples and 100000 tries, 0.57 ms
+        
+        int nSamples = 1000000;
+        int nTries = 1000;
         int imageWidth = 600;
         int imageHeight = 400;
         Random rand = new Random();
@@ -40,7 +44,7 @@ public class ProfileHistogram1D {
         dataset.update(update);
         
         Histogram1D histogram = Histograms.createHistogram(dataset);
-        Histogram1DRenderer renderer = new Histogram1DRenderer(imageWidth, imageHeight);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(imageWidth, imageHeight);
         
         StopWatch stopWatch = new StopWatch(nTries);
         

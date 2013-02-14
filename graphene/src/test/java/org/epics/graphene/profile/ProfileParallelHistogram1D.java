@@ -43,7 +43,7 @@ public class ProfileParallelHistogram1D {
                 dataset.update(update);
 
                 Histogram1D histogram = Histograms.createHistogram(dataset);
-                Histogram1DRenderer renderer = new Histogram1DRenderer(imageWidth, imageHeight);
+                AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(imageWidth, imageHeight);
 
                 StopWatch stopWatch = new StopWatch(nTries);
 

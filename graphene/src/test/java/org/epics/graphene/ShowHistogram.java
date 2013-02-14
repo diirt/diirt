@@ -45,7 +45,7 @@ public class ShowHistogram extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private Histogram1D hist;
-    private Histogram1DRenderer renderer = new Histogram1DRenderer(300, 200);
+    private AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
 
     public void setHistogram(Histogram1D hist) {
         this.hist = hist;

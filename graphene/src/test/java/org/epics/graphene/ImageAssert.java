@@ -17,7 +17,7 @@ public class ImageAssert {
     public static void compareImages(String imageName, BufferedImage image) throws Exception {
         boolean done = false;
         try {
-            BufferedImage expected = ImageIO.read(Histogram1DRendererTest.class.getResource(imageName + ".png"));
+            BufferedImage expected = ImageIO.read(ImageAssert.class.getResource(imageName + ".png"));
             
             assertEquals("Images are not the same height", expected.getHeight(), image.getHeight());
             assertEquals("Images are not the same width", expected.getWidth(), image.getWidth());
