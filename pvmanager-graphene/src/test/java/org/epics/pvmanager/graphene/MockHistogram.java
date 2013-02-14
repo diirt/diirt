@@ -17,7 +17,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.graphene.Histogram1DRendererUpdate;
+import org.epics.graphene.AreaGraph2DRendererUpdate;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;
@@ -52,7 +52,7 @@ public class MockHistogram extends javax.swing.JFrame {
             public void componentResized(ComponentEvent e) {
 
                 if (plot != null) {
-                    plot.update(new Histogram1DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
+                    plot.update(new AreaGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
                 }
             }
         });
@@ -147,7 +147,7 @@ public class MockHistogram extends javax.swing.JFrame {
         }
 
         plot = ExpressionLanguage.histogramOf(vNumber(pvName.getText()));
-        plot.update(new Histogram1DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
+        plot.update(new AreaGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
                 .readListener(new PVReaderListener<VImage>() {
