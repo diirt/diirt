@@ -22,7 +22,7 @@ public class GangliaRrdClusterMain {
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             System.out.println("Usage:  list directory (prints the machines and signals found)\n");
-            System.out.println("Usage:  plot directory signalX signalY signalSize date outputName (creates a bubble plot)\n");
+            System.out.println("Usage:  plot directory signalX signalY signalSize date outputName linkTemplate (creates a bubble plot)\n");
             System.exit(0);
         }
         
@@ -34,7 +34,7 @@ public class GangliaRrdClusterMain {
             System.out.println("Machines: " + cluster.getMachines());
             System.out.println("Signals: " + cluster.getSignals());
         } else if ("plot".equals(args[0])) {
-            if (args.length != 7) {
+            if (args.length != 8) {
                 System.out.println("Wrong number of arguments");
             }
             String path = args[1];
@@ -42,6 +42,7 @@ public class GangliaRrdClusterMain {
             String signalY = args[3];
             String signalZ = args[4];
             String filename = args[6];
+            String link = args[7];
             Timestamp time = format.parse(args[5]);
             String timeString = null;
             if (time != null) {
@@ -54,7 +55,8 @@ public class GangliaRrdClusterMain {
             Point3DWithLabelDataset dataset = cluster.dataset(Arrays.asList(signalX, signalY, signalZ), time);
             StringBuilder html = new StringBuilder();
             BubbleUtil.createBubblePlot(filename, dataset,
-                    "http://ganglia-um.aglt2.org/ganglia/?m=load_one&r=day&s=ascending&c=UM-Worker-Nodes&h=DATASETLABEL&sh=1&hc=4&z=small",
+                    link,
+//                    "http://ganglia-um.aglt2.org/ganglia/?m=load_one&r=day&s=ascending&c=UM-Worker-Nodes&h=DATASETLABEL&sh=1&hc=4&z=small",
                     path, signalX, signalY, signalZ, time);
         } else {
             System.out.println("Command not found");
