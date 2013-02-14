@@ -55,6 +55,12 @@ public class BubbleUtil {
         html.append("        </center>\n");
         html.append("        <map name=\"graph\">\n");
         BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(800, 600) {
+            {
+                this.bottomAreaMargin = 10;
+                this.topAreaMargin = 10;
+                this.leftAreaMargin = 10;
+                this.rightAreaMargin = 10;
+            }
             protected void newValue(double x, double y, double size, int i) {
                 String url = urlPrototype.replaceAll("DATASETLABEL", dataset.getLabels().get(i));
                 html.append("            <area shape=\"circle\" coords=\"" + (int) x + "," + (int) y + "," + (int) size + "\" href=\"" + url + "\" alt=\"" + dataset.getLabels().get(i) + "\">\n");
