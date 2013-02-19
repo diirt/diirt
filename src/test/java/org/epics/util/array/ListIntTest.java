@@ -76,4 +76,21 @@ public class ListIntTest {
         assertThat(coll.hashCode(), equalTo(Arrays.hashCode(new int[] {0,1,2,3,4,5,6,7,8,9})));
     }
     
+    @Test
+    public void toString1() {
+        ListInt coll = new ListInt() {
+
+            @Override
+            public int size() {
+                return 10;
+            }
+
+            @Override
+            public int getInt(int index) {
+                return index;
+            }
+        };
+        assertThat(coll.toString(), equalTo("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"));
+    }
+    
 }
