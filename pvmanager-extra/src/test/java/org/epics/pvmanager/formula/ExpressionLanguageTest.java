@@ -16,6 +16,7 @@ import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
 import org.epics.util.array.*;
+import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
 import static org.junit.Assert.*;
@@ -416,6 +417,14 @@ public class ExpressionLanguageTest {
         assertThat(exp.getExpression().getName(), equalTo("((2 ^ 3) ^ 4)"));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(4096.0, 0.0001));
+    }
+
+    @Test
+    public void formula41() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("arrayOf(1,2,3)"));
+        assertThat(exp.getExpression().getName(), equalTo("numberArrayOf"));
+        VNumberArray result = (VNumberArray) exp.getFunction().readValue();
+        assertThat(result.getData(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
     }
 
     @Test
