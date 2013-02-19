@@ -24,6 +24,12 @@ public class SortedListView extends ListDouble {
         this.indexes = new ArrayInt(indexArray);
     }
 
+    public SortedListView(ListNumber values, ListInt indexes) {
+        this.values = values;
+        this.indexes = indexes;
+        this.indexArray = null;
+    }
+
     @Override
     public double getDouble(int index) {
         return values.getDouble(indexes.getInt(index));

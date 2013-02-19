@@ -9,9 +9,15 @@ package org.epics.util.array;
  * @author carcassi
  */
 public class ListNumbers {
+    
     public static SortedListView sortedView(ListNumber values) {
         SortedListView view = new SortedListView(values);
         SortedListView.quicksort(view);
+        return view;
+    }
+    
+    public static SortedListView sortedView(ListNumber values, ListInt indexes) {
+        SortedListView view = new SortedListView(values, indexes);
         return view;
     }
 }
