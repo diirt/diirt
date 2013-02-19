@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraphRendererUpdate;
+import org.epics.graphene.LineGraph2DRendererUpdate;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
@@ -54,7 +54,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             public void componentResized(ComponentEvent e) {
 
                 if (plot != null) {
-                    plot.update(new LineGraphRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
+                    plot.update(new LineGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()));
                 }
             }
         });
@@ -220,7 +220,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(yPv.getText())));
         }
         
-        plot.update(new LineGraphRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
+        plot.update(new LineGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
                 .readListener(new PVReaderListener<Plot2DResult>() {
@@ -252,6 +252,7 @@ public class MockLineGraph extends javax.swing.JFrame {
     private void setLastError(Exception ex) {
         if (ex != null) {
             lastError.setText(ex.getMessage());
+            ex.printStackTrace();
             Logger.getLogger(MockLineGraph.class.getName()).log(Level.WARNING, "Error", ex);
         } else {
             lastError.setText("");
