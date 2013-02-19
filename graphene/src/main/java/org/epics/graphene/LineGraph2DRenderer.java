@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
 import java.awt.geom.Path2D.Double;
 import org.epics.util.array.ListNumber;
+import org.epics.util.array.SortedListView;
 
 /**
  *
@@ -54,12 +55,12 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         drawBackground();
         drawGraphArea();
         
-        // Scale data
+        // Scale data and sort data
         int dataCount = data.getCount();
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
-        ListNumber xValues = data.getXValues();
-        ListNumber yValues = data.getYValues();
+        SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
+        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
         for (int i = 0; i < scaledY.length; i++) {
             scaledX[i] = scaledX(xValues.getDouble(i));
             scaledY[i] = scaledY(yValues.getDouble(i));;
