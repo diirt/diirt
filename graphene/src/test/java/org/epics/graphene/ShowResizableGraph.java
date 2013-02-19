@@ -96,12 +96,12 @@ public class ShowResizableGraph extends javax.swing.JFrame {
     }
     
     public static void showLineGraph(final Point2DDataset dataset) {
-        final LineGraphRenderer renderer = new LineGraphRenderer(200, 300);
+        final LineGraph2DRenderer renderer = new LineGraph2DRenderer(200, 300);
         showGraph(new Renderer() {
 
             @Override
             public void redrawHistogram(BufferedImage image) {
-                renderer.update(new LineGraphRendererUpdate()
+                renderer.update(new LineGraph2DRendererUpdate()
                         .imageHeight(image.getHeight())
                         .imageWidth(image.getWidth()));
                 renderer.draw(image.createGraphics(), dataset);

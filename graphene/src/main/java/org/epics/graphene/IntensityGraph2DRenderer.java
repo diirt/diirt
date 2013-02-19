@@ -86,7 +86,7 @@ public class IntensityGraph2DRenderer {
         return startPlotY;
     }
     
-    public void update(LineGraphRendererUpdate update) {
+    public void update(IntensityGraph2DRendererUpdate update) {
         if (update.getImageHeight() != null) {
             height = update.getImageHeight();
         }
