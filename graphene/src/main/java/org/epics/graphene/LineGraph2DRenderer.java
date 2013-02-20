@@ -6,8 +6,7 @@ package org.epics.graphene;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Path2D.Double;
+import java.util.Arrays;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
@@ -18,6 +17,8 @@ import org.epics.util.array.SortedListView;
  */
 public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpdate> {
 
+    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    
     @Override
     public LineGraph2DRendererUpdate newUpdate() {
         return new LineGraph2DRendererUpdate();
