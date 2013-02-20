@@ -80,4 +80,18 @@ public class ScatterGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("scatter2D.3", image);
     }
+    
+    @Test
+    public void test4() throws Exception {
+        double[] x = new double[] {-7, -10, -7, 0, 7, 10, 7};
+        double[] y = new double[] {-7, 0, 7, 10, 7, 0, -7};
+        
+        Point2DDataset data = Point2DDatasets.lineData(x,y);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("scatter2D.4", image);
+    }
 }
