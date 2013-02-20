@@ -4,16 +4,15 @@
  */
 package org.epics.graphene;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
 import java.awt.geom.Path2D.Double;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
 /**
+ * Renderer for a line graph.
  *
  * @author carcassi
  */
@@ -25,16 +24,22 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     }
 
     private InterpolationScheme scheme = InterpolationScheme.NEAREST_NEIGHBOUR;
-    
 
-    public LineGraph2DRenderer(int width, int height) {
-        super(width, height);
+    /**
+     * Creates a new line graph renderer.
+     * 
+     * @param imageWidth the graph width
+     * @param imageHeight the graph height
+     */
+    public LineGraph2DRenderer(int imageWidth, int imageHeight) {
+        super(imageWidth, imageHeight);
     }
 
-    public LineGraph2DRenderer() {
-        this(300, 200);
-    }
-    
+    /**
+     * The current interpolation used for the line.
+     * 
+     * @return the current interpolation
+     */
     public InterpolationScheme getInterpolation() {
         return scheme;
     }
@@ -47,6 +52,12 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
 
+    /**
+     * Draws the graph on the given graphics context.
+     * 
+     * @param g the graphics on which to display the data
+     * @param data the data to display
+     */
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         

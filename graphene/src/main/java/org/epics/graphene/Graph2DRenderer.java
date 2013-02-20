@@ -19,6 +19,7 @@ import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 
 /**
+ * The base class for all graph renderers.
  *
  * @author carcassi
  */
@@ -42,15 +43,31 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int yAreaEnd;
     protected int xAreaEnd;
 
-    public Graph2DRenderer(int imageWidth, int imageHeight) {
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
+    /**
+     * Creates a graph renderer.
+     * 
+     * @param graphWidth the graph width
+     * @param graphHeight the graph height
+     */
+    public Graph2DRenderer(int graphWidth, int graphHeight) {
+        this.imageWidth = graphWidth;
+        this.imageHeight = graphHeight;
     }
 
+    /**
+     * The current height of the graph.
+     * 
+     * @return the graph height
+     */
     public int getImageHeight() {
         return imageHeight;
     }
 
+    /**
+     * The current width of the graph.
+     * 
+     * @return the graph width
+     */
     public int getImageWidth() {
         return imageWidth;
     }
@@ -100,30 +117,68 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
 
+    /**
+     * The current strategy to calculate the x range for the graph.
+     * 
+     * @return the x axis range calculator
+     */
     public AxisRange getXAxisRange() {
         return xAxisRange;
     }
 
+    /**
+     * The current strategy to calculate the y range for the graph.
+     * 
+     * @return the y axis range calculator
+     */
     public AxisRange getYAxisRange() {
         return yAxisRange;
     }
 
+    /**
+     * The aggregated range of all the data that has been rendered.
+     * 
+     * @return the aggregated data x range
+     */
     public Range getXAggregatedRange() {
         return xAggregatedRange;
     }
 
+    /**
+     * The aggregated range of all the data that has been rendered.
+     * 
+     * @return the aggregated data y range
+     */
     public Range getYAggregatedRange() {
         return yAggregatedRange;
     }
 
+    /**
+     * The range of the x axis in the last graph rendering.
+     * 
+     * @return the x axis range
+     */
     public Range getXPlotRange() {
         return xPlotRange;
     }
 
+    /**
+     * The range of the y axis in the last graph rendering.
+     * 
+     * @return the y axis range
+     */
     public Range getYPlotRange() {
         return yPlotRange;
     }
 
+    /**
+     * Applies the update to the renderer.
+     * <p>
+     * When sub-classing, one should re-implement this method by first calling it
+     * and then applying all the updates specific to the sub-class.
+     * 
+     * @param update the update to apply
+     */
     public void update(T update) {
         if (update.getImageHeight() != null) {
             imageHeight = update.getImageHeight();
@@ -147,6 +202,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
+    /**
+     * Creates a new update for the given graph.
+     * 
+     * @return a new update object
+     */
     public abstract T newUpdate();
     
     protected void calculateRanges(Range xDataRange, Range yDataRange) {
