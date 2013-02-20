@@ -27,8 +27,10 @@ public class ProfileLineGraph2D {
         // Using ArrayDouble, 3.9436457209999842 ms, 100 samples, 10000 tries, 600x400
         // Using array, 19.336473031333334 ms, 1000 samples, 1500 tries, 600x400
         // Using ArrayDouble, 17.84245149399999 ms, 1000 samples, 1500 tries, 600x400 18.67990659599997
-        int nSamples = 2000;
-        int nTries = 1500;
+        // Adding sorting and new impl, 12.17332916666666 ms, 1000 samples, 1500 tries, 600x400
+        // Adding sorting and new impl, 2.679641561333325 ms, 100 samples, 15000 tries, 600x400
+        int nSamples = 100;
+        int nTries = 15000;
         int imageWidth = 600;
         int imageHeight = 400;
         Random rand = new Random();
@@ -41,7 +43,7 @@ public class ProfileLineGraph2D {
         //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(imageWidth, imageHeight);
-        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         
         StopWatch stopWatch = new StopWatch(nTries);
         
