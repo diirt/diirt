@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
 import java.awt.geom.Path2D.Double;
+import java.util.List;
 import org.epics.util.array.ListNumber;
 
 /**
@@ -20,7 +21,7 @@ public class IntensityGraph2DRenderer {
 
     private int width = 300;
     private int height = 200;
-    private InterpolationScheme scheme = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private ValueColorScheme colorScheme;
     
     private boolean rangeFromDataset = true;
     private double startPlotX = java.lang.Double.MIN_VALUE;
@@ -48,10 +49,6 @@ public class IntensityGraph2DRenderer {
 
     public int getImageWidth() {
         return width;
-    }
-    
-    public InterpolationScheme getInterpolation() {
-        return scheme;
     }
 
     public double getEndPlotX() {
@@ -92,9 +89,6 @@ public class IntensityGraph2DRenderer {
         }
         if (update.getImageWidth() != null) {
             width = update.getImageWidth();
-        }
-        if (update.getInterpolation() != null) {
-            scheme = update.getInterpolation();
         }
         if (update.isRangeFromDataset() != null) {
             rangeFromDataset = update.isRangeFromDataset();
@@ -181,9 +175,48 @@ public class IntensityGraph2DRenderer {
         for (int yTick : yTicks) {
             g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
         }
-
         
+        // Set color scheme
+        colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
 
+        ///////////////////////////////////////////////////////////////////////
+        
+        //double xBoundaries = data.getXBoundaries().getDouble(3);
+        ListNumber yBoundaries = data.getYBoundaries();
+        ListNumber xBoundaries = data.getXBoundaries();
+        int countY = 0;
+        int countX = 0;
+        int valuey = 10;
+        //Replace this eventually
+        int cellWidth = (plotWidth)/data.getXCount();
+        int cellHeight = plotHeight/data.getYCount();
+        //commented loop tries to account for different sizes of intervals 
+//        for (int j = 0; j < yBoundaries.size(); j++)
+//        {
+//            int valuex = 0;
+//            for (int i = 0; i < xBoundaries.size(); i++)
+//            {
+//                int x = xStartGraph + cellWidth*xBoundaries.getInt(i);
+//                g.setColor(new Color(colorScheme.colorFor(data.getValue(valuex, valuey))));
+//                g.fillRect(x,j, cellWidth, cellHeight);
+//                valuex++;
+//            }
+//            valuey--;
+//        }
+
+        for (int j = yStartGraph; j < (yEndGraph-cellHeight); j = j + cellHeight)
+        {
+            int valuex = 0;
+            for (int i = xStartGraph; i < xEndGraph; i = i + cellWidth)
+            {
+                g.setColor(new Color(colorScheme.colorFor(data.getValue(valuex, valuey))));
+                g.fillRect(i, j, cellWidth, cellHeight);
+                valuex++;
+                countX++;
+            }
+            valuey--;
+            countY++;
+        }
 
     }
 
