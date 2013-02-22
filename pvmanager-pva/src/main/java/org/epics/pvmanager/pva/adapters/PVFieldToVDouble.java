@@ -6,6 +6,7 @@ package org.epics.pvmanager.pva.adapters;
 
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.vtype.VDouble;
+import org.epics.vtype.VTypeToString;
 
 /**
  * @author msekoranja
@@ -32,6 +33,11 @@ public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDoub
     public Double getValue()
     {
     	return value;
+    }
+    
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
     }
 
 }

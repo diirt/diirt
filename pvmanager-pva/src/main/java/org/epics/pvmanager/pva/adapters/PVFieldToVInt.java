@@ -8,6 +8,7 @@ import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.vtype.VInt;
+import org.epics.vtype.VTypeToString;
 
 /**
  * @author msekoranja
@@ -38,6 +39,11 @@ public class PVFieldToVInt extends AlarmTimeDisplayExtractor implements VInt {
     public Integer getValue()
     {
     	return value;
+    }
+    
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
     }
 
 }

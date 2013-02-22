@@ -7,6 +7,7 @@ package org.epics.pvmanager.pva.adapters;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.vtype.VString;
+import org.epics.vtype.VTypeToString;
 
 /**
  * @author msekoranja
@@ -35,22 +36,9 @@ public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VStri
 		return value;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "PVFieldToVString [value=" + value + ", alarmSeverity="
-				+ alarmSeverity + ", alarmStatus=" + alarmStatus
-				+ ", timeStamp=" + timeStamp + ", timeUserTag=" + timeUserTag
-				+ ", isTimeValid=" + isTimeValid + ", lowerDisplayLimit="
-				+ lowerDisplayLimit + ", lowerCtrlLimit=" + lowerCtrlLimit
-				+ ", lowerAlarmLimit=" + lowerAlarmLimit
-				+ ", lowerWarningLimit=" + lowerWarningLimit + ", units="
-				+ units + ", format=" + format + ", upperWarningLimit="
-				+ upperWarningLimit + ", upperAlarmLimit=" + upperAlarmLimit
-				+ ", upperCtrlLimit=" + upperCtrlLimit + ", upperDisplayLimit="
-				+ upperDisplayLimit + "]";
-	}
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
 	
 }

@@ -13,7 +13,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.epics.pvdata.factory.FieldFactory;
+import org.epics.pvdata.factory.StandardFieldFactory;
 import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.vtype.VByteArray;
@@ -39,18 +41,26 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVStringArray;
 
 /**
  *
- * @author carcassi
+ * @author msekoranja
  */
 public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     
+	private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     @Override
     public Set<PVATypeAdapter> getAdapters() {
         return converters;
     }
     
     //  -> VDouble
-    final static PVATypeAdapter ToVDouble = new PVATypeAdapter(VDouble.class, new String[] { "NTScalar", "scalar_t", "structure" }, null) {
-
+    final static PVATypeAdapter ToVDouble = new PVATypeAdapter(
+    		VDouble.class, 
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" }, 
+    		new Field[]
+    				{
+    					fieldCreate.createScalar(ScalarType.pvDouble),
+    					fieldCreate.createScalar(ScalarType.pvFloat),
+    				})
+    	{
             @Override
             public VDouble createValue(PVStructure message, Field valueType, boolean disconnected) {
                 return new PVFieldToVDouble(message, disconnected);
@@ -58,7 +68,23 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VInt
-    final static PVATypeAdapter ToVInt = new PVATypeAdapter(VInt.class, new String[] { "NTScalar", "scalar_t", "structure" }, null) {
+    final static PVATypeAdapter ToVInt = new PVATypeAdapter(
+    		VInt.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new Field[]
+    				{
+    					fieldCreate.createScalar(ScalarType.pvInt),
+    					fieldCreate.createScalar(ScalarType.pvUInt),
+    					fieldCreate.createScalar(ScalarType.pvLong),
+    					fieldCreate.createScalar(ScalarType.pvULong),
+    					fieldCreate.createScalar(ScalarType.pvShort),
+    					fieldCreate.createScalar(ScalarType.pvUShort),
+    					fieldCreate.createScalar(ScalarType.pvByte),
+    					fieldCreate.createScalar(ScalarType.pvUByte),
+    					
+    					fieldCreate.createScalar(ScalarType.pvBoolean)
+    				})
+    	{
 
             @Override
             public VInt createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -67,8 +93,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VString
-    final static PVATypeAdapter ToVString = new PVATypeAdapter(VString.class, new String[] { "NTScalar", "scalar_t", "structure" }, null) {
-
+    final static PVATypeAdapter ToVString = new PVATypeAdapter(
+    		VString.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+			fieldCreate.createScalar(ScalarType.pvString))
+    	{
             @Override
             public VString createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVString(message, disconnected);
@@ -76,8 +105,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
             
     //  -> VEnum
-    final static PVATypeAdapter ToVEnum = new PVATypeAdapter(VEnum.class, new String[] { "NTScalar", "scalar_t", "structure" }, null) {
-
+    final static PVATypeAdapter ToVEnum = new PVATypeAdapter(
+    		VEnum.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		StandardFieldFactory.getStandardField().enumerated())
+    	{
             @Override
             public VEnum createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVEnum(message, disconnected);
@@ -85,8 +117,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VArrayDouble
-    final static PVATypeAdapter ToVArrayDouble = new PVATypeAdapter(VDoubleArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvDouble)) {
-
+    final static PVATypeAdapter ToVArrayDouble = new PVATypeAdapter(
+    		VDoubleArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvDouble))
+    	{
             @Override
             public VDoubleArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVDoubleArray(message, disconnected);
@@ -94,8 +129,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VArrayFloat
-    final static PVATypeAdapter ToVArrayFloat = new PVATypeAdapter(VFloatArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvFloat)) {
-
+    final static PVATypeAdapter ToVArrayFloat = new PVATypeAdapter(
+    		VFloatArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvFloat))
+    	{
             @Override
             public VFloatArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVFloatArray(message, disconnected);
@@ -103,8 +141,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
         
     //  -> VArrayInt
-    final static PVATypeAdapter ToVArrayInt = new PVATypeAdapter(VIntArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvInt)) {
-
+    final static PVATypeAdapter ToVArrayInt = new PVATypeAdapter(
+    		VIntArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvInt))
+    	{
             @Override
             public VIntArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVIntArray(message, disconnected);
@@ -112,8 +153,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
 
     //  -> VArrayShort
-    final static PVATypeAdapter ToVArrayShort = new PVATypeAdapter(VShortArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvShort)) {
-
+    final static PVATypeAdapter ToVArrayShort = new PVATypeAdapter(
+    		VShortArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvShort))
+    	{
             @Override
             public VShortArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVShortArray(message, disconnected);
@@ -121,8 +165,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
         
     //  -> VArrayByte
-    final static PVATypeAdapter ToVArrayByte = new PVATypeAdapter(VByteArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvByte)) {
-
+    final static PVATypeAdapter ToVArrayByte = new PVATypeAdapter(
+    		VByteArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvByte))
+    	{
             @Override
             public VByteArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVByteArray(message, disconnected);
@@ -130,8 +177,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         };
         
     //  -> VArrayString
-    final static PVATypeAdapter ToVArrayString = new PVATypeAdapter(VStringArray.class, new String[] { "NTArray", "scalarArray_t", "structure" }, FieldFactory.getFieldCreate().createScalarArray(ScalarType.pvString)) {
-
+    final static PVATypeAdapter ToVArrayString = new PVATypeAdapter(
+    		VStringArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTArray", "scalarArray_t" },
+    		fieldCreate.createScalarArray(ScalarType.pvString))
+    	{
             @Override
             public VStringArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
             	return new PVFieldToVStringArray(message, disconnected);

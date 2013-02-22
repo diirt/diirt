@@ -25,20 +25,42 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 	// e.g. VDouble.class
     private final Class<?> typeClass;
     
+    // PVStructure requirements
     private final String[] ntIds;
-    private final Field pvValueType;
+    private final Field[] valueFieldTypes;
 
     /**
      * Creates a new type adapter.
      * 
      * @param typeClass the java type this adapter will create
-     * @param ntIds optional array of IDs this instance supports
-     * @param pvType <code>Field</code> instance this this adapter will convert
+     * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
      */
-    public PVATypeAdapter(Class<?> typeClass, String[] ntIds, Field pvValueType) {
+    public PVATypeAdapter(Class<?> typeClass, String[] ntIds) {
+    	this(typeClass, ntIds, (Field[])null);
+    }
+
+    /**
+     * Creates a new type adapter.
+     * 
+     * @param typeClass the java type this adapter will create
+     * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
+     * @param fieldType <code>Field</code> instance this adapter is able convert
+     */
+    public PVATypeAdapter(Class<?> typeClass, String[] ntIds, Field fieldType) {
+    	this(typeClass, ntIds, new Field[] { fieldType });
+    }
+
+    /**
+     * Creates a new type adapter.
+     * 
+     * @param typeClass the java type this adapter will create
+     * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
+     * @param fieldTypes <code>Field</code> instances this adapter is able convert, <code>null</code> allowed
+     */
+    public PVATypeAdapter(Class<?> typeClass, String[] ntIds, Field[] fieldTypes) {
         this.typeClass = typeClass;
         this.ntIds = ntIds;
-        this.pvValueType = pvValueType;
+        this.valueFieldTypes = fieldTypes;
     }
 
     @Override
@@ -53,6 +75,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         {
         	boolean match = false;
         	String ntId = channel.getChannelType().getID();
+        	// TODO "structure" ID ??
         	for (String id : ntIds)
         		if (ntId.equals(id))
         		{
@@ -65,14 +88,25 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         }
         
         // If the type of the channel does not match, no match
-        if (pvValueType != null)
+        if (valueFieldTypes != null)
         {
+        	boolean match = false;
         	// we assume Structure here
         	Field channelValueType = ((Structure)channel.getChannelType()).getField("value");
-        	if (channelValueType == null || !pvValueType.equals(channelValueType))
-        		return 0;
+        	if (channelValueType != null)
+    		{
+            	for (Field vf : valueFieldTypes)
+            		if (channelValueType.equals(vf))
+            		{
+            			match = true;
+            			break;
+            		}
+            	
+            	if (!match)
+            		return 0;
+    		}
         }
-        
+
         // Everything matches
         return 1;
     }

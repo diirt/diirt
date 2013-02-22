@@ -13,10 +13,11 @@ import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.StringArrayData;
 import org.epics.vtype.VEnum;
+import org.epics.vtype.VTypeToString;
 
 public class PVFieldToVEnum extends AlarmTimeDisplayExtractor implements VEnum {
 	
-	protected final String value;
+	protected final int index;
 	protected final List<String> labels;
 	
 	public PVFieldToVEnum(PVStructure pvField, boolean disconnected)
@@ -36,16 +37,20 @@ public class PVFieldToVEnum extends AlarmTimeDisplayExtractor implements VEnum {
 				
 				PVInt indexField = enumField.getIntField("index");
 				if (indexField != null)
-					value = labels.get(indexField.get());
+				{
+					index = indexField.get();
+				}
 				else
-					value = null;
+				{
+					index = -1;
+				}
 				
 				return;
 			}
 		}
 		
 		// error
-		value = null;
+		index = -1;
 		labels = null;
 	}
 	
@@ -54,8 +59,7 @@ public class PVFieldToVEnum extends AlarmTimeDisplayExtractor implements VEnum {
 	 */
 	@Override
 	public List<String> getLabels() {
-		// TODO Auto-generated method stub
-		return null;
+		return labels;
 	}
 
 	/* (non-Javadoc)
@@ -63,7 +67,10 @@ public class PVFieldToVEnum extends AlarmTimeDisplayExtractor implements VEnum {
 	 */
 	@Override
 	public String getValue() {
-		return value;
+		if (labels != null && index != -1)
+			return labels.get(index);
+		else
+			return null;
 	}
 
 	/* (non-Javadoc)
@@ -71,26 +78,12 @@ public class PVFieldToVEnum extends AlarmTimeDisplayExtractor implements VEnum {
 	 */
 	@Override
 	public int getIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		return index;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "PVFieldToVEnum [value=" + value + ", alarmSeverity="
-				+ alarmSeverity + ", alarmStatus=" + alarmStatus
-				+ ", timeStamp=" + timeStamp + ", timeUserTag=" + timeUserTag
-				+ ", isTimeValid=" + isTimeValid + ", lowerDisplayLimit="
-				+ lowerDisplayLimit + ", lowerCtrlLimit=" + lowerCtrlLimit
-				+ ", lowerAlarmLimit=" + lowerAlarmLimit
-				+ ", lowerWarningLimit=" + lowerWarningLimit + ", units="
-				+ units + ", format=" + format + ", upperWarningLimit="
-				+ upperWarningLimit + ", upperAlarmLimit=" + upperAlarmLimit
-				+ ", upperCtrlLimit=" + upperCtrlLimit + ", upperDisplayLimit="
-				+ upperDisplayLimit + "]";
-	}
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
 
 }
