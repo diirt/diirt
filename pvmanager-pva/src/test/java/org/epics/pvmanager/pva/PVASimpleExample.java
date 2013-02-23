@@ -1,7 +1,6 @@
 package org.epics.pvmanager.pva;
 
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.epics.pvmanager.ExpressionLanguage.channel;
 
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;

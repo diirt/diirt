@@ -18,26 +18,30 @@ import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.vtype.VByteArray;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VFloatArray;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VIntArray;
-import org.epics.vtype.VShortArray;
-import org.epics.vtype.VString;
-import org.epics.vtype.VStringArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVByteArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDouble;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVEnum;
 import org.epics.pvmanager.pva.adapters.PVFieldToVFloatArray;
+import org.epics.pvmanager.pva.adapters.PVFieldToVImage;
 import org.epics.pvmanager.pva.adapters.PVFieldToVInt;
 import org.epics.pvmanager.pva.adapters.PVFieldToVIntArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVString;
 import org.epics.pvmanager.pva.adapters.PVFieldToVStringArray;
+import org.epics.pvmanager.pva.adapters.PVFieldToVTable;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 
 /**
  *
@@ -188,6 +192,28 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
         
+        //  -> VImage
+        final static PVATypeAdapter ToVImage = new PVATypeAdapter(
+        		VImage.class,
+        		new String[] { "uri:ev4:nt/2012/pwd:NTImage" })
+        	{
+                @Override
+                public VImage createValue(final PVStructure message, Field valueType, boolean disconnected) {
+                	return new PVFieldToVImage(message, disconnected);
+                }
+            };
+
+        //  -> VImage
+        final static PVATypeAdapter ToVTable = new PVATypeAdapter(
+        		VTable.class,
+        		new String[] { "uri:ev4:nt/2012/pwd:NTTable" })
+        	{
+                @Override
+                public VTable createValue(final PVStructure message, Field valueType, boolean disconnected) {
+                	return new PVFieldToVTable(message, disconnected);
+                }
+            };
+
     private static final Set<PVATypeAdapter> converters;
     
     static {
@@ -208,7 +234,23 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVArrayString);
         //newFactories.add(ToVArrayEnum);
         
+        newFactories.add(ToVImage);
+        newFactories.add(ToVTable);
+
         converters = Collections.unmodifiableSet(newFactories);
     }
     
+    
+    // TODO
+    /*
+VEnumArray
+VMultiDouble
+VMultiEnum
+VMultiInt
+VMultiString
+VStatistics - missing NTStatistics
+VTable
+
+-> NTMatrix
+    */
 }
