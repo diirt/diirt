@@ -18,6 +18,7 @@ import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvmanager.pva.adapters.PVFieldNTMatrixToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVByteArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDouble;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDoubleArray;
@@ -214,6 +215,16 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
                 }
             };
 
+        //  -> VDoubleArray as matrix (NTMatrix support)
+        final static PVATypeAdapter ToVDoubleArrayAsMatrix = new PVATypeAdapter(
+        		VDoubleArray.class,
+        		new String[] { "uri:ev4:nt/2012/pwd:NTMatrix" })
+        	{
+                @Override
+                public VDoubleArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
+                	return new PVFieldNTMatrixToVDoubleArray(message, disconnected);
+                }
+            };
     private static final Set<PVATypeAdapter> converters;
     
     static {
@@ -236,6 +247,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         
         newFactories.add(ToVImage);
         newFactories.add(ToVTable);
+        newFactories.add(ToVDoubleArrayAsMatrix);	// NTMatrix support
 
         converters = Collections.unmodifiableSet(newFactories);
     }
@@ -243,14 +255,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     
     // TODO
     /*
-VEnumArray
-VMultiDouble
-VMultiEnum
-VMultiInt
-VMultiString
+VEnumArray - not explicitly a NT
+VMultiDouble - missing Display
+VMultiEnum  - missing Display
+VMultiInt - missing Display
+VMultiString  - missing Display
 VStatistics - missing NTStatistics
-VTable
-
--> NTMatrix
     */
 }
