@@ -48,10 +48,35 @@ public class PVFieldToVImage implements VImage {
 		PVByteArray array = (PVByteArray)pvField.getScalarArrayField("value", ScalarType.pvByte);
 		if (array != null)
 		{
+			int len = array.getLength();
 			ByteArrayData bad = new ByteArrayData();
-			array.get(0, array.getLength(), bad);
+			array.get(0, len, bad);
 			
-			data = bad.data;
+			int pixels = width*height;
+			int expectedBytes = 3*pixels;
+			
+			if (len == expectedBytes)
+			{
+				data = bad.data;
+			}
+			else if (len == pixels)
+			{
+				// convert grayscale to RGB
+				data = new byte[3*pixels];
+				int p = 0;
+				for (int i = 0; i < pixels; i++)
+				{
+					byte c = bad.data[i];
+					// R = G = B = c
+					data[p++] = c; 
+					data[p++] = c; 
+					data[p++] = c;
+				}
+			}
+			else
+			{
+				data = null;
+			}
 		}
 		else
 			data = null;

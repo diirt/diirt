@@ -32,7 +32,7 @@ public class PVAImageMonitor {
 	}
 	
 	private final JFrame frame;
-	private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_BYTE_GRAY);
+	private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
 	private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
 
 	public PVAImageMonitor()
@@ -45,7 +45,7 @@ public class PVAImageMonitor {
 	public void showImage(VImage vImage)
 	{
 		final BufferedImage lastBufferedImage = bufferedImage;
-		final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_BYTE_GRAY);
+		final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_3BYTE_BGR);
 		bufferedImage = newBufferedImage;
 		
 		SwingUtilities.invokeLater(new Runnable()
