@@ -53,7 +53,7 @@ final class LogValueScale implements ValueScale {
         }
         
         // Number of digits required after first number
-        int orderOfIncrement = (int) Math.ceil(Math.log10(currentFactor));
+        int orderOfIncrement = MathUtil.orderOf(currentFactor);
         NumberFormat format;
         boolean useExponentialNotation;
         if ((minExp - orderOfIncrement) < -3 || maxExp > 3) {
@@ -146,12 +146,12 @@ final class LogValueScale implements ValueScale {
         int currentExp = minExp;
         while (currentExp <= maxExp) {
             double currentOrder = Math.pow(10, currentExp);
-            if (currentOrder <= maxValue) {
+            if (currentOrder <= maxValue && currentOrder >= minValue) {
                 values.addDouble(currentOrder);
             }
             for (int i = 0; i < subdivisionFactor; i++) {
                 double newValue = (currentOrder * 10 * i) / subdivisionFactor;
-                if ((newValue <= maxValue) && (newValue > currentOrder)) {
+                if ((newValue <= maxValue) && (newValue > currentOrder) && (newValue > minValue)) {
                     values.addDouble(newValue);
                 }
             }

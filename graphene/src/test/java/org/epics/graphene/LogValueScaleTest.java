@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -34,6 +35,34 @@ public class LogValueScaleTest {
         ValueScale logScale = ValueScales.logScale();
         ValueAxis axis = logScale.references(RangeUtil.range(1.0, 1000.0), 2, 4);
         assertAxisEquals(1.0, 1000.0, new double[]{1.0, 10.0, 100.0, 1000.0}, new String[]{"1", "10", "100", "1000"}, axis);
+    }
+
+    @Test
+    public void references2() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(RangeUtil.range(100.0, 100000.0), 2, 4);
+        assertAxisEquals(100.0, 100000.0, new double[]{100.0, 1000.0, 10000.0, 100000.0}, new String[]{"1e2", "1e3", "1e4", "1e5"}, axis);
+    }
+
+    @Test
+    public void references3() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(RangeUtil.range(0.001, 1), 2, 4);
+        assertAxisEquals(0.001, 1, new double[]{0.001, 0.01, 0.1, 1.0}, new String[]{"0.001", "0.010", "0.100", "1.000"}, axis);
+    }
+
+    @Test
+    public void references4() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(RangeUtil.range(0.0001, 1), 2, 7);
+        assertAxisEquals(0.0001, 1, new double[]{0.0001, 0.001, 0.01, 0.1, 1.0}, new String[]{"1e-4", "1e-3", "1e-2", "1e-1", "1e0"}, axis);
+    }
+
+    @Test
+    public void references5() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(RangeUtil.range(5, 50), 2, 7);
+        assertAxisEquals(5, 50, new double[]{6,8,10,20,40}, new String[]{"6", "8", "10", "20", "40"}, axis);
     }
     
     @Test
@@ -75,6 +104,12 @@ public class LogValueScaleTest {
     public void generateReferenceValues8() {
         assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
                 equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
+    }
+    
+    @Test
+    public void generateReferenceValues9() {
+        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(5, 50), 5), 
+                equalTo((ListDouble) new ArrayDouble(6,8,10,20,40)));
     }
     
     @Test
