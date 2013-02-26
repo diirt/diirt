@@ -10,6 +10,7 @@ import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.vtype.VShortArray;
+import org.epics.vtype.VTypeToString;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListShort;
@@ -73,5 +74,10 @@ public class PVFieldToVShortArray extends AlarmTimeDisplayExtractor implements V
 	public ListShort getData() {
 		return list;
 	}
+    
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
 
 }

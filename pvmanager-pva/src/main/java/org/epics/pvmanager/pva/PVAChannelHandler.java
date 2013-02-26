@@ -354,7 +354,11 @@ public class PVAChannelHandler extends
 	@Override
 	protected PVATypeAdapter findTypeAdapter(
 			ValueCache<?> cache, PVAChannelHandler connection) {
-		return pvaTypeSupport.find(cache, connection);
+		PVATypeAdapter pta = null;
+		try	{
+			pta = pvaTypeSupport.find(cache, connection);
+		} catch (Throwable th) { th.printStackTrace(); }
+		return pta;
 	}
 
 	@Override

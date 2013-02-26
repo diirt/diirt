@@ -10,6 +10,7 @@ import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VTypeToString;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -73,5 +74,10 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
 	public ListFloat getData() {
 		return list;
 	}
+    
+    @Override
+    public String toString() {
+        return VTypeToString.toString(this);
+    }
 
 }
