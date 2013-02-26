@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.2.2-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
     </dependencies>
