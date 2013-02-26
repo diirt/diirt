@@ -23,6 +23,8 @@ import org.epics.util.array.ListMath;
 public class ProfileScatter2DGraph {
 
     public static void main(String[] args) {
+        // Before abstracting scale nSample=100000 nTries=3000 49.411858081000055 ms
+        // After abstracting scale nSample=100000 nTries=3000 49.5761738296667 ms
         int nSamples = 1000;
         int nTries = 3000;
         int imageWidth = 600;
