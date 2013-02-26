@@ -13,7 +13,14 @@
 
     <name>Graphene</name>
     <description>Graph library for real time.</description>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>epics-util</artifactId>
+            <version>0.3-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
     <reporting>
         <plugins>
             <plugin>
