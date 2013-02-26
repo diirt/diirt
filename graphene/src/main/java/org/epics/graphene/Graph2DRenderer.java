@@ -196,6 +196,12 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (update.getYAxisRange() != null) {
             yAxisRange = update.getYAxisRange();
         }
+        if (update.getXValueScale()!= null) {
+            xValueScale = update.getXValueScale();
+        }
+        if (update.getYValueScale() != null) {
+            yValueScale = update.getYValueScale();
+        }
     }
     
     static Range aggregateRange(Range dataRange, Range aggregatedRange) {
