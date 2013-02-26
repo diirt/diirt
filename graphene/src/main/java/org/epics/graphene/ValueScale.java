@@ -4,8 +4,6 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.ListDouble;
-
 /**
  * The scale to be used to create axis references and rescale values.
  *
@@ -13,5 +11,5 @@ import org.epics.util.array.ListDouble;
  */
 public interface ValueScale {
     double scaleValue(double value, double minValue, double maxValue, double newMinValue, double newMaxValue);
-    ListDouble references(Range range, int minRefs, int maxRegs);
+    ValueAxis references(Range range, int minRefs, int maxRegs);
 }
