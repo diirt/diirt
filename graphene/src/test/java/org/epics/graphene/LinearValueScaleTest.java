@@ -27,14 +27,14 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange1() {
+    public void references1() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(1.0, 9.0), 2, 4);
         assertAxisEquals(1.0, 9.0, new double[]{2.0, 4.0, 6.0, 8.0}, new String[]{"2", "4", "6", "8"}, axis);
     }
 
     @Test
-    public void testTicksForRange2() {
+    public void references2() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0, 10.0), 2, 11);
         assertAxisEquals(0.0, 10.0, new double[]{0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
@@ -42,7 +42,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange3() {
+    public void references3() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0, 10.0), 2, 21);
         assertAxisEquals(0.0, 10.0, new double[]{0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0},
@@ -51,7 +51,7 @@ public class LinearValueScaleTest {
     }
 //    
 //    @Test
-//    public void testTicksForRange4() {
+//    public void references4() {
 //         ValueScale linearScale = ValueScales.linearScale();
 //         ValueAxis axis = linearScale.references(RangeUtil.range(0.0, 10.0), 2, 101, 1.0);
 //        assertAxisEquals(0.0, 10.0, new double[]{0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0},
@@ -59,7 +59,7 @@ public class LinearValueScaleTest {
 //    }
 
     @Test
-    public void testTicksForRange5() {
+    public void references5() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0, 10.0), 2, 6);
         assertAxisEquals(0.0, 10.0, new double[]{0.0, 2.0, 4.0, 6.0, 8.0, 10.0},
@@ -67,7 +67,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange6() {
+    public void references6() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0, 10.0), 2, 8);
         assertAxisEquals(0.0, 10.0, new double[]{0.0, 2.0, 4.0, 6.0, 8.0, 10.0},
@@ -75,7 +75,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange7() {
+    public void references7() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(-10.0, -1.0), 2, 11);
         assertAxisEquals(-10.0, -1.0, new double[]{-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0},
@@ -83,7 +83,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange8() {
+    public void references8() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(-10.0, 0.0), 2, 11);
         assertAxisEquals(-10.0, 0.0, new double[]{-10.0, -9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0, -1.0, 0.0},
@@ -91,7 +91,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange9() {
+    public void references9() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.9, 1.3), 2, 10);
         assertAxisEquals(0.9, 1.3, new double[]{0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3},
@@ -99,7 +99,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange10() {
+    public void references10() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.77777, 0.88888), 2, 15);
         assertAxisEquals(0.77777, 0.88888, new double[]{0.78, 0.79, 0.80, 0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88},
@@ -107,7 +107,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange11() {
+    public void references11() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(100.77777, 100.88888), 2, 15);
         assertAxisEquals(100.77777, 100.88888, new double[]{100.78, 100.79, 100.80, 100.81, 100.82, 100.83, 100.84, 100.85, 100.86, 100.87, 100.88},
@@ -115,7 +115,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange12() {
+    public void references12() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.000077777, 0.000088888), 2, 15);
         assertAxisEquals(0.000077777, 0.000088888, new double[]{0.000078, 0.000079, 0.000080, 0.000081, 0.000082, 0.000083, 0.000084, 0.000085, 0.000086, 0.000087, 0.000088},
@@ -123,7 +123,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange13() {
+    public void references13() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0000799, 0.0001201), 2, 5);
         assertAxisEquals(0.00008, 0.00012, new double[]{0.00008, 0.00009, 0.0001, 0.00011, 0.00012},
@@ -131,7 +131,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange14() {
+    public void references14() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.0000799, 0.0000809), 2, 5);
         assertAxisEquals(0.0000799, 0.0000809, new double[]{0.00008, 0.0000802, 0.0000804, 0.0000806, 0.0000808},
@@ -139,7 +139,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange15() {
+    public void references15() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.000099, 0.0004001), 2, 5);
         assertAxisEquals(0.000099, 0.0004001, new double[]{0.0001, 0.0002, 0.0003, 0.0004},
@@ -147,7 +147,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange16() {
+    public void references16() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(234567, 678967), 2, 5);
         assertAxisEquals(234567, 678967, new double[]{300000, 400000, 500000, 600000},
@@ -155,7 +155,7 @@ public class LinearValueScaleTest {
     }
 //    
 //    @Test
-//    public void testTicksForRange17() {
+//    public void references17() {
 //         ValueScale linearScale = ValueScales.linearScale();
 //         ValueAxis axis = linearScale.references(RangeUtil.range(0, 550), 2, 7, 1.0);
 //        assertAxisEquals(0, 550, new double[]{0, 100, 200, 300, 400, 500},
@@ -163,7 +163,7 @@ public class LinearValueScaleTest {
 //    }
 
     @Test
-    public void testTicksForRange18() {
+    public void references18() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.00001, 0.00004), 2, 4);
         assertAxisEquals(0.00001, 0.00004, new double[]{0.00001, 0.00002, 0.00003, 0.00004},
@@ -171,7 +171,7 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange19() {
+    public void references19() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(0.00001, 0.0004), 2, 5);
         assertAxisEquals(0.00001, 0.0004, new double[]{0.0001, 0.0002, 0.0003, 0.0004},
@@ -179,14 +179,14 @@ public class LinearValueScaleTest {
     }
 
     @Test
-    public void testTicksForRange20() {
+    public void references20() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(RangeUtil.range(-2.644, 3.3689), 2, 3);
         assertAxisEquals(-2.644, 3.3689, new double[]{-2.0, 0.0, 2.0},
                 new String[]{"-2", "0", "2"}, axis);
     }
 
-    private void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
+    public static void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
         assertEquals(minValue, axis.getMinValue(), 0.000001);
         assertEquals(maxValue, axis.getMaxValue(), 0.000001);
         assertArrayEquals(tickValues, axis.getTickValues(), 0.000001);
