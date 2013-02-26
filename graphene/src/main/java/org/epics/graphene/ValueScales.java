@@ -12,4 +12,8 @@ public class ValueScales {
     public static ValueScale linearScale() {
         return new LinearValueScale();
     }
+    
+    public static ValueScale logScale() {
+        return new LogValueScale();
+    }
 }
