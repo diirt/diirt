@@ -29,12 +29,12 @@ public class LogValueScaleTest {
         assertThat(logScale.scaleValue(100, 10, 1000, -100, 100), equalTo(0.0));
     }
 
-//    @Test
-//    public void references1() {
-//        ValueScale logScale = ValueScales.logScale();
-//        ValueAxis axis = logScale.references(RangeUtil.range(1.0, 1000.0), 2, 4);
-//        assertAxisEquals(1.0, 1000.0, new double[]{1.0, 10.0, 100.0, 1000.0}, new String[]{"1", "10", "100", "1000"}, axis);
-//    }
+    @Test
+    public void references1() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(RangeUtil.range(1.0, 1000.0), 2, 4);
+        assertAxisEquals(1.0, 1000.0, new double[]{1.0, 10.0, 100.0, 1000.0}, new String[]{"1", "10", "100", "1000"}, axis);
+    }
     
     @Test
     public void generateReferenceValues1() {
@@ -70,10 +70,30 @@ public class LogValueScaleTest {
     public void generateReferenceValues7() {
         assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 1), equalTo((ListDouble) new ArrayDouble(1, 10, 100, 1000, 10000)));
     }
+//    
+//    @Test
+//    public void generateReferenceValues8() {
+//        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
+//                equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
+//    }
     
     @Test
-    public void generateReferenceValues8() {
-        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
-                equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
+    public void quantize1() {
+        assertThat(LogValueScale.quantize(0.00045), equalTo(1));
+    }
+    
+    @Test
+    public void quantize2() {
+        assertThat(LogValueScale.quantize(1.2), equalTo(2));
+    }
+    
+    @Test
+    public void quantize3() {
+        assertThat(LogValueScale.quantize(33.5), equalTo(50));
+    }
+    
+    @Test
+    public void quantize4() {
+        assertThat(LogValueScale.quantize(99.99), equalTo(100));
     }
 }
