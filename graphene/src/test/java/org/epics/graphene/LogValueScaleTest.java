@@ -70,12 +70,12 @@ public class LogValueScaleTest {
     public void generateReferenceValues7() {
         assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 1), equalTo((ListDouble) new ArrayDouble(1, 10, 100, 1000, 10000)));
     }
-//    
-//    @Test
-//    public void generateReferenceValues8() {
-//        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
-//                equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
-//    }
+    
+    @Test
+    public void generateReferenceValues8() {
+        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
+                equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
+    }
     
     @Test
     public void quantize1() {
@@ -95,5 +95,25 @@ public class LogValueScaleTest {
     @Test
     public void quantize4() {
         assertThat(LogValueScale.quantize(99.99), equalTo(100));
+    }
+    
+    @Test
+    public void decreaseFactor1() {
+        assertThat(LogValueScale.decreaseFactor(200), equalTo(100));
+    }
+    
+    @Test
+    public void decreaseFactor2() {
+        assertThat(LogValueScale.decreaseFactor(100), equalTo(50));
+    }
+    
+    @Test
+    public void decreaseFactor3() {
+        assertThat(LogValueScale.decreaseFactor(1), equalTo(1));
+    }
+    
+    @Test
+    public void decreaseFactor4() {
+        assertThat(LogValueScale.decreaseFactor(5), equalTo(2));
     }
 }

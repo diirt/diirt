@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import static org.epics.graphene.ValueAxis.orderOfMagnitude;
 import org.epics.util.array.CircularBufferDouble;
+import org.epics.util.array.CollectionNumbers;
 import org.epics.util.array.ListDouble;
 import org.epics.util.text.NumberFormats;
 
@@ -38,14 +39,77 @@ final class LogValueScale implements ValueScale {
         if (Math.signum(minValue) != Math.signum(maxValue)) {
             throw new IllegalArgumentException("The range for a log scale must be all positive or all negative");
         }
-        int minExp = Math.getExponent(minValue);
-        int maxExp = Math.getExponent(maxValue);
+        int minExp = MathUtil.orderOf(minValue);
+        int maxExp = MathUtil.orderOf(maxValue);
         
         int expRange = maxExp - minExp + 1;
         int maxRefsPerOrder = maxRefs / expRange;
+        int currentFactor = quantize(maxRefsPerOrder);
         
+        ListDouble references = generateReferenceValues(range, currentFactor);
+        while (references.size() > maxRefs && currentFactor != 1) {
+            currentFactor = decreaseFactor(currentFactor);
+            references = generateReferenceValues(range, currentFactor);
+        }
         
-        return null;
+        // Number of digits required after first number
+        int orderOfIncrement = (int) Math.ceil(Math.log10(currentFactor));
+        NumberFormat format;
+        boolean useExponentialNotation;
+        if ((minExp - orderOfIncrement) < -3 || maxExp > 3) {
+            // Would need more than 3 decimal places or more than 3 zeros
+            useExponentialNotation = true;
+            format = NumberFormats.format(orderOfIncrement);
+        } else {
+            useExponentialNotation = false;
+            format = NumberFormats.format(orderOfIncrement - minExp);
+        }
+        
+        String[] labels = new String[references.size()];
+        for (int i = 0; i < references.size(); i++) {
+            double value = references.getDouble(i);
+            if (useExponentialNotation) {
+                labels[i] = format(value, format, Integer.toString(MathUtil.orderOf(value)), Math.pow(10, MathUtil.orderOf(value)));
+            } else {
+                labels[i] = format(value, format, null, 1);
+            }
+        }
+        
+        return new ValueAxis(minValue, maxValue, CollectionNumbers.doubleArrayCopyOf(references), labels);
+    }
+    
+    static String format(double number, NumberFormat format, String exponent, double normalization) {
+        if (exponent != null) {
+            return format.format(number/normalization) + "e" + exponent;
+        } else {
+            return format.format(number/normalization);
+        }
+    }
+    
+    static int decreaseFactor(int factor) {
+        if (factor == 1) {
+            return 1;
+        }
+
+        int order = 1;
+        while (factor >= 10) {
+            factor /= 10;
+            order *= 10;
+        }
+        
+        if (factor == 1) {
+            return order / 2;
+        }
+        
+        if (factor == 5) {
+            return order * 2;
+        }
+        
+        if (factor == 2) {
+            return order;
+        }
+        
+        throw new IllegalStateException("Logic error: this should be unreachable");
     }
     
     static int quantize(double value) {
