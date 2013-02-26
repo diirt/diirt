@@ -65,4 +65,15 @@ public class LogValueScaleTest {
     public void generateReferenceValues6() {
         assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 1.5), 100), equalTo((ListDouble) new ArrayDouble(1, 1.1, 1.2, 1.3, 1.4, 1.5)));
     }
+    
+    @Test
+    public void generateReferenceValues7() {
+        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 1), equalTo((ListDouble) new ArrayDouble(1, 10, 100, 1000, 10000)));
+    }
+    
+    @Test
+    public void generateReferenceValues8() {
+        assertThat(LogValueScale.generateReferenceValues(RangeUtil.range(1, 10000), 2), 
+                equalTo((ListDouble) new ArrayDouble(1, 5, 10, 50, 100, 500, 1000, 5000, 10000)));
+    }
 }
