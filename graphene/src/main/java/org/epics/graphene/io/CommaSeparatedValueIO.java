@@ -4,12 +4,17 @@
  */
 package org.epics.graphene.io;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import org.epics.graphene.Point2DDataset;
+import org.epics.graphene.Point2DDatasets;
+import org.epics.util.array.CircularBufferDouble;
 
 /**
  *
@@ -35,5 +40,27 @@ public class CommaSeparatedValueIO {
         StringWriter writer = new StringWriter();
         write(dataset, writer);
         return writer.toString();
+    }
+    
+    public static Point2DDataset read(Reader reader) throws IOException {
+        BufferedReader br = new BufferedReader(reader);
+        String line = br.readLine();
+        CircularBufferDouble xValues = new CircularBufferDouble(Integer.MAX_VALUE);
+        CircularBufferDouble yValues = new CircularBufferDouble(Integer.MAX_VALUE);
+        while ((line = br.readLine()) != null) {
+            String[] tokens = line.split(",");
+            if (tokens.length != 2) {
+                throw new IllegalArgumentException("Each line must have two values");
+            }
+            double xValue = Double.parseDouble(tokens[0]);
+            double yValue = Double.parseDouble(tokens[1]);
+            xValues.addDouble(xValue);
+            yValues.addDouble(yValue);
+        }
+        return Point2DDatasets.lineData(xValues, yValues);
+    }
+    
+    public static Point2DDataset read(String string) throws IOException {
+        return read(new StringReader(string));
     }
 }
