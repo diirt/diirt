@@ -20,7 +20,10 @@ import org.epics.pvmanager.formula.FormulaLexer;
 import org.epics.pvmanager.formula.FormulaParser;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
+import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.WriteExpression;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -57,13 +60,18 @@ public class ExpressionLanguage {
         }
     }
     
-    public static DesiredRateExpression<?> formula(String formula) {
+    public static DesiredRateReadWriteExpression<?, Object> formula(String formula) {
         try {
             DesiredRateExpression<?> exp = createParser(formula).formula();
             if (exp == null) {
                 throw new NullPointerException("Parsing failed");
             }
-            return exp;
+            
+            if (exp instanceof LastOfChannelExpression) {
+                return new DesiredRateReadWriteExpressionImpl<>(exp, org.epics.pvmanager.vtype.ExpressionLanguage.vType(exp.getName()));
+            } else {
+                return new DesiredRateReadWriteExpressionImpl<>(exp, readOnlyWriteExpression("Read-only formula"));
+            }
         } catch (RecognitionException ex) {
             throw new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
         } catch (Exception ex) {
