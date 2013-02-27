@@ -65,7 +65,7 @@ public class JCAVTypeAdapterSetTest {
         when(handler.getJcaDataSource()).thenReturn(dataSource);
         when(handler.isLongString()).thenReturn(longString);
 
-        return new JCAConnectionPayload(handler, channel);
+        return new JCAConnectionPayload(handler, channel, null);
     }
 
     @Test
