@@ -20,6 +20,7 @@ import org.epics.pvmanager.formula.FormulaLexer;
 import org.epics.pvmanager.formula.FormulaParser;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.epics.pvmanager.expression.WriteExpression;
 
 /**
  *
@@ -398,5 +399,9 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<VDouble> sqrt(DesiredRateExpression<? extends VNumber> args) {
         return oneArgNumbericFunction("sqrt", args);
+    }
+    
+    static <T> WriteExpression<T> readOnlyWriteExpression(String errorMessage) {
+        return new ReadOnlyWriteExpression<>(errorMessage, "");
     }
 }

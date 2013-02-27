@@ -5,6 +5,10 @@
 package org.epics.pvmanager.formula;
 
 import org.antlr.runtime.RecognitionException;
+import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderListener;
+import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.vtype.VDouble;
 import org.epics.pvmanager.ReadFunction;
@@ -15,7 +19,10 @@ import org.junit.Test;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ChannelExpression;
+import org.epics.pvmanager.test.CountDownPVWriterListener;
+import org.epics.pvmanager.test.MockDataSource;
 import org.epics.util.array.*;
+import org.epics.util.time.TimeDuration;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
@@ -450,5 +457,28 @@ public class ExpressionLanguageTest {
     @Test
     public void channelFromFormula5() {
         assertThat(ExpressionLanguage.channelFromFormula("2+3"), nullValue());
+    }
+    
+    @Test
+    public void readOnlyWriteExpression1() throws InterruptedException {
+        DataSource sim = new MockDataSource();
+        CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<Object>(1);
+        PVWriter<Object> pvWriter = PVManager.write(ExpressionLanguage.readOnlyWriteExpression("Error message"))
+                .from(sim)
+                .writeListener(listener)
+                .async();
+        try {
+            listener.await(TimeDuration.ofMillis(200));
+            Exception ex = pvWriter.lastWriteException();
+            assertThat(ex, instanceOf(RuntimeException.class));
+            assertThat(ex.getMessage(), equalTo("Error message"));
+            assertThat(pvWriter.isWriteConnected(), equalTo(false));
+            Thread.sleep(200);
+            assertThat(pvWriter.lastWriteException(), nullValue());
+            assertThat(pvWriter.isWriteConnected(), equalTo(false));
+        } finally {
+            pvWriter.close();
+            sim.close();
+        }
     }
 }
