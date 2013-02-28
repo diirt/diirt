@@ -125,10 +125,10 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
     }
 
     /**
-     * Given the value and the (optional) metadata, will create the new value.
+     * Given the value create the new value.
      * 
-     * @param value the value taken from the monitor
-     * @param metadata the value taken as metadata
+     * @param message the value taken from the monitor
+     * @param valueType the value introspection data
      * @param disconnected true if the value should report the channel is currently disconnected
      * @return the new value
      */

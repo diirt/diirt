@@ -7,6 +7,7 @@ package org.epics.pvmanager.pva;
 import static org.epics.pvmanager.ExpressionLanguage.channel;
 
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.TimeDuration;
@@ -16,7 +17,7 @@ public class PVASimpleExample {
 	public static void main(String[] args) throws InterruptedException
 	{
 		PVManager.setDefaultDataSource(new PVADataSource());
-		PVManager.read(channel("testCounter")).
+		PVReader<Object> reader = PVManager.read(channel("testCounter")).
 				readListener(new PVReaderListener<Object>() {
 
 					@Override
@@ -29,8 +30,11 @@ public class PVASimpleExample {
 					}
 				}).maxRate(TimeDuration.ofHertz(10));
 		
-		while (true)
+		// forever
+		while (System.currentTimeMillis() != 0)
 			Thread.sleep(Long.MAX_VALUE);
+		
+		reader.close();
 	}
 
 }
