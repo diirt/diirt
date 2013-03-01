@@ -3,6 +3,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/pvmanager-core"/>
 	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="lib/pvAccess-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/pvData-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="M2_REPO/epics/pvData/2.0-BETA/pvData-2.0-BETA.jar"/>
 	<classpathentry kind="var" path="M2_REPO/epics/pvAccess/2.0-BETA/pvAccess-2.0-BETA.jar"/>
@@ -17,5 +19,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/mockito/mockito-core/1.8.5/mockito-core-1.8.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/objenesis/objenesis/1.0/objenesis-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit-dep/4.8.2/junit-dep-4.8.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
