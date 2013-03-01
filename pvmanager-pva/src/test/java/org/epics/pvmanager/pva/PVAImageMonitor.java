@@ -51,6 +51,9 @@ public class PVAImageMonitor {
 	// popular: BufferedImage.TYPE_3BYTE_BGR or BufferedImage.TYPE_BYTE_GRAY
 	public static BufferedImage updateBufferedImage(BufferedImage image, VImage vImage, int imageType)
 	{
+		if (vImage == null)
+			return image;
+		
 		if (image == null ||
 			image.getHeight() != vImage.getHeight() ||
 			image.getWidth() != vImage.getWidth() ||
@@ -105,7 +108,7 @@ public class PVAImageMonitor {
 	{
 		// max 100Hz monitor
 		PVManager.setDefaultDataSource(new PVADataSource());
-		PVReader<VImage> reader = PVManager.read(channel("testNTImage", VImage.class, VImage.class)).
+		PVReader<VImage> reader = PVManager.read(channel("testImage", VImage.class, VImage.class)).
 				readListener(new PVReaderListener<VImage>() {
 
 					@Override
