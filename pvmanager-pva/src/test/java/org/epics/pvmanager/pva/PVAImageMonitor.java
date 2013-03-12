@@ -6,13 +6,19 @@ package org.epics.pvmanager.pva;
 
 import static org.epics.pvmanager.ExpressionLanguage.channel;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.TimeDuration;
@@ -20,9 +26,34 @@ import org.epics.vtype.VImage;
 
 public class PVAImageMonitor {
 
+	@SuppressWarnings("serial")
+	static class ImagePanel extends JComponent {
+
+		private Image image;
+		
+		// must be called from GUI thread
+		public void setImage(BufferedImage image)
+		{
+			this.image = image;
+			Dimension dim = new Dimension(image.getWidth(), image.getHeight());
+			this.setSize(dim);
+			this.setPreferredSize(dim);
+			revalidate();
+		}
+		
+	    @Override
+	    public void paintComponent(Graphics g) {
+	        g.drawImage(image, 0, 0, null);
+	    }
+
+	}
+	
 	// popular: BufferedImage.TYPE_3BYTE_BGR or BufferedImage.TYPE_BYTE_GRAY
 	public static BufferedImage updateBufferedImage(BufferedImage image, VImage vImage, int imageType)
 	{
+		if (vImage == null)
+			return image;
+		
 		if (image == null ||
 			image.getHeight() != vImage.getHeight() ||
 			image.getWidth() != vImage.getWidth() ||
@@ -38,11 +69,17 @@ public class PVAImageMonitor {
 	private final JFrame frame;
 	private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
 	private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
-
+	private final ImagePanel imagePanel;
+	
 	public PVAImageMonitor()
 	{
+		imagePanel = new ImagePanel();
+		imagePanel.setImage(bufferedImage);
+
 		frame = new JFrame();
-		frame.setSize(bufferedImage.getWidth(), bufferedImage.getHeight());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().add(BorderLayout.CENTER, imagePanel);
+		frame.pack();
 		frame.setVisible(true);	
 	}
 	
@@ -59,19 +96,19 @@ public class PVAImageMonitor {
 			{
 				if (newBufferedImage != lastBufferedImage)
 				{
-					// new image, new size?
-					frame.setSize(newBufferedImage.getWidth(), newBufferedImage.getHeight());
+					imagePanel.setImage(newBufferedImage);
+					frame.pack();
 				}
-				frame.getGraphics().drawImage(newBufferedImage, 0, 0, null);
+				imagePanel.repaint();
 			}
 		});
 	}
 	
-	public void execute(String[] args)
+	public void execute(String[] args) throws InterruptedException
 	{
 		// max 100Hz monitor
 		PVManager.setDefaultDataSource(new PVADataSource());
-		PVManager.read(channel("testImage", VImage.class, VImage.class)).
+		PVReader<VImage> reader = PVManager.read(channel("testImage", VImage.class, VImage.class)).
 				readListener(new PVReaderListener<VImage>() {
 
 					@Override
@@ -82,9 +119,15 @@ public class PVAImageMonitor {
 							System.out.println(event.toString());
 					}
 				}).maxRate(TimeDuration.ofHertz(100));
+
+		// forever
+		while (System.currentTimeMillis() != 0)
+			Thread.sleep(Long.MAX_VALUE);
+		
+		reader.close();
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws InterruptedException
 	{
 		new PVAImageMonitor().execute(args);
 	}
