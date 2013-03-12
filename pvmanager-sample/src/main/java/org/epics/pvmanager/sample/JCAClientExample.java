@@ -4,8 +4,20 @@
  */
 package org.epics.pvmanager.sample;
 
+import gov.aps.jca.CAException;
+import gov.aps.jca.Channel;
+import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
+import gov.aps.jca.Monitor;
+import gov.aps.jca.event.ConnectionEvent;
+import gov.aps.jca.event.ConnectionListener;
+import gov.aps.jca.event.MonitorEvent;
+import gov.aps.jca.event.MonitorListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VString;
 import org.epics.vtype.VDouble;
@@ -21,8 +33,10 @@ import org.epics.vtype.VShortArray;
 import org.epics.vtype.VStringArray;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
+import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
+import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
@@ -38,22 +52,35 @@ public class JCAClientExample {
     private static final String doubleArrayPV = "SR:C00-Glb:G00<BETA:00>RB-X";
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Test");
+        System.out.println(Double.NEGATIVE_INFINITY);
         System.out.println(System.getProperty("java.library.path"));
         
+        System.loadLibrary("jca");
         PVManager.setDefaultDataSource(new JCADataSourceBuilder().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).build());
+        PVReader<Object> pvReader = PVManager.read(channel("counter1"))
+                .readListener(new PVReaderListener<Object>() {
 
-        testNativeTypeSupport();
-        testVDoubleSupport();
-        testVIntSupport();
-        testVStringSupport();
-        testVEnumSupport();
-        testVDoubleArraySupport();
-//        testVFloatArraySupport();
-//        testVByteArraySupport();
-//        testVShortArraySupport();
-//        testVIntArraySupport();
-//        testVStringArraySupport();
+            @Override
+            public void pvChanged(PVReaderEvent<Object> event) {
+                System.out.println(event.getPvReader().getValue());
+            }
+        })
+                .maxRate(TimeDuration.ofMillis(100));
+        
+        Thread.sleep(5000);
+        pvReader.close();
+        
+        //        testNativeTypeSupport();
+        //        testVDoubleSupport();
+        //        testVIntSupport();
+        //        testVStringSupport();
+        //        testVEnumSupport();
+        //        testVDoubleArraySupport();
+        //        testVFloatArraySupport();
+        //        testVByteArraySupport();
+        //        testVShortArraySupport();
+        //        testVIntArraySupport();
+        //        testVStringArraySupport();
 
     }
 

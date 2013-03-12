@@ -21,10 +21,10 @@ import org.epics.vtype.SimpleValueFormat;
 import org.epics.vtype.ValueFormat;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.NumberFormats;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.util.Executors.*;
+import org.epics.util.text.NumberFormats;
 import static org.epics.util.time.TimeDuration.*;
 
 /**
