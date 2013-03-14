@@ -182,35 +182,24 @@ public class IntensityGraph2DRenderer {
         ///////////////////////////////////////////////////////////////////////
         
         //double xBoundaries = data.getXBoundaries().getDouble(3);
-        ListNumber yBoundaries = data.getYBoundaries();
-        ListNumber xBoundaries = data.getXBoundaries();
         int countY = 0;
         int countX = 0;
         int valuey = 10;
-        //Replace this eventually
-        int cellWidth = (plotWidth)/data.getXCount();
-        int cellHeight = plotHeight/data.getYCount();
-        //commented loop tries to account for different sizes of intervals 
-//        for (int j = 0; j < yBoundaries.size(); j++)
-//        {
-//            int valuex = 0;
-//            for (int i = 0; i < xBoundaries.size(); i++)
-//            {
-//                int x = xStartGraph + cellWidth*xBoundaries.getInt(i);
-//                g.setColor(new Color(colorScheme.colorFor(data.getValue(valuex, valuey))));
-//                g.fillRect(x,j, cellWidth, cellHeight);
-//                valuex++;
-//            }
-//            valuey--;
-//        }
-
-        for (int j = yStartGraph; j < (yEndGraph-cellHeight); j = j + cellHeight)
+        int xPosition = xStartGraph;
+        int yPosition = yStartGraph;
+        int xWidthTotal = xEndGraph - xStartGraph;
+        int yHeightTotal = yEndGraph - yStartGraph;
+        int xRange = data.getXBoundaries().getInt(data.getXCount()) - data.getXBoundaries().getInt(0);
+        int yRange = data.getYBoundaries().getInt(data.getYCount()) - data.getYBoundaries().getInt(0);
+        while (countY < data.getYBoundaries().getDouble(data.getYCount()))
         {
             int valuex = 0;
-            for (int i = xStartGraph; i < xEndGraph; i = i + cellWidth)
+            int cellHeight = ((data.getYBoundaries().getInt(countY) - data.getYBoundaries().getInt(countY+1))/yRange)*yHeightTotal;
+            while (countX < data.getXBoundaries().getDouble(data.getXCount()))
             {
+                int cellWidth = ((data.getXBoundaries().getInt(countX) - data.getXBoundaries().getInt(countX+1))/xRange)*xWidthTotal;
                 g.setColor(new Color(colorScheme.colorFor(data.getValue(valuex, valuey))));
-                g.fillRect(i, j, cellWidth, cellHeight);
+                g.fillRect(xPosition, yPosition, cellWidth, cellHeight);
                 valuex++;
                 countX++;
             }
