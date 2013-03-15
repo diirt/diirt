@@ -66,20 +66,20 @@ public class MockHistogramFromMouse extends javax.swing.JFrame {
         plot = histogramOf(queue);
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
-                .readListener(new PVReaderListener<VImage>() {
+                .readListener(new PVReaderListener<Graph2DResult>() {
 
                     @Override
-                    public void pvChanged(PVReaderEvent<VImage> event) {
+                    public void pvChanged(PVReaderEvent<Graph2DResult> event) {
                         setLastError(pv.lastException());
                         if (pv.getValue() != null) {
-                            BufferedImage image = ValueUtil.toImage(pv.getValue());
+                            BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());
                             plotView.setImage(image);
                         }
                     }
                 })
                 .maxRate(ofHertz(50));
     }
-    private PVReader<VImage> pv;
+    private PVReader<Graph2DResult> pv;
     private Queue<VInt> queue;
     private Histogram1DPlot plot;
 
