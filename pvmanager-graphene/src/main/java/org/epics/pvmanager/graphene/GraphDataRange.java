@@ -7,60 +7,35 @@ package org.epics.pvmanager.graphene;
 import org.epics.graphene.Range;
 
 /**
+ * Range information of a drawn graph.
+ * <p>
+ * For an axis, it will give the range of the plot, the range of the current
+ * data being visualize and the integrated range of all data displayed in the past.
  *
  * @author carcassi
  */
 public class GraphDataRange {
-    private final double startPlotRange;
-    private final double endPlotRange;
-    private final double startDataRange;
-    private final double endDataRange;
-    private final double startIntegratedDataRange;
-    private final double endIntegratedDataRange;
-
-    GraphDataRange(double startPlotRange, double endPlotRange, double startDataRange, double endDataRange, double startIntegratedDataRange, double endIntegratedDataRange) {
-        this.startPlotRange = startPlotRange;
-        this.endPlotRange = endPlotRange;
-        this.startDataRange = startDataRange;
-        this.endDataRange = endDataRange;
-        this.startIntegratedDataRange = startIntegratedDataRange;
-        this.endIntegratedDataRange = endIntegratedDataRange;
-    }
+    
+    private final Range plotRange;
+    private final Range dataRange;
+    private final Range integratedRange;
 
     GraphDataRange(Range plotRange, Range dataRange, Range integratedRange) {
-        this.startPlotRange = plotRange.getMinimum().doubleValue();
-        this.endPlotRange = plotRange.getMaximum().doubleValue();
-        this.startDataRange = dataRange.getMinimum().doubleValue();
-        this.endDataRange = dataRange.getMaximum().doubleValue();
-        this.startIntegratedDataRange = integratedRange.getMinimum().doubleValue();
-        this.endIntegratedDataRange = integratedRange.getMaximum().doubleValue();
-    }
-    
-    
-
-    public double getEndDataRange() {
-        return endDataRange;
+        this.plotRange = plotRange;
+        this.dataRange = dataRange;
+        this.integratedRange = integratedRange;
     }
 
-    public double getEndIntegratedDataRange() {
-        return endIntegratedDataRange;
+    public Range getPlotRange() {
+        return plotRange;
     }
 
-    public double getEndPlotRange() {
-        return endPlotRange;
+    public Range getDataRange() {
+        return dataRange;
     }
 
-    public double getStartDataRange() {
-        return startDataRange;
+    public Range getIntegratedRange() {
+        return integratedRange;
     }
-
-    public double getStartIntegratedDataRange() {
-        return startIntegratedDataRange;
-    }
-
-    public double getStartPlotRange() {
-        return startPlotRange;
-    }
-    
     
 }
