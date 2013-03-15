@@ -1,13 +1,8 @@
-/*
- * Copyright 2010-11 Brookhaven National Laboratory
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
 
-/*
- * MockWaterfallPlot.java
- *
- * Created on Jan 10, 2011, 3:59:13 PM
- */
 package org.epics.pvmanager.graphene;
 
 import java.awt.event.ComponentAdapter;
