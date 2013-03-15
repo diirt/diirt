@@ -60,7 +60,7 @@ public class MockLineGraph extends javax.swing.JFrame {
         });
     }
     private PVReader<Graph2DResult> pv;
-    private LineGraphPlot plot;
+    private LineGraph2DExpression plot;
 
     /**
      * This method is called from within the constructor to initialize the form.

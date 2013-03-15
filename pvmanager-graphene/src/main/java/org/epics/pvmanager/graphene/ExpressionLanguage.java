@@ -41,20 +41,20 @@ public class ExpressionLanguage {
         return new Histogram1DPlot(vDoubles, new Histogram1DFunction(vDoubles.getFunction()), "histogram");
     }
 
-    public static LineGraphPlot lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {
-        return new LineGraphPlot(vDoubleArray, new LineGraphFunction(vDoubleArray.getFunction()), "lineGraph");
+    public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {
+        return new LineGraph2DExpression(vDoubleArray, new LineGraph2DFunction(vDoubleArray.getFunction()), "lineGraph");
     }
 
-    public static LineGraphPlot lineGraphOf(DesiredRateExpression<? extends VNumberArray> yArray,
+    public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> yArray,
             DesiredRateExpression<? extends VNumber> xInitialOffset,
             DesiredRateExpression<? extends VNumber> xIncrementSize) {
-        return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(yArray).and(xInitialOffset).and(xIncrementSize),
-                new LineGraphFunction(yArray.getFunction(), xInitialOffset.getFunction(), xIncrementSize.getFunction()), "lineGraph");
+        return new LineGraph2DExpression(new DesiredRateExpressionListImpl<Object>().and(yArray).and(xInitialOffset).and(xIncrementSize),
+                new LineGraph2DFunction(yArray.getFunction(), xInitialOffset.getFunction(), xIncrementSize.getFunction()), "lineGraph");
     }
 
-    public static LineGraphPlot lineGraphOf(DesiredRateExpression<? extends VNumberArray> xVDoubleArray, DesiredRateExpression<? extends VNumberArray> yVDoubleArray) {
-        return new LineGraphPlot(new DesiredRateExpressionListImpl<Object>().and(xVDoubleArray).and(yVDoubleArray),
-                new LineGraphFunction(xVDoubleArray.getFunction(), yVDoubleArray.getFunction()), "lineGraph");
+    public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> xVDoubleArray, DesiredRateExpression<? extends VNumberArray> yVDoubleArray) {
+        return new LineGraph2DExpression(new DesiredRateExpressionListImpl<Object>().and(xVDoubleArray).and(yVDoubleArray),
+                new LineGraph2DFunction(xVDoubleArray.getFunction(), yVDoubleArray.getFunction()), "lineGraph");
     }
 
 }
