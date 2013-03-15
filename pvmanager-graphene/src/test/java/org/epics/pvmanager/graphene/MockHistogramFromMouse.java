@@ -81,7 +81,7 @@ public class MockHistogramFromMouse extends javax.swing.JFrame {
     }
     private PVReader<Graph2DResult> pv;
     private Queue<VInt> queue;
-    private Histogram1DPlot plot;
+    private AreaGraph2DExpression plot;
 
     /**
      * This method is called from within the constructor to initialize the form.

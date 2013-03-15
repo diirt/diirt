@@ -15,19 +15,19 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
  *
  * @author carcassi
  */
-public class Histogram1DPlot extends DesiredRateExpressionImpl<Graph2DResult> implements Graph2DExpression<AreaGraph2DRendererUpdate> {
+public class AreaGraph2DExpression extends DesiredRateExpressionImpl<Graph2DResult> implements Graph2DExpression<AreaGraph2DRendererUpdate> {
 
-    Histogram1DPlot(DesiredRateExpressionList<?> childExpressions, Histogram1DFunction function, String defaultName) {
+    AreaGraph2DExpression(DesiredRateExpressionList<?> childExpressions, AreaGraph2DFunction function, String defaultName) {
         super(childExpressions, function, defaultName);
     }
     
     public void update(Histogram1DUpdate update) {
-        ((Histogram1DFunction) getFunction()).update(update);
+        ((AreaGraph2DFunction) getFunction()).update(update);
     }
     
     @Override
     public void update(AreaGraph2DRendererUpdate update) {
-        ((Histogram1DFunction) getFunction()).getUpdateQueue().writeValue(update);
+        ((AreaGraph2DFunction) getFunction()).getUpdateQueue().writeValue(update);
     }
 
     @Override

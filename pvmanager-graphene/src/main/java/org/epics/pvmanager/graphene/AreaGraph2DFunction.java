@@ -19,7 +19,7 @@ import org.epics.vtype.ValueUtil;
  *
  * @author carcassi
  */
-class Histogram1DFunction implements ReadFunction<Graph2DResult> {
+class AreaGraph2DFunction implements ReadFunction<Graph2DResult> {
     
     private ReadFunction<? extends List<? extends VNumber>> argument;
     private Point1DCircularBuffer dataset = new Point1DCircularBuffer(1000000);
@@ -29,7 +29,7 @@ class Histogram1DFunction implements ReadFunction<Graph2DResult> {
     private List<Histogram1DUpdate> histogramUpdates = Collections.synchronizedList(new ArrayList<Histogram1DUpdate>());
     private QueueCollector<AreaGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
-    public Histogram1DFunction(ReadFunction<? extends List<? extends VNumber>> argument) {
+    public AreaGraph2DFunction(ReadFunction<? extends List<? extends VNumber>> argument) {
         this.argument = argument;
     }
     

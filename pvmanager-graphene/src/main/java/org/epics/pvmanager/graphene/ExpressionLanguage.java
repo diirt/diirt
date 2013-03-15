@@ -32,13 +32,13 @@ public class ExpressionLanguage {
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Graph2DResult.class));
     }
 
-    public static Histogram1DPlot histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {
+    public static AreaGraph2DExpression histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {
         DesiredRateExpression<? extends List<? extends VNumber>> queue = newValuesOf(vDoubles);
-        return new Histogram1DPlot(queue, new Histogram1DFunction(queue.getFunction()), "histogram");
+        return new AreaGraph2DExpression(queue, new AreaGraph2DFunction(queue.getFunction()), "histogram");
     }
 
-    public static Histogram1DPlot histogramOf(DesiredRateExpression<? extends List<? extends VNumber>> vDoubles) {
-        return new Histogram1DPlot(vDoubles, new Histogram1DFunction(vDoubles.getFunction()), "histogram");
+    public static AreaGraph2DExpression histogramOf(DesiredRateExpression<? extends List<? extends VNumber>> vDoubles) {
+        return new AreaGraph2DExpression(vDoubles, new AreaGraph2DFunction(vDoubles.getFunction()), "histogram");
     }
 
     public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {

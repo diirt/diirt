@@ -58,7 +58,7 @@ public class MockHistogram extends javax.swing.JFrame {
         });
     }
     private PVReader<Graph2DResult> pv;
-    private Histogram1DPlot plot;
+    private AreaGraph2DExpression plot;
 
     /**
      * This method is called from within the constructor to initialize the form.
