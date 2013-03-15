@@ -59,7 +59,7 @@ public class MockLineGraph extends javax.swing.JFrame {
             }
         });
     }
-    private PVReader<Plot2DResult> pv;
+    private PVReader<Graph2DResult> pv;
     private LineGraphPlot plot;
 
     /**
@@ -223,10 +223,10 @@ public class MockLineGraph extends javax.swing.JFrame {
         plot.update(new LineGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
-                .readListener(new PVReaderListener<Plot2DResult>() {
+                .readListener(new PVReaderListener<Graph2DResult>() {
 
                     @Override
-                    public void pvChanged(PVReaderEvent<Plot2DResult> event) {
+                    public void pvChanged(PVReaderEvent<Graph2DResult> event) {
                         setLastError(pv.lastException());
                         if (pv.getValue() != null) {
                             BufferedImage image = ValueUtil.toImage(pv.getValue().getImage());

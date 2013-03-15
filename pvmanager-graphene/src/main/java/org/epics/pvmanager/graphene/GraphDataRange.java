@@ -10,7 +10,7 @@ import org.epics.graphene.Range;
  *
  * @author carcassi
  */
-public class PlotDataRange {
+public class GraphDataRange {
     private final double startPlotRange;
     private final double endPlotRange;
     private final double startDataRange;
@@ -18,7 +18,7 @@ public class PlotDataRange {
     private final double startIntegratedDataRange;
     private final double endIntegratedDataRange;
 
-    PlotDataRange(double startPlotRange, double endPlotRange, double startDataRange, double endDataRange, double startIntegratedDataRange, double endIntegratedDataRange) {
+    GraphDataRange(double startPlotRange, double endPlotRange, double startDataRange, double endDataRange, double startIntegratedDataRange, double endIntegratedDataRange) {
         this.startPlotRange = startPlotRange;
         this.endPlotRange = endPlotRange;
         this.startDataRange = startDataRange;
@@ -27,7 +27,7 @@ public class PlotDataRange {
         this.endIntegratedDataRange = endIntegratedDataRange;
     }
 
-    PlotDataRange(Range plotRange, Range dataRange, Range integratedRange) {
+    GraphDataRange(Range plotRange, Range dataRange, Range integratedRange) {
         this.startPlotRange = plotRange.getMinimum().doubleValue();
         this.endPlotRange = plotRange.getMaximum().doubleValue();
         this.startDataRange = dataRange.getMinimum().doubleValue();

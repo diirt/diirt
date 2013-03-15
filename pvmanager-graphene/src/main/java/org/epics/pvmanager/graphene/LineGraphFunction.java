@@ -21,7 +21,7 @@ import org.epics.pvmanager.ReadFunction;
  *
  * @author carcassi
  */
-class LineGraphFunction implements ReadFunction<Plot2DResult> {
+class LineGraphFunction implements ReadFunction<Graph2DResult> {
     
     private ReadFunction<? extends VNumberArray> yArray;
     private ReadFunction<? extends VNumberArray> xArray;
@@ -53,7 +53,7 @@ class LineGraphFunction implements ReadFunction<Plot2DResult> {
     }
 
     @Override
-    public Plot2DResult readValue() {
+    public Graph2DResult readValue() {
         VNumberArray newData = yArray.readValue();
         
         // No data, no plot
@@ -98,9 +98,9 @@ class LineGraphFunction implements ReadFunction<Plot2DResult> {
         renderer.draw(image.createGraphics(), dataset);
         
         previousImage = ValueUtil.toVImage(image);
-        return new Plot2DResult(previousImage,
-                new PlotDataRange(renderer.getXPlotRange(), dataset.getXStatistics(), renderer.getXAggregatedRange()),
-                new PlotDataRange(renderer.getYPlotRange(), dataset.getYStatistics(), renderer.getYAggregatedRange()));
+        return new Graph2DResult(previousImage,
+                new GraphDataRange(renderer.getXPlotRange(), dataset.getXStatistics(), renderer.getXAggregatedRange()),
+                new GraphDataRange(renderer.getYPlotRange(), dataset.getYStatistics(), renderer.getYAggregatedRange()));
     }
     
 }

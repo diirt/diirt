@@ -29,7 +29,7 @@ public class ExpressionLanguage {
         DataTypeSupport.install();
         // Add support for Basic types
         BasicTypeSupport.install();
-        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Plot2DResult.class));
+        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Graph2DResult.class));
     }
 
     public static Histogram1DPlot histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {

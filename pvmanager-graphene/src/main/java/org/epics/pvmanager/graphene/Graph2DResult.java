@@ -10,12 +10,12 @@ import org.epics.vtype.VImage;
  *
  * @author carcassi
  */
-public class Plot2DResult {
+public class Graph2DResult {
     private final VImage image;
-    private final PlotDataRange xRange;
-    private final PlotDataRange yRange;
+    private final GraphDataRange xRange;
+    private final GraphDataRange yRange;
 
-    Plot2DResult(VImage image, PlotDataRange xRange, PlotDataRange yRange) {
+    Graph2DResult(VImage image, GraphDataRange xRange, GraphDataRange yRange) {
         this.image = image;
         this.xRange = xRange;
         this.yRange = yRange;
@@ -25,11 +25,11 @@ public class Plot2DResult {
         return image;
     }
 
-    public PlotDataRange getxRange() {
+    public GraphDataRange getxRange() {
         return xRange;
     }
 
-    public PlotDataRange getyRange() {
+    public GraphDataRange getyRange() {
         return yRange;
     }
     
