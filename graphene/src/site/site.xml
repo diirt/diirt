@@ -2,6 +2,7 @@
 <project name="Graphene">
   <bannerLeft>
     <name>Graphene</name>
+    <src>images/graphene-128.png</src>
     <href>http://graphene.sourceforge.net</href>
   </bannerLeft>
   <body>
