@@ -181,36 +181,48 @@ public class IntensityGraph2DRenderer {
 
         ///////////////////////////////////////////////////////////////////////
         
-        //double xBoundaries = data.getXBoundaries().getDouble(3);
         int countY = 0;
         int countX = 0;
-        int valuey = 10;
-        int xPosition = xStartGraph;
-        int yPosition = yStartGraph;
+
         int xWidthTotal = xEndGraph - xStartGraph;
         int yHeightTotal = yEndGraph - yStartGraph;
         int xRange = data.getXBoundaries().getInt(data.getXCount()) - data.getXBoundaries().getInt(0);
         int yRange = data.getYBoundaries().getInt(data.getYCount()) - data.getYBoundaries().getInt(0);
-        while (countY < data.getYBoundaries().getDouble(data.getYCount()))
+        double initCellHeights = ((data.getYBoundaries().getDouble(1) - data.getYBoundaries().getDouble(0))*yHeightTotal)/yRange;
+        int initCellHeight = (int) (Math.floor(initCellHeights));
+        if ((initCellHeights - initCellHeight) > 0.5)
         {
-            int valuex = 0;
-            int cellHeight = ((data.getYBoundaries().getInt(countY) - data.getYBoundaries().getInt(countY+1))/yRange)*yHeightTotal;
-            while (countX < data.getXBoundaries().getDouble(data.getXCount()))
+            initCellHeight++;
+        }
+        int yPosition = yEndGraph - initCellHeight;
+        while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1))
+        {
+            countX = 0;
+            int xPosition = xStartGraph;
+            double cellHeights = ((data.getYBoundaries().getDouble(countY+1) - data.getYBoundaries().getDouble(countY))*yHeightTotal)/yRange;
+            int cellHeight = (int) (Math.floor(cellHeights));
+            if (cellHeights - cellHeight > 0.5)
             {
-                int cellWidth = ((data.getXBoundaries().getInt(countX) - data.getXBoundaries().getInt(countX+1))/xRange)*xWidthTotal;
-                g.setColor(new Color(colorScheme.colorFor(data.getValue(valuex, valuey))));
+                cellHeight++;
+            }
+            while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1))
+            {
+                double cellWidths = ((data.getXBoundaries().getDouble(countX+1)-data.getXBoundaries().getDouble(countX))*xWidthTotal)/xRange;
+                int cellWidth = (int) (Math.floor(cellWidths));
+                System.out.println(cellWidth);
+                if (cellWidths - cellWidth > 0)
+                {
+                    cellWidth++;
+                }
+                System.out.println(cellWidth);
+                g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
                 g.fillRect(xPosition, yPosition, cellWidth, cellHeight);
-                valuex++;
+                xPosition = xPosition + cellWidth;
                 countX++;
             }
-            valuey--;
+            yPosition = yPosition - cellHeight;
             countY++;
         }
 
-    }
-
-    
-
-    
-    
+    }    
 }
