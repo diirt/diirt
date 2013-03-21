@@ -12,8 +12,8 @@ public class TemporalGraph2DRendererUpdate<T extends TemporalGraph2DRendererUpda
     
     private Integer imageHeight;
     private Integer imageWidth;
-    private AxisRange xAxisRange;
-    private AxisRange yAxisRange;
+    private AxisRange axisRange;
+    private TimeAxisRange timeAxisRange;
     private ValueScale xValueScale;
     private ValueScale yValueScale;
     
@@ -31,13 +31,13 @@ public class TemporalGraph2DRendererUpdate<T extends TemporalGraph2DRendererUpda
         return self();
     }
     
-    public T xAxisRange(AxisRange xAxisRange) {
-        this.xAxisRange = xAxisRange;
+    public T axisRange(AxisRange axisRange) {
+        this.axisRange = axisRange;
         return self();
     }
     
-    public T yAxisRange(AxisRange yAxisRange) {
-        this.yAxisRange = yAxisRange;
+    public T timeAxisRange(TimeAxisRange timeAxisRange) {
+        this.timeAxisRange = timeAxisRange;
         return self();
     }
     
@@ -59,12 +59,12 @@ public class TemporalGraph2DRendererUpdate<T extends TemporalGraph2DRendererUpda
         return imageWidth;
     }
 
-    public AxisRange getXAxisRange() {
-        return xAxisRange;
+    public AxisRange getAxisRange() {
+        return axisRange;
     }
 
-    public AxisRange getYAxisRange() {
-        return yAxisRange;
+    public TimeAxisRange getTimeAxisRange() {
+        return timeAxisRange;
     }
 
     public ValueScale getXValueScale() {

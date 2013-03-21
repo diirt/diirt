@@ -1,9 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2012 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.graphene;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -54,4 +56,34 @@ public class TemporalGraph2DRendererTest {
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval1, interval2), equalTo(total));
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval2, interval1), equalTo(total));
     }
+    
+    @Test
+    public void calculateRanges1() throws Exception {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(300, 200) {
+
+            @Override
+            public TemporalGraph2DRendererUpdate newUpdate() {
+                return new TemporalGraph2DRendererUpdate();
+            }
+        };
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        
+        Range initialRange = RangeUtil.range(0, 10);
+        Timestamp now = Timestamp.now();
+        TimeInterval initialTimeInterval = TimeInterval.between(now, now.plus(TimeDuration.ofSeconds(1)));
+        renderer.calculateRanges(initialRange, initialTimeInterval);
+        assertThat(renderer.getPlotRange(), sameInstance(initialRange));
+        assertThat(renderer.getPlotTimeInterval(), sameInstance(initialTimeInterval));
+        
+        Range newRange = RangeUtil.range(5, 15);
+        TimeInterval newTimeInterval = TimeInterval.between(now.minus(TimeDuration.ofSeconds(1)), now);
+        renderer.calculateRanges(newRange, newTimeInterval);
+        assertThat(renderer.getPlotRange().getMinimum(), equalTo(RangeUtil.range(0, 15).getMinimum()));
+        assertThat(renderer.getPlotRange().getMaximum(), equalTo(RangeUtil.range(0, 15).getMaximum()));
+        assertThat(renderer.getPlotTimeInterval(), sameInstance(newTimeInterval));
+    }
+    
 }

@@ -83,8 +83,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     private int imageWidth;
     private int imageHeight;
     // Strategy for calculating the axis range
-    private AxisRange xAxisRange = AxisRanges.integrated();
-    private AxisRange yAxisRange = AxisRanges.integrated();
+    private AxisRange axisRange = AxisRanges.integrated();
+    private TimeAxisRange timeAxisRange = TimeAxisRanges.relative();
     // Strategy for generating labels and scaling value of the axis
     private ValueScale xValueScale = ValueScales.linearScale();
     private ValueScale yValueScale = ValueScales.linearScale();
@@ -109,10 +109,10 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     
     // Computed parameters, visible to outside //
     
-    private Range xAggregatedRange;
-    private Range yAggregatedRange;
-    private Range xPlotRange;
-    private Range yPlotRange;
+    private Range aggregatedRange;
+    private TimeInterval aggregatedTimeInterval;
+    private Range plotRange;
+    private TimeInterval plotTimeInterval;
     protected FontMetrics labelFontMetrics;
     protected ListDouble xReferenceCoords;
     protected ListDouble xReferenceValues;
@@ -128,8 +128,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the x axis range calculator
      */
-    public AxisRange getXAxisRange() {
-        return xAxisRange;
+    public AxisRange getAxisRange() {
+        return axisRange;
     }
 
     /**
@@ -137,8 +137,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the y axis range calculator
      */
-    public AxisRange getYAxisRange() {
-        return yAxisRange;
+    public TimeAxisRange getTimeAxisRange() {
+        return timeAxisRange;
     }
 
     /**
@@ -146,8 +146,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the aggregated data x range
      */
-    public Range getXAggregatedRange() {
-        return xAggregatedRange;
+    public Range getAggregatedRange() {
+        return aggregatedRange;
     }
 
     /**
@@ -155,8 +155,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the aggregated data y range
      */
-    public Range getYAggregatedRange() {
-        return yAggregatedRange;
+    public TimeInterval getAggregatedTimeInterval() {
+        return aggregatedTimeInterval;
     }
 
     /**
@@ -164,8 +164,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the x axis range
      */
-    public Range getXPlotRange() {
-        return xPlotRange;
+    public Range getPlotRange() {
+        return plotRange;
     }
 
     /**
@@ -173,8 +173,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * 
      * @return the y axis range
      */
-    public Range getYPlotRange() {
-        return yPlotRange;
+    public TimeInterval getPlotTimeInterval() {
+        return plotTimeInterval;
     }
 
     /**
@@ -192,11 +192,11 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         if (update.getImageWidth() != null) {
             imageWidth = update.getImageWidth();
         }
-        if (update.getXAxisRange() != null) {
-            xAxisRange = update.getXAxisRange();
+        if (update.getAxisRange() != null) {
+            axisRange = update.getAxisRange();
         }
-        if (update.getYAxisRange() != null) {
-            yAxisRange = update.getYAxisRange();
+        if (update.getTimeAxisRange() != null) {
+            timeAxisRange = update.getTimeAxisRange();
         }
         if (update.getXValueScale()!= null) {
             xValueScale = update.getXValueScale();
@@ -249,11 +249,11 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      */
     public abstract T newUpdate();
     
-    protected void calculateRanges(Range xDataRange, Range yDataRange) {
-        xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
-        yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
-        xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange);
-        yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange);
+    protected void calculateRanges(Range valueRange, TimeInterval timeInterval) {
+        aggregatedRange = aggregateRange(valueRange, aggregatedRange);
+        aggregatedTimeInterval = aggregateTimeInterval(timeInterval, aggregatedTimeInterval);
+        plotRange = axisRange.axisRange(valueRange, aggregatedRange);
+        plotTimeInterval = timeAxisRange.axisRange(timeInterval, aggregatedTimeInterval);
     }
     
     protected void drawHorizontalReferenceLines() {
@@ -277,8 +277,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     }
     
     protected void calculateGraphArea() {
-        ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
-        ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
+        ValueAxis xAxis = xValueScale.references(plotRange, 2, Math.max(2, getImageWidth() / 60));
+        ValueAxis yAxis = null;//= yValueScale.references(plotTimeInterval, 2, Math.max(2, getImageHeight() / 60));
         xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
         yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
         xReferenceValues = new ArrayDouble(xAxis.getTickValues());
@@ -299,10 +299,10 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         }
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
-        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
-        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
-        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
-        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
+        xPlotValueStart = getPlotRange().getMinimum().doubleValue();
+        yPlotValueStart = 0;//getYPlotRange().getMinimum().doubleValue();
+        xPlotValueEnd = getPlotRange().getMaximum().doubleValue();
+        yPlotValueEnd = 1;//getYPlotRange().getMaximum().doubleValue();
         xAreaStart = areaFromLeft;
         yAreaStart = topMargin;
         xAreaEnd = getImageWidth() - rightMargin - 1;
