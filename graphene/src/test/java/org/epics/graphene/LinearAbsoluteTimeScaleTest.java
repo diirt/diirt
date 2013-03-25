@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.util.GregorianCalendar;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -18,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 public class LinearAbsoluteTimeScaleTest {
 
     @Test
-    public void scaleValue1() {
+    public void scaleNormalizedTime1() {
         TimeScale linearScale = TimeScales.linearAbsoluteScale();
         assertThat(linearScale.scaleNormalizedTime(0.0, 1.0, 100.0), equalTo(1.0));
         assertThat(linearScale.scaleNormalizedTime(0.25, 1.0, 100.0), equalTo(25.75));
@@ -27,7 +28,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
 
     @Test
-    public void scaleValue2() {
+    public void scaleTimestamp1() {
         TimeScale linearScale = TimeScales.linearAbsoluteScale();
         Timestamp start = Timestamp.now();
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(8)));
