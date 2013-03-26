@@ -9,14 +9,30 @@
     <groupId>org.epics</groupId>
     <artifactId>graphene-all</artifactId>
     <version>0.2-SNAPSHOT</version>
+    <name>graphene</name>
+    <description>A library to create graphs suitable for real time scientific
+        data visualization.</description>
     <packaging>pom</packaging>
     <url>http://graphene.sourceforge.net</url>
+    <organization>
+        <name>Brookhaven National Laboratory, University of Michigan</name>
+    </organization>
+    <inceptionYear>2012</inceptionYear>    
     <licenses>
         <license>
             <name>GNU General Public License 2 with the Classpath Exception</name>
             <url>LICENSE.TXT</url>
         </license>
     </licenses>
+    <scm>
+        <connection>scm:hg:http://graphene.hg.sourceforge.net:8000/hgroot/graphene/graphene</connection>
+        <developerConnection>scm:hg:ssh://carcassi@graphene.hg.sourceforge.net/hgroot/graphene/graphene</developerConnection>
+        <url>http://graphene.hg.sourceforge.net/hgweb/graphene/graphene/</url>
+    </scm>
+    <ciManagement>
+        <system>jenkins</system>
+        <url>https://openepics.ci.cloudbees.com/</url>
+    </ciManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
