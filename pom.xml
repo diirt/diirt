@@ -29,6 +29,15 @@
         <developerConnection>scm:hg:ssh://carcassi@graphene.hg.sourceforge.net/hgroot/graphene/graphene</developerConnection>
         <url>http://graphene.hg.sourceforge.net/hgweb/graphene/graphene/</url>
     </scm>
+    <developers>
+        <developer>
+            <id>carcassi</id>
+            <name>Gabriele Carcassi</name>
+            <email>carcassi@bnl.gov</email>
+            <organization>BNL</organization>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
     <ciManagement>
         <system>jenkins</system>
         <url>https://openepics.ci.cloudbees.com/</url>
