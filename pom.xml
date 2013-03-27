@@ -193,6 +193,7 @@
         <module>pvmanager-test</module>
         <module>pvmanager-sim</module>
         <module>pvmanager-extra</module>
+        <module>pvmanager-graphene</module>
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
         <module>epics-vtype</module>
