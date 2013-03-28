@@ -5,6 +5,8 @@
 package org.epics.graphene;
 
 import java.util.GregorianCalendar;
+import java.util.List;
+import org.epics.util.array.ListDouble;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -37,11 +39,20 @@ public class LinearAbsoluteTimeScaleTest {
         assertThat(linearScale.scaleTimestamp(start.plus(TimeDuration.ofSeconds(4)), timeInterval, 1.0, 100.0), equalTo(50.5));
         assertThat(linearScale.scaleTimestamp(start.plus(TimeDuration.ofSeconds(8)), timeInterval, 1.0, 100.0), equalTo(100.0));
     }
-//
-//    public static void assertAxisEquals(double minValue, double maxValue, double[] tickValues, String[] tickLabels, org.epics.graphene.ValueAxis axis) {
-//        assertEquals(minValue, axis.getMinValue(), 0.000001);
-//        assertEquals(maxValue, axis.getMaxValue(), 0.000001);
-//        assertArrayEquals(tickValues, axis.getTickValues(), 0.000001);
-//        assertArrayEquals(tickLabels, axis.getTickLabels());
-//    }
+
+    @Test
+    public void references1() {
+//        TimeScale linearScale = TimeScales.linearAbsoluteScale();
+//        Timestamp start = Timestamp.now();
+//        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofHours(9)));
+//        TimeAxis timeAxis = linearScale.references(timeInterval, 2, 11);
+        
+    }
+
+    public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
+        assertThat(axis.getTimeInterval(), equalTo(timeInterval));
+        assertThat(axis.getNormalizedValues(), equalTo(normalizedValues));
+        assertThat(axis.getTimestamps(), equalTo(timestamps));
+        assertThat(axis.getTickLabels(), equalTo(labels));
+    }
 }
