@@ -53,8 +53,8 @@ public class TimeScalesTest {
     }
     
     @Test
-    public void nextUp6() {
-        TimeScales.TimePeriod nextUp = TimeScales.nextUp(new TimePeriod(SECOND, 30));
-        assertThat(nextUp, equalTo(new TimePeriod(MINUTE, 1)));
+    public void roundSeconds1() {
+        TimeScales.TimePeriod period = TimeScales.roundSeconds(61.0);
+        assertThat(period, equalTo(new TimePeriod(MINUTE, 61.0/60.0)));
     }
 }

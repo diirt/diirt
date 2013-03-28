@@ -75,4 +75,11 @@ public class TimeScales {
         }
         return null;
     }
+    
+    static TimePeriod roundSeconds(double seconds) {
+        if (seconds > 60) {
+            return new TimePeriod(GregorianCalendar.MINUTE, seconds / 60.0);
+        }
+        return new TimePeriod(GregorianCalendar.SECOND, seconds);
+    }
 }
