@@ -63,4 +63,46 @@ public class TimeScalesTest {
         TimeScales.TimePeriod period = TimeScales.roundSeconds(61.0);
         assertThat(period, equalTo(new TimePeriod(MINUTE, 61.0/60.0)));
     }
+    
+    @Test
+    public void nextDown1() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 15));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 10)));
+    }
+    
+    @Test
+    public void nextDown2() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 2));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 1)));
+    }
+    
+    @Test
+    public void nextDown3() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 5));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 2)));
+    }
+    
+    @Test
+    public void nextDown4() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 10));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 5)));
+    }
+    
+    @Test
+    public void nextDown5() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 15));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 10)));
+    }
+    
+    @Test
+    public void nextDown6() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(SECOND, 30));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 15)));
+    }
+    
+    @Test
+    public void nextDown7() {
+        TimeScales.TimePeriod period = TimeScales.nextDown(new TimePeriod(MINUTE, 1));
+        assertThat(period, equalTo(new TimePeriod(SECOND, 30)));
+    }
 }

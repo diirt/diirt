@@ -4,7 +4,9 @@
  */
 package org.epics.graphene;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  *
@@ -50,6 +52,10 @@ public class TimeScales {
             return true;
         }
 
+        @Override
+        public String toString() {
+            return "TimePeriod{" + "fieldId=" + fieldId + ", amount=" + amount + '}';
+        }
         
     }
 
@@ -72,6 +78,34 @@ public class TimeScales {
                     return new TimePeriod(GregorianCalendar.SECOND, 30);
                 }
                 return new TimePeriod(GregorianCalendar.MINUTE, 1);
+        }
+        return null;
+    }
+
+    static TimePeriod nextDown(TimePeriod period) {
+        switch(period.fieldId) {
+            case GregorianCalendar.MINUTE:
+                return new TimePeriod(GregorianCalendar.SECOND, 30);
+            case GregorianCalendar.SECOND:
+                if (period.amount > 30) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 30);
+                }
+                if (period.amount > 15) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 15);
+                }
+                if (period.amount > 10) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 10);
+                }
+                if (period.amount > 5) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 5);
+                }
+                if (period.amount > 2) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 2);
+                }
+                if (period.amount > 1) {
+                    return new TimePeriod(GregorianCalendar.SECOND, 1);
+                }
+                return new TimePeriod(GregorianCalendar.SECOND, 0.5);
         }
         return null;
     }
