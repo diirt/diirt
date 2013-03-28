@@ -54,6 +54,12 @@ public class TimeScalesTest {
     
     @Test
     public void roundSeconds1() {
+        TimeScales.TimePeriod period = TimeScales.roundSeconds(30.0);
+        assertThat(period, equalTo(new TimePeriod(SECOND, 30.0)));
+    }
+    
+    @Test
+    public void roundSeconds2() {
         TimeScales.TimePeriod period = TimeScales.roundSeconds(61.0);
         assertThat(period, equalTo(new TimePeriod(MINUTE, 61.0/60.0)));
     }
