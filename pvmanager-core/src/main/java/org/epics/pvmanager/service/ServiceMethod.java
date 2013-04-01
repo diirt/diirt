@@ -19,32 +19,55 @@ public abstract class ServiceMethod {
     private String name;
     private final Map<String, Class<?>> parameterTypes;
     private final Map<String, String> parameterDescriptions;
-    private final Map<String, Class<?>> outputTypes;
-    private final Map<String, String> outputDescriptions;
+    private final Map<String, Class<?>> resultTypes;
+    private final Map<String, String> resultDescriptions;
 
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription) {
         this.name = serviceMethodDescription.name;
         this.parameterTypes = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.parameterTypes));
         this.parameterDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.parameterDescriptions));
-        this.outputTypes = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.outputTypes));
-        this.outputDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.outputDescriptions));
+        this.resultTypes = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultTypes));
+        this.resultDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultDescriptions));
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public Map<String, Class<?>> getParameterTypes() {
+    public final Map<String, Class<?>> getParameterTypes() {
         return parameterTypes;
     }
 
-    public Map<String, String> getParameterDescriptions() {
+    public final Map<String, String> getParameterDescriptions() {
         return parameterDescriptions;
     }
 
-    public Map<String, Class<?>> getOutputTypes() {
-        return outputTypes;
+    public final Map<String, Class<?>> getOutputTypes() {
+        return resultTypes;
+    }
+
+    public final Map<String, String> getOutputDescriptions() {
+        return resultDescriptions;
     }
     
-    public abstract void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback);
+    void validateParameters(Map<String, Object> parameters) {
+        for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
+            String parameterName = parameter.getKey();
+            Object parameterValue = parameter.getValue();
+            Class<?> parameterType = parameterTypes.get(parameterName);
+            if (parameterType == null) {
+                throw new IllegalArgumentException("ServiceMethod " + name + ": unexpected parameter " + parameterName);
+            }
+            if (!parameterType.isInstance(parameterValue)) {
+                throw new IllegalArgumentException("ServiceMethod " + name + ": parameter " + parameterName + " should be of type " + parameterType.getSimpleName() + " but was " + parameterValue.getClass().getSimpleName());
+            }
+        }
+    }
+    
+    public final void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
+        validateParameters(parameters);
+        executeMethod(parameters, callback);
+    }
+    
+    public abstract void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback);
 }

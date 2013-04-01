@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager.service;
 
@@ -17,14 +17,14 @@ import org.epics.pvmanager.WriteFunction;
 public class AddServiceMethod extends ServiceMethod {
 
     public AddServiceMethod() {
-        super(new ServiceMethodDescription("add")
+        super(new ServiceMethodDescription("add", "Adds two numbers.")
                 .addParameter("arg1", "First argument", Number.class)
                 .addParameter("arg2", "Second argument", Number.class)
-                .addOutput("result", "The sum of arg1 and arg2", Number.class));
+                .addResult("result", "The sum of arg1 and arg2", Number.class));
     }
 
     @Override
-    public void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
+    public void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
         Number arg1 = (Number) parameters.get("arg1");
         Number arg2 = (Number) parameters.get("arg2");
         Number result = arg1.doubleValue() + arg2.doubleValue();
