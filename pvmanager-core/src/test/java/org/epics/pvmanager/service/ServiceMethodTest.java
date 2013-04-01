@@ -49,4 +49,18 @@ public class ServiceMethodTest {
         assertThat(cache.getValue(), nullValue());
         assertThat(exceptionCache.getValue(), instanceOf(IllegalArgumentException.class));
     }
+
+    @Test
+    public void execute3() {
+        ServiceMethod method = new MultiplyServiceMethod();
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("arg1", 1);
+        parameters.put("arg2", 2);
+        WriteCache<Map<String, Object>> cache = new WriteCache<>();
+        WriteCache<Exception> exceptionCache = new WriteCache<>();
+        method.execute(parameters, cache, exceptionCache);
+        
+        assertThat(cache.getValue().get("result"), equalTo((Object) 2.0));
+        assertThat(exceptionCache.getValue(), nullValue());
+    }
 }

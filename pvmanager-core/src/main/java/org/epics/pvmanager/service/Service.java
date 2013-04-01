@@ -17,21 +17,24 @@ public class Service {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
     
     private String name;
+    private String description;
     private Map<String, ServiceMethod> serviceMethods;
 
-    public Service(String name, Map<String, ServiceMethod> serviceMethods) {
-        this.name = name;
-        if (!namePattern.matcher(name).matches()) {
-            throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
-        }
-        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceMethods));
+    public Service(ServiceDescription serviceDescription) {
+        this.name = serviceDescription.name;
+        this.description = serviceDescription.description;
+        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.serviceMethods));
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public Map<String, ServiceMethod> getServiceMethods() {
+    public final String getDescription() {
+        return description;
+    }
+
+    public final Map<String, ServiceMethod> getServiceMethods() {
         return serviceMethods;
     }
     
