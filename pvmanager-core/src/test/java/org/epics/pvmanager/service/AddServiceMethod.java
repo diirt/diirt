@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.epics.pvmanager.service;
+
+import org.epics.pvmanager.service.ServiceMethod;
+import org.epics.pvmanager.service.ServiceMethodDescription;
+import java.util.HashMap;
+import java.util.Map;
+import org.epics.pvmanager.WriteFunction;
+
+/**
+ *
+ * @author carcassi
+ */
+public class AddServiceMethod extends ServiceMethod {
+
+    public AddServiceMethod() {
+        super(new ServiceMethodDescription("add")
+                .addParameter("arg1", "First argument", Number.class)
+                .addParameter("arg2", "Second argument", Number.class)
+                .addOutput("result", "The sum of arg1 and arg2", Number.class));
+    }
+
+    @Override
+    public void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
+        Number arg1 = (Number) parameters.get("arg1");
+        Number arg2 = (Number) parameters.get("arg2");
+        Number result = arg1.doubleValue() + arg2.doubleValue();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", result);
+        callback.writeValue(resultMap);
+    }
+}
