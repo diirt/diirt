@@ -24,7 +24,7 @@ public class AddServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
+    public void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback) {
         Number arg1 = (Number) parameters.get("arg1");
         Number arg2 = (Number) parameters.get("arg2");
         Number result = arg1.doubleValue() + arg2.doubleValue();

@@ -23,14 +23,30 @@ public class ServiceMethodTest {
     }
 
     @Test
-    public void createServiceMethod() {
+    public void execute1() {
         ServiceMethod method = new AddServiceMethod();
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
         WriteCache<Map<String, Object>> cache = new WriteCache<>();
-        method.execute(parameters, cache);
+        WriteCache<Exception> exceptionCache = new WriteCache<>();
+        method.execute(parameters, cache, exceptionCache);
         
         assertThat(cache.getValue().get("result"), equalTo((Object) 3.0));
+        assertThat(exceptionCache.getValue(), nullValue());
+    }
+
+    @Test
+    public void execute2() {
+        ServiceMethod method = new AddServiceMethod();
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("arg1", 1);
+        parameters.put("arg2", "test");
+        WriteCache<Map<String, Object>> cache = new WriteCache<>();
+        WriteCache<Exception> exceptionCache = new WriteCache<>();
+        method.execute(parameters, cache, exceptionCache);
+        
+        assertThat(cache.getValue(), nullValue());
+        assertThat(exceptionCache.getValue(), instanceOf(IllegalArgumentException.class));
     }
 }

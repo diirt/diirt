@@ -64,10 +64,14 @@ public abstract class ServiceMethod {
         }
     }
     
-    public final void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback) {
-        validateParameters(parameters);
-        executeMethod(parameters, callback);
+    public final void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback) {
+        try {
+            validateParameters(parameters);
+            executeMethod(parameters, callback, errorCallback);
+        } catch (Exception ex) {
+            errorCallback.writeValue(ex);
+        }
     }
     
-    public abstract void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback);
+    public abstract void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback);
 }
