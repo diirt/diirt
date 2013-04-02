@@ -4,9 +4,11 @@
  */
 package org.epics.graphene;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.List;
+import org.epics.util.time.TimeInterval;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -81,7 +83,36 @@ public class TimeScales {
         }
         return null;
     }
+    
+//    static List<Timestamp> createReferences(TimeInterval timeInterval, TimePeriod period) {
+//        Date start = timeInterval.getStart().toDate();
+//        Date end = timeInterval.getEnd().toDate();
+//        GregorianCalendar cal = new GregorianCalendar();
+//        cal.setTime(start);
+//    }
 
+    static void roundUp(GregorianCalendar cal, int field) {
+        if (GregorianCalendar.MILLISECOND == field) {
+            return;
+        }
+        
+        cal.set(GregorianCalendar.MILLISECOND, 0);
+        
+        if (GregorianCalendar.SECOND == field) {
+            cal.roll(GregorianCalendar.SECOND, 1);
+            return;
+        }
+
+        cal.set(GregorianCalendar.SECOND, 0);
+        
+        if (GregorianCalendar.SECOND == field) {
+            cal.roll(GregorianCalendar.SECOND, 1);
+            return;
+        }
+        
+        cal.roll(GregorianCalendar.MINUTE, 1);
+    }
+    
     static TimePeriod nextDown(TimePeriod period) {
         switch(period.fieldId) {
             case GregorianCalendar.MINUTE:
