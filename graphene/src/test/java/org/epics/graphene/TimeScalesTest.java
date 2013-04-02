@@ -122,4 +122,16 @@ public class TimeScalesTest {
         TimeScales.roundUp(cal, GregorianCalendar.MINUTE);
         assertThat(cal, equalTo(new GregorianCalendar(2013, 3, 14, 14, 24, 0)));
     }
+    
+    @Test
+    public void createReferences1() {
+        GregorianCalendar cal = new GregorianCalendar(2013, 3, 14, 14, 23, 15);
+        cal.set(GregorianCalendar.MILLISECOND, 123);
+        Timestamp start = Timestamp.of(cal.getTime());
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(2)));
+        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 50));
+        assertThat(references.size(), equalTo(41));
+        assertThat(references.get(0), equalTo(timeInterval.getStart()));
+        assertThat(references.get(40), equalTo(timeInterval.getEnd()));
+    }
 }

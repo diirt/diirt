@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -84,12 +85,21 @@ public class TimeScales {
         return null;
     }
     
-//    static List<Timestamp> createReferences(TimeInterval timeInterval, TimePeriod period) {
-//        Date start = timeInterval.getStart().toDate();
-//        Date end = timeInterval.getEnd().toDate();
-//        GregorianCalendar cal = new GregorianCalendar();
-//        cal.setTime(start);
-//    }
+    static List<Timestamp> createReferences(TimeInterval timeInterval, TimePeriod period) {
+        Date start = timeInterval.getStart().toDate();
+        Date end = timeInterval.getEnd().toDate();
+        GregorianCalendar endCal = new GregorianCalendar();
+        endCal.setTime(end);
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(start);
+        roundUp(cal, period.fieldId);
+        List<Timestamp> references = new ArrayList<>();
+        while (endCal.compareTo(cal) >= 0) {
+            references.add(Timestamp.of(cal.getTime()));
+            cal.add(period.fieldId, (int) period.amount);
+        }
+        return references;
+    }
 
     static void roundUp(GregorianCalendar cal, int field) {
         if (GregorianCalendar.MILLISECOND == field) {
