@@ -92,35 +92,40 @@ public class TimeScales {
         endCal.setTime(end);
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(start);
-        roundUp(cal, period.fieldId);
+        round(cal, period.fieldId);
+        cal.set(period.fieldId, (cal.get(period.fieldId) / (int) period.amount) * (int) period.amount);
         List<Timestamp> references = new ArrayList<>();
         while (endCal.compareTo(cal) >= 0) {
-            references.add(Timestamp.of(cal.getTime()));
+            Timestamp newTime = Timestamp.of(cal.getTime());
+            if (timeInterval.contains(newTime)) {
+                references.add(newTime);
+            }
             cal.add(period.fieldId, (int) period.amount);
         }
         return references;
     }
 
-    static void roundUp(GregorianCalendar cal, int field) {
+    static void round(GregorianCalendar cal, int field) {
+        
         if (GregorianCalendar.MILLISECOND == field) {
             return;
         }
-        
+
         cal.set(GregorianCalendar.MILLISECOND, 0);
         
         if (GregorianCalendar.SECOND == field) {
-            cal.roll(GregorianCalendar.SECOND, 1);
             return;
         }
 
         cal.set(GregorianCalendar.SECOND, 0);
-        
-        if (GregorianCalendar.SECOND == field) {
-            cal.roll(GregorianCalendar.SECOND, 1);
+
+        if (GregorianCalendar.MINUTE == field) {
             return;
         }
         
-        cal.roll(GregorianCalendar.MINUTE, 1);
+        cal.set(GregorianCalendar.MINUTE, 0);
+        
+        return;
     }
     
     static TimePeriod nextDown(TimePeriod period) {

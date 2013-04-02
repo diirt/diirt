@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
+import org.epics.util.time.TimestampFormat;
 
 /**
  *
@@ -108,19 +109,19 @@ public class TimeScalesTest {
     }
     
     @Test
-    public void roundUp1() {
+    public void round1() {
         GregorianCalendar cal = new GregorianCalendar(2013, 3, 14, 14, 23, 15);
         cal.set(GregorianCalendar.MILLISECOND, 123);
         Date date = cal.getTime();
 
-        TimeScales.roundUp(cal, GregorianCalendar.MILLISECOND);
+        TimeScales.round(cal, GregorianCalendar.MILLISECOND);
         assertThat(cal.getTime(), equalTo(date));
 
-        TimeScales.roundUp(cal, GregorianCalendar.SECOND);
-        assertThat(cal, equalTo(new GregorianCalendar(2013, 3, 14, 14, 23, 16)));
+        TimeScales.round(cal, GregorianCalendar.SECOND);
+        assertThat(cal, equalTo(new GregorianCalendar(2013, 3, 14, 14, 23, 15)));
         
-        TimeScales.roundUp(cal, GregorianCalendar.MINUTE);
-        assertThat(cal, equalTo(new GregorianCalendar(2013, 3, 14, 14, 24, 0)));
+        TimeScales.round(cal, GregorianCalendar.MINUTE);
+        assertThat(cal, equalTo(new GregorianCalendar(2013, 3, 14, 14, 23, 0)));
     }
     
     @Test
@@ -130,8 +131,41 @@ public class TimeScalesTest {
         Timestamp start = Timestamp.of(cal.getTime());
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(2)));
         List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 50));
-        assertThat(references.size(), equalTo(41));
-        assertThat(references.get(0), equalTo(timeInterval.getStart()));
-        assertThat(references.get(40), equalTo(timeInterval.getEnd()));
+        assertThat(references.size(), equalTo(40));
+        assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 15, 150)));
+        assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 15, 200)));
+        assertThat(references.get(39), equalTo(create(2013, 3, 14, 14, 23, 17, 100)));
+    }
+    
+    @Test
+    public void createReferences2() {
+        GregorianCalendar cal = new GregorianCalendar(2013, 3, 14, 14, 23, 15);
+        cal.set(GregorianCalendar.MILLISECOND, 123);
+        Timestamp start = Timestamp.of(cal.getTime());
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(2)));
+        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 100));
+        assertThat(references.size(), equalTo(20));
+        assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 15, 200)));
+        assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 15, 300)));
+        assertThat(references.get(19), equalTo(create(2013, 3, 14, 14, 23, 17, 100)));
+    }
+    
+    @Test
+    public void createReferences3() {
+        GregorianCalendar cal = new GregorianCalendar(2013, 3, 14, 14, 23, 15);
+        cal.set(GregorianCalendar.MILLISECOND, 123);
+        Timestamp start = Timestamp.of(cal.getTime());
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(30)));
+        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(SECOND, 10));
+        assertThat(references.size(), equalTo(3));
+        assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 20, 0)));
+        assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 30, 0)));
+        assertThat(references.get(2), equalTo(create(2013, 3, 14, 14, 23, 40, 0)));
+    }
+    
+    private static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+        GregorianCalendar cal = new GregorianCalendar(year, month, day, hour, minute, second);
+        cal.set(GregorianCalendar.MILLISECOND, millisecond);
+        return Timestamp.of(cal.getTime());
     }
 }
