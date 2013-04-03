@@ -156,10 +156,13 @@ public class TimeScales {
         return null;
     }
     
-    static TimePeriod roundSeconds(double seconds) {
-        if (seconds > 60) {
+    static TimePeriod toTimePeriod(double seconds) {
+        if (seconds >= 60) {
             return new TimePeriod(GregorianCalendar.MINUTE, seconds / 60.0);
         }
-        return new TimePeriod(GregorianCalendar.SECOND, seconds);
+        if (seconds >= 1) {
+            return new TimePeriod(GregorianCalendar.SECOND, seconds);
+        }
+        return new TimePeriod(GregorianCalendar.MILLISECOND, 100*seconds);
     }
 }

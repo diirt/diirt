@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.GregorianCalendar;
+import java.util.List;
 import static org.epics.graphene.ValueAxis.orderOfMagnitude;
 import org.epics.util.text.NumberFormats;
+import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
 
@@ -164,7 +166,20 @@ final class LinearAbsoluteTimeScale implements TimeScale {
 
     @Override
     public TimeAxis references(TimeInterval range, int minRefs, int maxRefs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // First guess at the time between references.
+        // Get the smallest required period, and then round down
+        TimeDuration rangeDuration = range.getEnd().durationFrom(range.getStart());
+        double minPeriodInSec = rangeDuration.toSeconds() / maxRefs;
+        TimeScales.TimePeriod timePeriod = TimeScales.toTimePeriod(minPeriodInSec);
+        timePeriod = TimeScales.nextDown(timePeriod);
+        
+        List<Timestamp> references = TimeScales.createReferences(range, timePeriod);
+        while(references.size() > maxRefs) {
+            timePeriod = TimeScales.nextUp(timePeriod);
+            references = TimeScales.createReferences(range, timePeriod);
+        }
+        
+        return new TimeAxis(range, references, null, null);
     }
     
 }

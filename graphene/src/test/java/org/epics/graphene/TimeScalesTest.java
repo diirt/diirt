@@ -56,13 +56,13 @@ public class TimeScalesTest {
     
     @Test
     public void roundSeconds1() {
-        TimeScales.TimePeriod period = TimeScales.roundSeconds(30.0);
+        TimeScales.TimePeriod period = TimeScales.toTimePeriod(30.0);
         assertThat(period, equalTo(new TimePeriod(SECOND, 30.0)));
     }
     
     @Test
     public void roundSeconds2() {
-        TimeScales.TimePeriod period = TimeScales.roundSeconds(61.0);
+        TimeScales.TimePeriod period = TimeScales.toTimePeriod(61.0);
         assertThat(period, equalTo(new TimePeriod(MINUTE, 61.0/60.0)));
     }
     
@@ -163,7 +163,7 @@ public class TimeScalesTest {
         assertThat(references.get(2), equalTo(create(2013, 3, 14, 14, 23, 40, 0)));
     }
     
-    private static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+    static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         GregorianCalendar cal = new GregorianCalendar(year, month, day, hour, minute, second);
         cal.set(GregorianCalendar.MILLISECOND, millisecond);
         return Timestamp.of(cal.getTime());
