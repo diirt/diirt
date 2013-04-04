@@ -5,11 +5,15 @@
 package org.epics.graphene;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
+import org.epics.util.time.TimestampFormat;
 
 /**
  *
@@ -225,5 +229,61 @@ public class TimeScales {
         double range = timeInterval.getEnd().durationFrom(timeInterval.getStart()).toNanosLong();
         double value = time.durationBetween(timeInterval.getStart()).toNanosLong();
         return value / range;
+    }
+    
+    private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss.NNNNNNNNN");
+    private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25);
+    private static String zeroFormat = "0000/01/01 00:00:00.000000000";
+    
+    static List<String> createLabels(List<Timestamp> timestamps) {
+        if (timestamps.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<String> result = new ArrayList<>(timestamps.size());
+        for (Timestamp timestamp : timestamps) {
+            result.add(format.format(timestamp));
+        }
+        
+        return result;
+    }
+    
+    static int commonEnd(String a, String b) {
+        int currentStopFromEnd = 0;
+        while(a.charAt(b.length() - 1 - currentStopFromEnd) == b.charAt(b.length() - 1 - currentStopFromEnd)) {
+            currentStopFromEnd++;
+        }
+        return currentStopFromEnd;
+    }
+    
+    static List<String> trimLabels(List<String> labels) {
+        if (labels.isEmpty()) {
+            return labels;
+        }
+        
+        // Calculate the useless part common to all strings
+        int currentStopFromEnd = zeroFormat.length();
+        for (int i = 0; i < labels.size(); i++) {
+            String otherLabel = labels.get(i);
+            currentStopFromEnd = Math.min(currentStopFromEnd, commonEnd(otherLabel, zeroFormat));
+        }
+        
+        // Round down to a possible stop
+        int finalStop = 0;
+        for (int i = 0; possibleStopFromEnd.getInt(i) <= currentStopFromEnd; i++) {
+            finalStop = possibleStopFromEnd.getInt(i);
+        }
+        
+        if (finalStop == 0) {
+            return labels;
+        }
+        
+        // Trim labels
+        List<String> result = new ArrayList<>(labels.size());
+        for (String label : labels) {
+            result.add(label.substring(0, zeroFormat.length() - finalStop));
+        }
+        
+        return result;
     }
 }
