@@ -232,7 +232,8 @@ public class TimeScales {
     }
     
     private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss.NNNNNNNNN");
-    private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25);
+    private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
+    private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
     
     static List<String> createLabels(List<Timestamp> timestamps) {
@@ -256,7 +257,15 @@ public class TimeScales {
         return currentStopFromEnd;
     }
     
-    static List<String> trimLabels(List<String> labels) {
+    static int commonStart(String a, String b) {
+        int commonStart = 0;
+        while(a.charAt(commonStart) == b.charAt(commonStart)) {
+            commonStart++;
+        }
+        return commonStart;
+    }
+    
+    static List<String> trimLabelsRight(List<String> labels) {
         if (labels.isEmpty()) {
             return labels;
         }
@@ -282,6 +291,29 @@ public class TimeScales {
         List<String> result = new ArrayList<>(labels.size());
         for (String label : labels) {
             result.add(label.substring(0, zeroFormat.length() - finalStop));
+        }
+        
+        return result;
+    }
+    
+    static List<String> trimLabelsLeft(List<String> labels) {
+        if (labels.isEmpty()) {
+            return labels;
+        }
+        
+        List<String> result = new ArrayList<>(labels.size());
+        String previousLabel = labels.get(0);
+        result.add(previousLabel);
+        
+        for (int i = 1; i < labels.size(); i++) {
+            String nextLabel = labels.get(i);
+            int commonStart = commonStart(previousLabel, nextLabel);
+            int finalStart = 0;
+            for (int j = 0; possibleStopFromStart.getInt(j) <= commonStart; j++) {
+                finalStart = possibleStopFromStart.getInt(j);
+            }
+            result.add(nextLabel.substring(finalStart, nextLabel.length()));
+            previousLabel = nextLabel;
         }
         
         return result;
