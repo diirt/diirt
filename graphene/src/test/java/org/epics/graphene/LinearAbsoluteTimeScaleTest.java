@@ -6,6 +6,7 @@ package org.epics.graphene;
 
 import java.util.Arrays;
 import java.util.List;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
@@ -46,7 +47,16 @@ public class LinearAbsoluteTimeScaleTest {
         Timestamp start = TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 123);
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(20)));
         TimeAxis timeAxis = linearScale.references(timeInterval, 2, 11);
-        assertAxisEquals(timeInterval, null, 
+        assertAxisEquals(timeInterval, new ArrayDouble(1877.0/20000.0,
+                3877.0/20000.0,
+                5877.0/20000.0,
+                7877.0/20000.0,
+                9877.0/20000.0,
+                11877.0/20000.0,
+                13877.0/20000.0,
+                15877.0/20000.0,
+                17877.0/20000.0,
+                19877.0/20000.0), 
                 Arrays.asList(TimeScalesTest.create(2013, 5, 10, 16, 13, 46, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 48, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 50, 0),
@@ -63,10 +73,19 @@ public class LinearAbsoluteTimeScaleTest {
     @Test
     public void references2() {
         TimeScale linearScale = TimeScales.linearAbsoluteScale();
-        Timestamp start = TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 123);
+        Timestamp start = TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 100);
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(5)));
         TimeAxis timeAxis = linearScale.references(timeInterval, 2, 11);
-        assertAxisEquals(timeInterval, null, 
+        assertAxisEquals(timeInterval, new ArrayDouble(4.0/50.0,
+                9.0/50.0,
+                14.0/50.0,
+                19.0/50.0,
+                24.0/50.0,
+                29.0/50.0,
+                34.0/50.0,
+                39.0/50.0,
+                44.0/50.0,
+                49.0/50.0), 
                 Arrays.asList(TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 500),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 45, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 45, 500),

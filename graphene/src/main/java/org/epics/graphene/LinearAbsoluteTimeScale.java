@@ -10,6 +10,7 @@ import java.text.NumberFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
 import static org.epics.graphene.ValueAxis.orderOfMagnitude;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
@@ -178,8 +179,13 @@ final class LinearAbsoluteTimeScale implements TimeScale {
             timePeriod = TimeScales.nextUp(timePeriod);
             references = TimeScales.createReferences(range, timePeriod);
         }
+        double[] normalized = new double[references.size()];
+        for (int i = 0; i < references.size(); i++) {
+            normalized[i] = TimeScales.normalize(references.get(i), range);
+        }
+        ArrayDouble normalizedValues = new ArrayDouble(normalized);
         
-        return new TimeAxis(range, references, null, null);
+        return new TimeAxis(range, references, normalizedValues, null);
     }
     
 }

@@ -64,6 +64,32 @@ public class TimeScales {
 
     static TimePeriod nextUp(TimePeriod period) {
         switch(period.fieldId) {
+            case GregorianCalendar.MILLISECOND:
+                if (period.amount < 2) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 2);
+                }
+                if (period.amount < 5) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 5);
+                }
+                if (period.amount < 10) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 10);
+                }
+                if (period.amount < 20) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 20);
+                }
+                if (period.amount < 50) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 50);
+                }
+                if (period.amount < 100) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 100);
+                }
+                if (period.amount < 200) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 200);
+                }
+                if (period.amount < 500) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 500);
+                }
+                return new TimePeriod(GregorianCalendar.SECOND, 1);
             case GregorianCalendar.SECOND:
                 if (period.amount < 2) {
                     return new TimePeriod(GregorianCalendar.SECOND, 2);
@@ -151,7 +177,35 @@ public class TimeScales {
                 if (period.amount > 1) {
                     return new TimePeriod(GregorianCalendar.SECOND, 1);
                 }
-                return new TimePeriod(GregorianCalendar.SECOND, 0.5);
+                return new TimePeriod(GregorianCalendar.MILLISECOND, 500);
+            case GregorianCalendar.MILLISECOND:
+                if (period.amount > 500) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 500);
+                }
+                if (period.amount > 200) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 200);
+                }
+                if (period.amount > 100) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 100);
+                }
+                if (period.amount > 50) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 50);
+                }
+                if (period.amount > 20) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 20);
+                }
+                if (period.amount > 10) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 10);
+                }
+                if (period.amount > 5) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 5);
+                }
+                if (period.amount > 2) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 2);
+                }
+                if (period.amount > 1) {
+                    return new TimePeriod(GregorianCalendar.MILLISECOND, 1);
+                }
         }
         return null;
     }
@@ -164,5 +218,12 @@ public class TimeScales {
             return new TimePeriod(GregorianCalendar.SECOND, seconds);
         }
         return new TimePeriod(GregorianCalendar.MILLISECOND, 100*seconds);
+    }
+    
+    static double normalize(Timestamp time, TimeInterval timeInterval) {
+        // XXX: if interval is more than 292 years, this will not work
+        double range = timeInterval.getEnd().durationFrom(timeInterval.getStart()).toNanosLong();
+        double value = time.durationBetween(timeInterval.getStart()).toNanosLong();
+        return value / range;
     }
 }
