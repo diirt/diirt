@@ -11,7 +11,7 @@
     <version>2.2-SNAPSHOT</version>
     <name>pvmanager</name>
     <description>A library to create well behaved clients for aggregating and processing
-    real-time live data.</description>
+        real-time live data.</description>
     <packaging>pom</packaging>
     <url>http://pvmanager.sourceforge.net</url>
     <organization>
@@ -131,7 +131,7 @@
                         </goals>
                         <phase>site</phase>
                         <configuration>
-                            <docfilessubdirs />
+                            <docfilessubdirs/>
                         </configuration>
                     </execution>
                 </executions>
@@ -197,8 +197,9 @@
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
         <module>epics-vtype</module>
-    <module>pvmanager-sys</module>
-  </modules>
+        <module>pvmanager-sys</module>
+        <module>pvmanager-timecache</module>
+    </modules>
     <reporting>
         <plugins>
             <plugin>
