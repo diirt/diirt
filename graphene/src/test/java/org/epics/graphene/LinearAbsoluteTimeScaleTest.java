@@ -66,7 +66,17 @@ public class LinearAbsoluteTimeScaleTest {
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 58, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 14, 0, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 14, 2, 0),
-                TimeScalesTest.create(2013, 5, 10, 16, 14, 4, 0)), null, timeAxis);
+                TimeScalesTest.create(2013, 5, 10, 16, 14, 4, 0)),
+                Arrays.asList("2013/05/10 16:13:46",
+                "16:13:48",
+                "16:13:50",
+                "16:13:52",
+                "16:13:54",
+                "16:13:56",
+                "16:13:58",
+                "16:14:00",
+                "16:14:02",
+                "16:14:04"), timeAxis);
         
     }
 
@@ -95,7 +105,17 @@ public class LinearAbsoluteTimeScaleTest {
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 47, 500),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 48, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 48, 500),
-                TimeScalesTest.create(2013, 5, 10, 16, 13, 49, 0)), null, timeAxis);
+                TimeScalesTest.create(2013, 5, 10, 16, 13, 49, 0)),
+                Arrays.asList("2013/05/10 16:13:44.5",
+                "16:13:45.0",
+                ".5",
+                "16:13:46.0",
+                ".5",
+                "16:13:47.0",
+                ".5",
+                "16:13:48.0",
+                ".5",
+                "16:13:49.0"), timeAxis);
         
     }
 

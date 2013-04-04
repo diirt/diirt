@@ -185,7 +185,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         }
         ArrayDouble normalizedValues = new ArrayDouble(normalized);
         
-        return new TimeAxis(range, references, normalizedValues, null);
+        return new TimeAxis(range, references, normalizedValues, TimeScales.trimLabelsLeft(TimeScales.trimLabelsRight(TimeScales.createLabels(references))));
     }
     
 }
