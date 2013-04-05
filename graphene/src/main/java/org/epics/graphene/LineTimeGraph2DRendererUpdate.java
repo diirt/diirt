@@ -16,7 +16,7 @@ public class LineTimeGraph2DRendererUpdate extends TemporalGraph2DRendererUpdate
         if (scheme == null) {
             throw new NullPointerException("Interpolation scheme chan't be null");
         }
-        if (!LineGraph2DRenderer.supportedInterpolationScheme.contains(scheme)) {
+        if (!LineTimeGraph2DRenderer.supportedInterpolationScheme.contains(scheme)) {
             throw new IllegalArgumentException("Interpolation " + scheme + " is not supported");
         }
         this.interpolation = scheme;

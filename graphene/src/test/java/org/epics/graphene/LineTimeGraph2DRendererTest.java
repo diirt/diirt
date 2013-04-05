@@ -84,4 +84,22 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.3", image);
     }
+    
+    @Test
+    public void test4() throws Exception {
+        Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(6000)),
+                start.plus(TimeDuration.ofMillis(8500)),
+                start.plus(TimeDuration.ofMillis(12500)),
+                start.plus(TimeDuration.ofMillis(15000))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.4", image);
+    }
 }

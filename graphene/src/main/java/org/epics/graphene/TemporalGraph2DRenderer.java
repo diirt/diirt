@@ -14,6 +14,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
+import static org.epics.graphene.InterpolationScheme.NEAREST_NEIGHBOUR;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
@@ -359,8 +360,12 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         Path2D path;
         switch (interpolation) {
             default:
+                throw new IllegalArgumentException("Interpolation " + interpolation + " not supported");
             case NEAREST_NEIGHBOUR:
                 path = nearestNeighbour(scaledX, scaledY);
+                break;
+            case PREVIOUS_VALUE:
+                path = previousValue(scaledX, scaledY);
                 break;
             case LINEAR:
                 path = linearInterpolation(scaledX, scaledY);
@@ -387,6 +392,19 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             }
         }
         line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
+        return line;
+    }
+
+    private static Path2D.Double previousValue(double[] scaledX, double[] scaledY) {
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[0], scaledY[0]);
+        // TODO: review for NaN support
+        for (int i = 1; i < scaledY.length; i++) {
+            line.lineTo(scaledX[i], scaledY[i-1]);
+            line.lineTo(scaledX[i], scaledY[i]);
+        }
+//        line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
+        //TODO: last value till end of the graph 
         return line;
     }
 

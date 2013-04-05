@@ -17,7 +17,11 @@ import org.epics.util.array.SortedListView;
  */
 public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGraph2DRendererUpdate> {
 
-    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(
+            InterpolationScheme.NEAREST_NEIGHBOUR, 
+            InterpolationScheme.PREVIOUS_VALUE,
+            InterpolationScheme.LINEAR,
+            InterpolationScheme.CUBIC);
     
     @Override
     public LineTimeGraph2DRendererUpdate newUpdate() {
