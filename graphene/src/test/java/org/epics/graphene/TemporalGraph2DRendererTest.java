@@ -6,6 +6,8 @@ package org.epics.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -84,6 +86,26 @@ public class TemporalGraph2DRendererTest {
         assertThat(renderer.getPlotRange().getMinimum(), equalTo(RangeUtil.range(0, 15).getMinimum()));
         assertThat(renderer.getPlotRange().getMaximum(), equalTo(RangeUtil.range(0, 15).getMaximum()));
         assertThat(renderer.getPlotTimeInterval(), sameInstance(newTimeInterval));
+    }
+    
+    @Test
+    public void timeGraphArea1() throws Exception {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(300, 200) {
+
+            @Override
+            public TemporalGraph2DRendererUpdate newUpdate() {
+                return new TemporalGraph2DRendererUpdate();
+            }
+        };
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        Timestamp start = TimeScalesTest.create(2013, 1, 1, 12, 0, 0, 0);
+        Timestamp end = TimeScalesTest.create(2013, 1, 1, 12, 0, 2, 0);
+        renderer.calculateRanges(RangeUtil.range(0, 10), TimeInterval.between(start, end));
+        renderer.calculateGraphArea();
+        renderer.drawGraphArea();
+        ImageAssert.compareImages("timeGraph2DArea.1", image);
     }
     
 }
