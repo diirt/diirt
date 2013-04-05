@@ -4,19 +4,14 @@
  */
 package org.epics.graphene;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.GregorianCalendar;
 import java.util.List;
-import static org.epics.graphene.ValueAxis.orderOfMagnitude;
 import org.epics.util.array.ArrayDouble;
-import org.epics.util.text.NumberFormats;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
 
 /**
+ * A time scale where absolute time is used linearly.
  *
  * @author carcassi
  */
@@ -45,11 +40,17 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         TimeScales.TimePeriod timePeriod = TimeScales.toTimePeriod(minPeriodInSec);
         timePeriod = TimeScales.nextDown(timePeriod);
         
+        // Kepp increasing the time until you have the right amount of references
         List<Timestamp> references = TimeScales.createReferences(range, timePeriod);
         while(references.size() > maxRefs) {
             timePeriod = TimeScales.nextUp(timePeriod);
             references = TimeScales.createReferences(range, timePeriod);
         }
+        if (references.size() < minRefs) {
+            throw new RuntimeException("Can't create the requested amount of references");
+        }
+
+        // Prepare normalized values
         double[] normalized = new double[references.size()];
         for (int i = 0; i < references.size(); i++) {
             normalized[i] = TimeScales.normalize(references.get(i), range);
