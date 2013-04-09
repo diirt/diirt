@@ -76,6 +76,27 @@ public class ListNumbers {
         
         return index;
     }
+    
+    public static int binarySearchValueOrHigher(ListNumber values, double value) {
+        if (value <= values.getDouble(0)) {
+            return 0;
+        }
+        if (value >= values.getDouble(values.size() -1)) {
+            return values.size() - 1;
+        }
+        
+        int index = binarySearch(0, values.size() - 1, values, value);
+        
+        while (index != values.size() - 1 && value > values.getDouble(index)) {
+            index++;
+        }
+        
+        while (index != values.size() - 1 && value == values.getDouble(index + 1)) {
+            index++;
+        }
+        
+        return index;
+    }
 
     private static int binarySearch(int low, int high, ListNumber values, double value) {
         // Taken from JDK

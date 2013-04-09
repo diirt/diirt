@@ -43,11 +43,31 @@ public class ListNumbersTest {
         assertThat(ListNumbers.binarySearchValueOrLower(values, 5), equalTo(5));
         assertThat(ListNumbers.binarySearchValueOrLower(values, 9), equalTo(9));
         assertThat(ListNumbers.binarySearchValueOrLower(values, 2.5), equalTo(1));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 0.5), equalTo(0));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 10), equalTo(10));
     }
     
     @Test
     public void binarySearchValueOrLower2() {
         ListNumber values = new ArrayDouble(1,2,2,2,2,2,2,2,2,2,3);
         assertThat(ListNumbers.binarySearchValueOrLower(values, 2), equalTo(1));
+   }
+    
+    @Test
+    public void binarySearchValueOrHigher1() {
+        ListNumber values = new ArrayDouble(1,2,3,3,4,5,5,6,7,8,10);
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 1), equalTo(0));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 10), equalTo(10));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 2), equalTo(1));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 3), equalTo(3));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 5), equalTo(6));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 9), equalTo(10));
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 2.5), equalTo(2));
+    }
+    
+    @Test
+    public void binarySearchValueOrHigher2() {
+        ListNumber values = new ArrayDouble(1,2,2,2,2,2,2,2,2,2,3);
+        assertThat(ListNumbers.binarySearchValueOrHigher(values, 2), equalTo(9));
    }
 }
