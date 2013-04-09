@@ -25,6 +25,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     }
 
     private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
 
     /**
      * Creates a new line graph renderer.
@@ -72,6 +73,6 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
         setClip(g);
         g.setColor(Color.BLACK);
-        drawValueLine(xValues, yValues, interpolation);
+        drawValueExplicitLine(xValues, yValues, interpolation, reduction);
     }
 }
