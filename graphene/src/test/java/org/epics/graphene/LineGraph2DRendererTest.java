@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import junit.framework.AssertionFailedError;
 import org.epics.util.array.ArrayDouble;
@@ -25,12 +26,22 @@ public class LineGraph2DRendererTest {
     public LineGraph2DRendererTest() {
     }
 
+    private static Point2DDataset largeDataset;
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
+        Random rand = new Random(1);
+        int nSamples = 100000;
+        double[] waveform = new double[nSamples];
+        for (int i = 0; i < nSamples; i++) {
+            waveform[i] = rand.nextGaussian();
+        }
+        largeDataset = org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        largeDataset = null;
     }
     
     @Test
@@ -110,5 +121,28 @@ public class LineGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.7", image);
+    }
+    
+    @Test(timeout = 300)
+    public void test8() throws Exception {
+        Point2DDataset dataset = largeDataset;
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, dataset);
+        ImageAssert.compareImages("lineGraph.8", image);
+    }
+    
+    @Test(timeout = 300)
+    public void test8b() throws Exception {
+        Point2DDataset dataset = largeDataset;
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, dataset);
+        ImageAssert.compareImages("lineGraph.8", image);
     }
 }

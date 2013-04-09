@@ -18,6 +18,7 @@ import org.epics.util.array.SortedListView;
 public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpdate> {
 
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE);
     
     @Override
     public LineGraph2DRendererUpdate newUpdate() {
@@ -51,6 +52,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         super.update(update);
         if (update.getInterpolation() != null) {
             interpolation = update.getInterpolation();
+        }
+        if (update.getDataReduction() != null) {
+            reduction = update.getDataReduction();
         }
     }
 
