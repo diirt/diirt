@@ -316,12 +316,75 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         drawYLabels();
         drawXLabels();
     }
+
+    private ScaledData scaleNoReducation(ListNumber xValues, ListNumber yValues) {
+        ScaledData scaledData = new ScaledData();
+        int dataCount = xValues.size();
+        scaledData.scaledX = new double[dataCount];
+        scaledData.scaledY = new double[dataCount];
+        for (int i = 0; i < scaledData.scaledY.length; i++) {
+            scaledData.scaledX[i] = scaledX(xValues.getDouble(i));
+            scaledData.scaledY[i] = scaledY(yValues.getDouble(i));;
+        }
+        scaledData.end = dataCount;
+        return scaledData;
+    }
+
+    private ScaledData scaleFirstMaxMinLastReduction(ListNumber xValues, ListNumber yValues) {
+        ScaledData scaledData = new ScaledData();
+        scaledData.scaledX = new double[((int) xPlotCoordWidth + 1)*4 ];
+        scaledData.scaledY = new double[((int) xPlotCoordWidth + 1)*4];
+        int cursor = 0;
+        int previousPixel = (int) scaledX(xValues.getDouble(0));
+        double last = scaledY(yValues.getDouble(0));
+        double min = last;
+        double max = last;
+        scaledData.scaledX[0] = previousPixel;
+        scaledData.scaledY[0] = min;
+        cursor++;
+        for (int i = 1; i < xValues.size(); i++) {
+            int currentPixel = (int) scaledX(xValues.getDouble(i));
+            if (currentPixel == previousPixel) {
+                last = scaledY(yValues.getDouble(i));
+                min = MathIgnoreNaN.min(min, last);
+                max = MathIgnoreNaN.max(max, last);
+            } else {
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = max;
+                cursor++;
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = min;
+                cursor++;
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = last;
+                cursor++;
+                previousPixel = currentPixel;
+                last = scaledY(yValues.getDouble(i));
+                min = last;
+                max = last;
+                scaledData.scaledX[cursor] = currentPixel;
+                scaledData.scaledY[cursor] = last;
+                cursor++;
+            }
+        }
+        scaledData.scaledX[cursor] = previousPixel;
+        scaledData.scaledY[cursor] = max;
+        cursor++;
+        scaledData.scaledX[cursor] = previousPixel;
+        scaledData.scaledY[cursor] = min;
+        cursor++;
+        scaledData.end = cursor;
+        return scaledData;
+    }
+    
+    private static class ScaledData {
+        private double[] scaledX;
+        private double[] scaledY;
+        private int start;
+        private int end;
+    }
     
     protected void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation) {
-//        if (xValues.size() > 5 && interpolation == InterpolationScheme.LINEAR) {
-//            drawValueLineSkip(xValues, yValues, interpolation);
-//            return;
-//        }
         ReductionScheme reductionScheme;
         if (xValues.size() > xPlotCoordWidth * 4) {
             reductionScheme = ReductionScheme.FIRST_MAX_MIN_LAST;
@@ -329,83 +392,31 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             reductionScheme = ReductionScheme.NONE;
         }
 
-        double[] scaledX;
-        double[] scaledY;
-        int start = 0;
-        int end = 0;
+        ScaledData scaledData;
         
         switch (reductionScheme) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reductionScheme + " not supported");
             case NONE:
-                int dataCount = xValues.size();
-                scaledX = new double[dataCount];
-                scaledY = new double[dataCount];
-                for (int i = 0; i < scaledY.length; i++) {
-                    scaledX[i] = scaledX(xValues.getDouble(i));
-                    scaledY[i] = scaledY(yValues.getDouble(i));;
-                }
-                end = dataCount;
+                scaledData = scaleNoReducation(xValues, yValues);
                 break;
             case FIRST_MAX_MIN_LAST:
-                scaledX = new double[((int) xPlotCoordWidth + 1)*4 ];
-                scaledY = new double[((int) xPlotCoordWidth + 1)*4];
-                int cursor = 0;
-                int previousPixel = (int) scaledX(xValues.getDouble(0));
-                double last = scaledY(yValues.getDouble(0));
-                double min = last;
-                double max = last;
-                scaledX[0] = previousPixel;
-                scaledY[0] = min;
-                cursor++;
-                for (int i = 1; i < xValues.size(); i++) {
-                    int currentPixel = (int) scaledX(xValues.getDouble(i));
-                    if (currentPixel == previousPixel) {
-                        last = scaledY(yValues.getDouble(i));
-                        min = MathIgnoreNaN.min(min, last);
-                        max = MathIgnoreNaN.max(max, last);
-                    } else {
-                        scaledX[cursor] = previousPixel;
-                        scaledY[cursor] = max;
-                        cursor++;
-                        scaledX[cursor] = previousPixel;
-                        scaledY[cursor] = min;
-                        cursor++;
-                        scaledX[cursor] = previousPixel;
-                        scaledY[cursor] = last;
-                        cursor++;
-                        previousPixel = currentPixel;
-                        last = scaledY(yValues.getDouble(i));
-                        min = last;
-                        max = last;
-                        scaledX[cursor] = currentPixel;
-                        scaledY[cursor] = last;
-                        cursor++;
-                    }
-                }
-                scaledX[cursor] = previousPixel;
-                scaledY[cursor] = max;
-                cursor++;
-                scaledX[cursor] = previousPixel;
-                scaledY[cursor] = min;
-                cursor++;
-                end = cursor;
+                scaledData = scaleFirstMaxMinLastReduction(xValues, yValues);
                 break;
         }
         
-        // Scale data and sort data
-        
+        // create path
         Path2D path;
         switch (interpolation) {
             default:
             case NEAREST_NEIGHBOUR:
-                path = nearestNeighbour(scaledX, scaledY, start, end);
+                path = nearestNeighbour(scaledData);
                 break;
             case LINEAR:
-                path = linearInterpolation(scaledX, scaledY, start, end);
+                path = linearInterpolation(scaledData);
                 break;
             case CUBIC:
-                path = cubicInterpolation(scaledX, scaledY, start, end);
+                path = cubicInterpolation(scaledData);
                 break;
         }
 
@@ -413,7 +424,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.draw(path);
     }
 
-    private static Path2D.Double nearestNeighbour(double[] scaledX, double[] scaledY, int start, int end) {
+    private static Path2D.Double nearestNeighbour(ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[start], scaledY[start]);
         for (int i = 1; i < end; i++) {
@@ -430,8 +445,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return line;
     }
 
-    private static Path2D.Double linearInterpolation(double[] scaledX, double[] scaledY, int start, int end) {
-        Path2D.Double line = new Path2D.Double();
+    private static Path2D.Double linearInterpolation(ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;        Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[start], scaledY[start]);
         for (int i = 1; i < end; i++) {
             line.lineTo(scaledX[i], scaledY[i]);
@@ -439,7 +457,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return line;
     }
 
-    private static Path2D.Double cubicInterpolation(double[] scaledX, double[] scaledY, int start, int end) {
+    private static Path2D.Double cubicInterpolation(ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
         Path2D.Double path = new Path2D.Double();
         path.moveTo(scaledX[start], scaledY[start]);
         for (int i = 1; i < end; i++) {
