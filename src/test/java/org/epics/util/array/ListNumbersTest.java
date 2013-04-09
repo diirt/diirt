@@ -32,4 +32,22 @@ public class ListNumbersTest {
         assertThat(sortedView, equalTo((ListNumber) new ArrayDouble(5,4,3,2,1,0)));
         assertThat(sortedView.getIndexes(), equalTo((ListInt) new ArrayInt(0,3,1,4,2,5)));
     }
+    
+    @Test
+    public void binarySearchValueOrLower1() {
+        ListNumber values = new ArrayDouble(1,2,3,3,4,5,5,6,7,8,10);
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 1), equalTo(0));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 10), equalTo(10));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 2), equalTo(1));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 3), equalTo(2));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 5), equalTo(5));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 9), equalTo(9));
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 2.5), equalTo(1));
+    }
+    
+    @Test
+    public void binarySearchValueOrLower2() {
+        ListNumber values = new ArrayDouble(1,2,2,2,2,2,2,2,2,2,3);
+        assertThat(ListNumbers.binarySearchValueOrLower(values, 2), equalTo(1));
+   }
 }
