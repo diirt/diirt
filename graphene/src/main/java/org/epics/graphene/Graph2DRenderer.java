@@ -22,6 +22,7 @@ import static org.epics.graphene.ReductionScheme.NONE;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
+import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 
 /**
@@ -427,6 +428,13 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     
     protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction) {
         ScaledData scaledData;
+        
+        // Narrow the data
+        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        
+        xValues = ListMath.limit(xValues, start, end + 1);
+        yValues = ListMath.limit(yValues, start, end + 1);
         
         switch (reduction) {
             default:
