@@ -2,4 +2,4 @@ syntax: glob
 **/target/
 *.failed.png
 *~
-
+~*
