@@ -38,7 +38,7 @@ class ColumnOfVTableConverter implements ReadFunction<VType> {
     public VType readValue() {
         final VTable table = tableArg.readValue();
         final VString columnName = columnNameArg.readValue();
-        if (columnName == null) {
+        if (columnName == null || table == null) {
             return null;
         }
         
