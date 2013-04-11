@@ -28,7 +28,7 @@ public class Table extends SimFunction<VTable> {
         }
     }
     
-    private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.class, Integer.class);
+    private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.TYPE, Integer.TYPE);
     
 
     @Override
@@ -64,6 +64,10 @@ public class Table extends SimFunction<VTable> {
     }
     
     String generateString(int id) {
+        if (id == 0) {
+            return "A";
+        }
+        
         StringBuilder sb = new StringBuilder();
         while (id != 0) {
             char letter = (char) ('A' + (id %  26));
