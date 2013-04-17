@@ -8,6 +8,7 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.antlr.runtime.*;
@@ -20,6 +21,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
+import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.WriteExpression;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -213,6 +215,24 @@ public class ExpressionLanguage {
     }
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
+        Collection<FormulaFunction> matchedFunctions = FormulaRegistry.getDefault().findFunctions(function, args.getDesiredRateExpressions().size());
+        if (matchedFunctions.size() > 0) {
+            FormulaReadFunction readFunction = new FormulaReadFunction(Expressions.functionsOf(args), matchedFunctions);
+            StringBuilder sb = new StringBuilder();
+            sb.append(function).append('(');
+            boolean first = true;
+            for (DesiredRateExpression<?> arg : args.getDesiredRateExpressions()) {
+                if (!first) {
+                    sb.append(", ");
+                } else {
+                    first = false;
+                }
+                sb.append(arg.getName());
+            }
+            sb.append(')');
+            return new DesiredRateExpressionImpl<>(args, readFunction, sb.toString());
+        }
+        
         if ("arrayOf".equals(function)) {
             return org.epics.pvmanager.vtype.ExpressionLanguage.vNumberArrayOf(cast(VNumber.class, args));
         }
@@ -233,14 +253,6 @@ public class ExpressionLanguage {
     
     static {
         Map<String, OneArgNumericFunction> map = new HashMap<>();
-        
-        map.put("abs", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.abs(arg);
-            }
-        });
         
         map.put("acos", new OneArgNumericFunction() {
 

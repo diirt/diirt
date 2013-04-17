@@ -60,16 +60,16 @@ public class FormulaRegistry {
     }
     
     public Collection<FormulaFunction> findFunctions(String functionName, Integer nArguments) {
-        FormulaFunctionSet set = functionSets.get(functionName);
-        if (set == null) {
-            return Collections.emptySet();
+        Set<FormulaFunction> functions = new HashSet<>();
+        for (FormulaFunctionSet formulaFunctionSet : functionSets.values()) {
+            for (FormulaFunction formulaFunction : formulaFunctionSet.getFunctions()) {
+                if (formulaFunction.getName().equals(functionName) &&
+                        formulaFunction.getArgumentNames().size() == nArguments) {
+                    functions.add(formulaFunction);
+                }
+            }
         }
         
-        Collection<FormulaFunction> functions = set.getFunctions();
-        if (functions == null) {
-            return Collections.emptySet();
-        }
-        
-        return Collections.unmodifiableCollection(functions);
+        return functions;
     }
 }
