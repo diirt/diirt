@@ -18,6 +18,12 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.abs(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("acos", "Arc cosine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.acos(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {

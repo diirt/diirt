@@ -43,6 +43,17 @@ public class MathFunctionSetTest {
     }
 
     @Test
+    public void acos1() {
+        Collection<FormulaFunction> functions = set.findFunctions("acos");
+        assertThat(functions.size(), equalTo(1));
+        FormulaFunction function = functions.iterator().next();
+        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(0.0)));
+        assertThat(value.getValue().doubleValue(), closeTo(3.1415/2.0, 0.0001));
+        value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(1.0)));
+        assertThat(value.getValue().doubleValue(), closeTo(0.0, 0.0001));
+    }
+
+    @Test
     public void log1() {
         Collection<FormulaFunction> functions = set.findFunctions("log");
         assertThat(functions.size(), equalTo(1));
