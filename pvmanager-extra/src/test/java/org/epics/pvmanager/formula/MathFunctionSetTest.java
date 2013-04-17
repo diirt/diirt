@@ -30,37 +30,30 @@ import static org.epics.vtype.ValueFactory.*;
 public class MathFunctionSetTest {
 
     private static MathFunctionSet set = new MathFunctionSet();
+    
+    public static void testFunction(FormulaFunctionSet set, String name, double arg, double result) {
+        Collection<FormulaFunction> functions = set.findFunctions(name);
+        assertThat(functions.size(), equalTo(1));
+        FormulaFunction function = functions.iterator().next();
+        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(arg)));
+        assertThat(value.getValue().doubleValue(), closeTo(result, 0.0001));
+    }
 
     @Test
     public void abs1() {
-        Collection<FormulaFunction> functions = set.findFunctions("abs");
-        assertThat(functions.size(), equalTo(1));
-        FormulaFunction function = functions.iterator().next();
-        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(1.0)));
-        assertThat(value.getValue().doubleValue(), equalTo(1.0));
-        value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(-1.0)));
-        assertThat(value.getValue().doubleValue(), equalTo(1.0));
+        testFunction(set, "abs", 1.0, 1.0);
+        testFunction(set, "abs", -1.0, 1.0);
     }
 
     @Test
     public void acos1() {
-        Collection<FormulaFunction> functions = set.findFunctions("acos");
-        assertThat(functions.size(), equalTo(1));
-        FormulaFunction function = functions.iterator().next();
-        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(0.0)));
-        assertThat(value.getValue().doubleValue(), closeTo(3.1415/2.0, 0.0001));
-        value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(1.0)));
-        assertThat(value.getValue().doubleValue(), closeTo(0.0, 0.0001));
+        testFunction(set, "acos", 0.0, 3.1415/2.0);
+        testFunction(set, "acos", 1.0, 0.0);
     }
 
     @Test
     public void log1() {
-        Collection<FormulaFunction> functions = set.findFunctions("log");
-        assertThat(functions.size(), equalTo(1));
-        FormulaFunction function = functions.iterator().next();
-        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(Math.E)));
-        assertThat(value.getValue().doubleValue(), equalTo(1.0));
-        value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(1.0)));
-        assertThat(value.getValue().doubleValue(), equalTo(0.0));
+        testFunction(set, "log", Math.E, 1.0);
+        testFunction(set, "log", 1.0, 0.0);
     }
 }
