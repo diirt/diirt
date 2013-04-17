@@ -32,6 +32,17 @@ public class MathFunctionSetTest {
     private static MathFunctionSet set = new MathFunctionSet();
 
     @Test
+    public void abs1() {
+        Collection<FormulaFunction> functions = set.findFunctions("abs");
+        assertThat(functions.size(), equalTo(1));
+        FormulaFunction function = functions.iterator().next();
+        VNumber value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(1.0)));
+        assertThat(value.getValue().doubleValue(), equalTo(1.0));
+        value = (VNumber) function.calculate(Arrays.<Object>asList(newVDouble(-1.0)));
+        assertThat(value.getValue().doubleValue(), equalTo(1.0));
+    }
+
+    @Test
     public void log1() {
         Collection<FormulaFunction> functions = set.findFunctions("log");
         assertThat(functions.size(), equalTo(1));
