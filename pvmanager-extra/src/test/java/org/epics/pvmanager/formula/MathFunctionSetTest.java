@@ -58,6 +58,11 @@ public class MathFunctionSetTest {
     }
 
     @Test
+    public void atan1() {
+        testFunction(set, "atan", 0.0, 0.0);
+    }
+
+    @Test
     public void log1() {
         testFunction(set, "log", Math.E, 1.0);
         testFunction(set, "log", 1.0, 0.0);

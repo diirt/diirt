@@ -254,30 +254,6 @@ public class ExpressionLanguage {
     static {
         Map<String, OneArgNumericFunction> map = new HashMap<>();
         
-        map.put("acos", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.acos(arg);
-            }
-        });
-        
-        map.put("asin", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.asin(arg);
-            }
-        });
-        
-        map.put("atan", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.atan(arg);
-            }
-        });
-        
         map.put("cbrt", new OneArgNumericFunction() {
 
             @Override

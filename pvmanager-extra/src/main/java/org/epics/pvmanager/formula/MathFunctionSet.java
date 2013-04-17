@@ -30,6 +30,12 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.asin(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("atan", "Arc tangent", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.atan(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {
