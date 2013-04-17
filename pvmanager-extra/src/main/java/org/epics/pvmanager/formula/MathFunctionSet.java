@@ -24,6 +24,12 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.acos(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("asin", "Arc sine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.asin(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {
