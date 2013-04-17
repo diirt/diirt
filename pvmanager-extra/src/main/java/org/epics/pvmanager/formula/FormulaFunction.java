@@ -20,7 +20,7 @@ public interface FormulaFunction {
     
     public List<Class<?>> getArgumentTypes();
     
-    public List<Class<?>> getArgumentNames();
+    public List<String> getArgumentNames();
     
     public Object calculate(List<Object> args);
 }
