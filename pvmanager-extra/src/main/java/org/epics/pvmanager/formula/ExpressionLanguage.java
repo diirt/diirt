@@ -254,14 +254,6 @@ public class ExpressionLanguage {
     static {
         Map<String, OneArgNumericFunction> map = new HashMap<>();
         
-        map.put("cbrt", new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return Math.cbrt(arg);
-            }
-        });
-        
         map.put("ceil", new OneArgNumericFunction() {
 
             @Override

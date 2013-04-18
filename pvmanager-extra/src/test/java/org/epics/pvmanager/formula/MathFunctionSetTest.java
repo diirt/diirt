@@ -63,6 +63,13 @@ public class MathFunctionSetTest {
     }
 
     @Test
+    public void cbrt1() {
+        testFunction(set, "cbrt", 1.0, 1.0);
+        testFunction(set, "cbrt", 8.0, 2.0);
+        testFunction(set, "cbrt", 27.0, 3.0);
+    }
+
+    @Test
     public void log1() {
         testFunction(set, "log", Math.E, 1.0);
         testFunction(set, "log", 1.0, 0.0);

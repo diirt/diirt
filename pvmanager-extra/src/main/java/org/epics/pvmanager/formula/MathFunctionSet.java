@@ -36,6 +36,12 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.atan(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("cbrt", "Cubic root", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.cbrt(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {
