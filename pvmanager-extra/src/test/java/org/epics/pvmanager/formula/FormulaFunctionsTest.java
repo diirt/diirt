@@ -32,30 +32,46 @@ public class FormulaFunctionsTest {
 
     @Test
     public void matchArgumentTypes1() {
-        FormulaFunction formula = mock(FormulaFunction.class);
-        when(formula.isVarargs()).thenReturn(false);
-        when(formula.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
+        FormulaFunction function = mock(FormulaFunction.class);
+        when(function.isVarargs()).thenReturn(false);
+        when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList("test", "test"), formula), equalTo(false));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0, ""), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), formula), equalTo(false));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", 1.0), formula), equalTo(false));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", "test"), formula), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), function), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList("test", "test"), function), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0, ""), function), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), function), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", 1.0), function), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", "test"), function), equalTo(false));
     }
 
     @Test
     public void matchArgumentTypes2() {
-        FormulaFunction formula = mock(FormulaFunction.class);
-        when(formula.isVarargs()).thenReturn(true);
-        when(formula.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
+        FormulaFunction function = mock(FormulaFunction.class);
+        when(function.isVarargs()).thenReturn(true);
+        when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList("test", "test"), formula), equalTo(false));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0, ""), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", 1.0), formula), equalTo(false));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", "test"), formula), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), function), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList("test", "test"), function), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0, ""), function), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), function), equalTo(true));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", 1.0), function), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", "test"), function), equalTo(true));
+    }
+
+    @Test
+    public void findFirstMatch1() {
+        FormulaFunction function1 = mock(FormulaFunction.class);
+        when(function1.isVarargs()).thenReturn(false);
+        when(function1.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(String.class));
+        FormulaFunction function2 = mock(FormulaFunction.class);
+        when(function2.isVarargs()).thenReturn(true);
+        when(function2.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class));
+        List<FormulaFunction> functions = Arrays.asList(function1, function2);
+        
+        assertThat(FormulaFunctions.findFirstMatch(Arrays.<Object>asList(3.0, "test"), functions), nullValue());
+        assertThat(FormulaFunctions.findFirstMatch(Arrays.<Object>asList(3.0), functions), sameInstance(function2));
+        assertThat(FormulaFunctions.findFirstMatch(Arrays.<Object>asList(3.0, 4.0), functions), sameInstance(function2));
+        assertThat(FormulaFunctions.findFirstMatch(Arrays.<Object>asList("test"), functions), sameInstance(function1));
     }
     
 }

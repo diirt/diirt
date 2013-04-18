@@ -35,7 +35,7 @@ public class FormulaFunctions {
         return true;
     }
     
-    public static FormulaFunction findMatch(List<Object> values, Collection<FormulaFunction> formulaFunctions) {
+    public static FormulaFunction findFirstMatch(List<Object> values, Collection<FormulaFunction> formulaFunctions) {
         for (FormulaFunction formulaFunction : formulaFunctions) {
             if (matchArgumentTypes(values, formulaFunction)) {
                 return formulaFunction;
