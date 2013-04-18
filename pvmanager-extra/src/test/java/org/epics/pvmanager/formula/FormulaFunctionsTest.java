@@ -53,7 +53,7 @@ public class FormulaFunctionsTest {
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), formula), equalTo(true));
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList("test", "test"), formula), equalTo(false));
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0, ""), formula), equalTo(true));
-        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), formula), equalTo(false));
+        assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(1.0), formula), equalTo(true));
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", 1.0), formula), equalTo(false));
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test", "test"), formula), equalTo(true));
     }
