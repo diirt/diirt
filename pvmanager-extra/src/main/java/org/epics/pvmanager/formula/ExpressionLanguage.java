@@ -233,9 +233,6 @@ public class ExpressionLanguage {
             return new DesiredRateExpressionImpl<>(args, readFunction, sb.toString());
         }
         
-        if ("arrayOf".equals(function)) {
-            return org.epics.pvmanager.vtype.ExpressionLanguage.vNumberArrayOf(cast(VNumber.class, args));
-        }
         if ("columnOf".equals(function)) {
             if (args.getDesiredRateExpressions().size() != 2) {
                 throw new IllegalArgumentException("columnOf takes 2 arguments");

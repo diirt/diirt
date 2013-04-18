@@ -16,13 +16,7 @@ public class FormulaFunctions {
     public static boolean matchArgumentTypes(List<Object> values, FormulaFunction formula) {
         List<Class<?>> types = formula.getArgumentTypes();
         
-        // varargs can have 0 arguments
-        if (formula.isVarargs() && ((types.size() - 1) > values.size())) {
-            return false;
-        }
-        
-        // no varargs must match
-        if (!formula.isVarargs() && (types.size() != values.size())) {
+        if (!matchArgumentCount(values.size(), formula)) {
             return false;
         }
         
@@ -32,6 +26,20 @@ public class FormulaFunctions {
                 return false;
             }
         }
+        return true;
+    }
+    
+    public static boolean matchArgumentCount(int nArguments, FormulaFunction formula) {
+        // no varargs must match
+        if (!formula.isVarargs() && (formula.getArgumentTypes().size() != nArguments)) {
+            return false;
+        }
+        
+        // varargs can have 0 arguments
+        if (formula.isVarargs() && ((formula.getArgumentTypes().size() - 1) > nArguments)) {
+            return false;
+        }
+        
         return true;
     }
     

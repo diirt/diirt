@@ -64,7 +64,7 @@ public class FormulaRegistry {
         for (FormulaFunctionSet formulaFunctionSet : functionSets.values()) {
             for (FormulaFunction formulaFunction : formulaFunctionSet.getFunctions()) {
                 if (formulaFunction.getName().equals(functionName) &&
-                        formulaFunction.getArgumentNames().size() == nArguments) {
+                        FormulaFunctions.matchArgumentCount(nArguments, formulaFunction)) {
                     functions.add(formulaFunction);
                 }
             }

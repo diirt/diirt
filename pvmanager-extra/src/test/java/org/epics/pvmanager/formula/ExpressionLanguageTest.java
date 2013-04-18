@@ -39,6 +39,7 @@ public class ExpressionLanguageTest {
     @BeforeClass
     public static void initMath() {
         FormulaRegistry.getDefault().registerFormulaFunctionSet(new MathFunctionSet());
+        FormulaRegistry.getDefault().registerFormulaFunctionSet(new ArrayFunctionSet());
     }
 
     @Test
@@ -435,7 +436,7 @@ public class ExpressionLanguageTest {
     @Test
     public void formula41() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("arrayOf(1,2,3)"));
-        assertThat(exp.getExpression().getName(), equalTo("numberArrayOf"));
+        assertThat(exp.getExpression().getName(), equalTo("arrayOf(1, 2, 3)"));
         VNumberArray result = (VNumberArray) exp.getFunction().readValue();
         assertThat(result.getData(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
     }
