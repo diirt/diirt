@@ -45,6 +45,11 @@ abstract class OneArgNumericFormulaFunction implements FormulaFunction {
     }
 
     @Override
+    public boolean isVarargs() {
+        return false;
+    }
+
+    @Override
     public List<Class<?>> getArgumentTypes() {
         return argumentTypes;
     }

@@ -14,6 +14,8 @@ public interface FormulaFunction {
     
     public boolean isPure();
     
+    public boolean isVarargs();
+    
     public String getName();
     
     public String getDescription();
