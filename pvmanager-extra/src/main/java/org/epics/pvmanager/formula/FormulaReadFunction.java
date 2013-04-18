@@ -38,8 +38,8 @@ class FormulaReadFunction implements ReadFunction<Object> {
             argumentValues.set(i, argumentFunctions.get(i).readValue());
         }
         
-        if (lastFormula == null || !matchArgumentTypes(argumentValues, lastFormula.getArgumentTypes())) {
-            lastFormula = findMatch(argumentValues, formulaMatches);
+        if (lastFormula == null || !FormulaFunctions.matchArgumentTypes(argumentValues, lastFormula)) {
+            lastFormula = FormulaFunctions.findFirstMatch(argumentValues, formulaMatches);
         }
         
         if (lastFormula == null) {
@@ -55,25 +55,6 @@ class FormulaReadFunction implements ReadFunction<Object> {
         }
         
         return lastFormula.calculate(argumentValues);
-    }
-    
-    static boolean matchArgumentTypes(List<Object> values, List<Class<?>> types) {
-        for (int i = 0; i < values.size(); i++) {
-            if (!types.get(i).isInstance(values.get(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    static FormulaFunction findMatch(List<Object> values, Collection<FormulaFunction> formulaFunctions) {
-        for (FormulaFunction formulaFunction : formulaFunctions) {
-            if (matchArgumentTypes(values, formulaFunction.getArgumentTypes())) {
-                return formulaFunction;
-            }
-        }
-        
-        return null;
     }
     
 }
