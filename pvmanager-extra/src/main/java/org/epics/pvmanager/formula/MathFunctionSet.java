@@ -60,6 +60,18 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.cosh(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("exp", "Exponential", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.exp(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("floor", "Floor function", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.floor(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {
