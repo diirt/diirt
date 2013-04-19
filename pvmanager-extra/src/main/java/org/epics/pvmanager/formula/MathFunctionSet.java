@@ -77,7 +77,20 @@ public class MathFunctionSet extends FormulaFunctionSet {
                     double calculate(double arg) {
                         return Math.log(arg);
                     }
-                }));
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("log10", "Base 10 logarithm", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.log10(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("signum", "Sign function", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.signum(arg);
+                    }
+                })
+                );
     }
 
 

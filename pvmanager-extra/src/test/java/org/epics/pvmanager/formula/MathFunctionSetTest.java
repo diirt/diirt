@@ -107,4 +107,17 @@ public class MathFunctionSetTest {
         testFunction(set, "log", Math.E, 1.0);
         testFunction(set, "log", 1.0, 0.0);
     }
+
+    @Test
+    public void log101() {
+        testFunction(set, "log10", 10.0, 1.0);
+        testFunction(set, "log10", 1.0, 0.0);
+    }
+
+    @Test
+    public void signum1() {
+        testFunction(set, "signum", 10.0, 1.0);
+        testFunction(set, "signum", -14.0, -1.0);
+        testFunction(set, "signum", 0.0, 0.0);
+    }
 }
