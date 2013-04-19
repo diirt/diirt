@@ -42,6 +42,12 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.cbrt(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("ceil", "Ceiling function", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.ceil(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {
