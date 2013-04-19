@@ -64,6 +64,7 @@ public class ExpressionLanguage {
     }
     
     public static DesiredRateReadWriteExpression<?, Object> formula(String formula) {
+        RuntimeException parsingError;
         try {
             DesiredRateExpression<?> exp = createParser(formula).formula();
             if (exp == null) {
@@ -76,10 +77,11 @@ public class ExpressionLanguage {
                 return new DesiredRateReadWriteExpressionImpl<>(exp, readOnlyWriteExpression("Read-only formula"));
             }
         } catch (RecognitionException ex) {
-            throw new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
+            parsingError = new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Malformed formula '" + formula + "'", ex);
+            parsingError = new IllegalArgumentException("Malformed formula '" + formula + "'", ex);
         }
+        return new DesiredRateReadWriteExpressionImpl<>(errorDesiredRateExpression(parsingError), readOnlyWriteExpression("Parsing error")); 
     }
     
     static DesiredRateExpression<?> cachedPv(String channelName) {
@@ -396,6 +398,10 @@ public class ExpressionLanguage {
     
     static <T> WriteExpression<T> readOnlyWriteExpression(String errorMessage) {
         return new ReadOnlyWriteExpression<>(errorMessage, "");
+    }
+    
+    static <T> DesiredRateExpression<T> errorDesiredRateExpression(RuntimeException error) {
+        return new ErrorDesiredRateExpression<>(error, "");
     }
     
     static DesiredRateExpression<VType>
