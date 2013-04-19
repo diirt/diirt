@@ -102,6 +102,24 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.sinh(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("sqrt", "Square root", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.sqrt(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("tan", "Tangent", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.tan(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("tanh", "Hyperbolic tangent", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.tanh(arg);
+                    }
+                })
                 );
     }
 

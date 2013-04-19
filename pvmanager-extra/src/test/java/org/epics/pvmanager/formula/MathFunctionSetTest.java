@@ -133,4 +133,22 @@ public class MathFunctionSetTest {
         testFunction(set, "sinh", 0.0, 0.0);
         testFunction(set, "sinh", 1.0, 1.17520);
     }
+
+    @Test
+    public void sqrt1() {
+        testFunction(set, "sqrt", 1.0, 1.0);
+        testFunction(set, "sqrt", 9.0, 3.0);
+    }
+
+    @Test
+    public void tan1() {
+        testFunction(set, "tan", 0.0, 0.0);
+        testFunction(set, "tan", Math.PI / 4, 1.0);
+    }
+
+    @Test
+    public void tanh1() {
+        testFunction(set, "tanh", 0.0, 0.0);
+        testFunction(set, "tanh", Math.E, 0.991328);
+    }
 }
