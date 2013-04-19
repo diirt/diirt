@@ -234,27 +234,23 @@ public class MockFormulaProbe extends javax.swing.JFrame {
             lastError.setText("");
         }
 
-        try {
-            pv = PVManager.read(formula(pvName.getText()))
-                    .timeout(TimeDuration.ofSeconds(5))
-                    .readListener(new PVReaderListener<Object>() {
-                            @Override
-                            public void pvChanged(PVReaderEvent<Object> event) {
-                                setLastError(pv.lastException());
-                                Object value = pv.getValue();
-                                setTextValue(format.format(value));
-                                setType(ValueUtil.typeOf(value));
-                                setAlarm(ValueUtil.alarmOf(value));
-                                setTime(ValueUtil.timeOf(value));
-                                setIndicator(ValueUtil.normalizedNumericValueOf(value));
-                                setMetadata(ValueUtil.displayOf(value));
-                                setConnected(pv.isConnected());
-                            }
-                        })
-                    .maxRate(ofHertz(10));
-        } catch (RuntimeException ex) {
-            setLastError(ex);
-        }
+        pv = PVManager.read(formula(pvName.getText()))
+                .timeout(TimeDuration.ofSeconds(5))
+                .readListener(new PVReaderListener<Object>() {
+                        @Override
+                        public void pvChanged(PVReaderEvent<Object> event) {
+                            setLastError(pv.lastException());
+                            Object value = pv.getValue();
+                            setTextValue(format.format(value));
+                            setType(ValueUtil.typeOf(value));
+                            setAlarm(ValueUtil.alarmOf(value));
+                            setTime(ValueUtil.timeOf(value));
+                            setIndicator(ValueUtil.normalizedNumericValueOf(value));
+                            setMetadata(ValueUtil.displayOf(value));
+                            setConnected(pv.isConnected());
+                        }
+                    })
+                .maxRate(ofHertz(10));
 
     }//GEN-LAST:event_pvNameActionPerformed
 
