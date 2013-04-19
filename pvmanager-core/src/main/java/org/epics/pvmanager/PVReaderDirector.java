@@ -335,7 +335,7 @@ public class PVReaderDirector<T> {
             @Override
             public void run() {
                 PVReaderImpl<T> pv = pvRef.get();
-                if (pv != null && pv.getValue() == null) {
+                if (pv != null && !pv.isSentFirsEvent()) {
                     exceptionCollector.writeValue(new TimeoutException(timeoutMessage));
                 }
             }
