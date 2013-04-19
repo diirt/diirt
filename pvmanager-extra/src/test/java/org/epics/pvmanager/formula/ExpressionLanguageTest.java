@@ -85,20 +85,6 @@ public class ExpressionLanguageTest {
     }
 
     @Test
-    public void log1() {
-        DesiredRateExpression<VDouble> exp = log(vConst(Math.E));
-        VDouble result = exp.getFunction().readValue();
-        assertThat(result.getValue(), equalTo(1.0));
-    }
-
-    @Test
-    public void log2() {
-        DesiredRateExpression<VDouble> exp = log(vConst(1.0));
-        VDouble result = exp.getFunction().readValue();
-        assertThat(result.getValue(), equalTo(0.0));
-    }
-
-    @Test
     public void formula1() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("(3+2+x)*(5-y)/z"));
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
