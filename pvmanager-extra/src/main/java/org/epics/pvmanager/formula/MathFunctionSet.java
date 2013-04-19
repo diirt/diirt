@@ -90,6 +90,18 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.signum(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("sin", "Sine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.sin(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("sinh", "Hyperbolic sine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.sinh(arg);
+                    }
+                })
                 );
     }
 

@@ -120,4 +120,17 @@ public class MathFunctionSetTest {
         testFunction(set, "signum", -14.0, -1.0);
         testFunction(set, "signum", 0.0, 0.0);
     }
+
+    @Test
+    public void sin1() {
+        testFunction(set, "sin", 0.0, 0.0);
+        testFunction(set, "sin", Math.PI / 2 , 1.0);
+        testFunction(set, "sin", -Math.PI / 2 , -1.0);
+    }
+
+    @Test
+    public void sinh1() {
+        testFunction(set, "sinh", 0.0, 0.0);
+        testFunction(set, "sinh", 1.0, 1.17520);
+    }
 }
