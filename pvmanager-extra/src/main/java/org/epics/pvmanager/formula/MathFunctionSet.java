@@ -48,6 +48,18 @@ public class MathFunctionSet extends FormulaFunctionSet {
                         return Math.ceil(arg);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("cos", "Cosine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.cos(arg);
+                    }
+                })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("cosh", "Hyperbolic cosine", "arg") {
+                    @Override
+                    double calculate(double arg) {
+                        return Math.cosh(arg);
+                    }
+                })
                 .addFormulaFunction(new OneArgNumericFormulaFunction("log", "Natural logarithm", "arg") {
                     @Override
                     double calculate(double arg) {

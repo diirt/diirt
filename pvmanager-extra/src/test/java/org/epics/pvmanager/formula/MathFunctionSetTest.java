@@ -77,6 +77,19 @@ public class MathFunctionSetTest {
     }
 
     @Test
+    public void cos1() {
+        testFunction(set, "cos", 0.0, 1.0);
+        testFunction(set, "cos", Math.PI / 2, 0.0);
+        testFunction(set, "cos", Math.PI, -1.0);
+    }
+
+    @Test
+    public void cosh1() {
+        testFunction(set, "cosh", 0.0, 1.0);
+        testFunction(set, "cosh", 1.0, 1.54308);
+    }
+
+    @Test
     public void log1() {
         testFunction(set, "log", Math.E, 1.0);
         testFunction(set, "log", 1.0, 0.0);
