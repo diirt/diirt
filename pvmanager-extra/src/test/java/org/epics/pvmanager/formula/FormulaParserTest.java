@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class FormulaParserTest {
+public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void pv1() throws RecognitionException {

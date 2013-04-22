@@ -28,19 +28,14 @@ import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 
 /**
  *
  * @author carcassi
  */
-public class ExpressionLanguageTest {
-    
-    @BeforeClass
-    public static void initMath() {
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new MathFunctionSet());
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new ArrayFunctionSet());
-    }
+public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void add1() {

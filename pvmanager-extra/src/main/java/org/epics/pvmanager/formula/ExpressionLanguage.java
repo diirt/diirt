@@ -8,8 +8,10 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.antlr.runtime.*;
 import org.epics.vtype.VDouble;
@@ -128,8 +130,8 @@ public class ExpressionLanguage {
         }, arg1, arg2, opName(" + ", arg1, arg2));
     }
     
-    static DesiredRateExpression<VDouble> addCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return add(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    static DesiredRateExpression<?> addCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return function("+", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<VDouble> pow(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
@@ -220,19 +222,11 @@ public class ExpressionLanguage {
         Collection<FormulaFunction> matchedFunctions = FormulaRegistry.getDefault().findFunctions(function, args.getDesiredRateExpressions().size());
         if (matchedFunctions.size() > 0) {
             FormulaReadFunction readFunction = new FormulaReadFunction(Expressions.functionsOf(args), matchedFunctions);
-            StringBuilder sb = new StringBuilder();
-            sb.append(function).append('(');
-            boolean first = true;
-            for (DesiredRateExpression<?> arg : args.getDesiredRateExpressions()) {
-                if (!first) {
-                    sb.append(", ");
-                } else {
-                    first = false;
-                }
-                sb.append(arg.getName());
+            List<String> argNames = new ArrayList<>(args.getDesiredRateExpressions().size());
+            for (DesiredRateExpression<? extends Object> arg : args.getDesiredRateExpressions()) {
+                argNames.add(arg.getName());
             }
-            sb.append(')');
-            return new DesiredRateExpressionImpl<>(args, readFunction, sb.toString());
+            return new DesiredRateExpressionImpl<>(args, readFunction, FormulaFunctions.format(function, argNames));
         }
         
         if ("columnOf".equals(function)) {

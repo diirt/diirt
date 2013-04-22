@@ -1,0 +1,25 @@
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
+package org.epics.pvmanager.formula;
+
+/**
+ *
+ * @author carcassi
+ */
+public class NumberOperatorFunctionSet extends FormulaFunctionSet {
+
+    public NumberOperatorFunctionSet() {
+        super(new FormulaFunctionSetDescription("+", "Numeric sum")
+                .addFormulaFunction(new TwoArgNumericFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
+                    @Override
+                    double calculate(double arg1, double arg2) {
+                        return arg1 + arg2;
+                    }
+                })
+                );
+    }
+
+
+}

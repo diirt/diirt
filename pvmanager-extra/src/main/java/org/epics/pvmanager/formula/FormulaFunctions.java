@@ -6,6 +6,8 @@ package org.epics.pvmanager.formula;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
+import org.epics.pvmanager.expression.DesiredRateExpression;
 
 /**
  *
@@ -51,6 +53,43 @@ public class FormulaFunctions {
         }
         
         return null;
+    }
+    
+    private static Pattern postFixTwoArg = Pattern.compile("\\+");
+    
+    public static String format(String function, List<String> args) {
+        if (args.size() == 2 && postFixTwoArg.matcher(function).matches()) {
+            return formatPostFixTwoArgs(function, args);
+        }
+        return formatFunction(function, args);
+    }
+    
+    private static String formatPostFixTwoArgs(String function, List<String> args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(")
+          .append(args.get(0))
+          .append(" ")
+          .append(function)
+          .append(" ")
+          .append(args.get(1))
+          .append(")");
+        return sb.toString();
+    }
+    
+    private static String formatFunction(String function, List<String> args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(function).append('(');
+        boolean first = true;
+        for (String arg : args) {
+            if (!first) {
+                sb.append(", ");
+            } else {
+                first = false;
+            }
+            sb.append(arg);
+        }
+        sb.append(')');
+        return sb.toString();
     }
     
 }
