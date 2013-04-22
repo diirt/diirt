@@ -38,13 +38,6 @@ import org.junit.BeforeClass;
 public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
-    public void multiply1() {
-        DesiredRateExpression<VDouble> exp = multiply(vConst(3.0), vConst(4.0));
-        VDouble result = exp.getFunction().readValue();
-        assertThat(result.getValue(), equalTo(12.0));
-    }
-
-    @Test
     public void divide1() {
         DesiredRateExpression<VDouble> exp = divide(vConst(12.0), vConst(4.0));
         VDouble result = exp.getFunction().readValue();

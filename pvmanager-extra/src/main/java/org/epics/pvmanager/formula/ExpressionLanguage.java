@@ -156,18 +156,8 @@ public class ExpressionLanguage {
         return negate(cast(VNumber.class, arg));
     }
     
-    static DesiredRateExpression<VDouble> multiply(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
-        return resultOf(new TwoArgNumericFunction() {
-
-            @Override
-            double calculate(double arg1, double arg2) {
-                return arg1 * arg2;
-            }
-        }, arg1, arg2, opName(" * ", arg1, arg2));
-    }
-    
-    static DesiredRateExpression<VDouble> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return multiply(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    static DesiredRateExpression<?> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return function("*", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<VDouble> divide(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
