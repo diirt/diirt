@@ -13,6 +13,9 @@ import org.epics.vtype.VNumberArray;
  */
 public class ArrayFunctionSet extends FormulaFunctionSet {
 
+    /**
+     * Creates a new set.
+     */
     public ArrayFunctionSet() {
         super(new FormulaFunctionSetDescription("array", "Aggregation and calculations on arrays")
                 .addFormulaFunction(new ArrayOfFormulaFunction()));
