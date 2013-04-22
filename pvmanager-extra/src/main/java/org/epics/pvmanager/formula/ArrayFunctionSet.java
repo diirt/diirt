@@ -4,7 +4,10 @@
  */
 package org.epics.pvmanager.formula;
 
+import org.epics.vtype.VNumberArray;
+
 /**
+ * A set of functions to work with {@link VNumberArray}s.
  *
  * @author carcassi
  */
