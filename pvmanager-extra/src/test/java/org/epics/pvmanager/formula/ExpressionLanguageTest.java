@@ -38,13 +38,6 @@ import org.junit.BeforeClass;
 public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
-    public void pow1() {
-        DesiredRateExpression<VDouble> exp = pow(vConst(12.0), vConst(2.0));
-        VDouble result = exp.getFunction().readValue();
-        assertThat(result.getValue(), equalTo(144.0));
-    }
-
-    @Test
     public void formula1() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("(3+2+x)*(5-y)/z"));
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));

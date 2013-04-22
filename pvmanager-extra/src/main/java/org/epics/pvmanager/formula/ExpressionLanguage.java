@@ -124,18 +124,8 @@ public class ExpressionLanguage {
         return function("+", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
-    static DesiredRateExpression<VDouble> pow(DesiredRateExpression<? extends VNumber> arg1, DesiredRateExpression<? extends VNumber> arg2) {
-        return resultOf(new TwoArgNumericFunction() {
-
-            @Override
-            double calculate(double arg1, double arg2) {
-                return Math.pow(arg1, arg2);
-            }
-        }, arg1, arg2, opName(" ^ ", arg1, arg2));
-    }
-    
-    static DesiredRateExpression<VDouble> powCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return pow(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    static DesiredRateExpression<?> powCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return function("^", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<?> subtractCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
