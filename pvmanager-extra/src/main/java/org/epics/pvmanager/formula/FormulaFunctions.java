@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -53,6 +54,29 @@ public class FormulaFunctions {
         }
         
         return null;
+    }
+    
+    public static String formatSignature(FormulaFunction function) {
+        // Prepare arguments
+        List<String> arguments = new ArrayList<>();
+        for (int i = 0; i < function.getArgumentTypes().size() - 1; i++) {
+            arguments.add(function.getArgumentTypes().get(i).getSimpleName() + " "
+                    + function.getArgumentNames().get(i));
+        }
+        StringBuilder lastArgument = new StringBuilder();
+        lastArgument.append(function.getArgumentTypes().get(function.getArgumentTypes().size() - 1).getSimpleName());
+        if (function.isVarargs()) {
+            lastArgument.append("...");
+        }
+        lastArgument.append(" ").append(function.getArgumentNames().get(function.getArgumentTypes().size() - 1));
+        arguments.add(lastArgument.toString());
+
+        // Format strings
+        StringBuilder sb = new StringBuilder();
+        sb.append(format(function.getName(), arguments));
+        sb.append(": ");
+        sb.append(function.getReturnType().getSimpleName());
+        return sb.toString();
     }
     
     private static Pattern postfixTwoArg = Pattern.compile("\\+|-|\\*|/|%|\\^");

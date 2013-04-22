@@ -98,4 +98,27 @@ public class FormulaFunctionsTest {
         assertThat(FormulaFunctions.matchArgumentCount(10, function), equalTo(true));
     }
     
+    @Test
+    public void formatSignature1() {
+        FormulaFunction function = new ArrayOfFormulaFunction();
+        assertThat(FormulaFunctions.formatSignature(function), equalTo("arrayOf(VNumber... args): VNumberArray"));
+    }
+    
+    @Test
+    public void formatSignature2() {
+        FormulaFunction function = new OneArgNumericFormulaFunction("log", "desc", "input") {
+            @Override
+            double calculate(double arg) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+        assertThat(FormulaFunctions.formatSignature(function), equalTo("log(VNumber input): VNumber"));
+    }
+    
+    @Test
+    public void formatSignature3() {
+        FormulaFunction function = new NumberOperatorFunctionSet().findFunctions("+").iterator().next();
+        assertThat(FormulaFunctions.formatSignature(function), equalTo("(VNumber arg1 + VNumber arg2): VNumber"));
+    }
+    
 }
