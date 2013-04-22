@@ -55,16 +55,20 @@ public class FormulaFunctions {
         return null;
     }
     
-    private static Pattern postFixTwoArg = Pattern.compile("\\+|-|\\*|/|%|\\^");
+    private static Pattern postfixTwoArg = Pattern.compile("\\+|-|\\*|/|%|\\^");
+    private static Pattern prefixOneArg = Pattern.compile("-");
     
     public static String format(String function, List<String> args) {
-        if (args.size() == 2 && postFixTwoArg.matcher(function).matches()) {
-            return formatPostFixTwoArgs(function, args);
+        if (args.size() == 2 && postfixTwoArg.matcher(function).matches()) {
+            return formatPostfixTwoArgs(function, args);
+        }
+        if (args.size() == 1 && prefixOneArg.matcher(function).matches()) {
+            return formatPrefixOneArg(function, args);
         }
         return formatFunction(function, args);
     }
     
-    private static String formatPostFixTwoArgs(String function, List<String> args) {
+    private static String formatPostfixTwoArgs(String function, List<String> args) {
         StringBuilder sb = new StringBuilder();
         sb.append("(")
           .append(args.get(0))
@@ -73,6 +77,13 @@ public class FormulaFunctions {
           .append(" ")
           .append(args.get(1))
           .append(")");
+        return sb.toString();
+    }
+    
+    private static String formatPrefixOneArg(String function, List<String> args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(function)
+          .append(args.get(0));
         return sb.toString();
     }
     

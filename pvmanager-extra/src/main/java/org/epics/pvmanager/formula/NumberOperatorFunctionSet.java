@@ -48,6 +48,12 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                         return Math.pow(arg1, arg2);
                     }
                 })
+                .addFormulaFunction(new OneArgNumericFormulaFunction("-", "Numeric negation", "arg1") {
+                    @Override
+                    double calculate(double arg1) {
+                        return - arg1;
+                    }
+                })
                 );
     }
 

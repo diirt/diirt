@@ -132,18 +132,8 @@ public class ExpressionLanguage {
         return function("-", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
-    static DesiredRateExpression<VDouble> negate(DesiredRateExpression<? extends VNumber> arg) {
-        return resultOf(new OneArgNumericFunction() {
-
-            @Override
-            double calculate(double arg) {
-                return - arg;
-            }
-        }, arg, opName("-", arg));
-    }
-    
-    static DesiredRateExpression<VDouble> negateCast(DesiredRateExpression<?> arg) {
-        return negate(cast(VNumber.class, arg));
+    static DesiredRateExpression<?> negateCast(DesiredRateExpression<?> arg) {
+        return function("-", new DesiredRateExpressionListImpl<Object>().and(arg));
     }
     
     static DesiredRateExpression<?> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
