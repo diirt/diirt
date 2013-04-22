@@ -33,7 +33,7 @@ public class FormulaFunctionsTest {
     @Test
     public void matchArgumentTypes1() {
         FormulaFunction function = mock(FormulaFunction.class);
-        when(function.isVarargs()).thenReturn(false);
+        when(function.isVarArgs()).thenReturn(false);
         when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), function), equalTo(true));
@@ -47,7 +47,7 @@ public class FormulaFunctionsTest {
     @Test
     public void matchArgumentTypes2() {
         FormulaFunction function = mock(FormulaFunction.class);
-        when(function.isVarargs()).thenReturn(true);
+        when(function.isVarArgs()).thenReturn(true);
         when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
         assertThat(FormulaFunctions.matchArgumentTypes(Arrays.<Object>asList(3.0, "test"), function), equalTo(true));
@@ -61,10 +61,10 @@ public class FormulaFunctionsTest {
     @Test
     public void findFirstMatch1() {
         FormulaFunction function1 = mock(FormulaFunction.class);
-        when(function1.isVarargs()).thenReturn(false);
+        when(function1.isVarArgs()).thenReturn(false);
         when(function1.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(String.class));
         FormulaFunction function2 = mock(FormulaFunction.class);
-        when(function2.isVarargs()).thenReturn(true);
+        when(function2.isVarArgs()).thenReturn(true);
         when(function2.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class));
         List<FormulaFunction> functions = Arrays.asList(function1, function2);
         
@@ -77,7 +77,7 @@ public class FormulaFunctionsTest {
     @Test
     public void matchArgumentCount1() {
         FormulaFunction function = mock(FormulaFunction.class);
-        when(function.isVarargs()).thenReturn(false);
+        when(function.isVarArgs()).thenReturn(false);
         when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
         assertThat(FormulaFunctions.matchArgumentCount(2, function), equalTo(true));
@@ -88,7 +88,7 @@ public class FormulaFunctionsTest {
     @Test
     public void matchArgumentCount2() {
         FormulaFunction function = mock(FormulaFunction.class);
-        when(function.isVarargs()).thenReturn(true);
+        when(function.isVarArgs()).thenReturn(true);
         when(function.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class, String.class));
         
         assertThat(FormulaFunctions.matchArgumentCount(0, function), equalTo(false));

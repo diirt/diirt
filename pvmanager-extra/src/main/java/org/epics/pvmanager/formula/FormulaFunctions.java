@@ -34,12 +34,12 @@ public class FormulaFunctions {
     
     public static boolean matchArgumentCount(int nArguments, FormulaFunction formula) {
         // no varargs must match
-        if (!formula.isVarargs() && (formula.getArgumentTypes().size() != nArguments)) {
+        if (!formula.isVarArgs() && (formula.getArgumentTypes().size() != nArguments)) {
             return false;
         }
         
         // varargs can have 0 arguments
-        if (formula.isVarargs() && ((formula.getArgumentTypes().size() - 1) > nArguments)) {
+        if (formula.isVarArgs() && ((formula.getArgumentTypes().size() - 1) > nArguments)) {
             return false;
         }
         
@@ -65,7 +65,7 @@ public class FormulaFunctions {
         }
         StringBuilder lastArgument = new StringBuilder();
         lastArgument.append(function.getArgumentTypes().get(function.getArgumentTypes().size() - 1).getSimpleName());
-        if (function.isVarargs()) {
+        if (function.isVarArgs()) {
             lastArgument.append("...");
         }
         lastArgument.append(" ").append(function.getArgumentNames().get(function.getArgumentTypes().size() - 1));
