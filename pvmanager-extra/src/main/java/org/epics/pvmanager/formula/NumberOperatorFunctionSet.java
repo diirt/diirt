@@ -11,11 +11,17 @@ package org.epics.pvmanager.formula;
 public class NumberOperatorFunctionSet extends FormulaFunctionSet {
 
     public NumberOperatorFunctionSet() {
-        super(new FormulaFunctionSetDescription("+", "Numeric sum")
+        super(new FormulaFunctionSetDescription("numericOperators", "Operators for numeric scalar")
                 .addFormulaFunction(new TwoArgNumericFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
                     @Override
                     double calculate(double arg1, double arg2) {
                         return arg1 + arg2;
+                    }
+                })
+                .addFormulaFunction(new TwoArgNumericFormulaFunction("-", "Numeric subtraction", "arg1", "arg2") {
+                    @Override
+                    double calculate(double arg1, double arg2) {
+                        return arg1 - arg2;
                     }
                 })
                 );

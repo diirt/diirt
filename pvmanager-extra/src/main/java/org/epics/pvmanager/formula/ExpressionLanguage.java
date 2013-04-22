@@ -158,8 +158,8 @@ public class ExpressionLanguage {
         }, arg1, arg2, opName(" - ", arg1, arg2));
     }
     
-    static DesiredRateExpression<VDouble> subtractCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return subtract(cast(VNumber.class, arg1), cast(VNumber.class, arg2));
+    static DesiredRateExpression<?> subtractCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return function("-", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<VDouble> negate(DesiredRateExpression<? extends VNumber> arg) {

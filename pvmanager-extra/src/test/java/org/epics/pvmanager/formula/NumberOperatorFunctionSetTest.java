@@ -40,4 +40,10 @@ public class NumberOperatorFunctionSetTest {
         testTwoArgNumericFunction(set, "+", 1.0, 2.0, 3.0);
         testTwoArgNumericFunction(set, "+", 1.0, -2.0, -1.0);
     }
+    
+    @Test
+    public void subtract1() {
+        testTwoArgNumericFunction(set, "-", 1.0, 2.0, -1.0);
+        testTwoArgNumericFunction(set, "-", 1.0, -2.0, 3.0);
+    }
 }
