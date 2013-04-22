@@ -52,4 +52,10 @@ public class NumberOperatorFunctionSetTest {
         testTwoArgNumericFunction(set, "*", 2.0, 5.0, 10.0);
         testTwoArgNumericFunction(set, "*", 3.0, -2.0, -6.0);
     }
+    
+    @Test
+    public void divide1() {
+        testTwoArgNumericFunction(set, "/", 8.0, 2.0, 4.0);
+        testTwoArgNumericFunction(set, "/", 1.0, -2.0, -0.5);
+    }
 }

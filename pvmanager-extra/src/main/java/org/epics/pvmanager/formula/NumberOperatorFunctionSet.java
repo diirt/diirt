@@ -30,6 +30,12 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                         return arg1 * arg2;
                     }
                 })
+                .addFormulaFunction(new TwoArgNumericFormulaFunction("/", "Numeric division", "arg1", "arg2") {
+                    @Override
+                    double calculate(double arg1, double arg2) {
+                        return arg1 / arg2;
+                    }
+                })
                 );
     }
 
