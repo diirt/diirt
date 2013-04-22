@@ -55,7 +55,7 @@ public class FormulaFunctions {
         return null;
     }
     
-    private static Pattern postFixTwoArg = Pattern.compile("\\+|-|\\*|/");
+    private static Pattern postFixTwoArg = Pattern.compile("\\+|-|\\*|/|%");
     
     public static String format(String function, List<String> args) {
         if (args.size() == 2 && postFixTwoArg.matcher(function).matches()) {

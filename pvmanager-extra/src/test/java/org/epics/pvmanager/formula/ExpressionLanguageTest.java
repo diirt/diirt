@@ -45,13 +45,6 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
     }
 
     @Test
-    public void reminder1() {
-        DesiredRateExpression<VDouble> exp = reminder(vConst(9.0), vConst(4.0));
-        VDouble result = exp.getFunction().readValue();
-        assertThat(result.getValue(), equalTo(1.0));
-    }
-
-    @Test
     public void formula1() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("(3+2+x)*(5-y)/z"));
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
@@ -392,6 +385,14 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         assertThat(exp.getExpression().getName(), equalTo("arrayOf(1, 2, 3)"));
         VNumberArray result = (VNumberArray) exp.getFunction().readValue();
         assertThat(result.getData(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+    }
+
+    @Test
+    public void formula42() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("5%4"));
+        assertThat(exp.getExpression().getName(), equalTo("(5 % 4)"));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), closeTo(1.0, 0.0001));
     }
 
     @Test

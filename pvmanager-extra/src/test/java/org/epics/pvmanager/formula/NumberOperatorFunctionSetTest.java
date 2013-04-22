@@ -58,4 +58,10 @@ public class NumberOperatorFunctionSetTest {
         testTwoArgNumericFunction(set, "/", 8.0, 2.0, 4.0);
         testTwoArgNumericFunction(set, "/", 1.0, -2.0, -0.5);
     }
+    
+    @Test
+    public void remainder1() {
+        testTwoArgNumericFunction(set, "%", 8.0, 2.0, 0.0);
+        testTwoArgNumericFunction(set, "%", 3.0, 2.0, 1.0);
+    }
 }
