@@ -22,7 +22,7 @@
     <scm>
         <connection>scm:hg:http://hg.code.sf.net/p/epics-util/code</connection>
         <developerConnection>scm:hg:ssh://epics-jenkins@hg.code.sf.net/p/epics-util/code</developerConnection>
-        <url>http://epics-util.hg.sourceforge.net/hgweb/epics-util/epics-util/</url>
+        <url>https://sourceforge.net/p/epics-util/code</url>
     </scm>
     <developers>
         <developer>
