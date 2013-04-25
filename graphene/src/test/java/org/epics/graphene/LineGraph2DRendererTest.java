@@ -146,7 +146,7 @@ public class LineGraph2DRendererTest {
         ImageAssert.compareImages("lineGraph.8", image);
     }
     
-    @Test(timeout = 100)
+    @Test(timeout = 300)
     public void test9() throws Exception {
         Point2DDataset dataset = largeDataset;
         
