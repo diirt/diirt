@@ -17,6 +17,7 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 import org.epics.vtype.ValueUtil;
 
 /**
@@ -92,9 +93,51 @@ public class CSVIO {
                 }
             }
 
+            if (value instanceof VTable) {
+                VTable table = (VTable) value;
+                boolean first = true;
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        writer.append(" ");
+                    }
+                    writer.append("\"")
+                            .append(table.getColumnName(i))
+                            .append("\"");
+                }
+                writer.append("\n");
+                for (int row = 0; row < table.getRowCount(); row++) {
+                    first = true;
+                    for (int column = 0; column < table.getColumnCount(); column++) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            writer.append(" ");
+                        }
+                        writer.append(toString(table, row, column));
+                    }
+                    writer.append("\n");
+                }
+            }
+
         } catch (IOException e) {
             throw new RuntimeException("Write failed", e);
         }
+    }
+    
+    private String toString(VTable table, int row, int column) {
+        Class<?> clazz = table.getColumnType(column);
+        if (clazz.equals(String.class)) {
+            return "\"" + ((String[]) table.getColumnArray(column))[row] + "\"";
+        }
+        if (clazz.equals(Double.TYPE)) {
+            return Double.toString(((double[]) table.getColumnArray(column))[row]);
+        }
+        if (clazz.equals(Integer.TYPE)) {
+            return Integer.toString(((int[]) table.getColumnArray(column))[row]);
+        }
+        throw new UnsupportedOperationException("Can't export columns of type " + clazz.getSimpleName());
     }
 
     public boolean canExport(Object data) {
@@ -119,6 +162,10 @@ public class CSVIO {
         }
 
         if (data instanceof VEnumArray) {
+            return true;
+        }
+
+        if (data instanceof VTable) {
             return true;
         }
 
