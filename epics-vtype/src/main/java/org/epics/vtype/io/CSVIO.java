@@ -86,8 +86,9 @@ public class CSVIO {
             if (value instanceof VEnumArray) {
                 List<String> data = ((VEnumArray) value).getData();
                 for (int i = 0; i < data.size(); i++) {
-                    writer.append(" ")
-                            .append(data.get(i));
+                    writer.append(" \"")
+                            .append(data.get(i))
+                            .append("\"");
                 }
             }
 
