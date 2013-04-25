@@ -25,8 +25,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:hg:http://graphene.hg.sourceforge.net:8000/hgroot/graphene/graphene</connection>
-        <developerConnection>scm:hg:ssh://carcassi@graphene.hg.sourceforge.net/hgroot/graphene/graphene</developerConnection>
+        <connection>scm:hg:http://hg.code.sf.net/p/graphene/code</connection>
+        <developerConnection>scm:hg:ssh://carcassi@hg.code.sf.net/p/graphene/code</developerConnection>
         <url>http://graphene.hg.sourceforge.net/hgweb/graphene/graphene/</url>
     </scm>
     <developers>
