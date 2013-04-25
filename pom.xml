@@ -27,7 +27,7 @@
     <scm>
         <connection>scm:hg:http://hg.code.sf.net/p/graphene/code</connection>
         <developerConnection>scm:hg:ssh://carcassi@hg.code.sf.net/p/graphene/code</developerConnection>
-        <url>http://graphene.hg.sourceforge.net/hgweb/graphene/graphene/</url>
+        <url>https://sourceforge.net/p/graphene/code</url>
     </scm>
     <developers>
         <developer>
