@@ -7,6 +7,7 @@ package org.epics.vtype.io;
 import java.io.StringWriter;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -35,6 +36,13 @@ public class CSVIOTest {
         VNumber value = ValueFactory.newVInt(10, alarmNone(), newTime(Timestamp.of(90, 0)), displayNone());
         CSVIO io = new CSVIO();
         exportTest(io, value, "\"1969/12/31 19:01:30.0 -0500\" NONE NONE 10.0");
+    }
+
+    @Test
+    public void exportVString1() {
+        VString value = ValueFactory.newVString("Hello world!", alarmNone(), newTime(Timestamp.of(133, 0)));
+        CSVIO io = new CSVIO();
+        exportTest(io, value, "\"1969/12/31 19:02:13.0 -0500\" NONE NONE \"Hello world!\"");
     }
     
     public static void exportTest(CSVIO io, Object value, String csv) {

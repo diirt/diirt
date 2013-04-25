@@ -55,8 +55,9 @@ public class CSVIO {
             }
 
             if (value instanceof VString) {
-                writer.append(" ")
-                        .append(((VString) value).getValue());
+                writer.append(" \"")
+                        .append(((VString) value).getValue())
+                        .append("\"");
             }
 
             if (value instanceof VEnum) {
