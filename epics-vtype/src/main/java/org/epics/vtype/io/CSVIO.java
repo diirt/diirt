@@ -76,8 +76,9 @@ public class CSVIO {
             if (value instanceof VStringArray) {
                 List<String> data = ((VStringArray) value).getData();
                 for (int i = 0; i < data.size(); i++) {
-                    writer.append(" ")
-                            .append(data.get(i));
+                    writer.append(" \"")
+                            .append(data.get(i))
+                            .append("\"");
                 }
             }
 
