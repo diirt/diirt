@@ -7,6 +7,7 @@ package org.epics.vtype.io;
 import java.io.StringWriter;
 import java.util.Arrays;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
@@ -52,6 +53,13 @@ public class CSVIOTest {
         VStringArray value = ValueFactory.newVStringArray(Arrays.asList("The first", "The second"), alarmNone(), newTime(Timestamp.of(133, 0)));
         CSVIO io = new CSVIO();
         exportTest(io, value, "\"1969/12/31 19:02:13.0 -0500\" NONE NONE \"The first\" \"The second\"");
+    }
+
+    @Test
+    public void exportVEnum1() {
+        VEnum value = ValueFactory.newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(133, 0)));
+        CSVIO io = new CSVIO();
+        exportTest(io, value, "\"1969/12/31 19:02:13.0 -0500\" NONE NONE \"Two\"");
     }
     
     public static void exportTest(CSVIO io, Object value, String csv) {

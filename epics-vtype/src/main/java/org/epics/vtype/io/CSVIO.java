@@ -61,8 +61,9 @@ public class CSVIO {
             }
 
             if (value instanceof VEnum) {
-                writer.append(" ")
-                        .append(((VEnum) value).getValue());
+                writer.append(" \"")
+                        .append(((VEnum) value).getValue())
+                        .append("\"");
             }
 
             if (value instanceof VNumberArray) {
