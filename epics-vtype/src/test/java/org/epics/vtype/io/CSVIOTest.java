@@ -77,9 +77,9 @@ public class CSVIOTest {
     public void exportVTable() {
         VTable value = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, Double.TYPE, Integer.TYPE),
                                    Arrays.asList("Name", "Value", "Index"), 
-                                   Arrays.<Object>asList(new String[] {"A", "B", "C", "D", "E"},
-                                          new double[] {0.234, 1.456, 234567891234.0, 0.000000123, 123},
-                                          new int[] {1,2,3,4,5}));
+                                   Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D", "E"),
+                                          new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123),
+                                          new ArrayInt(1,2,3,4,5)));
         CSVIO io = new CSVIO();
         exportTest(io, value, "\"Name\" \"Value\" \"Index\"\n" +
                 "\"A\" 0.234 1\n" +

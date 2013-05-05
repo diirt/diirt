@@ -13,6 +13,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.vtype.Alarm;
@@ -153,9 +154,10 @@ public class VTypeExamples {
                     public void pvChanged(PVReaderEvent<VTable> pvReader) {
                         VTable vTable = pvReader.getPvReader().getValue();
                         // First column is the names
-                        String[] names = (String[]) vTable.getColumnArray(0);
+                        @SuppressWarnings("unchecked")
+                        List<String> names = (List<String>) vTable.getColumnData(0);
                         // Second column is the values
-                        double[] values = (double[]) vTable.getColumnArray(1);
+                        ListDouble values = (ListDouble) vTable.getColumnData(1);
                         // ...
                     }
                 })

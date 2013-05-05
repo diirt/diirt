@@ -7,6 +7,8 @@ package org.epics.vtype.io;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.time.TimestampFormat;
 import org.epics.vtype.Alarm;
@@ -129,13 +131,13 @@ public class CSVIO {
     private String toString(VTable table, int row, int column) {
         Class<?> clazz = table.getColumnType(column);
         if (clazz.equals(String.class)) {
-            return "\"" + ((String[]) table.getColumnArray(column))[row] + "\"";
+            return "\"" + ((List) table.getColumnData(column)).get(row) + "\"";
         }
         if (clazz.equals(Double.TYPE)) {
-            return Double.toString(((double[]) table.getColumnArray(column))[row]);
+            return Double.toString(((ListDouble) table.getColumnData(column)).getDouble(row));
         }
         if (clazz.equals(Integer.TYPE)) {
-            return Integer.toString(((int[]) table.getColumnArray(column))[row]);
+            return Integer.toString(((ListInt) table.getColumnData(column)).getInt(row));
         }
         throw new UnsupportedOperationException("Can't export columns of type " + clazz.getSimpleName());
     }

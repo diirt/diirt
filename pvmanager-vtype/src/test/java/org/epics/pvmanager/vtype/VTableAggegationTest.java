@@ -13,6 +13,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInt;
 
 /**
  *
@@ -30,12 +32,12 @@ public class VTableAggegationTest {
         assertThat(result.getColumnCount(), equalTo(3));
         assertThat(result.getColumnName(0), equalTo("Names"));
         assertThat(result.getColumnType(0), equalTo((Class) String.class));
-        assertThat(result.getColumnArray(0), equalTo((Object) new String[]{"One", "Two", "Three"}));
+        assertThat(result.getColumnData(0), equalTo((Object) Arrays.asList("One", "Two", "Three")));
         assertThat(result.getColumnName(1), equalTo("Values"));
         assertThat(result.getColumnType(1), equalTo((Class) Double.TYPE));
-        assertThat(result.getColumnArray(1), equalTo((Object) new double[]{1.0, 2.0, 3.0}));
+        assertThat(result.getColumnData(1), equalTo((Object) new ArrayDouble(1.0, 2.0, 3.0)));
         assertThat(result.getColumnName(2), equalTo("Counts"));
         assertThat(result.getColumnType(2), equalTo((Class) Integer.TYPE));
-        assertThat(result.getColumnArray(2), equalTo((Object) new int[]{1, 2, 3}));
+        assertThat(result.getColumnData(2), equalTo((Object) new ArrayInt(1, 2, 3)));
     }
 }
