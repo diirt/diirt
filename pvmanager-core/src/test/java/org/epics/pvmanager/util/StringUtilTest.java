@@ -81,4 +81,17 @@ public class StringUtilTest {
         assertThat(StringUtil.unquote("\"I said \\\"Hi\\\"\""), equalTo("I said \"Hi\""));
     }
 
+    @Test
+    public void parseCSVLine1() {
+        String line = "\"a\" 1 2.3 \"b\"";
+        List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
+        assertThat(tokens, equalTo(Arrays.<Object>asList("a", 1.0, 2.3, "b")));
+    }
+
+    @Test
+    public void parseCSVLine2() {
+        String line = "\"This is a test\" \"Another test\"  \"No spaces\"\"Between these two\"";
+        List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
+        assertThat(tokens, equalTo(Arrays.<Object>asList("This is a test", "Another test", "No spaces", "Between these two")));
+    }
 }
