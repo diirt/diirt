@@ -347,7 +347,7 @@ public class ValueUtil {
             }
         }
         
-        return null;
+        throw new IllegalArgumentException("Column '" + columnName +"' was not found");
     }
     
 }

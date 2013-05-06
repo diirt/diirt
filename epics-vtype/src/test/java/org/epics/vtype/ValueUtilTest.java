@@ -92,7 +92,6 @@ public class ValueUtilTest {
         assertThat(ValueUtil.numericColumnOf(data, null), equalTo(null));
         assertThat(ValueUtil.numericColumnOf(data, "x"), equalTo((ListNumber) new ArrayDouble(1,2,3)));
         assertThat(ValueUtil.numericColumnOf(data, "y"), equalTo((ListNumber) new ArrayDouble(5,4,6)));
-        assertThat(ValueUtil.numericColumnOf(data, "z"), equalTo(null));
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -102,6 +101,13 @@ public class ValueUtilTest {
         assertThat(ValueUtil.numericColumnOf(data, null), equalTo(null));
         assertThat(ValueUtil.numericColumnOf(data, "x"), equalTo((ListNumber) new ArrayDouble(1,2,3)));
         ValueUtil.numericColumnOf(data, "y");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void numericColumnOf3() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
+        ValueUtil.numericColumnOf(data, "z");
     }
 
 }
