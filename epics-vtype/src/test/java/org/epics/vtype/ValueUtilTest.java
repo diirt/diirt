@@ -14,6 +14,7 @@ import org.epics.util.text.NumberFormats;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
 
 /**
@@ -82,6 +83,25 @@ public class ValueUtilTest {
     public void displayHasValidDisplayLimits2() {
         Display display1 = newDisplay(0.0, 1.0, 2.0, "", NumberFormats.toStringFormat(), 8.0, 9.0, 10.0, 0.0, 10.0);
         assertThat(displayHasValidDisplayLimits(display1), equalTo(true));
+    }
+    
+    @Test
+    public void numericColumnOf1() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
+        assertThat(ValueUtil.numericColumnOf(data, null), equalTo(null));
+        assertThat(ValueUtil.numericColumnOf(data, "x"), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        assertThat(ValueUtil.numericColumnOf(data, "y"), equalTo((ListNumber) new ArrayDouble(5,4,6)));
+        assertThat(ValueUtil.numericColumnOf(data, "z"), equalTo(null));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void numericColumnOf2() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, String.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), Arrays.asList("a", "b", "c")));
+        assertThat(ValueUtil.numericColumnOf(data, null), equalTo(null));
+        assertThat(ValueUtil.numericColumnOf(data, "x"), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        ValueUtil.numericColumnOf(data, "y");
     }
 
 }
