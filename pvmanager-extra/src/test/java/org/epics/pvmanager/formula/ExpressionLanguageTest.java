@@ -387,6 +387,12 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(1.0, 0.0001));
     }
+    
+    @Test(expected = RuntimeException.class)
+    public void formulaCast1() {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("3.0", VString.class));
+        exp.getValue();
+    }
 
     @Test
     public void channelFromFormula1() {
