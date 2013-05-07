@@ -51,9 +51,6 @@ public abstract class ValueFormat extends Format {
         if (data instanceof Array)
             return format((Array) data, toAppendTo, pos);
 
-        if (data instanceof VTable)
-            return format((VTable) data, toAppendTo, pos);
-
         return toAppendTo.append(data);
     }
 
