@@ -75,4 +75,14 @@ public class VTypeToStringTest {
         assertThat(VTypeToString.toString(newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
                 equalTo("VEnumArray[[TWO, ONE, THREE], size 3, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
+
+    @Test
+    public void toStringVTable() {
+        assertThat(VTypeToString.toString(newVTable(Arrays.<Class<?>>asList(String.class, double.class, int.class),
+                Arrays.asList("Name", "Value", "Index"),
+                Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D"),
+                new ArrayDouble(1.3,4.23,13,321.4),
+                new ArrayInt(1,2,3,4)))),
+                equalTo("VTable[4x3, [Name, Value, Index]]"));
+    }
 }
