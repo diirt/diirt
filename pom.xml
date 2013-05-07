@@ -179,7 +179,7 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>
@@ -199,7 +199,8 @@
         <module>epics-vtype</module>
         <module>pvmanager-sys</module>
         <module>pvmanager-timecache</module>
-    </modules>
+    <module>pvmanager-file</module>
+  </modules>
     <reporting>
         <plugins>
             <plugin>
