@@ -19,6 +19,7 @@ import org.epics.pvmanager.*;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.io.CSVIO;
 
@@ -43,9 +44,10 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
         processConnection(file);
         try {
             FileReader fileReader = new FileReader(file);
-            // TODO import the data
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FileChannelHandler.class.getName()).log(Level.SEVERE, null, ex);
+            VTable value = io.importVTable(fileReader);
+            processMessage(value);
+        } catch (Exception ex) {
+            reportExceptionToAllReadersAndWriters(ex);
         }
     }
 
