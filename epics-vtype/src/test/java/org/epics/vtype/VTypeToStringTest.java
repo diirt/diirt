@@ -83,6 +83,6 @@ public class VTypeToStringTest {
                 Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D"),
                 new ArrayDouble(1.3,4.23,13,321.4),
                 new ArrayInt(1,2,3,4)))),
-                equalTo("VTable[4x3, [Name, Value, Index]]"));
+                equalTo("VTable[3x4, [Name, Value, Index]]"));
     }
 }

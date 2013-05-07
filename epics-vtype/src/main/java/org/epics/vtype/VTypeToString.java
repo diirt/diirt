@@ -179,9 +179,9 @@ public class VTypeToString {
         StringBuilder builder = new StringBuilder();
         builder.append("VTable")
                 .append("[")
-                .append(vTable.getRowCount())
-                .append("x")
                 .append(vTable.getColumnCount())
+                .append("x")
+                .append(vTable.getRowCount())
                 .append(", ");
         builder.append(format.format(ValueFactory.newVStringArray(new AbstractList<String>() {
 
