@@ -4,6 +4,7 @@
  */
 package org.epics.vtype.io;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
@@ -95,5 +96,28 @@ public class CSVIOTest {
         io.export(value, writer);
         System.out.println(writer.toString());
         assertThat(writer.toString(), equalTo(csv));
+    }
+
+    @Test
+    public void importVTable1() {
+        String inputText = "\"Name\" \"Value\" \"Index\"\n" +
+                "\"A\" 0.234 1\n" +
+                "\"B\" 1.456 2\n" +
+                "\"C\" 2.34567891234E11 3\n" +
+                "\"D\" 1.23E-7 4\n" +
+                "\"E\" 123.0 5\n";
+        
+        CSVIO io = new CSVIO();
+        VTable value = io.importVTable(new StringReader(inputText));
+        assertThat(value.getColumnCount(), equalTo(3));
+        assertThat(value.getColumnName(0), equalTo("Name"));
+        assertThat(value.getColumnName(1), equalTo("Value"));
+        assertThat(value.getColumnName(2), equalTo("Index"));
+        assertThat((Object) value.getColumnType(0), equalTo((Object) String.class));
+        assertThat((Object) value.getColumnType(1), equalTo((Object) double.class));
+        assertThat((Object) value.getColumnType(2), equalTo((Object) double.class));
+        assertThat(value.getColumnData(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
+        assertThat(value.getColumnData(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(value.getColumnData(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
     }
 }
