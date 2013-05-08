@@ -24,10 +24,10 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
         super(childExpressions, function, defaultName);
     }
 
-    public ScatterGraph2DExpression(DesiredRateExpression<? extends VTable> tableData,
-	    DesiredRateExpression<? extends VString> xColumnName,
-	    DesiredRateExpression<? extends VString> yColumnName,
-	    DesiredRateExpression<? extends VString> tooltipColumnName) {
+    public ScatterGraph2DExpression(DesiredRateExpression<?> tableData,
+	    DesiredRateExpression<?> xColumnName,
+	    DesiredRateExpression<?> yColumnName,
+	    DesiredRateExpression<?> tooltipColumnName) {
         super(new DesiredRateExpressionListImpl<>().and(tableData)
                 .and(xColumnName).and(yColumnName).and(tooltipColumnName),
                 new ScatterGraph2DTableFunction(tableData.getFunction(),
