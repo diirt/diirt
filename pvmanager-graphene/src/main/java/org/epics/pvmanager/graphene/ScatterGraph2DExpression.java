@@ -37,7 +37,12 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
 
     @Override
     public void update(ScatterGraph2DRendererUpdate update) {
-        ((ScatterGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
+        if (getFunction() instanceof ScatterGraph2DFunction) {
+            ((ScatterGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
+        }
+        if (getFunction() instanceof ScatterGraph2DTableFunction) {
+            ((ScatterGraph2DTableFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
+        }
     }
 
     @Override
