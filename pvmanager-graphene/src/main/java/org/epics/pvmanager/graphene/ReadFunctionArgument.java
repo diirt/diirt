@@ -26,7 +26,7 @@ public class ReadFunctionArgument<T> {
     }
     
     public boolean isDefined() {
-        return function == null;
+        return function != null;
     }
     
     public boolean isMissing() {
