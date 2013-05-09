@@ -30,7 +30,7 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
 	    DesiredRateExpression<?> yColumnName,
 	    DesiredRateExpression<?> tooltipColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, tooltipColumnName),
-                new ScatterGraph2DTableFunction(functionOf(tableData),
+                new ScatterGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName), functionOf(tooltipColumnName)),
                 "Scatter Graph");
     }
@@ -39,9 +39,6 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
     public void update(ScatterGraph2DRendererUpdate update) {
         if (getFunction() instanceof ScatterGraph2DFunction) {
             ((ScatterGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
-        }
-        if (getFunction() instanceof ScatterGraph2DTableFunction) {
-            ((ScatterGraph2DTableFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
         }
     }
 

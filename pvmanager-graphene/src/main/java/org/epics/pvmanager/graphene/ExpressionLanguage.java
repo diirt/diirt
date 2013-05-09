@@ -59,16 +59,6 @@ public class ExpressionLanguage {
         return new LineGraph2DExpression(new DesiredRateExpressionListImpl<Object>().and(xVDoubleArray).and(yVDoubleArray),
                 new LineGraph2DFunction(xVDoubleArray.getFunction(), yVDoubleArray.getFunction()), "lineGraph");
     }
-
-    public static ScatterGraph2DExpression scatterGraphOf(
-	    DesiredRateExpression<? extends VNumberArray> xNumberArray,
-	    DesiredRateExpression<? extends VNumberArray> yNumberArray) {
-	return new ScatterGraph2DExpression(new DesiredRateExpressionListImpl<>().and(
-		xNumberArray).and(yNumberArray), new ScatterGraph2DFunction(
-		yNumberArray.getFunction(), xNumberArray.getFunction()),
-		"Scatter Graph");
-
-    }
     
     public static ScatterGraph2DExpression scatterGraphOf(
 	    DesiredRateExpression<?> tableData,
