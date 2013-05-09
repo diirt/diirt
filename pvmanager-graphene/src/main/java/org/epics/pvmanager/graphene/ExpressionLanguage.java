@@ -8,6 +8,7 @@ import java.util.List;
 import org.epics.pvmanager.BasicTypeSupport;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.NotificationSupport;
+import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.TypeSupport;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.vtype.VNumber;
@@ -85,6 +86,14 @@ public class ExpressionLanguage {
             }
         }
         return list;
+    }
+    
+    static <T> ReadFunction<T> functionOf(DesiredRateExpression<T> exp) {
+        if (exp == null) {
+            return null;
+        } else {
+            return exp.getFunction();
+        }
     }
 
 }
