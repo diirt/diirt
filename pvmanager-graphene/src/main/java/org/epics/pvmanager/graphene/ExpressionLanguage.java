@@ -13,6 +13,7 @@ import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.vtype.VString;
@@ -67,13 +68,23 @@ public class ExpressionLanguage {
 		"Scatter Graph");
 
     }
-
+    
     public static ScatterGraph2DExpression scatterGraphOf(
 	    DesiredRateExpression<?> tableData,
 	    DesiredRateExpression<?> xColumnName,
 	    DesiredRateExpression<?> yColumnName,
 	    DesiredRateExpression<?> tooltipColumnName) {
 	return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
+    }
+    
+    static <T> DesiredRateExpressionList<T> createList(DesiredRateExpressionList<? extends T>... expressions) {
+        DesiredRateExpressionList<T> list = new DesiredRateExpressionListImpl<T>();
+        for (DesiredRateExpressionList<? extends T> exp : expressions) {
+            if (exp != null) {
+                list.and(exp);
+            }
+        }
+        return list;
     }
 
 }

@@ -28,8 +28,7 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
 	    DesiredRateExpression<?> xColumnName,
 	    DesiredRateExpression<?> yColumnName,
 	    DesiredRateExpression<?> tooltipColumnName) {
-        super(new DesiredRateExpressionListImpl<>().and(tableData)
-                .and(xColumnName).and(yColumnName).and(tooltipColumnName),
+        super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, tooltipColumnName),
                 new ScatterGraph2DTableFunction(tableData.getFunction(),
                 xColumnName.getFunction(), yColumnName.getFunction(), tooltipColumnName.getFunction()),
                 "Scatter Graph");
