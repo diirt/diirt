@@ -17,6 +17,8 @@ import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueUtil;
 
+import static org.epics.pvmanager.graphene.ArgumentExpressions.*;
+
 /**
  * @author shroffk
  *
@@ -38,9 +40,9 @@ public class ScatterGraph2DTableFunction implements ReadFunction<Graph2DResult> 
 	    ReadFunction<?> yColumnName,
 	    ReadFunction<?> tooltipColumnName) {
         this.tableData = new CheckedReadFunction<>(VTable.class, tableData, "Data");
-        this.xColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, xColumnName, "X Column")));
-        this.yColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, yColumnName, "Y Column")));
-        this.tooltipColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, tooltipColumnName, "Tooltip Column")));
+        this.xColumnName = stringArgument(xColumnName, "X Column");
+        this.yColumnName = stringArgument(yColumnName, "Y Column");
+        this.tooltipColumnName = stringArgument(tooltipColumnName, "Tooltip Column");
     }
 
     public QueueCollector<ScatterGraph2DRendererUpdate> getRendererUpdateQueue() {
