@@ -67,7 +67,8 @@ public class ExpressionLanguage {
 	    DesiredRateExpression<?> tooltipColumnName) {
 	return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
-    
+
+    @SafeVarargs
     static <T> DesiredRateExpressionList<T> createList(DesiredRateExpressionList<? extends T>... expressions) {
         DesiredRateExpressionList<T> list = new DesiredRateExpressionListImpl<T>();
         for (DesiredRateExpressionList<? extends T> exp : expressions) {
