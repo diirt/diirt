@@ -24,9 +24,9 @@ import org.epics.vtype.ValueUtil;
 public class ScatterGraph2DTableFunction implements ReadFunction<Graph2DResult> {
 
     private ReadFunction<? extends VTable> tableData;
-    private ReadFunction<? extends VString> xColumnName;
-    private ReadFunction<? extends VString> yColumnName;
-    private ReadFunction<? extends VString> tooltipColumnName;
+    private ReadFunctionArgument<String> xColumnName;
+    private ReadFunctionArgument<String> yColumnName;
+    private ReadFunctionArgument<String> tooltipColumnName;
     private ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300,
             200);
     private VImage previousImage;
@@ -38,9 +38,9 @@ public class ScatterGraph2DTableFunction implements ReadFunction<Graph2DResult> 
 	    ReadFunction<?> yColumnName,
 	    ReadFunction<?> tooltipColumnName) {
         this.tableData = new CheckedReadFunction<>(VTable.class, tableData, "Data");
-        this.xColumnName = new CheckedReadFunction<>(VString.class, xColumnName, "X Column");
-        this.yColumnName = new CheckedReadFunction<>(VString.class, yColumnName, "Y Column");
-        this.tooltipColumnName = new CheckedReadFunction<>(VString.class, tooltipColumnName, "Tooltip Column");
+        this.xColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, xColumnName, "X Column")));
+        this.yColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, yColumnName, "Y Column")));
+        this.tooltipColumnName = new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(VString.class, tooltipColumnName, "Tooltip Column")));
     }
 
     public QueueCollector<ScatterGraph2DRendererUpdate> getRendererUpdateQueue() {
@@ -50,25 +50,17 @@ public class ScatterGraph2DTableFunction implements ReadFunction<Graph2DResult> 
     @Override
     public Graph2DResult readValue() {
         VTable vTable = tableData.readValue();
-        VString xVString = xColumnName.readValue();
-        VString yVString = yColumnName.readValue();
+        xColumnName.readNext();
+        yColumnName.readNext();
+        tooltipColumnName.readNext();
         
-        // Table must be available
-        if (vTable == null) {
+        // Table and columns must be available
+        if (vTable == null || xColumnName.isMissing() || yColumnName.isMissing()) {
             return null;
         }
 
-        // Extract column names
-        String xColumn = null;
-        if (xVString != null) {
-            xColumn = xVString.getValue();
-        }
-        String yColumn = null;
-        if (yVString != null) {
-            yColumn = yVString.getValue();
-        }
-
-        Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(vTable, xColumn, yColumn);
+        // Prepare new dataset
+        Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(vTable, xColumnName.getValue(), yColumnName.getValue());
 
         List<ScatterGraph2DRendererUpdate> updates = rendererUpdateQueue
                 .readValue();
