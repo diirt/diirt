@@ -18,6 +18,7 @@ import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.graphene.ArgumentExpressions.stringArgument;
 import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -25,7 +26,7 @@ import org.epics.vtype.VTable;
  */
 class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
     
-    private ReadFunction<? extends VTable> tableData;
+    private ReadFunction<VType> tableData;
     private ReadFunctionArgument<String> xColumnName;
     private ReadFunctionArgument<String> yColumnName;
     private ReadFunctionArgument<String> tooltipColumnName;
@@ -39,7 +40,7 @@ class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
 	    ReadFunction<?> xColumnName,
 	    ReadFunction<?> yColumnName,
 	    ReadFunction<?> tooltipColumnName) {
-        this.tableData = new CheckedReadFunction<>(VTable.class, tableData, "Data");
+        this.tableData = new CheckedReadFunction<VType>(tableData, "Data", VTable.class, VNumberArray.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");
         this.tooltipColumnName = stringArgument(tooltipColumnName, "Tooltip Column");
@@ -51,18 +52,23 @@ class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
 
     @Override
     public Graph2DResult readValue() {
-        VTable vTable = tableData.readValue();
+        VType vType = tableData.readValue();
         xColumnName.readNext();
         yColumnName.readNext();
         tooltipColumnName.readNext();
         
         // Table and columns must be available
-        if (vTable == null || xColumnName.isMissing() || yColumnName.isMissing()) {
+        if (vType == null || xColumnName.isMissing() || yColumnName.isMissing()) {
             return null;
         }
 
         // Prepare new dataset
-        Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(vTable, xColumnName.getValue(), yColumnName.getValue());
+        Point2DDataset dataset;
+        if (vType instanceof VNumberArray) {
+            dataset = Point2DDatasets.lineData(((VNumberArray) vType).getData());
+        } else {
+            dataset = DatasetConversions.point2DDatasetFromVTable((VTable) vType, xColumnName.getValue(), yColumnName.getValue());
+        }
         
         // Process all renderer updates
         List<LineGraph2DRendererUpdate> updates = rendererUpdateQueue.readValue();
