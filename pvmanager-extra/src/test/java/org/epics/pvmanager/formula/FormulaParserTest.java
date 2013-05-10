@@ -24,7 +24,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void pv1() throws RecognitionException {
-        DesiredRateExpression<?> exp = createParser("mypv").pv();
+        DesiredRateExpression<?> exp = createParser("'mypv'").pv();
         assertThat(exp, not(nullValue()));
         assertThat(exp.getName(), equalTo("mypv"));
     }
@@ -38,7 +38,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void pv3() throws RecognitionException {
-        DesiredRateExpression<?> exp = createParser("ca://mypv").pv();
+        DesiredRateExpression<?> exp = createParser("'ca://mypv'").pv();
         assertThat(exp, not(nullValue()));
         assertThat(exp.getName(), equalTo("ca://mypv"));
     }
@@ -78,7 +78,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void multiplicativeExpression2() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("2*x").multiplicativeExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("2*'x'").multiplicativeExpression());
         assertThat(exp.getExpression().getName(), equalTo("(2 * x)"));
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -100,7 +100,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void multiplicativeExpression4() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("x/2").multiplicativeExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("'x'/2").multiplicativeExpression());
         assertThat(exp.getExpression().getName(), equalTo("(x / 2)"));
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -121,7 +121,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void multiplicativeExpression6() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("x%4").multiplicativeExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("'x'%4").multiplicativeExpression());
         exp.writeValue("x", ValueFactory.newVDouble(11.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
@@ -142,7 +142,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void additiveExpression2() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("2+x").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("2+'x'").additiveExpression());
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         assertThat(exp.getExpression().getName(), equalTo("(2 + x)"));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -164,7 +164,7 @@ public class FormulaParserTest extends BaseTestForFormula {
 
     @Test
     public void additiveExpression4() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(createParser("2-x").additiveExpression());
+        ReadExpressionTester exp = new ReadExpressionTester(createParser("2-'x'").additiveExpression());
         assertThat(exp.getExpression().getName(), equalTo("(2 - x)"));
         exp.writeValue("x", ValueFactory.newVDouble(10.0));
         VDouble result = (VDouble) exp.getFunction().readValue();

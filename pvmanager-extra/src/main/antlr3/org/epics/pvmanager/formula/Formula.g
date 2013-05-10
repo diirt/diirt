@@ -72,7 +72,7 @@ primary returns [DesiredRateExpression<?> result]
     ;
 
 functionExpression returns [DesiredRateExpression<?> result]
-    :   ID '(' op=expression {String name = $ID.text; DesiredRateExpressionList args = new DesiredRateExpressionListImpl().and($op.result);}
+    :   FUNCTION '(' op=expression {String name = $FUNCTION.text; DesiredRateExpressionList args = new DesiredRateExpressionListImpl().and($op.result);}
         (   ',' op2=expression {args.and($op2.result);}
         )* ')' {result = function(name, args);}
     ;
@@ -82,9 +82,7 @@ parExpression returns [DesiredRateExpression<?> result]
     ;
 
 pv returns [DesiredRateExpression<?> result]
-    :   ID {result = cachedPv($ID.text);}
-    |   FULL_ID {result = cachedPv($FULL_ID.text);}
-    |   QUOTED_ID {result = cachedPv(unquote($QUOTED_ID.text));}
+    :   PV {result = cachedPv(unquote($PV.text));}
     ;
 
 numericLiteral returns [DesiredRateExpression<?> result]
@@ -97,11 +95,6 @@ stringLiteral returns [DesiredRateExpression<?> result]
     ;
 
 
-FULL_ID  :	(('a'..'z'|'A'..'Z')* ':' '/' '/' ) ('0'..'9')* ('a'..'z'|'A'..'Z'|'_') 
-                 ( 'a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}' |
-                   '(' ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}'|','|' '|'-'| STRING )* ')')*
-    ;
-
 INT :	'0'..'9'+
     ;
 
@@ -111,7 +104,7 @@ FLOAT
     |   ('0'..'9')+ EXPONENT
     ;
 
-ID  :	('0'..'9')* ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'.'|'$'|'_'|':'|'{'|'}')*
+FUNCTION  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9')*
     ;
 
 WS  :   ( ' '
@@ -125,7 +118,7 @@ STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-QUOTED_ID
+PV
     :  '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
     ;
 

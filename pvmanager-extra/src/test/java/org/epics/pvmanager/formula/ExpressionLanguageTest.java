@@ -39,7 +39,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula1() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("(3+2+x)*(5-y)/z"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("(3+2+'x')*(5-'y')/'z'"));
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
         exp.writeValue("x", ValueFactory.newVDouble(3.0));
         exp.writeValue("y", ValueFactory.newVDouble(2.0));
@@ -59,7 +59,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula3() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("mypv.FIELD"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'mypv.FIELD'"));
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD"));
         exp.writeValue("mypv.FIELD", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -68,7 +68,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula4() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("mypv.FIELD$"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'mypv.FIELD$'"));
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD$"));
         exp.writeValue("mypv.FIELD$", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -77,7 +77,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula5() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("loc://test(0)"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'loc://test(0)'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0)"));
         exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -86,7 +86,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula6() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("loc://test(0)+3"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'loc://test(0)'+3"));
         assertThat(exp.getExpression().getName(), equalTo("(loc://test(0) + 3)"));
         exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -95,7 +95,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula7() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("loc://test(0, 1, 2, 3)"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'loc://test(0, 1, 2, 3)'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0, 1, 2, 3)"));
         exp.writeValue("loc://test(0, 1, 2, 3)", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -104,7 +104,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula8() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("loc://test(\"0\", \"1\", \"2\", \"3\")"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'loc://test(\"0\", \"1\", \"2\", \"3\")'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(\"0\", \"1\", \"2\", \"3\")"));
         exp.writeValue("loc://test(\"0\", \"1\", \"2\", \"3\")", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -121,7 +121,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula10() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("300abc"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'300abc'"));
         assertThat(exp.getExpression().getName(), equalTo("300abc"));
         exp.writeValue("300abc", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -146,7 +146,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula13() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("log(sim://test())"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("log('sim://test()')"));
         assertThat(exp.getExpression().getName(), equalTo("log(sim://test())"));
         exp.writeValue("sim://test()", ValueFactory.newVDouble(1.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -187,7 +187,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula18() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("sim://const(\"Hello!\")"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'sim://const(\"Hello!\")'"));
         assertThat(exp.getExpression().getName(), equalTo("sim://const(\"Hello!\")"));
         exp.writeValue("sim://const(\"Hello!\")", ValueFactory.newVDouble(1.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -196,7 +196,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void formula19() throws RecognitionException {
-        ReadExpressionTester exp = new ReadExpressionTester(formula("loc://test"));
+        ReadExpressionTester exp = new ReadExpressionTester(formula("'loc://test'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test"));
         exp.writeValue("loc://test", ValueFactory.newVDouble(3.0));
         VDouble result = (VDouble) exp.getFunction().readValue();
@@ -396,7 +396,7 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
 
     @Test
     public void channelFromFormula1() {
-        assertThat(ExpressionLanguage.channelFromFormula("test"), equalTo("test"));
+        assertThat(ExpressionLanguage.channelFromFormula("'test'"), equalTo("test"));
     }
 
     @Test
