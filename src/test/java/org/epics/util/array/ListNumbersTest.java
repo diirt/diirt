@@ -34,6 +34,13 @@ public class ListNumbersTest {
     }
     
     @Test
+    public void sortedView3() {
+        ArrayDouble values = new ArrayDouble(-1.7178013239620846, 0.5200744839822301, 0.638091980352644, 0.093683130487196, -1.2967630810250952, 0.7040257444802407, -0.4166241363846508, 2.9610862677876244, 0.03636268292097817, -0.35530274977371445);
+        SortedListView sortedView = ListNumbers.sortedView(values);
+        assertThat(sortedView, equalTo((ListNumber) new ArrayDouble(-1.7178013239620846, -1.2967630810250952, -0.4166241363846508, -0.35530274977371445, 0.03636268292097817, 0.093683130487196, 0.5200744839822301, 0.638091980352644, 0.7040257444802407, 2.9610862677876244)));
+    }
+    
+    @Test
     public void binarySearchValueOrLower1() {
         ListNumber values = new ArrayDouble(1,2,3,3,4,5,5,6,7,8,10);
         assertThat(ListNumbers.binarySearchValueOrLower(values, 1), equalTo(0));
