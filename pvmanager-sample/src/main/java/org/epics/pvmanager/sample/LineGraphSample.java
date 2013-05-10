@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.epics.pvmanager.graphene;
+package org.epics.pvmanager.sample;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -22,7 +22,11 @@ import org.epics.vtype.VImage;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
+import org.epics.pvmanager.graphene.Graph2DResult;
+import org.epics.pvmanager.graphene.LineGraph2DExpression;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
+import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 
@@ -30,12 +34,12 @@ import static org.epics.util.time.TimeDuration.*;
  *
  * @author carcassi
  */
-public class MockLineGraph extends javax.swing.JFrame {
+public class LineGraphSample extends javax.swing.JFrame {
 
     /**
      * Creates new form MockWaterfallPlot
      */
-    public MockLineGraph() {
+    public LineGraphSample() {
         PVManager.setDefaultNotificationExecutor(swingEDT());
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
@@ -67,24 +71,24 @@ public class MockLineGraph extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        yPv = new javax.swing.JTextField();
+        dataFormulaField = new javax.swing.JTextField();
         lastError = new javax.swing.JTextField();
-        plotView = new org.epics.pvmanager.graphene.ImagePanel();
+        plotView = new org.epics.pvmanager.sample.ImagePanel();
         jLabel2 = new javax.swing.JLabel();
-        xPv = new javax.swing.JTextField();
+        xColumnField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        xInitialOffset = new javax.swing.JTextField();
+        yColumnField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        xIncrementSize = new javax.swing.JTextField();
+        tooltipColumnField = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Y pv:");
+        jLabel1.setText("Data Formula:");
 
-        yPv.addActionListener(new java.awt.event.ActionListener() {
+        dataFormulaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yPvActionPerformed(evt);
+                dataFormulaFieldActionPerformed(evt);
             }
         });
 
@@ -101,27 +105,27 @@ public class MockLineGraph extends javax.swing.JFrame {
             .addGap(0, 197, Short.MAX_VALUE)
         );
 
-        jLabel2.setText("X pv:");
+        jLabel2.setText("X Column:");
 
-        xPv.addActionListener(new java.awt.event.ActionListener() {
+        xColumnField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xPvActionPerformed(evt);
+                xColumnFieldActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("X initial offset:");
+        jLabel3.setText("Y Column:");
 
-        xInitialOffset.addActionListener(new java.awt.event.ActionListener() {
+        yColumnField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xInitialOffsetActionPerformed(evt);
+                yColumnFieldActionPerformed(evt);
             }
         });
 
-        jLabel4.setText("X increment size:");
+        jLabel4.setText("Tooltip Column:");
 
-        xIncrementSize.addActionListener(new java.awt.event.ActionListener() {
+        tooltipColumnField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xIncrementSizeActionPerformed(evt);
+                tooltipColumnFieldActionPerformed(evt);
             }
         });
 
@@ -135,7 +139,7 @@ public class MockLineGraph extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(yPv)
+                        .addComponent(dataFormulaField)
                         .addGap(12, 12, 12))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -145,17 +149,17 @@ public class MockLineGraph extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(xPv)
+                        .addComponent(xColumnField)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(xInitialOffset)
+                        .addComponent(yColumnField)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(xIncrementSize)
+                        .addComponent(tooltipColumnField)
                         .addContainerGap())))
             .addComponent(jSeparator1)
         );
@@ -165,19 +169,19 @@ public class MockLineGraph extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(yPv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataFormulaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(xPv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(xColumnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(xInitialOffset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(yColumnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(xIncrementSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tooltipColumnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,29 +194,22 @@ public class MockLineGraph extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void yPvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yPvActionPerformed
+    private void dataFormulaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFormulaFieldActionPerformed
         if (pv != null) {
             pv.close();
             plotView.setImage(null);
             plot = null;
         }
         
-        if (yPv.getText() == null || yPv.getText().trim().isEmpty()) {
+        if (dataFormulaField.getText() == null || dataFormulaField.getText().trim().isEmpty()) {
             return;
         }
         
-        if (xPv.getText() != null && !xPv.getText().trim().isEmpty()) {
-            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(xPv.getText())),
-                    latestValueOf(vNumberArray(yPv.getText())));
-        } else if (xInitialOffset.getText() != null && !xInitialOffset.getText().trim().isEmpty()
-                && xIncrementSize.getText() != null && !xIncrementSize.getText().trim().isEmpty()) {
-            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(yPv.getText())),
-                    latestValueOf(vNumber(xInitialOffset.getText())),
-                    latestValueOf(vNumber(xIncrementSize.getText())));
-        }
-
         if (plot == null) {
-            plot = ExpressionLanguage.lineGraphOf(latestValueOf(vNumberArray(yPv.getText())));
+            plot = lineGraphOf(formula(dataFormulaField.getText()),
+                    formulaArg(xColumnField.getText()),
+                    formulaArg(yColumnField.getText()),
+                    formulaArg(tooltipColumnField.getText()));
         }
         
         plot.update(new LineGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
@@ -230,25 +227,25 @@ public class MockLineGraph extends javax.swing.JFrame {
                     }
                 })
                 .maxRate(ofHertz(50));
-    }//GEN-LAST:event_yPvActionPerformed
+    }//GEN-LAST:event_dataFormulaFieldActionPerformed
 
-    private void xInitialOffsetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xInitialOffsetActionPerformed
-        yPvActionPerformed(evt);
-    }//GEN-LAST:event_xInitialOffsetActionPerformed
+    private void yColumnFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yColumnFieldActionPerformed
+        dataFormulaFieldActionPerformed(evt);
+    }//GEN-LAST:event_yColumnFieldActionPerformed
 
-    private void xIncrementSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xIncrementSizeActionPerformed
-        yPvActionPerformed(evt);
-    }//GEN-LAST:event_xIncrementSizeActionPerformed
+    private void tooltipColumnFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tooltipColumnFieldActionPerformed
+        dataFormulaFieldActionPerformed(evt);
+    }//GEN-LAST:event_tooltipColumnFieldActionPerformed
 
-    private void xPvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xPvActionPerformed
-        yPvActionPerformed(evt);
-    }//GEN-LAST:event_xPvActionPerformed
+    private void xColumnFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xColumnFieldActionPerformed
+        dataFormulaFieldActionPerformed(evt);
+    }//GEN-LAST:event_xColumnFieldActionPerformed
 
     private void setLastError(Exception ex) {
         if (ex != null) {
             lastError.setText(ex.getMessage());
             ex.printStackTrace();
-            Logger.getLogger(MockLineGraph.class.getName()).log(Level.WARNING, "Error", ex);
+            Logger.getLogger(LineGraphSample.class.getName()).log(Level.WARNING, "Error", ex);
         } else {
             lastError.setText("");
         }
@@ -262,21 +259,21 @@ public class MockLineGraph extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new MockLineGraph().setVisible(true);
+                new LineGraphSample().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField dataFormulaField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastError;
-    private org.epics.pvmanager.graphene.ImagePanel plotView;
-    private javax.swing.JTextField xIncrementSize;
-    private javax.swing.JTextField xInitialOffset;
-    private javax.swing.JTextField xPv;
-    private javax.swing.JTextField yPv;
+    private org.epics.pvmanager.sample.ImagePanel plotView;
+    private javax.swing.JTextField tooltipColumnField;
+    private javax.swing.JTextField xColumnField;
+    private javax.swing.JTextField yColumnField;
     // End of variables declaration//GEN-END:variables
 }

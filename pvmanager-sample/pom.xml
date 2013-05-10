@@ -49,5 +49,15 @@
             <artifactId>pvmanager-sys</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphene</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvmanager-graphene</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
