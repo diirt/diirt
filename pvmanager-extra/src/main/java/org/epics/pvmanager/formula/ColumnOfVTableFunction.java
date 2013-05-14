@@ -28,7 +28,7 @@ class ColumnOfVTableFunction implements FormulaFunction {
 
     @Override
     public boolean isVarArgs() {
-        return true;
+        return false;
     }
 
     @Override
