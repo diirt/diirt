@@ -19,6 +19,9 @@ public class TableFunctionSet extends FormulaFunctionSet {
                 .addFormulaFunction(new ColumnOfVTableFunction())
                 .addFormulaFunction(new ColumnFromVNumberArrayFunction())
                 .addFormulaFunction(new TableOfFormulaFunction())
+                .addFormulaFunction(new RangeFormulaFunction())
+                .addFormulaFunction(new StepFormulaFunction())
+                .addFormulaFunction(new ColumnFromListNumberGeneratorFunction())
                 );
     }
 
