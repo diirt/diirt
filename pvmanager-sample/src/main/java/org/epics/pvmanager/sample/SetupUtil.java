@@ -11,6 +11,7 @@ import org.epics.pvmanager.formula.ArrayFunctionSet;
 import org.epics.pvmanager.formula.FormulaRegistry;
 import org.epics.pvmanager.formula.MathFunctionSet;
 import org.epics.pvmanager.formula.NumberOperatorFunctionSet;
+import org.epics.pvmanager.formula.TableFunctionSet;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
@@ -34,6 +35,7 @@ public class SetupUtil {
         FormulaRegistry.getDefault().registerFormulaFunctionSet(new ArrayFunctionSet());
         FormulaRegistry.getDefault().registerFormulaFunctionSet(new MathFunctionSet());
         FormulaRegistry.getDefault().registerFormulaFunctionSet(new NumberOperatorFunctionSet());
+        FormulaRegistry.getDefault().registerFormulaFunctionSet(new TableFunctionSet());
     }
     public static void defaultCASetupForSwing() {
         PVManager.setDefaultNotificationExecutor(Executors.swingEDT());
