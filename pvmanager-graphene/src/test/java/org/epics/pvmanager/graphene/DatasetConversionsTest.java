@@ -40,7 +40,7 @@ public class DatasetConversionsTest {
         Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(data, "x", null);
         assertThat(dataset.getCount(), equalTo(3));
         assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
-        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(0,1,2)));
+        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(5,4,6)));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class DatasetConversionsTest {
                 Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
         Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(data, null, "y");
         assertThat(dataset.getCount(), equalTo(3));
-        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(0,1,2)));
+        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
         assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(5,4,6)));
     }
 
@@ -102,5 +102,15 @@ public class DatasetConversionsTest {
         assertThat(dataset.getCount(), equalTo(3));
         assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
         assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(5,4,6)));
+    }
+
+    @Test
+    public void point2DDatsetFromVTable10() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
+        Point2DDataset dataset = DatasetConversions.point2DDatasetFromVTable(data, null, "x");
+        assertThat(dataset.getCount(), equalTo(3));
+        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(5,4,6)));
+        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
     }
 }
