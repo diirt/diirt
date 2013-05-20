@@ -66,7 +66,7 @@ public class DatasetConversions {
      * @param sizeColumn the column for the size values
      * @return the dataset
      */
-    public static Point3DWithLabelDataset point2DDatasetFromVTable(VTable vTable,
+    public static Point3DWithLabelDataset point3DDatasetFromVTable(VTable vTable,
             String xColumn, String yColumn, String sizeColumn) {
         // Extract x and y using column names
         ListNumber xValues = ValueUtil.numericColumnOf(vTable, xColumn);
