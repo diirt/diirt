@@ -5,15 +5,10 @@
 package org.epics.pvmanager.graphene;
 
 import org.epics.graphene.BubbleGraph2DRendererUpdate;
-import org.epics.graphene.Graph2DRendererUpdate;
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
         
 /**
@@ -30,10 +25,11 @@ public class BubbleGraph2DExpression extends DesiredRateExpressionImpl<Graph2DRe
     BubbleGraph2DExpression(DesiredRateExpression<?> tableData,
 	    DesiredRateExpression<?> xColumnName,
 	    DesiredRateExpression<?> yColumnName,
+	    DesiredRateExpression<?> sizeColumnName,
 	    DesiredRateExpression<?> tooltipColumnName) {
-        super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, tooltipColumnName),
-                new ScatterGraph2DFunction(functionOf(tableData),
-                functionOf(xColumnName), functionOf(yColumnName), functionOf(tooltipColumnName)),
+        super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, sizeColumnName, tooltipColumnName),
+                new BubbleGraph2DFunction(functionOf(tableData),
+                functionOf(xColumnName), functionOf(yColumnName), functionOf(sizeColumnName), functionOf(tooltipColumnName)),
                 "Bubble Graph");
     }
 
