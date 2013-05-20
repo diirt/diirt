@@ -7,6 +7,7 @@ package org.epics.pvmanager.graphene;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import org.epics.graphene.BubbleGraph2DRenderer;
+import org.epics.graphene.BubbleGraph2DRendererUpdate;
 import org.epics.graphene.Graph2DRendererUpdate;
 
 import org.epics.graphene.Point2DDataset;
@@ -36,7 +37,7 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
     private BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(300,
             200);
     private VImage previousImage;
-    private final QueueCollector<Graph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(
+    private final QueueCollector<BubbleGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(
             100);
 
     public BubbleGraph2DFunction(ReadFunction<?> tableData,
@@ -51,7 +52,7 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
         this.tooltipColumnName = stringArgument(tooltipColumnName, "Tooltip Column");
     }
 
-    public QueueCollector<Graph2DRendererUpdate> getRendererUpdateQueue() {
+    public QueueCollector<BubbleGraph2DRendererUpdate> getRendererUpdateQueue() {
         return rendererUpdateQueue;
     }
 
@@ -71,9 +72,9 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
         // Prepare new dataset
         Point3DWithLabelDataset dataset = DatasetConversions.point3DDatasetFromVTable(vTable, xColumnName.getValue(), yColumnName.getValue(), sizeColumnName.getValue());
 
-        List<Graph2DRendererUpdate> updates = rendererUpdateQueue
+        List<BubbleGraph2DRendererUpdate> updates = rendererUpdateQueue
                 .readValue();
-        for (Graph2DRendererUpdate scatterGraph2DRendererUpdate : updates) {
+        for (BubbleGraph2DRendererUpdate scatterGraph2DRendererUpdate : updates) {
             renderer.update(scatterGraph2DRendererUpdate);
         }
 
