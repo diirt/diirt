@@ -35,9 +35,7 @@ public class BubbleGraph2DExpression extends DesiredRateExpressionImpl<Graph2DRe
 
     @Override
     public void update(BubbleGraph2DRendererUpdate update) {
-        if (getFunction() instanceof BubbleGraph2DRendererUpdate) {
-            ((BubbleGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
-        }
+        ((BubbleGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);
     }
 
     @Override
