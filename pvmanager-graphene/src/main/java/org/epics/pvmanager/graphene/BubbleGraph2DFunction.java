@@ -48,7 +48,7 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
         this.tableData = new CheckedReadFunction<>(tableData, "Data", VTable.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");
-        this.yColumnName = stringArgument(yColumnName, "Size Column");
+        this.sizeColumnName = stringArgument(sizeColumnName, "Size Column");
         this.tooltipColumnName = stringArgument(tooltipColumnName, "Tooltip Column");
     }
 
