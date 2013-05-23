@@ -77,6 +77,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         if (update.getFocusPixelX()!= null) {
             focusPixelX = update.getFocusPixelX();
         }
+        if (update.getHighlightFocusValue()!= null) {
+            highlightFocusValue = update.getHighlightFocusValue();
+        }
     }
 
     /**
@@ -104,6 +107,11 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         drawValueExplicitLine(xValues, yValues, interpolation, reduction);
         if (focusPixelX != null) {
             focusValueIndex = xValues.getIndexes().getInt(currentIndex);
+            if (highlightFocusValue) {
+                g.setColor(new Color(0, 0, 0, 128));
+                int x = (int) scaledX(xValues.getDouble(currentIndex));
+                g.drawLine(x, yAreaStart, x, yAreaEnd);
+            }
         }
     }
 

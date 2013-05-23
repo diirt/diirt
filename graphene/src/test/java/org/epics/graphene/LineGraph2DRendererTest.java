@@ -167,9 +167,10 @@ public class LineGraph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR)
-                .focusPixel(250));
+                .focusPixel(250).highlightFocusValue(true));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         assertThat(renderer.getFocusValueIndex(), equalTo(3));
+        ImageAssert.compareImages("lineGraph.10", image);
     }
 }
