@@ -183,5 +183,101 @@ public class Graph2DRendererTest {
     public static <T extends Graph2DRendererUpdate<T>> void changeSize(Graph2DRenderer<T> renderer) {
         renderer.update(renderer.newUpdate().imageHeight(100).imageWidth(200));
     }
+    
+    @Test
+    public void processValue1() throws Exception {
+        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+
+            @Override
+            protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                assertThat(data.getXValues().getDouble(index), equalTo(valueX));
+                assertThat(data.getYValues().getDouble(index), equalTo(valueY));
+            }
+            
+        };
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
+        renderer.calculateGraphArea();
+        renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
+    }
+    
+    @Test
+    public void processValue2() throws Exception {
+        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+
+            @Override
+            protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                assertThat(data.getXValues().getDouble(index), equalTo(valueX));
+                assertThat(data.getYValues().getDouble(index), equalTo(valueY));
+            }
+            
+        };
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
+        renderer.calculateGraphArea();
+        renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
+    }
+    
+    @Test
+    public void processValue3() throws Exception {
+        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+
+            @Override
+            protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                assertThat(data.getXValues().getDouble(index), equalTo(valueX));
+                assertThat(data.getYValues().getDouble(index), equalTo(valueY));
+            }
+            
+        };
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
+        renderer.calculateGraphArea();
+        renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
+    }
+    
+    @Test
+    public void processValue4() throws Exception {
+        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+
+            @Override
+            protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                assertThat(data.getXValues().getDouble(index), equalTo(valueX));
+                assertThat(data.getYValues().getDouble(index), equalTo(valueY));
+            }
+            
+        };
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
+        renderer.calculateGraphArea();
+        renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
+    }
 
 }
