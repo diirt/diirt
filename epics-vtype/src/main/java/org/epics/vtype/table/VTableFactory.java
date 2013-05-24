@@ -133,6 +133,9 @@ public class VTableFactory {
     }
     
     public static VTable extractRow(VTable vTable, int row) {
+        if (vTable == null || vTable.getRowCount() >= row || row < 0) {
+            return null;
+        }
         List<String> columnNames = new ArrayList<>(vTable.getColumnCount());
         List<Class<?>> columnTypes = new ArrayList<>(vTable.getColumnCount());
         List<Object> columnData = new ArrayList<>(vTable.getColumnCount());
