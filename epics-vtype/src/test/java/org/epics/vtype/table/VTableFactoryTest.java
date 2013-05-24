@@ -48,4 +48,19 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(0), equalTo((Object) new ArrayDouble(0,0.5,1,1.5)));
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(4,3,2,1)));
     }
+
+    @Test
+    public void selectRows1() {
+        VTable table = newVTable(column("Index", step(0, 1)),
+                                 column("Value", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())));
+        VTable rowTable = extractRow(table, 1);
+        assertThat(rowTable.getColumnCount(), equalTo(2));
+        assertThat(rowTable.getRowCount(), equalTo(1));
+        assertThat(rowTable.getColumnName(0), equalTo("Index"));
+        assertThat(rowTable.getColumnName(1), equalTo("Value"));
+        assertThat(rowTable.getColumnType(0), equalTo((Object) double.class));
+        assertThat(rowTable.getColumnType(1), equalTo((Object) double.class));
+        assertThat(rowTable.getColumnData(0), equalTo((Object) new ArrayDouble(1)));
+        assertThat(rowTable.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
+    }
 }
