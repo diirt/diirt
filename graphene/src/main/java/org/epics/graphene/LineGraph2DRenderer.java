@@ -32,7 +32,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     
     private boolean highlightFocusValue = false;
 
-    private Integer focusValueIndex;
+    private int focusValueIndex = -1;
     
     /**
      * Creates a new line graph renderer.
@@ -112,6 +112,8 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
                 int x = (int) scaledX(xValues.getDouble(currentIndex));
                 g.drawLine(x, yAreaStart, x, yAreaEnd);
             }
+        } else {
+            focusValueIndex = -1;
         }
     }
 
