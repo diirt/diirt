@@ -4,8 +4,8 @@
             <actionName>CUSTOM-Site</actionName>
             <displayName>Site</displayName>
             <goals>
-                <goal>site</goal>
-                <goal>site:stage</goal>
+                <goal>site:site</goal>
+                
             </goals>
         </action>
     </actions>

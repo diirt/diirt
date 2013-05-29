@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>pvmanager changes page</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="2.2" date="SNAPSHOT" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
+            <action dev="carcassi"  type="update">
+                vtype: valueOf returns UNDEFINED for null values
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: support for bubble graph expression
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: graph result returns original data and selection index
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula now uses syntax with '=' before an actual formula
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding functions tableOf/column/range/step to generate tables from column data
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: utilities to assemble vTables
+            </action>
+            <action dev="carcassi"  type="fix">
+                core: better error message if a type is not setup for notification
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: utilities to compare values (only value, no timestamp/alarm/display)
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: line/scatter graphs now work on tables instead of multiple waveforms
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: added toString implementation for VTable
+            </action>
+            <action dev="carcassi"  type="remove">
+                core: moved StringUtils and ListNumbers to epics-util
+            </action>
+            <action dev="carcassi"  type="add">
+                file: new datasource to read files; can read a csv table
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: changing VTable definition so that returns List and ListNumbers instead of arrays
+            </action>
+            <action dev="carcassi" type="add">
+                vtype: adding CSV import/export for most types
+            </action>
+            <action dev="carcassi"  type="add">
+                service: first cut for service integration
+            </action>
+            <action dev="carcassi" type="add">
+                formula: formula functions dynamic registration; modularized all implemented functions
+            </action>
+            <action dev="carcassi" type="update">
+                formula: all single argument functions from java.util.Math are registered as formula functions
+            </action>
+            <action dev="carcassi" type="fix">
+                core: don't send TimeoutException if another exception was sent before
+            </action>
+            <action dev="carcassi" type="fix">
+                loc: add support for all VTypes
+            </action>
+            <action dev="carcassi" type="fix">
+                sim: add table simulation
+            </action>
+            <action dev="msekoranja" type="add">
+                pva: enum and array write support
+            </action>
+        </release>
+        <release version="2.1" date="2013/03/27" description="Stabilization. Bugfixes and improvements">
+            <action dev="carcassi" type="update">
+                jca: better behavior if native library is not found
+            </action>
+            <action dev="carcassi" type="update">
+                formula: read/write expression, allows write only if it's a single channel, if not reports exception
+            </action>
+            <action dev="carcassi" type="update">
+                core: adding machinery to support Exception handling while creating expressions, so that exceptions are reported on the reader/writer
+            </action>
+            <action dev="carcassi" type="update">
+                jca: workaround if Channel.getFieldType() returns UNKNOWN
+            </action>
+            <action dev="carcassi" type="update">
+                jca: workaround, accessright callback dispatched to a separate thread for JNI (needs to be removed)
+            </action>
+            <action dev="carcassi" type="update">
+                formula: added function to create array from expressions
+            </action>
+        </release>
+        <release version="2.0" date="2013/02/12" description="Internal refactoring">
+            <action dev="carcassi" type="fix">
+                core: expression using the same channel twice now work properly
+            </action>
+        </release>
+
+    </body>
+</document>
+

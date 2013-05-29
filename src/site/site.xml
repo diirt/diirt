@@ -17,9 +17,8 @@
 
     <menu name="PVManager">
       <item name="About" href="index.html"/>
-      <item name="Wiki(Trac)" href="http://apps.sourceforge.net/trac/pvmanager/"/>
+      <item name="Changes" href="changes-report.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/pvmanager/"/>
-      <item name="About" href="index.html"/>
     </menu>
 
     <menu ref="reports"/>
