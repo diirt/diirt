@@ -148,27 +148,37 @@ public class FunctionParser {
     public static List<Object> parseFunctionWithScalarOrArrayArguments(String string, String errorMessage) {
         // Parse the channel name
         List<Object> parsedTokens = FunctionParser.parsePvAndArguments(string);
+        
+        // Single argument, return right away
         if (parsedTokens != null && parsedTokens.size() <= 2) {
             return parsedTokens;
         }
         
-        if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof Double) {
-            ListDouble data = asListDouble(parsedTokens.subList(1, parsedTokens.size()));
-            if (data == null) {
-                throw new IllegalArgumentException(errorMessage);
-            }
-            return Arrays.asList(parsedTokens.get(0), data);
+        // Multiple arguments, collect in array if possible
+        Object data = asScalarOrList(parsedTokens.subList(1, parsedTokens.size()));
+        if (data == null) {
+            throw new IllegalArgumentException(errorMessage);
         }
-        
-        if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof String) {
-            List<String> data = asListString(parsedTokens.subList(1, parsedTokens.size()));
-            if (data == null) {
-                throw new IllegalArgumentException(errorMessage);
-            }
-            return Arrays.asList(parsedTokens.get(0), data);
+        return Arrays.asList(parsedTokens.get(0), data);
+    }
+    
+    /**
+     * Converts the list of arguments into a scalar or
+     * an appropriate list. Returns null if it's not possible.
+     * 
+     * @param objects the argument list
+     * @return the value converted or null
+     */
+    static Object asScalarOrList(List<Object> objects) {
+        if (objects.size() <=1) {
+            return objects;
+        } else if (objects.get(0) instanceof Double) {
+            return asListDouble(objects);
+        } else if (objects.get(0) instanceof String) {
+            return asListString(objects);
+        } else {
+            return null;
         }
-        
-        throw new IllegalArgumentException(errorMessage);
     }
     
     /**
