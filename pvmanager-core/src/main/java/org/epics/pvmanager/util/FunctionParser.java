@@ -68,9 +68,11 @@ public class FunctionParser {
      * @param objects the argument list
      * @return the value converted or null
      */
-    static Object asScalarOrList(List<Object> objects) {
-        if (objects.size() <=1) {
-            return objects;
+    public static Object asScalarOrList(List<Object> objects) {
+        if (objects.isEmpty()) {
+            return null;
+        } else if (objects.size() == 1) {
+            return objects.get(0);
         } else if (objects.get(0) instanceof Double) {
             return asListDouble(objects);
         } else if (objects.get(0) instanceof String) {
@@ -87,7 +89,7 @@ public class FunctionParser {
      * @param objects a list of arguments
      * @return the converted list or null
      */
-    static ListDouble asListDouble(List<Object> objects) {
+    public static ListDouble asListDouble(List<Object> objects) {
         double[] data = new double[objects.size()];
         for (int i = 0; i < objects.size(); i++) {
             Object value = objects.get(i);
@@ -107,7 +109,7 @@ public class FunctionParser {
      * @param objects a list of arguments
      * @return  the converted list of null
      */
-    static List<String> asListString(List<Object> objects) {
+    public static List<String> asListString(List<Object> objects) {
         List<String> data = new ArrayList<>();
         for (int i = 0; i < objects.size(); i++) {
             Object value = objects.get(i);
