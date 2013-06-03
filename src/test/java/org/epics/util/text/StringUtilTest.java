@@ -92,4 +92,11 @@ public class StringUtilTest {
         List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
         assertThat(tokens, equalTo(Arrays.<Object>asList("This is a test", "Another test", "No spaces", "Between these two")));
     }
+
+    @Test
+    public void parseCSVLine3() {
+        String line = "\"And he asked:\\\"Does quoting works?\\\"\"";
+        List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
+        assertThat(tokens, equalTo(Arrays.<Object>asList("And he asked:\"Does quoting works?\"")));
+    }
 }
