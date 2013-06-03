@@ -222,18 +222,28 @@ public class FunctionParser {
     }
     
     public static List<Object> parseFunctionAnyParameter(String string) {
-        if (!functionAndParameters.matcher(string).matches()) {
-            return null;
-        }
+        return parseFunctionAnyParameter("(\\w+)", string);
+    }
+    
+    public static List<Object> parseFunctionAnyParameter(String nameRegex, String string) {
         if (string.indexOf('(') == -1) {
             return Arrays.<Object>asList(string);
         }
         
         String name = string.substring(0, string.indexOf('('));
         String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
+        
+        if (!Pattern.compile(nameRegex).matcher(name).matches()) {
+            return null;
+        }
+        
         List<Object> result = new ArrayList<>();
         result.add(name);
-        result.addAll(StringUtil.parseCSVLine(arguments.trim(), "\\s*,\\s*"));
+        List<Object> parsedArguments = StringUtil.parseCSVLine(arguments.trim(), "\\s*,\\s*");
+        if (parsedArguments == null) {
+            return null;
+        }
+        result.addAll(parsedArguments);
         return result;
     }
 }
