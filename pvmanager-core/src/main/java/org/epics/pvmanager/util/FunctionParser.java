@@ -197,13 +197,17 @@ public class FunctionParser {
     
     public static List<Object> parseFunctionAnyParameter(String nameRegex, String string) {
         if (string.indexOf('(') == -1) {
-            return Arrays.<Object>asList(string);
+            if (string.matches(nameRegex)) {
+                return Arrays.<Object>asList(string);
+            } else {
+                return null;
+            }
         }
         
         String name = string.substring(0, string.indexOf('('));
         String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
         
-        if (!Pattern.compile(nameRegex).matcher(name).matches()) {
+        if (!name.matches(nameRegex)) {
             return null;
         }
         
