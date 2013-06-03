@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.epics.util.text.StringUtil;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 
 /**
  * Utility class to parse variable names and create simulated signals.
@@ -152,16 +153,11 @@ public class FunctionParser {
         }
         
         if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof Double) {
-            double[] data = new double[parsedTokens.size() - 1];
-            for (int i = 1; i < parsedTokens.size(); i++) {
-                Object value = parsedTokens.get(i);
-                if (value instanceof Double) {
-                    data[i-1] = (Double) value;
-                } else {
-                    throw new IllegalArgumentException(errorMessage);
-                }
+            ListDouble data = asListDouble(parsedTokens.subList(1, parsedTokens.size()));
+            if (data == null) {
+                throw new IllegalArgumentException(errorMessage);
             }
-            return Arrays.asList(parsedTokens.get(0), new ArrayDouble(data));
+            return Arrays.asList(parsedTokens.get(0), data);
         }
         
         if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof String) {
@@ -178,6 +174,26 @@ public class FunctionParser {
         }
         
         throw new IllegalArgumentException(errorMessage);
+    }
+    
+    /**
+     * Convert the list of arguments to a ListDouble. Returns
+     * null if it's not possible.
+     * 
+     * @param objects a list of arguments
+     * @return the converter list or null
+     */
+    static ListDouble asListDouble(List<Object> objects) {
+        double[] data = new double[objects.size()];
+        for (int i = 0; i < objects.size(); i++) {
+            Object value = objects.get(i);
+            if (value instanceof Double) {
+                data[i] = (Double) value;
+            } else {
+                return null;
+            }
+        }
+        return new ArrayDouble(data);
     }
     
     public static List<Object> parseFunctionAnyParameter(String string) {
