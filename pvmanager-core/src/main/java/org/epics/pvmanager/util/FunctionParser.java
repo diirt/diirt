@@ -116,8 +116,12 @@ public class FunctionParser {
      * @return the name of the function and the argument
      */
     public static List<Object> parseFunctionWithScalarOrArrayArguments(String string, String errorMessage) {
+        return parseFunctionWithScalarOrArrayArguments("(\\w+)", string, errorMessage);
+    }
+    
+    public static List<Object> parseFunctionWithScalarOrArrayArguments(String nameRegex, String string, String errorMessage) {
         // Parse the channel name
-        List<Object> parsedTokens = FunctionParser.parsePvAndArguments(string);
+        List<Object> parsedTokens = FunctionParser.parseFunctionAnyParameter(nameRegex, string);
         
         // Single argument, return right away
         if (parsedTokens != null && parsedTokens.size() <= 2) {
