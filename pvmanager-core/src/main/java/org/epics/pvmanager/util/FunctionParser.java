@@ -20,14 +20,17 @@ import org.epics.util.array.ArrayDouble;
  */
 public class FunctionParser {
 
-    static final Pattern doubleParameter = Pattern.compile("\\s*([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*");
+    public static final String STRING_OR_DOUBLE_REGEX = StringUtil.DOUBLE_REGEX + "|" + StringUtil.QUOTED_STRING_REGEX;
+    static final Pattern doubleParameter = Pattern.compile("\\s*(" + StringUtil.DOUBLE_REGEX + ")\\s*");
     static final Pattern stringParameter = Pattern.compile("\\s*(" + StringUtil.QUOTED_STRING_REGEX + ")\\s*");
     static final Pattern commaSeparatedDoubles = Pattern.compile(doubleParameter + "(," + doubleParameter + ")*");
     static final Pattern commaSeparatedStrings = Pattern.compile(stringParameter + "(," + stringParameter + ")*");
+    static final Pattern commaSeparatedStringOrDoubles = Pattern.compile(STRING_OR_DOUBLE_REGEX + "(," + STRING_OR_DOUBLE_REGEX + ")*");
     static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
     static final Pattern functionAndStringParameter = Pattern.compile("(\\w+)(\\((\".*\")\\))?");
     static final Pattern pvNameAndParameter = Pattern.compile("([^\\(]+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
     static final Pattern pvNameAndStringParameter = Pattern.compile("([^\\(]+)(\\((" + commaSeparatedStrings + ")\\))?");
+    static final Pattern functionAndParameters = Pattern.compile("(\\w+)(\\(((" + commaSeparatedStringOrDoubles + ")?)\\))?");
  
     /**
      * Parses a comma separated list of arguments and returns them as a list.
@@ -175,5 +178,18 @@ public class FunctionParser {
         }
         
         throw new IllegalArgumentException(errorMessage);
+    }
+    
+    public static List<Object> parseFunctionAnyParameter(String string) {
+        if (!functionAndParameters.matcher(string).matches()) {
+            return null;
+        }
+        
+        String name = string.substring(0, string.indexOf('('));
+        String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
+        List<Object> result = new ArrayList<>();
+        result.add(name);
+        result.addAll(StringUtil.parseCSVLine(arguments, "\\s*,\\s*"));
+        return result;
     }
 }

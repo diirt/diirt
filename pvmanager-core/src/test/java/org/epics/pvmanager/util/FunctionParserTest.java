@@ -126,4 +126,10 @@ public class FunctionParserTest {
         assertThat(parameters.get(1), equalTo((Object) "I said \"Right!\""));
     }
 
+    @Test
+    public void parseFunctionAnyParameters1() {
+        List<Object> parameters = FunctionParser.parseFunctionAnyParameter("foo(1.0)");
+        assertThat(parameters, equalTo(Arrays.asList((Object) "foo", 1.0)));
+    }
+
 }
