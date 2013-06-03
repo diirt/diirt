@@ -76,36 +76,6 @@ public class FunctionParser {
     }
 
     /**
-     * Parse a function with parameters and returns a list where the first
-     * element is the function name and the others are the parsed arguments.
-     *
-     * @param string a string representing a function
-     * @return the name and the parameters
-     */
-    public static List<Object> parseFunction(String string) {
-        Matcher matcher = functionAndParameter.matcher(string);
-        // Match comma separate double list
-        if (matcher.matches()) {
-            List<Object> parameters = new ArrayList<Object>();
-            parameters.add(matcher.group(1));
-            parameters.addAll(parseParameters(matcher.group(3)));
-            return parameters;
-        }
-
-        // Match string parameter
-        matcher = functionAndStringParameter.matcher(string);
-        if (matcher.matches()) {
-            List<Object> parameters = new ArrayList<Object>();
-            parameters.add(matcher.group(1));
-            String quotedString = matcher.group(3);
-            parameters.add(quotedString.substring(1, quotedString.length() - 1));
-            return parameters;
-        }
-
-        return null;
-    }
-
-    /**
      * Parse a pv name with parameters and returns a list where the first
      * element is the function name and the others are the parsed arguments.
      *
