@@ -6,10 +6,7 @@ package org.epics.pvmanager.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.epics.util.text.StringUtil;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
@@ -21,60 +18,6 @@ import org.epics.util.array.ListDouble;
  */
 public class FunctionParser {
 
-    public static final String STRING_OR_DOUBLE_REGEX = "(" + StringUtil.DOUBLE_REGEX + "|" + StringUtil.QUOTED_STRING_REGEX + ")";
-    static final Pattern doubleParameter = Pattern.compile("\\s*(" + StringUtil.DOUBLE_REGEX + ")\\s*");
-    static final Pattern stringParameter = Pattern.compile("\\s*(" + StringUtil.QUOTED_STRING_REGEX + ")\\s*");
-    static final Pattern commaSeparatedDoubles = Pattern.compile(doubleParameter + "(," + doubleParameter + ")*");
-    static final Pattern commaSeparatedStrings = Pattern.compile(stringParameter + "(," + stringParameter + ")*");
-    static final Pattern commaSeparatedStringOrDoubles = Pattern.compile("\\s*" + STRING_OR_DOUBLE_REGEX + "(\\s*,\\s*" + STRING_OR_DOUBLE_REGEX + ")*\\s*");
-    static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
-    static final Pattern functionAndStringParameter = Pattern.compile("(\\w+)(\\((\".*\")\\))?");
-    static final Pattern pvNameAndParameter = Pattern.compile("([^\\(]+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
-    static final Pattern pvNameAndStringParameter = Pattern.compile("([^\\(]+)(\\((" + commaSeparatedStrings + ")\\))?");
-    static final Pattern functionAndParameters = Pattern.compile("(\\w+)(\\(((" + commaSeparatedStringOrDoubles + ")?)\\))?");
- 
-    /**
-     * Parses a comma separated list of arguments and returns them as a list.
-     *
-     * @param string a comma separated list of arguments; if null or empty
-     * returns the empty list
-     * @return the list of parsed arguments
-     */
-    static List<Object> parseParameters(String string) {
-        // Argument is empty
-        if (string == null || "".equals(string)) {
-            return Collections.emptyList();
-        }
-
-        // Validate input
-        if (!commaSeparatedDoubles.matcher(string).matches()) {
-            return null;
-        }
-
-        // Parse parameters
-        Matcher matcher = doubleParameter.matcher(string);
-        List<Object> parameters = new ArrayList<Object>();
-        while (matcher.find()) {
-            String parameter = matcher.group();
-            Double value = Double.parseDouble(parameter);
-            parameters.add(value);
-        }
-
-        return parameters;
-    }
-    
-    private static List<Object> parseStringParameters(String string) {
-        // Parse parameters
-        Matcher matcher = stringParameter.matcher(string);
-        List<Object> parameters = new ArrayList<Object>();
-        while (matcher.find()) {
-            String parameter = matcher.group(1);
-            parameters.add(StringUtil.unquote(parameter));
-        }
-
-        return parameters;
-    }
-    
     /**
      * Parse a function that accepts a scalar value (number or string) or
      * an array value (number or string).
@@ -86,7 +29,16 @@ public class FunctionParser {
     public static List<Object> parseFunctionWithScalarOrArrayArguments(String string, String errorMessage) {
         return parseFunctionWithScalarOrArrayArguments("(\\w+)", string, errorMessage);
     }
-    
+
+    /**
+     * Parse a function that accepts a scalar value (number or string) or
+     * an array value (number or string).
+     * 
+     * @param nameRegex regex for function name
+     * @param string the string to be parsed
+     * @param errorMessage the error message for the exception if parsing fails
+     * @return the name of the function and the argument
+     */
     public static List<Object> parseFunctionWithScalarOrArrayArguments(String nameRegex, String string, String errorMessage) {
         // Parse the channel name
         List<Object> parsedTokens = FunctionParser.parseFunctionAnyParameter(nameRegex, string);
@@ -168,10 +120,27 @@ public class FunctionParser {
         return data;
     }
     
+    /**
+     * Parses the string and returns the name of the function plus the
+     * list of arguments. The arguments can either be doubles or Strings.
+     * Returns null if parsing fails.
+     * 
+     * @param string the string to be parsed
+     * @return the function name and arguments; null if parsing fails
+     */
     public static List<Object> parseFunctionAnyParameter(String string) {
         return parseFunctionAnyParameter("(\\w+)", string);
     }
-    
+
+    /**
+     * Parses the string and returns the name of the function plus the
+     * list of arguments. The arguments can either be doubles or Strings.
+     * Returns null if parsing fails.
+     * 
+     * @param nameRegex the syntax for the function name
+     * @param string the string to be parsed
+     * @return the function name and arguments; null if parsing fails
+     */
     public static List<Object> parseFunctionAnyParameter(String nameRegex, String string) {
         if (string.indexOf('(') == -1) {
             if (string.matches(nameRegex)) {

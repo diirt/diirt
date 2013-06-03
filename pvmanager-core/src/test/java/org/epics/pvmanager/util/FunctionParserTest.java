@@ -23,15 +23,6 @@ public class FunctionParserTest {
     }
 
     @Test
-    public void testParameterParsing() {
-        // A couple of correct combinations
-        List<Object> parameters = FunctionParser.parseParameters("1.0,2.0");
-        assertThat(parameters, equalTo(Arrays.asList((Object) 1.0, 2.0)));
-        parameters = FunctionParser.parseParameters("-1,.5,  23.25");
-        assertThat(parameters, equalTo(Arrays.asList((Object) (-1.0), 0.5,  23.25)));
-    }
-
-    @Test
     public void parseFunctionWithScalarOrArrayArguments1() {
         List<Object> parameters = FunctionParser.parseFunctionWithScalarOrArrayArguments("foo(1.0)", "error");
         assertThat(parameters, equalTo(Arrays.asList((Object) "foo", 1.0)));
