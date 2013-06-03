@@ -20,12 +20,12 @@ import org.epics.util.array.ArrayDouble;
  */
 public class FunctionParser {
 
-    public static final String STRING_OR_DOUBLE_REGEX = StringUtil.DOUBLE_REGEX + "|" + StringUtil.QUOTED_STRING_REGEX;
+    public static final String STRING_OR_DOUBLE_REGEX = "(" + StringUtil.DOUBLE_REGEX + "|" + StringUtil.QUOTED_STRING_REGEX + ")";
     static final Pattern doubleParameter = Pattern.compile("\\s*(" + StringUtil.DOUBLE_REGEX + ")\\s*");
     static final Pattern stringParameter = Pattern.compile("\\s*(" + StringUtil.QUOTED_STRING_REGEX + ")\\s*");
     static final Pattern commaSeparatedDoubles = Pattern.compile(doubleParameter + "(," + doubleParameter + ")*");
     static final Pattern commaSeparatedStrings = Pattern.compile(stringParameter + "(," + stringParameter + ")*");
-    static final Pattern commaSeparatedStringOrDoubles = Pattern.compile(STRING_OR_DOUBLE_REGEX + "(," + STRING_OR_DOUBLE_REGEX + ")*");
+    static final Pattern commaSeparatedStringOrDoubles = Pattern.compile("\\s*" + STRING_OR_DOUBLE_REGEX + "(\\s*,\\s*" + STRING_OR_DOUBLE_REGEX + ")*\\s*");
     static final Pattern functionAndParameter = Pattern.compile("(\\w+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
     static final Pattern functionAndStringParameter = Pattern.compile("(\\w+)(\\((\".*\")\\))?");
     static final Pattern pvNameAndParameter = Pattern.compile("([^\\(]+)(\\(((" + commaSeparatedDoubles + ")?)\\))?");
@@ -189,7 +189,7 @@ public class FunctionParser {
         String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
         List<Object> result = new ArrayList<>();
         result.add(name);
-        result.addAll(StringUtil.parseCSVLine(arguments, "\\s*,\\s*"));
+        result.addAll(StringUtil.parseCSVLine(arguments.trim(), "\\s*,\\s*"));
         return result;
     }
 }
