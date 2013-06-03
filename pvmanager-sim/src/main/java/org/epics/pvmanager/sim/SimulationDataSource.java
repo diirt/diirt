@@ -52,6 +52,9 @@ public final class SimulationDataSource extends DataSource {
         if (channelName.startsWith("const(")) {
             return new ConstantChannelHandler(channelName);
         }
+        if (channelName.startsWith("delayedConnectionChannel(")) {
+            return new DelayedConnectionChannelHandler(channelName);
+        }
         
         SimFunction<?> simFunction = (SimFunction<?>) NameParser.createFunction(channelName);
         return new SimulationChannelHandler(channelName, simFunction, exec);
