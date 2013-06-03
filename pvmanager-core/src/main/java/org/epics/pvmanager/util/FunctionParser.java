@@ -225,6 +225,9 @@ public class FunctionParser {
         if (!functionAndParameters.matcher(string).matches()) {
             return null;
         }
+        if (string.indexOf('(') == -1) {
+            return Arrays.<Object>asList(string);
+        }
         
         String name = string.substring(0, string.indexOf('('));
         String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
