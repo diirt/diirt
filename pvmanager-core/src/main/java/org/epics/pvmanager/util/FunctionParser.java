@@ -161,14 +161,9 @@ public class FunctionParser {
         }
         
         if (parsedTokens != null && parsedTokens.size() > 2 && parsedTokens.get(1) instanceof String) {
-            List<String> data = new ArrayList<>();
-            for (int i = 1; i < parsedTokens.size(); i++) {
-                Object value = parsedTokens.get(i);
-                if (value instanceof String) {
-                    data.add((String) value);
-                } else {
-                    throw new IllegalArgumentException(errorMessage);
-                }
+            List<String> data = asListString(parsedTokens.subList(1, parsedTokens.size()));
+            if (data == null) {
+                throw new IllegalArgumentException(errorMessage);
             }
             return Arrays.asList(parsedTokens.get(0), data);
         }
@@ -181,7 +176,7 @@ public class FunctionParser {
      * null if it's not possible.
      * 
      * @param objects a list of arguments
-     * @return the converter list or null
+     * @return the converted list or null
      */
     static ListDouble asListDouble(List<Object> objects) {
         double[] data = new double[objects.size()];
@@ -194,6 +189,26 @@ public class FunctionParser {
             }
         }
         return new ArrayDouble(data);
+    }
+
+    /**
+     * Convert the list of arguments to a List. Returns
+     * null if it's not possible.
+     * 
+     * @param objects a list of arguments
+     * @return  the converted list of null
+     */
+    static List<String> asListString(List<Object> objects) {
+        List<String> data = new ArrayList<>();
+        for (int i = 0; i < objects.size(); i++) {
+            Object value = objects.get(i);
+            if (value instanceof String) {
+                data.add((String) value);
+            } else {
+                return null;
+            }
+        }
+        return data;
     }
     
     public static List<Object> parseFunctionAnyParameter(String string) {
