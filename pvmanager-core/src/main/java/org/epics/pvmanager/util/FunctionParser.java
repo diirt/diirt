@@ -123,8 +123,13 @@ public class FunctionParser {
         // Parse the channel name
         List<Object> parsedTokens = FunctionParser.parseFunctionAnyParameter(nameRegex, string);
         
+        // Parsing failed
+        if (parsedTokens == null) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+        
         // Single argument, return right away
-        if (parsedTokens != null && parsedTokens.size() <= 2) {
+        if (parsedTokens.size() <= 2) {
             return parsedTokens;
         }
         
@@ -217,11 +222,15 @@ public class FunctionParser {
         
         List<Object> result = new ArrayList<>();
         result.add(name);
-        List<Object> parsedArguments = StringUtil.parseCSVLine(arguments.trim(), "\\s*,\\s*");
-        if (parsedArguments == null) {
+        try {
+            List<Object> parsedArguments = StringUtil.parseCSVLine(arguments.trim(), "\\s*,\\s*");
+            if (parsedArguments == null) {
+                return null;
+            }
+            result.addAll(parsedArguments);
+            return result;
+        } catch (IllegalArgumentException ex) {
             return null;
         }
-        result.addAll(parsedArguments);
-        return result;
     }
 }
