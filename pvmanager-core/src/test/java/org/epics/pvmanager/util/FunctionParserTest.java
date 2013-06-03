@@ -32,13 +32,6 @@ public class FunctionParserTest {
     }
 
     @Test
-    public void testParsing() {
-        // Couple of correct functions
-        List<Object> parameters = FunctionParser.parsePvAndArguments("test(\"A\",\"B\")");
-        assertThat(parameters, equalTo(Arrays.asList((Object) "test", "A", "B")));
-    }
-
-    @Test
     public void parseFunctionWithScalarOrArrayArguments1() {
         List<Object> parameters = FunctionParser.parseFunctionWithScalarOrArrayArguments("foo(1.0)", "error");
         assertThat(parameters, equalTo(Arrays.asList((Object) "foo", 1.0)));
