@@ -34,7 +34,6 @@ class IntermittentChannelHandler extends MultiplexedChannelHandler<Object, Objec
             // Protect the timer thread for possible problems.
             try {
                 boolean toConnect = !isConnected();
-                System.out.println("Help");
                 
                 if (toConnect) {
                     processConnection(new Object());
