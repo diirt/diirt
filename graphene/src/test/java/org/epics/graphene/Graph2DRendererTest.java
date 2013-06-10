@@ -176,6 +176,25 @@ public class Graph2DRendererTest {
     }
     
     @Test
+    public void graphArea7() throws Exception {
+        Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
+
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+        };
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.calculateRanges(RangeUtil.range(3, 3), RangeUtil.range(0, 10));
+        renderer.calculateGraphArea();
+        renderer.drawGraphArea();
+        ImageAssert.compareImages("graph2DArea.7", image);
+    }
+    
+    @Test
     public void inheritance1() throws Exception {
         AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
         changeSize(renderer);
