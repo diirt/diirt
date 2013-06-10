@@ -173,4 +173,16 @@ public class LineGraph2DRendererTest {
         assertThat(renderer.getFocusValueIndex(), equalTo(3));
         ImageAssert.compareImages("lineGraph.10", image);
     }
+    
+    @Test
+    public void test11() throws Exception {
+        Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(0,1,2,3,4,5), 
+                new ArrayDouble(3,3,3,3,3,3));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraph.11", image);
+    }
 }

@@ -24,9 +24,10 @@ public class RangeUtilTest {
         assertThat(range.getMaximum(), equalTo((Number) 10.0));
     }
     
-    @Test(expected=IllegalArgumentException.class)
     public void range2() throws Exception {
         Range range = RangeUtil.range(0.0, 0.0);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 0.0));
     }
     
     @Test(expected=IllegalArgumentException.class)
