@@ -10,6 +10,8 @@ import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.ChannelHandlerWriteSubscription;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.pvmanager.*;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
@@ -22,6 +24,8 @@ import org.epics.vtype.VType;
  * @author carcassi
  */
 class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
+    
+    private static Logger log = Logger.getLogger(LocalChannelHandler.class.getName());
 
     LocalChannelHandler(String channelName) {
         super(channelName);
@@ -30,13 +34,11 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     @Override
     public void connect() {
         processConnection(new Object());
-        if (getLastMessagePayload() == null) {
-            processMessage(wrapValue(0.0));
-        }
     }
 
     @Override
     public void disconnect() {
+        initialValue = null;
         processConnection(null);
     }
 
@@ -123,14 +125,19 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     protected boolean isWriteConnected(Object payload) {
         return isConnected(payload);
     }
-
-    @Override
-    protected boolean saveMessageAfterDisconnect() {
-        return true;
-    }
+    
+    private Object initialValue;
     
     void setInitialValue(Object value) {
-        processMessage(wrapValue(value));
+        if (initialValue != null && !initialValue.equals(value)) {
+            String message = "Different initialization for local channel " + getChannelName() + ": " + value + " but was " + initialValue;
+            log.log(Level.WARNING, message);
+            throw new RuntimeException(message);
+        }
+        initialValue = value;
+        if (getLastMessagePayload() == null) {
+            processMessage(wrapValue(value));
+        }
     }
     
 }

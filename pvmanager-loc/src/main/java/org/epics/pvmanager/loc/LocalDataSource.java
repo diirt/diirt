@@ -46,11 +46,6 @@ public final class LocalDataSource extends DataSource {
         List<Object> parsedTokens = parseName(channelName);
         
         LocalChannelHandler channel = new LocalChannelHandler(parsedTokens.get(0).toString());
-        if (parsedTokens.size() > 1) {
-            channel.setInitialValue(parsedTokens.get(1));
-        } else {
-            channel.setInitialValue(0.0);
-        }
         return channel;
     }
     
@@ -62,6 +57,37 @@ public final class LocalDataSource extends DataSource {
     protected String channelHandlerLookupName(String channelName) {
         List<Object> parsedTokens = parseName(channelName);
         return parsedTokens.get(0).toString();
+    }
+    
+    private void initialize(String channelName) {
+        List<Object> parsedTokens = parseName(channelName);
+
+        if (parsedTokens.size() > 1) {
+            LocalChannelHandler channel = (LocalChannelHandler) getChannels().get(channelHandlerLookupName(channelName));
+            if (channel != null) {
+                channel.setInitialValue(parsedTokens.get(1));
+            }
+        }
+    }
+
+    @Override
+    public void connectRead(ReadRecipe readRecipe) {
+        super.connectRead(readRecipe);
+        
+        // Initialize all values
+        for (ChannelReadRecipe channelReadRecipe : readRecipe.getChannelReadRecipes()) {
+            initialize(channelReadRecipe.getChannelName());
+        }
+    }
+
+    @Override
+    public void connectWrite(WriteRecipe writeRecipe) {
+        super.connectWrite(writeRecipe);
+        
+        // Initialize all values
+        for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
+            initialize(channelWriteRecipe.getChannelName());
+        }
     }
 
 }

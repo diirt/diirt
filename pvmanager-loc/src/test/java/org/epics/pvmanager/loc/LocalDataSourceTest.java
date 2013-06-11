@@ -197,9 +197,7 @@ public class LocalDataSourceTest {
         Thread.sleep(100);
         Object value = valueCache.readValue();
         dataSource1.disconnectRead(recipe);
-        assertThat(value, instanceOf(VDouble.class));
-        VDouble vDouble = (VDouble) value;
-        assertThat(vDouble.getValue(), equalTo(0.0));
+        assertThat(value, nullValue());
     }
 
     @Test

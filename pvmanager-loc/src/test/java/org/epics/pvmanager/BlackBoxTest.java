@@ -23,7 +23,7 @@ public class BlackBoxTest {
 
     @Test
     public void readAndWriteBlackBox1() throws Exception {
-        String channelName = "test";
+        String channelName = "test(0)";
         DataSource dataSource = new LocalDataSource();
         
         PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
@@ -41,7 +41,7 @@ public class BlackBoxTest {
 
     @Test
     public void readAndWriteBlackBox2() throws Exception {
-        String channelName = "test";
+        String channelName = "test(0)";
         DataSource dataSource = new LocalDataSource();
         
         PV<Object, Object> pv1 = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
