@@ -43,6 +43,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     @Override
     public void disconnect() {
         initialValue = null;
+        type = null;
         processConnection(null);
     }
 
