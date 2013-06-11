@@ -12,10 +12,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.*;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 
 /**
@@ -66,6 +70,13 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         super.removeWrite(subscription);
     }
     
+    private Object checkValue(Object value) {
+        if (type != null && !type.isInstance(value)) {
+            throw new IllegalArgumentException("Value " + value + " is not of type " + type.getSimpleName());
+        }
+        return value;
+    }
+    
     private Object wrapValue(Object value) {
         if (value instanceof VType) {
             return value;
@@ -113,7 +124,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                 } catch (NumberFormatException ex) {
                 }
             }
-            newValue = wrapValue(newValue);
+            newValue = checkValue(wrapValue(newValue));
             processMessage(newValue);
             callback.channelWritten(null);
         } catch (Exception ex) {
@@ -127,6 +138,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
     
     private Object initialValue;
+    private Class<?> type;
     
     void setInitialValue(Object value) {
         if (initialValue != null && !initialValue.equals(value)) {
@@ -136,8 +148,37 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         }
         initialValue = value;
         if (getLastMessagePayload() == null) {
-            processMessage(wrapValue(value));
+            processMessage(checkValue(wrapValue(value)));
         }
+    }
+    
+    void setType(String typeName) {
+        if (typeName == null) {
+            return;
+        }
+        Class<?> newType = null;
+        if ("VDouble".equals(typeName)) {
+            newType = VDouble.class;
+        }
+        if ("VString".equals(typeName)) {
+            newType = VString.class;
+        }
+        if ("VDoubleArray".equals(typeName)) {
+            newType = VDoubleArray.class;
+        }
+        if ("VStringArray".equals(typeName)) {
+            newType = VStringArray.class;
+        }
+        if ("VTable".equals(typeName)) {
+            newType = VTable.class;
+        }
+        if (newType == null) {
+            throw new IllegalArgumentException("Type " + typeName + " for channel " + getChannelName() + " is not supported by local datasource.");
+        }
+        if (type != null && !type.equals(newType)) {
+            throw new IllegalArgumentException("Type mismatch for channel " + getChannelName() + ": " + typeName + " but was " + type.getSimpleName());
+        }
+        type = newType;
     }
     
 }
