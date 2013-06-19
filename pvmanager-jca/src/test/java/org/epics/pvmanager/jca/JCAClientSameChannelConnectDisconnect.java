@@ -55,6 +55,9 @@ public class JCAClientSameChannelConnectDisconnect {
                                 if (event.isValueChanged()) {
                                     valueNotificationCount.incrementAndGet();
                                 }
+                                if (event.isExceptionChanged()) {
+                                    System.out.println(event.getPvReader().lastException().getMessage());
+                                }
                                 totalNotificationCount.incrementAndGet();
                             }
                         })
