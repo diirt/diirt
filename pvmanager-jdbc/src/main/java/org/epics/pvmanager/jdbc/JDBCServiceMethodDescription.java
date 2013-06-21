@@ -4,11 +4,8 @@
  */
 package org.epics.pvmanager.jdbc;
 
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
 import org.epics.pvmanager.service.ServiceMethodDescription;

@@ -4,25 +4,15 @@
  */
 package org.epics.pvmanager.jdbc;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sql.DataSource;
 import org.epics.pvmanager.WriteFunction;
-import org.epics.pvmanager.service.Service;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.epics.pvmanager.service.ServiceRegistry;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
 import org.epics.vtype.io.CSVIO;
 import static org.epics.vtype.ValueFactory.*;
 
@@ -30,38 +20,23 @@ import static org.epics.vtype.ValueFactory.*;
  *
  * @author carcassi
  */
-public class MySQLJDBCService {
+public class JDBCSampleClient {
 
     public static void main(String[] args) throws Exception {
-        DataSource dataSource = new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root");
-        ExecutorService executor = Executors.newSingleThreadExecutor(org.epics.pvmanager.util.Executors.namedPool("jdbc"));
         
-        Service service = new JDBCServiceDescription("jdbc", "A test service")
-                .dataSource(dataSource)
-                .executorService(executor)
-                .addServiceMethod(new JDBCServiceMethodDescription("test", "A test query")
-                    .queryResult("result", "The query result")
-                    .query("SELECT * FROM Data"))
-                .addServiceMethod(new JDBCServiceMethodDescription("insert", "A test insertquery")
-                    .addArgument("name", "The name", VString.class)
-                    .addArgument("index", "The index", VNumber.class)
-                    .addArgument("value", "The value", VNumber.class)
-                    .query("INSERT INTO `test`.`Data` (`Name`, `Index`, `Value`) VALUES (?, ?, ?)"))
-                .createService();
-        
-        ServiceRegistry.getDefault().registerService(service);
+        ServiceRegistry.getDefault().registerService(new JDBCSampleService());
         
         ServiceMethod method;
         VTable table;
         
-        method = ServiceRegistry.getDefault().findServiceMethod("jdbc/insert");
+        method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/insert");
         Map<String, Object> arguments = new HashMap<String, Object>();
         arguments.put("name", newVString("George", alarmNone(), timeNow()));
         arguments.put("index", newVDouble(4.1, alarmNone(), timeNow(), displayNone()));
         arguments.put("value", newVDouble(2.11, alarmNone(), timeNow(), displayNone()));
         syncExecuteMethod(method, arguments);
         
-        method = ServiceRegistry.getDefault().findServiceMethod("jdbc/test");
+        method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/query");
         table = (VTable) syncExecuteMethod(method, new HashMap<String, Object>()).get("result");
         
         CSVIO io = new CSVIO();

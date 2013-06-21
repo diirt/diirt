@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
-import org.epics.pvmanager.service.Service;
 import org.epics.pvmanager.service.ServiceDescription;
 
 /**
@@ -47,12 +46,12 @@ public class JDBCServiceDescription {
         return this;
     }
     
-    public Service createService() {
+    ServiceDescription createService() {
         for (JDBCServiceMethodDescription jdbcServiceMethodDescription : jdbcServiceMethodDescriptions) {
             jdbcServiceMethodDescription.dataSource(dataSource);
             jdbcServiceMethodDescription.executorService(executorService);
             serviceDescription.addServiceMethod(new JDBCServiceMethod(jdbcServiceMethodDescription));
         }
-        return new Service(serviceDescription);
+        return serviceDescription;
     }
 }
