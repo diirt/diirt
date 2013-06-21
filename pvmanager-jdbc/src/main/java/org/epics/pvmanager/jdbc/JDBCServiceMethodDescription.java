@@ -45,7 +45,7 @@ public class JDBCServiceMethodDescription {
         return this;
     }
     
-    public JDBCServiceMethodDescription dataSource(DataSource dataSource) {
+    JDBCServiceMethodDescription dataSource(DataSource dataSource) {
         if (this.dataSource != null) {
             throw new IllegalArgumentException("DataSource was already set");
         }
@@ -53,7 +53,7 @@ public class JDBCServiceMethodDescription {
         return this;
     }
     
-    public JDBCServiceMethodDescription executorService(ExecutorService executorService) {
+    JDBCServiceMethodDescription executorService(ExecutorService executorService) {
         if (this.executorService != null) {
             throw new IllegalArgumentException("ExecutorService was already set");
         }

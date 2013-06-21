@@ -14,6 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.epics.pvmanager.WriteFunction;
+import org.epics.pvmanager.service.Service;
+import org.epics.pvmanager.service.ServiceMethod;
+import org.epics.pvmanager.service.ServiceRegistry;
 import org.epics.vtype.VTable;
 import org.epics.vtype.io.CSVIO;
 
@@ -25,13 +28,19 @@ public class MySQLJDBCService {
 
     public static void main(String[] args) throws Exception {
         DataSource dataSource = new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root");
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-
-        JDBCServiceMethod method = new JDBCServiceMethod(new JDBCServiceMethodDescription("test", "A test query")
-                .queryResult("result", "The query result")
+        ExecutorService executor = Executors.newSingleThreadExecutor(org.epics.pvmanager.util.Executors.namedPool("jdbc"));
+        
+        Service service = new JDBCServiceDescription("jdbc", "A test service")
                 .dataSource(dataSource)
                 .executorService(executor)
-                .query("SELECT * FROM Data"));
+                .addServiceMethod(new JDBCServiceMethodDescription("test", "A test query")
+                    .queryResult("result", "The query result")
+                    .query("SELECT * FROM Data"))
+                .createService();
+        
+        ServiceRegistry.getDefault().registerService(service);
+        
+        ServiceMethod method = ServiceRegistry.getDefault().findServiceMethod("jdbc/test");
 
         method.executeMethod(new HashMap<String, Object>(), new WriteFunction<Map<String, Object>>() {
             @Override

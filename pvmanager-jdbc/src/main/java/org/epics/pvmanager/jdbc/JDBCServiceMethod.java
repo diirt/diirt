@@ -36,7 +36,7 @@ public class JDBCServiceMethod extends ServiceMethod {
     private final String query;
     private final List<String> parameterNames;
 
-    public JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription) {
+    JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription) {
         super(serviceMethodDescription.serviceMethodDescription);
         this.dataSource = serviceMethodDescription.dataSource;
         this.executorService = serviceMethodDescription.executorService;
