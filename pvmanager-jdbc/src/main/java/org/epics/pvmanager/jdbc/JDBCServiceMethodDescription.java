@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import javax.sql.DataSource;
 import org.epics.pvmanager.service.ServiceMethodDescription;
 import org.epics.vtype.VTable;
 
@@ -21,7 +22,7 @@ public class JDBCServiceMethodDescription {
     
     final ServiceMethodDescription serviceMethodDescription;
     boolean resultAdded = false;
-    Connection connection;
+    DataSource dataSource;
     ExecutorService executorService;
     String query;
     final List<String> orderedParameterNames = new ArrayList<>();
@@ -44,11 +45,11 @@ public class JDBCServiceMethodDescription {
         return this;
     }
     
-    public JDBCServiceMethodDescription connection(Connection connection) {
-        if (this.connection != null) {
-            throw new IllegalArgumentException("Connection was already set");
+    public JDBCServiceMethodDescription dataSource(DataSource dataSource) {
+        if (this.dataSource != null) {
+            throw new IllegalArgumentException("DataSource was already set");
         }
-        this.connection = connection;
+        this.dataSource = dataSource;
         return this;
     }
     
