@@ -54,6 +54,5 @@ public class MySQLJDBCService {
         });
 
         Thread.sleep(2000);
-        executor.shutdown();
     }
 }
