@@ -22,6 +22,9 @@ import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.epics.pvmanager.service.ServiceMethodDescription;
 import org.epics.util.array.CircularBufferDouble;
+import org.epics.vtype.VFloat;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 
@@ -73,13 +76,22 @@ public class JDBCServiceMethod extends ServiceMethod {
                     try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery())) {
                         int i = 0;
                         for (String parameterName : getParameterNames()) {
-                            preparedStatement.setObject(i, parameters.get(parameterName));
+                            Object value = parameters.get(parameterName);
+                            if (value instanceof VString) {
+                                preparedStatement.setString(i+1, ((VString) value).getValue());
+                            } else if (value instanceof VNumber) {
+                                preparedStatement.setDouble(i+1, ((VNumber) value).getValue().doubleValue());
+                            } else {
+                                throw new RuntimeException("JDBC mapping support for " + value.getClass().getSimpleName() + " not implemented");
+                            }
+                            i++;
                         }
                         if (isResultQuery()) {
                             ResultSet resultSet = preparedStatement.executeQuery();
                             VTable table = resultSetToVTable(resultSet);
                             callback.writeValue(Collections.<String, Object>singletonMap(getResultDescriptions().keySet().iterator().next(), table));
                         } else {
+                            preparedStatement.execute();
                             callback.writeValue(new HashMap<String, Object>());
                         }
                     }
