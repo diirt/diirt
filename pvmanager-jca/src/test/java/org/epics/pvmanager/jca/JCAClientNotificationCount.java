@@ -55,6 +55,9 @@ public class JCAClientNotificationCount
                     @Override
                     public void pvChanged(PVReaderEvent<Object> event)
                     {
+                        if (event.isExceptionChanged()) {
+                            event.getPvReader().lastException().printStackTrace();
+                        }
                         if (event.isConnectionChanged())
                         {
                             connections.incrementAndGet();
@@ -73,8 +76,11 @@ public class JCAClientNotificationCount
             if (! done.await(10, TimeUnit.SECONDS)) {
                 System.out.println("NO VALUE");
                 System.out.println(jca.getChannels().get(name).getProperties());
+                pv.close();
+                System.out.println("Closed");
+            } else {
+                pv.close();
             }
-            pv.close();
 
             if (runs.get() == countToPrint)
             {
