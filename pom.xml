@@ -207,6 +207,7 @@
         <module>pvmanager-sys</module>
         <module>pvmanager-timecache</module>
     <module>pvmanager-file</module>
+    <module>pvmanager-jdbc</module>
   </modules>
     <reporting>
         <plugins>
