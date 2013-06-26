@@ -29,6 +29,10 @@ import org.epics.vtype.ValueFactory;
  * @author carcassi
  */
 public class VTableFactory {
+ 
+    public static VTable join(List<VTable> tables) {
+        return join(tables.toArray(new VTable[tables.size()]));
+    }
     
     public static VTable join(VTable... tables) {
         if (tables.length == 0) {
