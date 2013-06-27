@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.epics</groupId>
         <artifactId>graphene-all</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3</version>
     </parent>
 
     <artifactId>graphene</artifactId>
