@@ -1,8 +1,4 @@
-/target/
-target/
-
-classes/
-# .project
-# .classpath
-.checkstyle
-.fbprefs
+syntax: glob
+**/target/
+*~
+~*
