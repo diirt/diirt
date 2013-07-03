@@ -9,6 +9,30 @@
   
     <body>
         <release version="2.2" date="SNAPSHOT" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
+            <action dev="carcassi"  type="add">
+                vtype/formula: adding natural join
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding alarm logic that uses both value and connection information
+            </action>
+            <action dev="carcassi"  type="update">
+                jca: support for Integer[], Double[] and long String with warnings
+            </action>
+            <action dev="carcassi"  type="add">
+                jdbc services: prototype for introducting database services
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: partial fix to double connection on the same channel with the different qualifiers
+            </action>
+            <action dev="carcassi"  type="update">
+                loc: default value is null, allow typed pvs, discard value when disconnect
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: single quotes allows for simple pv names
+            </action>
+            <action dev="carcassi"  type="add">
+                sim: adding new channels (intermittent channel and delayed connection channel, sine/square/sawtooth/triangle waveforms)
+            </action>
             <action dev="carcassi"  type="update">
                 vtype: valueOf returns UNDEFINED for null values
             </action>
