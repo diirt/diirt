@@ -7,6 +7,7 @@ package org.epics.pvmanager.formula;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.epics.pvmanager.PVReaderDirector;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.ValueUtil;
 
@@ -22,6 +23,7 @@ class FormulaReadFunction implements ReadFunction<Object> {
     public final String functionName;
     public FormulaFunction lastFormula;
     public Object lastValue;
+    public volatile PVReaderDirector<?> directory;
 
     FormulaReadFunction(List<ReadFunction<?>> argumentFunctions, Collection<FormulaFunction> formulaMatches) {
         this.argumentFunctions = argumentFunctions;
@@ -33,7 +35,11 @@ class FormulaReadFunction implements ReadFunction<Object> {
         this.functionName = formulaMatches.iterator().next().getName();
     }
 
-    @Override
+    void setDirectory(PVReaderDirector<?> directory) {
+        this.directory = directory;
+    }
+    
+   @Override
     public Object readValue() {
         List<Object> previousValues = new ArrayList<>(argumentValues);
         for (int i = 0; i < argumentFunctions.size(); i++) {
@@ -45,6 +51,12 @@ class FormulaReadFunction implements ReadFunction<Object> {
         
         if (lastFormula == null || !FormulaFunctions.matchArgumentTypes(argumentValues, lastFormula)) {
             lastFormula = FormulaFunctions.findFirstMatch(argumentValues, formulaMatches);
+            // If the function is stateful, create a new copy
+            // The copy will be kept until the same match works:
+            // is that the right behavior?
+            if (lastFormula instanceof StatefulFormulaFunction) {
+                lastFormula = FormulaFunctions.createInstance((StatefulFormulaFunction) lastFormula);
+            }
         }
         
         if (lastFormula == null) {
