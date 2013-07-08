@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.PVReaderDirector;
-
 /**
  *
  * @author carcassi
@@ -15,6 +13,10 @@ public abstract class StatefulFormulaFunction implements FormulaFunction {
     @Override
     public final boolean isPure() {
         return false;
+    }
+    
+    public void dispose() {
+        // Default implementation does nothing;
     }
     
 }

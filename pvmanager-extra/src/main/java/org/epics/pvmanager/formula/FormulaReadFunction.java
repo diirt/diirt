@@ -23,7 +23,7 @@ class FormulaReadFunction implements ReadFunction<Object> {
     public final String functionName;
     public FormulaFunction lastFormula;
     public Object lastValue;
-    public volatile PVReaderDirector<?> directory;
+    public volatile PVReaderDirector<?> director;
 
     FormulaReadFunction(List<ReadFunction<?>> argumentFunctions, Collection<FormulaFunction> formulaMatches) {
         this.argumentFunctions = argumentFunctions;
@@ -36,7 +36,7 @@ class FormulaReadFunction implements ReadFunction<Object> {
     }
 
     void setDirectory(PVReaderDirector<?> directory) {
-        this.directory = directory;
+        this.director = directory;
     }
     
    @Override
@@ -50,12 +50,20 @@ class FormulaReadFunction implements ReadFunction<Object> {
         }
         
         if (lastFormula == null || !FormulaFunctions.matchArgumentTypes(argumentValues, lastFormula)) {
+            if (lastFormula instanceof StatefulFormulaFunction) {
+                ((StatefulFormulaFunction) lastFormula).dispose();
+            }
+            
             lastFormula = FormulaFunctions.findFirstMatch(argumentValues, formulaMatches);
             // If the function is stateful, create a new copy
             // The copy will be kept until the same match works:
             // is that the right behavior?
             if (lastFormula instanceof StatefulFormulaFunction) {
                 lastFormula = FormulaFunctions.createInstance((StatefulFormulaFunction) lastFormula);
+            }
+            
+            if (lastFormula instanceof DynamicFormulaFunction) {
+                ((DynamicFormulaFunction) lastFormula).setDirector(director);
             }
         }
         
