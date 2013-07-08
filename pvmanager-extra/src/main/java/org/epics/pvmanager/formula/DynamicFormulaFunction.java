@@ -10,14 +10,9 @@ import org.epics.pvmanager.PVReaderDirector;
  *
  * @author carcassi
  */
-public abstract class DynamicFormulaFunction implements FormulaFunction {
+public abstract class DynamicFormulaFunction extends StatefulFormulaFunction {
     
     private PVReaderDirector<?> director;
-
-    @Override
-    public final boolean isPure() {
-        return false;
-    }
 
     public PVReaderDirector<?> getDirector() {
         return director;
