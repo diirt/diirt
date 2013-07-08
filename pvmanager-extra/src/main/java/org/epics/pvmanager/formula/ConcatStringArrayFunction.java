@@ -17,7 +17,7 @@ import org.epics.vtype.ValueFactory;
  * @author shroffk
  * 
  */
-public class ConcatFunction implements FormulaFunction {
+public class ConcatStringArrayFunction implements FormulaFunction {
 
     /*
      * (non-Javadoc)
