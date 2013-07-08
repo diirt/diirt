@@ -100,7 +100,7 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature1() {
-        FormulaFunction function = new ArrayOfFormulaFunction();
+        FormulaFunction function = new ArrayOfNumberFormulaFunction();
         assertThat(FormulaFunctions.formatSignature(function), equalTo("arrayOf(VNumber... args): VNumberArray"));
     }
     
