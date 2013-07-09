@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.junit.Test;
 
 /**
@@ -125,5 +126,17 @@ public class MathFunctionSetTest extends BaseTestForFormula {
     public void tanh1() {
         testFunction(set, "tanh", 0.0, 0.0);
         testFunction(set, "tanh", Math.E, 0.991328);
+    }
+
+    @Test
+    public void toRadians1() {
+        testFunction(set, "toRadians", 0.0, 0.0);
+        testFunction(set, "toRadians", 180, Math.PI);
+    }
+
+    @Test
+    public void toDegrees1() {
+        testFunction(set, "toDegrees", 0.0, 0.0);
+        testFunction(set, "toDegrees", Math.PI, 180);
     }
 }
