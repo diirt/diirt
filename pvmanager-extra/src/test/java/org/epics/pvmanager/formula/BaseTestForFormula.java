@@ -6,12 +6,21 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.epics.util.array.ListDouble;
+import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
+import org.epics.vtype.ValueFactory;
+
 import static org.epics.vtype.ValueFactory.newVDouble;
+import static org.epics.vtype.ValueFactory.newVDoubleArray;
+import static org.epics.vtype.ValueFactory.timeNow;
+import static org.epics.vtype.ValueFactory.displayNone;
+import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
@@ -51,6 +60,31 @@ public class BaseTestForFormula {
 	assertThat("Wrong result for function '" + name + "(" + arg1 + ", "
 		+ arg2 + ")'.", value.getValue().doubleValue(),
 		closeTo(result, 0.0001));
+    }
+
+    public static void testTwoArgArrayFunction(FormulaFunctionSet set,
+	    String name, ListDouble arg1, ListDouble arg2, ListDouble result) {
+	FormulaFunction function = null;
+	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
+	    if (formulaFunction.getArgumentTypes().size() == 2) {
+		function = formulaFunction;
+	    }
+	}
+	assertThat("Function '" + name + "' not found.", function,
+		not(nullValue()));
+
+	VDoubleArray value = (VDoubleArray) function.calculate(Arrays
+		.<Object> asList(
+			newVDoubleArray(arg1, alarmNone(), timeNow(),
+				displayNone()),
+			newVDoubleArray(arg2, alarmNone(), timeNow(),
+				displayNone())));
+	assertThat(
+		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
+			+ ")'.",
+		compare(value,
+			newVDoubleArray(result, alarmNone(), timeNow(),
+				displayNone())), equalTo(true));
     }
 
     public static void testFunction(FormulaFunctionSet set, String name,
