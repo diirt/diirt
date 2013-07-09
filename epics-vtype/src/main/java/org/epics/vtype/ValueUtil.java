@@ -299,7 +299,7 @@ public class ValueUtil {
         colorMap.put(AlarmSeverity.NONE, Color.GREEN.getRGB());
         colorMap.put(AlarmSeverity.MINOR, Color.YELLOW.getRGB());
         colorMap.put(AlarmSeverity.MAJOR, Color.RED.getRGB());
-        colorMap.put(AlarmSeverity.MAJOR, Color.MAGENTA.getRGB());
+        colorMap.put(AlarmSeverity.INVALID, Color.MAGENTA.getRGB());
         colorMap.put(AlarmSeverity.UNDEFINED, Color.DARK_GRAY.getRGB());
         return colorMap;
     }
