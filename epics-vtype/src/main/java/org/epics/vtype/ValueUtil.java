@@ -4,13 +4,16 @@
  */
 package org.epics.vtype;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
@@ -289,6 +292,21 @@ public class ValueUtil {
     private static volatile TimestampFormat defaultTimestampFormat = new TimestampFormat();
     private static volatile NumberFormat defaultNumberFormat = NumberFormats.toStringFormat();
     private static volatile ValueFormat defaultValueFormat = new SimpleValueFormat(3);
+    private static volatile Map<AlarmSeverity, Integer> rgbSeverityColor = createDefaultSeverityColorMap();
+    
+    private static Map<AlarmSeverity, Integer> createDefaultSeverityColorMap() {
+        Map<AlarmSeverity, Integer> colorMap = new EnumMap<>(AlarmSeverity.class);
+        colorMap.put(AlarmSeverity.NONE, Color.GREEN.getRGB());
+        colorMap.put(AlarmSeverity.MINOR, Color.YELLOW.getRGB());
+        colorMap.put(AlarmSeverity.MAJOR, Color.RED.getRGB());
+        colorMap.put(AlarmSeverity.MAJOR, Color.MAGENTA.getRGB());
+        colorMap.put(AlarmSeverity.UNDEFINED, Color.DARK_GRAY.getRGB());
+        return colorMap;
+    }
+    
+    public static int colorFor(AlarmSeverity severity) {
+        return rgbSeverityColor.get(severity);
+    }
     
     /**
      * The default object to format and parse timestamps.
