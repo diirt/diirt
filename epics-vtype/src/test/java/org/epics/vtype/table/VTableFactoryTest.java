@@ -6,6 +6,9 @@ package org.epics.vtype.table;
 
 import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -128,5 +131,32 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2,3)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "386")));
         assertThat(table.getColumnData(3), equalTo((Object) new ArrayDouble(300,500)));
+    }
+    
+    @Test
+    public void valueTable1() {
+        VDouble value1 = newVDouble(3.1);
+        VDouble value2 = newVDouble(3.2, newAlarm(AlarmSeverity.MINOR, "HI"), timeNow(), displayNone());
+        VDouble value3 = newVDouble(3.3);
+        VTable table = valueTable(Arrays.asList(value1, value2, value3));
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(3));
+        assertThat(table.getColumnName(0), equalTo("Value"));
+        assertThat(table.getColumnName(1), equalTo("Severity"));
+        assertThat(table.getColumnName(2), equalTo("Status"));
+        assertThat(table.getColumnType(0), equalTo((Object) double.class));
+        assertThat(table.getColumnType(1), equalTo((Object) String.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) new ArrayDouble(3.1,3.2,3.3)));
+        assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList("NONE", "MINOR", "NONE")));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("NONE", "HI", "NONE")));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void valueTable2() {
+        VDouble value1 = newVDouble(3.1);
+        VString value2 = newVString("test", newAlarm(AlarmSeverity.MINOR, "HI"), timeNow());
+        VDouble value3 = newVDouble(3.3);
+        VTable table = valueTable(Arrays.asList(value1, value2, value3));
     }
 }
