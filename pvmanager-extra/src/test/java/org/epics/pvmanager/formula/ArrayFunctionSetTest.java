@@ -35,7 +35,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 		newVString("z", alarmNone(), timeNow()) };
 	VStringArray expected = newVStringArray(Arrays.asList("x", "y", "z"),
 		alarmNone(), timeNow());
-	testFunction(set, "arrayOf", expected, data);
+	testFunction(set, "arrayOf", expected, (Object[]) data);
     }
 
     @Test
@@ -50,6 +50,6 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	double[] expectedData = { 1, 2, 3 };
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
 		timeNow(), displayNone());
-	testFunction(set, "arrayOf", expected, data);
+	testFunction(set, "arrayOf", expected, (Object[]) data);
     }
 }
