@@ -304,6 +304,34 @@ public class ValueUtil {
         return colorMap;
     }
     
+    /**
+     * Changes the color map for AlarmSeverity. The new color map must be complete
+     * and not null;
+     * 
+     * @param map the new color map
+     */
+    public static void setAlarmSeverityColorMap(Map<AlarmSeverity, Integer> map) {
+        if (map == null) {
+            throw new IllegalArgumentException("Alarm severity color map can't be null");
+        }
+        
+        for (AlarmSeverity alarmSeverity : AlarmSeverity.values()) {
+            if (!map.containsKey(alarmSeverity)) {
+                throw new IllegalArgumentException("Missing color for AlarmSeverity." + alarmSeverity);
+            }
+        }
+        
+        Map<AlarmSeverity, Integer> colorMap = new EnumMap<>(AlarmSeverity.class);
+        colorMap.putAll(map);
+        rgbSeverityColor = colorMap;
+    }
+    
+    /**
+     * Returns the rgb value for the given severity.
+     * 
+     * @param severity an alarm severity
+     * @return the rgb color
+     */
     public static int colorFor(AlarmSeverity severity) {
         return rgbSeverityColor.get(severity);
     }
