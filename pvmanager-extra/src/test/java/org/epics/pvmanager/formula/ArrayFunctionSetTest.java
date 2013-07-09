@@ -14,6 +14,8 @@ import static org.epics.vtype.ValueFactory.newVDoubleArray;
 
 import java.util.Arrays;
 
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -51,5 +53,17 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
 		timeNow(), displayNone());
 	testFunction(set, "arrayOf", expected, (Object[]) data);
+    }
+
+    @Test
+    public void addArrayOfNumber() {
+	testTwoArgArrayFunction(set, "+", new ArrayDouble(1, 2, 3),
+		new ArrayDouble(4, 5, 6), new ArrayDouble(5, 7, 9));
+    }
+
+    @Test
+    public void subtractArrayOfNumber() {
+	testTwoArgArrayFunction(set, "-", new ArrayDouble(4, 5, 6),
+		new ArrayDouble(4, 3, 2), new ArrayDouble(0, 2, 4));
     }
 }
