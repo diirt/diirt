@@ -354,16 +354,16 @@ public class VTableFactory {
     }
     
     public static VTable valueTable(List<? extends VType> values) {
-        if (values.isEmpty()) {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-
         int nullValue = values.indexOf(null);
         if (nullValue != -1) {
             values = new ArrayList<>(values);
             while (values.remove(null)) {
                 // Removing null values;
             }
+        }
+        
+        if (values.isEmpty()) {
+            throw new UnsupportedOperationException("Not implemented yet");
         }
         
         if (values.get(0) instanceof VNumber) {
