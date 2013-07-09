@@ -5,11 +5,13 @@
 package org.epics.vtype.table;
 
 import java.util.Arrays;
+import java.util.Collections;
 import org.epics.util.array.ArrayDouble;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -158,5 +160,21 @@ public class VTableFactoryTest {
         VString value2 = newVString("test", newAlarm(AlarmSeverity.MINOR, "HI"), timeNow());
         VDouble value3 = newVDouble(3.3);
         VTable table = valueTable(Arrays.asList(value1, value2, value3));
+    }
+    
+    @Test
+    public void valueTable3() {
+        VTable table = valueTable(Collections.<VType>emptyList());
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(0));
+        assertThat(table.getColumnName(0), equalTo("Value"));
+        assertThat(table.getColumnName(1), equalTo("Severity"));
+        assertThat(table.getColumnName(2), equalTo("Status"));
+        assertThat(table.getColumnType(0), equalTo((Object) double.class));
+        assertThat(table.getColumnType(1), equalTo((Object) String.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) new ArrayDouble()));
+        assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList()));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
     }
 }

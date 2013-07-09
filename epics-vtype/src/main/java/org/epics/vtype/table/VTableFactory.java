@@ -363,7 +363,7 @@ public class VTableFactory {
         }
         
         if (values.isEmpty()) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return valueNumberTable(values);
         }
         
         if (values.get(0) instanceof VNumber) {
