@@ -26,7 +26,7 @@ public class JCAClientSameChannelConnectDisconnect {
         PVManager.setDefaultDataSource(jca);
         
         String channelName = "TEST_1";
-        String channelName2 = channelName + " {'longString':false}";
+        String channelName2 = channelName + " {\"longString\":false}";
         
         List<String> names = Arrays.asList(channelName, channelName, channelName2, channelName2);
         List<PVReader<?>> pvs = new ArrayList<PVReader<?>>(); 
