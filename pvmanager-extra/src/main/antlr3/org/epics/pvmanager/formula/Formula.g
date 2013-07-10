@@ -38,8 +38,8 @@ expression returns [DesiredRateExpression<?> result]
 
 additiveExpression returns [DesiredRateExpression<?> result]
     :   op1=multiplicativeExpression {result = $op1.result;}
-        (   '+' op2=multiplicativeExpression {result = addCast($result, $op2.result);}
-        |   '-' op2=multiplicativeExpression {result = subtractCast($result, $op2.result);}
+        (   '+' op2=multiplicativeExpression {result = twoArgOp("+", $result, $op2.result);}
+        |   '-' op2=multiplicativeExpression {result = twoArgOp("-", $result, $op2.result);}
         )*
     ;
 

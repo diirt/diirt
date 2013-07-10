@@ -200,16 +200,8 @@ public class ExpressionLanguage {
         return fun + "(" + arg.getName()+ ")";
     }
     
-    static DesiredRateExpression<?> addCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return function("+", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
-    }
-    
     static DesiredRateExpression<?> powCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return function("^", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
-    }
-    
-    static DesiredRateExpression<?> subtractCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return function("-", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<?> negateCast(DesiredRateExpression<?> arg) {
@@ -226,6 +218,10 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<?> remainderCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return function("%", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
+    }
+
+    static DesiredRateExpression<?> twoArgOp(String opName, DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
+        return function(opName, new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
