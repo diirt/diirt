@@ -93,7 +93,12 @@ exponentialExpression returns [DesiredRateExpression<?> result]
     ;
 
 unaryExpression returns [DesiredRateExpression<?> result]
-    :   '-' op=unaryExpression {result = negateCast($op.result);}
+    :   '-' op=unaryExpression {result = oneArgOp("-", $op.result);}
+    |   op=unaryExpressionNotPlusMinus {result = $op.result;}
+    ;
+
+unaryExpressionNotPlusMinus returns [DesiredRateExpression<?> result]
+    :   '!' op=unaryExpression {result = oneArgOp("!", $op.result);}
     |   op=primary {result = $op.result;}
     ;
 

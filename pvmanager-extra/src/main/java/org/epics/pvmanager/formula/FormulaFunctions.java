@@ -111,7 +111,7 @@ public class FormulaFunctions {
     }
     
     private static Pattern postfixTwoArg = Pattern.compile("\\+|-|\\*|/|%|\\^|<=|>=|<|>|==|!=|\\|\\||&&");
-    private static Pattern prefixOneArg = Pattern.compile("-");
+    private static Pattern prefixOneArg = Pattern.compile("-|!");
 
     /**
      * Given the function name and a string representation of the arguments,

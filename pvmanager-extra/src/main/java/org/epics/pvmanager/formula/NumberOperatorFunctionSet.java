@@ -107,6 +107,7 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                     }
                 })
                 .addFormulaFunction(new ConditionalOperatorFormulaFunction())
+                .addFormulaFunction(new LogicalNotFormulaFunction())
                 );
     }
 

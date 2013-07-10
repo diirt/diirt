@@ -533,6 +533,22 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         VBoolean result = (VBoolean) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(true));
     }
+
+    @Test
+    public void formula61() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=!(0<1)"));
+        assertThat(exp.getExpression().getName(), equalTo("!(0 < 1)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
+
+    @Test
+    public void formula62() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=!(1<0)"));
+        assertThat(exp.getExpression().getName(), equalTo("!(1 < 0)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
     
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
