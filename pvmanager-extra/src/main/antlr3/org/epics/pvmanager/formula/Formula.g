@@ -33,7 +33,16 @@ formula returns [DesiredRateExpression<?> result]
     ;
 
 expression returns [DesiredRateExpression<?> result]
-    :   additiveExpression {result = $additiveExpression.result;}
+    :   relationalExpression {result = $relationalExpression.result;}
+    ;
+
+relationalExpression returns [DesiredRateExpression<?> result]
+    :   op1=additiveExpression {result = $op1.result;}
+        (   '&lt;' '=' op2=additiveExpression {result = twoArgOp("<=", $result, $op2.result);}
+        |   '&gt;' '=' op2=additiveExpression {result = twoArgOp(">=", $result, $op2.result);}
+        |   '&lt;' op2=additiveExpression {result = twoArgOp("<", $result, $op2.result);}
+        |   '&gt;' op2=additiveExpression {result = twoArgOp(">", $result, $op2.result);}
+        )*
     ;
 
 additiveExpression returns [DesiredRateExpression<?> result]
