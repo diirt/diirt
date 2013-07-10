@@ -58,6 +58,30 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                         return - arg1;
                     }
                 })
+                .addFormulaFunction(new TwoArgNumericToBooleanFormulaFunction("<=", "Less than or equal", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(double arg1, double arg2) {
+                        return arg1 <= arg2;
+                    }
+                })
+                .addFormulaFunction(new TwoArgNumericToBooleanFormulaFunction(">=", "Greater than or equal", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(double arg1, double arg2) {
+                        return arg1 >= arg2;
+                    }
+                })
+                .addFormulaFunction(new TwoArgNumericToBooleanFormulaFunction("<", "Less than", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(double arg1, double arg2) {
+                        return arg1 < arg2;
+                    }
+                })
+                .addFormulaFunction(new TwoArgNumericToBooleanFormulaFunction(">", "Greater than", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(double arg1, double arg2) {
+                        return arg1 > arg2;
+                    }
+                })
                 );
     }
 

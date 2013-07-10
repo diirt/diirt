@@ -23,6 +23,7 @@ import org.epics.pvmanager.test.CountDownPVWriterListener;
 import org.epics.pvmanager.test.MockDataSource;
 import org.epics.util.array.*;
 import org.epics.util.time.TimeDuration;
+import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
@@ -386,6 +387,70 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         assertThat(exp.getExpression().getName(), equalTo("(5 % 4)"));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(1.0, 0.0001));
+    }
+
+    @Test
+    public void formula43() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3<4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 < 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula44() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3<3"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 < 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
+
+    @Test
+    public void formula45() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3>4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 > 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
+
+    @Test
+    public void formula46() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=4>3"));
+        assertThat(exp.getExpression().getName(), equalTo("(4 > 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula47() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3 >= 4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 >= 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
+
+    @Test
+    public void formula48() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3>=3"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 >= 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula49() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3 <= 4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 <= 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula50() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3<=3"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 <= 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
     }
     
     @Test(expected = RuntimeException.class)

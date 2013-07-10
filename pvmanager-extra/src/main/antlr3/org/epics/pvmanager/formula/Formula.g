@@ -38,10 +38,10 @@ expression returns [DesiredRateExpression<?> result]
 
 relationalExpression returns [DesiredRateExpression<?> result]
     :   op1=additiveExpression {result = $op1.result;}
-        (   '&lt;' '=' op2=additiveExpression {result = twoArgOp("<=", $result, $op2.result);}
-        |   '&gt;' '=' op2=additiveExpression {result = twoArgOp(">=", $result, $op2.result);}
-        |   '&lt;' op2=additiveExpression {result = twoArgOp("<", $result, $op2.result);}
-        |   '&gt;' op2=additiveExpression {result = twoArgOp(">", $result, $op2.result);}
+        (   '<' '=' op2=additiveExpression {result = twoArgOp("<=", $result, $op2.result);}
+        |   '>' '=' op2=additiveExpression {result = twoArgOp(">=", $result, $op2.result);}
+        |   '<' op2=additiveExpression {result = twoArgOp("<", $result, $op2.result);}
+        |   '>' op2=additiveExpression {result = twoArgOp(">", $result, $op2.result);}
         )*
     ;
 
