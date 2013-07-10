@@ -149,21 +149,8 @@ public class ExpressionLanguage {
      * @return an expression of the given type
      */
     public static <T> DesiredRateExpression<T> formula(String formula, Class<T> readType) {
-        // TODO: refactor better; make sure it does check the final type
-        RuntimeException parsingError;
-        try {
-            DesiredRateExpression<?> exp = createParser(formula).formula();
-            if (exp == null) {
-                throw new NullPointerException("Parsing failed");
-            }
-            
-            return checkReturnType(readType, exp);
-        } catch (RecognitionException ex) {
-            parsingError = new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
-        } catch (Exception ex) {
-            parsingError = new IllegalArgumentException("Malformed formula '" + formula + "'", ex);
-        }
-        return errorDesiredRateExpression(parsingError); 
+        DesiredRateExpression<?> exp = parseFormula(formula);
+        return checkReturnType(readType, exp);
     }
     
     static DesiredRateExpression<?> cachedPv(String channelName) {
