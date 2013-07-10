@@ -207,18 +207,6 @@ public class ExpressionLanguage {
     static DesiredRateExpression<?> negateCast(DesiredRateExpression<?> arg) {
         return function("-", new DesiredRateExpressionListImpl<Object>().and(arg));
     }
-    
-    static DesiredRateExpression<?> multiplyCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return function("*", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
-    }
-
-    static DesiredRateExpression<?> divideCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return function("/", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
-    }
-    
-    static DesiredRateExpression<?> remainderCast(DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
-        return function("%", new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
-    }
 
     static DesiredRateExpression<?> twoArgOp(String opName, DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return function(opName, new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));

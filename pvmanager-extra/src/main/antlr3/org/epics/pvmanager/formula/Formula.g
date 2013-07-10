@@ -45,9 +45,9 @@ additiveExpression returns [DesiredRateExpression<?> result]
 
 multiplicativeExpression returns [DesiredRateExpression<?> result]
     :   op1=exponentialExpression {result = $op1.result;}
-        (   '*' op2=exponentialExpression {result = multiplyCast($result, $op2.result);}
-        |   '/' op2=exponentialExpression {result = divideCast($result, $op2.result);}
-        |   '%' op2=exponentialExpression {result = remainderCast($result, $op2.result);}
+        (   '*' op2=exponentialExpression {result = twoArgOp("*", $result, $op2.result);}
+        |   '/' op2=exponentialExpression {result = twoArgOp("/", $result, $op2.result);}
+        |   '%' op2=exponentialExpression {result = twoArgOp("\%", $result, $op2.result);}
         )*
     ;
 
