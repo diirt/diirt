@@ -469,6 +469,38 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         VInt result = (VInt) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(4));
     }
+
+    @Test
+    public void formula53() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3==4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 == 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
+
+    @Test
+    public void formula54() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3==3"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 == 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula55() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3!=4"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 != 4)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula56() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3!=3"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 != 3)"));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(false));
+    }
     
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
