@@ -33,7 +33,13 @@ formula returns [DesiredRateExpression<?> result]
     ;
 
 expression returns [DesiredRateExpression<?> result]
-    :   relationalExpression {result = $relationalExpression.result;}
+    :   conditionalExpression {result = $conditionalExpression.result;}
+    ;
+
+conditionalExpression returns [DesiredRateExpression<?> result]
+    :   op1=relationalExpression {result = $op1.result;}
+        (   '?' op2=expression ':' op3=conditionalExpression {result = threeArgOp("?:", $result, $op2.result, $op3.result);}
+        )?
     ;
 
 relationalExpression returns [DesiredRateExpression<?> result]

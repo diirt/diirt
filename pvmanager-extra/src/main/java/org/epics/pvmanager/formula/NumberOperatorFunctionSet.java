@@ -82,6 +82,7 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                         return arg1 > arg2;
                     }
                 })
+                .addFormulaFunction(new ConditionalOperatorFormulaFunction())
                 );
     }
 

@@ -195,6 +195,10 @@ public class ExpressionLanguage {
         return function("-", new DesiredRateExpressionListImpl<Object>().and(arg));
     }
 
+    static DesiredRateExpression<?> threeArgOp(String opName, DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2, DesiredRateExpression<?> arg3) {
+        return function(opName, new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2).and(arg3));
+    }
+
     static DesiredRateExpression<?> twoArgOp(String opName, DesiredRateExpression<?> arg1, DesiredRateExpression<?> arg2) {
         return function(opName, new DesiredRateExpressionListImpl<Object>().and(arg1).and(arg2));
     }

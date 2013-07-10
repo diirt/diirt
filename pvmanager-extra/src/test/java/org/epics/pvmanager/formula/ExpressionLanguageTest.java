@@ -24,6 +24,7 @@ import org.epics.pvmanager.test.MockDataSource;
 import org.epics.util.array.*;
 import org.epics.util.time.TimeDuration;
 import org.epics.vtype.VBoolean;
+import org.epics.vtype.VInt;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.ValueFactory;
@@ -451,6 +452,22 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         assertThat(exp.getExpression().getName(), equalTo("(3 <= 3)"));
         VBoolean result = (VBoolean) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(true));
+    }
+
+    @Test
+    public void formula51() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=(1>0)?3:4"));
+        assertThat(exp.getExpression().getName(), equalTo("((1 > 0) ? 3 : 4)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3));
+    }
+
+    @Test
+    public void formula52() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=(1<0)?\"a\":4"));
+        assertThat(exp.getExpression().getName(), equalTo("((1 < 0) ? a : 4)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(4));
     }
     
     @Test(expected = RuntimeException.class)
