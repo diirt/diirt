@@ -48,6 +48,13 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVBoolean1() {
+        VBoolean value = newVBoolean(true, alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        assertThat(value.getValue(), equalTo(true));
+        assertThat(value.toString(), equalTo("VBoolean[true, 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
     public void newVEnum1() {
         VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getValue(), equalTo("TWO"));

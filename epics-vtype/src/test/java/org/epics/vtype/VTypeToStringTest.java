@@ -85,4 +85,12 @@ public class VTypeToStringTest {
                 new ArrayInt(1,2,3,4)))),
                 equalTo("VTable[3x4, [Name, Value, Index]]"));
     }
+
+    @Test
+    public void toStringVBoolean() {
+        assertThat(VTypeToString.toString(newVBoolean(true, alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VBoolean[true, 1970/01/15 01:56:07.123]"));
+        assertThat(VTypeToString.toString(newVBoolean(false, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VBoolean[false, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+    }
 }
