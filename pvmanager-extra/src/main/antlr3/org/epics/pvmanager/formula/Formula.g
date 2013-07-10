@@ -37,9 +37,21 @@ expression returns [DesiredRateExpression<?> result]
     ;
 
 conditionalExpression returns [DesiredRateExpression<?> result]
-    :   op1=equalityExpression {result = $op1.result;}
+    :   op1=conditionalOrExpression {result = $op1.result;}
         (   '?' op2=expression ':' op3=conditionalExpression {result = threeArgOp("?:", $result, $op2.result, $op3.result);}
         )?
+    ;
+
+conditionalOrExpression returns [DesiredRateExpression<?> result]
+    :   op1=conditionalAndExpression {result = $op1.result;}
+        (   '||' op2=conditionalAndExpression {result = twoArgOp("||", $result, $op2.result);}
+        )*
+    ;
+
+conditionalAndExpression returns [DesiredRateExpression<?> result]
+    :   op1=equalityExpression {result = $op1.result;}
+        (   '&&' op2=equalityExpression {result = twoArgOp("&&", $result, $op2.result);}
+        )*
     ;
 
 equalityExpression returns [DesiredRateExpression<?> result]

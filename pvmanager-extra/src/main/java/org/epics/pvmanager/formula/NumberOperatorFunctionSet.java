@@ -94,6 +94,18 @@ public class NumberOperatorFunctionSet extends FormulaFunctionSet {
                         return arg1 != arg2;
                     }
                 })
+                .addFormulaFunction(new TwoArgBooleanFormulaFunction("||", "Conditional OR", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(boolean arg1, boolean arg2) {
+                        return arg1 || arg2;
+                    }
+                })
+                .addFormulaFunction(new TwoArgBooleanFormulaFunction("&&", "Conditional AND", "arg1", "arg2") {
+                    @Override
+                    boolean calculate(boolean arg1, boolean arg2) {
+                        return arg1 && arg2;
+                    }
+                })
                 .addFormulaFunction(new ConditionalOperatorFormulaFunction())
                 );
     }
