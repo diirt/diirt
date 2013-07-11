@@ -157,4 +157,29 @@ public class ListMath {
         };
     }
     
+    /**
+     * Returns a list where each element is the diff of the elements of the two
+     * lists at the same index. The lists have to match in size.
+     * 
+     * @param data1 a list of numbers
+     * @param data2 another list of numbers
+     * @return the computed data
+     */
+    public static ListDouble diff(final ListNumber data1, final ListNumber data2) {
+        if (data1.size() != data2.size())
+            throw new IllegalArgumentException("Can't diff ListNumbers of different size (" + data1.size() + " - " + data2.size() + ")");
+        return new ListDouble() {
+
+            @Override
+            public double getDouble(int index) {
+                return data1.getDouble(index) - data2.getDouble(index);
+            }
+
+            @Override
+            public int size() {
+                return data1.size();
+            }
+        };
+    }
+    
 }
