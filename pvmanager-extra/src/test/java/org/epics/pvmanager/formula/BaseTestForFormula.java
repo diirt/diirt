@@ -4,26 +4,26 @@
  */
 package org.epics.pvmanager.formula;
 
-import java.util.Arrays;
-import java.util.Collection;
+import static org.epics.vtype.ValueFactory.alarmNone;
+import static org.epics.vtype.ValueFactory.displayNone;
+import static org.epics.vtype.ValueFactory.newVDouble;
+import static org.epics.vtype.ValueFactory.newVNumberArray;
+import static org.epics.vtype.ValueFactory.timeNow;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import org.epics.util.array.ListDouble;
-import org.epics.vtype.VDoubleArray;
+import java.util.Arrays;
+
+import org.epics.util.array.ListNumber;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
-
-import static org.epics.vtype.ValueFactory.newVDouble;
-import static org.epics.vtype.ValueFactory.newVDoubleArray;
-import static org.epics.vtype.ValueFactory.timeNow;
-import static org.epics.vtype.ValueFactory.displayNone;
-import static org.epics.vtype.ValueFactory.alarmNone;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import org.junit.BeforeClass;
+import org.mockito.internal.matchers.InstanceOf;
 
 /**
  * 
@@ -63,7 +63,7 @@ public class BaseTestForFormula {
     }
 
     public static void testTwoArgArrayFunction(FormulaFunctionSet set,
-	    String name, ListDouble arg1, ListDouble arg2, ListDouble result) {
+	    String name, ListNumber arg1, ListNumber arg2, ListNumber result) {
 	FormulaFunction function = null;
 	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
 	    if (formulaFunction.getArgumentTypes().size() == 2) {
@@ -72,18 +72,17 @@ public class BaseTestForFormula {
 	}
 	assertThat("Function '" + name + "' not found.", function,
 		not(nullValue()));
-
-	VDoubleArray value = (VDoubleArray) function.calculate(Arrays
+	VNumberArray value = (VNumberArray) function.calculate(Arrays
 		.<Object> asList(
-			newVDoubleArray(arg1, alarmNone(), timeNow(),
+			newVNumberArray(arg1, alarmNone(), timeNow(),
 				displayNone()),
-			newVDoubleArray(arg2, alarmNone(), timeNow(),
+			newVNumberArray(arg2, alarmNone(), timeNow(),
 				displayNone())));
 	assertThat(
 		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
 			+ ")'.",
 		compare(value,
-			newVDoubleArray(result, alarmNone(), timeNow(),
+			newVNumberArray(result, alarmNone(), timeNow(),
 				displayNone())), equalTo(true));
     }
 

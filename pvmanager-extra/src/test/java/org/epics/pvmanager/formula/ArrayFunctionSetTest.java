@@ -6,16 +6,16 @@ package org.epics.pvmanager.formula;
 
 import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
+import static org.epics.vtype.ValueFactory.newVDouble;
+import static org.epics.vtype.ValueFactory.newVDoubleArray;
 import static org.epics.vtype.ValueFactory.newVString;
 import static org.epics.vtype.ValueFactory.newVStringArray;
 import static org.epics.vtype.ValueFactory.timeNow;
-import static org.epics.vtype.ValueFactory.newVDouble;
-import static org.epics.vtype.ValueFactory.newVDoubleArray;
 
 import java.util.Arrays;
 
 import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
+import org.epics.util.array.ArrayInt;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -56,9 +56,15 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void addArrayOfNumber() {
+    public void addArrayDoubleOfNumber() {
 	testTwoArgArrayFunction(set, "+", new ArrayDouble(1, 2, 3),
 		new ArrayDouble(4, 5, 6), new ArrayDouble(5, 7, 9));
+    }
+    
+    @Test
+    public void addArrayIntOfNumber() {
+	testTwoArgArrayFunction(set, "+", new ArrayInt(1, 2, 3),
+		new ArrayInt(4, 5, 6), new ArrayDouble(5, 7, 9));
     }
 
     @Test
