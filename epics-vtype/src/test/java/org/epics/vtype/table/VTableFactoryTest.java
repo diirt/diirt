@@ -193,4 +193,26 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
     }
+    
+    @Test
+    public void valueTable5() {
+        VDouble value1 = newVDouble(3.1);
+        VDouble value2 = newVDouble(3.2, newAlarm(AlarmSeverity.MINOR, "HI"), timeNow(), displayNone());
+        VDouble value3 = newVDouble(3.3);
+        VTable table = valueTable(Arrays.asList("A", "B", "C"), Arrays.asList(value1, value2, value3));
+        assertThat(table.getColumnCount(), equalTo(4));
+        assertThat(table.getRowCount(), equalTo(3));
+        assertThat(table.getColumnName(0), equalTo("Name"));
+        assertThat(table.getColumnName(1), equalTo("Value"));
+        assertThat(table.getColumnName(2), equalTo("Severity"));
+        assertThat(table.getColumnName(3), equalTo("Status"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnType(3), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A", "B", "C")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(3.1,3.2,3.3)));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("NONE", "MINOR", "NONE")));
+        assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList("NONE", "HI", "NONE")));
+    }
 }
