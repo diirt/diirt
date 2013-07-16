@@ -8,6 +8,7 @@ import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
 import static org.epics.vtype.ValueFactory.newVDouble;
 import static org.epics.vtype.ValueFactory.newVNumberArray;
+import static org.epics.vtype.ValueFactory.newVNumber;
 import static org.epics.vtype.ValueFactory.timeNow;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
@@ -77,6 +78,30 @@ public class BaseTestForFormula {
 			newVNumberArray(arg1, alarmNone(), timeNow(),
 				displayNone()),
 			newVNumberArray(arg2, alarmNone(), timeNow(),
+				displayNone())));
+	assertThat(
+		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
+			+ ")'.",
+		compare(value,
+			newVNumberArray(result, alarmNone(), timeNow(),
+				displayNone())), equalTo(true));
+    }
+    
+    public static void testTwoArgArrayFunction(FormulaFunctionSet set,
+	    String name, ListNumber arg1, Number arg2, ListNumber result) {
+	FormulaFunction function = null;
+	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
+	    if (formulaFunction.getArgumentTypes().size() == 2) {
+		function = formulaFunction;
+	    }
+	}
+	assertThat("Function '" + name + "' not found.", function,
+		not(nullValue()));
+	VNumberArray value = (VNumberArray) function.calculate(Arrays
+		.<Object> asList(
+			newVNumberArray(arg1, alarmNone(), timeNow(),
+				displayNone()),
+			newVNumber(arg2, alarmNone(), timeNow(),
 				displayNone())));
 	assertThat(
 		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
