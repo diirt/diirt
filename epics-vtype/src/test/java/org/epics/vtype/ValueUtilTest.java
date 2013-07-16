@@ -4,6 +4,7 @@
  */
 package org.epics.vtype;
 
+import java.awt.Color;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -110,4 +111,12 @@ public class ValueUtilTest {
         ValueUtil.numericColumnOf(data, "z");
     }
 
+    @Test
+    public void colorFor1() {
+        assertThat(colorFor(AlarmSeverity.NONE), equalTo(Color.GREEN.getRGB()));
+        assertThat(colorFor(AlarmSeverity.MINOR), equalTo(Color.YELLOW.getRGB()));
+        assertThat(colorFor(AlarmSeverity.MAJOR), equalTo(Color.RED.getRGB()));
+        assertThat(colorFor(AlarmSeverity.INVALID), equalTo(Color.MAGENTA.getRGB()));
+        assertThat(colorFor(AlarmSeverity.UNDEFINED), equalTo(Color.DARK_GRAY.getRGB()));
+    }
 }
