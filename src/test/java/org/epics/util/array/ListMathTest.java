@@ -23,6 +23,13 @@ public class ListMathTest {
         ListDouble rescaled = ListMath.rescale(array1, 2.5, -5.0);
         assertThat(CollectionNumbers.doubleArrayCopyOf(rescaled), equalTo(new double[] {-5.0, -2.5, 0, 2.5, 5.0, 7.5}));
     }
+    
+    @Test
+    public void rescaleWithfactor1() {
+        ArrayDouble array1 = new ArrayDouble(new double[] {0, 1, 2, 3, 4, 5});
+        ListDouble rescaled = ListMath.rescale(array1, 1, 1);
+        assertThat(CollectionNumbers.doubleArrayCopyOf(rescaled), equalTo(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}));
+    }
 
     @Test
     public void sum1() {
