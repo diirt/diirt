@@ -96,7 +96,7 @@ public class ListMath {
      * @return the computed data
      */
     public static ListDouble rescale(final ListNumber data, final double factor, final double offset) {
-        if (offset == 1.0)
+        if (factor == 1.0)
             return sum(data, offset);
         return new ListDouble() {
 
