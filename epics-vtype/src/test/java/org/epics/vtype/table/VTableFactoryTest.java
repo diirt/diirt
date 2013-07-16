@@ -260,4 +260,23 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList()));
     }
+    
+    @Test
+    public void valueTable7() {
+        VTable table = valueTable(Arrays.asList("A", "B", "C", "D"), Arrays.asList((VType) null, null, null, null));
+        assertThat(table.getColumnCount(), equalTo(4));
+        assertThat(table.getRowCount(), equalTo(0));
+        assertThat(table.getColumnName(0), equalTo("Name"));
+        assertThat(table.getColumnName(1), equalTo("Value"));
+        assertThat(table.getColumnName(2), equalTo("Severity"));
+        assertThat(table.getColumnName(3), equalTo("Status"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnType(3), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList()));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble()));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
+        assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList()));
+    }
 }
