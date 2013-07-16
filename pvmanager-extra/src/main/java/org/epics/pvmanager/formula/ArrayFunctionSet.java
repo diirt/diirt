@@ -40,7 +40,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 			    @Override
 			    ListNumber calculate(ListNumber arg1,
 				    ListNumber arg2) {
-				return ListMath.diff(arg1, arg2);
+				return ListMath.subtract(arg1, arg2);
 			    }
 			}));
     }
