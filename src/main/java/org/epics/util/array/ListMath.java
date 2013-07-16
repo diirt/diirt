@@ -4,6 +4,8 @@
  */
 package org.epics.util.array;
 
+import java.math.BigInteger;
+
 /**
  * Math operations defined on lists of numbers.
  *
@@ -158,16 +160,16 @@ public class ListMath {
     }
     
     /**
-     * Returns a list where each element is the diff of the elements of the two
+     * Returns a list where each element is the difference of the elements of the two
      * lists at the same index. The lists have to match in size.
      * 
      * @param data1 a list of numbers
      * @param data2 another list of numbers
      * @return the computed data
      */
-    public static ListDouble diff(final ListNumber data1, final ListNumber data2) {
+    public static ListDouble subtract(final ListNumber data1, final ListNumber data2) {
         if (data1.size() != data2.size())
-            throw new IllegalArgumentException("Can't diff ListNumbers of different size (" + data1.size() + " - " + data2.size() + ")");
+            throw new IllegalArgumentException("Can't subtract ListNumbers of different size (" + data1.size() + " - " + data2.size() + ")");
         return new ListDouble() {
 
             @Override
