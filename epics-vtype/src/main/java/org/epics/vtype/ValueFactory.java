@@ -263,6 +263,23 @@ public class ValueFactory {
         return displayNone;
     }
     
+    /**
+     * Creates a new VNumber based on the type of the data
+     * 
+     * @param value
+     * @param alarm
+     * @param time
+     * @param display
+     * @return
+     */
+    public static VNumber newVNumber(Number value, Alarm alarm, Time time, Display display){
+	if(value instanceof Double){
+	    return newVDouble((Double) value, alarm, time, display);
+	}else if(value instanceof Integer){
+	    return newVInt((Integer)value, alarm, time, display);
+	}	
+	throw new UnsupportedOperationException();
+    }
     
     /**
      * Creates a new VDouble.
