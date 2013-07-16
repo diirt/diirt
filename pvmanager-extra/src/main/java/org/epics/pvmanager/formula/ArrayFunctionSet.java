@@ -4,9 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.CircularBufferDouble;
-import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 import org.epics.vtype.VNumberArray;
 
@@ -30,18 +28,9 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 				"arg1", "arg2") {
 
 			    @Override
-			    ListDouble calculate(ListNumber arg1,
+			    ListNumber calculate(ListNumber arg1,
 				    ListNumber arg2) {
-				if (arg1.size() != arg2.size()) {
-				    throw new RuntimeException(
-					    "Invalid arguments: size of two arrays is not equal");
-				}
-				double[] result = new double[arg1.size()];
-				for (int i = 0; i < arg1.size(); i++) {
-				    result[i] = arg1.getDouble(i)
-					    + arg2.getDouble(i);
-				}
-				return new ArrayDouble(result);
+				return ListMath.sum(arg1, arg2);
 			    }
 			})
 		.addFormulaFunction(
@@ -49,20 +38,10 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 				"Subtract Two Arrays", "arg1", "arg2") {
 
 			    @Override
-			    ListDouble calculate(ListNumber arg1,
+			    ListNumber calculate(ListNumber arg1,
 				    ListNumber arg2) {
-				if (arg1.size() != arg2.size()) {
-				    throw new RuntimeException(
-					    "Invalid arguments: size of two arrays is not equal");
-				}
-				double[] result = new double[arg1.size()];
-				for (int i = 0; i < arg1.size(); i++) {
-				    result[i] = arg1.getDouble(i)
-					    - arg2.getDouble(i);
-				}
-				return new ArrayDouble(result);
+				return ListMath.diff(arg1, arg2);
 			    }
 			}));
     }
-
 }
