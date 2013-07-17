@@ -13,14 +13,14 @@ import static org.epics.vtype.ValueFactory.*;
  *
  * @author carcassi
  */
-public class Flipflop1 extends SimFunction<VBoolean> {
+public class Flipflop extends SimFunction<VBoolean> {
 
     private boolean value = true;
 
     /**
      * Creates a flipflop that changes every 500 ms.
      */
-    public Flipflop1() {
+    public Flipflop() {
         this(0.5);
     }
 
@@ -29,7 +29,7 @@ public class Flipflop1 extends SimFunction<VBoolean> {
      *
      * @param interval interval between samples in seconds
      */
-    public Flipflop1(Double interval) {
+    public Flipflop(Double interval) {
         super(interval, VBoolean.class);
         if (interval <= 0.0) {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + interval + ")");
