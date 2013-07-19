@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInt;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VString;
@@ -278,5 +279,24 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble()));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList()));
+    }
+    
+    @Test
+    public void select1() {
+        VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable table = select(table1, new ArrayInt(1));
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(1));
+        assertThat(table.getColumnName(0), equalTo("Rack"));
+        assertThat(table.getColumnName(1), equalTo("Slot"));
+        assertThat(table.getColumnName(2), equalTo("CPU"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
     }
 }
