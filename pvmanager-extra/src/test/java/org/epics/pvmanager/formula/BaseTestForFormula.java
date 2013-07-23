@@ -19,6 +19,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 
 import org.epics.util.array.ListNumber;
+import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -166,6 +167,12 @@ public class BaseTestForFormula {
 	    VString str1 = (VString) obj1;
 	    VString str2 = (VString) obj2;
 	    return str1.getValue().equals(str2.getValue());
+	}
+
+	if ((obj1 instanceof VEnum) && (obj2 instanceof VEnum)) {
+	    VEnum enum1 = (VEnum) obj1;
+	    VEnum enum2 = (VEnum) obj2;
+	    return enum1.getValue().equals(enum2.getValue()) && enum1.getLabels().equals(enum2.getLabels());
 	}
 
 	return false;

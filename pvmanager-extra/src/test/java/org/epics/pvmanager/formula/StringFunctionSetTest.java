@@ -4,20 +4,16 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.alarmNone;
-import static org.epics.vtype.ValueFactory.newVString;
-import static org.epics.vtype.ValueFactory.newVStringArray;
-import static org.epics.vtype.ValueFactory.newVTable;
-import static org.epics.vtype.ValueFactory.timeNow;
-
 import java.util.Arrays;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VEnum;
 
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
-import org.epics.vtype.VTable;
 import org.junit.Test;
 
-import antlr.collections.List;
+import static org.epics.vtype.ValueFactory.*;
+
 
 /**
  * @author shroffk
@@ -43,5 +39,15 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 
 	VString expected = newVString("abc", alarmNone(), timeNow());
 	testFunction(set, "concat", expected, dataA, dataB, dataC);
+    }
+
+    @Test
+    public void highestSeverity1() {
+	VString dataA = newVString("a", alarmNone(), timeNow());
+	VString dataB = newVString("b", alarmNone(), timeNow());
+	VString dataC = newVString("c", alarmNone(), timeNow());
+
+        VEnum expected = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
+        testFunction(set, "highestSeverity", expected, dataA, dataB, dataC);
     }
 }
