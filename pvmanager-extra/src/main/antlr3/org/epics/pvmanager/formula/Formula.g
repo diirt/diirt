@@ -49,8 +49,20 @@ conditionalOrExpression returns [DesiredRateExpression<?> result]
     ;
 
 conditionalAndExpression returns [DesiredRateExpression<?> result]
+    :   op1=inclusiveOrExpression {result = $op1.result;}
+        (   '&&' op2=inclusiveOrExpression {result = twoArgOp("&&", $result, $op2.result);}
+        )*
+    ;
+
+inclusiveOrExpression returns [DesiredRateExpression<?> result]
+    :   op1=andExpression {result = $op1.result;}
+        (   '|' op2=andExpression {result = twoArgOp("|", $result, $op2.result);}
+        )*
+    ;
+
+andExpression returns [DesiredRateExpression<?> result]
     :   op1=equalityExpression {result = $op1.result;}
-        (   '&&' op2=equalityExpression {result = twoArgOp("&&", $result, $op2.result);}
+        (   '&' op2=equalityExpression {result = twoArgOp("&", $result, $op2.result);}
         )*
     ;
 
@@ -87,8 +99,8 @@ multiplicativeExpression returns [DesiredRateExpression<?> result]
 
 exponentialExpression returns [DesiredRateExpression<?> result]
     :   op1=unaryExpression {result = $op1.result;}
-        (   '^' op2=unaryExpression {result = powCast($result, $op2.result);}
-        |   '**' op2=unaryExpression {result = powCast($result, $op2.result);}
+        (   '^' op2=unaryExpression {result = twoArgOp("^", $result, $op2.result);}
+        |   '**' op2=unaryExpression {result = twoArgOp("^", $result, $op2.result);}
         )*
     ;
 

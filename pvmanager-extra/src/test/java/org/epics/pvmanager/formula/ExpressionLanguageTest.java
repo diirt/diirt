@@ -549,6 +549,38 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         VBoolean result = (VBoolean) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(true));
     }
+
+    @Test
+    public void formula63() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=3&1"));
+        assertThat(exp.getExpression().getName(), equalTo("(3 & 1)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(1));
+    }
+
+    @Test
+    public void formula64() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=7&12"));
+        assertThat(exp.getExpression().getName(), equalTo("(7 & 12)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(4));
+    }
+
+    @Test
+    public void formula65() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=7|12"));
+        assertThat(exp.getExpression().getName(), equalTo("(7 | 12)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(15));
+    }
+
+    @Test
+    public void formula66() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=xor(7,4)"));
+        assertThat(exp.getExpression().getName(), equalTo("xor(7, 4)"));
+        VInt result = (VInt) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(3));
+    }
     
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
