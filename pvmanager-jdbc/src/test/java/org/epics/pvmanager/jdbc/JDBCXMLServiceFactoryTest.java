@@ -36,7 +36,7 @@ import org.mockito.InOrder;
 public class JDBCXMLServiceFactoryTest {
 
     @Test
-    public void createFromXml1() throws Exception {
+    public void new1() throws Exception {
         File file = new File(getClass().getResource(".").toURI());
         JDBCXMLServiceFactory factory = new JDBCXMLServiceFactory(file);
         Collection<Service> services = factory.createServices();
@@ -60,6 +60,14 @@ public class JDBCXMLServiceFactoryTest {
         assertThat(service.getServiceMethods().get("insert").getArgumentTypes().get("index"), equalTo((Class) VNumber.class));
         assertThat(service.getServiceMethods().get("insert").getArgumentDescriptions().get("value"), equalTo("The value"));
         assertThat(service.getServiceMethods().get("insert").getArgumentTypes().get("value"), equalTo((Class) VNumber.class));
+    }
+
+    @Test
+    public void new2() throws Exception {
+        File file = new File("DOES_NOT_EXISTS");
+        JDBCXMLServiceFactory factory = new JDBCXMLServiceFactory(file);
+        Collection<Service> services = factory.createServices();
+        assertThat(services.size(), equalTo(0));
     }
 
 }

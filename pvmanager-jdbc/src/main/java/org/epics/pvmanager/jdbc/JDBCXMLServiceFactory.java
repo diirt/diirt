@@ -25,7 +25,7 @@ public class JDBCXMLServiceFactory implements ServiceFactory {
 
     public JDBCXMLServiceFactory(File directory) {
         this.directory = directory;
-        if (!directory.isDirectory()) {
+        if (directory.exists() && !directory.isDirectory()) {
             throw new IllegalArgumentException("Path provided is not a directory (" + directory + ")");
         }
     }
@@ -33,12 +33,18 @@ public class JDBCXMLServiceFactory implements ServiceFactory {
     @Override
     public Collection<Service> createServices() {
         List<Service> services = new ArrayList<>();
-        for (File file : directory.listFiles()) {
-            try {
-                services.add(JDBCServices.createFromXml(new FileInputStream(file)));
-            } catch (Exception ex) {
-                    Logger.getLogger(JDBCServices.class.getName()).log(Level.INFO, "Failed creating JDBCService from " + file, ex);
+        if (directory.exists()) {
+            for (File file : directory.listFiles()) {
+                if (file.getName().endsWith(".xml")) {
+                    try {
+                        services.add(JDBCServices.createFromXml(new FileInputStream(file)));
+                    } catch (Exception ex) {
+                            Logger.getLogger(JDBCServices.class.getName()).log(Level.INFO, "Failed creating JDBCService from " + file, ex);
+                    }
+                }
             }
+        } else {
+            Logger.getLogger(JDBCServices.class.getName()).log(Level.WARNING, "Directory " + directory + " does not exist");
         }
         return services;
     }
