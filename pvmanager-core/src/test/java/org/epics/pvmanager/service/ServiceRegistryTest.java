@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import org.epics.pvmanager.service.ServiceMethod;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,5 +76,28 @@ public class ServiceRegistryTest {
         ServiceRegistry registry = new ServiceRegistry();
         registry.registerService(new MathService());
         registry.findServiceMethod("math/invent");
+    }
+
+    @Test
+    public void findServiceMethod5() {
+        ServiceRegistry registry = new ServiceRegistry();
+        ServiceMethod serviceMethod = registry.findServiceMethod("math", "add");
+        assertThat(serviceMethod, nullValue());
+
+        registry.registerServices(new ServiceFactory() {
+
+            @Override
+            public Collection<Service> createServives() {
+                return Arrays.<Service>asList(new MathService());
+            }
+        });
+        serviceMethod = registry.findServiceMethod("test", "add");
+        assertThat(serviceMethod, nullValue());
+        serviceMethod = registry.findServiceMethod("math", "add");
+        assertThat(serviceMethod, instanceOf(AddServiceMethod.class));
+        serviceMethod = registry.findServiceMethod("math", "multiply");
+        assertThat(serviceMethod, instanceOf(MultiplyServiceMethod.class));
+        serviceMethod = registry.findServiceMethod("math", "invent");
+        assertThat(serviceMethod, nullValue());
     }
 }
