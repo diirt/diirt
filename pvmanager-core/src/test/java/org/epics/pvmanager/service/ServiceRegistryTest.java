@@ -87,7 +87,7 @@ public class ServiceRegistryTest {
         registry.registerServices(new ServiceFactory() {
 
             @Override
-            public Collection<Service> createServives() {
+            public Collection<Service> createServices() {
                 return Arrays.<Service>asList(new MathService());
             }
         });
