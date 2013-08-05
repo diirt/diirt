@@ -135,7 +135,12 @@ class JDBCServiceMethod extends ServiceMethod {
                     break;
                     
                 default:
-                    throw new IllegalArgumentException("Unsupported type " + metaData.getColumnTypeName(j));
+                    if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
+                        types.add(String.class);
+                        data.add(new ArrayList<String>());
+                    } else {
+                        throw new IllegalArgumentException("Unsupported type " + metaData.getColumnTypeName(j));
+                    }
 
             }
         }
