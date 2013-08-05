@@ -128,6 +128,7 @@ class JDBCServiceMethod extends ServiceMethod {
                     break;
                     
                 case Types.LONGNVARCHAR:
+                case Types.CHAR:
                 case Types.VARCHAR:
                     types.add(String.class);
                     data.add(new ArrayList<String>());
