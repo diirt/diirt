@@ -89,6 +89,23 @@ public class CSVIOTest {
                 "\"D\" 1.23E-7 4\n" +
                 "\"E\" 123.0 5\n");
     }
+
+    @Test
+    public void exportVTable2() {
+        VTable value = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, Double.TYPE, Integer.TYPE, Timestamp.class),
+                                   Arrays.asList("Name", "Value", "Index", "Time"), 
+                                   Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D", "E"),
+                                          new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123),
+                                          new ArrayInt(1,2,3,4,5),
+                                          Arrays.asList(Timestamp.of(133, 0),Timestamp.of(134, 0),Timestamp.of(135, 0),Timestamp.of(136, 0),Timestamp.of(137, 0))));
+        CSVIO io = new CSVIO();
+        exportTest(io, value, "\"Name\" \"Value\" \"Index\" \"Time\"\n" +
+                "\"A\" 0.234 1 \"1969/12/31 19:02:13.0 -0500\"\n" +
+                "\"B\" 1.456 2 \"1969/12/31 19:02:14.0 -0500\"\n" +
+                "\"C\" 2.34567891234E11 3 \"1969/12/31 19:02:15.0 -0500\"\n" +
+                "\"D\" 1.23E-7 4 \"1969/12/31 19:02:16.0 -0500\"\n" +
+                "\"E\" 123.0 5 \"1969/12/31 19:02:17.0 -0500\"\n");
+    }
     
     public static void exportTest(CSVIO io, Object value, String csv) {
         assertThat(io.canExport(value), equalTo(true));
