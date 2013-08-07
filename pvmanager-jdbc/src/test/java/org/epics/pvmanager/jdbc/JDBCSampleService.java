@@ -23,7 +23,7 @@ public class JDBCSampleService extends JDBCService {
                     .queryResult("result", "The query result")
                 )
                 .addServiceMethod(new JDBCServiceMethodDescription("insert", "A test insertquery")
-                    .query("INSERT INTO `test`.`Data` (`Name`, `Index`, `Value`) VALUES (?, ?, ?)")
+                    .query("INSERT INTO `test`.`Data` (`Name`, `Index`, `Value`, `Time`) VALUES (?, ?, ?, now())")
                     .addArgument("name", "The name", VString.class)
                     .addArgument("index", "The index", VNumber.class)
                     .addArgument("value", "The value", VNumber.class)

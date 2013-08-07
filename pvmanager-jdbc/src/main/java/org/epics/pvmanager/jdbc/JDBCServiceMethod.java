@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import javax.sql.DataSource;
 import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.epics.util.array.CircularBufferDouble;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
@@ -134,6 +136,11 @@ class JDBCServiceMethod extends ServiceMethod {
                     data.add(new ArrayList<String>());
                     break;
                     
+                case Types.TIMESTAMP:
+                    types.add(Timestamp.class);
+                    data.add(new ArrayList<Timestamp>());
+                    break;
+                    
                 default:
                     if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
                         types.add(String.class);
@@ -152,6 +159,10 @@ class JDBCServiceMethod extends ServiceMethod {
                     @SuppressWarnings("unchecked")
                     List<String> strings = (List<String>) data.get(i);
                     strings.add(resultSet.getString(i+1));
+                } else if (type.equals(Timestamp.class)) {
+                    @SuppressWarnings("unchecked")
+                    List<Timestamp> timestamps = (List<Timestamp>) data.get(i);
+                    timestamps.add(Timestamp.of(new Date(resultSet.getTimestamp(i+1).getTime())));
                 } else if (type.equals(double.class)) {
                     ((CircularBufferDouble) data.get(i)).addDouble(resultSet.getDouble(i+1));
                 }
