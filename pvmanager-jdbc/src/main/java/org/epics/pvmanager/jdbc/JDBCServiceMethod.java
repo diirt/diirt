@@ -121,6 +121,9 @@ class JDBCServiceMethod extends ServiceMethod {
             switch (metaData.getColumnType(j)) {
                 case Types.DOUBLE:
                 case Types.FLOAT:
+                    // XXX: NUMERIC should be BigInteger
+                case Types.NUMERIC:
+                    // XXX: Integers should be Long/Int
                 case Types.INTEGER:
                 case Types.TINYINT:
                 case Types.BIGINT:
@@ -132,6 +135,9 @@ class JDBCServiceMethod extends ServiceMethod {
                 case Types.LONGNVARCHAR:
                 case Types.CHAR:
                 case Types.VARCHAR:
+                    // XXX: should be a booloean
+                case Types.BOOLEAN:
+                case Types.BIT:
                     types.add(String.class);
                     data.add(new ArrayList<String>());
                     break;
