@@ -162,7 +162,12 @@ class JDBCServiceMethod extends ServiceMethod {
                 } else if (type.equals(Timestamp.class)) {
                     @SuppressWarnings("unchecked")
                     List<Timestamp> timestamps = (List<Timestamp>) data.get(i);
-                    timestamps.add(Timestamp.of(new Date(resultSet.getTimestamp(i+1).getTime())));
+                    java.sql.Timestamp sqlTimestamp = resultSet.getTimestamp(i+1);
+                    if (sqlTimestamp == null) {
+                        timestamps.add(null);
+                    } else {
+                        timestamps.add(Timestamp.of(new Date(sqlTimestamp.getTime())));
+                    }
                 } else if (type.equals(double.class)) {
                     ((CircularBufferDouble) data.get(i)).addDouble(resultSet.getDouble(i+1));
                 }
