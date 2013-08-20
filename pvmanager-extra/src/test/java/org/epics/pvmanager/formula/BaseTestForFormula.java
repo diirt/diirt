@@ -174,6 +174,12 @@ public class BaseTestForFormula {
 	    VEnum enum2 = (VEnum) obj2;
 	    return enum1.getValue().equals(enum2.getValue()) && enum1.getLabels().equals(enum2.getLabels());
 	}
+	
+	if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
+	    VNumber number1 = (VNumber) obj1;
+	    VNumber number2 = (VNumber) obj2;
+	    return number1.getValue().equals(number2.getValue());
+	}
 
 	return false;
     }

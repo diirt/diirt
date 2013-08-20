@@ -6,10 +6,9 @@ package org.epics.pvmanager.formula;
 
 import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
-import static org.epics.vtype.ValueFactory.newVNumber;
-import static org.epics.vtype.ValueFactory.newVNumberArray;
 import static org.epics.vtype.ValueFactory.newVDouble;
 import static org.epics.vtype.ValueFactory.newVDoubleArray;
+import static org.epics.vtype.ValueFactory.newVNumber;
 import static org.epics.vtype.ValueFactory.newVString;
 import static org.epics.vtype.ValueFactory.newVStringArray;
 import static org.epics.vtype.ValueFactory.timeNow;
@@ -89,14 +88,6 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void rescaleArray() {
-//	VNumber[] data = {
-//		newVDouble(Double.valueOf(1), alarmNone(), timeNow(),
-//			displayNone()),
-//		newVDouble(Double.valueOf(2), alarmNone(), timeNow(),
-//			displayNone()),
-//		newVDouble(Double.valueOf(3), alarmNone(), timeNow(),
-//			displayNone()) };
-	// factor = 1 and
 	double[] data = {1, 2, 3};
 	double[] expectedData = { 2, 3, 4 };
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
@@ -112,4 +103,27 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 		newVNumber(1.0, alarmNone(), timeNow(),
 			displayNone()));
     }
+    
+    @Test
+    public void subArray(){	
+	double[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	double[] expectedData = { 2, 3, 4};
+	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
+		timeNow(), displayNone());
+	testFunction(set, "subArray", expected,
+		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
+		newVNumber(2, alarmNone(), timeNow(), displayNone()),
+		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+    }
+    
+    @Test
+    public void elementAtArray(){	
+	double[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
+	
+	testFunction(set, "elementAt", expected,
+		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
+		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+    }
+   
 }
