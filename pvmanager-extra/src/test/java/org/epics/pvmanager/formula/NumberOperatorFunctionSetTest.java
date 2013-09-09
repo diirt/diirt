@@ -5,7 +5,12 @@
 package org.epics.pvmanager.formula;
 
 import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionAlarm;
 import static org.epics.pvmanager.formula.BaseTestForFormula.testTwoArgNumericFunction;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 
 /**
@@ -20,6 +25,8 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     public void add1() {
         testTwoArgNumericFunction(set, "+", 1.0, 2.0, 3.0);
         testTwoArgNumericFunction(set, "+", 1.0, -2.0, -1.0);
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        testFunctionAlarm(set, "+", alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
     }
     
     @Test

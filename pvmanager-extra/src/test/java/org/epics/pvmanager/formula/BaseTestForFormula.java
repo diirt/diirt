@@ -19,11 +19,14 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 
 import org.epics.util.array.ListNumber;
+import org.epics.vtype.Alarm;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTypeToString;
+import org.epics.vtype.ValueUtil;
 import org.junit.BeforeClass;
 import org.mockito.internal.matchers.InstanceOf;
 
@@ -140,6 +143,33 @@ public class BaseTestForFormula {
 			+ Arrays.toString(args) + ")'. Was (" + result
 			+ ") expected (" + expected + ")",
 		compare(result, expected), equalTo(true));
+    }
+
+    public static void testFunctionAlarm(FormulaFunctionSet set, String name,
+	    Alarm expected, Object... args) {
+	FormulaFunction function = FormulaFunctions.findFirstMatch(
+		Arrays.asList(args), set.findFunctions(name));
+	assertThat("Function '" + name + "' not found.", function,
+		not(nullValue()));
+	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
+	assertThat(
+		"Wrong result for function '" + name + "("
+			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
+			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
+		compareAlarm(result, expected), equalTo(true));
+    }
+
+    public static boolean compareAlarm(Alarm alarm1, Alarm alarm2) {
+	if (alarm1 == null && alarm2 == null) {
+	    return true;
+	}
+
+	if (alarm1 == null || alarm2 == null) {
+	    return false;
+	}
+        
+        return alarm1.getAlarmSeverity().equals(alarm2.getAlarmSeverity()) &&
+                alarm1.getAlarmName().equals(alarm2.getAlarmName());
     }
 
     public static boolean compare(Object obj1, Object obj2) {
