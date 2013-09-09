@@ -27,6 +27,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "+", 1.0, -2.0, -1.0);
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         testFunctionAlarm(set, "+", alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
+//        testFunctionAlarm(set, "+", newAlarm(AlarmSeverity.MINOR, "Unkown"), newVDouble(1.0, display), newVDouble(3.5, display));
     }
     
     @Test

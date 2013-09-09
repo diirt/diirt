@@ -5,6 +5,7 @@
 package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VEnum;
 
@@ -48,6 +49,16 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 	VString dataC = newVString("c", alarmNone(), timeNow());
 
         VEnum expected = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
+        testFunction(set, "highestSeverity", expected, dataA, dataB, dataC);
+    }
+
+    @Test
+    public void highestSeverity2() {
+	VString dataA = newVString("a", alarmNone(), timeNow());
+	VString dataB = newVString("b", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
+	VString dataC = newVString("c", alarmNone(), timeNow());
+
+        VEnum expected = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
         testFunction(set, "highestSeverity", expected, dataA, dataB, dataC);
     }
 }
