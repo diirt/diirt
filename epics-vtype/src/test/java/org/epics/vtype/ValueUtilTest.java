@@ -119,4 +119,22 @@ public class ValueUtilTest {
         assertThat(colorFor(AlarmSeverity.INVALID), equalTo(Color.MAGENTA.getRGB()));
         assertThat(colorFor(AlarmSeverity.UNDEFINED), equalTo(Color.DARK_GRAY.getRGB()));
     }
+
+    @Test
+    public void highestSeverityOf1() {
+        Alarm none = ValueFactory.alarmNone();
+        Alarm minor = ValueFactory.newAlarm(AlarmSeverity.MINOR, "Minor alarm");
+        Alarm otherMinor = ValueFactory.newAlarm(AlarmSeverity.MINOR, "Other minor alarm");
+        Alarm major = ValueFactory.newAlarm(AlarmSeverity.MAJOR, "Major alarm");
+        Alarm invalid = ValueFactory.newAlarm(AlarmSeverity.INVALID, "Invalid alarm");
+        Alarm undefined = ValueFactory.newAlarm(AlarmSeverity.UNDEFINED, "Undefined alarm");
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, minor), false), sameInstance(minor));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, minor, otherMinor), false), sameInstance(minor));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(null, minor, otherMinor), false), sameInstance(minor));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(null, minor, otherMinor), true).getAlarmSeverity(), sameInstance(AlarmSeverity.UNDEFINED));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, otherMinor), false), sameInstance(major));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, otherMinor, invalid), false), sameInstance(invalid));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, undefined, invalid), false), sameInstance(undefined));
+        assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, undefined, invalid, null), true), sameInstance(undefined));
+    }
 }

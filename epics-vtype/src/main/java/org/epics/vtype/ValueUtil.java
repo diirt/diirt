@@ -100,6 +100,34 @@ public class ValueUtil {
             return ValueFactory.newAlarm(AlarmSeverity.UNDEFINED, "Disconnected");
         }
     }
+    
+    /**
+     * Returns the alarm with highest severity. null values can either be ignored or
+     * treated as UNDEFINED severity.
+     * 
+     * @param args a list of values
+     * @param considerNull whether to consider null values
+     * @return the highest alarm; can't be null
+     */
+    public static Alarm highestSeverityOf(final List<Object> args, final boolean considerNull) {
+        Alarm finalAlarm = ValueFactory.alarmNone();
+        for (Object object : args) {
+            Alarm newAlarm;
+            if (object == null && considerNull) {
+                newAlarm = ValueFactory.newAlarm(AlarmSeverity.UNDEFINED, "No Value");
+            } else {
+                newAlarm = ValueUtil.alarmOf(object);
+                if (newAlarm == null) {
+                    newAlarm = ValueFactory.alarmNone();
+                }
+            }
+            if (newAlarm.getAlarmSeverity().compareTo(finalAlarm.getAlarmSeverity()) > 0) {
+                finalAlarm = newAlarm;
+            }
+        }
+        
+        return finalAlarm;
+    }
 
     /**
      * Extracts the time information if present.
