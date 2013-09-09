@@ -29,6 +29,20 @@ public class VTypeToString {
         }
     }
     
+    /**
+     * Converts the given alarm to a string
+     * 
+     * @param alarm the alarm
+     * @return the string
+     */
+    public static String alarmToString(Alarm alarm) {
+        if (alarm == null) {
+            return "NONE";
+        }
+        
+        return alarm.getAlarmSeverity() + "(" + alarm.getAlarmName() + ")";
+    }
+    
     private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd hh:mm:ss.SSS");
     
     private static void appendTime(StringBuilder builder, Time time) {
