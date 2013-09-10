@@ -39,6 +39,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     public void negate1() {
         testFunction(set, "-", 1.0, -1.0);
         testFunction(set, "-", -2.0, 2.0);
+        testOneArgNumericFunctionHighestAlarm(set, "-");
     }
     
     @Test

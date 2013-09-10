@@ -127,6 +127,13 @@ public class BaseTestForFormula {
 			newVNumberArray(result, alarmNone(), timeNow(),
 				displayNone())), equalTo(true));
     }
+    
+    public static void testOneArgNumericFunctionHighestAlarm(FormulaFunctionSet set, String functionName) {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        testFunctionAlarm(set, functionName, alarmNone(), newVDouble(0.0, display));
+        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(3.5, display));
+        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display));
+    }
 
     public static void testFunction(FormulaFunctionSet set, String name,
 	    double arg, double result) {
