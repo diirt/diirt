@@ -19,13 +19,19 @@ import static org.junit.Assert.assertThat;
 import java.util.Arrays;
 
 import org.epics.util.array.ListNumber;
+import org.epics.util.text.NumberFormats;
 import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTypeToString;
+import static org.epics.vtype.ValueFactory.newAlarm;
+import static org.epics.vtype.ValueFactory.newDisplay;
+import static org.epics.vtype.ValueFactory.newVDouble;
 import org.epics.vtype.ValueUtil;
 import org.junit.BeforeClass;
 import org.mockito.internal.matchers.InstanceOf;
@@ -48,6 +54,13 @@ public class BaseTestForFormula {
 	    FormulaRegistry.getDefault().registerFormulaFunctionSet(
 		    new TableFunctionSet());
 	}
+    }
+    
+    public static void testTwoArgNumericFunctionHighestAlarm(FormulaFunctionSet set, String functionName) {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        testFunctionAlarm(set, functionName, alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
+        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
+        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
     }
 
     public static void testTwoArgNumericFunction(FormulaFunctionSet set,
