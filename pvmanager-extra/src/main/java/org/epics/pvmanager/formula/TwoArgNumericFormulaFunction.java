@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.ValueFactory;
 import org.epics.vtype.ValueUtil;
@@ -74,10 +75,14 @@ abstract class TwoArgNumericFormulaFunction implements FormulaFunction {
             return null;
         }
         Alarm alarm = ValueUtil.highestSeverityOf(args, false);
+        Time time = ValueUtil.latestTimeOf(args);
+        if (time == null) {
+            time = ValueFactory.timeNow();
+        }
         return ValueFactory.newVDouble(
                 calculate(((VNumber) args.get(0)).getValue().doubleValue(),
                 ((VNumber) args.get(1)).getValue().doubleValue())
-                , alarm, ValueFactory.newTime(Timestamp.now()), ValueFactory.displayNone());
+                , alarm, time, ValueFactory.displayNone());
     }
     
     abstract double calculate(double arg1, double arg2);

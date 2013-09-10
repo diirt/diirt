@@ -18,6 +18,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
@@ -225,8 +226,8 @@ public class BaseTestForFormula {
 	    return false;
 	}
         
-        return time1.getTimestamp().equals(time2.getTimestamp()) &&
-                time1.getTimeUserTag().equals(time2.getTimeUserTag());
+        return Objects.equals(time1.getTimestamp(), time2.getTimestamp()) &&
+                Objects.equals(time1.getTimeUserTag(), time2.getTimeUserTag());
     }
 
     public static boolean compare(Object obj1, Object obj2) {

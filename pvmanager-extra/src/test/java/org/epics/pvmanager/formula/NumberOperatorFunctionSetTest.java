@@ -26,6 +26,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "+", 1.0, 2.0, 3.0);
         testTwoArgNumericFunction(set, "+", 1.0, -2.0, -1.0);
         testTwoArgNumericFunctionHighestAlarm(set, "+");
+        testTwoArgNumericFunctionLatestTime(set, "+");
     }
     
     @Test
@@ -33,6 +34,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "-", 1.0, 2.0, -1.0);
         testTwoArgNumericFunction(set, "-", 1.0, -2.0, 3.0);
         testTwoArgNumericFunctionHighestAlarm(set, "-");
+        testTwoArgNumericFunctionLatestTime(set, "-");
     }
     
     @Test
@@ -47,6 +49,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "*", 2.0, 5.0, 10.0);
         testTwoArgNumericFunction(set, "*", 3.0, -2.0, -6.0);
         testTwoArgNumericFunctionHighestAlarm(set, "*");
+        testTwoArgNumericFunctionLatestTime(set, "*");
     }
     
     @Test
@@ -54,6 +57,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "/", 8.0, 2.0, 4.0);
         testTwoArgNumericFunction(set, "/", 1.0, -2.0, -0.5);
         testTwoArgNumericFunctionHighestAlarm(set, "/");
+        testTwoArgNumericFunctionLatestTime(set, "/");
     }
     
     @Test
@@ -61,6 +65,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "%", 8.0, 2.0, 0.0);
         testTwoArgNumericFunction(set, "%", 3.0, 2.0, 1.0);
         testTwoArgNumericFunctionHighestAlarm(set, "%");
+        testTwoArgNumericFunctionLatestTime(set, "%");
     }
     
     @Test
@@ -68,5 +73,6 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
         testTwoArgNumericFunction(set, "^", 8.0, 2.0, 64.0);
         testTwoArgNumericFunction(set, "^", 4.0, 0.5, 2.0);
         testTwoArgNumericFunctionHighestAlarm(set, "^");
+        testTwoArgNumericFunctionLatestTime(set, "^");
     }
 }
