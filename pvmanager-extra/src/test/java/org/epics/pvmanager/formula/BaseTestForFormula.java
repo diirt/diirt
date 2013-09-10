@@ -17,21 +17,23 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
+import org.epics.vtype.Time;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTypeToString;
-import static org.epics.vtype.ValueFactory.newAlarm;
-import static org.epics.vtype.ValueFactory.newDisplay;
-import static org.epics.vtype.ValueFactory.newVDouble;
+import org.epics.vtype.ValueFactory;
+import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
 import org.junit.BeforeClass;
 import org.mockito.internal.matchers.InstanceOf;
@@ -61,6 +63,14 @@ public class BaseTestForFormula {
         testFunctionAlarm(set, functionName, alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
         testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
         testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
+    }
+    
+    public static void testTwoArgNumericFunctionLatestTime(FormulaFunctionSet set, String functionName) {
+        Time time1 = newTime(Timestamp.of(12340000, 0));
+        Time time2 = newTime(Timestamp.of(12350000, 0));
+        testFunctionTime(set, functionName, time1, newVDouble(0.0, time1), newVDouble(1.0, time1));
+        testFunctionTime(set, functionName, time2, newVDouble(0.0, time1), newVDouble(1.0, time2));
+        testFunctionTime(set, functionName, time2, newVDouble(0.0, time2), newVDouble(1.0, time1));
     }
 
     public static void testTwoArgNumericFunction(FormulaFunctionSet set,
@@ -179,6 +189,20 @@ public class BaseTestForFormula {
 		compareAlarm(result, expected), equalTo(true));
     }
 
+    public static void testFunctionTime(FormulaFunctionSet set, String name,
+	    Time expected, Object... args) {
+	FormulaFunction function = FormulaFunctions.findFirstMatch(
+		Arrays.asList(args), set.findFunctions(name));
+	assertThat("Function '" + name + "' not found.", function,
+		not(nullValue()));
+	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
+	assertThat(
+		"Wrong result for function '" + name + "("
+			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
+			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
+		compareTime(result, expected), equalTo(true));
+    }
+
     public static boolean compareAlarm(Alarm alarm1, Alarm alarm2) {
 	if (alarm1 == null && alarm2 == null) {
 	    return true;
@@ -190,6 +214,19 @@ public class BaseTestForFormula {
         
         return alarm1.getAlarmSeverity().equals(alarm2.getAlarmSeverity()) &&
                 alarm1.getAlarmName().equals(alarm2.getAlarmName());
+    }
+
+    public static boolean compareTime(Time time1, Time time2) {
+	if (time1 == null && time2 == null) {
+	    return true;
+	}
+
+	if (time1 == null || time2 == null) {
+	    return false;
+	}
+        
+        return time1.getTimestamp().equals(time2.getTimestamp()) &&
+                time1.getTimeUserTag().equals(time2.getTimeUserTag());
     }
 
     public static boolean compare(Object obj1, Object obj2) {
