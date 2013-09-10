@@ -128,6 +128,27 @@ public class ValueUtil {
         
         return finalAlarm;
     }
+    
+    /**
+     * Returns the time with latest timestamp.
+     * 
+     * @param args a list of values
+     * @return the latest time; can be null
+     */
+    public static Time latestTimeOf(final List<Object> args) {
+        Time finalTime = null;
+        for (Object object : args) {
+            Time newTime;
+            if (object != null)  {
+                newTime = ValueUtil.timeOf(object);
+                if (newTime != null && (finalTime == null || newTime.getTimestamp().compareTo(finalTime.getTimestamp()) > 0)) {
+                    finalTime = newTime;
+                }
+            }
+        }
+        
+        return finalTime;
+    }
 
     /**
      * Extracts the time information if present.

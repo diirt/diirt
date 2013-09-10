@@ -17,6 +17,7 @@ import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
+import org.epics.util.time.Timestamp;
 
 /**
  *
@@ -136,5 +137,18 @@ public class ValueUtilTest {
         assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, otherMinor, invalid), false), sameInstance(invalid));
         assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, undefined, invalid), false), sameInstance(undefined));
         assertThat(ValueUtil.highestSeverityOf(Arrays.<Object>asList(none, major, minor, undefined, invalid, null), true), sameInstance(undefined));
+    }
+    
+    @Test
+    public void latestTimeOf1() {
+        Time time1 = newTime(Timestamp.of(12340000, 0));
+        Time time2 = newTime(Timestamp.of(12340000, 0));
+        Time time3 = newTime(Timestamp.of(12350000, 0));
+        Time time4 = newTime(Timestamp.of(12360000, 0));
+        assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time3)), sameInstance(time3));
+        assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time3, time1)), sameInstance(time3));
+        assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time2)), sameInstance(time1));
+        assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time2, time1)), sameInstance(time2));
+        assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time4, time2, time3)), sameInstance(time4));
     }
 }
