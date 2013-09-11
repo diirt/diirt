@@ -47,33 +47,37 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void multiply1() {
-        testTwoArgNumericFunction(set, "*", 2.0, 5.0, 10.0);
-        testTwoArgNumericFunction(set, "*", 3.0, -2.0, -6.0);
-        testTwoArgNumericFunctionHighestAlarm(set, "*");
-        testTwoArgNumericFunctionLatestTime(set, "*");
+        FunctionTester.findByName(set, "*")
+                .compareReturnValue(10.0, 2.0, 5.0)
+                .compareReturnValue(-6.0, 3.0, -2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
     public void divide1() {
-        testTwoArgNumericFunction(set, "/", 8.0, 2.0, 4.0);
-        testTwoArgNumericFunction(set, "/", 1.0, -2.0, -0.5);
-        testTwoArgNumericFunctionHighestAlarm(set, "/");
-        testTwoArgNumericFunctionLatestTime(set, "/");
+        FunctionTester.findByName(set, "/")
+                .compareReturnValue(4.0, 8.0, 2.0)
+                .compareReturnValue(-0.5, 1.0, -2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
     public void remainder1() {
-        testTwoArgNumericFunction(set, "%", 8.0, 2.0, 0.0);
-        testTwoArgNumericFunction(set, "%", 3.0, 2.0, 1.0);
-        testTwoArgNumericFunctionHighestAlarm(set, "%");
-        testTwoArgNumericFunctionLatestTime(set, "%");
+        FunctionTester.findByName(set, "%")
+                .compareReturnValue(0.0, 8.0, 2.0)
+                .compareReturnValue(1.0, 3.0, 2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
     public void pow1() {
-        testTwoArgNumericFunction(set, "^", 8.0, 2.0, 64.0);
-        testTwoArgNumericFunction(set, "^", 4.0, 0.5, 2.0);
-        testTwoArgNumericFunctionHighestAlarm(set, "^");
-        testTwoArgNumericFunctionLatestTime(set, "^");
+        FunctionTester.findByName(set, "^")
+                .compareReturnValue(64.0, 8.0, 2.0)
+                .compareReturnValue(2.0, 4.0, 0.5)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 }
