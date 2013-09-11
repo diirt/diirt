@@ -23,8 +23,9 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void add1() {
-        testTwoArgNumericFunction(set, "+", 1.0, 2.0, 3.0);
-        testTwoArgNumericFunction(set, "+", 1.0, -2.0, -1.0);
+        FunctionTester.findByName(set, "+")
+                .compareReturnValue(3.0, 1.0, 2.0)
+                .compareReturnValue(-1.0, 1.0, -2.0);
         testTwoArgNumericFunctionHighestAlarm(set, "+");
         testTwoArgNumericFunctionLatestTime(set, "+");
     }
