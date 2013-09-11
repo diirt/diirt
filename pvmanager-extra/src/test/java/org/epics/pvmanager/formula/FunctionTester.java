@@ -8,11 +8,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compareAlarm;
+import static org.epics.pvmanager.formula.BaseTestForFormula.compareTime;
 import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionAlarm;
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionTime;
 import org.epics.util.text.NumberFormats;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeToString;
 import static org.epics.vtype.ValueFactory.*;
@@ -72,6 +76,16 @@ public class FunctionTester {
 		compareAlarm(result, expected), equalTo(true));
         return this;
     }
+
+    public FunctionTester compareReturnTime(Time expected, Object... args) {
+	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
+	assertThat(
+		"Wrong result for function '" + function.getName() + "("
+			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
+			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
+		compareTime(result, expected), equalTo(true));
+        return this;
+    }
     
     public FunctionTester highestAlarmReturned() {
         if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
@@ -89,4 +103,20 @@ public class FunctionTester {
         compareReturnAlarm(newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
     }
     
+    public FunctionTester latestTimeReturned() {
+        if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
+            twoArgNumericLatestTimeReturned();
+        } else {
+            throw new IllegalArgumentException("Can't test highest alarm returned for " + function.getName());
+        }
+        return this;
+    }
+    
+    private void twoArgNumericLatestTimeReturned() {
+        Time time1 = newTime(Timestamp.of(12340000, 0));
+        Time time2 = newTime(Timestamp.of(12350000, 0));
+        compareReturnTime(time1, newVDouble(0.0, time1), newVDouble(1.0, time1));
+        compareReturnTime(time2, newVDouble(0.0, time1), newVDouble(1.0, time2));
+        compareReturnTime(time2, newVDouble(0.0, time2), newVDouble(1.0, time1));
+    }
 }
