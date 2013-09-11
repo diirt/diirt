@@ -10,6 +10,7 @@ import static org.epics.pvmanager.formula.BaseTestForFormula.testTwoArgNumericFu
 import org.epics.util.text.NumberFormats;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
 import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 
@@ -32,10 +33,11 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void subtract1() {
-        testTwoArgNumericFunction(set, "-", 1.0, 2.0, -1.0);
-        testTwoArgNumericFunction(set, "-", 1.0, -2.0, 3.0);
-        testTwoArgNumericFunctionHighestAlarm(set, "-");
-        testTwoArgNumericFunctionLatestTime(set, "-");
+        FunctionTester.findBySignature(set, "-", VNumber.class, VNumber.class)
+                .compareReturnValue(-1.0, 1.0, 2.0)
+                .compareReturnValue(3.0, 1.0, -2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test

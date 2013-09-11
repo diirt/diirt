@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager.formula;
 
@@ -43,6 +43,17 @@ public class FunctionTester {
         Collection<FormulaFunction> functions = set.findFunctions(name);
 	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
 		equalTo(false));
+	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
+		equalTo(1));
+        return new FunctionTester(functions.iterator().next());
+    }
+    
+    public static FunctionTester findBySignature(FormulaFunctionSet set, String name, Class<?>... argTypes) {
+        Collection<FormulaFunction> functions = set.findFunctions(name);
+	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
+		equalTo(false));
+        
+        functions = FormulaFunctions.findArgTypeMatch(Arrays.asList(argTypes), functions);
 	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
 		equalTo(1));
         return new FunctionTester(functions.iterator().next());

@@ -2,15 +2,13 @@
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.epics.pvmanager.formula;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VString;
@@ -119,6 +117,21 @@ public class FormulaFunctionsTest {
     public void formatSignature3() {
         FormulaFunction function = new NumberOperatorFunctionSet().findFunctions("+").iterator().next();
         assertThat(FormulaFunctions.formatSignature(function), equalTo("(VNumber arg1 + VNumber arg2): VNumber"));
+    }
+
+    @Test
+    public void findArgTypeMatch1() {
+        FormulaFunction function1 = mock(FormulaFunction.class);
+        when(function1.isVarArgs()).thenReturn(false);
+        when(function1.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(String.class));
+        FormulaFunction function2 = mock(FormulaFunction.class);
+        when(function2.isVarArgs()).thenReturn(true);
+        when(function2.getArgumentTypes()).thenReturn(Arrays.<Class<?>>asList(Number.class));
+        List<FormulaFunction> functions = Arrays.asList(function1, function2);
+        
+        assertThat(FormulaFunctions.findArgTypeMatch(Arrays.<Class<?>>asList(VNumber.class, VNumber.class), functions).isEmpty(), equalTo(true));
+        assertThat(FormulaFunctions.findArgTypeMatch(Arrays.<Class<?>>asList(Number.class), functions), contains(function2));
+        assertThat(FormulaFunctions.findArgTypeMatch(Arrays.<Class<?>>asList(String.class), functions), contains(function1));
     }
     
 }
