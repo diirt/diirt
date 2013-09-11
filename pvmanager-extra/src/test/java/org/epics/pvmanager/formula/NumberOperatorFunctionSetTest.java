@@ -42,9 +42,11 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void negate1() {
-        testFunction(set, "-", 1.0, -1.0);
-        testFunction(set, "-", -2.0, 2.0);
-        testOneArgNumericFunctionHighestAlarm(set, "-");
+        FunctionTester.findBySignature(set, "-", VNumber.class)
+                .compareReturnValue(-1.0, 1.0)
+                .compareReturnValue(2.0, -2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
