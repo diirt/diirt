@@ -58,21 +58,6 @@ public class BaseTestForFormula {
 		    new TableFunctionSet());
 	}
     }
-    
-    public static void testTwoArgNumericFunctionHighestAlarm(FormulaFunctionSet set, String functionName) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        testFunctionAlarm(set, functionName, alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
-        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
-        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
-    }
-    
-    public static void testTwoArgNumericFunctionLatestTime(FormulaFunctionSet set, String functionName) {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        testFunctionTime(set, functionName, time1, newVDouble(0.0, time1), newVDouble(1.0, time1));
-        testFunctionTime(set, functionName, time2, newVDouble(0.0, time1), newVDouble(1.0, time2));
-        testFunctionTime(set, functionName, time2, newVDouble(0.0, time2), newVDouble(1.0, time1));
-    }
 
     public static void testTwoArgNumericFunction(FormulaFunctionSet set,
 	    String name, double arg1, double arg2, double result) {
@@ -138,13 +123,6 @@ public class BaseTestForFormula {
 			newVNumberArray(result, alarmNone(), timeNow(),
 				displayNone())), equalTo(true));
     }
-    
-    public static void testOneArgNumericFunctionHighestAlarm(FormulaFunctionSet set, String functionName) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        testFunctionAlarm(set, functionName, alarmNone(), newVDouble(0.0, display));
-        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(3.5, display));
-        testFunctionAlarm(set, functionName, newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display));
-    }
 
     public static void testFunction(FormulaFunctionSet set, String name,
 	    double arg, double result) {
@@ -174,34 +152,6 @@ public class BaseTestForFormula {
 			+ Arrays.toString(args) + ")'. Was (" + result
 			+ ") expected (" + expected + ")",
 		compare(result, expected), equalTo(true));
-    }
-
-    public static void testFunctionAlarm(FormulaFunctionSet set, String name,
-	    Alarm expected, Object... args) {
-	FormulaFunction function = FormulaFunctions.findFirstMatch(
-		Arrays.asList(args), set.findFunctions(name));
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + name + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
-			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
-		compareAlarm(result, expected), equalTo(true));
-    }
-
-    public static void testFunctionTime(FormulaFunctionSet set, String name,
-	    Time expected, Object... args) {
-	FormulaFunction function = FormulaFunctions.findFirstMatch(
-		Arrays.asList(args), set.findFunctions(name));
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + name + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
-			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
-		compareTime(result, expected), equalTo(true));
     }
 
     public static boolean compareAlarm(Alarm alarm1, Alarm alarm2) {

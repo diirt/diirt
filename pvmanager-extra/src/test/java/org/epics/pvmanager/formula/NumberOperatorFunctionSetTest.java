@@ -4,14 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionAlarm;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testTwoArgNumericFunction;
-import org.epics.util.text.NumberFormats;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Display;
 import org.epics.vtype.VNumber;
-import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 
 /**

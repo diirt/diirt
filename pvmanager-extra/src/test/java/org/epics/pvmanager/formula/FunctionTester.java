@@ -9,8 +9,6 @@ import java.util.Collection;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compareAlarm;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compareTime;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionAlarm;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionTime;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
@@ -21,9 +19,6 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeToString;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
