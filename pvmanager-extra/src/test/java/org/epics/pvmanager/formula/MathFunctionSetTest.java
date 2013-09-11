@@ -4,7 +4,6 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.junit.Test;
 
 /**
@@ -17,25 +16,37 @@ public class MathFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void abs1() {
-        testFunction(set, "abs", 1.0, 1.0);
-        testFunction(set, "abs", -1.0, 1.0);
+        FunctionTester.findByName(set, "abs")
+                .compareReturnValue(1.0, 1.0)
+                .compareReturnValue(2.0, -2.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void acos1() {
-        testFunction(set, "acos", 0.0, 3.1415/2.0);
-        testFunction(set, "acos", 1.0, 0.0);
+        FunctionTester.findByName(set, "acos")
+                .compareReturnValue(3.1415/2.0, 0.0)
+                .compareReturnValue(0.0, 1.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void asin1() {
-        testFunction(set, "asin", 1.0, 3.1415/2.0);
-        testFunction(set, "asin", 0.0, 0.0);
+        FunctionTester.findByName(set, "asin")
+                .compareReturnValue(3.1415/2.0, 1.0)
+                .compareReturnValue(0.0, 0.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void atan1() {
-        testFunction(set, "atan", 0.0, 0.0);
+        FunctionTester.findByName(set, "atan")
+                .compareReturnValue(0.0, 0.0)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
