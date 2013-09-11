@@ -17,6 +17,7 @@ import org.epics.vtype.Display;
 import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeToString;
+import org.epics.vtype.VTypeValueEquals;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
 import static org.hamcrest.Matchers.*;
@@ -88,7 +89,7 @@ public class FunctionTester {
 		"Wrong result for function '" + function.getName() + "("
 			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
 			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
-		compareAlarm(result, expected), equalTo(true));
+                VTypeValueEquals.alarmEquals(result, expected), equalTo(true));
         return this;
     }
 
@@ -98,7 +99,7 @@ public class FunctionTester {
 		"Wrong result for function '" + function.getName() + "("
 			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
 			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
-		compareTime(result, expected), equalTo(true));
+		VTypeValueEquals.timeEquals(result, expected), equalTo(true));
         return this;
     }
     
