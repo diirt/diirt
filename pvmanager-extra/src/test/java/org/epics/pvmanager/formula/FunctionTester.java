@@ -7,8 +7,16 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import java.util.Collection;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
+import static org.epics.pvmanager.formula.BaseTestForFormula.compareAlarm;
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunctionAlarm;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
 import org.epics.vtype.VNumber;
-import static org.epics.vtype.ValueFactory.newVDouble;
+import org.epics.vtype.VTypeToString;
+import static org.epics.vtype.ValueFactory.*;
+import org.epics.vtype.ValueUtil;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -54,6 +62,31 @@ public class FunctionTester {
 		closeTo(result, 0.0001));
         return this;
     }
+
+    public FunctionTester compareReturnAlarm(Alarm expected, Object... args) {
+	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
+	assertThat(
+		"Wrong result for function '" + function.getName() + "("
+			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
+			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
+		compareAlarm(result, expected), equalTo(true));
+        return this;
+    }
     
+    public FunctionTester highestAlarmReturned() {
+        if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
+            twoArgNumericHighestAlarmReturned();
+        } else {
+            throw new IllegalArgumentException("Can't test highest alarm returned for " + function.getName());
+        }
+        return this;
+    }
+    
+    private void twoArgNumericHighestAlarmReturned() {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        compareReturnAlarm(alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
+        compareReturnAlarm(newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
+        compareReturnAlarm(newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
+    }
     
 }
