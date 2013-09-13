@@ -56,6 +56,20 @@ class ExecServiceMethod extends ServiceMethod {
     @Override
     public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
         String expandedCommand = command;
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            String name = entry.getKey();
+            Object object = entry.getValue();
+            String value = null;
+            if (object instanceof VString) {
+                value = ((VString) object).getValue();
+            } else if (object == null) {
+                value = "";
+            } else {
+                errorCallback.writeValue(new IllegalArgumentException("Can't map parameter '" + name + "': was " + object));
+                return;
+            }
+            expandedCommand = expandedCommand.replaceAll("#" + name + "#", value);
+        }
         GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg, expandedCommand);
     }
 }
