@@ -74,7 +74,7 @@ public class ExecServices {
                 String resultDescription = xPath.evaluate("result/@description", method);
                 
                 ExecServiceMethodDescription jdbcMethod = new ExecServiceMethodDescription(methodName, methodDescription);
-                jdbcMethod.query(query);
+//                jdbcMethod.query(query);
                 if (!resultName.trim().isEmpty()) {
                     jdbcMethod.queryResult(resultName, resultDescription);
                 }

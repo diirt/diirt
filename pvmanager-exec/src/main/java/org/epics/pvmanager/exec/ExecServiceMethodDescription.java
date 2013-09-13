@@ -20,9 +20,9 @@ public class ExecServiceMethodDescription {
     
     final ServiceMethodDescription serviceMethodDescription;
     boolean resultAdded = false;
-    DataSource dataSource;
     ExecutorService executorService;
-    String query;
+    String shell;
+    String shellArg;
     final List<String> orderedParameterNames = new ArrayList<>();
 
     /**
@@ -69,14 +69,6 @@ public class ExecServiceMethodDescription {
         return this;
     }
     
-    ExecServiceMethodDescription dataSource(DataSource dataSource) {
-        if (this.dataSource != null) {
-            throw new IllegalArgumentException("DataSource was already set");
-        }
-        this.dataSource = dataSource;
-        return this;
-    }
-    
     ExecServiceMethodDescription executorService(ExecutorService executorService) {
         if (this.executorService != null) {
             throw new IllegalArgumentException("ExecutorService was already set");
@@ -84,21 +76,5 @@ public class ExecServiceMethodDescription {
         this.executorService = executorService;
         return this;
     }
-    
-    /**
-     * The query mapped to this service method.
-     * 
-     * @param query the query
-     * @return this
-     */
-    public ExecServiceMethodDescription query(String query) {
-        if (this.query != null) {
-            throw new IllegalArgumentException("Query was already set");
-        }
-        this.query = query;
-        return this;
-    }
-    
-    
     
 }

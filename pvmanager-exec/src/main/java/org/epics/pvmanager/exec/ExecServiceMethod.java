@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.sql.DataSource;
 import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
@@ -28,16 +29,15 @@ import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 
 /**
- * The implementation of a JDBC service method.
+ * The implementation of an executor service method.
  *
  * @author carcassi
  */
 class ExecServiceMethod extends ServiceMethod {
     
-    private final DataSource dataSource;
     private final ExecutorService executorService;
-    private final String query;
-    private final List<String> parameterNames;
+    private final String shell;
+    private final String shellArg;
 
     /**
      * Creates a new service method.
@@ -46,114 +46,21 @@ class ExecServiceMethod extends ServiceMethod {
      */
     ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription) {
         super(serviceMethodDescription.serviceMethodDescription);
-        this.dataSource = serviceMethodDescription.dataSource;
         this.executorService = serviceMethodDescription.executorService;
-        this.query = serviceMethodDescription.query;
-        this.parameterNames = serviceMethodDescription.orderedParameterNames;
-    }
-
-    private DataSource getDataSource() {
-        return dataSource;
+        this.shell = serviceMethodDescription.shell;
+        this.shellArg = serviceMethodDescription.shellArg;
     }
 
     private ExecutorService getExecutorService() {
         return executorService;
-    }
-
-    protected String getQuery() {
-        return query;
     }
     
     private boolean isResultQuery() {
         return !getResultDescriptions().isEmpty();
     }
 
-    protected List<String> getParameterNames() {
-        return parameterNames;
-    }
-
     @Override
     public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
-        getExecutorService().submit(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-    }
-
-    /**
-     * Maps a result set to a VTable
-     */
-    static VTable resultSetToVTable(ResultSet resultSet) throws SQLException {
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        int nColumns = metaData.getColumnCount();
-        List<Class<?>> types = new ArrayList<>(nColumns);
-        List<Object> data = new ArrayList<>(nColumns);
-        List<String> names = new ArrayList<>(nColumns);
-        for (int j = 1; j <= nColumns; j++) {
-            names.add(metaData.getColumnName(j));
-            switch (metaData.getColumnType(j)) {
-                case Types.DOUBLE:
-                case Types.FLOAT:
-                    // XXX: NUMERIC should be BigInteger
-                case Types.NUMERIC:
-                    // XXX: Integers should be Long/Int
-                case Types.INTEGER:
-                case Types.TINYINT:
-                case Types.BIGINT:
-                case Types.SMALLINT:
-                    types.add(double.class);
-                    data.add(new CircularBufferDouble(Integer.MAX_VALUE));
-                    break;
-                    
-                case Types.LONGNVARCHAR:
-                case Types.CHAR:
-                case Types.VARCHAR:
-                    // XXX: should be a booloean
-                case Types.BOOLEAN:
-                case Types.BIT:
-                    types.add(String.class);
-                    data.add(new ArrayList<String>());
-                    break;
-                    
-                case Types.TIMESTAMP:
-                    types.add(Timestamp.class);
-                    data.add(new ArrayList<Timestamp>());
-                    break;
-                    
-                default:
-                    if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
-                        types.add(String.class);
-                        data.add(new ArrayList<String>());
-                    } else {
-                        throw new IllegalArgumentException("Unsupported type " + metaData.getColumnTypeName(j));
-                    }
-
-            }
-        }
-        
-        while (resultSet.next()) {
-            for (int i = 0; i < nColumns; i++) {
-                Class<?> type = types.get(i);
-                if (type.equals(String.class)) {
-                    @SuppressWarnings("unchecked")
-                    List<String> strings = (List<String>) data.get(i);
-                    strings.add(resultSet.getString(i+1));
-                } else if (type.equals(Timestamp.class)) {
-                    @SuppressWarnings("unchecked")
-                    List<Timestamp> timestamps = (List<Timestamp>) data.get(i);
-                    java.sql.Timestamp sqlTimestamp = resultSet.getTimestamp(i+1);
-                    if (sqlTimestamp == null) {
-                        timestamps.add(null);
-                    } else {
-                        timestamps.add(Timestamp.of(new Date(sqlTimestamp.getTime())));
-                    }
-                } else if (type.equals(double.class)) {
-                    ((CircularBufferDouble) data.get(i)).addDouble(resultSet.getDouble(i+1));
-                }
-            }
-        }
-        
-        return ValueFactory.newVTable(types, names, data);
+        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg);
     }
 }

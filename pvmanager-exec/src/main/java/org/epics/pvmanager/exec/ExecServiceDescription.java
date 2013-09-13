@@ -25,9 +25,10 @@ import org.epics.pvmanager.service.ServiceDescription;
 public class ExecServiceDescription {
     
     final ServiceDescription serviceDescription;
-    DataSource dataSource;
     ExecutorService executorService;
-    private List<ExecServiceMethodDescription> jdbcServiceMethodDescriptions = new ArrayList<>();
+    String shell = "cmd";
+    String shellArg = "/c";
+    private List<ExecServiceMethodDescription> execServiceMethodDescriptions = new ArrayList<>();
     
     /**
      * A new service description with the given service name and description.
@@ -46,7 +47,17 @@ public class ExecServiceDescription {
      * @return this
      */
     public ExecServiceDescription addServiceMethod(ExecServiceMethodDescription jdbcServiceMethodDescription) {
-        jdbcServiceMethodDescriptions.add(jdbcServiceMethodDescription);
+        execServiceMethodDescriptions.add(jdbcServiceMethodDescription);
+        return this;
+    }
+    
+    public ExecServiceDescription shell(String shell) {
+        this.shell = shell;
+        return this;
+    }
+    
+    public ExecServiceDescription shellArg(String shellArg) {
+        this.shellArg = shellArg;
         return this;
     }
     
@@ -65,9 +76,10 @@ public class ExecServiceDescription {
     }
     
     ServiceDescription createService() {
-        for (ExecServiceMethodDescription jdbcServiceMethodDescription : jdbcServiceMethodDescriptions) {
-            jdbcServiceMethodDescription.dataSource(dataSource);
+        for (ExecServiceMethodDescription jdbcServiceMethodDescription : execServiceMethodDescriptions) {
             jdbcServiceMethodDescription.executorService(executorService);
+            jdbcServiceMethodDescription.shell = shell;
+            jdbcServiceMethodDescription.shellArg = shellArg;
             serviceDescription.addServiceMethod(new ExecServiceMethod(jdbcServiceMethodDescription));
         }
         return serviceDescription;
