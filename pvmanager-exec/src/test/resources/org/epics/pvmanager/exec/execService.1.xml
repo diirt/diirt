@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<execService ver="1" name="execSample" description="A test service">
+    <methods>
+        <method name="echo" description="A test script">
+            <command>echo "You selected #string#"</command>
+            <argument name="string" description="The string" type="VString"/>
+            <result name="result" description="The result"/>
+        </method>
+        <method name="script" description="My script">
+            <command>myscript.py #value#"</command>
+            <argument name="value" description="The value" type="VNumber"/>
+            <result name="result" description="The script result" type="VTable"/>
+        </method>
+    </methods>
+</execService>
