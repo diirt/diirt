@@ -138,7 +138,7 @@
                         </goals>
                         <phase>site</phase>
                         <configuration>
-                            <docfilessubdirs />
+                            <docfilessubdirs/>
                         </configuration>
                     </execution>
                 </executions>
@@ -208,6 +208,7 @@
         <module>pvmanager-timecache</module>
     <module>pvmanager-file</module>
     <module>pvmanager-jdbc</module>
+    <module>pvmanager-exec</module>
   </modules>
     <reporting>
         <plugins>
