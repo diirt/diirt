@@ -52,29 +52,27 @@ public class ExecServices {
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
             
-            String ver = xPath.evaluate("/jdbcService/@ver", document);
-            String serviceName = xPath.evaluate("/jdbcService/@name", document);
-            String serviceDesecription = xPath.evaluate("/jdbcService/@description", document);
-            String jdbcUrl = xPath.evaluate("/jdbcService/jdbcUrl", document);
+            String ver = xPath.evaluate("/execService/@ver", document);
+            String serviceName = xPath.evaluate("/execService/@name", document);
+            String serviceDesecription = xPath.evaluate("/execService/@description", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
             
             ExecServiceDescription service = new ExecServiceDescription(serviceName, serviceDesecription);
-            //service.dataSource(new SimpleDataSource(jdbcUrl));
             service.executorService(defaultExecutor);
 
-            NodeList methods = (NodeList) xPath.evaluate("/jdbcService/methods/method", document, XPathConstants.NODESET);
+            NodeList methods = (NodeList) xPath.evaluate("/execService/methods/method", document, XPathConstants.NODESET);
             for (int i = 0; i < methods.getLength(); i++) {
                 Node method = methods.item(i);
                 String methodName = xPath.evaluate("@name", method);
                 String methodDescription = xPath.evaluate("@description", method);
-                String query = xPath.evaluate("query", method);
+                String command = xPath.evaluate("command", method);
                 String resultName = xPath.evaluate("result/@name", method);
                 String resultDescription = xPath.evaluate("result/@description", method);
                 
                 ExecServiceMethodDescription jdbcMethod = new ExecServiceMethodDescription(methodName, methodDescription);
-//                jdbcMethod.query(query);
+                jdbcMethod.command(command);
                 if (!resultName.trim().isEmpty()) {
                     jdbcMethod.queryResult(resultName, resultDescription);
                 }

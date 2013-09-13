@@ -9,7 +9,7 @@
         <method name="script" description="My script">
             <command>myscript.py #value#"</command>
             <argument name="value" description="The value" type="VNumber"/>
-            <result name="result" description="The script result" type="VTable"/>
+            <result name="result" description="The script result"/>
         </method>
     </methods>
 </execService>

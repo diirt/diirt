@@ -55,7 +55,7 @@ public class ExecXMLServiceFactory implements ServiceFactory {
                     try {
                         services.add(ExecServices.createFromXml(new FileInputStream(file)));
                     } catch (Exception ex) {
-                            Logger.getLogger(ExecServices.class.getName()).log(Level.INFO, "Failed creating JDBCService from " + file, ex);
+                            Logger.getLogger(ExecServices.class.getName()).log(Level.INFO, "Failed creating ExecService from " + file, ex);
                     }
                 }
             }
