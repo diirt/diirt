@@ -38,6 +38,7 @@ class ExecServiceMethod extends ServiceMethod {
     private final ExecutorService executorService;
     private final String shell;
     private final String shellArg;
+    private final String command;
 
     /**
      * Creates a new service method.
@@ -49,18 +50,12 @@ class ExecServiceMethod extends ServiceMethod {
         this.executorService = serviceMethodDescription.executorService;
         this.shell = serviceMethodDescription.shell;
         this.shellArg = serviceMethodDescription.shellArg;
-    }
-
-    private ExecutorService getExecutorService() {
-        return executorService;
-    }
-    
-    private boolean isResultQuery() {
-        return !getResultDescriptions().isEmpty();
+        this.command = serviceMethodDescription.command;
     }
 
     @Override
     public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
-        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg);
+        String expandedCommand = command;
+        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg, expandedCommand);
     }
 }

@@ -7,12 +7,11 @@ package org.epics.pvmanager.exec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import javax.sql.DataSource;
 import org.epics.pvmanager.service.ServiceMethodDescription;
-import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
- * The description for a JDBC service method (i.e. a query).
+ * The description for an executor service method (i.e. a shell command).
  *
  * @author carcassi
  */
@@ -23,6 +22,7 @@ public class ExecServiceMethodDescription {
     ExecutorService executorService;
     String shell;
     String shellArg;
+    String command;
     final List<String> orderedParameterNames = new ArrayList<>();
 
     /**
@@ -52,10 +52,7 @@ public class ExecServiceMethodDescription {
     }
     
     /**
-     * Adds a result for the query.
-     * <p>
-     * The result must be specified if the query returns data (i.e. it is a SELECT)
-     * and must not be specified if the query does not return data (i.e. INSERT, UPDATE, DELETE, ...).
+     * Adds a result for the script.
      * 
      * @param name the result name
      * @param description the result description
@@ -65,7 +62,7 @@ public class ExecServiceMethodDescription {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
-        serviceMethodDescription.addResult(name, description, VTable.class);
+        serviceMethodDescription.addResult(name, description, VType.class);
         return this;
     }
     
@@ -74,6 +71,11 @@ public class ExecServiceMethodDescription {
             throw new IllegalArgumentException("ExecutorService was already set");
         }
         this.executorService = executorService;
+        return this;
+    }
+
+    public ExecServiceMethodDescription command(String command) {
+        this.command = command;
         return this;
     }
     

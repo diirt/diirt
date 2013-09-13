@@ -37,18 +37,18 @@ class GenericExecServiceMethod extends ServiceMethod {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         String shell = "cmd";
         String shellArg = "/c";
-        executeCommand(parameters, callback, errorCallback, executor, shell, shellArg);
+        String command = ((VString) parameters.get("command")).getValue();
+        executeCommand(parameters, callback, errorCallback, executor, shell, shellArg, command);
     }
 
     static void executeCommand(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback,
-            final ExecutorService executor, final String shell, final String shellArg) {
+            final ExecutorService executor, final String shell, final String shellArg, final String command) {
         executor.submit(new Runnable() {
 
             @Override
             public void run() {
                 Process process = null;
                 try {
-                    String command = ((VString) parameters.get("command")).getValue();
                     process = new ProcessBuilder(shell, shellArg, command).start();
                     
                     // Read output to a text buffer
