@@ -58,7 +58,7 @@ class GenericExecServiceMethod extends ServiceMethod {
     }
     
     static boolean isWindows() {
-        return System.getProperties().get("os.name").toString().indexOf("win") >= 0;
+        return System.getProperties().get("os.name").toString().toLowerCase().indexOf("win") >= 0;
     }
 
     static void executeCommand(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback,
