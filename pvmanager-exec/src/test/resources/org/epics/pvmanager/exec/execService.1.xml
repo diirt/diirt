@@ -2,7 +2,7 @@
 <execService ver="1" name="execSample" description="A test service">
     <methods>
         <method name="echo" description="A test script">
-            <command>echo "You selected #string#"</command>
+            <command>echo You selected #string#</command>
             <argument name="string" description="The string" type="VString"/>
             <result name="result" description="The result"/>
         </method>

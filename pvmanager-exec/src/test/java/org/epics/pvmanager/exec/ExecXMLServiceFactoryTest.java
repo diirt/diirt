@@ -91,7 +91,7 @@ public class ExecXMLServiceFactoryTest {
         params.put("string", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
         Map<String, Object> result = ServiceUtil.syncExecuteMethod(service.getServiceMethods().get("echo"), params);
         VString output = (VString) result.get("output");
-        assertThat(output.getValue(), equalTo("\"You selected FOO!\"\n"));
+        assertThat(output.getValue(), equalTo("You selected FOO!\n"));
     }
 
 }
