@@ -35,10 +35,30 @@ class GenericExecServiceMethod extends ServiceMethod {
     @Override
     public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        String shell = "cmd";
-        String shellArg = "/c";
+        String shell = defaultShell();
+        String shellArg = defaultShellArg();
         String command = ((VString) parameters.get("command")).getValue();
         executeCommand(parameters, callback, errorCallback, executor, shell, shellArg, command);
+    }
+    
+    static String defaultShell() {
+        if (isWindows()) {
+            return "cmd";
+        } else {
+            return "/bin/bash";
+        }
+    }
+    
+    static String defaultShellArg() {
+        if (isWindows()) {
+            return "/c";
+        } else {
+            return "-c";
+        }
+    }
+    
+    static boolean isWindows() {
+        return System.getProperties().get("os.name").toString().indexOf("win") >= 0;
     }
 
     static void executeCommand(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback,

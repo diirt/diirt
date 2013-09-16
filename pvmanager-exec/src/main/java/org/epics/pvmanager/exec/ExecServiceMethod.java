@@ -4,29 +4,11 @@
  */
 package org.epics.pvmanager.exec;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.sql.DataSource;
 import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
-import org.epics.util.array.CircularBufferDouble;
-import org.epics.util.time.Timestamp;
-import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
 
 /**
  * The implementation of an executor service method.

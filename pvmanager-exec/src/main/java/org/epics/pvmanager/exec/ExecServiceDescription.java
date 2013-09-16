@@ -26,8 +26,8 @@ public class ExecServiceDescription {
     
     final ServiceDescription serviceDescription;
     ExecutorService executorService;
-    String shell = "cmd";
-    String shellArg = "/c";
+    String shell = GenericExecServiceMethod.defaultShell();
+    String shellArg = GenericExecServiceMethod.defaultShellArg();
     private List<ExecServiceMethodDescription> execServiceMethodDescriptions = new ArrayList<>();
     
     /**
