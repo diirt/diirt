@@ -226,6 +226,13 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     public abstract T newUpdate();
     
+    /**
+     * Given the new data ranges, calculates the new aggregated and plot
+     * ranges.
+     * 
+     * @param xDataRange the new data range for x
+     * @param yDataRange the new data range for y
+     */
     protected void calculateRanges(Range xDataRange, Range yDataRange) {
         xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
         yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
@@ -233,6 +240,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange);
     }
     
+    /**
+     * Draws the horizontal reference lines based on the calculated
+     * graph area.
+     */
     protected void drawHorizontalReferenceLines() {
         g.setColor(referenceLineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -253,6 +264,16 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
+    /**
+     * Calculates the graph area based on:
+     * <ul>
+     *    <li>The image size</li>
+     *    <li>The plot ranges</li>
+     *    <li>The value scales</li>
+     *    <li>The font for the labels</li>
+     *    <li>The margins</li>
+     * </ul>
+     */
     protected void calculateGraphArea() {
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
@@ -330,11 +351,18 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yReferenceCoords = new ArrayDouble(yRefCoords);
     }
 
+    /**
+     * Draws the background with the background color.
+     */
     protected void drawBackground() {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getImageWidth(), getImageHeight());
     }
     
+    /**
+     * Draw the calculated graph area. Draws the background, the reference
+     * lines and the labels.
+     */
     protected void drawGraphArea() {
         drawBackground();
         
@@ -347,11 +375,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         drawXLabels();
     }
 
-    private ScaledData scaleNoReducation(ListNumber xValues, ListNumber yValues) {
-        return scaleNoReducation(xValues, yValues, 0);
+    private ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues) {
+        return scaleNoReduction(xValues, yValues, 0);
     }
 
-    private ScaledData scaleNoReducation(ListNumber xValues, ListNumber yValues, int dataStart) {
+    private ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues, int dataStart) {
         ScaledData scaledData = new ScaledData();
         int dataCount = xValues.size();
         scaledData.scaledX = new double[dataCount];
@@ -370,7 +398,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         // number of points on the x axis. If the number of points is less
         // than that, it's not worth it. Don't do the data reduction.
         if (xValues.size() < xPlotCoordWidth * 4) {
-            return scaleNoReducation(xValues, yValues, dataStart);
+            return scaleNoReduction(xValues, yValues, dataStart);
         }
 
         ScaledData scaledData = new ScaledData();
@@ -432,6 +460,14 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         private int end;
     }
     
+    /**
+     * Draws an implicit line given the interpolation scheme and the x,y values.
+     * The function will scale the values.
+     * 
+     * @param xValues the x values
+     * @param yValues the y values
+     * @param interpolation the interpolation scheme
+     */
     protected void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation) {
         ReductionScheme reductionScheme = ReductionScheme.NONE;
 
@@ -441,7 +477,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reductionScheme + " not supported");
             case NONE:
-                scaledData = scaleNoReducation(xValues, yValues);
+                scaledData = scaleNoReduction(xValues, yValues);
                 break;
         }
         
@@ -464,6 +500,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.draw(path);
     }
     
+    /**
+     * Draws an explicit line give the interpolation and reduction schemes,
+     * the x values and the y values. The function will scale the values.
+     * 
+     * @param xValues the x values
+     * @param yValues the y values
+     * @param interpolation the interpolation
+     * @param reduction the reduction
+     */
     protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction) {
         ScaledData scaledData;
         
@@ -478,7 +523,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
             case NONE:
-                scaledData = scaleNoReducation(xValues, yValues, start);
+                scaledData = scaleNoReduction(xValues, yValues, start);
                 break;
             case FIRST_MAX_MIN_LAST:
                 scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start);
@@ -659,19 +704,38 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
-
+    /**
+     * Scale the x value to the graph area.
+     * 
+     * @param value the x value
+     * @return the x position in the graph area
+     */
     protected final double scaledX(double value) {
         return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
     }
 
+    /**
+     * Scale the y value to the graph area.
+     * 
+     * @param value the y value
+     * @return the y position in the graph area
+     */
     protected final double scaledY(double value) {
         return yValueScale.scaleValue(value, yPlotValueStart, yPlotValueEnd, yPlotCoordEnd, yPlotCoordStart);
     }
     
+    /**
+     * Sets the clip area to the actual graph area
+     * 
+     * @param g the graphics context
+     */
     protected void setClip(Graphics2D g) {
         g.setClip(xAreaStart, yAreaStart, xAreaEnd - xAreaStart + 1, yAreaEnd - yAreaStart + 1);
     }
 
+    /**
+     * Draw the vertical labels based on the calculated graph area.
+     */
     protected void drawYLabels() {
         // Draw Y labels
         ListNumber yTicks = yReferenceCoords;
@@ -696,6 +760,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
 
+    /**
+     * Draw the horizontal labels based on the calculated graph area.
+     */
     protected void drawXLabels() {
         // Draw X labels
         ListNumber xTicks = xReferenceCoords;
