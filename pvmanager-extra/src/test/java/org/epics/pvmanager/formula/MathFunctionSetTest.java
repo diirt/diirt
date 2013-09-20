@@ -119,63 +119,103 @@ public class MathFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void log1() {
-        testFunction(set, "log", Math.E, 1.0);
-        testFunction(set, "log", 1.0, 0.0);
+        FunctionTester.findByName(set, "log")
+                .compareReturnValue(1.0, Math.E)
+                .compareReturnValue(0.0, 1.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void log101() {
-        testFunction(set, "log10", 10.0, 1.0);
-        testFunction(set, "log10", 1.0, 0.0);
+        FunctionTester.findByName(set, "log10")
+                .compareReturnValue(1.0, 10.0)
+                .compareReturnValue(0.0, 1.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void signum1() {
-        testFunction(set, "signum", 10.0, 1.0);
-        testFunction(set, "signum", -14.0, -1.0);
-        testFunction(set, "signum", 0.0, 0.0);
+        FunctionTester.findByName(set, "signum")
+                .compareReturnValue(1.0, 10.0)
+                .compareReturnValue(-1.0, -14.0)
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void sin1() {
-        testFunction(set, "sin", 0.0, 0.0);
-        testFunction(set, "sin", Math.PI / 2 , 1.0);
-        testFunction(set, "sin", -Math.PI / 2 , -1.0);
+        FunctionTester.findByName(set, "sin")
+                .compareReturnValue(1.0, Math.PI / 2)
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(-1.0, - Math.PI / 2)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void sinh1() {
-        testFunction(set, "sinh", 0.0, 0.0);
-        testFunction(set, "sinh", 1.0, 1.17520);
+        FunctionTester.findByName(set, "sinh")
+                .compareReturnValue(1.17520, 1.0)
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void sqrt1() {
-        testFunction(set, "sqrt", 1.0, 1.0);
-        testFunction(set, "sqrt", 9.0, 3.0);
+        FunctionTester.findByName(set, "sqrt")
+                .compareReturnValue(1.0, 1.0)
+                .compareReturnValue(3.0, 9.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void tan1() {
-        testFunction(set, "tan", 0.0, 0.0);
-        testFunction(set, "tan", Math.PI / 4, 1.0);
+        FunctionTester.findByName(set, "tan")
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(1.0, Math.PI / 4)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void tanh1() {
-        testFunction(set, "tanh", 0.0, 0.0);
-        testFunction(set, "tanh", Math.E, 0.991328);
+        FunctionTester.findByName(set, "tanh")
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(0.991328, Math.E)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void toRadians1() {
-        testFunction(set, "toRadians", 0.0, 0.0);
-        testFunction(set, "toRadians", 180, Math.PI);
+        FunctionTester.findByName(set, "toRadians")
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(Math.PI, 180.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void toDegrees1() {
-        testFunction(set, "toDegrees", 0.0, 0.0);
-        testFunction(set, "toDegrees", Math.PI, 180);
+        FunctionTester.findByName(set, "toDegrees")
+                .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(180.0, Math.PI)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 }
