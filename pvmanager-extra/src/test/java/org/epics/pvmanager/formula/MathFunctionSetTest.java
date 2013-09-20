@@ -55,42 +55,66 @@ public class MathFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void cbrt1() {
-        testFunction(set, "cbrt", 1.0, 1.0);
-        testFunction(set, "cbrt", 8.0, 2.0);
-        testFunction(set, "cbrt", 27.0, 3.0);
+        FunctionTester.findByName(set, "cbrt")
+                .compareReturnValue(1.0, 1.0)
+                .compareReturnValue(2.0, 8.0)
+                .compareReturnValue(3.0, 27.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void ceil1() {
-        testFunction(set, "ceil", 1.0, 1.0);
-        testFunction(set, "ceil", 1.5, 2.0);
-        testFunction(set, "ceil", 2.9, 3.0);
+        FunctionTester.findByName(set, "ceil")
+                .compareReturnValue(1.0, 1.0)
+                .compareReturnValue(2.0, 1.5)
+                .compareReturnValue(3.0, 2.9)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void cos1() {
-        testFunction(set, "cos", 0.0, 1.0);
-        testFunction(set, "cos", Math.PI / 2, 0.0);
-        testFunction(set, "cos", Math.PI, -1.0);
+        FunctionTester.findByName(set, "cos")
+                .compareReturnValue(1.0, 0.0)
+                .compareReturnValue(0.0, Math.PI / 2)
+                .compareReturnValue(-1.0, Math.PI)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void cosh1() {
-        testFunction(set, "cosh", 0.0, 1.0);
-        testFunction(set, "cosh", 1.0, 1.54308);
+        FunctionTester.findByName(set, "cosh")
+                .compareReturnValue(1.0, 0.0)
+                .compareReturnValue(1.54308, 1.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void exp1() {
-        testFunction(set, "exp", 0.0, 1.0);
-        testFunction(set, "exp", 1.0, Math.E);
+        FunctionTester.findByName(set, "exp")
+                .compareReturnValue(1.0, 0.0)
+                .compareReturnValue(Math.E, 1.0)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void floor1() {
-        testFunction(set, "floor", 1.0, 1.0);
-        testFunction(set, "floor", 1.5, 1.0);
-        testFunction(set, "floor", 2.1, 2.0);
+        FunctionTester.findByName(set, "floor")
+                .compareReturnValue(1.0, 1.0)
+                .compareReturnValue(1.0, 1.5)
+                .compareReturnValue(2.0, 2.1)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
