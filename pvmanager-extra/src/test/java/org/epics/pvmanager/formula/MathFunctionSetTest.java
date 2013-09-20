@@ -19,6 +19,7 @@ public class MathFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findByName(set, "abs")
                 .compareReturnValue(1.0, 1.0)
                 .compareReturnValue(2.0, -2.0)
+                .compareReturnValue(null, (Object) null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -28,6 +29,7 @@ public class MathFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findByName(set, "acos")
                 .compareReturnValue(3.1415/2.0, 0.0)
                 .compareReturnValue(0.0, 1.0)
+                .compareReturnValue(null, (Object) null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -37,6 +39,7 @@ public class MathFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findByName(set, "asin")
                 .compareReturnValue(3.1415/2.0, 1.0)
                 .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(null, (Object) null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -45,6 +48,7 @@ public class MathFunctionSetTest extends BaseTestForFormula {
     public void atan1() {
         FunctionTester.findByName(set, "atan")
                 .compareReturnValue(0.0, 0.0)
+                .compareReturnValue(null, (Object) null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
