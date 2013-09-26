@@ -9,6 +9,60 @@
   
     <body>
         <release version="2.2" date="SNAPSHOT" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
+            <action dev="carcassi"  type="update">
+                formula: basic numeric math function return highest alarm and latest time of arguments; also handle null better
+            </action>
+            <action dev="carcassi"  type="add">
+                exec: first draft for services that execute commands; if output is a CSV, it's parsed to a VTable
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: add alarm and time compare, toString and other utility functions
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: significant refactoring in test code
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype/file: adding temporary support for images in file; review VImage conversion routines
+            </action>
+            <action dev="carcassi"  type="update">
+                jdbc: adding support for Timestamp/numeric/boolean/bit null, temporary support for images in file; review VImage conversion routines
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: VTable can handle timestamps
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: using the not sharing of channels to prevent concurrency issues
+            </action>
+            <action dev="carcassi"  type="add">
+                jdbc: ability to create database services from XML descriptions
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: VBoolean support
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: added color definitions for Alarm
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: highestSeverity
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added comparative operators, bitwise operator, logical operator
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added a few operators for arrays
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added toString/toRadians/toDegrees
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added dynamic pv and pvs functions (pointer like function)
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added concat function for string concatenation
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: support for stateful and dynamic functions
+            </action>
             <action dev="carcassi"  type="add">
                 vtype/formula: adding natural join
             </action>
