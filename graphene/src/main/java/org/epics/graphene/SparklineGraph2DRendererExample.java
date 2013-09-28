@@ -17,13 +17,17 @@ import javax.imageio.ImageIO;
 public class SparklineGraph2DRendererExample {
     public static void main(String[] args) throws IOException
         {
-            Cell2DDataset data = Cell2DDatasets.linearRange(new Cell2DDatasets.Function2D() {
-                
-                @Override
-                public double getValue(double x, double y) {
-                    return x+y;
-                }
-            }, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 10), 10);
+            double[] initialDataX = new double[100];
+            for(int i = 0; i< 100; i++)
+            {
+                initialDataX[i] = i;
+            }
+            double[] initialDataY = new double[100];
+            for(int i = 0; i< 100; i++)
+            {
+                initialDataY[i] = i;
+            }
+            Point2DDataset data = Point2DDatasets.lineData(initialDataX,initialDataY);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();
             SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(640,480);
