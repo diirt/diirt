@@ -15,6 +15,24 @@ import org.epics.util.array.SortedListView;
  * @author Samuel
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
+    /**
+     * Creates a new sparkline graph renderer.
+     * 
+     * @param imageWidth the graph width
+     * @param imageHeight the graph height
+     */    
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, String dataType){
+        super(imageWidth, imageHeight);
+        bottomAreaMargin = imageWidth/4;
+        topAreaMargin = imageWidth/4;
+        rightAreaMargin = imageHeight/6;
+        leftAreaMargin = imageHeight/6;
+        this.dataType = dataType;
+    }
+    private String dataType;
+    
+    public String getDataType(){
+        return this.dataType;
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
@@ -35,6 +53,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);
         super.rightMargin = 120;
+
     }
     
     public void update(LineGraph2DRendererUpdate update) {
@@ -86,10 +105,24 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         } else {
             focusValueIndex = -1;
         }
-        
-        //Data for Margins
-        Number yMax = data.getYStatistics().getMaximum();
-        Number yMin = data.getYStatistics().getMinimum();     
+        //TODO: find a way to make this more thread friendly/faster.
+        //TODO: make it so the datatype label moves away from the graph, the longer the string for the datatype.
+        //TODO: split this into methods that change text size and stuff, based on the size of the graph.
+        double lastNum = (yValues.getDouble(yValues.size()-1));
+        double secondLastNum = (yValues.getDouble(yValues.size()-2));
+        double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
+        int converter = (int)(percentChange*1000);
+        percentChange = converter/1000;
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/6, "Value");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/4,
+        Double.toString(yValues.getDouble(yValues.size()-1)));
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/6, "Change");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/4,
+        Double.toString(lastNum - secondLastNum)+ " (" + 
+        Double.toString(percentChange) + "%)");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/6, "Data Type");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/4, getDataType());
     }
     
     @Override 
@@ -132,6 +165,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 currentScaledDiff = scaledDiff;
             }
         }
+    }
+    protected void drawCurrentValue(){
+        
     }    
     
+    private int currentIndex;
+    private double currentScaledDiff;
 }

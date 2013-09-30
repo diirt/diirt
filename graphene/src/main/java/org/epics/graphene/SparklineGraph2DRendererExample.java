@@ -27,10 +27,10 @@ public class SparklineGraph2DRendererExample {
             {
                 initialDataY[i] = i;
             }
-            Point2DDataset data = Point2DDatasets.lineData(initialDataX,initialDataY);
+            Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(640,480);
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(640,480, new String("Pounds"));
             renderer.draw(g, data);
             ImageIO.write(image, "png", new File("SparklineGraph.png"));
         }    
