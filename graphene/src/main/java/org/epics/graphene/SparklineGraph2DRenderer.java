@@ -22,8 +22,18 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, String dataType){
         super(imageWidth, imageHeight);
+        bottomAreaMargin = imageWidth/4;
+        topAreaMargin = imageWidth/4;
+        rightAreaMargin = imageHeight/6;
+        leftAreaMargin = imageHeight/6;
+        this.dataType = dataType;
+    }
+    private String dataType;
+    
+    public String getDataType(){
+        return this.dataType;
     }
     
     @Override
@@ -55,6 +65,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * 
      * @return the current interpolation
      */
+
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
@@ -121,6 +132,25 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         } else {
             focusValueIndex = -1;
         }
+        //TODO: find a way to make this more thread friendly/faster.
+        //TODO: make it so the datatype label moves away from the graph, the longer the string for the datatype.
+        //TODO: split this into methods that change text size and stuff, based on the size of the graph.
+        
+        double lastNum = (yValues.getDouble(yValues.size()-1));
+        double secondLastNum = (yValues.getDouble(yValues.size()-2));
+        double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
+        int converter = (int)(percentChange*1000);
+        percentChange = converter/1000;
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/6, "Value");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/4,
+        Double.toString(yValues.getDouble(yValues.size()-1)));
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/6, "Change");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/4,
+        Double.toString(lastNum - secondLastNum)+ " (" + 
+        Double.toString(percentChange) + "%)");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/6, "Data Type");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/4, getDataType());
     }
     @Override 
     protected void drawGraphArea(){
@@ -136,6 +166,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 currentScaledDiff = scaledDiff;
             }
         }
+    }
+    protected void drawCurrentValue(){
+        
     }
     
     private int currentIndex;
