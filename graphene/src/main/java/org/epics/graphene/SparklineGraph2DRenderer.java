@@ -15,7 +15,17 @@ import org.epics.util.array.SortedListView;
  * @author Samuel
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
-    
+    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
+
+    private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
+    private Integer focusPixelX;
+    private boolean highlightFocusValue = false;
+    private int focusValueIndex = -1;
+    private int currentIndex;
+    private double currentScaledDiff;
+
     /**
      * Creates a new sparkline graph renderer.
      * 
@@ -24,53 +34,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      */    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);
+        super.rightMargin = 120;
     }
-    
-    @Override
-    public Graph2DRendererUpdate newUpdate() {
-        return new SparklineGraph2DRendererUpdate();
-    }
-    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
-    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE);
-    
-
-    private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
-    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
-    // Pixel focus
-    private Integer focusPixelX;
-    
-    private boolean highlightFocusValue = false;
-
-    private int focusValueIndex = -1;
-    
-    /**
-     * Creates a new line graph renderer.
-     * 
-     * @param imageWidth the graph width
-     * @param imageHeight the graph height
-     */
-
-    /**
-     * The current interpolation used for the line.
-     * 
-     * @return the current interpolation
-     */
-    public InterpolationScheme getInterpolation() {
-        return interpolation;
-    }
-    
-    public boolean isHighlightFocusValue() {
-        return highlightFocusValue;
-    }
-    
-    public int getFocusValueIndex() {
-        return focusValueIndex;
-    }
-    
-    public Integer getFocusPixelX() {
-        return focusPixelX;
-    }
-    
     
     public void update(LineGraph2DRendererUpdate update) {
         super.update(update);
@@ -101,7 +66,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateGraphArea();
         drawBackground();
         drawGraphArea();
-        
+                
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
 
@@ -121,12 +86,43 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         } else {
             focusValueIndex = -1;
         }
+        
+        //Data for Margins
+        Number yMax = data.getYStatistics().getMaximum();
+        Number yMin = data.getYStatistics().getMinimum();     
     }
+    
     @Override 
     protected void drawGraphArea(){
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
-
+    
+    @Override
+    public Graph2DRendererUpdate newUpdate() {
+        return new SparklineGraph2DRendererUpdate();
+    }
+    
+    /**
+     * The current interpolation used for the line.
+     * 
+     * @return the current interpolation
+     */
+    public InterpolationScheme getInterpolation() {
+        return interpolation;
+    }
+    
+    public boolean isHighlightFocusValue() {
+        return highlightFocusValue;
+    }  
+    
+    public int getFocusValueIndex() {
+        return focusValueIndex;
+    }  
+    
+    public Integer getFocusPixelX() {
+        return focusPixelX;
+    }
+        
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         if (focusPixelX != null) {
@@ -136,10 +132,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 currentScaledDiff = scaledDiff;
             }
         }
-    }
-    
-    private int currentIndex;
-    private double currentScaledDiff;
-    
+    }    
     
 }
