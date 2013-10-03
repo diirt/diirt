@@ -5,10 +5,10 @@
 package org.epics.graphene;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
 import java.util.Arrays;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
+
 
 /**
  *
@@ -23,16 +23,18 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      */    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight, String dataType){
         super(imageWidth, imageHeight);
-        bottomAreaMargin = imageWidth/4;
-        topAreaMargin = imageWidth/4;
-        rightAreaMargin = imageHeight/6;
-        leftAreaMargin = imageHeight/6;
+        bottomAreaMargin = (int)(imageWidth/5*1.5); //Right Side
+        topAreaMargin = imageWidth/5; //Left Side
+        rightAreaMargin = imageHeight/8;
+        leftAreaMargin = imageHeight/8;
         this.dataType = dataType;
+        
     }
     private String dataType;
     
     public String getDataType(){
         return this.dataType;
+    }
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
@@ -43,6 +45,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int focusValueIndex = -1;
     private int currentIndex;
     private double currentScaledDiff;
+
 
     /**
      * Creates a new sparkline graph renderer.
@@ -85,7 +88,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateGraphArea();
         drawBackground();
         drawGraphArea();
-                
+        int fontSize = (int)(getImageWidth()/30.0);
+        g.setFont(new Font("Serif",Font.PLAIN,(int)(getImageWidth()/30.0)));//(new Font("Helvetica",2,int(Math.log(double(getImageWidth()))))));      
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
 
@@ -112,17 +116,18 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double secondLastNum = (yValues.getDouble(yValues.size()-2));
         double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
         int converter = (int)(percentChange*1000);
-        percentChange = converter/1000;
+        percentChange = converter/1000.0;
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/6, "Value");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/4, getImageHeight()/4,
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3, "Value");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3+20,
         Double.toString(yValues.getDouble(yValues.size()-1)));
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/6, "Change");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-getImageWidth()/8, getImageHeight()/4,
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin + (this.fontSize)*3, getImageHeight()/3, "Change");
+        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin + (this.fontSize)*3, getImageHeight()/3+20,
         Double.toString(lastNum - secondLastNum)+ " (" + 
         Double.toString(percentChange) + "%)");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/6, "Data Type");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()/8, getImageHeight()/4, getDataType());
+        alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+        Java2DStringUtilities.drawString(g, alignment, this.topAreaMargin-3, getImageHeight()/3, "Data Type");
+        Java2DStringUtilities.drawString(g, alignment, this.topAreaMargin-3, getImageHeight()/3 + 20, getDataType());
     }
     
     @Override 
@@ -155,7 +160,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public Integer getFocusPixelX() {
         return focusPixelX;
     }
-        
+
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         if (focusPixelX != null) {
@@ -169,7 +174,4 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected void drawCurrentValue(){
         
     }    
-    
-    private int currentIndex;
-    private double currentScaledDiff;
 }
