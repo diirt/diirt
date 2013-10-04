@@ -45,19 +45,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int focusValueIndex = -1;
     private int currentIndex;
     private double currentScaledDiff;
-
-
-    /**
-     * Creates a new sparkline graph renderer.
-     * 
-     * @param imageWidth the graph width
-     * @param imageHeight the graph height
-     */    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
-        super(imageWidth, imageHeight);
-        super.rightMargin = 120;
-
-    }
     
     public void update(LineGraph2DRendererUpdate update) {
         super.update(update);
@@ -84,15 +71,24 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
+        //General Render
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
         drawBackground();
         drawGraphArea();
-        int fontSize = (int)(getImageWidth()/30.0);
-        g.setFont(new Font("Serif",Font.PLAIN,(int)(getImageWidth()/30.0)));//(new Font("Helvetica",2,int(Math.log(double(getImageWidth()))))));      
+        
+        //Determines Font Size
+        int fontSize = 18;
+        int pixelsOfString = 0;        
+        do{
+            fontSize--;
+            g.setFont(new Font("Serif",Font.PLAIN, fontSize));    
+            pixelsOfString = g.getFontMetrics().stringWidth(dataType);
+        }while(pixelsOfString > (topAreaMargin - 3 - 20));     
+        
+        
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
-        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
-
+        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         g.setColor(Color.BLACK);
 
@@ -109,6 +105,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         } else {
             focusValueIndex = -1;
         }
+        
+                
         //TODO: find a way to make this more thread friendly/faster.
         //TODO: make it so the datatype label moves away from the graph, the longer the string for the datatype.
         //TODO: split this into methods that change text size and stuff, based on the size of the graph.
@@ -117,17 +115,28 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
         int converter = (int)(percentChange*1000);
         percentChange = converter/1000.0;
-        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3, "Value");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3+20,
+        
+        //Sparkline Margins
+        //Alignments
+        Java2DStringUtilities.Alignment leftAlignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
+        Java2DStringUtilities.Alignment rightAlignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;                
+        
+        //Value
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3+20,
         Double.toString(yValues.getDouble(yValues.size()-1)));
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin + (this.fontSize)*3, getImageHeight()/3, "Change");
-        Java2DStringUtilities.drawString(g, alignment, getImageWidth()-this.bottomAreaMargin + (this.fontSize)*3, getImageHeight()/3+20,
-        Double.toString(lastNum - secondLastNum)+ " (" + 
-        Double.toString(percentChange) + "%)");
-        alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
-        Java2DStringUtilities.drawString(g, alignment, this.topAreaMargin-3, getImageHeight()/3, "Data Type");
-        Java2DStringUtilities.drawString(g, alignment, this.topAreaMargin-3, getImageHeight()/3 + 20, getDataType());
+        
+        //Change
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, getImageHeight()/3+20,
+        Double.toString(lastNum - secondLastNum)+ " (" + Double.toString(percentChange) + "%)");
+        
+        //Data Type
+        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, getImageHeight()/3 + 20, getDataType());
+        
+        //Data Headers
+        g.setFont(new Font("Serif",Font.BOLD, fontSize));            
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3, "Value");
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, getImageHeight()/3, "Change");
+        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, getImageHeight()/3, "Data Type");        
     }
     
     @Override 
