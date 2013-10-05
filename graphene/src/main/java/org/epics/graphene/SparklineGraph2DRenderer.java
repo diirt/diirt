@@ -27,9 +27,12 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         topAreaMargin = imageWidth/5; //Left Side
         rightAreaMargin = imageHeight/8;
         leftAreaMargin = imageHeight/8;
+        labelHeight = imageHeight/3;
+        dataHeight = imageHeight/3+20;
         this.dataType = dataType;
         
     }
+
     private String dataType;
     
     public String getDataType(){
@@ -45,6 +48,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int focusValueIndex = -1;
     private int currentIndex;
     private double currentScaledDiff;
+    protected int labelHeight;
+    protected int dataHeight;
     
     public void update(LineGraph2DRendererUpdate update) {
         super.update(update);
@@ -82,10 +87,10 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int pixelsOfString = 0;        
         do{
             fontSize--;
-            g.setFont(new Font("Serif",Font.PLAIN, fontSize));    
+            g.setFont(new Font("Serif",Font.BOLD, fontSize));    
             pixelsOfString = g.getFontMetrics().stringWidth(dataType);
         }while(pixelsOfString > (topAreaMargin - 3 - 20));     
-        
+        g.setFont(new Font("Serif",Font.PLAIN, fontSize));
         
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
@@ -108,13 +113,19 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
                 
         //TODO: find a way to make this more thread friendly/faster.
-        //TODO: make it so the datatype label moves away from the graph, the longer the string for the datatype.
-        //TODO: split this into methods that change text size and stuff, based on the size of the graph.
         double lastNum = (yValues.getDouble(yValues.size()-1));
         double secondLastNum = (yValues.getDouble(yValues.size()-2));
         double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
         int converter = (int)(percentChange*1000);
         percentChange = converter/1000.0;
+        
+        double rawChange = (lastNum-secondLastNum);
+        converter = (int)(rawChange*1000);
+        rawChange = converter/1000.0;
+        
+        converter = (int)(lastNum*1000);
+        lastNum = converter/1000.0;
+        
         
         //Sparkline Margins
         //Alignments
@@ -122,21 +133,24 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         Java2DStringUtilities.Alignment rightAlignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;                
         
         //Value
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3+20,
-        Double.toString(yValues.getDouble(yValues.size()-1)));
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.dataHeight,
+        Double.toString(lastNum));
         
+
         //Change
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, getImageHeight()/3+20,
-        Double.toString(lastNum - secondLastNum)+ " (" + Double.toString(percentChange) + "%)");
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3+10, this.dataHeight,
+        Double.toString(rawChange));
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, this.dataHeight+15,
+        " (" + Double.toString(percentChange) + "%)");
         
         //Data Type
-        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, getImageHeight()/3 + 20, getDataType());
+        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.dataHeight, getDataType());
         
         //Data Headers
         g.setFont(new Font("Serif",Font.BOLD, fontSize));            
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, getImageHeight()/3, "Value");
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, getImageHeight()/3, "Change");
-        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, getImageHeight()/3, "Data Type");        
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.labelHeight, "Value");
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, this.labelHeight, "Change");
+        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.labelHeight, "Data Type");        
     }
     
     @Override 
