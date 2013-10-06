@@ -1,4 +1,7 @@
-
+/**
+ * Copyright (C) 2012 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
 package org.epics.graphene;
 
 import java.awt.Graphics2D;
@@ -39,7 +42,7 @@ public class SparklineGraph2DRendererTest {
         largeDataset = null;
     }
     
-    @Test
+/*    @Test
     public void test1() throws Exception {
         double[] initialDataX = new double[100];
         for(int i = 0; i< 100; i++)
@@ -52,5 +55,5 @@ public class SparklineGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("sparkline2D.1", image);
-    }
+    }*/
 }
