@@ -38,6 +38,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public String getDataType(){
         return this.dataType;
     }
+    
+    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
@@ -51,6 +53,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected int labelHeight;
     protected int dataHeight;
     
+    public void setDataHeight(int newHeight){
+        dataHeight = newHeight;
+    }
     public void update(LineGraph2DRendererUpdate update) {
         super.update(update);
         if (update.getInterpolation() != null) {
@@ -87,9 +92,12 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int pixelsOfString = 0;        
         do{
             fontSize--;
-            g.setFont(new Font("Serif",Font.BOLD, fontSize));    
-            pixelsOfString = g.getFontMetrics().stringWidth(dataType);
-        }while(pixelsOfString > (topAreaMargin - 3 - 20));     
+            g.setFont(new Font("Serif",Font.BOLD, fontSize)); 
+            if(dataType.length() >= "Data TypeA".length())
+                pixelsOfString = g.getFontMetrics().stringWidth(dataType);
+            else
+                pixelsOfString = g.getFontMetrics().stringWidth("Data Type");
+        }while(pixelsOfString > (topAreaMargin - 25));     
         g.setFont(new Font("Serif",Font.PLAIN, fontSize));
         
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
@@ -115,18 +123,16 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //TODO: find a way to make this more thread friendly/faster.
         double lastNum = (yValues.getDouble(yValues.size()-1));
         double secondLastNum = (yValues.getDouble(yValues.size()-2));
-        double percentChange = (lastNum-secondLastNum)/secondLastNum*100;
-        int converter = (int)(percentChange*1000);
-        percentChange = converter/1000.0;
-        
         double rawChange = (lastNum-secondLastNum);
-        converter = (int)(rawChange*1000);
-        rawChange = converter/1000.0;
+        double percentChange = rawChange/secondLastNum*100;
+
         
-        converter = (int)(lastNum*1000);
-        lastNum = converter/1000.0;
+        String rawChangeString = convertToReadable(rawChange);
+        String lastNumString = convertToReadable(lastNum);
+        String percentChangeString = convertToReadable(percentChange);
         
-        
+        setDataHeight(this.labelHeight+(int)(fontSize*1.15));
+              
         //Sparkline Margins
         //Alignments
         Java2DStringUtilities.Alignment leftAlignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
@@ -134,14 +140,14 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Value
         Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.dataHeight,
-        Double.toString(lastNum));
+        lastNumString);
         
 
         //Change
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3+10, this.dataHeight,
-        Double.toString(rawChange));
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, this.dataHeight+15,
-        " (" + Double.toString(percentChange) + "%)");
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.8), this.dataHeight,
+        rawChangeString);
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.2), this.dataHeight+(int)((fontSize)*1.15),
+        " (" + percentChangeString + "%)");
         
         //Data Type
         Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.dataHeight, getDataType());
@@ -149,7 +155,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Data Headers
         g.setFont(new Font("Serif",Font.BOLD, fontSize));            
         Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.labelHeight, "Value");
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (fontSize)*3, this.labelHeight, "Change");
+        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.8), this.labelHeight, "Change");
         Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.labelHeight, "Data Type");        
     }
     
@@ -196,5 +202,37 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     protected void drawCurrentValue(){
         
-    }    
+    } 
+    protected String convertToReadable(double originalNumber){
+        int power = 0;
+        if(Math.abs(originalNumber) < 10000 && Math.abs(originalNumber) > .001){
+            int converter = (int)(originalNumber*1000);
+            originalNumber = (converter/1000.0);
+            return Double.toString(originalNumber);
+        }
+        else{
+            if(Math.abs(originalNumber) > 10000){
+                power = 4;
+                while(Math.abs(originalNumber)/(Math.pow(10,power)) >= 1){
+                    power+=1;
+                }
+                power-=1;
+                double readableNumber = originalNumber/(Math.pow(10,power));
+                int converter = (int)(100*readableNumber);
+                readableNumber = converter/100.0;
+                return Double.toString(readableNumber) + "E" + Integer.toString(power);
+            }
+            if(Math.abs(originalNumber) < .001){
+                power = -4;
+                while(Math.abs(originalNumber)/(Math.pow(10,power)) <= 1){
+                    power-=1;
+                }
+                double readableNumber = originalNumber/(Math.pow(10,power));
+                int converter = (int)(10*readableNumber);
+                readableNumber = converter/10.0;
+                return Double.toString(readableNumber) + "E" + Integer.toString(power);
+            }
+        }
+        return "";
+    }
 }
