@@ -53,7 +53,7 @@ public class ProfileSparklineGraph2D {
         //OrderedDataset2D dataset = org.epics.graphene.Arrays.lineData(new ArrayDouble(waveform));
         
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(imageWidth, imageHeight, "Stuff");
-        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(new SparklineGraph2DRendererUpdate());
 
         Timestamp start = Timestamp.now();
         Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));
