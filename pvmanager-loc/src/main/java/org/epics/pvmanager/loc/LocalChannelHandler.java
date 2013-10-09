@@ -143,7 +143,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     private Object initialValue;
     private Class<?> type;
     
-    void setInitialValue(Object value) {
+    synchronized void setInitialValue(Object value) {
         if (initialValue != null && !initialValue.equals(value)) {
             String message = "Different initialization for local channel " + getChannelName() + ": " + value + " but was " + initialValue;
             log.log(Level.WARNING, message);
@@ -155,7 +155,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         }
     }
     
-    void setType(String typeName) {
+    synchronized void setType(String typeName) {
         if (typeName == null) {
             return;
         }
@@ -185,7 +185,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
     }
 
     @Override
-    public Map<String, Object> getProperties() {
+    public synchronized Map<String, Object> getProperties() {
         Map<String, Object> properties = new HashMap<>();
         properties.put("Name", getChannelName());
         properties.put("Type", type);
