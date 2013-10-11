@@ -56,4 +56,18 @@ public class SparklineGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("sparkline2D.1", image);
     }*/
+    @Test
+    public void testGetMaxIndex() throws Exception{
+        double[] raw_data = {0,5,15,20,15,5,0};
+        Point2DDataset data = Point2DDatasets.lineData(raw_data);
+        SparklineGraph2DRenderer graph_object = new SparklineGraph2DRenderer(100, 100);
+        assertEquals(3, graph_object.getMaxIndex(data));
+    }
+    @Test
+    public void testGetMinIndex() throws Exception{
+        double[] raw_data = {20,5,10,0,0,0,5};
+        Point2DDataset data = Point2DDatasets.lineData(raw_data);
+        SparklineGraph2DRenderer graph_object = new SparklineGraph2DRenderer(100, 100);
+        assertEquals(3, graph_object.getMinIndex(data));
+    }
 }

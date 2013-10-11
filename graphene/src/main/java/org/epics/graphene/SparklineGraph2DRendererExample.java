@@ -29,11 +29,11 @@ public class SparklineGraph2DRendererExample {
             Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             
             //Image and Graphics initialization
-            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();
             
             //Graph initialization
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(500,100, new String("Pounds"));
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
             
             //Start time
             double startTime = System.currentTimeMillis();

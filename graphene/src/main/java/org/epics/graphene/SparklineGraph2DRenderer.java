@@ -6,18 +6,22 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.util.Arrays;
+import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
+import static org.epics.graphene.ReductionScheme.NONE;
+import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
 
 /**
  *
- * @author Samuel
+ * @authors asbarber, jkfeng, sjdallst
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
     
     private String dataType;
     protected int dataHeight;
+    
     
     /**
      * Creates a new sparkline graph renderer.
@@ -25,15 +29,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, String dataType){
-        super(imageWidth, imageHeight);
-        bottomAreaMargin = (int)(imageWidth/5*1.5); //Right Side
-        topAreaMargin = imageWidth/5; //Left Side
-        rightAreaMargin = imageHeight/8;
-        leftAreaMargin = imageHeight/8;
-        labelHeight = imageHeight/3;
-        dataHeight = imageHeight/3+20;
-        this.dataType = dataType;       
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
+        super(imageWidth, imageHeight);   
     }
     
     /**
@@ -91,28 +88,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         drawBackground();
         drawGraphArea();
         
-        //Determines Font Size
-        int fontSize = 18;
-        int pixelsOfString = 0;       
-        boolean headerIsLonger = dataType.length() < "Data TypeA".length();
-        
-        //Continually decreases font size while size (in pixels) is too large
-        do{
-            fontSize--;
-            g.setFont(new Font("Serif",Font.BOLD, fontSize)); 
-            
-            //Base max font size from the header "Data Type"
-            if (headerIsLonger){
-                pixelsOfString = g.getFontMetrics().stringWidth("Data Type");                
-            }
-            //Base max font size from the data type text
-            else{
-                pixelsOfString = g.getFontMetrics().stringWidth(dataType);                
-            }
-        }while(pixelsOfString > (topAreaMargin - 25));     
-
-        //Updates font size
-        g.setFont(new Font("Serif",Font.PLAIN, fontSize));
         g.setColor(Color.BLACK);
         
         //Calculates data values
@@ -133,47 +108,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
         } else {
             focusValueIndex = -1;
-        }
-        
-                
-        //TODO: find a way to make this more thread friendly/faster.
-        if (yValues.size() < 2){
-            return; //Data size validation
-        }
-        
-        //Data values to be displayed in margins
-        double lastNum = (yValues.getDouble(yValues.size()-1));
-        double secondLastNum = (yValues.getDouble(yValues.size()-2));
-        double rawChange = (lastNum-secondLastNum);
-        double percentChange = rawChange/secondLastNum*100;
-
-        String rawChangeString = convertToReadable(rawChange);
-        String lastNumString = convertToReadable(lastNum);
-        String percentChangeString = convertToReadable(percentChange);
-        
-        //Updates size of render area
-        setDataHeight(this.labelHeight+(int)(fontSize*1.15));
-              
-        //Sparkline Margins//
-        //Alignments
-        Java2DStringUtilities.Alignment leftAlignment = Java2DStringUtilities.Alignment.BOTTOM_LEFT;
-        Java2DStringUtilities.Alignment rightAlignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;                
-        
-        //Value
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.dataHeight, lastNumString);
-        
-        //Change
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.8), this.dataHeight, rawChangeString);
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.2), this.dataHeight+(int)((fontSize)*1.15), " (" + percentChangeString + "%)");
-        
-        //Data Type
-        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.dataHeight, getDataType());
-        
-        //Data Headers
-        g.setFont(new Font("Serif",Font.BOLD, fontSize));            
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin, this.labelHeight, "Value");
-        Java2DStringUtilities.drawString(g, leftAlignment, getImageWidth()-this.bottomAreaMargin + (int)((fontSize)*3.8), this.labelHeight, "Change");
-        Java2DStringUtilities.drawString(g, rightAlignment, this.topAreaMargin-3, this.labelHeight, "Data Type");        
+        }           
     }
     
     /**
@@ -182,54 +117,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param originalNumber Number to format
      * @return Number in scientific notation
      */
-    protected String convertToReadable(double originalNumber){
-        int power = 0;
-        
-        //When number does not need formatting:  between 10^-3 and 10^4
-        if(Math.abs(originalNumber) < 10000 && Math.abs(originalNumber) > .001){
-            //Truncates after 4 decimal points
-            int converter = (int)(originalNumber*1000);
-            originalNumber = (converter/1000.0);
-            return Double.toString(originalNumber);
-        }
-        //originalNumber is above 10^4
-        else if (Math.abs(originalNumber) > 10000){
-            //Minimum of 10^4
-            power = 4;
-            
-            //Finds value x in E^x of scientific notation of originalNumber
-            while(Math.abs(originalNumber)/(Math.pow(10,power)) >= 1){
-                power+=1;
-            }
-            power-=1;
-            
-            //Truncates after 3 decimal points
-            double readableNumber = originalNumber/(Math.pow(10,power));
-            int converter = (int)(100*readableNumber);
-            readableNumber = converter/100.0;
-            
-            //Converts to scientific notation
-            return Double.toString(readableNumber) + "E" + Integer.toString(power);
-        }
-        //originalNumber is below 10^-3
-        else{
-            //Maximum of 10^-4
-            power = -4;
-            
-            //Finds value x in E^x of scientific notation of originalNumber
-            while(Math.abs(originalNumber)/(Math.pow(10,power)) <= 1){
-                power-=1;
-            }
-            
-            //Truncates after 3 decimal points
-            double readableNumber = originalNumber/(Math.pow(10,power));
-            int converter = (int)(10*readableNumber);
-            readableNumber = converter/10.0;
-            
-            //Converts to scientific notation
-            return Double.toString(readableNumber) + "E" + Integer.toString(power);            
-        }
-    }
     
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -295,6 +182,29 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      */
     public Integer getFocusPixelX() {
         return focusPixelX;
+    }
+    
+    public int getMaxIndex(Point2DDataset data){
+        double max = data.getYStatistics().getMaximum().doubleValue();
+        for(int i = 0; i < data.getCount(); i++){
+            if(data.getYValues().getDouble(i) == max)
+                return i;
+        }
+        return 0;
+    }
+    
+    public int getMinIndex(Point2DDataset data){
+        double min = data.getYStatistics().getMinimum().doubleValue();
+        for(int i = 0; i < data.getCount(); i++){
+            if(data.getYValues().getDouble(i) == min)
+                return i;
+        }
+        return 0;
+    }
+    
+    public void drawMinCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues){
+        int minIndex = getMinIndex(data);
+        int x = (int) scaledX(xValues.getDouble(minIndex));
     }
 
     @Override
