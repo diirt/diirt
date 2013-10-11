@@ -13,27 +13,27 @@ import java.math.*;
 
 /**
  *
- * @author Aaron
+ * @author asbarber, jkfeng, sjdallst
  */
 public class SparklineGraph2DRendererExample {
     public static void main(String[] args) throws IOException
         {
             //Creates sample data
             double[] initialDataX = new double[100];
-            for(int i = 0; i< 100; i+=1)
+            for(int i = 20; i< 120; i+=1)
             {
-                initialDataX[i]= Math.pow(Math.E,(-i));
+                initialDataX[i-20]= Math.cos(Math.PI * 6 * i/100.0);
             }
 
             //Converts data array into dataset type
             Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             
             //Image and Graphics initialization
-            BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_3BYTE_BGR);
+            BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();
             
             //Graph initialization
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100, true);
             
             //Start time
             double startTime = System.currentTimeMillis();

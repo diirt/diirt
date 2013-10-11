@@ -6,8 +6,10 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
 import static org.epics.graphene.ReductionScheme.NONE;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
@@ -19,8 +21,6 @@ import org.epics.util.array.SortedListView;
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
     
-    private String dataType;
-    protected int dataHeight;
     
     
     /**
@@ -29,25 +29,56 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */    
+    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
-        super(imageWidth, imageHeight);   
+        super(imageWidth, imageHeight); 
+        circleDiameter = 10;
+        minColor = Color.BLUE;
+        maxColor = Color.RED;
+        currentValueColor = Color.GREEN;
+        drawCircles = false;
     }
     
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, boolean includeCircles){
+        super(imageWidth, imageHeight); 
+        circleDiameter = 10;
+        minColor = Color.BLUE;
+        maxColor = Color.RED;
+        currentValueColor = Color.GREEN;
+        drawCircles = includeCircles;
+    }
+    
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, int diameter){
+        super(imageWidth, imageHeight); 
+        circleDiameter = diameter;
+        minColor = Color.BLUE;
+        maxColor = Color.RED;
+        currentValueColor = Color.GREEN;
+        drawCircles = true;
+    }
+    
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, Color min, Color max, Color current, int diameter){
+        super(imageWidth, imageHeight); 
+        circleDiameter = diameter;
+        minColor = min;
+        maxColor = max;
+        currentValueColor = current;
+        drawCircles = true;
+    }
+    
+    private int circleDiameter;
+    private Color minColor, maxColor, currentValueColor;
+    private boolean drawCircles;
     /**
      * The type of data on the y-axis of the Sparkline.
      * @return The type of data represented in the Sparkline.
      */
-    public String getDataType(){
-        return this.dataType;
-    }
+
         
     /**
      * Sets the height of the data rendered to the image in pixels.
      * @param newHeight The new height of the data in pixels.
      */
-    public void setDataHeight(int newHeight){
-        this.dataHeight = newHeight;
-    }
     
     /**
      * Applies the update to the renderer.
@@ -94,7 +125,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
-
+        
         //Appropriate scaling methods
         currentIndex = 0;
         currentScaledDiff = getImageWidth();
@@ -108,7 +139,12 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
         } else {
             focusValueIndex = -1;
-        }           
+        }
+        if(drawCircles){
+            drawCircle(g, data, xValues, yValues, getMinIndex(data), minColor);
+            drawCircle(g, data, xValues, yValues, getMaxIndex(data), maxColor);
+            drawCircle(g, data, xValues, yValues, data.getCount()-1, currentValueColor);
+        }
     }
     
     /**
@@ -133,7 +169,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     //Current Value
     private int currentIndex;
     private double currentScaledDiff;
-    protected int labelHeight;
     
     @Override 
     protected void drawGraphArea(){
@@ -202,11 +237,34 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return 0;
     }
     
-    public void drawMinCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues){
-        int minIndex = getMinIndex(data);
-        int x = (int) scaledX(xValues.getDouble(minIndex));
+    public void drawCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues, int index, Color color){
+        int x = (int) (scaledX(xValues.getDouble(index)) - .5*circleDiameter);
+        int y = (int) (scaledY(yValues.getDouble(index)) - .5*circleDiameter);
+        g.setColor(color);
+        g.fillOval(x, y, circleDiameter, circleDiameter);
+        g.setColor(Color.BLACK);
     }
-
+    
+    public void setMinColor(Color color){
+        minColor = color;
+    }
+    
+    public void setMaxColor(Color color){
+        maxColor = color;
+    }
+    
+    public void setCurrentValueColor(Color color){
+        currentValueColor = color;
+    }
+    
+    public void setDiameter(int diameter){
+        circleDiameter = diameter;
+    }
+    
+    public void setDrawCircles(boolean decision){
+        drawCircles = decision;
+    }
+    
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         //If there is a focus value with a pixel location
@@ -222,4 +280,5 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
         }
     }
+
 }
