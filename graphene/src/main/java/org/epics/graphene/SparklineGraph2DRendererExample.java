@@ -19,11 +19,13 @@ public class SparklineGraph2DRendererExample {
         {
             //Creates sample data
             double[] initialDataX = new double[100];
+
             for(int i = 20; i< 120; i+=1)
             {
                 initialDataX[i-20]= Math.cos(Math.PI * 6 * i/100.0);
             }
-
+            
+            
             //Converts data array into dataset type
             Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             
@@ -32,7 +34,7 @@ public class SparklineGraph2DRendererExample {
             Graphics2D g = (Graphics2D) image.getGraphics();
             
             //Graph initialization
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100, false);
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100, true);
             
             //Start time
             double startTime = System.currentTimeMillis();

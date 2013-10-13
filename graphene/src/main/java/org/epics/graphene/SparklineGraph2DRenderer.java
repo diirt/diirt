@@ -6,6 +6,8 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
@@ -26,7 +28,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param imageHeight the graph height
      */    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
-        this(imageWidth, imageHeight, 3);
+        this(imageWidth, imageHeight, 7);
         drawCircles = false;
     }
     
@@ -73,14 +75,39 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         minColor = min;
         maxColor = max;
         currentValueColor = current;
-        drawCircles = true;
+        drawCircles = true;     
+        
+        bottomMargin = 5;
+        topMargin = 5;
+        leftMargin = 5;
+        rightMargin = 5;
     }
     
     //Options for the min/max/current of the data
     private int circleDiameter;
     private Color minColor, maxColor, currentValueColor;
     private boolean drawCircles;
+    
+    //Min and Max Values
+    private int[] maxIndices = {0}, minIndices = {0};
+    private double maxValue = 0, minValue = 0;    
 
+    //Scaling Schemes    
+    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
+
+    private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
+    
+    //Focus Value
+    private Integer focusPixelX;
+    private boolean highlightFocusValue = false;
+    private int focusValueIndex = -1;
+    
+    //Current Value
+    private int currentIndex;
+    private double currentScaledDiff;
+    
     
     /**
      * Applies the update to the renderer.
@@ -119,7 +146,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
         drawBackground();
-        drawGraphArea();
+        //drawGraphArea();
         
         g.setColor(Color.BLACK);
         
@@ -145,28 +172,51 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Draws a circle at the max, min, and current value
         if(drawCircles){
-            drawCircle(g, data, xValues, yValues, getMinIndex(data), minColor);
-            drawCircle(g, data, xValues, yValues, getMaxIndex(data), maxColor);
+            for (int index: minIndices){
+                drawCircle(g, data, xValues, yValues, index, minColor);
+            }
+            for (int index: maxIndices){
+                drawCircle(g, data, xValues, yValues, index, maxColor);                
+            }
             drawCircle(g, data, xValues, yValues, data.getCount()-1, currentValueColor);
         }
     }
-    
-    
-    //Scaling Schemes    
-    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
-    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
-    private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
-    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
-    
-    //Focus Value
-    private Integer focusPixelX;
-    private boolean highlightFocusValue = false;
-    private int focusValueIndex = -1;
-    
-    //Current Value
-    private int currentIndex;
-    private double currentScaledDiff;
+    @Override
+    protected void calculateGraphArea() {
+        int areaFromBottom = bottomMargin;
+        int areaFromLeft = leftMargin;
+
+        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
+        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        if (xPlotValueStart == xPlotValueEnd) {
+            // If range is zero, fake a range
+            xPlotValueStart -= 1.0;
+            xPlotValueEnd += 1.0;
+        }
+        xAreaStart = areaFromLeft;
+        xAreaEnd = getImageWidth() - rightMargin - 1;
+        
+        //Adjusts for size of circle
+        xPlotCoordStart = xAreaStart + topAreaMargin + 1 + circleDiameter;
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin - 0.5 - circleDiameter;
+        xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
+        
+        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
+        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
+        if (yPlotValueStart == yPlotValueEnd) {
+            // If range is zero, fake a range
+            yPlotValueStart -= 1.0;
+            yPlotValueEnd += 1.0;
+        }
+        yAreaStart = topMargin;
+        yAreaEnd = getImageHeight() - areaFromBottom - 1;
+        
+        //Adjusts for size of circle
+        yPlotCoordStart = yAreaStart + leftAreaMargin + 1 + circleDiameter;
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin - 1 - circleDiameter;
+        yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
+    }
     
     @Override 
     protected void drawGraphArea(){
@@ -314,6 +364,64 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 currentScaledDiff = scaledDiff;
             }
         }
+
+        
+        //Checks if new value is the new min or the new max
+        
+        //Base Case
+        if (index == 0){
+            maxValue = valueY;
+            minValue = valueY;
+            
+            maxIndices[0] = 0;
+            minIndices[0] = 0;
+        }
+        else{
+            //Max
+            if (maxValue < valueY){
+                maxValue = valueY;
+                
+                maxIndices = new int[]{0};  //Clears
+                maxIndices[0] = index;
+            }
+            //Another index equal to current max value
+            else if (maxValue == valueY){
+                maxIndices = addElementToArray(maxIndices, index);
+            }
+
+            //Min
+            if (minValue > valueY){
+                minValue = valueY;
+                
+                minIndices = new int[]{0};  //Clears               
+                minIndices[0] = index;
+            }
+            //Another index equal to current max value
+            else if (minValue == valueY){
+                minIndices = addElementToArray(minIndices, index);
+            }    
+        }
+    }
+
+    /**
+     * Adds an element to an array
+     * @param array Collection of values
+     * @param newElement Value to add to the collection
+     * @return The array with the new element inserted in the last position
+     */
+    private int[] addElementToArray(int[] array, int newElement){
+            //Makes room in array for the new element
+            int[] tmp = new int[array.length + 1];
+            
+            //Copies Array            
+            for (int i = 0; i < array.length; i++){
+                tmp[i] = array[i];
+            }
+           
+            //New Element
+            tmp[tmp.length -1] = newElement;
+            
+            return tmp;       
     }
 
 }
