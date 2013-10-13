@@ -6,11 +6,6 @@ package org.epics.graphene;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
-import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
-import static org.epics.graphene.ReductionScheme.NONE;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
@@ -20,43 +15,58 @@ import org.epics.util.array.SortedListView;
  * @authors asbarber, jkfeng, sjdallst
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
+
+    /**
+     * Creates a new sparkline graph renderer.
+     * Default Colors: blue is min, red is max, green is current
+     * Default Diameter: 10
+     * Defaults to not draw circles
+     * 
+     * @param imageWidth the graph width
+     * @param imageHeight the graph height
+     */    
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
+        this(imageWidth, imageHeight, 3);
+        drawCircles = false;
+    }
     
+    /**
+     * Creates a new sparkline graph renderer.
+     * Default Colors: blue is min, red is max, green is current
+     * Default Diameter: 10
+     * 
+     * @param imageWidth the graph width
+     * @param imageHeight the graph height
+     * @param includeCircles Whether to draw circle at min/max/current
+     */     
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, boolean includeCircles){
+        this(imageWidth, imageHeight);
+        drawCircles = includeCircles;
+    }
     
+    /**
+     * Creates a new sparkline graph renderer.
+     * Default Colors: blue is min, red is max, green is current
+     * Defaults to draw circles
+     * 
+     * @param imageWidth the graph width
+     * @param imageHeight the graph height
+     * @param diameter Size of circle for min/max/current
+     */     
+    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, int diameter){
+        this(imageWidth, imageHeight, Color.BLUE, Color.RED, Color.GREEN, diameter);
+    }
     
     /**
      * Creates a new sparkline graph renderer.
      * 
      * @param imageWidth the graph width
      * @param imageHeight the graph height
-     */    
-    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
-        super(imageWidth, imageHeight); 
-        circleDiameter = 10;
-        minColor = Color.BLUE;
-        maxColor = Color.RED;
-        currentValueColor = Color.GREEN;
-        drawCircles = false;
-    }
-    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, boolean includeCircles){
-        super(imageWidth, imageHeight); 
-        circleDiameter = 10;
-        minColor = Color.BLUE;
-        maxColor = Color.RED;
-        currentValueColor = Color.GREEN;
-        drawCircles = includeCircles;
-    }
-    
-    public SparklineGraph2DRenderer(int imageWidth, int imageHeight, int diameter){
-        super(imageWidth, imageHeight); 
-        circleDiameter = diameter;
-        minColor = Color.BLUE;
-        maxColor = Color.RED;
-        currentValueColor = Color.GREEN;
-        drawCircles = true;
-    }
-    
+     * @param min Color for minimum value
+     * @param max Color for maximum value
+     * @param current Color for current value
+     * @param diameter Size of circle for min/max/current
+     */     
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight, Color min, Color max, Color current, int diameter){
         super(imageWidth, imageHeight); 
         circleDiameter = diameter;
@@ -66,19 +76,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         drawCircles = true;
     }
     
+    //Options for the min/max/current of the data
     private int circleDiameter;
     private Color minColor, maxColor, currentValueColor;
     private boolean drawCircles;
-    /**
-     * The type of data on the y-axis of the Sparkline.
-     * @return The type of data represented in the Sparkline.
-     */
 
-        
-    /**
-     * Sets the height of the data rendered to the image in pixels.
-     * @param newHeight The new height of the data in pixels.
-     */
     
     /**
      * Applies the update to the renderer.
@@ -113,7 +115,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        //General Render
+        //General Rendering
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
         drawBackground();
@@ -126,7 +128,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         
-        //Appropriate scaling methods
+        //Focus Value
         currentIndex = 0;
         currentScaledDiff = getImageWidth();
         drawValueExplicitLine(xValues, yValues, interpolation, reduction);
@@ -140,6 +142,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         } else {
             focusValueIndex = -1;
         }
+        
+        //Draws a circle at the max, min, and current value
         if(drawCircles){
             drawCircle(g, data, xValues, yValues, getMinIndex(data), minColor);
             drawCircle(g, data, xValues, yValues, getMaxIndex(data), maxColor);
@@ -147,12 +151,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
     }
     
-    /**
-     * Converts the number to scientific notation if it is not between 10^-3 and 10^4.
-     * 
-     * @param originalNumber Number to format
-     * @return Number in scientific notation
-     */
     
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -219,15 +217,10 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return focusPixelX;
     }
     
-    public int getMaxIndex(Point2DDataset data){
-        double max = data.getYStatistics().getMaximum().doubleValue();
-        for(int i = 0; i < data.getCount(); i++){
-            if(data.getYValues().getDouble(i) == max)
-                return i;
-        }
-        return 0;
-    }
-    
+    /**
+     * @param data Points to find the minimum of
+     * @return The index of the min y-value
+     */
     public int getMinIndex(Point2DDataset data){
         double min = data.getYStatistics().getMinimum().doubleValue();
         for(int i = 0; i < data.getCount(); i++){
@@ -237,6 +230,28 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return 0;
     }
     
+    /**
+     * @param data Points to find the maximum of
+     * @return The index of the max y-value
+     */
+    public int getMaxIndex(Point2DDataset data){
+        double max = data.getYStatistics().getMaximum().doubleValue();
+        for(int i = 0; i < data.getCount(); i++){
+            if(data.getYValues().getDouble(i) == max)
+                return i;
+        }
+        return 0;
+    }    
+    
+    /**
+     * Draws a circle at the corresponding index.
+     * @param g Graphics
+     * @param data Collection of points
+     * @param xValues x values
+     * @param yValues y values
+     * @param index Position to draw the circle
+     * @param color Color of the circle
+     */
     public void drawCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues, int index, Color color){
         int x = (int) (scaledX(xValues.getDouble(index)) - .5*circleDiameter);
         int y = (int) (scaledY(yValues.getDouble(index)) - .5*circleDiameter);
@@ -245,22 +260,42 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         g.setColor(Color.BLACK);
     }
     
+    /**
+     * Updates the color of the circle drawn at the minimum.
+     * @param color Color of circle
+     */
     public void setMinColor(Color color){
         minColor = color;
     }
     
+    /**
+     * Updates the color of the circle drawn at the maximum.
+     * @param color Color of circle
+     */    
     public void setMaxColor(Color color){
         maxColor = color;
     }
     
+    /**
+     * Updates the color of the circle drawn at the current value.
+     * @param color Color of circle
+     */    
     public void setCurrentValueColor(Color color){
         currentValueColor = color;
     }
     
+    /**
+     * Updates the diameter of the circle
+     * @param diameter Diameter size in pixels
+     */
     public void setDiameter(int diameter){
         circleDiameter = diameter;
     }
     
+    /**
+     * Updates the option to draw circles at max/min/current
+     * @param decision Whether to draw the circles
+     */
     public void setDrawCircles(boolean decision){
         drawCircles = decision;
     }

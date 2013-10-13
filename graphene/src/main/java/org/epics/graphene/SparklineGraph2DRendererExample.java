@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.math.*;
 
 /**
  *
@@ -33,7 +32,7 @@ public class SparklineGraph2DRendererExample {
             Graphics2D g = (Graphics2D) image.getGraphics();
             
             //Graph initialization
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100, true);
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100, false);
             
             //Start time
             double startTime = System.currentTimeMillis();
