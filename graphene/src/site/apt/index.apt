@@ -13,7 +13,9 @@ that allow no-copy data manipulation.
 
 Download
 
-  {{{http://epics.sourceforge.net/maven2/org/epics/graphene/}All releases and development snapshots}}
+  {{{http://search.maven.org/#search|ga|1|org.epics%20graphene}Official releases are available on Maven central}}
+
+  {{{http://oss.sonatype.org/content/repositories/snapshots/org/epics/}All releases and development snapshots}}
 
   {{{https://openepics.ci.cloudbees.com/job/Graphene%20-%20Build/}Latest build}}
 
