@@ -29,6 +29,9 @@ public class ImagePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         if (image != null) {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
         }
     }
 }
