@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager.sample;
 
@@ -14,12 +14,12 @@ import org.epics.graphene.ScatterGraph2DRenderer;
  */
 public class ScatterGraphDialog extends javax.swing.JDialog {
 
-    private final BaseGraphApp graph;
+    private final ScatterGraphApp graph;
     
     /**
      * Creates new form ScatterGraphDialog
      */
-    public ScatterGraphDialog(java.awt.Frame parent, boolean modal, BaseGraphApp graph) {
+    public ScatterGraphDialog(java.awt.Frame parent, boolean modal, ScatterGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();

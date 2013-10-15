@@ -1,12 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager.sample;
 
+import java.awt.EventQueue;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRendererUpdate;
 import org.epics.graphene.ScatterGraph2DRendererUpdate;
@@ -26,7 +29,7 @@ import org.epics.vtype.ValueUtil;
  *
  * @author carcassi
  */
-public class BaseGraphApp extends javax.swing.JFrame {
+public abstract class BaseGraphApp extends javax.swing.JFrame {
 
     /**
      * Creates new form SimpleScatterGraph
@@ -43,23 +46,17 @@ public class BaseGraphApp extends javax.swing.JFrame {
                 }
             }
         });
-        dataFormulaField.setSelectedIndex(0);
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                dataFormulaField.setSelectedIndex(0);
+            }
+        });
     }
     
-    private InterpolationScheme interpolationScheme = InterpolationScheme.NONE;
     private PVReader<Graph2DResult> pv;
-    private ScatterGraph2DExpression plot;
-
-    public InterpolationScheme getInterpolationScheme() {
-        return interpolationScheme;
-    }
-
-    public void setInterpolationScheme(InterpolationScheme interpolationScheme) {
-        this.interpolationScheme = interpolationScheme;
-        if (plot != null) {
-            plot.update(plot.newUpdate().interpolation(interpolationScheme));
-        }
-    }
+    protected ScatterGraph2DExpression plot;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -154,16 +151,10 @@ public class BaseGraphApp extends javax.swing.JFrame {
             return;
         }
         
-        if (plot == null) {
-            plot = scatterGraphOf(formula(dataFormulaField.getSelectedItem().toString()),
-                    null,
-                    null,
-                    null);
-        }
+        plot = createExpression(dataFormulaField.getSelectedItem().toString());
         
         plot.update(new ScatterGraph2DRendererUpdate().imageHeight(imagePanel.getHeight())
-                .imageWidth(imagePanel.getWidth())
-                .interpolation(interpolationScheme));
+                .imageWidth(imagePanel.getWidth()));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
                 .readListener(new PVReaderListener<Graph2DResult>() {
@@ -181,11 +172,11 @@ public class BaseGraphApp extends javax.swing.JFrame {
 
     }//GEN-LAST:event_dataFormulaFieldActionPerformed
 
+    protected abstract ScatterGraph2DExpression createExpression(String dataFormula);
+    protected abstract void openConfigurationDialog();
+    
     private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
-        ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, this);
-        dialog.setTitle("Configure...");
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
+        openConfigurationDialog();
     }//GEN-LAST:event_configureButtonActionPerformed
 
     private void setLastError(Exception ex) {
@@ -196,10 +187,7 @@ public class BaseGraphApp extends javax.swing.JFrame {
         }
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    public static void main(final Class<? extends BaseGraphApp> clazz) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -226,10 +214,17 @@ public class BaseGraphApp extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BaseGraphApp().setVisible(true);
+                try {
+                    clazz.newInstance().setVisible(true);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(BaseGraphApp.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(BaseGraphApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configureButton;
     private javax.swing.JComboBox dataFormulaField;
