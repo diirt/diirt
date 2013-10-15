@@ -24,17 +24,19 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="imagePanel" max="32767" attributes="0"/>
                   <Component id="lastErrorField" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="dataFormulaField" pref="581" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Component id="dataFormulaField" pref="504" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="configureButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -45,6 +47,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="dataFormulaField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="configureButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="imagePanel" max="32767" attributes="0"/>
@@ -92,10 +95,18 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="464" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="461" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JButton" name="configureButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Configure"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="configureButtonActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

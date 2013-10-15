@@ -7,6 +7,7 @@ package org.epics.pvmanager.sample;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRendererUpdate;
 import org.epics.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.PVManager;
@@ -25,12 +26,12 @@ import org.epics.vtype.ValueUtil;
  *
  * @author carcassi
  */
-public class SimpleScatterGraph extends javax.swing.JFrame {
+public class BaseGraphApp extends javax.swing.JFrame {
 
     /**
      * Creates new form SimpleScatterGraph
      */
-    public SimpleScatterGraph() {
+    public BaseGraphApp() {
         SetupUtil.defaultCASetupForSwing();
         initComponents();
         imagePanel.addComponentListener(new ComponentAdapter() {
@@ -45,8 +46,20 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
         dataFormulaField.setSelectedIndex(0);
     }
     
+    private InterpolationScheme interpolationScheme = InterpolationScheme.NONE;
     private PVReader<Graph2DResult> pv;
     private ScatterGraph2DExpression plot;
+
+    public InterpolationScheme getInterpolationScheme() {
+        return interpolationScheme;
+    }
+
+    public void setInterpolationScheme(InterpolationScheme interpolationScheme) {
+        this.interpolationScheme = interpolationScheme;
+        if (plot != null) {
+            plot.update(plot.newUpdate().interpolation(interpolationScheme));
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,6 +74,7 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
         dataFormulaField = new javax.swing.JComboBox();
         lastErrorField = new javax.swing.JTextField();
         imagePanel = new org.epics.pvmanager.sample.ImagePanel();
+        configureButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,8 +98,15 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
         );
         imagePanelLayout.setVerticalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
         );
+
+        configureButton.setText("Configure");
+        configureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configureButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,7 +120,9 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dataFormulaField, 0, 581, Short.MAX_VALUE)))
+                        .addComponent(dataFormulaField, 0, 504, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(configureButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -108,7 +131,8 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(dataFormulaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataFormulaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(configureButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,7 +161,9 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
                     null);
         }
         
-        plot.update(new ScatterGraph2DRendererUpdate().imageHeight(imagePanel.getHeight()).imageWidth(imagePanel.getWidth()));
+        plot.update(new ScatterGraph2DRendererUpdate().imageHeight(imagePanel.getHeight())
+                .imageWidth(imagePanel.getWidth())
+                .interpolation(interpolationScheme));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
                 .readListener(new PVReaderListener<Graph2DResult>() {
@@ -154,6 +180,13 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
                 .maxRate(ofHertz(50));
 
     }//GEN-LAST:event_dataFormulaFieldActionPerformed
+
+    private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
+        ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, this);
+        dialog.setTitle("Configure...");
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_configureButtonActionPerformed
 
     private void setLastError(Exception ex) {
         if (ex != null) {
@@ -180,24 +213,25 @@ public class SimpleScatterGraph extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SimpleScatterGraph.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseGraphApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SimpleScatterGraph.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseGraphApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SimpleScatterGraph.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseGraphApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SimpleScatterGraph.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BaseGraphApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SimpleScatterGraph().setVisible(true);
+                new BaseGraphApp().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton configureButton;
     private javax.swing.JComboBox dataFormulaField;
     private org.epics.pvmanager.sample.ImagePanel imagePanel;
     private javax.swing.JLabel jLabel1;
