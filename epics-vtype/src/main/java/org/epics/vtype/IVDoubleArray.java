@@ -4,6 +4,7 @@
  */
 package org.epics.vtype;
 
+import java.util.List;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 
@@ -38,6 +39,11 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
     @Override
     public String toString() {
         return VTypeToString.toString(this);
+    }
+
+    @Override
+    public List<ArrayDimensionDisplay> getDimensionDisplay() {
+        return ValueUtil.defaultArrayDisplay(this);
     }
 
 }

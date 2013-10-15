@@ -4,6 +4,7 @@
  */
 package org.epics.vtype;
 
+import java.util.List;
 import org.epics.util.array.ListInt;
 
 /**
@@ -37,6 +38,11 @@ class IVIntArray extends IVNumeric implements VIntArray {
     @Override
     public String toString() {
         return VTypeToString.toString(this);
+    }
+
+    @Override
+    public List<ArrayDimensionDisplay> getDimensionDisplay() {
+        return ValueUtil.defaultArrayDisplay(this);
     }
 
 }

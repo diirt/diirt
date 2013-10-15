@@ -151,4 +151,11 @@ public class ValueUtilTest {
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time2, time1)), sameInstance(time2));
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time4, time2, time3)), sameInstance(time4));
     }
+    
+    @Test
+    public void indexDimensionDisplay1() {
+        ArrayDimensionDisplay indexDimensionDisplay = ValueUtil.indexDimensionDisplay(5);
+        assertThat(indexDimensionDisplay.getUnits(), equalTo(""));
+        assertThat(indexDimensionDisplay.getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 1, 2, 3, 4, 5)));
+    }
 }

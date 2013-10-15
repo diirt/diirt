@@ -7,6 +7,7 @@ package org.epics.vtype;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.TimestampFormat;
 
@@ -477,4 +479,41 @@ public class ValueUtil {
         throw new IllegalArgumentException("Column '" + columnName +"' was not found");
     }
     
+    /**
+     * Returns an array display where the index is used to calculate the
+     * cell boundaries.
+     * 
+     * @param nCells the number of cells along the direction
+     * @return a new array display
+     */
+    public static ArrayDimensionDisplay indexDimensionDisplay(int nCells) {
+        final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
+        return new ArrayDimensionDisplay() {
+
+            @Override
+            public ListNumber getCellBoundaries() {
+                return boundaries;
+            }
+
+            @Override
+            public String getUnits() {
+                return "";
+            }
+        };
+    }
+    
+    /**
+     * Returns the default array dimension display by looking at the size
+     * of the n dimensional array and creating cell boundaries based on index.
+     * 
+     * @param array the array
+     * @return the array dimension display
+     */
+    public static List<ArrayDimensionDisplay> defaultArrayDisplay(VNumberArray array) {
+        List<ArrayDimensionDisplay> displays = new ArrayList<>();
+        for (int i = 0; i < array.getSizes().size(); i++) {
+            displays.add(indexDimensionDisplay(array.getSizes().getInt(i)));
+        }
+        return displays;
+    }
 }
