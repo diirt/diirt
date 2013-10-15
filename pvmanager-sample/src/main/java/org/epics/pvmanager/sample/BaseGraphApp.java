@@ -10,17 +10,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRendererUpdate;
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
+import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
-import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
+import org.epics.pvmanager.graphene.Graph2DExpression;
 import org.epics.pvmanager.graphene.Graph2DResult;
-import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.util.Executors.swingEDT;
 import static org.epics.util.time.TimeDuration.ofHertz;
 import org.epics.vtype.ValueUtil;
@@ -29,7 +25,7 @@ import org.epics.vtype.ValueUtil;
  *
  * @author carcassi
  */
-public abstract class BaseGraphApp extends javax.swing.JFrame {
+public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends javax.swing.JFrame {
 
     /**
      * Creates new form SimpleScatterGraph
@@ -56,7 +52,7 @@ public abstract class BaseGraphApp extends javax.swing.JFrame {
     }
     
     private PVReader<Graph2DResult> pv;
-    protected ScatterGraph2DExpression plot;
+    protected Graph2DExpression<T> plot;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,7 +149,7 @@ public abstract class BaseGraphApp extends javax.swing.JFrame {
         
         plot = createExpression(dataFormulaField.getSelectedItem().toString());
         
-        plot.update(new ScatterGraph2DRendererUpdate().imageHeight(imagePanel.getHeight())
+        plot.update(plot.newUpdate().imageHeight(imagePanel.getHeight())
                 .imageWidth(imagePanel.getWidth()));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())
@@ -172,7 +168,7 @@ public abstract class BaseGraphApp extends javax.swing.JFrame {
 
     }//GEN-LAST:event_dataFormulaFieldActionPerformed
 
-    protected abstract ScatterGraph2DExpression createExpression(String dataFormula);
+    protected abstract Graph2DExpression<T> createExpression(String dataFormula);
     protected abstract void openConfigurationDialog();
     
     private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed

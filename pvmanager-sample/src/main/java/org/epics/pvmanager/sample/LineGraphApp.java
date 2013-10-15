@@ -5,17 +5,18 @@
 package org.epics.pvmanager.sample;
 
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
+import org.epics.graphene.LineGraph2DRendererUpdate;
 import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
+import org.epics.pvmanager.graphene.LineGraph2DExpression;
 
 /**
  *
  * @author carcassi
  */
-public class ScatterGraphApp extends BaseGraphApp<ScatterGraph2DRendererUpdate> {
-    private InterpolationScheme interpolationScheme = InterpolationScheme.NONE;
+public class LineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
+    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOUR;
 
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
@@ -29,8 +30,8 @@ public class ScatterGraphApp extends BaseGraphApp<ScatterGraph2DRendererUpdate> 
     }
 
     @Override
-    protected ScatterGraph2DExpression createExpression(String dataFormula) {
-        ScatterGraph2DExpression plot = scatterGraphOf(formula(dataFormula),
+    protected LineGraph2DExpression createExpression(String dataFormula) {
+        LineGraph2DExpression plot = lineGraphOf(formula(dataFormula),
                     null,
                     null,
                     null);
@@ -40,14 +41,14 @@ public class ScatterGraphApp extends BaseGraphApp<ScatterGraph2DRendererUpdate> 
 
     @Override
     protected void openConfigurationDialog() {
-        ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, this);
+        LineGraphDialog dialog = new LineGraphDialog(new javax.swing.JFrame(), true, this);
         dialog.setTitle("Configure...");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
     
     public static void main(String[] args) {
-        main(ScatterGraphApp.class);
+        main(LineGraphApp.class);
     }
     
 }
