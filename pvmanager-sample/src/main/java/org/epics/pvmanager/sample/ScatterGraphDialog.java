@@ -6,6 +6,7 @@ package org.epics.pvmanager.sample;
 
 import javax.swing.DefaultComboBoxModel;
 import org.epics.graphene.InterpolationScheme;
+import org.epics.graphene.LineGraph2DRenderer;
 import org.epics.graphene.ScatterGraph2DRenderer;
 
 /**
@@ -23,7 +24,7 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.graph = graph;
         initComponents();
-        interpolationSchemeField.setModel(new DefaultComboBoxModel<Object>(ScatterGraph2DRenderer.supportedInterpolationScheme.toArray()));
+        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(ScatterGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
         if (graph != null) {
             interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
         }
@@ -39,7 +40,7 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        interpolationSchemeField = new javax.swing.JComboBox();
+        interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -123,7 +124,7 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox interpolationSchemeField;
+    private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
