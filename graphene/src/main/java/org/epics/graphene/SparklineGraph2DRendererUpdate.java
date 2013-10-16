@@ -12,22 +12,23 @@ import java.awt.Color;
  */
 public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<SparklineGraph2DRendererUpdate>{
     
-    private int circleDiameter;
-    private Color minColor, maxColor, currentValueColor;
-    private boolean drawCircles;
+    private Color minValueColor, maxValueColor, lastValueColor;
+    private Integer circleDiameter;   
+    private Boolean drawCircles;
+    private InterpolationScheme interpolation;
     
-    public SparklineGraph2DRendererUpdate minColor(Color color){
-        minColor = color;
+    public SparklineGraph2DRendererUpdate minValueColor(Color color){
+        minValueColor = color;
         return self();
     }
     
-    public SparklineGraph2DRendererUpdate maxColor(Color color){
-        maxColor = color;
+    public SparklineGraph2DRendererUpdate maxValueColor(Color color){
+        maxValueColor = color;
         return self();
     }
     
-    public SparklineGraph2DRendererUpdate currentValueColor(Color color){
-        currentValueColor = color;
+    public SparklineGraph2DRendererUpdate lastValueColor(Color color){
+        lastValueColor = color;
         return self();
     }
     
@@ -40,4 +41,40 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
         this.drawCircles = decision;
         return self();
     }
+    
+    public SparklineGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
+        if (scheme == null) {
+            throw new NullPointerException("Interpolation scheme chan't be null");
+        }
+        if (!LineTimeGraph2DRenderer.supportedInterpolationScheme.contains(scheme)) {
+            throw new IllegalArgumentException("Interpolation " + scheme + " is not supported");
+        }
+        this.interpolation = scheme;
+        return this;
+    }    
+    
+    public Color getMinValueColor(){
+        return minValueColor;
+    }
+    
+    public Color getMaxValueColor(){
+        return maxValueColor;
+    }
+    
+    public Color getLastValueColor(){
+        return lastValueColor;
+    }
+    
+    public Integer getCircleDiameter(){
+        return circleDiameter;
+    }
+    
+    public Boolean getDrawCircles(){
+        return drawCircles;
+    }
+    
+    public InterpolationScheme getInterpolation() {
+        return interpolation;
+    }    
+    
 }
