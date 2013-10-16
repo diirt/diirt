@@ -17,6 +17,14 @@ import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 public class ScatterGraphApp extends BaseGraphApp<ScatterGraph2DRendererUpdate> {
     private InterpolationScheme interpolationScheme = InterpolationScheme.NONE;
 
+    public ScatterGraphApp() {
+        dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
+                new String[] { "sim://table", 
+                    "=tableOf(column(\"X\", step(0, 1)), column(\"Y\", 'sim://gaussianWaveform'))", 
+                    "=tableOf(column(\"X\", 'sim://sineWaveform(1,100,100,0.01)'), column(\"Y\", 'sim://sineWaveform(10,100,100,0.01)'))",
+                    "=tableOf(column(\"X\", 'sim://triangleWaveform(10,100,100,0.01)'), column(\"Y\", 'sim://triangleWaveform(20,100,100,0.01)'))" }));
+    }
+
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }

@@ -64,7 +64,7 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        dataFormulaField = new javax.swing.JComboBox();
+        dataFormulaField = new javax.swing.JComboBox<String>();
         lastErrorField = new javax.swing.JTextField();
         imagePanel = new org.epics.pvmanager.sample.ImagePanel();
         configureButton = new javax.swing.JButton();
@@ -74,7 +74,6 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
         jLabel1.setText("Data:");
 
         dataFormulaField.setEditable(true);
-        dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "sim://table", "=tableOf(column(\"X\", step(0, 1)), column(\"Y\", 'sim://gaussianWaveform'))", "=tableOf(column(\"X\", 'sim://sineWaveform(1,100,100,0.01)'), column(\"Y\", 'sim://sineWaveform(10,100,100,0.01)'))", "=tableOf(column(\"X\", 'sim://triangleWaveform(10,100,100,0.01)'), column(\"Y\", 'sim://triangleWaveform(20,100,100,0.01)'))" }));
         dataFormulaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dataFormulaFieldActionPerformed(evt);
@@ -223,7 +222,7 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configureButton;
-    private javax.swing.JComboBox dataFormulaField;
+    protected javax.swing.JComboBox<String> dataFormulaField;
     private org.epics.pvmanager.sample.ImagePanel imagePanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField lastErrorField;

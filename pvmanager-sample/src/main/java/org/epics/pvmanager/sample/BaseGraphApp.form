@@ -67,18 +67,14 @@
     <Component class="javax.swing.JComboBox" name="dataFormulaField">
       <Properties>
         <Property name="editable" type="boolean" value="true"/>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="sim://table"/>
-            <StringItem index="1" value="=tableOf(column(&quot;X&quot;, step(0, 1)), column(&quot;Y&quot;, &apos;sim://gaussianWaveform&apos;))"/>
-            <StringItem index="2" value="=tableOf(column(&quot;X&quot;, &apos;sim://sineWaveform(1,100,100,0.01)&apos;), column(&quot;Y&quot;, &apos;sim://sineWaveform(10,100,100,0.01)&apos;))"/>
-            <StringItem index="3" value="=tableOf(column(&quot;X&quot;, &apos;sim://triangleWaveform(10,100,100,0.01)&apos;), column(&quot;Y&quot;, &apos;sim://triangleWaveform(20,100,100,0.01)&apos;))"/>
-          </StringArray>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataFormulaFieldActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="lastErrorField">
       <Properties>

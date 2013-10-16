@@ -18,6 +18,15 @@ import org.epics.pvmanager.graphene.LineGraph2DExpression;
 public class LineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
     private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOUR;
 
+    public LineGraphApp() {
+        dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
+                new String[] { "sim://table",
+                    "sim://gaussianWaveform",
+                    "sim://sineWaveform",
+                    "sim://triangleWaveform",
+                    "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))"}));
+    }
+    
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }
