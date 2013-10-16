@@ -6,27 +6,23 @@ package org.epics.pvmanager.sample;
 
 import javax.swing.DefaultComboBoxModel;
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRenderer;
+import org.epics.graphene.LineGraph2DRenderer;
 
 /**
  *
  * @author carcassi
  */
-public class ScatterGraphDialog extends javax.swing.JDialog {
+public class HistogramGraphDialog extends javax.swing.JDialog {
 
-    private final ScatterGraphApp graph;
+    private final HistogramGraphApp graph;
     
     /**
      * Creates new form ScatterGraphDialog
      */
-    public ScatterGraphDialog(java.awt.Frame parent, boolean modal, ScatterGraphApp graph) {
+    public HistogramGraphDialog(java.awt.Frame parent, boolean modal, HistogramGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
-        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(ScatterGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
-        if (graph != null) {
-            interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
-        }
     }
 
     /**
@@ -76,9 +72,8 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void interpolationSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpolationSchemeFieldActionPerformed
-        if (graph != null) {
-            graph.setInterpolationScheme((InterpolationScheme) interpolationSchemeField.getSelectedItem());
-        }
+
+        
     }//GEN-LAST:event_interpolationSchemeFieldActionPerformed
 
     /**
@@ -98,20 +93,20 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, null);
+                HistogramGraphDialog dialog = new HistogramGraphDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
