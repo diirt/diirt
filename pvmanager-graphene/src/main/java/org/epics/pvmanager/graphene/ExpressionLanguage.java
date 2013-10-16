@@ -37,7 +37,12 @@ public class ExpressionLanguage {
         BasicTypeSupport.install();
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Graph2DResult.class));
     }
-
+    
+    public static HistogramGraph2DExpression histogramGraphOf(
+	    DesiredRateExpression<?> arrayData) {
+	return new HistogramGraph2DExpression(arrayData);
+    }
+    
     public static AreaGraph2DExpression histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {
         DesiredRateExpression<? extends List<? extends VNumber>> queue = newValuesOf(vDoubles);
         return new AreaGraph2DExpression(queue, new AreaGraph2DFunction(queue.getFunction()), "histogram");
