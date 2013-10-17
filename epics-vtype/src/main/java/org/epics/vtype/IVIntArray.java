@@ -5,6 +5,7 @@
 package org.epics.vtype;
 
 import java.util.List;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 
 /**
@@ -13,16 +14,25 @@ import org.epics.util.array.ListInt;
  */
 class IVIntArray extends IVNumeric implements VIntArray {
 
-    private final int[] array;
     private final ListInt data;
     private final ListInt sizes;
+    private final List<ArrayDimensionDisplay> dimensionDisplay;
 
     public IVIntArray(ListInt data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
+        this(data, sizes, null, alarm, time, display);
+    }
+
+    public IVIntArray(ListInt data, ListInt sizes, List<ArrayDimensionDisplay> dimDisplay,
+            Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
-        this.array = null;
         this.sizes = sizes;
         this.data = data;
+        if (dimDisplay == null) {
+            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(this);
+        } else {
+            this.dimensionDisplay = dimDisplay;
+        }
     }
 
     @Override
@@ -42,7 +52,7 @@ class IVIntArray extends IVNumeric implements VIntArray {
 
     @Override
     public List<ArrayDimensionDisplay> getDimensionDisplay() {
-        return ValueUtil.defaultArrayDisplay(this);
+        return dimensionDisplay;
     }
 
 }
