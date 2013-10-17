@@ -53,26 +53,50 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
         return this;
     }    
     
+    /**
+     * Gets the color of the circle drawn for a minimum value in the data set.
+     * @return Color of the circle at the minimum
+     */
     public Color getMinValueColor(){
         return minValueColor;
     }
     
+    /**
+     * Gets the color of the circle drawn for a maximum value in the data set.
+     * @return Color of the circle at the maximum
+     */
     public Color getMaxValueColor(){
         return maxValueColor;
     }
     
+    /**
+     * Gets the color of the circle drawn for the last value in the data set.
+     * @return Color of the circle at the last index
+     */
     public Color getLastValueColor(){
         return lastValueColor;
     }
     
+    /**
+     * Gets the size of the circle
+     * @return Size of the diameter of the circles drawn
+     */
     public Integer getCircleDiameter(){
         return circleDiameter;
     }
     
+    /**
+     * Gets the parameter of whether circles are drawn.
+     * @return Parameter of whether to draw circles
+     */
     public Boolean getDrawCircles(){
         return drawCircles;
     }
     
+    /**
+     * Gets the interpolation Scheme
+     * @return InterpolationScheme of graph
+     */
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }    
