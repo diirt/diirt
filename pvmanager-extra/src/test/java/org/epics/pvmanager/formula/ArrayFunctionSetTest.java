@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListDouble;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -50,7 +51,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 			displayNone()),
 		newVDouble(Double.valueOf(3), alarmNone(), timeNow(),
 			displayNone()) };
-	double[] expectedData = { 1, 2, 3 };
+	ListDouble expectedData = new ArrayDouble(1, 2, 3);
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
 		timeNow(), displayNone());
 	testFunction(set, "arrayOf", expected, (Object[]) data);
@@ -88,8 +89,8 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void rescaleArray() {
-	double[] data = {1, 2, 3};
-	double[] expectedData = { 2, 3, 4 };
+	ListDouble data = new ArrayDouble(1, 2, 3);
+	ListDouble expectedData = new ArrayDouble(2, 3, 4);
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
 		timeNow(), displayNone());
 	testFunction(
@@ -105,9 +106,9 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void subArray(){	
-	double[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	double[] expectedData = { 2, 3, 4};
+    public void subArray(){
+	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+	ListDouble expectedData = new ArrayDouble(2, 3, 4);
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
 		timeNow(), displayNone());
 	testFunction(set, "subArray", expected,
@@ -118,7 +119,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void elementAtArray(){	
-	double[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
 	
 	testFunction(set, "elementAt", expected,
