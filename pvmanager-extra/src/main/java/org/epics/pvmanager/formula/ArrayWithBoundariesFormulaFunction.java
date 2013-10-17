@@ -70,7 +70,7 @@ class ArrayWithBoundariesFormulaFunction implements FormulaFunction {
             if (numberGenerator == null) {
                 return null;
             } else {
-                dimDisplay.add(ValueFactory.newDisplay(numberGenerator.createListNumber(array.getSizes().getInt(i-1)), ""));
+                dimDisplay.add(ValueFactory.newDisplay(numberGenerator.createListNumber(array.getSizes().getInt(i-1) + 1), ""));
             }
         }
         
