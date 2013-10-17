@@ -177,6 +177,7 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
     private void setLastError(Exception ex) {
         if (ex != null) {
             lastErrorField.setText(ex.getMessage());
+            ex.printStackTrace();
         } else {
             lastErrorField.setText("");
         }

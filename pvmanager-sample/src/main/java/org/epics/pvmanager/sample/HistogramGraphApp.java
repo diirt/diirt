@@ -23,8 +23,8 @@ public class HistogramGraphApp extends BaseGraphApp<AreaGraph2DRendererUpdate> {
     public HistogramGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "sim://gaussianWaveform",
-                    "sim://sineWaveform",
-                    "sim://triangleWaveform"}));
+                    "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
+                    "=caHistogram(\"histo\")"}));
     }
 
     @Override
