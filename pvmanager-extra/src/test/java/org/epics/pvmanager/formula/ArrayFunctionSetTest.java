@@ -139,7 +139,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         // TODO: should test alarm, time and display
         VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), timeNow(), displayNone());
         ListNumberProvider generator = VTableFactory.step(-1, 0.5);
-        VNumberArray expected = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(5),
+        VNumberArray expected = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(4),
                 Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
 	
 	testFunction(set, "arrayWithBoundaries", expected,

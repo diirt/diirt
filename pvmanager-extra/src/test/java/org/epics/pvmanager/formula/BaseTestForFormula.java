@@ -192,7 +192,7 @@ public class BaseTestForFormula {
 	if ((obj1 instanceof VNumberArray) && (obj2 instanceof VNumberArray)) {
 	    VNumberArray array1 = (VNumberArray) obj1;
 	    VNumberArray array2 = (VNumberArray) obj2;
-	    return array1.getData().equals(array2.getData());
+	    return array1.getData().equals(array2.getData()) && array1.getSizes().equals(array2.getSizes());
 	}
 
 	if ((obj1 instanceof VStringArray) && (obj2 instanceof VStringArray)) {
