@@ -25,6 +25,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 			.addFormulaFunction(new ArrayOfNumberFormulaFunction())
 			.addFormulaFunction(new ArrayOfStringFormulaFunction())
 			.addFormulaFunction(new ArrayWithBoundariesFormulaFunction())
+			.addFormulaFunction(new CaHistogramFormulaFunction())
 			.addFormulaFunction(new RescaleArrayFormulaFunction())
 			.addFormulaFunction(new SubArrayFormulaFunction())
 			.addFormulaFunction(new ElementAtArrayFormulaFunction())
