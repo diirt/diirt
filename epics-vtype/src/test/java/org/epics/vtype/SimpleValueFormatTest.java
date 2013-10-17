@@ -46,9 +46,9 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3}), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1}), alarmNone(), timeNow(), display)), equalTo("[1.000]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3, 4, 5}), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000, ...]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.000, 2.000, 3.000]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.000]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.000, 2.000, 3.000, ...]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1), alarmNone(), timeNow(), display)), equalTo("[1.000]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1, 2, 3, 4, 5), alarmNone(), timeNow(), display)), equalTo("[1.000, 2.000, 3.000, ...]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
@@ -74,9 +74,9 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3}), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1}), alarmNone(), timeNow(), display)), equalTo("[1.00]"));
         assertThat(f.format(newVFloatArray(new ArrayFloat(new float[] {1, 2, 3, 4, 5}), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00, ...]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3}, display)), equalTo("[1.00, 2.00, 3.00]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1}, display)), equalTo("[1.00]"));
-        assertThat(f.format(newVDoubleArray(new double[] {1, 2, 3, 4, 5}, display)), equalTo("[1.00, 2.00, 3.00, ...]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1), alarmNone(), timeNow(), display)), equalTo("[1.00]"));
+        assertThat(f.format(newVDoubleArray(new ArrayDouble(1, 2, 3, 4, 5), alarmNone(), timeNow(), display)), equalTo("[1.00, 2.00, 3.00, ...]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo("[A, B, C]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));

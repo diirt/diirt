@@ -406,6 +406,7 @@ public class ValueFactory {
      * @param display the display
      * @return the new value
      */
+    @Deprecated
     public static VDoubleArray newVDoubleArray(final double[] values, final ListInt sizes, Alarm alarm, Time time, Display display) {
         return new IVDoubleArray(new ArrayDouble(values), sizes, alarm, time, display);
     }
@@ -456,6 +457,7 @@ public class ValueFactory {
      * @param display the display
      * @return the new value
      */
+    @Deprecated
     public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
         return newVDoubleArray(values, new ArrayInt(values.length), alarm, time, display);
     }
@@ -495,6 +497,7 @@ public class ValueFactory {
      * @param display the display
      * @return the new value
      */
+    @Deprecated
     public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
         return newVDoubleArray(values, new ArrayInt(values.length), alarmNone(), timeNow(), display);
     }
