@@ -34,6 +34,20 @@ public class ValueFactoryTest {
         assertThat(alarm.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
         assertThat(alarm.getAlarmName(), equalTo("DEVICE"));
     }
+    
+    @Test
+    public void newDisplay1() {
+        ArrayDimensionDisplay indexDimensionDisplay = newDisplay(5);
+        assertThat(indexDimensionDisplay.getUnits(), equalTo(""));
+        assertThat(indexDimensionDisplay.getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 1, 2, 3, 4, 5)));
+    }
+
+    @Test
+    public void newDisplay2() {
+        ArrayDimensionDisplay display = newDisplay(new ArrayDouble(-2, -1, 0, 1, 2), "m");
+        assertThat(display.getUnits(), equalTo("m"));
+        assertThat(display.getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(-2, -1, 0, 1, 2)));
+    }
 
     @Test
     public void alarmNone1() {

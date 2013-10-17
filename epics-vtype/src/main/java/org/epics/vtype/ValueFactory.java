@@ -265,15 +265,7 @@ public class ValueFactory {
         };
     }
     
-    /**
-     * Returns an array display where the index is used to calculate the
-     * cell boundaries.
-     * 
-     * @param nCells the number of cells along the direction
-     * @return a new array display
-     */
-    public static ArrayDimensionDisplay indexDimensionDisplay(int nCells) {
-        final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
+    public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit) {
         return new ArrayDimensionDisplay() {
 
             @Override
@@ -283,9 +275,21 @@ public class ValueFactory {
 
             @Override
             public String getUnits() {
-                return "";
+                return unit;
             }
         };
+    }
+    
+    /**
+     * Returns an array display where the index is used to calculate the
+     * cell boundaries.
+     * 
+     * @param nCells the number of cells along the direction
+     * @return a new array display
+     */
+    public static ArrayDimensionDisplay newDisplay(int nCells) {
+        final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
+        return newDisplay(boundaries, "");
     }
     
     private static final Display displayNone = newDisplay(Double.NaN, Double.NaN, 

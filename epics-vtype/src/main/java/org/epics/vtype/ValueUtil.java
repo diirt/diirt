@@ -489,7 +489,7 @@ public class ValueUtil {
     public static List<ArrayDimensionDisplay> defaultArrayDisplay(VNumberArray array) {
         List<ArrayDimensionDisplay> displays = new ArrayList<>();
         for (int i = 0; i < array.getSizes().size(); i++) {
-            displays.add(ValueFactory.indexDimensionDisplay(array.getSizes().getInt(i)));
+            displays.add(ValueFactory.newDisplay(array.getSizes().getInt(i)));
         }
         return displays;
     }
