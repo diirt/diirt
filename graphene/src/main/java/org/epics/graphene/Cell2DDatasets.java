@@ -102,4 +102,59 @@ public class Cell2DDatasets {
             }
         };
     }
+    
+    public static Cell2DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries, final ListNumber yBoundaries) {
+        final Statistics statistics = StatisticsUtil.statisticsOf(values);
+        final Range xRange = RangeUtil.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
+        final Range yRange = RangeUtil.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
+        
+        // Check boundary sizes correspond match the number of points.
+        final int xCount = xBoundaries.size() - 1;
+        final int yCount = yBoundaries.size() - 1;
+        if (values.size() != xCount * yCount) {
+            throw new IllegalArgumentException("Number of boundaries do not match number of cells (" + xCount + " * " + yCount + " !+ " + values.size() + ")");
+        }
+        return new Cell2DDataset() {
+
+            @Override
+            public double getValue(int x, int y) {
+                return values.getDouble(y * xCount + x);
+            }
+
+            @Override
+            public Statistics getStatistics() {
+                return statistics;
+            }
+
+            @Override
+            public ListNumber getXBoundaries() {
+                return xBoundaries;
+            }
+
+            @Override
+            public Range getXRange() {
+                return xRange;
+            }
+
+            @Override
+            public int getXCount() {
+                return xCount;
+            }
+
+            @Override
+            public ListNumber getYBoundaries() {
+                return yBoundaries;
+            }
+
+            @Override
+            public Range getYRange() {
+                return yRange;
+            }
+
+            @Override
+            public int getYCount() {
+                return yCount;
+            }
+        };
+    }
 }
