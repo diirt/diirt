@@ -480,29 +480,6 @@ public class ValueUtil {
     }
     
     /**
-     * Returns an array display where the index is used to calculate the
-     * cell boundaries.
-     * 
-     * @param nCells the number of cells along the direction
-     * @return a new array display
-     */
-    public static ArrayDimensionDisplay indexDimensionDisplay(int nCells) {
-        final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
-        return new ArrayDimensionDisplay() {
-
-            @Override
-            public ListNumber getCellBoundaries() {
-                return boundaries;
-            }
-
-            @Override
-            public String getUnits() {
-                return "";
-            }
-        };
-    }
-    
-    /**
      * Returns the default array dimension display by looking at the size
      * of the n dimensional array and creating cell boundaries based on index.
      * 
@@ -512,7 +489,7 @@ public class ValueUtil {
     public static List<ArrayDimensionDisplay> defaultArrayDisplay(VNumberArray array) {
         List<ArrayDimensionDisplay> displays = new ArrayList<>();
         for (int i = 0; i < array.getSizes().size(); i++) {
-            displays.add(indexDimensionDisplay(array.getSizes().getInt(i)));
+            displays.add(ValueFactory.indexDimensionDisplay(array.getSizes().getInt(i)));
         }
         return displays;
     }

@@ -14,6 +14,7 @@ import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -261,6 +262,29 @@ public class ValueFactory {
                 return upperDisplayLimit;
             }
 
+        };
+    }
+    
+    /**
+     * Returns an array display where the index is used to calculate the
+     * cell boundaries.
+     * 
+     * @param nCells the number of cells along the direction
+     * @return a new array display
+     */
+    public static ArrayDimensionDisplay indexDimensionDisplay(int nCells) {
+        final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
+        return new ArrayDimensionDisplay() {
+
+            @Override
+            public ListNumber getCellBoundaries() {
+                return boundaries;
+            }
+
+            @Override
+            public String getUnits() {
+                return "";
+            }
         };
     }
     

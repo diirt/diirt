@@ -154,7 +154,7 @@ public class ValueUtilTest {
     
     @Test
     public void indexDimensionDisplay1() {
-        ArrayDimensionDisplay indexDimensionDisplay = ValueUtil.indexDimensionDisplay(5);
+        ArrayDimensionDisplay indexDimensionDisplay = ValueFactory.indexDimensionDisplay(5);
         assertThat(indexDimensionDisplay.getUnits(), equalTo(""));
         assertThat(indexDimensionDisplay.getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 1, 2, 3, 4, 5)));
     }
