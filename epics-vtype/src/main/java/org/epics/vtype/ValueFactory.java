@@ -454,7 +454,7 @@ public class ValueFactory {
 	}else if(data instanceof ListInt){
 	    return newVIntArray((ListInt)data, alarm, time, display);
 	}	
-	throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException("TODO: support types other than double and int");
     }
     
     /**
@@ -471,9 +471,9 @@ public class ValueFactory {
 	if (data instanceof ListDouble){
 	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
 	} else if(data instanceof ListInt){
-	    return newVIntArray((ListInt)data, alarm, time, display);
+	    return new IVIntArray((ListInt)data, sizes, dimensionDisplay, alarm, time, display);
 	}	
-	throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException("TODO: support types other than double and int");
     }
     
     /**
