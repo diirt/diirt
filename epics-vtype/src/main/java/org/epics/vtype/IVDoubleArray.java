@@ -14,16 +14,25 @@ import org.epics.util.array.ListInt;
  */
 class IVDoubleArray extends IVNumeric implements VDoubleArray {
 
-    private final double[] array;
     private final ListDouble data;
     private final ListInt sizes;
+    private final List<ArrayDimensionDisplay> dimensionDisplay;
 
     public IVDoubleArray(ListDouble data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
+        this(data, sizes, null, alarm, time, display);
+    }
+
+    public IVDoubleArray(ListDouble data, ListInt sizes, List<ArrayDimensionDisplay> dimDisplay,
+            Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
-        this.array = null;
         this.sizes = sizes;
         this.data = data;
+        if (dimDisplay == null) {
+            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(this);
+        } else {
+            this.dimensionDisplay = dimDisplay;
+        }
     }
 
     @Override
@@ -43,7 +52,7 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
 
     @Override
     public List<ArrayDimensionDisplay> getDimensionDisplay() {
-        return ValueUtil.defaultArrayDisplay(this);
+        return dimensionDisplay;
     }
 
 }

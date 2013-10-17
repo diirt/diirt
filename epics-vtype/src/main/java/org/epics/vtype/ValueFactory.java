@@ -429,6 +429,25 @@ public class ValueFactory {
     }
     
     /**
+     * Creates a new VNumberArray based on the type of the data.
+     * 
+     * @param data
+     * @param alarm
+     * @param time
+     * @param display
+     * @return
+     */
+    public static VNumberArray newVNumberArray(final ListNumber data, final ListInt sizes, final List<ArrayDimensionDisplay> dimensionDisplay,
+            final Alarm alarm, final Time time, final Display display){
+	if (data instanceof ListDouble){
+	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
+	} else if(data instanceof ListInt){
+	    return newVIntArray((ListInt)data, alarm, time, display);
+	}	
+	throw new UnsupportedOperationException();
+    }
+    
+    /**
      * Creates a new VDoubleArray.
      * 
      * @param values array values
