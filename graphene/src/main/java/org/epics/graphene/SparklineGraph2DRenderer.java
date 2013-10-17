@@ -65,7 +65,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //General Rendering
         super.calculateRanges(data.getXStatistics(), data.getYStatistics());
-        super.calculateGraphArea();
+        super.calculateGraphAreaNoLabels();
         super.drawBackground();
         
         g.setColor(Color.BLACK);
@@ -74,7 +74,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
-        
+        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
         //Draws a circle at the max, min, and current value
         if(drawCircles){
             drawCircle(g, data, xValues, yValues, minIndex, minValueColor);
@@ -97,6 +97,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param index Position to draw the circle
      * @param color Color of the circle
      */
+    //See bubble graph for reimplementation
     public void drawCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues, int index, Color color){
         int x = (int) (scaledX(xValues.getDouble(index)) - .5*circleDiameter);
         int y = (int) (scaledY(yValues.getDouble(index)) - .5*circleDiameter);

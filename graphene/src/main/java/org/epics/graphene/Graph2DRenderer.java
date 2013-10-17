@@ -350,6 +350,65 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         yReferenceCoords = new ArrayDouble(yRefCoords);
     }
+    
+    protected void calculateGraphAreaNoLabels() {
+        
+        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
+            ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
+            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
+        } else {
+            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());
+        }
+
+        // Calculate vertical axis references. If range is zero, use special logic
+        if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
+            ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
+            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
+        } else {
+            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());
+        }
+        
+        int areaFromBottom = bottomMargin;
+        int areaFromLeft = leftMargin;
+
+        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
+        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        if (xPlotValueStart == xPlotValueEnd) {
+            // If range is zero, fake a range
+            xPlotValueStart -= 1.0;
+            xPlotValueEnd += 1.0;
+        }
+        xAreaStart = areaFromLeft;
+        xAreaEnd = getImageWidth() - rightMargin - 1;
+        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
+        
+        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
+        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
+        if (yPlotValueStart == yPlotValueEnd) {
+            // If range is zero, fake a range
+            yPlotValueStart -= 1.0;
+            yPlotValueEnd += 1.0;
+        }
+        yAreaStart = topMargin;
+        yAreaEnd = getImageHeight() - areaFromBottom - 1;
+        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
+        
+        double[] xRefCoords = new double[xReferenceValues.size()];
+        for (int i = 0; i < xRefCoords.length; i++) {
+            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
+        }
+        xReferenceCoords = new ArrayDouble(xRefCoords);
+        
+        double[] yRefCoords = new double[yReferenceValues.size()];
+        for (int i = 0; i < yRefCoords.length; i++) {
+            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
+        }
+        yReferenceCoords = new ArrayDouble(yRefCoords);
+    }
 
     /**
      * Draws the background with the background color.
