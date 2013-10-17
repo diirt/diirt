@@ -14,6 +14,7 @@ import static org.epics.vtype.ValueFactory.newVStringArray;
 import static org.epics.vtype.ValueFactory.timeNow;
 
 import java.util.Arrays;
+import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
@@ -22,6 +23,12 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.ValueFactory;
+import static org.epics.vtype.ValueFactory.newVDoubleArray;
+import static org.epics.vtype.ValueFactory.newVNumber;
+import static org.epics.vtype.ValueFactory.timeNow;
+import org.epics.vtype.table.ListNumberProvider;
+import org.epics.vtype.table.VTableFactory;
 import org.junit.Test;
 
 /**
@@ -125,6 +132,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	testFunction(set, "elementAt", expected,
 		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
 		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+    }
+    
+    @Test
+    public void arrayWithBoundaries(){
+        // TODO: should test alarm, time and display
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), timeNow(), displayNone());
+        ListNumberProvider generator = VTableFactory.step(-1, 0.5);
+        VNumberArray expected = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(5),
+                Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
+	
+	testFunction(set, "arrayWithBoundaries", expected,
+		array,
+		generator);
     }
    
 }

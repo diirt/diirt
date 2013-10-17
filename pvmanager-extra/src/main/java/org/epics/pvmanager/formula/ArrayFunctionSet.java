@@ -24,6 +24,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 			"Aggregation and calculations on arrays")
 			.addFormulaFunction(new ArrayOfNumberFormulaFunction())
 			.addFormulaFunction(new ArrayOfStringFormulaFunction())
+			.addFormulaFunction(new ArrayWithBoundariesFormulaFunction())
 			.addFormulaFunction(new RescaleArrayFormulaFunction())
 			.addFormulaFunction(new SubArrayFormulaFunction())
 			.addFormulaFunction(new ElementAtArrayFormulaFunction())
