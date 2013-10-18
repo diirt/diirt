@@ -208,6 +208,48 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (update.getYValueScale() != null) {
             yValueScale = update.getYValueScale();
         }
+        if (update.getBackgroundColor() != null){
+            backgroundColor = update.getBackgroundColor();
+        }
+        if (update.getLabelColor() != null){
+            labelColor = update.getLabelColor();
+        }
+        if (update.getReferenceLineColor() != null){
+            referenceLineColor = update.getReferenceLineColor();
+        }
+        if (update.getLabelFont() != null){
+            labelFont = update.getLabelFont();
+        }
+        if (update.getBottomMargin() != null){
+            bottomMargin = update.getBottomMargin();
+        }
+        if (update.getTopMargin() != null){
+            topMargin = update.getTopMargin();
+        }
+        if (update.getLeftMargin() != null){
+            leftMargin = update.getLeftMargin();
+        }
+        if (update.getRightMargin() != null){
+            rightMargin = update.getRightMargin();
+        }
+        if (update.getBottomAreaMargin() != null){
+            bottomAreaMargin = update.getBottomAreaMargin();
+        }
+        if (update.getTopAreaMargin() != null){
+            topAreaMargin = update.getTopAreaMargin();
+        }
+        if (update.getLeftAreaMargin() != null){
+            leftAreaMargin = update.getLeftAreaMargin();
+        }
+        if (update.getRightAreaMargin() != null){
+            rightAreaMargin = update.getRightAreaMargin();
+        }
+        if (update.getXLabelMargin() != null){
+            xLabelMargin = update.getXLabelMargin();
+        }
+        if (update.getYLabelMargin() != null){
+            yLabelMargin = update.getYLabelMargin();
+        }
     }
     
     static Range aggregateRange(Range dataRange, Range aggregatedRange) {
