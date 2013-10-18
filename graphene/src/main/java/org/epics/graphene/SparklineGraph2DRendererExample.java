@@ -20,12 +20,12 @@ public class SparklineGraph2DRendererExample {
             //Creates sample data
             double[] initialDataX = new double[100];
 
-            for(int i = 20; i< 120; i+=1)
-            {
-                initialDataX[i-20]= Math.cos(Math.PI * 6 * i/100.0);
+            for(int i = 0; i < 50; i++){
+            initialDataX[i] = i;
             }
-            
-            
+            for(int i = 49; i>=0; i--){
+                initialDataX[100-i-1] = i;
+            }
             //Converts data array into dataset type
             Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             

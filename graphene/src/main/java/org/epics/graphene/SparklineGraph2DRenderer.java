@@ -76,10 +76,26 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         setClip(g);
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
         //Draws a circle at the max, min, and current value
+        
+        //minIndex, maxIndex, lastIndex, minValueColor, maxValueColor, lastValueColor
         if(drawCircles){
-            drawCircle(g, data, xValues, yValues, minIndex, minValueColor);
-            drawCircle(g, data, xValues, yValues, maxIndex, maxValueColor);                
-            drawCircle(g, data, xValues, yValues, lastIndex, lastValueColor);
+            double x = scaledX(data.getXValues().getDouble(minIndex));
+            double y = scaledY(data.getYValues().getDouble(minIndex));
+            g.setColor(minValueColor);
+            Shape circle = createShape(x, y, circleDiameter);
+            g.fill(circle);
+            
+            x = scaledX(data.getXValues().getDouble(maxIndex));
+            y = scaledY(data.getYValues().getDouble(maxIndex));
+            g.setColor(maxValueColor);
+            circle = createShape(x, y, circleDiameter);
+            g.fill(circle);
+            
+            x = scaledX(data.getXValues().getDouble(lastIndex));
+            y = scaledY(data.getYValues().getDouble(lastIndex));
+            g.setColor(lastValueColor);
+            circle = createShape(x, y, circleDiameter);
+            g.fill(circle);
         }
     }
 
@@ -89,26 +105,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     @Override 
     protected void drawGraphArea(){
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     } 
     
-    /**
-     * Draws a circle at the corresponding index.
-     * @param g Graphics
-     * @param data Collection of points
-     * @param xValues x values
-     * @param yValues y values
-     * @param index Position to draw the circle
-     * @param color Color of the circle
-     */
-    //See bubble graph for reimplementation
-    public void drawCircle(Graphics2D g, Point2DDataset data, SortedListView xValues, ListNumber yValues, int index, Color color){
-        int x = (int) (scaledX(xValues.getDouble(index)) - .5*circleDiameter);
-        int y = (int) (scaledY(yValues.getDouble(index)) - .5*circleDiameter);
-        
-        g.setColor(color);
-        g.fillOval(x, y, circleDiameter, circleDiameter);
-        g.setColor(Color.BLACK);
-    }
     private Shape createShape(double x, double y, double size) {
         double halfSize = size / 2;
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
