@@ -9,17 +9,25 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.junit.AfterClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
-
+/**
+ * 
+ * @authors asbarber, jkfeng, sjdallst
+ */
 public class SparklineGraph2DRendererTest {
-    
+    /**
+     * Tests the functions in SparklineGraph2DRenderer
+     */
     public SparklineGraph2DRendererTest() {
     }
 
     private static Point2DDataset largeDataset;
     
+    /**
+     * Sets up the large dataset used in the tests
+     * @throws Exception 
+     */
     @BeforeClass
     public static void setUpClass() throws Exception {
         Random rand = new Random(1);
@@ -31,62 +39,152 @@ public class SparklineGraph2DRendererTest {
         largeDataset = org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
 
+    /**
+     * Empties the memory used in the large dataset
+     * @throws Exception 
+     */
     @AfterClass
     public static void tearDownClass() throws Exception {
         largeDataset = null;
     }
     
-    //Testing: min = lastValue
+    
+    /**
+     * Tests case of:
+     * <ul>
+     *      <li>Min Value = Last Value</li>
+     *      <li>There exists more than one min value</li>
+     * </ul>
+     * 
+     * @throws Exception Test fails
+     */    
     @Test
     public void test1() throws Exception {
-        double[] initialDataX = new double[100];
-        for(int i = 0; i < 50; i++){
-            initialDataX[i] = i;
-        }
-        for(int i = 49; i>=0; i--){
-            initialDataX[100-i-1] = i;
-        }
+        double[] initialDataX = new double[101];
+        
+            //Creates the function:
+                //f(x) = x          for  0  <= x <  50
+                //f(x) = 100 - x    for  50 <= x <= 100
+            for(int x = 0; x < 50; x++){
+                initialDataX[x] = x;
+            }
+            for (int x = 50; x <= 100; x++){
+                initialDataX[x] = 100 - x;
+            }         
+
+        //Creates a sparkline graph
         Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
         renderer.draw(g, data);
+        
+        //Compares to correct image
         ImageAssert.compareImages("sparkline2D.1", image);
     }
     
-    //Testing: max = current value;
-        @Test
+    /**
+     * Tests case of:
+     * <ul>
+     *      <li>Max Value = Last Value</li>
+     *      <li>There exists more than one max value</li>
+     * </ul>
+     * 
+     * @throws Exception Test fails
+     */        
+    @Test
     public void test2() throws Exception {
-        double[] initialDataX = new double[100];
-            for(int i = 49; i>=0; i--)
-            {
-                initialDataX[50-1-i]= i;
+        double[] initialDataX = new double[101];
+        
+            //Creates the function:
+                //f(x) = 50 - x         for  0  <= x <  50
+                //f(x) = x - 50         for  50 <= x <= 100
+            for (int x = 0; x <= 49; x++){
+                initialDataX[x] = 50 - x;
             }
-            for(int i = 0; i< 50; i++)
-            {
-                initialDataX[50+i]= i;
+            for (int x =50; x <= 100; x++){
+                initialDataX[x] = x - 50;
             }
+            
+        //Creates a sparkline graph
         Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
         renderer.draw(g, data);
+        
+        //Compares to correct image
         ImageAssert.compareImages("sparkline2D.2", image);
     }
         
-        //Testing: max = min = lastValue.
-        
-        @Test
+    /**
+     * Tests case of:
+     * <ul>
+     *      <li>Max Value = Min Value = Last Value</li>
+     *      <li>There exists more than one max value</li>
+     *      <li>There exists more than one min value</li>
+     * </ul>
+     * 
+     * @throws Exception Test fails
+     */    
+    @Test
     public void test3() throws Exception {
         double[] initialDataX = new double[100];
+        
+            //Creates the function:
+                //f(x) = 1      for 0 <= x < 100
             for(int i = 0; i < 100; i++){
                 initialDataX[i] = 1;
             }
+            
+        //Creates a sparkline graph
         Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
         renderer.draw(g, data);
+        
+        //Compares to correct image
         ImageAssert.compareImages("sparkline2D.3", image);
+    }
+    
+    /**
+     * Tests case of:
+     * <ul>
+     *      <li>Max Value != Last Value</li>
+     *      <li>Min Value != Last Value</li>
+     *      <li>There exists more than one max value</li>
+     *      <li>There exists more than one min value</li>
+     * </ul>
+     * 
+     * @throws Exception Test fails
+     */   
+    @Test
+    public void test4() throws Exception {
+        double[] initialDataX = new double[100];
+        
+            //Creates the function:
+                //f(x) = 1      for 0 <= x < 33
+                //f(x) = -1     for 33 <= x < 67
+                //f(x) = 0      for 67 <= x < 100
+            for(int x = 0; x < 33; x++){
+                initialDataX[x] = 1;
+            }
+            for (int x = 33; x < 67; x++){
+                initialDataX[x] = -1;
+            }
+            for (int x = 67; x < 100; x++){
+                initialDataX[x] = 0;
+            }
+            
+        //Creates a sparkline graph
+        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.4", image);        
     }
 }

@@ -20,12 +20,16 @@ public class SparklineGraph2DRendererExample {
             //Creates sample data
             double[] initialDataX = new double[100];
 
-            for(int i = 0; i < 50; i++){
-            initialDataX[i] = i;
+            for(int x = 0; x < 33; x++){
+                initialDataX[x] = 1;
             }
-            for(int i = 49; i>=0; i--){
-                initialDataX[100-i-1] = i;
+            for (int x = 33; x < 67; x++){
+                initialDataX[x] = -1;
             }
+            for (int x = 67; x < 100; x++){
+                initialDataX[x] = 0;
+            }
+            
             //Converts data array into dataset type
             Point2DDataset data = Point2DDatasets.lineData(initialDataX);
             

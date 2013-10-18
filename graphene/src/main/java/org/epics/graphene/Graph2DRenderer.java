@@ -22,7 +22,6 @@ import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
 import static org.epics.graphene.ReductionScheme.NONE;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListInt;
 import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 
@@ -428,7 +427,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // When drawing the reference line, align them to the pixel
         drawVerticalReferenceLines();
-        drawHorizontalReferenceLines();;
+        drawHorizontalReferenceLines();
         
         drawYLabels();
         drawXLabels();
@@ -445,7 +444,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         scaledData.scaledY = new double[dataCount];
         for (int i = 0; i < scaledData.scaledY.length; i++) {
             scaledData.scaledX[i] = scaledX(xValues.getDouble(i));
-            scaledData.scaledY[i] = scaledY(yValues.getDouble(i));;
+            scaledData.scaledY[i] = scaledY(yValues.getDouble(i));
             processScaledValue(dataStart + i, xValues.getDouble(i), yValues.getDouble(i), scaledData.scaledX[i], scaledData.scaledY[i]);
         }
         scaledData.end = dataCount;

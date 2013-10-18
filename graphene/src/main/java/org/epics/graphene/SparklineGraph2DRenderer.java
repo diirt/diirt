@@ -7,11 +7,8 @@ package org.epics.graphene;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
-import java.util.Collections;
-import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
-
 
 /**
  *
@@ -41,9 +38,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int     maxIndex, 
                     minIndex,
                     lastIndex;
-    private double  maxValue = 0, 
-                    minValue = 0,
-                    lastValue = 0;    
+    private double  maxValueY = 0, 
+                    minValueY = 0,
+                    lastValueY = 0;    
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -75,6 +72,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
+        
         //Draws a circle at the max, min, and current value
         
         //minIndex, maxIndex, lastIndex, minValueColor, maxValueColor, lastValueColor
@@ -100,7 +98,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
 
     /**
-     * Sets the rendering hint to render with antialiasing.
+     * Sets the rendering hint to render with antialiasing and pure stroke.
      */
     @Override 
     protected void drawGraphArea(){
@@ -108,6 +106,13 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     } 
     
+    /**
+     * Creates a circle shape at the given position with given size.
+     * @param x x position of shape
+     * @param y y position of shape
+     * @param size Diameter of circle
+     * @return Ellipse (circle) shape
+     */
     private Shape createShape(double x, double y, double size) {
         double halfSize = size / 2;
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
@@ -129,24 +134,24 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Base Case
         if (index == 0){
-            maxValue = valueY;
-            minValue = valueY;
+            maxValueY = valueY;
+            minValueY = valueY;
         }
         else{
             //Max
-            if (maxValue <= valueY){
-                maxValue = valueY;
+            if (maxValueY <= valueY){
+                maxValueY = valueY;
                 maxIndex = index;
             }
             //Min
-            if (minValue >= valueY){
-                minValue = valueY;
+            if (minValueY >= valueY){
+                minValueY = valueY;
                 minIndex = index;
             }  
         }
         
         //New point is always last point
-        lastValue = valueY;
+        lastValueY = valueY;
         lastIndex = index;
     }
     
@@ -228,7 +233,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @return The data value of the maximum
      */
     public double getMaxValue(){
-        return maxValue;
+        return maxValueY;
     }
     
     /**
@@ -238,7 +243,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @return The data value of the minimum
      */
     public double getMinValue(){
-        return minValue;
+        return minValueY;
     }
     
     /**
@@ -246,6 +251,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @return The data value for the last index
      */
     public double getLastValue(){
-        return lastValue;
+        return lastValueY;
     }
 }
