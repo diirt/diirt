@@ -8,7 +8,7 @@ package org.epics.graphene;
  *
  * @author carcassi
  */
-public class IntensityGraph2DRendererUpdate {
+public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<IntensityGraph2DRendererUpdate> {
 
     private Integer imageHeight;
     private Integer imageWidth;

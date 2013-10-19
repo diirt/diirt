@@ -17,7 +17,7 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-public class IntensityGraph2DRenderer {
+public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
 
     private int width = 300;
     private int height = 200;
@@ -34,23 +34,14 @@ public class IntensityGraph2DRenderer {
     private double integratedMaxX = java.lang.Double.MIN_VALUE;
     private double integratedMaxY = java.lang.Double.MIN_VALUE;
 
-    public IntensityGraph2DRenderer(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public IntensityGraph2DRenderer(int imageWidth, int imageHeight) {
+        super(imageWidth, imageHeight); 
     }
 
     public IntensityGraph2DRenderer() {
         this(300, 200);
     }
-
-    public int getImageHeight() {
-        return height;
-    }
-
-    public int getImageWidth() {
-        return width;
-    }
-
+    
     public double getEndPlotX() {
         return endPlotX;
     }
@@ -224,5 +215,9 @@ public class IntensityGraph2DRenderer {
             countY++;
         }
 
-    }    
+    }
+    @Override
+    public Graph2DRendererUpdate newUpdate() {
+        return new IntensityGraph2DRendererUpdate();
+    }
 }
