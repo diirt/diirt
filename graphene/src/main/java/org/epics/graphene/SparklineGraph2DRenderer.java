@@ -113,7 +113,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param size Diameter of circle
      * @return Ellipse (circle) shape
      */
-    private Shape createShape(double x, double y, double size) {
+    protected Shape createShape(double x, double y, double size) {
         double halfSize = size / 2;
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
         return circle;
@@ -252,5 +252,25 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      */
     public double getLastValue(){
         return lastValueY;
+    }
+    
+    public boolean getDrawCircles(){
+        return drawCircles;
+    }
+    
+    public Color getMinValueColor(){
+        return minValueColor;
+    }
+    
+    public Color getMaxValueColor(){
+        return maxValueColor;
+    }
+    
+    public Color getLastValueColor(){
+        return lastValueColor;
+    }
+    
+    public int getCircleDiameter(){
+        return circleDiameter;
     }
 }
