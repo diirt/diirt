@@ -93,6 +93,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
+        calculateGraphAreaNoLabels();        
         drawBackground();
         drawGraphArea();
         

@@ -12,7 +12,9 @@ import org.epics.util.array.SortedListView;
 
 /**
  *
- * @authors asbarber, jkfeng, sjdallst
+ * @author asbarber
+ * @author jkfeng
+ * @author sjdallst
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
 
@@ -24,7 +26,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param imageHeight the graph height
      */    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
-        super(imageWidth, imageHeight); 
+        super(imageWidth, imageHeight);
+        super.xLabelMargin = 0;
+        super.yLabelMargin = 0;        
     }
     
     //Parameters

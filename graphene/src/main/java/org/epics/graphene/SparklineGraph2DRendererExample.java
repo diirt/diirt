@@ -12,7 +12,9 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author asbarber, jkfeng, sjdallst
+ * @author asbarber
+ * @author jkfeng
+ * @author sjdallst
  */
 public class SparklineGraph2DRendererExample {
     public static void main(String[] args) throws IOException

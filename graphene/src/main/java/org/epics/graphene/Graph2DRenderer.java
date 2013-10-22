@@ -315,7 +315,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      *    <li>The margins</li>
      * </ul>
      */
-    protected void calculateGraphArea() {
+    protected void calculateGraphAreaORIGINAL() {
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
@@ -392,12 +392,66 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yReferenceCoords = new ArrayDouble(yRefCoords);
     }
     
-    protected void calculateGraphAreaNoLabels() {
+    /**
+     * Calculates:
+     * <ul>
+     *    <li>The font for the labels</li>
+     *    <li>The margins based on labels</li>
+     * </ul>
+     */    
+    protected void calculateGraphArea() {
+        // Calculate horizontal axis references. If range is zero, use special logic
+        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
+            ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
+            xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
+        } else {
+            // TODO: use something better to format the number
+            xReferenceLabels = Collections.singletonList(xPlotRange.getMinimum().toString());
+        }
+
+        // Calculate vertical axis references. If range is zero, use special logic
+        if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
+            ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
+            yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
+        } else {
+            // TODO: use something better to format the number
+            yReferenceLabels = Collections.singletonList(yPlotRange.getMinimum().toString());
+        }
         
+        labelFontMetrics = g.getFontMetrics(labelFont);
+        
+        // Compute x axis spacing
+        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
+        
+        // Compute y axis spacing
+        int[] yLabelWidths = new int[yReferenceLabels.size()];
+        yLabelMaxWidth = 0;
+        for (int i = 0; i < yLabelWidths.length; i++) {
+            yLabelWidths[i] = labelFontMetrics.stringWidth(yReferenceLabels.get(i));
+            yLabelMaxWidth = Math.max(yLabelMaxWidth, yLabelWidths[i]);
+        }
+    }
+        
+    /**
+     * Calculates the graph area based on:
+     * <ul>
+     *    <li>The image size</li>
+     *    <li>The plot ranges</li>
+     *    <li>The value scales</li>
+     *    <li>The font for the labels</li>
+     *    <li>The margins</li>
+     * </ul>
+     * 
+     * To calculate area based on labels, ensure that calculateGraphArea() is called
+     * prior to calling calculateGraphAreaNoLabels().
+     */    
+    protected void calculateGraphAreaNoLabels() {
+        // Calculate horizontal axis references. If range is zero, use special logic
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());
         } else {
+            // TODO: use something better to format the number
             xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());
         }
 
@@ -406,11 +460,12 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
             yReferenceValues = new ArrayDouble(yAxis.getTickValues());
         } else {
+            // TODO: use something better to format the number
             yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());
         }
-        
-        int areaFromBottom = bottomMargin;
-        int areaFromLeft = leftMargin;
+                
+        int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
+        int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
         xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
         xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();

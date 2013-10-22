@@ -179,7 +179,7 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     
     /**
      * Updates the parameter for rightMargin
-     * @param topMargin Margin at top of image
+     * @param rightMargin Margin at top of image
      * @return Self with parameter topMargin changed
      */
     public T rightMargin(Integer rightMargin){

@@ -152,6 +152,7 @@ public class Graph2DRendererTest {
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(0, 10));
         renderer.calculateGraphArea();
+        renderer.calculateGraphAreaNoLabels();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.5", image);
     }
@@ -171,6 +172,7 @@ public class Graph2DRendererTest {
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(3, 3));
         renderer.calculateGraphArea();
+        renderer.calculateGraphAreaNoLabels();        
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.6", image);
     }
@@ -190,6 +192,7 @@ public class Graph2DRendererTest {
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(3, 3), RangeUtil.range(0, 10));
         renderer.calculateGraphArea();
+        renderer.calculateGraphAreaNoLabels();        
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.7", image);
     }

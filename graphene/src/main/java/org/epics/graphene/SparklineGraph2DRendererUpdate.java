@@ -8,7 +8,9 @@ import java.awt.Color;
 
 /**
  *
- * @author asbarber, jkfeng, sjdallst
+ * @author asbarber
+ * @author jkfeng
+ * @author sjdallst
  */
 public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<SparklineGraph2DRendererUpdate>{
     //Parameters that can be updated

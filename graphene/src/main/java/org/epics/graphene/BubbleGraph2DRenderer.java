@@ -35,6 +35,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         
         drawBackground();
         calculateGraphArea();
+        calculateGraphAreaNoLabels();        
         drawGraphArea();
         
 
