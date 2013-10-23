@@ -21,7 +21,7 @@ public class SparklineMultilineGraph2DRendererExample {
             //Creates sample data
             double[][] initialDataX = new double[10][100];
 
-            /*for(int x = 0; x < 100; x++){
+            for(int x = 0; x < 100; x++){
                 initialDataX[0][x] = 50*Math.cos(6.0*(x/100.0)*Math.PI); 
             }
             
@@ -30,13 +30,13 @@ public class SparklineMultilineGraph2DRendererExample {
             }
             for(int x = 0; x < 100; x++){
                 initialDataX[2][x] = 55*Math.cos(6.0*(x/100.0)*Math.PI-Math.PI/3*2);
-            }*/
+            }
             
-            for(int a = 0; a < initialDataX.length; a++){
+            /*for(int a = 0; a < initialDataX.length; a++){
                 for(int b = 0; b < initialDataX[0].length; b++){
                     initialDataX[a][b] = a;
                 }
-            }
+            }*/
             
             
             Point2DDataset [] finalData = new Point2DDataset[initialDataX.length];
