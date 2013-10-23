@@ -44,8 +44,8 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
         // Prepare the plot area
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         this.g = g;
-        calculateGraphArea();
-        calculateGraphAreaNoLabels();        
+        calculateLabels();
+        calculateGraphArea();        
         drawGraphArea();
 
         // Draw the plot

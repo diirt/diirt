@@ -151,8 +151,8 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(0, 10));
+        renderer.calculateLabels();
         renderer.calculateGraphArea();
-        renderer.calculateGraphAreaNoLabels();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.5", image);
     }
@@ -171,8 +171,8 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(3, 3));
-        renderer.calculateGraphArea();
-        renderer.calculateGraphAreaNoLabels();        
+        renderer.calculateLabels();
+        renderer.calculateGraphArea();        
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.6", image);
     }
@@ -191,8 +191,8 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(3, 3), RangeUtil.range(0, 10));
-        renderer.calculateGraphArea();
-        renderer.calculateGraphAreaNoLabels();        
+        renderer.calculateLabels();
+        renderer.calculateGraphArea();        
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.7", image);
     }
@@ -245,7 +245,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
     
@@ -269,7 +269,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
     
@@ -293,7 +293,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
     
@@ -317,7 +317,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
 

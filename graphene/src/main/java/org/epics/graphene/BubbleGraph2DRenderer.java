@@ -34,8 +34,8 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         calculateRanges(data.getXStatistics(), data.getYStatistics(), data.getZStatistics());
         
         drawBackground();
-        calculateGraphArea();
-        calculateGraphAreaNoLabels();        
+        calculateLabels();
+        calculateGraphArea();        
         drawGraphArea();
         
 

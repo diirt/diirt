@@ -24,7 +24,7 @@ public class SparklineMultilineGraph2DRenderer extends SparklineGraph2DRenderer{
         for(Point2DDataset dataPiece: data){
           super.calculateRanges(dataPiece.getXStatistics(), dataPiece.getYStatistics());  
         }
-        super.calculateGraphAreaNoLabels();
+        super.calculateGraphArea();
         super.drawBackground();
     
         int MAXCOLOR = 255;

@@ -30,8 +30,8 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         this.g = graphics;
         this.referenceLineColor = this.backgroundColor;
         calculateRanges(dataset.getXRange(), dataset.getStatistics());
+        calculateLabels();
         calculateGraphArea();
-        calculateGraphAreaNoLabels();
         drawGraphArea();
 
         // Compute bin limits

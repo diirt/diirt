@@ -306,100 +306,13 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
     /**
-     * Calculates the graph area based on:
-     * <ul>
-     *    <li>The image size</li>
-     *    <li>The plot ranges</li>
-     *    <li>The value scales</li>
-     *    <li>The font for the labels</li>
-     *    <li>The margins</li>
-     * </ul>
-     */
-    protected void calculateGraphAreaORIGINAL() {
-        // Calculate horizontal axis references. If range is zero, use special logic
-        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
-            ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
-            xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
-        } else {
-            // TODO: use something better to format the number
-            xReferenceLabels = Collections.singletonList(xPlotRange.getMinimum().toString());
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());
-        }
-
-        // Calculate vertical axis references. If range is zero, use special logic
-        if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
-            ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
-            yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
-            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
-        } else {
-            // TODO: use something better to format the number
-            yReferenceLabels = Collections.singletonList(yPlotRange.getMinimum().toString());
-            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());
-        }
-        
-        labelFontMetrics = g.getFontMetrics(labelFont);
-        
-        // Compute x axis spacing
-        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
-        int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
-        
-        // Compute y axis spacing
-        int[] yLabelWidths = new int[yReferenceLabels.size()];
-        yLabelMaxWidth = 0;
-        for (int i = 0; i < yLabelWidths.length; i++) {
-            yLabelWidths[i] = labelFontMetrics.stringWidth(yReferenceLabels.get(i));
-            yLabelMaxWidth = Math.max(yLabelMaxWidth, yLabelWidths[i]);
-        }
-        int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
-
-        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
-        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
-        if (xPlotValueStart == xPlotValueEnd) {
-            // If range is zero, fake a range
-            xPlotValueStart -= 1.0;
-            xPlotValueEnd += 1.0;
-        }
-        xAreaStart = areaFromLeft;
-        xAreaEnd = getImageWidth() - rightMargin - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
-        xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
-        
-        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
-        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
-        if (yPlotValueStart == yPlotValueEnd) {
-            // If range is zero, fake a range
-            yPlotValueStart -= 1.0;
-            yPlotValueEnd += 1.0;
-        }
-        yAreaStart = topMargin;
-        yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
-        yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
-        
-        double[] xRefCoords = new double[xReferenceValues.size()];
-        for (int i = 0; i < xRefCoords.length; i++) {
-            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
-        }
-        xReferenceCoords = new ArrayDouble(xRefCoords);
-        
-        double[] yRefCoords = new double[yReferenceValues.size()];
-        for (int i = 0; i < yRefCoords.length; i++) {
-            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
-        }
-        yReferenceCoords = new ArrayDouble(yRefCoords);
-    }
-    
-    /**
      * Calculates:
      * <ul>
      *    <li>The font for the labels</li>
      *    <li>The margins based on labels</li>
      * </ul>
-     */    
-    protected void calculateGraphArea() {
+     */
+    protected void calculateLabels() {
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
@@ -445,7 +358,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * To calculate area based on labels, ensure that calculateGraphArea() is called
      * prior to calling calculateGraphAreaNoLabels().
      */    
-    protected void calculateGraphAreaNoLabels() {
+    protected void calculateGraphArea() {
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
