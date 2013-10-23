@@ -4,15 +4,9 @@
  */
 package org.epics.graphene;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.Path2D;
-import java.awt.geom.Path2D.Double;
-import java.util.List;
-import org.epics.util.array.ListNumber;
-
 /**
  *
  * @author carcassi

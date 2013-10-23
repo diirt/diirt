@@ -39,58 +39,75 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     private Integer yLabelMargin;
     
     /**
-     * Gets the update casted appropriately.
+     * Gets the update. Casts this appropriately.
      * For all subclasses, casts the objects as the subclass object (not Graph2DRendererUpdate).
-     * @return This casted as the appropriate object type
+     * @return this, casted as the appropriate object type
      */
     protected T self() {
         return (T) this;
     }
     
     /**
-     * Updates the parameter for imageHeight.
-     * @param height Size for height
-     * @return Self with parameter imageHeight changed
+     * Updates the parameter for the height of the image that is rendered.
+     * The height must be greater than zero and less than the max integer value.
+     * @param height Size of image height in pixels
+     * @return this
      */
     public T imageHeight(int height) {
+        if (height <= 0){
+            throw new IllegalArgumentException("Image height must be a postive non-zero integer.");
+        }
+        if (height > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("Image height must be less than the max integer value.");
+        }
+        
         this.imageHeight = height;
         return self();
     }
     
     /**
-     * Updates the parameter for imageWidth.
-     * @param width Size for width
-     * @return Self with parameter imageWidth changed
-     */    
+     * Updates the parameter for the width of the image that is rendered.
+     * The width must be greater than zero and less than the max integer value.
+     * @param width Size of image width in pixels
+     * @return this
+     */   
     public T imageWidth(int width) {
+        if (width <= 0){
+            throw new IllegalArgumentException("Image width must be a postive non-zero integer.");
+        }
+        if (width > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("Image width must be less than the max integer value.");
+        }
+        
         this.imageWidth = width;
         return self();
     }
     
     /**
-     * Updates the parameter for xAxisRange.
-     * @param xAxisRange Range of x axis
-     * @return Self with parameter xAxisRange changed
+     * Updates the parameter for the range (max - min) of the values on the x-axis.
+     * @param xAxisRange Specifies the x-axis range (composed of the data range and the aggregated data range)
+     * @return this
      */    
     public T xAxisRange(AxisRange xAxisRange) {
         this.xAxisRange = xAxisRange;
         return self();
     }
     
-    /**
-     * Updates the parameter for yAxisRange.
-     * @param yAxisRange Range of y axis
-     * @return Self with parameter yAxisRange changed
-     */     
+     /**
+     * Updates the parameter for the range (max - min) of the values on the y-axis.
+     * @param yAxisRange Specifies the y-axis range (composed of the data range and the aggregated data range)
+     * @return this
+     */      
     public T yAxisRange(AxisRange yAxisRange) {
         this.yAxisRange = yAxisRange;
         return self();
     }
     
     /**
-     * Updates the parameter for xValueScale
-     * @param xValueScale Scale value for x axis
-     * @return Self with parameter xValueScale changed
+     * Updates the parameter for the scaling on the x-axis.
+     * This will enable actual data to be scaled to a specified min and max.
+     * @param xValueScale Tool used for changing actual data to scaled data on the x-axis.
+     * @return this
      */
     public T xValueScale(ValueScale xValueScale) {
         this.xValueScale = xValueScale;
@@ -98,9 +115,10 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for yValueScale
-     * @param yValueScale Scale value for y axis
-     * @return Self with parameter yValueScale changed
+     * Updates the parameter for the scaling on the y-axis.
+     * This will enable actual data to be scaled to a specified min and max.
+     * @param yValueScale Tool used for changing actual data to scaled data on the y-axis.
+     * @return this
      */
     public T yValueScale(ValueScale yValueScale) {
         this.yValueScale = yValueScale;
@@ -108,9 +126,9 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for backgroundColor
+     * Updates the parameter for the color of the image background.
      * @param backgroundColor Color of image background
-     * @return Self with parameter backgroundColor changed
+     * @return this
      */
     public T backgroundColor(Color backgroundColor){
         this.backgroundColor = backgroundColor;
@@ -118,9 +136,9 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for labelColor
+     * Updates the parameter for the color of the labels for axes.
      * @param labelColor Color of labels
-     * @return Self with parameter labelColor changed
+     * @return this
      */
     public T labelColor(Color labelColor){
         this.labelColor = labelColor;
@@ -128,9 +146,9 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for referenceLineColor
+     * Updates the parameter for the color of the reference lines on the background.
      * @param referenceLineColor Color of reference lines
-     * @return Self with parameter referenceLineColor changed
+     * @return this
      */
     public T referenceLineColor(Color referenceLineColor){
         this.referenceLineColor = referenceLineColor;
@@ -138,9 +156,9 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for labelFont
+     * Updates the parameter for the font of the labels for axes.
      * @param labelFont Font used for labels
-     * @return Self with parameter labelFont changed
+     * @return this
      */
     public T labelFont(Font labelFont){
         this.labelFont = labelFont;
@@ -148,43 +166,101 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for bottomMargin
-     * @param bottomMargin Margin at bottom of image
-     * @return Self with parameter bottomMargin changed
+     * Updates the parameter for margin at the bottom.
+     * This margin splits the bottom of the image from the bottom of the graph area.
+     * The margin size must be a non-negative integer.
+     * @param bottomMargin Margin at bottom of image in pixels
+     * @return this
      */
-    public T bottomMargin(Integer bottomMargin){
+    public T bottomMargin(int bottomMargin){
+        if (bottomMargin < 0){
+            throw new IllegalArgumentException("The bottom margin must be a non-negative integer.");
+        }
+        if (bottomMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The bottom margin must be less than the max integer value.");
+        }
+        
         this.bottomMargin = bottomMargin;
         return self();        
     }
     
     /**
-     * Updates the parameter for topMargin
-     * @param topMargin Margin at top of image
-     * @return Self with parameter topMargin changed
+     * Updates the parameter for margin at the top.
+     * This margin splits the top of the image from the top of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param topMargin Margin at top of image in pixels
+     * @return this
      */
-    public T topMargin(Integer topMargin){
+    public T topMargin(int topMargin){
+        if (topMargin < 0){
+            throw new IllegalArgumentException("The top margin must be a non-negative integer.");
+        }
+        if (topMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The top margin must be less than the max integer value.");
+        }
+        
         this.topMargin = topMargin;        
         return self();        
     }
     
     /**
-     * Updates the parameter for leftMargin
-     * @param leftMargin Margin at left of image
-     * @return Self with parameter leftMargin changed
+     * Updates the parameter for margin at the left.
+     * This margin splits the left of the image from the left of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param leftMargin Margin at top of image in pixels
+     * @return this
      */
-    public T leftMargin(Integer leftMargin){
+    public T leftMargin(int leftMargin){
+        if (leftMargin < 0){
+            throw new IllegalArgumentException("The left margin must be a non-negative integer.");
+        }
+        if (leftMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The left margin must be less than the max integer value.");
+        }
+        
         this.leftMargin = leftMargin;
         return self();        
     }
     
     /**
-     * Updates the parameter for rightMargin
-     * @param rightMargin Margin at top of image
-     * @return Self with parameter topMargin changed
+     * Updates the parameter for margin at the right.
+     * This margin splits the right of the image from the right of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param rightMargin Margin at right of image in pixels
+     * @return this
      */
-    public T rightMargin(Integer rightMargin){
+    public T rightMargin(int rightMargin){
+        if (rightMargin < 0){
+            throw new IllegalArgumentException("The right margin must be a non-negative integer.");
+        }
+        if (rightMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The right margin must be less than the max integer value.");
+        }
+        
         this.rightMargin = rightMargin;
         return self();        
+    }
+    
+    /**
+     * Updates the parameter for all margins (top, bottom, left, right).
+     * All margins are set to the same size.
+     * This margin region splits the edge of the image from the edge of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param rightMargin Margin on all sides of image in pixels
+     * @return this
+     */    
+    public T allMargins(int marginSize){
+        if (marginSize < 0){
+            throw new IllegalArgumentException("The margin size must be a non-negative integer.");
+        }
+        if (marginSize > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The margin size must be less than the max integer value.");
+        }        
+        this.bottomMargin = marginSize;
+        this.topMargin = marginSize;
+        this.leftMargin = marginSize;
+        this.rightMargin = marginSize;
+        return self();
     }
     
     /**
@@ -192,7 +268,14 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param bottomAreaMargin Margin at bottom of area
      * @return Self with parameter bottomAreaMargin changed
      */    
-    public T bottomAreaMargin(Integer bottomAreaMargin){
+    public T bottomAreaMargin(int bottomAreaMargin){
+        if (bottomAreaMargin < 0){
+            throw new IllegalArgumentException("The bottomArea margin must be a non-negative integer.");
+        }
+        if (bottomAreaMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The bottomArea margin must be less than the max integer value.");
+        }
+        
         this.bottomAreaMargin = bottomAreaMargin;
         return self();        
     }
@@ -202,7 +285,14 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param topAreaMargin Margin at top of area
      * @return Self with parameter topAreaMargin changed
      */      
-    public T topAreaMargin(Integer topAreaMargin){
+    public T topAreaMargin(int topAreaMargin){
+        if (topAreaMargin < 0){
+            throw new IllegalArgumentException("The topArea margin must be a non-negative integer.");
+        }
+        if (topAreaMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The topArea margin must be less than the max integer value.");
+        }
+        
         this.topAreaMargin = topAreaMargin;        
         return self();        
     }
@@ -212,7 +302,14 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param leftAreaMargin Margin at left of area
      * @return Self with parameter leftAreaMargin changed
      */      
-    public T leftAreaMargin(Integer leftAreaMargin){
+    public T leftAreaMargin(int leftAreaMargin){
+        if (leftAreaMargin < 0){
+            throw new IllegalArgumentException("The leftArea margin must be a non-negative integer.");
+        }
+        if (leftAreaMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The leftArea margin must be less than the max integer value.");
+        }
+        
         this.leftAreaMargin = leftAreaMargin;
         return self();        
     }
@@ -222,9 +319,31 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param rightAreaMargin Margin at right of area
      * @return Self with parameter rightAreaMargin changed
      */      
-    public T rightAreaMargin(Integer rightAreaMargin){
+    public T rightAreaMargin(int rightAreaMargin){
+        if (rightAreaMargin < 0){
+            throw new IllegalArgumentException("The rightArea margin must be a non-negative integer.");
+        }
+        if (rightAreaMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The rightArea margin must be less than the max integer value.");
+        }
+        
         this.rightAreaMargin = rightAreaMargin;
         return self();        
+    }
+    
+    public T allAreaMargins(int areaMarginSize){
+        if (areaMarginSize < 0){
+            throw new IllegalArgumentException("The area margin size must be a non-negative integer.");
+        }
+        if (areaMarginSize > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The area margin size must be less than the max integer value.");
+        }
+        
+        this.topAreaMargin = areaMarginSize;
+        this.bottomAreaMargin = areaMarginSize;
+        this.leftAreaMargin = areaMarginSize;
+        this.rightAreaMargin = areaMarginSize;
+        return self();
     }
     
     /**
@@ -232,7 +351,14 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param xLabelMargin Margin for the x axis labels
      * @return Self with parameter xLabelMargin changed
      */
-    public T xLabelMargin(Integer xLabelMargin){
+    public T xLabelMargin(int xLabelMargin){
+        if (xLabelMargin < 0){
+            throw new IllegalArgumentException("The xLabel margin must be a non-negative integer.");
+        }
+        if (xLabelMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The xLabel margin must be less than the max integer value.");
+        }
+        
         this.xLabelMargin = xLabelMargin;
         return self();        
     }
@@ -242,10 +368,30 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * @param yLabelMargin Margin for the y axis labels
      * @return Self with parameter yLabelMargin changed
      */    
-    public T yLabelMargin(Integer yLabelMargin){
+    public T yLabelMargin(int yLabelMargin){
+        if (yLabelMargin < 0){
+            throw new IllegalArgumentException("The yLabel margin must be a non-negative integer.");
+        }
+        if (yLabelMargin > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The yLabel margin must be less than the max integer value.");
+        }        
+        
         this.yLabelMargin = yLabelMargin;
         return self();        
     }    
+    
+    public T allLabelMargins(int labelMarginSize){
+        if (labelMarginSize < 0){
+            throw new IllegalArgumentException("The label margin size must be a non-negative integer.");
+        }
+        if (labelMarginSize > Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The label margin size must be less than the max integer value.");
+        }   
+        
+        this.xLabelMargin = labelMarginSize;
+        this.yLabelMargin = labelMarginSize;
+        return self();
+    }
     
     /**
      * Gets height of image
