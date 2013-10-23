@@ -246,7 +246,7 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * All margins are set to the same size.
      * This margin region splits the edge of the image from the edge of the label/axis area.
      * The margin size must be a non-negative integer.
-     * @param rightMargin Margin on all sides of image in pixels
+     * @param marginSize Margin on all sides of image in pixels
      * @return this
      */    
     public T allMargins(int marginSize){
@@ -264,10 +264,12 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for bottomAreaMargin
-     * @param bottomAreaMargin Margin at bottom of area
-     * @return Self with parameter bottomAreaMargin changed
-     */    
+     * Updates the parameter for margin at the bottom of the graph area.
+     * This margin splits the bottom of the graph area (where the line is drawn) from the bottom of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param bottomAreaMargin Margin at bottom of the graph area in pixels
+     * @return this
+     */   
     public T bottomAreaMargin(int bottomAreaMargin){
         if (bottomAreaMargin < 0){
             throw new IllegalArgumentException("The bottomArea margin must be a non-negative integer.");
@@ -281,9 +283,11 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for topAreaMargin
-     * @param topAreaMargin Margin at top of area
-     * @return Self with parameter topAreaMargin changed
+     * Updates the parameter for margin at the top of the graph area.
+     * This margin splits the top of the graph area (where the line is drawn) from the top of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param topAreaMargin Margin at top of the graph area in pixels
+     * @return this
      */      
     public T topAreaMargin(int topAreaMargin){
         if (topAreaMargin < 0){
@@ -298,9 +302,11 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for leftAreaMargin
-     * @param leftAreaMargin Margin at left of area
-     * @return Self with parameter leftAreaMargin changed
+     * Updates the parameter for margin at the left of the graph area.
+     * This margin splits the left of the graph area (where the line is drawn) from the left of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param leftAreaMargin Margin at left of the graph area in pixels
+     * @return this
      */      
     public T leftAreaMargin(int leftAreaMargin){
         if (leftAreaMargin < 0){
@@ -315,10 +321,12 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for rightAreaMargin
-     * @param rightAreaMargin Margin at right of area
-     * @return Self with parameter rightAreaMargin changed
-     */      
+     * Updates the parameter for margin at the right of the graph area.
+     * This margin splits the right of the graph area (where the line is drawn) from the right of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param rightAreaMargin Margin at right of the graph area in pixels
+     * @return this
+     */    
     public T rightAreaMargin(int rightAreaMargin){
         if (rightAreaMargin < 0){
             throw new IllegalArgumentException("The rightArea margin must be a non-negative integer.");
@@ -331,6 +339,14 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
         return self();        
     }
     
+    /**
+     * Updates the parameter for all margins (top, bottom, left, right) of the graph area.
+     * All margins are set to the same size.
+     * This margin splits the all edges of the graph area (where the line is drawn) from all edges of the label/axis area.
+     * The margin size must be a non-negative integer.
+     * @param areaMarginSize Margin on all sides of graph area in pixels
+     * @return this
+     */      
     public T allAreaMargins(int areaMarginSize){
         if (areaMarginSize < 0){
             throw new IllegalArgumentException("The area margin size must be a non-negative integer.");
@@ -347,9 +363,11 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for xLabelMargin
-     * @param xLabelMargin Margin for the x axis labels
-     * @return Self with parameter xLabelMargin changed
+     * Updates the parameter for the margin for the labels on the x-axis.
+     * This margin splits the area for the x-axis labels from the graph area.
+     * The margin size must be a non-negative integer.
+     * @param xLabelMargin Margin for the x-axis labels in pixels
+     * @return this
      */
     public T xLabelMargin(int xLabelMargin){
         if (xLabelMargin < 0){
@@ -364,10 +382,12 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for yLabelMargin
-     * @param yLabelMargin Margin for the y axis labels
-     * @return Self with parameter yLabelMargin changed
-     */    
+     * Updates the parameter for the margin for the labels on the y-axis.
+     * This margin splits the area for the y-axis labels from the graph area.
+     * The margin size must be a non-negative integer.
+     * @param yLabelMargin Margin for the y-axis labels in pixels
+     * @return this
+     */   
     public T yLabelMargin(int yLabelMargin){
         if (yLabelMargin < 0){
             throw new IllegalArgumentException("The yLabel margin must be a non-negative integer.");
@@ -380,6 +400,13 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
         return self();        
     }    
     
+    /**
+     * Updates the parameter for the margins for the labels on both axes.
+     * This margin splits the area for the labels on both axes from the graph area.
+     * The margin size must be a non-negative integer.
+     * @param yLabelMargin Margin for the x-axis and y-axis labels in pixels
+     * @return this
+     */      
     public T allLabelMargins(int labelMarginSize){
         if (labelMarginSize < 0){
             throw new IllegalArgumentException("The label margin size must be a non-negative integer.");
@@ -394,119 +421,125 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Gets height of image
-     * @return imageHeight
+     * Gets height of image.
+     * Ensured as a positive non-zero integer.
+     * @return The height of the image in pixels
      */
     public Integer getImageHeight() {
         return imageHeight;
     }
 
     /**
-     * Gets width of image
-     * @return imageWidth
+     * Gets width of image.
+     * Ensured as a positive non-zero integer.
+     * @return The width of the image in pixels
      */
     public Integer getImageWidth() {
         return imageWidth;
     }
 
     /**
-     * Gets x axis range
-     * @return xAxisRange
+     * Gets x-axis range
+     * @return Range (of data and of aggregated data) of the values on the x-axis
      */
     public AxisRange getXAxisRange() {
         return xAxisRange;
     }
 
     /**
-     * Gets y axis range
-     * @return yAxisRange
+     * Gets y-axis range
+     * @return Range (of data and of aggregated data) of the values on the y-axis
      */
     public AxisRange getYAxisRange() {
         return yAxisRange;
     }
 
     /**
-     * Gets scale value for x axis
-     * @return xValueScale
+     * Gets the scaling tool to scale down the values on the x-axis.
+     * @return The scaling on the x-axis
      */
     public ValueScale getXValueScale() {
         return xValueScale;
     }
 
     /**
-     * Gets scale value for y axis
-     * @return yValueScale
+     * Gets the scaling tool to scale down the values on the y-axis.
+     * @return The scaling on the y-axis
      */
     public ValueScale getYValueScale() {
         return yValueScale;
     }
   
     /**
-     * Gets background color of image
-     * @return backgroundColor
+     * Gets background color of the image.
+     * @return The color of the background of the image
      */
     public Color getBackgroundColor(){
         return this.backgroundColor;
     }
     
     /**
-     * Gets color of labels
-     * @return labelColor
+     * Gets color of labels for the axes.
+     * @return The color of the label of the axes
      */
     public Color getLabelColor(){
         return this.labelColor;
     }
     
     /**
-     * Gets color of reference lines
-     * @return referenceLineColor
+     * Gets color of reference lines on the graph area.
+     * @return The color of the reference lines on the graph area
      */
     public Color getReferenceLineColor(){
         return this.referenceLineColor;
     }
     
     /**
-     * Gets font of labels
-     * @return labelFont
+     * Gets font of labels for the axes.
+     * @return The font for the labels on the axes
      */
     public Font getLabelFont(){
         return this.labelFont;
     }
     
     /**
-     * Gets bottom margin
-     * @return bottomMargin
+     * Gets the margin between the bottom of the image and the bottom of the axes/labels area.
+     * Ensured as a non-negative integer.
+     * @return The bottom margin for the image and the axes area.
      */
     public Integer getBottomMargin(){
         return this.bottomMargin;
     }
     
     /**
-     * Gets top margin
-     * @return topMargin
+     * Gets the margin between the top of the image and the top of the axes/labels area.
+     * Ensured as a non-negative integer.
+     * @return The bottom margin for the image and the axes area.
      */
     public Integer getTopMargin(){
         return this.topMargin;
     }
     
     /**
-     * Gets left margin
-     * @return leftMargin
+     * Gets the margin between the left of the image and the left of the axes/labels area.
+     * Ensured as a non-negative integer.
+     * @return The left margin for the image and the axes area.
      */
     public Integer getLeftMargin(){
         return this.leftMargin;
     }
     
     /**
-     * Gets right margin
-     * @return rightMargin
+     * Gets the margin between the right of the image and the right of the axes/labels area.
+     * Ensured as a non-negative integer.
+     * @return The right margin for the image and the axes area.
      */
     public Integer getRightMargin(){
         return this.rightMargin;
     }
     
     /**
-     * Gets bottom area margin
+     * Gets the margin between the bottom of the graph area and the axes/labels area.
      * @return bottomAreaMargin
      */
     public Integer getBottomAreaMargin(){
