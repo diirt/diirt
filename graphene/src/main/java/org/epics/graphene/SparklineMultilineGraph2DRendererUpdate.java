@@ -22,7 +22,8 @@ public class SparklineMultilineGraph2DRendererUpdate extends Graph2DRendererUpda
         return self();
     }
     
-    public SparklineMultilineGraph2DRendererUpdate setColor (Color color, int index){
+    public SparklineMultilineGraph2DRendererUpdate setColor (Color[] colorArrayOriginal, int index, Color color){
+        colorArray = colorArrayOriginal;
         colorArray[index] = color;
         return self();
     }
