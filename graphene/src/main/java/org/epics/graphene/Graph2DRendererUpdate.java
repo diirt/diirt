@@ -168,11 +168,16 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     }
     
     /**
-     * Updates the parameter for leftMargin
-     * @param leftMargin Margin at left of image
-     * @return Self with parameter leftMargin changed
+     * Changes the left margin between the border of the 
+     * image and the vertical axis.
+     * 
+     * @param leftMargin number of pixels; can't be negative
+     * @return this
      */
     public T leftMargin(Integer leftMargin){
+        if (leftMargin < 0) {
+            throw new IllegalArgumentException("Left margin must be positive");
+        }
         this.leftMargin = leftMargin;
         return self();        
     }
