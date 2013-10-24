@@ -68,7 +68,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         super.calculateRanges(data.getXStatistics(), data.getYStatistics());
         super.calculateGraphArea();
         super.drawBackground();
-        //super.drawGraphArea();
         
         g.setColor(Color.BLACK);
         
