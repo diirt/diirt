@@ -540,47 +540,47 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     
     /**
      * Gets the margin between the bottom of the graph area and the axes/labels area.
-     * @return bottomAreaMargin
+     * @return The bottom margin for the image and the axes area.
      */
     public Integer getBottomAreaMargin(){
         return this.bottomAreaMargin;
     }
     
     /**
-     * Gets top area margin
-     * @return topAreaMargin
+     * Gets the margin between the top of the graph area and the axes/labels area.
+     * @return The top margin for the image and the axes area.
      */
     public Integer getTopAreaMargin(){
         return this.topAreaMargin;
     }
     
     /**
-     * Gets left area margin
-     * @return leftAreaMargin
+     * Gets the margin between the left of the graph area and the axes/labels area.
+     * @return The left margin for the image and the axes area.
      */
     public Integer getLeftAreaMargin(){
         return this.leftAreaMargin;
     }
     
     /**
-     * Gets right area margin
-     * @return rightAreaMargin
+     * Gets the margin between the right of the graph area and the axes/labels area.
+     * @return The right margin for the image and the axes area.
      */
     public Integer getRightAreaMargin(){
         return this.rightAreaMargin;
     }
     
     /**
-     * Gets margin for x label
-     * @return xLabelMargin
+     * Gets the margin separating x-axis labels from the graph area.
+     * @return The margin for the x-axis labels from the graph area
      */
     public Integer getXLabelMargin(){
         return this.xLabelMargin;
     }
     
     /**
-     * Gets margin for y label
-     * @return yLabelMargin
+     * Gets the margin separating y-axis labels from the graph area.
+     * @return The margin for the y-axis labels from the graph area
      */
     public Integer getYLabelMargin(){
         return this.yLabelMargin;
