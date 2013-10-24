@@ -92,7 +92,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
         
     }
-
+    //Working on: Exchanging Cell2DDataset with a dataset of 3D points, Replacing methods for calculating graph area with super class methods.
+    //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
     public void draw(Graphics2D g, Cell2DDataset data) {
         
         
@@ -161,6 +162,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
         }
         
+        /*this.g = g;
+        calculateRanges(data.getXStatistics(), data.getYStatistics(), data.getZStatistics());
+        drawBackground();
+        calculateLabels();
+        calculateGraphArea();        
+        drawGraphArea();*/
         // Set color scheme
         colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
 
