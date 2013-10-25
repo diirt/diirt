@@ -13,8 +13,6 @@ import java.awt.RenderingHints;
  */
 public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
 
-    private int width = 300;
-    private int height = 200;
     private ValueColorScheme colorScheme;
     
     private boolean rangeFromDataset = true;
@@ -69,12 +67,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     public void update(IntensityGraph2DRendererUpdate update) {
-        if (update.getImageHeight() != null) {
-            height = update.getImageHeight();
-        }
-        if (update.getImageWidth() != null) {
-            width = update.getImageWidth();
-        }
+        super.update(update);
         if (update.isRangeFromDataset() != null) {
             rangeFromDataset = update.isRangeFromDataset();
         }
@@ -123,28 +116,23 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int margin = 3;
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, width, height);
-        g.setColor(Color.BLACK);
+
 
         // Compute axis
-        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, width / 60));
-        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, height / 60));
+        ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, super.getImageWidth() / 60));
+        ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, super.getImageHeight() / 60));
         HorizontalAxisRenderer xAxisRenderer = new HorizontalAxisRenderer(xAxis, margin, g);
         VerticalAxisRenderer yAxisRenderer = new VerticalAxisRenderer(yAxis, margin, g);
 
         // Compute graph area
         int xStartGraph = yAxisRenderer.getAxisWidth();
-        int xEndGraph = width - margin;
+        int xEndGraph = super.getImageWidth() - margin;
         int yStartGraph = margin;
-        int yEndGraph = height - xAxisRenderer.getAxisHeight();
+        int yEndGraph = super.getImageHeight() - xAxisRenderer.getAxisHeight();
         int plotWidth = xEndGraph - xStartGraph;
         int plotHeight = yEndGraph - yStartGraph;
 
         // Draw axis
-        xAxisRenderer.draw(g, 0, xStartGraph, xEndGraph, width, yEndGraph);
-        yAxisRenderer.draw(g, 0, yStartGraph, yEndGraph, height, xStartGraph);
-
 
         double rangeX = endXPlot - startXPlot;
         double rangeY = endYPlot - startYPlot;
@@ -152,23 +140,14 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
        
         
         // Draw reference lines
-        g.setColor(new Color(240, 240, 240));
-        int[] xTicks = xAxisRenderer.horizontalTickPositions();
-        for (int xTick : xTicks) {
-            g.drawLine(xTick, yStartGraph, xTick, yEndGraph);
-        }
-        int[] yTicks = yAxisRenderer.verticalTickPositions();
-        for (int yTick : yTicks) {
-            g.drawLine(xStartGraph, height - yTick, xEndGraph, height - yTick);
-        }
         
-        /*this.g = g;
-        calculateRanges(data.getXStatistics(), data.getYStatistics(), data.getZStatistics());
+        this.g = g;
+        calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
         calculateGraphArea();        
-        drawGraphArea();*/
-        // Set color scheme
+        drawGraphArea();
+        //Set color scheme
         colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
 
         ///////////////////////////////////////////////////////////////////////
