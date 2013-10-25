@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.math.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -39,13 +41,14 @@ public class SparklineMultilineGraph2DRendererExample {
             }*/
             
             
-            Point2DDataset [] finalData = new Point2DDataset[initialDataX.length];
+            List<Point2DDataset> finalData = new ArrayList<>();
             //Converts data array into dataset type
             
             for(int a = 0; a < initialDataX.length; a++){
-                finalData[a] = Point2DDatasets.lineData(initialDataX[a]);
+                finalData.add(Point2DDatasets.lineData(initialDataX[a]));
             }
-             
+            
+            
             //Image and Graphics initialization
             BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();

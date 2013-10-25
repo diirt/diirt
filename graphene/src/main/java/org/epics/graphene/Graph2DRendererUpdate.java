@@ -404,7 +404,7 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      * Updates the parameter for the margins for the labels on both axes.
      * This margin splits the area for the labels on both axes from the graph area.
      * The margin size must be a non-negative integer.
-     * @param yLabelMargin Margin for the x-axis and y-axis labels in pixels
+     * @param labelMarginSize Margin for the x-axis and y-axis labels in pixels
      * @return this
      */      
     public T allLabelMargins(int labelMarginSize){

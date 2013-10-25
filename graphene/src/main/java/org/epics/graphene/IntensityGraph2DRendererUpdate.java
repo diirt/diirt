@@ -10,8 +10,6 @@ package org.epics.graphene;
  */
 public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<IntensityGraph2DRendererUpdate> {
 
-    private Integer imageHeight;
-    private Integer imageWidth;
     private InterpolationScheme interpolation;
     
     private Double startX;
@@ -21,52 +19,34 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
     private Boolean rangeFromDataset;
     
-    public IntensityGraph2DRendererUpdate startX(Double startX) {
+    public IntensityGraph2DRendererUpdate startX(double startX) {
         this.startX = startX;
-        return this;
+        return self();
     }
     
-    public IntensityGraph2DRendererUpdate startY(Double startY) {
+    public IntensityGraph2DRendererUpdate startY(double startY) {
         this.startY = startY;
-        return this;
+        return self();
     }
     
-    public IntensityGraph2DRendererUpdate endX(Double endX) {
+    public IntensityGraph2DRendererUpdate endX(double endX) {
         this.endX = endX;
-        return this;
+        return self();
     }
     
-    public IntensityGraph2DRendererUpdate endY(Double endY) {
+    public IntensityGraph2DRendererUpdate endY(double endY) {
         this.endY = endY;
-        return this;
+        return self();
     }
     
     public IntensityGraph2DRendererUpdate rangeFromDataset(boolean rangeFromDataset) {
         this.rangeFromDataset = rangeFromDataset;
-        return this;
-    }
-    
-    public IntensityGraph2DRendererUpdate imageHeight(int height) {
-        this.imageHeight = height;
-        return this;
-    }
-    
-    public IntensityGraph2DRendererUpdate imageWidth(int width) {
-        this.imageWidth = width;
-        return this;
+        return self();
     }
     
     public IntensityGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
         this.interpolation = scheme;
-        return this;
-    }
-    
-    public Integer getImageHeight() {
-        return imageHeight;
-    }
-
-    public Integer getImageWidth() {
-        return imageWidth;
+        return self();
     }
     
     public InterpolationScheme getInterpolation() {

@@ -127,6 +127,14 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
 
+    public ValueScale getXValueScale(){
+        return xValueScale;
+    }
+    
+    public ValueScale getYValueScale(){
+        return yValueScale;
+    }
+    
     /**
      * The current strategy to calculate the x range for the graph.
      * 
@@ -180,6 +188,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     public Range getYPlotRange() {
         return yPlotRange;
     }
+    
     
     /**
      * Applies the update to the renderer.

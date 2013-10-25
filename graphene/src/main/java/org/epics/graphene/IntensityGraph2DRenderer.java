@@ -85,6 +85,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
         
     }
+    
     //Working on: Exchanging Cell2DDataset with a dataset of 3D points, Replacing methods for calculating graph area with super class methods.
     //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
     public void draw(Graphics2D g, Cell2DDataset data) {
@@ -115,9 +116,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
         int margin = 3;
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
         // Compute axis
         ValueAxis xAxis = ValueAxis.createAutoAxis(startXPlot, endXPlot, Math.max(2, super.getImageWidth() / 60));
         ValueAxis yAxis = ValueAxis.createAutoAxis(startYPlot, endYPlot, Math.max(2, super.getImageHeight() / 60));
@@ -129,14 +127,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int xEndGraph = super.getImageWidth() - margin;
         int yStartGraph = margin;
         int yEndGraph = super.getImageHeight() - xAxisRenderer.getAxisHeight();
-        int plotWidth = xEndGraph - xStartGraph;
-        int plotHeight = yEndGraph - yStartGraph;
-
-        // Draw axis
-
-        double rangeX = endXPlot - startXPlot;
-        double rangeY = endYPlot - startYPlot;
-
        
         
         // Draw reference lines
@@ -150,6 +140,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Set color scheme
         colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
 
+       
         ///////////////////////////////////////////////////////////////////////
         
         int countY = 0;
@@ -180,12 +171,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             {
                 double cellWidths = ((data.getXBoundaries().getDouble(countX+1)-data.getXBoundaries().getDouble(countX))*xWidthTotal)/xRange;
                 int cellWidth = (int) (Math.floor(cellWidths));
-                System.out.println(cellWidth);
                 if (cellWidths - cellWidth > 0)
                 {
                     cellWidth++;
                 }
-                System.out.println(cellWidth);
                 g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
                 g.fillRect(xPosition, yPosition, cellWidth, cellHeight);
                 xPosition = xPosition + cellWidth;
@@ -196,6 +185,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
 
     }
+    
     @Override
     public Graph2DRendererUpdate newUpdate() {
         return new IntensityGraph2DRendererUpdate();

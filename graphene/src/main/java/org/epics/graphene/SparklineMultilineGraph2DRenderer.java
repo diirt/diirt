@@ -5,19 +5,29 @@
 package org.epics.graphene;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
+/**
+ *
+ * @author asbarber 
+ * @author jkfeng 
+ * @author sjdallst
+ */
 public class SparklineMultilineGraph2DRenderer extends SparklineGraph2DRenderer{
     
     public SparklineMultilineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);
+        
+        colorArray = new ArrayList<>();        
     }
     
-    private Color [] colorArray;
-    public void draw(Graphics2D g, Point2DDataset[] data) {
+    private List<Color> colorArray;
+    private int MAX_COLOR = 255;
+    
+    public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
         
         //Calculate range, range will end up being from the lowest point to highest in all of the given data.
@@ -26,31 +36,30 @@ public class SparklineMultilineGraph2DRenderer extends SparklineGraph2DRenderer{
         }
         super.calculateGraphArea();
         super.drawBackground();
-    
-        int MAXCOLOR = 255;
-        
-        //Set a default array of colors, if non are given.
-        if(colorArray == null){
-            colorArray = new Color[data.length];
-            for(int datasetNumber = 0; datasetNumber < data.length; datasetNumber++){
-                colorArray[datasetNumber] = new Color((int)(MAXCOLOR*(((double)datasetNumber)/data.length)),(int)(MAXCOLOR*(((double)datasetNumber)/data.length)), (int)(MAXCOLOR*(((double)datasetNumber)/data.length)));
+            
+        //If more colors are needed to represent the different data lines, auto generate colors
+        if(colorArray.size() < data.size()){
+            for(int datasetNumber = 0; datasetNumber < data.size(); datasetNumber++){
+                colorArray.set(datasetNumber, getDefaultColor(datasetNumber, data.size()));
             }
         }
+        
         //Draw a line for each set of data in the data array.
-        for(int datasetNumber = 0; datasetNumber < data.length; datasetNumber++){
-            SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data[datasetNumber].getXValues());
-            ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data[datasetNumber].getYValues(), xValues.getIndexes());        
+        for(int datasetNumber = 0; datasetNumber < data.size(); datasetNumber++){
+            SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.get(datasetNumber).getXValues());
+            ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());        
             setClip(g);
-            g.setColor(colorArray[datasetNumber]);
+            g.setColor(colorArray.get(datasetNumber));
             drawValueExplicitLine(xValues, yValues, getInterpolation(), ReductionScheme.FIRST_MAX_MIN_LAST);
         }
     }
-    public Color [] getColorArray(){
-        return colorArray;
-    }
     
-    public void setColor(Color color, int index){
-        colorArray[index] = color;
+    private Color getDefaultColor(int indexValue, int sizeConstant){
+        int cValue = (int)(MAX_COLOR*(((double)indexValue)/sizeConstant));
+        return new Color (cValue, cValue, cValue);
+    }
+    public List<Color> getColorArray(){
+        return colorArray;
     }
     
     public void update(SparklineMultilineGraph2DRendererUpdate update) {
