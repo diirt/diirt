@@ -86,7 +86,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
     }
     
-    //Working on: Exchanging Cell2DDataset with a dataset of 3D points, Replacing methods for calculating graph area with super class methods.
+    //Working on: Replacing methods for calculating graph area with super class methods.
     //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
     public void draw(Graphics2D g, Cell2DDataset data) {
         
@@ -124,8 +124,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 
         // Compute graph area
         int xStartGraph = yAxisRenderer.getAxisWidth();
-        int xEndGraph = super.getImageWidth() - margin;
-        int yStartGraph = margin;
         int yEndGraph = super.getImageHeight() - xAxisRenderer.getAxisHeight();
        
         
@@ -146,8 +144,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int countY = 0;
         int countX = 0;
 
-        int xWidthTotal = xEndGraph - xStartGraph;
-        int yHeightTotal = yEndGraph - yStartGraph;
+        int xWidthTotal = (int)super.xPlotCoordWidth;
+        int yHeightTotal = (int)super.yPlotCoordHeight;
         int xRange = data.getXBoundaries().getInt(data.getXCount()) - data.getXBoundaries().getInt(0);
         int yRange = data.getYBoundaries().getInt(data.getYCount()) - data.getYBoundaries().getInt(0);
         double initCellHeights = ((data.getYBoundaries().getDouble(1) - data.getYBoundaries().getDouble(0))*yHeightTotal)/yRange;
