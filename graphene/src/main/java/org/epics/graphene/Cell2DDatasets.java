@@ -35,9 +35,9 @@ public static Cell2DDataset linearRange(final ArrayDouble zData, final Range xRa
     if(xCount <= 0 || yCount <= 0){
         throw new IllegalArgumentException("Number of X (or Y) values must be greater than 0. xCount = " + xCount + " yCount = " + yCount);
     }
-    if(((xCount)*(yCount-1)+xCount-1) > (zData.size()-1)){
-        throw new IllegalArgumentException("Too many X (or Y) values. Array length = " + (zData.size())+ ", Predicted size(given X and Y) = " 
-                + (xCount)*(yCount-1)+xCount + ", xCount = " + xCount + ", yCount = " + yCount);
+    if(((xCount)*(yCount-1)+xCount-1) != (zData.size()-1)){
+        throw new IllegalArgumentException("Unexpected number of X (or Y) values. Array length = " + (zData.size())+ ", Predicted size(given X and Y) = " 
+                + ((xCount)*(yCount-1)+xCount) + ", xCount = " + xCount + ", yCount = " + yCount);
     }
     
     final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), xCount + 1);

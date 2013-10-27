@@ -30,13 +30,19 @@ public class IntensityGraph2DRendererExample {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(g, data);
             ImageIO.write(image, "png", new File("IntensityGraph.png"));*/
-            double listOfData [] = {0,1,2,3,4,5,6,7,8};
+            double listOfData [] = new double[280*280];
+            for(int i = 0; i < (140*140); i++){
+                listOfData[i] = Math.random()*200;
+            }
             ArrayDouble dataList = new ArrayDouble(listOfData);
-            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 3), 3, RangeUtil.range(0, 3), 3);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 280), 280, RangeUtil.range(0, 280), 280);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D g = (Graphics2D) image.getGraphics();
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            double startTime = System.currentTimeMillis();
             renderer.draw(g, data);
+            double endTime = System.currentTimeMillis();
+            System.out.println((endTime-startTime));
             ImageIO.write(image, "png", new File("IntensityGraph.png"));
         }
     }
