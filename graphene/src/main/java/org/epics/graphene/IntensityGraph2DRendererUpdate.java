@@ -8,7 +8,7 @@ package org.epics.graphene;
  *
  * @author carcassi
  */
-public class IntensityGraph2DRendererUpdate {
+public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<IntensityGraph2DRendererUpdate> {
 
     private Integer imageHeight;
     private Integer imageWidth;
@@ -46,27 +46,9 @@ public class IntensityGraph2DRendererUpdate {
         return this;
     }
     
-    public IntensityGraph2DRendererUpdate imageHeight(int height) {
-        this.imageHeight = height;
-        return this;
-    }
-    
-    public IntensityGraph2DRendererUpdate imageWidth(int width) {
-        this.imageWidth = width;
-        return this;
-    }
-    
     public IntensityGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
         this.interpolation = scheme;
         return this;
-    }
-    
-    public Integer getImageHeight() {
-        return imageHeight;
-    }
-
-    public Integer getImageWidth() {
-        return imageWidth;
     }
     
     public InterpolationScheme getInterpolation() {
