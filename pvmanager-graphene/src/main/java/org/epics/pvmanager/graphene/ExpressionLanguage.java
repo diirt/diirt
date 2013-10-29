@@ -43,6 +43,11 @@ public class ExpressionLanguage {
 	return new HistogramGraph2DExpression(arrayData);
     }
     
+    public static IntensityGraph2DExpression intensityGraphOf(
+	    DesiredRateExpression<?> arrayData) {
+	return new IntensityGraph2DExpression(arrayData);
+    }
+    
     public static AreaGraph2DExpression histogramOf(SourceRateExpression<? extends VNumber> vDoubles) {
         DesiredRateExpression<? extends List<? extends VNumber>> queue = newValuesOf(vDoubles);
         return new AreaGraph2DExpression(queue, new AreaGraph2DFunction(queue.getFunction()), "histogram");
