@@ -67,6 +67,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Draw graph when cell width or height is smaller than one pixel.
         if(cellWidth < 1 || cellHeight < 1){
+            if(cellHeight > 1){
+                drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+            }
+            if(cellWidth > 1){
+                drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+            }
+            if(cellWidth < 1 && cellHeight < 1){
+                
+            }
             while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1))
             {
                 countX = 0;
@@ -96,12 +105,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         int countY = 0;
         int countX;
         double yPosition = yEndGraph - cellHeight;
-        while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1))
-            {
+        while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1)){
                 countX = 0;
                 double xPosition = xStartGraph;
-                while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1))
-                {
+                while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1)){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
                     Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPosition, yPosition, cellWidth, cellHeight);
                     g.fill(currentRectangle);
@@ -112,38 +119,113 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 countY++;
             }
     }
-    //WORK IN PROGRESS. DOES NOT WORK.
-    //Working on: drawing graph when cell widths are less than 1.  Current plan is to set color by adding all values contained within a pixel.
-    //Cells that lie on two pixels should be added to those pixels based on what percentage of the cell lies in each pixel.
+
+    //Draws rectangles for the case when there are more x values than pixels, but no more y values than pixels.
+    //Adds multiple x values in the same pixel together.
     public void drawRectanglesSmallX(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
         
         int countY = 0;
         int countX;
         double yPosition = yEndGraph - cellHeight;
-        while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1))
-            {
+        while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1)){
                 countX = 0;
                 double xPosition = xStartGraph;
-                while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1))
-                {
-                    double pixelValue = 0;
+                double pixelValueCarry = 0;
+                while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1)){
+                    double pixelValue = pixelValueCarry;
                     double xPositionInitial = xPosition;
                     while(xPosition <= xPositionInitial +1){
                         if(xPosition + cellWidth <= xPositionInitial +1){
                             pixelValue+=data.getValue(countX, countY);
                         }
                         else{
-                            
+                            pixelValue+=(data.getValue(countX, countY)*((xPositionInitial+1-(xPosition-cellWidth))/cellWidth));
+                            pixelValueCarry = (data.getValue(countX, countY)*((xPosition-(xPositionInitial+1))/cellWidth));
                         }
+                        xPosition = xPosition + cellWidth;
+                        countX++;
                     }
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
-                    
-                    xPosition = xPosition + cellWidth;
-                    countX++;
+                    g.setColor(new Color(colorScheme.colorFor(pixelValue)));
+                    Rectangle2D.Double rect = new Rectangle2D.Double(xPositionInitial,yPosition,xPosition-xPositionInitial,cellHeight);
+                    g.fill(rect);
                 }
                 yPosition = yPosition - cellHeight;
                 countY++;
             }
     }
+public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+        
+        int countY;
+        int countX = 0;
+        double xPosition = xStartGraph + cellWidth;
+        while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1)){
+                countY = 0;
+                double yPosition = yEndGraph - cellHeight;
+                double pixelValueCarry = 0;
+                while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1)){
+                    double pixelValue = pixelValueCarry;
+                    double yPositionInitial = yPosition;
+                    while(yPosition >= yPositionInitial-1){
+                        if(yPosition - cellHeight >= yPositionInitial-1){
+                            pixelValue+=data.getValue(countX, countY);
+                        }
+                        else{
+                            pixelValue+=(data.getValue(countX, countY)*(((yPosition+cellHeight)-yPositionInitial-1)/cellHeight));
+                            pixelValueCarry = (data.getValue(countX, countY)*(((yPositionInitial-1)-yPosition)/cellHeight));
+                        }
+                        yPosition = yPosition - cellHeight;
+                        countY++;
+                    }
+                    g.setColor(new Color(colorScheme.colorFor(pixelValue)));
+                    Rectangle2D.Double rect = new Rectangle2D.Double(xPosition,yPositionInitial,cellWidth,yPositionInitial-yPosition);
+                    g.fill(rect);
+                }
+                xPosition = xPosition + cellWidth;
+                countY++;
+            }
+    }
+//NOT FINISHED.
+//Draws for the case when there are both more x values and y values than pixels.
+public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+    int countY = 0;
+    int countX;
+    int xStartGraphForced = (int)xStartGraph;
+    int yEndGraphForced = (int)yEndGraph;
+    
+    double pixelValues [][] = new double[(int)yHeightTotal][(int)xWidthTotal];
+    for(int i = 0; i < pixelValues.length; i++){
+        for(int j = 0; j < xWidthTotal; j++){
+            pixelValues[i][j] = 0;
+        }
+    }
+    double pixelValueCarryX;
+    double pixelValueCarryY [] = new double[data.getXCount()];
+    for(int i = 0; i < pixelValueCarryY.length; i++){
+        pixelValueCarryY[i] = 0;
+    }
+    double yPosition = yEndGraph;
+    int pixelYCount = 0;
+    int pixelXCount = 0;        
+    while (countY <= data.getYBoundaries().getDouble(data.getYCount()-1)){
+            countX = 0;
+            double xPosition = xStartGraph;
+            while (countX <= data.getXBoundaries().getDouble(data.getXCount()-1)){
+                if(xPosition > pixelXCount+1){
+                    pixelValues[pixelYCount][pixelXCount] += (data.getValue(countX, countY)*((pixelXCount - (xPosition - cellWidth))/cellWidth));
+                    pixelValueCarryX = (data.getValue(countX, countY)*((xPosition - pixelXCount)/cellWidth));
+                    pixelXCount+=1;
+                    if(pixelXCount < pixelValues[0].length){
+                        pixelValues[pixelYCount][pixelXCount]+=pixelValueCarryX;
+                    }
+                }
+                xPosition = xPosition + cellWidth;
+                countX++;
+            }
+            yPosition = yPosition - cellHeight;
+            countY++;
+    }
+}
 }
