@@ -57,9 +57,6 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
         if (height <= 0){
             throw new IllegalArgumentException("Image height must be a postive non-zero integer.");
         }
-        if (height > Integer.MAX_VALUE){
-            throw new IllegalArgumentException("Image height must be less than the max integer value.");
-        }
         
         this.imageHeight = height;
         return self();
@@ -67,16 +64,13 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     
     /**
      * Updates the parameter for the width of the image that is rendered.
-     * The width must be greater than zero and less than the max integer value.
-     * @param width Size of image width in pixels
+     * The width must be greater than zero.
+     * @param width size of image width in pixels
      * @return this
      */   
     public T imageWidth(int width) {
         if (width <= 0){
             throw new IllegalArgumentException("Image width must be a postive non-zero integer.");
-        }
-        if (width > Integer.MAX_VALUE){
-            throw new IllegalArgumentException("Image width must be less than the max integer value.");
         }
         
         this.imageWidth = width;
@@ -175,9 +169,6 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     public T bottomMargin(int bottomMargin){
         if (bottomMargin < 0){
             throw new IllegalArgumentException("The bottom margin must be a non-negative integer.");
-        }
-        if (bottomMargin > Integer.MAX_VALUE){
-            throw new IllegalArgumentException("The bottom margin must be less than the max integer value.");
         }
         
         this.bottomMargin = bottomMargin;
