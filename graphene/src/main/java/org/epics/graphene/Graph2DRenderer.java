@@ -127,6 +127,14 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
 
+    public ValueScale getXValueScale(){
+        return xValueScale;
+    }
+    
+    public ValueScale getYValueScale(){
+        return yValueScale;
+    }
+    
     /**
      * The current strategy to calculate the x range for the graph.
      * 
@@ -180,6 +188,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     public Range getYPlotRange() {
         return yPlotRange;
     }
+    
     
     /**
      * Applies the update to the renderer.
@@ -389,8 +398,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         xAreaStart = areaFromLeft;
         xAreaEnd = getImageWidth() - rightMargin - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5; //STUDENT: Remove 0.5 to enable line to draw on edges of graph area
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;  //STUDENT
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
@@ -402,8 +411,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         yAreaStart = topMargin;
         yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;    //STUDENT
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;       //STUDENT
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
         double[] xRefCoords = new double[xReferenceValues.size()];

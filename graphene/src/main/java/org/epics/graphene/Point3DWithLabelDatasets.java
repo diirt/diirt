@@ -15,7 +15,7 @@ public class Point3DWithLabelDatasets {
 
     public static Point3DWithLabelDataset build(final ListNumber x, final ListNumber y, final ListNumber z, final List<String> labels) {
         if (x.size() != y.size() || x.size() != y.size() || x.size() != labels.size()) {
-            throw new IllegalArgumentException("Arrays length don't match: " + x.size() + " - " + y.size() + " - " + z.size() + " - " + labels.size());
+            throw new IllegalArgumentException("Array lengths don't match: " + x.size() + " - " + y.size() + " - " + z.size() + " - " + labels.size());
         }
         
         return new Point3DWithLabelDataset() {

@@ -5,26 +5,29 @@
 package org.epics.graphene;
 
 import java.awt.Color;
+import java.util.List;
 
 /**
  *
- * @author asbarber, jkfeng, sjdallst
+ * @author asbarber
+ * @author jkfeng
+ * @author sjdallst
  */
 public class SparklineMultilineGraph2DRendererUpdate extends Graph2DRendererUpdate<SparklineMultilineGraph2DRendererUpdate>{
-    private Color [] colorArray;
+    private List<Color> colorArray;
     
-    public Color [] getColorArray(){
+    public List<Color> getColorArray(){
         return colorArray;
     }
     
-    public SparklineMultilineGraph2DRendererUpdate colorArray (Color[] newColorArray){
+    public SparklineMultilineGraph2DRendererUpdate colorArray (List<Color> newColorArray){
         colorArray = newColorArray;
         return self();
     }
     
-    public SparklineMultilineGraph2DRendererUpdate setColor (Color[] colorArrayOriginal, int index, Color color){
-        colorArray = colorArrayOriginal;
-        colorArray[index] = color;
+    public SparklineMultilineGraph2DRendererUpdate setColor (List<Color> originalArray, int index, Color color){
+        originalArray.set(index, color);
+        colorArray = originalArray;
         return self();
     }
 }

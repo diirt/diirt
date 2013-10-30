@@ -40,7 +40,7 @@ public class SparklineGraph2DRendererExample {
             Graphics2D g = (Graphics2D) image.getGraphics();
             
             //Graph initialization
-            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
+            SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100, 100);
             
             //Start time
             double startTime = System.currentTimeMillis();
