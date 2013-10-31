@@ -77,8 +77,10 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         
-        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
-        
+        //drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
+        setMaxIndex(data);
+        setMinIndex(data);
+        setLastIndex(data);
         //Draws a circle at the max, min, and last value
         if(drawCircles){
             //Min
@@ -206,43 +208,31 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double halfSize = size / 2;
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
         return circle;
-    }       
+    } 
     
-    /**
-     * 
-     * @param index
-     * @param valueX
-     * @param valueY
-     * @param scaledX
-     * @param scaledY 
-     */
-    @Override
-    protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
-        //Checks if new value is the new min or the new max
-        
-        //Base Case
-        if (index == 0){
-            maxValueY = valueY;
-            minValueY = valueY;
-        }
-        else{
-            //Max
-            if (maxValueY <= valueY){
-                maxValueY = valueY;
-                maxIndex = index;
+    private void setLastIndex(Point2DDataset data){
+        lastIndex = data.getCount()-1;
+    }
+    private void setMaxIndex(Point2DDataset data){
+        double maxValue = Double.MIN_VALUE;
+        for(int i = 0; i < data.getCount();i++){
+            if(data.getYValues().getDouble(i) >= maxValue){
+                maxValue = data.getYValues().getDouble(i);
+                maxIndex = i;
             }
-            //Min
-            if (minValueY >= valueY){
-                minValueY = valueY;
-                minIndex = index;
-            }  
         }
-        
-        //New point is always last point
-        lastValueY = valueY;
-        lastIndex = index;
     }
     
+    private void setMinIndex(Point2DDataset data){
+        double minValue = Double.MAX_VALUE;
+        for(int i = 0; i < data.getCount();i++){
+            if(data.getYValues().getDouble(i) <= minValue){
+                minValue = data.getYValues().getDouble(i);
+                minIndex = i;
+            }
+        }
+    }
+
     /**
      * Applies the update to the renderer.
      * 
