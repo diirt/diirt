@@ -49,6 +49,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int yAreaStart;
     protected int yAreaEnd;
     protected int xAreaEnd;
+    
+    private boolean labels = true;
 
     /**
      * Creates a graph renderer.
@@ -189,6 +191,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return yPlotRange;
     }
     
+    protected void setNoLabels(){
+        labels = false;
+    }
     
     /**
      * Applies the update to the renderer.
@@ -367,8 +372,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * To calculate area based on labels, ensure that calculateGraphArea() is called
      * prior to calling calculateGraphAreaNoLabels().
      */    
+    //Probably still want to find a better way to split this up.
     protected void calculateGraphArea() {
         // Calculate horizontal axis references. If range is zero, use special logic
+        if(labels){
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());
@@ -385,7 +392,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             // TODO: use something better to format the number
             yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());
         }
-                
+        }        
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
@@ -415,6 +422,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;       //STUDENT
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
+        if(labels){
         double[] xRefCoords = new double[xReferenceValues.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
             xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
@@ -426,6 +434,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
         }
         yReferenceCoords = new ArrayDouble(yRefCoords);
+        }
     }
 
     /**
