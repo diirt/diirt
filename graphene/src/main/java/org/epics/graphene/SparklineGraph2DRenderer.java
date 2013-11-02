@@ -70,7 +70,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateGraphArea();
         drawBackground();
         
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLACK);        
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         //Calculates data values
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
@@ -80,6 +82,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         setMaxIndex(data);
         setMinIndex(data);
         setLastIndex(data);
+        
         //Draws a circle at the max, min, and last value
         if(drawCircles){
             //Min
@@ -88,6 +91,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.setColor(minValueColor);
             Shape circle = createShape(x, y, circleDiameter);
             g.fill(circle);
+            g.draw(circle);
             
             //Max
             x = scaledX(data.getXValues().getDouble(maxIndex));
@@ -95,29 +99,22 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.setColor(maxValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle);
+            g.draw(circle);
             
             //Last
             x = scaledX(data.getXValues().getDouble(lastIndex));
             y = scaledY(data.getYValues().getDouble(lastIndex));
             g.setColor(lastValueColor);
             circle = createShape(x, y, circleDiameter);
-            g.fill(circle);
+            g.fill(circle); 
+            g.draw(circle);
             
-            g.setColor(Color.BLACK);                 
+            g.setColor(Color.BLACK);
         }
         
         //Draws Line
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);      
     }
-
-    /**
-     * Sets the rendering hint to render with antialiasing and pure stroke.
-     */
-    @Override 
-    protected void drawGraphArea(){
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-    } 
     
     /**
      * Creates a circle shape at the given position with given size.
