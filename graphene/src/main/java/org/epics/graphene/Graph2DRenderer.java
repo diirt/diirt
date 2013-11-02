@@ -50,8 +50,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected int yAreaEnd;
     protected int xAreaEnd;
     
-    private boolean labels = true;
-
     /**
      * Creates a graph renderer.
      * 
@@ -191,10 +189,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return yPlotRange;
     }
     
-    protected void setNoLabels(){
-        labels = false;
-    }
-    
     /**
      * Applies the update to the renderer.
      * <p>
@@ -331,18 +325,22 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
+            xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
             xReferenceLabels = Collections.singletonList(xPlotRange.getMinimum().toString());
-        }
-
+            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());            
+        }      
+        
         // Calculate vertical axis references. If range is zero, use special logic
         if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
+            yReferenceValues = new ArrayDouble(yAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
             yReferenceLabels = Collections.singletonList(yPlotRange.getMinimum().toString());
+            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());            
         }
         
         labelFontMetrics = g.getFontMetrics(labelFont);
@@ -372,27 +370,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * To calculate area based on labels, ensure that calculateGraphArea() is called
      * prior to calling calculateGraphAreaNoLabels().
      */    
-    //Probably still want to find a better way to split this up.
-    protected void calculateGraphArea() {
-        // Calculate horizontal axis references. If range is zero, use special logic
-        if(labels){
-        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
-            ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
-        } else {
-            // TODO: use something better to format the number
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());
-        }
-
-        // Calculate vertical axis references. If range is zero, use special logic
-        if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
-            ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
-            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
-        } else {
-            // TODO: use something better to format the number
-            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());
-        }
-        }        
+    protected void calculateGraphArea() {   
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
@@ -422,18 +400,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;       //STUDENT
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
-        if(labels){
-        double[] xRefCoords = new double[xReferenceValues.size()];
-        for (int i = 0; i < xRefCoords.length; i++) {
-            xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
-        }
-        xReferenceCoords = new ArrayDouble(xRefCoords);
-        
-        double[] yRefCoords = new double[yReferenceValues.size()];
-        for (int i = 0; i < yRefCoords.length; i++) {
-            yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
-        }
-        yReferenceCoords = new ArrayDouble(yRefCoords);
+        //Only calculates reference coordinates if calculateLabels() was called
+        if(xReferenceValues != null && yReferenceValues != null){
+            double[] xRefCoords = new double[xReferenceValues.size()];
+            for (int i = 0; i < xRefCoords.length; i++) {
+                xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
+            }
+            xReferenceCoords = new ArrayDouble(xRefCoords);
+
+            double[] yRefCoords = new double[yReferenceValues.size()];
+            for (int i = 0; i < yRefCoords.length; i++) {
+                yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
+            }
+            yReferenceCoords = new ArrayDouble(yRefCoords);
         }
     }
 
