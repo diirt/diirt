@@ -32,6 +32,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         calculateRanges(dataset.getXRange(), dataset.getStatistics());
         calculateLabels();
         calculateGraphArea();
+        drawBackground();
         drawGraphArea();
 
         // Compute bin limits
