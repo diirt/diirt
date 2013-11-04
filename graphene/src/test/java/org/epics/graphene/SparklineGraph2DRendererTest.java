@@ -58,7 +58,7 @@ public class SparklineGraph2DRendererTest {
      * 
      * @throws Exception Test fails
      */    
-    /*@Test
+    @Test
     public void test1() throws Exception {
         double[] initialDataX = new double[101];
         
@@ -81,7 +81,7 @@ public class SparklineGraph2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.1", image);
-    }*/
+    }
     
     /**
      * Tests case of:
@@ -92,7 +92,7 @@ public class SparklineGraph2DRendererTest {
      * 
      * @throws Exception Test fails
      */        
-    /*@Test
+    @Test
     public void test2() throws Exception {
         double[] initialDataX = new double[101];
         
@@ -115,7 +115,7 @@ public class SparklineGraph2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.2", image);
-    }*/
+    }
         
     /**
      * Tests case of:
@@ -127,7 +127,7 @@ public class SparklineGraph2DRendererTest {
      * 
      * @throws Exception Test fails
      */    
-    /*@Test
+    @Test
     public void test3() throws Exception {
         double[] initialDataX = new double[100];
         
@@ -146,7 +146,7 @@ public class SparklineGraph2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.3", image);
-    }*/
+    }
     
     /**
      * Tests case of:
@@ -159,7 +159,7 @@ public class SparklineGraph2DRendererTest {
      * 
      * @throws Exception Test fails
      */   
-    /*@Test
+    @Test
     public void test4() throws Exception {
         double[] initialDataX = new double[100];
         
@@ -186,5 +186,5 @@ public class SparklineGraph2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.4", image);        
-    }*/
+    }
 }
