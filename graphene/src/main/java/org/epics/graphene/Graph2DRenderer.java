@@ -110,6 +110,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     // Axis label margins
     protected int xLabelMargin = 3;
     protected int yLabelMargin = 3;
+    // Margin for starting drawing from center of pixel
+    protected double xPointMargin = 0.5;  //Set as point (not area) by default
+    protected double yPointMargin = 0.5;
     
     // Computed parameters, visible to outside //
     
@@ -375,8 +378,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         xAreaStart = areaFromLeft;
         xAreaEnd = getImageWidth() - rightMargin - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        xPlotCoordStart = xAreaStart + topAreaMargin + xPointMargin;
+        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
@@ -388,8 +391,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         yAreaStart = topMargin;
         yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        yPlotCoordStart = yAreaStart + leftAreaMargin + yPointMargin;
+        yPlotCoordEnd = yAreaEnd - rightAreaMargin + yPointMargin;
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
         //Only calculates reference coordinates if calculateLabels() was called
@@ -842,4 +845,24 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
 
+    protected void setupDataAsPoints(){
+        setupXAsPoints();
+        setupYAsPoints();
+    }
+    protected void setupXAsPoints(){
+        xPointMargin = 0.5;
+    }
+    protected void setupYAsPoints(){
+        yPointMargin = 0.5;
+    }
+    protected void setupDataAsAreas(){
+        setupXAsAreas();
+        setupYAsAreas();
+    }
+    protected void setupXAsAreas(){
+        xPointMargin = 0;
+    }
+    protected void setupYAsAreas(){
+        yPointMargin = 0;
+    }
 }

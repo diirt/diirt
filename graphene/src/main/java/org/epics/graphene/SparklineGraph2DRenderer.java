@@ -43,9 +43,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int     maxIndex, 
                     minIndex,
                     lastIndex;
-    private double  maxValueY = 0, 
-                    minValueY = 0,
-                    lastValueY = 0;    
+    private double  maxValueY = -1, 
+                    minValueY = -1,
+                    lastValueY = -1;    
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -72,7 +72,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         g.setColor(Color.BLACK);        
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);        
-        
+        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
         
         //Calculates data values
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
@@ -111,7 +111,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             
             g.setColor(Color.BLACK);
         }
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
         //Draws Line
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);      
     }
@@ -131,6 +131,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     
     private void setLastIndex(Point2DDataset data){
         lastIndex = data.getCount()-1;
+        lastValueY = data.getYValues().getDouble(lastIndex);
     }
     private void setMaxIndex(Point2DDataset data){
         double maxValue = Double.MIN_VALUE;
@@ -150,7 +151,33 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
         }
     }
-
+    
+    protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+        //Checks if new value is the new min or the new max
+        
+        //Base Case
+        if (index == 0){
+            maxValueY = valueY;
+            minValueY = valueY;
+        }
+        else{
+            //Max
+            if (maxValueY <= valueY){
+                maxValueY = valueY;
+                maxIndex = index;
+            }
+            //Min
+            if (minValueY >= valueY){
+                minValueY = valueY;
+                minIndex = index;
+            }  
+        }
+        
+        //New point is always last point
+        lastValueY = valueY;
+        lastIndex = index;
+    }
+    
     /**
      * Applies the update to the renderer.
      * 
