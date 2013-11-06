@@ -427,7 +427,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * Draw the calculated graph area. Draws the the reference
      * lines and the labels.
      */
-    protected void drawGraphArea() {        
+    protected void drawGraphArea() {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // When drawing the reference line, align them to the pixel
         drawVerticalReferenceLines();
