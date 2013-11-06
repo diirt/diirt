@@ -295,7 +295,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber yTicks = yReferenceCoords;
         for (int i = 0; i < yTicks.size(); i++) {
-            Shape line = new Line2D.Double(xAreaStart, yTicks.getDouble(i), xAreaEnd, yTicks.getDouble(i));
+            Shape line = new Line2D.Double(xAreaStart, yTicks.getDouble(i), xAreaEnd - 1, yTicks.getDouble(i));
             g.draw(line);
         }
     }
@@ -305,7 +305,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         ListNumber xTicks = xReferenceCoords;
         for (int i = 0; i < xTicks.size(); i++) {
-            Shape line = new Line2D.Double(xTicks.getDouble(i), yAreaStart, xTicks.getDouble(i), yAreaEnd);
+            Shape line = new Line2D.Double(xTicks.getDouble(i), yAreaStart, xTicks.getDouble(i), yAreaEnd - 1);
             g.draw(line);
         }
     }
@@ -367,7 +367,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * To calculate area based on labels, ensure that calculateGraphArea() is called
      * prior to calling calculateGraphAreaNoLabels().
      */    
-    protected void calculateGraphArea() {   
+    protected void calculateGraphArea() {
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
@@ -379,9 +379,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             xPlotValueEnd += 1.0;
         }
         xAreaStart = areaFromLeft;
-        xAreaEnd = getImageWidth() - rightMargin - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin + xPointMargin;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + xPointMargin;
+        xAreaEnd = getImageWidth() - rightMargin;
+        xPlotCoordStart = xAreaStart + leftAreaMargin + xPointMargin;
+        xPlotCoordEnd = xAreaEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
@@ -392,19 +392,21 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yPlotValueEnd += 1.0;
         }
         yAreaStart = topMargin;
-        yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        yPlotCoordStart = yAreaStart + leftAreaMargin + yPointMargin;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin + yPointMargin;
+        yAreaEnd = getImageHeight() - areaFromBottom;
+        yPlotCoordStart = yAreaStart + topAreaMargin + yPointMargin;
+        yPlotCoordEnd = yAreaEnd - bottomAreaMargin - yPointMargin;
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
         //Only calculates reference coordinates if calculateLabels() was called
-        if(xReferenceValues != null && yReferenceValues != null){
+        if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
             for (int i = 0; i < xRefCoords.length; i++) {
                 xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
-
+        }
+        
+        if (yReferenceValues != null) {
             double[] yRefCoords = new double[yReferenceValues.size()];
             for (int i = 0; i < yRefCoords.length; i++) {
                 yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
@@ -790,7 +792,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      * @param g the graphics context
      */
     protected void setClip(Graphics2D g) {
-        g.setClip(xAreaStart, yAreaStart, xAreaEnd - xAreaStart + 1, yAreaEnd - yAreaStart + 1);
+        g.setClip(xAreaStart, yAreaStart, xAreaEnd - xAreaStart, yAreaEnd - yAreaStart);
     }
 
     /**
@@ -806,7 +808,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             FontMetrics metrics = g.getFontMetrics();
 
             // Draw first and last label
-            int[] drawRange = new int[] {yAreaStart, yAreaEnd};
+            int[] drawRange = new int[] {yAreaStart, yAreaEnd - 1};
             int xRightLabel = (int) (xAreaStart - yLabelMargin - 1);
             drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(0), (int) Math.floor(yTicks.getDouble(0)),
                 drawRange, xRightLabel, true, false);
@@ -833,8 +835,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             FontMetrics metrics = g.getFontMetrics();
 
             // Draw first and last label
-            int[] drawRange = new int[] {xAreaStart, xAreaEnd};
-            int yTop = (int) (yAreaEnd + xLabelMargin + 1);
+            int[] drawRange = new int[] {xAreaStart, xAreaEnd - 1};
+            int yTop = (int) (yAreaEnd + xLabelMargin);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),

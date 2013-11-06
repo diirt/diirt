@@ -184,5 +184,5 @@ public class LineGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraph.11", image);
-    }
+    }    
 }
