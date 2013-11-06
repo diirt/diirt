@@ -33,18 +33,21 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     //Parameters
-    private int     circleDiameter = 7;
-    private Color   minValueColor = Color.BLUE,
-                    maxValueColor = Color.RED,
-                    lastValueColor = Color.GREEN;
+    private int     circleDiameter = 5;
+    private Color   minValueColor = new Color(28, 160, 232),
+                    maxValueColor = new Color(28, 160, 232),
+                    firstValueColor = new Color(223, 59, 73),            
+                    lastValueColor = new Color(223, 59, 73);
     private boolean drawCircles = true;
     
     //Min, Max, Last Values and Indices
     private int     maxIndex, 
                     minIndex,
+                    firstIndex,
                     lastIndex;
     private double  maxValueY = -1, 
                     minValueY = -1,
+                    firstValueY = -1,
                     lastValueY = -1;    
 
     //Scaling Schemes    
@@ -80,12 +83,16 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         
-        setMaxIndex(data);
-        setMinIndex(data);
-        setLastIndex(data);
-        
+        //Draws Line  
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
+        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);      
+
         //Draws a circle at the max, min, and last value
         if(drawCircles){
+            AlphaComposite ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7F);
+            g.setComposite(ac);        
+            
             //Min
             double x = scaledX(data.getXValues().getDouble(minIndex));
             double y = scaledY(data.getYValues().getDouble(minIndex));
@@ -102,20 +109,22 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.fill(circle);
             g.draw(circle);
             
+            //First
+            x = scaledX(data.getXValues().getDouble(firstIndex));
+            y = scaledY(data.getYValues().getDouble(firstIndex));
+            g.setColor(firstValueColor);
+            circle = createShape(x, y, circleDiameter);
+            g.fill(circle); 
+            g.draw(circle);    
+            
             //Last
             x = scaledX(data.getXValues().getDouble(lastIndex));
             y = scaledY(data.getYValues().getDouble(lastIndex));
             g.setColor(lastValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle); 
-            g.draw(circle);
-            
-            g.setColor(Color.BLACK);
+            g.draw(circle);            
         }
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //Draws Line
-        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);      
     }
     
     /**
@@ -131,34 +140,14 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return circle;
     } 
     
-    private void setLastIndex(Point2DDataset data){
-        lastIndex = data.getCount()-1;
-        lastValueY = data.getYValues().getDouble(lastIndex);
-    }
-    private void setMaxIndex(Point2DDataset data){
-        maxValueY = Double.MIN_VALUE;
-        for(int i = 0; i < data.getCount();i++){
-            if(data.getYValues().getDouble(i) >= maxValueY){
-                maxValueY = data.getYValues().getDouble(i);
-                maxIndex = i;
-            }
-        }
-    }
-    private void setMinIndex(Point2DDataset data){
-        minValueY = Double.MAX_VALUE;
-        for(int i = 0; i < data.getCount();i++){
-            if(data.getYValues().getDouble(i) <= minValueY){
-                minValueY = data.getYValues().getDouble(i);
-                minIndex = i;
-            }
-        }
-    }
-    
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         //Checks if new value is the new min or the new max
         
         //Base Case
         if (index == 0){
+            firstIndex = 0;
+            firstValueY = valueY;
+            
             maxValueY = valueY;
             minValueY = valueY;
         }
@@ -243,6 +232,14 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     /**
+     * The index corresponding to the first value in the data set.
+     * @return the index of the first value
+     */
+    public int getFirstIndex(){
+        return firstIndex;
+    }
+    
+    /**
      * The index corresponding to the last value in the data set.
      * @return The index of the last value
      */
@@ -268,6 +265,14 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      */
     public double getMinValue(){
         return minValueY;
+    }
+    
+    /**
+     * The first y-value in the list of data.
+     * @return the data value for the first index
+     */
+    public double getFirstValue(){
+        return firstValueY;
     }
     
     /**
