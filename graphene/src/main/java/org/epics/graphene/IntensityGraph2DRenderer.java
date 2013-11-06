@@ -65,15 +65,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Draw graph when cell width or height is smaller than one pixel.
         if(cellWidth < 1 || cellHeight < 1){
             if(cellHeight > 1){
-                System.out.println("Case: Small X");
                 drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
             }
             if(cellWidth > 1){
-                System.out.println("Case: Small Y");
                 drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
             }
             if(cellWidth < 1 && cellHeight < 1){
-                System.out.println("Case: Small X and Y");
                 drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
             }
             

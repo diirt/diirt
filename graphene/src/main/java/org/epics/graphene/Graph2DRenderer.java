@@ -126,6 +126,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected List<String> yReferenceLabels;
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
+    private boolean xAsPoints = true;
+    private boolean yAsPoints = true;
     
     /**
      * The current strategy to calculate the x range for the graph.
@@ -375,8 +377,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         xAreaStart = areaFromLeft;
         xAreaEnd = getImageWidth() - rightMargin - 1;
-        xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
-        xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        if(xAsPoints){
+            xPlotCoordStart = xAreaStart + topAreaMargin + 0.5;
+            xPlotCoordEnd = xAreaEnd - bottomAreaMargin + 0.5;
+        }
+        else{
+            xPlotCoordStart = (int)(xAreaStart + topAreaMargin);
+            if((int)(xAreaEnd-bottomAreaMargin) == (xAreaEnd-bottomAreaMargin)){
+                xPlotCoordEnd = xAreaEnd-bottomAreaMargin;
+            }
+            else{
+                xPlotCoordEnd = (int)(xAreaEnd-bottomAreaMargin+1);
+            }
+        }
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
         yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
@@ -388,8 +401,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         yAreaStart = topMargin;
         yAreaEnd = getImageHeight() - areaFromBottom - 1;
-        yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
-        yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        if(yAsPoints){
+            yPlotCoordStart = yAreaStart + leftAreaMargin + 0.5;
+            yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
+        }
+        else{
+            yPlotCoordStart = (int)(yAreaStart + leftAreaMargin);
+            if((int)(yAreaEnd-rightAreaMargin) == (yAreaEnd-rightAreaMargin)){
+                yPlotCoordEnd = yAreaEnd-rightAreaMargin;
+            }
+            else{
+                yPlotCoordEnd = (int)(yAreaEnd-rightAreaMargin+1);
+            }
+        }
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
         
         //Only calculates reference coordinates if calculateLabels() was called
@@ -841,5 +865,16 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             }
         }
     }
-
+public void setXAsPoints(){
+    xAsPoints = true;
+}
+public void setXAsArea(){
+    xAsPoints = false;
+}
+public void setYAsPoints(){
+    yAsPoints = true;
+}
+public void setYAsArea(){
+    yAsPoints = false;
+}
 }
