@@ -28,10 +28,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 4;
-                this.xAreaEnd = 296;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 196;
+                this.xAreaCoordStart = 4;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(4.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 100, 4.5);
                 this.yReferenceLabels = Collections.<String>emptyList();
@@ -57,10 +57,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 24;
-                this.xAreaEnd = 296;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 196;
+                this.xAreaCoordStart = 24;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(24.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 147.75, 100, 47.25, 4.5);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
@@ -87,10 +87,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 24;
-                this.xAreaEnd = 296;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 196;
+                this.xAreaCoordStart = 24;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150");
@@ -116,10 +116,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 4;
-                this.xAreaEnd = 296;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 186;
+                this.xAreaCoordStart = 4;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 186;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.xReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
                 this.xLabelMargin = 1;

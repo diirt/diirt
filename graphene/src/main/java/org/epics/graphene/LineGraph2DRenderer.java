@@ -111,7 +111,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
             if (highlightFocusValue) {
                 g.setColor(new Color(0, 0, 0, 128));
                 int x = (int) scaledX(xValues.getDouble(currentIndex));
-                g.drawLine(x, yAreaStart, x, yAreaEnd);
+                g.drawLine(x, yAreaCoordStart, x, yAreaCoordEnd - 1);
             }
         } else {
             focusValueIndex = -1;
