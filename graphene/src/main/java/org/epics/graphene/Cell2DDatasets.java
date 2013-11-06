@@ -28,53 +28,26 @@ public class Cell2DDatasets {
      * @param yCount
      * @return
      */
-public static Cell2DDataset linearRange(final ArrayDouble zData, final Range xRange, final int xCount, final Range yRange, final int yCount){
-    if(zData.size() == 0){
-        throw new IllegalArgumentException("Empty Dataset. zData size = " + zData.size());
+public static Cell2DDataset linearRange(final ListNumber data, final Range xRange, final int xCount, final Range yRange, final int yCount){
+    if(data.size() == 0){
+        throw new IllegalArgumentException("Empty Dataset. zData size = " + data.size());
     }
     if(xCount <= 0 || yCount <= 0){
         throw new IllegalArgumentException("Number of X (or Y) values must be greater than 0. xCount = " + xCount + " yCount = " + yCount);
     }
-    if(((xCount)*(yCount-1)+xCount-1) != (zData.size()-1)){
-        throw new IllegalArgumentException("Unexpected number of X (or Y) values. Array length = " + (zData.size())+ ", Predicted size(given X and Y) = " 
+    if(((xCount)*(yCount-1)+xCount-1) != (data.size()-1)){
+        throw new IllegalArgumentException("Unexpected number of X (or Y) values. Array length = " + (data.size())+ ", Predicted size(given X and Y) = " 
                 + ((xCount)*(yCount-1)+xCount) + ", xCount = " + xCount + ", yCount = " + yCount);
     }
     
     final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), xCount + 1);
     final ListNumber yBoundaries = ListNumbers.linearListFromRange(yRange.getMinimum().doubleValue(), yRange.getMaximum().doubleValue(), yCount + 1);
     
-    CollectionNumber data = new CollectionDouble() {
-         @Override
-         public IteratorDouble iterator() {
-            return new IteratorDouble() {
-                int x;
-                int y;
-                @Override
-                public boolean hasNext() {
-                    return y < yCount;
-                }
-                @Override
-                public double nextDouble() {
-                    double value = zData.getDouble(y*xCount+x);
-                    x++;
-                    if (x == xCount) {
-                        x=0;
-                        y++;
-                    }
-                        return value;
-                }
-           };
-        }
-        @Override
-        public int size() {
-            return xCount * yCount;
-        }
-    };
     final Statistics stats = StatisticsUtil.statisticsOf(data);
     return new Cell2DDataset() {
         @Override
         public double getValue(int x, int y) {
-            return zData.getDouble(y*xCount+x);
+            return data.getDouble(y*xCount+x);
         }
 
         @Override
