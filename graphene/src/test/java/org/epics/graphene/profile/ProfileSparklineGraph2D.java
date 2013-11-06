@@ -16,7 +16,9 @@ import org.epics.util.time.Timestamp;
 
 /**
  *
- * @authors asbarber, jkfeng, sjdallst
+ * @author asbarber
+ * @author jkfeng
+ * @author sjdallst
  */
 public class ProfileSparklineGraph2D {
 

@@ -134,19 +134,19 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         lastValueY = data.getYValues().getDouble(lastIndex);
     }
     private void setMaxIndex(Point2DDataset data){
-        double maxValue = Double.MIN_VALUE;
+        maxValueY = Double.MIN_VALUE;
         for(int i = 0; i < data.getCount();i++){
-            if(data.getYValues().getDouble(i) >= maxValue){
-                maxValue = data.getYValues().getDouble(i);
+            if(data.getYValues().getDouble(i) >= maxValueY){
+                maxValueY = data.getYValues().getDouble(i);
                 maxIndex = i;
             }
         }
     }
     private void setMinIndex(Point2DDataset data){
-        double minValue = Double.MAX_VALUE;
+        minValueY = Double.MAX_VALUE;
         for(int i = 0; i < data.getCount();i++){
-            if(data.getYValues().getDouble(i) <= minValue){
-                minValue = data.getYValues().getDouble(i);
+            if(data.getYValues().getDouble(i) <= minValueY){
+                minValueY = data.getYValues().getDouble(i);
                 minIndex = i;
             }
         }
