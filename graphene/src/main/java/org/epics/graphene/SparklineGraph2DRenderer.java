@@ -140,6 +140,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return circle;
     } 
     
+    @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         //Checks if new value is the new min or the new max
         

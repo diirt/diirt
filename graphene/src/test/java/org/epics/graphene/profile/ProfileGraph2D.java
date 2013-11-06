@@ -6,6 +6,11 @@ package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Histogram1D;
@@ -26,7 +31,7 @@ import org.epics.util.time.Timestamp;
  * @author jkfeng
  * @author sjdallst
  */
-public abstract class ProfileGraph2D<T extends Graph2DRenderer> {
+public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public ProfileGraph2D(){
         
     }
@@ -34,6 +39,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer> {
         this.maxTries = maxTries;
         this.testTimeSec = testTimeSec;
     }
+    
+    private static final String LOG_FILENAME = "graphene\\src\\test\\resources\\org\\epics\\graphene\\log.txt";
     
     //Profile Parameters (Customizable)
     private int maxTries    = 1000000,
@@ -48,10 +55,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer> {
     private StopWatch   stopWatch;
     
     
-    public void profile(){
-        //Any actions that occur prior to rendering
-        prerender();
-        
+    public void profile(){        
         //Timing
         Timestamp start = Timestamp.now();
         Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));        
@@ -59,23 +63,22 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer> {
         
         nTries = 0;
         
+        //Data and Render Objects (Implemented in subclasses)
+        S data = getDataset();
         T renderer = getRenderer(imageWidth, imageHeight);
 
         //Trials
         while (end.compareTo(Timestamp.now()) >= 0) {
             nTries++;
             stopWatch.start();
-            render(renderer);
+            render(renderer, data);
             stopWatch.stop();
         }
     }
-    
-    protected void prerender(){
-        //Actions that occur prior to rendering during profiling
-        //Use to set up any datasets
-    }    
+      
+    protected abstract S getDataset();
     protected abstract T getRenderer(int imageWidth, int imageHeight);
-    protected abstract void render(T renderer);
+    protected abstract void render(T renderer, S data);
     
     public void printStatistics(){
         //Ensures profile() was called
@@ -108,6 +111,24 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer> {
         ShowResizableGraph.showHistogram(hist);
         ShowResizableGraph.showLineGraph(line);
         ShowResizableGraph.showLineGraph(averagedLine);           
+    }
+    public void saveStatistics(){
+        //Ensures profile() was called
+        if (stopWatch == null || nTries == 0){
+            System.err.println("Has not been profiled.");
+            return;
+        }
+        
+        String results = "\"" + stopWatch.getAverageMs() + "\" ";
+        
+        try {
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(LOG_FILENAME, true)))) {
+                out.println(results);
+                out.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Output errors exist.");
+        }
     }
     
     public static Point1DDataset makePoint1DData(int nSamples){        

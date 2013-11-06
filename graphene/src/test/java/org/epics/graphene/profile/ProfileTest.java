@@ -10,17 +10,12 @@ import org.epics.graphene.SparklineGraph2DRendererUpdate;
  *
  * @author Aaron
  */
-public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer> {
-    private Point2DDataset dataset;
-    
-    private Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(1000);
-    }
+public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer, Point2DDataset> {
     
     @Override
-    protected void prerender() {
-        dataset = getDataset();
-    }    
+    protected Point2DDataset getDataset() {
+        return ProfileGraph2D.makePoint2DData(1000);
+    }
     @Override
     protected SparklineGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(imageWidth, imageHeight);
@@ -29,7 +24,7 @@ public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer> {
         return renderer;
     }
     @Override
-    protected void render(SparklineGraph2DRenderer renderer) {
+    protected void render(SparklineGraph2DRenderer renderer, Point2DDataset dataset) {
         BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = image.createGraphics();
         renderer.draw(graphics, dataset);    
@@ -40,6 +35,5 @@ public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer> {
         ProfileTest profiler = new ProfileTest();
         profiler.profile();
         profiler.printStatistics();
-    }
-    
+    }    
 }
