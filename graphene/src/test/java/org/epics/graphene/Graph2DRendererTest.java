@@ -29,9 +29,9 @@ public class Graph2DRendererTest {
             
             {
                 this.xAreaStart = 4;
-                this.xAreaEnd = 295;
+                this.xAreaEnd = 296;
                 this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.yAreaEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(4.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 100, 4.5);
                 this.yReferenceLabels = Collections.<String>emptyList();
@@ -46,7 +46,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.drawBackground();  //poop
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.1", image);
     }
@@ -58,9 +58,9 @@ public class Graph2DRendererTest {
             
             {
                 this.xAreaStart = 24;
-                this.xAreaEnd = 295;
+                this.xAreaEnd = 296;
                 this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.yAreaEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(24.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 147.75, 100, 47.25, 4.5);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
@@ -88,9 +88,9 @@ public class Graph2DRendererTest {
             
             {
                 this.xAreaStart = 24;
-                this.xAreaEnd = 295;
+                this.xAreaEnd = 296;
                 this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.yAreaEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150");
@@ -117,9 +117,9 @@ public class Graph2DRendererTest {
             
             {
                 this.xAreaStart = 4;
-                this.xAreaEnd = 295;
+                this.xAreaEnd = 296;
                 this.yAreaStart = 4;
-                this.yAreaEnd = 185;
+                this.yAreaEnd = 186;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.xReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
                 this.xLabelMargin = 1;
@@ -217,8 +217,8 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.xPointMargin=1.5;
-        renderer.yPointMargin=1.5;
+        renderer.xPointMargin = 2.5;
+        renderer.yPointMargin = 2.5;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();   
