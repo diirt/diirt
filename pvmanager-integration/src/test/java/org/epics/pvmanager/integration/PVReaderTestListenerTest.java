@@ -16,6 +16,9 @@ import org.epics.util.time.TimeDuration;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VString;
+import org.epics.vtype.ValueFactory;
 import static org.hamcrest.Matchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -23,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
+import static org.epics.vtype.ValueFactory.*;
 
 /**
  *
@@ -56,12 +60,39 @@ public class PVReaderTestListenerTest {
         return connectedEvent;
     }
     
+    public static <T, V extends T> PVReaderEvent<T> createValueEvent(V value) {
+        @SuppressWarnings("unchecked")
+        PVReader<T> pvReader = (PVReader<T>) mock(PVReader.class);
+        when(pvReader.getValue()).thenReturn(value);
+        
+        @SuppressWarnings("unchecked")
+        PVReaderEvent<T> event = (PVReaderEvent<T>) mock(PVReaderEvent.class);
+        when(event.isValueChanged()).thenReturn(true);
+        when(event.getPvReader()).thenReturn(pvReader);
+        
+        return event;
+    }
+    
     @Test
     public void matchConnections1() throws Exception {
         PVReaderTestListener<Object> listener = PVReaderTestListener.matchConnections(true, false, true);
         listener.pvChanged(createConnectedEvent());
         listener.pvChanged(createDisconnectedEvent());
         listener.pvChanged(createConnectedEvent());
+        
+        listener.close();
+        assertThat(listener.getErrorMessage(), nullValue());
+        assertThat(listener.isSuccess(), equalTo(true));
+    }
+    
+    @Test
+    public void matchValues1() throws Exception {
+        VDouble value1 = newVDouble(3.14);
+        VString value2 = newVString("Test", alarmNone(), timeNow());
+        PVReaderTestListener<Object> listener = PVReaderTestListener.matchValues(newVDouble(3.14, newTime(value1.getTimestamp())),
+                newVString("Test", alarmNone(), newTime(value2.getTimestamp())));
+        listener.pvChanged(createValueEvent(value1));
+        listener.pvChanged(createValueEvent(value2));
         
         listener.close();
         assertThat(listener.getErrorMessage(), nullValue());
