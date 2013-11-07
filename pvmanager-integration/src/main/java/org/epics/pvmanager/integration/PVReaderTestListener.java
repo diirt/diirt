@@ -107,14 +107,20 @@ public abstract class PVReaderTestListener<T> implements PVReaderListener<T> {
                     } else {
                         Object actualValue = event.getPvReader().getValue();
                         Object expectedValue = values[nextCall];
-                        if (VTypeValueEquals.typeEquals(actualValue, expectedValue) &&
-                                VTypeValueEquals.valueEquals(actualValue, expectedValue) &&
-                                VTypeValueEquals.alarmEquals(ValueUtil.alarmOf(actualValue), ValueUtil.alarmOf(expectedValue)) &&
-                                VTypeValueEquals.timeEquals(ValueUtil.timeOf(actualValue), ValueUtil.timeOf(expectedValue))) {
-                            nextCall++;
-                        } else {
+                        if (!VTypeValueEquals.typeEquals(actualValue, expectedValue)) {
                             success = false;
-                            message = "Value notification " + nextCall + " mismatch: was " + actualValue + " (expected " + expectedValue + ")";
+                            message = "Value notification " + nextCall + " TYPE mismatch: was " + actualValue + " (expected " + expectedValue + ")";
+                        } else if (!VTypeValueEquals.valueEquals(actualValue, expectedValue)) {
+                            success = false;
+                            message = "Value notification " + nextCall + " VALUE mismatch: was " + actualValue + " (expected " + expectedValue + ")";
+                        } else if (!VTypeValueEquals.alarmEquals(ValueUtil.alarmOf(actualValue), ValueUtil.alarmOf(expectedValue))) {
+                            success = false;
+                            message = "Value notification " + nextCall + " ALARM mismatch: was " + actualValue + " (expected " + expectedValue + ")";
+                        } else if (!VTypeValueEquals.timeEquals(ValueUtil.timeOf(actualValue), ValueUtil.timeOf(expectedValue))) {
+                            success = false;
+                            message = "Value notification " + nextCall + " TIME mismatch: was " + actualValue + " (expected " + expectedValue + ")";
+                        } else {
+                            nextCall++;
                         }
                     }
                 }
