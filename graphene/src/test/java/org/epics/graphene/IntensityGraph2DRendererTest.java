@@ -6,7 +6,9 @@ package org.epics.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -58,5 +60,120 @@ public class IntensityGraph2DRendererTest {
      */    
     @Test
     public void test1() throws Exception {
+        double listOfData [] = new double[10*10];
+            for(int i = 0; i < (10*10); i++){
+                listOfData[i] = i;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 10), 10);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.1", image);
+            
+    }
+    
+    @Test
+    public void test2() throws Exception {
+        double listOfData [] = new double[640*10];
+            for(int i = 0; i < (640*10); i++){
+                listOfData[i] = 1;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 10), 10);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.2", image);
+            
+    }
+    
+    @Test
+    public void test3() throws Exception {
+        double listOfData [] = new double[640*10];
+            for(int i = 0; i < (640*10); i++){
+                listOfData[i] = i;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 10), 10);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.3", image);
+            
+    }
+    
+    @Test
+    public void test4() throws Exception {
+        double listOfData [] = new double[10*480];
+            for(int i = 0; i < (10*480); i++){
+                listOfData[i] = 1;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.4", image);
+            
+    }
+    
+    @Test
+    public void test5() throws Exception {
+        double listOfData [] = new double[10*480];
+            for(int i = 0; i < (10*480); i++){
+                listOfData[i] = i;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.5", image);
+            
+    }
+    
+    @Test
+    public void test6() throws Exception {
+        double listOfData [] = new double[640*480];
+            for(int i = 0; i < (640*480); i++){
+                listOfData[i] = 1;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.6", image);
+            
+    }
+    
+    @Test
+    public void test7() throws Exception {
+        double listOfData [] = new double[640*480];
+            for(int i = 0; i < (640*480); i++){
+                listOfData[i] = i;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.7", image);
+            
     }
 }

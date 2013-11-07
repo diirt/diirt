@@ -87,21 +87,21 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         int countY = 0;
         int countX;
-        double yPosition = yEndGraph;
-        int yPositionInt = (int)yEndGraph;
+        double yPosition = yEndGraph-yHeightTotal;
+        int yPositionInt = (int)(yEndGraph-yHeightTotal);
         while (countY < data.getYCount()){
                 countX = 0;
                 double xPosition = xStartGraph;
                 int xPositionInt = (int)xStartGraph;
                 while (countX < data.getXCount()){
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
-                    Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPositionInt, yPositionInt-(int)cellHeight, (int)cellWidth+1, (int)cellHeight+1);
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
+                    Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPositionInt, yPositionInt, (int)cellWidth+1, (int)cellHeight+1);
                     g.fill(currentRectangle);
                     xPosition = xPosition + cellWidth;
                     xPositionInt = (int)xPosition;
                     countX++;
                 }
-                yPosition = yPosition - cellHeight;
+                yPosition = yPosition + cellHeight;
                 yPositionInt = (int)yPosition;
                 countY++;
             }
@@ -113,32 +113,27 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
         
         int countY = 0;
-        int countX;
-        double yPosition = yEndGraph;
-        int yPositionInt = (int)(Math.ceil(yEndGraph));
-        while (countY < data.getYCount()-1){
+        double countX;
+        double xDataPerBox = xWidthTotal/data.getXCount();
+        double yPosition = yEndGraph-yHeightTotal;
+        int yPositionInt = (int)(yEndGraph-yHeightTotal);
+        while (countY < data.getYCount()){
                 countX = 0;
                 double xPosition = xStartGraph;
                 int xPositionInt = (int)xStartGraph;
-                while (countX < data.getXCount()-1){
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
-                    double xPositionInitial = xPosition;
-                    int xPositionInitialInt = xPositionInt;
-                    while(xPosition <= (xPositionInitialInt +1) && countX < data.getXCount()-1){
-                        xPosition += cellWidth;
-                        if(countX<data.getXCount()-1)
-                            countX+=1;
-                    }
-                    xPositionInt+=1;
+                while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
                     Rectangle2D.Double rect;
-                    if((yPositionInt-(int)cellHeight) >= (yPosition-cellHeight+1) )
-                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt-((int)cellHeight),1,(int)cellHeight+1);
+                    if((yPositionInt+((int)cellHeight)+1)-(yPosition+cellHeight) < 1)
+                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt ,1,((int)cellHeight)+1);
                     else
-                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt-((int)cellHeight),1,(int)cellHeight+1);
+                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt ,1,((int)cellHeight)+2);
                     g.fill(rect);
+                    countX+=xDataPerBox;
+                    xPositionInt+=1;   
                 }
-                yPosition = yPosition - cellHeight;
-                yPositionInt = (int)(Math.ceil(yPosition));
+                yPosition = yPosition + cellHeight;
+                yPositionInt = (int)(yPosition);
                 countY++;
             }
     }
@@ -146,29 +141,25 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
         
-        int countY;
+        double countY;
         int countX = 0;
+        double yDataPerBox = yHeightTotal/data.getYCount();
         double xPosition = xStartGraph;
         int xPositionInt = (int)xStartGraph;
-        while (countX < data.getXCount()-1){
+        while (countX < data.getXCount()){
                 countY = 0;
-                double yPosition = yEndGraph;
-                int yPositionInt = (int)yEndGraph;
-                while (countY < data.getYCount()-1){
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
-                    int yPositionInitialInt = yPositionInt;
-                    while(yPosition >= yPositionInitialInt - 1 && countY < data.getYCount()-1){
-                        yPosition-= cellHeight;
-                        if(countY<data.getYCount()-1)
-                            countY+=1;
-                    }
-                    yPositionInt-=1;
+                double yPosition = yEndGraph-yHeightTotal;
+                int yPositionInt = (int)(yEndGraph-yHeightTotal);
+                while (yPositionInt < (int)yEndGraph+1){
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-((int)countY)))));
                     Rectangle2D.Double rect;
-                    if(xPositionInt+(int)cellWidth <= xPosition+cellWidth-1)
+                    if((xPositionInt+(int)cellWidth+1)-(xPosition+cellWidth) < 1)
                         rect = new Rectangle2D.Double(xPositionInt,yPositionInt,(int)cellWidth+1,1);
                     else
-                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt,(int)cellWidth+1,1);
+                        rect = new Rectangle2D.Double(xPositionInt,yPositionInt,(int)cellWidth+2,1);
                     g.fill(rect);
+                    countY+=yDataPerBox;
+                    yPositionInt+=1;
                 }
                 xPosition = xPosition + cellWidth;
                 xPositionInt = (int)xPosition;
@@ -179,36 +170,25 @@ public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cel
 //Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
 public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
-    int countY = 0;
-    int countX;
-    int yPositionInt = (int)yEndGraph;
+    double countY = 0;
+    double countX;
+    int yPositionInt = (int)(yEndGraph-yHeightTotal);
+    double yDataPerBox = yHeightTotal/data.getYCount();
+    double xDataPerBox = xWidthTotal/data.getXCount();
     int xPositionInt;
-    double yPosition = yEndGraph;
-    double xPosition;
-    while (countY < data.getYCount()-1){
+    while (yPositionInt < (int)yEndGraph+1){
         countX = 0;
-        xPosition = xStartGraph;
         xPositionInt = (int) xStartGraph;
-        int yPositionInitialInt = yPositionInt;
-        while(yPosition >= yPositionInitialInt - 1 && countY < data.getYCount()-1){
-            yPosition-= cellHeight;
-            if(countY<data.getYCount()-1)
-                countY+=1;
-        }
-        yPositionInt-=1;
-        while (countX < data.getXCount()-1){
-            g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, countY))));
-            int xPositionInitialInt = xPositionInt;
-            while(xPosition <= xPositionInitialInt +1 && countX < data.getXCount()-1){
-                xPosition += cellWidth;
-                if(countX<data.getXCount()-1)
-                    countX++;
-            }
-            Rectangle2D.Double rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
+        while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
+            g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
+            Rectangle2D.Double rect;
+            rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
             g.fill(rect);
+            countX+=xDataPerBox;
             xPositionInt+=1;
         }
-
+        countY+=yDataPerBox;
+        yPositionInt+=1;
     }
 }
 }

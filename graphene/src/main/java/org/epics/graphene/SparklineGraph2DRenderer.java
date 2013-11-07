@@ -74,8 +74,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         drawBackground();
         
         g.setColor(Color.BLACK);        
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE); 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         
         
         //Calculates data values
@@ -86,7 +85,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Draws Line  
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
-        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);      
+        drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
+        
+        
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         //Draws a circle at the max, min, and last value
         if(drawCircles){
@@ -94,32 +97,32 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.setComposite(ac);        
             
             //Min
-            double x = scaledX(data.getXValues().getDouble(minIndex));
-            double y = scaledY(data.getYValues().getDouble(minIndex));
+            double x = Math.floor(scaledX(data.getXValues().getDouble(minIndex)))+.5;
+            double y = Math.floor(scaledY(data.getYValues().getDouble(minIndex)))+.5;
             g.setColor(minValueColor);
             Shape circle = createShape(x, y, circleDiameter);
             g.fill(circle);
             g.draw(circle);
             
             //Max
-            x = scaledX(data.getXValues().getDouble(maxIndex));
-            y = scaledY(data.getYValues().getDouble(maxIndex));
+            x = Math.floor(scaledX(data.getXValues().getDouble(maxIndex)))+.5;
+            y = Math.floor(scaledY(data.getYValues().getDouble(maxIndex)))+.5;
             g.setColor(maxValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle);
             g.draw(circle);
             
             //First
-            x = scaledX(data.getXValues().getDouble(firstIndex));
-            y = scaledY(data.getYValues().getDouble(firstIndex));
+            x = Math.floor(scaledX(data.getXValues().getDouble(firstIndex)))+.5;
+            y = Math.floor(scaledY(data.getYValues().getDouble(firstIndex)))+.5;
             g.setColor(firstValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle); 
             g.draw(circle);    
             
             //Last
-            x = scaledX(data.getXValues().getDouble(lastIndex));
-            y = scaledY(data.getYValues().getDouble(lastIndex));
+            x = Math.floor(scaledX(data.getXValues().getDouble(lastIndex)))+.5;
+            y = Math.floor(scaledY(data.getYValues().getDouble(lastIndex)))+.5;
             g.setColor(lastValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle); 
