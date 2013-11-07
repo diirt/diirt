@@ -53,4 +53,16 @@ public class VTypeValueEqualsTest {
         assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 0), 12, true), newTime(Timestamp.of(12340000, 0), 12, false)),
                 equalTo(false));
     }
+
+    @Test
+    public void typeEquals1() {
+        assertThat(VTypeValueEquals.typeEquals(newVInt(0, alarmNone(), timeNow(), displayNone()),
+                newVDouble(0.0)), equalTo(false));
+        assertThat(VTypeValueEquals.typeEquals(newVInt(0, alarmNone(), timeNow(), displayNone()),
+                newVInt(1, alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.typeEquals(newVString("Test", alarmNone(), timeNow()),
+                newVDouble(0.0)), equalTo(false));
+        assertThat(VTypeValueEquals.typeEquals(newVString("Test", alarmNone(), timeNow()),
+                newVString("A", alarmNone(), timeNow())), equalTo(true));
+    }
 }
