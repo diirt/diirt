@@ -6,14 +6,7 @@ package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Random;
 import org.epics.graphene.*;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListMath;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
-import org.epics.util.array.*;
 
 /**
  *

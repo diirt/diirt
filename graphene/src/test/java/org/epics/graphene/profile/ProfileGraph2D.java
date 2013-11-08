@@ -54,6 +54,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     //Statistics
     private int         nTries = 0;
     private StopWatch   stopWatch;
+    private Statistics  stats;
     
     
     public void profile(){        
@@ -81,24 +82,22 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     protected abstract T getRenderer(int imageWidth, int imageHeight);
     protected abstract void render(T renderer, S data);
     
-    public void printStatistics(){
+
+    public Statistics getStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
-            System.err.println("Has not been profiled.");
-            return;
+            throw new NullPointerException("Has not been profiled.");
         }
         
-        System.out.println("nTries: " + nTries + " ");
-        System.out.println("average: " + stopWatch.getAverageMs() + " ms");
-        System.out.println("total: " + stopWatch.getTotalMs() + " ms");  
-        
-     
+        return new Statistics(nTries, stopWatch.getAverageMs(), stopWatch.getTotalMs());
+    }
+    public void printStatistics(){
+        getStatistics().printStatistics();
     }
     public void graphStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
-            System.err.println("Has not been profiled.");
-            return;
+            throw new NullPointerException("Has not been profiled.");
         }
         
         ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
@@ -116,8 +115,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public void saveStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
-            System.err.println("Has not been profiled.");
-            return;
+            throw new NullPointerException("Has not been profiled.");
         }
         
         String results = "\"" + stopWatch.getAverageMs() + "\" ";
@@ -158,7 +156,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
-    public static Cell2DDataset  makeCell2DData (int nSamples){
+    public static Cell2DDataset makeCell2DData(int nSamples){
         double[] waveform = new double[nSamples];
         int maxValue = 1;
         
@@ -169,5 +167,19 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, 500), 500, RangeUtil.range(0, 1000), 1000);
+    }
+    public static Histogram1D makeHistogram1DData(int nSamples){
+        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
+        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
+        int maxValue = 1;
+        
+        //Creates data
+        Random rand = new Random(maxValue);                
+        for (int i = 0; i < nSamples; i++) {
+            update.addData(rand.nextGaussian());
+        }
+        dataset.update(update);
+        
+        return Histograms.createHistogram(dataset);        
     }
 }

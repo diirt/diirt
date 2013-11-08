@@ -6,65 +6,64 @@ package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import org.epics.graphene.*;
 
 /**
  *
- * @author carcassi
+ * @author asbarber
  */
-public class ProfileHistogram1D {
+public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Histogram1D>{
+    // With 1000000 samples and 1000 tries, 26 ms
+    // With 1000 samples and 100000 tries, 0.86 ms
 
-    public static void main(String[] args) {
-        // With 1000000 samples and 1000 tries, 26 ms
-        // With 1000 samples and 100000 tries, 0.86 ms
+    // After using CollectionNumber
+    // With 1000000 samples and 1000 tries, 25.4 ms
+    // With 1000 samples and 100000 tries, 0.73 ms
+
+    // After refactoring to Cell1DDataset and AreaGraph2DRenderer
+    // With 1000000 samples and 1000 tries, 13.5 ms
+    // with 1000 samples and 100000 tries, 0.57 ms
+    
+    private Point1DCircularBuffer datasetBuffer;
+    
+    
+    @Override
+    protected Histogram1D getDataset() {
+        int nSamples = 1000;
         
-        // After using CollectionNumber
-        // With 1000000 samples and 1000 tries, 25.4 ms
-        // With 1000 samples and 100000 tries, 0.73 ms
-        
-        // After refactoring to Cell1DDataset and AreaGraph2DRenderer
-        // With 1000000 samples and 1000 tries, 13.5 ms
-        // with 1000 samples and 100000 tries, 0.57 ms
-        
-        int nSamples = 1000000;
-        int nTries = 1000;
-        int imageWidth = 600;
-        int imageHeight = 400;
-        Random rand = new Random();
-                
-        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
+        datasetBuffer = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
+        int maxValue = 1;
+        
+        //Creates data
+        Random rand = new Random(maxValue);                
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
-        dataset.update(update);
+        datasetBuffer.update(update);
         
-        Histogram1D histogram = Histograms.createHistogram(dataset);
-        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(imageWidth, imageHeight);
-        
-        StopWatch stopWatch = new StopWatch(nTries);
-        
-        for (int i = 0; i < nTries; i++) {
-            stopWatch.start();
-            histogram.update(new Histogram1DUpdate().recalculateFrom(dataset));
-            BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D graphics = image.createGraphics();
-            renderer.draw(graphics, histogram);
-            stopWatch.stop();
-            
-            if (image.getRGB(0, 0) == 0) {
-                System.out.println("Black");
-            }
-        }
-        
-        System.out.println("average " + stopWatch.getAverageMs() + " ms");
-        Point1DCircularBuffer timings = new Point1DCircularBuffer(nTries);
-        timings.update(new Point1DDatasetUpdate().addData(Arrays.copyOfRange(stopWatch.getData(), 1, nTries)));
-        Histogram1D hist = Histograms.createHistogram(timings);
-        ShowResizableImage.showHistogram(hist);
+        return Histograms.createHistogram(datasetBuffer);            
     }
+
+    @Override
+    protected AreaGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
+        return new AreaGraph2DRenderer(imageWidth, imageHeight);
+    }
+
+    @Override
+    protected void render(AreaGraph2DRenderer renderer, Histogram1D data) {
+        data.update(new Histogram1DUpdate().recalculateFrom(datasetBuffer));
+        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = image.createGraphics();
+        renderer.draw(graphics, data);            
+    }
+    
+    
+    public static void main(String[] args) {
+        ProfileHistogram1D profiler = new ProfileHistogram1D();
+        profiler.profile();
+        profiler.printStatistics();
+    }
+    
 }
