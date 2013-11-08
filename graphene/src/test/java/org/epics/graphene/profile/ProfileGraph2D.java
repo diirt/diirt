@@ -4,14 +4,14 @@
  */
 package org.epics.graphene.profile;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
+import org.epics.graphene.Cell2DDataset;
+import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
@@ -19,7 +19,9 @@ import org.epics.graphene.Point1DCircularBuffer;
 import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
+import org.epics.graphene.RangeUtil;
 import org.epics.graphene.ShowResizableGraph;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
 import org.epics.util.time.TimeDuration;
@@ -28,8 +30,6 @@ import org.epics.util.time.Timestamp;
 /**
  *
  * @author asbarber
- * @author jkfeng
- * @author sjdallst
  */
 public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public ProfileGraph2D(){
@@ -39,6 +39,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         this.maxTries = maxTries;
         this.testTimeSec = testTimeSec;
     }
+    
     
     private static final String LOG_FILENAME = "graphene\\src\\test\\resources\\org\\epics\\graphene\\log.txt";
     
@@ -156,5 +157,17 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
+    }
+    public static Cell2DDataset  makeCell2DData (int nSamples){
+        double[] waveform = new double[nSamples];
+        int maxValue = 1;
+        
+        //Creates data
+        Random rand = new Random(maxValue);        
+        for (int i = 0; i < nSamples; i++){
+            waveform[i] = rand.nextGaussian();
+        }
+        
+        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, 500), 500, RangeUtil.range(0, 1000), 1000);
     }
 }

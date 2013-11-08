@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2012 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
+ */
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
@@ -8,14 +12,15 @@ import org.epics.graphene.SparklineGraph2DRendererUpdate;
 
 /**
  *
- * @author Aaron
+ * @author asbarber
  */
-public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer, Point2DDataset> {
+public class ProfileSparkline2DGraph extends ProfileGraph2D<SparklineGraph2DRenderer, Point2DDataset> {
     
     @Override
     protected Point2DDataset getDataset() {
         return ProfileGraph2D.makePoint2DData(1000);
     }
+    
     @Override
     protected SparklineGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(imageWidth, imageHeight);
@@ -24,15 +29,16 @@ public class ProfileTest extends ProfileGraph2D<SparklineGraph2DRenderer, Point2
         return renderer;
     }
     @Override
-    protected void render(SparklineGraph2DRenderer renderer, Point2DDataset dataset) {
+    
+    protected void render(SparklineGraph2DRenderer renderer, Point2DDataset data) {
         BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = image.createGraphics();
-        renderer.draw(graphics, dataset);    
+        renderer.draw(graphics, data);    
     }
 
 
     public static void main(String[] args){
-        ProfileTest profiler = new ProfileTest();
+        ProfileSparkline2DGraph profiler = new ProfileSparkline2DGraph();
         profiler.profile();
         profiler.printStatistics();
     }    
