@@ -25,31 +25,13 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         PVManager.setDefaultDataSource(new JCADataSource());
         
-        PVReaderTestListener<Object> listener = PVReaderTestListener.matchConnections(true);
-        PVReaderTestListener<Object> valueListener = PVReaderTestListener.matchValues(newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
-        
-        PVReader<Object> pvReader = PVManager.read(channel("passive_double"))
-                .readListener(new PVReaderListener<Object>() {
+        PVReaderTestCase<Object> test = PVReaderTestCase.newTest(PVManager.read(channel("passive_double")));
+        test.addListener(PVReaderTestListener.matchConnections(true));
+        test.addListener(PVReaderTestListener.matchValues(newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone())));
+        test.start(TimeDuration.ofSeconds(1));
+        test.await();
 
-            @Override
-            public void pvChanged(PVReaderEvent<Object> event) {
-                System.out.println(event.getPvReader().getValue());
-            }
-        }).readListener(listener).readListener(valueListener).maxRate(TimeDuration.ofHertz(50));
-        
-        Thread.sleep(1000);
-       
-        pvReader.close();
-        listener.close();
-        valueListener.close();
-        
-        if (!valueListener.isSuccess()) {
-            System.out.println(valueListener.getErrorMessage());
-        }
-        
-        if (!listener.isSuccess()) {
-            System.out.println(listener.getErrorMessage());
-        }
+        test.printErrors();
         
         Thread.sleep(100);
         
