@@ -16,9 +16,10 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     //Parameters that can be updated
     private Color   minValueColor, maxValueColor, lastValueColor;               //Circle colors
     private Integer circleDiameter;                                             //Circle size
-    private Boolean drawCircles;                                                //Option to not draw circles
+    private Boolean drawCircles,                                                //Option to not draw circles
+                    useAspectRatio;                                             //Option to use an Aspect Ratio   
     private InterpolationScheme interpolation;                                  //Data interpolation
-    
+    private Double aspectRatio;                                                 //x:y ratio
     /**
      * Sets the parameter of the color of the minimum value circle.
      * @param color Color for the minimum value circle
@@ -85,6 +86,15 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
         return self();
     }    
     
+    public SparklineGraph2DRendererUpdate useAspectRatio(boolean decision){
+        useAspectRatio = decision;
+        return self();
+    }
+    
+    public SparklineGraph2DRendererUpdate aspectRatio(double ratio){
+        aspectRatio = ratio;
+        return self();
+    }
     /**
      * Gets the color of the circle drawn for a minimum value in the data set.
      * @return Color of the circle at the minimum
@@ -133,4 +143,11 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
         return interpolation;
     }    
     
+    public Boolean getUseAspectRatio(){
+        return useAspectRatio;
+    }
+    
+    public Double getAspectRatio(){
+        return aspectRatio;
+    }
 }

@@ -33,12 +33,13 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     //Parameters
-    private int     circleDiameter = 5;
+    private int     circleDiameter = 3;
     private Color   minValueColor = new Color(28, 160, 232),
                     maxValueColor = new Color(28, 160, 232),
                     firstValueColor = new Color(223, 59, 73),            
                     lastValueColor = new Color(223, 59, 73);
-    private boolean drawCircles = true;
+    private boolean drawCircles = true,
+                    useAspectRatio = true;
     
     //Min, Max, Last Values and Indices
     private int     maxIndex, 
@@ -48,13 +49,14 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private double  maxValueY = -1, 
                     minValueY = -1,
                     firstValueY = -1,
-                    lastValueY = -1;    
+                    lastValueY = -1,
+                    aspectRatio = 5;    
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
-    private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
 
     
     //DRAWING FUNCTIONS
@@ -73,10 +75,29 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateGraphArea();
         drawBackground();
         
+        //Make room to draw full circles on all edges of the graph.
+        if(drawCircles){
+            xPlotCoordEnd-=(circleDiameter/2.0);
+            xPlotCoordStart+=(circleDiameter/2.0);
+            yPlotCoordEnd-=(circleDiameter/2.0);
+            yPlotCoordStart+=(circleDiameter/2.0);
+        }
+        
+        //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
+        //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
+        if(useAspectRatio){
+            double yMiddleOfGraph = yPlotCoordEnd-(yPlotCoordHeight/2);
+            yPlotCoordEnd = yMiddleOfGraph+(Math.floor(xPlotCoordWidth/aspectRatio/2)+.5);
+            yPlotCoordStart = yMiddleOfGraph-(Math.floor(xPlotCoordWidth/aspectRatio/2)+.5);
+        }
+        
+        //Throw an error if the aspect ratio would cause the graph to be drawn out of bounds.
+        if(yPlotCoordEnd > yAreaCoordEnd || yPlotCoordEnd < yAreaCoordStart){
+            throw new IllegalArgumentException("Aspect Ratio is too small.");
+        }
+       
         g.setColor(Color.BLACK);        
-
-        
-        
+  
         //Calculates data values
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
@@ -89,7 +110,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         //Draws a circle at the max, min, and last value
         if(drawCircles){
@@ -142,6 +162,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
         return circle;
     } 
+    
     
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
@@ -196,7 +217,13 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
         if (update.getInterpolation() != null) {
             interpolation = update.getInterpolation();
-        }        
+        } 
+        if (update.getUseAspectRatio() != null){
+            useAspectRatio = update.getUseAspectRatio();
+        }
+        if (update.getAspectRatio() != null){
+            aspectRatio = update.getAspectRatio();
+        }
     }
     
     /**
@@ -305,5 +332,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     
     public int getCircleDiameter(){
         return circleDiameter;
+    }
+    public double getAspectRatio(){
+        return aspectRatio;
+    }
+    public boolean getUseAspectRatio(){
+        return useAspectRatio;
     }
 }
