@@ -37,26 +37,12 @@ public class Main2 {
             @Override
             public void verify(Log log) {
                 log.matchConnections("passive_double", true);
+                log.matchValues("passive_double", newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
                 log.matchConnections("passive_double.NAME", true);
+                log.matchValues("passive_double.NAME", newVString("passive_double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
             }
         };
         
-//        PVReaderTestCase<Object> test = PVReaderTestCase.newTest();
-//        test.addListener(PVReaderTestListener.matchConnections(true));
-//        test.addListener(PVReaderTestListener.matchValues(newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone())));
-//        test.start(TimeDuration.ofSeconds(1));
-//        
-//        PVReaderTestCase<Object> test2 = PVReaderTestCase.newTest(PVManager.read(channel("passive_double.NAME")));
-//        test2.addListener(PVReaderTestListener.matchConnections(true));
-//        test2.addListener(PVReaderTestListener.matchValues(newVString("passive_double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false))));
-//        test2.start(TimeDuration.ofSeconds(1));
-//        
-//        test.await();
-//        test2.await();
-//
-//        test.printErrors();
-//        test2.printErrors();
-
         phase1.execute();
         
         Thread.sleep(100);

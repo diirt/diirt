@@ -11,6 +11,8 @@ import java.util.List;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.VTypeValueEquals;
+import org.epics.vtype.ValueUtil;
 
 /**
  *
@@ -57,10 +59,39 @@ public class Log {
             }
         }
         if (current > connectionFlags.length) {
-            errors.add(pvName + ": more connection ("  + current + ") notification than expected ("  + connectionFlags.length + ")");
+            errors.add(pvName + ": more connection notification ("  + current + ") than expected ("  + connectionFlags.length + ")");
         }
         if (current < connectionFlags.length) {
-            errors.add(pvName + ": fewer connection ("  + current + ") notification than expected (" + connectionFlags.length + ")");
+            errors.add(pvName + ": fewer connection notification ("  + current + ") than expected (" + connectionFlags.length + ")");
+        }
+    }
+    
+    public void matchValues(String pvName, Object... values) {
+        int current = 0;
+        for (Event event : events) {
+            if (event instanceof ReadEvent && event.getPvName().equals(pvName)) {
+                ReadEvent readEvent = (ReadEvent) event;
+                if (readEvent.getEvent().isValueChanged()) {
+                    Object actualValue = readEvent.getValue();
+                    Object expectedValue = values[current];
+                    if (!VTypeValueEquals.typeEquals(actualValue, expectedValue)) {
+                        errors.add(pvName + ": value notification " + current + " TYPE mismatch: was " + actualValue + " (expected " + expectedValue + ")");
+                    } else if (!VTypeValueEquals.valueEquals(actualValue, expectedValue)) {
+                        errors.add(pvName + ": value notification " + current + " VALUE mismatch: was " + actualValue + " (expected " + expectedValue + ")");
+                    } else if (!VTypeValueEquals.alarmEquals(ValueUtil.alarmOf(actualValue), ValueUtil.alarmOf(expectedValue))) {
+                        errors.add(pvName + ": value notification " + current + " ALARM mismatch: was " + actualValue + " (expected " + expectedValue + ")");
+                    } else if (!VTypeValueEquals.timeEquals(ValueUtil.timeOf(actualValue), ValueUtil.timeOf(expectedValue))) {
+                        errors.add(pvName + ": value notification " + current + " TIME mismatch: was " + actualValue + " (expected " + expectedValue + ")");
+                    }
+                    current++;
+                }
+            }
+        }
+        if (current > values.length) {
+            errors.add(pvName + ": more value notification ("  + current + ") than expected ("  + values.length + ")");
+        }
+        if (current < values.length) {
+            errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
         }
     }
 }
