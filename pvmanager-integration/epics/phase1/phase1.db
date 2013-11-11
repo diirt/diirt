@@ -1,0 +1,19 @@
+record(calcout, "double-counter") {
+  field(PINI, "RUNNING")
+  field(INPA, "double-counter.VAL NPP")
+  field(CALC, "A+1")
+  field(ODLY, "0.01")
+  field(OUT , "double-counter.PROC CA")
+}
+
+record(ai, "const-double") {
+  field(DESC, "Double value")
+  field(EGU, "m")
+  field(HOPR, 1)
+  field(LOPR, -1)
+  field(HIHI, 0.8)
+  field(HIGH, 0.6)
+  field(LOW, -0.6)
+  field(LOLO, -0.8)
+  field(VAL, 0.13)
+}
