@@ -38,10 +38,13 @@ public abstract class TestPhase {
         }
         verify(phaseLog);
         if (!phaseLog.isCorrect()) {
+            System.out.println("Errors:");
             for (String error : phaseLog.getErrors()) {
                 System.out.println(error);
             }
+            System.out.println("Log:");
+            phaseLog.print(System.out);
         }
     }
-
+    
 }

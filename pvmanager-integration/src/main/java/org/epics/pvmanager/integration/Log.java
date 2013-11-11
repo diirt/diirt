@@ -5,12 +5,15 @@
 
 package org.epics.pvmanager.integration;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.Timestamp;
+import org.epics.util.time.TimestampFormat;
 import org.epics.vtype.VTypeValueEquals;
 import org.epics.vtype.ValueUtil;
 
@@ -93,5 +96,31 @@ public class Log {
         if (current < values.length) {
             errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
         }
+    }
+    
+    TimestampFormat format = new TimestampFormat("ss.NNNNNNNNN");
+    
+    public void print(PrintStream out) {
+        for (Event event : events) {
+            if (event instanceof ReadEvent) {
+                ReadEvent readEvent = (ReadEvent) event;
+                out.append(format.format(readEvent.getTimestamp()))
+                        .append(" R ").append(readEvent.getPvName());
+                if (readEvent.isConnected()) {
+                    out.append(" CONN ");
+                } else {
+                    out.append(" DISC ");
+                }
+                out.append(Objects.toString(readEvent.getValue()));
+                if (readEvent.getLastException() != null) {
+                    out.append(" ").append(readEvent.getLastException().getClass().getName())
+                            .append(":").append(readEvent.getLastException().getMessage());
+                } else {
+                    out.append(" NoException");
+                }
+            }
+            out.append("\n");
+        }
+        out.flush();
     }
 }
