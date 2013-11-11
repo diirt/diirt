@@ -1,0 +1,5 @@
+GraphTitle,Date,AverageTime,TotalTime,NumberOfTries,NumberOfDataPoints,Message
+"Histogram1D","2013/11/10 21:46:06","2.021733719047137 ms","13712 ms","9781","1000","",
+"LineGraph2D","2013/11/10 21:46:26","11.998136542016812 ms","19106 ms","1666","1000","",
+"ScatterGraph2D","2013/11/10 21:46:46","2.6691290458188655 ms","17195 ms","7486","1000","",
+"SparklineGraph2D","2013/11/10 21:47:06","7.502284959474675 ms","18779 ms","2665","1000","",

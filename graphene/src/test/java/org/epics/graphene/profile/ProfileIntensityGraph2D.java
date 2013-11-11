@@ -31,7 +31,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
 
     @Override
     protected Cell2DDataset getDataset() {
-        return ProfileGraph2D.makeCell2DData(1000);
+        return ProfileGraph2D.makeCell2DData(getNumDataPoints());
     }
 
     @Override
@@ -49,10 +49,16 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         renderer.draw(graphics, data);        
     }
     
+    @Override
+    public String getGraphTitle() {
+        return "IntensityGraph2D";
+    }
+    
     
     public static void main(String[] args){
         ProfileIntensityGraph2D profiler = new ProfileIntensityGraph2D();
         profiler.profile();
-        profiler.printStatistics();        
+        profiler.printStatistics();   
+        profiler.saveStatistics();
     }    
 }

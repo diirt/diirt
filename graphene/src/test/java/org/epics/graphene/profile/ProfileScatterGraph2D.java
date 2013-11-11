@@ -12,11 +12,11 @@ import org.epics.graphene.*;
  *
  * @author asbarber
  */
-public class ProfileScatter2DGraph extends ProfileGraph2D<ScatterGraph2DRenderer, Point2DDataset>{
+public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer, Point2DDataset>{
 
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(1000);
+        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
     }
 
     @Override
@@ -31,10 +31,16 @@ public class ProfileScatter2DGraph extends ProfileGraph2D<ScatterGraph2DRenderer
         renderer.draw(graphics, data);
     }
     
+    @Override
+    public String getGraphTitle() {
+        return "ScatterGraph2D";
+    }
+    
     
     public static void main(String[] args){
-        ProfileScatter2DGraph profiler = new ProfileScatter2DGraph();
+        ProfileScatterGraph2D profiler = new ProfileScatterGraph2D();
         profiler.profile();
         profiler.printStatistics();
+        profiler.saveStatistics();        
     }    
 }

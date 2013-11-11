@@ -17,8 +17,8 @@ import org.epics.graphene.*;
  *
  * @author carcassi
  */
-public class ProfileLockHistogram1D1 extends ProfileHistogram1D{
-    public ProfileLockHistogram1D1(){
+public class ProfileLockHistogram1D extends ProfileHistogram1D{
+    public ProfileLockHistogram1D(){
         initDatasets();
     }
     private void initDatasets(){
@@ -39,7 +39,7 @@ public class ProfileLockHistogram1D1 extends ProfileHistogram1D{
     private static int nThreads = 4;
     
     //Dataset of each profiler
-    private final int nSamples = 1000;
+    private final int nSamples = getNumDataPoints();
     private final Point1DCircularBuffer datasetBuffer = new Point1DCircularBuffer(nSamples);
     private Histogram1D dataset;    
     
@@ -56,6 +56,10 @@ public class ProfileLockHistogram1D1 extends ProfileHistogram1D{
         }
     }
     
+    @Override
+    public String getGraphTitle() {
+        return "LockHistogram1D";
+    } 
     
     public static void main(String[] args) {
 

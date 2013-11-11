@@ -14,11 +14,11 @@ import org.epics.graphene.SparklineGraph2DRendererUpdate;
  *
  * @author asbarber
  */
-public class ProfileSparkline2DGraph extends ProfileGraph2D<SparklineGraph2DRenderer, Point2DDataset> {
+public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRenderer, Point2DDataset> {
     
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(1000);
+        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
     }
     
     @Override
@@ -36,10 +36,15 @@ public class ProfileSparkline2DGraph extends ProfileGraph2D<SparklineGraph2DRend
         renderer.draw(graphics, data);    
     }
 
+    @Override
+    public String getGraphTitle() {
+        return "SparklineGraph2D";
+    }    
 
     public static void main(String[] args){
-        ProfileSparkline2DGraph profiler = new ProfileSparkline2DGraph();
+        ProfileSparklineGraph2D profiler = new ProfileSparklineGraph2D();
         profiler.profile();
         profiler.printStatistics();
+        profiler.saveStatistics();
     }    
 }

@@ -56,7 +56,7 @@ public class SparklineGraph2DRendererTest {
      *      <li>There exists more than one min value</li>
      * </ul>
      * 
-     * @throws Exception Test fails
+     * @throws Exception test fails
      */    
     @Test
     public void test1() throws Exception {
@@ -90,7 +90,7 @@ public class SparklineGraph2DRendererTest {
      *      <li>There exists more than one max value</li>
      * </ul>
      * 
-     * @throws Exception Test fails
+     * @throws Exception test fails
      */        
     @Test
     public void test2() throws Exception {
@@ -125,7 +125,7 @@ public class SparklineGraph2DRendererTest {
      *      <li>There exists more than one min value</li>
      * </ul>
      * 
-     * @throws Exception Test fails
+     * @throws Exception test fails
      */    
     @Test
     public void test3() throws Exception {
@@ -157,7 +157,7 @@ public class SparklineGraph2DRendererTest {
      *      <li>There exists more than one min value</li>
      * </ul>
      * 
-     * @throws Exception Test fails
+     * @throws Exception test fails
      */   
     @Test
     public void test4() throws Exception {
@@ -187,4 +187,65 @@ public class SparklineGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.4", image);        
     }
+    
+    /**
+     * Tests data that is similar to a general Sparkline graph.
+     * The general shape is slopes shifting up and down for small line segments.
+     * 
+     * This test uses an aspect-ratio similar to a general Sparkline graph.
+     * This general aspect-ratio is a 5:1 (width:height).
+     * 
+     * @throws Exception test fails
+     */
+    @Test
+    public void test5() throws Exception {
+        double[] initialDataX = new double[200];
+        
+            int index = 0;
+            for (int m = 1; index < 200; m++){
+                for (int i = 0; i < m * 5; i++){
+                    if (index < 200){
+                        initialDataX[index] = m + i; 
+                        index++;
+                    }
+                }
+            }
+            
+        //Creates a sparkline graph
+        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        BufferedImage image = new BufferedImage(100, 25, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,25);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.5", image);          
+    }
+    
+    /**
+     * Tests case where a maximum circle (blue) and last value circle (red)
+     * are close to the same pixel point and overlap.
+     * 
+     * @throws Exception test fails
+     */
+    @Test
+    public void test6() throws Exception {
+        double[] initialDataX = new double[100];
+        
+            for (int x = 0; x < 98; x++){
+                initialDataX[x] = 90;
+            }
+            initialDataX[98] = 100;
+            initialDataX[99] = 99;
+
+        //Creates a sparkline graph
+        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        BufferedImage image = new BufferedImage(100, 25, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,25);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.6", image);          
+    }    
 }

@@ -30,10 +30,10 @@ public class Statistics {
     }
     
     public void printStatistics(){
-        String[] components = this.toString().split(",");
+        String[] components = this.toString().split(", ");
         
         for (String part: components){
-            System.out.println(components);
+            System.out.println(part);
         }
     }
     

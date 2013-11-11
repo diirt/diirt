@@ -5,10 +5,12 @@
 package org.epics.graphene.profile;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.Cell2DDatasets;
@@ -41,7 +43,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     }
     
     
-    private static final String LOG_FILENAME = "graphene\\src\\test\\resources\\org\\epics\\graphene\\log.txt";
+    public static final String LOG_FILENAME = "src\\test\\resources\\org\\epics\\graphene\\log.csv";
     
     //Profile Parameters (Customizable)
     private int maxTries    = 1000000,
@@ -53,9 +55,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     //Statistics
     private int         nTries = 0;
-    private StopWatch   stopWatch;
-    private Statistics  stats;
-    
+    private StopWatch   stopWatch;    
     
     public void profile(){        
         //Timing
@@ -82,7 +82,6 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     protected abstract T getRenderer(int imageWidth, int imageHeight);
     protected abstract void render(T renderer, S data);
     
-
     public Statistics getStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
@@ -113,13 +112,28 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         ShowResizableGraph.showLineGraph(averagedLine);           
     }
     public void saveStatistics(){
+        saveStatistics("");
+    }
+    public void saveStatistics(String message){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
             throw new NullPointerException("Has not been profiled.");
         }
         
-        String results = "\"" + stopWatch.getAverageMs() + "\" ";
+        //Format output string:
+        //"graphType","date","average time","total time","number of tries","numDataPoints","message",
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
+        String quote = "\"";
+        String results = quote + getGraphTitle() + quote + "," +
+                         quote + dateFormat.format(new Date()) + quote + "," +
+                         quote + stopWatch.getAverageMs() + " ms" + quote + "," +
+                         quote + stopWatch.getTotalMs() + " ms" + quote + "," +
+                         quote + nTries + quote + "," +
+                         quote + getNumDataPoints() + quote + "," +
+                         quote + message + quote + ",";
+        
+        //Write to file
         try {
             try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(LOG_FILENAME, true)))) {
                 out.println(results);
@@ -129,6 +143,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             System.err.println("Output errors exist.");
         }
     }
+    
+    public int getNumDataPoints(){
+        return 1000;
+    }
+    public abstract String getGraphTitle();
     
     public static Point1DDataset makePoint1DData(int nSamples){        
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
