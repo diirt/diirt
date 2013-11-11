@@ -105,7 +105,17 @@ public class Log {
             if (event instanceof ReadEvent) {
                 ReadEvent readEvent = (ReadEvent) event;
                 out.append(format.format(readEvent.getTimestamp()))
-                        .append(" R ").append(readEvent.getPvName());
+                        .append(" R(");
+                if (readEvent.getEvent().isConnectionChanged()) {
+                    out.append("C");
+                }
+                if (readEvent.getEvent().isValueChanged()) {
+                    out.append("V");
+                }
+                if (readEvent.getEvent().isExceptionChanged()) {
+                    out.append("E");
+                }
+                out.append(") ").append(readEvent.getPvName());
                 if (readEvent.isConnected()) {
                     out.append(" CONN ");
                 } else {
