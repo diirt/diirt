@@ -29,17 +29,17 @@ public class Main2 {
 
             @Override
             public void run() throws Exception{
-                addReader(PVManager.read(channel("passive_double")), TimeDuration.ofHertz(50));
-                addReader(PVManager.read(channel("passive_double.NAME")), TimeDuration.ofHertz(50));
+                addReader(PVManager.read(channel("const-double")), TimeDuration.ofHertz(50));
+                addReader(PVManager.read(channel("const-double.NAME")), TimeDuration.ofHertz(50));
                 Thread.sleep(1000);
             }
 
             @Override
             public void verify(Log log) {
-                log.matchConnections("passive_double", true);
-                log.matchValues("passive_double", newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
-                log.matchConnections("passive_double.NAME", true);
-                log.matchValues("passive_double.NAME", newVString("passive_double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
+                log.matchConnections("const-double", true);
+                log.matchValues("const-double", newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
+                log.matchConnections("const-double.NAME", true);
+                log.matchValues("const-double.NAME", newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
             }
         };
         
