@@ -36,8 +36,14 @@ public abstract class TestPhase {
         } catch (Exception ex) {
             Logger.getLogger(TestPhase.class.getName()).log(Level.SEVERE, null, ex);
         }
-        verify(phaseLog);
-        if (!phaseLog.isCorrect()) {
+        boolean verifyFailed = false;
+        try {
+            verify(phaseLog);
+        } catch (Exception ex) {
+            System.out.println("Verify failed: " + ex.getMessage());
+            verifyFailed = true;
+        }
+        if (!phaseLog.isCorrect() || verifyFailed) {
             System.out.println("Errors:");
             for (String error : phaseLog.getErrors()) {
                 System.out.println(error);
