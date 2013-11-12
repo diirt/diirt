@@ -46,7 +46,7 @@ public class Main2 {
                 log.matchValues("const-double.NAME", newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("const-double.SCAN", true);
                 log.matchValues("const-double.SCAN", newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
-                log.matchConnections("double-counter-1Hz", false);
+                log.matchConnections("double-counter-1Hz", true);
             }
         };
         
