@@ -1,5 +1,9 @@
 #!/bin/bash
-[ "$#" -eq 2 ] || echo "Usage: $0 <interface> <seconds>"; echo "    $0 eth0 30"; exit 1
+if [ ! "$#" -eq 2 ]; then
+  echo "Usage: $0 <interface> <seconds>"
+  echo "    $0 eth0 30"
+  exit 1
+fi
 
 ETHINT=$1
 SEC=$2
