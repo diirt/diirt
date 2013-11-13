@@ -26,7 +26,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
 
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(1000);
+        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
     }
 
     @Override
@@ -44,9 +44,15 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
         renderer.draw(graphics, data);  
     }
     
+    @Override
+    public String getGraphTitle() {
+        return "LineGraph2D";
+    }
+    
     public static void main(String[] args){
         ProfileLineGraph2D profiler = new ProfileLineGraph2D();
         profiler.profile();
         profiler.printStatistics();
+        profiler.saveStatistics();        
     }     
 }

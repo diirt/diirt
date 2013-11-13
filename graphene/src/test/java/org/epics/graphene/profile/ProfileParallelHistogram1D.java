@@ -35,7 +35,7 @@ public class ProfileParallelHistogram1D extends ProfileHistogram1D{
     private static int nThreads = 4;
     
     //Dataset of each profiler
-    private final int nSamples = 1000;
+    private final int nSamples = getNumDataPoints();
     private final Point1DCircularBuffer datasetBuffer = new Point1DCircularBuffer(nSamples);
     private Histogram1D dataset;    
     
@@ -45,6 +45,11 @@ public class ProfileParallelHistogram1D extends ProfileHistogram1D{
       return dataset;
     }
 
+    @Override
+    public String getGraphTitle() {
+        return "ParallelHistogram1D";
+    }
+    
     public static void main(String[] args) {
 
         ExecutorService executor = Executors.newFixedThreadPool(nThreads);

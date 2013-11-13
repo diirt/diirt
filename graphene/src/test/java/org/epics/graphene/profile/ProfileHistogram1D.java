@@ -30,7 +30,7 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     
     @Override
     protected Histogram1D getDataset() {
-        int nSamples = 1000;
+        int nSamples = getNumDataPoints();
         
         datasetBuffer = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
@@ -59,11 +59,19 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
         renderer.draw(graphics, data);            
     }
     
+    @Override
+    public String getGraphTitle() {
+        return "Histogram1D";
+    }
+    
     
     public static void main(String[] args) {
         ProfileHistogram1D profiler = new ProfileHistogram1D();
         profiler.profile();
         profiler.printStatistics();
+        profiler.saveStatistics();
     }
+
+
     
 }
