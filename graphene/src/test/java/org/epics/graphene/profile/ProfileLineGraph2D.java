@@ -26,7 +26,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
 
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
+        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
     }
 
     @Override
@@ -38,9 +38,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
     }
 
     @Override
-    protected void render(LineGraph2DRenderer renderer, Point2DDataset data) {
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = image.createGraphics();
+    protected void render(Graphics2D graphics, LineGraph2DRenderer renderer, Point2DDataset data) {
         renderer.draw(graphics, data);  
     }
     

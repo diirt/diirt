@@ -52,10 +52,8 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     }
 
     @Override
-    protected void render(AreaGraph2DRenderer renderer, Histogram1D data) {
+    protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Histogram1D data) {
         data.update(new Histogram1DUpdate().recalculateFrom(datasetBuffer));
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = image.createGraphics();
         renderer.draw(graphics, data);            
     }
     

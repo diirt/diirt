@@ -4,7 +4,10 @@
  */
 package org.epics.graphene.profile;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +15,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Graph2DRenderer;
@@ -42,21 +47,6 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         this.testTimeSec = testTimeSec;
     }
     
-    
-    public static final String LOG_FILENAME = "src\\test\\resources\\org\\epics\\graphene\\log.csv";
-    
-    //Profile Parameters (Customizable)
-    private int maxTries    = 1000000,
-                testTimeSec = 20;
-    
-    //Pofile Parameters (Uncustomizable)
-    private int imageWidth  = 600,
-                imageHeight = 400;
-    
-    //Statistics
-    private int         nTries = 0;
-    private StopWatch   stopWatch;    
-    
     public void profile(){        
         //Timing
         Timestamp start = Timestamp.now();
@@ -68,20 +58,66 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         //Data and Render Objects (Implemented in subclasses)
         S data = getDataset();
         T renderer = getRenderer(imageWidth, imageHeight);
-
+        
+        //Creates the image buffer if parameter says to set it ouside of render loop
+        BufferedImage image = null;
+        Graphics2D graphics = null;
+        if (!bufferInLoop){
+            image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            graphics = image.createGraphics();
+        }
+        
         //Trials
         while (end.compareTo(Timestamp.now()) >= 0) {
             nTries++;
             stopWatch.start();
-            render(renderer, data);
+            
+                //Create Image if necessary
+                if (bufferInLoop){
+                    image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);                    
+                    graphics = image.createGraphics();
+                }
+                
+                //Subclass render
+                render(graphics, renderer, data);
+            
             stopWatch.stop();
+            
+            //Buffer clears
+            if (image != null && image.getRGB(0, 0) == 0){
+                System.out.println("Black");
+            }
         }
-    }
+    }    
+    
+    public static final String LOG_FILEPATH = "ProfileResults\\";
+    
+    //Profile Parameters (Customizable)
+    private int maxTries    = 1000000,
+                testTimeSec = 20;
+    
+    private int nPoints = 1000;
+    private boolean bufferInLoop = false;
+    
+    //Pofile Parameters (Uncustomizable)
+    private int imageWidth  = 600,
+                imageHeight = 400;
+    
+    //Statistics
+    private int         nTries = 0;
+    private StopWatch   stopWatch;    
+    
+    //Save Parameters
+    private String datasetMessage = "",
+                   saveMessage = "";
+    
       
+    //During-Profile Sections
     protected abstract S getDataset();
     protected abstract T getRenderer(int imageWidth, int imageHeight);
-    protected abstract void render(T renderer, S data);
+    protected abstract void render(Graphics2D graphics, T renderer, S data);
     
+    //Post-Profile Options
     public Statistics getStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
@@ -112,31 +148,35 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         ShowResizableGraph.showLineGraph(averagedLine);           
     }
     public void saveStatistics(){
-        saveStatistics("");
-    }
-    public void saveStatistics(String message){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
             throw new NullPointerException("Has not been profiled.");
         }
         
         //Format output string:
-        //"graphType","date","average time","total time","number of tries","numDataPoints","dataComment","message",
+        //"graphType","date","average time","total time","number of tries","numDataPoints","datasetComment","message",
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
         String quote = "\"";
-        String results = quote + getGraphTitle() + quote + "," +
-                         quote + dateFormat.format(new Date()) + quote + "," +
-                         quote + stopWatch.getAverageMs() + " ms" + quote + "," +
-                         quote + stopWatch.getTotalMs() + " ms" + quote + "," +
-                         quote + nTries + quote + "," +
-                         quote + getNumDataPoints() + quote + "," +
-                         quote + getDataPointMessage() + quote + "," +
-                         quote + message + quote + ",";
+        String delim = " ";
+        String results = quote + getGraphTitle() + quote + delim +
+                         quote + dateFormat.format(new Date()) + quote + delim +
+                                 stopWatch.getAverageMs() + delim +
+                                 stopWatch.getTotalMs() + delim +
+                                 nTries + delim +
+                                 getNumDataPoints() + delim +
+                         quote + getDatasetMessage() + quote + delim +
+                         quote + getSaveMessage() + quote + delim;
+        
+        //Ensures file is created
+        File outputFile = new File(LOG_FILEPATH + getLogFileName());
+        if (!outputFile.exists()){
+            createLog();
+        }
         
         //Write to file
         try {
-            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(LOG_FILENAME, true)))) {
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
                 out.println(results);
                 out.close();
             }
@@ -144,16 +184,95 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             System.err.println("Output errors exist.");
         }
     }
-    
-    public int getNumDataPoints(){
-        return 1000;
+    private void createLog(){
+        File outputFile = new File(LOG_FILEPATH + getLogFileName());
+        
+        //Creates file
+        try {
+            outputFile.createNewFile();
+        } catch (IOException ex) {
+            System.err.println("Output errors exist.");
+        }
+        
+        //Header
+        String quote = "\"";
+        String delim = " ";
+        String header = quote + "Graph Type" + quote + delim +
+                        quote + "Date" + quote + delim +
+                        quote + "Average Time (ms)" + quote + delim +
+                        quote + "Total Time (ms)" + quote + delim +
+                        quote + "Number of Tries" + quote + delim +
+                        quote + "Number of Data Points" + quote + delim +
+                        quote + "Datatset Comments" + quote + delim +
+                        quote + "General Message" + quote + delim;
+        
+        //Write to file
+        try {
+            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
+                out.println(header);
+                out.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Output errors exist.");
+        }    
     }
+    
+    //Save Parameter Getters
     public abstract String getGraphTitle();
-    public String getDataPointMessage(){
-        return "";
+    public String getLogFileName(){
+        return getGraphTitle() + ".csv";
+    }
+    public String getDatasetMessage(){
+        return datasetMessage;
+    }
+    public String getSaveMessage(){
+        return saveMessage;
     }
     
-    public static Point1DDataset makePoint1DData(int nSamples){        
+    //Save Parameter Setters
+    public void setDatasetMessage(String message){
+        this.datasetMessage = message;
+    }
+    public void setSaveMessage(String message){
+        this.saveMessage = message;
+    }
+    
+    //Test Parameter Getters
+    public int getNumDataPoints(){
+        return nPoints;
+    }    
+    public int getImageWidth(){
+        return imageWidth;
+    }
+    public int getImageHeight(){
+        return imageHeight;
+    }
+    public int getMaxTries(){
+        return maxTries;
+    }
+    public int getTestTime(){
+        return testTimeSec;
+    }
+    
+    //Test Parameter Setters
+    public void setNumDataPoints(int nPoints){
+        this.nPoints = nPoints;
+    }
+    public void setImageWidth(int imageWidth){
+        this.imageWidth = imageWidth;
+    }   
+    public void setImageHeight(int imageHeight){
+        this.imageHeight = imageHeight;
+    }
+    public void setMaxTries(int maxTries){
+        this.maxTries = maxTries;
+    }
+    public void setTestTime(int testTimeSec){
+        this.testTimeSec = testTimeSec;
+    }
+    
+    //Dataset Generators
+    public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
         int maxValue = 1;
@@ -167,7 +286,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return dataset;
     }
-    public static Point2DDataset makePoint2DData(int nSamples){
+    public static Point2DDataset makePoint2DGaussianRandomData(int nSamples){
         double[] waveform = new double[nSamples];
         int maxValue = 1;
         
@@ -179,7 +298,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
-    public static Cell2DDataset makeCell2DData(int xSamples, int ySamples){
+    public static Cell2DDataset makeCell2DGaussianRandomData(int xSamples, int ySamples){
         int nSamples = xSamples * ySamples;
         double[] waveform = new double[nSamples];
         int maxValue = 1;
@@ -192,7 +311,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
     }
-    public static Histogram1D makeHistogram1DData(int nSamples){
+    public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
         int maxValue = 1;

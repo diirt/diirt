@@ -5,10 +5,7 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.epics.graphene.*;
@@ -50,9 +47,9 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
     }
     
     @Override
-    public void render(AreaGraph2DRenderer renderer, Histogram1D data){
+    public void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Histogram1D data){
         synchronized(datasetBuffer){
-            super.render(renderer, data);
+            super.render(graphics, renderer, data);
         }
     }
     
