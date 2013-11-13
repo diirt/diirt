@@ -11,7 +11,7 @@ package org.epics.graphene.profile;
 public class ProfileAll {
     public static void main(String[] args){
         ProfileHistogram1D.main(null);
-        //ProfileIntensityGraph2D.main(null);
+        ProfileIntensityGraph2D.main(null);
         ProfileLineGraph2D.main(null);
         //ProfileLockHistogram1D.main(null);      //Does not save statistics
         //ProfileParallelHistogram1D.main(null);  //Does not save statistics

@@ -121,7 +121,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Format output string:
-        //"graphType","date","average time","total time","number of tries","numDataPoints","message",
+        //"graphType","date","average time","total time","number of tries","numDataPoints","dataComment","message",
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
         String quote = "\"";
@@ -131,6 +131,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                          quote + stopWatch.getTotalMs() + " ms" + quote + "," +
                          quote + nTries + quote + "," +
                          quote + getNumDataPoints() + quote + "," +
+                         quote + getDataPointMessage() + quote + "," +
                          quote + message + quote + ",";
         
         //Write to file
@@ -148,6 +149,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return 1000;
     }
     public abstract String getGraphTitle();
+    public String getDataPointMessage(){
+        return "";
+    }
     
     public static Point1DDataset makePoint1DData(int nSamples){        
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
@@ -175,7 +179,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
-    public static Cell2DDataset makeCell2DData(int nSamples){
+    public static Cell2DDataset makeCell2DData(int xSamples, int ySamples){
+        int nSamples = xSamples * ySamples;
         double[] waveform = new double[nSamples];
         int maxValue = 1;
         
@@ -185,7 +190,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             waveform[i] = rand.nextGaussian();
         }
         
-        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, 500), 500, RangeUtil.range(0, 1000), 1000);
+        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
     }
     public static Histogram1D makeHistogram1DData(int nSamples){
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
