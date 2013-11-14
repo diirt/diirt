@@ -323,6 +323,7 @@ public class SparklineGraph2DRendererTest {
     }
     
     //Tests the case of multiple draws with aspect ratio.
+    //XXX no idea why the image from this test is so strange.
     @Test
     public void test9() throws Exception {
         double[] initialDataX = new double[200];
