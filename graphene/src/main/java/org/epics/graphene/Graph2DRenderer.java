@@ -549,6 +549,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     protected void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation) {
         ReductionScheme reductionScheme = ReductionScheme.NONE;
+        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         ScaledData scaledData;
         
@@ -590,6 +593,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction) {
         ScaledData scaledData;
+        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         // Narrow the data
         int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
@@ -653,7 +659,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
-        int end = scaledData.end;        Path2D.Double line = new Path2D.Double();
+        int end = scaledData.end;
+        Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[start], scaledY[start]);
         for (int i = 1; i < end; i++) {
             line.lineTo(scaledX[i], scaledY[i]);

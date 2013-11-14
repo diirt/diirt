@@ -6,6 +6,7 @@ package org.epics.graphene;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.Arrays;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
@@ -111,6 +112,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
             if (highlightFocusValue) {
                 g.setColor(new Color(0, 0, 0, 128));
                 int x = (int) scaledX(xValues.getDouble(currentIndex));
+                g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
                 g.drawLine(x, yAreaCoordStart, x, yAreaCoordEnd - 1);
             }
         } else {
