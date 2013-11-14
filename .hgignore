@@ -3,3 +3,5 @@ syntax: glob
 *.failed.png
 *~
 ~*
+*.orig
+Thumbs.db
