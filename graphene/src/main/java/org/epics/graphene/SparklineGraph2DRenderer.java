@@ -38,8 +38,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     maxValueColor = new Color(28, 160, 232),
                     firstValueColor = new Color(223, 59, 73),            
                     lastValueColor = new Color(223, 59, 73);
-    private boolean drawCircles = true,
-                    useAspectRatio = true;
+    private boolean drawCircles = true;
     
     //Min, Max, Last Values and Indices
     private int     maxIndex, 
@@ -49,8 +48,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private double  maxValueY = -1, 
                     minValueY = -1,
                     firstValueY = -1,
-                    lastValueY = -1,
-                    aspectRatio = 5;    
+                    lastValueY = -1;
+    private Double  aspectRatio = null,
+                    numDataPoints = null;
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -73,33 +73,28 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         if(drawCircles){
-            leftAreaMargin+=(2);
-            rightAreaMargin+=(2);
-            bottomAreaMargin+=(2);
-            topAreaMargin+=(2);
+            setCircleMargins();
+        }
+
+        if(numDataPoints != null){
+            if(aspectRatio != null){
+                aspectRatio *= (1+((data.getCount()-numDataPoints))/numDataPoints);
+            }
         }
         
+        numDataPoints = (double)data.getCount();
         //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
         //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
         //TODO: make better tests for this (ones that test when aspect ratio causes y to go out of range), make aspectRatio change with a lessening of points. 
-        if(useAspectRatio){
-            int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
-            double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
-            while(newMargin < 2){
-                xPlotCoordWidthCopy-=2;
-                newMargin = (int)((super.getImageHeight()-bottomMargin-topMargin-(xPlotCoordWidthCopy/aspectRatio))/2);
-            }
-            leftAreaMargin+= (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2;
-            rightAreaMargin+= (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2;
-            bottomAreaMargin = newMargin;
-            topAreaMargin = newMargin;
+        if(aspectRatio != null){
+            adjustGraphToAspectRatio();
         }
-        
+        //System.out.println("left: "+leftAreaMargin+"right: "+rightAreaMargin+"bot: "+bottomAreaMargin+"top: "+topAreaMargin);
         //General Rendering
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
         drawBackground();
-       
+        //System.out.println("xEnd: "+xPlotCoordEnd);
         g.setColor(Color.BLACK);        
   
         //Calculates data values
@@ -150,7 +145,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             g.setColor(lastValueColor);
             circle = createShape(x, y, circleDiameter);
             g.fill(circle); 
-            g.draw(circle);            
+            g.draw(circle); 
+            ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F);
+            g.setComposite(ac);
         }
     }
     
@@ -222,9 +219,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if (update.getInterpolation() != null) {
             interpolation = update.getInterpolation();
         } 
-        if (update.getUseAspectRatio() != null){
-            useAspectRatio = update.getUseAspectRatio();
-        }
         if (update.getAspectRatio() != null){
             aspectRatio = update.getAspectRatio();
         }
@@ -340,7 +334,22 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public double getAspectRatio(){
         return aspectRatio;
     }
-    public boolean getUseAspectRatio(){
-        return useAspectRatio;
+    private void setCircleMargins(){
+        leftAreaMargin=(2);
+        rightAreaMargin=(2);
+        bottomAreaMargin=(2);
+        topAreaMargin=(2);
+    }
+    private void adjustGraphToAspectRatio(){
+        int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
+        double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
+        while(newMargin < 2){
+            xPlotCoordWidthCopy-=2;
+            newMargin = (int)((super.getImageHeight()-bottomMargin-topMargin-(xPlotCoordWidthCopy/aspectRatio))/2);
+        }
+        leftAreaMargin = (int)(2+ (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2);
+        rightAreaMargin = (int)(2+(super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2);
+        bottomAreaMargin = newMargin;
+        topAreaMargin = newMargin;
     }
 }
