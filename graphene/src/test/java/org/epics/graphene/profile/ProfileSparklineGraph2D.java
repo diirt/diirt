@@ -18,7 +18,7 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
     
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
+        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
     }
     
     @Override
@@ -29,10 +29,7 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
         return renderer;
     }
     @Override
-    
-    protected void render(SparklineGraph2DRenderer renderer, Point2DDataset data) {
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = image.createGraphics();
+    protected void render(Graphics2D graphics, SparklineGraph2DRenderer renderer, Point2DDataset data) {
         renderer.draw(graphics, data);    
     }
 

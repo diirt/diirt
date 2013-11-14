@@ -30,8 +30,24 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     */
 
     @Override
+    public int getNumDataPoints(){
+        return getNumXDataPoints() * getNumYDataPoints();
+    }
+    
+    public int getNumXDataPoints(){
+        return 100;
+    }
+    public int getNumYDataPoints(){
+        return 100;
+    }
+    
+    public void setDatasetMessage(){
+        super.setDatasetMessage(getNumXDataPoints() + "x" + getNumYDataPoints());
+    }
+    
+    @Override
     protected Cell2DDataset getDataset() {
-        return ProfileGraph2D.makeCell2DData(getNumDataPoints());
+        return ProfileGraph2D.makeCell2DGaussianRandomData(getNumXDataPoints(), getNumYDataPoints());
     }
 
     @Override
@@ -43,9 +59,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     }
 
     @Override
-    protected void render(IntensityGraph2DRenderer renderer, Cell2DDataset data) {
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = image.createGraphics();
+    protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data) {
         renderer.draw(graphics, data);        
     }
     
@@ -58,7 +72,8 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     public static void main(String[] args){
         ProfileIntensityGraph2D profiler = new ProfileIntensityGraph2D();
         profiler.profile();
-        profiler.printStatistics();   
+        profiler.printStatistics();  
+        profiler.setDatasetMessage();
         profiler.saveStatistics();
     }    
 }

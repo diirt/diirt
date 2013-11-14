@@ -16,7 +16,7 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
 
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DData(getNumDataPoints());
+        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
     }
 
     @Override
@@ -25,9 +25,7 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
     }
 
     @Override
-    protected void render(ScatterGraph2DRenderer renderer, Point2DDataset data) {
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = image.createGraphics();
+    protected void render(Graphics2D graphics, ScatterGraph2DRenderer renderer, Point2DDataset data) {
         renderer.draw(graphics, data);
     }
     

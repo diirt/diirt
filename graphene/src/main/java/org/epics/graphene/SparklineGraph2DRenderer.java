@@ -70,31 +70,35 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        //General Rendering
-        calculateRanges(data.getXStatistics(), data.getYStatistics());
-        calculateGraphArea();
-        drawBackground();
         
-        //Make room to draw full circles on all edges of the graph.
+        
         if(drawCircles){
-            xPlotCoordEnd-=(circleDiameter/2.0);
-            xPlotCoordStart+=(circleDiameter/2.0);
-            yPlotCoordEnd-=(circleDiameter/2.0);
-            yPlotCoordStart+=(circleDiameter/2.0);
+            leftAreaMargin+=(2);
+            rightAreaMargin+=(2);
+            bottomAreaMargin+=(2);
+            topAreaMargin+=(2);
         }
         
         //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
         //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
+        //TODO: make better tests for this (ones that test when aspect ratio causes y to go out of range), make aspectRatio change with a lessening of points. 
         if(useAspectRatio){
-            double yMiddleOfGraph = yPlotCoordEnd-(yPlotCoordHeight/2);
-            yPlotCoordEnd = yMiddleOfGraph+(Math.floor(xPlotCoordWidth/aspectRatio/2)+.5);
-            yPlotCoordStart = yMiddleOfGraph-(Math.floor(xPlotCoordWidth/aspectRatio/2)+.5);
+            int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
+            double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
+            while(newMargin < 2){
+                xPlotCoordWidthCopy-=2;
+                newMargin = (int)((super.getImageHeight()-bottomMargin-topMargin-(xPlotCoordWidthCopy/aspectRatio))/2);
+            }
+            leftAreaMargin+= (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2;
+            rightAreaMargin+= (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2;
+            bottomAreaMargin = newMargin;
+            topAreaMargin = newMargin;
         }
         
-        //Throw an error if the aspect ratio would cause the graph to be drawn out of bounds.
-        if(yPlotCoordEnd > yAreaCoordEnd || yPlotCoordEnd < yAreaCoordStart){
-            throw new IllegalArgumentException("Aspect Ratio is too small.");
-        }
+        //General Rendering
+        calculateRanges(data.getXStatistics(), data.getYStatistics());
+        calculateGraphArea();
+        drawBackground();
        
         g.setColor(Color.BLACK);        
   
