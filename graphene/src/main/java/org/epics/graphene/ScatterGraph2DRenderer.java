@@ -53,7 +53,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
         ListNumber xValues = data.getXValues();
         ListNumber yValues = data.getYValues();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         setClip(g);
         g.setColor(Color.BLACK);
         for (int i = 0; i < xValues.size(); i++) {
