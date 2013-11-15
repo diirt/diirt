@@ -28,11 +28,16 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void update(IntensityGraph2DRendererUpdate update) {
         super.update(update);    
     }
-
+    
+    private int legendWidth = 10;
+    private boolean drawLegend = false;
     //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
+        if(drawLegend){
+            rightMargin = 2+legendWidth+5;
+        }
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
