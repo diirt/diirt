@@ -17,7 +17,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     private Double startY;
     private Double endY;
     
-    private Boolean rangeFromDataset;
+    private Boolean rangeFromDataset,
+                    drawLegend;
     
     public IntensityGraph2DRendererUpdate startX(double startX) {
         this.startX = startX;
@@ -41,6 +42,11 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
     public IntensityGraph2DRendererUpdate rangeFromDataset(boolean rangeFromDataset) {
         this.rangeFromDataset = rangeFromDataset;
+        return self();
+    }
+    
+    public IntensityGraph2DRendererUpdate drawLegend(boolean drawLegend) {
+        this.drawLegend = drawLegend;
         return self();
     }
     
@@ -71,6 +77,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
 
     public Boolean isRangeFromDataset() {
         return rangeFromDataset;
+    }
+    
+    public Boolean getDrawLegend() {
+        return drawLegend;
     }
     
 }

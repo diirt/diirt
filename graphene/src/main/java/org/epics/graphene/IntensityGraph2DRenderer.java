@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.math.*;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.array.*;
 /**
  *
  * @author carcassi
@@ -26,17 +28,22 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
       
     public void update(IntensityGraph2DRendererUpdate update) {
-        super.update(update);    
+        super.update(update);
+        if(update.getDrawLegend() != null){
+            drawLegend = update.getDrawLegend();
+        }
     }
     
-    private int legendWidth = 10;
+    private int legendWidth = 10,
+                legendMarginToGraph = 10,
+                legendMarginToEdge = 7;
     private boolean drawLegend = false;
     //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
         if(drawLegend){
-            rightMargin = 2+legendWidth+5;
+            rightMargin = legendMarginToEdge+legendWidth+legendMarginToGraph+1;
         }
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
@@ -79,6 +86,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
             }
             
+        }
+        //Draw a legend, given the current data set.
+        //TODO: find a way to add in labels. Preferably using methods from Graph2DRenderer (Looking at them, I don't think that's going to be possible though.)
+        if(drawLegend){
+            ListNumber dataList = ListNumbers.linearListFromRange(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue(), (int)yHeightTotal);
+            Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
+            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1,1,1, legendWidth);
         }
     }
     
