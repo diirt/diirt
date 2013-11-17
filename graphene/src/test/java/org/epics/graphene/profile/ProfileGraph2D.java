@@ -47,6 +47,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         this.testTimeSec = testTimeSec;
     }
     
+    
     public void profile(){        
         //Timing
         Timestamp start = Timestamp.now();
@@ -90,6 +91,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
     }    
     
+    
     public static final String LOG_FILEPATH = "ProfileResults\\";
     
     //Profile Parameters (Customizable)
@@ -127,6 +129,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return new Statistics(nTries, stopWatch.getAverageMs(), stopWatch.getTotalMs());
     }
     public void printStatistics(){
+        System.out.println(getGraphTitle());
         getStatistics().printStatistics();
     }
     public void graphStatistics(){
@@ -186,12 +189,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     }
     private void createLog(){
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
-        
-        //Creates file
         try {
+            //Creates file
             outputFile.createNewFile();
         } catch (IOException ex) {
-            System.err.println("Output errors exist.");
+            Logger.getLogger(ProfileGraph2D.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //Header
@@ -253,6 +255,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public int getTestTime(){
         return testTimeSec;
     }
+    public boolean getBufferInLoop(){
+        return this.bufferInLoop;
+    }
     
     //Test Parameter Setters
     public void setNumDataPoints(int nPoints){
@@ -269,6 +274,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     }
     public void setTestTime(int testTimeSec){
         this.testTimeSec = testTimeSec;
+    }
+    public void setBufferInLoop(boolean bufferInLoop){
+        this.bufferInLoop = bufferInLoop;
     }
     
     //Dataset Generators

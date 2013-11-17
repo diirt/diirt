@@ -16,6 +16,7 @@ import org.epics.util.array.SortedListView;
  * @author asbarber
  * @author jkfeng
  * @author sjdallst
+ * 
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
 
@@ -111,6 +112,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         //Draws a circle at the max, min, and last value
+        //FIXME: Potential problems arise when circles overlap with transparency
         if(drawCircles){
             AlphaComposite ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7F);
             g.setComposite(ac);        

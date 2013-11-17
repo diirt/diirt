@@ -5,7 +5,6 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.SparklineGraph2DRenderer;
 import org.epics.graphene.SparklineGraph2DRendererUpdate;
