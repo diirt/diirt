@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.math.*;
+import java.util.Arrays;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
 /**
@@ -52,6 +53,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         drawGraphArea();
         
         //Set color scheme
+        
+        //TODO: Incorporate a mechanism for choosing a color scheme.
         colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
 
         double xStartGraph = super.xPlotCoordStart;
@@ -90,9 +93,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Draw a legend, given the current data set.
         //TODO: find a way to add in labels. Preferably using methods from Graph2DRenderer (Looking at them, I don't think that's going to be possible though.)
         if(drawLegend){
+            Range zRange = RangeUtil.range(0, (int)yHeightTotal);
             ListNumber dataList = ListNumbers.linearListFromRange(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue(), (int)yHeightTotal);
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1,1,1, legendWidth);
+            //calculateRanges(legendData.getXRange(), RangeUtil.range(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue()));
+            //calculateLabels();
+            //calculateGraphArea();
+            //xAreaCoordStart = getImageWidth();
+            //drawYLabels();
         }
     }
     
@@ -210,4 +219,12 @@ public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme,
         yPositionInt+=1;
     }
 }
+
+/*
+private void calculateLabelsLegend(Range zRange){
+    ValueScale zValueScale = ValueScales.linearScale();
+    ValueAxis yAxis = zValueScale.references(zRange, 2, Math.max(2, getImageHeight() / 60));
+    yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
+    yReferenceValues = new ArrayDouble(yAxis.getTickValues()); 
+}*/
 }
