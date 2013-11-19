@@ -4,31 +4,23 @@
  */
 package org.epics.pvmanager.formula;
 
-import java.util.ArrayList;
-import static org.epics.vtype.ValueFactory.alarmNone;
-import static org.epics.vtype.ValueFactory.displayNone;
-import static org.epics.vtype.ValueFactory.newVDouble;
-import static org.epics.vtype.ValueFactory.newVDoubleArray;
-import static org.epics.vtype.ValueFactory.newVNumber;
-import static org.epics.vtype.ValueFactory.newVString;
-import static org.epics.vtype.ValueFactory.newVStringArray;
-import static org.epics.vtype.ValueFactory.timeNow;
+import static org.epics.vtype.ValueFactory.*;
 
 import java.util.Arrays;
-import java.util.List;
 import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
+import org.epics.util.time.Timestamp;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.ValueFactory;
-import static org.epics.vtype.ValueFactory.newVDoubleArray;
-import static org.epics.vtype.ValueFactory.newVNumber;
-import static org.epics.vtype.ValueFactory.timeNow;
 import org.epics.vtype.table.ListNumberProvider;
 import org.epics.vtype.table.VTableFactory;
 import org.junit.Test;
@@ -129,13 +121,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     @Test
     public void elementAtArray1() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
+        Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Time time = newTime(Timestamp.of(16548379, 0));
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarm, time, displayNone());
 	VNumber index = newVNumber(5, alarmNone(), timeNow(), displayNone());
 	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
         
         FunctionTester.findBySignature(set, "elementAt", VNumberArray.class, VNumber.class)
                 .compareReturnValue(expected, array, index)
                 .compareReturnValue(null, array, null)
-                .compareReturnValue(null, null, index);
+                .compareReturnValue(null, null, index)
+                .compareReturnAlarm(alarmNone(), array, index)
+                .compareReturnAlarm(alarm, array2, index)
+                .compareReturnTime(time, array2, index);
     }
     
     @Test

@@ -81,7 +81,7 @@ public class ElementAtArrayFormulaFunction implements FormulaFunction {
         }
 	int i = index.getValue().intValue();	
 	return newVNumber(numberArray.getData().getDouble(i),
-		alarmNone(), timeNow(), displayNone());
+		numberArray, numberArray, displayNone());
     }
 
 }
