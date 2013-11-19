@@ -115,7 +115,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void subArray(){
+    public void subArray() {
 	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	ListDouble expectedData = new ArrayDouble(2, 3, 4);
 	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
@@ -127,27 +127,27 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray1(){	
-	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+    public void elementAtArray1() {
+        VNumberArray array = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
+	VNumber index = newVNumber(5, alarmNone(), timeNow(), displayNone());
 	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
-	
-	testFunction(set, "elementAt", expected,
-		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
-		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+        
+        FunctionTester.findBySignature(set, "elementAt", VNumberArray.class, VNumber.class)
+                .compareReturnValue(expected, array, index);
     }
     
     @Test
-    public void elementAtArray2(){	
-        List<String> data = Arrays.asList("A", "B", "C", "D", "E");
+    public void elementAtArray2() {
+        VStringArray array = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow());
+	VNumber index = newVNumber(2, alarmNone(), timeNow(), displayNone());
 	VString expected = newVString("C", alarmNone(),timeNow());
-	
-	testFunction(set, "elementAt", expected,
-		newVStringArray(data, alarmNone(), timeNow()),
-		newVNumber(2, alarmNone(), timeNow(), displayNone()));
+        
+        FunctionTester.findBySignature(set, "elementAt", VStringArray.class, VNumber.class)
+                .compareReturnValue(expected, array, index);
     }
     
     @Test
-    public void elementAtArray3(){	
+    public void elementAtArray3() {
 	VString expected = null;
 	
 	testFunction(set, "elementAt", expected,
@@ -156,7 +156,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray4(){	
+    public void elementAtArray4() {
 	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	VNumber expected = null;
 	
@@ -166,7 +166,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray5(){	
+    public void elementAtArray5() {
         List<String> data = Arrays.asList("A", "B", "C", "D", "E");
 	VString expected = null;
 	
