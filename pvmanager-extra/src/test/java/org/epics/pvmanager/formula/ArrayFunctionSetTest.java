@@ -147,6 +147,15 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
+    public void elementAtArray3(){	
+	VString expected = null;
+	
+	testFunction(set, "elementAt", expected,
+		null,
+		newVNumber(2, alarmNone(), timeNow(), displayNone()));
+    }
+    
+    @Test
     public void arrayWithBoundaries(){
         // TODO: should test alarm, time and display
         VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), timeNow(), displayNone());
