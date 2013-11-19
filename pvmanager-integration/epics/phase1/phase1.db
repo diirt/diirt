@@ -1,9 +1,17 @@
-record(calcout, "double-counter") {
+record(calcout, "double-counter-1Hz") {
   field(PINI, "RUNNING")
-  field(INPA, "double-counter.VAL NPP")
+  field(INPA, "double-counter-1Hz.VAL NPP")
+  field(CALC, "A+1")
+  field(ODLY, "1.0")
+  field(OUT , "double-counter-1Hz.PROC CA")
+}
+
+record(calcout, "double-counter-100Hz") {
+  field(PINI, "RUNNING")
+  field(INPA, "double-counter-100Hz.VAL NPP")
   field(CALC, "A+1")
   field(ODLY, "0.01")
-  field(OUT , "double-counter.PROC CA")
+  field(OUT , "double-counter-100Hz.PROC CA")
 }
 
 record(ai, "const-double") {
