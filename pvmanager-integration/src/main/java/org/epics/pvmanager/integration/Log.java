@@ -124,6 +124,32 @@ public class Log {
             errors.add(pvName + ": repeated value occurences mismatch (" + repeatedValues + " but expected " + expectedRepeatedValues + ")");
         }
     }
+
+    void matchValueEventRate(String pvName, double rateHz, double tolerance) {
+        Timestamp initialTime = null;
+        Timestamp finalTime = null;
+        int nNotifications = 0;
+        for (Event event : events) {
+            if (pvName.equals(event.getPvName()) && event instanceof ReadEvent) {
+                ReadEvent readEvent = (ReadEvent) event;
+                Timestamp nextTime = readEvent.getTimestamp();
+                if (initialTime == null) {
+                    initialTime = nextTime;
+                } else {
+                    finalTime = nextTime;
+                    nNotifications++;
+                }
+            }
+        }
+        
+        if (initialTime != null && finalTime != null) {
+            double seconds = finalTime.durationFrom(initialTime).toSeconds();
+            double rate = nNotifications / seconds;
+            if (rate > rateHz * (1.0 + tolerance) || rate < rateHz * (1 - tolerance)) {
+                errors.add(pvName + ": event rate mismatch (" + rate + " but expected " + rateHz + ")");
+            }
+        }
+    }
     
     private <T> List<T> valuesForChannel(String pvName, Class<T> clazz) {
         List<T> values = new ArrayList<>();

@@ -40,6 +40,7 @@ public class Main2 {
                 addReader(PVManager.read(channel("const-double.NAME")), TimeDuration.ofHertz(50));
                 addReader(PVManager.read(channel("const-double.SCAN")), TimeDuration.ofHertz(50));
                 addReader(PVManager.read(channel("double-counter-1Hz")), TimeDuration.ofHertz(50));
+                addReader(PVManager.read(channel("double-counter-100Hz")), TimeDuration.ofHertz(50));
                 Thread.sleep(5000);
             }
 
@@ -53,6 +54,9 @@ public class Main2 {
                 log.matchValues("const-double.SCAN", newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("double-counter-1Hz", true);
                 log.matchSequentialNumberValues("double-counter-1Hz", 1);
+                log.matchValueEventRate("double-counter-1Hz", 1.1, 0.15);
+                log.matchConnections("double-counter-100Hz", true);
+                log.matchValueEventRate("double-counter-100Hz", 50, 0.05);
             }
         };
         

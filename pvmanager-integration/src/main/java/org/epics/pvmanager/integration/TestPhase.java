@@ -17,13 +17,19 @@ import org.epics.util.time.TimeDuration;
  * @author carcassi
  */
 public abstract class TestPhase {
-    private List<PVReader<?>> pvReaders = new CopyOnWriteArrayList<>();
-    private Log phaseLog = new Log();
-    private boolean done = false;
+    private final List<PVReader<?>> pvReaders = new CopyOnWriteArrayList<>();
+    private final Log phaseLog = new Log();
     
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createListener()).maxRate(maxRate);
+        pvReaders.add(pvReader);
         return this;
+    }
+    
+    private void closeAll() {
+        for (PVReader<?> pvReader : pvReaders) {
+            pvReader.close();
+        }
     }
     
     public abstract void run() throws Exception;
@@ -37,10 +43,12 @@ public abstract class TestPhase {
             Logger.getLogger(TestPhase.class.getName()).log(Level.SEVERE, null, ex);
         }
         boolean verifyFailed = false;
+        closeAll();
         try {
             verify(phaseLog);
         } catch (Exception ex) {
-            System.out.println("Verify failed: " + ex.getMessage());
+            System.out.println("Verify failed:");
+            ex.printStackTrace(System.out);
             verifyFailed = true;
         }
         if (!phaseLog.isCorrect() || verifyFailed) {
