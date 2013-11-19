@@ -156,6 +156,16 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
+    public void elementAtArray4(){	
+	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+	VString expected = null;
+	
+	testFunction(set, "elementAt", expected,
+		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
+		null);
+    }
+    
+    @Test
     public void arrayWithBoundaries(){
         // TODO: should test alarm, time and display
         VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), timeNow(), displayNone());
