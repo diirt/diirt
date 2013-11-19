@@ -63,7 +63,7 @@ public class ElementAtStringArrayFormulaFunction implements FormulaFunction {
         }
 	int i = index.getValue().intValue();
 	return newVString(stringArray.getData().get(i),
-		alarmNone(), timeNow());
+		stringArray, stringArray);
     }
 
 }

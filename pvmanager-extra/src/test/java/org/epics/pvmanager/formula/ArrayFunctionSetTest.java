@@ -139,13 +139,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     @Test
     public void elementAtArray2() {
         VStringArray array = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow());
+        Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Time time = newTime(Timestamp.of(16548379, 0));
+        VStringArray array2 = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarm, time);
 	VNumber index = newVNumber(2, alarmNone(), timeNow(), displayNone());
 	VString expected = newVString("C", alarmNone(),timeNow());
         
         FunctionTester.findBySignature(set, "elementAt", VStringArray.class, VNumber.class)
                 .compareReturnValue(expected, array, index)
                 .compareReturnValue(null, array, null)
-                .compareReturnValue(null, null, index);
+                .compareReturnValue(null, null, index)
+                .compareReturnAlarm(alarmNone(), array, index)
+                .compareReturnAlarm(alarm, array2, index)
+                .compareReturnTime(time, array2, index);
     }
     
     @Test
