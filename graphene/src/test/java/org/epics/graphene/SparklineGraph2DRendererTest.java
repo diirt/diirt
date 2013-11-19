@@ -355,4 +355,42 @@ public class SparklineGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.9", image);          
     }
+    
+    @Test
+    public void test10() throws Exception{
+    
+        double[] sampleData = new double[100];
+        for(int i = 0; i < 50; i++)
+            sampleData[i] = Math.pow(Math.E, i);
+        for(int i = 50; i< 100; i++)
+            sampleData[i] = Math.pow(-Math.E, i);
+      
+        Point2DDataset data = Point2DDatasets.lineData(sampleData);
+        BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
+        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
+        renderer.draw(g, data);
+        ImageAssert.compareImages("sparkline2D.10", image);
+    }
+    
+    @Test
+    public void test11() throws Exception{
+        
+        double[] sampleData = new double[10];
+        for(int i = 0; i < 10; i++){
+            if(i % 2 == 0)
+                sampleData[i] = -1.5 * i;
+            else
+                sampleData[i] = 1.5 * i;
+        }
+        Point2DDataset data = Point2DDatasets.lineData(sampleData);
+        BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
+        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
+        update.aspectRatio(5);
+        renderer.draw(g, data);
+        ImageAssert.compareImages("sparkline2D.11", image);
+    }
 }
