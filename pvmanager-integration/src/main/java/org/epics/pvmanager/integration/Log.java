@@ -14,6 +14,7 @@ import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
+import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeValueEquals;
 import org.epics.vtype.ValueUtil;
 
@@ -97,6 +98,50 @@ public class Log {
             errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
         }
     }
+    
+    public void matchSequentialNumberValues(String pvName, int expectedRepeatedValues) {
+        List<VNumber> values = valuesForChannel(pvName, VNumber.class);
+        Double currentValue = null;
+        int repeatedValues = 0;
+        for (VNumber vNumber : values) {
+            if (vNumber == null) {
+                errors.add(pvName + ": value was null");
+            } else {
+                if (currentValue == null) {
+                    currentValue = vNumber.getValue().doubleValue();
+                } else {
+                    double nextValue = vNumber.getValue().doubleValue();
+                    if (nextValue == currentValue) {
+                        repeatedValues++;
+                    } else if (nextValue != currentValue + 1) {
+                        errors.add(pvName + ": value was not sequential (" + nextValue + " after " + currentValue + ")");
+                    }
+                    currentValue = nextValue;
+                }
+            }
+        }
+        if (repeatedValues != expectedRepeatedValues) {
+            errors.add(pvName + ": repeated value occurences mismatch (" + repeatedValues + " but expected " + expectedRepeatedValues + ")");
+        }
+    }
+    
+    private <T> List<T> valuesForChannel(String pvName, Class<T> clazz) {
+        List<T> values = new ArrayList<>();
+        for (Event event : events) {
+            if (pvName.equals(event.getPvName()) && event instanceof ReadEvent) {
+                ReadEvent readEvent = (ReadEvent) event;
+                if (readEvent.getEvent().isValueChanged()) {
+                    try {
+                        T value = clazz.cast(readEvent.getValue());
+                        values.add(value);
+                    } catch(ClassCastException ex) {
+                        errors.add(pvName + ": value is not " + clazz.getSimpleName() + " (was " + readEvent.getValue() + ")");
+                    }
+                }
+            }
+        }
+        return values;
+    } 
     
     TimestampFormat format = new TimestampFormat("ss.NNNNNNNNN");
     

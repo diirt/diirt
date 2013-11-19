@@ -4,7 +4,11 @@
  */
 package org.epics.pvmanager.integration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.logging.LogManager;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
@@ -24,8 +28,9 @@ import static org.epics.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class Main2 {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(new JCADataSource());
+        //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         
         TestPhase phase1 = new TestPhase() {
 
@@ -47,6 +52,7 @@ public class Main2 {
                 log.matchConnections("const-double.SCAN", true);
                 log.matchValues("const-double.SCAN", newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("double-counter-1Hz", true);
+                log.matchSequentialNumberValues("double-counter-1Hz", 1);
             }
         };
         
