@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.ArrayList;
 import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
 import static org.epics.vtype.ValueFactory.newVDouble;
@@ -14,6 +15,7 @@ import static org.epics.vtype.ValueFactory.newVStringArray;
 import static org.epics.vtype.ValueFactory.timeNow;
 
 import java.util.Arrays;
+import java.util.List;
 import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 
 import org.epics.util.array.ArrayDouble;
@@ -125,13 +127,23 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray(){	
+    public void elementAtArray1(){	
 	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
 	
 	testFunction(set, "elementAt", expected,
 		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
 		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+    }
+    
+    @Test
+    public void elementAtArray2(){	
+        List<String> data = Arrays.asList("A", "B", "C", "D", "E");
+	VString expected = newVString("C", alarmNone(),timeNow());
+	
+	testFunction(set, "elementAt", expected,
+		newVStringArray(data, alarmNone(), timeNow()),
+		newVNumber(2, alarmNone(), timeNow(), displayNone()));
     }
     
     @Test
