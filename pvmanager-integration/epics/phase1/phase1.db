@@ -14,6 +14,10 @@ record(calcout, "double-counter-100Hz") {
   field(OUT , "double-counter-100Hz.PROC CA")
 }
 
+record(stringin, "command") {
+  field(DESC, "Command for the server script")
+}
+
 record(ai, "const-double") {
   field(DESC, "Double value")
   field(EGU, "m")
