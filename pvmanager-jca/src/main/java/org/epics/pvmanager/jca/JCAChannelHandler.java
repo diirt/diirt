@@ -22,6 +22,7 @@ import gov.aps.jca.event.MonitorEvent;
 import gov.aps.jca.event.MonitorListener;
 import gov.aps.jca.event.PutEvent;
 import gov.aps.jca.event.PutListener;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -445,13 +446,27 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             }
         };;
     
+    private String toStringDBR(DBR value) {
+        StringBuilder builder = new StringBuilder();
+        if (value.getValue() instanceof double[]) {
+            builder.append(Arrays.toString((double[]) value.getValue()));
+        } else if (value.getValue() instanceof short[]) {
+            builder.append(Arrays.toString((short[]) value.getValue()));
+        } else if (value.getValue() instanceof String[]) {
+            builder.append(Arrays.toString((String[]) value.getValue()));
+        } else {
+            builder.append(value.getValue().toString());
+        }
+        return builder.toString();
+    }
+    
     private final MonitorListener monitorListener = new MonitorListener() {
 
         @Override
         public void monitorChanged(MonitorEvent event) {
             synchronized(JCAChannelHandler.this) {
                 if (log.isLoggable(Level.FINEST)) {
-                    log.log(Level.FINEST, "JCA value monitorChanged for channel {0} event {1}", new Object[] {getChannelName(), event});
+                    log.log(Level.FINEST, "JCA value monitorChanged for channel {0} value {1}, event {2}", new Object[] {getChannelName(), toStringDBR(event.getDBR()), event});
                 }
                 
                 DBR metadata = null;
