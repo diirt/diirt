@@ -158,10 +158,20 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     @Test
     public void elementAtArray4(){	
 	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	VString expected = null;
+	VNumber expected = null;
 	
 	testFunction(set, "elementAt", expected,
 		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
+		null);
+    }
+    
+    @Test
+    public void elementAtArray5(){	
+        List<String> data = Arrays.asList("A", "B", "C", "D", "E");
+	VString expected = null;
+	
+	testFunction(set, "elementAt", expected,
+		newVStringArray(data, alarmNone(), timeNow()),
 		null);
     }
     

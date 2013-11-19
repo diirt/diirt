@@ -57,11 +57,12 @@ public class ElementAtStringArrayFormulaFunction implements FormulaFunction {
     @Override
     public Object calculate(List<Object> args) {
 	VStringArray stringArray = (VStringArray) args.get(0);
-        if (stringArray == null) {
+        VNumber index = (VNumber) args.get(1);
+        if (stringArray == null || index == null) {
             return null;
         }
-	int index = ((VNumber) args.get(1)).getValue().intValue();	
-	return newVString(stringArray.getData().get(index),
+	int i = index.getValue().intValue();
+	return newVString(stringArray.getData().get(i),
 		alarmNone(), timeNow());
     }
 
