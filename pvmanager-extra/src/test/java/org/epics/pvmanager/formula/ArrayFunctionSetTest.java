@@ -133,7 +133,9 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
         
         FunctionTester.findBySignature(set, "elementAt", VNumberArray.class, VNumber.class)
-                .compareReturnValue(expected, array, index);
+                .compareReturnValue(expected, array, index)
+                .compareReturnValue(null, array, null)
+                .compareReturnValue(null, null, index);
     }
     
     @Test
@@ -143,36 +145,9 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	VString expected = newVString("C", alarmNone(),timeNow());
         
         FunctionTester.findBySignature(set, "elementAt", VStringArray.class, VNumber.class)
-                .compareReturnValue(expected, array, index);
-    }
-    
-    @Test
-    public void elementAtArray3() {
-	VString expected = null;
-	
-	testFunction(set, "elementAt", expected,
-		null,
-		newVNumber(2, alarmNone(), timeNow(), displayNone()));
-    }
-    
-    @Test
-    public void elementAtArray4() {
-	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	VNumber expected = null;
-	
-	testFunction(set, "elementAt", expected,
-		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
-		null);
-    }
-    
-    @Test
-    public void elementAtArray5() {
-        List<String> data = Arrays.asList("A", "B", "C", "D", "E");
-	VString expected = null;
-	
-	testFunction(set, "elementAt", expected,
-		newVStringArray(data, alarmNone(), timeNow()),
-		null);
+                .compareReturnValue(expected, array, index)
+                .compareReturnValue(null, array, null)
+                .compareReturnValue(null, null, index);
     }
     
     @Test
