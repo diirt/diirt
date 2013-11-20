@@ -287,9 +287,9 @@ public class SparklineGraph2DRendererTest {
         BufferedImage image = new BufferedImage(100, 20, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,20);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
+        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
+        aspectUpdate.aspectRatio(5);
+        renderer.update(aspectUpdate);
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -326,6 +326,7 @@ public class SparklineGraph2DRendererTest {
     //XXX no idea why the image from this test is so strange.
     @Test
     public void test9() throws Exception {
+        //Primary Data
         double[] initialDataX = new double[200];
         
             int index = 0;
@@ -337,21 +338,31 @@ public class SparklineGraph2DRendererTest {
                     }
                 }
             }
-            
-        //Creates a sparkline graph
         Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+            
+        //Secondary Data
+        double[] changedData = new double[50];
+            for(int i = 0; i < 50; i++){
+                changedData[i] = initialDataX[i+100]; 
+            }
+        Point2DDataset data1 = Point2DDatasets.lineData(changedData);
+        
+        
+        //Creates image and renderer
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
+        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
+        aspectUpdate.aspectRatio(5);
+        renderer.update(aspectUpdate);
+        
+        //Draw Primary
         renderer.draw(g, data);
-        double[] changedData = new double[50];
-        for(int i = 0; i < 50; i++){
-            changedData[i] = initialDataX[i+100]; 
-        }
-        Point2DDataset data1 = Point2DDatasets.lineData(changedData);
+
+        //Draw Secondary
         renderer.draw(g,data1);
+        
+        
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.9", image);          
     }
@@ -369,7 +380,6 @@ public class SparklineGraph2DRendererTest {
         BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
         renderer.draw(g, data);
         ImageAssert.compareImages("sparkline2D.10", image);
     }
@@ -388,9 +398,45 @@ public class SparklineGraph2DRendererTest {
         BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
+        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
+        aspectUpdate.aspectRatio(5);
+        renderer.update(aspectUpdate);
         renderer.draw(g, data);
         ImageAssert.compareImages("sparkline2D.11", image);
+    }
+    
+    //Tests the case of a non-LINEAR (uses NEAREST NEIGHBOR) interpolation scheme
+    @Test
+    public void test12() throws Exception{
+        double[] initialDataX = new double[200];
+        
+            int index = 0;
+            for (int m = 1; index < 200; m++){
+                for (int i = 0; i < m * 5; i++){
+                    if (index < 200){
+                        initialDataX[index] = Math.pow(m + i, 4); 
+                        index++;
+                    }
+                }
+            }
+            
+        //Creates a sparkline graph
+        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,50);
+        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
+        update.aspectRatio(5);
+        update.interpolation(InterpolationScheme.NEAREST_NEIGHBOUR);
+        renderer.update(update);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.12", image);               
+    }
+    
+    public static void main(String[] args) throws Exception{
+        SparklineGraph2DRendererTest t = new SparklineGraph2DRendererTest();
+        t.test9();
     }
 }

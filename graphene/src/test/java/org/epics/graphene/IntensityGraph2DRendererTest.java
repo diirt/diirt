@@ -6,9 +6,7 @@ package org.epics.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
-import javax.imageio.ImageIO;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;

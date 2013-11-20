@@ -24,6 +24,16 @@ public class ValueColorSchemes {
         return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,0,255), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
     }
     
+    public static ValueColorScheme hotScale(final Range range) {
+        Color white = new Color(255, 255, 255),
+              lightYellow = new Color(255,255,33),   
+              lightOrange = new Color(255,165,0),
+              orange = new Color(255,82,0),
+              red = new Color(214,0,0),
+              darkRed = new Color(41,0,0);
+        return quintipleRangeGradient(range, white, lightYellow, lightOrange, orange, red, darkRed, Color.BLACK);
+    }
+    
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
         return new ValueColorScheme() {
 

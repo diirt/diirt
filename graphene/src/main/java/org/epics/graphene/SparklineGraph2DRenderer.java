@@ -76,7 +76,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(drawCircles){
             setCircleMargins();
         }
-
+        
         if(numDataPoints != null){
             if(aspectRatio != null){
                 aspectRatio *= (1+((data.getCount()-numDataPoints))/numDataPoints);
@@ -94,6 +94,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //General Rendering
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
+
         drawBackground();
         //System.out.println("xEnd: "+xPlotCoordEnd);
         g.setColor(Color.BLACK);        
