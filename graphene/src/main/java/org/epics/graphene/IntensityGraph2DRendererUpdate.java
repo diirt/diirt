@@ -20,6 +20,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     private Boolean rangeFromDataset,
                     drawLegend;
     
+    private ColorScheme valueColorScheme;
+    
     public IntensityGraph2DRendererUpdate startX(double startX) {
         this.startX = startX;
         return self();
@@ -55,6 +57,11 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
+    public IntensityGraph2DRendererUpdate valueColorScheme(ColorScheme scheme) {
+        this.valueColorScheme = scheme;
+        return self();
+    }
+    
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
@@ -83,4 +90,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return drawLegend;
     }
     
+    public ColorScheme getValueColorScheme() {
+        return valueColorScheme;
+    }
 }

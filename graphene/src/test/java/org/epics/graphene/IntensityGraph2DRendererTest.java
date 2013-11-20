@@ -197,4 +197,49 @@ public class IntensityGraph2DRendererTest {
             ImageAssert.compareImages("intensityGraph2D.8", image);
             
     }
+    
+    @Test
+    public void test9() throws Exception {
+        double listOfData [] = new double[640*480];
+            for(int i = 0; i < (640*480); i++){
+                if(i%1240 == 0)
+                    listOfData[i] = 0;
+                else
+                    listOfData[i] = 1;
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+            update.drawLegend(true);
+            renderer.update(update);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.9", image);
+            
+    }
+    
+    @Test
+    public void test10() throws Exception {
+        double listOfData [] = new double[640*480];
+        Random rand = new Random(0);
+            for(int i = 0; i < (640*480); i++){
+                listOfData[i] = rand.nextDouble();
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+            update.drawLegend(true);
+            update.valueColorScheme(ColorScheme.JET);
+            renderer.update(update);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.10", image);
+            
+    }
 }

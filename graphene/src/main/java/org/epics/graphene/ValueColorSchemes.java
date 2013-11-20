@@ -21,7 +21,7 @@ public class ValueColorSchemes {
     }
     
     public static ValueColorScheme jetScale(final Range range) {
-        return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
+        return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,0,255), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
     }
     
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
@@ -45,7 +45,7 @@ public class ValueColorSchemes {
         };
     }
     
-    public static ValueColorScheme quintipleRangeGradient(final Range range, final Color firstValueColor, final Color secondValueColor,final Color thirdValueColor,final Color fourthValueColor,final Color fifthValueColor, final Color nanColor) {
+    public static ValueColorScheme quintipleRangeGradient(final Range range, final Color firstValueColor, final Color secondValueColor,final Color thirdValueColor,final Color fourthValueColor,final Color fifthValueColor,final Color sixthValueColor, final Color nanColor) {
         return new ValueColorScheme() {
 
             @Override
@@ -54,14 +54,15 @@ public class ValueColorSchemes {
                     return nanColor.getRGB();
                 }
                 double firstNum = range.getMinimum().doubleValue();
-                double secondNum = (range.getMaximum().doubleValue()-range.getMinimum().doubleValue())/4;
+                double secondNum = (range.getMaximum().doubleValue()-range.getMinimum().doubleValue())/5;
                 double thirdNum = secondNum*2;
                 double fourthNum = secondNum*3;
-                double fifthNum = range.getMaximum().doubleValue();;
+                double fifthNum = secondNum*4;
+                double sixthNum = range.getMaximum().doubleValue();
                 
                 int alpha = 0, red = 0, green = 0, blue = 0;
                 if(value<secondNum){
-                    double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
+                    double normalValue = NumberUtil.normalize(value, firstNum, secondNum);
                     normalValue = Math.min(normalValue, 1.0);
                     normalValue = Math.max(normalValue, 0.0);
                     alpha = 255;
@@ -71,7 +72,7 @@ public class ValueColorSchemes {
                 }
                 
                 if(value>=secondNum && value < thirdNum){
-                    double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
+                    double normalValue = NumberUtil.normalize(value, secondNum,thirdNum);
                     normalValue = Math.min(normalValue, 1.0);
                     normalValue = Math.max(normalValue, 0.0);
                     alpha = 255;
@@ -81,7 +82,7 @@ public class ValueColorSchemes {
                 }
                 
                 if(value>=thirdNum && value < fourthNum){
-                    double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
+                    double normalValue = NumberUtil.normalize(value, thirdNum,fourthNum);
                     normalValue = Math.min(normalValue, 1.0);
                     normalValue = Math.max(normalValue, 0.0);
                     alpha = 255;
@@ -90,14 +91,23 @@ public class ValueColorSchemes {
                     blue = (int) (thirdValueColor.getBlue() + (fourthValueColor.getBlue() - thirdValueColor.getBlue()) * normalValue);  
                 }
                 
-                if(value>=fourthNum && value <= fifthNum){
-                    double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
+                if(value>=fourthNum && value < fifthNum){
+                    double normalValue = NumberUtil.normalize(value, fourthNum,fifthNum);
                     normalValue = Math.min(normalValue, 1.0);
                     normalValue = Math.max(normalValue, 0.0);
                     alpha = 255;
                     red = (int) (fourthValueColor.getRed() + (fifthValueColor.getRed() - fourthValueColor.getRed()) * normalValue);
                     green = (int) (fourthValueColor.getGreen() + (fifthValueColor.getGreen() - fourthValueColor.getGreen()) * normalValue);
                     blue = (int) (fourthValueColor.getBlue() + (fifthValueColor.getBlue() - fourthValueColor.getBlue()) * normalValue);  
+                }
+                if(value>=fifthNum && value <= sixthNum){
+                    double normalValue = NumberUtil.normalize(value, fifthNum,sixthNum);
+                    normalValue = Math.min(normalValue, 1.0);
+                    normalValue = Math.max(normalValue, 0.0);
+                    alpha = 255;
+                    red = (int) (fifthValueColor.getRed() + (sixthValueColor.getRed() - fifthValueColor.getRed()) * normalValue);
+                    green = (int) (fifthValueColor.getGreen() + (sixthValueColor.getGreen() - fifthValueColor.getGreen()) * normalValue);
+                    blue = (int) (fifthValueColor.getBlue() + (sixthValueColor.getBlue() - fifthValueColor.getBlue()) * normalValue);  
                 }
                 
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;

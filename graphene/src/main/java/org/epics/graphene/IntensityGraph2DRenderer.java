@@ -33,13 +33,18 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(update.getDrawLegend() != null){
             drawLegend = update.getDrawLegend();
         }
+        if(update.getValueColorScheme() != null){
+            valueColorScheme = update.getValueColorScheme();
+        }
     }
     
     private int legendWidth = 10,
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 7;
     private boolean drawLegend = false;
-    //Working on: Making the drawing of cells more generic / able to draw with large quantities of data.
+    
+    private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
+   
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
@@ -51,11 +56,18 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateLabels();
         calculateGraphArea();        
         drawGraphArea();
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
         
         //Set color scheme
-        
-        //TODO: Incorporate a mechanism for choosing a color scheme.
-        colorScheme = ValueColorSchemes.grayScale(data.getStatistics());
+        switch(valueColorScheme){
+            case GRAY_SCALE:
+                colorScheme = ValueColorSchemes.grayScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;
+            case JET:
+                colorScheme = ValueColorSchemes.jetScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+        }
+
 
         double xStartGraph = super.xPlotCoordStart;
         double yEndGraph = super.yPlotCoordEnd;
@@ -196,6 +208,9 @@ public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cel
     }
 //Draws for the case when there are both more x values and y values than pixels.
 //Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
+
+//NOTE: bug found, occasionally draws rectangles that are too big. Not sure why
+
 public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
     double countY = 0;
