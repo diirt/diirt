@@ -9,5 +9,5 @@ package org.epics.graphene;
  * @author sjdallst
  */
 public enum ColorScheme {
-    GRAY_SCALE,JET;
+    GRAY_SCALE,JET,HOT;
 }

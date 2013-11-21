@@ -66,6 +66,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 break;
             case JET:
                 colorScheme = ValueColorSchemes.jetScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;
+            case HOT:
+                colorScheme = ValueColorSchemes.hotScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;
         }
 
 

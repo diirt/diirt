@@ -39,13 +39,18 @@ public class ValueColorSchemes {
     }
     
     public static ValueColorScheme hotScale(final Range range) {
-        Color white = new Color(255, 255, 255),
-              lightYellow = new Color(255,255,33),   
-              lightOrange = new Color(255,165,0),
-              orange = new Color(255,82,0),
-              red = new Color(214,0,0),
-              darkRed = new Color(41,0,0);
-        return quintipleRangeGradient(range, white, lightYellow, lightOrange, orange, red, darkRed, Color.BLACK);
+        ArrayList<Color> colors = new ArrayList<Color>();
+        colors.add(new Color(30,0,0));
+        colors.add(Color.RED);
+        colors.add(Color.YELLOW);
+        colors.add(Color.WHITE);
+        colors.add(Color.BLUE);
+        ArrayList<Double> percentages = new ArrayList<Double>();
+        percentages.add(0.0);
+        for(int i = 1; i <= colors.size()-2; i++){
+            percentages.add((double)i/(colors.size()-2));
+        }
+        return RangeGradient(range, colors, percentages);
     }
     
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
