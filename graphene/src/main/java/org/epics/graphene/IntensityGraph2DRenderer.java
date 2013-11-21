@@ -5,11 +5,15 @@
 package org.epics.graphene;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.math.*;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
 /**
@@ -42,18 +46,40 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 7;
     private boolean drawLegend = false;
+    private Range zRange;
+    private Range zAggregatedRange;
+    private Range zPlotRange;
+    private AxisRange zAxisRange = AxisRanges.integrated();
+    private ValueScale zValueScale = ValueScales.linearScale();
+    protected ListDouble zReferenceCoords;
+    protected ListDouble zReferenceValues;
+    protected List<String> zReferenceLabels;
+    private int zLabelMaxWidth;
+    protected int zLabelMargin = 3;
+    
     
     private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
    
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
-        if(drawLegend){
-            rightMargin = legendMarginToEdge+legendWidth+legendMarginToGraph+1;
-        }
+       
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
+        if(drawLegend){
+            zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
+            calculateZRange(zRange);
+            calculateZLabels();
+            if (zReferenceValues != null) {
+                double[] zRefCoords = new double[zReferenceValues.size()];
+                for (int i = 0; i < zRefCoords.length; i++) {
+                    zRefCoords[i] = scaledZ(zReferenceValues.getDouble(i));
+                }
+                zReferenceCoords = new ArrayDouble(zRefCoords);
+            }
+            rightMargin = legendMarginToEdge+legendWidth+legendMarginToGraph+zLabelMaxWidth+1;    
+        }
         calculateGraphArea();        
         drawGraphArea();
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -109,15 +135,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Draw a legend, given the current data set.
         //TODO: find a way to add in labels. Preferably using methods from Graph2DRenderer (Looking at them, I don't think that's going to be possible though.)
         if(drawLegend){
-            Range zRange = RangeUtil.range(0, (int)yHeightTotal);
             ListNumber dataList = ListNumbers.linearListFromRange(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue(), (int)yHeightTotal);
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1,1,1, legendWidth);
-            //calculateRanges(legendData.getXRange(), RangeUtil.range(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue()));
-            //calculateLabels();
-            //calculateGraphArea();
-            //xAreaCoordStart = getImageWidth();
-            //drawYLabels();
+            drawZLabels();
         }
     }
     
@@ -181,7 +202,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
     }
 //Same logic as drawRectanglesSmallX, but for when there are more y values than pixels.
-public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
         
         double countY;
@@ -212,37 +233,114 @@ public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cel
 //Draws for the case when there are both more x values and y values than pixels.
 //Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
 
-//NOTE: bug found, occasionally draws rectangles that are too big. Not sure why
-
-public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
-    double countY = 0;
-    double countX;
-    int yPositionInt = (int)(yEndGraph-yHeightTotal);
-    double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
-    double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
-    int xPositionInt;
-    while (yPositionInt < (int)yEndGraph+1){
-        countX = 0;
-        xPositionInt = (int) xStartGraph;
-        while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
-            g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
-            Rectangle2D.Double rect;
-            rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
-            g.fill(rect);
-            countX+=xDataPerBox;
-            xPositionInt+=1;
+        double countY = 0;
+        double countX;
+        int yPositionInt = (int)(yEndGraph-yHeightTotal);
+        double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
+        double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
+        int xPositionInt;
+        while (yPositionInt < (int)yEndGraph+1){
+            countX = 0;
+            xPositionInt = (int) xStartGraph;
+            while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
+                g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
+                Rectangle2D.Double rect;
+                rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
+                g.fill(rect);
+                countX+=xDataPerBox;
+                xPositionInt+=1;
+            }
+            countY+=yDataPerBox;
+            yPositionInt+=1;
         }
-        countY+=yDataPerBox;
-        yPositionInt+=1;
     }
-}
 
-/*
-private void calculateLabelsLegend(Range zRange){
-    ValueScale zValueScale = ValueScales.linearScale();
-    ValueAxis yAxis = zValueScale.references(zRange, 2, Math.max(2, getImageHeight() / 60));
-    yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
-    yReferenceValues = new ArrayDouble(yAxis.getTickValues()); 
-}*/
+    protected void calculateZRange(Range zDataRange) {
+        zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
+        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
+    }
+    protected void calculateZLabels() {           
+        // Calculate z axis references. If range is zero, use special logic
+        if (!zPlotRange.getMinimum().equals(zPlotRange.getMaximum())) {
+            ValueAxis zAxis = zValueScale.references(zPlotRange, 2, Math.max(2, getImageHeight() / 60));
+            zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
+            zReferenceValues = new ArrayDouble(zAxis.getTickValues());            
+        } else {
+            // TODO: use something better to format the number
+            zReferenceLabels = Collections.singletonList(zPlotRange.getMinimum().toString());
+            zReferenceValues = new ArrayDouble(zPlotRange.getMinimum().doubleValue());            
+        }
+        
+        // Compute z axis spacing
+        int[] zLabelWidths = new int[zReferenceLabels.size()];
+        zLabelMaxWidth = 0;
+        for (int i = 0; i < zLabelWidths.length; i++) {
+            zLabelWidths[i] = labelFontMetrics.stringWidth(zReferenceLabels.get(i));
+            zLabelMaxWidth = Math.max(zLabelMaxWidth, zLabelWidths[i]);
+        }
+    }
+    protected void drawZLabels() {
+        // Draw Y labels
+        ListNumber zTicks = zReferenceCoords;
+        if (zReferenceLabels != null && !zReferenceLabels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
+            int xRightLabel = (int) (getImageWidth() - rightMargin - 1);
+            drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(0), (int) Math.floor(zTicks.getDouble(0)),
+                drawRange, xRightLabel, true, false);
+            drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(zReferenceLabels.size() - 1), (int) Math.floor(zTicks.getDouble(zReferenceLabels.size() - 1)),
+                drawRange, xRightLabel, false, false);
+            
+            for (int i = 1; i < zReferenceLabels.size() - 1; i++) {
+                drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(i), (int) Math.floor(zTicks.getDouble(i)),
+                    drawRange, xRightLabel, true, false);
+            }
+        }
+    }
+    private static int MIN = 0;
+    private static int MAX = 1;
+    private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
+        int targetY = yCenter;
+        int halfHeight = metrics.getAscent() / 2;
+        if (yCenter < drawRange[MIN] + halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
+            targetY = drawRange[MIN];
+        } else if (yCenter > drawRange[MAX] - halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+            targetY = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
+        
+        if (updateMin) {
+            drawRange[MAX] = targetY - metrics.getHeight();
+        } else {
+            drawRange[MIN] = targetY + metrics.getHeight();
+        }
+    }
+    protected final double scaledZ(double value) {
+        return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
+    }
 }

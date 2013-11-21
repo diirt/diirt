@@ -63,7 +63,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected double yPlotCoordEnd;
     protected double xPlotCoordEnd;
 
-    // The pixel size of the range (not of the plot area
+    // The pixel size of the range (not of the plot area)
     protected double yPlotCoordHeight;
     protected double xPlotCoordWidth;
     
