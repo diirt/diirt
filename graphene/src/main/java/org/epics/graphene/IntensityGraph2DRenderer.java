@@ -154,12 +154,11 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         int countY = 0;
         double countX;
-        double xDataPerBox = xWidthTotal/data.getXCount();
+        double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
         double yPosition = yEndGraph-yHeightTotal;
         int yPositionInt = (int)(yEndGraph-yHeightTotal);
         while (countY < data.getYCount()){
                 countX = 0;
-                double xPosition = xStartGraph;
                 int xPositionInt = (int)xStartGraph;
                 while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
@@ -183,7 +182,7 @@ public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cel
         
         double countY;
         int countX = 0;
-        double yDataPerBox = yHeightTotal/data.getYCount();
+        double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
         double xPosition = xStartGraph;
         int xPositionInt = (int)xStartGraph;
         while (countX < data.getXCount()){
@@ -216,8 +215,8 @@ public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme,
     double countY = 0;
     double countX;
     int yPositionInt = (int)(yEndGraph-yHeightTotal);
-    double yDataPerBox = yHeightTotal/data.getYCount();
-    double xDataPerBox = xWidthTotal/data.getXCount();
+    double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
+    double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
     int xPositionInt;
     while (yPositionInt < (int)yEndGraph+1){
         countX = 0;

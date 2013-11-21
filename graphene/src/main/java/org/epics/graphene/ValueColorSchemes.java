@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 package org.epics.graphene;
-
+import java.util.ArrayList;
 import java.awt.Color;
 
 /**
@@ -21,7 +21,21 @@ public class ValueColorSchemes {
     }
     
     public static ValueColorScheme jetScale(final Range range) {
-        return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,0,255), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
+        //return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,0,255), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
+        ArrayList<Color> colors = new ArrayList<Color>();
+        colors.add(new Color(0,0,138));
+        colors.add(Color.BLUE);
+        colors.add(Color.CYAN);
+        colors.add(Color.YELLOW);
+        colors.add(Color.RED);
+        colors.add(new Color(138,0,0));
+        colors.add(Color.BLACK);
+        ArrayList<Double> percentages = new ArrayList<Double>();
+        percentages.add(0.0);
+        for(int i = 1; i <= colors.size()-2; i++){
+            percentages.add((double)i/(colors.size()-2));
+        }
+        return RangeGradient(range,colors,percentages);
     }
     
     public static ValueColorScheme hotScale(final Range range) {
@@ -120,6 +134,33 @@ public class ValueColorSchemes {
                     blue = (int) (fifthValueColor.getBlue() + (sixthValueColor.getBlue() - fifthValueColor.getBlue()) * normalValue);  
                 }
                 
+                return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            }
+        };
+    }
+
+    public static ValueColorScheme RangeGradient(final Range range, final ArrayList<Color> colors, final ArrayList<Double> percentages){
+        return new ValueColorScheme() {
+            
+            Color nanColor = colors.get(colors.size()-1); 
+            @Override
+            public int colorFor(double value) {
+                if (Double.isNaN(value)) {
+                    return nanColor.getRGB();
+                }
+                double fullRange = range.getMaximum().doubleValue() - range.getMinimum().doubleValue();
+                int alpha = 0, red = 0, green = 0, blue = 0;
+                for(int i = 0; i < percentages.size()-1;i++){
+                    if(range.getMinimum().doubleValue()+percentages.get(i)*fullRange <= value && value <= range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange){
+                        double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue()+percentages.get(i)*fullRange, range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange);
+                        normalValue = Math.min(normalValue, 1.0);
+                        normalValue = Math.max(normalValue, 0.0);
+                        alpha = 255;
+                        red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
+                        green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
+                        blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
+                    }
+                }
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;
             }
         };
