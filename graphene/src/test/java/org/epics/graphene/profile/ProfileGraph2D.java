@@ -97,11 +97,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     //Profile Parameters (Customizable)
     private int maxTries    = 1000000,
                 testTimeSec = 20;
+    private int nPoints     = 1000;
     
-    private int nPoints = 1000;
     private boolean bufferInLoop = false;
     
-    //Pofile Parameters (Uncustomizable)
     private int imageWidth  = 600,
                 imageHeight = 400;
     

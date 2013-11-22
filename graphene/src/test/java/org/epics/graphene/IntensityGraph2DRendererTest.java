@@ -239,5 +239,5 @@ public class IntensityGraph2DRendererTest {
             
             ImageAssert.compareImages("intensityGraph2D.10", image);
             
-    }
+    }  
 }

@@ -13,6 +13,9 @@ import java.math.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static org.epics.graphene.ColorScheme.BONE;
+import static org.epics.graphene.ColorScheme.PINK;
+import static org.epics.graphene.ColorScheme.SPRING;
 import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
@@ -96,6 +99,21 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             case HOT:
                 colorScheme = ValueColorSchemes.hotScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
                 break;
+            case COOL:
+                colorScheme = ValueColorSchemes.coolScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;
+            case SPRING:
+                colorScheme = ValueColorSchemes.springScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;          
+            case BONE:
+                colorScheme = ValueColorSchemes.boneScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;   
+            case COPPER:
+                colorScheme = ValueColorSchemes.copperScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;                 
+            case PINK:
+                colorScheme = ValueColorSchemes.pinkScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
+                break;                  
         }
 
 

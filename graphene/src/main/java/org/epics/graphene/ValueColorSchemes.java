@@ -24,7 +24,7 @@ public class ValueColorSchemes {
         colors.add(Color.YELLOW);
         colors.add(Color.RED);
         colors.add(new Color(138,0,0));
-        colors.add(Color.BLACK);
+        colors.add(Color.BLACK);    //NaN
         
         return RangeGradient(range, colors, percentageRange(colors.size() - 2));
     }
@@ -35,10 +35,83 @@ public class ValueColorSchemes {
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
-        colors.add(Color.BLUE);
+        colors.add(Color.BLUE); //NaN
         
         return RangeGradient(range, colors, percentageRange(colors.size() - 2));
     }
+
+    public static ValueColorScheme coolScale(final Range range) {
+        ArrayList<Color> colors = new ArrayList<>();
+        
+        colors.add(Color.CYAN);
+        colors.add(new Color(66, 189, 255));    //Light Blue        
+        colors.add(new Color(189, 66, 255));    //Purple
+        colors.add(Color.MAGENTA);
+        
+        colors.add(Color.RED);  //NaN
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));        
+    }
+    
+    public static ValueColorScheme springScale(final Range range) {
+        ArrayList<Color> colors = new ArrayList<>();
+        
+        colors.add(Color.MAGENTA);
+        colors.add(new Color(255, 66, 189));
+        colors.add(new Color(255, 82, 173));             
+        colors.add(new Color(255, 173, 82));
+        colors.add(new Color(255, 189, 66));
+        colors.add(Color.YELLOW);
+
+        colors.add(Color.RED);  //NaN
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));        
+    }    
+    
+    public static ValueColorScheme boneScale(final Range range) {
+        ArrayList<Color> colors = new ArrayList<>();
+        
+        colors.add(Color.BLACK);
+        colors.add(new Color(44, 37, 101));     //Dark Blue
+        colors.add(new Color(107, 115, 140));   //Blue
+        colors.add(new Color(158, 203, 205));   //Pale Blue
+        colors.add(Color.WHITE);
+
+        
+        colors.add(Color.RED);  //NaN
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));        
+    }    
+    
+    public static ValueColorScheme copperScale(final Range range) {
+        ArrayList<Color> colors = new ArrayList<>();
+        
+        colors.add(Color.BLACK);
+        colors.add(new Color(66, 41, 24));      //Dark Brown
+        colors.add(new Color(173, 107, 68));    //Brown
+        colors.add(new Color(239, 148, 90));    //Light Brown
+        colors.add(new Color(255, 198, 123));   //Tan
+
+        
+        colors.add(Color.RED);  //NaN
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));        
+    }    
+    
+    public static ValueColorScheme pinkScale(final Range range) {
+        ArrayList<Color> colors = new ArrayList<>();
+        
+        colors.add(new Color(57, 0, 0));        //Dark Red
+        colors.add(new Color(189, 123, 123));   //Dark Pink
+        colors.add(new Color(214, 189, 156));   //Pale Pink
+        colors.add(Color.WHITE);
+
+        
+        colors.add(Color.RED);  //NaN
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));        
+    }    
+    
     
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
         return new ValueColorScheme() {
