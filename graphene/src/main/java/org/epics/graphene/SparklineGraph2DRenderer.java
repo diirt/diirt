@@ -31,6 +31,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         super.xLabelMargin = 0;
         super.yLabelMargin = 0; 
         
+        super.rightMargin = 0;
+        super.leftMargin = 0;
+        super.bottomMargin = 0;
+        super.topMargin = 0;
+        
         super.leftAreaMargin   = 2;
         super.rightAreaMargin  = 2;
         super.bottomAreaMargin = 2;
@@ -96,6 +101,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
 
+        g.setColor(Color.YELLOW);
         drawBackground();
         g.setColor(Color.BLACK);        
   
@@ -325,7 +331,45 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return aspectRatio;
     }
     
-    private void adjustGraphToAspectRatio(){        
+    private void adjustGraphToAspectRatio(){
+        
+        //Aspect Ratio:  W : H,  5 : 1
+        //Image  Size: 100 : 10
+        
+        int relevantHeight = super.getImageHeight() - bottomMargin - topMargin,
+            relevantWidth  = super.getImageWidth() - rightMargin - leftMargin;
+        
+        //Defaults
+        rightAreaMargin = 2;
+        leftAreaMargin = 2;
+        topAreaMargin = 2;
+        bottomAreaMargin = 2;
+            
+        //Shrink width to maintain aspect ratio
+        if (relevantHeight * aspectRatio <= relevantWidth){
+            double preferredWidth = relevantHeight * aspectRatio;
+            int marginSize = (int) (relevantWidth - preferredWidth) / 2;
+            
+            rightAreaMargin = 2 + marginSize;
+            leftAreaMargin = 2 + marginSize;
+        }
+        //Shrink height to maintain aspect ratio
+        else {
+            /*
+             * Let W be the width (constant), H be the height (adjusting this)
+             * Then the aspect ratio, R, is defined as
+             * 
+             * W / H = R
+             * thus H = W / R
+             */
+            double preferredHeight = relevantWidth / aspectRatio;
+            int marginSize = (int) (relevantHeight - preferredHeight) / 2;
+            
+            topAreaMargin = 2 + marginSize;
+            bottomAreaMargin = 2 + marginSize;
+        }
+    }
+    private void adjustGraphToAspectRatioOLD(){        
         int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
         double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
         while(newMargin < 2){

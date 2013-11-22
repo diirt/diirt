@@ -434,9 +434,4 @@ public class SparklineGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.12", image);               
     }
-    
-    public static void main(String[] args) throws Exception{
-        SparklineGraph2DRendererTest t = new SparklineGraph2DRendererTest();
-        t.test9();
-    }
 }
