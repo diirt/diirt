@@ -7,7 +7,6 @@ package org.epics.graphene;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
-import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
@@ -30,11 +29,17 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);
         super.xLabelMargin = 0;
-        super.yLabelMargin = 0;        
+        super.yLabelMargin = 0; 
+        
+        super.leftAreaMargin   = 2;
+        super.rightAreaMargin  = 2;
+        super.bottomAreaMargin = 2;
+        super.topAreaMargin    = 2;        
+        
     }
     
     //Parameters
-    private int     circleDiameter = 3;
+    private int     circleDiameter = 4;
     private Color   minValueColor = new Color(28, 160, 232),
                     maxValueColor = new Color(28, 160, 232),
                     firstValueColor = new Color(223, 59, 73),            
@@ -72,31 +77,26 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         this.g = g;
         
         
+//FIXME:  Not sure
+//        if(numDataPoints != null){
+//            if(aspectRatio != null){
+//                aspectRatio *= (1+((data.getCount()-numDataPoints))/numDataPoints);
+//            }
+//        }
+//        numDataPoints = (double)data.getCount();
         
-        if(drawCircles){
-            setCircleMargins();
-        }
-        
-        if(numDataPoints != null){
-            if(aspectRatio != null){
-                aspectRatio *= (1+((data.getCount()-numDataPoints))/numDataPoints);
-            }
-        }
-        
-        numDataPoints = (double)data.getCount();
         //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
         //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
         //TODO: make better tests for this (ones that test when aspect ratio causes y to go out of range), make aspectRatio change with a lessening of points. 
         if(aspectRatio != null){
             adjustGraphToAspectRatio();
         }
-        //System.out.println("left: "+leftAreaMargin+"right: "+rightAreaMargin+"bot: "+bottomAreaMargin+"top: "+topAreaMargin);
+        
         //General Rendering
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
 
         drawBackground();
-        //System.out.println("xEnd: "+xPlotCoordEnd);
         g.setColor(Color.BLACK);        
   
         //Calculates data values
@@ -108,50 +108,37 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
-        
-        
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+                
 
+        //FIXME: Potential problems arise when circles overlap with transparency        
         //Draws a circle at the max, min, and last value
-        //FIXME: Potential problems arise when circles overlap with transparency
         if(drawCircles){
+            //Hints: pure stroke, no antialias
+            g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            
+            //Set transparency
             AlphaComposite ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7F);
             g.setComposite(ac);        
             
-            //Min
-            double x = Math.floor(scaledX(data.getXValues().getDouble(minIndex)))+.5;
-            double y = Math.floor(scaledY(data.getYValues().getDouble(minIndex)))+.5;
-            g.setColor(minValueColor);
-            Shape circle = createShape(x, y, circleDiameter);
-            g.fill(circle);
-            g.draw(circle);
-            
-            //Max
-            x = Math.floor(scaledX(data.getXValues().getDouble(maxIndex)))+.5;
-            y = Math.floor(scaledY(data.getYValues().getDouble(maxIndex)))+.5;
-            g.setColor(maxValueColor);
-            circle = createShape(x, y, circleDiameter);
-            g.fill(circle);
-            g.draw(circle);
-            
-            //First
-            x = Math.floor(scaledX(data.getXValues().getDouble(firstIndex)))+.5;
-            y = Math.floor(scaledY(data.getYValues().getDouble(firstIndex)))+.5;
-            g.setColor(firstValueColor);
-            circle = createShape(x, y, circleDiameter);
-            g.fill(circle); 
-            g.draw(circle);    
-            
-            //Last
-            x = Math.floor(scaledX(data.getXValues().getDouble(lastIndex)))+.5;
-            y = Math.floor(scaledY(data.getYValues().getDouble(lastIndex)))+.5;
-            g.setColor(lastValueColor);
-            circle = createShape(x, y, circleDiameter);
-            g.fill(circle); 
-            g.draw(circle); 
+            //Fills circle
+            drawCircle(g, data, minIndex, minValueColor);
+            drawCircle(g, data, maxIndex, maxValueColor);
+            drawCircle(g, data, firstIndex, firstValueColor);
+            drawCircle(g, data, lastIndex, lastValueColor);
+
+            //Reset Transparency
             ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F);
             g.setComposite(ac);
         }
+    }
+    
+    protected void drawCircle(Graphics2D g, Point2DDataset data, int index, Color color){
+            double x = Math.floor(scaledX(data.getXValues().getDouble(index)))+.5;
+            double y = Math.floor(scaledY(data.getYValues().getDouble(index)))+.5;
+            g.setColor(color);
+            Shape circle = createShape(x, y, circleDiameter);
+            g.fill(circle);        
     }
     
     /**
@@ -166,7 +153,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         Ellipse2D.Double circle = new Ellipse2D.Double(x-halfSize, y-halfSize, size, size);
         return circle;
     } 
-    
     
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
@@ -334,16 +320,12 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public int getCircleDiameter(){
         return circleDiameter;
     }
+    
     public double getAspectRatio(){
         return aspectRatio;
     }
-    private void setCircleMargins(){
-        leftAreaMargin=(2);
-        rightAreaMargin=(2);
-        bottomAreaMargin=(2);
-        topAreaMargin=(2);
-    }
-    private void adjustGraphToAspectRatio(){
+    
+    private void adjustGraphToAspectRatio(){        
         int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
         double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
         while(newMargin < 2){

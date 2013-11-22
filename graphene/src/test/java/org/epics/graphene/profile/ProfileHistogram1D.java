@@ -14,16 +14,6 @@ import org.epics.graphene.*;
  * @author asbarber
  */
 public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Histogram1D>{
-    // With 1000000 samples and 1000 tries, 26 ms
-    // With 1000 samples and 100000 tries, 0.86 ms
-
-    // After using CollectionNumber
-    // With 1000000 samples and 1000 tries, 25.4 ms
-    // With 1000 samples and 100000 tries, 0.73 ms
-
-    // After refactoring to Cell1DDataset and AreaGraph2DRenderer
-    // With 1000000 samples and 1000 tries, 13.5 ms
-    // with 1000 samples and 100000 tries, 0.57 ms
     
     private Point1DCircularBuffer datasetBuffer;
     

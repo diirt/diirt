@@ -15,6 +15,7 @@ import org.epics.graphene.*;
  * @author carcassi
  */
 public class ProfileLockHistogram1D extends ProfileHistogram1D{
+    
     public ProfileLockHistogram1D(){
         initDatasets();
     }

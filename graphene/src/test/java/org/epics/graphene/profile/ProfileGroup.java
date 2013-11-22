@@ -71,17 +71,19 @@ public class ProfileGroup {
         }
     }
     
-    public void iteratePoints(int minPoints, int step, int maxPoints){        
-        for (int nPoints = minPoints; nPoints < maxPoints; nPoints += step){
-            this.nPoints = nPoints;
-            run();
+    public void run(int[] numPoints, int[] widths, int[] heights){
+        //Traverse different data point sizes
+        for (int n: numPoints){
+            this.nPoints = n;
+            
+            //Traverse different widths/heights
+            for (int index = 0; index < widths.length && index < heights.length; index++){
+                this.imageWidth = widths[index];
+                this.imageHeight = heights[index];
+                
+                run();
+            }
         }
-    }
-    public void iterateTestTime(int minTime, int step, int maxTime){        
-        for (int testTimeSec = minTime; testTimeSec < maxTime; testTimeSec += step){
-            this.testTimeSec = testTimeSec;
-            run();
-        }        
     }
     
     

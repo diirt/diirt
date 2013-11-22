@@ -14,6 +14,7 @@ import org.epics.graphene.*;
  * @author asbarber
  */
 public class ProfileParallelHistogram1D extends ProfileHistogram1D{
+    
     public ProfileParallelHistogram1D(){
         initDatasets();
     }

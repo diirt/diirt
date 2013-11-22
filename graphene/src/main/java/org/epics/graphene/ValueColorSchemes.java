@@ -2,10 +2,6 @@
  * Copyright (C) 2012 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.epics.graphene;
 import java.util.ArrayList;
 import java.awt.Color;
@@ -21,8 +17,7 @@ public class ValueColorSchemes {
     }
     
     public static ValueColorScheme jetScale(final Range range) {
-        //return quintipleRangeGradient(range, new Color(0,0,138), new Color(0,0,255), new Color(0,255,255),new Color(255,255,0),new Color(255,0,0),new Color(138,0,0), Color.BLACK);
-        ArrayList<Color> colors = new ArrayList<Color>();
+        ArrayList<Color> colors = new ArrayList<>();
         colors.add(new Color(0,0,138));
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
@@ -30,27 +25,19 @@ public class ValueColorSchemes {
         colors.add(Color.RED);
         colors.add(new Color(138,0,0));
         colors.add(Color.BLACK);
-        ArrayList<Double> percentages = new ArrayList<Double>();
-        percentages.add(0.0);
-        for(int i = 1; i <= colors.size()-2; i++){
-            percentages.add((double)i/(colors.size()-2));
-        }
-        return RangeGradient(range,colors,percentages);
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));
     }
     
     public static ValueColorScheme hotScale(final Range range) {
-        ArrayList<Color> colors = new ArrayList<Color>();
+        ArrayList<Color> colors = new ArrayList<>();
         colors.add(new Color(30,0,0));
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
         colors.add(Color.BLUE);
-        ArrayList<Double> percentages = new ArrayList<Double>();
-        percentages.add(0.0);
-        for(int i = 1; i <= colors.size()-2; i++){
-            percentages.add((double)i/(colors.size()-2));
-        }
-        return RangeGradient(range, colors, percentages);
+        
+        return RangeGradient(range, colors, percentageRange(colors.size() - 2));
     }
     
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
@@ -169,5 +156,17 @@ public class ValueColorSchemes {
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;
             }
         };
+    }
+    
+    private static ArrayList<Double> percentageRange(int size){
+        ArrayList<Double> percentages = new ArrayList<>();
+        
+        percentages.add(0.0);
+        
+        for (int i = 1; i <= size; i++){
+            percentages.add((double) i / size);
+        }
+        
+        return percentages;
     }
 }

@@ -157,17 +157,19 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Format output string:
-        //"graphType","date","average time","total time","number of tries","numDataPoints","datasetComment","message",
+        //  "graphType","date","average time","total time","number of tries","numDataPoints","Image Width","Image Height","datasetComment","message",
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
         String quote = "\"";
-        String delim = " ";
+        String delim = ",";
         String results = quote + getGraphTitle() + quote + delim +
                          quote + dateFormat.format(new Date()) + quote + delim +
                                  stopWatch.getAverageMs() + delim +
                                  stopWatch.getTotalMs() + delim +
                                  nTries + delim +
                                  getNumDataPoints() + delim +
+                                 getImageWidth() + delim +
+                                 getImageHeight() + delim +
                          quote + getDatasetMessage() + quote + delim +
                          quote + getSaveMessage() + quote + delim;
         
@@ -197,16 +199,17 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Header
-        String quote = "\"";
-        String delim = " ";
-        String header = quote + "Graph Type" + quote + delim +
-                        quote + "Date" + quote + delim +
-                        quote + "Average Time (ms)" + quote + delim +
-                        quote + "Total Time (ms)" + quote + delim +
-                        quote + "Number of Tries" + quote + delim +
-                        quote + "Number of Data Points" + quote + delim +
-                        quote + "Datatset Comments" + quote + delim +
-                        quote + "General Message" + quote + delim;
+        String delim = ",";
+        String header = "Graph Type" + delim +
+                        "Date" + delim +
+                        "Average Time (ms)" + delim +
+                        "Total Time (ms)" + delim +
+                        "Number of Tries" + delim +
+                        "Number of Data Points" + delim +
+                        "Image Width" + delim +
+                        "Image Height" + delim +
+                        "Datatset Comments" + delim +
+                        "General Message" + delim;
         
         //Write to file
         try {

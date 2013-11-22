@@ -15,20 +15,6 @@ import org.epics.graphene.*;
  * @author sjdallst
  */
 public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRenderer, Cell2DDataset>{
-    /* Summary
-     * Using array,         3.86 ms,   100 samples,    15000 tries,    600x400
-     * Using ArrayDouble,   3.94 ms,   100 samples,    10000 tries,    600x400
-     * Using array,         19.34 ms,  1000 samples,   1500 tries,     600x400
-     * Using ArrayDouble,   17.84 ms,  1000 samples,   1500 tries,     600x400
-     *
-     * Adding sorting and new impl, 12.17 ms,  1000 samples,   1500 tries,     600x400
-     * Adding sorting and new impl, 2.68 ms,   100 samples,    15000 tries,    600x400
-     *
-     * Before large array optimization, 16686.27 ms,    1000000 samples,    3 tries,    600x400 LINEAR
-     * Before large array optimization, 423.63 ms,      100000 samples,     100 tries,  600x400 LINEAR
-     * Before large array optimization, 38.33 ms,       10000 samples,      100 tries,  600x400 LINEAR
-    */
-
     @Override
     public int getNumDataPoints(){
         return getNumXDataPoints() * getNumYDataPoints();
