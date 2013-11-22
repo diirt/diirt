@@ -12,6 +12,7 @@ import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
@@ -165,6 +166,28 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 	testFunction(set, "arrayWithBoundaries", expected,
 		array,
 		generator);
+    }
+    
+    @Test
+    public void histogramOf() {
+	ListDouble data = new ArrayDouble(0, 10, 3, 3, 3.5, 4, 4.5, 3, 7, 3.1);
+        ListInt expectedData = new ArrayInt(1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           3, 1, 0, 0, 0, 1, 0, 0, 0, 0,
+                                           1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+	VNumberArray array = newVDoubleArray(data, alarmNone(),
+		timeNow(), displayNone());
+	VNumberArray expected = newVIntArray(expectedData, alarmNone(),
+		timeNow(), displayNone());
+        
+        FunctionTester.findByName(set, "histogramOf")
+                .compareReturnValue(expected, array);
     }
    
 }
