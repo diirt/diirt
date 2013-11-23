@@ -47,7 +47,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     
     private int legendWidth = 10,
                 legendMarginToGraph = 10,
-                legendMarginToEdge = 7;
+                legendMarginToEdge = 2;
     private boolean drawLegend = false;
     private Range zRange;
     private Range zAggregatedRange;
@@ -74,6 +74,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
             calculateZRange(zRange);
             calculateZLabels();
+            rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;    
+        }
+        calculateGraphArea();
+        if(drawLegend){
             if (zReferenceValues != null) {
                 double[] zRefCoords = new double[zReferenceValues.size()];
                 for (int i = 0; i < zRefCoords.length; i++) {
@@ -81,9 +85,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 }
                 zReferenceCoords = new ArrayDouble(zRefCoords);
             }
-            rightMargin = legendMarginToEdge+legendWidth+legendMarginToGraph+zLabelMaxWidth+1;    
         }
-        calculateGraphArea();        
         drawGraphArea();
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
@@ -310,7 +312,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 
             // Draw first and last label
             int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
-            int xRightLabel = (int) (getImageWidth() - rightMargin - 1);
+            int xRightLabel = (int) (getImageWidth() - legendMarginToEdge-1);
             drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(0), (int) Math.floor(zTicks.getDouble(0)),
                 drawRange, xRightLabel, true, false);
             drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(zReferenceLabels.size() - 1), (int) Math.floor(zTicks.getDouble(zReferenceLabels.size() - 1)),
