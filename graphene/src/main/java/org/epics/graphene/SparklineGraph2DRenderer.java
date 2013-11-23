@@ -367,16 +367,4 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
             bottomAreaMargin = 2 + marginSize;
         }
     }
-    private void adjustGraphToAspectRatioOLD(){        
-        int newMargin = (int)(((super.getImageHeight()-bottomMargin-topMargin-((super.getImageWidth()-leftMargin-rightMargin))/aspectRatio))/2);
-        double xPlotCoordWidthCopy = super.getImageWidth()-rightMargin-leftMargin;
-        while(newMargin < 2){
-            xPlotCoordWidthCopy-=2;
-            newMargin = (int)((super.getImageHeight()-bottomMargin-topMargin-(xPlotCoordWidthCopy/aspectRatio))/2);
-        }
-        leftAreaMargin = (int)(2+ (super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2);
-        rightAreaMargin = (int)(2+(super.getImageWidth()-rightMargin-leftMargin-xPlotCoordWidthCopy)/2);
-        bottomAreaMargin = newMargin;
-        topAreaMargin = newMargin;
-    }
 }

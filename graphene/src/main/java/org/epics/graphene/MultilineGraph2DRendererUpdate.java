@@ -14,5 +14,14 @@ import java.util.List;
  * @author sjdallst
  */
 public class MultilineGraph2DRendererUpdate extends Graph2DRendererUpdate<MultilineGraph2DRendererUpdate>{
+    private ColorScheme valueColorScheme;
     
+    public MultilineGraph2DRendererUpdate valueColorScheme(ColorScheme scheme) {
+        this.valueColorScheme = scheme;
+        return self();
+    }
+    
+    public ColorScheme getValueColorScheme() {
+        return valueColorScheme;
+    }
 }

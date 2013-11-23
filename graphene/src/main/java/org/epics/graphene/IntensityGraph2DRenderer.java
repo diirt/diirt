@@ -43,11 +43,27 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(update.getValueColorScheme() != null){
             valueColorScheme = update.getValueColorScheme();
         }
+        if(update.getZLabelMargin() != null){
+            zLabelMargin = update.getZLabelMargin();
+        }
+        if(update.getLegendWidth() != null){
+            legendWidth = update.getLegendWidth();
+        }
+        if(update.getLegendMarginToGraph() != null){
+            legendMarginToGraph = update.getLegendMarginToGraph();
+        }
+        if(update.getLegendMarginToEdge() != null){
+            legendMarginToEdge = update.getLegendMarginToEdge();
+        }
     }
     
+    //legendWidth,legendMarginToGraph,legendMarginToEdge, and zLabelMargin are all lengths, in terms of pixels.
+    //legendMarginToGraph corresponds to the space between the original graph and the legend.
+    //legendMarginToEdge -> the space between the legend labels and the edge of the picture.
     private int legendWidth = 10,
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 2;
+    protected int zLabelMargin = 3;
     private boolean drawLegend = false;
     private Range zRange;
     private Range zAggregatedRange;
@@ -58,7 +74,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
-    protected int zLabelMargin = 3;
     
     
     private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
@@ -70,13 +85,21 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
+        
+        //Calculate all margins necessary for drawing the legend. 
+        //Only do calculations if user says to draw a legend.
         if(drawLegend){
+            //Find the range in order to calculate legend labels and their corresponding width.
             zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
             calculateZRange(zRange);
             calculateZLabels();
             rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;    
         }
+        
         calculateGraphArea();
+        
+        //Wait to calculate the coordinates of the legend labels till after yPlotCoordRange is calculated.
+        //Allows for the use of yPlotCoordEnd/start in calculations.
         if(drawLegend){
             if (zReferenceValues != null) {
                 double[] zRefCoords = new double[zReferenceValues.size()];
@@ -153,9 +176,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             
         }
         //Draw a legend, given the current data set.
-        //TODO: find a way to add in labels. Preferably using methods from Graph2DRenderer (Looking at them, I don't think that's going to be possible though.)
         if(drawLegend){
-            ListNumber dataList = ListNumbers.linearListFromRange(data.getStatistics().getMinimum().doubleValue(), data.getStatistics().getMaximum().doubleValue(), (int)yHeightTotal);
+            ListNumber dataList = ListNumbers.linearListFromRange(zAggregatedRange.getMinimum().doubleValue(),zAggregatedRange.getMaximum().doubleValue(),(int)yHeightTotal);
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1,1,1, legendWidth);
             drawZLabels();
@@ -302,7 +324,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
     }
     protected void drawZLabels() {
-        // Draw Y labels
+        // Draw Z labels
         ListNumber zTicks = zReferenceCoords;
         if (zReferenceLabels != null && !zReferenceLabels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
