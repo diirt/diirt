@@ -44,7 +44,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     //Parameters
-    private int     circleDiameter = 4;
+    private int     circleDiameter = 3;
     private Color   minValueColor = new Color(28, 160, 232),
                     maxValueColor = new Color(28, 160, 232),
                     firstValueColor = new Color(223, 59, 73),            
