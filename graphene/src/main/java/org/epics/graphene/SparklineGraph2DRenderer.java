@@ -17,7 +17,7 @@ import org.epics.util.array.SortedListView;
  * @author sjdallst
  * 
  */
-public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
+public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRendererUpdate>{
 
     /**
      * Creates a new sparkline graph renderer.
@@ -40,7 +40,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         super.rightAreaMargin  = 2;
         super.bottomAreaMargin = 2;
         super.topAreaMargin    = 2;        
-        
     }
     
     //Parameters
@@ -101,7 +100,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateGraphArea();
 
-        g.setColor(Color.YELLOW);
         drawBackground();
         g.setColor(Color.BLACK);        
   
@@ -224,7 +222,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @return Update of the Sparkline
      */
     @Override
-    public Graph2DRendererUpdate newUpdate() {
+    public SparklineGraph2DRendererUpdate newUpdate() {
         return new SparklineGraph2DRendererUpdate();
     }
     

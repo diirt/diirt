@@ -16,70 +16,49 @@ import org.junit.BeforeClass;
  * @authors asbarber, jkfeng, sjdallst
  */
 public class SparklineGraph2DRendererTest {
-    /**
-     * Tests the functions in SparklineGraph2DRenderer
-     */
+    
     public SparklineGraph2DRendererTest() {
     }
 
-    private static Point2DDataset largeDataset;
-    
-    /**
-     * Sets up the large dataset used in the tests
-     * @throws Exception 
-     */
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Random rand = new Random(1);
-        int nSamples = 100000;
-        double[] waveform = new double[nSamples];
-        for (int i = 0; i < nSamples; i++) {
-            waveform[i] = rand.nextGaussian();
-        }
-        largeDataset = org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
 
-    /**
-     * Empties the memory used in the large dataset
-     * @throws Exception 
-     */
     @AfterClass
     public static void tearDownClass() throws Exception {
-        largeDataset = null;
     }
     
+    //CIRCLE DRAWING TESTS
     
     /**
      * Tests case of:
      * <ul>
      *      <li>Min Value = Last Value</li>
-     *      <li>There exists more than one min value</li>
      * </ul>
      * 
      * @throws Exception test fails
      */    
     @Test
     public void test1() throws Exception {
-        double[] initialDataX = new double[101];
-        
+        double[] initialDataY = new double[101];
+
             //Creates the function:
                 //f(x) = x          for  0  <= x <  50
                 //f(x) = 100 - x    for  50 <= x <= 100
             for(int x = 0; x < 50; x++){
-                initialDataX[x] = x;
+                initialDataY[x] = x;
             }
             for (int x = 50; x <= 100; x++){
-                initialDataX[x] = 100 - x;
+                initialDataY[x] = 100 - x;
             }         
+        
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
 
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
+
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -90,33 +69,31 @@ public class SparklineGraph2DRendererTest {
      * Tests case of:
      * <ul>
      *      <li>Max Value = Last Value</li>
-     *      <li>There exists more than one max value</li>
      * </ul>
      * 
      * @throws Exception test fails
      */        
     @Test
     public void test2() throws Exception {
-        double[] initialDataX = new double[101];
+        double[] initialDataY = new double[101];
         
             //Creates the function:
                 //f(x) = 50 - x         for  0  <= x <  50
                 //f(x) = x - 50         for  50 <= x <= 100
             for (int x = 0; x <= 49; x++){
-                initialDataX[x] = 50 - x;
+                initialDataY[x] = 50 - x;
             }
             for (int x =50; x <= 100; x++){
-                initialDataX[x] = x - 50;
+                initialDataY[x] = x - 50;
             }
             
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+            
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
+
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -127,30 +104,27 @@ public class SparklineGraph2DRendererTest {
      * Tests case of:
      * <ul>
      *      <li>Max Value = Min Value = Last Value</li>
-     *      <li>There exists more than one max value</li>
-     *      <li>There exists more than one min value</li>
      * </ul>
      * 
      * @throws Exception test fails
      */    
     @Test
     public void test3() throws Exception {
-        double[] initialDataX = new double[100];
+        double[] initialDataY = new double[100];
         
             //Creates the function:
                 //f(x) = 1      for 0 <= x < 100
             for(int i = 0; i < 100; i++){
-                initialDataX[i] = 1;
+                initialDataY[i] = 1;
             }
             
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+            
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
+
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -160,8 +134,6 @@ public class SparklineGraph2DRendererTest {
     /**
      * Tests case of:
      * <ul>
-     *      <li>Max Value != Last Value</li>
-     *      <li>Min Value != Last Value</li>
      *      <li>There exists more than one max value</li>
      *      <li>There exists more than one min value</li>
      * </ul>
@@ -170,24 +142,24 @@ public class SparklineGraph2DRendererTest {
      */   
     @Test
     public void test4() throws Exception {
-        double[] initialDataX = new double[100];
+        double[] initialDataY = new double[100];
         
             //Creates the function:
                 //f(x) = 1      for 0 <= x < 33
                 //f(x) = -1     for 33 <= x < 67
                 //f(x) = 0      for 67 <= x < 100
             for(int x = 0; x < 33; x++){
-                initialDataX[x] = 1;
+                initialDataY[x] = 1;
             }
             for (int x = 33; x < 67; x++){
-                initialDataX[x] = -1;
+                initialDataY[x] = -1;
             }
             for (int x = 67; x < 100; x++){
-                initialDataX[x] = 0;
+                initialDataY[x] = 0;
             }
             
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
@@ -201,237 +173,231 @@ public class SparklineGraph2DRendererTest {
     }
     
     /**
-     * Tests data that is similar to a general Sparkline graph.
-     * The general shape is slopes shifting up and down for small line segments.
-     * 
-     * This test uses an aspect-ratio similar to a general Sparkline graph.
-     * This general aspect-ratio is a 5:1 (width:height).
-     * 
-     * @throws Exception test fails
-     */
-    @Test
-    public void test5() throws Exception {
-        double[] initialDataX = new double[200];
-        
-            int index = 0;
-            for (int m = 1; index < 200; m++){
-                for (int i = 0; i < m * 5; i++){
-                    if (index < 200){
-                        initialDataX[index] = m + i; 
-                        index++;
-                    }
-                }
-            }
-            
-        //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
-        BufferedImage image = new BufferedImage(100, 25, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,25);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
-        renderer.draw(g, data);
-        
-        //Compares to correct image
-        ImageAssert.compareImages("sparkline2D.5", image);          
-    }
-    
-    /**
      * Tests case where a maximum circle (blue) and last value circle (red)
      * are close to the same pixel point and overlap.
      * 
      * @throws Exception test fails
      */
     @Test
-    public void test6() throws Exception {
-        double[] initialDataX = new double[100];
+    public void test5() throws Exception {
+        double[] initialDataY = new double[100];
         
             for (int x = 0; x < 98; x++){
-                initialDataX[x] = 90;
+                initialDataY[x] = 90;
             }
-            initialDataX[98] = 100;
-            initialDataX[99] = 99;
+            initialDataY[98] = 100;
+            initialDataY[99] = 99;
 
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+            
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
         BufferedImage image = new BufferedImage(100, 25, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,25);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        renderer.update(update);
+
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.5", image);          
+    }
+        
+    
+    //ASPECT RATIO TESTS
+    
+    /**
+     * Tests case when the aspect ratio would cause the image to draw out of bounds.
+     * The size of the data is greater than the size of the image.
+     * 
+     * @throws Exception test fails
+     */
+    @Test
+    public void test6() throws Exception {
+        double[] initialDataY = new double[200];
+        
+            int index = 0;
+            for (int m = 1; index < 200; m++){
+                for (int i = 0; i < m * 5; i++){
+                    if (index < 200){
+                        initialDataY[index] = m + i; 
+                        index++;
+                    }
+                }
+            }
+
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+
+        //Creates a sparkline graph
+        BufferedImage image = new BufferedImage(100, 20, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,20);
+        renderer.update( renderer.newUpdate().aspectRatio(5) );
         renderer.draw(g, data);
         
         //Compares to correct image
         ImageAssert.compareImages("sparkline2D.6", image);          
     }
     
-    //Tests the case when the aspect ratio would cause the image to draw out of bounds. 
+    /**
+     * Tests case where the aspect ratio is set and the height is the limiting factor.
+     * 
+     * @throws Exception test fails
+     */
     @Test
-    public void test7() throws Exception {
-        double[] initialDataX = new double[200];
-        
-            int index = 0;
-            for (int m = 1; index < 200; m++){
-                for (int i = 0; i < m * 5; i++){
-                    if (index < 200){
-                        initialDataX[index] = m + i; 
-                        index++;
-                    }
-                }
-            }
-            
-        //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
-        BufferedImage image = new BufferedImage(100, 20, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,20);
-        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
-        aspectUpdate.aspectRatio(5);
-        renderer.update(aspectUpdate);
-        renderer.draw(g, data);
-        
-        //Compares to correct image
-        ImageAssert.compareImages("sparkline2D.7", image);          
-    }
-    
-    //Tests the case when the aspect ratio is not set.
-    @Test
-    public void test8() throws Exception {
-        double[] initialDataX = new double[200];
-        
-            int index = 0;
-            for (int m = 1; index < 200; m++){
-                for (int i = 0; i < m * 5; i++){
-                    if (index < 200){
-                        initialDataX[index] = m + i; 
-                        index++;
-                    }
-                }
-            }
-            
-        //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        renderer.draw(g, data);
-        
-        //Compares to correct image
-        ImageAssert.compareImages("sparkline2D.8", image);          
-    }
-    
-    //Tests the case of multiple draws with aspect ratio.
-    //XXX no idea why the image from this test is so strange.
-    @Test
-    public void test9() throws Exception {
-        //Primary Data
-        double[] initialDataX = new double[200];
-        
-            int index = 0;
-            for (int m = 1; index < 200; m++){
-                for (int i = 0; i < m * 5; i++){
-                    if (index < 200){
-                        initialDataX[index] = m + i; 
-                        index++;
-                    }
-                }
-            }
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
-            
-        //Secondary Data
-        double[] changedData = new double[50];
-            for(int i = 0; i < 50; i++){
-                changedData[i] = initialDataX[i+100]; 
-            }
-        Point2DDataset data1 = Point2DDatasets.lineData(changedData);
-        
-        
-        //Creates image and renderer
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
-        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
-        aspectUpdate.aspectRatio(5);
-        renderer.update(aspectUpdate);
-        
-        //Draw Primary
-        renderer.draw(g, data);
-
-        //Draw Secondary
-        renderer.draw(g,data1);
-        
-        
-        //Compares to correct image
-        ImageAssert.compareImages("sparkline2D.9", image);          
-    }
-    
-    @Test
-    public void test10() throws Exception{
-    
-        double[] sampleData = new double[100];
-        for(int i = 0; i < 50; i++)
-            sampleData[i] = Math.pow(Math.E, i);
-        for(int i = 50; i< 100; i++)
-            sampleData[i] = Math.pow(-Math.E, i);
-      
-        Point2DDataset data = Point2DDatasets.lineData(sampleData);
-        BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
-        renderer.draw(g, data);
-        ImageAssert.compareImages("sparkline2D.10", image);
-    }
-    
-    @Test
-    public void test11() throws Exception{
+    public void test7() throws Exception{
         
         double[] sampleData = new double[10];
-        for(int i = 0; i < 10; i++){
-            if(i % 2 == 0)
-                sampleData[i] = -1.5 * i;
-            else
-                sampleData[i] = 1.5 * i;
-        }
+            for(int i = 0; i < 10; i++){
+                if(i % 2 == 0)
+                    sampleData[i] = -1.5 * i;
+                else
+                    sampleData[i] = 1.5 * i;
+            }
         Point2DDataset data = Point2DDatasets.lineData(sampleData);
+        
+        //Graphics
         BufferedImage image = new BufferedImage(200,200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
+        
+        //Sparkline
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,200);
-        SparklineGraph2DRendererUpdate aspectUpdate = new SparklineGraph2DRendererUpdate();
-        aspectUpdate.aspectRatio(5);
-        renderer.update(aspectUpdate);
+        renderer.update( renderer.newUpdate().aspectRatio(5) );
         renderer.draw(g, data);
-        ImageAssert.compareImages("sparkline2D.11", image);
+        
+        //Assert true
+        ImageAssert.compareImages("sparkline2D.7", image);
     }
     
-    //Tests the case of a non-LINEAR (uses NEAREST NEIGHBOR) interpolation scheme
+    /**
+     * Tests case where the aspect ratio is set and the width is the limiting factor.
+     * 
+     * @throws Exception test fails
+     */
     @Test
-    public void test12() throws Exception{
-        double[] initialDataX = new double[200];
+    public void test8() throws Exception{
+        double[] sampleData = new double[10];
+        
+            for(int i = 0; i < 10; i++){
+                if(i % 2 == 0)
+                    sampleData[i] = -1.5 * i;
+                else
+                    sampleData[i] = 1.5 * i;
+            }
+            
+        Point2DDataset data = Point2DDatasets.lineData(sampleData);
+        
+        //Graphics
+        BufferedImage image = new BufferedImage(200,20, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        
+        //Sparkline
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(200,20);
+        renderer.update( renderer.newUpdate().aspectRatio(5) );
+        renderer.draw(g, data);
+        
+        //Assert true
+        ImageAssert.compareImages("sparkline2D.8", image);
+    }    
+    
+    
+    //GENERAL SPARKLINE TESTS
+    
+    /**
+     * Tests case of a non-LINEAR interpolation scheme (uses NEAREST NEIGHBOR).
+     * 
+     * @throws Exception test fails
+     */    
+    @Test
+    public void test9() throws Exception{
+        double[] initialDataY = new double[200];
         
             int index = 0;
             for (int m = 1; index < 200; m++){
                 for (int i = 0; i < m * 5; i++){
                     if (index < 200){
-                        initialDataX[index] = Math.pow(m + i, 4); 
+                        initialDataY[index] = Math.pow(m + i, 4); 
                         index++;
                     }
                 }
             }
             
         //Creates a sparkline graph
-        Point2DDataset data = Point2DDatasets.lineData(initialDataX);
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
         BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,50);
-        SparklineGraph2DRendererUpdate update = new SparklineGraph2DRendererUpdate();
-        update.aspectRatio(5);
-        update.interpolation(InterpolationScheme.NEAREST_NEIGHBOUR);
-        renderer.update(update);
+        renderer.update( renderer.newUpdate().aspectRatio(5).interpolation(InterpolationScheme.NEAREST_NEIGHBOUR) );
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("sparkline2D.12", image);               
+        ImageAssert.compareImages("sparkline2D.9", image);               
     }
+    
+    /**
+     * Tests data that is similar to a general Sparkline graph.
+     * The general shape is slopes shifting up and down for small line segments.
+     * 
+     * This test uses an aspect-ratio similar to a general Sparkline graph.
+     * This general aspect-ratio is a 5:1 (width:height).
+     * The aspect ratio is set manually by setting the width to be 5 times as big as the height.
+     * 
+     * @throws Exception test fails
+     */
+    @Test
+    public void test10() throws Exception {
+        double[] initialDataY = new double[200];
+        
+            int index = 0;
+            for (int m = 1; index < 200; m++){
+                for (int i = 0; i < m * 5; i++){
+                    if (index < 200){
+                        initialDataY[index] = m + i; 
+                        index++;
+                    }
+                }
+            }
+
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+            
+        //Creates a sparkline graph
+        BufferedImage image = new BufferedImage(100, 20, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,20);
+
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.10", image);          
+    }   
+    
+    /**
+     * Tests case when aspect ratio is not set.
+     * 
+     * @throws Exception 
+     */
+    @Test
+    public void test11() throws Exception {
+        double[] initialDataY = new double[200];
+        
+            int index = 0;
+            for (int m = 1; index < 200; m++){
+                for (int i = 0; i < m * 5; i++){
+                    if (index < 200){
+                        initialDataY[index] = m + i; 
+                        index++;
+                    }
+                }
+            }
+            
+        //Creates a sparkline graph
+        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100,100);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("sparkline2D.11", image);          
+    }    
+    
 }
