@@ -11,6 +11,7 @@ while true; do
              ./stop-ioc.sh
              sleep `echo $COMMAND | cut -d " " -f 3`
              ./start-ioc.sh `echo $COMMAND | cut -d " " -f 2`
+             sleep 1
              ;;
      netpause*) echo Pausing network for `echo $COMMAND | cut -d " " -f 2` seconds
              ./network-pause.sh $ETH `echo $COMMAND | cut -d " " -f 2`
