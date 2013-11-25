@@ -15,6 +15,7 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
 import org.epics.vtype.VNumber;
+import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
 import org.epics.vtype.ValueUtil;
 
@@ -70,22 +71,19 @@ public class Log {
         }
     }
     
-    public void matchValues(String pvName, Object... values) {
+    public void matchValues(String pvName, VTypeMatchMask mask, Object... values) {
         int current = 0;
         for (Event event : events) {
             if (event instanceof ReadEvent && event.getPvName().equals(pvName)) {
                 ReadEvent readEvent = (ReadEvent) event;
                 if (readEvent.getEvent().isValueChanged()) {
                     Object actualValue = readEvent.getValue();
-                    Object expectedValue = values[current];
-                    if (!VTypeValueEquals.typeEquals(actualValue, expectedValue)) {
-                        errors.add(pvName + ": value notification " + current + " TYPE mismatch: was " + actualValue + " (expected " + expectedValue + ")");
-                    } else if (!VTypeValueEquals.valueEquals(actualValue, expectedValue)) {
-                        errors.add(pvName + ": value notification " + current + " VALUE mismatch: was " + actualValue + " (expected " + expectedValue + ")");
-                    } else if (!VTypeValueEquals.alarmEquals(ValueUtil.alarmOf(actualValue), ValueUtil.alarmOf(expectedValue))) {
-                        errors.add(pvName + ": value notification " + current + " ALARM mismatch: was " + actualValue + " (expected " + expectedValue + ")");
-                    } else if (!VTypeValueEquals.timeEquals(ValueUtil.timeOf(actualValue), ValueUtil.timeOf(expectedValue))) {
-                        errors.add(pvName + ": value notification " + current + " TIME mismatch: was " + actualValue + " (expected " + expectedValue + ")");
+                    if (current < values.length) {
+                        Object expectedValue = values[current];
+                        String message = mask.match(expectedValue, actualValue);
+                        if (message != null) {
+                            errors. add(pvName + ": value notification " + current + " " + message);
+                        }
                     }
                     current++;
                 }

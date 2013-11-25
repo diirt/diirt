@@ -5,11 +5,15 @@
 package org.epics.pvmanager.integration;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderConfiguration;
+import org.epics.pvmanager.PVWriter;
+import org.epics.pvmanager.PVWriterConfiguration;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -17,6 +21,7 @@ import org.epics.util.time.TimeDuration;
  * @author carcassi
  */
 public abstract class TestPhase {
+    private final Map<String, PVWriter<?>> pvWriters = new ConcurrentHashMap<>();
     private final List<PVReader<?>> pvReaders = new CopyOnWriteArrayList<>();
     private final Log phaseLog = new Log();
     
@@ -24,6 +29,21 @@ public abstract class TestPhase {
         PVReader<T> pvReader = reader.readListener(phaseLog.createListener()).maxRate(maxRate);
         pvReaders.add(pvReader);
         return this;
+    }
+    
+    protected <T> TestPhase addWriter(String name, PVWriterConfiguration<T> writer) {
+        PVWriter<T> pvWriter = writer.async();
+        if (pvWriters.containsKey(name)) {
+            throw new IllegalArgumentException("Writer called " + name + " already exists");
+        }
+        pvWriters.put(name, pvWriter);
+        return this;
+    }
+    
+    protected void write(String name, Object obj) {
+        @SuppressWarnings("unchecked")
+        PVWriter<Object> pvWriter = (PVWriter<Object>) pvWriters.get(name);
+        pvWriter.write(obj);
     }
     
     private void closeAll() {

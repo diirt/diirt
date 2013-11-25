@@ -15,6 +15,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
+import org.epics.pvmanager.PVWriterConfiguration;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
@@ -22,6 +23,7 @@ import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Time;
 import org.epics.vtype.VEnum;
 import static org.epics.vtype.ValueFactory.*;
+import static org.epics.pvmanager.integration.VTypeMatchMask.*;
 
 /**
  *
@@ -41,23 +43,28 @@ public class Main2 {
                 addReader(PVManager.read(channel("const-double.SCAN")), TimeDuration.ofHertz(50));
                 addReader(PVManager.read(channel("double-counter-1Hz")), TimeDuration.ofHertz(50));
                 addReader(PVManager.read(channel("double-counter-100Hz")), TimeDuration.ofHertz(50));
-                Thread.sleep(5000);
+                addWriter("const-double", PVManager.write(channel("const-double")));
+                Thread.sleep(1000);
+                write("const-double", 3.0);
+                Thread.sleep(4000);
             }
 
             @Override
             public void verify(Log log) {
                 log.matchConnections("const-double", true);
-                log.matchValues("const-double", newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
+                log.matchValues("const-double", ALL_EXCEPT_TIME, newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()),
+                        newVDouble(3.0, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
                 log.matchConnections("const-double.NAME", true);
-                log.matchValues("const-double.NAME", newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
+                log.matchValues("const-double.NAME", ALL, newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("const-double.SCAN", true);
-                log.matchValues("const-double.SCAN", newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
+                log.matchValues("const-double.SCAN", ALL, newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("double-counter-1Hz", true);
                 log.matchSequentialNumberValues("double-counter-1Hz", 0);
                 log.matchValueEventRate("double-counter-1Hz", 0.95, 1.05);
                 log.matchConnections("double-counter-100Hz", true);
                 log.matchValueEventRate("double-counter-100Hz", 45, 50);
             }
+
         };
         
         phase1.execute();
