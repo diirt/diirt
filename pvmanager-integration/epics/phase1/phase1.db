@@ -1,9 +1,6 @@
 record(calcout, "double-counter-1Hz") {
-  field(PINI, "RUNNING")
-  field(INPA, "double-counter-1Hz.VAL NPP")
-  field(CALC, "A+1")
-  field(ODLY, "1.0")
-  field(OUT , "double-counter-1Hz.PROC CA")
+  field(SCAN, "1 second")
+  field(CALC, "VAL+1")
 }
 
 record(calcout, "double-counter-100Hz") {
