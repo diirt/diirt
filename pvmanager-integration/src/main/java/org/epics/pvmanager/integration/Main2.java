@@ -4,24 +4,14 @@
  */
 package org.epics.pvmanager.integration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.logging.LogManager;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVWriterConfiguration;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Time;
-import org.epics.vtype.VEnum;
 import static org.epics.vtype.ValueFactory.*;
 import static org.epics.pvmanager.integration.VTypeMatchMask.*;
 

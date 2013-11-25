@@ -16,8 +16,15 @@ public class WriteEvent implements Event {
     private String pvName;
     private PVWriterEvent<?> event;
     private boolean coonected;
-    private Object value;
     private Exception lastException;
+
+    public WriteEvent(Timestamp timestamp, String pvName, PVWriterEvent<?> event, boolean coonected, Exception lastException) {
+        this.timestamp = timestamp;
+        this.pvName = pvName;
+        this.event = event;
+        this.coonected = coonected;
+        this.lastException = lastException;
+    }
 
     @Override
     public Timestamp getTimestamp() {
@@ -52,14 +59,6 @@ public class WriteEvent implements Event {
 
     public void setCoonected(boolean coonected) {
         this.coonected = coonected;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
     }
 
     public Exception getLastException() {

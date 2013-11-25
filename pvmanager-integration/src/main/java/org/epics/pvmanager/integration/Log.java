@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
+import org.epics.pvmanager.PVWriterEvent;
+import org.epics.pvmanager.PVWriterListener;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
 import org.epics.vtype.VNumber;
@@ -28,12 +30,22 @@ public class Log {
     private final List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
     private final List<String> errors = Collections.synchronizedList(new ArrayList<String>());
     
-    public <T> PVReaderListener<T> createListener() {
+    public <T> PVReaderListener<T> createReadListener() {
         return new PVReaderListener<T>() {
 
             @Override
             public void pvChanged(PVReaderEvent<T> event) {
                 events.add(new ReadEvent(Timestamp.now(), event.getPvReader().getName(), event, event.getPvReader().isConnected(), event.getPvReader().getValue(), event.getPvReader().lastException()));
+            }
+        };
+    }
+    
+    public <T> PVWriterListener<T> createWriteListener(final String name) {
+        return new PVWriterListener<T>() {
+
+            @Override
+            public void pvChanged(PVWriterEvent<T> event) {
+                events.add(new WriteEvent(Timestamp.now(), name, event, event.getPvWriter().isWriteConnected(), event.getPvWriter().lastWriteException()));
             }
         };
     }

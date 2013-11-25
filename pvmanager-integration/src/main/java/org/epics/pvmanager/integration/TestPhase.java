@@ -26,13 +26,13 @@ public abstract class TestPhase {
     private final Log phaseLog = new Log();
     
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
-        PVReader<T> pvReader = reader.readListener(phaseLog.createListener()).maxRate(maxRate);
+        PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
         pvReaders.add(pvReader);
         return this;
     }
     
     protected <T> TestPhase addWriter(String name, PVWriterConfiguration<T> writer) {
-        PVWriter<T> pvWriter = writer.async();
+        PVWriter<T> pvWriter = writer.writeListener(phaseLog.<T>createWriteListener(name)).async();
         if (pvWriters.containsKey(name)) {
             throw new IllegalArgumentException("Writer called " + name + " already exists");
         }
