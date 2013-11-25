@@ -53,10 +53,10 @@ public class Main2 {
                 log.matchConnections("const-double.SCAN", true);
                 log.matchValues("const-double.SCAN", newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("double-counter-1Hz", true);
-                log.matchSequentialNumberValues("double-counter-1Hz", 1);
-                log.matchValueEventRate("double-counter-1Hz", 1.1, 0.15);
+                log.matchSequentialNumberValues("double-counter-1Hz", 0);
+                log.matchValueEventRate("double-counter-1Hz", 0.95, 1.05);
                 log.matchConnections("double-counter-100Hz", true);
-                log.matchValueEventRate("double-counter-100Hz", 50, 0.05);
+                log.matchValueEventRate("double-counter-100Hz", 45, 50);
             }
         };
         

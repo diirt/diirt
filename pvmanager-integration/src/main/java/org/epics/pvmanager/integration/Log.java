@@ -125,18 +125,20 @@ public class Log {
         }
     }
 
-    void matchValueEventRate(String pvName, double rateHz, double tolerance) {
+    void matchValueEventRate(String pvName, double minRateHz, double maxRateHz) {
         Timestamp initialTime = null;
         Timestamp finalTime = null;
         int nNotifications = 0;
         for (Event event : events) {
             if (pvName.equals(event.getPvName()) && event instanceof ReadEvent) {
                 ReadEvent readEvent = (ReadEvent) event;
-                Timestamp nextTime = readEvent.getTimestamp();
-                if (initialTime == null) {
-                    initialTime = nextTime;
-                } else {
-                    finalTime = nextTime;
+                if (readEvent.getEvent().isValueChanged()) {
+                    Timestamp nextTime = readEvent.getTimestamp();
+                    if (initialTime == null) {
+                        initialTime = nextTime;
+                    } else {
+                        finalTime = nextTime;
+                    }
                     nNotifications++;
                 }
             }
@@ -144,9 +146,14 @@ public class Log {
         
         if (initialTime != null && finalTime != null) {
             double seconds = finalTime.durationFrom(initialTime).toSeconds();
-            double rate = nNotifications / seconds;
-            if (rate > rateHz * (1.0 + tolerance) || rate < rateHz * (1 - tolerance)) {
-                errors.add(pvName + ": event rate mismatch (" + rate + " but expected " + rateHz + ")");
+            // The period between the first two notification is going to be shorter
+            // since we connect independently from the cycle.
+            // We'll make sure the rate is between the two extreems: second event
+            // is right after, second event is after the correct period
+            double minMeasuredRate = (nNotifications - 2) / seconds;
+            double maxMeasuredRate = (nNotifications - 1) / seconds;
+            if (maxMeasuredRate < minRateHz || minMeasuredRate > maxRateHz) {
+                errors.add(pvName + ": event rate mismatch (" + minMeasuredRate + "/" + maxMeasuredRate + " but expected between " + minRateHz + "/" + maxRateHz + ")");
             }
         }
     }
