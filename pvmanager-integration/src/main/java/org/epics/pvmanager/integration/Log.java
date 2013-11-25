@@ -76,10 +76,10 @@ public class Log {
             }
         }
         if (current > connectionFlags.length) {
-            errors.add(pvName + ": more connection notification ("  + current + ") than expected ("  + connectionFlags.length + ")");
+            errors.add(pvName + ": more connection notifications ("  + current + ") than expected ("  + connectionFlags.length + ")");
         }
         if (current < connectionFlags.length) {
-            errors.add(pvName + ": fewer connection notification ("  + current + ") than expected (" + connectionFlags.length + ")");
+            errors.add(pvName + ": fewer connection notifications ("  + current + ") than expected (" + connectionFlags.length + ")");
         }
     }
     
@@ -97,10 +97,36 @@ public class Log {
             }
         }
         if (current > connectionFlags.length) {
-            errors.add(pvName + ": more write connection notification ("  + current + ") than expected ("  + connectionFlags.length + ")");
+            errors.add(pvName + ": more write connection notifications ("  + current + ") than expected ("  + connectionFlags.length + ")");
         }
         if (current < connectionFlags.length) {
-            errors.add(pvName + ": fewer write connection notification ("  + current + ") than expected (" + connectionFlags.length + ")");
+            errors.add(pvName + ": fewer write connection notifications ("  + current + ") than expected (" + connectionFlags.length + ")");
+        }
+    }
+    
+    public void matchWriteNotifications(String pvName, boolean... sucessfulWrite) {
+        int current = 0;
+        for (Event event : events) {
+            if (event instanceof WriteEvent && event.getPvName().equals(pvName)) {
+                WriteEvent writeEvent = (WriteEvent) event;
+                if (writeEvent.getEvent().isWriteSucceeded()) {
+                    if (current < sucessfulWrite.length && !sucessfulWrite[current]) {
+                        errors.add(pvName + ": write notification " + current + " was successful (expected unsuccessful)");
+                    }
+                    current++;
+                } else if (writeEvent.getEvent().isWriteFailed()) {
+                    if (current < sucessfulWrite.length && sucessfulWrite[current]) {
+                        errors.add(pvName + ": write notification " + current + " was unsuccessful (expected successful)");
+                    }
+                    current++;
+                }
+            }
+        }
+        if (current > sucessfulWrite.length) {
+            errors.add(pvName + ": more write notifications ("  + current + ") than expected ("  + sucessfulWrite.length + ")");
+        }
+        if (current < sucessfulWrite.length) {
+            errors.add(pvName + ": fewer write notifications ("  + current + ") than expected (" + sucessfulWrite.length + ")");
         }
     }
     
@@ -234,6 +260,35 @@ public class Log {
                 if (readEvent.getLastException() != null) {
                     out.append(" ").append(readEvent.getLastException().getClass().getName())
                             .append(":").append(readEvent.getLastException().getMessage());
+                } else {
+                    out.append(" NoException");
+                }
+            }
+            if (event instanceof WriteEvent) {
+                WriteEvent writeEvent = (WriteEvent) event;
+                out.append(format.format(writeEvent.getTimestamp()))
+                        .append(" W(");
+                if (writeEvent.getEvent().isConnectionChanged()) {
+                    out.append("C");
+                }
+                if (writeEvent.getEvent().isWriteSucceeded()) {
+                    out.append("S");
+                }
+                if (writeEvent.getEvent().isWriteFailed()) {
+                    out.append("F");
+                }
+                if (writeEvent.getEvent().isExceptionChanged()) {
+                    out.append("E");
+                }
+                out.append(") ").append(writeEvent.getPvName());
+                if (writeEvent.isConnected()) {
+                    out.append(" CONN");
+                } else {
+                    out.append(" DISC");
+                }
+                if (writeEvent.getLastException() != null) {
+                    out.append(" ").append(writeEvent.getLastException().getClass().getName())
+                            .append(":").append(writeEvent.getLastException().getMessage());
                 } else {
                     out.append(" NoException");
                 }
