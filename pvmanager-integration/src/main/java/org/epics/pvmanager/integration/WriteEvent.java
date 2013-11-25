@@ -15,14 +15,14 @@ public class WriteEvent implements Event {
     private Timestamp timestamp;
     private String pvName;
     private PVWriterEvent<?> event;
-    private boolean coonected;
+    private boolean connected;
     private Exception lastException;
 
     public WriteEvent(Timestamp timestamp, String pvName, PVWriterEvent<?> event, boolean coonected, Exception lastException) {
         this.timestamp = timestamp;
         this.pvName = pvName;
         this.event = event;
-        this.coonected = coonected;
+        this.connected = coonected;
         this.lastException = lastException;
     }
 
@@ -53,12 +53,12 @@ public class WriteEvent implements Event {
         this.event = event;
     }
 
-    public boolean isCoonected() {
-        return coonected;
+    public boolean isConnected() {
+        return connected;
     }
 
-    public void setCoonected(boolean coonected) {
-        this.coonected = coonected;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     public Exception getLastException() {

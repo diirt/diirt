@@ -83,6 +83,27 @@ public class Log {
         }
     }
     
+    public void matchWriteConnections(String pvName, boolean... connectionFlags) {
+        int current = 0;
+        for (Event event : events) {
+            if (event instanceof WriteEvent && event.getPvName().equals(pvName)) {
+                WriteEvent writeEvent = (WriteEvent) event;
+                if (writeEvent.getEvent().isConnectionChanged()) {
+                    if (current < connectionFlags.length && writeEvent.isConnected() != connectionFlags[current]) {
+                        errors.add(pvName + ": write connection notification " + current + " was " + writeEvent.isConnected() + " (expected " + connectionFlags[current] + ")");
+                    }
+                    current++;
+                }
+            }
+        }
+        if (current > connectionFlags.length) {
+            errors.add(pvName + ": more write connection notification ("  + current + ") than expected ("  + connectionFlags.length + ")");
+        }
+        if (current < connectionFlags.length) {
+            errors.add(pvName + ": fewer write connection notification ("  + current + ") than expected (" + connectionFlags.length + ")");
+        }
+    }
+    
     public void matchValues(String pvName, VTypeMatchMask mask, Object... values) {
         int current = 0;
         for (Event event : events) {

@@ -44,6 +44,7 @@ public class Main2 {
                 log.matchConnections("const-double", true);
                 log.matchValues("const-double", ALL_EXCEPT_TIME, newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()),
                         newVDouble(3.0, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
+                log.matchWriteConnections("const-double", true);
                 log.matchConnections("const-double.NAME", true);
                 log.matchValues("const-double.NAME", ALL, newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false)));
                 log.matchConnections("const-double.SCAN", true);
