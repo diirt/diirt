@@ -1,0 +1,67 @@
+record(calc, "$(P)$(DBL)Small-I") {
+  field(DESC, "Count from 0 -> 15")
+  field(SCAN, "$(SCAN=1 second)")
+  field(INPA, "$(P)$(DBL)Small-I.VAL NPP")
+  field(CALC, "A<15?A+1:0")
+  field(FLNK, "$(P)$(DBL)Large-I")
+  field(TSEL, "$(TSEL=)")
+  
+  field(LOPR, "0")
+  field(HOPR, "15")
+  field(EGU,  "arb")
+
+  field(HIHI, "14")
+  field(HIGH, "10")
+  field(LOW , "5")
+  field(LOLO, "1")
+  field(HHSV, "MAJOR")
+  field(HSV , "MINOR")
+  field(LSV , "MAJOR")
+  field(LLSV, "INVALID")
+}
+
+record(calc, "$(P)$(DBL)Large-I") {
+  field(DESC, "Exp. from 10^-16 -> 10^16")
+  field(INPA, "$(P)$(DBL)Small-I.VAL NPP")
+  field(CALC, "(A+1)**(2*A-16)")
+  field(FLNK, "$(P)$(LONG)")
+  field(TSEL, "$(P)$(DBL)Small-I.TIME")
+  
+  field(LOPR, "1e-16")
+  field(HOPR, "1e+16")
+  field(EGU,  "pow")
+}
+
+record(longin, "$(P)$(LONG)") {
+  field(INP,  "$(P)$(DBL)Small-I MSS")
+  field(FLNK, "$(P)$(MBBI)")
+  field(TSEL, "$(P)$(DBL)Small-I.TIME")
+  
+  field(LOPR, "0")
+  field(HOPR, "15")
+  field(EGU,  "iarb")
+
+}
+
+record(mbbi, "$(P)$(MBBI)") {
+  field(INP, "$(P)$(DBL)Small-I MSS")
+  field(ZRST, "Zero")
+  field(ONST, "One")
+  field(TWST, "Two")
+  field(THST, "Three")
+  field(FRST, "Four")
+  field(FVST, "Five")
+  field(SXST, "Six")
+  field(SVST, "Seven")
+  field(EIST, "Eight")
+  field(NIST, "Nine")
+  field(TEST, "Ten")
+  field(UNSV, "INVALID")
+  field(FLNK, "$(P)$(STR)")
+  field(TSEL, "$(P)$(DBL)Small-I.TIME")
+}
+
+record(stringin, "$(P)$(STR)") {
+  field(INP, "$(P)$(MBBI) MSS")
+  field(TSEL, "$(P)$(DBL)Small-I.TIME")
+}
