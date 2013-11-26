@@ -7,7 +7,6 @@ package org.epics.pvmanager.jca;
 import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.ValueCache;
-import com.cosylab.epics.caj.CAJMonitor;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Monitor;
@@ -71,6 +70,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     public JCAChannelHandler(String channelName, JCADataSource jcaDataSource) {
         super(channelName);
+        setProcessMessageOnReconnect(false);
         this.jcaDataSource = jcaDataSource;
         
         boolean longStringName = longStringPattern.matcher(channelName).matches();
@@ -386,6 +386,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                             // Setup monitors on connection
                             setup(channel);
                         } else {
+                            resetMessage();
                             // Next connection, resend the read only exception if that's the case
                             sentReadOnlyException = false;
                         }
