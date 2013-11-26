@@ -156,6 +156,27 @@ public class Log {
         }
     }
     
+    public void matchErrors(String pvName, String... messages) {
+        int current = 0;
+        for (Event event : events) {
+            if (event instanceof ReadEvent && event.getPvName().equals(pvName)) {
+                ReadEvent readEvent = (ReadEvent) event;
+                if (readEvent.getEvent().isExceptionChanged()) {
+                    if (current < messages.length && Objects.equals(readEvent.getLastException().getMessage(), messages[current])) {
+                        errors.add(pvName + ": error notification " + current + " was " + readEvent.getLastException().getMessage() + " (expected " + messages[current] + ")");
+                    }
+                    current++;
+                }
+            }
+        }
+        if (current > messages.length) {
+            errors.add(pvName + ": more error notifications ("  + current + ") than expected ("  + messages.length + ")");
+        }
+        if (current < messages.length) {
+            errors.add(pvName + ": fewer error notifications ("  + current + ") than expected (" + messages.length + ")");
+        }
+    }
+    
     public void matchSequentialNumberValues(String pvName, int expectedRepeatedValues) {
         List<VNumber> values = valuesForChannel(pvName, VNumber.class);
         Double currentValue = null;
