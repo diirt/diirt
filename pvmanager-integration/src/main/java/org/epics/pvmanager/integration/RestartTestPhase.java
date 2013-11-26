@@ -21,14 +21,18 @@ public class RestartTestPhase extends TestPhase {
 
     @Override
     public void run() throws Exception {
+        // Open command writer
+        addWriter("command", PVManager.write(channel("command")));
+        Thread.sleep(1000);
+
+        // Reset ioc to known state
+        write("command", "start phase1 1");
+        Thread.sleep(10000);
+        
         // Add all constant fields
         // TODO: missing float, int, short, byte, string and all arrays
         addReader(PVManager.read(channel("const-double")), TimeDuration.ofHertz(50));
 
-        // Open command writer
-        addWriter("command", PVManager.write(channel("command")));
-        Thread.sleep(1000);
-        
         // Send restart command and wait enough time
         write("command", "start phase1 1");
         Thread.sleep(10000);
