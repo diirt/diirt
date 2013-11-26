@@ -1,9 +1,9 @@
-package org.epics.pvmanager.integration;
-
 /**
  * Copyright (C) 2010-12 Brookhaven National Laboratory
  * All rights reserved. Use is subject to license terms.
  */
+
+package org.epics.pvmanager.integration;
 
 import org.epics.pvmanager.integration.*;
 import java.util.Arrays;
@@ -26,23 +26,7 @@ public class Main {
         PVManager.setDefaultDataSource(new JCADataSource());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         
-        TestPhase phase1 = new TestPhase() {
-
-            @Override
-            public void run() throws Exception{
-                addReader(PVManager.read(channel("const-double")), TimeDuration.ofHertz(50));
-                addWriter("command", PVManager.write(channel("command")));
-                Thread.sleep(1000);
-                write("command", "start phase1 1");
-                Thread.sleep(10000);
-            }
-
-            @Override
-            public void verify(Log log) {
-                log.matchConnections("const-double", true, false, true);
-            }
-
-        };
+        TestPhase phase1 = new RestartTestPhase();
         
         phase1.execute();
         
