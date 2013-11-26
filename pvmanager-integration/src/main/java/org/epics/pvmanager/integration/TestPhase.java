@@ -46,6 +46,15 @@ public abstract class TestPhase {
         pvWriter.write(obj);
     }
     
+    protected void pause(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TestPhase.class.getName()).log(Level.SEVERE, null, ex);
+            Thread.currentThread().interrupt();
+        }
+    }
+    
     private void closeAll() {
         for (PVReader<?> pvReader : pvReaders) {
             pvReader.close();
