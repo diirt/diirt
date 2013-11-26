@@ -4,11 +4,16 @@
  */
 package org.epics.pvmanager.integration;
 
-import static org.epics.pvmanager.ExpressionLanguage.channel;
+import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVManager;
 import org.epics.util.time.TimeDuration;
+import org.epics.util.time.Timestamp;
+import org.epics.vtype.AlarmSeverity;
+import static org.epics.pvmanager.integration.VTypeMatchMask.*;
+import static org.epics.vtype.ValueFactory.*;
 
 /**
+ * Tests reconnects caused by a server restart.
  *
  * @author carcassi
  */
@@ -16,9 +21,15 @@ public class RestartTestPhase extends TestPhase {
 
     @Override
     public void run() throws Exception {
+        // Add all constant fields
+        // TODO: missing float, int, short, byte, string and all arrays
         addReader(PVManager.read(channel("const-double")), TimeDuration.ofHertz(50));
+
+        // Open command writer
         addWriter("command", PVManager.write(channel("command")));
         Thread.sleep(1000);
+        
+        // Send restart command and wait enough time
         write("command", "start phase1 1");
         Thread.sleep(10000);
     }
@@ -26,6 +37,10 @@ public class RestartTestPhase extends TestPhase {
     @Override
     public void verify(Log log) {
         log.matchConnections("const-double", true, false, true);
+        log.matchValues("const-double", ALL,
+                newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()),
+                newVDouble(0.13, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()),
+                newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
     }
 
 }
