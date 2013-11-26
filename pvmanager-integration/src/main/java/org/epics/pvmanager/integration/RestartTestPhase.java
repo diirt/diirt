@@ -10,6 +10,7 @@ import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import static org.epics.pvmanager.integration.VTypeMatchMask.*;
+import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.vtype.ValueFactory.*;
 
 /**
@@ -46,6 +47,13 @@ public class RestartTestPhase extends TestPhase {
                 newVDouble(0.13, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()),
                 newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
         log.matchErrors("const-double");
+    }
+
+    public static void main(String[] args) {
+        PVManager.setDefaultDataSource(new JCADataSource());
+        TestPhase phase1 = new RestartTestPhase();
+        phase1.execute();
+        PVManager.getDefaultDataSource().close();
     }
 
 }
