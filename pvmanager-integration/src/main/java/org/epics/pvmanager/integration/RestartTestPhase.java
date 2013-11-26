@@ -23,7 +23,7 @@ public class RestartTestPhase extends DisconnectTestPhase {
 
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(new JCADataSource());
-//        LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
+        //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new RestartTestPhase();
         phase1.execute();
         Thread.sleep(100);
