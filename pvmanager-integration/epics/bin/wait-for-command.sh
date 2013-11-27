@@ -7,6 +7,7 @@ while read i; do
     (( COUNT++ ))
   else
     echo $COMMAND
+    pkill -P $CHILD_PID
     exit 0
   fi
 done < <(camonitor command)
