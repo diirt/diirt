@@ -7,22 +7,28 @@ cd $BASEDIR
 while true; do
   COMMAND=`./wait-for-command.sh 2> /dev/null`
   case $COMMAND in
-     start*) echo Starting ioc `echo $COMMAND | cut -d " " -f 2` after a pause of `echo $COMMAND | cut -d " " -f 3` seconds
-             ./stop-ioc.sh
+     start*) echo Executing \"$COMMAND\"
+             NSEC=`echo $COMMAND | cut -d " " -f 3`
+             IOC=`echo $COMMAND | cut -d " " -f 2`
+             echo Stopping current IOC
+             ./stop-ioc.sh &> /dev/null
+             echo Waiting $NSEC seconds
              sleep `echo $COMMAND | cut -d " " -f 3`
              ./start-ioc.sh `echo $COMMAND | cut -d " " -f 2`
              sleep 1
              ;;
-     netpause*) echo Pausing network for `echo $COMMAND | cut -d " " -f 2` seconds
+     netpause*) echo Executing \"$COMMAND\"
              ./network-pause.sh $ETH `echo $COMMAND | cut -d " " -f 2`
              ;;
-     stop*) echo Finished
-             ./stop-ioc.sh
+     stop*) echo Shutting down
+             echo Stopping current IOC
+             ./stop-ioc.sh &> /dev/null
+             echo Done
              exit 0;
              ;;
      *) echo Unrecognized command $COMMAND
         ;;
   esac
   echo Ready for next command
-  caput command ready >/dev/null
+  caput command ready &>/dev/null
 done
