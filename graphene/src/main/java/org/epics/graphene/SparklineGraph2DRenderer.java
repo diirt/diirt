@@ -36,10 +36,10 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         super.bottomMargin = 0;
         super.topMargin = 0;
         
-        super.leftAreaMargin   = 2;
-        super.rightAreaMargin  = 2;
-        super.bottomAreaMargin = 2;
-        super.topAreaMargin    = 2;        
+        super.leftAreaMargin   = 1;
+        super.rightAreaMargin  = 1;
+        super.bottomAreaMargin = 1;
+        super.topAreaMargin    = 1;        
     }
     
     //Parameters

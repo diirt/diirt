@@ -7,6 +7,7 @@ package org.epics.graphene;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -118,8 +119,9 @@ public class SparklineGraph2DRendererTest {
                 initialDataY[i] = 1;
             }
             
-        Point2DDataset data = Point2DDatasets.lineData(initialDataY);
-            
+        //Point2DDataset data = Point2DDatasets.lineData(initialDataY);
+        Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(0,1,2,3,4,5), 
+                new ArrayDouble(3,3,3,3,3,3));    
         //Creates a sparkline graph
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
