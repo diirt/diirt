@@ -159,27 +159,31 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Draw the cells of data by filling rectangles, if the width and height are greater than one pixel.
         if(cellWidth >= 1 && cellHeight >= 1){
-            drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+            drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
         }
         
         //Draw graph when cell width or height is smaller than one pixel.
         if(cellWidth < 1 || cellHeight < 1){
             if(cellHeight > 1){
-                drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+                drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
             }
             if(cellWidth > 1){
-                drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+                drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
             }
             if(cellWidth < 1 && cellHeight < 1){
-                drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, xRange, yRange, cellHeight, cellWidth);
+                drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
             }
             
         }
-        //Draw a legend, given the current data set.
-        if(drawLegend){
+        //Draw a legend, given the current data set. 
+        //Don't draw if the user indicats that no legend should be drawn, or the legend width is invalid.
+        if(drawLegend && legendWidth>0){
+            //dataList is made by splitting the aggregated range of the z(color) data into a list of the
+            //same length as the the height of the graph in pixels.
             ListNumber dataList = ListNumbers.linearListFromRange(zAggregatedRange.getMinimum().doubleValue(),zAggregatedRange.getMaximum().doubleValue(),(int)yHeightTotal);
+            //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
-            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1,1,1, legendWidth);
+            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth);
             drawZLabels();
         }
     }
@@ -190,7 +194,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     
     public void drawRectangles(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         
         int countY = 0;
         int countX;
@@ -217,12 +221,20 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     //Draws rectangles for the case when there are more x values than pixels, but no more y values than pixels.
     //Uses the first value within each pixel to choose a color.
     public void drawRectanglesSmallX(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         
         int countY = 0;
         double countX;
+        /*DataPerBox is a measure of how many data points fit into each pixel.
+         Because of checks in the draw method, DataPerBox is guaranteed to be greater 
+         than 1. When drawing each box, xDataPerBox is the amount added to countX, which is then
+         rounded down to the nearest integer to be used as an index for a data point.
+         countX itself is never rounded.*/
         double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
+        //yPosition is never rounded, and keeps track of exactly where each box should start.
         double yPosition = yEndGraph-yHeightTotal;
+        //yPositionInt is used for the actual drawing of boxes, since every box needs to be drawn
+        //starting from the top left of a pixel. It is based off of yPosition. 
         int yPositionInt = (int)(yEndGraph-yHeightTotal);
         while (countY < data.getYCount()){
                 countX = 0;
@@ -230,6 +242,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
                     Rectangle2D.Double rect;
+                    //check to see how far the end of the drawn box is from the end of the actual data box (due to truncation)
                     if((yPositionInt+((int)cellHeight)+1)-(yPosition+cellHeight) < 1)
                         rect = new Rectangle2D.Double(xPositionInt,yPositionInt ,1,((int)cellHeight)+1);
                     else
@@ -245,7 +258,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
 //Same logic as drawRectanglesSmallX, but for when there are more y values than pixels.
     public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         
         double countY;
         int countX = 0;
@@ -276,7 +289,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 //Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
 
     public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double xRange, double yRange, double cellHeight, double cellWidth){
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         double countY = 0;
         double countX;
         int yPositionInt = (int)(yEndGraph-yHeightTotal);
