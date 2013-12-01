@@ -60,7 +60,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
                     minValueY = -1,
                     firstValueY = -1,
                     lastValueY = -1;
-    private Double  aspectRatio = null,
+    private Double  aspectRatio = null;
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
