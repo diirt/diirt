@@ -36,6 +36,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         super.bottomMargin = 0;
         super.topMargin = 0;
         
+        //Set all area matgins to 1 to account for the drawing of circles.
         super.leftAreaMargin   = 1;
         super.rightAreaMargin  = 1;
         super.bottomAreaMargin = 1;
@@ -60,7 +61,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
                     firstValueY = -1,
                     lastValueY = -1;
     private Double  aspectRatio = null,
-                    numDataPoints = null;
 
     //Scaling Schemes    
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
@@ -79,15 +79,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
      */
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
-        
-        
-//FIXME:  Not sure
-//        if(numDataPoints != null){
-//            if(aspectRatio != null){
-//                aspectRatio *= (1+((data.getCount()-numDataPoints))/numDataPoints);
-//            }
-//        }
-//        numDataPoints = (double)data.getCount();
         
         //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
         //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
@@ -137,6 +128,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         }
     }
     
+    //Puts (x,y) at the center of the pixel it's within, then draws the circle.
     protected void drawCircle(Graphics2D g, Point2DDataset data, int index, Color color){
             double x = Math.floor(scaledX(data.getXValues().getDouble(index)))+.5;
             double y = Math.floor(scaledY(data.getYValues().getDouble(index)))+.5;
@@ -338,18 +330,18 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
             relevantWidth  = super.getImageWidth() - rightMargin - leftMargin;
         
         //Defaults
-        rightAreaMargin = 2;
-        leftAreaMargin = 2;
-        topAreaMargin = 2;
-        bottomAreaMargin = 2;
+        rightAreaMargin = 1;
+        leftAreaMargin = 1;
+        topAreaMargin = 1;
+        bottomAreaMargin = 1;
             
         //Shrink width to maintain aspect ratio
         if (relevantHeight * aspectRatio <= relevantWidth){
             double preferredWidth = relevantHeight * aspectRatio;
             int marginSize = (int) (relevantWidth - preferredWidth) / 2;
             
-            rightAreaMargin = 2 + marginSize;
-            leftAreaMargin = 2 + marginSize;
+            rightAreaMargin = 1 + marginSize;
+            leftAreaMargin = 1 + marginSize;
         }
         //Shrink height to maintain aspect ratio
         else {
@@ -363,8 +355,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
             double preferredHeight = relevantWidth / aspectRatio;
             int marginSize = (int) (relevantHeight - preferredHeight) / 2;
             
-            topAreaMargin = 2 + marginSize;
-            bottomAreaMargin = 2 + marginSize;
+            topAreaMargin = 1 + marginSize;
+            bottomAreaMargin = 1 + marginSize;
         }
     }
 }

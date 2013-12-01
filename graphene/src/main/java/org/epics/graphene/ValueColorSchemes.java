@@ -18,12 +18,12 @@ public class ValueColorSchemes {
     
     public static ValueColorScheme jetScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
-        colors.add(new Color(0,0,138));
+        colors.add(new Color(0,0,138)); //Dark Blue
         colors.add(Color.BLUE);
         colors.add(Color.CYAN);
         colors.add(Color.YELLOW);
         colors.add(Color.RED);
-        colors.add(new Color(138,0,0));
+        colors.add(new Color(138,0,0)); //Dark Red
         colors.add(Color.BLACK);    //NaN
         
         return RangeGradient(range, colors, percentageRange(colors.size() - 2));
@@ -31,7 +31,7 @@ public class ValueColorSchemes {
     
     public static ValueColorScheme hotScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
-        colors.add(new Color(30,0,0));
+        colors.add(new Color(30,0,0)); //Very Dark Red
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
         colors.add(Color.WHITE);
@@ -57,10 +57,6 @@ public class ValueColorSchemes {
         ArrayList<Color> colors = new ArrayList<>();
         
         colors.add(Color.MAGENTA);
-        colors.add(new Color(255, 66, 189));
-        colors.add(new Color(255, 82, 173));             
-        colors.add(new Color(255, 173, 82));
-        colors.add(new Color(255, 189, 66));
         colors.add(Color.YELLOW);
 
         colors.add(Color.RED);  //NaN

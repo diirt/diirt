@@ -9,7 +9,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.*;
-import java.math.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -259,15 +258,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 //Same logic as drawRectanglesSmallX, but for when there are more y values than pixels.
     public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
-        
+        //Exact y index of data value to be used.
         double countY;
         int countX = 0;
+        //Exact number of y data points per pixel. 
         double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
         double xPosition = xStartGraph;
         int xPositionInt = (int)xStartGraph;
         while (countX < data.getXCount()){
                 countY = 0;
-                double yPosition = yEndGraph-yHeightTotal;
                 int yPositionInt = (int)(yEndGraph-yHeightTotal);
                 while (yPositionInt < (int)yEndGraph+1){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-((int)countY)))));
@@ -287,9 +286,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
 //Draws for the case when there are both more x values and y values than pixels.
 //Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
-
+//Draws boxes only 1 pixel wide and 1 pixel tall. 
     public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
+        /*countY and countX are used in the same way as in drawRectanglesSmallX and drawRectanglesSmallY
+         each is used to calculate exactly what index of data value should be used to get the color
+         for the drawn square.*/
         double countY = 0;
         double countX;
         int yPositionInt = (int)(yEndGraph-yHeightTotal);
@@ -311,7 +313,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             yPositionInt+=1;
         }
     }
-
+    /*Calculates the range of the z values to be graphed, based on the previous z range (if there is one)
+     If there is a previous range, the minimum value can only be lowered and the maximum value can only
+     be raised to match the current range.*/
     protected void calculateZRange(Range zDataRange) {
         zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
         zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
