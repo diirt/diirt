@@ -16,6 +16,7 @@ import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
+import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
@@ -153,6 +154,23 @@ public class Log {
         }
         if (current < values.length) {
             errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
+        }
+    }
+
+    void matchAllValues(String pvName, VTypeMatchMask mask, Object expectedValue) {
+        int current = 0;
+        for (Event event : events) {
+            if (event instanceof ReadEvent && event.getPvName().equals(pvName)) {
+                ReadEvent readEvent = (ReadEvent) event;
+                if (readEvent.getEvent().isValueChanged()) {
+                    Object actualValue = readEvent.getValue();
+                    String message = mask.match(expectedValue, actualValue);
+                    if (message != null) {
+                        errors. add(pvName + ": value notification " + current + " " + message);
+                    }
+                    current++;
+                }
+            }
         }
     }
     

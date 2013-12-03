@@ -25,4 +25,6 @@ public class Constants {
     public static final VEnum const_enum_value = newVEnum(0, Arrays.asList("Passive", "Event", "I/O Intr", "10 second", "5 second", "2 second", "1 second", ".5 second", ".2 second", ".1 second"), newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false));
     public static final String counter_double_1Hz = "double-counter-1Hz";
     public static final String counter_double_100Hz = "double-counter-100Hz";
+    public static final String alarm_string = "TST:Alarm:String";
+    public static final VString alarm_string_value = newVString("Hello", newAlarm(AlarmSeverity.NONE, "NO_ALARM"), timeNow());
 }

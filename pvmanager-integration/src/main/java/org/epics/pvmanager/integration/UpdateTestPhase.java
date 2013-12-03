@@ -36,6 +36,7 @@ public class UpdateTestPhase extends TestPhase {
         addReader(PVManager.read(channel(const_enum)), TimeDuration.ofHertz(50));
         addReader(PVManager.read(channel(counter_double_1Hz)), TimeDuration.ofHertz(50));
         addReader(PVManager.read(channel(counter_double_100Hz)), TimeDuration.ofHertz(50));
+        addReader(PVManager.read(channel(alarm_string)), TimeDuration.ofHertz(50));
         addWriter(const_double, PVManager.write(channel(const_double)));
         pause(1000);
         write(const_double, 3.0);
@@ -59,6 +60,7 @@ public class UpdateTestPhase extends TestPhase {
         log.matchValueEventRate(counter_double_1Hz, 0.95, 1.05);
         log.matchConnections(counter_double_100Hz, true);
         log.matchValueEventRate(counter_double_100Hz, 45, 50);
+        log.matchAllValues(alarm_string, VALUE, alarm_string_value);
     }
 
     public static void main(String[] args) throws Exception {
