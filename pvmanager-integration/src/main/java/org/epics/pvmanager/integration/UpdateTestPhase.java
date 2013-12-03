@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.integration;
 
+import java.util.Arrays;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVManager;
 import org.epics.util.time.TimeDuration;
@@ -61,6 +62,10 @@ public class UpdateTestPhase extends TestPhase {
         log.matchConnections(counter_double_100Hz, true);
         log.matchValueEventRate(counter_double_100Hz, 45, 50);
         log.matchAllValues(alarm_string, VALUE, alarm_string_value);
+        log.validate(alarm_string, Validators.cycleValidator(VTypeMatchMask.ALARM, Arrays.<Object>asList(newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
+                newAlarm(AlarmSeverity.MINOR, "LINK_ALARM"), newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
+                newAlarm(AlarmSeverity.MAJOR, "LINK_ALARM"), newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
+                newAlarm(AlarmSeverity.INVALID, "LINK_ALARM"))));
     }
 
     public static void main(String[] args) throws Exception {

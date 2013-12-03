@@ -16,6 +16,7 @@ import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
+import org.epics.vtype.Alarm;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VTypeToString;
@@ -156,8 +157,15 @@ public class Log {
             errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
         }
     }
+    
+    public void validate(String pvName, Validator validator) {
+        List<String> resErrors = validator.validate(valuesForChannel(pvName, Object.class));
+        for (String error : resErrors) {
+            errors.add(pvName + ": " + error);
+        }
+    }
 
-    void matchAllValues(String pvName, VTypeMatchMask mask, Object expectedValue) {
+    public void matchAllValues(String pvName, VTypeMatchMask mask, Object expectedValue) {
         int current = 0;
         for (Event event : events) {
             if (event instanceof ReadEvent && event.getPvName().equals(pvName)) {
@@ -266,6 +274,19 @@ public class Log {
                     } catch(ClassCastException ex) {
                         errors.add(pvName + ": value is not " + clazz.getSimpleName() + " (was " + readEvent.getValue() + ")");
                     }
+                }
+            }
+        }
+        return values;
+    } 
+    
+    private List<Alarm> alarmsForChannel(String pvName) {
+        List<Alarm> values = new ArrayList<>();
+        for (Event event : events) {
+            if (pvName.equals(event.getPvName()) && event instanceof ReadEvent) {
+                ReadEvent readEvent = (ReadEvent) event;
+                if (readEvent.getEvent().isValueChanged()) {
+                    values.add(ValueUtil.alarmOf(readEvent.getValue()));
                 }
             }
         }
