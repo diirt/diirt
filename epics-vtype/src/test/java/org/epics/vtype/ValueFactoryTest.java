@@ -33,6 +33,7 @@ public class ValueFactoryTest {
         Alarm alarm = newAlarm(AlarmSeverity.MAJOR, "DEVICE");
         assertThat(alarm.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
         assertThat(alarm.getAlarmName(), equalTo("DEVICE"));
+        assertThat(alarm.toString(), equalTo("MAJOR(DEVICE)"));
     }
     
     @Test

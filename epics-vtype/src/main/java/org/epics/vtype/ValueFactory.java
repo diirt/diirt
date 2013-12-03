@@ -100,6 +100,11 @@ public class ValueFactory {
             public String getAlarmName() {
                 return alarmName;
             }
+
+            @Override
+            public String toString() {
+                return VTypeToString.alarmToString(this);
+            }
             
         };
     }
