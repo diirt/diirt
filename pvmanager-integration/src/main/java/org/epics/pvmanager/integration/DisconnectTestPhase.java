@@ -1,19 +1,16 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory All rights reserved. Use
- * is subject to license terms.
+ * Copyright (C) 2010-12 Brookhaven National Laboratory
+ * All rights reserved. Use is subject to license terms.
  */
 package org.epics.pvmanager.integration;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVManager;
 import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import static org.epics.pvmanager.integration.VTypeMatchMask.*;
-import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VString;
 import static org.epics.vtype.ValueFactory.*;
+import static org.epics.pvmanager.integration.Constants.*;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -21,11 +18,6 @@ import static org.epics.vtype.ValueFactory.*;
  * @author carcassi
  */
 public abstract class DisconnectTestPhase extends TestPhase {
-    
-    private static final String const_double = "const-double";
-    private static final VDouble const_double_value = newVDouble(0.13, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone());
-    private static final String const_string = "const-double.NAME";
-    private static final VString const_string_value = newVString("const-double", newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Timestamp.of(631152000, 0), null, false));
 
     @Override
     public final void run() throws Exception {
