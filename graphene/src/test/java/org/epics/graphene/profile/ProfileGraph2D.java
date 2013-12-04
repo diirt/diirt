@@ -35,19 +35,64 @@ import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
 /**
- *
+ * The base class for all graph profilers.
+ * Has parameter T that is a graph renderer.
+ * Has parameter S that is the dataset associated with T.
+ * 
+ * A profiler creates a loop in which a Graph2DRenderer perform multiple render operations.
+ * Various options are provided to handle the profile statistics.
+ * 
  * @author asbarber
  */
 public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
-    public ProfileGraph2D(){
-        
+    
+    /**
+     * Creates a graph profiler.
+     */
+    public ProfileGraph2D(){    
     }
+    
+    /**
+     * Creates a graph profiler with specified properties.
+     * @param maxTries the maximum attempts for rendering
+     * @param testTimeSec the maximum time spent in the render loop
+     */
     public ProfileGraph2D(int maxTries, int testTimeSec){
         this.maxTries = maxTries;
         this.testTimeSec = testTimeSec;
     }
     
+
+    public static final String LOG_FILEPATH = "ProfileResults\\";
     
+    //Profile Parameters (Customizable)
+    private int maxTries    = 1000000,
+                testTimeSec = 20;
+    private int nPoints     = 1000;
+    
+    private boolean bufferInLoop = false;
+    
+    private int imageWidth  = 600,
+                imageHeight = 400;
+    
+    //Statistics
+    private int         nTries = 0;
+    private StopWatch   stopWatch;    
+    
+    //Save Parameters
+    private String datasetMessage = "",
+                   saveMessage = "";
+    
+    /**
+     * Performs the necessary operation to 'profile' a graph renderer.
+     * Gathers statistics about the rendering time of a Graph2DRenderer.
+     * 
+     * <ol>
+     *      <li>Makes the data</li>
+     *      <li>Makes the renderer</li>
+     *      <li>Repeatedly renders</li>
+     * </ol>
+     */
     public void profile(){        
         //Timing
         Timestamp start = Timestamp.now();
@@ -90,35 +135,50 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             }
         }
     }    
+
     
-    
-    public static final String LOG_FILEPATH = "ProfileResults\\";
-    
-    //Profile Parameters (Customizable)
-    private int maxTries    = 1000000,
-                testTimeSec = 20;
-    private int nPoints     = 1000;
-    
-    private boolean bufferInLoop = false;
-    
-    private int imageWidth  = 600,
-                imageHeight = 400;
-    
-    //Statistics
-    private int         nTries = 0;
-    private StopWatch   stopWatch;    
-    
-    //Save Parameters
-    private String datasetMessage = "",
-                   saveMessage = "";
-    
-      
     //During-Profile Sections
+    
+    /**
+     * The data that to be rendered in the render loop.
+     * Precondition: getRenderer() is capable of rendering getDataset().
+     *               Thus type T is capable of rendering type S.
+     * 
+     * A useful helper method is getNumDataPoints.
+     * The size of the returned data set should match the size specified by getNumDataPoints.
+     * @return a set of data associated with T
+     */
     protected abstract S getDataset();
+    
+    /**
+     * The renderer used in the render loop.
+     * Precondition: getRenderer() is capable of rendering getDataset().
+     *               Thus type T is capable of rendering type S.
+     * @param imageWidth pixel width of rendered image
+     * @param imageHeight pixel height of rendered image
+     * @return a Graph2DRenderer associated with data S
+     */
     protected abstract T getRenderer(int imageWidth, int imageHeight);
+    
+    /**
+     * The primary method in the profiles render loop.
+     * Override this method to test the draw method of 'renderer'.
+     * 
+     * @param graphics where image draws to
+     * @param renderer what draws the image
+     * @param data what is drawn
+     */
     protected abstract void render(Graphics2D graphics, T renderer, S data);
     
+    
     //Post-Profile Options
+    
+    /**
+     * Gets profile statistics. 
+     * Returns null if the profile method has not been called and no statistics exist.
+     * 
+     * @return 
+     */
     public Statistics getStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
@@ -127,10 +187,23 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return new Statistics(nTries, stopWatch.getAverageMs(), stopWatch.getTotalMs());
     }
+    
+    /**
+     * Prints the graph title and then the statistics.
+     * Does not print anything if statistics do not exist.
+     */
     public void printStatistics(){
-        System.out.println(getGraphTitle());
-        getStatistics().printStatistics();
+        Statistics stats = getStatistics();
+        
+        if (stats != null){
+            System.out.println(getGraphTitle());            
+            stats.printStatistics();
+        }
     }
+    
+    /**
+     * Graphs the profile statistics in a histogram, line graph, and averaged line graph.
+     */
     public void graphStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
@@ -149,6 +222,45 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         ShowResizableGraph.showLineGraph(line);
         ShowResizableGraph.showLineGraph(averagedLine);           
     }
+    
+    /**
+     * Writes the profile statistics to a CSV file designated to the profile graph.
+     * Appends the statistics to the end of the CSV file.
+     * 
+     * The file name is designated by getLogFileName(). 
+     * Each subclass should thus have its own CSV file.
+     * If a CSV file does not exist, the file is created.
+     * 
+     * If statistics do no exist, no operations are performed.
+     * If errors occur in IO, a console message is printed.
+     * 
+     * The format for the appended record is:
+     * "graphType","date","timeAverage","timeTotal","numberAttempts","numDataPoints","imageWidth","imageHeight","datasetComment","generalMessage"
+     * 
+     * The delimiting is:
+     * <ul>
+     *      <li>Non-numeric components enclosed in quotes</li>
+     *      <li>Numeric components not enclosed
+     *      <li>Components separated by commas (no spaces)</li>
+     * </ul>
+     * 
+     * The components are:
+     * <ol>
+     *      <li>Graph title (type of graph)</li>
+     *      <li>Date</li>
+     *      <li>Average time rendering</li>
+     *      <li>Total time rendering</li>
+     *      <li>Number of render attempts</li>
+     *      <li>Number of data points</li>
+     *      <li>Width of image rendered</li>
+     *      <li>Height of image rendered</li>
+     *      <li>Comment about the data set rendered (useful for multi-dimensional or unusual data sets)</li>
+     *      <li>General comment about rendering</li>
+     * </ol>     
+     * 
+     * It is important that this method has a parallel format to createLog so that
+     * the file writes properly and can be read/open to make sense.
+     */
     public void saveStatistics(){
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
@@ -188,6 +300,39 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             System.err.println("Output errors exist.");
         }
     }
+    
+    /**
+     * Creates a CSV file designated to the profile graph.
+     * Makes the file and appends the header.
+     * 
+     * Precondition: The designated file does not exist.
+     * 
+     * The file name is designated by getLogFileName(). 
+     * Each subclass should thus have its own CSV file.
+     * 
+     * If errors occur in creating the file, the exception is thrown and is logged.
+     * If errors occur in IO, a console message is printed.
+     * 
+     * The header delimiting is:
+     * <ul>
+     *      <li>Components are not enclosed in quotes</li>
+     *      <li>Components separated by commas (no spaces)</li>
+     * </ul>
+     * 
+     * The header components are:
+     * <ol>
+     *      <li>Graph Type</li>
+     *      <li>Date</li>
+     *      <li>Average Time (ms)</li>
+     *      <li>Total Time (ms)</li>
+     *      <li>Number of tries</li>
+     *      <li>Number of Data Points</li>
+     *      <li>Image Width</li>
+     *      <li>Image Height</li>
+     *      <li>Dataset Comments</li>
+     *      <li>General Message</li>
+     * </ol>     
+     */
     private void createLog(){
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
         try {
@@ -207,7 +352,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                         "Number of Data Points" + delim +
                         "Image Width" + delim +
                         "Image Height" + delim +
-                        "Datatset Comments" + delim +
+                        "Dataset Comments" + delim +
                         "General Message" + delim;
         
         //Write to file
@@ -221,45 +366,140 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }    
     }
     
+    
     //Save Parameter Getters
+    
+    /**
+     * Gets the type of graph renderer.
+     * Used in printing and saving statistics.
+     * Example: "LineGraph2D"
+     * @return the title of the graph renderer being profiled
+     */
     public abstract String getGraphTitle();
+    
+    /**
+     * Gets the name of the CSV file to save statistics to.
+     * Derived from getGraphTitle().
+     * @return the file name (not file path) of the CSV log file
+     */
     public String getLogFileName(){
         return getGraphTitle() + ".csv";
     }
+    
+    /**
+     * Gets the comment associated with the data set.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * 
+     * This is appropriate for discussing the distribution of the data, dimensions of the data, etc.
+     * @return message about the data set
+     */
     public String getDatasetMessage(){
         return datasetMessage;
     }
+    
+    /**
+     * Gets the general comment associated with the profile.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * 
+     * This is appropriate for discussing the parameters of the renderer, etc.
+     */
     public String getSaveMessage(){
         return saveMessage;
     }
     
+    
     //Save Parameter Setters
+    
+    /**
+     * Set the comment associated with the data set.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * 
+     * This is appropriate for discussing the distribution of the data, dimensions of the data, etc.
+     * 
+     * @param message comment about the data
+     */
     public void setDatasetMessage(String message){
         this.datasetMessage = message;
     }
+    
+    /**
+     * Set the general comment associated with the profile.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * 
+     * This is appropriate for discussing the parameters of the renderer, etc.
+     * 
+     * @param message general comment about the profiling
+     */    
     public void setSaveMessage(String message){
         this.saveMessage = message;
     }
     
+    
     //Test Parameter Getters
+    
+    /**
+     * Gets the size of the data set.
+     * Useful for creating the data set of the appropriate size.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return size of the data set in rendering
+     */
     public int getNumDataPoints(){
         return nPoints;
     }    
+    
+    /**
+     * Gets the width of the image rendered.
+     * Useful for creating the graph renderer.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return image width in pixels 
+     */
     public int getImageWidth(){
         return imageWidth;
     }
+    
+    /**
+     * Gets the height of the image rendered.
+     * Useful for creating the graph renderer.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return image height in pixels 
+     */    
     public int getImageHeight(){
         return imageHeight;
     }
+    
+    /**
+     * Gets the number of times the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return max tries the render loop will be run
+     */
     public int getMaxTries(){
         return maxTries;
     }
+    
+    /**
+     * Gets the time limit for how long the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return max time the render loop will be run
+     */
     public int getTestTime(){
         return testTimeSec;
     }
+    
+    /**
+     * Gets whether the image buffer is created within the render loop or beforehand.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return whether the image buffer is created in the render loop
+     */
     public boolean getBufferInLoop(){
         return this.bufferInLoop;
     }
+    
     
     //Test Parameter Setters
     public void setNumDataPoints(int nPoints){
@@ -280,6 +520,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public void setBufferInLoop(boolean bufferInLoop){
         this.bufferInLoop = bufferInLoop;
     }
+    
     
     //Dataset Generators
     public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
