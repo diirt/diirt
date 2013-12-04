@@ -13,17 +13,18 @@ import java.awt.Color;
  * @author sjdallst
  */
 public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<SparklineGraph2DRendererUpdate>{
-    //Parameters that can be updated
+    
     private Color   minValueColor, maxValueColor, lastValueColor;               //Circle colors
     private Integer circleDiameter;                                             //Circle size
-    private Boolean drawCircles,                                                //Option to not draw circles
-                    useAspectRatio;                                             //Option to use an Aspect Ratio   
+    private Boolean drawCircles;                                                //Option to not draw circles
+    
     private InterpolationScheme interpolation;                                  //Data interpolation
     private Double aspectRatio;                                                 //x:y ratio
+    
     /**
-     * Sets the parameter of the color of the minimum value circle.
-     * @param color Color for the minimum value circle
-     * @return Self, with modified color for the minimum value circle
+     * Sets the color of the circle drawn at the minimum value.
+     * @param color color for the minimum value circle
+     * @return this
      */    
     public SparklineGraph2DRendererUpdate minValueColor(Color color){
         minValueColor = color;
@@ -31,9 +32,9 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     }
     
     /**
-     * Sets the parameter of the color of the maximum value circle.
-     * @param color Color for the maximum value circle
-     * @return Self, with modified color for the maximum value circle
+     * Sets the color of the circle drawn at the maximum value.
+     * @param color color for the maximum value circle
+     * @return this
      */    
     public SparklineGraph2DRendererUpdate maxValueColor(Color color){
         maxValueColor = color;
@@ -41,9 +42,9 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     }
     
     /**
-     * Sets the parameter of the color of the last value circle.
-     * @param color Color for the last value circle
-     * @return Self, with modified color for the last value circle
+     * Sets the color of the circle drawn at the last value.
+     * @param color color for the last value circle
+     * @return this
      */
     public SparklineGraph2DRendererUpdate lastValueColor(Color color){
         lastValueColor = color;
@@ -51,9 +52,9 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     }
     
     /**
-     * Sets the parameter of the diameter of the drawn circles.
-     * @param diameter Size of circle diameter
-     * @return Self, with modified circle diameter
+     * Sets the diameter of the circles drawn.
+     * @param diameter size of circle diameter in pixels
+     * @return this
      */
     public SparklineGraph2DRendererUpdate circleDiameter(int diameter){
         circleDiameter = diameter;
@@ -61,9 +62,9 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     }
     
     /**
-     * Sets the parameter of whether circles are drawn.
-     * @param decision Whether circles are drawn
-     * @return Self, with modified parameter of deciding whether circles are drawn
+     * Sets whether circles are drawn on the line at important values.
+     * @param decision whether circles are drawn
+     * @return this
      */
     public SparklineGraph2DRendererUpdate drawCircles(boolean decision){
         this.drawCircles = decision;
@@ -71,9 +72,9 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
     }
     
     /**
-     * Sets the interpolation scheme parameter.
-     * @param scheme New interpolation scheme
-     * @return Self, with modified interpolation scheme
+     * Sets the interpolation scheme of the line.
+     * @param scheme new interpolation scheme
+     * @return this
      */
     public SparklineGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
         if (scheme == null) {
@@ -86,67 +87,68 @@ public class SparklineGraph2DRendererUpdate extends Graph2DRendererUpdate<Sparkl
         return self();
     }    
     
-    public SparklineGraph2DRendererUpdate useAspectRatio(boolean decision){
-        useAspectRatio = decision;
-        return self();
-    }
-    
+    /**
+     * Sets the width to height aspect ratio for the graph area.
+     * @param ratio ratio between width and height that should be maintained 
+     * @return this
+     */
     public SparklineGraph2DRendererUpdate aspectRatio(double ratio){
         aspectRatio = ratio;
         return self();
     }
+    
     /**
-     * Gets the color of the circle drawn for a minimum value in the data set.
-     * @return Color of the circle at the minimum
+     * Gets the color of the circle drawn for the minimum value.
+     * @return color of the circle at the minimum
      */
     public Color getMinValueColor(){
         return minValueColor;
     }
     
     /**
-     * Gets the color of the circle drawn for a maximum value in the data set.
-     * @return Color of the circle at the maximum
+     * Gets the color of the circle drawn for the maximum value.
+     * @return color of the circle at the maximum
      */
     public Color getMaxValueColor(){
         return maxValueColor;
     }
     
     /**
-     * Gets the color of the circle drawn for the last value in the data set.
-     * @return Color of the circle at the last index
+     * Gets the color of the circle drawn for the last value.
+     * @return color of the circle at the last index
      */
     public Color getLastValueColor(){
         return lastValueColor;
     }
     
     /**
-     * Gets the size of the circle
-     * @return Size of the diameter of the circles drawn
+     * Gets the diameter of the circle.
+     * @return size of the diameter of the circles drawn in pixels
      */
     public Integer getCircleDiameter(){
         return circleDiameter;
     }
     
     /**
-     * Gets the parameter of whether circles are drawn.
-     * @return Parameter of whether to draw circles
+     * Gets the decision for whether circles are drawn.
+     * @return whether circles are drawn
      */
     public Boolean getDrawCircles(){
         return drawCircles;
     }
     
     /**
-     * Gets the interpolation Scheme
-     * @return InterpolationScheme of graph
+     * Gets the interpolation scheme of the line.
+     * @return interpolation scheme for the line
      */
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }    
     
-    public Boolean getUseAspectRatio(){
-        return useAspectRatio;
-    }
-    
+    /**
+     * Gets the width to height aspect ratio of the graph area
+     * @return width to height aspect ratio
+     */
     public Double getAspectRatio(){
         return aspectRatio;
     }

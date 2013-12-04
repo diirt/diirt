@@ -15,7 +15,6 @@ import org.epics.util.array.SortedListView;
  * @author asbarber
  * @author jkfeng
  * @author sjdallst
- * 
  */
 public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRendererUpdate>{
 
@@ -23,8 +22,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
      * Creates a new sparkline graph renderer.
      * Will draw a circle at the max value, min value, and last value.
      * 
-     * @param imageWidth the graph width
-     * @param imageHeight the graph height
+     * @param imageWidth the graph width in pixels
+     * @param imageHeight the graph height in pixels
      */    
     public SparklineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);
@@ -45,9 +44,9 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     
     //Parameters
     private int     circleDiameter = 3;
-    private Color   minValueColor = new Color(28, 160, 232),
-                    maxValueColor = new Color(28, 160, 232),
-                    firstValueColor = new Color(223, 59, 73),            
+    private Color   minValueColor = new Color(28, 160, 232),    //Blue
+                    maxValueColor = new Color(28, 160, 232),    
+                    firstValueColor = new Color(223, 59, 73),   //Red         
                     lastValueColor = new Color(223, 59, 73);
     private boolean drawCircles = true;
     
@@ -73,6 +72,21 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     
     /**
      * Draws the graph on the given graphics context.
+     * The render process is:
+     * <ul>
+     *      <li>Set aspect ratio</li>
+     *      <li>Calculate data and plot ranges</li>
+     *      <li>Calculates the region for the graph</li>
+     *      <li>Draws the background</li>
+     *      <li>Draws the line</li>
+     *      <li>Draw circles if necessary</li>
+     * </ul>
+     * 
+     * A circle is drawn at the max value and min value.
+     * A circle is drawn at the first value and last value.
+     * Each circle is drawn at 70% transparency.
+     * If two circles are set to draw at the same value, only one circle is drawn.
+     * If there is overlap, first/last values are drawn instead of max/min values.
      * 
      * @param g the graphics on which to display the data
      * @param data the data to display
@@ -104,7 +118,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
         
-        //FIXME: Potential problems arise when circles overlap with transparency        
         //Draws a circle at the max, min, and last value
         if(drawCircles){
             //Hints: pure stroke, no antialias
@@ -127,15 +140,36 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         }
     }
     
+    /**
+     * Determines whether the minimum value circle overlaps with the first or last values.
+     * This is useful in determining whether to not draw the minimum circle.
+     * 
+     * @return whether the "minimum" circle overlaps with other circles
+     */
     private boolean hasOverlapMinimum(){
         return minIndex == lastIndex || minIndex == firstIndex;
     }
     
+    /**
+     * Determines whether the maximum value circle overlaps with the first or last values.
+     * This is useful in determining whether to not draw the maximum circle.
+     * 
+     * @return whether the "maximum" circle overlaps with other circles
+     */    
     private boolean hasOverlapMaximum(){
         return maxIndex == lastIndex || maxIndex == firstIndex;
     }
 
-    //Puts (x,y) at the center of the pixel it's within, then draws the circle.
+    /**
+     * Draws a circle of a certain color at a certain position.
+     * The pixel position is determined from the data value.
+     * The data value is found by the 'index' element in 'data'.
+     * 
+     * @param g graphic context to draw (where circles are drawn)
+     * @param data set of data that is graphed
+     * @param index position in the data set where the circle is drawn (index position)
+     * @param color color of circle that is drawn
+     */
     protected void drawCircle(Graphics2D g, Point2DDataset data, int index, Color color){
             double x = Math.floor(scaledX(data.getXValues().getDouble(index)))+.5;
             double y = Math.floor(scaledY(data.getYValues().getDouble(index)))+.5;
@@ -148,8 +182,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
      * Creates a circle shape at the given position with given size.
      * @param x x position of shape
      * @param y y position of shape
-     * @param size Diameter of circle
-     * @return Ellipse (circle) shape
+     * @param size diameter of circle
+     * @return ellipse (circle) shape
      */
     protected Shape createShape(double x, double y, double size) {
         double halfSize = size / 2;
@@ -157,6 +191,18 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         return circle;
     } 
     
+    /**
+     * Operations for every value in data as it is processed.
+     * This checks whether each new value is an important index.
+     * An important index is if this y-value is a maximum, minimum, first, or last.
+     * Note: this y-value is always the last value.
+     * 
+     * @param index element position in data set
+     * @param valueX x value being processed
+     * @param valueY y value being processed
+     * @param scaledX x value scaled by data
+     * @param scaledY y value scaled by data
+     */
     @Override
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
         //Checks if new value is the new min or the new max
@@ -192,6 +238,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
      * 
      * @param update the update to apply
      */    
+    @Override
     public void update(SparklineGraph2DRendererUpdate update) {
         super.update(update);
 
@@ -217,8 +264,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     }
     
     /**
-     * A new update object for a Sparkline graph.
-     * @return Update of the Sparkline
+     * Creates an object that allows updating of sparkline parameters.
+     * @return sparkline update
      */
     @Override
     public SparklineGraph2DRendererUpdate newUpdate() {
@@ -227,42 +274,42 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     
     /**
      * The current interpolation used for the line.
-     * 
-     * @return the current interpolation
+     * @return current interpolation scheme of line
      */
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }  
     
     /**
-     * The index corresponding to the maximum value in the data set.
+     * The index corresponding to the maximum y-value.
      * If there are multiple maximums, the greatest index is returned.
-     * @return The index of the maximum value
+     * @return index of maximum
      */
     public int getMaxIndex(){
         return maxIndex;
     }
     
     /**
-     * The index corresponding to the minimum value in the data set.
+     * The index corresponding to the minimum y-value.
      * If there are multiple minimums, the greatest index is returned.
-     * @return The index of the minimum value
+     * @return index of the minimum
      */
     public int getMinIndex(){
         return minIndex;
     }
     
     /**
-     * The index corresponding to the first value in the data set.
-     * @return the index of the first value
+     * The index corresponding to the first value.
+     * This value should always be zero.
+     * @return index of the first value (zero)
      */
     public int getFirstIndex(){
         return firstIndex;
     }
     
     /**
-     * The index corresponding to the last value in the data set.
-     * @return The index of the last value
+     * The index corresponding to the last value.
+     * @return index of the last value (data.size() - 1)
      */
     public int getLastIndex(){
         return lastIndex;

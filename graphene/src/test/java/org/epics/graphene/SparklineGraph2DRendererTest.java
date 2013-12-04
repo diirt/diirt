@@ -6,7 +6,6 @@ package org.epics.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -14,7 +13,9 @@ import org.junit.BeforeClass;
 
 /**
  * 
- * @authors asbarber, jkfeng, sjdallst
+ * @author asbarber, 
+ * @author jkfeng,
+ * @author sjdallst
  */
 public class SparklineGraph2DRendererTest {
     
