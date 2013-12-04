@@ -141,15 +141,30 @@ public class ValueColorSchemes {
                 }
                 double fullRange = range.getMaximum().doubleValue() - range.getMinimum().doubleValue();
                 int alpha = 0, red = 0, green = 0, blue = 0;
-                for(int i = 0; i < percentages.size()-1;i++){
-                    if(range.getMinimum().doubleValue()+percentages.get(i)*fullRange <= value && value <= range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange){
-                        double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue()+percentages.get(i)*fullRange, range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange);
-                        normalValue = Math.min(normalValue, 1.0);
-                        normalValue = Math.max(normalValue, 0.0);
-                        alpha = 255;
-                        red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
-                        green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
-                        blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
+                if(fullRange>0){
+                    for(int i = 0; i < percentages.size()-1;i++){
+                        if(range.getMinimum().doubleValue()+percentages.get(i)*fullRange <= value && value <= range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange){
+                            double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue()+percentages.get(i)*fullRange, range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange);
+                            normalValue = Math.min(normalValue, 1.0);
+                            normalValue = Math.max(normalValue, 0.0);
+                            alpha = 255;
+                            red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
+                            green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
+                            blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
+                        }
+                    }
+                }
+                else{
+                    for(int i = 0; i < percentages.size()-1;i++){
+                        if(percentages.get(i) <= .5 && .5 <= percentages.get(i+1)){
+                            double normalValue =0;
+                            normalValue = Math.min(normalValue, 1.0);
+                            normalValue = Math.max(normalValue, 0.0);
+                            alpha = 255;
+                            red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
+                            green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
+                            blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
+                        }
                     }
                 }
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;

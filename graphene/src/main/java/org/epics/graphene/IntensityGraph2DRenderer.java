@@ -23,7 +23,7 @@ import org.epics.util.array.*;
  * @author carcassi
  */
 public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
-
+    //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
     private ValueColorScheme colorScheme;
 
     public IntensityGraph2DRenderer(int imageWidth, int imageHeight) {
@@ -56,9 +56,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
     }
     
-    //legendWidth,legendMarginToGraph,legendMarginToEdge, and zLabelMargin are all lengths, in terms of pixels.
-    //legendMarginToGraph corresponds to the space between the original graph and the legend.
-    //legendMarginToEdge -> the space between the legend labels and the edge of the picture.
+    /*legendWidth,legendMarginToGraph,legendMarginToEdge, and zLabelMargin are all lengths, in terms of pixels.
+    legendMarginToGraph corresponds to the space between the original graph and the legend.
+    legendMarginToEdge -> the space between the legend labels and the edge of the picture.*/
     private int legendWidth = 10,
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 2;
@@ -85,8 +85,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         drawBackground();
         calculateLabels();
         
-        //Calculate all margins necessary for drawing the legend. 
-        //Only do calculations if user says to draw a legend.
+        /*Calculate all margins necessary for drawing the legend. 
+        Only do calculations if user says to draw a legend.*/
         if(drawLegend){
             //Find the range in order to calculate legend labels and their corresponding width.
             zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
@@ -97,13 +97,18 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         calculateGraphArea();
         
-        //Wait to calculate the coordinates of the legend labels till after yPlotCoordRange is calculated.
-        //Allows for the use of yPlotCoordEnd/start in calculations.
+        /*Wait to calculate the coordinates of the legend labels till after yPlotCoordRange is calculated.
+        Allows for the use of yPlotCoordEnd/start in calculations.*/
         if(drawLegend){
             if (zReferenceValues != null) {
                 double[] zRefCoords = new double[zReferenceValues.size()];
-                for (int i = 0; i < zRefCoords.length; i++) {
-                    zRefCoords[i] = scaledZ(zReferenceValues.getDouble(i));
+                if(zRefCoords.length == 1){
+                    zRefCoords[0] = Math.max(2, getImageHeight() / 60);
+                }
+                else{
+                    for (int i = 0; i < zRefCoords.length; i++) {
+                        zRefCoords[i] = scaledZ(zReferenceValues.getDouble(i));
+                    }
                 }
                 zReferenceCoords = new ArrayDouble(zRefCoords);
             }
@@ -174,11 +179,11 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
             
         }
-        //Draw a legend, given the current data set. 
-        //Don't draw if the user indicats that no legend should be drawn, or the legend width is invalid.
+        /*Draw a legend, given the current data set. 
+        Don't draw if the user indicats that no legend should be drawn, or the legend width is invalid.*/
         if(drawLegend && legendWidth>0){
-            //dataList is made by splitting the aggregated range of the z(color) data into a list of the
-            //same length as the the height of the graph in pixels.
+            /*dataList is made by splitting the aggregated range of the z(color) data into a list of the
+            same length as the the height of the graph in pixels.*/
             ListNumber dataList = ListNumbers.linearListFromRange(zAggregatedRange.getMinimum().doubleValue(),zAggregatedRange.getMaximum().doubleValue(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
@@ -232,8 +237,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
         //yPosition is never rounded, and keeps track of exactly where each box should start.
         double yPosition = yEndGraph-yHeightTotal;
-        //yPositionInt is used for the actual drawing of boxes, since every box needs to be drawn
-        //starting from the top left of a pixel. It is based off of yPosition. 
+        /*yPositionInt is used for the actual drawing of boxes, since every box needs to be drawn
+        starting from the top left of a pixel. It is based off of yPosition.*/ 
         int yPositionInt = (int)(yEndGraph-yHeightTotal);
         while (countY < data.getYCount()){
                 countX = 0;
@@ -284,9 +289,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 countX++;
             }
     }
-//Draws for the case when there are both more x values and y values than pixels.
-//Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
-//Draws boxes only 1 pixel wide and 1 pixel tall. 
+/*Draws for the case when there are both more x values and y values than pixels.
+Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
+Draws boxes only 1 pixel wide and 1 pixel tall.*/ 
     public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         /*countY and countX are used in the same way as in drawRectanglesSmallX and drawRectanglesSmallY
@@ -328,7 +333,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             zReferenceValues = new ArrayDouble(zAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            zReferenceLabels = Collections.singletonList(zPlotRange.getMinimum().toString());
+            ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 0);
+            zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
             zReferenceValues = new ArrayDouble(zPlotRange.getMinimum().doubleValue());            
         }
         
@@ -399,7 +405,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
+    //Translates a value's position in the aggregated range to a position on the legend. 
     protected final double scaledZ(double value) {
         return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
     }
+    
+    /*protected final String formatSingleNumber(int number){
+        
+    }*/
 }

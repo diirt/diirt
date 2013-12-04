@@ -94,9 +94,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        //If we want to use the aspect ratio, we change the start and end of the coordinate plot,
-        //so that the total height is equal to the width of the xplot divided by the aspect ratio. 
-        //TODO: make better tests for this (ones that test when aspect ratio causes y to go out of range), make aspectRatio change with a lessening of points. 
+        /*If we want to use the aspect ratio, we change the start and end of the coordinate plot,
+        so that the total height is equal to the width of the xplot divided by the aspect ratio.*/  
         if(aspectRatio != null){
             adjustGraphToAspectRatio();
         }
@@ -378,7 +377,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     private void adjustGraphToAspectRatio(){
         
         //Aspect Ratio:  W : H,  5 : 1
-        //Image  Size: 100 : 10
+        //Image  Size: 100 : 20
         
         int relevantHeight = super.getImageHeight() - bottomMargin - topMargin,
             relevantWidth  = super.getImageWidth() - rightMargin - leftMargin;
