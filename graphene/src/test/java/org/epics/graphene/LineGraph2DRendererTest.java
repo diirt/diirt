@@ -184,6 +184,7 @@ public class LineGraph2DRendererTest {
     }  
     
    @Test
+   //Makes sure that graph is drawn correctly with multiple Double.NaN data points
     public void test12() throws Exception {
         Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(Double.NaN, Double.NaN, 1, 3, 5, Double.NaN, 1), 50, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
@@ -195,6 +196,7 @@ public class LineGraph2DRendererTest {
     }
    
    @Test
+   //Tests linear interpolation accuracy
     public void test13() throws Exception {
         Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(10,10,5,6,2), 50, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
@@ -205,6 +207,7 @@ public class LineGraph2DRendererTest {
         ImageAssert.compareImages("lineGraph.13", image);
     }
    @Test
+   //Tests graph with negative values
    public void test14() throws Exception {
         Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(-100,-200,0,10,20));
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
@@ -215,6 +218,9 @@ public class LineGraph2DRendererTest {
     }
    
    @Test
+   /*Tests graph with larger dataset
+    * There should be a space where there is Double.NaN, but there is not
+    */
    public void test15() throws Exception {
         double[] dataSet = new double[100];
         for(int i = 0; i < 50; i++)
