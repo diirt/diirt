@@ -481,10 +481,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     }
     
     /**
-     * Gets the time limit for how long the profiler will try to render.
+     * Gets the time limit (seconds) for how long the profiler will try to render.
      * Used in saving statistics to the CSV log file.
      * 
-     * @return max time the render loop will be run
+     * @return max time the render loop will be run (in seconds)
      */
     public int getTestTime(){
         return testTimeSec;
@@ -502,27 +502,83 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     
     //Test Parameter Setters
+    
+    /**
+     * Sets the size of the data set.
+     * Useful for creating the data set of the appropriate size.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param npoints size of the data set in rendering
+     */
     public void setNumDataPoints(int nPoints){
         this.nPoints = nPoints;
     }
+    
+    /**
+     * Sets the width of the image rendered.
+     * Useful for creating the graph renderer.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param imageWidth image width in pixels 
+     */    
     public void setImageWidth(int imageWidth){
         this.imageWidth = imageWidth;
     }   
+    
+    /**
+     * Sets the height of the image rendered.
+     * Useful for creating the graph renderer.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param imageHeight image height in pixels 
+     */      
     public void setImageHeight(int imageHeight){
         this.imageHeight = imageHeight;
     }
+    
+    /**
+     * Sets the number of times the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param maxTries max tries the render loop will be run in
+     */    
     public void setMaxTries(int maxTries){
         this.maxTries = maxTries;
     }
+    
+    /**
+     * Sets the time limit (seconds) for how long the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param testTimeSec max time the render loop will be run in seconds
+     */    
     public void setTestTime(int testTimeSec){
         this.testTimeSec = testTimeSec;
     }
+    
+    /**
+     * Sets whether the image buffer is created within the render loop or beforehand.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param bufferInLoop whether the image buffer is created in the render loop
+     */    
     public void setBufferInLoop(boolean bufferInLoop){
         this.bufferInLoop = bufferInLoop;
     }
     
     
     //Dataset Generators
+    
+    /**
+     * Generates Point1D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data (number of points) is nSamples<li>
+     *      <li>Random data</li>
+     *      <li>Gaussian distribution from 0 to 1</li>
+     * @param nSamples number of points in data
+     * @return a set of data to be drawn
+     */
     public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
@@ -537,6 +593,18 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return dataset;
     }
+    
+    /**
+     * Generates Point2D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data (number of points) is nSamples<li>
+     *      <li>Random y-values</li>
+     *      <li>y-values are sorted ascending and plotted against sorted index (sorted index is x-value)</li>
+     *      <li>Gaussian distribution from 0 to 1</li>
+     * @param nSamples number of points in data
+     * @return a set of data to be drawn
+     */
     public static Point2DDataset makePoint2DGaussianRandomData(int nSamples){
         double[] waveform = new double[nSamples];
         int maxValue = 1;
@@ -549,6 +617,18 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
+    
+    /**
+     * Generates Cell2D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data is xSamples * ySamples<li>
+     *      <li>Random cell data</li>
+     *      <li>Gaussian distribution of values from 0 to 1</li>
+     * @param xSamples number of x-cells in data
+     * @param ySamples number of y-cells in data
+     * @return a set of data to be drawn
+     */    
     public static Cell2DDataset makeCell2DGaussianRandomData(int xSamples, int ySamples){
         int nSamples = xSamples * ySamples;
         double[] waveform = new double[nSamples];
@@ -562,6 +642,17 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
     }
+    
+    /**
+     * Generates Histogram1D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data (number of points) is nSamples<li>
+     *      <li>Random values</li>
+     *      <li>Gaussian distribution from 0 to 1</li>
+     * @param nSamples number of points in data
+     * @return a set of data to be drawn
+     */    
     public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
