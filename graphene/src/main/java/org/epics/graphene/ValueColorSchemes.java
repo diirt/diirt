@@ -12,6 +12,13 @@ import java.awt.Color;
  */
 public class ValueColorSchemes {
 
+    /**
+     * Creates a new gray scale color scheme based on the range.
+     * The color red will be used for NaNs.
+     *
+     * @param range range for the color scheme; never null
+     * @return the new color scheme; never null
+     */
     public static ValueColorScheme grayScale(final Range range) {
         return singleRangeGradient(range, Color.BLACK, Color.WHITE, Color.RED);
     }
@@ -110,6 +117,9 @@ public class ValueColorSchemes {
     
     
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
+        if (range == null) {
+            throw new NullPointerException("Range should not be null");
+        }
         return new ValueColorScheme() {
 
             @Override
