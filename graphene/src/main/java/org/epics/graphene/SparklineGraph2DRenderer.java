@@ -103,8 +103,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);        
         drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
-                
-
+        
         //FIXME: Potential problems arise when circles overlap with transparency        
         //Draws a circle at the max, min, and last value
         if(drawCircles){
@@ -117,17 +116,25 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
             g.setComposite(ac);        
             
             //Fills circle
-            drawCircle(g, data, minIndex, minValueColor);
-            drawCircle(g, data, maxIndex, maxValueColor);
+            if (!hasOverlapMinimum()){
+                drawCircle(g, data, minIndex, minValueColor);
+            }
+            if (!hasOverlapMaximum()){
+                drawCircle(g, data, maxIndex, maxValueColor);
+            }
             drawCircle(g, data, firstIndex, firstValueColor);
             drawCircle(g, data, lastIndex, lastValueColor);
-
-            //Reset Transparency
-            ac = java.awt.AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0F);
-            g.setComposite(ac);
         }
     }
     
+    private boolean hasOverlapMinimum(){
+        return minIndex == lastIndex || minIndex == firstIndex;
+    }
+    
+    private boolean hasOverlapMaximum(){
+        return maxIndex == lastIndex || maxIndex == firstIndex;
+    }
+
     //Puts (x,y) at the center of the pixel it's within, then draws the circle.
     protected void drawCircle(Graphics2D g, Point2DDataset data, int index, Color color){
             double x = Math.floor(scaledX(data.getXValues().getDouble(index)))+.5;
