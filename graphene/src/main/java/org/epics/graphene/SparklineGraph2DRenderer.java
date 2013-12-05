@@ -325,7 +325,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     }
     
     /**
-     * The minimum y-value in the list of data.
+     * Gets the minimum y-value in the list of data.
      * If there are multiple minimum values, the last minimum
      * (determined by the greatest index) is the value returned.
      * @return The data value of the minimum
@@ -335,7 +335,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     }
     
     /**
-     * The first y-value in the list of data.
+     * Gets the first y-value in the list of data.
      * @return the data value for the first index
      */
     public double getFirstValue(){
@@ -343,42 +343,86 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     }
     
     /**
-     * The last y-value in the list of data.
+     * Gets the last y-value in the list of data.
      * @return The data value for the last index
      */
     public double getLastValue(){
         return lastValueY;
     }
     
+    /**
+     * Gets the decision of whether the draw function also draws circles at important data points.
+     * @return whether circles get drawn along the line
+     */
     public boolean getDrawCircles(){
         return drawCircles;
     }
     
+    /**
+     * Gets the color for the circle drawn at the minimum y-value.
+     * @return color for circle
+     */
     public Color getMinValueColor(){
         return minValueColor;
     }
     
+    /**
+     * Gets the color of the circle drawn at the maximum y-value.
+     * @return color for circle
+     */
     public Color getMaxValueColor(){
         return maxValueColor;
     }
     
+    /**
+     * Gets the color of the circle drawn at the last y-value.
+     * @return color for circle
+     */
     public Color getLastValueColor(){
         return lastValueColor;
     }
     
+    /**
+     * Gets the diameter for all circles that are drawn along the line in pixels.
+     * @return diameter of circles drawn on line in pixels 
+     */
     public int getCircleDiameter(){
         return circleDiameter;
     }
     
+    /**
+     * Gets the preferred width to height ratio that must be maintained within the graph area.
+     * Ratio of width (pixels) to height (pixels).
+     * @return width to height ratio
+     */
     public double getAspectRatio(){
         return aspectRatio;
     }
     
+    /**
+     * Adjusts the area margins to maintain the aspect ratio.
+     * The aspect ratio is applied only to the graph area (margins are ignored).
+     * 
+     * The area margin for all borders is set to 1 by default.
+     * 
+     * The left/right area margins are increased if the width needs to shrink to maintain the ratio.
+     * The top/bottom area margins are increased if the height needs to shrink to maintain the ratio.
+     * Note that the width and height can never be increased, so the aspect ratio is maintained by shrinking axes.
+     * 
+     * <p>
+     * Example:
+     *  Width = 100 pixels
+     *  Height = 20 pixels
+     *  Ratio is 4 : 1  (W : H)
+     * 
+     * The width and height could then be 100 : 25 or 80 : 20
+     * Since the height cannot be increased from 20 to 25, the first option would not work.
+     * The option 80 : 20 is then set.
+     * The width is decreased from 100 to 80 by setting the left and right area margin to 10 pixels.
+     * </p>
+     */
     private void adjustGraphToAspectRatio(){
-        
-        //Aspect Ratio:  W : H,  5 : 1
-        //Image  Size: 100 : 20
-        
+        //Only looks at available graph area region
         int relevantHeight = super.getImageHeight() - bottomMargin - topMargin,
             relevantWidth  = super.getImageWidth() - rightMargin - leftMargin;
         
@@ -398,13 +442,6 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         }
         //Shrink height to maintain aspect ratio
         else {
-            /*
-             * Let W be the width (constant), H be the height (adjusting this)
-             * Then the aspect ratio, R, is defined as
-             * 
-             * W / H = R
-             * thus H = W / R
-             */
             double preferredHeight = relevantWidth / aspectRatio;
             int marginSize = (int) (relevantHeight - preferredHeight) / 2;
             
