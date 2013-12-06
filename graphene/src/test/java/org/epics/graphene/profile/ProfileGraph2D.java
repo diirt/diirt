@@ -183,7 +183,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * Gets profile statistics. 
      * Returns null if the profile method has not been called and no statistics exist.
      * 
-     * @return 
+     * @return statistical information about profiling
      */
     public Statistics getStatistics(){
         //Ensures profile() was called
