@@ -17,8 +17,20 @@ import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
 /**
- *
+ * Profiles for two different methods for drawing an image to see which
+ * is the more efficient method.
+ * 
+ * <p>
+ * One method is "Set Pixel", which individually sets each pixel value of an image.
+ * One method is "Draw Rect", which creates the image by drawing a rectangle
+ * for every single pixel of the image.
+ * 
+ * <p>
+ * The results are that the "Set Pixel" method is 3 times as fast as
+ * the "Draw Rect" method.
+ * 
  * @author carcassi
+ * @author asbarber
  */
 public class SetPixelVsDrawRect{
     private boolean     profileSetPixel = true;

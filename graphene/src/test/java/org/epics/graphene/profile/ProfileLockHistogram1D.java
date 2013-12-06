@@ -5,6 +5,7 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +15,7 @@ import org.epics.graphene.*;
  * Handles profiling for <code>Histogram1D</code> while synchronized.
  * Takes a <code>Histogram1D</code> dataset and repeatedly renders with several synchronized <code>AreaGraph2DRenderer</code> objects.
  * 
+ * @author carcassi
  * @author asbarber
  */
 public class ProfileLockHistogram1D extends ProfileHistogram1D{
@@ -94,6 +96,21 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
      * @param args console arguments -- no impact
      */  
     public static void main(String[] args) {
-        //FIXME: needs to be tested
-    }    
-}
+        ExecutorService executor = Executors.newFixedThreadPool(nThreads);
+        
+        for (int i = 0; i < nThreads; i++) {
+            executor.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    ProfileLockHistogram1D profiler = new ProfileLockHistogram1D();
+                    profiler.profile();
+                    System.out.println(profiler.getStatistics());
+                }   
+                
+            });
+        }
+        
+        executor.shutdown();        
+    }        
+}    

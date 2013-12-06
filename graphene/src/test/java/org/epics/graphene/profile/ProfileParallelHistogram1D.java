@@ -13,6 +13,7 @@ import org.epics.graphene.*;
  * Handles profiling for <code>Histogram1D</code> in parallel (by threading).
  * Takes a <code>Histogram1D</code> dataset and repeatedly renders with several threads of <code>AreaGraph2DRenderer</code> objects.
  * 
+ * @author carcassi
  * @author asbarber
  */
 public class ProfileParallelHistogram1D extends ProfileHistogram1D{
@@ -87,7 +88,6 @@ public class ProfileParallelHistogram1D extends ProfileHistogram1D{
                 public void run() {
                     ProfileParallelHistogram1D profiler = new ProfileParallelHistogram1D();
                     profiler.profile();
-                    profiler.saveStatistics();
                     System.out.println(profiler.getStatistics().toString());
                 }   
                 
