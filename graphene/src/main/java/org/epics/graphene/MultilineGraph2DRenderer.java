@@ -20,6 +20,11 @@ import org.epics.util.array.SortedListView;
  */
 public class MultilineGraph2DRenderer extends Graph2DRenderer{
     
+    /**
+     *Uses constructor specified in super class (Graph2DRenderer)
+     * @param imageWidth should be equal to the width of the bufferedImage.
+     * @param imageHeight should be equal to the height of the bufferedImage.
+     */
     public MultilineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);       
     }
@@ -32,6 +37,11 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
 
     private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
     
+    /**
+     *Draws a graph with multiple lines, each pertaining to a different set of data.
+     * @param g Graphics2D object used to perform drawing functions within draw.
+     * @param data can not be null
+     */
     public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
         
@@ -85,6 +95,11 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
     
 
     
+    /**
+     *Updates private data by getting new values from update.
+     * Parameter not already taken care of by the super class: valueColorScheme
+     * @param update
+     */
     public void update(MultilineGraph2DRendererUpdate update) {
         super.update(update);
         

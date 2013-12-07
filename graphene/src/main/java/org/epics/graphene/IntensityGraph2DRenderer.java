@@ -95,7 +95,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * All drawing is done within the bounds specified either at initialization or at update.
      *  Different colorSchemes may be specified using the IntensityGraph2DRendererUpdate class, in combination with the update function. 
      * @param g Graphics2D object used to perform drawing functions within draw.
-     * @param data can not b null
+     * @param data can not be null
      */
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
