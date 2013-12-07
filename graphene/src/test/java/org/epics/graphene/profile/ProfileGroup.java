@@ -60,7 +60,7 @@ public class ProfileGroup {
     
     /**
      * Sets whether statistics will be saved to a CSV log after each profile.
-     * @param printStats if profile statistics should be saved to log files
+     * @param saveStats if profile statistics should be saved to log files
      */     
     public void setSaveStats(boolean saveStats){
         this.saveStats = saveStats;

@@ -7,7 +7,20 @@ package org.epics.graphene;
 import java.awt.Color;
 
 /**
- *
+ * A set of parameters that can be applied to a <code>SparklineGraph2DRenderer</code>
+ * to update the settings of the <code>SparklineGraph2DRenderer</code>.
+ * 
+ * <p>
+ * Only the parameters that are set in the update get applied to the renderer.
+ * Parameters that can be changed are:
+ * <ul>
+ *      <li>Colors of the circles drawn at the important data points of a sparkline graph</li>
+ *      <li>Size of the circles drawn at the important data points</li>
+ *      <li>Whether to draw circles at the important data points</li>
+ *      <li>Interpolation scheme used in drawing the sparkline line</li>
+ *      <li>Aspect ratio to be maintained in the graph area</li>
+ * </ul>
+ * 
  * @author asbarber
  * @author jkfeng
  * @author sjdallst
