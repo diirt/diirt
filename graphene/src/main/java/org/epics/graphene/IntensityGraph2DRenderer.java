@@ -363,7 +363,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             zReferenceValues = new ArrayDouble(zAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 0);
+            ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 1);
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
             zReferenceValues = new ArrayDouble(zPlotRange.getMinimum().doubleValue());            
         }
