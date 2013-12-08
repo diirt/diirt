@@ -55,7 +55,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      *Sets this object's drawLegend to the given boolean value.
      * To be used in conjunction with IntensityGraph2DRenderer's update function.
      * @param drawLegend boolean that will tell IntensityGraph2DRenderer whether or not it should draw a legend
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate drawLegend(boolean drawLegend) {
         this.drawLegend = drawLegend;
@@ -70,7 +70,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     /**
      *Sets this object's valueColorScheme to the given ColorScheme.
      * @param scheme supported schemes: GRAY_SCALE, JET, HOT, COOL, SPRING, BONE, COPPER, PINK
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate valueColorScheme(ColorScheme scheme) {
         this.valueColorScheme = scheme;
@@ -80,7 +80,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     /**
      *Sets this object's zLabelMargin to the given int.
      * @param margin integer distance(pixels) from the beginning of the z labels to the legend. 
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate zLabelMargin(int margin) {
         this.zLabelMargin = margin;
@@ -90,7 +90,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     /**
      *Sets this object's legendWidth to the given int.
      * @param width corresponds to the x-axis
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate legendWidth(int width) {
         this.legendWidth = width;
@@ -100,7 +100,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     /**
      *Sets this object's legendMarginToGraph to the given int.
      * @param margin distance(pixels) from the intensity graph to the legend.
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate legendMarginToGraph(int margin) {
         this.legendMarginToGraph = margin;
@@ -110,7 +110,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     /**
      *Sets this object's legendMarginToEdge to the given int.
      * @param margin distance(pixels) from the end of the legend(including labels and other margins) to the end of the graphics component.
-     * @return IntensityGraph2DRendererUpdate
+     * @return this
      */
     public IntensityGraph2DRendererUpdate legendMarginToEdge(int margin) {
         this.legendMarginToEdge = margin;
