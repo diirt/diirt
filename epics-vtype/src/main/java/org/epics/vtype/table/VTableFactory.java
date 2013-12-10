@@ -325,14 +325,25 @@ public class VTableFactory {
     }
     
     public static ListNumberProvider step(final double initialValue, final double increment) {
-        return new ListNumberProvider(double.class) {
-
-            @Override
-            public ListNumber createListNumber(int size) {
-                return ListNumbers.linearList(initialValue, increment, size);
-            }
-        };
+        return new Step(initialValue, increment);
     }
+    
+    private static class Step extends ListNumberProvider {
+        
+        private final double initialValue;
+        private final double increment;
+
+        public Step(double initialValue, double increment) {
+            super(double.class);
+            this.initialValue = initialValue;
+            this.increment = increment;
+        }
+
+        @Override
+        public ListNumber createListNumber(int size) {
+            return ListNumbers.linearList(initialValue, increment, size);
+        }
+    };
     
     public static VTable extractRow(VTable vTable, int row) {
         if (vTable == null || row >= vTable.getRowCount() || row < 0) {
