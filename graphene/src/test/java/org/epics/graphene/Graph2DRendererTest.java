@@ -28,10 +28,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 4;
-                this.xAreaEnd = 295;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.xAreaCoordStart = 4;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(4.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 100, 4.5);
                 this.yReferenceLabels = Collections.<String>emptyList();
@@ -46,6 +46,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.1", image);
     }
@@ -56,10 +57,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 24;
-                this.xAreaEnd = 295;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.xAreaCoordStart = 24;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(24.5, 150, 295.5);
                 this.yReferenceCoords = new ArrayDouble(195.5, 147.75, 100, 47.25, 4.5);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
@@ -75,6 +76,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.2", image);
     }
@@ -85,10 +87,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 24;
-                this.xAreaEnd = 295;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 195;
+                this.xAreaCoordStart = 24;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 196;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150");
@@ -104,6 +106,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.3", image);
     }
@@ -113,10 +116,10 @@ public class Graph2DRendererTest {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
             
             {
-                this.xAreaStart = 4;
-                this.xAreaEnd = 295;
-                this.yAreaStart = 4;
-                this.yAreaEnd = 185;
+                this.xAreaCoordStart = 4;
+                this.xAreaCoordEnd = 296;
+                this.yAreaCoordStart = 4;
+                this.yAreaCoordEnd = 186;
                 this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
                 this.xReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
                 this.xLabelMargin = 1;
@@ -133,6 +136,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.4", image);
     }
@@ -151,7 +155,9 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(0, 10));
+        renderer.calculateLabels();
         renderer.calculateGraphArea();
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.5", image);
     }
@@ -170,7 +176,9 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(3, 3));
+        renderer.calculateLabels();
         renderer.calculateGraphArea();
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.6", image);
     }
@@ -189,9 +197,34 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(3, 3), RangeUtil.range(0, 10));
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
+        renderer.calculateGraphArea();   
+        renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.7", image);
+    }
+    
+    @Test
+    public void graphArea8() throws Exception {
+        Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
+
+            @Override
+            public Graph2DRendererUpdate newUpdate() {
+                return new Graph2DRendererUpdate();
+            }
+        };
+        
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        renderer.xPointMargin = 2.5;
+        renderer.yPointMargin = 2.5;
+        renderer.calculateRanges(RangeUtil.range(0, 10), RangeUtil.range(0, 10));
+        renderer.calculateLabels();
+        renderer.calculateGraphArea();   
+        renderer.drawBackground();
+        renderer.drawGraphArea();
+        ImageAssert.compareImages("graph2DArea.8", image);
     }
     
     @Test
@@ -242,7 +275,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
     
@@ -266,7 +299,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
     
@@ -290,7 +323,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
     
@@ -314,7 +347,7 @@ public class Graph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(RangeUtil.range(2.5, 4.5), data.getYStatistics());
-        renderer.calculateGraphArea();
+        renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
 
