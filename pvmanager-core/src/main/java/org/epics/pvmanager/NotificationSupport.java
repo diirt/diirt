@@ -33,15 +33,33 @@ public abstract class NotificationSupport<T> extends TypeSupport<T> {
      * @return the value to be notified
      */
     public static <T> Notification<T> notification(final T oldValue, final T newValue) {
+        NotificationSupport<T> support = findNotificationSupportFor(newValue);
+        return support.prepareNotification(oldValue, newValue);
+    }
+    
+    /**
+     * Retrieves the notification support based on the given value.
+     * <p>
+     * If no support is found, an exception is thrown.
+     * 
+     * @param <T> value type
+     * @param newValue the value; can't be null
+     * @return the notification support
+     */
+    public static <T> NotificationSupport<T> findNotificationSupportFor(final T newValue) {
         @SuppressWarnings("unchecked")
         Class<T> typeClass = (Class<T>) newValue.getClass();
         NotificationSupport<T> support
                 = (NotificationSupport<T>) findTypeSupportFor(NotificationSupport.class,
                         typeClass);
         if (support == null) {
-            throw new RuntimeException("Values for type " + typeClass.getSimpleName() + " are not setup for notification.");
+            String name = typeClass.getSimpleName();
+            if (name == null || name.trim().isEmpty()) {
+                name = typeClass.getName();
+            }
+            throw new RuntimeException("Final value can't be of type " + name + ".");
         }
-        return support.prepareNotification(oldValue, newValue);
+        return support;
     }
 
     /**
