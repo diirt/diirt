@@ -315,14 +315,25 @@ public class VTableFactory {
     } 
 
     public static ListNumberProvider range(final double min, final double max) {
-        return new ListNumberProvider(double.class) {
-
-            @Override
-            public ListNumber createListNumber(final int size) {
-                return ListNumbers.linearListFromRange(min, max, size);
-            }
-        };
+        return new Range(min, max);
     }
+    
+    private static class Range extends ListNumberProvider {
+        
+        private final double min;
+        private final double max;
+
+        public Range(double min, double max) {
+            super(double.class);
+            this.min = min;
+            this.max = max;
+        }
+
+        @Override
+        public ListNumber createListNumber(int size) {
+            return ListNumbers.linearListFromRange(min, max, size);
+        }
+    };
     
     public static ListNumberProvider step(final double initialValue, final double increment) {
         return new Step(initialValue, increment);
