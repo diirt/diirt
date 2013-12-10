@@ -51,4 +51,14 @@ public class TableFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(expected, column1, column2);
     }
+    
+    @Test
+    public void tableOf2() {
+        VTable expected = newVTable(Arrays.<Class<?>>asList(double.class),
+                Arrays.asList("B"), Arrays.<Object>asList(new ArrayDouble(1,2,3)));
+        Column column2 = VTableFactory.column("B", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone()));
+
+        FunctionTester.findByName(set, "tableOf")
+                .compareReturnValue(expected, null, column2);
+    }
 }

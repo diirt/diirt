@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.vtype.VTable;
@@ -53,7 +54,10 @@ class TableOfFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(final List<Object> args) {
-        Column[] columns = args.toArray(new Column[args.size()]);
+        List<Object> argsNoNull = new ArrayList<>(args);
+        while (argsNoNull.remove(null)) {
+        }
+        Column[] columns = argsNoNull.toArray(new Column[argsNoNull.size()]);
         
         return VTableFactory.newVTable(columns);
     }
