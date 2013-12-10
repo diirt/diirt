@@ -85,6 +85,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public IntensityGraph2DRendererUpdate zLabelMargin(int margin) {
         this.zLabelMargin = margin;
         return self();
+    }
+    
     /**
      *Sets this object's legendWidth to the given int.
      * @param width corresponds to the x-axis
@@ -93,6 +95,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public IntensityGraph2DRendererUpdate legendWidth(int width) {
         this.legendWidth = width;
         return self();
+    }
+    
     /**
      *Sets this object's legendMarginToGraph to the given int.
      * @param margin distance(pixels) from the intensity graph to the legend.
@@ -101,6 +105,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public IntensityGraph2DRendererUpdate legendMarginToGraph(int margin) {
         this.legendMarginToGraph = margin;
         return self();
+    }
+    
     /**
      *Sets this object's legendMarginToEdge to the given int.
      * @param margin distance(pixels) from the end of the legend(including labels and other margins) to the end of the graphics component.
@@ -109,6 +115,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public IntensityGraph2DRendererUpdate legendMarginToEdge(int margin) {
         this.legendMarginToEdge = margin;
         return self();
+    }
     
 //    public InterpolationScheme getInterpolation() {
 //        return interpolation;
