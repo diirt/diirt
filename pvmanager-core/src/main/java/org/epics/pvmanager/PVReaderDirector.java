@@ -247,6 +247,9 @@ public class PVReaderDirector<T> {
         try {
             // Tries to calculate the value
             newValue = function.readValue();
+            if (newValue != null) {
+                NotificationSupport.findNotificationSupportFor(newValue);
+            }
             calculationSucceeded = true;
         } catch(RuntimeException ex) {
             // Calculation failed
