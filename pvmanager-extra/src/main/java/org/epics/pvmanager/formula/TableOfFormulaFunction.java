@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.vtype.VTable;
 import org.epics.vtype.table.Column;
+import org.epics.vtype.table.ListNumberProvider;
 import org.epics.vtype.table.VTableFactory;
 
 /**
@@ -55,8 +56,34 @@ class TableOfFormulaFunction implements FormulaFunction {
     @Override
     public Object calculate(final List<Object> args) {
         List<Object> argsNoNull = new ArrayList<>(args);
+        
+        // Remove null columns if there are any
+        boolean removedNull = false;
         while (argsNoNull.remove(null)) {
+            removedNull = true;
         }
+        
+        // If null was removed, check whether all the remaining columns
+        // are generated. In that case, return null.
+        // This needs to be here because ListNumberProvider are usually
+        // static, while the other columns may be from waveforms coming from
+        // the network. So, at connection, it's often the case
+        // that only variable columns are connected. This is a temporary
+        // problem, so we don't want the warning that at least
+        // one column must be fixed size.
+        if (removedNull) {
+            boolean allGenerated = true;
+            for (Object object : argsNoNull) {
+                Column column = (Column) object;
+                if (!column.isGenerated()) {
+                    allGenerated = false;
+                }
+            }
+            if (allGenerated) {
+                return null;
+            }
+        }
+        
         Column[] columns = argsNoNull.toArray(new Column[argsNoNull.size()]);
         
         return VTableFactory.newVTable(columns);

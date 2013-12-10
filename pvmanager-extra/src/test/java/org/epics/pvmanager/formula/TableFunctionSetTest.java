@@ -61,4 +61,12 @@ public class TableFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(expected, null, column2);
     }
+    
+    @Test
+    public void tableOf3() {
+        Column column1 = VTableFactory.column("A", VTableFactory.step(0, 0.1));
+
+        FunctionTester.findByName(set, "tableOf")
+                .compareReturnValue(null, column1, null);
+    }
 }
