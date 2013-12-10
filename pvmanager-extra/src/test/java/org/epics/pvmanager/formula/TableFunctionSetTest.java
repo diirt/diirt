@@ -13,6 +13,8 @@ import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
+import org.epics.vtype.table.Column;
+import org.epics.vtype.table.VTableFactory;
 import org.junit.Test;
 
 /**
@@ -37,5 +39,16 @@ public class TableFunctionSetTest extends BaseTestForFormula {
                 Arrays.asList("x", "y", "z"), Arrays.<Object>asList(Arrays.asList("a", "b", "c"), new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
         VNumberArray expected = newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone());
         testFunction(set, "columnOf", expected, data, newVString("y", alarmNone(), timeNow()));
+    }
+    
+    @Test
+    public void tableOf1() {
+        VTable expected = newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                Arrays.asList("A", "B"), Arrays.<Object>asList(new ArrayDouble(0.0, 0.1, 0.2), new ArrayDouble(1,2,3)));
+        Column column1 = VTableFactory.column("A", VTableFactory.step(0, 0.1));
+        Column column2 = VTableFactory.column("B", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone()));
+
+        FunctionTester.findByName(set, "tableOf")
+                .compareReturnValue(expected, column1, column2);
     }
 }
