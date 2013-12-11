@@ -173,6 +173,9 @@ public class ValueColorSchemes {
      * @return ValueColorScheme
      */
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
+        if (range == null) {
+            throw new NullPointerException("Range should not be null");
+        }
         return new ValueColorScheme() {
 
             @Override

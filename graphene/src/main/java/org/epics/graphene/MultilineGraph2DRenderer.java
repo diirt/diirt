@@ -30,9 +30,27 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
     }
     
     private ValueColorScheme colorScheme;
-    private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
-    //Scaling Schemes    
+    private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;   
+    /**
+     *Supported interpolation schemes. 
+     * Possible values:
+     * <ul>
+     *  <li>NEAREST_NEIGHBOR: Draws a line in steps. Starts at an initial point, draws that point's value
+     * until it is halfway to the next point, draws a straight line upwards to the next point's value, then draws
+     * a straight line to the next point.</li>
+     *  <li>LINEAR: Draws lines from one point to the next in a linear fashion.</li>
+     *  <li>CUBIC: Fits a cubic curve to the points plotted.</li>
+     * </ul>
+     */
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    /**
+     *Supported reduction schemes. Possible values:
+     * <ul>
+     *  <li>FIRST_MAX_MIN_LAST: plots only the first max min and last points within every four pixels along the x-axis. 
+     *  To be used when there are many more points than pixels.</li>
+     *  <li>NONE: No reduction scheme, all points are plotted.</li>
+     * </ul>
+     */
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
     private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
