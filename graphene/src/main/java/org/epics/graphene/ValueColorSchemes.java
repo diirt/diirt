@@ -5,31 +5,88 @@
 package org.epics.graphene;
 import java.util.ArrayList;
 import java.awt.Color;
+import static org.epics.graphene.ColorScheme.BONE;
+import static org.epics.graphene.ColorScheme.COOL;
+import static org.epics.graphene.ColorScheme.COPPER;
+import static org.epics.graphene.ColorScheme.GRAY_SCALE;
+import static org.epics.graphene.ColorScheme.HOT;
+import static org.epics.graphene.ColorScheme.JET;
+import static org.epics.graphene.ColorScheme.PINK;
+import static org.epics.graphene.ColorScheme.SPRING;
 
 /**
- *
- * @author carcassi, sjdallst, asbarber, jkfeng
+ * The <code>ValueColorSchemes</code> class contains several useful methods
+ * to associate a <code>ValueColorScheme</code> with a <code>ColorScheme</code>.
+ * It cannot be instantiated.
  * 
+ * <p>The <code>ValueColorSchemes</code> class has preset colors that represent
+ * a color scheme that can be associated with any range to create a value range.
+ * There are various predefined scales that can be found in <code>ColorScheme</code>.
+ * 
+ * @author carcassi
+ * @author sjdallst
+ * @author asbarber
+ * @author jkfeng
  */
 public class ValueColorSchemes {
 
     /**
-     *Returns a color scheme that varies linearly (black:white) for values within range.
+     * Cannot be instantiated.
+     */
+    private ValueColorSchemes(){
+    }
+    
+    /**
+     * Creates a Value scheme associated with the Color scheme and range.
+     * An unrecognized or null <code>ColorScheme</code> is handled as gray scale.
+     * @param color the color scheme to create a value scheme for
+     * @param range associates colors from a color scheme for different values within the range, can not be null
+     * @return a Value scheme for the specified Color scheme
+     */
+    public static ValueColorScheme schemeFor(ColorScheme color, final Range range){
+        if (range == null){
+            throw new NullPointerException("The range cannot be null.");
+        }
+
+        switch(color){
+            case GRAY_SCALE:
+                return ValueColorSchemes.grayScale(range);
+            case JET:
+                return ValueColorSchemes.jetScale(range);
+            case HOT:
+                return ValueColorSchemes.hotScale(range);
+            case COOL:
+                return ValueColorSchemes.coolScale(range);
+            case SPRING:
+                return ValueColorSchemes.springScale(range);
+            case BONE:
+                return ValueColorSchemes.boneScale(range);
+            case COPPER:
+                return ValueColorSchemes.copperScale(range);
+            case PINK:
+                return ValueColorSchemes.pinkScale(range);
+            default:
+                return ValueColorSchemes.grayScale(range);
+        }        
+    }
+            
+    /**
+     * Returns a color scheme that varies linearly (black:white) for values within range.
      *  NaN = red:
      *  Single value case = black
      * @param range can not be null.
-     * @return ValueColorScheme 
+     * @return gray color range for the value range
      */
     public static ValueColorScheme grayScale(final Range range) {
         return singleRangeGradient(range, Color.BLACK, Color.WHITE, Color.RED);
     }
     
     /**
-     *Returns a color scheme that varies linearly (dark blue:blue:cyan:yellow:red:dark red) for values within range.
+     * Returns a color scheme that varies linearly (dark blue:blue:cyan:yellow:red:dark red) for values within range.
      *  NaN = black:
      *  Single value case = cyan
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return jet (blue to yellow to red) color range for the value range
      */
     public static ValueColorScheme jetScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -45,11 +102,11 @@ public class ValueColorSchemes {
     }
     
     /**
-     *Returns a color scheme that varies linearly (dark red:red:yellow:white) for values within range.
+     * Returns a color scheme that varies linearly (dark red:red:yellow:white) for values within range.
      *  NaN = blue:
      *  Single value case = red
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return hot (red to white) color range for the value range
      */
     public static ValueColorScheme hotScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -63,11 +120,11 @@ public class ValueColorSchemes {
     }
 
     /**
-     *Returns a color scheme that varies linearly (cyan:magenta) for values within range.
+     * Returns a color scheme that varies linearly (cyan:magenta) for values within range.
      *  NaN = red:
      *  Single value case = cyan
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return cool (cyan to magenta) color range for the value range
      */
     public static ValueColorScheme coolScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -81,11 +138,11 @@ public class ValueColorSchemes {
     }
     
     /**
-     *Returns a color scheme that varies linearly (magenta:yellow) for values within range.
+     * Returns a color scheme that varies linearly (magenta:yellow) for values within range.
      *  NaN = red:
      *  Single value case = magenta
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return spring (magenta to yellow) color range for the value range
      */
     public static ValueColorScheme springScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -99,11 +156,11 @@ public class ValueColorSchemes {
     }    
     
     /**
-     *Returns a color scheme that varies linearly (black:dark blue: blue:light blue: white) for values within range.
+     * Returns a color scheme that varies linearly (black:dark blue:blue:light blue:white) for values within range.
      *  NaN = red:
      *  Single value case = blue
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return bone (black to blue to white) color range for the value range
      */
     public static ValueColorScheme boneScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -121,11 +178,11 @@ public class ValueColorSchemes {
     }    
     
     /**
-     *Returns a color scheme that varies linearly (black:dark brown:brown:light brown:tan) for values within range.
+     * Returns a color scheme that varies linearly (black:dark brown:brown:light brown:tan) for values within range.
      *  NaN = red:
      *  Single value case = brown
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return copper (black to brown to tan) color range for the value range
      */
     public static ValueColorScheme copperScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -143,11 +200,11 @@ public class ValueColorSchemes {
     }    
     
     /**
-     *Returns a color scheme that varies linearly (dark red:dark pink:light pink) for values within range.
+     * Returns a color scheme that varies linearly (dark red:dark pink:light pink) for values within range.
      *  NaN = red:
      *  Single value case = dark pink
      * @param range can not be null
-     * @return ValueColorScheme
+     * @return pink (red to pink) color range for the value range
      */
     public static ValueColorScheme pinkScale(final Range range) {
         ArrayList<Color> colors = new ArrayList<>();
@@ -165,26 +222,33 @@ public class ValueColorSchemes {
     
     
     /**
-     *Returns a ValueColorScheme that varies linearly from one color to the next, based on range.
+     * Returns a ValueColorScheme that varies linearly from one color to the next, based on range.
      * @param range can not be null
      * @param minValueColor color that will be used for the lowest value in range. Can not be null.
      * @param maxValueColor color that will be used for the highest value in range. Can not be null. 
      * @param nanColor color to be returned when value is NaN.
-     * @return ValueColorScheme
+     * @return linear value to color transformation scheme between two colors
      */
     public static ValueColorScheme singleRangeGradient(final Range range, final Color minValueColor, final Color maxValueColor, final Color nanColor) {
         if (range == null) {
             throw new NullPointerException("Range should not be null");
         }
+        if (minValueColor == null){
+            throw new NullPointerException("The minimum color value should not be null");
+        }
+        if (maxValueColor == null){
+            throw new NullPointerException("The maximum color value should not be null");
+        }
+        if (nanColor == null){
+            throw new NullPointerException("The 'not a number' default color value should not be null");
+        }
+        
         return new ValueColorScheme() {
 
             @Override
             public int colorFor(double value) {
                 if (Double.isNaN(value)) {
                     return nanColor.getRGB();
-                }
-                if(range == null){
-                    throw new NullPointerException("range can not be null.");
                 }
                 double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
                 normalValue = Math.min(normalValue, 1.0);
@@ -199,16 +263,16 @@ public class ValueColorSchemes {
     }
 
     /**
-     *Returns a ValueColorScheme that varies linearly from color to color based on percentage.
+     * Returns a ValueColorScheme that varies linearly from color to color based on percentage.
      * @param range can not be null
      * @param colors an ArrayList<Color> that specifies what colors ValueColorScheme will use. The last value should correspond to the color to be used when value is NaN.
      * @param percentages an ArrayList<Double> that corresponds to colors, specifying what color corresponds to what percentage of range.
-     * @return ValueColorScheme
+     * @return linear value to color transformation scheme between multiple colors
      */
     public static ValueColorScheme RangeGradient(final Range range, final ArrayList<Color> colors, final ArrayList<Double> percentages){
         return new ValueColorScheme() {
             
-            Color nanColor = colors.get(colors.size()-1); 
+            private Color nanColor = colors.get(colors.size()-1); 
             @Override
             public int colorFor(double value) {
                 if (Double.isNaN(value)) {
@@ -250,6 +314,20 @@ public class ValueColorSchemes {
         };
     }
     
+    /**
+     * Creates a list for the cumulative percentages for n equally sized bins.
+     * For any color, the bin size is 1 / n.
+     * For color i, the cumulative percentage would be i / n.
+     * 
+     * Based on the number of colors, each color gets an equal bin of 100%.
+     * 
+     * Example:
+     *      size = 3
+     *      colors = {red, blue, yellow}
+     *      percentages = {0.33, 0.67, 1.00}
+     * @param size number of 'bins' to divide 100% into
+     * @return list of cumulative percentages 
+     */
     private static ArrayList<Double> percentageRange(int size){
         ArrayList<Double> percentages = new ArrayList<>();
         

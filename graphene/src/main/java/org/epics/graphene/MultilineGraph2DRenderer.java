@@ -73,33 +73,9 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
         drawGraphArea();
         
         Range datasetRange = RangeUtil.range(0,data.size());
+        
         //Set color scheme
-        switch(valueColorScheme){
-            case GRAY_SCALE:
-                colorScheme = ValueColorSchemes.grayScale(datasetRange);
-                break;
-            case JET:
-                colorScheme = ValueColorSchemes.jetScale(datasetRange);
-                break;
-            case HOT:
-                colorScheme = ValueColorSchemes.hotScale(datasetRange);
-                break;
-            case COOL:
-                colorScheme = ValueColorSchemes.coolScale(datasetRange);
-                break;
-            case SPRING:
-                colorScheme = ValueColorSchemes.springScale(datasetRange);
-                break;          
-            case BONE:
-                colorScheme = ValueColorSchemes.boneScale(datasetRange);
-                break;   
-            case COPPER:
-                colorScheme = ValueColorSchemes.copperScale(datasetRange);
-                break;                 
-            case PINK:
-                colorScheme = ValueColorSchemes.pinkScale(datasetRange);
-                break;                  
-        }
+        colorScheme = ValueColorSchemes.schemeFor(valueColorScheme, datasetRange);
         
         //Draw a line for each set of data in the data array.
         for(int datasetNumber = 0; datasetNumber < data.size(); datasetNumber++){

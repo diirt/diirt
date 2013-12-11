@@ -5,7 +5,9 @@
 package org.epics.graphene;
 
 /**
- *
+ * A scheme that will associate a RBG color to any data value.
+ * This is a transformation from <b>value</b> to <b>color</b>.
+ * 
  * @author carcassi
  */
 public interface ValueColorScheme {

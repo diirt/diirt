@@ -5,54 +5,35 @@
 package org.epics.graphene;
 
 /**
- *
+ * A set of parameters that can be applied to a <code>IntensityGraph2DRenderer</code>
+ * to update its settings.
+ * 
+ * <p>
+ * Only the parameters that are set in the update get applied to the renderer.
+ * Parameters unique to the intensity graph that can be changed are:
+ * <ul>
+ *          <li>zLabel margin size</li>
+ *          <li>Legend pixel width</li>
+ *          <li>Legend margin size between the legend and graph</li>
+ *          <li>Legend margin size between the legend and the image edge</li>
+ * </ul>
+ * 
  * @author carcassi
+ * @author sjdallst
  */
 public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<IntensityGraph2DRendererUpdate> {
 
-//    private InterpolationScheme interpolation;
-    
-//    private Double startX;
-//    private Double endX;
-//    private Double startY;
-//    private Double endY;
     private Integer zLabelMargin,
                     legendWidth,
                     legendMarginToGraph,
                     legendMarginToEdge;
     
-//    private Boolean rangeFromDataset,
       private Boolean drawLegend;
     
     private ColorScheme valueColorScheme;
     
-//    public IntensityGraph2DRendererUpdate startX(double startX) {
-//        this.startX = startX;
-//        return self();
-//    }
-//    
-//    public IntensityGraph2DRendererUpdate startY(double startY) {
-//        this.startY = startY;
-//        return self();
-//    }
-//    
-//    public IntensityGraph2DRendererUpdate endX(double endX) {
-//        this.endX = endX;
-//        return self();
-//    }
-//    
-//    public IntensityGraph2DRendererUpdate endY(double endY) {
-//        this.endY = endY;
-//        return self();
-//    }
-//    
-//    public IntensityGraph2DRendererUpdate rangeFromDataset(boolean rangeFromDataset) {
-//        this.rangeFromDataset = rangeFromDataset;
-//        return self();
-//    }
-    
     /**
-     *Sets this object's drawLegend to the given boolean value.
+     * Sets this object's drawLegend to the given boolean value.
      * To be used in conjunction with IntensityGraph2DRenderer's update function.
      * @param drawLegend boolean that will tell IntensityGraph2DRenderer whether or not it should draw a legend
      * @return this
@@ -61,15 +42,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         this.drawLegend = drawLegend;
         return self();
     }
-    
-//    public IntensityGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
-//        this.interpolation = scheme;
-//        return self();
-//    }
-    
+
     /**
-     *Sets this object's valueColorScheme to the given ColorScheme.
-     * @param scheme supported schemes: GRAY_SCALE, JET, HOT, COOL, SPRING, BONE, COPPER, PINK
+     * Sets this object's valueColorScheme to the given ColorScheme.
+     * @param scheme supported schemes: any <code>ColorScheme</code> supported by the <code>ValueColorSchemes</code>
      * @return this
      */
     public IntensityGraph2DRendererUpdate valueColorScheme(ColorScheme scheme) {
@@ -78,7 +54,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     }
     
     /**
-     *Sets this object's zLabelMargin to the given int.
+     * Sets this object's zLabelMargin to the given margin size.
      * @param margin integer distance(pixels) from the beginning of the z labels to the legend. 
      * @return this
      */
@@ -88,7 +64,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     }
     
     /**
-     *Sets this object's legendWidth to the given int.
+     * Sets this object's legendWidth to the given margin size.
      * @param width corresponds to the x-axis
      * @return this
      */
@@ -98,7 +74,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     }
     
     /**
-     *Sets this object's legendMarginToGraph to the given int.
+     * Sets this object's legendMarginToGraph to the given margin size.
      * @param margin distance(pixels) from the intensity graph to the legend.
      * @return this
      */
@@ -108,7 +84,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     }
     
     /**
-     *Sets this object's legendMarginToEdge to the given int.
+     * Sets this object's legendMarginToEdge to the given margin size.
      * @param margin distance(pixels) from the end of the legend(including labels and other margins) to the end of the graphics component.
      * @return this
      */
@@ -116,30 +92,6 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         this.legendMarginToEdge = margin;
         return self();
     }
-    
-//    public InterpolationScheme getInterpolation() {
-//        return interpolation;
-//    }
-//
-//    public Double getStartX() {
-//        return startX;
-//    }
-//
-//    public Double getStartY() {
-//        return startY;
-//    }
-//
-//    public Double getEndX() {
-//        return endX;
-//    }
-//
-//    public Double getEndY() {
-//        return endY;
-//    }
-//
-//    public Boolean isRangeFromDataset() {
-//        return rangeFromDataset;
-//    }
     
     /**
      *

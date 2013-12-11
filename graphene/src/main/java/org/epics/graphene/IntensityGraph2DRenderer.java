@@ -10,7 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import static org.epics.graphene.ColorScheme.BONE;
 import static org.epics.graphene.ColorScheme.PINK;
@@ -138,32 +137,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         //Set color scheme
-        switch(valueColorScheme){
-            case GRAY_SCALE:
-                colorScheme = ValueColorSchemes.grayScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;
-            case JET:
-                colorScheme = ValueColorSchemes.jetScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;
-            case HOT:
-                colorScheme = ValueColorSchemes.hotScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;
-            case COOL:
-                colorScheme = ValueColorSchemes.coolScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;
-            case SPRING:
-                colorScheme = ValueColorSchemes.springScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;          
-            case BONE:
-                colorScheme = ValueColorSchemes.boneScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;   
-            case COPPER:
-                colorScheme = ValueColorSchemes.copperScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;                 
-            case PINK:
-                colorScheme = ValueColorSchemes.pinkScale(RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
-                break;                  
-        }
+        colorScheme = ValueColorSchemes.schemeFor(valueColorScheme, RangeUtil.range((double)data.getStatistics().getMinimum(), (double)data.getStatistics().getMaximum()));
 
 
         double xStartGraph = super.xPlotCoordStart;
