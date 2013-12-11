@@ -317,6 +317,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
 
+    /**
+     *Draw reference lines that correspond to reference values. Reference lines are drawn on the exact pixel that represents a reference value.
+     */
     protected void drawVerticalReferenceLines() {
         g.setColor(referenceLineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -529,6 +532,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return scaledData;
     }
     
+    /**
+     *Empty function, designed to be implemented in sub-classes.
+     * <p>Used on every value in a dataset.</p>
+     * @param index
+     * @param valueX
+     * @param valueY
+     * @param scaledX
+     * @param scaledY
+     */
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
     }
     
@@ -873,23 +885,44 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
 
+    /**
+     *Sets up a graph to start and end at the center of a pixel.
+     * Consequently, all drawing done after using this method should assume that every point is on the center of a pixel.
+     */
     protected void setupDataAsPoints(){
         setupXAsPoints();
         setupYAsPoints();
     }
+    /**
+     *Sets up the x-axis of a graph to start and end at the center of a pixel. 
+     */
     protected void setupXAsPoints(){
         xPointMargin = 0.5;
     }
+    /**
+     *Sets up the y-axis of a graph to start and end at the center of a pixel.
+     */
     protected void setupYAsPoints(){
         yPointMargin = 0.5;
     }
+    /**
+     *Sets up a graph to start and end at the beginning border of a pixel. 
+     *  After using this method, each point should be assumed to be at the top left corner of a pixel.
+     */
     protected void setupDataAsAreas(){
         setupXAsAreas();
         setupYAsAreas();
     }
+    /**
+     *Sets up the x-axis of a graph to start and end at the left border of a pixel.
+     */
     protected void setupXAsAreas(){
         xPointMargin = 0;
     }
+    
+    /**
+     *Sets up the y-axis of a graph to start and end at the top border of a pixel.
+     */
     protected void setupYAsAreas(){
         yPointMargin = 0;
     }

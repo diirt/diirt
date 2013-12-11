@@ -20,20 +20,33 @@ import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
 /**
  *
- * @author carcassi
+ * @author carcassi, sjdallst, asbarber, jkfeng
  */
 public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
     private ValueColorScheme colorScheme;
 
+    /**
+     *Uses constructor specified in super class (Graph2DRenderer)
+     * @param imageWidth should be equal to the width of the bufferedImage.
+     * @param imageHeight should be equal to the height of the bufferedImage.
+     */
     public IntensityGraph2DRenderer(int imageWidth, int imageHeight) {
         super(imageWidth, imageHeight); 
     }
 
+    /**
+     *Default Constructor: makes an IntensityGraph2DRenderer of width 300 and height 200.
+     */
     public IntensityGraph2DRenderer() {
         this(300, 200);
     }
       
+    /**
+     *Updates private data by getting new values from update.
+     * Uses update from super class (Graph2DRenderer) for updates that are not specific to IntensityGraph2DRenderer. 
+     * @param update IntensityGraph2DRendererUpdate
+     */
     public void update(IntensityGraph2DRendererUpdate update) {
         super.update(update);
         if(update.getDrawLegend() != null){
@@ -77,6 +90,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     
     private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
    
+    /**
+     *Draws an intensity graph in the given graphics context, using the given data.
+     * All drawing is done within the bounds specified either at initialization or at update.
+     *  Different colorSchemes may be specified using the IntensityGraph2DRendererUpdate class, in combination with the update function. 
+     * @param g Graphics2D object used to perform drawing functions within draw.
+     * @param data can not be null
+     */
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
@@ -197,7 +217,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         return new IntensityGraph2DRendererUpdate();
     }
     
-    public void drawRectangles(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    private void drawRectangles(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         
         int countY = 0;
@@ -224,7 +244,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 
     //Draws rectangles for the case when there are more x values than pixels, but no more y values than pixels.
     //Uses the first value within each pixel to choose a color.
-    public void drawRectanglesSmallX(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    private void drawRectanglesSmallX(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         
         int countY = 0;
@@ -261,7 +281,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
     }
 //Same logic as drawRectanglesSmallX, but for when there are more y values than pixels.
-    public void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    private void drawRectanglesSmallY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         //Exact y index of data value to be used.
         double countY;
@@ -292,7 +312,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
 /*Draws for the case when there are both more x values and y values than pixels.
 Picks the value at approximately the top left of each pixel to set color. Skips other values within the pixel. 
 Draws boxes only 1 pixel wide and 1 pixel tall.*/ 
-    public void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+    private void drawRectanglesSmallXAndY(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
             double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
         /*countY and countX are used in the same way as in drawRectanglesSmallX and drawRectanglesSmallY
          each is used to calculate exactly what index of data value should be used to get the color
@@ -321,10 +341,20 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
     /*Calculates the range of the z values to be graphed, based on the previous z range (if there is one)
      If there is a previous range, the minimum value can only be lowered and the maximum value can only
      be raised to match the current range.*/
+    /**
+     *Calculates the range of the z values to be graphed based on the previous z range (if there is one).
+     *  If there is a previous range, the minimum value can only be lowered and the maximum value can only
+     *be raised to match the current range.
+     * @param zDataRange current data range.
+     */
     protected void calculateZRange(Range zDataRange) {
         zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
         zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
     }
+    /**
+     *Sets private variables to account for the space required to draw in labels for the legend.
+     * Only called if drawLegend is true.
+     */
     protected void calculateZLabels() {           
         // Calculate z axis references. If range is zero, use special logic
         if (!zPlotRange.getMinimum().equals(zPlotRange.getMaximum())) {
@@ -333,7 +363,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             zReferenceValues = new ArrayDouble(zAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 0);
+            ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 1);
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
             zReferenceValues = new ArrayDouble(zPlotRange.getMinimum().doubleValue());            
         }
@@ -346,6 +376,9 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             zLabelMaxWidth = Math.max(zLabelMaxWidth, zLabelWidths[i]);
         }
     }
+    /**
+     *Draws evenly spaced labels along the legend.
+     */
     protected void drawZLabels() {
         // Draw Z labels
         ListNumber zTicks = zReferenceCoords;
@@ -404,8 +437,12 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
-    }
-    //Translates a value's position in the aggregated range to a position on the legend. 
+    } 
+    /**
+     *Translates a value's position in the aggregated range to a position on the legend.
+     * @param value raw value
+     * @return double(scaled value)
+     */
     protected final double scaledZ(double value) {
         return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
     }

@@ -54,14 +54,30 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         return interpolation;
     }
     
+    /**
+     *Current state of highlightFocusValue.
+     * <ul>
+     *  <li>True - highlight and show the value the mouse is on.</li>
+     *  <li>False - Avoid calculation involved with finding the highlighted value/ do not highlight the value.</li>
+     * </ul>
+     * @return true or false
+     */
     public boolean isHighlightFocusValue() {
         return highlightFocusValue;
     }
     
+    /**
+     *Current index of the value that the mouse is focused on.
+     * @return focused index (in the dataset).
+     */
     public int getFocusValueIndex() {
         return focusValueIndex;
     }
     
+    /**
+     *Current x-position(pixel) of the value that the mouse is focused on.
+     * @return the x position that the mouse is focused on in the graph (pixel).
+     */
     public Integer getFocusPixelX() {
         return focusPixelX;
     }

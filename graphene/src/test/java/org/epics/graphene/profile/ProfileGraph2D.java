@@ -35,12 +35,16 @@ import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
 /**
+ * Handles the profiling for testing rendering (specifically the draw) of a <code>Graph2DRenderer</code>.
  * The base class for all graph profilers.
  * Has parameter T that is a graph renderer.
  * Has parameter S that is the dataset associated with T.
  * 
  * A profiler creates a loop in which a Graph2DRenderer perform multiple render operations.
  * Various options are provided to handle the profile statistics.
+ * 
+ * @param <T> type of graph render being profiled that is subclass of <code>Graph2DRenderer</code>
+ * @param <S> dataset type that is associated with <T> the graph renderer
  * 
  * @author asbarber
  */
@@ -62,7 +66,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         this.testTimeSec = testTimeSec;
     }
     
-
+    /**
+     * Default file path for all CSV log files of statistics.
+     */
     public static final String LOG_FILEPATH = "ProfileResults\\";
     
     //Profile Parameters (Customizable)
@@ -152,16 +158,16 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     /**
      * The renderer used in the render loop.
-     * Precondition: getRenderer() is capable of rendering getDataset().
-     *               Thus type T is capable of rendering type S.
+     * Precondition: <code>getRenderer()</code> is capable of rendering <code>getDataset()</code>.
+     *               Thus type <code>T</code> is capable of rendering type <code>S</code>.
      * @param imageWidth pixel width of rendered image
      * @param imageHeight pixel height of rendered image
-     * @return a Graph2DRenderer associated with data S
+     * @return a <code>Graph2DRenderer</code> associated with data S
      */
     protected abstract T getRenderer(int imageWidth, int imageHeight);
     
     /**
-     * The primary method in the profiles render loop.
+     * The primary method in the profiling render loop.
      * Override this method to test the draw method of 'renderer'.
      * 
      * @param graphics where image draws to
@@ -177,7 +183,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * Gets profile statistics. 
      * Returns null if the profile method has not been called and no statistics exist.
      * 
-     * @return 
+     * @return statistical information about profiling
      */
     public Statistics getStatistics(){
         //Ensures profile() was called
@@ -282,7 +288,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
                          quote + getDatasetMessage() + quote + delim +
-                         quote + getSaveMessage() + quote + delim;
+                         quote + getSaveMessage() + quote;
         
         //Ensures file is created
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
@@ -315,7 +321,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * 
      * The header delimiting is:
      * <ul>
-     *      <li>Components are not enclosed in quotes</li>
+     *      <li>Components are enclosed in quotes</li>
      *      <li>Components separated by commas (no spaces)</li>
      * </ul>
      * 
@@ -343,17 +349,18 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Header
+        String quote = "\"";
         String delim = ",";
-        String header = "Graph Type" + delim +
-                        "Date" + delim +
-                        "Average Time (ms)" + delim +
-                        "Total Time (ms)" + delim +
-                        "Number of Tries" + delim +
-                        "Number of Data Points" + delim +
-                        "Image Width" + delim +
-                        "Image Height" + delim +
-                        "Dataset Comments" + delim +
-                        "General Message" + delim;
+        String header =quote + "Graph Type" + quote + delim +
+                       quote + "Date" + quote + delim +
+                       quote + "Average Time (ms)" + quote + delim +
+                       quote + "Total Time (ms)" + quote + delim +
+                       quote + "Number of Tries" + quote + delim +
+                       quote + "Number of Data Points" + quote + delim +
+                       quote + "Image Width" + quote + delim +
+                       quote + "Image Height" + quote + delim +
+                       quote + "Dataset Comments" + quote + delim +
+                       quote + "General Message" + quote;
         
         //Write to file
         try {
@@ -379,7 +386,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     /**
      * Gets the name of the CSV file to save statistics to.
-     * Derived from getGraphTitle().
+     * Derived from <code>getGraphTitle()</code>.
      * @return the file name (not file path) of the CSV log file
      */
     public String getLogFileName(){
@@ -402,6 +409,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * This comment will be written to the CSV log file when saving the statistics.
      * 
      * This is appropriate for discussing the parameters of the renderer, etc.
+     * @return general message about the profiling results
      */
     public String getSaveMessage(){
         return saveMessage;
@@ -508,7 +516,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * Useful for creating the data set of the appropriate size.
      * Used in saving statistics to the CSV log file.
      * 
-     * @param npoints size of the data set in rendering
+     * @param nPoints size of the data set in rendering
      */
     public void setNumDataPoints(int nPoints){
         this.nPoints = nPoints;

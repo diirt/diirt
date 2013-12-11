@@ -11,7 +11,29 @@ import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
 /**
- *
+ * Creates a renderer that is capable of drawing a sparkline graph.
+ * 
+ * <p>
+ * A sparkline graph
+ * <ul>
+ *      <li>Displays a line</li>
+ *      <li>Does not have axes labels</li>
+ *      <li>Does not have scales display on the axes</li>
+ *      <li>Often draws small circles at important values on the line</li>
+ *      <li>Important values are:</li>
+ *          <ul>
+ *              <li>First Value</li>
+ *              <li>Last Value</li>
+ *              <li>Maximum Value</li>
+ *              <li>Minimum Value</li>
+ *          </ul>
+ *      <li>Often maintains a high width to height aspect ratio.
+ *          This can be manually setting the appropriate image width and height,
+ *          or can be applied in the code through the <code>aspectRatio</code>.
+ *          The aspect ratio should be set so that the line of the sparkline
+ *          never has a slope greater than 45-degrees.</li>
+ * </ul>
+ * 
  * @author asbarber
  * @author jkfeng
  * @author sjdallst
@@ -62,8 +84,11 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
     private Double  aspectRatio = null;
 
     //Scaling Schemes    
+    /**
+     * The set of interpolation schemes that are supported by the <code>SparklineGraph2DRenderer</code>.
+     * The interpolation schemes supported are <code>NEAREST_NEIGHBOUR</code>, <code>LINEAR</code>, and <code>CUBIC</code>.
+     */
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
-    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
 
     private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
 

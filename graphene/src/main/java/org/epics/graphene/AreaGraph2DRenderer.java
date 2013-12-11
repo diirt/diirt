@@ -21,6 +21,11 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         return new AreaGraph2DRendererUpdate();
     }
 
+    /**
+     *Draws the area to be put behind a graph on the given Graphics2D context, given the Cell1DDataset.
+     * @param graphics Graphics2D: can not be null.
+     * @param dataset Cell1DDataset 
+     */
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
         
         Color dividerColor = new Color(196, 196, 196);

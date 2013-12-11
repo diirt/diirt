@@ -18,6 +18,9 @@ import java.awt.geom.Rectangle2D;
  */
 public class Java2DStringUtilities {
     
+    /**
+     *How a string will be drawn, in relation to the given center pixel.
+     */
     public enum Alignment {
         TOP_RIGHT, TOP, TOP_LEFT,
         RIGHT, CENTER, LEFT,
@@ -60,6 +63,16 @@ public class Java2DStringUtilities {
         }
     }
     
+    /**
+     *Draws a string using the given alignment.
+     * @param g Graphics2D element, calls drawString.
+     * @param alignment Possible values: TOP_RIGHT, TOP, TOP_LEFT, RIGHT, CENTER, LEFT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT;
+     * @param x corresponds to different positions based on the alignment,
+     * but generally the x-coordinate of the pixel position where the graphics component will begin drawing the string.
+     * @param y corresponds to different positions based on the alignment,
+     * but generally the y-coordinate of the pixel position where the graphics component will begin drawing the string.
+     * @param text string to be drawn.
+     */
     public static void drawString(Graphics2D g, Alignment alignment, int x, int y, String text) {
         Rectangle2D stringBounds = g.getFontMetrics().getStringBounds(text, g);
         g.drawString(text, alignment.stringRightSide(stringBounds, x), alignment.stringBaseline(stringBounds, y));

@@ -20,13 +20,13 @@ public class Cell2DDatasets {
     }
     /**
      *returns a Cell2DDataset, which is a 1D list of values that is treated like a 2D matrix.
-     * @param zData: 1D list of z-values. x and y coordinates are calculated by partitioning the matrix
+     * @param data 1D list of z-values. x and y coordinates are calculated by partitioning the matrix
      * into pieces of length xCount. # of rows = yCount # of cols = xCount.
      * @param xRange
      * @param xCount
      * @param yRange
      * @param yCount
-     * @return
+     * @return Cell2DDataset
      */
 public static Cell2DDataset linearRange(final ListNumber data, final Range xRange, final int xCount, final Range yRange, final int yCount){
     if(data.size() == 0){

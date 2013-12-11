@@ -5,19 +5,24 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.epics.graphene.*;
 
 /**
- *
+ * Handles profiling for <code>Histogram1D</code>.
+ * Takes a <code>Histogram1D</code> dataset and repeatedly renders through a <code>AreaGraph2DRenderer</code>.
+ * 
  * @author asbarber
  */
 public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Histogram1D>{
     
     private Point1DCircularBuffer datasetBuffer;
     
-    
+    /**
+     * Generates <code>Histogram1D</code> data that can be used in rendering.
+     * The data is Gaussian and random between 0 and 1.
+     * @return data as a histogram
+     */
     @Override
     protected Histogram1D getDataset() {
         int nSamples = getNumDataPoints();
@@ -36,30 +41,49 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
         return Histograms.createHistogram(datasetBuffer);            
     }
 
+    /**
+     * Returns the renderer used in the render loop.
+     * The histogram data is rendered by a <code>AreaGraph2DRenderer</code>.
+     * @param imageWidth width of rendered image in pixels
+     * @param imageHeight height of rendered image in pixels
+     * @return a <code>AreaGraph2DRenderer</code> associated with <code>Histogram1D</code> data
+     */
     @Override
     protected AreaGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
         return new AreaGraph2DRenderer(imageWidth, imageHeight);
     }
 
+    /**
+     * Draws the histogram in an area graph.
+     * Primary method in the render loop.
+     * @param graphics where image draws to
+     * @param renderer what draws the image
+     * @param data the histogram being drawn
+     */
     @Override
     protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Histogram1D data) {
         data.update(new Histogram1DUpdate().recalculateFrom(datasetBuffer));
         renderer.draw(graphics, data);            
     }
     
+    /**
+     * Returns the name of the graph being profiled.
+     * @return <code>Histogram1D</code> title
+     */
     @Override
     public String getGraphTitle() {
         return "Histogram1D";
     }
     
-    
+    /**
+     * Profiles for <code>Histogram1D</code>, 
+     * prints the statistics to the console and saves the statistics.
+     * @param args console arguments -- no impact
+     */
     public static void main(String[] args) {
         ProfileHistogram1D profiler = new ProfileHistogram1D();
         profiler.profile();
         profiler.printStatistics();
         profiler.saveStatistics();
     }
-
-
-    
 }
