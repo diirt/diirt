@@ -118,6 +118,13 @@ public class ExpressionLanguage {
 	return new LineGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
     
+    public static SparklineGraph2DExpression sparklineGraphOf(
+	    DesiredRateExpression<?> tableData,
+	    DesiredRateExpression<?> xColumnName,
+	    DesiredRateExpression<?> yColumnName) {
+	return new SparklineGraph2DExpression(tableData, xColumnName, yColumnName);
+    }
+    
     public static ScatterGraph2DExpression scatterGraphOf(
 	    DesiredRateExpression<?> tableData,
 	    DesiredRateExpression<?> xColumnName,
