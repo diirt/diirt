@@ -1,4 +1,12 @@
 #!/bin/bash
+USER=`whoami`
+
+if [ $USER != "root" ];
+then
+    echo "Server script must be run as root"
+    exit -1
+fi
+
 BASEDIR=$(dirname $0)
 FIRSTIOC="phase1"
 ETH="eth1"
