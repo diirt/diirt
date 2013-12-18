@@ -23,8 +23,10 @@ public class CAIntegrationTest {
                 new OutageTestPhase(),
                 new TypeChangeTestPhase(),
                 new RepeatedDisconnectTestPhase());
+        int debugLevel = 1;
         
         for (TestPhase phase : phases) {
+            phase.setDebugLevel(debugLevel);
             phase.execute();
         }
         

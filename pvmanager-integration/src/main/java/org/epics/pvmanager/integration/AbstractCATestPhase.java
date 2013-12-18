@@ -23,6 +23,10 @@ import org.epics.vtype.VDouble;
 public abstract class AbstractCATestPhase extends TestPhase {
 
     protected void init(String iocName) {
+        if (getDebugLevel() >= 1) {
+            System.out.println("Initializing IOC " + iocName);
+        }
+        
         // Open command writer
         addReader(PVManager.read(channel("command")), TimeDuration.ofHertz(50));
         addWriter("command", PVManager.write(channel("command")));
@@ -33,6 +37,10 @@ public abstract class AbstractCATestPhase extends TestPhase {
     }
     
     protected void restart(String iocName) {
+        if (getDebugLevel() >= 1) {
+            System.out.println("Restart to IOC " + iocName);
+        }
+        
         pause(500);
         write("command", "start " + iocName + " 1");
         pause(500);
@@ -40,6 +48,10 @@ public abstract class AbstractCATestPhase extends TestPhase {
     }
     
     protected void pauseNetwork(int secPause) {
+        if (getDebugLevel() >= 1) {
+            System.out.println("Pause network for " + secPause + " sec");
+        }
+        
         pause(500);
         write("command", "netpause " + secPause);
         pause(500);

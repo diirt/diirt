@@ -6,6 +6,7 @@ package org.epics.pvmanager.integration;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -26,6 +27,8 @@ public abstract class TestPhase {
     private final Map<String, PVReader<?>> pvReaders = new ConcurrentHashMap<>();
     private final Log phaseLog = new Log();
     
+    private int debugLevel;
+    
     public String getName() {
         return getClass().getSimpleName();
     }
@@ -33,6 +36,9 @@ public abstract class TestPhase {
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
         pvReaders.put(pvReader.getName(), pvReader);
+        if (getDebugLevel() >= 2) {
+            System.out.println("Adding reader '" + pvReader.getName() + "'");
+        }
         return this;
     }
     
@@ -42,16 +48,25 @@ public abstract class TestPhase {
             throw new IllegalArgumentException("Writer called " + name + " already exists");
         }
         pvWriters.put(name, pvWriter);
+        if (getDebugLevel() >= 2) {
+            System.out.println("Adding writer '" + name + "'");
+        }
         return this;
     }
     
     protected void write(String name, Object obj) {
+        if (getDebugLevel() >= 2) {
+            System.out.println("Writing '" + obj + "' to '" + name + "'");
+        }
         @SuppressWarnings("unchecked")
         PVWriter<Object> pvWriter = (PVWriter<Object>) pvWriters.get(name);
         pvWriter.write(obj);
     }
     
     protected void waitFor(String name, String value, int msTimeout) {
+        if (getDebugLevel() >= 2) {
+            System.out.println("Waiting for '" + value + "' on '" + name + "'");
+        }
         PVReaderValueCondition cond = new PVReaderValueCondition(VTypeMatchMask.VALUE, newVString(value, alarmNone(), timeNow()));
         @SuppressWarnings("unchecked")
         PVReader<Object> pvReader = (PVReader<Object>) pvReaders.get(name);
@@ -62,6 +77,9 @@ public abstract class TestPhase {
     }
     
     protected void pause(long ms) {
+        if (getDebugLevel() >= 3) {
+            System.out.println("Pause " + ms + " ms");
+        }
         try {
             Thread.sleep(ms);
         } catch (InterruptedException ex) {
@@ -106,5 +124,15 @@ public abstract class TestPhase {
             phaseLog.print(System.out);
         }
     }
-    
+
+    public int getDebugLevel() {
+        return debugLevel;
+    }
+
+    public void setDebugLevel(int debugLevel) {
+        if (debugLevel < 0 || debugLevel > 4) {
+            throw new IllegalArgumentException("Debug level can only be 0, 1 or 2");
+        }
+        this.debugLevel = debugLevel;
+    }
 }
