@@ -53,8 +53,11 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     private static final int LARGE_ARRAY = 100000;
     private final JCADataSource jcaDataSource;
     private final String jcaChannelName;
+    // TODO: probably all volatile members could be guarded by this
     private volatile Channel channel;
+    // TODO: needs monitor can probably be removed
     private volatile boolean needsMonitor;
+    private Monitor valueMonitor;
     private volatile boolean largeArray = false;
     private volatile boolean sentReadOnlyException = false;
     private final boolean putCallback;
@@ -319,10 +322,31 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             });
         }
 
-        // Start the monitor only if the channel was (re)created, and
-        // not because a disconnection/reconnection
         if (needsMonitor) {
-            channel.addMonitor(valueTypeFor(channel), countFor(channel), jcaDataSource.getMonitorMask(), monitorListener);
+            // At each (re)connect, we need to create a new monitor:
+            // since the type could be changed, we would have a type mismatch
+            // between the current type and the old type when the monitor was
+            // created
+            
+            // XXX: Ideally, we would destroy the monitor on reconnect,
+            // but currently this does not work with CAJ (you get an
+            // IllegalStateException because the transport is not there
+            // anymore). So, for now, we destroy the monitor during the 
+            // the connection callback.
+            
+            // XXX: Ideally, we should just close (clear) the monitor, but
+            // this would cause one last event to reach the monitorListener.
+            // So, we remove the monitorListener right before the clear.
+            
+            // TODO: we could remember the previous type, and reconnect
+            // only if the type actually changed
+            if (valueMonitor != null) {
+                valueMonitor.removeMonitorListener(monitorListener);
+                valueMonitor.clear();
+                valueMonitor = null;
+            }
+            
+            valueMonitor = channel.addMonitor(valueTypeFor(channel), countFor(channel), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
         
@@ -389,6 +413,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                             resetMessage();
                             // Next connection, resend the read only exception if that's the case
                             sentReadOnlyException = false;
+                            needsMonitor = true;
                         }
                         
                     } catch (Exception ex) {
@@ -449,6 +474,9 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     
     private String toStringDBR(DBR value) {
         StringBuilder builder = new StringBuilder();
+        if (value == null) {
+            return "null";
+        }
         if (value.getValue() instanceof double[]) {
             builder.append(Arrays.toString((double[]) value.getValue()));
         } else if (value.getValue() instanceof short[]) {
