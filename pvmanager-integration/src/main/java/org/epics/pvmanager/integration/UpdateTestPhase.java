@@ -20,17 +20,11 @@ import static org.epics.pvmanager.integration.Constants.*;
  *
  * @author carcassi
  */
-public class UpdateTestPhase extends TestPhase {
+public class UpdateTestPhase extends AbstractCATestPhase {
 
     @Override
     public final void run() throws Exception {
-        // Open command writer
-        addWriter("command", PVManager.write(channel("command")));
-        Thread.sleep(1000);
-
-        // Reset ioc to known state
-        write("command", "start phase1 1");
-        Thread.sleep(10000);
+        init("phase1");
         
         addReader(PVManager.read(channel(const_double)), TimeDuration.ofHertz(50));
         addReader(PVManager.read(channel(const_int)), TimeDuration.ofHertz(50));

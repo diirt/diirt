@@ -18,25 +18,18 @@ import static org.epics.vtype.ValueFactory.*;
  *
  * @author carcassi
  */
-public class TypeChangeTestPhase extends TestPhase {
+public class TypeChangeTestPhase extends AbstractCATestPhase {
 
     @Override
     public final void run() throws Exception {
-        // Open command writer
-        addWriter("command", PVManager.write(channel("command")));
-        Thread.sleep(1000);
-
-        // Reset ioc to known state
-        write("command", "start typeChange1 1");
-        Thread.sleep(10000);
+        init("typeChange1");
         
         addReader(PVManager.read(channel("double-to-i32")), TimeDuration.ofHertz(50));
         //addReader(PVManager.read(channel("i32-to-double")), TimeDuration.ofHertz(50));
         pause(1000);
         
-        // Change ioc and types
-        write("command", "start typeChange2 1");
-        pause(10000);
+        restart("typeChange2");
+        pause(2000);
     }
 
     @Override
