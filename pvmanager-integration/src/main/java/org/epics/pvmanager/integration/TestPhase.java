@@ -26,6 +26,10 @@ public abstract class TestPhase {
     private final Map<String, PVReader<?>> pvReaders = new ConcurrentHashMap<>();
     private final Log phaseLog = new Log();
     
+    public String getName() {
+        return getClass().getSimpleName();
+    }
+    
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
         pvReaders.put(pvReader.getName(), pvReader);
@@ -78,6 +82,7 @@ public abstract class TestPhase {
     
     public void execute() {
         try {
+            System.out.println("Starting " + getName());
             run();
         } catch (Exception ex) {
             Logger.getLogger(TestPhase.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,6 +91,7 @@ public abstract class TestPhase {
         closeAll();
         try {
             verify(phaseLog);
+            System.out.println("Run " + phaseLog.getTestCount() + " tests");
         } catch (Exception ex) {
             System.out.println("Verify failed:");
             ex.printStackTrace(System.out);

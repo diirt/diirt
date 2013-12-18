@@ -5,6 +5,8 @@
 
 package org.epics.pvmanager.integration;
 
+import java.util.Arrays;
+import java.util.List;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
 
@@ -16,25 +18,15 @@ public class CAIntegrationTest {
     public static void main(String[] args) {
         PVManager.setDefaultDataSource(new JCADataSource());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
-        System.out.println("Starting update phase");
-        TestPhase phase1 = new UpdateTestPhase();
-        phase1.execute();
+        List<TestPhase> phases = Arrays.<TestPhase>asList(new UpdateTestPhase(),
+                new RestartTestPhase(),
+                new OutageTestPhase(),
+                new TypeChangeTestPhase(),
+                new RepeatedDisconnectTestPhase());
         
-        System.out.println("Starting restart phase");
-        TestPhase phase2 = new RestartTestPhase();
-        phase2.execute();
-        
-        System.out.println("Starting outage phase");
-        TestPhase phase3 = new OutageTestPhase();
-        phase3.execute();
-        
-        System.out.println("Starting type change phase");
-        TestPhase phase4 = new TypeChangeTestPhase();
-        phase4.execute();
-        
-        System.out.println("Starting repeated disconnect phase");
-        TestPhase phase5 = new RepeatedDisconnectTestPhase();
-        phase5.execute();
+        for (TestPhase phase : phases) {
+            phase.execute();
+        }
         
         PVManager.getDefaultDataSource().close();
     }
