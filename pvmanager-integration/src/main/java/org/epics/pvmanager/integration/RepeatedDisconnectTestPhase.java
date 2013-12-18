@@ -20,19 +20,11 @@ import org.epics.vtype.VDouble;
  *
  * @author carcassi
  */
-public class RepeatedDisconnectTestPhase extends TestPhase {
+public class RepeatedDisconnectTestPhase extends AbstractCATestPhase {
 
     @Override
     public final void run() throws Exception {
-        int msAfterRestart = 10000;
-        
-        // Open command writer
-        addReader(PVManager.read(channel("command")), TimeDuration.ofHertz(50));
-        addWriter("command", PVManager.write(channel("command")));
-        pause(1000);
-
-        // Reset ioc to known state
-        restart("phase1");
+        init("phase1");
         
         addReader(PVManager.read(channel(const_double)), TimeDuration.ofHertz(50));
 
@@ -47,13 +39,6 @@ public class RepeatedDisconnectTestPhase extends TestPhase {
         restart("phase1");
         restart("phase1");
         restart("phase1");
-    }
-    
-    protected void restart(String iocName) {
-        pause(500);
-        write("command", "start " + iocName + " 1");
-        pause(500);
-        waitFor("command", "ready", 20000);
     }
 
     @Override
