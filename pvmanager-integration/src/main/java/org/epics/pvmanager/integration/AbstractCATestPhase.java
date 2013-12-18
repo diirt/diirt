@@ -38,5 +38,12 @@ public abstract class AbstractCATestPhase extends TestPhase {
         pause(500);
         waitFor("command", "ready", 20000);
     }
+    
+    protected void pauseNetwork(int secPause) {
+        pause(500);
+        write("command", "netpause " + secPause);
+        pause(500);
+        waitFor("command", "ready", (secPause + 20) * 1000);
+    }
 
 }

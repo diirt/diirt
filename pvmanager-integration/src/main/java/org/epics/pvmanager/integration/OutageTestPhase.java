@@ -16,9 +16,8 @@ public class OutageTestPhase extends DisconnectTestPhase {
 
     @Override
     public void disconnectCycle() {
-        // Send restart command and wait enough time
-        write("command", "netpause 35");
-        pause(40000);
+        // Pause network
+        pauseNetwork(35);
     }
 
     public static void main(String[] args) {
