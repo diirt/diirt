@@ -28,6 +28,14 @@ public class CAIntegrationTest {
         TestPhase phase3 = new OutageTestPhase();
         phase3.execute();
         
+        System.out.println("Starting type change phase");
+        TestPhase phase4 = new TypeChangeTestPhase();
+        phase4.execute();
+        
+        System.out.println("Starting repeated disconnect phase");
+        TestPhase phase5 = new RepeatedDisconnectTestPhase();
+        phase5.execute();
+        
         PVManager.getDefaultDataSource().close();
     }
 }
