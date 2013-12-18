@@ -18,12 +18,17 @@ while true; do
      start*) echo Executing \"$COMMAND\"
              NSEC=`echo $COMMAND | cut -d " " -f 3`
              IOC=`echo $COMMAND | cut -d " " -f 2`
-             echo Stopping current IOC
-             ./stop-ioc.sh &> /dev/null
-             echo Waiting $NSEC seconds
-             sleep `echo $COMMAND | cut -d " " -f 3`
-             ./start-ioc.sh `echo $COMMAND | cut -d " " -f 2`
-             sleep 1
+             IOCDIR=`echo ../$IOC`
+             if [ -d "$IOCDIR" ]; then
+               echo Stopping current IOC
+               ./stop-ioc.sh &> /dev/null
+               echo Waiting $NSEC seconds
+               sleep `echo $COMMAND | cut -d " " -f 3`
+               ./start-ioc.sh `echo $COMMAND | cut -d " " -f 2`
+               sleep 1
+             else
+               echo IOC $IOC does not exist: skipping command
+             fi
              ;;
      netpause*) echo Executing \"$COMMAND\"
              ./network-pause.sh $ETH `echo $COMMAND | cut -d " " -f 2`
