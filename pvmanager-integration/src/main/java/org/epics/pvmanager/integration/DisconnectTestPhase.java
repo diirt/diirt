@@ -17,17 +17,11 @@ import static org.epics.pvmanager.integration.Constants.*;
  *
  * @author carcassi
  */
-public abstract class DisconnectTestPhase extends TestPhase {
+public abstract class DisconnectTestPhase extends AbstractCATestPhase {
 
     @Override
     public final void run() throws Exception {
-        // Open command writer
-        addWriter("command", PVManager.write(channel("command")));
-        Thread.sleep(1000);
-
-        // Reset ioc to known state
-        write("command", "start phase1 1");
-        Thread.sleep(10000);
+        init("phase1");
         
         // Add all constant fields
         // TODO: missing float, int, short, byte, string and all arrays

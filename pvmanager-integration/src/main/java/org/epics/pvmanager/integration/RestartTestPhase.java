@@ -16,9 +16,8 @@ public class RestartTestPhase extends DisconnectTestPhase {
 
     @Override
     public void disconnectCycle() {
-        // Send restart command and wait enough time
-        write("command", "start phase1 1");
-        pause(10000);
+        // Send restart command
+        restart("phase1");
     }
 
     public static void main(String[] args) throws Exception {
