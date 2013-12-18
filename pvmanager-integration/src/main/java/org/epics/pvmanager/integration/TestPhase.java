@@ -15,6 +15,7 @@ import org.epics.pvmanager.PVReaderConfiguration;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterConfiguration;
 import org.epics.util.time.TimeDuration;
+import static org.epics.vtype.ValueFactory.*;
 
 /**
  *
@@ -22,12 +23,12 @@ import org.epics.util.time.TimeDuration;
  */
 public abstract class TestPhase {
     private final Map<String, PVWriter<?>> pvWriters = new ConcurrentHashMap<>();
-    private final List<PVReader<?>> pvReaders = new CopyOnWriteArrayList<>();
+    private final Map<String, PVReader<?>> pvReaders = new ConcurrentHashMap<>();
     private final Log phaseLog = new Log();
     
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
-        pvReaders.add(pvReader);
+        pvReaders.put(pvReader.getName(), pvReader);
         return this;
     }
     
@@ -46,6 +47,16 @@ public abstract class TestPhase {
         pvWriter.write(obj);
     }
     
+    protected void waitFor(String name, String value, int msTimeout) {
+        PVReaderValueCondition cond = new PVReaderValueCondition(VTypeMatchMask.VALUE, newVString(value, alarmNone(), timeNow()));
+        @SuppressWarnings("unchecked")
+        PVReader<Object> pvReader = (PVReader<Object>) pvReaders.get(name);
+        boolean conditionMet = cond.waitOn(pvReader, msTimeout);
+        if (!conditionMet) {
+            throw new RuntimeException("Waiting failed on " + name + " value " + value);
+        }
+    }
+    
     protected void pause(long ms) {
         try {
             Thread.sleep(ms);
@@ -56,7 +67,7 @@ public abstract class TestPhase {
     }
     
     private void closeAll() {
-        for (PVReader<?> pvReader : pvReaders) {
+        for (PVReader<?> pvReader : pvReaders.values()) {
             pvReader.close();
         }
     }
