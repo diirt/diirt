@@ -26,3 +26,23 @@ record(ai, "const-double") {
   field(LOLO, -0.8)
   field(VAL, 0.13)
 }
+
+record(waveform, "const-float") {
+  field(DESC, "Float value")
+  field(FTVL, "FLOAT")
+}
+
+record(waveform, "const-i32") {
+  field(DESC, "Long value")
+  field(FTVL, "LONG")
+}
+
+record(waveform, "const-i16") {
+  field(DESC, "Short value")
+  field(FTVL, "SHORT")
+}
+
+record(waveform, "const-i8") {
+  field(DESC, "Char value")
+  field(FTVL, "CHAR")
+}
