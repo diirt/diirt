@@ -58,6 +58,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     // TODO: needs monitor can probably be removed
     private volatile boolean needsMonitor;
     private Monitor valueMonitor;
+    private Monitor metadataMonitor;
     private volatile boolean largeArray = false;
     private volatile boolean sentReadOnlyException = false;
     private final boolean putCallback;
@@ -296,7 +297,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     private void setup(Channel channel) throws CAException {
         DBRType metaType = metadataFor(channel);
-
+        
         // If metadata is needed, get it
         if (metaType != null) {
             // Need to use callback for the listener instead of doing a synchronous get
@@ -349,27 +350,17 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             valueMonitor = channel.addMonitor(valueTypeFor(channel), countFor(channel), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
+
+        // Remove current metadata monitor
+        if (metadataMonitor != null) {
+            metadataMonitor.removeMonitorListener(metadataListener);
+            metadataMonitor.clear();
+            metadataMonitor = null;
+        }
         
         // Setup metadata monitor if required
         if (jcaDataSource.isDbePropertySupported() && metaType != null) {
-            channel.addMonitor(metaType, 1, Monitor.PROPERTY, new MonitorListener() {
-
-                @Override
-                public void monitorChanged(MonitorEvent ev) {
-                    synchronized(JCAChannelHandler.this) {
-                        if (log.isLoggable(Level.FINEST)) {
-                            log.log(Level.FINEST, "JCA metadata monitorChanged for channel {0} event {1}", new Object[] {getChannelName(), ev});
-                        }
-                        
-                        // In case the metadata arrives after the monitor
-                        MonitorEvent event = null;
-                        if (getLastMessagePayload() != null) {
-                            event = getLastMessagePayload().getEvent();
-                        }
-                        processMessage(new JCAMessagePayload(ev.getDBR(), event));
-                    }
-                }
-            });
+            metadataMonitor = channel.addMonitor(metaType, 1, Monitor.PROPERTY, metadataListener);
         }
 
         // Flush the entire context (it's the best we can do)
@@ -503,6 +494,25 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                     metadata = getLastMessagePayload().getMetadata();
                 }
                 processMessage(new JCAMessagePayload(metadata, event));
+            }
+        }
+    };
+    
+    private final MonitorListener metadataListener = new MonitorListener() {
+
+        @Override
+        public void monitorChanged(MonitorEvent ev) {
+            synchronized(JCAChannelHandler.this) {
+                if (log.isLoggable(Level.FINEST)) {
+                    log.log(Level.FINEST, "JCA metadata monitorChanged for channel {0} event {1}", new Object[] {getChannelName(), ev});
+                }
+
+                // In case the metadata arrives after the monitor
+                MonitorEvent event = null;
+                if (getLastMessagePayload() != null) {
+                    event = getLastMessagePayload().getEvent();
+                }
+                processMessage(new JCAMessagePayload(ev.getDBR(), event));
             }
         }
     };
