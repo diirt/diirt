@@ -76,6 +76,12 @@ public abstract class TestPhase {
         }
     }
     
+    protected Object valueFor(String name) {
+        @SuppressWarnings("unchecked")
+        PVReader<Object> pvReader = (PVReader<Object>) pvReaders.get(name);
+        return pvReader.getValue();
+    }
+    
     protected void pause(long ms) {
         if (getDebugLevel() >= 3) {
             System.out.println("Pause " + ms + " ms");

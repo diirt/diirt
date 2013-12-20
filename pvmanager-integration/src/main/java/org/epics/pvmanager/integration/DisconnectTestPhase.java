@@ -29,6 +29,8 @@ public abstract class DisconnectTestPhase extends AbstractCATestPhase {
         addReader(PVManager.read(channel(const_string)), TimeDuration.ofHertz(50));
 
         disconnectCycle();
+        
+        channelConnections(const_double, 1);
     }
     
     public abstract void disconnectCycle();

@@ -6,6 +6,7 @@ package org.epics.pvmanager.integration;
 
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a network outage.

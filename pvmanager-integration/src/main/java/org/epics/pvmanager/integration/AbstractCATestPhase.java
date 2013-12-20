@@ -14,6 +14,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.vtype.ValueFactory.*;
 import static org.epics.pvmanager.integration.Constants.*;
 import org.epics.vtype.VDouble;
+import org.epics.vtype.VString;
 
 /**
  * Superclass for Channel Access tests.
@@ -27,9 +28,10 @@ public abstract class AbstractCATestPhase extends TestPhase {
             System.out.println("Initializing IOC " + iocName);
         }
         
-        // Open command writer
+        // Open command and output
         addReader(PVManager.read(channel("command")), TimeDuration.ofHertz(50));
         addWriter("command", PVManager.write(channel("command")));
+        addReader(PVManager.read(channel("output")), TimeDuration.ofHertz(50));
         pause(1000);
         
         // Reset ioc to known state
@@ -56,6 +58,23 @@ public abstract class AbstractCATestPhase extends TestPhase {
         write("command", "netpause " + secPause);
         pause(500);
         waitFor("command", "ready", (secPause + 20) * 1000);
+    }
+    
+    protected void channelConnections(String channelName, int expected) {
+        if (getDebugLevel() >= 1) {
+            System.out.println("Querying channel connections for '" + channelName + "'");
+        }
+        
+        pause(500);
+        write("command", "connections " + channelName);
+        pause(500);
+        waitFor("command", "ready", 15000);
+        VString output = (VString) valueFor("output");
+        int actual = Integer.valueOf(output.getValue());
+        // FIXME: the comparison should actually not be done here!
+        if (actual != expected) {
+            throw new RuntimeException("Expected " + expected + " connections on '" + channelName + "' (was " + actual + ")");
+        }
     }
 
 }

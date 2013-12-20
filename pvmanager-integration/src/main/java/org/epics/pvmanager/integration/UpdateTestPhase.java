@@ -39,6 +39,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         write(const_double, 3.0);
         write(const_int, 42);
         pause(4000);
+        channelConnections(const_double, 1);
     }
 
     @Override
