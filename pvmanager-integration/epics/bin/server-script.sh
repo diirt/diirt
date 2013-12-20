@@ -33,6 +33,11 @@ while true; do
      netpause*) echo Executing \"$COMMAND\"
              ./network-pause.sh $ETH `echo $COMMAND | cut -d " " -f 2`
              ;;
+     connections*) echo Executing \"$COMMAND\"
+             PV=`echo $COMMAND | cut -d " " -f 2`
+             OUTPUT=`./channel-connections.sh $PV`
+             caput output $OUTPUT &> /dev/null
+             ;;
      stop*) echo Shutting down
              echo Stopping current IOC
              ./stop-ioc.sh &> /dev/null
