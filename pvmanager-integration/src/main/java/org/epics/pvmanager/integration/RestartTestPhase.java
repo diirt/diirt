@@ -4,8 +4,11 @@
  */
 package org.epics.pvmanager.integration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.logging.LogManager;
 import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -21,7 +24,7 @@ public class RestartTestPhase extends DisconnectTestPhase {
     }
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new JCADataSource());
+        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(true).build());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new RestartTestPhase();
         phase1.execute();

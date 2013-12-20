@@ -14,6 +14,7 @@ import static org.epics.pvmanager.integration.VTypeMatchMask.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.vtype.ValueFactory.*;
 import static org.epics.pvmanager.integration.Constants.*;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -39,7 +40,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         write(const_double, 3.0);
         write(const_int, 42);
         pause(4000);
-        channelConnections(const_double, 1);
+        singleChannelConnection(const_double);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
     }
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new JCADataSource());
+        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(false).build());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new UpdateTestPhase();
         phase1.execute();

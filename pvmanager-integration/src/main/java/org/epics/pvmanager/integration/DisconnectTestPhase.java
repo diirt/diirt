@@ -26,11 +26,13 @@ public abstract class DisconnectTestPhase extends AbstractCATestPhase {
         // Add all constant fields
         // TODO: missing float, int, short, byte, string and all arrays
         addReader(PVManager.read(channel(const_double)), TimeDuration.ofHertz(50));
-        addReader(PVManager.read(channel(const_string)), TimeDuration.ofHertz(50));
+        //addReader(PVManager.read(channel(const_string)), TimeDuration.ofHertz(50));
 
         disconnectCycle();
         
-        channelConnections(const_double, 1);
+        pause(500);
+        
+        singleChannelConnection(const_double);
     }
     
     public abstract void disconnectCycle();
@@ -50,14 +52,14 @@ public abstract class DisconnectTestPhase extends AbstractCATestPhase {
         
         // *** const_string ***
         // Connection should go up, down and back up 
-        log.matchConnections(const_string, true, false, true);
+        //log.matchConnections(const_string, true, false, true);
         // Value should remain the same, but change alarm
-        log.matchValues(const_string, ALL,
-                const_string_value,
-                newVString(const_string_value.getValue(), newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), const_string_value),
-                const_string_value);
-        // No errors
-        log.matchErrors(const_string);
+//        log.matchValues(const_string, ALL,
+//                const_string_value,
+//                newVString(const_string_value.getValue(), newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), const_string_value),
+//                const_string_value);
+//        // No errors
+//        log.matchErrors(const_string);
     }
 
 }

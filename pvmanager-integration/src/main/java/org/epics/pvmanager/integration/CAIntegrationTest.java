@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**
  *
@@ -16,7 +17,6 @@ import org.epics.pvmanager.jca.JCADataSource;
  */
 public class CAIntegrationTest {
     public static void main(String[] args) {
-        PVManager.setDefaultDataSource(new JCADataSource());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         List<TestPhase> phases = Arrays.<TestPhase>asList(new UpdateTestPhase(),
                 new RestartTestPhase(),
@@ -24,6 +24,23 @@ public class CAIntegrationTest {
                 new TypeChangeTestPhase(),
                 new RepeatedDisconnectTestPhase());
         int debugLevel = 1;
+        
+        PVManager.setDefaultDataSource(new JCADataSource());
+        
+        for (TestPhase phase : phases) {
+            phase.setDebugLevel(debugLevel);
+            phase.execute();
+        }
+        
+        PVManager.getDefaultDataSource().close();
+        
+        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(true).build());
+
+        phases = Arrays.<TestPhase>asList(new UpdateTestPhase(),
+                new RestartTestPhase(),
+                new OutageTestPhase(),
+                new TypeChangeTestPhase(),
+                new RepeatedDisconnectTestPhase());
         
         for (TestPhase phase : phases) {
             phase.setDebugLevel(debugLevel);

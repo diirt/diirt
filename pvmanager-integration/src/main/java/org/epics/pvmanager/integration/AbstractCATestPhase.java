@@ -76,5 +76,18 @@ public abstract class AbstractCATestPhase extends TestPhase {
             throw new RuntimeException("Expected " + expected + " connections on '" + channelName + "' (was " + actual + ")");
         }
     }
+    
+    protected boolean isDbePropertySupported() {
+        JCADataSource dataSource =  (JCADataSource) PVManager.getDefaultDataSource();
+        return dataSource.isDbePropertySupported();
+    }
+    
+    protected void singleChannelConnection(String channelName) {
+        if (isDbePropertySupported()) {
+            channelConnections(channelName, 2);
+        } else {
+            channelConnections(channelName, 1);
+        }
+    }
 
 }
