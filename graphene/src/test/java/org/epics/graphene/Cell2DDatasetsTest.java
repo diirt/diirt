@@ -26,9 +26,6 @@ public class Cell2DDatasetsTest {
             }
         }, RangeUtil.range(0, 1), 10, RangeUtil.range(0, 1), 20);
         
-        System.out.println(dataset.getValue(0, 0));
-        System.out.println(dataset.getValue(9, 19));
-        
         assertThat(dataset.getXCount(), equalTo(10));
         assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
         assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(1.0));
