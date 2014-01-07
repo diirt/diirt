@@ -7,7 +7,7 @@ package org.epics.graphene;
 import org.epics.util.array.ListNumber;
 
 /**
- * A dataset consisting on a set of 1D cells.
+ * Dataset consisting of a value for each cell of a 1D grid.
  * <p>
  * It represents values distributed on a 1D grid and their statistical information.
  *
