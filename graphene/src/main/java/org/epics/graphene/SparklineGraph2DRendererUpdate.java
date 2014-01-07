@@ -8,11 +8,11 @@ import java.awt.Color;
 
 /**
  * A set of parameters that can be applied to a <code>SparklineGraph2DRenderer</code>
- * to update the settings of the <code>SparklineGraph2DRenderer</code>.
+ * to update it's settings.
  * 
  * <p>
  * Only the parameters that are set in the update get applied to the renderer.
- * Parameters that can be changed are:
+ * Parameters unique to the sparkline that can be changed are:
  * <ul>
  *      <li>Colors of the circles drawn at the important data points of a sparkline graph</li>
  *      <li>Size of the circles drawn at the important data points</li>
