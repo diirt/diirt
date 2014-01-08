@@ -6,20 +6,25 @@ Time graphs
 * waterfall
 
 Area graphs
+ * Multi line plot (single axis)
+ * Multi line plot (multiple y axis)
+
+Area graphs
 -----------
-* area graph
 * intensity graph
 
-Cleanup
+Core
 -------
-* Review of core graph area paint and documentation
-* Add support for basic things (color, font, ...)
+* Add suggested range from datasets
 
 Tools
 -----
 * JavaFX integration (may have to wait Java 8)
-* formalized tools for performance tests
+
+Stability
+---------
+ * Rationalize and develop a comprehensive testing strategy
 
 Performance
 -----------
-* Find ways to improve scatter plot--
+* Profile different graphs and fine ways to improve
