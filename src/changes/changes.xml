@@ -8,7 +8,50 @@
     </properties>
   
     <body>
-        <release version="2.2" date="SNAPSHOT" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
+        <release version="2.4" date="SNAPSHOT" description="Integration framework for ca regression tests.">
+            <action dev="carcassi"  type="update">
+                vtype: adding display information to VNumberArray
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding function to calculate histograms
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: handling time with nanosec out of range
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: better handling of reconnects with type change and metadata monitors
+            </action>
+            <action dev="carcassi"  type="add">
+                integration: adding framework for regression tests for channel access
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: tableOf better handles unconnected arguments
+            </action>
+        </release>
+        <release version="2.3" date="2013/10/14" description="Exec service. Finalized operator support in formula.">
+            <action dev="carcassi"  type="update">
+                formula: better handling of time and alarm for operators
+            </action>
+            <action dev="carcassi"  type="add">
+                exec: adding service for command line execution
+            </action>
+            <action dev="carcassi"  type="update">
+                jdbc: more DB types supported in the mapping
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding boolean operators and logical operators
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added support for stateful functions, such as pv(VString) and pvs(String)
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding standard color map
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding VBoolean
+            </action>
+        </release>
+        <release version="2.2" date="2013/06/27" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
             <action dev="carcassi"  type="update">
                 formula: basic numeric math function return highest alarm and latest time of arguments; also handle null better
             </action>
