@@ -1,33 +1,16 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
- */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.ReadExpressionTester;
-import org.epics.pvmanager.ReadRecipe;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 
 /**
  *
