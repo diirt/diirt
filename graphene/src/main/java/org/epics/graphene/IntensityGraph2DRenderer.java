@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.util.Arrays;
 import java.util.List;
+import java.math.*;
 import static org.epics.graphene.ColorScheme.BONE;
 import static org.epics.graphene.ColorScheme.PINK;
 import static org.epics.graphene.ColorScheme.SPRING;
@@ -99,7 +100,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
-       
+        int pixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
+        double dpiChange = 1+Math.sqrt((pixelsPerInch-72)/72);
+        g.setTransform(new AffineTransform(dpiChange,0,0,dpiChange,0,0));
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
