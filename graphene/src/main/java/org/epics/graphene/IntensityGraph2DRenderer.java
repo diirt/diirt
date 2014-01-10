@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.util.Arrays;
 import java.util.List;
+import java.math.*;
 import static org.epics.graphene.ColorScheme.BONE;
 import static org.epics.graphene.ColorScheme.PINK;
 import static org.epics.graphene.ColorScheme.SPRING;
@@ -75,12 +76,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 2;
     protected int zLabelMargin = 3;
-    private boolean drawLegend = false;
+    private boolean drawLegend = false, addXSum, addYSum;
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
     private AxisRange zAxisRange = AxisRanges.integrated();
     private ValueScale zValueScale = ValueScales.linearScale();
+    private List<Double> xSum,ySum;
     protected ListDouble zReferenceCoords;
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
@@ -99,7 +101,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
-       
+        int pixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
+        double dpiChange = 1+Math.sqrt((pixelsPerInch-72)/72);
+        g.setTransform(new AffineTransform(dpiChange,0,0,dpiChange,0,0));
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
@@ -155,8 +159,25 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double cellHeight = (yHeightTotal)/data.getYCount();
         double cellWidth = (xWidthTotal)/data.getXCount();
         
+        if(addXSum){
+            xSum.clear();
+        }
+        if(addYSum){
+            ySum.clear();
+        }
+        
         //Draw the cells of data by filling rectangles, if the width and height are greater than one pixel.
         if(cellWidth >= 1 && cellHeight >= 1){
+            if(addXSum){
+                for(int i = 0; i < data.getXCount();i++){
+                    xSum.add(Double.valueOf(0));
+                }
+            }
+            if(addYSum){
+                for(int i = 0; i < data.getYCount();i++){
+                    ySum.add(Double.valueOf(0));
+                }
+            }
             drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
         }
         
@@ -204,6 +225,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 int xPositionInt = (int)xStartGraph;
                 while (countX < data.getXCount()){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
+                    if(addXSum){
+                        xSum.set(countX,data.getValue(countX,data.getYCount()-1-countY)+xSum.get(countX));
+                    }
+                    if(addYSum){
+                        ySum.set(data.getYCount()-1-countY,data.getValue(countX,data.getYCount()-1-countY)+ySum.get(data.getYCount()-1-countY));
+                    }
                     Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPositionInt, yPositionInt, (int)cellWidth+1, (int)cellHeight+1);
                     g.fill(currentRectangle);
                     xPosition = xPosition + cellWidth;
