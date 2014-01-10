@@ -157,7 +157,7 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     //Defaults
     
     public static List<Integer> defaultDatasetSizes(){
-        int n = 4; //6;
+        int n = 6;
         int base = 10;
         List<Integer> sizes = new ArrayList<>(n);
         
