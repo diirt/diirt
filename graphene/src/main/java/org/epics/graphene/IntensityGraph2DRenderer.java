@@ -76,13 +76,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 2;
     protected int zLabelMargin = 3;
-    private boolean drawLegend = false, addXSum, addYSum;
+    private boolean drawLegend = false, addXSum = false, addYSum = false;
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
     private AxisRange zAxisRange = AxisRanges.integrated();
     private ValueScale zValueScale = ValueScales.linearScale();
-    private List<Double> xSum,ySum;
+    private double [] xSum,ySum;
     protected ListDouble zReferenceCoords;
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
@@ -159,23 +159,19 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         double cellHeight = (yHeightTotal)/data.getYCount();
         double cellWidth = (xWidthTotal)/data.getXCount();
         
-        if(addXSum){
-            xSum.clear();
-        }
-        if(addYSum){
-            ySum.clear();
-        }
         
         //Draw the cells of data by filling rectangles, if the width and height are greater than one pixel.
         if(cellWidth >= 1 && cellHeight >= 1){
             if(addXSum){
+                xSum = new double[data.getXCount()];
                 for(int i = 0; i < data.getXCount();i++){
-                    xSum.add(Double.valueOf(0));
+                    xSum[i] = 0;
                 }
             }
             if(addYSum){
+                ySum = new double[data.getYCount()];
                 for(int i = 0; i < data.getYCount();i++){
-                    ySum.add(Double.valueOf(0));
+                    ySum[i] = 0;
                 }
             }
             drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
@@ -184,12 +180,48 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         //Draw graph when cell width or height is smaller than one pixel.
         if(cellWidth < 1 || cellHeight < 1){
             if(cellHeight > 1){
+                if(addXSum){
+                    xSum = new double[(int)xWidthTotal];
+                    for(int i = 0; i < (int)xWidthTotal;i++){
+                        xSum[i] = 0;
+                    }
+                }
+                if(addYSum){
+                    ySum = new double[data.getYCount()];
+                    for(int i = 0; i < data.getYCount();i++){
+                        ySum[i] = 0;
+                    }
+                }
                 drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
             }
             if(cellWidth > 1){
+                if(addXSum){
+                    xSum = new double[data.getXCount()];
+                    for(int i = 0; i < data.getXCount();i++){
+                        xSum[i] = 0;
+                    }
+                }
+                if(addYSum){
+                    ySum = new double[(int)yHeightTotal];
+                    for(int i = 0; i < (int)yHeightTotal;i++){
+                        ySum[i] = 0;
+                    }
+                }
                 drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
             }
             if(cellWidth < 1 && cellHeight < 1){
+                if(addXSum){
+                    xSum = new double[(int)xWidthTotal];
+                    for(int i = 0; i < (int)xWidthTotal;i++){
+                        xSum[i] = 0;
+                    }
+                }
+                if(addYSum){
+                    ySum = new double[(int)yHeightTotal];
+                    for(int i = 0; i < (int)yHeightTotal;i++){
+                        ySum[i] = 0;
+                    }
+                }
                 drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
             }
             
@@ -226,10 +258,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 while (countX < data.getXCount()){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
                     if(addXSum){
-                        xSum.set(countX,data.getValue(countX,data.getYCount()-1-countY)+xSum.get(countX));
+                        xSum[countX] += data.getValue(countX, data.getYCount()-1-countY);
                     }
                     if(addYSum){
-                        ySum.set(data.getYCount()-1-countY,data.getValue(countX,data.getYCount()-1-countY)+ySum.get(data.getYCount()-1-countY));
+                        ySum[countY] += data.getValue(countX, data.getYCount()-1-countY);
                     }
                     Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPositionInt, yPositionInt, (int)cellWidth+1, (int)cellHeight+1);
                     g.fill(currentRectangle);
@@ -266,6 +298,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 int xPositionInt = (int)xStartGraph;
                 while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
+                    if(addXSum){
+                        xSum[xPositionInt] += data.getValue((int)countX,data.getYCount()-1-countY);
+                    }
+                    if(addYSum){
+                        ySum[countY] += data.getValue((int)countX,data.getYCount()-1-countY);
+                    }
                     Rectangle2D.Double rect;
                     //check to see how far the end of the drawn box is from the end of the actual data box (due to truncation)
                     if((yPositionInt+((int)cellHeight)+1)-(yPosition+cellHeight) < 1)
@@ -296,6 +334,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 int yPositionInt = (int)(yEndGraph-yHeightTotal);
                 while (yPositionInt < (int)yEndGraph+1){
                     g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-((int)countY)))));
+                    if(addXSum){
+                        xSum[countX] += data.getYCount()-1-((int)countY);
+                    }
+                    if(addYSum){
+                        ySum[yPositionInt] += data.getValue(countX,data.getYCount()-1-((int)countY));
+                    }
                     Rectangle2D.Double rect;
                     if((xPositionInt+(int)cellWidth+1)-(xPosition+cellWidth) < 1)
                         rect = new Rectangle2D.Double(xPositionInt,yPositionInt,(int)cellWidth+1,1);
@@ -329,6 +373,12 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             xPositionInt = (int) xStartGraph;
             while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
                 g.setColor(new Color(colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
+                if(addXSum){
+                    xSum[xPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
+                }
+                if(addYSum){
+                    ySum[yPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
+                }
                 Rectangle2D.Double rect;
                 rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
                 g.fill(rect);
