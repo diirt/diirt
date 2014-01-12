@@ -8,7 +8,7 @@ package org.epics.graphene.profile;
  *
  * @author Aaron
  */
-public class Resolution {
+public class Resolution implements Comparable{
     private int width, height;
     
     public Resolution (int width, int height){
@@ -38,5 +38,25 @@ public class Resolution {
     
     public int getHeight(){
         return this.height;
+    }
+    
+    public int getPixels(){
+        return this.width * this.height;
+    }
+    
+    @Override
+    public String toString(){
+        return width + "x" + height;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Resolution){
+            Resolution other = ((Resolution) o);
+            return Integer.compare(this.getPixels(), other.getPixels());
+        }
+        else{
+            return 0;
+        }
     }
 }
