@@ -21,53 +21,52 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     public NLineGraphs2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth,imageHeight);
     }
-    private int imageWidth,
-                imageHeight;
+    
     private ArrayList<LineGraph2DRenderer> graphList;
-    private ArrayList<Graphics2D> graphicsList;
-    /**
-     *Supported interpolation schemes. 
-     * Possible values:
-     * <ul>
-     *  <li>NEAREST_NEIGHBOR: Draws a line in steps. Starts at an initial point, draws that point's value
-     * until it is halfway to the next point, draws a straight line upwards to the next point's value, then draws
-     * a straight line to the next point.</li>
-     *  <li>LINEAR: Draws lines from one point to the next in a linear fashion.</li>
-     *  <li>CUBIC: Fits a cubic curve to the points plotted.</li>
-     * </ul>
-     */
-    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
-    /**
-     *Supported reduction schemes. Possible values:
-     * <ul>
-     *  <li>FIRST_MAX_MIN_LAST: plots only the first max min and last points within every four pixels along the x-axis. 
-     *  To be used when there are many more points than pixels.</li>
-     *  <li>NONE: No reduction scheme, all points are plotted.</li>
-     * </ul>
-     */
-    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
-
-    private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
-    public void draw( BufferedImage image, List<Point2DDataset> data){
-        this.g = (Graphics2D) image.getGraphics();
+    private ArrayList<Integer> roundingIndices;
+    
+    public void draw( Graphics2D g, List<Point2DDataset> data){
+        this.g = g;
         graphList = new ArrayList<LineGraph2DRenderer>();
-        graphicsList = new ArrayList<Graphics2D>();
-        for(Point2DDataset dataset: data){
-            LineGraph2DRenderer added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
-            graphList.add(added);
-        }
-        for(int i = 0; i < graphList.size(); i++){
-            System.out.println(i);
-            Graphics2D gtemp = (Graphics2D) image.getGraphics();
-            gtemp.translate(0,this.getImageHeight()/data.size()*i);
-            graphList.get(i).draw(gtemp, data.get(i));
-        }
+        roundingIndices = new ArrayList<Integer>();
+        addGraphs(data);
+        drawGraphs(data);
     }
+    
     @Override
     public Graph2DRendererUpdate newUpdate() {
         return new NLineGraphs2DRendererUpdate();
     }
     public void update(NLineGraphs2DRendererUpdate update) {
         super.update(update);
+    }
+    private void addGraphs(List<Point2DDataset> data){
+        double roundingError = 0;
+        for(int i = 0; i < data.size();i++){
+            LineGraph2DRenderer added = null;
+            roundingError+=((double)this.getImageHeight()/data.size())-(int)(this.getImageHeight()/data.size());
+            if(roundingError < 1){
+                added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
+            }
+            if(roundingError >= 1){
+                added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
+                roundingError-=1;
+                if(i < data.size()-1){
+                    roundingIndices.add(Integer.valueOf(i+1));
+                }
+            }
+            graphList.add(added);
+        }  
+    }
+    private void drawGraphs(List<Point2DDataset> data){
+        double roundingError = 0;
+        for(int i = 0; i < graphList.size(); i++){
+            Graphics2D gtemp = (Graphics2D)g.create();
+            if(roundingIndices.contains(i)){
+                roundingError = (1*(roundingIndices.indexOf(i)+1));
+            }
+            gtemp.translate(0,this.getImageHeight()/data.size()*i+roundingError);
+            graphList.get(i).draw(gtemp, data.get(i));
+        }
     }
 }
