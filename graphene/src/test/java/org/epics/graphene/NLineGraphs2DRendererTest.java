@@ -17,11 +17,11 @@ import org.junit.BeforeClass;
  * 
  * @authors asbarber, jkfeng, sjdallst
  */
-public class MultilineGraph2DRendererTest {
+public class NLineGraphs2DRendererTest {
     /**
      * Tests the functions in SparklineGraph2DRenderer
      */
-    public MultilineGraph2DRendererTest() {
+    public NLineGraphs2DRendererTest() {
     }
 
     private static Point2DDataset largeDataset;
@@ -69,16 +69,19 @@ public class MultilineGraph2DRendererTest {
             }
         }
 
+                     
+
+        //Creates a sparkline graph
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
         for(int i = 0; i < 10; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(100,100);
-        renderer.draw(g, data);
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        renderer.draw(image, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.1", image);
+        ImageAssert.compareImages("nlinegraphs2D.1", image);
     }
 }
