@@ -9,19 +9,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Point2DDataset;
@@ -29,7 +22,18 @@ import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.ShowResizableGraph;
 
 /**
- *
+ * Handles the profiling for testing rendering (specifically the draw) of a
+ * <code>Graph2DRenderer</code> through sets of testing settings.
+ * Has a <code>ProfileGraph2D</code> with the type of the
+ * <code>Graph2DRenderer</code> being profiled.
+ * <p>
+ * Enables the <i>profile object</i> to be run at various image resolutions
+ * and dataset sizes.  These statistics may then be graphed or saved.
+ * 
+ * @param <T> type of graph render being profiled that is a subclass of 
+ *            <code>Graph2DRenderer</code>
+ * @param <S> dataset type that is associated with <T> the graph renderer
+ * 
  * @author asbarber
  */
 public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
@@ -355,6 +359,26 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         
         return sizes;
     }
+    
+    /**
+     * Generates a set of dataset sizes to test profiling on, 
+     * on a logarithmic scale.
+     * The values are base^min, base^(min+1), ... , base^max.
+     * 
+     * @param min minimum power to raise the base to
+     * @param max maximum power to raise the base to
+     * @param base raise this to the power of n
+     * @return a list with values of base^n for n = min to n = max
+     */
+    public static List<Integer> logarathmicDatasetSizes(int min, int max, int base){
+        List<Integer> sizes = new ArrayList<>(max);
+        
+        for (int power = min; power <= max; power++){
+            sizes.add((int) Math.pow(base, power));
+        }
+        
+        return sizes;
+    }    
 
     /**
      * Default set of resolutions (image width and height set) to test
@@ -363,16 +387,7 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
      * (160x120, 320x240, ... 1600x1200)
      */
     public static List<Resolution> defaultResolutions(){
-        List<Resolution> r = new ArrayList<>();
-        
-        r.add(new Resolution(160, 120));
-        r.add(new Resolution(320, 240));
-        r.add(new Resolution(640, 480));
-        r.add(new Resolution(800, 600));
-        r.add(new Resolution(1024, 768));
-        r.add(new Resolution(1440, 1080));
-        r.add(new Resolution(1600, 1200));
-        return r;
+        return Resolution.defaultResolutions();
     } 
     
     
