@@ -46,7 +46,7 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("args");
+        return Arrays.asList("numArgs");
     }
 
     @Override
@@ -56,7 +56,7 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(final List<Object> args) {
-        
+
         ListDouble data = new ListDouble() {
 
             @Override
@@ -73,8 +73,8 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
                 return args.size();
             }
         };
-        
+
         return ValueFactory.newVDoubleArray(data, alarmNone(), newTime(Timestamp.now()), displayNone());
     }
-    
+
 }
