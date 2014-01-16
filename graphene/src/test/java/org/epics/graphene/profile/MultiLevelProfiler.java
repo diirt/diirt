@@ -4,8 +4,11 @@
  */
 package org.epics.graphene.profile;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +18,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
@@ -42,6 +47,8 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     private List<Resolution> resolutions;
     private List<Integer> datasetSizes;
         
+    private boolean displayTimeWarning = true;
+    
     private Map<Resolution, Map<Integer, Statistics>> results;
       
     /**
@@ -86,9 +93,11 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
             throw new NullPointerException("Use the setter to list resolutions.");
         }
         
-        //Shows estimated time
-        int estimatedTime = datasetSizes.size() * resolutions.size() * profiler.getTestTime();
-        JOptionPane.showMessageDialog(null, "The estimated run time is " + estimatedTime + " seconds.");
+        if (displayTimeWarning){
+            //Shows estimated time
+            int estimatedTime = datasetSizes.size() * resolutions.size() * profiler.getTestTime();
+            JOptionPane.showMessageDialog(null, "The estimated run time is " + estimatedTime + " seconds.");
+        }
         
         //Loop through combinations of settings
         for (int r = 0; r < resolutions.size(); r++){
@@ -146,8 +155,10 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
      * where the point is composed of the number of data points profiled
      * and the average profile time.
      * 
+     * Each point has the form (size, time).
+     * 
      * @return lines for each resolution composed of average run time and
-     * dataset size points
+     * dataset size points, with the point have the form (size, time)
      */
     public List<Point2DDataset> getStatisticLineData(){
         List<Point2DDataset> allLines = new ArrayList<>();
@@ -188,8 +199,9 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
      * Displays a separate <code>frame</code> for every profile operation
      * performed.
      * 
-     * Precondition: <code>#run()</code> has been called.
+     * Plots the sizes on the x-axis and the times on the y-axis.
      * 
+     * Precondition: <code>#run()</code> has been called.
      */
     public void graphStatistics(){
         if (results == null){
@@ -337,6 +349,16 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         this.datasetSizes = nPoints;
     }
     
+    /**
+     * Sets whether to show the time estimate for running the profiler.
+     * @param show true to show the time warning,
+     *             false to not show the time warning
+     * 
+     * @see #run() 
+     */
+    public void setDisplayTimeEstimate(boolean show){
+        this.displayTimeWarning = show;
+    }
     
     //Defaults
     
@@ -391,9 +413,214 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     } 
     
     
+    //Analysis
+    
+    //Computes the difference of each cell between the first file selected
+    //and the second file (first - second)
+    public static void compareTables(){
+        String message = "Select two Graphene table files (*.csv) to compute"
+                       + " the timing differences of.";
+        String hint    = "Note that the differences are calculated by:"
+                       + " first file cell minus second file cell.";
+        
+        JOptionPane.showMessageDialog(null, message);
+        JOptionPane.showMessageDialog(null, hint);
+        
+        File fileA, fileB;
+        
+        //File Choosers
+        final JFileChooser fc = new JFileChooser(ProfileGraph2D.LOG_FILEPATH);
+        fc.setFileFilter(new FileNameExtensionFilter("Graphene Tables (*.csv)", "csv"));
+        
+        //File A
+        int returnValueA = fc.showOpenDialog(null);
+        if (returnValueA == JFileChooser.APPROVE_OPTION){
+            fileA = fc.getSelectedFile();
+        }
+        else{
+            return;
+        }
+        
+        //File B
+        int returnValueB = fc.showOpenDialog(null);
+        if (returnValueB == JFileChooser.APPROVE_OPTION){
+            fileB = fc.getSelectedFile();
+        }
+        else{
+            return;
+        }
+        
+        compareTables(fileA, fileB);
+    }
+    
+    //Computes the difference of each cell between file A and file B
+    public static void compareTables(File fileA, File fileB){
+        List<String[]> rowsOfA = readTable(fileA);
+        List<String[]> rowsOfB = readTable(fileB);
+        
+        List<String[]> differenceRows = new ArrayList<>();
+        
+        //Ensures the same number of rows in both tables
+        if (rowsOfA.size() != rowsOfB.size()){
+            throw new IllegalArgumentException("The tables must have the same number of rows.");
+        }
+        
+        //Every row (applies to both tables)
+        for (int i = 0; i < rowsOfA.size(); i++){
+            String[] rowA = rowsOfA.get(i);
+            String[] rowB = rowsOfB.get(i);
+            
+            //Ensures same number of cells in the row of both tables
+            if (rowA.length != rowB.length){
+                throw new IllegalArgumentException("The tables must have the same number of columns.");
+            }
+            
+            String[] diffRow = new String[rowA.length];
+            
+            //Column header (first cell in each row)
+            if (rowA[0].equals(rowB[0])){
+                diffRow[0] = rowA[0];
+            }
+            else{
+                diffRow[0] = "*Error in Reading This Cell*";
+            }
+            
+            //All cells in the row (applies to both tables) (starts at cell 1, ignores column header)
+            for (int j = 1; j < rowA.length; j++){
+                String cellA = rowA[j];
+                String cellB = rowB[j];
+                
+                if (cellA == null || cellB == null){
+                    diffRow[j] = "";
+                }
+                else{
+                    //Tries to find a numberical values (for times)
+                    try{
+                        double numberA = Double.parseDouble(rowA[j]);
+                        double numberB = Double.parseDouble(rowB[j]);
+                        diffRow[j] = String.format("%.3f", numberA - numberB);
+                    }catch(NumberFormatException e){
+                        //When 
+                        if (cellA.equals(cellB)){
+                            diffRow[j] = cellA;
+                        }
+                        else{
+                            diffRow[j] = "*Error In Reading This Cell*";
+                        }
+                    }                    
+                }
+            }
+            
+            differenceRows.add(diffRow);
+        }
+        
+        
+        
+        //File Output
+        String delim = ",";
+        String filenameA = fileA.getName();
+        String filenameB = fileB.getName();
+        
+            //How to name output file
+            String graphType;        
+            if (filenameA.indexOf(" -") == -1){
+                graphType = "Unknown Graph Type";
+            }
+            else{
+                graphType = filenameA.substring(0, filenameA.indexOf(" -"));
+            }
+            
+            String dateA, dateB;
+            if (filenameA.indexOf("(") == -1 || filenameA.indexOf(")") == -1){
+                dateA = filenameA;
+            }
+            else{
+                dateA = filenameA.substring(filenameA.indexOf("("), filenameB.indexOf(")") + 1);
+            }
+
+            if (filenameB.indexOf("(") == -1 || filenameB.indexOf(")") == -1){
+                dateB = filenameB;
+            }
+            else{
+                dateB = filenameB.substring(filenameB.indexOf("("), filenameB.indexOf(")") + 1);
+            }
+        
+        File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                   graphType +
+                                   " - Table Difference" + 
+                                   "(" +
+                                   dateA +
+                                   " vs " +
+                                   dateB +
+                                   ")" +
+                                   ".csv");
+        
+        try {
+            outputFile.createNewFile();
+            
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+            
+            //Prints rows
+            for (String[] row: differenceRows){
+                for (String element: row){
+                    out.print(element + delim);
+                }
+                out.println();
+            }
+            
+            out.close();
+        } catch (IOException ex) {
+            System.err.println("Output errors exist.");
+        }        
+    }
+    
+    //String[] is cell values, list is of the rows
+    public static List<String[]> readTable(File file){
+        List<String[]> rows = new ArrayList<>();
+        String delim = ",";
+        FileReader fr = null;
+        
+        try{
+            fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
+            
+            String header = reader.readLine();
+            rows.add(header.split(delim));
+            
+            String row;
+            while ( (row = reader.readLine()) != null ){
+                rows.add(row.split(delim));
+            }
+            
+            reader.close();
+        }
+        catch(FileNotFoundException ex){
+            System.err.println("The first file could not be found.");
+        }
+        catch (IOException ex){
+            System.err.println("Output errors exist.");
+        } 
+        finally {
+           try {
+               if (fr != null){
+                   fr.close();
+               }
+           } 
+           catch (IOException ex){
+               System.exit(1);
+           }
+        }
+        
+        return rows;
+    }
+    
+    
     //Example use
     
     public static void main(String[] args){
+//        MultiLevelProfiler.compareTables();
+        
+        
         ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
         profile.setTestTime(1);
         
@@ -403,6 +630,7 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         
         layer.run();
         
+        layer.graphStatistics();
         layer.saveStatistics();        
     }
 }
