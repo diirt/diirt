@@ -61,15 +61,13 @@ public class NLineGraphs2DRendererTest {
      * @throws Exception Test fails
      */    
     @Test
-    public void test1() throws Exception {
+    public void EvenSplitTest() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
             }
         }
-
-                     
 
         //Creates a sparkline graph
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
@@ -82,7 +80,7 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.1", image);
+        ImageAssert.compareImages("nlinegraphs2D.EvenSplit", image);
     }
     @Test
     public void UnevenSplitTest() throws Exception {
@@ -108,4 +106,31 @@ public class NLineGraphs2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("nlinegraphs2D.UnevenSplit", image);
     }
+    
+    @Test
+    public void TooManyGraphsTest() throws Exception {
+        double [][] initialData= new double [120][100]; 
+        for(int i = 0; i < 120; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+                     
+
+        //Creates a sparkline graph
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 120; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("nlinegraphs2D.TooManyGraphs", image);
+    }
+    
+    
 }

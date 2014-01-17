@@ -26,6 +26,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private ArrayList<Integer> roundingIndices;
     
     public void draw( Graphics2D g, List<Point2DDataset> data){
+        if(g == null){
+            throw new IllegalArgumentException("Graphics can't be null.");
+        }
+        if(data == null){
+            throw new IllegalArgumentException("data can't be null.");
+        }
         this.g = g;
         graphList = new ArrayList<LineGraph2DRenderer>();
         roundingIndices = new ArrayList<Integer>();
