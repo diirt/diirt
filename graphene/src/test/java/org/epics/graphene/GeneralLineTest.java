@@ -27,7 +27,23 @@ public class GeneralLineTest {
      
     public GeneralLineTest() {
     }
-
+//abstract BaseTestForGraph
+    //constructor (String s)
+    //this.s = "";
+   //abstract method: creates graph2drenderer
+    //abstract imageDraw(graph2drendererUpdate)
+    //private string prefixTestTimages
+    //renderer = createrenderer()
+    //rendere.update (...font)
+    //compareImages (prefix + "font"
+    //Image\image = draw (new g2drendererupdate.font())
+    
+    
+    //linegraph2d renderer
+    //super ('line2d)
+    //draw (update)
+    //create renderer, update, create image, draw, return image
+    //
     private static Point2DDataset largeDataset;
     
     @BeforeClass

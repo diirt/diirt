@@ -106,6 +106,7 @@ public class LineGraph2DRendererTest {
     
     @Test
     public void testOneNaN() throws Exception{
+        //TODO: NaN doesn't show up with linear interpolation
         double[] dataSet = {1,2,3, Double.NaN, 5};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);

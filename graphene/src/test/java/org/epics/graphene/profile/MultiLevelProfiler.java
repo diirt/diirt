@@ -618,19 +618,30 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     //Example use
     
     public static void main(String[] args){
-//        MultiLevelProfiler.compareTables();
+        MultiLevelProfiler.compareTables();
         
-        
-        ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
-        profile.setTestTime(1);
-        
-        MultiLevelProfiler layer = new MultiLevelProfiler(profile);
-        layer.setImageSizes(defaultResolutions());
-        layer.setDatasetSizes(defaultDatasetSizes());
-        
-        layer.run();
-        
-        layer.graphStatistics();
-        layer.saveStatistics();        
+//        
+//        ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
+//        profile.setTestTime(1);
+//        
+//        MultiLevelProfiler layer = new MultiLevelProfiler(profile);
+//        layer.setImageSizes(defaultResolutions());
+//        layer.setDatasetSizes(defaultDatasetSizes());
+//        
+//        layer.run();
+//        
+//        layer.graphStatistics();
+//        layer.saveStatistics();        
     }
 }
+
+//Notes
+//in naming: 201401030830
+//time before the name
+//time-graph name
+
+//percentage difference
+//put % symbol in csv
+
+//write estimated time to system console
+//show what is being tested and the result
