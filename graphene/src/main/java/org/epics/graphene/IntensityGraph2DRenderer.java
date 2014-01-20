@@ -174,7 +174,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     ySum[i] = 0;
                 }
             }
-            drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
+            drawRectanglesBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
         }
         
         //Draw graph when cell width or height is smaller than one pixel.
@@ -275,6 +275,36 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
     }
 
+    private void drawRectanglesBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
+        
+        ListNumber cellBoundariesX = data.getXBoundaries();
+        ListNumber cellBoundariesY = data.getYBoundaries();
+        int countY = 0;
+        int countX;
+        double yPosition = yEndGraph-yHeightTotal;
+        int yPositionInt = (int)(yEndGraph-yHeightTotal);
+        while (countY < cellBoundariesY.size()-1){
+                countX = 0;
+                while (countX < cellBoundariesX.size()-1){
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
+                    if(addXSum){
+                        xSum[countX] += data.getValue(countX, data.getYCount()-1-countY);
+                    }
+                    if(addYSum){
+                        ySum[countY] += data.getValue(countX, data.getYCount()-1-countY);
+                    }
+                    Rectangle2D.Double currentRectangle = new Rectangle2D.Double((int)scaledX(cellBoundariesX.getDouble(countX)), (int)scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY))
+                            , (int)(scaledX(cellBoundariesX.getDouble(countX+1))-scaledX(cellBoundariesX.getDouble(countX)))+1, (int)(scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY-1))-scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY)))+1);
+                    g.fill(currentRectangle);
+                    countX++;
+                }
+                yPosition = yPosition + cellHeight;
+                yPositionInt = (int)yPosition;
+                countY++;
+            }
+    }
+    
     //Draws rectangles for the case when there are more x values than pixels, but no more y values than pixels.
     //Uses the first value within each pixel to choose a color.
     private void drawRectanglesSmallX(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
