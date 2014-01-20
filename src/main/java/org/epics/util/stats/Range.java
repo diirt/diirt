@@ -12,6 +12,9 @@ package org.epics.util.stats;
  * <p>
  * The appropriate Range instance for
  * an unknown range, or for a range of NaN values, is null.
+ * <p>
+ * The minimum and maximum are Numbers to allow to retain the type of
+ * values used.
  *
  * @author carcassi
  */
