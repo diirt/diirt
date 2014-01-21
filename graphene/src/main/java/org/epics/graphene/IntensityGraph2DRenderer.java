@@ -18,6 +18,7 @@ import static org.epics.graphene.ColorScheme.SPRING;
 import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
+import java.util.ArrayList;
 /**
  *
  * @author carcassi, sjdallst, asbarber, jkfeng
@@ -193,7 +194,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     }
                 }
                 drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
-                //drawRectanglesSmallXBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
+                //drawRectanglesSmallXBoundaries(g, colorScheme, data);
             }
             if(cellWidth > 1){
                 if(addXSum){
@@ -224,6 +225,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     }
                 }
                 drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
             }
             
         }
@@ -346,26 +348,44 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             }
     }
     
-    private void drawRectanglesSmallXBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
+    private void drawRectanglesSmallXBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data){
         
         ListNumber cellBoundariesX = data.getXBoundaries();
+        List<Integer> newBoundariesX = new ArrayList<Integer>();
+        List<Integer> valueIndices = new ArrayList<Integer>();
+        int countX = 0;
+        newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(0)));
+        valueIndices.add(0);
+        for(int i = 1; i < cellBoundariesX.size(); i++){
+            if((int)scaledX(cellBoundariesX.getDouble(i)) > newBoundariesX.get(countX)){
+                newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
+                valueIndices.add(i);
+                countX++;
+            }
+        }
         ListNumber cellBoundariesY = data.getYBoundaries();
         int countY = 0;
-        int countX;
+        //int currentXStart;
         while (countY < cellBoundariesY.size()-1){
                 countX = 0;
-                while (countX < cellBoundariesX.size()-1){
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
+                //currentXStart = (int)scaledX(cellBoundariesX.getDouble(0));
+                while (countX < newBoundariesX.size()-1){
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue(valueIndices.get(countX), data.getYCount()-1-countY))));
                     if(addXSum){
                         xSum[countX] += data.getValue(countX, data.getYCount()-1-countY);
                     }
                     if(addYSum){
                         ySum[countY] += data.getValue(countX, data.getYCount()-1-countY);
                     }
-                    
-                    Rectangle2D.Double currentRectangle = new Rectangle2D.Double((int)scaledX(cellBoundariesX.getDouble(countX)), (int)scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY))
-                            , (int)(scaledX(cellBoundariesX.getDouble(countX+1))-scaledX(cellBoundariesX.getDouble(countX)))+1, (int)(scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY-1))-scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY)))+1);
+                    Rectangle2D.Double currentRectangle;
+                    currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX), (int)scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY))
+                            , newBoundariesX.get(countX+1)-newBoundariesX.get(countX), (int)(scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY-1))-scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY)))+1);
+                    g.fill(currentRectangle);
+                    if(countX == newBoundariesX.size()-2){
+                        currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX)+1, (int)scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY))
+                            , newBoundariesX.get(countX+1)-newBoundariesX.get(countX), (int)(scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY-1))-scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-1-countY)))+1);
+                        g.fill(currentRectangle);
+                    }
                     g.fill(currentRectangle);
                     countX++;
                 }
@@ -441,6 +461,63 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             countY+=yDataPerBox;
             yPositionInt+=1;
         }
+    }
+    
+    private void drawRectanglesSmallXAndYBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
+        ListNumber cellBoundariesX = data.getXBoundaries();
+        List<Integer> newBoundariesX = new ArrayList<Integer>();
+        List<Integer> valueIndicesX = new ArrayList<Integer>();
+        int countX = 0;
+        newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(0)));
+        valueIndicesX.add(0);
+        for(int i = 1; i < cellBoundariesX.size(); i++){
+            if((int)scaledX(cellBoundariesX.getDouble(i)) > newBoundariesX.get(countX)){
+                newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
+                valueIndicesX.add(i);
+                countX++;
+            }
+        }
+        ListNumber cellBoundariesY = data.getYBoundaries();
+        List<Integer> newBoundariesY = new ArrayList<Integer>();
+        List<Integer> valueIndicesY = new ArrayList<Integer>();
+        int countY = 0;
+        newBoundariesY.add((int)scaledY(cellBoundariesY.getDouble(0)));
+        valueIndicesY.add(0);
+        for(int i = 1; i < cellBoundariesY.size(); i++){
+            if((int)scaledY(cellBoundariesY.getDouble(i)) < newBoundariesY.get(countY)){
+                newBoundariesY.add((int)scaledY(cellBoundariesY.getDouble(i)));
+                valueIndicesY.add(i);
+                countY++;
+            }
+        }
+        countY = 0;
+        //int currentXStart;
+        while (countY < newBoundariesY.size()-2){
+                countX = 0;
+                //currentXStart = (int)scaledX(cellBoundariesX.getDouble(0));
+                while (countX < newBoundariesX.size()-1){
+                    g.setColor(new Color(colorScheme.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
+                    if(addXSum){
+                        xSum[countX] += data.getValue(countX, data.getYCount()-1-countY);
+                    }
+                    if(addYSum){
+                        ySum[countY] += data.getValue(countX, data.getYCount()-1-countY);
+                    }
+                    Rectangle2D.Double currentRectangle;
+                    currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX), newBoundariesY.get(newBoundariesY.size()-2-countY)
+                            , newBoundariesX.get(countX+1)-newBoundariesX.get(countX),  newBoundariesY.get(newBoundariesY.size()-2-countY-1)-newBoundariesY.get(newBoundariesY.size()-2-countY));
+                    g.fill(currentRectangle);
+                    if(countX == newBoundariesX.size()-2){
+                        currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX)+1, (int)scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-2-countY))
+                            , newBoundariesX.get(countX+1)-newBoundariesX.get(countX), (int)(scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-2-countY-1))-scaledY(cellBoundariesY.getDouble(cellBoundariesY.size()-2-countY))));
+                        g.fill(currentRectangle);
+                    }
+                    g.fill(currentRectangle);
+                    countX++;
+                }
+                countY++;
+            }
     }
     /*Calculates the range of the z values to be graphed, based on the previous z range (if there is one)
      If there is a previous range, the minimum value can only be lowered and the maximum value can only
