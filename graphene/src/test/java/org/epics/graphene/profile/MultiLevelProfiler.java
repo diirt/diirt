@@ -12,9 +12,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,19 +37,16 @@ import org.epics.graphene.ShowResizableGraph;
  * Enables the <i>profile object</i> to be run at various image resolutions
  * and dataset sizes.  These statistics may then be graphed or saved.
  * 
- * @param <T> type of graph render being profiled that is a subclass of 
- *            <code>Graph2DRenderer</code>
- * @param <S> dataset type that is associated with <T> the graph renderer
- * 
  * @author asbarber
  */
-public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
-    private ProfileGraph2D<T, S> profiler;
+public class MultiLevelProfiler{
+    private ProfileGraph2D profiler;
     
     private List<Resolution> resolutions;
     private List<Integer> datasetSizes;
         
     private boolean displayTimeWarning = true;
+    private boolean printResults = true;
     
     private Map<Resolution, Map<Integer, Statistics>> results;
       
@@ -60,7 +59,7 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
      * @param profiler graph renderer with given profile settings to
      * do extensive testing on
      */
-    public MultiLevelProfiler(ProfileGraph2D<T, S> profiler){
+    public MultiLevelProfiler(ProfileGraph2D profiler){
         this.profiler = profiler;
         this.results = new HashMap<>();
     }
@@ -92,12 +91,9 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         if (resolutions == null || resolutions.isEmpty()){
             throw new NullPointerException("Use the setter to list resolutions.");
         }
-        
-        if (displayTimeWarning){
-            //Shows estimated time
-            int estimatedTime = datasetSizes.size() * resolutions.size() * profiler.getTestTime();
-            JOptionPane.showMessageDialog(null, "The estimated run time is " + estimatedTime + " seconds.");
-        }
+           
+        //Can give warning about how long this method will run
+        this.processTimeWarning(datasetSizes.size() * resolutions.size() * profiler.getTestTime());
         
         //Loop through combinations of settings
         for (int r = 0; r < resolutions.size(); r++){
@@ -105,7 +101,10 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
             HashMap<Integer, Statistics> map = new HashMap<>();
             
                 for (int s = 0; s < datasetSizes.size(); s++){
-
+                    
+                    //Use this to process before the result, such as to print to console
+                    this.processPreResult(resolutions.get(r), datasetSizes.get(s));
+                    
                     //Apply settings
                     profiler.setNumDataPoints(datasetSizes.get(s));
                     profiler.setImageWidth(resolutions.get(r).getWidth());
@@ -116,6 +115,9 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
 
                     //Track results (dataset size and statistics)
                     map.put(datasetSizes.get(s), profiler.getStatistics());
+                    
+                    //Use to process the result, such as print to console
+                    this.processResult(resolutions.get(r), datasetSizes.get(s), profiler.getStatistics());
                 }
             
             //Put dataSize & statistics map into resolution set
@@ -244,12 +246,8 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
        String header = ",";
        String delim = ",";      
        
-       Calendar today = Calendar.getInstance();       
-       String date = today.get(Calendar.YEAR) + "-" +               
-                     (today.get(Calendar.MONTH) + 1) + "-" +
-                     today.get(Calendar.DAY_OF_MONTH) + " " +
-                     today.get(Calendar.HOUR) + "." +
-                     today.get(Calendar.MINUTE);
+       SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+       String date = format.format(new Date());
 
        //Sorts keys so table has sorted columns/rows
        Arrays.sort(resKeys);
@@ -278,11 +276,11 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
        
        //Creates file
        File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                  date + 
+                                  "-" +
                                   profiler.getGraphTitle() +
-                                  " - Table" + 
-                                  "(" +
-                                  date +
-                                  ")" +
+                                  "-" +
+                                  "Table" + 
                                   ".csv");
        
         try {
@@ -304,8 +302,26 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         }
     }
     
+    public void processTimeWarning(int estimatedTime){
+        if (displayTimeWarning){
+            System.out.println("The estimated run time is " + estimatedTime + " seconds.");
+        }
+    }
     
-    //Test Paramter Setters
+    public void processPreResult(Resolution resolution, int datasetSize){
+        if (printResults){
+            System.out.print(resolution + ": " + datasetSize + ": " );
+        }
+    }
+    
+    public void processResult(Resolution resolution, int datasetSize, Statistics stats){
+        if (printResults){
+            System.out.println(stats.getAverageTime() + "ms");
+        }
+    }
+    
+    
+    //Test Parameter Setters
     
     /**
      * Sets the resolution sizes to be profiled.
@@ -358,6 +374,10 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
      */
     public void setDisplayTimeEstimate(boolean show){
         this.displayTimeWarning = show;
+    }
+    
+    public void setPrintResults(boolean show){
+        this.printResults = show;
     }
     
     //Defaults
@@ -415,8 +435,16 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     
     //Analysis
     
-    //Computes the difference of each cell between the first file selected
-    //and the second file (first - second)
+    /**
+     * Brings a dialog box to ask the user to select two table based
+     * CSV files and compares the differences of the tables.
+     * <p>
+     * Computes the difference of each cell between the first file selected
+     * and the second file (first - second).
+     * <p>
+     * Precondition: both files selected are <code>MultiLevelProfiler</code>
+     * table files of the same graph type.
+     */
     public static void compareTables(){
         String message = "Select two Graphene table files (*.csv) to compute"
                        + " the timing differences of.";
@@ -453,7 +481,13 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         compareTables(fileA, fileB);
     }
     
-    //Computes the difference of each cell between file A and file B
+    /**
+     * Computes the difference of each cell between the first file selected
+     * and the second file (first - second).
+     * <p>
+     * Precondition: both files selected are <code>MultiLevelProfiler</code>
+     * table files of the same graph type.
+     */
     public static void compareTables(File fileA, File fileB){
         List<String[]> rowsOfA = readTable(fileA);
         List<String[]> rowsOfB = readTable(fileB);
@@ -482,7 +516,7 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
                 diffRow[0] = rowA[0];
             }
             else{
-                diffRow[0] = "*Error in Reading This Cell*";
+                diffRow[0] = "*Error in reading this cell*";
             }
             
             //All cells in the row (applies to both tables) (starts at cell 1, ignores column header)
@@ -494,11 +528,11 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
                     diffRow[j] = "";
                 }
                 else{
-                    //Tries to find a numberical values (for times)
+                    //Tries to find a numerical values (for times)
                     try{
                         double numberA = Double.parseDouble(rowA[j]);
                         double numberB = Double.parseDouble(rowB[j]);
-                        diffRow[j] = String.format("%.3f", numberA - numberB);
+                        diffRow[j] = String.format("%.3f", (numberA - numberB)/numberA*100) + "%";
                     }catch(NumberFormatException e){
                         //When 
                         if (cellA.equals(cellB)){
@@ -521,38 +555,45 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         String filenameA = fileA.getName();
         String filenameB = fileB.getName();
         
+        int delimA1 = filenameA.indexOf("-"),
+            delimA2 = filenameA.lastIndexOf("-"),
+            delimB1 = filenameB.indexOf("-");
+                
             //How to name output file
             String graphType;        
-            if (filenameA.indexOf(" -") == -1){
+            if (delimA2 == -1){
                 graphType = "Unknown Graph Type";
             }
             else{
-                graphType = filenameA.substring(0, filenameA.indexOf(" -"));
+                graphType = filenameA.substring(delimA1 + 1, delimA2);
             }
             
-            String dateA, dateB;
-            if (filenameA.indexOf("(") == -1 || filenameA.indexOf(")") == -1){
+        String dateA, dateB;
+            if (delimA1 == -1){
                 dateA = filenameA;
             }
             else{
-                dateA = filenameA.substring(filenameA.indexOf("("), filenameB.indexOf(")") + 1);
+                dateA = filenameA.substring(0, delimA1);
             }
 
-            if (filenameB.indexOf("(") == -1 || filenameB.indexOf(")") == -1){
+            if (delimB1 == -1){
                 dateB = filenameB;
             }
             else{
-                dateB = filenameB.substring(filenameB.indexOf("("), filenameB.indexOf(")") + 1);
+                dateB = filenameB.substring(0, delimB1);
             }
         
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String todaysDate = format.format(new Date());
+       
         File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                   todaysDate +
+                                   "-" +
                                    graphType +
-                                   " - Table Difference" + 
-                                   "(" +
+                                   "-Table Difference-" + 
                                    dateA +
-                                   " vs " +
+                                   "vs" +
                                    dateB +
-                                   ")" +
                                    ".csv");
         
         try {
@@ -574,7 +615,14 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
         }        
     }
     
-    //String[] is cell values, list is of the rows
+    /**
+     * Reads a <code>MultiLevelProfiler</code> table CSV file
+     * and gets the input of every cell.
+     * 
+     * The output is a list of each row formatted as an array.
+     * @param file
+     * @return a list of each row, with the row formatted as an array
+     */
     public static List<String[]> readTable(File file){
         List<String[]> rows = new ArrayList<>();
         String delim = ",";
@@ -618,30 +666,19 @@ public class MultiLevelProfiler<T extends Graph2DRenderer, S> {
     //Example use
     
     public static void main(String[] args){
-        MultiLevelProfiler.compareTables();
+//        MultiLevelProfiler.compareTables();
         
-//        
-//        ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
-//        profile.setTestTime(1);
-//        
-//        MultiLevelProfiler layer = new MultiLevelProfiler(profile);
-//        layer.setImageSizes(defaultResolutions());
-//        layer.setDatasetSizes(defaultDatasetSizes());
-//        
-//        layer.run();
-//        
-//        layer.graphStatistics();
-//        layer.saveStatistics();        
+        
+        ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
+        profile.setTestTime(1);
+        
+        MultiLevelProfiler layer = new MultiLevelProfiler(profile);
+        layer.setImageSizes(defaultResolutions());
+        layer.setDatasetSizes(defaultDatasetSizes());
+        
+        layer.run();
+        
+        layer.graphStatistics();
+        layer.saveStatistics();        
     }
 }
-
-//Notes
-//in naming: 201401030830
-//time before the name
-//time-graph name
-
-//percentage difference
-//put % symbol in csv
-
-//write estimated time to system console
-//show what is being tested and the result
