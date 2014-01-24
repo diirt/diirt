@@ -666,7 +666,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         line.lineTo(scaledX[end - 1], scaledY[end - 1]);
         return line;
     }
-
+    //Does not test for NaN like Nearest Neighbor Interpolation?
     private static Path2D.Double linearInterpolation(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -679,7 +679,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         return line;
     }
-
+    //Does not test for NaN like Nearest Neighbor Interpolation?
     private static Path2D.Double cubicInterpolation(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;

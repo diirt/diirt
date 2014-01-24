@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
  * @author jkfeng,
  * @author sjdallst
  */
+//supposed to extend BaseGraphTest
 public class SparklineGraph2DRendererTest {
     
     public SparklineGraph2DRendererTest() {
@@ -398,7 +399,81 @@ public class SparklineGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("sparklineNegativeValues", image); 
         
+        
     }
+     @Test
+    public void testOneNaNLinear() throws Exception{
+        //TODO: NaN doesn't show up with linear interpolation
+        double[] dataSet = {1,2,3, Double.NaN, 5};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklinehOneNanLinear", image);
+    }
+    
+    @Test
+    public void testMultipleNaNLinear() throws Exception{
+        double[] dataSet = {1, Double.NaN, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklineMultipleNaN", image);
+    }
+    
+    @Test
+    public void testOneNaNNeighbor() throws Exception{
+        double[] dataSet = {1, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklineOneNaNNeighbor", image);
+    }
+    
+    @Test
+    public void testMultipleNaNNeighbor() throws Exception{
+        double[] dataSet = {1, Double.NaN, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklineMultipleNaNNeighbor", image);
+    }
+    
+    @Test
+    public void testOneNaNCubic() throws Exception{
+        double[] dataSet = {1, 8, 27,Double.NaN, 125, 216};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklineOneNaNCubic", image);
+    }
+    
+    @Test
+    public void testMultipleNaNCubic() throws Exception{
+        double[] dataSet = {1, 8, 27, Double.NaN, 125,Double.NaN, 349};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
+        renderer.update(new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("sparklineMultipleNaNCubic", image);
+    }
+    
     /*@Test
     public void test1() throws Exception {
         double[] initialDataY = new double[101];

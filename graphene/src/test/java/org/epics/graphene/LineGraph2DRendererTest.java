@@ -22,11 +22,36 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class LineGraph2DRendererTest {
+//supposed to exted BaseGraphTest
+public class LineGraph2DRendererTest{
+ 
+    /*public LineGraph2DRendererTest(){
+                super("line2D");
+        }
+ 
+        public BufferedImage draw(Graph2DRendererUpdate update){
+        double[] dataSet = new double[100];
+        for(int i = 0; i < 50; i++)
+            dataSet[i] = i;
+        for(int i = 50; i < 100; i++)
+            dataSet[i] = 100 - i;
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300,200);
+        renderer.update(new LineGraph2DREndererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        return image;
+        }
+  
     
-    public LineGraph2DRendererTest() {
-    }
-
+/*draw update
+ * create renderer
+ * update renderer
+ * create image
+ * draw
+ * return image
+ */
     private static Point2DDataset largeDataset;
     
     @BeforeClass
@@ -44,6 +69,23 @@ public class LineGraph2DRendererTest {
     public static void tearDownClass() throws Exception {
         largeDataset = null;
     }
+    //public LineGraph2DRendererTest(){
+    //  super("line2D");
+    //}
+    /*public Image ImageDraw(Graph2DRendererUpdate update{
+        double[] dataSet = new double[100];
+        for(int i = 0; i < 50; i++)
+            dataSet[i] = i;
+        for(int i = 50; i < 100; i++)
+            dataSet[i] = 100 - i;
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300,200);
+        renderer.update(new LineGraph2DREndererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        return image;
+    }*/
     
     @Test
     public void testOneDataPoint() throws Exception {
@@ -105,7 +147,7 @@ public class LineGraph2DRendererTest {
     }
     
     @Test
-    public void testOneNaN() throws Exception{
+    public void testOneNaNLinear() throws Exception{
         //TODO: NaN doesn't show up with linear interpolation
         double[] dataSet = {1,2,3, Double.NaN, 5};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
@@ -114,11 +156,11 @@ public class LineGraph2DRendererTest {
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("lineGraphOneNan", image);
+        ImageAssert.compareImages("lineGraphOneNanLinear", image);
     }
     
     @Test
-    public void testMultipleNaN() throws Exception{
+    public void testMultipleNaNLinear() throws Exception{
         double[] dataSet = {1, Double.NaN, Double.NaN, 10, 20};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
@@ -126,9 +168,56 @@ public class LineGraph2DRendererTest {
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("lineGraphMultipleNaN", image);
+        ImageAssert.compareImages("lineGraphMultipleNaNLinear", image);
     }
     
+    @Test
+    public void testOneNaNNeighbor() throws Exception{
+        double[] dataSet = {1, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphOneNaNNeighbor", image);
+    }
+    
+    @Test
+    public void testMultipleNaNNeighbor() throws Exception{
+        double[] dataSet = {1, Double.NaN, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphMultipleNaNNeighbor", image);
+    }
+    
+    @Test
+    public void testOneNaNCubic() throws Exception{
+        double[] dataSet = {1, 8, 27,Double.NaN, 125, 216};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphOneNaNCubic", image);
+    }
+    
+    @Test
+    public void testMultipleNaNCubic() throws Exception{
+        double[] dataSet = {1, 8, 27, Double.NaN, 125,Double.NaN, 349};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphMultipleNaNCubic", image);
+    }
     @Test 
     public void testLinearInterpolation() throws Exception{
         double[] dataSet = new double[100];
