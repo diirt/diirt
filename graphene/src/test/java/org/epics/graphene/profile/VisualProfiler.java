@@ -5,34 +5,55 @@
 package org.epics.graphene.profile;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.JTextField;
+
 
 /**
  *
  * @author asbarber
  */
 public class VisualProfiler extends JFrame{
-    private JPanel mainPanel;
+    private static final String PROFILE_PATH = "org.epics.graphene.profile";
+    public static final String[] SUPPORTED_PROFILERS = {"Histogram1D",
+                                                        "IntensityGraph2D",
+                                                        "LineGraph2D",
+                                                        "ScatterGraph2D",
+                                                        "SparklineGraph2D"
+                                                       };
     
-    //Middle
+    private JPanel mainPanel;
+
+    //Pane: General Settings
+    private JComboBox           listRendererTypes;
+    private JLabel              lblRendererTypes;
+    
+    private JTextField          txtTestTime;
+    private JLabel              lblTestTime;
+    
+    private JTextField          txtMaxAttempts;
+    private JLabel              lblMaxAttempts;
+    
+    //Tab: Control Panel
+    
+    //Tab: Multi Layer
     private JLabel              lblResolutions,
                                 lblNPoints;
     
@@ -64,9 +85,20 @@ public class VisualProfiler extends JFrame{
         super.setVisible(true);
     }
     private void initComponents(){
-        mainPanel = new JPanel();              
+        mainPanel = new JPanel();        
+        mainPanel.setLayout(new BorderLayout());
         
-        //Middle Area
+        //General Settings
+        listRendererTypes = new JComboBox(VisualProfiler.SUPPORTED_PROFILERS);
+        lblRendererTypes = new JLabel("Renderer Type: ");
+        
+        txtTestTime = new JTextField("20");
+        lblTestTime = new JLabel("Test Time: ");
+                
+        txtMaxAttempts = new JTextField("1000000");
+        lblMaxAttempts = new JLabel("Max Attempts: ");
+        
+        //Tab: Multi Layer
         //------------
         
         lblResolutions = new JLabel("Resolutions");
@@ -106,6 +138,21 @@ public class VisualProfiler extends JFrame{
     }    
     private void addComponents(){
         
+        //General Settings
+        JPanel settingsPane = new JPanel();
+        settingsPane.setLayout(new GridLayout(0, 2));
+        
+        settingsPane.add(this.lblRendererTypes);
+        settingsPane.add(this.listRendererTypes);
+        
+        settingsPane.add(this.lblTestTime);
+        settingsPane.add(this.txtTestTime);
+        
+        settingsPane.add(this.lblMaxAttempts);
+        settingsPane.add(this.txtMaxAttempts);
+        
+        
+        //Tab: Multi Layer
         
         JPanel left = new JPanel();
         left.setLayout(new BorderLayout());
@@ -131,8 +178,13 @@ public class VisualProfiler extends JFrame{
             outer.setLeftComponent(inner);
             outer.setRightComponent(right);
         
+        //Tabs
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("Multi Layer", outer);
+        
         //Add to panel hiearchy
-        mainPanel.add(outer);
+        mainPanel.add(settingsPane, BorderLayout.NORTH);
+        mainPanel.add(tabs, BorderLayout.CENTER);
         super.add(mainPanel);
     }
     
@@ -161,10 +213,63 @@ public class VisualProfiler extends JFrame{
     
     //Helper
     
-    public ProfileSparklineGraph2D getProfiler(){
-        ProfileSparklineGraph2D graph = new ProfileSparklineGraph2D();
-        graph.setTestTime(1);
-        return graph;
+    //Returns null if unable to get a profiler
+    public ProfileGraph2D getProfiler(){
+        //Get inputs
+        String strClass = listRendererTypes.getSelectedItem().toString();
+        String strTestTime = this.txtTestTime.getText();
+        String strMaxAttempts = this.txtMaxAttempts.getText();
+        
+        //Intended variables
+        int testTime;
+        int maxAttempts;
+        ProfileGraph2D renderer;
+                
+        //Test Time
+        try{
+            testTime = Integer.parseInt(strTestTime);
+            
+            if (testTime <= 0){
+                throw new NumberFormatException();
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Error", "Enter a positive non-zero integer.", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        
+        //Test Time
+        try{
+            maxAttempts = Integer.parseInt(strMaxAttempts);
+            
+            if (maxAttempts <= 0){
+                throw new NumberFormatException();
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Error", "Enter a positive non-zero integer.", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        
+        //Instance creation                
+        try {
+            Class profileClass = Class.forName(PROFILE_PATH + ".Profile" + strClass);
+            renderer = (ProfileGraph2D) profileClass.newInstance();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error", "This class is not currently accessible.", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } catch (InstantiationException ex) {
+            Logger.getLogger(VisualProfiler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(VisualProfiler.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        //Update
+        renderer.setTestTime(testTime);
+        renderer.setMaxTries(maxAttempts);
+        
+        //Final Format
+        return renderer;
     }
     private void consoleAppend(final String output){
         synchronized (this) {
@@ -191,15 +296,7 @@ public class VisualProfiler extends JFrame{
             consoleAppend(stats.getAverageTime() + "ms" + "\n");
         }        
     };
-    private JPanel buildTempPanel(Component component){
-        JPanel panel = new JPanel();
-        
-        panel.add(component);
-        
-        panel.add(component);
-        return panel;
-    }
-    
+   
     //Static
     
     public static void invokeVisualAid(){
