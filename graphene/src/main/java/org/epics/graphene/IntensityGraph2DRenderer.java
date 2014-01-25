@@ -176,6 +176,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 }
             }
             drawRectanglesBoundaries(g, colorScheme, data);
+            //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
         }
         
         //Draw graph when cell width or height is smaller than one pixel.
@@ -195,6 +196,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 }
                 drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
                 //drawRectanglesSmallXBoundaries(g, colorScheme, data);
+                //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
             }
             if(cellWidth > 1){
                 if(addXSum){
@@ -224,8 +226,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                //drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
-                drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
             }
         }
         /*Draw a legend, given the current data set. 
@@ -468,28 +470,40 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         List<Integer> newBoundariesX = new ArrayList<Integer>();
         List<Integer> valueIndicesX = new ArrayList<Integer>();
         int countX = 0;
-        newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(0)));
-        valueIndicesX.add(0);
-        for(int i = 1; i < cellBoundariesX.size(); i++){
-            if((int)scaledX(cellBoundariesX.getDouble(i)) > newBoundariesX.get(countX)){
-                newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
-                valueIndicesX.add(i);
-                countX++;
+        xPlotCoordEnd+=1;
+        for(int i = 0; i < cellBoundariesX.size(); i++){
+            if(cellBoundariesX.getDouble(i) >= xPlotValueStart && cellBoundariesX.getDouble(i) <= xPlotValueEnd){
+                if(newBoundariesX.size() == 0){
+                    newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
+                    valueIndicesX.add(i);
+                }
+                else if((int)scaledX(cellBoundariesX.getDouble(i)) > newBoundariesX.get(countX)){
+                    newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
+                    valueIndicesX.add(i);
+                    countX++;
+                }
             }
         }
+        xPlotCoordEnd-=1;
         ListNumber cellBoundariesY = data.getYBoundaries();
         List<Integer> newBoundariesY = new ArrayList<Integer>();
         List<Integer> valueIndicesY = new ArrayList<Integer>();
         int countY = 0;
-        newBoundariesY.add((int)scaledY(cellBoundariesY.getDouble(0)));
-        valueIndicesY.add(0);
-        for(int i = 1; i < cellBoundariesY.size(); i++){
-            if((int)scaledY(cellBoundariesY.getDouble(i)) <= newBoundariesY.get(countY)-1){
-                newBoundariesY.add(((int)scaledY(cellBoundariesY.getDouble(i))));
-                valueIndicesY.add(i);
-                countY++;
+        yPlotCoordEnd += 1;
+        for(int i = 0; i < cellBoundariesY.size(); i++){
+            if(cellBoundariesY.getDouble(i) >= yPlotValueStart && cellBoundariesY.getDouble(i) <= yPlotValueEnd){
+                if(newBoundariesY.size() == 0){
+                    newBoundariesY.add(((int)scaledY(cellBoundariesY.getDouble(i))));
+                    valueIndicesY.add(i);
+                }
+                else if((int)scaledY(cellBoundariesY.getDouble(i)) <= newBoundariesY.get(countY)-1){
+                    newBoundariesY.add(((int)scaledY(cellBoundariesY.getDouble(i))));
+                    valueIndicesY.add(i);
+                    countY++;
+                }
             }
         }
+        yPlotCoordEnd -=1;
         countY = 0;
         //int currentXStart;
         while (countY < newBoundariesY.size()-1){
@@ -507,14 +521,14 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
                     currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX), newBoundariesY.get(newBoundariesY.size()-1-countY)
                             , newBoundariesX.get(countX+1)-newBoundariesX.get(countX),  newBoundariesY.get(newBoundariesY.size()-1-countY-1)-newBoundariesY.get(newBoundariesY.size()-1-countY));
                     g.fill(currentRectangle);
-                    if(countX == newBoundariesX.size()-2){
+                    /*if(countX == newBoundariesX.size()-2){
                         if(newBoundariesX.get(countX) < xStartGraph+xWidthTotal){
                             g.setColor(new Color(colorScheme.colorFor(data.getValue(data.getXCount()-1, valueIndicesY.get(valueIndicesY.size()-2-countY)))));
                             currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX)+1, newBoundariesY.get(newBoundariesY.size()-1-countY)
                                 , newBoundariesX.get(countX+1)-newBoundariesX.get(countX), newBoundariesY.get(newBoundariesY.size()-1-countY-1)-newBoundariesY.get(newBoundariesY.size()-1-countY));
                             g.fill(currentRectangle);
                         }
-                    }
+                    }*/
                     countX++;
                 }
                 countY++;
