@@ -1,6 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
 
@@ -23,25 +23,27 @@ import java.awt.Font;
  *
  * @author Jiakung
  */
- public abstract class BaseGraphTest{
+public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extends Graph2DRenderer<T>> {
 
-        private String testImages;
+    private String resultPrefix;
 
-        public BaseGraphTest(String s){
-            this.testImages = s;
-        }
+    public BaseGraphTest(String resultPrefix) {
+        this.resultPrefix = resultPrefix;
+    }
+    
+    public abstract S createRenderer();
 
-        abstract BufferedImage draw(Graph2DRendererUpdate update);
+    public abstract BufferedImage draw(S renderer);
 
-       @Test
-        public void changeFont() throws Exception{
-           //Graph2DRenderer renderer = new Graph2DRenderer(300,200); cannot instantiate because it is abstract
-           //BufferedImage image = renderer.draw(new Graph2DRenderer().getLabelFont(); regular draw method?
-           //ImageAssert.compareImages(testImages + "testFont", image);
-        }
-       
-       @Test
-       public void changeColor() throws Exception{
-           
-       }
- }
+    @Test
+    public void rightMargin() throws Exception {
+        S renderer = createRenderer();
+        renderer.update(renderer.newUpdate().rightMargin(10));
+        ImageAssert.compareImages(resultPrefix + "RightMargin", draw(renderer));
+    }
+
+    @Test
+    public void changeColor() throws Exception {
+
+    }
+}
