@@ -118,9 +118,9 @@ public class MultilineGraph2DRendererTest {
         for(int i = 0; i < 10; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(100,100);
+        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(640,480);
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -140,9 +140,9 @@ public class MultilineGraph2DRendererTest {
         for(int i = 0; i < 10; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(100,100);
+        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(640,480);
         MultilineGraph2DRendererUpdate update = new MultilineGraph2DRendererUpdate();
         update.valueColorScheme(ColorScheme.JET);
         renderer.update(update);

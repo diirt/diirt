@@ -22,8 +22,9 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         super(imageWidth,imageHeight);
     }
     
-    private ArrayList<LineGraph2DRenderer> graphList;
+    private ArrayList<NLineGraph2DRenderer> graphList;
     private ArrayList<Integer> roundingIndices;
+    private LineGraph2DRenderer lastGraph;
     
     public void draw( Graphics2D g, List<Point2DDataset> data){
         if(g == null){
@@ -33,7 +34,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             throw new IllegalArgumentException("data can't be null.");
         }
         this.g = g;
-        graphList = new ArrayList<LineGraph2DRenderer>();
+        graphList = new ArrayList<NLineGraph2DRenderer>();
         roundingIndices = new ArrayList<Integer>();
         addGraphs(data);
         drawGraphs(data);
@@ -48,14 +49,14 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     }
     private void addGraphs(List<Point2DDataset> data){
         double roundingError = 0;
-        for(int i = 0; i < data.size();i++){
-            LineGraph2DRenderer added = null;
+        for(int i = 0; i < data.size()-1;i++){
+            NLineGraph2DRenderer added = null;
             roundingError+=((double)this.getImageHeight()/data.size())-(int)(this.getImageHeight()/data.size());
             if(roundingError < 1){
-                added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
+                added = new NLineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
             }
             if(roundingError >= 1){
-                added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
+                added = new NLineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
                 roundingError-=1;
                 if(i < data.size()-1){
                     roundingIndices.add(Integer.valueOf(i+1));
@@ -63,6 +64,16 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             }
             graphList.add(added);
         }  
+        LineGraph2DRenderer added = null;
+        roundingError+=((double)this.getImageHeight()/data.size())-(int)(this.getImageHeight()/data.size());
+        if(roundingError < 1){
+            added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
+        }
+        if(roundingError >= 1){
+            added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
+            roundingError-=1;
+        }
+        lastGraph = added;
     }
     private void drawGraphs(List<Point2DDataset> data){
         double roundingError = 0;
@@ -74,5 +85,8 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             gtemp.translate(0,this.getImageHeight()/data.size()*i+roundingError);
             graphList.get(i).draw(gtemp, data.get(i));
         }
+        Graphics2D gtemp = (Graphics2D)g.create();
+        gtemp.translate(0,this.getImageHeight()/data.size()*graphList.size()+roundingError);
+        lastGraph.draw(gtemp, data.get(graphList.size()));
     }
 }
