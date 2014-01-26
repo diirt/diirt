@@ -24,6 +24,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 
 /**
@@ -197,13 +198,8 @@ public class VisualProfiler extends JFrame{
         ProfileGraph2D profiler = this.getProfiler();
 
         if (!resolutions.isEmpty() && !datasetSizes.isEmpty() && getProfiler() != null){
-            consoleAppend("\n" + profiler.getGraphTitle());
-
-            VisualMultiLevelProfiler multiprofiler = new VisualMultiLevelProfiler(getProfiler());
-            multiprofiler.setImageSizes(resolutions);
-            multiprofiler.setDatasetSizes(datasetSizes);
-            multiprofiler.run();
-            multiprofiler.saveStatistics();
+            ProfilerWorker worker = new ProfilerWorker(profiler, resolutions, datasetSizes);
+            worker.execute();
         }    
         else{
             JOptionPane.showMessageDialog(null, "Profiling was cancelled due to invalid settings.", "Run Fail", JOptionPane.ERROR_MESSAGE);
@@ -271,30 +267,72 @@ public class VisualProfiler extends JFrame{
         //Final Format
         return renderer;
     }
-    private void consoleAppend(final String output){
-        synchronized (this) {
-            console.append(output);
-        }
+    private void print(final String output){
+        console.append(output);
     }
-    private class VisualMultiLevelProfiler extends MultiLevelProfiler{
-        public VisualMultiLevelProfiler(ProfileGraph2D profiler){
-            super(profiler);
-        }
+    
 
-        @Override
-        public void processTimeWarning(int estimatedTime){
-            consoleAppend("The estimated run time is " + estimatedTime + " seconds.");
+    private class ProfilerWorker extends SwingWorker<Object, String>{
+        private VisualMultiLevelProfiler multiProfiler;
+        
+        public ProfilerWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
+            publish("--------\n");
+            publish(profiler.getGraphTitle() + "\n\n");
+            
+            this.multiProfiler = new VisualMultiLevelProfiler(profiler);
+            this.multiProfiler.setImageSizes(resolutions);
+            this.multiProfiler.setDatasetSizes(datasetSizes);
         }
-
+        
         @Override
-        public void processPreResult(Resolution resolution, int datasetSize){
-            consoleAppend(resolution + ": " + datasetSize + ": ");
+        protected Object doInBackground() throws Exception {
+            this.multiProfiler.run();
+            this.multiProfiler.saveStatistics();
+            publish("\nProfiling complete." + "\n");
+            publish("--------\n");
+            return true;
         }
-
+        
         @Override
-        public void processResult(Resolution resolution, int datasetSize, Statistics stats){
-            consoleAppend(stats.getAverageTime() + "ms" + "\n");
+        protected void process(List<String> chunks){
+            for (String chunk: chunks){
+                VisualProfiler.this.print(chunk);
+            }
         }        
+                
+        private class VisualMultiLevelProfiler extends MultiLevelProfiler{
+            public VisualMultiLevelProfiler(ProfileGraph2D profiler){
+                super(profiler);
+            }
+
+            @Override
+            public void processTimeWarning(int estimatedTime){
+                ProfilerWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
+            }
+
+            @Override
+            public void processPreResult(Resolution resolution, int datasetSize){
+                //Spacing formatting
+                int maxSpace = 40;
+                int numSpaces = resolution.toString().length() +
+                             (": ").length() + 
+                             Integer.toString(datasetSize).length() +
+                             (": ").length();
+                String spacing = "";
+                
+                for (int count = 0; count < maxSpace - numSpaces; count++){
+                    spacing += " ";
+                }
+                
+                //Publishes
+                ProfilerWorker.this.publish(resolution + ": " + datasetSize + ": " + spacing);
+            }
+
+            @Override
+            public void processResult(Resolution resolution, int datasetSize, Statistics stats){
+                ProfilerWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
+            }        
+        };        
     };
    
     //Static
