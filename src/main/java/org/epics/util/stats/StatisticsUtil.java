@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2012 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2012-14 epics-util developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.util.stats;
 
@@ -10,6 +10,7 @@ import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.IteratorNumber;
 
 /**
+ * Utility class to calculate statistical information.
  *
  * @author carcassi
  */
@@ -101,7 +102,13 @@ public class StatisticsUtil {
         
         return new StatisticsImpl(count, min, max, average, stdDev);
     }
-    
+
+    /**
+     * Aggregates statistical information.
+     * 
+     * @param data a list of statistical information
+     * @return the aggregate of all
+     */
     public static Statistics statisticsOf(List<Statistics> data) {
         if (data.isEmpty())
             return null;
