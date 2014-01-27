@@ -61,20 +61,29 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void addArrayDoubleOfNumber() {
-	testTwoArgArrayFunction(set, "+", new ArrayDouble(1, 2, 3),
-		new ArrayDouble(4, 5, 6), new ArrayDouble(5, 7, 9));
+        VNumberArray array = newVNumberArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVNumberArray(new ArrayDouble(4, 5, 6), alarmNone(), timeNow(), displayNone());
+        VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "+", VNumberArray.class, VNumberArray.class)
+                .compareReturnValue(array3, array, array2);
     }
 
     @Test
     public void addArrayIntOfNumber() {
-	testTwoArgArrayFunction(set, "+", new ArrayInt(1, 2, 3), new ArrayInt(
-		4, 5, 6), new ArrayDouble(5, 7, 9));
+        VNumberArray array = newVNumberArray(new ArrayInt(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVNumberArray(new ArrayInt(4, 5, 6), alarmNone(), timeNow(), displayNone());
+        VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "+", VNumberArray.class, VNumberArray.class)
+                .compareReturnValue(array3, array, array2);
     }
 
     @Test
     public void subtractArrayOfNumber() {
-	testTwoArgArrayFunction(set, "-", new ArrayDouble(4, 5, 6),
-		new ArrayDouble(4, 3, 2), new ArrayDouble(0, 2, 4));
+        VNumberArray array = newVDoubleArray(new ArrayDouble(4, 5, 6), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(4, 3, 2), alarmNone(), timeNow(), displayNone());
+        VNumberArray array3 = newVDoubleArray(new ArrayDouble(0, 2, 4), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "-", VNumberArray.class, VNumberArray.class)
+                .compareReturnValue(array3, array, array2);
     }
 
     @Test
@@ -85,8 +94,11 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void divideArrayWithNumber() {
-	testTwoArgArrayFunction(set, "/", new ArrayDouble(2, 4, 6),
-		Double.valueOf(2), new ArrayDouble(1, 2, 3));
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
+	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "/", VNumberArray.class, VNumber.class)
+                .compareReturnValue(array, array2, number);
     }
 
     @Test

@@ -46,7 +46,7 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("numArgs");
+        return Arrays.asList("args");
     }
 
     @Override
