@@ -1,8 +1,6 @@
 /**
-/**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- *       and (C) 2013 Facility for Rare Isotope Beams (FRIB)
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager.formula;
 
