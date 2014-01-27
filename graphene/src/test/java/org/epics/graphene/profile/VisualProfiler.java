@@ -6,10 +6,12 @@ package org.epics.graphene.profile;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 
@@ -74,10 +77,12 @@ public class VisualProfiler extends JFrame{
     private JCheckBox           chkShowGraph;
     
     private JButton             btnSingleProfile;
+    private JButton             btnSingleProfileAll;
     
     
     //Tab: Control Panel
     private JButton             btnCompareTables;
+    private JButton             btnCompareTables1D;
     
     
     //Tab: Multi Layer
@@ -107,7 +112,9 @@ public class VisualProfiler extends JFrame{
         super.pack();
     }
     
+    
     //Swing Setup
+    
     private void initFrame(){
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setVisible(true);
@@ -144,16 +151,17 @@ public class VisualProfiler extends JFrame{
         txtSaveMessage = new JTextField("");
         
         btnSingleProfile = new JButton("Profile");
+        btnSingleProfileAll = new JButton("Profile For All Renderers");
         
         
         //Tab: Control Panel
         //------------
         btnCompareTables = new JButton("Compare Profile Tables");
+        btnCompareTables1D = new JButton("Analyze Single Profile Tables");
         
         
         //Tab: Multi Layer
         //------------
-        
         lblResolutions = new JLabel("Resolutions");
         lblNPoints = new JLabel("N Points");
         btnStart = new JButton("Start");
@@ -191,6 +199,14 @@ public class VisualProfiler extends JFrame{
            }
            
        });
+       this.btnSingleProfileAll.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.singleProfileActionAll();
+           }
+           
+       });
        this.btnStart.addActionListener(new ActionListener(){
 
             @Override
@@ -204,6 +220,14 @@ public class VisualProfiler extends JFrame{
            @Override
            public void actionPerformed(ActionEvent e) {
                VisualProfiler.this.compareTablesAction();
+           }
+           
+       });
+       this.btnCompareTables1D.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.analyzeTables1DAction();
            }
            
        });
@@ -242,13 +266,14 @@ public class VisualProfiler extends JFrame{
             singleProfileTab.add(lblSaveMessage);
             singleProfileTab.add(txtSaveMessage);
             
-            singleProfileTab.add(btnSingleProfile);
-        
+            singleProfileTab.add(blankPanel(btnSingleProfile));
+            singleProfileTab.add(blankPanel(btnSingleProfileAll));
         
         //Tab: Control Panel
         JPanel controlPane = new JPanel();
         
             controlPane.add(this.btnCompareTables);
+            controlPane.add(this.btnCompareTables1D);
         
         
         //Tab: Multi Layer
@@ -266,14 +291,24 @@ public class VisualProfiler extends JFrame{
                 multiLayerRight.setLayout(new BorderLayout());        
                 multiLayerRight.add(btnStart, BorderLayout.NORTH);
         
-            JSplitPane multiLayerInner = new JSplitPane();
-            JSplitPane multiLayerOuter = new JSplitPane();
+            final JSplitPane multiLayerInner = new JSplitPane();
+            final JSplitPane multiLayerOuter = new JSplitPane();
 
             multiLayerInner.setLeftComponent(multiLayerLeft);
             multiLayerInner.setRightComponent(multiLayerMiddle);
 
             multiLayerOuter.setLeftComponent(multiLayerInner);
             multiLayerOuter.setRightComponent(multiLayerRight);
+            
+            SwingUtilities.invokeLater(new Runnable(){
+
+                @Override
+                public void run() {
+                    multiLayerOuter.setDividerLocation(0.8);
+                    multiLayerInner.setDividerLocation(0.8);                                        
+                }
+                
+            });            
         
         //Console
         JPanel consolePanel = new JPanel();
@@ -406,6 +441,167 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();
     }
+    private void singleProfileActionAll(){
+        //Get inputs
+        String strTestTime = this.txtTestTime.getText();
+        String strMaxAttempts = this.txtMaxAttempts.getText();
+        
+        //Intended variables
+        int testTime;
+        int maxAttempts;
+                
+        //Test Time
+        try{
+            testTime = Integer.parseInt(strTestTime);
+            
+            if (testTime <= 0){
+                throw new NumberFormatException();
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for test time.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        //Test Time
+        try{
+            maxAttempts = Integer.parseInt(strMaxAttempts);
+            
+            if (maxAttempts <= 0){
+                throw new NumberFormatException();
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for max attempts.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        
+        String strDatasetSize = txtDatasetSize.getText();
+        String strImageWidth = txtImageWidth.getText();
+        String strImageHeight = txtImageHeight.getText();
+        
+        int datasetSize;
+        int imageWidth;
+        int imageHeight;
+        String saveMessage = this.txtSaveMessage.getText();
+        final boolean showGraphs = this.chkShowGraph.isSelected();
+        
+        //Datset Size
+        try{
+            datasetSize = Integer.parseInt(strDatasetSize);
+            
+            if (datasetSize <= 0){
+                throw new NumberFormatException();
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the dataset size.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;            
+        }
+        
+        //Image Width
+        try{
+            imageWidth = Integer.parseInt(strImageWidth);
+            
+            if (imageWidth <= 0){
+                throw new NumberFormatException();
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the image width.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;            
+        }        
+        
+        //Image Height
+        try{
+            imageHeight = Integer.parseInt(strImageHeight);
+            
+            if (imageHeight <= 0){
+                throw new NumberFormatException();
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the image height.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;            
+        }   
+        
+        
+        //Profile Creation
+        final List<ProfileGraph2D> profilers = new ArrayList<>();
+        
+        
+        for (int i = 0; i < VisualProfiler.SUPPORTED_PROFILERS.length; i++){
+            
+            //Instance creation                
+            try {
+                Class profileClass = Class.forName(PROFILE_PATH + ".Profile" + VisualProfiler.SUPPORTED_PROFILERS[i]);
+                profilers.add((ProfileGraph2D) profileClass.newInstance());
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "This class is not currently accessible.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } catch (InstantiationException ex) {
+                return;
+            } catch (IllegalAccessException ex) {
+                return;
+            }
+            
+            //Update
+            profilers.get(profilers.size()-1).setTestTime(testTime);
+            profilers.get(profilers.size()-1).setMaxTries(maxAttempts);   
+            profilers.get(profilers.size()-1).setNumDataPoints(datasetSize);
+            profilers.get(profilers.size()-1).setImageWidth(imageWidth);
+            profilers.get(profilers.size()-1).setImageHeight(imageHeight);
+            profilers.get(profilers.size()-1).setSaveMessage(saveMessage);            
+
+        }
+
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                setEnabledActions(false);
+                
+                for (final ProfileGraph2D profiler: profilers){
+                    ///Begin message
+                    publish("--------\n");
+                    publish(profiler.getGraphTitle() + ": Single Profile\n\n");
+
+                    //Runs
+                    publish("Running...\n");
+                    profiler.profile();
+                    publish("Running finished.\n");
+
+                    //Saves
+                    publish("Saving...\n");
+                    profiler.saveStatistics();
+                    publish("Saving finished.\n");
+
+                    //Displays results graph if checked
+                    if (showGraphs){
+                        publish("\nGraphing Results...\n");
+                        profiler.graphStatistics();
+                        publish("Graphing Complete.\n");
+                    }
+
+                    //Finish message
+                    publish("\nProfiling completed.\n");
+                    publish("--------\n");
+                }
+                
+                setEnabledActions(true);
+
+                return null;
+            }
+
+
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }            
+        };
+        worker.execute();   
+    }
     private void startAction(){
         List<Resolution> resolutions = listResolutions.getSelectedValuesList();
         List<Integer> datasetSizes = listNPoints.getSelectedValuesList();
@@ -427,7 +623,7 @@ public class VisualProfiler extends JFrame{
                 setEnabledActions(false);                
                 publish("--------\n");
                 publish("Compare Tables\n");
-                MultiLevelProfiler.compareTables();   
+                ProfileAnalysis.compareTables2D();   
                 publish("\nComparison completed.\n");
                 publish("--------\n");
                 setEnabledActions(true);                
@@ -443,11 +639,42 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();
     }
+    private void analyzeTables1DAction(){
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                setEnabledActions(false);                
+                publish("--------\n");
+                publish("Comparing Single Profile Tables\n\n");
+                
+                List<String> output = ProfileAnalysis.analyzeTables1D();
+                for (String out: output){
+                    publish(out + "\n");
+                }
+                
+                publish("\nComparison completed.\n");
+                publish("--------\n");
+                setEnabledActions(true);                
+                return null;
+            }
+            
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }
+        };
+        worker.execute();        
+    }
     private void setEnabledActions(boolean enabled){
         this.btnSingleProfile.setEnabled(enabled);
         this.btnStart.setEnabled(enabled);
         this.btnCompareTables.setEnabled(enabled);
     }
+    
+    
     //Helper
     
     //Returns null if unable to get a profiler
@@ -511,7 +738,6 @@ public class VisualProfiler extends JFrame{
     private void print(final String output){
         console.append(output);
     }
-
     private class ProfilerWorker extends SwingWorker<Object, String>{
         private VisualMultiLevelProfiler multiProfiler;
         
@@ -577,7 +803,12 @@ public class VisualProfiler extends JFrame{
             }        
         };        
     };
-   
+    private JPanel blankPanel(Component itemToAdd){
+        JPanel tmp = new JPanel();
+        tmp.add(itemToAdd);
+        return tmp;
+    }
+    
     //Static
     
     public static void invokeVisualAid(){
