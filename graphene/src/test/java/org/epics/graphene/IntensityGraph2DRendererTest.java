@@ -263,4 +263,24 @@ public class IntensityGraph2DRendererTest {
             ImageAssert.compareImages("intensityGraph2D.11", image);
             
     }
+    
+    @Test
+    public void test12() throws Exception {
+        Cell2DDataset data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
+            @Override
+            public double getValue(double x, double y) {
+                return x * y;
+            }
+        }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+        update.drawLegend(true);
+        update.valueColorScheme(ColorScheme.JET);
+        renderer.update(update);
+        renderer.draw(g, data);
+
+        ImageAssert.compareImages("intensityGraph2D.12", image);
+    }
 }
