@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager.formula;
 
@@ -32,6 +32,7 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
@@ -217,6 +218,23 @@ public class BaseTestForFormula {
 	    VNumber number1 = (VNumber) obj1;
 	    VNumber number2 = (VNumber) obj2;
 	    return number1.getValue().equals(number2.getValue());
+	}
+	
+	if((obj1 instanceof VTable) && (obj2 instanceof VTable)) {
+	    VTable table1 = (VTable) obj1;
+	    VTable table2 = (VTable) obj2;
+	    if (table1.getColumnCount() != table2.getColumnCount() ||
+                    table1.getRowCount() != table2.getRowCount()) {
+                return false;
+            }
+            for (int i = 0; i < table1.getColumnCount(); i++) {
+                if (!Objects.equals(table1.getColumnType(i), table2.getColumnType(i)) ||
+                        !Objects.equals(table1.getColumnName(i), table2.getColumnName(i)) ||
+                        !Objects.equals(table1.getColumnData(i), table2.getColumnData(i))) {
+                    return false;
+                }
+            }
+            return true;
 	}
 
 	return false;

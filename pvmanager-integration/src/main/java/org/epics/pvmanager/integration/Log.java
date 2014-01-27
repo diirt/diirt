@@ -1,8 +1,7 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-
 package org.epics.pvmanager.integration;
 
 import java.io.PrintStream;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriterEvent;
@@ -31,6 +31,7 @@ public class Log {
     
     private final List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
     private final List<String> errors = Collections.synchronizedList(new ArrayList<String>());
+    private final AtomicInteger testCount = new AtomicInteger(0);
     
     public <T> PVReaderListener<T> createReadListener() {
         return new PVReaderListener<T>() {
@@ -64,6 +65,10 @@ public class Log {
         return errors;
     }
     
+    public int getTestCount() {
+        return testCount.get();
+    }
+    
     public void matchConnections(String pvName, boolean... connectionFlags) {
         int current = 0;
         for (Event event : events) {
@@ -83,6 +88,7 @@ public class Log {
         if (current < connectionFlags.length) {
             errors.add(pvName + ": fewer connection notifications ("  + current + ") than expected (" + connectionFlags.length + ")");
         }
+        testCount.incrementAndGet();
     }
     
     public void matchWriteConnections(String pvName, boolean... connectionFlags) {
@@ -104,6 +110,7 @@ public class Log {
         if (current < connectionFlags.length) {
             errors.add(pvName + ": fewer write connection notifications ("  + current + ") than expected (" + connectionFlags.length + ")");
         }
+        testCount.incrementAndGet();
     }
     
     public void matchWriteNotifications(String pvName, boolean... sucessfulWrite) {
@@ -130,6 +137,7 @@ public class Log {
         if (current < sucessfulWrite.length) {
             errors.add(pvName + ": fewer write notifications ("  + current + ") than expected (" + sucessfulWrite.length + ")");
         }
+        testCount.incrementAndGet();
     }
     
     public void matchValues(String pvName, VTypeMatchMask mask, Object... values) {
@@ -156,6 +164,7 @@ public class Log {
         if (current < values.length) {
             errors.add(pvName + ": fewer value notification ("  + current + ") notification than expected (" + values.length + ")");
         }
+        testCount.incrementAndGet();
     }
     
     public void validate(String pvName, Validator validator) {
@@ -163,6 +172,7 @@ public class Log {
         for (String error : resErrors) {
             errors.add(pvName + ": " + error);
         }
+        testCount.incrementAndGet();
     }
 
     public void matchAllValues(String pvName, VTypeMatchMask mask, Object expectedValue) {
@@ -180,6 +190,7 @@ public class Log {
                 }
             }
         }
+        testCount.incrementAndGet();
     }
     
     public void matchErrors(String pvName, String... messages) {
@@ -201,6 +212,7 @@ public class Log {
         if (current < messages.length) {
             errors.add(pvName + ": fewer error notifications ("  + current + ") than expected (" + messages.length + ")");
         }
+        testCount.incrementAndGet();
     }
     
     public void matchSequentialNumberValues(String pvName, int expectedRepeatedValues) {
@@ -227,6 +239,7 @@ public class Log {
         if (repeatedValues != expectedRepeatedValues) {
             errors.add(pvName + ": repeated value occurences mismatch (" + repeatedValues + " but expected " + expectedRepeatedValues + ")");
         }
+        testCount.incrementAndGet();
     }
 
     void matchValueEventRate(String pvName, double minRateHz, double maxRateHz) {
@@ -260,6 +273,7 @@ public class Log {
                 errors.add(pvName + ": event rate mismatch (" + minMeasuredRate + "/" + maxMeasuredRate + " but expected between " + minRateHz + "/" + maxRateHz + ")");
             }
         }
+        testCount.incrementAndGet();
     }
     
     private <T> List<T> valuesForChannel(String pvName, Class<T> clazz) {

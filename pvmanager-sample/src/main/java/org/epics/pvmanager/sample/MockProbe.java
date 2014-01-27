@@ -1,11 +1,6 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
- */
-/*
- * MockPVFrame.java
- *
- * Created on Feb 16, 2010, 3:43:37 PM
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager.sample;
 
@@ -29,12 +24,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import org.epics.pvmanager.*;
-import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.jca.JCADataSource;
-import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.Executors.*;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeDuration;
 

@@ -1,13 +1,7 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/*
- * MockPVFrame.java
- *
- * Created on Feb 16, 2010, 3:43:37 PM
- */
-
 package org.epics.pvmanager.sample;
 
 import org.epics.vtype.VStatistics;

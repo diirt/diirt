@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager;
 
@@ -247,6 +247,9 @@ public class PVReaderDirector<T> {
         try {
             // Tries to calculate the value
             newValue = function.readValue();
+            if (newValue != null) {
+                NotificationSupport.findNotificationSupportFor(newValue);
+            }
             calculationSucceeded = true;
         } catch(RuntimeException ex) {
             // Calculation failed

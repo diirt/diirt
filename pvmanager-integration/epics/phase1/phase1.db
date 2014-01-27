@@ -15,6 +15,10 @@ record(stringin, "command") {
   field(DESC, "Command for the server script")
 }
 
+record(stringin, "output") {
+  field(DESC, "Command output")
+}
+
 record(ai, "const-double") {
   field(DESC, "Double value")
   field(EGU, "m")

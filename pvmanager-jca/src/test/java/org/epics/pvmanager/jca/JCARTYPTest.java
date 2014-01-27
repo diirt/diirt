@@ -1,10 +1,6 @@
 /**
- * Copyright (C) 2010-12 Brookhaven National Laboratory
- * All rights reserved. Use is subject to license terms.
- */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.pvmanager.jca;
 
@@ -17,20 +13,13 @@ import gov.aps.jca.dbr.DBR_TIME_String;
 import gov.aps.jca.dbr.Severity;
 import gov.aps.jca.dbr.Status;
 import gov.aps.jca.event.MonitorEvent;
-import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.junit.Before;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 /**
  *
