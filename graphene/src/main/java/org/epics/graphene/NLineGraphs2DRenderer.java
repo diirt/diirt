@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import static org.epics.graphene.ColorScheme.*;
-import org.epics.util.array.ListNumber;
-import org.epics.util.array.SortedListView;
+import org.epics.util.array.*;
 
 /**
  *
@@ -23,8 +22,9 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     }
     
     private ArrayList<NLineGraph2DRenderer> graphList;
-    private ArrayList<Integer> roundingIndices;
     private LineGraph2DRenderer lastGraph;
+    private ListNumber graphBoundaries;
+    private ListNumber graphBoundaryRatios;
     
     public void draw( Graphics2D g, List<Point2DDataset> data){
         if(g == null){
@@ -35,7 +35,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }
         this.g = g;
         graphList = new ArrayList<NLineGraph2DRenderer>();
-        roundingIndices = new ArrayList<Integer>();
         addGraphs(data);
         drawGraphs(data);
     }
@@ -46,47 +45,39 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     }
     public void update(NLineGraphs2DRendererUpdate update) {
         super.update(update);
+        if(update.getImageHeight() != null){
+            for(int i = 0; i < graphBoundaries.size(); i++){
+                graphBoundaries.setDouble(i, getImageHeight() * graphBoundaryRatios.getDouble(i));
+            }
+        }
+        
     }
+
     private void addGraphs(List<Point2DDataset> data){
-        double roundingError = 0;
+        if(this.graphBoundaries == null || this.graphBoundaries.size() != data.size()+1){
+            graphBoundaries = ListNumbers.linearListFromRange(0,this.getImageHeight(),data.size()+1);
+            graphBoundaryRatios = ListNumbers.linearListFromRange(0,1,data.size()+1);
+        }
         for(int i = 0; i < data.size()-1;i++){
             NLineGraph2DRenderer added = null;
-            roundingError+=((double)this.getImageHeight()/data.size())-(int)(this.getImageHeight()/data.size());
-            if(roundingError < 1){
-                added = new NLineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
-            }
-            if(roundingError >= 1){
-                added = new NLineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
-                roundingError-=1;
-                if(i < data.size()-1){
-                    roundingIndices.add(Integer.valueOf(i+1));
-                }
-            }
+            added = new NLineGraph2DRenderer(this.getImageWidth(),graphBoundaries.getInt(i+1)-
+                    graphBoundaries.getInt(i));
             graphList.add(added);
         }  
         LineGraph2DRenderer added = null;
-        roundingError+=((double)this.getImageHeight()/data.size())-(int)(this.getImageHeight()/data.size());
-        if(roundingError < 1){
-            added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size());
-        }
-        if(roundingError >= 1){
-            added = new LineGraph2DRenderer(this.getImageWidth(),this.getImageHeight()/data.size()+1);
-            roundingError-=1;
-        }
+        added = new LineGraph2DRenderer(this.getImageWidth(),graphBoundaries.getInt(data.size())-
+                    graphBoundaries.getInt(data.size()-1));
         lastGraph = added;
     }
+    
     private void drawGraphs(List<Point2DDataset> data){
-        double roundingError = 0;
         for(int i = 0; i < graphList.size(); i++){
             Graphics2D gtemp = (Graphics2D)g.create();
-            if(roundingIndices.contains(i)){
-                roundingError = (1*(roundingIndices.indexOf(i)+1));
-            }
-            gtemp.translate(0,this.getImageHeight()/data.size()*i+roundingError);
-            graphList.get(i).draw(gtemp, data.get(i));
+            gtemp.translate(0,graphBoundaries.getInt(i));
+            graphList.get(i).draw(gtemp, data.get(data.size()-1-i));
         }
         Graphics2D gtemp = (Graphics2D)g.create();
-        gtemp.translate(0,this.getImageHeight()/data.size()*graphList.size()+roundingError);
-        lastGraph.draw(gtemp, data.get(graphList.size()));
+        gtemp.translate(0,graphBoundaries.getInt(graphList.size()));
+        lastGraph.draw(gtemp, data.get(0));
     }
 }

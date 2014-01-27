@@ -9,5 +9,4 @@ package org.epics.graphene;
  * @author sjdallst
  */
 public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate{
-    
 }
