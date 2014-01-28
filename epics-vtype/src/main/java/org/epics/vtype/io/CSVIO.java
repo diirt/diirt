@@ -145,6 +145,9 @@ public class CSVIO {
     public VTable importVTable(Reader reader) {
         CsvParser parser = new CsvParser(new CsvParserConfiguration());
         CsvParserResult result = parser.parse(reader);
+        if (!result.isParsingSuccessful()) {
+            throw new RuntimeException(result.getMessage());
+        }
         if (result.getRowCount() == 0) {
             throw new RuntimeException("Malformed table: no lines");
         }
