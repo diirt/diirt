@@ -99,4 +99,25 @@ public class StringUtilTest {
         List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
         assertThat(tokens, equalTo(Arrays.<Object>asList("And he asked:\"Does quoting works?\"")));
     }
+    
+    @Test
+    public void csvTokens1() {
+        String line = "1,3,HELLO,\"How are you?\"";
+        List<String> tokens = StringUtil.csvTokens(line, ",");
+        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
+    }
+    
+    @Test
+    public void csvTokens2() {
+        String line = "1;3;HELLO;\"How are you?\"";
+        List<String> tokens = StringUtil.csvTokens(line, ";");
+        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
+    }
+    
+    @Test
+    public void csvTokens3() {
+        String line = "1 3 HELLO \"How are you?\"";
+        List<String> tokens = StringUtil.csvTokens(line, " ");
+        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
+    }
 }
