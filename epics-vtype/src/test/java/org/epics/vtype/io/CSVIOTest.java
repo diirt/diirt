@@ -10,6 +10,10 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListNumber;
+import org.epics.util.text.CSVParser;
+import org.epics.util.text.CsvParserConfiguration;
+import org.epics.util.text.CsvParserResult;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VEnumArray;
@@ -169,5 +173,21 @@ public class CSVIOTest {
         assertThat(value.getColumnData(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
         assertThat(value.getColumnData(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
         assertThat(value.getColumnData(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+    }
+
+    @Test
+    public void importFileTable4CSV() throws Exception {
+        CSVIO io = new CSVIO();
+        VTable value = io.importVTable(new FileReader(getClass().getResource("table4.csv").getFile()));
+        assertThat(value.getColumnCount(), equalTo(13));
+        assertThat(value.getColumnName(0), equalTo("timestamp"));
+        assertThat(value.getColumnName(1), equalTo("rta_MIN"));
+        assertThat(value.getColumnName(2), equalTo("rta_MAX"));
+        assertThat((Object) value.getColumnType(0), equalTo((Object) double.class));
+        assertThat((Object) value.getColumnType(1), equalTo((Object) double.class));
+        assertThat((Object) value.getColumnType(2), equalTo((Object) double.class));
+        assertThat(((ListNumber) value.getColumnData(0)).getDouble(0), equalTo(1390913220.0));
+        assertThat(((ListNumber) value.getColumnData(1)).getDouble(1), equalTo(0.28083333333));
+        assertThat(((ListNumber) value.getColumnData(2)).getDouble(2), equalTo(0.266825));
     }
 }
