@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import java.util.List;
 import org.junit.BeforeClass;
+import org.epics.util.array.*;
 
 /**
  * 
@@ -131,7 +132,7 @@ public class NLineGraphs2DRendererTest {
     }
     
     @Test
-    public void MultiCosTest() throws Exception {
+    public void UpdateRatios() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -147,10 +148,20 @@ public class NLineGraphs2DRendererTest {
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        NLineGraphs2DRendererUpdate update = new NLineGraphs2DRendererUpdate();
+        ArrayList<Double> new_Ratios = new ArrayList<Double>();
+        for(double i = 0; i <= 10; i++){
+            new_Ratios.add(i/10);
+        }
+        for(double i = 1; i < 10; i++){
+            new_Ratios.set((int)i,new_Ratios.get((int)i)+.07);
+        }
+        update.GraphBoundaryRatios(new_Ratios);
+        renderer.update(update);
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.MultiCos", image);
+        ImageAssert.compareImages("nlinegraphs2D.UpdateRatios", image);
     }
     
 }
