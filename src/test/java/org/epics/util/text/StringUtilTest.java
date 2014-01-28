@@ -120,4 +120,18 @@ public class StringUtilTest {
         List<String> tokens = StringUtil.csvTokens(line, " ");
         assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
     }
+    
+    @Test
+    public void csvTokens4() {
+        String line = "1\t3\tHELLO\t\"How are you?\"";
+        List<String> tokens = StringUtil.csvTokens(line, "\t");
+        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
+    }
+    
+    @Test
+    public void csvTokens5() {
+        String line = "1,3,\"This\nis\nmultiline\",\"How are you?\"";
+        List<String> tokens = StringUtil.csvTokens(line, ",");
+        assertThat(tokens, equalTo(Arrays.asList("1", "3", "This\nis\nmultiline", "How are you?")));
+    }
 }
