@@ -15,11 +15,13 @@ public class CsvParserResult {
     private final List<String> columnNames;
     private final List<Object> columnValues;
     private final List<Class<?>> columnTypes;
+    private final int rowCount;
 
-    CsvParserResult(List<String> columnNames, List<Object> columnValues, List<Class<?>> columnTypes) {
+    CsvParserResult(List<String> columnNames, List<Object> columnValues, List<Class<?>> columnTypes, int rowCount) {
         this.columnNames = columnNames;
         this.columnValues = columnValues;
         this.columnTypes = columnTypes;
+        this.rowCount = rowCount;
     }
 
     public List<String> getColumnNames() {
@@ -32,6 +34,10 @@ public class CsvParserResult {
 
     public List<Class<?>> getColumnTypes() {
         return columnTypes;
+    }
+
+    public int getRowCount() {
+        return rowCount;
     }
     
 }

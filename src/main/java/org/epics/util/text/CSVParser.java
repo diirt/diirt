@@ -94,7 +94,7 @@ public class CSVParser {
             }
         }
         
-        return new CsvParserResult(columnNames, columnValues, columnTypes);
+        return new CsvParserResult(columnNames, columnValues, columnTypes, lines.size() - 1);
     }
 
     public CSVParser(CsvParserConfiguration configuration) {
