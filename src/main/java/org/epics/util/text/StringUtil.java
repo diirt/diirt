@@ -123,7 +123,7 @@ public class StringUtil {
             } else {
                 throw new IllegalArgumentException("Can't parse line: expected token at " + currentPosition + " (" + line + ")");
             }
-            
+
             if (currentPosition < line.length()) {
                 if (!separatorMatcher.region(currentPosition, line.length()).useAnchoringBounds(true).find()) {
                     throw new IllegalArgumentException("Can't parse line: expected separator at " + currentPosition + " (" + line + ")");
@@ -132,33 +132,6 @@ public class StringUtil {
             }
         }
         return matches;
-    }
-    
-    static List<String> csvTokens(String line, String separatorChar) {
-        String regex = // puts a doublequoted field in group(1) and an unquoted field into group(2)
-                "\\G(?:^|" + separatorChar + ")" +
-                "(?:" +
-                "\"" +
-                "((?:[^\"]++|\"\")*+)" +
-                "\"" +
-                "|" +
-                "([^\"" + separatorChar + "]*)" +
-                ")";
-        Matcher mMain = Pattern.compile(regex).matcher("");
-        Matcher mQuote = Pattern.compile("\"\"").matcher("");
-        
-        List<String> tokens = new ArrayList<>();
-        mMain.reset(line);
-        while (mMain.find()) {
-            String field;
-            if (mMain.start(2) >= 0) {
-                field = mMain.group(2);
-            } else {
-                field = mQuote.reset(mMain.group(1)).replaceAll("\"");
-            }
-            tokens.add(field);
-        }
-        return tokens;
     }
 
 }
