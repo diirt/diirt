@@ -4,8 +4,12 @@
  */
 package org.epics.util.text;
 
+import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
+import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -95,5 +99,53 @@ public class CSVParserTest {
         String line = "1,3,\"This\nis\nmultiline\",\"How are you?\"";
         List<String> tokens = CSVParser.csvTokens(line, ",");
         assertThat(tokens, equalTo(Arrays.asList("1", "3", "This\nis\nmultiline", "How are you?")));
+    }
+    
+    @Test
+    public void parseTable1CSV() throws Exception {
+        CSVParser parser = new CSVParser(new CsvParserConfiguration());
+        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table1.csv").getFile()));
+        assertThat(result.getColumnNames().size(), equalTo(3));
+        assertThat(result.getColumnNames().get(0), equalTo("Name"));
+        assertThat(result.getColumnNames().get(1), equalTo("Value"));
+        assertThat(result.getColumnNames().get(2), equalTo("Index"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
+        assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+    }
+
+    @Test
+    public void importFileTable2CSV() throws Exception {
+        CSVParser parser = new CSVParser(new CsvParserConfiguration());
+        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table2.csv").getFile()));
+        assertThat(result.getColumnNames().size(), equalTo(3));
+        assertThat(result.getColumnNames().get(0), equalTo("Name"));
+        assertThat(result.getColumnNames().get(1), equalTo("Value"));
+        assertThat(result.getColumnNames().get(2), equalTo("Index"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
+        assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+    }
+
+    @Test
+    public void importFileTable4CSV() throws Exception {
+        CSVParser parser = new CSVParser(new CsvParserConfiguration());
+        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table4.csv").getFile()));
+        assertThat(result.getColumnNames().size(), equalTo(13));
+        assertThat(result.getColumnNames().get(0), equalTo("timestamp"));
+        assertThat(result.getColumnNames().get(1), equalTo("rta_MIN"));
+        assertThat(result.getColumnNames().get(2), equalTo("rta_MAX"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
+        assertThat(((ListNumber) result.getColumnValues().get(0)).getDouble(0), equalTo(1390913220.0));
+        assertThat(((ListNumber) result.getColumnValues().get(1)).getDouble(1), equalTo(0.28083333333));
+        assertThat(((ListNumber) result.getColumnValues().get(2)).getDouble(2), equalTo(0.266825));
     }
 }
