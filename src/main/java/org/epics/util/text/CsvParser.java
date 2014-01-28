@@ -79,7 +79,7 @@ public class CsvParser {
         }
         
         if (columnMismatch) {
-            throw new RuntimeException("Number of columns is not the same for all lines");
+            return new CsvParserResult(null, null, null, 0, false, "Number of columns is not the same for all lines");
         }
         
         List<Object> columnValues = new ArrayList<>(nColumns);
@@ -94,7 +94,7 @@ public class CsvParser {
             }
         }
         
-        return new CsvParserResult(columnNames, columnValues, columnTypes, lines.size() - 1);
+        return new CsvParserResult(columnNames, columnValues, columnTypes, lines.size() - 1, true, null);
     }
 
     public CsvParser(CsvParserConfiguration configuration) {

@@ -16,12 +16,17 @@ public class CsvParserResult {
     private final List<Object> columnValues;
     private final List<Class<?>> columnTypes;
     private final int rowCount;
+    private final boolean parsingSuccessful;
+    private final String message;
 
-    CsvParserResult(List<String> columnNames, List<Object> columnValues, List<Class<?>> columnTypes, int rowCount) {
+    CsvParserResult(List<String> columnNames, List<Object> columnValues, List<Class<?>> columnTypes,
+            int rowCount, boolean parsingSuccessful, String message) {
         this.columnNames = columnNames;
         this.columnValues = columnValues;
         this.columnTypes = columnTypes;
         this.rowCount = rowCount;
+        this.parsingSuccessful = parsingSuccessful;
+        this.message = message;
     }
 
     public List<String> getColumnNames() {
@@ -38,6 +43,14 @@ public class CsvParserResult {
 
     public int getRowCount() {
         return rowCount;
+    }
+
+    public boolean isParsingSuccessful() {
+        return parsingSuccessful;
+    }
+
+    public String getMessage() {
+        return message;
     }
     
 }
