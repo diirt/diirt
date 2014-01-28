@@ -11,7 +11,7 @@ import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListNumber;
-import org.epics.util.text.CSVParser;
+import org.epics.util.text.CsvParser;
 import org.epics.util.text.CsvParserConfiguration;
 import org.epics.util.text.CsvParserResult;
 import org.epics.util.time.Timestamp;

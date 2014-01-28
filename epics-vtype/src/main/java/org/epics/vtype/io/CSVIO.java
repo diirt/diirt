@@ -17,7 +17,7 @@ import org.epics.util.array.CircularBufferDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
-import org.epics.util.text.CSVParser;
+import org.epics.util.text.CsvParser;
 import org.epics.util.text.CsvParserConfiguration;
 import org.epics.util.text.CsvParserResult;
 import org.epics.util.text.StringUtil;
@@ -143,7 +143,7 @@ public class CSVIO {
     }
     
     public VTable importVTable(Reader reader) {
-        CSVParser parser = new CSVParser(new CsvParserConfiguration());
+        CsvParser parser = new CsvParser(new CsvParserConfiguration());
         CsvParserResult result = parser.parse(reader);
         if (result.getRowCount() == 0) {
             throw new RuntimeException("Malformed table: no lines");
