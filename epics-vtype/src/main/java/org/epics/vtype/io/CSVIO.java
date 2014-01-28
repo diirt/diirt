@@ -17,6 +17,7 @@ import org.epics.util.array.CircularBufferDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
+import org.epics.util.text.CSVParser;
 import org.epics.util.text.StringUtil;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
@@ -146,7 +147,7 @@ public class CSVIO {
             // Parse column names
             String titleLine = br.readLine();
             List<String> columnNames = new ArrayList<>();
-            for (Object token : StringUtil.parseCSVLine(titleLine, "\\s*")) {
+            for (Object token : CSVParser.parseCSVLine(titleLine, " ")) {
                 if (token instanceof String) {
                     columnNames.add((String) token);
                 } else {
@@ -159,7 +160,7 @@ public class CSVIO {
             List<Class<?>> columnTypes = new ArrayList<>();
             columnTypes.addAll(Collections.nCopies(columnNames.size(), (Class<Object>) null));
             while ((line = br.readLine()) != null) {
-                List<Object> tokens = StringUtil.parseCSVLine(line, "\\s*");
+                List<Object> tokens = CSVParser.parseCSVLine(line, " ");
                 if (tokens.size() != columnNames.size()) {
                     throw new IllegalArgumentException("All rows need to have the same number of elements");
                 }

@@ -154,4 +154,20 @@ public class CSVIOTest {
         assertThat(value.getColumnData(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
         assertThat(value.getColumnData(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
     }
+
+    @Test
+    public void importFileTable2CSV() throws Exception {
+        CSVIO io = new CSVIO();
+        VTable value = io.importVTable(new FileReader(getClass().getResource("table2.csv").getFile()));
+        assertThat(value.getColumnCount(), equalTo(3));
+        assertThat(value.getColumnName(0), equalTo("Name"));
+        assertThat(value.getColumnName(1), equalTo("Value"));
+        assertThat(value.getColumnName(2), equalTo("Index"));
+        assertThat((Object) value.getColumnType(0), equalTo((Object) String.class));
+        assertThat((Object) value.getColumnType(1), equalTo((Object) double.class));
+        assertThat((Object) value.getColumnType(2), equalTo((Object) double.class));
+        assertThat(value.getColumnData(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
+        assertThat(value.getColumnData(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(value.getColumnData(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+    }
 }
