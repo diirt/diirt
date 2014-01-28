@@ -22,7 +22,7 @@ import static org.epics.util.text.StringUtil.DOUBLE_REGEX;
  *
  * @author carcassi
  */
-public class CvsParser {
+public class CsvParser {
     
     private final CsvParserConfiguration configuration;
     private int nColumns;
@@ -97,7 +97,7 @@ public class CvsParser {
         return new CsvParserResult(columnNames, columnValues, columnTypes, lines.size() - 1);
     }
 
-    public CvsParser(CsvParserConfiguration configuration) {
+    public CsvParser(CsvParserConfiguration configuration) {
         this.configuration = configuration;
     }
     
