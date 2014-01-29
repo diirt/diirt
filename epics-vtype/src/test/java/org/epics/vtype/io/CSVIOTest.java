@@ -4,7 +4,6 @@
  */
 package org.epics.vtype.io;
 
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,9 +11,6 @@ import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListNumber;
-import org.epics.util.text.CsvParser;
-import org.epics.util.text.CsvParserConfiguration;
-import org.epics.util.text.CsvParserResult;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VEnumArray;
@@ -27,7 +23,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.vtype.ValueFactory.*;
-import static org.epics.vtype.ValueUtil.*;
 
 /**
  *

@@ -4,23 +4,15 @@
  */
 package org.epics.vtype.io;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.epics.util.array.CircularBufferDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.CsvParser;
-import org.epics.util.text.CsvParserConfiguration;
 import org.epics.util.text.CsvParserResult;
-import org.epics.util.text.StringUtil;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
 import org.epics.vtype.Alarm;
@@ -32,7 +24,6 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
 import org.epics.vtype.ValueFactory;
 import org.epics.vtype.ValueUtil;
 
@@ -143,7 +134,7 @@ public class CSVIO {
     }
     
     public VTable importVTable(Reader reader) {
-        CsvParser parser = new CsvParser(new CsvParserConfiguration());
+        CsvParser parser = CsvParser.AUTOMATIC;
         CsvParserResult result = parser.parse(reader);
         if (!result.isParsingSuccessful()) {
             throw new RuntimeException(result.getMessage());
