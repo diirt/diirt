@@ -5,6 +5,7 @@
 package org.epics.vtype.io;
 
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -146,7 +147,7 @@ public class CSVIOTest {
     @Test
     public void importFileTable1CSV() throws Exception {
         CSVIO io = new CSVIO();
-        VTable value = io.importVTable(new FileReader(getClass().getResource("table1.csv").getFile()));
+        VTable value = io.importVTable(new InputStreamReader(getClass().getResource("table1.csv").openStream()));
         assertThat(value.getColumnCount(), equalTo(3));
         assertThat(value.getColumnName(0), equalTo("Name"));
         assertThat(value.getColumnName(1), equalTo("Value"));
@@ -162,7 +163,7 @@ public class CSVIOTest {
     @Test
     public void importFileTable2CSV() throws Exception {
         CSVIO io = new CSVIO();
-        VTable value = io.importVTable(new FileReader(getClass().getResource("table2.csv").getFile()));
+        VTable value = io.importVTable(new InputStreamReader(getClass().getResource("table2.csv").openStream()));
         assertThat(value.getColumnCount(), equalTo(3));
         assertThat(value.getColumnName(0), equalTo("Name"));
         assertThat(value.getColumnName(1), equalTo("Value"));
@@ -178,7 +179,7 @@ public class CSVIOTest {
     @Test
     public void importFileTable4CSV() throws Exception {
         CSVIO io = new CSVIO();
-        VTable value = io.importVTable(new FileReader(getClass().getResource("table4.csv").getFile()));
+        VTable value = io.importVTable(new InputStreamReader(getClass().getResource("table4.csv").openStream()));
         assertThat(value.getColumnCount(), equalTo(13));
         assertThat(value.getColumnName(0), equalTo("timestamp"));
         assertThat(value.getColumnName(1), equalTo("rta_MIN"));
