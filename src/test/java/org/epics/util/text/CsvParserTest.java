@@ -5,6 +5,7 @@
 package org.epics.util.text;
 
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
@@ -104,7 +105,7 @@ public class CsvParserTest {
     @Test
     public void parseTable1CSV() throws Exception {
         CsvParser parser = new CsvParser(new CsvParserConfiguration());
-        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table1.csv").getFile()));
+        CsvParserResult result = parser.parse(new InputStreamReader(getClass().getResource("table1.csv").openStream()));
         assertThat(result.getColumnNames().size(), equalTo(3));
         assertThat(result.getColumnNames().get(0), equalTo("Name"));
         assertThat(result.getColumnNames().get(1), equalTo("Value"));
@@ -120,7 +121,7 @@ public class CsvParserTest {
     @Test
     public void importFileTable2CSV() throws Exception {
         CsvParser parser = new CsvParser(new CsvParserConfiguration());
-        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table2.csv").getFile()));
+        CsvParserResult result = parser.parse(new InputStreamReader(getClass().getResource("table2.csv").openStream()));
         assertThat(result.getColumnNames().size(), equalTo(3));
         assertThat(result.getColumnNames().get(0), equalTo("Name"));
         assertThat(result.getColumnNames().get(1), equalTo("Value"));
@@ -136,7 +137,7 @@ public class CsvParserTest {
     @Test
     public void importFileTable4CSV() throws Exception {
         CsvParser parser = new CsvParser(new CsvParserConfiguration());
-        CsvParserResult result = parser.parse(new FileReader(getClass().getResource("table4.csv").getFile()));
+        CsvParserResult result = parser.parse(new InputStreamReader(getClass().getResource("table4.csv").openStream()));
         assertThat(result.getColumnNames().size(), equalTo(13));
         assertThat(result.getColumnNames().get(0), equalTo("timestamp"));
         assertThat(result.getColumnNames().get(1), equalTo("rta_MIN"));
