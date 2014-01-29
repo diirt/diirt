@@ -118,7 +118,7 @@ public class CsvParserTest {
     }
 
     @Test
-    public void importFileTable2CSV() throws Exception {
+    public void parseFileTable2CSV() throws Exception {
         CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table2.csv").openStream()));
         assertThat(result.getColumnNames().size(), equalTo(3));
         assertThat(result.getColumnNames().get(0), equalTo("Name"));
@@ -133,7 +133,7 @@ public class CsvParserTest {
     }
 
     @Test
-    public void importFileTable4CSV() throws Exception {
+    public void parseFileTable4CSV() throws Exception {
         CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table4.csv").openStream()));
         assertThat(result.getColumnNames().size(), equalTo(13));
         assertThat(result.getColumnNames().get(0), equalTo("timestamp"));
@@ -145,5 +145,35 @@ public class CsvParserTest {
         assertThat(((ListNumber) result.getColumnValues().get(0)).getDouble(0), equalTo(1390913220.0));
         assertThat(((ListNumber) result.getColumnValues().get(1)).getDouble(1), equalTo(0.28083333333));
         assertThat(((ListNumber) result.getColumnValues().get(2)).getDouble(2), equalTo(0.266825));
+    }
+
+    @Test
+    public void parseFileTable5CSV() throws Exception {
+        CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table5.csv").openStream()));
+        assertThat(result.getColumnNames().size(), equalTo(3));
+        assertThat(result.getColumnNames().get(0), equalTo("A"));
+        assertThat(result.getColumnNames().get(1), equalTo("B"));
+        assertThat(result.getColumnNames().get(2), equalTo("C"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
+        assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+    }
+
+    @Test
+    public void parseFileTable6CSV() throws Exception {
+        CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table6.csv").openStream()));
+        assertThat(result.getColumnNames().size(), equalTo(3));
+        assertThat(result.getColumnNames().get(0), equalTo("Name"));
+        assertThat(result.getColumnNames().get(1), equalTo("Surname"));
+        assertThat(result.getColumnNames().get(2), equalTo("Address"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) String.class));
+        assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("Gabriele", "Kunal")));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) Arrays.asList("Carcassi", "Shroff")));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) Arrays.asList("Happytown", "Politeville")));
     }
 }

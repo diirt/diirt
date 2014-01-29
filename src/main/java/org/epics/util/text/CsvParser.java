@@ -8,6 +8,7 @@ package org.epics.util.text;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -44,7 +45,7 @@ public class CsvParser {
     // Configuration
     private final String separators;
     private final Header header;
-    
+
     /**
      * The configuration options for the header.
      */
@@ -90,12 +91,30 @@ public class CsvParser {
         this.header = header;
     }
 
+    /**
+     * Returns the list of separators that are going to be tried while parsing.
+     * 
+     * @return a string with all the possible separators
+     */
     public String getSeparators() {
         return separators;
     }
     
+    /**
+     * Parser the text provided by the reader with the format defined in this
+     * parser. This method is thread-safe.
+     * <p>
+     * If the parsing fails, this method does not throw an exception but
+     * will have information in the result. The idea is that, in the future,
+     * the parser can provide multiple reasons as why the parsing failed or 
+     * event incomplete results.
+     * 
+     * @param reader a reader
+     * @return the parsed information
+     */
     public CsvParserResult parse(Reader reader) {
-        // State used for parsing
+        // State used for parsing. Since each call has its own state,
+        // the parsing is thread safe.
         State state = new State();
         
         // Divide into lines.
@@ -167,8 +186,16 @@ public class CsvParser {
             return new CsvParserResult(null, null, null, 0, false, "Number of columns is not the same for all lines");
         }
         
-        // Parsing was successful. Now it's time to convert the tokens
-        // to the actual type.
+        // Parsing was successful.
+        // Should the first line be used as data?
+        if (header == Header.NONE || (header == Header.AUTO && isFirstLineData(state, state.columnNames))) {
+            for (int i = 0; i < state.nColumns; i++) {
+                state.columnTokens.set(i, joinList(state.columnNames.get(i), state.columnTokens.get(i)));
+                state.columnNames.set(i, alphabeticName(i));
+            }
+        }
+        
+        // Now it's time to convert the tokens to the actual type.
         List<Object> columnValues = new ArrayList<>(state.nColumns);
         List<Class<?>> columnTypes = new ArrayList<>(state.nColumns);
         for (int i = 0; i < state.nColumns; i++) {
@@ -183,7 +210,7 @@ public class CsvParser {
         
         // Prepare result, and remember to clear the state, so
         // we don't keep references to junk
-        CsvParserResult result = new CsvParserResult(state.columnNames, columnValues, columnTypes, lines.size() - 1, true, null);
+        CsvParserResult result = new CsvParserResult(state.columnNames, columnValues, columnTypes, state.columnTokens.get(0).size(), true, null);
         return result;
     }
     
@@ -266,7 +293,7 @@ public class CsvParser {
             if (state.mLineTokens.start(2) >= 0) {
                 // The token was unquoted. Check if it could be a number.
                 token = state.mLineTokens.group(2);
-                if (!state.mDouble.reset(token).matches()) {
+                if (!isTokenNumberParsable(state, token)) {
                     state.columnNumberParsable.set(nColumn, false);
                 }
             } else {
@@ -280,6 +307,84 @@ public class CsvParser {
         // Does this line have fewer columns than expected?
         if (nColumn != state.nColumns) {
             state.columnMismatch = true;
+        }
+    }
+    
+    /**
+     * Check whether the token can be parsed to a number.
+     * 
+     * @param state the state of the parser
+     * @param token the token
+     * @return true if token matches a double
+     */
+    private boolean isTokenNumberParsable(State state, String token) {
+        return state.mDouble.reset(token).matches();
+    }
+    
+    /**
+     * Checks whether the header can be safely interpreted as data.
+     * This is used for the auto header detection.
+     * 
+     * @param state the state of the parser
+     * @param headerTokens the header
+     * @return true if header should be handled as data
+     */
+    private boolean isFirstLineData(State state, List<String> headerTokens) {
+        // Check whether the type of the header match the type of the following data
+        boolean headerCompatible = true;
+        // Check whether if all types where strings
+        boolean allStrings = true;
+        for (int i = 0; i < state.nColumns; i++) {
+            if (state.columnNumberParsable.get(i)) {
+                allStrings = false;
+                if (!isTokenNumberParsable(state, headerTokens.get(i))) {
+                    headerCompatible = false;
+                }
+            }
+        }
+        // If all columns are strings, it's impossible to tell whether we have
+        // a header or not: assume we have a header.
+        // If the column types matches (e.g. the header for a number column is also
+        // a number) then we'll assume the header is actually data.
+        return !allStrings && headerCompatible;
+    }
+    
+    /**
+     * Takes an elements and a list and returns a new list with both.
+     * 
+     * @param head the first element
+     * @param tail the rest of the elements
+     * @return a list with all elements
+     */
+    private List<String> joinList(final String head, final List<String> tail) {
+        return new AbstractList<String>() {
+
+            @Override
+            public String get(int index) {
+                if (index == 0) {
+                    return head;
+                } else {
+                    return tail.get(index - 1);
+                }
+            }
+
+            @Override
+            public int size() {
+                return tail.size()+1;
+            }
+        };
+    }
+    
+    static String alphabeticName(int i) {
+        String name = "";
+        while (true) {
+            int offset = i % 26;
+            i = i / 26;
+            char character = (char) ('A' + offset);
+            name = name + character;
+            if (i == 0) {
+                return name;
+            }
         }
     }
     
