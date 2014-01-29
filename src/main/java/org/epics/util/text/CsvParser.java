@@ -40,20 +40,24 @@ public class CsvParser {
     
     private final CsvParserConfiguration configuration;
     
-    // Parser state
-    private int nColumns;
-    private boolean columnMismatch = false;
-    private List<String> columnNames;
-    private List<Boolean> columnNumberParsable;
-    private List<Boolean> columnTimestampParsable;
-    private List<List<String>> columnTokens;
+    private class State {
+        // Parser state
+        private int nColumns;
+        private boolean columnMismatch = false;
+        private List<String> columnNames;
+        private List<Boolean> columnNumberParsable;
+        private List<Boolean> columnTimestampParsable;
+        private List<List<String>> columnTokens;
+        
+        // Regex object used for parsing
+        private Matcher mLineTokens;
+        private final Matcher mQuote = pQuote.matcher("");
+        private final Matcher mDouble = pDouble.matcher("");
+    }
     
-    // Regex object used for parsing
-    private Matcher mLineTokens;
+    
     private static final Pattern pQuote = Pattern.compile("\"\"");
-    private final Matcher mQuote = pQuote.matcher("");
     private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX);
-    private final Matcher mDouble = pDouble.matcher("");
 
     /**
      * Creates a new parser based on the given configuration.
@@ -64,19 +68,10 @@ public class CsvParser {
         this.configuration = configuration;
     }
     
-    /**
-     * Removes state left over from the parsing
-     */
-    private void clear() {
-        columnNames = null;
-        columnNumberParsable = null;
-        columnTimestampParsable = null;
-        columnTokens = null;
-        mQuote.reset("");
-        mDouble.reset("");
-    }
-    
     public CsvParserResult parse(Reader reader) {
+        // State used for parsing
+        State state = new State();
+        
         // Divide into lines.
         // Note that means we are going to keep in memory the whole file.
         // This is not very memory efficient. But since we have to do multiple
@@ -104,33 +99,33 @@ public class CsvParser {
                     "([^\"" + currentSeparator + "]*)" +
                     ")";
             // Compile the matcher once for all the parsing
-            mLineTokens = Pattern.compile(regex).matcher("");
+            state.mLineTokens = Pattern.compile(regex).matcher("");
             
             // Try to parse the first line (the titles)
             // If only one columns is found, proceed to next separator
-            columnNames = parseTitles(lines.get(0));
-            nColumns = columnNames.size();
-            if (nColumns == 1) {
+            state.columnNames = parseTitles(state, lines.get(0));
+            state.nColumns = state.columnNames.size();
+            if (state.nColumns == 1) {
                 continue;
             }
             
             // Prepare the data structures to hold column data while parsing
-            columnMismatch = false;
-            columnNumberParsable = new ArrayList<>(nColumns);
-            columnTimestampParsable = new ArrayList<>(nColumns);
-            columnTokens = new ArrayList<>();
-            for (int i = 0; i < nColumns; i++) {
-                columnNumberParsable.add(true);
-                columnTimestampParsable.add(false);
-                columnTokens.add(new ArrayList<String>());
+            state.columnMismatch = false;
+            state.columnNumberParsable = new ArrayList<>(state.nColumns);
+            state.columnTimestampParsable = new ArrayList<>(state.nColumns);
+            state.columnTokens = new ArrayList<>();
+            for (int i = 0; i < state.nColumns; i++) {
+                state.columnNumberParsable.add(true);
+                state.columnTimestampParsable.add(false);
+                state.columnTokens.add(new ArrayList<String>());
             }
             
             // Parse each line
             // If one line does not match the number of columns found in the first
             // line, pass to the next separator
             for (int i = 1; i < lines.size(); i++) {
-                parseLine(lines.get(i));
-                if (columnMismatch) {
+                parseLine(state, lines.get(i));
+                if (state.columnMismatch) {
                     continue separatorLoop;
                 }
             }
@@ -142,29 +137,27 @@ public class CsvParser {
         
         // We are out of the loop: did we end because we parsed correctly,
         // or because even the last separator was a mismatch?
-        if (columnMismatch) {
-            clear();
+        if (state.columnMismatch) {
             return new CsvParserResult(null, null, null, 0, false, "Number of columns is not the same for all lines");
         }
         
         // Parsing was successful. Now it's time to convert the tokens
         // to the actual type.
-        List<Object> columnValues = new ArrayList<>(nColumns);
-        List<Class<?>> columnTypes = new ArrayList<>(nColumns);
-        for (int i = 0; i < nColumns; i++) {
-            if (columnNumberParsable.get(i)) {
-                columnValues.add(convertToListDouble(columnTokens.get(i)));
+        List<Object> columnValues = new ArrayList<>(state.nColumns);
+        List<Class<?>> columnTypes = new ArrayList<>(state.nColumns);
+        for (int i = 0; i < state.nColumns; i++) {
+            if (state.columnNumberParsable.get(i)) {
+                columnValues.add(convertToListDouble(state.columnTokens.get(i)));
                 columnTypes.add(double.class);
             } else {
-                columnValues.add(columnTokens.get(i));
+                columnValues.add(state.columnTokens.get(i));
                 columnTypes.add(String.class);
             }
         }
         
         // Prepare result, and remember to clear the state, so
         // we don't keep references to junk
-        CsvParserResult result = new CsvParserResult(columnNames, columnValues, columnTypes, lines.size() - 1, true, null);
-        clear();
+        CsvParserResult result = new CsvParserResult(state.columnNames, columnValues, columnTypes, lines.size() - 1, true, null);
         return result;
     }
     
@@ -210,17 +203,17 @@ public class CsvParser {
      * @param line the text line
      * @return the column names
      */
-    private List<String> parseTitles(String line) {
+    private List<String> parseTitles(State state, String line) {
         // Match using the parser
         List<String> titles = new ArrayList<>();
-        mLineTokens.reset(line);
-        while (mLineTokens.find()) {
+        state.mLineTokens.reset(line);
+        while (state.mLineTokens.find()) {
             String value;
-            if (mLineTokens.start(2) >= 0) {
-                value = mLineTokens.group(2);
+            if (state.mLineTokens.start(2) >= 0) {
+                value = state.mLineTokens.group(2);
             } else {
                 // If quoted, always use string
-                value = mQuote.reset(mLineTokens.group(1)).replaceAll("\"");
+                value = state.mQuote.reset(state.mLineTokens.group(1)).replaceAll("\"");
             }
             titles.add(value);
         }
@@ -232,35 +225,35 @@ public class CsvParser {
      * 
      * @param line a new line
      */
-    private void parseLine(String line) {
+    private void parseLine(State state, String line) {
         // Match using the parser
-        mLineTokens.reset(line);
+        state.mLineTokens.reset(line);
         int nColumn = 0;
-        while (mLineTokens.find()) {
+        while (state.mLineTokens.find()) {
             // Does this line have more columns than expected?
-            if (nColumn == nColumns) {
-                columnMismatch = true;
+            if (nColumn == state.nColumns) {
+                state.columnMismatch = true;
                 return;
             }
             
             String token;
-            if (mLineTokens.start(2) >= 0) {
+            if (state.mLineTokens.start(2) >= 0) {
                 // The token was unquoted. Check if it could be a number.
-                token = mLineTokens.group(2);
-                if (!mDouble.reset(token).matches()) {
-                    columnNumberParsable.set(nColumn, false);
+                token = state.mLineTokens.group(2);
+                if (!state.mDouble.reset(token).matches()) {
+                    state.columnNumberParsable.set(nColumn, false);
                 }
             } else {
                 // If quoted, always use string
-                token = mQuote.reset(mLineTokens.group(1)).replaceAll("\"");
-                columnNumberParsable.set(nColumn, false);
+                token = state.mQuote.reset(state.mLineTokens.group(1)).replaceAll("\"");
+                state.columnNumberParsable.set(nColumn, false);
             }
-            columnTokens.get(nColumn).add(token);
+            state.columnTokens.get(nColumn).add(token);
             nColumn++;
         }
         // Does this line have fewer columns than expected?
-        if (nColumn != nColumns) {
-            columnMismatch = true;
+        if (nColumn != state.nColumns) {
+            state.columnMismatch = true;
         }
     }
     
