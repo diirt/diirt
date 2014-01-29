@@ -18,8 +18,11 @@ import org.epics.util.array.ListNumber;
 import static org.epics.util.text.StringUtil.DOUBLE_REGEX;
 
 /**
- * Utility class to parse CSV text. The parser is not thread safe. It can be
- * reused multiple times, but nothing much is gained.
+ * Utility class to parse CSV text. The parser is thread safe: it includes an
+ * immutable set of parameters and the state for each parsing is kept separate.
+ * A change in the parser parameters will create a new parser, so to create
+ * your configuration take the closest matching as a template and apply the
+ * difference.
  * <p>
  * Since there is no CSV strict format, this parser honors as best it
  * can the suggestions found in <a href="http://tools.ietf.org/html/rfc4180">RFC4180</a>,
@@ -38,7 +41,28 @@ import static org.epics.util.text.StringUtil.DOUBLE_REGEX;
  */
 public class CsvParser {
     
-    private final CsvParserConfiguration configuration;
+    // Configuration
+    private final String separators;
+    private final Header header;
+    
+    /**
+     * The configuration options for the header.
+     */
+    public enum Header {
+        /**
+         * Auto detects whether the first line is a header.
+         */
+        AUTO, 
+        
+        /**
+         * The first line is the header.
+         */
+        FIRST_LINE,
+        
+        /**
+         * There is no header
+         */
+        NONE};
     
     private class State {
         // Parser state
@@ -58,14 +82,16 @@ public class CsvParser {
     
     private static final Pattern pQuote = Pattern.compile("\"\"");
     private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX);
+    
+    public static final CsvParser AUTOMATIC = new CsvParser(",;\t ", Header.AUTO);
 
-    /**
-     * Creates a new parser based on the given configuration.
-     * 
-     * @param configuration a configuration
-     */
-    public CsvParser(CsvParserConfiguration configuration) {
-        this.configuration = configuration;
+    private CsvParser(String separators, Header header) {
+        this.separators = separators;
+        this.header = header;
+    }
+
+    public String getSeparators() {
+        return separators;
     }
     
     public CsvParserResult parse(Reader reader) {
@@ -81,8 +107,8 @@ public class CsvParser {
         
         // Try each seaparater
         separatorLoop:
-        for(int nSeparator = 0; nSeparator < configuration.getSeparators().length(); nSeparator++) {
-            String currentSeparator = configuration.getSeparators().substring(nSeparator, nSeparator+1);
+        for(int nSeparator = 0; nSeparator < getSeparators().length(); nSeparator++) {
+            String currentSeparator = getSeparators().substring(nSeparator, nSeparator+1);
             
             // Taken from Mastering Regular Exceptions
             // Disabled comments so that space could work as possible separator
