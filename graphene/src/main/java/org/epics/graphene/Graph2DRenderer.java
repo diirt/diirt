@@ -667,6 +667,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return line;
     }
     //Does not test for NaN like Nearest Neighbor Interpolation?
+    /*assume you have x of each nan
+     * make horizontal line of 3 pixels
+     * if the previous and next point are nan, draw horizontal line of 3 pixels
+     */
     private static Path2D.Double linearInterpolation(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -675,7 +679,15 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[start], scaledY[start]);
         for (int i = 1; i < end; i++) {
-            line.lineTo(scaledX[i], scaledY[i]);
+            if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
+                line.moveTo(scaledX[i - 1], scaledY[i]);
+                line.lineTo(scaledX[i + 1], scaledY[i]);
+            }
+            else if(java.lang.Double.isNaN(scaledY[i])){
+                line.moveTo(scaledX[i + 1], scaledY[i + 1]);
+            }
+            else
+                line.lineTo(scaledX[i], scaledY[i]);                
         }
         return line;
     }
@@ -723,8 +735,17 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             double by1 = (bx1 - bx0) * bdy0 + by0;
             double bx2 = bx3 - (x3 - x1) / 6.0;
             double by2 = (bx2 - bx3) * bdy3 + by3;
-
-            path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+            
+          
+            if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
+                path.moveTo(scaledX[i - 1], scaledY[i]);
+                path.lineTo(scaledX[i + 1], scaledY[i]);
+            }
+            else if(java.lang.Double.isNaN(scaledY[i])){
+                path.moveTo(scaledX[i + 1], scaledY[i + 1]);
+            }
+            else
+                path.curveTo(bx1, by1, bx2, by2, bx3, by3);
         }
         return path;
     }
