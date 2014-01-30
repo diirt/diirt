@@ -3,6 +3,7 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
+import java.util.*;
 
 /**
  *
@@ -13,6 +14,8 @@ public class NLineGraph2DRendererUpdate extends Graph2DRendererUpdate<NLineGraph
     private ReductionScheme reduction;
     private Integer focusPixelX;
     private Boolean highlightFocusValue;
+    private HashMap<Integer, Range> IndexToRangeMap;
+    private HashMap<Integer, Boolean> IndexToForceMap;
     
     /**
      *Sets this object's interpolation to the given scheme.
@@ -54,6 +57,26 @@ public class NLineGraph2DRendererUpdate extends Graph2DRendererUpdate<NLineGraph
     public NLineGraph2DRendererUpdate focusPixel(int x) {
         this.focusPixelX = x;
         return this;
+    }
+    
+    public NLineGraph2DRendererUpdate setRanges(List<Integer> indices, List<Range> ranges){
+        if(indices.size() != ranges.size()){
+            throw new IllegalArgumentException("Index list is not as long as range list");
+        }
+        for(int i = 0; i < indices.size(); i++){
+            IndexToRangeMap.put(indices.get(i),ranges.get(i));
+        }
+        return this.self();
+    }
+    
+    public NLineGraph2DRendererUpdate setForce(List<Integer> indices, List<Boolean> force){
+        if(indices.size() != force.size()){
+            throw new IllegalArgumentException("Index list is not as long as range list");
+        }
+        for(int i = 0; i < indices.size(); i++){
+            IndexToForceMap.put(indices.get(i),force.get(i));
+        }
+        return this.self();
     }
     
     /**
@@ -104,5 +127,13 @@ public class NLineGraph2DRendererUpdate extends Graph2DRendererUpdate<NLineGraph
      */
     public Boolean getHighlightFocusValue() {
         return highlightFocusValue;
+    }
+    
+    public HashMap<Integer, Range> getIndexToRange(){
+        return IndexToRangeMap;
+    }
+    
+    public HashMap<Integer, Boolean> getIndexToForce(){
+        return IndexToForceMap;
     }
 }

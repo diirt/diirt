@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Arrays;
+import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
@@ -33,6 +34,9 @@ public class NLineGraph2DRenderer extends Graph2DRenderer<NLineGraph2DRendererUp
     private Integer focusPixelX;
     
     private boolean highlightFocusValue = false;
+    private boolean force = false;
+    
+    private Range forcedYRange;
 
     private int focusValueIndex = -1;
     
@@ -109,7 +113,12 @@ public class NLineGraph2DRenderer extends Graph2DRenderer<NLineGraph2DRendererUp
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        calculateRanges(data.getXStatistics(), data.getYStatistics());
+        if(force && forcedYRange != null){
+            forceRanges(data.getXStatistics(),forcedYRange);
+        }
+        else{
+            calculateRanges(data.getXStatistics(), data.getYStatistics());
+        }
         calculateLabels();
         calculateGraphArea();
         yAreaCoordStart = topMargin;
@@ -219,5 +228,21 @@ public class NLineGraph2DRenderer extends Graph2DRenderer<NLineGraph2DRendererUp
             }
             yReferenceCoords = new ArrayDouble(yRefCoords);
         }
+    }
+    
+    public void setForce(boolean force){
+        this.force = force;
+    }
+    
+    public boolean getForce(){
+        return force;
+    }
+    
+    public void forceYRange(Range forcedYRange){
+        this.forcedYRange = forcedYRange;
+    }
+    
+    public Range getForcedYRange(){
+        return forcedYRange;
     }
 }
