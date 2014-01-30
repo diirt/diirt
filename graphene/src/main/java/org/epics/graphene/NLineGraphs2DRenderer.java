@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import static org.epics.graphene.ColorScheme.*;
 import org.epics.util.array.*;
 
@@ -25,6 +26,8 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private LineGraph2DRenderer lastGraph;
     private ArrayList<Double> graphBoundaries;
     private ArrayList<Double> graphBoundaryRatios;
+    private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer,Range>();
+    private HashMap<Integer, Boolean> IndexToForceMap = new HashMap<Integer,Boolean>();
     private int num_Graphs;
     
     public void draw( Graphics2D g, List<Point2DDataset> data){
@@ -65,6 +68,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 graphBoundaries.add(getImageHeight() * graphBoundaryRatios.get(i));
             }
         }
+        if(update.getIndexToRange() != null){
+            IndexToRangeMap = update.getIndexToRange();
+        }
+        if(update.getIndexToForce() != null){
+            IndexToForceMap = update.getIndexToForce();
+        }
     }
 
     private void addGraphs(List<Point2DDataset> data){
@@ -95,6 +104,14 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     }
     
     private void drawGraphs(List<Point2DDataset> data){
+        for(int i = 0; i < graphList.size(); i++){
+            if(IndexToRangeMap.containsKey(i+1)){ 
+                graphList.get(i).forceYRange(IndexToRangeMap.get(i));
+            }
+            if(IndexToForceMap.containsKey(i+1)){
+                graphList.get(i).setForce(true);    
+            }
+        }
         for(int i = 0; i < graphList.size(); i++){
             Graphics2D gtemp = (Graphics2D)g.create();
             gtemp.translate(0,(int)(graphBoundaries.get(i)-0));
