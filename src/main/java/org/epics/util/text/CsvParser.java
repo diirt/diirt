@@ -101,6 +101,17 @@ public class CsvParser {
     }
     
     /**
+     * Creates a new parser with the given header handling.
+     * 
+     * @param header the header configuration for the parser
+     * @return a new parser
+     */
+    public CsvParser withHeader(Header header) {
+        return new CsvParser(separators, header);
+    }
+
+    
+    /**
      * Parser the text provided by the reader with the format defined in this
      * parser. This method is thread-safe.
      * <p>
