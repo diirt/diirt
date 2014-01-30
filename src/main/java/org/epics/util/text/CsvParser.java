@@ -99,6 +99,26 @@ public class CsvParser {
     public String getSeparators() {
         return separators;
     }
+
+    /**
+     * Creates a new parser that uses the given separators
+     * 
+     * @param separators the new list of separators
+     * @return a new parser
+     */
+    public CsvParser withSeparators(String separators) {
+        return new CsvParser(separators, header);
+    }
+
+    /**
+     * Returns the way that the parser handles the header (the first line of
+     * the csv file).
+     * 
+     * @return the header configuration of the parser
+     */
+    public Header getHeader() {
+        return header;
+    }
     
     /**
      * Creates a new parser with the given header handling.
