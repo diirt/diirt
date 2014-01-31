@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-//supposed to exted BaseGraphTest
+
 public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUpdate, LineGraph2DRenderer> {
 
     public LineGraph2DRendererTest() {
@@ -49,13 +49,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         return image;
     }
 
-    /*draw update
-     * create renderer
-     * update renderer
-     * create image
-     * draw
-     * return image
-     */
+   
     private static Point2DDataset largeDataset;
 
     @BeforeClass
@@ -155,7 +149,6 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
 
     @Test
     public void testOneNaNLinear() throws Exception {
-        //TODO: NaN doesn't show up with linear interpolation
         double[] dataSet = {1, 2, 3, Double.NaN, 5};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);

@@ -7,10 +7,14 @@ package org.epics.graphene.profile;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,8 +34,13 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreePath;
 
 
 /**
@@ -96,13 +105,20 @@ public class VisualProfiler extends JFrame{
     private DefaultListModel<Resolution>    modelResolutions;
     private DefaultListModel<Integer>       modelNPoints;
     
+    
+    //Tab: File Viewer
+    private JTree tree;
+    private DefaultTreeModel treeModel;
+    private DefaultMutableTreeNode treeRoot;
+    private JButton btnTreeOpenFile;
+    
+    
     //Pane: Console
     private JTextArea          console;
     private JLabel             lblConsole;
     
     public VisualProfiler(){
         super("Visual Profiler");
-        
         initFrame();
         initComponents();
         loadLists();
@@ -170,6 +186,27 @@ public class VisualProfiler extends JFrame{
         listNPoints = new JList<>();
         
         
+        //Tab: File Browser
+        //--------
+        treeRoot = new DefaultMutableTreeNode(new File(ProfileGraph2D.LOG_FILEPATH));
+        treeModel = new DefaultTreeModel(treeRoot);
+        tree = new JTree(treeRoot){
+            @Override
+            public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){  
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+                try{
+                    File f = (File) node.getUserObject();
+                    return f.getName();
+                }
+                catch(Exception e){
+                    return node.toString();
+                }
+            }
+        };        
+        tree.setModel(treeModel);
+        this.addNodes(treeRoot);
+        btnTreeOpenFile = new JButton("Open File(s)");
+        
         //Console
         console = new JTextArea(20, 50);
         console.setEditable(false);
@@ -228,6 +265,14 @@ public class VisualProfiler extends JFrame{
            @Override
            public void actionPerformed(ActionEvent e) {
                VisualProfiler.this.analyzeTables1DAction();
+           }
+           
+       });
+       this.btnTreeOpenFile.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.openFiles();
            }
            
        });
@@ -310,6 +355,12 @@ public class VisualProfiler extends JFrame{
                 
             });            
         
+        //Tab: File Browser
+        JPanel fileTab = new JPanel();
+        fileTab.setLayout(new GridLayout(0, 2));
+        fileTab.add(new JScrollPane(tree));
+        fileTab.add(blankPanel(this.btnTreeOpenFile));
+            
         //Console
         JPanel consolePanel = new JPanel();
         consolePanel.setLayout(new BorderLayout());
@@ -322,6 +373,7 @@ public class VisualProfiler extends JFrame{
         tabs.addTab("Single Profile", singleProfileTab);
         tabs.addTab("Multi Layer", multiLayerOuter);
         tabs.addTab("Control Panel", controlPane);
+        tabs.addTab("File Browser", fileTab);
         
         //Add to panel hiearchy
         mainPanel.add(settingsPane, BorderLayout.NORTH);
@@ -668,6 +720,57 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();        
     }
+    private void openFiles(){
+
+        
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                setEnabledActions(false);                
+                publish("--------\n");
+                publish("Opening Files\n\n");
+                
+                Desktop desktop = Desktop.getDesktop();
+                TreePath[] paths = tree.getSelectionPaths();
+
+                if (paths != null && desktop != null){
+                    for (TreePath path: paths){
+                        if (path != null){
+                            try{
+                                File toOpen = (File) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+                                desktop.open(toOpen);
+                                
+                                publish(toOpen.getName() + "...opened successfully!\n");
+                            }
+                            catch(IOException e){
+                                publish("Unable to open: " +
+                                        ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() +
+                                        "\n"
+                                       );
+                            }
+                            catch(ClassCastException e){
+                                //unable to open
+                            }
+                        }
+                    }
+                }
+                
+                publish("\nFile operations completed.\n");
+                publish("--------\n");
+                setEnabledActions(true);                
+                return null;
+            }
+            
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }
+        };
+        worker.execute();          
+    }
     private void setEnabledActions(boolean enabled){
         this.btnSingleProfile.setEnabled(enabled);
         this.btnStart.setEnabled(enabled);
@@ -807,6 +910,19 @@ public class VisualProfiler extends JFrame{
         JPanel tmp = new JPanel();
         tmp.add(itemToAdd);
         return tmp;
+    }
+    private void addNodes(DefaultMutableTreeNode parentNode){
+        File[] subfiles = ((File)parentNode.getUserObject()).listFiles();
+        
+        if (subfiles != null){
+            for (File subfile: subfiles){
+                if (subfile != null){
+                    DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(subfile);
+                    parentNode.add(childNode);
+                    this.addNodes(childNode);
+                }
+            }
+        }
     }
     
     //Static

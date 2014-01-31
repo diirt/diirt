@@ -18,11 +18,32 @@ import org.junit.BeforeClass;
  * @author sjdallst
  */
 //supposed to extend BaseGraphTest
-public class SparklineGraph2DRendererTest {
+public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2DRendererUpdate, SparklineGraph2DRenderer> {
     
     public SparklineGraph2DRendererTest() {
+        super("sparklineGraph");
     }
 
+    @Override
+    public SparklineGraph2DRenderer createRenderer() {
+        return new SparklineGraph2DRenderer(300, 200);
+    }
+
+    @Override
+    public BufferedImage draw(SparklineGraph2DRenderer renderer) {
+        double[] dataSet = new double[100];
+        for (int i = 0; i < 50; i++) {
+            dataSet[i] = i;
+        }
+        for (int i = 50; i < 100; i++) {
+            dataSet[i] = 100 - i;
+        }
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        renderer.draw(image.createGraphics(), data);
+        return image;
+    }
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
     }

@@ -43,7 +43,9 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     }
 
     @Test
-    public void changeColor() throws Exception {
-
+    public void leftMargin() throws Exception {
+        S renderer = createRenderer();
+        renderer.update(renderer.newUpdate().leftMargin(10));
+        ImageAssert.compareImages(resultPrefix + "RightMargin", draw(renderer));
     }
 }
