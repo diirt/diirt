@@ -81,4 +81,42 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getValue(0, 2), equalTo(2.0));
         assertThat(dataset.getValue(1, 2), equalTo(2.0));
     }
+    
+    @Test
+    public void datasetFrom2() {
+        Cell2DDataset dataset = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
+
+            @Override
+            public double getValue(double x, double y) {
+                return x + y;
+            }
+        }, new ArrayDouble(0, 2, 3, 5), new ArrayDouble(0, 1, 3));
+        
+        assertThat(dataset.getXCount(), equalTo(3));
+        assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
+        assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(5.0));
+        assertThat(dataset.getYCount(), equalTo(2));
+        assertThat(dataset.getYRange().getMinimum().doubleValue(), equalTo(0.0));
+        assertThat(dataset.getYRange().getMaximum().doubleValue(), equalTo(3.0));
+        assertThat(dataset.getStatistics().getAverage(), equalTo(3.75));
+        assertThat(dataset.getStatistics().getStdDev(), closeTo(1.43614, 0.0001));
+        assertThat(dataset.getStatistics().getMinimum(), equalTo((Number) (1.5)));
+        assertThat(dataset.getStatistics().getMaximum(), equalTo((Number) 6.0));
+        assertThat(dataset.getStatistics().getCount(), equalTo(6));
+        
+        // Check values
+        assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
+        assertThat(dataset.getXBoundaries().getDouble(1), equalTo(2.0));
+        assertThat(dataset.getXBoundaries().getDouble(2), equalTo(3.0));
+        assertThat(dataset.getXBoundaries().getDouble(3), equalTo(5.0));
+        assertThat(dataset.getYBoundaries().getDouble(0), equalTo(0.0));
+        assertThat(dataset.getYBoundaries().getDouble(1), equalTo(1.0));
+        assertThat(dataset.getYBoundaries().getDouble(2), equalTo(3.0));
+        assertThat(dataset.getValue(0, 0), equalTo(1.5));
+        assertThat(dataset.getValue(1, 0), equalTo(3.0));
+        assertThat(dataset.getValue(2, 0), equalTo(4.5));
+        assertThat(dataset.getValue(0, 1), equalTo(3.0));
+        assertThat(dataset.getValue(1, 1), equalTo(4.5));
+        assertThat(dataset.getValue(2, 1), equalTo(6.0));
+    }
 }

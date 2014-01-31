@@ -105,20 +105,26 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     
     private void drawGraphs(List<Point2DDataset> data){
         for(int i = 0; i < graphList.size(); i++){
-            if(IndexToRangeMap.containsKey(i+1)){ 
-                graphList.get(i).forceYRange(IndexToRangeMap.get(i));
+            if(IndexToRangeMap.containsKey(i+1)){
+                graphList.get(i).forceYRange(IndexToRangeMap.get(i+1));
             }
             if(IndexToForceMap.containsKey(i+1)){
-                graphList.get(i).setForce(true);    
+                graphList.get(i).setForce(IndexToForceMap.get(i+1));    
             }
         }
         for(int i = 0; i < graphList.size(); i++){
             Graphics2D gtemp = (Graphics2D)g.create();
             gtemp.translate(0,(int)(graphBoundaries.get(i)-0));
-            graphList.get(i).draw(gtemp, data.get(num_Graphs-1-i));
+            graphList.get(graphList.size()-1-i).draw(gtemp, data.get(num_Graphs-1-i));
         }
         Graphics2D gtemp = (Graphics2D)g.create();
         gtemp.translate(0,(int)(graphBoundaries.get(graphList.size())-0));
+        if(IndexToRangeMap.containsKey(0)){
+            lastGraph.forceYRange(IndexToRangeMap.get(0));
+        }
+        if(IndexToRangeMap.containsKey(0)){
+            lastGraph.setForce(IndexToForceMap.get(0));
+        }
         lastGraph.draw(gtemp, data.get(0));
     }
 }
