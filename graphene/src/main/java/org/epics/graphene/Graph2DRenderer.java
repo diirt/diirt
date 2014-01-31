@@ -304,6 +304,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
     
     protected void forceRanges(Range xDataRange, Range yDataRange) {
+        xAggregatedRange = xDataRange;
+        yAggregatedRange = yDataRange;
         xPlotRange = xDataRange;
         yPlotRange = yDataRange;
     }
