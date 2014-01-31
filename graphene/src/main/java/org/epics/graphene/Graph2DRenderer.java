@@ -671,11 +671,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         line.lineTo(scaledX[end - 1], scaledY[end - 1]);
         return line;
     }
-    //Does not test for NaN like Nearest Neighbor Interpolation?
-    /*assume you have x of each nan
-     * make horizontal line of 3 pixels
-     * if the previous and next point are nan, draw horizontal line of 3 pixels
-     */
+   
     private static Path2D.Double linearInterpolation(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
