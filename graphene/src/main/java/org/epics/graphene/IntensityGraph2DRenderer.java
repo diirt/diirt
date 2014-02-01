@@ -175,8 +175,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     ySum[i] = 0;
                 }
             }
-            drawRectanglesBoundaries(g, colorScheme, data);
-            //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+            //drawRectanglesBoundaries(g, colorScheme, data);
+            drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
         }
         
         //Draw graph when cell width or height is smaller than one pixel.
