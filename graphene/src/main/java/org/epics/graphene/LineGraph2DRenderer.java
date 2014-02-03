@@ -112,12 +112,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        if(force && forcedYRange != null){
-            forceRanges(data.getXStatistics(),forcedYRange);
-        }
-        else{
-            calculateRanges(data.getXStatistics(), data.getYStatistics());
-        }
+        calculateRanges(data.getXStatistics(), data.getYStatistics());
         calculateLabels();
         calculateGraphArea();        
         drawBackground();
@@ -158,21 +153,6 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     
     private int currentIndex;
     private double currentScaledDiff;
-    
-    public void setForce(boolean force){
-        this.force = force;
-    }
-    
-    public boolean getForce(){
-        return force;
-    }
-    
-    public void forceYRange(Range forcedYRange){
-        this.forcedYRange = forcedYRange;
-    }
-    
-    public Range getForcedYRange(){
-        return forcedYRange;
-    }
+
     
 }

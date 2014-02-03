@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import static org.epics.graphene.ColorScheme.*;
+import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.*;
 
 /**
@@ -22,31 +23,24 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         super(imageWidth,imageHeight);
     }
     
-    private ArrayList<NLineGraph2DRenderer> graphList;
-    private LineGraph2DRenderer lastGraph;
+    private AxisRange xAxisRange = AxisRanges.integrated();
+    private AxisRange yAxisRange = AxisRanges.integrated();
+    private List<Range> xAggregatedRange;
+    private List<Range> yAggregatedRange;
+    private List<Range> xPlotRange;
+    private List<Range> yPlotRange;
     private ArrayList<Double> graphBoundaries;
     private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer,Range>();
     private HashMap<Integer, Boolean> IndexToForceMap = new HashMap<Integer,Boolean>();
     private int num_Graphs;
+    private List<ListDouble> yReferenceCoords;
+    private List<ListDouble> yReferenceValues;
+    private List<List<String>> yReferenceLabels;
+    private int xLabelMaxHeight;
+    private int yLabelMaxWidth;
+    private Range emptyRange;
     
-    public void draw( Graphics2D g, List<Point2DDataset> data){
-        if(g == null){
-            throw new IllegalArgumentException("Graphics can't be null.");
-        }
-        if(data == null){
-            throw new IllegalArgumentException("data can't be null.");
-        }
-        this.g = g;
-        graphList = new ArrayList<NLineGraph2DRenderer>();
-        addGraphs(data);
-        drawGraphs(data);
-    }
-    
-    @Override
-    public Graph2DRendererUpdate newUpdate() {
-        return new NLineGraphs2DRendererUpdate();
-    }
     public void update(NLineGraphs2DRendererUpdate update) {
         super.update(update);
         if(update.getImageHeight() != null){
@@ -75,6 +69,33 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             IndexToForceMap = update.getIndexToForce();
         }
     }
+    
+    public void draw( Graphics2D g, List<Point2DDataset> data){
+        if(g == null){
+            throw new IllegalArgumentException("Graphics can't be null.");
+        }
+        if(data == null){
+            throw new IllegalArgumentException("data can't be null.");
+        }
+        this.g = g;
+        List<Range> dataRangesX = new ArrayList<Range>();
+        for(int i = 0; i < data.size(); i++){
+            dataRangesX.add(data.get(i).getXStatistics());
+        }
+        List<Range> dataRangesY = new ArrayList<Range>();
+        for(int i = 0; i < data.size(); i++){
+            dataRangesY.add(data.get(i).getYStatistics());
+        }
+        calculateRanges(dataRangesX,dataRangesY,data.size());
+        addGraphs(data);
+        drawGraphs(data);
+    }
+    
+    @Override
+    public Graph2DRendererUpdate newUpdate() {
+        return new NLineGraphs2DRendererUpdate();
+    }
+    
 
     private void addGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != num_Graphs+1){
@@ -91,40 +112,42 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 graphBoundaryRatios.add(i/num_Graphs);
             }
         }
-        for(int i = 0; i < num_Graphs-1;i++){
-            NLineGraph2DRenderer added = null;
-            added = new NLineGraph2DRenderer(this.getImageWidth(),(int)(graphBoundaries.get(i+1)-0)-
-                    (int)(graphBoundaries.get(i)-0));
-            graphList.add(added);
-        }  
-        LineGraph2DRenderer added = null;
-        added = new LineGraph2DRenderer(this.getImageWidth(),(int)(graphBoundaries.get(num_Graphs)-0)-
-                    (int)(graphBoundaries.get(num_Graphs-1)-0));
-        lastGraph = added;
+        
     }
     
     private void drawGraphs(List<Point2DDataset> data){
-        for(int i = 0; i < graphList.size(); i++){
-            if(IndexToRangeMap.containsKey(i+1)){
-                graphList.get(i).forceYRange(IndexToRangeMap.get(i+1));
+        
+    }
+    
+    protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
+        if(xAggregatedRange.size() == 0 || xDataRange.size() != xAggregatedRange.size()){
+            xAggregatedRange = new ArrayList<Range>();
+            xPlotRange = new ArrayList<Range>();
+            for(int i = 0; i < length; i++){
+              xAggregatedRange.add(aggregateRange(xDataRange.get(i), emptyRange));
+              xPlotRange.add(xAxisRange.axisRange(xDataRange.get(i), emptyRange));
             }
-            if(IndexToForceMap.containsKey(i+1)){
-                graphList.get(i).setForce(IndexToForceMap.get(i+1));    
+        }
+        else{
+            for(int i = 0; i < length; i++){
+                xAggregatedRange.set(i,aggregateRange(xDataRange.get(i), xAggregatedRange.get(i)));
+                xPlotRange.set(i,xAxisRange.axisRange(xDataRange.get(i), xAggregatedRange.get(i)));
             }
         }
-        for(int i = 0; i < graphList.size(); i++){
-            Graphics2D gtemp = (Graphics2D)g.create();
-            gtemp.translate(0,(int)(graphBoundaries.get(i)-0));
-            graphList.get(graphList.size()-1-i).draw(gtemp, data.get(num_Graphs-1-i));
+        
+        if(yAggregatedRange.size() == 0 || yDataRange.size() != yAggregatedRange.size()){
+            yAggregatedRange = new ArrayList<Range>();
+            yPlotRange = new ArrayList<Range>();
+            for(int i = 0; i < length; i++){
+                yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
+                yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), emptyRange));
+            }
         }
-        Graphics2D gtemp = (Graphics2D)g.create();
-        gtemp.translate(0,(int)(graphBoundaries.get(graphList.size())-0));
-        if(IndexToRangeMap.containsKey(0)){
-            lastGraph.forceYRange(IndexToRangeMap.get(0));
+        else{
+            for(int i = 0; i < length; i++){
+                yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+            }
         }
-        if(IndexToRangeMap.containsKey(0)){
-            lastGraph.setForce(IndexToForceMap.get(0));
-        }
-        lastGraph.draw(gtemp, data.get(0));
     }
 }

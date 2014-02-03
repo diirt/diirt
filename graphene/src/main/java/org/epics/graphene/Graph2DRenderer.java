@@ -303,13 +303,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange);
     }
     
-    protected void forceRanges(Range xDataRange, Range yDataRange) {
-        xAggregatedRange = xDataRange;
-        yAggregatedRange = yDataRange;
-        xPlotRange = xDataRange;
-        yPlotRange = yDataRange;
-    }
-    
     /**
      * Draws the horizontal reference lines based on the calculated
      * graph area.
