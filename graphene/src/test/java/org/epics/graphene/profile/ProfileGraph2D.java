@@ -87,7 +87,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     //Save Parameters
     private String datasetMessage = "",
-                   saveMessage = "";
+                   saveMessage = "",
+                   authorMessage = "";
     
     /**
      * Performs the necessary operation to 'profile' a graph renderer.
@@ -241,7 +242,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * If errors occur in IO, a console message is printed.
      * 
      * The format for the appended record is:
-     * "graphType","date","timeAverage","timeTotal","numberAttempts","numDataPoints","imageWidth","imageHeight","datasetComment","generalMessage"
+     * "graphType","date","timeAverage","timeTotal","numberAttempts","numDataPoints","imageWidth","imageHeight","datasetComment","authorMessage","generalMessage"
      * 
      * The delimiting is:
      * <ul>
@@ -261,6 +262,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      *      <li>Width of image rendered</li>
      *      <li>Height of image rendered</li>
      *      <li>Comment about the data set rendered (useful for multi-dimensional or unusual data sets)</li>
+     *      <li>Comment about the author performing the profile</li>
      *      <li>General comment about rendering</li>
      * </ol>     
      * 
@@ -274,7 +276,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Format output string:
-        //  "graphType","date","average time","total time","number of tries","numDataPoints","Image Width","Image Height","datasetComment","message",
+        //  "graphType","date","average time","total time","number of tries","numDataPoints","Image Width","Image Height","datasetComment","author","message",
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
         String quote = "\"";
@@ -288,6 +290,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
                          quote + getDatasetMessage() + quote + delim +
+                         quote + getAuthorMessage() + quote + delim +
                          quote + getSaveMessage() + quote;
         
         //Ensures file is created
@@ -336,6 +339,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      *      <li>Image Width</li>
      *      <li>Image Height</li>
      *      <li>Dataset Comments</li>
+     *      <li>Author</li>
      *      <li>General Message</li>
      * </ol>     
      */
@@ -360,6 +364,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
                        quote + "Dataset Comments" + quote + delim +
+                       quote + "Author" + quote +                
                        quote + "General Message" + quote;
         
         //Write to file
@@ -415,6 +420,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return saveMessage;
     }
     
+    public String getAuthorMessage(){
+        return this.authorMessage;
+    }
+    
     
     //Save Parameter Setters
     
@@ -440,6 +449,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */    
     public void setSaveMessage(String message){
         this.saveMessage = message;
+    }
+    
+    public void setAuthorMessage(String author){
+        this.authorMessage = author;
     }
     
     

@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -39,7 +38,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 
 
@@ -81,6 +79,9 @@ public class VisualProfiler extends JFrame{
     
     private JLabel              lblSaveMessage;
     private JTextField          txtSaveMessage;
+    
+    private JLabel              lblAuthorMessage;
+    private JTextField          txtAuthorMessage;
     
     private JLabel              lblShowGraph;
     private JCheckBox           chkShowGraph;
@@ -165,6 +166,9 @@ public class VisualProfiler extends JFrame{
         
         lblSaveMessage = new JLabel("Save Message: ");
         txtSaveMessage = new JTextField("");
+        
+        lblAuthorMessage = new JLabel("Author: ");
+        txtAuthorMessage = new JTextField("");
         
         btnSingleProfile = new JButton("Profile");
         btnSingleProfileAll = new JButton("Profile For All Renderers");
@@ -310,6 +314,9 @@ public class VisualProfiler extends JFrame{
 
             singleProfileTab.add(lblSaveMessage);
             singleProfileTab.add(txtSaveMessage);
+            
+            singleProfileTab.add(lblAuthorMessage);
+            singleProfileTab.add(txtAuthorMessage);
             
             singleProfileTab.add(blankPanel(btnSingleProfile));
             singleProfileTab.add(blankPanel(btnSingleProfileAll));

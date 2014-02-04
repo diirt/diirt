@@ -1,3 +1,2 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","General Message"
-"Histogram1D","2014/01/26 01:40:59",0.767157169437917,662,25921,10000,640,480,"",""
-"Histogram1D","2014/01/26 19:57:20",0.7586883303629586,513,26147,10000,640,480,"","Test Run v2"
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author""General Message"
+"Histogram1D","2014/02/04 00:12:08",2.294688495443527,16803,8669,10000,640,480,"","","Initialization"
