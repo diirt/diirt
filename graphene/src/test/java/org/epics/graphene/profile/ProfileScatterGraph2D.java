@@ -55,17 +55,5 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
     @Override
     public String getGraphTitle() {
         return "ScatterGraph2D";
-    }
-    
-    /**
-     * Profiles for <code>ScatterGraph2DRenderer</code>, 
-     * prints the statistics to the console and saves the statistics.
-     * @param args console arguments -- no impact
-     */     
-    public static void main(String[] args){
-        ProfileScatterGraph2D profiler = new ProfileScatterGraph2D();
-        profiler.profile();
-        profiler.printStatistics();
-        profiler.saveStatistics();        
-    }    
+    }   
 }

@@ -58,17 +58,5 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
     @Override
     public String getGraphTitle() {
         return "LineGraph2D";
-    }
-    
-    /**
-     * Profiles for <code>LineGraph2DRenderer</code>, 
-     * prints the statistics to the console and saves the statistics.
-     * @param args console arguments -- no impact
-     */       
-    public static void main(String[] args){
-        ProfileLineGraph2D profiler = new ProfileLineGraph2D();
-        profiler.profile();
-        profiler.printStatistics();
-        profiler.saveStatistics();        
-    }     
+    }   
 }

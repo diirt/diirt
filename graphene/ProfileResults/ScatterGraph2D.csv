@@ -1,2 +1,2 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author""General Message"
-"ScatterGraph2D","2014/02/04 00:13:08",18.51200037812788,19396,1079,10000,640,480,"","","Initialization"
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message"
+"ScatterGraph2D","2014/02/04 17:20:12",6.876018049242428,17824,2904,10000,640,480,"","","Initialization"

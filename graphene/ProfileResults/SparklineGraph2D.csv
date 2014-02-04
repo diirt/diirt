@@ -1,2 +1,2 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author""General Message"
-"SparklineGraph2D","2014/02/04 00:13:28",52.36654035602089,19811,382,10000,640,480,"","","Initialization"
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message"
+"SparklineGraph2D","2014/02/04 17:21:36",28.28745599292785,19577,707,10000,640,480,"","","Initialization"

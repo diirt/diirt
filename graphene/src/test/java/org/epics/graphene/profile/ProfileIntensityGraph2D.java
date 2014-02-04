@@ -120,17 +120,5 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     @Override
     public String getGraphTitle() {
         return "IntensityGraph2D";
-    }
-    
-    /**
-     * Profiles for <code>IntensityGraph2DRenderer</code>, 
-     * prints the statistics to the console and saves the statistics.
-     * @param args console arguments -- no impact
-     */    
-    public static void main(String[] args){
-        ProfileIntensityGraph2D profiler = new ProfileIntensityGraph2D();
-        profiler.profile();
-        profiler.printStatistics();  
-        profiler.saveStatistics();
-    }    
+    }  
 }

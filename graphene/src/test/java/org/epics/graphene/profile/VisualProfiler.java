@@ -12,13 +12,21 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,6 +44,8 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -55,7 +65,7 @@ public class VisualProfiler extends JFrame{
                                                        };
     
     private JPanel mainPanel;
-
+    private JTabbedPane tabs;
     
     //Pane: General Settings
     private JComboBox           listRendererTypes;
@@ -112,21 +122,29 @@ public class VisualProfiler extends JFrame{
     private DefaultTreeModel treeModel;
     private DefaultMutableTreeNode treeRoot;
     private JButton btnTreeOpenFile;
+    private JButton btnTreeDeleteFile;
+    private JButton btnTreeRefresh;
     
     
     //Pane: Console
     private JTextArea          console;
     private JLabel             lblConsole;
+    private JButton            btnClearLog;
+    private JButton            btnSaveLog;
+    
     
     public VisualProfiler(){
         super("Visual Profiler");
+                
         initFrame();
         initComponents();
         loadLists();
-        addListeners();
+        addListeners();        
         addComponents();
+                
+        login();
         
-        super.pack();
+        finalizeFrame();
     }
     
     
@@ -134,11 +152,11 @@ public class VisualProfiler extends JFrame{
     
     private void initFrame(){
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        super.setVisible(true);
     }
     private void initComponents(){
         mainPanel = new JPanel();        
         mainPanel.setLayout(new BorderLayout());
+        tabs = new JTabbedPane();
         
         //General Settings
         listRendererTypes = new JComboBox(VisualProfiler.SUPPORTED_PROFILERS);
@@ -209,12 +227,17 @@ public class VisualProfiler extends JFrame{
         };        
         tree.setModel(treeModel);
         this.addNodes(treeRoot);
+        tree.expandRow(0);
         btnTreeOpenFile = new JButton("Open File(s)");
+        btnTreeDeleteFile = new JButton("Delete File(s)");
+        btnTreeRefresh = new JButton("Refresh");
         
         //Console
         console = new JTextArea(20, 50);
         console.setEditable(false);
         lblConsole = new JLabel("Console");
+        btnSaveLog = new JButton("Save Log");
+        btnClearLog = new JButton("Clear Log");
     }
     private void loadLists(){
         modelResolutions = new DefaultListModel<>();
@@ -248,6 +271,7 @@ public class VisualProfiler extends JFrame{
            }
            
        });
+       
        this.btnStart.addActionListener(new ActionListener(){
 
             @Override
@@ -256,6 +280,7 @@ public class VisualProfiler extends JFrame{
             }
             
         });
+       
        this.btnCompareTables.addActionListener(new ActionListener(){
 
            @Override
@@ -272,11 +297,55 @@ public class VisualProfiler extends JFrame{
            }
            
        });
+       
        this.btnTreeOpenFile.addActionListener(new ActionListener(){
 
            @Override
            public void actionPerformed(ActionEvent e) {
                VisualProfiler.this.openFiles();
+           }
+           
+       });
+       this.btnTreeDeleteFile.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.deleteFiles();
+           }
+           
+       });
+       this.btnTreeRefresh.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.refresh();
+           }
+           
+       });
+       
+       this.btnSaveLog.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.saveLog();
+           }
+           
+       });
+       this.btnClearLog.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.clearLog();
+           }
+           
+       });
+       
+       
+       this.tabs.addChangeListener(new ChangeListener(){
+
+           @Override
+           public void stateChanged(ChangeEvent e) {
+               VisualProfiler.this.refresh(true);
            }
            
        });
@@ -296,6 +365,7 @@ public class VisualProfiler extends JFrame{
             settingsPane.add(this.lblMaxAttempts);
             settingsPane.add(this.txtMaxAttempts);
         
+            
         //Tab: Single Profile
         JPanel singleProfileTab = new JPanel();
         singleProfileTab.setLayout(new GridLayout(0, 2));
@@ -321,9 +391,9 @@ public class VisualProfiler extends JFrame{
             singleProfileTab.add(blankPanel(btnSingleProfile));
             singleProfileTab.add(blankPanel(btnSingleProfileAll));
         
+            
         //Tab: Control Panel
-        JPanel controlPane = new JPanel();
-        
+        JPanel controlPane = new JPanel();        
             controlPane.add(this.btnCompareTables);
             controlPane.add(this.btnCompareTables1D);
         
@@ -341,7 +411,7 @@ public class VisualProfiler extends JFrame{
 
                 JPanel multiLayerRight = new JPanel();
                 multiLayerRight.setLayout(new BorderLayout());        
-                multiLayerRight.add(btnStart, BorderLayout.NORTH);
+                multiLayerRight.add(blankPanel(btnStart), BorderLayout.NORTH);
         
             final JSplitPane multiLayerInner = new JSplitPane();
             final JSplitPane multiLayerOuter = new JSplitPane();
@@ -362,31 +432,83 @@ public class VisualProfiler extends JFrame{
                 
             });            
         
-        //Tab: File Browser
-        JPanel fileTab = new JPanel();
-        fileTab.setLayout(new GridLayout(0, 2));
-        fileTab.add(new JScrollPane(tree));
-        fileTab.add(blankPanel(this.btnTreeOpenFile));
             
+        //Tab: File Browser
+        JSplitPane fileTab = new JSplitPane();
+        
+            JPanel fileTabRight = new JPanel();
+            fileTabRight.setLayout(new BoxLayout(fileTabRight, BoxLayout.Y_AXIS));
+            fileTabRight.add(this.btnTreeOpenFile);
+            fileTabRight.add(this.btnTreeDeleteFile);
+            fileTabRight.add(this.btnTreeRefresh);
+            
+        fileTab.setLeftComponent(new JScrollPane(tree));
+        fileTab.setRightComponent(fileTabRight);
+           
+        
         //Console
         JPanel consolePanel = new JPanel();
         consolePanel.setLayout(new BorderLayout());
-        consolePanel.setBorder(BorderFactory.createLineBorder(Color.black));        
-        consolePanel.add(lblConsole, BorderLayout.NORTH);
-        consolePanel.add(new JScrollPane(console), BorderLayout.CENTER);
+        consolePanel.setBorder(BorderFactory.createLineBorder(Color.black));   
+        
+            JPanel consoleBottom = new JPanel();
+            consoleBottom.add(this.btnSaveLog);
+            consoleBottom.add(this.btnClearLog);
             
+            consolePanel.add(lblConsole, BorderLayout.NORTH);
+            consolePanel.add(new JScrollPane(console), BorderLayout.CENTER);
+            consolePanel.add(consoleBottom, BorderLayout.SOUTH);
+            
+        
         //Tabs
-        JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Single Profile", singleProfileTab);
         tabs.addTab("Multi Layer", multiLayerOuter);
         tabs.addTab("Control Panel", controlPane);
         tabs.addTab("File Browser", fileTab);
+        
         
         //Add to panel hiearchy
         mainPanel.add(settingsPane, BorderLayout.NORTH);
         mainPanel.add(tabs, BorderLayout.CENTER);
         mainPanel.add(consolePanel, BorderLayout.SOUTH);
         super.add(mainPanel);
+    }
+    private void finalizeFrame(){
+        super.setVisible(true);
+        super.pack();
+        super.setLocationRelativeTo(null);  //Centers
+    }
+    
+    private void login(){
+        String input = null;
+        boolean exit = false;
+        final String cancelMessage = "Do you want to exit the application?";
+        
+        //Validate
+        while (!exit){
+            input = JOptionPane.showInputDialog(null, "Username: ", "Login",
+                                                JOptionPane.PLAIN_MESSAGE);
+            
+            //Warning
+            if (input == null || input.equals("")){
+                int cancel = JOptionPane.showConfirmDialog(null, cancelMessage,
+                                                           "Cancel",
+                                                           JOptionPane.YES_NO_OPTION);
+                
+                //User wants to close program
+                if (cancel == JOptionPane.YES_OPTION){
+                    exit = true;
+                    this.processWindowEvent(new WindowEvent(
+                                            this, WindowEvent.WINDOW_CLOSING));
+                }
+            }
+            //Valid, exits looop
+            else{
+                exit = true;
+            }
+        }
+        
+        this.txtAuthorMessage.setText(input);
     }
     
     
@@ -728,8 +850,6 @@ public class VisualProfiler extends JFrame{
         worker.execute();        
     }
     private void openFiles(){
-
-        
         SwingWorker worker = new SwingWorker<Object, String>(){
 
             @Override
@@ -778,12 +898,161 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();          
     }
-    private void setEnabledActions(boolean enabled){
-        this.btnSingleProfile.setEnabled(enabled);
-        this.btnStart.setEnabled(enabled);
-        this.btnCompareTables.setEnabled(enabled);
+    private void deleteFiles(){
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                setEnabledActions(false);                
+                publish("--------\n");
+                publish("Opening Files\n\n");
+                
+                TreePath[] paths = tree.getSelectionPaths();
+
+                if (paths != null){
+                    for (TreePath path: paths){
+                        if (path != null){
+                            try{
+                                File toDelete = (File) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+                                
+                                Files.delete(toDelete.toPath());
+                                publish(toDelete.getName() + "...deleted successfully!\n");
+                            }
+                            catch(IOException e){
+                                publish("Unable to delete: " +
+                                        ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() +
+                                        "\n"
+                                       );
+                            }
+                            catch(ClassCastException e){
+                                //unable to open
+                            }
+                        }
+                    }
+                }
+                
+                VisualProfiler.this.refreshNodes();
+                
+                publish("\nFile operations completed.\n");
+                publish("--------\n");
+                setEnabledActions(true);                
+                return null;
+            }
+            
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }
+        };
+        worker.execute();     
+        
     }
-    
+    private void refresh(){
+        this.refresh(false);
+    }
+    private void refresh(final boolean silent){
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                if (!silent){
+                    setEnabledActions(false);                
+                    publish("--------\n");
+                    publish("Refreshing File Browser\n");
+                }
+                
+                VisualProfiler.this.refreshNodes();
+                
+                if (!silent){
+                    publish("Refresh completed.\n");
+                    publish("--------\n");
+                    setEnabledActions(true);                
+                }
+
+                return null;                
+            }
+            
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }
+        };
+        worker.execute();            
+    }    
+    private void saveLog(){
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                setEnabledActions(false);                
+                
+                //Where saving occurs
+                saveFile();
+                
+                publish("--------\n");
+                publish("Saving Log\n\n");
+                
+                //Saves beforehand to prevent this from being in log
+                
+                publish("\nSaving completed.\n");
+                publish("--------\n");
+                setEnabledActions(true);                
+                return null;
+            }
+            
+            private void saveFile(){
+                SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+                String date = format.format(new Date());         
+                
+                //Creates file
+                File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                  date + 
+                                  "-Log.txt");
+                
+                try {
+                    outputFile.createNewFile();
+
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+
+                    //Prints console
+                    out.print(VisualProfiler.this.console.getText());
+
+                    out.close();
+                } catch (IOException ex) {
+                    System.err.println("Output errors exist.");
+                }                
+            }
+            
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.print(chunk);
+                }
+            }
+        };
+        worker.execute();           
+    }
+    private void clearLog(){
+        console.setText("");
+    }
+
+    private void setEnabledActions(boolean enabled){
+        this.btnCompareTables.setEnabled(enabled);
+        this.btnCompareTables1D.setEnabled(enabled);
+        this.btnSingleProfile.setEnabled(enabled);
+        this.btnSingleProfileAll.setEnabled(enabled);
+        this.btnStart.setEnabled(enabled);
+        this.btnTreeOpenFile.setEnabled(enabled);
+        this.btnTreeDeleteFile.setEnabled(enabled);
+        this.btnTreeRefresh.setEnabled(enabled);
+        this.btnSaveLog.setEnabled(enabled);
+        this.btnClearLog.setEnabled(enabled);
+    }
+
     
     //Helper
     
@@ -913,11 +1182,13 @@ public class VisualProfiler extends JFrame{
             }        
         };        
     };
+    
     private JPanel blankPanel(Component itemToAdd){
         JPanel tmp = new JPanel();
         tmp.add(itemToAdd);
         return tmp;
     }
+    
     private void addNodes(DefaultMutableTreeNode parentNode){
         File[] subfiles = ((File)parentNode.getUserObject()).listFiles();
         
@@ -930,6 +1201,13 @@ public class VisualProfiler extends JFrame{
                 }
             }
         }
+    }
+    private void refreshNodes(){
+        this.treeRoot.removeAllChildren();
+        this.addNodes(treeRoot);
+        
+        this.treeModel.nodeStructureChanged(this.treeRoot);
+        this.repaint();              
     }
     
     //Static

@@ -364,7 +364,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
                        quote + "Dataset Comments" + quote + delim +
-                       quote + "Author" + quote +                
+                       quote + "Author" + quote + delim +               
                        quote + "General Message" + quote;
         
         //Write to file
