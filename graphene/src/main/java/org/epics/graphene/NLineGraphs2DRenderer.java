@@ -44,6 +44,29 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int yLabelMaxWidth;
     private Range emptyRange;
     
+    //TODO: EVERYTHING. LISTS. YEAH!
+    private double xPlotValueStart;
+    private double yPlotValueStart;
+    private double xPlotValueEnd;
+    private double yPlotValueEnd;
+
+    // The pixel coordinates for the area
+    private int xAreaCoordStart;
+    private int yAreaCoordStart;
+    private int yAreaCoordEnd;
+    private int xAreaCoordEnd;
+
+    // The pixel coordinates for the ranges
+    // These match the xPlotValueXxx
+    private double xPlotCoordStart;
+    private double yPlotCoordStart;
+    private double yPlotCoordEnd;
+    private double xPlotCoordEnd;
+
+    // The pixel size of the range (not of the plot area)
+    private double yPlotCoordHeight;
+    private double xPlotCoordWidth;
+    
     public void update(NLineGraphs2DRendererUpdate update) {
         super.update(update);
         if(update.getImageHeight() != null){
@@ -228,7 +251,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             for (int i = 0; i < yRefCoords.length; i++) {
                 //yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
             }
-           // yReferenceCoords = new ArrayDouble(yRefCoords);
+           //yReferenceCoords = new ArrayDouble(yRefCoords);
         }
     }
 }
