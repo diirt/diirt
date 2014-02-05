@@ -49,6 +49,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import org.epics.graphene.FontUtil;
 
 
 /**
@@ -1160,20 +1161,8 @@ public class VisualProfiler extends JFrame{
 
             @Override
             public void processPreResult(Resolution resolution, int datasetSize){
-                //Spacing formatting
-                int maxSpace = 40;
-                int numSpaces = resolution.toString().length() +
-                             (": ").length() + 
-                             Integer.toString(datasetSize).length() +
-                             (": ").length();
-                String spacing = "";
-                
-                for (int count = 0; count < maxSpace - numSpaces; count++){
-                    spacing += " ";
-                }
-                
                 //Publishes
-                ProfilerWorker.this.publish(resolution + ": " + datasetSize + ": " + spacing);
+                ProfilerWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
             }
 
             @Override
