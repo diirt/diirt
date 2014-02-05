@@ -36,7 +36,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> indexToRangeMap = new HashMap<Integer,Range>();
     private HashMap<Integer, Boolean> indexToForceMap = new HashMap<Integer,Boolean>();
-    private int num_Graphs;
+    private int numGraphs;
     private List<ListDouble> yReferenceCoords;
     private List<ListDouble> yReferenceValues;
     private List<List<String>> yReferenceLabels;
@@ -46,25 +46,25 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     
     //TODO: EVERYTHING. LISTS. YEAH!
     private double xPlotValueStart;
-    private double yPlotValueStart;
+    private List<Double> yPlotValueStart;
     private double xPlotValueEnd;
-    private double yPlotValueEnd;
+    private List<Double> yPlotValueEnd;
 
     // The pixel coordinates for the area
     private int xAreaCoordStart;
-    private int yAreaCoordStart;
-    private int yAreaCoordEnd;
+    private List<Integer> yAreaCoordStart;
+    private List<Integer> yAreaCoordEnd;
     private int xAreaCoordEnd;
 
     // The pixel coordinates for the ranges
     // These match the xPlotValueXxx
     private double xPlotCoordStart;
-    private double yPlotCoordStart;
-    private double yPlotCoordEnd;
+    private List<Double> yPlotCoordStart;
+    private List<Double> yPlotCoordEnd;
     private double xPlotCoordEnd;
 
     // The pixel size of the range (not of the plot area)
-    private double yPlotCoordHeight;
+    private List<Double> yPlotCoordHeight;
     private double xPlotCoordWidth;
     
     public void update(NLineGraphs2DRendererUpdate update) {
@@ -124,18 +124,18 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     
 
     private void addGraphs(List<Point2DDataset> data){
-        if(this.graphBoundaries == null || this.graphBoundaries.size() != num_Graphs+1){
-            num_Graphs = data.size();
-            while((double)getImageHeight()/num_Graphs < 40){
-                num_Graphs-=1;
+        if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
+            numGraphs = data.size();
+            while((double)getImageHeight()/numGraphs < 40){
+                numGraphs-=1;
             }
             graphBoundaries = new ArrayList<Double>();
-            for(double i = 0; i <= num_Graphs; i++){
-                graphBoundaries.add(i/num_Graphs*(getImageHeight()));
+            for(double i = 0; i <= numGraphs; i++){
+                graphBoundaries.add(i/numGraphs*(getImageHeight()));
             }
             graphBoundaryRatios = new ArrayList<Double>();
-            for(double i = 0; i <= num_Graphs; i++){
-                graphBoundaryRatios.add(i/num_Graphs);
+            for(double i = 0; i <= numGraphs; i++){
+                graphBoundaryRatios.add(i/numGraphs);
             }
         }
         
@@ -224,18 +224,44 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         xPlotCoordEnd = xAreaCoordEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
-        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
-        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
-        if (yPlotValueStart == yPlotValueEnd) {
-            // If range is zero, fake a range
-            yPlotValueStart -= 1.0;
-            yPlotValueEnd += 1.0;
+        //set the start and end of each plot in terms of values.
+        if(yPlotValueStart.size() == 0 || yPlotValueStart.size() != yPlotRange.size()){
+            yPlotValueStart = new ArrayList<Double>();
+            yPlotValueEnd = new ArrayList<Double>();
+            for(int i = 0; i < yPlotRange.size(); i++){
+                yPlotValueStart.add(yPlotRange.get(i).getMinimum().doubleValue());
+                yPlotValueEnd.add(yPlotRange.get(i).getMaximum().doubleValue());
+            }
         }
-        yAreaCoordStart = topMargin;
-        yAreaCoordEnd = getImageHeight() - areaFromBottom;
-        yPlotCoordStart = yAreaCoordStart + topAreaMargin + yPointMargin;
-        yPlotCoordEnd = yAreaCoordEnd - bottomAreaMargin - yPointMargin;
-        yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
+        else{
+            for(int i = 0; i < yPlotRange.size(); i++){
+                yPlotValueStart.set(i, yPlotRange.get(i).getMinimum().doubleValue());
+                yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum().doubleValue());
+            }
+        }
+        
+        //range faking
+        for(int i = 0; i < yPlotRange.size(); i++){
+            if (yPlotValueStart.get(i) == yPlotValueEnd.get(i)) {
+                // If range is zero, fake a range
+                yPlotValueStart.set(i, yPlotValueStart.get(i)-1.0);
+                yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
+            }
+        }
+        
+        //TODO: FINISH THIS PART OF THE METHOD. ACCOUNT FOR BEGINNING AND END GRAPHS, ACCOUNT FOR EXISTING LISTS
+        for(int i = 0; i < numGraphs; i++){
+            yAreaCoordStart = new ArrayList<Integer>();
+            yAreaCoordEnd = new ArrayList<Integer>();
+            yPlotCoordStart = new ArrayList<Double>();
+            yPlotCoordEnd = new ArrayList<Double>();
+            yPlotCoordHeight = new ArrayList<Double>();
+            yAreaCoordStart.add(topMargin + graphBoundaries.get(i).intValue());
+            yAreaCoordEnd.add(graphBoundaries.get(i+1).intValue()-areaFromBottom);
+            yPlotCoordStart.add(yAreaCoordStart.get(i).intValue() + topAreaMargin + yPointMargin);
+            yPlotCoordEnd.add(yAreaCoordEnd.get(i).intValue() - bottomAreaMargin - yPointMargin);
+            yPlotCoordHeight.add(yPlotCoordEnd.get(i)-yPlotCoordStart.get(i));
+        }
         
         //Only calculates reference coordinates if calculateLabels() was called
         if (xReferenceValues != null) {
