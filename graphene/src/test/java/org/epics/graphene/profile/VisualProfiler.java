@@ -21,8 +21,11 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -133,6 +136,9 @@ public class VisualProfiler extends JFrame{
     private JButton            btnClearLog;
     private JButton            btnSaveLog;
     
+    private JLabel             lblTime;
+    private JTextField         txtTime;
+    
     
     public VisualProfiler(){
         super("Visual Profiler");
@@ -146,6 +152,8 @@ public class VisualProfiler extends JFrame{
         login();
         
         finalizeFrame();
+        
+        startTimer();        
     }
     
     
@@ -239,6 +247,9 @@ public class VisualProfiler extends JFrame{
         lblConsole = new JLabel("Console");
         btnSaveLog = new JButton("Save Log");
         btnClearLog = new JButton("Clear Log");
+        lblTime = new JLabel("Timer:");
+        txtTime = new JTextField("00");
+        txtTime.setEditable(false);
     }
     private void loadLists(){
         modelResolutions = new DefaultListModel<>();
@@ -453,8 +464,13 @@ public class VisualProfiler extends JFrame{
         consolePanel.setBorder(BorderFactory.createLineBorder(Color.black));   
         
             JPanel consoleBottom = new JPanel();
-            consoleBottom.add(this.btnSaveLog);
-            consoleBottom.add(this.btnClearLog);
+            consoleBottom.setLayout(new GridLayout(2, 2));
+                consoleBottom.add(blankPanel(this.btnSaveLog));
+                consoleBottom.add(blankPanel(this.btnClearLog));
+            
+                consoleBottom.add(blankPanel(this.lblTime));
+                consoleBottom.add(blankPanel(this.txtTime));
+            
             
             consolePanel.add(lblConsole, BorderLayout.NORTH);
             consolePanel.add(new JScrollPane(console), BorderLayout.CENTER);
@@ -472,7 +488,10 @@ public class VisualProfiler extends JFrame{
         mainPanel.add(settingsPane, BorderLayout.NORTH);
         mainPanel.add(tabs, BorderLayout.CENTER);
         mainPanel.add(consolePanel, BorderLayout.SOUTH);
+                
         super.add(mainPanel);
+        
+        
     }
     private void finalizeFrame(){
         super.setVisible(true);
@@ -519,6 +538,7 @@ public class VisualProfiler extends JFrame{
         String strDatasetSize = txtDatasetSize.getText();
         String strImageWidth = txtImageWidth.getText();
         String strImageHeight = txtImageHeight.getText();
+        String strAuthor = this.txtAuthorMessage.getText();
         
         int datasetSize;
         int imageWidth;
@@ -576,6 +596,7 @@ public class VisualProfiler extends JFrame{
         profiler.setImageWidth(imageWidth);
         profiler.setImageHeight(imageHeight);
         profiler.setSaveMessage(saveMessage);
+        profiler.setAuthorMessage(strAuthor);
         
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -1054,6 +1075,42 @@ public class VisualProfiler extends JFrame{
         this.btnClearLog.setEnabled(enabled);
     }
 
+    private void startTimer(){
+        SwingWorker worker = new SwingWorker<Object, String>(){
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                publish("--------\n");
+                publish("Timing Log\n\n");
+                
+                Timer t = new Timer();;
+                t.scheduleAtFixedRate(new TimerTask(){
+
+                    @Override
+                    public void run() {
+                        publish(Integer.toString(Calendar.getInstance().get(Calendar.SECOND)));
+                    }
+                                      
+                    }
+                    
+                    , 1000, 1000
+                );
+                
+                publish("\nTiming completed.\n");
+                publish("--------\n");
+                return null;
+            }
+
+            @Override
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    VisualProfiler.this.txtTime.setText(chunk);
+                }
+            }
+        };
+        worker.execute();   
+    }
+    
     
     //Helper
     
@@ -1198,6 +1255,7 @@ public class VisualProfiler extends JFrame{
         this.treeModel.nodeStructureChanged(this.treeRoot);
         this.repaint();              
     }
+    
     
     //Static
     
