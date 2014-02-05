@@ -25,6 +25,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author asbarber
  */
 public class ProfileAnalysis {
+    public static final double STATISTICALLY_SIGNIFICANT = 0.05;
+    
     public static String[] SUPPORTED_TABLES_1D = new String[]   {"Histogram1D.csv",
                                                                 "IntensityGraph2D.csv",
                                                                 "LineGraph2D.csv",
@@ -278,15 +280,15 @@ public class ProfileAnalysis {
                     double recentTime = Double.parseDouble(recent[2]);
                     String graphType = previous[0];
 
-                    double percentChange = (recentTime - previousTime) / previousTime;
+                    double percentChange = (recentTime - previousTime) / previousTime * 100;
                     String performanceMessage;
 
                     //Signficant performance decrease
-                    if (percentChange > 0.33){
+                    if (percentChange > ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
                         performanceMessage = "Performance Decrease";
                     }
                     //Significant performance increase
-                    else if (percentChange < -0.33){
+                    else if (percentChange < ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
                         performanceMessage = "Performance Increase";                    
                     }
                     //No Significant performance change

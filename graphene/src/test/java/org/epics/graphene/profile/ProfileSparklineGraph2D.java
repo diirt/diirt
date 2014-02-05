@@ -60,17 +60,5 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
     @Override
     public String getGraphTitle() {
         return "SparklineGraph2D";
-    }    
-
-    /**
-     * Profiles for <code>SparklineGraph2DRenderer</code>, 
-     * prints the statistics to the console and saves the statistics.
-     * @param args console arguments -- no impact
-     */      
-    public static void main(String[] args){
-        ProfileSparklineGraph2D profiler = new ProfileSparklineGraph2D();
-        profiler.profile();
-        profiler.printStatistics();
-        profiler.saveStatistics();
-    }    
+    }      
 }

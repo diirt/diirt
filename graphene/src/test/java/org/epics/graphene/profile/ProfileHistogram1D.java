@@ -74,16 +74,4 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     public String getGraphTitle() {
         return "Histogram1D";
     }
-    
-    /**
-     * Profiles for <code>Histogram1D</code>, 
-     * prints the statistics to the console and saves the statistics.
-     * @param args console arguments -- no impact
-     */
-    public static void main(String[] args) {
-        ProfileHistogram1D profiler = new ProfileHistogram1D();
-        profiler.profile();
-        profiler.printStatistics();
-        profiler.saveStatistics();
-    }
 }

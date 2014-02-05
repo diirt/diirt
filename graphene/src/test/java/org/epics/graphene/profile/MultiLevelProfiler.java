@@ -4,11 +4,8 @@
  */
 package org.epics.graphene.profile;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,10 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.ShowResizableGraph;
@@ -431,17 +424,16 @@ public class MultiLevelProfiler{
         return Resolution.defaultResolutions();
     } 
     
-    
-    //Example use
-    
-    public static void main(String[] args){
-//        MultiLevelProfiler.compareTables();
-        
-        
-        ProfileSparklineGraph2D profile = new ProfileSparklineGraph2D();
-        profile.setTestTime(1);
-        
-        MultiLevelProfiler layer = new MultiLevelProfiler(profile);
+    /**
+     * Sample multi-level profiling for a given renderer.
+     * Uses the default resolutions and default datasets as data.
+     * <p>
+     * Graphs and saves the data.
+     * 
+     * @param profiler renderer to profile at multiple levels
+     */
+    public static void sampleProfile(ProfileGraph2D profiler){                
+        MultiLevelProfiler layer = new MultiLevelProfiler(profiler);
         layer.setImageSizes(defaultResolutions());
         layer.setDatasetSizes(defaultDatasetSizes());
         
