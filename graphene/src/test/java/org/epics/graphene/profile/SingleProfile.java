@@ -18,7 +18,7 @@ public class SingleProfile {
     public static void main(String[] args){
         SingleProfile profiler = new SingleProfile();
         
-        profiler.largeDataset2DCell();
+        profiler.largeDataset2DPoint();
         
         //profiler.invokeAll()
     }
@@ -59,7 +59,7 @@ public class SingleProfile {
             ProfileGraph2D graph = graphs.get(0);
             
             //Apply Settings
-            graph.setNumDataPoints( 10^6 );
+            graph.setNumDataPoints( (int)Math.pow(10, 6) );
 
             graph.setImageWidth(600);
             graph.setImageHeight(400);
@@ -90,7 +90,7 @@ public class SingleProfile {
             ProfileGraph2D graph = graphs.get(0);
             
             //Apply Settings
-            graph.setNumDataPoints( 10^6 );
+            graph.setNumDataPoints( (int)Math.pow(10, 6) );
 
             graph.setImageWidth(600);
             graph.setImageHeight(400);
