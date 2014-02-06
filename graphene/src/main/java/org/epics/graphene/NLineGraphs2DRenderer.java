@@ -43,6 +43,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int xLabelMaxHeight;
     private int yLabelMaxWidth;
     private Range emptyRange;
+    private int marginBetweenGraphs = 0;
     
     //TODO: EVERYTHING. LISTS. YEAH!
     private double xPlotValueStart;
@@ -250,17 +251,49 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }
         
         //TODO: FINISH THIS PART OF THE METHOD. ACCOUNT FOR BEGINNING AND END GRAPHS, ACCOUNT FOR EXISTING LISTS
-        for(int i = 0; i < numGraphs; i++){
+        if(yAreaCoordStart.size() == 0 || yAreaCoordStart.size() != numGraphs){
             yAreaCoordStart = new ArrayList<Integer>();
             yAreaCoordEnd = new ArrayList<Integer>();
             yPlotCoordStart = new ArrayList<Double>();
             yPlotCoordEnd = new ArrayList<Double>();
             yPlotCoordHeight = new ArrayList<Double>();
-            yAreaCoordStart.add(topMargin + graphBoundaries.get(i).intValue());
-            yAreaCoordEnd.add(graphBoundaries.get(i+1).intValue()-areaFromBottom);
-            yPlotCoordStart.add(yAreaCoordStart.get(i).intValue() + topAreaMargin + yPointMargin);
-            yPlotCoordEnd.add(yAreaCoordEnd.get(i).intValue() - bottomAreaMargin - yPointMargin);
-            yPlotCoordHeight.add(yPlotCoordEnd.get(i)-yPlotCoordStart.get(i));
+
+            yAreaCoordStart.add(topMargin + graphBoundaries.get(0).intValue());
+            yAreaCoordEnd.add(graphBoundaries.get(1).intValue()-areaFromBottom - marginBetweenGraphs);
+            yPlotCoordStart.add(yAreaCoordStart.get(0) + topAreaMargin + yPointMargin);
+            yPlotCoordEnd.add(yAreaCoordEnd.get(0) - bottomAreaMargin - yPointMargin);
+            yPlotCoordHeight.add(yPlotCoordEnd.get(0)-yPlotCoordStart.get(0));
+            for(int i = 1; i < numGraphs-1; i++){
+                yAreaCoordStart.add(topMargin + graphBoundaries.get(i).intValue() + marginBetweenGraphs);
+                yAreaCoordEnd.add(graphBoundaries.get(i+1).intValue()-areaFromBottom - marginBetweenGraphs);
+                yPlotCoordStart.add(yAreaCoordStart.get(i) + topAreaMargin + yPointMargin);
+                yPlotCoordEnd.add(yAreaCoordEnd.get(i) - bottomAreaMargin - yPointMargin);
+                yPlotCoordHeight.add(yPlotCoordEnd.get(i)-yPlotCoordStart.get(i));
+            }
+            yAreaCoordStart.add(topMargin + graphBoundaries.get(numGraphs-1).intValue());
+            yAreaCoordEnd.add(graphBoundaries.get(numGraphs).intValue()-areaFromBottom - marginBetweenGraphs);
+            yPlotCoordStart.add(yAreaCoordStart.get(numGraphs-1) + topAreaMargin + yPointMargin);
+            yPlotCoordEnd.add(yAreaCoordEnd.get(numGraphs-1) - bottomAreaMargin - yPointMargin);
+            yPlotCoordHeight.add(yPlotCoordEnd.get(numGraphs-1)-yPlotCoordStart.get(numGraphs-1));
+        }
+        else{
+            yAreaCoordStart.set(0,topMargin + graphBoundaries.get(0).intValue());
+            yAreaCoordEnd.set(0,graphBoundaries.get(1).intValue()-areaFromBottom - marginBetweenGraphs);
+            yPlotCoordStart.set(0,yAreaCoordStart.get(0) + topAreaMargin + yPointMargin);
+            yPlotCoordEnd.set(0,yAreaCoordEnd.get(0) - bottomAreaMargin - yPointMargin);
+            yPlotCoordHeight.set(0,yPlotCoordEnd.get(0)-yPlotCoordStart.get(0));
+            for(int i = 1; i < numGraphs-1; i++){
+                yAreaCoordStart.set(i,topMargin + graphBoundaries.get(i).intValue() + marginBetweenGraphs);
+                yAreaCoordEnd.set(i,graphBoundaries.get(i+1).intValue()-areaFromBottom - marginBetweenGraphs);
+                yPlotCoordStart.set(i,yAreaCoordStart.get(i) + topAreaMargin + yPointMargin);
+                yPlotCoordEnd.set(i,yAreaCoordEnd.get(i) - bottomAreaMargin - yPointMargin);
+                yPlotCoordHeight.set(i,yPlotCoordEnd.get(i)-yPlotCoordStart.get(i));
+            }
+            yAreaCoordStart.set(numGraphs-1,topMargin + graphBoundaries.get(numGraphs-1).intValue());
+            yAreaCoordEnd.set(numGraphs-1,graphBoundaries.get(numGraphs).intValue()-areaFromBottom - marginBetweenGraphs);
+            yPlotCoordStart.set(numGraphs-1,yAreaCoordStart.get(numGraphs-1) + topAreaMargin + yPointMargin);
+            yPlotCoordEnd.set(numGraphs-1,yAreaCoordEnd.get(numGraphs-1) - bottomAreaMargin - yPointMargin);
+            yPlotCoordHeight.set(numGraphs-1,yPlotCoordEnd.get(numGraphs-1)-yPlotCoordStart.get(numGraphs-1));
         }
         
         //Only calculates reference coordinates if calculateLabels() was called
@@ -271,13 +304,15 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
         }
-        
+        yReferenceCoords = new ArrayList<ListDouble>();
         if (yReferenceValues != null) {
-            double[] yRefCoords = new double[yReferenceValues.size()];
-            for (int i = 0; i < yRefCoords.length; i++) {
-                //yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
+            for(int a = 0; a < yReferenceValues.size(); a++){
+                double[] yRefCoords = new double[yReferenceValues.get(a).size()];
+                for (int b = 0; b < yRefCoords.length; b++) {
+                    yRefCoords[b] = scaledY(yReferenceValues.get(a).getDouble(b));
+                }
+                yReferenceCoords.add(new ArrayDouble(yRefCoords));
             }
-           //yReferenceCoords = new ArrayDouble(yRefCoords);
         }
     }
 }
