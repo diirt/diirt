@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <poolproperties>
+        <![CDATA[
+
+            #Rpc clients that have been abandoned (timed out) wont get closed and reported up unless the number of rpc clients in use are
+            #above the percentage defined by abandonWhenPercentageFull. The value should be between 0-100.
+
+            abandonWhenPercentageFull=11
+
+            #The number of rpc clients that will be established when the rpc client pool is started
+
+            initialSize=5
+
+            #Boolean flag to set if stack traces should be logged for application code which abandoned a rpc client.
+
+            logAbandoned=true
+
+            #The maximum number of active rpc clients that can be allocated from this pool at the same time.
+            #The default value is 100.
+
+            maxActive=6
+
+            #The maximum number of rpc clients that should be kept in the idle pool.
+
+            maxIdle=3
+
+            #The minimum number of established rpc clients that should be kept in the pool at all times.
+            #The rpc client pool can shrink below this number if validation fails and rpc clients get closed.
+            #Default value is derived from initialSize (also see testWhileIdle)
+            #The idle pool will not shrink below this value during an eviction run, hence the number of actual rpc clients
+            #can be between minIdle and somewhere between maxIdle and maxActive.
+
+            minIdle=1
+
+            #The maximum number of milliseconds that the pool will wait (when there are no available rpc clients
+            #and the maxActive has been reached) for a rpc client to be returned. Default value is 30000 (30 seconds)
+
+            maxWait=5000
+
+            #The minimum amount of time an object must sit idle in the pool before it is eligible for eviction.
+            #The default value is 60000 (60 seconds).
+
+            minEvictableIdleTimeMillis=35000
+
+            #Boolean flag to remove abandoned rpc clients if they exceed the removeAbandonedTimout.
+            #If set to true, a rpc client is considered abandoned and eligible for removal if it has
+            #been in use longer than the removeAbandonedTimeout and the condition for
+            #abandonWhenPercentageFull is met.
+            #Setting this to true can recover rpc clients from applications that fail to close a rpc client.
+            # The default value is false.
+
+            removeAbandoned=true
+
+           # The time in seconds before a rpc client can be considered abandoned.
+
+            removeAbandonedTimeout=1234
+
+            #The indication of whether objects will be validated before being borrowed from the pool.
+            #If the object fails to validate, it will be dropped from the pool, and we will attempt to borrow another.
+            #Default value is false.
+            #In order to have a more efficient validation, see validationInterval
+
+            testOnBorrow = true
+
+            #The indication of whether objects will be validated after being returned to the pool.
+            #If the object fails to validate, it will be dropped from the pool.
+            #Default value is false.
+            #In order to have a more efficient validation, see validationInterval
+
+            testOnReturn = true
+
+            #Set to true if validation should take place while the rpc client is idle.
+
+            testWhileIdle = true
+
+            #The number of milliseconds to sleep between runs of the idle rpc client validation, abandoned cleaner
+            #and idle pool resizing. This value should not be set under 1 second.
+            #It dictates how often we check for idle, abandoned rpc clients, and how often we validate idle rpc client
+            #and resize the idle pool. The default value is 5000 (5 seconds)
+
+            timeBetweenEvictionRunsMillis = 2345
+
+           #Avoid excess validation, only run validation at most at this frequency - time in milliseconds.
+           #If a rpc client is due for validation, but has been validated previously
+           #within this interval, it will not be validated again.
+           #The default value is 30000 (30 seconds).
+
+           validationInterval = 60000
+
+           #Time in milliseconds to keep this rpc client alive even when used.
+           #When a rpc client is returned to the pool, the pool will check to see if the
+           #((now - time-when-connected) > maxAge) has been reached, and if so,
+           #it closes the rpc client rather than returning it to the pool.
+           #The default value is 0, which implies that rpc clients will be left open and no
+           #age check will be done upon returning the rpc client to the pool.
+
+           maxAge=123
+
+           #Set to true if a lock should be used when operations are performed on the rpc client object.
+           #Should be set to false unless you plan to have a background thread of your own doing idle and abandon checking
+           #If the pool sweeper is enabled, then the lock will automatically be used regardless of this setting.
+
+           useLock = true
+
+           #Similar to removeAbandonedTimeout but instead of treating the rpc client
+           #as abandoned, and potentially closing the rpc client, this simply logs the warning if
+           #logAbandoned returns true. If this value is equal or less than 0, no suspect
+           #checking will be performed. Suspect checking only takes place if the timeout value is larger than 0 and
+           #the rpc client was not abandoned or if abandon check is disabled.
+           #If a rpc client is suspect a WARN message gets logged.
+
+           suspectTimeout = 100
+
+
+           nonExistantPoolParameter = 100
+
+        ]]>
+    </poolproperties>
+    <methods>
+        <method name="sum" description="sum the two numbers">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a" description="first number" type="VDouble"/>
+            <argument name="b" description="second number" type="VDouble"/>
+            <result name="c" description="sum result" type="VDouble"/>
+        </method>
+        <method name="concate" description="concate two strings">
+            <argument name="a" description="first string" type="VString"/>
+            <argument name="b" description="second string" type="VString"/>
+            <result name="c" description="concate result" type="VString"/>
+        </method>
+        <method name="getTable" description="get table as a standalone result">
+            <result standalone="true" description="table result" type="VTable"/>
+        </method>
+        <method name="getImage" description="get image as a standalone result">
+            <result standalone="true" description="image result" type="VImage"/>
+        </method>
+        <method name="multipyString" description="multiply the string">
+            <argument name="string" description="string to multiply" type="VString"/>
+            <argument name="times" description="how many times to multiply" type="VInt"/>
+            <result name="c" description="multiply result" type="VString"/>
+        </method>
+        <method name="getTimeInMiliseconds" description="get time in milliseconds">
+            <result name="c" description="time result" type="VDouble"/>
+        </method>
+        <method name="nop" description="method without arguments and no result">
+        </method>
+    </methods>
+</pvAccessRPCService>

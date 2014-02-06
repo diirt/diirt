@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methods>
+        <method name="sumFloat" description="sum the two float numbers">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a_alias" fieldName="a" description="first number" type="VFloat"/>
+            <argument name="b_alias" fieldName="b" description="second number" type="VFloat"/>
+            <result name="c" description="sum result" type="VFloat"/>
+        </method>
+        <method name="sumFloatWithAlias" operationName="sumFloat" description="sum the two float numbers">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a_alias" fieldName="a" description="first number" type="VFloat"/>
+            <argument name="b_alias" fieldName="b" description="second number" type="VFloat"/>
+            <result name="c_alias" fieldName="c" description="sum result" type="VFloat"/>
+        </method>
+    </methods>
+</pvAccessRPCService>

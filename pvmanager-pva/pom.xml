@@ -11,13 +11,13 @@
     <dependencies>
         <dependency>
             <groupId>epics</groupId>
-            <artifactId>pvData</artifactId>
-            <version>2.0-BETA</version>
+            <artifactId>pvDataJava</artifactId>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>epics</groupId>
-            <artifactId>pvAccess</artifactId>
-            <version>2.0-BETA</version>
+            <artifactId>pvAccessJava</artifactId>
+            <version>3.0.4</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
