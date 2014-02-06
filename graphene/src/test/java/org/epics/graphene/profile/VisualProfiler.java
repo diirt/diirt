@@ -248,7 +248,7 @@ public class VisualProfiler extends JFrame{
         btnSaveLog = new JButton("Save Log");
         btnClearLog = new JButton("Clear Log");
         lblTime = new JLabel("Timer:");
-        txtTime = new JTextField("00");
+        txtTime = new JTextField("00:00:00");
         txtTime.setEditable(false);
     }
     private void loadLists(){
@@ -1080,24 +1080,18 @@ public class VisualProfiler extends JFrame{
 
             @Override
             protected Object doInBackground() throws Exception {
-                publish("--------\n");
-                publish("Timing Log\n\n");
-                
-                Timer t = new Timer();;
+                Timer t = new Timer();
                 t.scheduleAtFixedRate(new TimerTask(){
 
                     @Override
-                    public void run() {
-                        publish(Integer.toString(Calendar.getInstance().get(Calendar.SECOND)));
+                    public void run() {         
+                        publish(getTime());
                     }
                                       
                     }
                     
                     , 1000, 1000
                 );
-                
-                publish("\nTiming completed.\n");
-                publish("--------\n");
                 return null;
             }
 
@@ -1256,6 +1250,19 @@ public class VisualProfiler extends JFrame{
         this.repaint();              
     }
     
+    private String getTime(){
+        int hour = Calendar.getInstance().get(Calendar.HOUR);
+        int minute = Calendar.getInstance().get(Calendar.MINUTE);
+        int second = Calendar.getInstance().get(Calendar.SECOND);
+        String format = "%02d";     
+
+        return String.format(format, hour) +
+               ":" +
+               String.format(format, minute) +
+               ":" +
+               String.format(format, second);
+                                
+    }
     
     //Static
     
