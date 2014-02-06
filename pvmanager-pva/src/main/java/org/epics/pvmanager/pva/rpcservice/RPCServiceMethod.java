@@ -294,16 +294,16 @@ class RPCServiceMethod extends ServiceMethod {
 
     if (resultType.isAssignableFrom(VDouble.class)) {
       return ValueFactory.newVDouble(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get());
-// TODO !!!    } else if (resultType.isAssignableFrom(VFloat.class)) {
-//      return ValueFactory.newVFloat(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get());
+    } else if (resultType.isAssignableFrom(VFloat.class)) {
+      return ValueFactory.newVFloat(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VFloatArray.class)) {
       return new PVFieldToVFloatArray(pvResult, fieldName != null ? fieldName : resultName, true);
     } else if (resultType.isAssignableFrom(VString.class)) {
-      return ValueFactory.newVString(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), null, null);
+      return ValueFactory.newVString(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
     } else if (resultType.isAssignableFrom(VInt.class)) {
-      return ValueFactory.newVInt(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), null, null, null);
+      return ValueFactory.newVInt(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VBoolean.class)) {
-      return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), null, null);
+      return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
     } else if (resultType.isAssignableFrom(VTable.class)) {
       return new PVFieldToVTable(pvResult,false);
     }

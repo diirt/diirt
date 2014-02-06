@@ -68,12 +68,10 @@ public class PVFieldNTNameValueToVTable implements VTable {
 
       } else if (scalarArray instanceof PVFloatArray) {
 
-// TODO !!!
-    	  types.add(double.class);
+    	types.add(float.class);
         FloatArrayData data = new FloatArrayData();
         ((PVFloatArray) scalarArray).get(col, 1, data);
-// TODO!!!        values.add(ValueFactory.newVFloat(data.data[col], ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone()));
-        values.add(ValueFactory.newVDouble(Double.valueOf(data.data[col]), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone()));
+        values.add(ValueFactory.newVFloat(data.data[col], ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone()));
 
       } else if (scalarArray instanceof PVIntArray) {
 
