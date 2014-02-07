@@ -1,2 +1,5 @@
 "Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message"
 "IntensityGraph2D","2014/02/04 21:37:27",6.554793262039188,18169,3011,10000,640,480,"100x100","","Initialization"
+"IntensityGraph2D","2014/02/07 16:01:12",9.255275792637482,18633,2146,40000,600,400,"20000x200000","asbarber","Max Dataset Size Test"
+"IntensityGraph2D","2014/02/07 16:01:57",46.73661316326531,4529,98,4000000,600,400,"20000x200000","asbarber","Max Dataset Size Test"
+"IntensityGraph2D","2014/02/07 16:02:45",63.83973877777779,1712,27,40000000,600,400,"20000x200000","asbarber","Max Dataset Size Test"

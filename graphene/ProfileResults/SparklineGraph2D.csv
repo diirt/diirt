@@ -1,3 +1,4 @@
 "Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message"
 "SparklineGraph2D","2014/02/04 17:21:36",28.28745599292785,19577,707,10000,640,480,"","","Initialization"
 "SparklineGraph2D","2014/02/06 15:16:54",43.92563702202641,19689,454,1000000,600,400,"","asbarber","Max Dataset Size Test"
+"SparklineGraph2D","2014/02/07 15:57:11",45.551581646118684,19709,438,1000000,600,400,"","asbarber","Max Dataset Size Test"

@@ -18,7 +18,7 @@ public class SingleProfile {
     public static void main(String[] args){
         SingleProfile profiler = new SingleProfile();
         
-        profiler.largeDataset2DPoint();
+        profiler.largeDataset2DCell();
         
         //profiler.invokeAll()
     }
@@ -113,8 +113,8 @@ public class SingleProfile {
         ProfileIntensityGraph2D graph = new ProfileIntensityGraph2D();
         
         //Apply Settings
-        graph.setNumXDataPoints( 200000 );
-        graph.setNumYDataPoints( 200000 );
+        graph.setNumXDataPoints( 20000 );
+        graph.setNumYDataPoints( 10000 );
         
         graph.setImageWidth(600);
         graph.setImageHeight(400);
@@ -123,7 +123,7 @@ public class SingleProfile {
         graph.setSaveMessage("Max Dataset Size Test");
         graph.setAuthorMessage("asbarber");
         
-        graph.setTestTime(20);
+        graph.setTestTime(5);
 
         //Run
         graph.profile();
