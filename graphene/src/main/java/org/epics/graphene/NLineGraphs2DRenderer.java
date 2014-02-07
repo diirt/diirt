@@ -5,6 +5,7 @@
 package org.epics.graphene;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int yLabelMaxWidth;
     private Range emptyRange;
     private int marginBetweenGraphs = 0;
+    protected List<String> xReferenceLabels;
     
     //TODO: EVERYTHING. LISTS. YEAH!
     private double xPlotValueStart;
@@ -115,7 +117,10 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }
         calculateRanges(dataRangesX,dataRangesY,data.size());
         addGraphs(data);
-        drawGraphs(data);
+        calculateLabels();
+        calculateGraphArea();        
+        drawBackground();
+        drawGraphArea();
     }
     
     @Override
@@ -151,12 +156,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
             xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xAggregatedRange);
         }  
-        if(yAggregatedRange.size() == 0 || yDataRange.size() != yAggregatedRange.size()){
+        if(yAggregatedRange == null || yDataRange.size() != yAggregatedRange.size()){
             yAggregatedRange = new ArrayList<Range>();
             yPlotRange = new ArrayList<Range>();
             for(int i = 0; i < length; i++){
                 yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
-                yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), emptyRange));
+                yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
             }
         }
         else{
@@ -180,15 +185,32 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }      
         
         // Calculate vertical axis references. If range is zero, use special logic
-        for(int i = 0; i < yPlotRange.size(); i++){
-            if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
-                ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
-                yReferenceLabels.add(Arrays.asList(yAxis.getTickLabels()));
-                yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));            
-            } else {
-                // TODO: use something better to format the number
-                yReferenceLabels.add(Collections.singletonList(yPlotRange.get(i).getMinimum().toString()));
-                yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum().doubleValue()));            
+        if(yReferenceLabels == null || yReferenceLabels.size() != numGraphs){
+            yReferenceLabels = new ArrayList<List<String>>();
+            yReferenceValues = new ArrayList<ListDouble>();
+            for(int i = 0; i < yPlotRange.size(); i++){
+                if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
+                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
+                    yReferenceLabels.add(Arrays.asList(yAxis.getTickLabels()));
+                    yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));            
+                } else {
+                    // TODO: use something better to format the number
+                    yReferenceLabels.add(Collections.singletonList(yPlotRange.get(i).getMinimum().toString()));
+                    yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum().doubleValue()));            
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < yPlotRange.size(); i++){
+                if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
+                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
+                    yReferenceLabels.set(i,Arrays.asList(yAxis.getTickLabels()));
+                    yReferenceValues.set(i,new ArrayDouble(yAxis.getTickValues()));            
+                } else {
+                    // TODO: use something better to format the number
+                    yReferenceLabels.set(i,Collections.singletonList(yPlotRange.get(i).getMinimum().toString()));
+                    yReferenceValues.set(i,new ArrayDouble(yPlotRange.get(i).getMinimum().doubleValue()));            
+                }
             }
         }
         labelFontMetrics = g.getFontMetrics(labelFont);
@@ -212,8 +234,8 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
-        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
-        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        xPlotValueStart = xPlotRange.getMinimum().doubleValue();
+        xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
         if (xPlotValueStart == xPlotValueEnd) {
             // If range is zero, fake a range
             xPlotValueStart -= 1.0;
@@ -226,7 +248,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
         //set the start and end of each plot in terms of values.
-        if(yPlotValueStart.size() == 0 || yPlotValueStart.size() != yPlotRange.size()){
+        if(yPlotValueStart == null || yPlotValueStart.size() != yPlotRange.size()){
             yPlotValueStart = new ArrayList<Double>();
             yPlotValueEnd = new ArrayList<Double>();
             for(int i = 0; i < yPlotRange.size(); i++){
@@ -243,7 +265,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         
         //range faking
         for(int i = 0; i < yPlotRange.size(); i++){
-            if (yPlotValueStart.get(i) == yPlotValueEnd.get(i)) {
+            if (yPlotValueStart.get(i).doubleValue() == yPlotValueEnd.get(i).doubleValue()) {
                 // If range is zero, fake a range
                 yPlotValueStart.set(i, yPlotValueStart.get(i)-1.0);
                 yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
@@ -251,7 +273,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }
         
         //TODO: FINISH THIS PART OF THE METHOD. ACCOUNT FOR BEGINNING AND END GRAPHS, ACCOUNT FOR EXISTING LISTS
-        if(yAreaCoordStart.size() == 0 || yAreaCoordStart.size() != numGraphs){
+        if(yAreaCoordStart == null || yAreaCoordStart.size() != numGraphs){
             yAreaCoordStart = new ArrayList<Integer>();
             yAreaCoordEnd = new ArrayList<Integer>();
             yPlotCoordStart = new ArrayList<Double>();
@@ -300,7 +322,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
             for (int i = 0; i < xRefCoords.length; i++) {
-                xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
+                xRefCoords[i] = scaledX1(xReferenceValues.getDouble(i));
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
         }
@@ -309,10 +331,179 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             for(int a = 0; a < yReferenceValues.size(); a++){
                 double[] yRefCoords = new double[yReferenceValues.get(a).size()];
                 for (int b = 0; b < yRefCoords.length; b++) {
-                    yRefCoords[b] = scaledY(yReferenceValues.get(a).getDouble(b));
+                    yRefCoords[b] = scaledY(yReferenceValues.get(a).getDouble(b),a);
                 }
                 yReferenceCoords.add(new ArrayDouble(yRefCoords));
             }
         }
+    }
+    
+    @Override
+    protected void drawGraphArea() {
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // When drawing the reference line, align them to the pixel
+        drawVerticalReferenceLines();
+        drawHorizontalReferenceLines();
+        
+        drawYLabels();
+        drawXLabels();
+    }
+    
+    @Override
+    protected void drawVerticalReferenceLines() {
+        g.setColor(referenceLineColor);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        ListNumber xTicks = xReferenceCoords;
+        for(int a = 0; a < numGraphs; a++){
+            for (int b = 0; b < xTicks.size(); b++) {
+                Shape line = new Line2D.Double(xTicks.getDouble(b), yAreaCoordStart.get(a), xTicks.getDouble(b), yAreaCoordEnd.get(a) - 1);
+                g.draw(line);
+            }
+        }
+    }
+    
+    @Override
+    protected void drawHorizontalReferenceLines() {
+        g.setColor(referenceLineColor);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        for(int a = 0; a < numGraphs-1; a++){
+            ListNumber yTicks = yReferenceCoords.get(a);
+            for (int b = 0; b < yTicks.size(); b++) {
+                Shape line = new Line2D.Double(xAreaCoordStart, yTicks.getDouble(b), xAreaCoordEnd - 1, yTicks.getDouble(b));
+                g.draw(line);
+            }
+        }
+    }
+    
+    @Override
+    protected void drawYLabels() {
+        // Draw Y labels
+        for(int a = 0; a < numGraphs; a++){
+            ListNumber yTicks = yReferenceCoords.get(a);
+            if (yReferenceLabels.get(a) != null && !yReferenceLabels.get(a).isEmpty()) {
+                //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+                g.setColor(labelColor);
+                g.setFont(labelFont);
+                FontMetrics metrics = g.getFontMetrics();
+
+                // Draw first and last label
+                int[] drawRange = new int[] {yAreaCoordStart.get(a), yAreaCoordEnd.get(a) - 1};
+                int xRightLabel = (int) (xAreaCoordStart - yLabelMargin - 1);
+                drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(0), (int) Math.floor(yTicks.getDouble(0)),
+                    drawRange, xRightLabel, true, false);
+                drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(yReferenceLabels.get(a).size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.get(a).size() - 1)),
+                    drawRange, xRightLabel, false, false);
+
+                for (int b = 1; b < yReferenceLabels.get(a).size() - 1; b++) {
+                    drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(b), (int) Math.floor(yTicks.getDouble(b)),
+                        drawRange, xRightLabel, true, false);
+                }
+            }
+        }
+    }
+    
+    private static final int MIN = 0;
+    private static final int MAX = 1;
+    private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
+        int targetY = yCenter;
+        int halfHeight = metrics.getAscent() / 2;
+        if (yCenter < drawRange[MIN] + halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
+            targetY = drawRange[MIN];
+        } else if (yCenter > drawRange[MAX] - halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+            targetY = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
+        
+        if (updateMin) {
+            drawRange[MAX] = targetY - metrics.getHeight();
+        } else {
+            drawRange[MIN] = targetY + metrics.getHeight();
+        }
+    }
+    
+    @Override
+    protected void drawXLabels() {
+        // Draw X labels
+        ListNumber xTicks = xReferenceCoords;
+        if (xReferenceLabels != null && !xReferenceLabels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {xAreaCoordStart, xAreaCoordEnd - 1};
+            int yTop = (int) (yAreaCoordEnd.get(numGraphs-1) + xLabelMargin);
+            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(0), (int) Math.floor(xTicks.getDouble(0)),
+                drawRange, yTop, true, false);
+            drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
+                drawRange, yTop, false, false);
+            
+            for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
+                drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
+                    drawRange, yTop, true, false);
+            }
+        }
+    }
+    
+    private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
+        int targetX = xCenter;
+        int halfWidth = metrics.stringWidth(text) / 2;
+        if (xCenter < drawRange[MIN] + halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_LEFT;
+            targetX = drawRange[MIN];
+        } else if (xCenter > drawRange[MAX] - halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
+            targetX = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
+        
+        if (updateMin) {
+            drawRange[MIN] = targetX + metrics.getHeight();
+        } else {
+            drawRange[MAX] = targetX - metrics.getHeight();
+        }
+    }
+    
+    private double scaledX1(double value) {
+        return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
+    }
+    
+    private final double scaledY(double value,  int index) {
+        return yValueScale.scaleValue(value, yPlotValueStart.get(index), yPlotValueEnd.get(index), yPlotCoordEnd.get(index), yPlotCoordStart.get(index));
     }
 }
