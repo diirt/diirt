@@ -89,9 +89,19 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
     
+    // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
+    private boolean drawBoundaries = true;
     
+    public void setDrawBoundaries(boolean drawBoundaries){
+        this.drawBoundaries = drawBoundaries;
+    }
+    
+    public boolean getDrawBoundaries(){
+        return drawBoundaries;
+    }
     private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
-   
+    // ^ (Possibly) TO BE TAKEN OUT ONE TESTING IS DONE ^
+    
     /**
      *Draws an intensity graph in the given graphics context, using the given data.
      * All drawing is done within the bounds specified either at initialization or at update.
@@ -175,8 +185,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     ySum[i] = 0;
                 }
             }
-            //drawRectanglesBoundaries(g, colorScheme, data);
-            drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+            if(drawBoundaries){
+                drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
+            }
+            else{
+                drawRectangles(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+            }
         }
         
         //Draw graph when cell width or height is smaller than one pixel.
@@ -194,9 +208,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
-                //drawRectanglesSmallXBoundaries(g, colorScheme, data);
-                //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                if(drawBoundaries){
+                    drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
+                }
+                else{
+                    drawRectanglesSmallX(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
+                }
+                
             }
             if(cellWidth > 1){
                 if(addXSum){
@@ -211,7 +229,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
+                if(drawBoundaries){
+                    drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
+                }
+                else{
+                    drawRectanglesSmallY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth);
+                }
             }
             if(cellWidth < 1 && cellHeight < 1){
                 if(addXSum){
@@ -226,8 +249,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
-                //drawRectanglesSmallXAndYBoundaries(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                if(drawBoundaries){
+                    drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
+                }
+                else{
+                    drawRectanglesSmallXAndY(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth);
+                }
             }
         }
         /*Draw a legend, given the current data set. 
@@ -464,8 +491,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         }
     }
     //TODO: make it so graph extends far enough and does not repeat final values.
-    private void drawRectanglesSmallXAndYBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
-            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth){
+    private void drawRectanglesSmallXAndYBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data){
         ListNumber cellBoundariesX = data.getXBoundaries();
         List<Integer> newBoundariesX = new ArrayList<Integer>();
         List<Integer> valueIndicesX = new ArrayList<Integer>();
