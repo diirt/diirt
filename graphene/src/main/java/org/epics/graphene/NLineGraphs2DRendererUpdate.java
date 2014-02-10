@@ -14,13 +14,15 @@ public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGrap
     private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer, Range>();
     private HashMap<Integer, Boolean> IndexToForceMap = new HashMap<Integer, Boolean>();
+    private Integer marginBetweenGraphs;
     
-    public NLineGraphs2DRendererUpdate GraphBoundaries(ArrayList<Double> graphBoundaries){
+   
+    public NLineGraphs2DRendererUpdate graphBoundaries(ArrayList<Double> graphBoundaries){
         this.graphBoundaries = graphBoundaries;
         return this.self();
     }
     
-    public NLineGraphs2DRendererUpdate GraphBoundaryRatios(ArrayList<Double> graphBoundaryRatios){
+    public NLineGraphs2DRendererUpdate graphBoundaryRatios(ArrayList<Double> graphBoundaryRatios){
         this.graphBoundaryRatios = graphBoundaryRatios;
         return this.self();
     }
@@ -45,6 +47,11 @@ public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGrap
         return this.self();
     }
     
+    public NLineGraphs2DRendererUpdate marginBetweenGraphs(Integer margin){
+        marginBetweenGraphs = margin;
+        return this.self();
+    }
+    
     public ArrayList<Double> getGraphBoundaries(){
         return this.graphBoundaries;
     }
@@ -59,5 +66,9 @@ public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGrap
     
     public HashMap<Integer, Boolean> getIndexToForce(){
         return IndexToForceMap;
+    }
+    
+    public Integer getMarginBetweenGraphs(){
+        return marginBetweenGraphs;
     }
 }

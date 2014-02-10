@@ -43,7 +43,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> indexToRangeMap = new HashMap<Integer,Range>();
     private HashMap<Integer, Boolean> indexToForceMap = new HashMap<Integer,Boolean>();
-    private int numGraphs;
+    private int numGraphs = 0;
     private List<ListDouble> yReferenceCoords;
     private List<ListDouble> yReferenceValues;
     private List<List<String>> yReferenceLabels;
@@ -96,15 +96,19 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         if(update.getGraphBoundaryRatios() != null){
             graphBoundaryRatios = update.getGraphBoundaryRatios();
             graphBoundaries = new ArrayList<Double>();
-            for(int i = 0; i < graphBoundaries.size(); i++){
+            for(int i = 0; i < graphBoundaryRatios.size(); i++){
                 graphBoundaries.add(getImageHeight() * graphBoundaryRatios.get(i));
             }
+            numGraphs = graphBoundaries.size()-1;
         }
         if(update.getIndexToRange() != null){
             indexToRangeMap = update.getIndexToRange();
         }
         if(update.getIndexToForce() != null){
             indexToForceMap = update.getIndexToForce();
+        }
+        if(update.getMarginBetweenGraphs() != null){
+            marginBetweenGraphs = update.getMarginBetweenGraphs();
         }
     }
     
@@ -124,8 +128,8 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         for(int i = 0; i < data.size(); i++){
             dataRangesY.add(data.get(i).getYStatistics());
         }
-        calculateRanges(dataRangesX,dataRangesY,data.size());
         addGraphs(data);
+        calculateRanges(dataRangesX,dataRangesY,numGraphs);
         calculateLabels();
         calculateGraphArea();        
         drawBackground();
@@ -156,7 +160,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private void addGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             numGraphs = data.size();
-            while((double)getImageHeight()/numGraphs < 40){
+            while((double)getImageHeight()/numGraphs < 100){
                 numGraphs-=1;
             }
             graphBoundaries = new ArrayList<Double>();
