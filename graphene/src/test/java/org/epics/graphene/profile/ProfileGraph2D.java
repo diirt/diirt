@@ -53,7 +53,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     /**
      * Creates a graph profiler.
      */
-    public ProfileGraph2D(){    
+    public ProfileGraph2D(){   
+        saveSettings = new Settings();
     }
     
     /**
@@ -62,6 +63,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @param testTimeSec the maximum time spent in the render loop
      */
     public ProfileGraph2D(int maxTries, int testTimeSec){
+        this();
         this.maxTries = maxTries;
         this.testTimeSec = testTimeSec;
     }
@@ -86,9 +88,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     private StopWatch   stopWatch;    
     
     //Save Parameters
-    private String datasetMessage = "",
-                   saveMessage = "",
-                   authorMessage = "";
+    private Settings saveSettings;
+    
     
     /**
      * Performs the necessary operation to 'profile' a graph renderer.
@@ -289,9 +290,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  getNumDataPoints() + delim +
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
-                         quote + getDatasetMessage() + quote + delim +
-                         quote + getAuthorMessage() + quote + delim +
-                         quote + getSaveMessage() + quote;
+                                 saveSettings.getOutputMessage();
         
         //Ensures file is created
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
@@ -363,9 +362,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                        quote + "Number of Data Points" + quote + delim +
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
-                       quote + "Dataset Comments" + quote + delim +
-                       quote + "Author" + quote + delim +               
-                       quote + "General Message" + quote;
+                       saveSettings.getOutputTitle();
         
         //Write to file
         try {
@@ -398,62 +395,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return getGraphTitle() + ".csv";
     }
     
-    /**
-     * Gets the comment associated with the data set.
-     * This comment will be written to the CSV log file when saving the statistics.
-     * 
-     * This is appropriate for discussing the distribution of the data, dimensions of the data, etc.
-     * @return message about the data set
-     */
-    public String getDatasetMessage(){
-        return datasetMessage;
+    public Settings getSaveSettings(){
+        return this.saveSettings;
     }
     
-    /**
-     * Gets the general comment associated with the profile.
-     * This comment will be written to the CSV log file when saving the statistics.
-     * 
-     * This is appropriate for discussing the parameters of the renderer, etc.
-     * @return general message about the profiling results
-     */
-    public String getSaveMessage(){
-        return saveMessage;
-    }
-    
-    public String getAuthorMessage(){
-        return this.authorMessage;
-    }
-    
-    
-    //Save Parameter Setters
-    
-    /**
-     * Set the comment associated with the data set.
-     * This comment will be written to the CSV log file when saving the statistics.
-     * 
-     * This is appropriate for discussing the distribution of the data, dimensions of the data, etc.
-     * 
-     * @param message comment about the data
-     */
-    public void setDatasetMessage(String message){
-        this.datasetMessage = message;
-    }
-    
-    /**
-     * Set the general comment associated with the profile.
-     * This comment will be written to the CSV log file when saving the statistics.
-     * 
-     * This is appropriate for discussing the parameters of the renderer, etc.
-     * 
-     * @param message general comment about the profiling
-     */    
-    public void setSaveMessage(String message){
-        this.saveMessage = message;
-    }
-    
-    public void setAuthorMessage(String author){
-        this.authorMessage = author;
-    }
     
     
     //Test Parameter Getters

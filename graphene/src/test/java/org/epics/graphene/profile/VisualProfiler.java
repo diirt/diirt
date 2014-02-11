@@ -595,8 +595,8 @@ public class VisualProfiler extends JFrame{
         profiler.setNumDataPoints(datasetSize);
         profiler.setImageWidth(imageWidth);
         profiler.setImageHeight(imageHeight);
-        profiler.setSaveMessage(saveMessage);
-        profiler.setAuthorMessage(strAuthor);
+        profiler.getSaveSettings().setSaveMessage(saveMessage);
+        profiler.getSaveSettings().setAuthorMessage(strAuthor);
         
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -753,7 +753,7 @@ public class VisualProfiler extends JFrame{
             profilers.get(profilers.size()-1).setNumDataPoints(datasetSize);
             profilers.get(profilers.size()-1).setImageWidth(imageWidth);
             profilers.get(profilers.size()-1).setImageHeight(imageHeight);
-            profilers.get(profilers.size()-1).setSaveMessage(saveMessage);            
+            profilers.get(profilers.size()-1).getSaveSettings().setSaveMessage(saveMessage);            
 
         }
 

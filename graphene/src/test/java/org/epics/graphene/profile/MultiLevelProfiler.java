@@ -292,8 +292,51 @@ public class MultiLevelProfiler{
         } catch (IOException ex) {
             System.err.println("Output errors exist.");
         }
+        
+        saveAdditionalInfo();
     }
     
+    private void saveAdditionalInfo(){
+       SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+       String date = format.format(new Date());
+       
+       //Creates file
+       File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                  date + 
+                                  "-" +
+                                  profiler.getGraphTitle() +
+                                  "-" +
+                                  "Table" + 
+                                  ".out" + 
+                                  ".csv");     
+                                 
+       try {
+           outputFile.createNewFile();
+       
+           String delim = ",";
+           String quote = "\"";
+           String header = quote + "Graph Type" + quote + delim +
+                           quote + "Date" + quote + delim +
+                           quote + "Dataset Comment" + quote + delim +
+                           quote + "Author" + quote + delim +
+                           quote + "General Message" + quote;
+           
+           String data = quote + profiler.getGraphTitle() + quote + delim +
+                         date + delim;
+                         
+           
+           PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
+           
+           //Prints header
+           out.println(header);
+           
+           //Prints row
+           out.println(data);
+       } catch (IOException ex) {
+            System.err.println("Output errors exist.");
+       }
+    }
+
     public void processTimeWarning(int estimatedTime){
         if (displayTimeWarning){
             System.out.println("The estimated run time is " + estimatedTime + " seconds.");

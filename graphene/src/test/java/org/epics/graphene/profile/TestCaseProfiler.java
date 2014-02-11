@@ -14,23 +14,23 @@ import java.util.logging.Logger;
  *
  * @author asbarber
  */
-public class SingleProfile {
+public class TestCaseProfiler {
     public static void main(String[] args){
-        SingleProfile profiler = new SingleProfile();
+        TestCaseProfiler profiler = new TestCaseProfiler();
         
-        profiler.largeDataset2DCell();
+        profiler.maxDataset2DCell();
         
         //profiler.invokeAll()
     }
     
     
     public void invokeAll(){
-        Method[] allMethods = SingleProfile.class.getMethods();
-        SingleProfile profiler = new SingleProfile();
+        Method[] allMethods = TestCaseProfiler.class.getMethods();
+        TestCaseProfiler profiler = new TestCaseProfiler();
                 
         for (Method method: allMethods){
             //Ensures one of the test methods
-            boolean notInherited = method.getDeclaringClass().equals(SingleProfile.class);
+            boolean notInherited = method.getDeclaringClass().equals(TestCaseProfiler.class);
             boolean notMain = !method.getName().equals("main");
             boolean notThis = !method.getName().equals("invokeAll");
             
@@ -43,13 +43,13 @@ public class SingleProfile {
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     //Method invoke failure
                     System.err.println("Error invoking method: " + method.getName());
-                    Logger.getLogger(SingleProfile.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
                 }                    
             }
         }        
     }
     
-    public void largeDataset1D(){        
+    public void maxDataset1D(){        
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         
         graphs.add(new ProfileHistogram1D());
@@ -64,8 +64,8 @@ public class SingleProfile {
             graph.setImageWidth(600);
             graph.setImageHeight(400);
 
-            graph.setSaveMessage("Max Dataset Size Test");
-            graph.setAuthorMessage("asbarber");
+            graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
+            graph.getSaveSettings().setAuthorMessage("asbarber");
 
             graph.setTestTime(20);
 
@@ -78,25 +78,31 @@ public class SingleProfile {
         }        
     }
     
-    public void largeDataset2DPoint(){
+    public void maxDataset2DPoint(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
+        ArrayList<Integer> size = new ArrayList<>();
         
         graphs.add(new ProfileLineGraph2D());
         graphs.add(new ProfileScatterGraph2D());
         graphs.add(new ProfileSparklineGraph2D());
         //Add more 2D point dataset types here
         
-        while(!graphs.isEmpty()){
+        size.add( (int)Math.pow(10, 6) );
+        size.add( (int)Math.pow(10,3) );
+        size.add( (int)Math.pow(10,3) );
+        //Add here to add dataset sizes
+        
+        while(!graphs.isEmpty() && !size.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
             
             //Apply Settings
-            graph.setNumDataPoints( (int)Math.pow(10, 6) );
+            graph.setNumDataPoints( size.get(0) );
 
             graph.setImageWidth(600);
             graph.setImageHeight(400);
 
-            graph.setSaveMessage("Max Dataset Size Test");
-            graph.setAuthorMessage("asbarber");
+            graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
+            graph.getSaveSettings().setAuthorMessage("asbarber");
 
             graph.setTestTime(20);
 
@@ -106,10 +112,11 @@ public class SingleProfile {
             
             //Free up memory
             graphs.remove(0);
+            size.remove(0);
         }
     }
     
-    public void largeDataset2DCell(){
+    public void maxDataset2DCell(){
         ProfileIntensityGraph2D graph = new ProfileIntensityGraph2D();
         
         //Apply Settings
@@ -119,14 +126,19 @@ public class SingleProfile {
         graph.setImageWidth(600);
         graph.setImageHeight(400);
         
-        graph.setDatasetMessage("20000x200000");
-        graph.setSaveMessage("Max Dataset Size Test");
-        graph.setAuthorMessage("asbarber");
+        graph.getSaveSettings().setDatasetMessage("20000x200000");
+        graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
+        graph.getSaveSettings().setAuthorMessage("asbarber");
         
         graph.setTestTime(5);
 
         //Run
         graph.profile();
         graph.saveStatistics();
+    }
+    
+    public void intensityGraphStrategies(){
+        ProfileIntensityGraph2D profiler = new ProfileIntensityGraph2D();
+        
     }
 }

@@ -54,6 +54,21 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     }
     
     /**
+     * Sets the number of x and y data points.
+     * The size of and x and y is determined as the square root of the total
+     * number of data points.
+     * @param numData total number of data points
+     */
+    @Override
+    public void setNumDataPoints(int numData){
+        numXData = (int) Math.sqrt(numData);
+        numYData = (int) Math.sqrt(numData);
+        
+        //Updates to make accurate representation of num data
+        super.setNumDataPoints(numXData * numYData);
+    }
+    
+    /**
      * Sets number of x-value data points.
      * @param numXData number of x-value data points
      */
@@ -74,7 +89,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
      * This message is saved in the log file as the comment about the data set.
      */
     public final void createDatasetMessage(){
-        super.setDatasetMessage(getNumXDataPoints() + "x" + getNumYDataPoints());
+        super.getSaveSettings().setDatasetMessage(getNumXDataPoints() + "x" + getNumYDataPoints());
     }
     
     /**
