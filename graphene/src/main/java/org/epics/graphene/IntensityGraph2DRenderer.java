@@ -90,17 +90,19 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int zLabelMaxWidth;
     
     // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
-    private boolean drawBoundaries = true;
+    private boolean linearBoundaries = true;
     
-    public void setDrawBoundaries(boolean drawBoundaries){
-        this.drawBoundaries = drawBoundaries;
+    public void setLinearBoundaries(boolean drawBoundaries){
+        this.linearBoundaries = drawBoundaries;
     }
     
-    public boolean getDrawBoundaries(){
-        return drawBoundaries;
+    public boolean isLinearBoundaries(){
+        return linearBoundaries;
     }
+    // ^ (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE ^
+    
     private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;
-    // ^ (Possibly) TO BE TAKEN OUT ONE TESTING IS DONE ^
+    
     
     /**
      *Draws an intensity graph in the given graphics context, using the given data.
@@ -185,7 +187,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                     ySum[i] = 0;
                 }
             }
-            if(drawBoundaries){
+            if(linearBoundaries){
                 drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
             }
             else{
@@ -208,7 +210,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                if(drawBoundaries){
+                if(linearBoundaries){
                     drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
                 }
                 else{
@@ -229,7 +231,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                if(drawBoundaries){
+                if(linearBoundaries){
                     drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
                 }
                 else{
@@ -249,7 +251,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                         ySum[i] = 0;
                     }
                 }
-                if(drawBoundaries){
+                if(linearBoundaries){
                     drawRectanglesSmallXAndYBoundaries(g, colorScheme, data);
                 }
                 else{
