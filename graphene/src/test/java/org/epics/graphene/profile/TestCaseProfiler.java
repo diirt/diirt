@@ -58,7 +58,7 @@ public class TestCaseProfiler {
         while(!graphs.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
             
-            //Apply Settings
+            //Apply SaveSettings
             graph.setNumDataPoints( (int)Math.pow(10, 6) );
 
             graph.setImageWidth(600);
@@ -95,7 +95,7 @@ public class TestCaseProfiler {
         while(!graphs.isEmpty() && !size.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
             
-            //Apply Settings
+            //Apply SaveSettings
             graph.setNumDataPoints( size.get(0) );
 
             graph.setImageWidth(600);
@@ -119,7 +119,7 @@ public class TestCaseProfiler {
     public void maxDataset2DCell(){
         ProfileIntensityGraph2D graph = new ProfileIntensityGraph2D();
         
-        //Apply Settings
+        //Apply SaveSettings
         graph.setNumXDataPoints( 20000 );
         graph.setNumYDataPoints( 10000 );
         

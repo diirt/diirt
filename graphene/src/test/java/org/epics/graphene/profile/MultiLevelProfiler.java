@@ -40,6 +40,8 @@ public class MultiLevelProfiler{
     private boolean displayTimeWarning = true;
     private boolean printResults = true;
     
+    private SaveSettings saveSettings;
+    
     private Map<Resolution, Map<Integer, Statistics>> results;
       
     /**
@@ -54,7 +56,9 @@ public class MultiLevelProfiler{
     public MultiLevelProfiler(ProfileGraph2D profiler){
         this.profiler = profiler;
         this.results = new HashMap<>();
+        this.saveSettings = new SaveSettings();
     }
+    
     
     //Profile Running
     
@@ -317,12 +321,13 @@ public class MultiLevelProfiler{
            String quote = "\"";
            String header = quote + "Graph Type" + quote + delim +
                            quote + "Date" + quote + delim +
-                           quote + "Dataset Comment" + quote + delim +
-                           quote + "Author" + quote + delim +
-                           quote + "General Message" + quote;
+                           this.saveSettings.getOutputTitle() + delim +
+                           this.saveSettings.getHardwareOutputTitle();
            
            String data = quote + profiler.getGraphTitle() + quote + delim +
-                         date + delim;
+                         quote + date + quote + delim +
+                         this.saveSettings.getOutputMessage() + delim +
+                         this.saveSettings.getHardwareOutputMessage();
                          
            
            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
@@ -332,6 +337,8 @@ public class MultiLevelProfiler{
            
            //Prints row
            out.println(data);
+           
+           out.close();
        } catch (IOException ex) {
             System.err.println("Output errors exist.");
        }
@@ -414,6 +421,12 @@ public class MultiLevelProfiler{
     public void setPrintResults(boolean show){
         this.printResults = show;
     }
+    
+    //Save Parameters
+    public SaveSettings getSaveSettings(){
+        return this.saveSettings;
+    }
+    
     
     //Defaults
     

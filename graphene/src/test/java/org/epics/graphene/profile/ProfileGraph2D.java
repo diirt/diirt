@@ -54,7 +54,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * Creates a graph profiler.
      */
     public ProfileGraph2D(){   
-        saveSettings = new Settings();
+        saveSettings = new SaveSettings();
     }
     
     /**
@@ -88,7 +88,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     private StopWatch   stopWatch;    
     
     //Save Parameters
-    private Settings saveSettings;
+    private SaveSettings saveSettings;
     
     
     /**
@@ -290,7 +290,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  getNumDataPoints() + delim +
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
-                                 saveSettings.getOutputMessage();
+                                 saveSettings.getOutputMessage() + delim +
+                                 saveSettings.getHardwareOutputMessage();
         
         //Ensures file is created
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
@@ -362,7 +363,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                        quote + "Number of Data Points" + quote + delim +
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
-                       saveSettings.getOutputTitle();
+                       saveSettings.getOutputTitle() + delim +
+                       saveSettings.getHardwareOutputTitle();
         
         //Write to file
         try {
@@ -395,7 +397,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return getGraphTitle() + ".csv";
     }
     
-    public Settings getSaveSettings(){
+    public SaveSettings getSaveSettings(){
         return this.saveSettings;
     }
     

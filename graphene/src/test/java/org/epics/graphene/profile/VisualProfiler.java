@@ -71,7 +71,7 @@ public class VisualProfiler extends JFrame{
     private JPanel mainPanel;
     private JTabbedPane tabs;
     
-    //Pane: General Settings
+    //Pane: General SaveSettings
     private JComboBox           listRendererTypes;
     private JLabel              lblRendererTypes;
     
@@ -80,6 +80,13 @@ public class VisualProfiler extends JFrame{
     
     private JTextField          txtMaxAttempts;
     private JLabel              lblMaxAttempts;
+    
+    private JLabel              lblSaveMessage;
+    private JTextField          txtSaveMessage;
+    
+    private JLabel              lblAuthorMessage;
+    private JTextField          txtAuthorMessage;
+    
     
     //Tab: Single Profile
     private JLabel              lblDatasetSize;
@@ -90,12 +97,6 @@ public class VisualProfiler extends JFrame{
     
     private JLabel              lblImageHeight;
     private JTextField          txtImageHeight;
-    
-    private JLabel              lblSaveMessage;
-    private JTextField          txtSaveMessage;
-    
-    private JLabel              lblAuthorMessage;
-    private JTextField          txtAuthorMessage;
     
     private JLabel              lblShowGraph;
     private JCheckBox           chkShowGraph;
@@ -167,7 +168,7 @@ public class VisualProfiler extends JFrame{
         mainPanel.setLayout(new BorderLayout());
         tabs = new JTabbedPane();
         
-        //General Settings
+        //General SaveSettings
         listRendererTypes = new JComboBox(VisualProfiler.SUPPORTED_PROFILERS);
         lblRendererTypes = new JLabel("Renderer Type: ");
         
@@ -176,6 +177,13 @@ public class VisualProfiler extends JFrame{
                 
         txtMaxAttempts = new JTextField("1000000");
         lblMaxAttempts = new JLabel("Max Attempts: ");
+        
+        lblSaveMessage = new JLabel("Save Message: ");
+        txtSaveMessage = new JTextField("");
+        
+        lblAuthorMessage = new JLabel("Author: ");
+        txtAuthorMessage = new JTextField("");
+        
         
         //Tab: Single Profile
         //------------
@@ -190,12 +198,6 @@ public class VisualProfiler extends JFrame{
         
         lblShowGraph = new JLabel("Graph Results: ");
         chkShowGraph = new JCheckBox("Show Graph");
-        
-        lblSaveMessage = new JLabel("Save Message: ");
-        txtSaveMessage = new JTextField("");
-        
-        lblAuthorMessage = new JLabel("Author: ");
-        txtAuthorMessage = new JTextField("");
         
         btnSingleProfile = new JButton("Profile");
         btnSingleProfileAll = new JButton("Profile For All Renderers");
@@ -364,7 +366,7 @@ public class VisualProfiler extends JFrame{
     }    
     private void addComponents(){
         
-        //General Settings
+        //General SaveSettings
         JPanel settingsPane = new JPanel();
         settingsPane.setLayout(new GridLayout(0, 2));
         
@@ -377,6 +379,11 @@ public class VisualProfiler extends JFrame{
             settingsPane.add(this.lblMaxAttempts);
             settingsPane.add(this.txtMaxAttempts);
         
+            settingsPane.add(lblSaveMessage);
+            settingsPane.add(txtSaveMessage);
+            
+            settingsPane.add(lblAuthorMessage);
+            settingsPane.add(txtAuthorMessage);            
             
         //Tab: Single Profile
         JPanel singleProfileTab = new JPanel();
@@ -393,12 +400,6 @@ public class VisualProfiler extends JFrame{
 
             singleProfileTab.add(lblShowGraph);
             singleProfileTab.add(chkShowGraph);
-
-            singleProfileTab.add(lblSaveMessage);
-            singleProfileTab.add(txtSaveMessage);
-            
-            singleProfileTab.add(lblAuthorMessage);
-            singleProfileTab.add(txtAuthorMessage);
             
             singleProfileTab.add(blankPanel(btnSingleProfile));
             singleProfileTab.add(blankPanel(btnSingleProfileAll));
@@ -1177,7 +1178,12 @@ public class VisualProfiler extends JFrame{
             publish("--------\n");
             publish(profiler.getGraphTitle() + "\n\n");
             
+            String strAuthor = VisualProfiler.this.txtAuthorMessage.getText();
+            String saveMessage = VisualProfiler.this.txtSaveMessage.getText();   
+            
             this.multiProfiler = new VisualMultiLevelProfiler(profiler);
+            this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
+            this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
             this.multiProfiler.setImageSizes(resolutions);
             this.multiProfiler.setDatasetSizes(datasetSizes);
         }

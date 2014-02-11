@@ -4,13 +4,17 @@
  */
 package org.epics.graphene.profile;
 
+import java.lang.management.ManagementFactory;
+
 /**
  *
  * @author asbarber
  */
-public class Settings {
-    public final String QUOTE = "\"";
-    public final String DELIM = ",";
+public class SaveSettings {
+    private static final double BYTES_TO_GB = Math.pow(2, 30);
+    
+    public static final String QUOTE = "\"";
+    public static final String DELIM = ",";
     
     public String datasetMessage = "",
                   saveMessage = "",
@@ -87,5 +91,36 @@ public class Settings {
                          quote + getDatasetMessage() + quote + delim +
                          quote + getAuthorMessage() + quote + delim +
                          quote + getSaveMessage() + quote;    
+    }
+    
+    
+    public String getHardwareOutputTitle(){
+        String quote = "\"";
+        String delim = ",";
+
+        return
+                         quote + "JVM Version" + quote + delim +
+                         quote + "Available Memory (GB)"+ quote + delim +
+                         quote + "RAM (GB)" + quote;      
+    }
+    
+    public String getHardwareOutputMessage(){
+        String quote = "\"";
+        String delim = ",";
+                
+        //Get Environment Properties
+        String javaVersion = System.getProperty("java.version");
+        
+        //Format
+        javaVersion = javaVersion == null ? "": javaVersion;
+        
+        //Memory
+        double runtime  = Runtime.getRuntime().maxMemory() / SaveSettings.BYTES_TO_GB;
+        double memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize() / SaveSettings.BYTES_TO_GB;
+        
+        return
+                         quote + javaVersion +quote + delim +
+                         String.format("%.3f", runtime) + delim +
+                         String.format("%.3f", memorySize);        
     }
 }
