@@ -53,7 +53,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int marginBetweenGraphs = 0;
     protected List<String> xReferenceLabels;
     
-    //TODO: EVERYTHING. LISTS. YEAH!
     private double xPlotValueStart;
     private List<Double> yPlotValueStart;
     private double xPlotValueEnd;
@@ -92,6 +91,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             for(int i = 0; i < graphBoundaryRatios.size(); i++){
                 graphBoundaryRatios.add(graphBoundaries.get(i)/ getImageHeight());
             }
+            numGraphs = graphBoundaries.size()-1;
         }
         if(update.getGraphBoundaryRatios() != null){
             graphBoundaryRatios = update.getGraphBoundaryRatios();
@@ -160,7 +160,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private void addGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             numGraphs = data.size();
-            while((double)getImageHeight()/numGraphs < 100){
+            while((double)getImageHeight()/numGraphs - marginBetweenGraphs < 100){
                 numGraphs-=1;
             }
             graphBoundaries = new ArrayList<Double>();
@@ -175,10 +175,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         
     }
     
-    private void drawGraphs(List<Point2DDataset> data){
-        
-    }
-    
     protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
         for(int i = 0; i < length; i++){
             xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
@@ -188,14 +184,29 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             yAggregatedRange = new ArrayList<Range>();
             yPlotRange = new ArrayList<Range>();
             for(int i = 0; i < length; i++){
-                yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
-                yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                if(indexToForceMap.isEmpty() || !indexToForceMap.containsKey(i)){
+                    yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
+                    yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                }
+                else{
+                    if(indexToRangeMap.containsKey(i) && indexToForceMap.get(i)){
+                        yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
+                        yPlotRange.add(indexToRangeMap.get(i));
+                    }
+                }
             }
         }
         else{
             for(int i = 0; i < length; i++){
-                yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
-                yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                if(indexToForceMap.isEmpty() || !indexToForceMap.containsKey(i)){
+                    yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                    yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                }
+                else{
+                    if(indexToRangeMap.containsKey(i) && indexToForceMap.get(i)){
+                        yPlotRange.set(i,indexToRangeMap.get(i));
+                    }
+                }
             }
         }
     }
