@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
-import static org.epics.util.text.StringUtil.DOUBLE_REGEX;
+import static org.epics.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
 
 /**
  * Utility class to parse CSV text. The parser is thread safe: it includes an
@@ -82,7 +82,7 @@ public class CsvParser {
     
     
     private static final Pattern pQuote = Pattern.compile("\"\"");
-    private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX);
+    private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX_WITH_NAN);
     
     public static final CsvParser AUTOMATIC = new CsvParser(",;\t ", Header.AUTO);
 
@@ -439,7 +439,7 @@ public class CsvParser {
                 ")";
         Matcher mMain = Pattern.compile(regex).matcher("");
         Matcher mQuote = Pattern.compile("\"\"").matcher("");
-        Matcher mDouble = Pattern.compile(DOUBLE_REGEX).matcher("");
+        Matcher mDouble = Pattern.compile(DOUBLE_REGEX_WITH_NAN).matcher("");
         
         List<Object> values = new ArrayList<>();
         mMain.reset(line);
