@@ -21,10 +21,8 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     
     /**
      * Creates a profiler for the intensity graph.
-     * Set up to save a message about the data (x size and y size comment).
      */
     public ProfileIntensityGraph2D(){
-        this.createDatasetMessage();
     }
     
     /**
@@ -66,6 +64,8 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         
         //Updates to make accurate representation of num data
         super.setNumDataPoints(numXData * numYData);
+        
+        this.createDatasetMessage();
     }
     
     /**
@@ -74,6 +74,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
      */
     public void setNumXDataPoints(int numXData){
         this.numXData = numXData;
+        this.createDatasetMessage();
     }
     
     /**
@@ -82,6 +83,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
      */    
     public void setNumYDataPoints(int numYData){
         this.numYData = numYData;
+        this.createDatasetMessage();
     }
     
     /**

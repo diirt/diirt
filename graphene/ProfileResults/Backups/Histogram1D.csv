@@ -1,3 +1,0 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message"
-"Histogram1D","2014/02/04 17:19:13",1.3054724612111337,12103,15275,10000,640,480,"","","Initialization"
-"Histogram1D","2014/02/06 15:15:20",11.714051812388325,18815,1679,1000000,600,400,"","asbarber","Max Dataset Size Test"
