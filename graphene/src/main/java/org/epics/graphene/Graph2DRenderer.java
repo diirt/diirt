@@ -674,11 +674,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
         
-        for (int i = 0; i < end; i++) {
+        for (int i = start; i < end; i++) {
             // Do I have a current value?
             if (!java.lang.Double.isNaN(scaledY[i])) {
                 // Do I have a previous value?
-                if (i != 0 && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                if (i != start && !java.lang.Double.isNaN(scaledY[i - 1])) {
                     // Here I have both the previous value and the current value
                     line.lineTo(scaledX[i], scaledY[i]);
                 } else {
@@ -695,19 +695,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                 }
             }
         }
-        /*for(int i = 0; i < end; i++){ 
-            if(i == 0 || java.lang.Double.isNaN(scaledY[i - 1]))
-                line.moveTo(scaledX[i], scaledY[i]);
-            else if(!java.lang.Double.isNaN(scaledY[i]))
-                line.lineTo(scaledX[i], scaledY[i]);
-            else if(!java.lang.Double.isNaN(scaledY[i - 1])){
-                line.moveTo(scaledX[i - 1] - 1, scaledY[i - 1]);
-                line.lineTo(scaledX[i - 1] + 1, scaledY[i - 1 ]);
-            }
-            else
-                line.lineTo(scaledX[i], scaledY[i]);
-        }
-         */
         return line;
     }
     
