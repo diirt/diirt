@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.epics.graphene.IntensityGraph2DRenderer;
 
 /**
  *
@@ -18,7 +19,7 @@ public class TestCaseProfiler {
     public static void main(String[] args){
         TestCaseProfiler profiler = new TestCaseProfiler();
         
-        profiler.maxDataset2DCell();
+        profiler.intensityGraphStrategies();
         
         //profiler.invokeAll()
     }
@@ -49,7 +50,7 @@ public class TestCaseProfiler {
         }        
     }
     
-    public void maxDataset1D(){        
+    public void maxDataset1D(){  
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         
         graphs.add(new ProfileHistogram1D());
@@ -138,7 +139,65 @@ public class TestCaseProfiler {
     }
     
     public void intensityGraphStrategies(){
-        ProfileIntensityGraph2D profiler = new ProfileIntensityGraph2D();
+        //Index 0:  Linear Boundaries
+        //Index 1:  Non Linear Boundaries
+        ProfileIntensityGraph2D profilers[] = new ProfileIntensityGraph2D[2];
         
+        //Setup Profilers
+        profilers[0] = new ProfileIntensityGraph2D(){
+            @Override
+            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
+                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
+                
+                renderer.setLinearBoundaries(true);
+                
+                return renderer;
+            }
+        };
+        profilers[0].getSaveSettings().setSaveMessage("Using Linear Boundaries");
+        
+        profilers[1] = new ProfileIntensityGraph2D(){
+            @Override
+            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
+                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
+                
+                renderer.setLinearBoundaries(false);
+                
+                return renderer;
+            }
+        };  
+        profilers[1].getSaveSettings().setSaveMessage("Not Using Linear Boundaries");
+        
+        //Apply To Both, One Time
+        for (ProfileIntensityGraph2D profile : profilers){
+            profile.getSaveSettings().setAuthorMessage("asbarber");
+        }
+        
+        
+        //Test Parameters
+        int datasetSizes[] = {10, 100, 1000};
+        Resolution resolutions[] = {Resolution.RESOLUTION_320x240, Resolution.RESOLUTION_1024x768};
+        int testTime = 20;
+        
+        //Multiple Test Runs        
+        for (Resolution resolution: resolutions){
+            for (int datasetSize : datasetSizes){
+                
+                for (ProfileIntensityGraph2D profile : profilers){
+                    //Updates
+                    profile.setNumXDataPoints(datasetSize);
+                    profile.setNumYDataPoints(datasetSize);
+                    
+                    profile.setImageWidth(resolution.getWidth());
+                    profile.setImageHeight(resolution.getHeight());
+                    
+                    profile.setTestTime(testTime);
+                    
+                    profile.profile();
+                    profile.saveStatistics();
+                }
+                
+            }
+        }
     }
 }

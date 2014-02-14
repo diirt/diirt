@@ -279,6 +279,23 @@ public class MultiLevelProfiler{
                                   "Table" + 
                                   ".csv");
        
+       //Prevent File Over Write
+       int tmpDuplicate = 1;       
+       while (outputFile.exists()){
+            outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                  date + 
+                                  "-" +
+                                  profiler.getGraphTitle() +
+                                  "-" +
+                                  "Table" + 
+                                  ".csv" +
+                                  "." +
+                                  tmpDuplicate);
+            
+            tmpDuplicate++;
+       }
+       
+       //Saves File Data
         try {
             outputFile.createNewFile();
             
@@ -313,7 +330,25 @@ public class MultiLevelProfiler{
                                   "Table" + 
                                   ".out" + 
                                   ".csv");     
-                                 
+       
+       //Prevent File Over Write
+       int tmpDuplicate = 1;       
+       while (outputFile.exists()){
+            outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
+                                  date + 
+                                  "-" +
+                                  profiler.getGraphTitle() +
+                                  "-" +
+                                  "Table" + 
+                                  ".out" + 
+                                  ".csv" +
+                                  "." +
+                                  tmpDuplicate);
+            
+            tmpDuplicate++;
+       }
+       
+       //Saves File Data
        try {
            outputFile.createNewFile();
        

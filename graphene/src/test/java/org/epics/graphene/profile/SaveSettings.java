@@ -16,7 +16,7 @@ public class SaveSettings {
     public static final String QUOTE = "\"";
     public static final String DELIM = ",";
     
-    public String datasetMessage = "",
+    private String datasetMessage = "",
                   saveMessage = "",
                   authorMessage = "";
     
