@@ -67,23 +67,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     public static void tearDownClass() throws Exception {
         largeDataset = null;
     }
-    //public LineGraph2DRendererTest(){
-    //  super("line2D");
-    //}
-    /*public Image ImageDraw(Graph2DRendererUpdate update{
-     double[] dataSet = new double[100];
-     for(int i = 0; i < 50; i++)
-     dataSet[i] = i;
-     for(int i = 50; i < 100; i++)
-     dataSet[i] = 100 - i;
-     Point2DDataset data = Point2DDatasets.lineData(dataSet);
-     BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-     LineGraph2DRenderer renderer = new LineGraph2DRenderer(300,200);
-     renderer.update(new LineGraph2DREndererUpdate().interpolation(InterpolationScheme.LINEAR));
-     Graphics2D graphics = (Graphics2D) image.getGraphics();
-     renderer.draw(graphics, data);
-     return image;
-     }*/
+   
 
     @Test
     public void testOneDataPoint() throws Exception {
@@ -148,20 +132,32 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
 
     @Test
-    public void testOneNaNLinear() throws Exception {
-        double[] dataSet = {1, 2, 3, Double.NaN, 5};
+    public void testEndsNaNLinear() throws Exception {
+        double[] dataSet = {Double.NaN, 2, 5, Double.NaN};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("lineGraphOneNanLinear", image);
+        ImageAssert.compareImages("lineGraphEndsNaNLinear", image);
     }
 
     @Test
-    public void testMultipleNaNLinear() throws Exception {
+    public void testConsecutiveNaNLinear() throws Exception {
         double[] dataSet = {1, Double.NaN, Double.NaN, 10, 20};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphConsecutiveNaNLinear", image);
+    }
+    
+    @Test
+    public void testMultipleNaNLinear() throws Exception{
+        double[] dataSet = {1, Double.NaN, 10, Double.NaN, 20};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
@@ -196,6 +192,29 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
 
     @Test
+    public void testOneValueCubic() throws Exception{
+    double[] dataSet = {5};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphOneValueCubic", image);
+    }
+    
+    @Test
+    public void testTwoValuesCubic() throws Exception{
+    double[] dataSet = {125, 216};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphTwoValuesCubic", image);
+    }
+    @Test
     public void testOneNaNCubic() throws Exception {
         double[] dataSet = {1, 8, 27, Double.NaN, 125, 216};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
@@ -219,6 +238,17 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         ImageAssert.compareImages("lineGraphMultipleNaNCubic", image);
     }
 
+    @Test
+    public void testEndsNaNCubic() throws Exception {
+        double[] dataSet = {Double.NaN, 125, 200, Double.NaN};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphEndsNaNCubic", image);
+    }
     @Test
     public void testLinearInterpolation() throws Exception {
         double[] dataSet = new double[100];
