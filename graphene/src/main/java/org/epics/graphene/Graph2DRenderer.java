@@ -673,25 +673,26 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
-        line.moveTo(scaledX[start], scaledY[start]);
         
-        for(int i = 0; i < end; i++){
-            if(!java.lang.Double.isNaN(scaledY[i])){
-                if(i == 0 || java.lang.Double.isNaN(scaledY[i - 1])){
-                    if(i == end - 1){
-                      line.moveTo(scaledX[i] - 1, scaledY[i]);
-                      line.lineTo(scaledX[i], scaledY[i]);
-                      continue;
-                   }
-                    if(java.lang.Double.isNaN(scaledY[i + 1])){
+        for (int i = 0; i < end; i++) {
+            // Do I have a current value?
+            if (!java.lang.Double.isNaN(scaledY[i])) {
+                // Do I have a previous value?
+                if (i != 0 && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                    // Here I have both the previous value and the current value
+                    line.lineTo(scaledX[i], scaledY[i]);
+                } else {
+                    // Don't have a previous value
+                    // De I have a next value?
+                    if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        // There is no value before, but there is a value after
+                        line.moveTo(scaledX[i], scaledY[i]);
+                    } else {
+                        // There is no value either before or after
                         line.moveTo(scaledX[i] - 1, scaledY[i]);
                         line.lineTo(scaledX[i] + 1, scaledY[i]);
+                    }
                 }
-                    else
-                        line.moveTo(scaledX[i], scaledY[i]);
-                }
-            else
-               line.lineTo(scaledX[i], scaledY[i]);
             }
         }
         /*for(int i = 0; i < end; i++){ 
