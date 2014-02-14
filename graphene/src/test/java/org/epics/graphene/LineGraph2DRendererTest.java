@@ -237,7 +237,45 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineGraphMultipleNaNCubic", image);
     }
-
+    
+    @Test
+    public void testConsecNaNCubic() throws Exception {
+        double[] dataSet = {Double.NaN, Double. NaN, 2, 5, 9, 15};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphConsecNaNCubic", image);
+    }
+    
+    @Test
+    public void testRandomNaNCubic() throws Exception {
+        double[] dataSet = {Double.NaN, 5, Double. NaN, 2, 3, 5, Double.NaN};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphRandomNaNCubic", image);
+    }
+    
+    @Test
+    public void testNormalCubic() throws Exception {
+        double[] dataSet = new double[10];
+        for(int i = 0;  i < 10; i++)
+            dataSet[i] = i * i;
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphNormalCubic", image);
+    }
+    
     @Test
     public void testEndsNaNCubic() throws Exception {
         double[] dataSet = {Double.NaN, 125, 200, Double.NaN};
