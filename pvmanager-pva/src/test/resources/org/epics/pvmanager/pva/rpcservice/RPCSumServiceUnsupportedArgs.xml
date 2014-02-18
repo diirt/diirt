@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+  <channelName>testChannel</channelName>
+  <methods>
+    <method name="sumFloat" description="sum two floats">
+      <argument name="a" description="first number" type="VFloat"/>
+      <argument name="b" description="second number" type="VFloat"/>
+      <result name="c" description="float result" type="VFloat"/>
+    </method>
+  </methods>
+</pvAccessRPCService>

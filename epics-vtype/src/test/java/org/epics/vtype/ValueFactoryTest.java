@@ -16,7 +16,6 @@ import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
-import org.epics.util.array.ListNumbers;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -98,6 +97,15 @@ public class ValueFactoryTest {
         assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
     }
     
+    @Test
+    public void newVFloat1() {
+        VFloat value = newVFloat(1.0f, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        assertThat(value.getValue(), equalTo(1.0f));
+        assertThat(value.getAlarmName(), equalTo("LOW"));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(value.toString(), equalTo("VFloat[1.0, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+    }
+
     @Test
     public void newVFloatArray1() {
         VFloatArray value = newVFloatArray(new ArrayFloat(3.125f, 6.25f, 1.375f, 0.0f, 1.0f), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());

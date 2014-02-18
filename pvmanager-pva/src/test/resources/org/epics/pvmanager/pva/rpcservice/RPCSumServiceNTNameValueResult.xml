@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methods>
+        <method name="createNTNameValue" description="create NTNameValue with different types">
+            <argument name="arrType" description="type of values in NTNameValue" type="VString"/>
+            <result standalone="true" description="nameValue result" type="VTable"/>
+        </method>
+    </methods>
+</pvAccessRPCService>
