@@ -49,20 +49,8 @@ h5 {
   color: #900;
   font-size: normal;
 }
-#breadcrumbs {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-  background-color: #92D050;
-}
-#leftColumn {
-  margin: 10px 0 0 5px;
-  border: 1px solid #999;
-  background-color: #fff;
-}
-#navcolumn h5 {
-  border-bottom: 1px solid #000;
-  padding-top: 2px;
-  color: #000;
+ul.breadcrumb {
+  background-color: #DDFFBB;
 }
 
 table.bodyTable th {
