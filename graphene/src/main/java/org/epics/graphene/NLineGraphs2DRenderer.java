@@ -75,14 +75,21 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private List<Double> yPlotCoordHeight;
     private double xPlotCoordWidth;
     
+    private boolean stretch = false;
+    
     private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
     private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
     
     public void update(NLineGraphs2DRendererUpdate update) {
         super.update(update);
         if(update.getImageHeight() != null){
-            for(int i = 0; i < graphBoundaries.size(); i++){
-                graphBoundaries.set(i, getImageHeight() * graphBoundaryRatios.get(i));
+            if(stretch){
+                for(int i = 0; i < graphBoundaries.size(); i++){
+                    graphBoundaries.set(i, getImageHeight() * graphBoundaryRatios.get(i));
+                }
+            }
+            if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= 200){
+                numGraphs+=1;
             }
         }
         if(update.getGraphBoundaries() != null){
@@ -128,9 +135,10 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         for(int i = 0; i < data.size(); i++){
             dataRangesY.add(data.get(i).getYStatistics());
         }
-        addGraphs(data);
+        getNumGraphs(data);
         calculateRanges(dataRangesX,dataRangesY,numGraphs);
         calculateLabels();
+        setGraphBoundaries(data);
         calculateGraphArea();        
         drawBackground();
         drawGraphArea();
@@ -156,23 +164,39 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         return new NLineGraphs2DRendererUpdate();
     }
     
-
-    private void addGraphs(List<Point2DDataset> data){
+    private void getNumGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             numGraphs = data.size();
             while((double)getImageHeight()/numGraphs - marginBetweenGraphs < 100){
                 numGraphs-=1;
             }
+        }
+        
+        //if all the graphs are being drawn, they can be stretched along with the image.
+        stretch = numGraphs == data.size();
+    }
+
+    private void setGraphBoundaries(List<Point2DDataset> data){
+        if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             graphBoundaries = new ArrayList<Double>();
             for(double i = 0; i <= numGraphs; i++){
-                graphBoundaries.add(i/numGraphs*(getImageHeight()));
+                if(stretch){
+                    graphBoundaries.add(i/numGraphs*(getImageHeight()));
+                }
+                else{
+                    graphBoundaries.add(i*100);
+                }
             }
             graphBoundaryRatios = new ArrayList<Double>();
             for(double i = 0; i <= numGraphs; i++){
-                graphBoundaryRatios.add(i/numGraphs);
+                if(stretch){
+                    graphBoundaryRatios.add(i/numGraphs);
+                }
+                else{
+                    graphBoundaryRatios.add((i*100)/getImageHeight());
+                }
             }
-        }
-        
+        } 
     }
     
     protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {

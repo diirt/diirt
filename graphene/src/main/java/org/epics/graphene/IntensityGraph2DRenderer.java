@@ -81,7 +81,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
-    private AxisRange zAxisRange = AxisRanges.integrated();
+    private AxisRange zAxisRange = AxisRanges.relative();
     private ValueScale zValueScale = ValueScales.linearScale();
     private double [] xSum,ySum;
     protected ListDouble zReferenceCoords;
@@ -264,7 +264,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(drawLegend && legendWidth>0){
             /*dataList is made by splitting the aggregated range of the z(color) data into a list of the
             same length as the the height of the graph in pixels.*/
-            ListNumber dataList = ListNumbers.linearListFromRange(zAggregatedRange.getMinimum().doubleValue(),zAggregatedRange.getMaximum().doubleValue(),(int)yHeightTotal);
+            ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum().doubleValue(),zPlotRange.getMaximum().doubleValue(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth);
