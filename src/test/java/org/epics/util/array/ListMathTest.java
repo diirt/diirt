@@ -4,6 +4,7 @@
  */
 package org.epics.util.array;
 
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -52,5 +53,12 @@ public class ListMathTest {
         ListLong limit = ListMath.limit(array1, 1, 5);
         ListLong reference = new ArrayLong(1, 2, 3, 4);
         assertThat(limit, equalTo(reference));
+    }
+
+    @Test
+    public void dft1() {
+        ListDouble x = new ArrayDouble(0, 1.0, 0, -1.0, 0, 1, 0, -1);
+        ListDouble y = new ArrayDouble(0, 0, 0, 0, 0, 0, 0, 0);
+        List<ListNumber> res = ListMath.dft(x, y);
     }
 }
