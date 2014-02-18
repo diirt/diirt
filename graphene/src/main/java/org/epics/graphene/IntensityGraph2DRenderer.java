@@ -88,6 +88,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
+
     
     // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
     private boolean linearBoundaries = true;
@@ -572,6 +573,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
      * @param zDataRange current data range.
      */
     protected void calculateZRange(Range zDataRange) {
+       
         zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
         zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
     }
@@ -671,6 +673,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
     }
     
+ 
     /*protected final String formatSingleNumber(int number){
         
     }*/

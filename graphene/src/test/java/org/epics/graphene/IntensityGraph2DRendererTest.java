@@ -298,6 +298,8 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ColorScheme.JET);
+        update.xAxisRange(AxisRanges.relative());
+        update.yAxisRange(AxisRanges.relative());
         renderer.update(update);
         renderer.draw(g, data);
         data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
