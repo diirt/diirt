@@ -317,6 +317,14 @@ public class MultiLevelProfiler{
         saveAdditionalInfo();
     }
     
+    /**
+     * Creates a table (.out.CSV format) to display the save settings,
+     * such as author, dataset message, save message,
+     * as well as information about the physical computer profiling.
+     * <p>
+     * Saves the CSV file to the same directory as general profile results,
+     * with the specific profile graph type as well as the <b>date</b>.
+     */
     private void saveAdditionalInfo(){
        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
        String date = format.format(new Date());
@@ -379,18 +387,61 @@ public class MultiLevelProfiler{
        }
     }
 
+    /**
+     * Performed after the call to <code>run</code> but prior to actual
+     * image rendering.  
+     * <p>
+     * Default behavior will display the estimated time based on the
+     * number of resolutions, number of dataset sizes, and the test time.
+     * 
+     * @param estimatedTime  estimated time to profile
+     * 
+     * @see #run()
+     * @see #setDisplayTimeEstimate(boolean)  
+     */
     public void processTimeWarning(int estimatedTime){
         if (displayTimeWarning){
             System.out.println("The estimated run time is " + estimatedTime + " seconds.");
         }
     }
     
+    /**
+     * Performed every iteration of profiling and is the action undertaken
+     * before knowing the statistics about the profile.
+     * <p>
+     * Default behavior is to print the resolution and dataset
+     * size to the console.
+     * Note that printing only occurs if <code>printResults</code> is true.
+     * <p>
+     * Override this to provide custom behaviors.
+     * 
+     * @param resolution resolution about to be profiled (image width, height)
+     * @param datasetSize size of data about to be profiled
+     * 
+     * @see #setPrintResults(boolean) 
+     */    
     public void processPreResult(Resolution resolution, int datasetSize){
         if (printResults){
             System.out.print(resolution + ": " + datasetSize + ": " );
         }
     }
     
+    /**
+     * Performed every iteration of profiling and is the action undertaken
+     * after knowing the statistics about the profile.
+     * <p>
+     * Default behavior is to print the average time to the console.
+     * Note that printing only occurs if <code>printResults</code>
+     * is true.
+     * <p>
+     * Override this to provide custom behaviors.
+     * 
+     * @param resolution resolution just profiled (image width, height)
+     * @param datasetSize size of data just profiled
+     * @param stats results of the profiling
+     * 
+     * @see #setPrintResults(boolean) 
+     */
     public void processResult(Resolution resolution, int datasetSize, Statistics stats){
         if (printResults){
             System.out.println(stats.getAverageTime() + "ms");
@@ -453,11 +504,35 @@ public class MultiLevelProfiler{
         this.displayTimeWarning = show;
     }
     
+    /**
+     * Sets whether to print the results to console while profiling.
+     * Default printing behavior shows the resolution and dataset size being
+     * profiled, as well as the average time for the profile.
+     * 
+     * @param show true to print the results
+     *             false to not print the results
+     * 
+     * @see #processPreResult(org.epics.graphene.profile.Resolution, int) 
+     * @see #processResult(org.epics.graphene.profile.Resolution, int, org.epics.graphene.profile.Statistics) 
+     */
     public void setPrintResults(boolean show){
         this.printResults = show;
     }
     
     //Save Parameters
+    
+    /**
+     * Gets the settings to be saved to the output file
+     * for a profile.
+     * Some settings include:
+     * <ul>
+     *      <li>Author</li>
+     *      <li>Dataset message</li>
+     *      <li>Save message</li>
+     * </ul>
+     * @return the messages about settings information to
+     *         be saved to an output file
+     */
     public SaveSettings getSaveSettings(){
         return this.saveSettings;
     }
