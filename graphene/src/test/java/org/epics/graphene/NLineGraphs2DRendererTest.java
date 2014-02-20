@@ -63,7 +63,7 @@ public class NLineGraphs2DRendererTest {
      */    
     @Test
     public void EvenSplitTest() throws Exception {
-        double [][] initialData= new double [10][100]; 
+        double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
@@ -72,7 +72,7 @@ public class NLineGraphs2DRendererTest {
 
         //Creates a sparkline graph
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 2; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
@@ -133,7 +133,7 @@ public class NLineGraphs2DRendererTest {
 
     @Test
     public void UnevenSplitTest() throws Exception {
-        double [][] initialData= new double [9][100]; 
+        double [][] initialData= new double [3][100]; 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
@@ -142,7 +142,7 @@ public class NLineGraphs2DRendererTest {
 
         //Creates a sparkline graph
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < 3; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
@@ -157,18 +157,15 @@ public class NLineGraphs2DRendererTest {
     
     @Test
     public void TooManyGraphsTest() throws Exception {
-        double [][] initialData= new double [120][100]; 
-        for(int i = 0; i < 120; i++){
+        double [][] initialData= new double [5][100]; 
+        for(int i = 0; i < 5; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
             }
         }
-
-                     
-
-        //Creates a sparkline graph
+        
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
-        for(int i = 0; i < 120; i++){
+        for(int i = 0; i < 5; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
         }
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
@@ -178,6 +175,34 @@ public class NLineGraphs2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("nlinegraphs2D.TooManyGraphs", image);
+    }
+    
+    @Test
+    public void TooManyGraphsUpdateTest() throws Exception {
+        double [][] initialData= new double [5][100]; 
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+                     
+
+        //Creates a sparkline graph
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 5; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 550, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        NLineGraphs2DRendererUpdate update = new NLineGraphs2DRendererUpdate();
+        update.imageHeight(550);
+        renderer.update(update);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("nlinegraphs2D.TooManyGraphsUpdate", image);
     }
     
     @Test

@@ -667,42 +667,51 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         return line;
     }
    
-    private static Path2D.Double linearInterpolation(ScaledData scaledData) {
+    private static Path2D.Double linearInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
-        line.moveTo(scaledX[start], scaledY[start]);
-        for (int i = 1; i < end; i++) {
-            if(i+1<end){
-                if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
-                    line.moveTo(scaledX[i]-1, scaledY[i]);
-                    line.lineTo(scaledX[i]+1, scaledY[i]);
-                }
-                else if(java.lang.Double.isNaN(scaledY[i])){
-                    line.moveTo(scaledX[i+1], scaledY[i + 1]);
-                }
-                else
-                    if(!java.lang.Double.isNaN(scaledY[i-1]))
-                        line.lineTo(scaledX[i], scaledY[i]);
-                }
-            else{
-                if(!java.lang.Double.isNaN(scaledY[i]))
+        
+        for (int i = start; i < end; i++) {
+            // Do I have a current value?
+            if (!java.lang.Double.isNaN(scaledY[i])) {
+                // Do I have a previous value?
+                if (i != start && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                    // Here I have both the previous value and the current value
                     line.lineTo(scaledX[i], scaledY[i]);
+                } else {
+                    // Don't have a previous value
+                    // De I have a next value?
+                    if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        // There is no value before, but there is a value after
+                        line.moveTo(scaledX[i], scaledY[i]);
+                    } else {
+                        // There is no value either before or after
+                        line.moveTo(scaledX[i] - 1, scaledY[i]);
+                        line.lineTo(scaledX[i] + 1, scaledY[i]);
+                    }
+                }
             }
         }
         return line;
     }
-    //Does not test for NaN like Nearest Neighbor Interpolation?
-    private static Path2D.Double cubicInterpolation(ScaledData scaledData) {
+    
+    private static Path2D.Double cubicInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double path = new Path2D.Double();
         path.moveTo(scaledX[start], scaledY[start]);
+        if(scaledData.end == 1){
+            path.lineTo(scaledX[start] + 1, scaledY[start]);
+            return path;
+        }
+        
         for (int i = 1; i < end; i++) {
+            
             // Extract 4 points (take care of boundaries)
             double y1 = scaledY[i - 1];
             double y2 = scaledY[i];
@@ -710,23 +719,35 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             double x2 = scaledX[i];
             double y0;
             double x0;
-            if (i > 1) {
-                y0 = scaledY[i - 2];
-                x0 = scaledX[i - 2];
-            } else {
-                y0 = y1 - (y2 - y1) / 2;
-                x0 = x1 - (x2 - x1);
-            }
             double y3;
             double x3;
-            if (i < end - 1) {
+          
+            if(i > 1){
+                y0 = scaledY[i - 2];
+                x0 = scaledX[i - 2];
+            }
+            else{
+                y0 = y1 - (y2 - y1) / 2;
+                x0 = x1 - (x2 - x1);   
+            }
+           
+            if (i < end - 1){
                 y3 = scaledY[i + 1];
                 x3 = scaledX[i + 1];
-            } else {
+            } 
+            else{
                 y3 = y2 + (y2 - y1) / 2;
                 x3 = x2 + (x2 - x1) / 2;
             }
-
+            
+          /* if (!(i  < end - 1) || java.lang.Double.isNaN(scaledY[i + 1])) {
+                y3 = y2 + (y2 - y1) / 2;
+                x3 = x2 + (x2 - x1) / 2;
+            }
+            else{
+                y3 = scaledY[i + 1];
+                x3 = scaledX[i + 1];
+            }*/
             // Convert to Bezier
             double bx0 = x1;
             double by0 = y1;
@@ -739,7 +760,28 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             double bx2 = bx3 - (x3 - x1) / 6.0;
             double by2 = (bx2 - bx3) * bdy3 + by3;
             
-            if(i+1 < end){
+            if(!java.lang.Double.isNaN(scaledY[i])){
+                if(java.lang.Double.isNaN(scaledY[i - 1])){
+                    if(i == end - 1){
+                      path.moveTo(scaledX[i] - 1, scaledY[i]);
+                      path.lineTo(scaledX[i], scaledY[i]);
+                      continue;
+                   }
+                    if(java.lang.Double.isNaN(scaledY[i + 1])){
+                        path.moveTo(scaledX[i] - 1, scaledY[i]);
+                        path.lineTo(scaledX[i] + 1, scaledY[i]);
+                }
+                    else
+                        path.moveTo(scaledX[i], scaledY[i]);
+                }
+                else{
+               if(!java.lang.Double.isNaN(scaledY[i -1]) && scaledData.end == 2)
+                   path.lineTo(scaledX[i], scaledY[i]);
+               else
+                   path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+                }
+                }            
+            /*if(i+1 < end){
                 if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
                     path.moveTo(scaledX[i]-1, scaledY[i]);
                     path.lineTo(scaledX[i]+1, scaledY[i]);
@@ -755,6 +797,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                     path.curveTo(bx1, by1, bx2, by2, bx3, by3);
             }
         }
+        return path;
+        */
+    }
         return path;
     }
     
@@ -831,7 +876,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
     }
     
-    /**
+    /*
      * Scale the x value to the graph area.
      * 
      * @param value the x value
