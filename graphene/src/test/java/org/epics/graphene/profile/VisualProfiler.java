@@ -66,6 +66,7 @@ public class VisualProfiler extends JFrame{
                                                         "ScatterGraph2D",
                                                         "SparklineGraph2D"
                                                        };
+    private SwingWorker thread;
     
     private JPanel mainPanel;
     private JTabbedPane tabs;
@@ -139,12 +140,15 @@ public class VisualProfiler extends JFrame{
     private JLabel             lblTime;
     private JTextField         txtTime;
     
+    private JButton            btnCancelThread;
+    
     
     public VisualProfiler(){
         super("Visual Profiler");
                 
         initFrame();
         initComponents();
+        initMnemonics();
         loadLists();
         addListeners();        
         addComponents();
@@ -187,6 +191,7 @@ public class VisualProfiler extends JFrame{
         //Tab: Single Profile
         //------------
         lblDatasetSize = new JLabel("Number of Data Points: ");
+        lblDatasetSize.setToolTipText("Format for IntensityGraph2D: 1000x1000");        
         txtDatasetSize = new JTextField("10000");
         
         lblImageWidth = new JLabel("Image Width: ");
@@ -251,6 +256,26 @@ public class VisualProfiler extends JFrame{
         lblTime = new JLabel("Timer:");
         txtTime = new JTextField("00:00:00");
         txtTime.setEditable(false);
+        btnCancelThread = new JButton("Cancel");
+        btnCancelThread.setEnabled(false);
+    }
+    private void initMnemonics(){
+       this.btnSingleProfile.setMnemonic('P');
+       this.btnSingleProfileAll.setMnemonic('A');
+       
+       this.btnStart.setMnemonic('S');
+       
+       //this.btnCompareTables.setMnemonic('');
+       //this.btnCompareTables1D.setMnemonic('');
+       
+       this.btnTreeOpenFile.setMnemonic('O');
+       this.btnTreeDeleteFile.setMnemonic('D');
+       this.btnTreeRefresh.setMnemonic('R');
+       
+       this.btnSaveLog.setMnemonic('L');
+       this.btnClearLog.setMnemonic('C');
+       this.btnCancelThread.setMnemonic('T');
+       
     }
     private void loadLists(){
         modelResolutions = new DefaultListModel<>();
@@ -352,7 +377,14 @@ public class VisualProfiler extends JFrame{
            }
            
        });
-       
+       this.btnCancelThread.addActionListener(new ActionListener(){
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               VisualProfiler.this.cancelThread();
+           }
+           
+       });
        
        this.tabs.addChangeListener(new ChangeListener(){
 
@@ -464,13 +496,14 @@ public class VisualProfiler extends JFrame{
         consolePanel.setBorder(BorderFactory.createLineBorder(Color.black));   
         
             JPanel consoleBottom = new JPanel();
-            consoleBottom.setLayout(new GridLayout(2, 2));
+            consoleBottom.setLayout(new GridLayout(3, 2));
                 consoleBottom.add(blankPanel(this.btnSaveLog));
                 consoleBottom.add(blankPanel(this.btnClearLog));
             
                 consoleBottom.add(blankPanel(this.lblTime));
                 consoleBottom.add(blankPanel(this.txtTime));
-            
+                
+                consoleBottom.add(blankPanel(this.btnCancelThread));
             
             consolePanel.add(lblConsole, BorderLayout.NORTH);
             consolePanel.add(new JScrollPane(console), BorderLayout.CENTER);
@@ -490,8 +523,6 @@ public class VisualProfiler extends JFrame{
         mainPanel.add(consolePanel, BorderLayout.SOUTH);
                 
         super.add(mainPanel);
-        
-        
     }
     private void finalizeFrame(){
         super.setVisible(true);
@@ -540,7 +571,9 @@ public class VisualProfiler extends JFrame{
         String strImageHeight = txtImageHeight.getText();
         String strAuthor = this.txtAuthorMessage.getText();
         
-        int datasetSize;
+        int datasetSize = -1;
+        int xSize = -1,
+            ySize = -1;
         int imageWidth;
         int imageHeight;
         String saveMessage = this.txtSaveMessage.getText();
@@ -552,18 +585,47 @@ public class VisualProfiler extends JFrame{
             return;
         }
         
+        
         //Datset Size
-        try{
-            datasetSize = Integer.parseInt(strDatasetSize);
-            
-            if (datasetSize <= 0){
-                throw new NumberFormatException();
+            //Checks if 2D in form of NUMBERxNUMBER
+            if (strDatasetSize.toLowerCase().contains("x")){
+                try{
+                    //Index of "x"
+                    int splitIndex = strDatasetSize.toLowerCase().indexOf("x");
+
+                    //Before the "x"
+                    xSize = Integer.parseInt(strDatasetSize.substring(0, splitIndex));
+
+                    //After the "x"
+                    ySize = Integer.parseInt(strDatasetSize.substring(splitIndex+1));
+
+                    //Validates
+                    if (xSize <= 0 || ySize <= 0){
+                        throw new NumberFormatException();
+                    }
+                }
+                catch (NumberFormatException e){
+                    String msg = "Enter positive non-zero integers separated by an \"x\", ie- 1000x1000";
+                    JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+                    return;            
+                }                      
             }
-        }
-        catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the dataset size.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;            
-        }
+            //1D data
+            else{
+                try{
+                    datasetSize = Integer.parseInt(strDatasetSize);
+
+                    //Validates
+                    if (datasetSize <= 0){
+                        throw new NumberFormatException();
+                    }
+                }
+                catch (NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the dataset size.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;            
+                }                
+            }
+
         
         //Image Width
         try{
@@ -591,18 +653,24 @@ public class VisualProfiler extends JFrame{
             return;            
         }   
         
-        //Applies setting changes
-        profiler.setNumDataPoints(datasetSize);
+        //Applies setting changes        
+        if ((profiler instanceof ProfileIntensityGraph2D) && xSize > 0 && ySize > 0){
+            ((ProfileIntensityGraph2D) profiler).setNumXDataPoints(xSize);
+            ((ProfileIntensityGraph2D) profiler).setNumYDataPoints(ySize);
+        }
+        else{
+            profiler.setNumDataPoints(datasetSize);        
+        }
         profiler.setImageWidth(imageWidth);
         profiler.setImageHeight(imageHeight);
         profiler.getSaveSettings().setSaveMessage(saveMessage);
         profiler.getSaveSettings().setAuthorMessage(strAuthor);
         
-        SwingWorker worker = new SwingWorker<Object, String>(){
-
+        SwingWorker worker = new SwingWorker<Object, String>(){            
             @Override
             protected Object doInBackground() throws Exception {
                 setEnabledActions(false);
+                threadStarted(this);
                 
                 ///Begin message
                 publish("--------\n");
@@ -630,6 +698,7 @@ public class VisualProfiler extends JFrame{
                 publish("--------\n");
                 
                 setEnabledActions(true);
+                threadFinished();
                 
                 return null;
             }
@@ -642,7 +711,7 @@ public class VisualProfiler extends JFrame{
                 }
             }            
         };
-        worker.execute();
+        worker.execute();        
     }
     private void singleProfileActionAll(){
         //Get inputs
@@ -762,6 +831,7 @@ public class VisualProfiler extends JFrame{
             @Override
             protected Object doInBackground() throws Exception {
                 setEnabledActions(false);
+                threadStarted(this);
                 
                 for (final ProfileGraph2D profiler: profilers){
                     ///Begin message
@@ -791,7 +861,7 @@ public class VisualProfiler extends JFrame{
                 }
                 
                 setEnabledActions(true);
-
+                threadFinished();
                 return null;
             }
 
@@ -804,6 +874,7 @@ public class VisualProfiler extends JFrame{
             }            
         };
         worker.execute();   
+        
     }
     private void startAction(){
         List<Resolution> resolutions = listResolutions.getSelectedValuesList();
@@ -812,24 +883,26 @@ public class VisualProfiler extends JFrame{
 
         if (!resolutions.isEmpty() && !datasetSizes.isEmpty() && getProfiler() != null){
             ProfilerWorker worker = new ProfilerWorker(profiler, resolutions, datasetSizes);
-            worker.execute();
+            worker.execute();            
         }    
         else{
             JOptionPane.showMessageDialog(null, "Profiling was cancelled due to invalid settings.", "Run Fail", JOptionPane.ERROR_MESSAGE);
-        }
+        }   
     }
     private void compareTablesAction(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
             @Override
             protected Object doInBackground() throws Exception {
-                setEnabledActions(false);                
+                setEnabledActions(false);     
+                threadStarted(this);
                 publish("--------\n");
                 publish("Compare Tables\n");
                 ProfileAnalysis.compareTables2D();   
                 publish("\nComparison completed.\n");
                 publish("--------\n");
-                setEnabledActions(true);                
+                setEnabledActions(true); 
+                threadFinished();
                 return null;
             }
             
@@ -847,7 +920,8 @@ public class VisualProfiler extends JFrame{
 
             @Override
             protected Object doInBackground() throws Exception {
-                setEnabledActions(false);                
+                setEnabledActions(false);        
+                threadStarted(this);
                 publish("--------\n");
                 publish("Comparing Single Profile Tables\n\n");
                 
@@ -858,7 +932,8 @@ public class VisualProfiler extends JFrame{
                 
                 publish("\nComparison completed.\n");
                 publish("--------\n");
-                setEnabledActions(true);                
+                setEnabledActions(true);     
+                threadFinished();
                 return null;
             }
             
@@ -869,14 +944,15 @@ public class VisualProfiler extends JFrame{
                 }
             }
         };
-        worker.execute();        
+        worker.execute();  
     }
     private void openFiles(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
             @Override
             protected Object doInBackground() throws Exception {
-                setEnabledActions(false);                
+                setEnabledActions(false);     
+                threadStarted(this);
                 publish("--------\n");
                 publish("Opening Files\n\n");
                 
@@ -907,8 +983,10 @@ public class VisualProfiler extends JFrame{
                 
                 publish("\nFile operations completed.\n");
                 publish("--------\n");
-                setEnabledActions(true);                
+                setEnabledActions(true);    
+                threadFinished();
                 return null;
+                
             }
             
             @Override
@@ -918,14 +996,16 @@ public class VisualProfiler extends JFrame{
                 }
             }
         };
-        worker.execute();          
+        worker.execute();   
     }
     private void deleteFiles(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
             @Override
             protected Object doInBackground() throws Exception {
-                setEnabledActions(false);                
+                setEnabledActions(false);    
+                threadStarted(this); 
+                
                 publish("--------\n");
                 publish("Opening Files\n\n");
                 
@@ -957,7 +1037,8 @@ public class VisualProfiler extends JFrame{
                 
                 publish("\nFile operations completed.\n");
                 publish("--------\n");
-                setEnabledActions(true);                
+                setEnabledActions(true);  
+                threadFinished();
                 return null;
             }
             
@@ -969,7 +1050,6 @@ public class VisualProfiler extends JFrame{
             }
         };
         worker.execute();     
-        
     }
     private void refresh(){
         this.refresh(false);
@@ -980,7 +1060,8 @@ public class VisualProfiler extends JFrame{
             @Override
             protected Object doInBackground() throws Exception {
                 if (!silent){
-                    setEnabledActions(false);                
+                    setEnabledActions(false);     
+                    threadStarted(this);
                     publish("--------\n");
                     publish("Refreshing File Browser\n");
                 }
@@ -990,7 +1071,8 @@ public class VisualProfiler extends JFrame{
                 if (!silent){
                     publish("Refresh completed.\n");
                     publish("--------\n");
-                    setEnabledActions(true);                
+                    setEnabledActions(true);     
+                    threadFinished();
                 }
 
                 return null;                
@@ -1003,7 +1085,7 @@ public class VisualProfiler extends JFrame{
                 }
             }
         };
-        worker.execute();            
+        worker.execute();  
     }    
     private void saveLog(){
         SwingWorker worker = new SwingWorker<Object, String>(){
@@ -1011,6 +1093,7 @@ public class VisualProfiler extends JFrame{
             @Override
             protected Object doInBackground() throws Exception {
                 setEnabledActions(false);                
+                threadStarted(this);
                 
                 //Where saving occurs
                 saveFile();
@@ -1022,7 +1105,8 @@ public class VisualProfiler extends JFrame{
                 
                 publish("\nSaving completed.\n");
                 publish("--------\n");
-                setEnabledActions(true);                
+                setEnabledActions(true);  
+                threadFinished();
                 return null;
             }
             
@@ -1061,7 +1145,42 @@ public class VisualProfiler extends JFrame{
     private void clearLog(){
         console.setText("");
     }
+    
+    private void threadStarted(SwingWorker worker){
+        if (worker == null){
+            throw new IllegalArgumentException("Must have a non-null thread.");
+        }
+        
+        this.thread = worker;
+        this.btnCancelThread.setEnabled(true);
+    }
+    private void threadFinished(){
+        this.thread = null;
+        this.btnCancelThread.setEnabled(false);
+        
 
+        
+        setEnabledActions(true);
+    }
+    private void cancelThread(){
+        if (this.thread != null){
+            thread.cancel(true);
+            this.btnCancelThread.setEnabled(false);
+            
+            SwingWorker worker = new SwingWorker(){
+
+                @Override
+                protected Object doInBackground() throws Exception {
+                    publish("\nAction Cancelled\n");                                
+                    publish("--------\n");
+                    return null;
+                }
+
+            };
+            worker.execute();            
+        }
+    }
+    
     private void setEnabledActions(boolean enabled){
         this.btnCompareTables.setEnabled(enabled);
         this.btnCompareTables1D.setEnabled(enabled);
@@ -1173,7 +1292,8 @@ public class VisualProfiler extends JFrame{
         private VisualMultiLevelProfiler multiProfiler;
         
         public ProfilerWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
-            setEnabledActions(false);            
+            setEnabledActions(false);        
+            threadStarted(this);
             publish("--------\n");
             publish(profiler.getGraphTitle() + "\n\n");
             
@@ -1194,7 +1314,7 @@ public class VisualProfiler extends JFrame{
             publish("\nProfiling complete." + "\n");
             publish("--------\n");
             setEnabledActions(true);
-            
+            threadFinished();
             return true;
         }
         
@@ -1268,6 +1388,7 @@ public class VisualProfiler extends JFrame{
                String.format(format, second);
                                 
     }
+    
     
     //Static
     

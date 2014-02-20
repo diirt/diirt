@@ -1,2 +1,4 @@
 "Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)"
 "IntensityGraph2D","2014/02/12 21:10:24",9.000752650586122,18762,2218,10000,640,480,"100x100","","Initialization","1.7.0_25",1.762,7.923
+"IntensityGraph2D","2014/02/19 17:53:10",32.99746604180598,19416,598,100000,640,480,"100x1000","asbarber","Test Dataset Size","1.7.0_25",1.762,7.923
+"IntensityGraph2D","2014/02/19 17:54:27",4.575443436606294,4219,1049,2500,640,480,"50x50","asbarber","Test Dataset Size","1.7.0_25",1.762,7.923
