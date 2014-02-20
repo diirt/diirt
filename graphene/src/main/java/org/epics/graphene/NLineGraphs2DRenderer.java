@@ -88,8 +88,11 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                     graphBoundaries.set(i, getImageHeight() * graphBoundaryRatios.get(i));
                 }
             }
-            if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= 200){
+            else if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= 200){
                 numGraphs+=1;
+            }
+            if((double)getImageHeight()/numGraphs - marginBetweenGraphs <= 100){
+                numGraphs = 0;
             }
         }
         if(update.getGraphBoundaries() != null){
