@@ -16,19 +16,47 @@ import org.epics.graphene.IntensityGraph2DRenderer;
  * @author asbarber
  */
 public class TestCaseProfiler {
+    
+    /**
+     * Starting point to running the test methods.
+     * Provides the options to run all test methods.
+     * @param args 
+     */
     public static void main(String[] args){
+        //Set this value to true
+        //to run all test methods in this class
+        boolean invokeAll = false;
+        
         TestCaseProfiler profiler = new TestCaseProfiler();
         
-        profiler.intensityGraphStrategies();
-        
-        //profiler.invokeAll()
+        //Run all test methods
+        if (invokeAll){
+            profiler.invokeAll();
+        }
+        //Invoke specific tests
+        else{
+            profiler.intensityGraphStrategies();
+        }
     }
     
     
+    /**
+     * Runs every test method in <code>TestCaseProfile</code>
+     * <p>
+     * Prints to the system console for each test being run.
+     * <p>
+     * Methods excluded:
+     * <ol>
+     *      <li>Inherited Methods</li>
+     *      <li>main</li>
+     *      <li>invokeAll (this)</li>
+     * </ol>
+     */
     public void invokeAll(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
                 
+        //All methods
         for (Method method: allMethods){
             //Ensures one of the test methods
             boolean notInherited = method.getDeclaringClass().equals(TestCaseProfiler.class);
@@ -50,6 +78,20 @@ public class TestCaseProfiler {
         }        
     }
     
+    /**
+     * Test method for the maximum dataset size used on
+     * every 1D renderer (ie - Histogram1D).
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Dataset Size: 10^6</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */
     public void maxDataset1D(){  
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         
@@ -79,6 +121,21 @@ public class TestCaseProfiler {
         }        
     }
     
+    /**
+     * Test method for the maximum dataset size used on
+     * every 2D Point data renderer (ie - LineGraph).
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Renderers: {LineGraph, ScatterGraph, SparklineGraph}</li>
+     *      <li>Dataset Size: {10^6, 10^3, 10^3}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */    
     public void maxDataset2DPoint(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         ArrayList<Integer> size = new ArrayList<>();
@@ -117,6 +174,21 @@ public class TestCaseProfiler {
         }
     }
     
+    /**
+     * Test method for the maximum dataset size used on
+     * every 2D Cell data renderer (ie - IntensityGraph).
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Renderers: {IntensityGraph}</li>
+     *      <li>Dataset Size: {10^6, 10^3, 10^3}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */       
     public void maxDataset2DCell(){
         ProfileIntensityGraph2D graph = new ProfileIntensityGraph2D();
         
@@ -131,13 +203,27 @@ public class TestCaseProfiler {
         graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
         graph.getSaveSettings().setAuthorMessage("asbarber");
         
-        graph.setTestTime(5);
+        graph.setTestTime(20);
 
         //Run
         graph.profile();
         graph.saveStatistics();
     }
     
+    /**
+     * Test method for the different <code>IntensityGraph2D</code> renderers.
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Strategies: Using Linear Boundaries, Not Using Linear Boundaries</li>
+     *      <li>Dataset Size: {10^6, 10^3, 10^3}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */       
     public void intensityGraphStrategies(){
         //Index 0:  Linear Boundaries
         //Index 1:  Non Linear Boundaries

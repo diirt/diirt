@@ -397,6 +397,18 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return getGraphTitle() + ".csv";
     }
     
+    /**
+     * Gets the settings to be saved to the output file
+     * for a profile.
+     * Some settings include:
+     * <ul>
+     *      <li>Author</li>
+     *      <li>Dataset message</li>
+     *      <li>Save message</li>
+     * </ul>
+     * @return the messages about settings information to
+     *         be saved to an output file
+     */
     public SaveSettings getSaveSettings(){
         return this.saveSettings;
     }

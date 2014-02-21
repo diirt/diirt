@@ -21,12 +21,43 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
+ * Provides the tools necessary for comparing the output tables of profiling
+ * to determine changes in the results.
+ * <p>
+ * Provides options to analyze the two tables types:
+ * <ul>
+ *      <li><code>ProfileGraph2D</code> 1D tables</li>
+ *      <li><code>MultiLevelProfiler</code> 2D tables</li>
+ * </ul>
+ * <p>
+ * The <code>ProfileAnalysis</code> class is purely static and unable
+ * to be instantiated.
+ * <p>
+ * <b>WARNING</b>: the analysis operations assume the preconditions
+ * are satisfied with only minor checks.  Therefore it essential
+ * that the appropriate file types are selected.
+ * 
  * @author asbarber
  */
 public class ProfileAnalysis {
+    
+    /**
+     * Private constructor; cannot be instantiated.
+     */
+    private ProfileAnalysis(){};
+    
+    /**
+     * Percent level in which difference in values are considered statistically
+     * significant and thus take appropriate (warning) action.
+     */
     public static final double STATISTICALLY_SIGNIFICANT = 0.05;
     
+    /**
+     * The file names of the tables supported by 1D table analysis
+     * (not <code>MultiLevelProfiler</code> tables).
+     * 
+     * @see #findTables1D() 
+     */
     public static String[] SUPPORTED_TABLES_1D = new String[]   {"Histogram1D.csv",
                                                                 "IntensityGraph2D.csv",
                                                                 "LineGraph2D.csv",
@@ -85,6 +116,11 @@ public class ProfileAnalysis {
      * <p>
      * Precondition: both files selected are <code>MultiLevelProfiler</code>
      * table files of the same graph type.
+     * 
+     * @param fileA .CSV <code>MultiLevelProfiler</code> formatted file,
+     *              considered initial file (compares fileA - fileB)
+     * @param fileB .CSV <code>MultiLevelProfiler</code> formatted file,
+     *              considered initial file (compares fileA - fileB)
      */
     public static void compareTables2D(File fileA, File fileB){
         List<String[]> rowsOfA = readTable(fileA);
@@ -259,11 +295,28 @@ public class ProfileAnalysis {
         return rows;
     }    
     
-    
+    /**
+     * Computes the difference between the last two records
+     * in each 1D table and analyzes whether the change was significant.
+     * <p>
+     * Conditions to Analyze:
+     * <ul>
+     *      <li>Supported files can be found</li>
+     *      <li>The 1D tables are in the right .CSV format</li>
+     *      <li>The file has two rows of data to compare</li>
+     * </ul>
+     * 
+     * @return a list of:
+     *         for each 1D table analyzed,
+     *         a generated analysis message
+     *         including the graph profile and the
+     *         the results of the analysis (significant increase/decrease)
+     */
     public static List<String> analyzeTables1D(){
         List<File>              files = findTables1D();
         List<String>            results = new ArrayList<>();
         
+        //All files that are supported and found
         for (File tableFile: files){
             if (tableFile != null){
                 List<String[]> tableRows = readTable(tableFile);
@@ -311,11 +364,22 @@ public class ProfileAnalysis {
         return results;
     }
     
+    /**
+     * Returns any file in the appropriate log file path that is supported
+     * by the profile analyzer and thus able to be further analyzed.
+     * 
+     * @return any file in the <code>ProfileGraph2D</code> specified log
+     *         file path that is supported by the profile analyzer
+     * 
+     * @see org.epics.graphene.profile.ProfileGraph2D#LOG_FILEPATH
+     * @see #SUPPORTED_TABLES_1D
+     */
     public static List<File> findTables1D(){
         List<File> tables1D = new ArrayList<>();
         
         File root = new File(ProfileGraph2D.LOG_FILEPATH);
         
+        //All files in the directory
         for (File subfile : root.listFiles()){
             for (int i = 0; i < SUPPORTED_TABLES_1D.length; i++){
                 

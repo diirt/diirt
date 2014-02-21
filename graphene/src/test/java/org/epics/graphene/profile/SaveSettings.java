@@ -7,13 +7,31 @@ package org.epics.graphene.profile;
 import java.lang.management.ManagementFactory;
 
 /**
- *
+ * A general purpose collection of messages to be saved to a
+ * .CSV output file for profiling.
+ * <p>
+ * Includes various properties,
+ * such as author and dataset comments,
+ * as well as hardware comments such as RAM.
+ * 
  * @author asbarber
  */
 public class SaveSettings {
+    
+    /**
+     * Conversion from bytes to gigabytes:
+     * 2^30 BYTES per GB.
+     */
     private static final double BYTES_TO_GB = Math.pow(2, 30);
     
+    /**
+     * Quote delimiter for a .CSV formatted output file.
+     */
     public static final String QUOTE = "\"";
+    
+    /**
+     * Comma delimiter for a .CSV formatted output file.
+     */
     public static final String DELIM = ",";
     
     private String datasetMessage = "",
@@ -23,7 +41,7 @@ public class SaveSettings {
     /**
      * Set the comment associated with the data set.
      * This comment will be written to the CSV log file when saving the statistics.
-     * 
+     * <p>
      * This is appropriate for discussing the distribution of the data, dimensions of the data, etc.
      * 
      * @param message comment about the data
@@ -35,7 +53,7 @@ public class SaveSettings {
     /**
      * Set the general comment associated with the profile.
      * This comment will be written to the CSV log file when saving the statistics.
-     * 
+     * <p>
      * This is appropriate for discussing the parameters of the renderer, etc.
      * 
      * @param message general comment about the profiling
@@ -44,6 +62,16 @@ public class SaveSettings {
         this.saveMessage = message;
     }
     
+    /**
+     * Set the author associated with the profile.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * <p>
+     * This is appropriate for stating the user who profiled.
+     * This can help provide understanding in different results due
+     * to computer hardware differences.
+     * 
+     * @param author author for the profiling
+     */       
     public void setAuthorMessage(String author){
         this.authorMessage = author;
     }    
@@ -71,11 +99,32 @@ public class SaveSettings {
         return saveMessage;
     }
     
+    /**
+     * Gets the author associated with the profile.
+     * This comment will be written to the CSV log file when saving the statistics.
+     * <p>
+     * This is appropriate for stating the user who profiled.
+     * This can help provide understanding in different results due
+     * to computer hardware differences.
+     * 
+     * @return author for the profiling
+     */      
     public String getAuthorMessage(){
         return this.authorMessage;
     }    
     
     
+    /**
+     * Gets the .CSV formatted header for the:
+     * (title row)
+     * <ol>
+     *      <li>Dataset comments</li>
+     *      <li>Author</li>
+     *      <li>General Message</li>
+     * </ol>
+     * 
+     * @return the header for the general comments output
+     */
     public String getOutputTitle(){
         return        
                        QUOTE + "Dataset Comments" + QUOTE + DELIM +
@@ -83,6 +132,17 @@ public class SaveSettings {
                        QUOTE + "General Message" + QUOTE;        
     }
     
+    /**
+     * Gets the .CSV formatted record for the:
+     * (information row)
+     * <ol>
+     *      <li>Dataset comments</li>
+     *      <li>Author</li>
+     *      <li>General Message</li>
+     * </ol>
+     * 
+     * @return the record for the general comments output
+     */    
     public String getOutputMessage(){
         String quote = "\"";
         String delim = ",";
@@ -94,6 +154,17 @@ public class SaveSettings {
     }
     
     
+    /**
+     * Gets the .CSV formatted header for the:
+     * (title row)
+     * <ol>
+     *      <li>Java Virtual Machine Version</li>
+     *      <li>Available Memory</li>
+     *      <li>Total RAM</li>
+     * </ol>
+     * 
+     * @return the header for the hardware comments output
+     */    
     public String getHardwareOutputTitle(){
         String quote = "\"";
         String delim = ",";
@@ -104,6 +175,17 @@ public class SaveSettings {
                          quote + "RAM (GB)" + quote;      
     }
     
+    /**
+     * Gets the .CSV formatted record for the:
+     * (information row)
+     * <ol>
+     *      <li>Java Virtual Machine Version</li>
+     *      <li>Available Memory</li>
+     *      <li>Total RAM</li>
+     * </ol>
+     * 
+     * @return the record for the hardware comments output
+     */     
     public String getHardwareOutputMessage(){
         String quote = "\"";
         String delim = ",";
