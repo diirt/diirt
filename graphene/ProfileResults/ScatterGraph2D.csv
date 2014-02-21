@@ -1,2 +1,3 @@
 "Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)"
 "ScatterGraph2D","2014/02/12 21:11:04",16.041933921348317,19543,1246,10000,640,480,"","","Initialization","1.7.0_25",1.762,7.923
+"ScatterGraph2D","2014/02/21 14:19:46",1.850198340583066,14781,10805,1000,600,400,"","asbarber","Max Dataset Size Test","1.7.0_25",1.762,7.923

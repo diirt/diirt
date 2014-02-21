@@ -11,10 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.graphene.IntensityGraph2DRenderer;
 
-/**
- *
- * @author asbarber
- */
+
 public class TestCaseProfiler {
     
     /**
@@ -36,6 +33,8 @@ public class TestCaseProfiler {
         //Invoke specific tests
         else{
             profiler.intensityGraphStrategies();
+            profiler.maxDataset1D();
+            profiler.maxDataset2DPoint();
         }
     }
     
