@@ -184,10 +184,20 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             graphBoundaries = new ArrayList<Double>();
             for(double i = 0; i <= numGraphs; i++){
                 if(stretch){
-                    graphBoundaries.add(i/numGraphs*(getImageHeight()));
+                    if(i > 0){
+                        graphBoundaries.add(i/numGraphs*(getImageHeight()) + marginBetweenGraphs);
+                    }
+                    else{
+                        graphBoundaries.add(i/numGraphs*(getImageHeight()));
+                    }
                 }
                 else{
-                    graphBoundaries.add(i*100);
+                    if(i > 0){
+                        graphBoundaries.add(i* (100+marginBetweenGraphs));
+                    }
+                    else{
+                        graphBoundaries.add(i*100);
+                    }
                 }
             }
             graphBoundaryRatios = new ArrayList<Double>();
@@ -352,7 +362,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             yPlotCoordEnd.add(yAreaCoordEnd.get(0) - bottomAreaMargin - yPointMargin);
             yPlotCoordHeight.add(yPlotCoordEnd.get(0)-yPlotCoordStart.get(0));
             for(int i = 1; i < numGraphs-1; i++){
-                yAreaCoordStart.add(topMargin + graphBoundaries.get(i).intValue() + marginBetweenGraphs);
+                yAreaCoordStart.add(topMargin + graphBoundaries.get(i).intValue());
                 yAreaCoordEnd.add(graphBoundaries.get(i+1).intValue()-areaFromBottom - marginBetweenGraphs);
                 yPlotCoordStart.add(yAreaCoordStart.get(i) + topAreaMargin + yPointMargin);
                 yPlotCoordEnd.add(yAreaCoordEnd.get(i) - bottomAreaMargin - yPointMargin);
