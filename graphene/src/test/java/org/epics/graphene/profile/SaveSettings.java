@@ -70,7 +70,7 @@ public class SaveSettings {
      * This can help provide understanding in different results due
      * to computer hardware differences.
      * 
-     * @param message author for the profiling
+     * @param author author for the profiling
      */       
     public void setAuthorMessage(String author){
         this.authorMessage = author;
@@ -107,7 +107,7 @@ public class SaveSettings {
      * This can help provide understanding in different results due
      * to computer hardware differences.
      * 
-     * @param message author for the profiling
+     * @return author for the profiling
      */      
     public String getAuthorMessage(){
         return this.authorMessage;

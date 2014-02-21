@@ -55,17 +55,37 @@ import javax.swing.tree.TreePath;
 
 
 /**
- *
+ * Constructs a graphical-user-interface to profile and test the efficiency
+ * of <code>Graph2DRenderer</code> subclasses.
+ * <p>
+ * Provides operations such as:
+ * <ul>
+ *      <li>Change output settings</li>
+ *      <li>Change profile parameters</li>
+ *      <li>Change renderer to profile</li>
+ *      <li>Provides 1D Table and 2D Table output types</li>
+ *      <li>Output analysis</li>
+ *      <li>File browsing of output files</li>
+ * </ul>
+ * 
  * @author asbarber
  */
 public class VisualProfiler extends JFrame{
+    /**
+     * Package location for <code>ProfileGraph2D</code> subclasses.
+     */
     private static final String PROFILE_PATH = "org.epics.graphene.profile";
+    
+    /**
+     * Java class names of all <code>ProfileGraph2D</code> subclasses.
+     */
     public static final String[] SUPPORTED_PROFILERS = {"Histogram1D",
                                                         "IntensityGraph2D",
                                                         "LineGraph2D",
                                                         "ScatterGraph2D",
                                                         "SparklineGraph2D"
                                                        };
+    
     private SwingWorker thread;
     
     private JPanel mainPanel;
@@ -143,6 +163,17 @@ public class VisualProfiler extends JFrame{
     private JButton            btnCancelThread;
     
     
+    /**
+     * Constructs a graphical-user-interface to profile and test the efficiency
+     * of <code>Graph2DRenderer</code> subclasses.
+     * <p>
+     * The following actions are performed:
+     * <ol>
+     *      <li>Login initializer</li>
+     *      <li>Finalizes and shows the frame</code>
+     *      <li>Starts the timer</li>
+     * </ol>
+     */
     public VisualProfiler(){
         super("Visual Profiler");
                 
@@ -163,9 +194,16 @@ public class VisualProfiler extends JFrame{
     
     //Swing Setup
     
+    /**
+     * Initializes frame properties.
+     */
     private void initFrame(){
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    /**
+     * Initializes all graphical user interface components.
+     */
     private void initComponents(){
         mainPanel = new JPanel();        
         mainPanel.setLayout(new BorderLayout());
@@ -259,6 +297,10 @@ public class VisualProfiler extends JFrame{
         btnCancelThread = new JButton("Cancel");
         btnCancelThread.setEnabled(false);
     }
+    
+    /**
+     * Initializes the mnemonic (hotkeys) for all button components.
+     */
     private void initMnemonics(){
        this.btnSingleProfile.setMnemonic('P');
        this.btnSingleProfileAll.setMnemonic('A');
@@ -277,6 +319,11 @@ public class VisualProfiler extends JFrame{
        this.btnCancelThread.setMnemonic('T');
        
     }
+    
+    /**
+     * Loads the lists for <code>Resolution</code>s and the
+     * dataset sizes for the <code>MultiLevelProfiler</code>.
+     */
     private void loadLists(){
         modelResolutions = new DefaultListModel<>();
         modelNPoints = new DefaultListModel<>();
@@ -292,6 +339,11 @@ public class VisualProfiler extends JFrame{
         listResolutions.setModel(modelResolutions);
         listNPoints.setModel(modelNPoints);
     }
+    
+    /**
+     * Adds action listeners to each button: associates each button
+     * with a method of the <code>VisualProfiler</code>.
+     */
     private void addListeners(){
        this.btnSingleProfile.addActionListener(new ActionListener(){
 
@@ -395,6 +447,10 @@ public class VisualProfiler extends JFrame{
            
        });
     }    
+    
+    /**
+     * Adds all graphical user interface components to the <code>JFrame</code>.
+     */
     private void addComponents(){
         
         //General SaveSettings
@@ -524,12 +580,22 @@ public class VisualProfiler extends JFrame{
                 
         super.add(mainPanel);
     }
+    
+    /**
+     * Finalizes frame properties (packs and shows frame).
+     */
     private void finalizeFrame(){
         super.setVisible(true);
         super.pack();
         super.setLocationRelativeTo(null);  //Centers
     }
     
+    /**
+     * Simple login feature that ensures all output files generated
+     * by profiling is associated with an author.
+     * <p>
+     * Provides the option to exit the application if the user so chooses.
+     */
     private void login(){
         String input = null;
         boolean exit = false;
@@ -565,6 +631,12 @@ public class VisualProfiler extends JFrame{
     
     //Actions
     
+    /**
+     * Thread safe operation to start a <code>ProfileGraph2D</code>
+     * for the renderer selected from the graphical user interface.
+     * Uses the given settings taken from the graphical user interface
+     * and saves to the specified output file.
+     */    
     private void singleProfileAction(){
         String strDatasetSize = txtDatasetSize.getText();
         String strImageWidth = txtImageWidth.getText();
@@ -713,6 +785,13 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();        
     }
+    
+    /**
+     * Thread safe operation to start a <code>ProfileGraph2D</code>
+     * for every supported renderer.
+     * Uses the given settings taken from the graphical user interface
+     * and saves to the specified output file.
+     */
     private void singleProfileActionAll(){
         //Get inputs
         String strTestTime = this.txtTestTime.getText();
@@ -876,6 +955,11 @@ public class VisualProfiler extends JFrame{
         worker.execute();   
         
     }
+    
+    /**
+     * Thread safe operation to start a <code>MultiLevelProfiler</code>
+     * profile and saves the results to an output file.
+     */
     private void startAction(){
         List<Resolution> resolutions = listResolutions.getSelectedValuesList();
         List<Integer> datasetSizes = listNPoints.getSelectedValuesList();
@@ -889,6 +973,12 @@ public class VisualProfiler extends JFrame{
             JOptionPane.showMessageDialog(null, "Profiling was cancelled due to invalid settings.", "Run Fail", JOptionPane.ERROR_MESSAGE);
         }   
     }
+    
+    /**
+     * Thread safe operation to analyze all 1D tables
+     * (<code>MultiLevelProfiler</code> output, not <code>ProfileGraph2D</code> output)
+     * and saves the results to an output file.
+     */
     private void compareTablesAction(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -915,6 +1005,13 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();
     }
+    
+    /**
+     * Thread safe operation to analyze all 1D tables
+     * (<code>ProfileGraph2D</code> output, not <code>MultiLevelProfiler</code> output)
+     * and print the results (performance increase/decrease) to the
+     * graphical user interface console.
+     */
     private void analyzeTables1DAction(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -946,6 +1043,11 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();  
     }
+    
+    /**
+     * Thread safe operation to open all selected files from the 
+     * file tree with the default application to open the files.
+     */
     private void openFiles(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -998,6 +1100,11 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();   
     }
+    
+    /**
+     * Thread safe operation to delete all selected files from the
+     * file tree.
+     */
     private void deleteFiles(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -1051,9 +1158,20 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();     
     }
+    
+    /**
+     * Thread safe operation to refresh nodes of the file tree.
+     * Prints a 'refresh' message to the console log.
+     */
     private void refresh(){
         this.refresh(false);
     }
+    
+    /**
+     * Thread safe operation to refresh nodes of the file tree.
+     * @param silent true to not print a 'refresh' message to the console log,
+     *               false to print a 'refresh' message to the console log
+     */
     private void refresh(final boolean silent){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -1087,6 +1205,12 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();  
     }    
+    
+    /**
+     * Thread safe operation to save the console log of the graphical
+     * user interface.
+     * The log is saved as a <b>.txt</b> file with the current timestamp.
+     */
     private void saveLog(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -1142,10 +1266,15 @@ public class VisualProfiler extends JFrame{
         };
         worker.execute();           
     }
+    
+    /**
+     * Empties the console log of the graphical user interface.
+     */
     private void clearLog(){
         console.setText("");
     }
     
+    //TODO: fix these methods
     private void threadStarted(SwingWorker worker){
         if (worker == null){
             throw new IllegalArgumentException("Must have a non-null thread.");
@@ -1181,6 +1310,11 @@ public class VisualProfiler extends JFrame{
         }
     }
     
+    /**
+     * Enables/disables all button components of the graphical user interface.
+     * @param enabled true to enable all buttons,
+     *                false to disable all buttons
+     */
     private void setEnabledActions(boolean enabled){
         this.btnCompareTables.setEnabled(enabled);
         this.btnCompareTables1D.setEnabled(enabled);
@@ -1194,6 +1328,11 @@ public class VisualProfiler extends JFrame{
         this.btnClearLog.setEnabled(enabled);
     }
 
+    /**
+     * Starts a thread-safe timing mechanism to display
+     * the current time in real-time to the graphical
+     * user interface.
+     */
     private void startTimer(){
         SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -1202,10 +1341,10 @@ public class VisualProfiler extends JFrame{
                 Timer t = new Timer();
                 t.scheduleAtFixedRate(new TimerTask(){
 
-                    @Override
-                    public void run() {         
-                        publish(getTime());
-                    }
+                        @Override
+                        public void run() {         
+                            publish(getTime());
+                        }
                                       
                     }
                     
@@ -1226,8 +1365,79 @@ public class VisualProfiler extends JFrame{
     
     
     //Helper
+   
+    /**
+     * Creates a thread safe <code>SwingWorker</code> that performs
+     * a <code>MultiLevelProfiler</code> profile and prints
+     * the results to the console log of the graphical user interface
+     * as the results are received.
+     */
+    private class ProfilerWorker extends SwingWorker<Object, String>{
+        private ProfilerWorker.VisualMultiLevelProfiler multiProfiler;
+        
+        public ProfilerWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
+            setEnabledActions(false);        
+            threadStarted(this);
+            publish("--------\n");
+            publish(profiler.getGraphTitle() + "\n\n");
+            
+            String strAuthor = VisualProfiler.this.txtAuthorMessage.getText();
+            String saveMessage = VisualProfiler.this.txtSaveMessage.getText();   
+            
+            this.multiProfiler = new ProfilerWorker.VisualMultiLevelProfiler(profiler);
+            this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
+            this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
+            this.multiProfiler.setImageSizes(resolutions);
+            this.multiProfiler.setDatasetSizes(datasetSizes);
+        }
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            this.multiProfiler.run();
+            this.multiProfiler.saveStatistics();
+            publish("\nProfiling complete." + "\n");
+            publish("--------\n");
+            setEnabledActions(true);
+            threadFinished();
+            return true;
+        }
+        
+        @Override
+        protected void process(List<String> chunks){
+            for (String chunk: chunks){
+                VisualProfiler.this.print(chunk);
+            }
+        }        
+                
+        private class VisualMultiLevelProfiler extends MultiLevelProfiler{
+            public VisualMultiLevelProfiler(ProfileGraph2D profiler){
+                super(profiler);
+            }
+
+            @Override
+            public void processTimeWarning(int estimatedTime){
+                ProfilerWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
+            }
+
+            @Override
+            public void processPreResult(Resolution resolution, int datasetSize){
+                //Publishes
+                ProfilerWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
+            }
+
+            @Override
+            public void processResult(Resolution resolution, int datasetSize, Statistics stats){
+                ProfilerWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
+            }        
+        };        
+    };
     
-    //Returns null if unable to get a profiler
+    /**
+     * 
+     * @return returns a graph profiler based on the renderer
+     *         selected from the graphical user interface,
+     *         returns <code>null</code> if unable to get a profiler
+     */
     public ProfileGraph2D getProfiler(){
         //Get inputs
         String strClass = listRendererTypes.getSelectedItem().toString();
@@ -1285,81 +1495,48 @@ public class VisualProfiler extends JFrame{
         //Final Format
         return renderer;
     }
+    
+    /**
+     * Prints the text to the graphical user interface console.
+     * @param output text to print to the console
+     */
     private void print(final String output){
         console.append(output);
     }
-    private class ProfilerWorker extends SwingWorker<Object, String>{
-        private VisualMultiLevelProfiler multiProfiler;
-        
-        public ProfilerWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
-            setEnabledActions(false);        
-            threadStarted(this);
-            publish("--------\n");
-            publish(profiler.getGraphTitle() + "\n\n");
-            
-            String strAuthor = VisualProfiler.this.txtAuthorMessage.getText();
-            String saveMessage = VisualProfiler.this.txtSaveMessage.getText();   
-            
-            this.multiProfiler = new VisualMultiLevelProfiler(profiler);
-            this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
-            this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
-            this.multiProfiler.setImageSizes(resolutions);
-            this.multiProfiler.setDatasetSizes(datasetSizes);
-        }
-        
-        @Override
-        protected Object doInBackground() throws Exception {
-            this.multiProfiler.run();
-            this.multiProfiler.saveStatistics();
-            publish("\nProfiling complete." + "\n");
-            publish("--------\n");
-            setEnabledActions(true);
-            threadFinished();
-            return true;
-        }
-        
-        @Override
-        protected void process(List<String> chunks){
-            for (String chunk: chunks){
-                VisualProfiler.this.print(chunk);
-            }
-        }        
-                
-        private class VisualMultiLevelProfiler extends MultiLevelProfiler{
-            public VisualMultiLevelProfiler(ProfileGraph2D profiler){
-                super(profiler);
-            }
-
-            @Override
-            public void processTimeWarning(int estimatedTime){
-                ProfilerWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
-            }
-
-            @Override
-            public void processPreResult(Resolution resolution, int datasetSize){
-                //Publishes
-                ProfilerWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
-            }
-
-            @Override
-            public void processResult(Resolution resolution, int datasetSize, Statistics stats){
-                ProfilerWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
-            }        
-        };        
-    };
     
+    /**
+     * Creates a panel with the default layout manager
+     * to add and center the component.
+     * @param itemToAdd component to add to the panel
+     * @return JPanel with default layout manager with
+     *         component added to it
+     */
     private JPanel blankPanel(Component itemToAdd){
         JPanel tmp = new JPanel();
         tmp.add(itemToAdd);
         return tmp;
     }
     
+    /**
+     * Takes a node with a <code>File</code> user object and adds
+     * all subfiles as children nodes.
+     * 
+     * @param parentNode must contain a <code>File</code> as the user object;
+     *                   adds all subfiles of the node
+     */
     private void addNodes(DefaultMutableTreeNode parentNode){
+        //Get subfiles of the node
         File[] subfiles = ((File)parentNode.getUserObject()).listFiles();
         
+        //If there are files within (non-directories would not have subfiles)
         if (subfiles != null){
+            
+            //All subfiles
             for (File subfile: subfiles){
+                
+                //Is valid subfile
                 if (subfile != null){
+                    //Add node
                     DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(subfile);
                     parentNode.add(childNode);
                     this.addNodes(childNode);
@@ -1367,14 +1544,27 @@ public class VisualProfiler extends JFrame{
             }
         }
     }
+    
+    /**
+     * Reloads all files of the JTree.
+     */
     private void refreshNodes(){
+        //Resets
         this.treeRoot.removeAllChildren();
+        
+        //Re-adds
         this.addNodes(treeRoot);
         
+        //Updates GUI
         this.treeModel.nodeStructureChanged(this.treeRoot);
         this.repaint();              
     }
     
+    /**
+     * Gets the current time (HH:MM:SS) to be displayed in the
+     * graphical user interface.
+     * @return current time (HH:MM:SS)
+     */
     private String getTime(){
         int hour = Calendar.getInstance().get(Calendar.HOUR);
         int minute = Calendar.getInstance().get(Calendar.MINUTE);
@@ -1392,6 +1582,9 @@ public class VisualProfiler extends JFrame{
     
     //Static
     
+    /**
+     * Constructs a thread safe <code>VisualProfiler</code> JFrame.
+     */
     public static void invokeVisualAid(){
         EventQueue.invokeLater(new Runnable(){
 
@@ -1402,6 +1595,12 @@ public class VisualProfiler extends JFrame{
             
         });
     }  
+    
+    /**
+     * Constructs a <code>VisualProfiler</code> to provide
+     * graphical user interface options to profile renderers.
+     * @param args no effect
+     */
     public static void main(String[] args){
         VisualProfiler.invokeVisualAid();
     }
