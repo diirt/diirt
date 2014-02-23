@@ -51,6 +51,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int yLabelMaxWidth;
     private Range emptyRange;
     private int marginBetweenGraphs = 0;
+    private int minimumGraphHeight = 100;
     protected List<String> xReferenceLabels;
     
     private double xPlotValueStart;
@@ -88,10 +89,10 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                     graphBoundaries.set(i, getImageHeight() * graphBoundaryRatios.get(i));
                 }
             }
-            else if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= 200){
+            else if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= (minimumGraphHeight*2)){
                 numGraphs+=1;
             }
-            if((double)getImageHeight()/numGraphs - marginBetweenGraphs <= 100){
+            if((double)getImageHeight()/numGraphs - marginBetweenGraphs <= minimumGraphHeight){
                 numGraphs = 0;
             }
         }
@@ -114,11 +115,11 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         if(update.getIndexToRange() != null){
             indexToRangeMap = update.getIndexToRange();
         }
-        if(update.getIndexToForce() != null){
-            indexToForceMap = update.getIndexToForce();
-        }
         if(update.getMarginBetweenGraphs() != null){
             marginBetweenGraphs = update.getMarginBetweenGraphs();
+        }
+        if(update.getMinimumGraphHeight() != null){
+            minimumGraphHeight = update.getMinimumGraphHeight();
         }
     }
     
@@ -170,7 +171,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private void getNumGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             numGraphs = data.size();
-            while((double)getImageHeight()/numGraphs - marginBetweenGraphs < 100){
+            while((double)getImageHeight()/numGraphs - marginBetweenGraphs < minimumGraphHeight){
                 numGraphs-=1;
             }
         }
@@ -193,10 +194,10 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 }
                 else{
                     if(i > 0){
-                        graphBoundaries.add(i* (100+marginBetweenGraphs));
+                        graphBoundaries.add(i* (minimumGraphHeight+marginBetweenGraphs));
                     }
                     else{
-                        graphBoundaries.add(i*100);
+                        graphBoundaries.add(i*minimumGraphHeight);
                     }
                 }
             }
@@ -206,7 +207,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                     graphBoundaryRatios.add(i/numGraphs);
                 }
                 else{
-                    graphBoundaryRatios.add((i*100)/getImageHeight());
+                    graphBoundaryRatios.add((i*minimumGraphHeight)/getImageHeight());
                 }
             }
         } 
@@ -221,12 +222,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             yAggregatedRange = new ArrayList<Range>();
             yPlotRange = new ArrayList<Range>();
             for(int i = 0; i < length; i++){
-                if(indexToForceMap.isEmpty() || !indexToForceMap.containsKey(i)){
+                if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
                     yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
                     yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
                 }
                 else{
-                    if(indexToRangeMap.containsKey(i) && indexToForceMap.get(i)){
+                    if(indexToRangeMap.containsKey(i)){
                         yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
                         yPlotRange.add(indexToRangeMap.get(i));
                     }
@@ -235,12 +236,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         }
         else{
             for(int i = 0; i < length; i++){
-                if(indexToForceMap.isEmpty() || !indexToForceMap.containsKey(i)){
+                if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
                     yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
                     yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
                 }
                 else{
-                    if(indexToRangeMap.containsKey(i) && indexToForceMap.get(i)){
+                    if(indexToRangeMap.containsKey(i)){
                         yPlotRange.set(i,indexToRangeMap.get(i));
                     }
                 }

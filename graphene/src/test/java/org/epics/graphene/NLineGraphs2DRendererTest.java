@@ -347,9 +347,6 @@ public class NLineGraphs2DRendererTest {
         indices.add(1);
         ArrayList<Range> ranges = new ArrayList<Range>();
         ranges.add(RangeUtil.range(-50,50));
-        ArrayList<Boolean> forces = new ArrayList<Boolean>();
-        forces.add(true);
-        update.setForce(indices, forces);
         update.setRanges(indices, ranges);
         renderer.update(update);
         renderer.draw(g, data);
@@ -382,6 +379,31 @@ public class NLineGraphs2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("nlinegraphs2D.MarginTooBig", image);
+    }
+    
+    @Test
+    public void UpdateMinimumGraphHeightTest() throws Exception {
+        double [][] initialData= new double [10][100]; 
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+        
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 10; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        NLineGraphs2DRendererUpdate update = new NLineGraphs2DRendererUpdate();
+        update.minimumGraphHeight(50);
+        renderer.update(update);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("nlinegraphs2D.UpdateMinimumGraphHeight", image);
     }
     
 }
