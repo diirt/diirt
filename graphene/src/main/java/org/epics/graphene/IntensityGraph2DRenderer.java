@@ -62,11 +62,13 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(update.getLegendWidth() != null){
             legendWidth = update.getLegendWidth();
         }
-        if(update.getLegendMarginToGraph() != null){
-            legendMarginToGraph = update.getLegendMarginToGraph();
-        }
         if(update.getLegendMarginToEdge() != null){
             legendMarginToEdge = update.getLegendMarginToEdge();
+        }
+        if(update.getRightMargin() != null){
+            rightMarginChanged = true;
+            rightMarginJustChanged = true;
+            rightMargin = update.getRightMargin();
         }
     }
     
@@ -88,7 +90,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
-
+    private boolean rightMarginChanged = false;
+    private boolean rightMarginJustChanged = false;
     
     // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
     private boolean linearBoundaries = true;
@@ -127,7 +130,14 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         Only do calculations if user says to draw a legend.*/
         if(drawLegend){
             calculateZLabels();
-            rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;    
+            if(!rightMarginChanged){
+                rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;
+            }
+            else if(rightMarginJustChanged){
+                rightMargin+= (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge);
+                rightMarginJustChanged = false;
+            }
+                
         }
         
         calculateGraphArea();
@@ -268,7 +278,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
             ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum().doubleValue(),zPlotRange.getMaximum().doubleValue(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
-            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+legendMarginToGraph+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth);
+            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+(rightMargin - (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge))+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth);
             drawZLabels();
         }
     }
@@ -505,6 +515,11 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             //Get rid of values outside of the plot range.
             if(cellBoundariesX.getDouble(i) >= xPlotValueStart && cellBoundariesX.getDouble(i) <= xPlotValueEnd){
                 if(newBoundariesX.size() == 0){
+                    if(i > 0 && (int)scaledX(cellBoundariesX.getDouble(i)) > xPlotCoordStart){
+                        newBoundariesX.add((int)xPlotCoordStart);
+                        valueIndicesX.add(i-1);
+                        countX++;
+                    }
                     newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
                     valueIndicesX.add(i);
                 }
@@ -513,6 +528,14 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
                     newBoundariesX.add((int)scaledX(cellBoundariesX.getDouble(i)));
                     valueIndicesX.add(i);
                     countX++;
+                }
+            }
+            else{
+                if(i>0){
+                    if(cellBoundariesX.getDouble(i-1) >= xPlotValueStart && cellBoundariesX.getDouble(i-1) < xPlotValueEnd){
+                        newBoundariesX.add((int) xPlotCoordEnd);
+                        valueIndicesX.add(i);
+                    }
                 }
             }
         }
@@ -527,6 +550,11 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             if(cellBoundariesY.getDouble(i) >= yPlotValueStart && cellBoundariesY.getDouble(i) <= yPlotValueEnd){
                 //Always add first value in range
                 if(newBoundariesY.size() == 0){
+                    if(i > 0 && (int)scaledY(cellBoundariesY.getDouble(i)) < yPlotCoordEnd){
+                        newBoundariesY.add((int)yPlotCoordEnd);
+                        valueIndicesY.add(i-1);
+                        countY++;
+                    }
                     newBoundariesY.add(((int)scaledY(cellBoundariesY.getDouble(i))));
                     valueIndicesY.add(i);
                 }
@@ -535,6 +563,14 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
                     newBoundariesY.add(((int)scaledY(cellBoundariesY.getDouble(i))));
                     valueIndicesY.add(i);
                     countY++;
+                }
+            }
+            else{
+                if(i>0){
+                    if(cellBoundariesY.getDouble(i-1) >= yPlotValueStart && cellBoundariesY.getDouble(i-1) > yPlotValueStart){
+                        newBoundariesY.add((int) yPlotCoordStart);
+                        valueIndicesY.add(i);
+                    }
                 }
             }
         }
