@@ -90,10 +90,10 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                     graphBoundaries.set(i, getImageHeight() * graphBoundaryRatios.get(i));
                 }
             }
-            else if((double)getImageHeight()/numGraphs - marginBetweenGraphs >= (minimumGraphHeight*2)){
+            else if((double)getImageHeight()/numGraphs - totalYMargins >= (minimumGraphHeight*2)){
                 numGraphs+=1;
             }
-            if((double)getImageHeight()/numGraphs - marginBetweenGraphs <= minimumGraphHeight){
+            if((double)getImageHeight()/numGraphs - totalYMargins <= minimumGraphHeight){
                 numGraphs = 0;
             }
         }
@@ -128,7 +128,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         
         // Compute x axis spacing
         xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
-        totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin;
+        totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin + topAreaMargin + bottomAreaMargin + xLabelMargin + 1;
         getNumGraphs(data);
         calculateRanges(dataRangesX,dataRangesY,numGraphs);
         calculateLabels();
@@ -161,7 +161,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private void getNumGraphs(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             numGraphs = data.size();
-            while((double)getImageHeight()/numGraphs - marginBetweenGraphs < minimumGraphHeight){
+            while((double)getImageHeight()/numGraphs - totalYMargins < minimumGraphHeight){
                 numGraphs-=1;
             }
         }
@@ -184,7 +184,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 }
                 else{
                     if(i > 0){
-                        graphBoundaries.add(i* (minimumGraphHeight+marginBetweenGraphs));
+                        graphBoundaries.add(i* (minimumGraphHeight+totalYMargins));
                     }
                     else{
                         graphBoundaries.add(i*minimumGraphHeight);
