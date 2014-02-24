@@ -51,6 +51,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private int yLabelMaxWidth;
     private Range emptyRange;
     private int marginBetweenGraphs = 0;
+    private int totalYMargins = 0;
     private int minimumGraphHeight = 100;
     protected List<String> xReferenceLabels;
     
@@ -96,22 +97,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 numGraphs = 0;
             }
         }
-        if(update.getGraphBoundaries() != null){
-            graphBoundaries = update.getGraphBoundaries();
-            graphBoundaryRatios = new ArrayList<Double>();
-            for(int i = 0; i < graphBoundaryRatios.size(); i++){
-                graphBoundaryRatios.add(graphBoundaries.get(i)/ getImageHeight());
-            }
-            numGraphs = graphBoundaries.size()-1;
-        }
-        if(update.getGraphBoundaryRatios() != null){
-            graphBoundaryRatios = update.getGraphBoundaryRatios();
-            graphBoundaries = new ArrayList<Double>();
-            for(int i = 0; i < graphBoundaryRatios.size(); i++){
-                graphBoundaries.add(getImageHeight() * graphBoundaryRatios.get(i));
-            }
-            numGraphs = graphBoundaries.size()-1;
-        }
         if(update.getIndexToRange() != null){
             indexToRangeMap = update.getIndexToRange();
         }
@@ -139,6 +124,11 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         for(int i = 0; i < data.size(); i++){
             dataRangesY.add(data.get(i).getYStatistics());
         }
+        labelFontMetrics = g.getFontMetrics(labelFont);
+        
+        // Compute x axis spacing
+        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
+        totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin;
         getNumGraphs(data);
         calculateRanges(dataRangesX,dataRangesY,numGraphs);
         calculateLabels();
@@ -290,10 +280,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 }
             }
         }
-        labelFontMetrics = g.getFontMetrics(labelFont);
         
-        // Compute x axis spacing
-        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
         
         // Compute y axis spacing
         int yLabelWidth = 0;

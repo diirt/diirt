@@ -10,22 +10,9 @@ import java.util.*;
  * @author sjdallst
  */
 public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGraphs2DRendererUpdate>{
-    private ArrayList<Double> graphBoundaries;
-    private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer, Range>();
     private Integer marginBetweenGraphs,
             minimumGraphHeight;
-    
-   
-    public NLineGraphs2DRendererUpdate graphBoundaries(ArrayList<Double> graphBoundaries){
-        this.graphBoundaries = graphBoundaries;
-        return this.self();
-    }
-    
-    public NLineGraphs2DRendererUpdate graphBoundaryRatios(ArrayList<Double> graphBoundaryRatios){
-        this.graphBoundaryRatios = graphBoundaryRatios;
-        return this.self();
-    }
     
     public NLineGraphs2DRendererUpdate setRanges(List<Integer> indices, List<Range> ranges){
         if(indices.size() != ranges.size()){
@@ -45,14 +32,6 @@ public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGrap
     public NLineGraphs2DRendererUpdate minimumGraphHeight(Integer minimumGraphHeight){
         this.minimumGraphHeight = minimumGraphHeight;
         return this.self();
-    }
-    
-    public ArrayList<Double> getGraphBoundaries(){
-        return this.graphBoundaries;
-    }
-    
-    public ArrayList<Double> getGraphBoundaryRatios(){
-        return this.graphBoundaryRatios;
     }
     
     public HashMap<Integer, Range> getIndexToRange(){
