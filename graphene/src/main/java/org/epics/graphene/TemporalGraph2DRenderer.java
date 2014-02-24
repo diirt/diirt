@@ -13,6 +13,7 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import static org.epics.graphene.InterpolationScheme.NEAREST_NEIGHBOUR;
 import org.epics.util.array.ArrayDouble;
@@ -206,6 +207,16 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         if (update.getTimeScale() != null) {
             timeScale = update.getTimeScale();
         }
+    }
+    
+    public void draw(Graphics2D g, TimeSeriesDataset data){
+        this.g = g;
+        
+        calculateRanges(data.getStatistics(), data.getTimeInterval());
+        //calculateLabels();
+        calculateGraphArea();        
+        drawBackground();
+        drawGraphArea();
     }
     
     static Range aggregateRange(Range dataRange, Range aggregatedRange) {
