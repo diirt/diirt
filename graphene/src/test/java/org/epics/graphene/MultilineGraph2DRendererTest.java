@@ -173,4 +173,26 @@ public class MultilineGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("multiline2D.LinesEqualsPixels", image);
     }
+    
+    @Test
+    public void ManyLinesStressTest() throws Exception {
+        double [][] initialData= new double [5000][100]; 
+        for(int i = 0; i < 5000; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 5000; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(100,100);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("multiline2D.ManyLinesStress", image);
+    }
 }

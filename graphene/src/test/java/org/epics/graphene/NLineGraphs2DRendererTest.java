@@ -107,6 +107,18 @@ public class NLineGraphs2DRendererTest {
         ImageAssert.compareImages("nlinegraphs2D.singleGraph", image);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void NoGraphsTest() throws Exception {
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+     
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        renderer.draw(g, data);
+    
+    }
+
     @Test
     public void MultiCosTest() throws Exception {
         double [][] initialData= new double [3][100]; 
