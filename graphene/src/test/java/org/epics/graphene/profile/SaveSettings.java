@@ -22,7 +22,7 @@ public class SaveSettings {
      * Conversion from bytes to gigabytes:
      * 2^30 BYTES per GB.
      */
-    private static final double BYTES_TO_GB = Math.pow(2, 30);
+    private static final double BYTES_TO_GB = 1073741824; //2^30
     
     /**
      * Quote delimiter for a .CSV formatted output file.
@@ -161,6 +161,8 @@ public class SaveSettings {
      *      <li>Java Virtual Machine Version</li>
      *      <li>Available Memory</li>
      *      <li>Total RAM</li>
+     *      <li>Operating System Name</li>
+     *      <li>Operating System Version</li>
      * </ol>
      * 
      * @return the header for the hardware comments output
@@ -172,7 +174,9 @@ public class SaveSettings {
         return
                          quote + "JVM Version" + quote + delim +
                          quote + "Available Memory (GB)"+ quote + delim +
-                         quote + "RAM (GB)" + quote;      
+                         quote + "RAM (GB)" + quote + delim +
+                         quote + "OS" + quote + delim +
+                         quote + " OS Version" + quote;
     }
     
     /**
@@ -182,6 +186,8 @@ public class SaveSettings {
      *      <li>Java Virtual Machine Version</li>
      *      <li>Available Memory</li>
      *      <li>Total RAM</li>
+     *      <li>Operating System Name</li>
+     *      <li>Operating System Version</li>     
      * </ol>
      * 
      * @return the record for the hardware comments output
@@ -192,17 +198,23 @@ public class SaveSettings {
                 
         //Get Environment Properties
         String javaVersion = System.getProperty("java.version");
+        String os = System.getProperty("os.name");
+        String osVersion = System.getProperty("os.version");
         
         //Format
         javaVersion = javaVersion == null ? "": javaVersion;
+        os = os == null ? "": os;
+        osVersion = osVersion == null ? "": osVersion;
         
         //Memory
         double runtime  = Runtime.getRuntime().maxMemory() / SaveSettings.BYTES_TO_GB;
         double memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize() / SaveSettings.BYTES_TO_GB;
         
         return
-                         quote + javaVersion +quote + delim +
+                         quote + javaVersion + quote + delim +
                          String.format("%.3f", runtime) + delim +
-                         String.format("%.3f", memorySize);        
+                         String.format("%.3f", memorySize) + delim +
+                         quote + os + quote + delim +
+                         quote + osVersion + quote;
     }
 }

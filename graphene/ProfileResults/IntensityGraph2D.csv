@@ -1,16 +1,2 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)"
-"IntensityGraph2D","2014/02/12 21:10:24",9.000752650586122,18762,2218,10000,640,480,"100x100","","Initialization","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/19 17:53:10",32.99746604180598,19416,598,100000,640,480,"100x1000","asbarber","Test Dataset Size","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/19 17:54:27",4.575443436606294,4219,1049,2500,640,480,"50x50","asbarber","Test Dataset Size","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:15:05",0.6655935689837859,1642,29275,100,320,240,"10x10","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:15:25",0.5593802400560226,87,35725,100,320,240,"10x10","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:15:45",5.223020145435521,18295,3823,10000,320,240,"100x100","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:16:05",3.9385432599527093,18232,5074,10000,320,240,"100x100","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:16:25",18.84829354210029,19285,1057,1000000,320,240,"1000x1000","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:16:45",17.279725142981714,19222,1147,1000000,320,240,"1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:17:05",4.341377396787504,17854,4607,100,1024,768,"10x10","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:17:25",4.58217642369387,18079,4364,100,1024,768,"10x10","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:17:45",9.127738593521887,18700,2192,10000,1024,768,"100x100","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:18:05",7.461395966417917,18407,2680,10000,1024,768,"100x100","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:18:25",405.53031595918367,19847,49,1000000,1024,768,"1000x1000","asbarber","Using Linear Boundaries","1.7.0_25",1.762,7.923
-"IntensityGraph2D","2014/02/21 14:18:46",327.3162166557376,19934,61,1000000,1024,768,"1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_25",1.762,7.923
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS"," OS Version"
+"IntensityGraph2D","2014/02/27 19:38:58",106.96208070930233,9156,86,100000000,600,400,"10000x10000","asbarber","Max Dataset Size Test","1.7.0_25",4.444,7.923,"Windows 8","6.2"
