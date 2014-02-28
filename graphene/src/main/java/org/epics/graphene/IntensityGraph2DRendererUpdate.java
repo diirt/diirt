@@ -25,7 +25,6 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
 
     private Integer zLabelMargin,
                     legendWidth,
-                    legendMarginToGraph,
                     legendMarginToEdge;
     
       private Boolean drawLegend, addXSum, addYSum;
@@ -83,15 +82,6 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
-    /**
-     * Sets this object's legendMarginToGraph to the given margin size.
-     * @param margin distance(pixels) from the intensity graph to the legend.
-     * @return this
-     */
-    public IntensityGraph2DRendererUpdate legendMarginToGraph(int margin) {
-        this.legendMarginToGraph = margin;
-        return self();
-    }
     
     /**
      * Sets this object's legendMarginToEdge to the given margin size.
@@ -134,14 +124,6 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public Integer getLegendWidth(){
         return legendWidth;
-    }
-    
-    /**
-     *
-     * @return Integer legendMarginToGraph, distance(pixels) from the intensity graph to the legend.
-     */
-    public Integer getLegendMarginToGraph(){
-        return legendMarginToGraph;
     }
     
     /**

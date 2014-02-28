@@ -298,16 +298,9 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ColorScheme.JET);
-        update.xAxisRange(AxisRanges.relative());
-        update.yAxisRange(AxisRanges.relative());
+        update.xAxisRange(AxisRanges.absolute(20,80));
+        update.yAxisRange(AxisRanges.absolute(20,80));
         renderer.update(update);
-        renderer.draw(g, data);
-        data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
-            @Override
-            public double getValue(double x, double y) {
-                return x * y;
-            }
-        }, new ArrayDouble(1, 2, 4, 9, 16, 25, 36, 49, 64, 81), new ArrayDouble(1, 2, 4, 9, 16, 25, 36, 49, 64, 81));
         renderer.draw(g,data);
         ImageAssert.compareImages("intensityGraph2D.ZoomIn", image);
     }
@@ -326,17 +319,55 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ColorScheme.JET);
-        update.xAxisRange(AxisRanges.relative());
-        update.yAxisRange(AxisRanges.relative());
+        update.xAxisRange(AxisRanges.absolute(-20, 120));
+        update.yAxisRange(AxisRanges.absolute(-20,120));
         renderer.update(update);
-        renderer.draw(g, data);
-        data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
-            @Override
-            public double getValue(double x, double y) {
-                return x * y;
-            }
-        }, new ArrayDouble(-1, 0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121), new ArrayDouble(-1, 0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121));
         renderer.draw(g,data);
         ImageAssert.compareImages("intensityGraph2D.ZoomOut", image);
+    }
+    
+    @Test
+    public void UpdateRightMarginWLegendTest() throws Exception {
+        double listOfData [] = new double[640*480];
+        Random rand = new Random(0);
+            for(int i = 0; i < (640*480); i++){
+                listOfData[i] = rand.nextDouble();
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+            update.drawLegend(true);
+            update.valueColorScheme(ColorScheme.JET);
+            update.rightMargin(20);
+            renderer.update(update);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", image);
+            
+    }
+    
+    @Test
+    public void UpdateRightMarginTest() throws Exception {
+        double listOfData [] = new double[640*480];
+        Random rand = new Random(0);
+            for(int i = 0; i < (640*480); i++){
+                listOfData[i] = rand.nextDouble();
+            }
+            ArrayDouble dataList = new ArrayDouble(listOfData);
+            Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
+            BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+            update.valueColorScheme(ColorScheme.JET);
+            update.rightMargin(20);
+            renderer.update(update);
+            renderer.draw(g, data);
+            
+            ImageAssert.compareImages("intensityGraph2D.UpdateRightMargin", image);
+            
     }
 }
