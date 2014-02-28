@@ -112,7 +112,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         if(g == null){
             throw new IllegalArgumentException("Graphics can't be null.");
         }
-        if(data == null){
+        if(data == null || data.isEmpty()){
             throw new IllegalArgumentException("data can't be null.");
         }
         this.g = g;
