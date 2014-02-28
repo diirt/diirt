@@ -122,7 +122,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         }
         
         //Trials
-        while (end.compareTo(Timestamp.now()) >= 0) {
+        while (end.compareTo(Timestamp.now()) >= 0 && !Thread.currentThread().isInterrupted()) {
             nTries++;
             stopWatch.start();
             
@@ -271,6 +271,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * the file writes properly and can be read/open to make sense.
      */
     public void saveStatistics(){
+        if (Thread.currentThread().isInterrupted()){
+            return;
+        }
+        
         //Ensures profile() was called
         if (stopWatch == null || nTries == 0){
             throw new NullPointerException("Has not been profiled.");

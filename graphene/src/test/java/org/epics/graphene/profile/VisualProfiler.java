@@ -754,20 +754,27 @@ public class VisualProfiler extends JFrame{
                 publish("Running finished.\n");
                 
                 //Saves
-                publish("Saving...\n");
-                profiler.saveStatistics();
-                publish("Saving finished.\n");
-                
-                //Displays results graph if checked
-                if (showGraphs){
-                    publish("\nGraphing Results...\n");
-                    profiler.graphStatistics();
-                    publish("Graphing Complete.\n");
+                if (!Thread.currentThread().isInterrupted()){
+                    publish("Saving...\n");
+                    profiler.saveStatistics();
+                    publish("Saving finished.\n");
+
+
+                    //Displays results graph if checked
+                    if (showGraphs){
+                        publish("\nGraphing Results...\n");
+                        profiler.graphStatistics();
+                        publish("Graphing Complete.\n");
+                    }
+                    
+                    //Finish message
+                    publish("\nProfiling completed.\n");
+                    publish("--------\n");                    
+                }else{
+                    //Finish message
+                    publish("\nProfiling cancelled.\n");
+                    publish("--------\n");                        
                 }
-                
-                //Finish message
-                publish("\nProfiling completed.\n");
-                publish("--------\n");
                 
                 setEnabledActions(true);
                 threadFinished();
@@ -913,6 +920,10 @@ public class VisualProfiler extends JFrame{
                 threadStarted(this);
                 
                 for (final ProfileGraph2D profiler: profilers){
+                    if (Thread.currentThread().isInterrupted()){
+                        break;  //quits loop if interrupted
+                    }
+                    
                     ///Begin message
                     publish("--------\n");
                     publish(profiler.getGraphTitle() + ": Single Profile\n\n");
@@ -922,21 +933,29 @@ public class VisualProfiler extends JFrame{
                     profiler.profile();
                     publish("Running finished.\n");
 
-                    //Saves
-                    publish("Saving...\n");
-                    profiler.saveStatistics();
-                    publish("Saving finished.\n");
+                    if (!Thread.currentThread().isInterrupted()){
+                        //Saves
+                        publish("Saving...\n");
+                        profiler.saveStatistics();
+                        publish("Saving finished.\n");
 
-                    //Displays results graph if checked
-                    if (showGraphs){
-                        publish("\nGraphing Results...\n");
-                        profiler.graphStatistics();
-                        publish("Graphing Complete.\n");
+                        //Displays results graph if checked
+                        if (showGraphs){
+                            publish("\nGraphing Results...\n");
+                            profiler.graphStatistics();
+                            publish("Graphing Complete.\n");
+                        }
+ 
+                        //Finish message
+                        publish("\nProfiling completed.\n");
+                        publish("--------\n");                        
+                    }else{
+                        //Finish message
+                        publish("\nProfiling cancelled.\n");
+                        publish("--------\n");                             
                     }
+                    
 
-                    //Finish message
-                    publish("\nProfiling completed.\n");
-                    publish("--------\n");
                 }
                 
                 setEnabledActions(true);
@@ -1063,6 +1082,10 @@ public class VisualProfiler extends JFrame{
 
                 if (paths != null && desktop != null){
                     for (TreePath path: paths){
+                        if (Thread.currentThread().isInterrupted()){
+                            break;
+                        }
+                        
                         if (path != null){
                             try{
                                 File toOpen = (File) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
@@ -1083,8 +1106,15 @@ public class VisualProfiler extends JFrame{
                     }
                 }
                 
-                publish("\nFile operations completed.\n");
-                publish("--------\n");
+                if (Thread.currentThread().isInterrupted()){
+                    publish("\nFile operations completed.\n");
+                    publish("--------\n");
+                }
+                else{
+                    publish("\nFile operations cancelled.\n");
+                    publish("--------\n");                    
+                }
+                
                 setEnabledActions(true);    
                 threadFinished();
                 return null;
@@ -1120,6 +1150,10 @@ public class VisualProfiler extends JFrame{
 
                 if (paths != null){
                     for (TreePath path: paths){
+                        if (Thread.currentThread().isInterrupted()){
+                            break;  //quits loop
+                        }
+                        
                         if (path != null){
                             try{
                                 File toDelete = (File) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
@@ -1142,8 +1176,15 @@ public class VisualProfiler extends JFrame{
                 
                 VisualProfiler.this.refreshNodes();
                 
-                publish("\nFile operations completed.\n");
-                publish("--------\n");
+                if (!Thread.currentThread().isInterrupted()){
+                    publish("\nFile operations completed.\n");
+                    publish("--------\n");
+                }
+                else{
+                    publish("\nFile operations cancelled.\n");
+                    publish("--------\n");                    
+                }
+                
                 setEnabledActions(true);  
                 threadFinished();
                 return null;
@@ -1394,9 +1435,17 @@ public class VisualProfiler extends JFrame{
         @Override
         protected Object doInBackground() throws Exception {
             this.multiProfiler.run();
-            this.multiProfiler.saveStatistics();
-            publish("\nProfiling complete." + "\n");
-            publish("--------\n");
+            
+            if (!Thread.currentThread().isInterrupted()){
+                this.multiProfiler.saveStatistics();
+                publish("\nProfiling complete." + "\n");
+                publish("--------\n");
+            }
+            else{
+                publish("\nProfiling cancelled." + "\n");
+                publish("--------\n");                
+            }
+            
             setEnabledActions(true);
             threadFinished();
             return true;
