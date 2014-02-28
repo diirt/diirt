@@ -47,6 +47,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     protected int yAreaStart;
     protected int yAreaEnd;
     protected int xAreaEnd;
+    protected int xRow2LabelMargin = 3;
 
     /**
      * Creates a graph renderer.
@@ -591,7 +592,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
                 drawRange, yTop, true, false);
             drawRange[MIN] = xAreaStart;
             drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(0)),
-                drawRange, yTop + xLabelMaxHeight + 3, true, false);
+                drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);
             drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(timeReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
                 drawRange, yTop, false, false);
             
