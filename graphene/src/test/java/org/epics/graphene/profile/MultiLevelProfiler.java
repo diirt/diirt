@@ -92,11 +92,11 @@ public class MultiLevelProfiler{
         this.processTimeWarning(datasetSizes.size() * resolutions.size() * profiler.getTestTime());
         
         //Loop through combinations of settings
-        for (int r = 0; r < resolutions.size(); r++){
+        for (int r = 0; r < resolutions.size() && !Thread.currentThread().isInterrupted(); r++){
             
             HashMap<Integer, Statistics> map = new HashMap<>();
             
-                for (int s = 0; s < datasetSizes.size(); s++){
+                for (int s = 0; s < datasetSizes.size() && !Thread.currentThread().isInterrupted(); s++){
                     
                     //Use this to process before the result, such as to print to console
                     this.processPreResult(resolutions.get(r), datasetSizes.get(s));
@@ -225,6 +225,10 @@ public class MultiLevelProfiler{
      * has been run.
      */
     public void saveStatistics(){
+       if (Thread.currentThread().isInterrupted()){
+           return;
+       }
+       
        if (results == null){
            throw new NullPointerException("Profiling has not been run.");
        }
