@@ -45,7 +45,7 @@ public final class TestCaseProfiler {
          *      1:      invokes methods without memory requirements
          *      2:      invokes methods with memory requirements
          */
-        int invokeType = 2;
+        int invokeType = 1;
         
         
         switch(invokeType){
