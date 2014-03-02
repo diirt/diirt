@@ -19,6 +19,8 @@ import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 /**
  *
  * @author carcassi, sjdallst, asbarber, jkfeng
@@ -118,9 +120,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     public void draw(Graphics2D g, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = g;
-        int pixelsPerInch = java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
-        double dpiChange = 1+Math.sqrt((pixelsPerInch-72)/72);
-        g.setTransform(new AffineTransform(dpiChange,0,0,dpiChange,0,0));
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
@@ -283,6 +282,82 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
     }
     
+    public void drawTest(Graphics2D g, Cell2DDataset data, BufferedImage image) {
+        //Use super class to draw basics of graph.
+        this.g = g;
+        calculateRanges(data.getXRange(), data.getYRange());
+        drawBackground();
+        calculateLabels();
+        zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
+        calculateZRange(zRange);
+        /*Calculate all margins necessary for drawing the legend. 
+        Only do calculations if user says to draw a legend.*/
+        if(drawLegend){
+            calculateZLabels();
+            if(!rightMarginChanged){
+                rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;
+            }
+            else if(rightMarginJustChanged){
+                rightMargin+= (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge);
+                rightMarginJustChanged = false;
+            }
+                
+        }
+        
+        calculateGraphArea();
+        
+        /*Wait to calculate the coordinates of the legend labels till after yPlotCoordRange is calculated.
+        Allows for the use of yPlotCoordEnd/start in calculations.*/
+        if(drawLegend){
+            if (zReferenceValues != null) {
+                double[] zRefCoords = new double[zReferenceValues.size()];
+                if(zRefCoords.length == 1){
+                    zRefCoords[0] = Math.max(2, getImageHeight() / 60);
+                }
+                else{
+                    for (int i = 0; i < zRefCoords.length; i++) {
+                        zRefCoords[i] = scaledZ(zReferenceValues.getDouble(i));
+                    }
+                }
+                zReferenceCoords = new ArrayDouble(zRefCoords);
+            }
+        }
+        drawGraphArea();
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
+        
+        //Set color scheme
+        colorScheme = ValueColorSchemes.schemeFor(valueColorScheme, RangeUtil.range(zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue()));
+
+
+        double xStartGraph = super.xPlotCoordStart;
+        double yEndGraph = super.yPlotCoordEnd;
+
+        //Get graph width and height from super class.
+        double xWidthTotal = super.xPlotCoordWidth;
+        double yHeightTotal = super.yPlotCoordHeight;
+        
+        //Get range of both x and y coordinates.
+        double xRange = data.getXBoundaries().getInt(data.getXCount()) - data.getXBoundaries().getInt(0);
+        double yRange = data.getYBoundaries().getInt(data.getYCount()) - data.getYBoundaries().getInt(0);
+        
+        //Set width and height of cells to be colored in by finding the width and height for the first cell.
+        double cellHeight = (yHeightTotal)/data.getYCount();
+        double cellWidth = (xWidthTotal)/data.getXCount();
+        
+        drawRectanglesSmallXAndYArray(g, colorScheme, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth, image);
+        
+        if(drawLegend && legendWidth>0){
+            /*dataList is made by splitting the aggregated range of the z(color) data into a list of the
+            same length as the the height of the graph in pixels.*/
+            ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum().doubleValue(),zPlotRange.getMaximum().doubleValue(),(int)yHeightTotal);
+            //legendData is a Cell2DDataset representation of dataList.
+            Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
+            drawRectangles(g,colorScheme,legendData,xStartGraph + xWidthTotal+(rightMargin - (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge))+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth);
+            drawZLabels();
+        }
+        
+    }
     @Override
     public Graph2DRendererUpdate newUpdate() {
         return new IntensityGraph2DRendererUpdate();
@@ -503,7 +578,54 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             yPositionInt+=1;
         }
     }
-  
+
+    private void drawRectanglesSmallXAndYArray(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data, double xStartGraph, double yEndGraph,
+            double xWidthTotal, double yHeightTotal, double cellHeight, double cellWidth, BufferedImage image){
+        /*countY and countX are used in the same way as in drawRectanglesSmallX and drawRectanglesSmallY
+         each is used to calculate exactly what index of data value should be used to get the color
+         for the drawn square.*/
+        byte[] pixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        boolean hasAlphaChannel = image.getAlphaRaster() != null;
+        double countY = 0;
+        double countX;
+        int yPositionInt = (int)(yEndGraph-yHeightTotal);
+        double yDataPerBox = (data.getYCount()-1)/yHeightTotal;
+        double xDataPerBox = (data.getXCount()-1)/xWidthTotal;
+        int xPositionInt;
+        while (yPositionInt < (int)yEndGraph+1){
+            countX = 0;
+            xPositionInt = (int) xStartGraph;
+            while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
+                if(hasAlphaChannel){
+                    int rgb = colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 0] = (byte)(rgb << 24 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 1] = (byte)(rgb & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 2] = (byte)(rgb << 8 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 3] = (byte)(rgb << 16 & 0xFF);
+                }
+                else{
+                    int rgb = colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 0] = (byte)(rgb & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 1] = (byte)(rgb << 8 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 2] = (byte)(rgb << 16 & 0xFF);
+                }
+                if(addXSum){
+                    xSum[xPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
+                }
+                if(addYSum){
+                    ySum[yPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
+                }
+                Rectangle2D.Double rect;
+                rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
+                g.fill(rect);
+                countX+=xDataPerBox;
+                xPositionInt+=1;
+            }
+            countY+=yDataPerBox;
+            yPositionInt+=1;
+        }
+    }
+    
     private void drawRectanglesSmallXAndYBoundaries(Graphics2D g, ValueColorScheme colorScheme, Cell2DDataset data){
         ListNumber cellBoundariesX = data.getXBoundaries();
         List<Integer> newBoundariesX = new ArrayList<Integer>();
