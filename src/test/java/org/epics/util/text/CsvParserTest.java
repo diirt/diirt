@@ -4,26 +4,21 @@
  */
 package org.epics.util.text;
 
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
-import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Test simulated pv function names parsing
+ * Tests CSV parser
  *
  * @author carcassi
  */
 public class CsvParserTest {
-
-    public CsvParserTest() {
-    }
 
     @Test
     public void parseCSVLine1() {
@@ -66,40 +61,12 @@ public class CsvParserTest {
         List<Object> tokens = CsvParser.parseCSVLine(line, " ");
         assertThat(tokens, equalTo(Arrays.<Object>asList("A", 0.234, 1.0)));
     }
-    
+
     @Test
-    public void csvTokens1() {
-        String line = "1,3,HELLO,\"How are you?\"";
-        List<String> tokens = CsvParser.csvTokens(line, ",");
-        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
-    }
-    
-    @Test
-    public void csvTokens2() {
-        String line = "1;3;HELLO;\"How are you?\"";
-        List<String> tokens = CsvParser.csvTokens(line, ";");
-        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
-    }
-    
-    @Test
-    public void csvTokens3() {
-        String line = "1 3 HELLO \"How are you?\"";
-        List<String> tokens = CsvParser.csvTokens(line, " ");
-        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
-    }
-    
-    @Test
-    public void csvTokens4() {
-        String line = "1\t3\tHELLO\t\"How are you?\"";
-        List<String> tokens = CsvParser.csvTokens(line, "\t");
-        assertThat(tokens, equalTo(Arrays.asList("1", "3", "HELLO", "How are you?")));
-    }
-    
-    @Test
-    public void csvTokens5() {
-        String line = "1,3,\"This\nis\nmultiline\",\"How are you?\"";
-        List<String> tokens = CsvParser.csvTokens(line, ",");
-        assertThat(tokens, equalTo(Arrays.asList("1", "3", "This\nis\nmultiline", "How are you?")));
+    public void parseCSVLine7() {
+        String line = "\"One \nTwo\nThree\"";
+        List<Object> tokens = CsvParser.parseCSVLine(line, " ");
+        assertThat(tokens, equalTo(Arrays.<Object>asList("One \nTwo\nThree")));
     }
     
     @Test

@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListNumber;
 import static org.epics.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
 
 /**
@@ -495,40 +494,5 @@ public class CsvParser {
             values.add(value);
         }
         return values;
-    }
-    
-    /**
-     * Parses a line of text representing comma separated values and returns
-     * the tokens.
-     * 
-     * @param line the line to parse
-     * @param separatorChar the regular expression for the separator
-     * @return the list of values
-     */
-    static List<String> csvTokens(String line, String separatorChar) {
-        String regex = // puts a doublequoted field in group(1) and an unquoted field into group(2)
-                "\\G(?:^|" + separatorChar + ")" +
-                "(?:" +
-                "\"" +
-                "((?:[^\"]++|\"\")*+)" +
-                "\"" +
-                "|" +
-                "([^\"" + separatorChar + "]*)" +
-                ")";
-        Matcher mMain = Pattern.compile(regex).matcher("");
-        Matcher mQuote = Pattern.compile("\"\"").matcher("");
-        
-        List<String> tokens = new ArrayList<>();
-        mMain.reset(line);
-        while (mMain.find()) {
-            String field;
-            if (mMain.start(2) >= 0) {
-                field = mMain.group(2);
-            } else {
-                field = mQuote.reset(mMain.group(1)).replaceAll("\"");
-            }
-            tokens.add(field);
-        }
-        return tokens;
     }
 }
