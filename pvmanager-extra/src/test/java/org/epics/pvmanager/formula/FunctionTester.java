@@ -9,6 +9,7 @@ import java.util.Collection;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compareAlarm;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compareTime;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
@@ -16,6 +17,7 @@ import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
 import static org.epics.vtype.ValueFactory.*;
@@ -108,6 +110,8 @@ public class FunctionTester {
             oneArgNumericHighestAlarmReturned();
         } else if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
             twoArgNumericHighestAlarmReturned();
+        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumberArray.class))) {
+            twoArgNumericArrayHighestAlarmReturned();
         } else {
             throw new IllegalArgumentException("Can't test highest alarm returned for " + function.getName());
         }
@@ -126,6 +130,16 @@ public class FunctionTester {
         compareReturnAlarm(alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
         compareReturnAlarm(newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
         compareReturnAlarm(newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
+    }
+    
+    private void twoArgNumericArrayHighestAlarmReturned() {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
+        compareReturnAlarm(none, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display));
+        compareReturnAlarm(minor, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
+        compareReturnAlarm(major, newVNumberArray(new ArrayDouble(1.0), major, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
     }
     
     public FunctionTester latestTimeReturned() {

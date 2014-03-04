@@ -83,7 +83,10 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(4, 3, 2), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVDoubleArray(new ArrayDouble(0, 2, 4), alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "-", VNumberArray.class, VNumberArray.class)
-                .compareReturnValue(array3, array, array2);
+                .compareReturnValue(array3, array, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, array, null)
+                .highestAlarmReturned();
     }
 
     @Test

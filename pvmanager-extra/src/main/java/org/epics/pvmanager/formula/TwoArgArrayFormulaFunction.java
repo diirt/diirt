@@ -13,7 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.epics.util.array.ListNumber;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumberArray;
+import org.epics.vtype.ValueFactory;
+import org.epics.vtype.ValueUtil;
 
 /**
  * @author shroffk
@@ -72,10 +76,20 @@ public abstract class TwoArgArrayFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
+        VNumberArray arg1 = (VNumberArray) args.get(0);
+        VNumberArray arg2 = (VNumberArray) args.get(1);
+        if (arg1 == null || arg2 == null) {
+            return null;
+        }
+        Alarm alarm = ValueUtil.highestSeverityOf(args, false);
+        Time time = ValueUtil.latestTimeOf(args);
+        if (time == null) {
+            time = ValueFactory.timeNow();
+        }
 	return newVNumberArray(
-		calculate(((VNumberArray) args.get(0)).getData(),
-			((VNumberArray) args.get(1)).getData()), alarmNone(),
-		timeNow(), displayNone());
+		calculate(arg1.getData(),
+			arg2.getData()), alarm,
+		time, displayNone());
 
     }
 
