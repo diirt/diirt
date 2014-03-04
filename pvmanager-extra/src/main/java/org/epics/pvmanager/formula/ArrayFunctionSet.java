@@ -38,7 +38,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                         .addFormulaFunction(new ElementAtStringArrayFormulaFunction())
 
                         .addFormulaFunction(
-                                new TwoArgArrayFormulaFunction("+", "Result[x] = array1[x] + array2[x]",
+                                new AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction("+", "Result[x] = array1[x] + array2[x]",
                                                                        "array1", "array2") {
 
                                     @Override
@@ -47,7 +47,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgArrayFormulaFunction("-", "Result[x] = array1[x] - array2[x]",
+                                new AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction("-", "Result[x] = array1[x] - array2[x]",
                                                                        "array1", "array2") {
 
                                     @Override

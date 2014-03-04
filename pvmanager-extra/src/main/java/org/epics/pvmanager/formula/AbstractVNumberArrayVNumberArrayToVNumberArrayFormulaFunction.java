@@ -4,10 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
 import static org.epics.vtype.ValueFactory.newVNumberArray;
-import static org.epics.vtype.ValueFactory.timeNow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,22 +18,40 @@ import org.epics.vtype.ValueFactory;
 import org.epics.vtype.ValueUtil;
 
 /**
+ * Abstract class for formula functions that take two VNumberArray as arguments
+ * and return a VNumberArray.
+ * <p>
+ * This class takes care of:
+ * <ul>
+ *    <li>extracting the VNumberArrays to ListNumber</li>
+ *    <li>null handling - returns null if one argument is null</li>
+ *    <li>alarm handling - returns highest alarm</li>
+ *    <li>time handling - returns latest time, or now if no time is available</li>
+ *    <li>display handling - returns display none</li>
+ * </ul>
+ * 
  * @author shroffk
  * 
  */
-public abstract class TwoArgArrayFormulaFunction implements FormulaFunction {
+public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction implements FormulaFunction {
 
     private final String name;
     private final String description;
-    private final List<Class<?>> argumentTypes;
+    private static final List<Class<?>> argumentTypes = Arrays.<Class<?>> asList(VNumberArray.class, VNumberArray.class);
     private final List<String> argumentNames;
 
-    public TwoArgArrayFormulaFunction(String name, String description,
+    /**
+     * Creates a new function.
+     * 
+     * @param name the name of the function
+     * @param description a short description
+     * @param arg1Name first argument name
+     * @param arg2Name second argument name
+     */
+    public AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction(String name, String description,
 	    String arg1Name, String arg2Name) {
 	this.name = name;
 	this.description = description;
-	this.argumentTypes = Arrays.<Class<?>> asList(VNumberArray.class,
-		VNumberArray.class);
 	this.argumentNames = Arrays.asList(arg1Name, arg2Name);
     }
 
@@ -78,21 +94,33 @@ public abstract class TwoArgArrayFormulaFunction implements FormulaFunction {
     public Object calculate(List<Object> args) {
         VNumberArray arg1 = (VNumberArray) args.get(0);
         VNumberArray arg2 = (VNumberArray) args.get(1);
+        // If one argument is null, return null
         if (arg1 == null || arg2 == null) {
             return null;
         }
+        // Get highest alarm
         Alarm alarm = ValueUtil.highestSeverityOf(args, false);
+        // Get latest time or now
         Time time = ValueUtil.latestTimeOf(args);
         if (time == null) {
             time = ValueFactory.timeNow();
         }
 	return newVNumberArray(
-		calculate(arg1.getData(),
-			arg2.getData()), alarm,
-		time, displayNone());
+		calculate(arg1.getData(), arg2.getData()),
+                alarm,
+		time,
+                displayNone());
 
     }
 
+    /**
+     * Calculates the array based on the previous two. This is the only
+     * method one has to implement.
+     * 
+     * @param arg1 the first argument; not null
+     * @param arg2 the second argument; not null
+     * @return the result; not null
+     */
     abstract ListNumber calculate(ListNumber arg1, ListNumber arg2);
 
 }
