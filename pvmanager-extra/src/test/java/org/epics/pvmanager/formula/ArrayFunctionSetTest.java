@@ -86,7 +86,8 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(array3, array, array2)
                 .compareReturnValue(null, null, array2)
                 .compareReturnValue(null, array, null)
-                .highestAlarmReturned();
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
