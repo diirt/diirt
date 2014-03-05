@@ -109,64 +109,12 @@ public class FunctionTester {
     }
     
     public FunctionTester highestAlarmReturned() {
-        if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class))) {
-            oneArgNumericHighestAlarmReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
-            twoArgNumericHighestAlarmReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumberArray.class))) {
-            twoArgNumericArrayHighestAlarmReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumber.class))) {
-            highestAlarmReturnedVNumberArrayVNumber();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumberArray.class))) {
-            highestAlarmReturnedVNumberVNumberArray();
+        if (function.isVarArgs() || function.getArgumentTypes().size() > 1) {
+            highestAlarmReturnedMultipleArgs(function);
         } else {
-            highestAlarmReturned(function);
+            highestAlarmReturnedSingleArg(function);
         }
         return this;
-    }
-    
-    public void oneArgNumericHighestAlarmReturned() {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        compareReturnAlarm(alarmNone(), newVDouble(0.0, display));
-        compareReturnAlarm(newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(3.5, display));
-        compareReturnAlarm(newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display));
-    }
-    
-    private void twoArgNumericHighestAlarmReturned() {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        compareReturnAlarm(alarmNone(), newVDouble(0.0, display), newVDouble(1.0, display));
-        compareReturnAlarm(newAlarm(AlarmSeverity.MINOR, "HIGH"), newVDouble(1.0, display), newVDouble(3.5, display));
-        compareReturnAlarm(newAlarm(AlarmSeverity.MAJOR, "LOLO"), newVDouble(-5.0, display), newVDouble(3.5, display));
-    }
-    
-    private void twoArgNumericArrayHighestAlarmReturned() {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
-        compareReturnAlarm(none, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display));
-        compareReturnAlarm(minor, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
-        compareReturnAlarm(major, newVNumberArray(new ArrayDouble(1.0), major, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
-    }
-    
-    private void highestAlarmReturnedVNumberArrayVNumber() {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
-        compareReturnAlarm(none, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumber(1.0, none, timeNow(), display));
-        compareReturnAlarm(minor, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumber(1.0, minor, timeNow(), display));
-        compareReturnAlarm(major, newVNumberArray(new ArrayDouble(1.0), major, timeNow(), display), newVNumber(1.0, minor, timeNow(), display));
-    }
-    
-    private void highestAlarmReturnedVNumberVNumberArray() {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
-        compareReturnAlarm(none, newVNumber(1.0, none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display));
-        compareReturnAlarm(minor, newVNumber(1.0, none, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
-        compareReturnAlarm(major, newVNumber(1.0, major, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
     }
 
     private Object createValue(Class<?> clazz, Alarm alarm, Time time, Display display) {
@@ -181,7 +129,18 @@ public class FunctionTester {
         }
     }
     
-    private void highestAlarmReturned(FormulaFunction function) {
+    private void highestAlarmReturnedSingleArg(FormulaFunction function) {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
+
+        compareReturnAlarm(none, createValue(function.getArgumentTypes().get(0), none, timeNow(), display));
+        compareReturnAlarm(minor, createValue(function.getArgumentTypes().get(0), minor, timeNow(), display));
+        compareReturnAlarm(major, createValue(function.getArgumentTypes().get(0), major, timeNow(), display));
+    }
+    
+    private void highestAlarmReturnedMultipleArgs(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
         if (function.isVarArgs()) {
@@ -230,62 +189,25 @@ public class FunctionTester {
     }
     
     public FunctionTester latestTimeReturned() {
-        if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class))) {
-            oneArgNumericLatestTimeReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumber.class))) {
-            twoArgNumericLatestTimeReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumberArray.class))) {
-            twoArgNumericArrayLatestTimeReturned();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumber.class))) {
-            latestTimeReturnedVNumberArrayVNumber();
-        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class, VNumberArray.class))) {
-            latestTimeReturnedVNumberVNumberArray();
+        if (function.isVarArgs() || function.getArgumentTypes().size() > 1) {
+            latestTimeReturnedMultipleArgs(function);
         } else {
-            latestTimeReturned(function);
+            latestTimeReturnedSingleArg(function);
         }
         return this;
     }
     
-    private void oneArgNumericLatestTimeReturned() {
+    private void latestTimeReturnedSingleArg(FormulaFunction function) {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Object[] args;
         Time time1 = newTime(Timestamp.of(12340000, 0));
         Time time2 = newTime(Timestamp.of(12350000, 0));
-        compareReturnTime(time1, newVDouble(0.0, time1));
-        compareReturnTime(time2, newVDouble(0.0, time2));
+        
+        compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), alarmNone(), time1, display));
+        compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), alarmNone(), time2, display));
     }
     
-    private void twoArgNumericLatestTimeReturned() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        compareReturnTime(time1, newVDouble(0.0, time1), newVDouble(1.0, time1));
-        compareReturnTime(time2, newVDouble(0.0, time1), newVDouble(1.0, time2));
-        compareReturnTime(time2, newVDouble(0.0, time2), newVDouble(1.0, time1));
-    }
-    
-    private void twoArgNumericArrayLatestTimeReturned() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        compareReturnTime(time1, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time1, displayNone()));
-        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time2, displayNone()));
-        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time2, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time1, displayNone()));
-    }
-    
-    private void latestTimeReturnedVNumberArrayVNumber() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        compareReturnTime(time1, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumber(2.0, alarmNone(), time1, displayNone()));
-        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumber(2.0, alarmNone(), time2, displayNone()));
-        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time2, displayNone()), newVNumber(2.0, alarmNone(), time1, displayNone()));
-    }
-    
-    private void latestTimeReturnedVNumberVNumberArray() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        compareReturnTime(time1, newVNumber(2.0, alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()));
-        compareReturnTime(time2, newVNumber(2.0, alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(1.0), alarmNone(), time2, displayNone()));
-        compareReturnTime(time2, newVNumber(2.0, alarmNone(), time2, displayNone()), newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()));
-    }
-    
-    private void latestTimeReturned(FormulaFunction function) {
+    private void latestTimeReturnedMultipleArgs(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
         if (function.isVarArgs()) {
