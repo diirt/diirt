@@ -210,20 +210,17 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void rescaleArray() {
-	ListDouble data = new ArrayDouble(1, 2, 3);
-	ListDouble expectedData = new ArrayDouble(2, 3, 4);
-	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
-		timeNow(), displayNone());
-	testFunction(
-		set,
-		"rescale",
-		expected,
-		newVDoubleArray(data , alarmNone(), timeNow(),
-			displayNone()),
-		newVNumber(1.0, alarmNone(), timeNow(),
-			displayNone()),
-		newVNumber(1.0, alarmNone(), timeNow(),
-			displayNone()));
+        VNumberArray data = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray expected = newVDoubleArray(new ArrayDouble(3, 5, 7), alarmNone(), timeNow(), displayNone());
+	VNumber offset = newVNumber(1, alarmNone(), timeNow(), displayNone());
+	VNumber scale = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "rescale", VNumberArray.class, VNumber.class, VNumber.class)
+                .compareReturnValue(expected, data, scale, offset)
+                .compareReturnValue(null, null, scale, offset)
+                .compareReturnValue(null, data, null, offset)
+                .compareReturnValue(null, data, scale, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
