@@ -62,14 +62,6 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
-        // Get highest alarm; null should appear as disconnected
-        Alarm alarm = ValueUtil.highestSeverityOf(args, true);
-        
-        // Get latest time or now
-        Time time = ValueUtil.latestTimeOf(args);
-        if (time == null) {
-            time = ValueFactory.timeNow();
-        }
         
         List<String> data = new ArrayList<>();
         for (Object arg : args) {
@@ -80,8 +72,9 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
                 data.add(str.getValue());
         }
 
-        return ValueFactory.newVStringArray(data, alarm,
-                time);
+        return ValueFactory.newVStringArray(data,
+                ValueUtil.highestSeverityOf(args, false),
+		ValueUtil.latestValidTimeOrNowOf(args));
     }
 
 }

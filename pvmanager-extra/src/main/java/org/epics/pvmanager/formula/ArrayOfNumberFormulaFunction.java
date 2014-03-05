@@ -59,17 +59,7 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(final List<Object> args) {
-        // Get highest alarm; null should appear as disconnected
-        Alarm alarm = ValueUtil.highestSeverityOf(args, true);
-        
-        // Get latest time or now
-        Time time = ValueUtil.latestTimeOf(args);
-        if (time == null) {
-            time = ValueFactory.timeNow();
-        }
-
         ListDouble data = new ListDouble() {
-
             @Override
             public double getDouble(int index) {
                 VNumber number = (VNumber) args.get(index);
@@ -85,7 +75,10 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
             }
         };
 
-        return ValueFactory.newVNumberArray(data, alarm, time, displayNone());
+        return ValueFactory.newVNumberArray(data,
+                ValueUtil.highestSeverityOf(args, false),
+		ValueUtil.latestValidTimeOrNowOf(args),
+                displayNone());
     }
 
 }
