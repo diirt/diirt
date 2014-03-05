@@ -136,7 +136,11 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
 	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "/", VNumberArray.class, VNumber.class)
-                .compareReturnValue(array, array2, number);
+                .compareReturnValue(array, array2, number)
+                .compareReturnValue(null, null, number)
+                .compareReturnValue(null, array2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test

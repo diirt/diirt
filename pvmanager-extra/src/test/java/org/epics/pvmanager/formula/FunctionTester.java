@@ -112,6 +112,8 @@ public class FunctionTester {
             twoArgNumericHighestAlarmReturned();
         } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumberArray.class))) {
             twoArgNumericArrayHighestAlarmReturned();
+        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumber.class))) {
+            highestAlarmReturnedVNumberArrayVNumber();
         } else {
             throw new IllegalArgumentException("Can't test highest alarm returned for " + function.getName());
         }
@@ -142,6 +144,16 @@ public class FunctionTester {
         compareReturnAlarm(major, newVNumberArray(new ArrayDouble(1.0), major, timeNow(), display), newVNumberArray(new ArrayDouble(1.0), minor, timeNow(), display));
     }
     
+    private void highestAlarmReturnedVNumberArrayVNumber() {
+        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
+        compareReturnAlarm(none, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumber(1.0, none, timeNow(), display));
+        compareReturnAlarm(minor, newVNumberArray(new ArrayDouble(1.0), none, timeNow(), display), newVNumber(1.0, minor, timeNow(), display));
+        compareReturnAlarm(major, newVNumberArray(new ArrayDouble(1.0), major, timeNow(), display), newVNumber(1.0, minor, timeNow(), display));
+    }
+    
     public FunctionTester latestTimeReturned() {
         if (function.getArgumentTypes().equals(Arrays.asList(VNumber.class))) {
             oneArgNumericLatestTimeReturned();
@@ -149,6 +161,8 @@ public class FunctionTester {
             twoArgNumericLatestTimeReturned();
         } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumberArray.class))) {
             twoArgNumericArrayLatestTimeReturned();
+        } else if (function.getArgumentTypes().equals(Arrays.asList(VNumberArray.class, VNumber.class))) {
+            latestTimeReturnedVNumberArrayVNumber();
         } else {
             throw new IllegalArgumentException("Can't test latest time returned for " + function.getName());
         }
@@ -176,5 +190,13 @@ public class FunctionTester {
         compareReturnTime(time1, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time1, displayNone()));
         compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time2, displayNone()));
         compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time2, displayNone()), newVNumberArray(new ArrayDouble(2.0), alarmNone(), time1, displayNone()));
+    }
+    
+    private void latestTimeReturnedVNumberArrayVNumber() {
+        Time time1 = newTime(Timestamp.of(12340000, 0));
+        Time time2 = newTime(Timestamp.of(12350000, 0));
+        compareReturnTime(time1, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumber(2.0, alarmNone(), time1, displayNone()));
+        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time1, displayNone()), newVNumber(2.0, alarmNone(), time2, displayNone()));
+        compareReturnTime(time2, newVNumberArray(new ArrayDouble(1.0), alarmNone(), time2, displayNone()), newVNumber(2.0, alarmNone(), time1, displayNone()));
     }
 }

@@ -72,7 +72,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgArrayNumberFormulaFunction("+", "Result[x] = array[x] + offset",
+                                new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("+", "Result[x] = array[x] + offset",
                                                                          "array", "offset") {
 
                                     @Override
@@ -81,7 +81,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgArrayNumberFormulaFunction("-", "Result[x] = array[x] - offset",
+                                new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("-", "Result[x] = array[x] - offset",
                                                                          "array", "offset") {
 
                                     @Override
@@ -108,7 +108,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgArrayNumberFormulaFunction("*", "Result[x] = array[x] * num",
+                                new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("*", "Result[x] = array[x] * num",
                                                                          "array", "num") {
 
                                     @Override
@@ -117,7 +117,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgArrayNumberFormulaFunction("/", "Result[x] = array[x] / num",
+                                new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("/", "Result[x] = array[x] / num",
                                                                          "array", "num") {
 
                                     @Override
