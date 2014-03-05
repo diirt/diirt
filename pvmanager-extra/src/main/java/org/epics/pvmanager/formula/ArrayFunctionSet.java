@@ -31,7 +31,15 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                         .addFormulaFunction(new CaHistogramFormulaFunction())
                         .addFormulaFunction(new HistogramOfFormulaFunction())
                         .addFormulaFunction(new RescaleArrayFormulaFunction())
-                        .addFormulaFunction(new MultArrayFormulaFunction())
+                        .addFormulaFunction(
+                                new AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction("arrayMult", "Result[x] = array1[x] * array2[x]",
+                                                                       "array1", "array2") {
+
+                                    @Override
+                                    ListNumber calculate(ListNumber array1, ListNumber array2) {
+                                          return ListMath.mult(array1, array2);
+                                    }
+                                })
                         .addFormulaFunction(new DivArrayFormulaFunction())
                         .addFormulaFunction(new SubArrayFormulaFunction())
                         .addFormulaFunction(new ElementAtArrayFormulaFunction())

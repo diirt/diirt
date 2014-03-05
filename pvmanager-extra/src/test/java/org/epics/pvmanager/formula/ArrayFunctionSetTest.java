@@ -99,6 +99,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
+    public void arrayMult() {
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(3, 2, 0), alarmNone(), timeNow(), displayNone());
+        VNumberArray array3 = newVDoubleArray(new ArrayDouble(3, 4, 0), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "arrayMult", VNumberArray.class, VNumberArray.class)
+                .compareReturnValue(array3, array, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, array, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+
+    @Test
     public void multiplyArrayWithNumber() {
 	testTwoArgArrayFunction(set, "*", new ArrayDouble(1, 2, 3),
 		Double.valueOf(2), new ArrayDouble(2, 4, 6));
