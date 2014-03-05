@@ -90,7 +90,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgNumberArrayFormulaFunction("-", "Result[x] = offset - array[x]",
+                                new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("-", "Result[x] = offset - array[x]",
                                                                          "offset", "array") {
 
                                     @Override
@@ -99,7 +99,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(
-                                new TwoArgNumberArrayFormulaFunction("/", "Result[x] = numerator / array[x]",
+                                new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("/", "Result[x] = numerator / array[x]",
                                                                          "numerator", "array") {
 
                                     @Override

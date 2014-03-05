@@ -19,7 +19,7 @@ import static org.epics.vtype.ValueFactory.newVNumberArray;
 import org.epics.vtype.ValueUtil;
 
 /**
- * Abstract class for formula functions that take a VNumber and a VNumberArray as arguments
+ * Abstract class for formula functions that take a VNumberArray and a VNumber as arguments
  * and return a VNumberArray.
  * <p>
  * This class takes care of:
@@ -34,10 +34,10 @@ import org.epics.vtype.ValueUtil;
  * @author shroffk
  * 
  */
-public abstract class AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction implements
+public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction implements
 	FormulaFunction {
-
-    private static final List<Class<?>> argumentTypes = Arrays.<Class<?>> asList(VNumberArray.class, VNumber.class);
+    
+    private static final List<Class<?>> argumentTypes = Arrays.<Class<?>> asList(VNumber.class, VNumberArray.class);
 
     private final String name;
     private final String description;
@@ -51,7 +51,7 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction im
      * @param arg1Name first argument name
      * @param arg2Name second argument name
      */
-    public AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction(String name, String description,
+    public AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction(String name, String description,
 	    String arg1Name, String arg2Name) {
 	this.name = name;
 	this.description = description;
@@ -95,8 +95,8 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction im
 
     @Override
     public Object calculate(List<Object> args) {
-        VNumberArray arg1 = (VNumberArray) args.get(0);
-        VNumber arg2 = (VNumber) args.get(1);
+        VNumber arg1 = (VNumber) args.get(0);
+        VNumberArray arg2 = (VNumberArray) args.get(1);
         // If one argument is null, return null
         if (arg1 == null || arg2 == null) {
             return null;
@@ -109,7 +109,7 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction im
             time = ValueFactory.timeNow();
         }
 	return newVNumberArray(
-		calculate(arg1.getData(), arg2.getValue()),
+		calculate(arg1.getValue(), arg2.getData()),
                 alarm,
 		time,
                 displayNone());
@@ -123,6 +123,6 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction im
      * @param arg2 the second argument; not null
      * @return the result; not null
      */
-    abstract ListNumber calculate(ListNumber arg1, Number arg2);
+    abstract ListNumber calculate(Number arg1, ListNumber arg2);
 
 }
