@@ -23,7 +23,7 @@ import org.epics.vtype.ValueUtil;
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the VNumberArrays to ListNumber</li>
+ *    <li>extracting the ListNumber from the VNumberArrays</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>
@@ -35,9 +35,10 @@ import org.epics.vtype.ValueUtil;
  */
 public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction implements FormulaFunction {
 
+    private static final List<Class<?>> argumentTypes = Arrays.<Class<?>> asList(VNumberArray.class, VNumberArray.class);
+
     private final String name;
     private final String description;
-    private static final List<Class<?>> argumentTypes = Arrays.<Class<?>> asList(VNumberArray.class, VNumberArray.class);
     private final List<String> argumentNames;
 
     /**
@@ -110,11 +111,10 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
                 alarm,
 		time,
                 displayNone());
-
     }
 
     /**
-     * Calculates the array based on the previous two. This is the only
+     * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
      * 
      * @param arg1 the first argument; not null
