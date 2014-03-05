@@ -26,8 +26,14 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                         .addFormulaFunction(new ArrayOfNumberFormulaFunction())
                         .addFormulaFunction(new ArrayOfStringFormulaFunction())
                         .addFormulaFunction(new ArrayWithBoundariesFormulaFunction())
+                        .addFormulaFunction(new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arrayPow", "Result[x] = pow(array[x], expon)",
+                                "array", "expon") {
+                            @Override
+                            ListNumber calculate(ListNumber arg1, Number arg2) {
+                                return ListMath.listToPow(arg1, arg2.doubleValue());
+                            }
+                        })
                         .addFormulaFunction(new ArrayOfPowFormulaFunction())
-                        .addFormulaFunction(new ArrayToPowFormulaFunction())
                         .addFormulaFunction(new CaHistogramFormulaFunction())
                         .addFormulaFunction(new HistogramOfFormulaFunction())
                         .addFormulaFunction(new RescaleArrayFormulaFunction())

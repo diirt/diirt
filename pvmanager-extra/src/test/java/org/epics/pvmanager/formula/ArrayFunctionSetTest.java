@@ -156,6 +156,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
+    
+    @Test
+    public void arrayPow() {
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1, 4, 9), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "arrayPow", VNumberArray.class, VNumber.class)
+                .compareReturnValue(array, array2, number)
+                .compareReturnValue(null, null, number)
+                .compareReturnValue(null, array2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
 
     @Test
     public void multiplyArrayWithNumber() {
