@@ -65,7 +65,11 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         VNumberArray array2 = newVNumberArray(new ArrayDouble(4, 5, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "+", VNumberArray.class, VNumberArray.class)
-                .compareReturnValue(array3, array, array2);
+                .compareReturnValue(array3, array, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, array, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
@@ -74,7 +78,11 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         VNumberArray array2 = newVNumberArray(new ArrayInt(4, 5, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "+", VNumberArray.class, VNumberArray.class)
-                .compareReturnValue(array3, array, array2);
+                .compareReturnValue(array3, array, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, array, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
