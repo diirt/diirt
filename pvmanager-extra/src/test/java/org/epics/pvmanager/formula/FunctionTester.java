@@ -52,6 +52,8 @@ public class FunctionTester {
 		equalTo(false));
         
         functions = FormulaFunctions.findArgTypeMatch(Arrays.asList(argTypes), functions);
+	assertThat("No matches found for function '" + name + "'.", functions.isEmpty(),
+		equalTo(false));
 	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
 		equalTo(1));
         return new FunctionTester(functions.iterator().next());
