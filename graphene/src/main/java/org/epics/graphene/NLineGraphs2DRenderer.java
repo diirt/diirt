@@ -42,7 +42,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
     private ArrayList<Double> graphBoundaries;
     private ArrayList<Double> graphBoundaryRatios;
     private HashMap<Integer, Range> indexToRangeMap = new HashMap<Integer,Range>();
-    private HashMap<Integer, Boolean> indexToForceMap = new HashMap<Integer,Boolean>();
     private int numGraphs = 0;
     private List<ListDouble> yReferenceCoords;
     private List<ListDouble> yReferenceValues;
@@ -238,6 +237,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             }
         }
     }
+    
     @Override
     protected void calculateLabels() {
         // Calculate horizontal axis references. If range is zero, use special logic

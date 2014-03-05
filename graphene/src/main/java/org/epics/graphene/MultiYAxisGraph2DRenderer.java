@@ -7,23 +7,26 @@ package org.epics.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
 /**
- * Renderer for a line graph.
+ * Renderer for a line graph with multiple y axes.
  *
- * @author carcassi
+ * @author carcassi, sjdallst
  */
-public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpdate> {
+public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2DRendererUpdate> {
 
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE);
     
     @Override
-    public LineGraph2DRendererUpdate newUpdate() {
-        return new LineGraph2DRendererUpdate();
+    public MultiYAxisGraph2DRendererUpdate newUpdate() {
+        return new MultiYAxisGraph2DRendererUpdate();
     }
 
     private InterpolationScheme interpolation = InterpolationScheme.NEAREST_NEIGHBOUR;
@@ -33,7 +36,20 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     
     private boolean highlightFocusValue = false;
 
+    private Range emptyRange;
+    private AxisRange xAxisRange = AxisRanges.integrated();
+    private AxisRange yAxisRange = AxisRanges.integrated();
+    private ValueScale xValueScale = ValueScales.linearScale();
+    private ValueScale yValueScale = ValueScales.linearScale();
+    private Range xAggregatedRange;
+    private List<Range> yAggregatedRange;
+    private Range xPlotRange;
+    private List<Range> yPlotRange;
+    private HashMap<Integer, Range> indexToRangeMap = new HashMap<Integer,Range>();
     private int focusValueIndex = -1;
+    private int numGraphs;
+    private int spaceForYAxes;
+    private int minimumGraphWidth = 200;
     
     /**
      * Creates a new line graph renderer.
@@ -41,7 +57,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */
-    public LineGraph2DRenderer(int imageWidth, int imageHeight) {
+    public MultiYAxisGraph2DRenderer(int imageWidth, int imageHeight) {
         super(imageWidth, imageHeight);
     }
 
@@ -83,7 +99,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     }
     
     @Override
-    public void update(LineGraph2DRendererUpdate update) {
+    public void update(MultiYAxisGraph2DRendererUpdate update) {
         super.update(update);
         if (update.getInterpolation() != null) {
             interpolation = update.getInterpolation();
@@ -105,34 +121,66 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
      * @param g the graphics on which to display the data
      * @param data the data to display
      */
-    public void draw(Graphics2D g, Point2DDataset data) {
+    public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
         
-        calculateRanges(data.getXStatistics(), data.getYStatistics());
+        List<Range> dataRangesX = new ArrayList<Range>();
+        for(int i = 0; i < data.size(); i++){
+            dataRangesX.add(data.get(i).getXStatistics());
+        }
+        List<Range> dataRangesY = new ArrayList<Range>();
+        for(int i = 0; i < data.size(); i++){
+            dataRangesY.add(data.get(i).getYStatistics());
+        }
+        
+        calculateRanges(dataRangesX, dataRangesY, numGraphs);
         calculateLabels();
         calculateGraphArea();        
         drawBackground();
         drawGraphArea();
-        
-        SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
-        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
 
-        setClip(g);
-        g.setColor(Color.BLACK);
-
-        currentIndex = 0;
-        currentScaledDiff = getImageWidth();
-        drawValueExplicitLine(xValues, yValues, interpolation, reduction);
-        if (focusPixelX != null) {
-            focusValueIndex = xValues.getIndexes().getInt(currentIndex);
-            if (highlightFocusValue) {
-                g.setColor(new Color(0, 0, 0, 128));
-                int x = (int) scaledX(xValues.getDouble(currentIndex));
-                g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-                g.drawLine(x, yAreaCoordStart, x, yAreaCoordEnd - 1);
+    }
+    
+    private void getNumGraphs(List<Point2DDataset> data){
+            numGraphs = data.size();
+            while((double)getImageWidth() - spaceForYAxes < minimumGraphWidth){
+                numGraphs-=1;
             }
-        } else {
-            focusValueIndex = -1;
+    }
+    
+    protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
+        for(int i = 0; i < length; i++){
+            xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
+            xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xAggregatedRange);
+        }  
+        if(yAggregatedRange == null || yDataRange.size() != yAggregatedRange.size()){
+            yAggregatedRange = new ArrayList<Range>();
+            yPlotRange = new ArrayList<Range>();
+            for(int i = 0; i < length; i++){
+                if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
+                    yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
+                    yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                }
+                else{
+                    if(indexToRangeMap.containsKey(i)){
+                        yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
+                        yPlotRange.add(indexToRangeMap.get(i));
+                    }
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < length; i++){
+                if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
+                    yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                    yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                }
+                else{
+                    if(indexToRangeMap.containsKey(i)){
+                        yPlotRange.set(i,indexToRangeMap.get(i));
+                    }
+                }
+            }
         }
     }
 
