@@ -36,12 +36,18 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void arrayOfString() {
-	VString[] data = { newVString("x", alarmNone(), timeNow()),
-		newVString("y", alarmNone(), timeNow()),
-		newVString("z", alarmNone(), timeNow()) };
-	VStringArray expected = newVStringArray(Arrays.asList("x", "y", "z"),
+        VString s1 = newVString("x", alarmNone(), timeNow());
+        VString s2 = newVString("y", alarmNone(), timeNow());
+        VString s3 = newVString("z", alarmNone(), timeNow());
+	VStringArray expected1 = newVStringArray(Arrays.asList("x", "y", "z"),
 		alarmNone(), timeNow());
-	testFunction(set, "arrayOf", expected, (Object[]) data);
+	VStringArray expected2 = newVStringArray(Arrays.asList("x", "y", null),
+		alarmNone(), timeNow());
+        FunctionTester.findBySignature(set, "arrayOf", VString.class)
+                .compareReturnValue(expected1, s1, s2, s3)
+                .compareReturnValue(expected2, s1, s2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
