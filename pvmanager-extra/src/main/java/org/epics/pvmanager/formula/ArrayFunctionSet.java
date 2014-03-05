@@ -33,7 +33,12 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 return ListMath.listToPow(arg1, arg2.doubleValue());
                             }
                         })
-                        .addFormulaFunction(new ArrayOfPowFormulaFunction())
+                        .addFormulaFunction(new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(base, array[x])", "base", "array") {
+                            @Override
+                            ListNumber calculate(Number arg1, ListNumber arg2) {
+                                return ListMath.powList(arg1.doubleValue(), arg2);
+                            }
+                        })
                         .addFormulaFunction(new CaHistogramFormulaFunction())
                         .addFormulaFunction(new HistogramOfFormulaFunction())
                         .addFormulaFunction(new RescaleArrayFormulaFunction())

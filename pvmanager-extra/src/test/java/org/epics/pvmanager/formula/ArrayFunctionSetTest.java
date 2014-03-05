@@ -161,11 +161,18 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     public void arrayPow() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(1, 4, 9), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray array3 = newVDoubleArray(new ArrayDouble(2, 4, 8), alarmNone(), timeNow(), displayNone());
 	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arrayPow", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
                 .compareReturnValue(null, array2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+        FunctionTester.findBySignature(set, "arrayPow", VNumber.class, VNumberArray.class)
+                .compareReturnValue(array3, number, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, number, null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
