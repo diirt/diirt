@@ -39,10 +39,10 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         VString s1 = newVString("x", alarmNone(), timeNow());
         VString s2 = newVString("y", alarmNone(), timeNow());
         VString s3 = newVString("z", alarmNone(), timeNow());
-	VStringArray expected1 = newVStringArray(Arrays.asList("x", "y", "z"),
-		alarmNone(), timeNow());
-	VStringArray expected2 = newVStringArray(Arrays.asList("x", "y", null),
-		alarmNone(), timeNow());
+        VStringArray expected1 = newVStringArray(Arrays.asList("x", "y", "z"),
+                alarmNone(), timeNow());
+        VStringArray expected2 = newVStringArray(Arrays.asList("x", "y", null),
+                alarmNone(), timeNow());
         FunctionTester.findBySignature(set, "arrayOf", VString.class)
                 .compareReturnValue(expected1, s1, s2, s3)
                 .compareReturnValue(expected2, s1, s2, null)
@@ -52,17 +52,16 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void arrayOfNumber() {
-	VNumber[] data = {
-		newVDouble(Double.valueOf(1), alarmNone(), timeNow(),
-			displayNone()),
-		newVDouble(Double.valueOf(2), alarmNone(), timeNow(),
-			displayNone()),
-		newVDouble(Double.valueOf(3), alarmNone(), timeNow(),
-			displayNone()) };
-	ListDouble expectedData = new ArrayDouble(1, 2, 3);
-	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
-		timeNow(), displayNone());
-	testFunction(set, "arrayOf", expected, (Object[]) data);
+        VNumber n1 = newVDouble(Double.valueOf(1), alarmNone(), timeNow(), displayNone());
+        VNumber n2 = newVDouble(Double.valueOf(2), alarmNone(), timeNow(), displayNone());
+        VNumber n3 = newVDouble(Double.valueOf(3), alarmNone(), timeNow(), displayNone());
+        VNumberArray expected1 = newVNumberArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+        VNumberArray expected2 = newVNumberArray(new ArrayDouble(1, 2, Double.NaN), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "arrayOf", VNumber.class)
+                .compareReturnValue(expected1, n1, n2, n3)
+                .compareReturnValue(expected2, n1, n2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
