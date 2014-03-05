@@ -40,7 +40,15 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                           return ListMath.mult(array1, array2);
                                     }
                                 })
-                        .addFormulaFunction(new DivArrayFormulaFunction())
+                        .addFormulaFunction(
+                                new AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction("arrayDiv", "Result[x] = array1[x] / array2[x]",
+                                                                       "array1", "array2") {
+
+                                    @Override
+                                    ListNumber calculate(ListNumber array1, ListNumber array2) {
+                                          return ListMath.div(array1, array2);
+                                    }
+                                })
                         .addFormulaFunction(new SubArrayFormulaFunction())
                         .addFormulaFunction(new ElementAtArrayFormulaFunction())
                         .addFormulaFunction(new ElementAtStringArrayFormulaFunction())
