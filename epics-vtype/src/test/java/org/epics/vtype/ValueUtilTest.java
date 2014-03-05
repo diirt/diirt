@@ -152,4 +152,20 @@ public class ValueUtilTest {
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time4, time2, time3)), sameInstance(time4));
     }
     
+    @Test
+    public void latestValidTimeOrNewOf1() {
+        Time time1 = newTime(Timestamp.of(12340000, 0));
+        Time time2 = newTime(Timestamp.of(12340000, 0));
+        Time time3 = newTime(Timestamp.of(12350000, 0));
+        Time time4 = newTime(Timestamp.of(12360000, 0));
+        Time time5 = newTime(Timestamp.of(12370000, 0), 1, false);
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time3)), sameInstance(time3));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time3, time1)), sameInstance(time3));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time2)), sameInstance(time1));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time2, time1)), sameInstance(time2));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time4, time5, time3)), sameInstance(time4));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time5)), not(sameInstance(time5)));
+        assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(null, null)), not(nullValue()));
+    }
+    
 }
