@@ -126,8 +126,15 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void multiplyArrayWithNumber() {
-	testTwoArgArrayFunction(set, "*", new ArrayDouble(1, 2, 3),
-		Double.valueOf(2), new ArrayDouble(2, 4, 6));
+        VNumberArray array = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
+	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "*", VNumberArray.class, VNumber.class)
+                .compareReturnValue(array, array2, number)
+                .compareReturnValue(null, null, number)
+                .compareReturnValue(null, array2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
