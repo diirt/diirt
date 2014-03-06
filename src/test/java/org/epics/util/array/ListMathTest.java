@@ -35,7 +35,7 @@ public class ListMathTest {
     @Test
     public void sum1() {
         ArrayDouble array1 = new ArrayDouble(new double[] {0, 1, 2, 3, 4, 5});
-        ListDouble summed = ListMath.sum(array1, ListMath.rescale(array1, -1.0, 0.0));
+        ListDouble summed = ListMath.add(array1, ListMath.rescale(array1, -1.0, 0.0));
         assertThat(CollectionNumbers.doubleArrayCopyOf(summed), equalTo(new double[] {0, 0, 0, 0, 0, 0}));
     }
 
