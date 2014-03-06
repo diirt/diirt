@@ -97,7 +97,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void addArrayDoubleOfNumber() {
+    public void plusVNumberArrayVNumberArrayDouble() {
         VNumberArray array = newVNumberArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVNumberArray(new ArrayDouble(4, 5, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
@@ -110,7 +110,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void addArrayIntOfNumber() {
+    public void plusVNumberArrayVNumberArrayInt() {
         VNumberArray array = newVNumberArray(new ArrayInt(1, 2, 3), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVNumberArray(new ArrayInt(4, 5, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVNumberArray(new ArrayDouble(5, 7, 9), alarmNone(), timeNow(), displayNone());
@@ -123,7 +123,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void subtractArrayOfNumber() {
+    public void minusVNumberArrayVNumberArray() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(4, 5, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(4, 3, 2), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVDoubleArray(new ArrayDouble(0, 2, 4), alarmNone(), timeNow(), displayNone());
@@ -182,7 +182,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void multiplyArrayWithNumber() {
+    public void multiplyVNumberArrayVNumber() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
 	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
@@ -195,7 +195,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
 
     @Test
-    public void divideArrayWithNumber() {
+    public void divideVNumberArrayVNumber() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
 	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
@@ -203,6 +203,19 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
                 .compareReturnValue(null, array2, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+
+    @Test
+    public void divideVNumberVNumberArray() {
+        VNumberArray array = newVDoubleArray(new ArrayDouble(6, 3, 2), alarmNone(), timeNow(), displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
+	VNumber number = newVNumber(12, alarmNone(), timeNow(), displayNone());
+        FunctionTester.findBySignature(set, "/", VNumber.class, VNumberArray.class)
+                .compareReturnValue(array, number, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, number, null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -239,7 +252,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray1() {
+    public void elementAtNumber() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
         Time time = newTime(Timestamp.of(16548379, 0));
@@ -257,7 +270,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void elementAtArray2() {
+    public void elementAtString() {
         VStringArray array = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow());
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
         Time time = newTime(Timestamp.of(16548379, 0));

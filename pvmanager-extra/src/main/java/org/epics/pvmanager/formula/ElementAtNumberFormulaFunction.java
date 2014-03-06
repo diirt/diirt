@@ -4,10 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
 import static org.epics.vtype.ValueFactory.newVNumber;
-import static org.epics.vtype.ValueFactory.timeNow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +17,7 @@ import org.epics.vtype.VNumberArray;
  * @author shroffk
  *
  */
-class ElementAtArrayFormulaFunction implements FormulaFunction {
+class ElementAtNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {

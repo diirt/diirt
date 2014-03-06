@@ -61,8 +61,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                     }
                                 })
                         .addFormulaFunction(new SubArrayFormulaFunction())
-                        .addFormulaFunction(new ElementAtArrayFormulaFunction())
-                        .addFormulaFunction(new ElementAtStringArrayFormulaFunction())
+                        .addFormulaFunction(new ElementAtNumberFormulaFunction())
+                        .addFormulaFunction(new ElementAtStringFormulaFunction())
 
                         .addFormulaFunction(
                                 new AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction("+", "Result[x] = array1[x] + array2[x]",
