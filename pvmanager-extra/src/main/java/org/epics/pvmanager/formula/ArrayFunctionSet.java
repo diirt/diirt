@@ -93,6 +93,15 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
+                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arraySum", "Result[x] = offset + array[x]",
+                                "offset", "array") {
+
+                            @Override
+                            ListNumber calculate(Number offset, ListNumber array) {
+                                return ListMath.rescale(array, 1.0, offset.doubleValue());
+                            }
+                        })
+                .addFormulaFunction(
                         new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arraySub", "Result[x] = array[x] - offset",
                                 "array", "offset") {
 
@@ -111,8 +120,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arrayDiv", "Result[x] = numerator / array[x]",
-                                "numerator", "array") {
+                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arrayDiv", "Result[x] = num / array[x]",
+                                "num", "array") {
 
                             @Override
                             ListNumber calculate(Number numerator, ListNumber array) {
@@ -129,8 +138,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("*", "Result[x] = array[x] * num",
-                                "array", "num") {
+                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("*", "Result[x] = num * array[x]",
+                                "num", "array") {
 
                             @Override
                             ListNumber calculate(Number num, ListNumber array) {
