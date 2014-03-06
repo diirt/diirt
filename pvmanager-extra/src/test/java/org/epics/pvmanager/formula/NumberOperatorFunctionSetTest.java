@@ -17,7 +17,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     private static FormulaFunctionSet set = new NumberOperatorFunctionSet();
     
     @Test
-    public void add1() {
+    public void add() {
         FunctionTester.findByName(set, "+")
                 .compareReturnValue(3.0, 1.0, 2.0)
                 .compareReturnValue(-1.0, 1.0, -2.0)
@@ -28,7 +28,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void subtract1() {
+    public void subtract() {
         FunctionTester.findBySignature(set, "-", VNumber.class, VNumber.class)
                 .compareReturnValue(-1.0, 1.0, 2.0)
                 .compareReturnValue(3.0, 1.0, -2.0)
@@ -39,7 +39,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void negate1() {
+    public void negate() {
         FunctionTester.findBySignature(set, "-", VNumber.class)
                 .compareReturnValue(-1.0, 1.0)
                 .compareReturnValue(2.0, -2.0)
@@ -49,7 +49,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void multiply1() {
+    public void multiply() {
         FunctionTester.findByName(set, "*")
                 .compareReturnValue(10.0, 2.0, 5.0)
                 .compareReturnValue(-6.0, 3.0, -2.0)
@@ -60,7 +60,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void divide1() {
+    public void divide() {
         FunctionTester.findByName(set, "/")
                 .compareReturnValue(4.0, 8.0, 2.0)
                 .compareReturnValue(-0.5, 1.0, -2.0)
@@ -71,7 +71,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void remainder1() {
+    public void remainder() {
         FunctionTester.findByName(set, "%")
                 .compareReturnValue(0.0, 8.0, 2.0)
                 .compareReturnValue(1.0, 3.0, 2.0)

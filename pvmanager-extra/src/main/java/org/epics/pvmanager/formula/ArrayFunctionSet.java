@@ -129,6 +129,15 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
+                        new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("*", "Result[x] = array[x] * num",
+                                "array", "num") {
+
+                            @Override
+                            ListNumber calculate(Number num, ListNumber array) {
+                                return ListMath.rescale(array, num.doubleValue(), 0.0);
+                            }
+                        })
+                .addFormulaFunction(
                         new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arrayDiv", "Result[x] = array[x] / num",
                                 "array", "num") {
 

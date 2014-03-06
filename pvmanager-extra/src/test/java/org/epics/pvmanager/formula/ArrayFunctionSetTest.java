@@ -210,6 +210,12 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(null, array2, null)
                 .highestAlarmReturned()
                 .latestTimeReturned();
+        FunctionTester.findBySignature(set, "*", VNumber.class, VNumberArray.class)
+                .compareReturnValue(array, number, array2)
+                .compareReturnValue(null, null, array2)
+                .compareReturnValue(null, number, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
