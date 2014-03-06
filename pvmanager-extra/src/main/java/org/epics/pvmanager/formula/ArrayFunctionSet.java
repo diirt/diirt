@@ -27,7 +27,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                 .addFormulaFunction(new ArrayOfStringFormulaFunction())
                 .addFormulaFunction(new ArrayWithBoundariesFormulaFunction())
                 .addFormulaFunction(
-                        new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arrayPow", "Result[x] = pow(array[x], expon)",
+                        new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(array[x], expon)",
                                 "array", "expon") {
                     @Override
                     ListNumber calculate(ListNumber arg1, Number arg2) {
@@ -84,7 +84,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arraySum", "Result[x] = array[x] + offset",
+                        new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arraySum", "Result[x] = array[x] + offset",
                                 "array", "offset") {
 
                             @Override
@@ -93,7 +93,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arraySub", "Result[x] = array[x] - offset",
+                        new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arraySub", "Result[x] = array[x] - offset",
                                 "array", "offset") {
 
                             @Override
@@ -120,7 +120,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("*", "Result[x] = array[x] * num",
+                        new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("*", "Result[x] = array[x] * num",
                                 "array", "num") {
 
                             @Override
@@ -138,7 +138,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(
-                        new AbstractVNumberArrayVNumberToVNumberArrayFomulaFunction("arrayDiv", "Result[x] = array[x] / num",
+                        new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arrayDiv", "Result[x] = array[x] / num",
                                 "array", "num") {
 
                             @Override
