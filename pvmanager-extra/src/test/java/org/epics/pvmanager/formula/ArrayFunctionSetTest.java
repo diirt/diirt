@@ -310,6 +310,11 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
         
         FunctionTester.findByName(set, "histogramOf")
                 .compareReturnValue(expected, array);
+        FunctionTester.findBySignature(set, "histogramOf", VNumberArray.class)
+                .compareReturnValue(expected, array)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
    
 }
