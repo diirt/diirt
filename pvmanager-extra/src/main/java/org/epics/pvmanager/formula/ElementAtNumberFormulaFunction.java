@@ -9,6 +9,7 @@ import static org.epics.vtype.ValueFactory.newVNumber;
 
 import java.util.Arrays;
 import java.util.List;
+import org.epics.pvmanager.util.NullUtils;
 
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
@@ -72,12 +73,14 @@ class ElementAtNumberFormulaFunction implements FormulaFunction {
      */
     @Override
     public Object calculate(List<Object> args) {
-        VNumberArray numberArray = (VNumberArray) args.get(0);
-        VNumber index = (VNumber) args.get(1);
-        if (numberArray == null || index == null) {
+        if (NullUtils.containsNull(args)) {
             return null;
         }
+        
+        VNumberArray numberArray = (VNumberArray) args.get(0);
+        VNumber index = (VNumber) args.get(1);
         int i = index.getValue().intValue();
+        
         return newVNumber(numberArray.getData().getDouble(i),
                 numberArray, numberArray, displayNone());
     }

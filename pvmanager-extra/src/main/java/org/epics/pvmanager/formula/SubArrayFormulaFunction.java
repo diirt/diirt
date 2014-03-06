@@ -4,10 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.alarmNone;
 import static org.epics.vtype.ValueFactory.displayNone;
 import static org.epics.vtype.ValueFactory.newVNumberArray;
-import static org.epics.vtype.ValueFactory.timeNow;
 
 import java.util.Arrays;
 import java.util.List;
