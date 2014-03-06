@@ -14,12 +14,15 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Graph2DRenderer;
+import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DCircularBuffer;
@@ -28,6 +31,7 @@ import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.RangeUtil;
 import org.epics.graphene.ShowResizableGraph;
+import org.epics.graphene.profile.StopWatch.TimeType;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
@@ -74,11 +78,15 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public static final String LOG_FILEPATH = "ProfileResults\\";
     
     //Profile Parameters (Customizable)
+    private Graph2DRendererUpdate update;
+    private String updateDescription;
+    
     private int maxTries    = 1000000,
                 testTimeSec = 20;
     private int nPoints     = 1000;
     
     private boolean bufferInLoop = false;
+    private TimeType timeType = StopWatch.TimeType.System;
     
     private int imageWidth  = 600,
                 imageHeight = 400;
@@ -102,16 +110,14 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * </ol>
      */
     public void profile(){        
-        //Timing
-        Timestamp start = Timestamp.now();
-        Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));        
         stopWatch = new StopWatch(maxTries);
-        
-        nTries = 0;
+        stopWatch.setTimeType(getTimeType());
         
         //Data and Render Objects (Implemented in subclasses)
         S data = getDataset();
         T renderer = getRenderer(imageWidth, imageHeight);
+        
+        if (update != null){ renderer.update(update); }
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         BufferedImage image = null;
@@ -121,8 +127,14 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             graphics = image.createGraphics();
         }
         
+        nTries = 0;
+        
+        //System Time
+        Timestamp start = Timestamp.now();
+        Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));   
+                
         //Trials
-        while (end.compareTo(Timestamp.now()) >= 0 && !Thread.currentThread().isInterrupted()) {
+        while (end.compareTo(Timestamp.now()) >= 0 && !Thread.currentThread().isInterrupted() && nTries < maxTries) {
             nTries++;
             stopWatch.start();
             
@@ -177,6 +189,17 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @param data what is drawn
      */
     protected abstract void render(Graphics2D graphics, T renderer, S data);
+    
+    protected abstract LinkedHashMap<String, Graph2DRendererUpdate> getVariations();
+    
+    protected void setUpdate(String updateDescription, Graph2DRendererUpdate update){
+        this.update = update;
+        this.updateDescription = updateDescription;
+    }
+    
+    protected void setUpdate(String updateDescription){
+        setUpdate(updateDescription, getVariations().get(updateDescription));
+    }
     
     
     //Post-Profile Options
@@ -262,6 +285,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      *      <li>Number of data points</li>
      *      <li>Width of image rendered</li>
      *      <li>Height of image rendered</li>
+     *      <li>Timing Type</li>
+     *      <li>Update Applied</li>
      *      <li>Comment about the data set rendered (useful for multi-dimensional or unusual data sets)</li>
      *      <li>Comment about the author performing the profile</li>
      *      <li>General comment about rendering</li>
@@ -294,6 +319,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  getNumDataPoints() + delim +
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
+                         quote + getTimeType() + quote + delim +
+                         quote + updateDescription + quote + delim +
                                  saveSettings.getOutputMessage() + delim +
                                  saveSettings.getHardwareOutputMessage();
         
@@ -342,6 +369,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      *      <li>Number of Data Points</li>
      *      <li>Image Width</li>
      *      <li>Image Height</li>
+     *      <li>Timing Type</li>
+     *      <li>Update Applied</li>
      *      <li>Dataset Comments</li>
      *      <li>Author</li>
      *      <li>General Message</li>
@@ -367,6 +396,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                        quote + "Number of Data Points" + quote + delim +
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
+                       quote + "Timing Type" + quote + delim +
+                       quote + "Update Applied" + quote + delim +
                        saveSettings.getOutputTitle() + delim +
                        saveSettings.getHardwareOutputTitle();
         
@@ -484,6 +515,14 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return this.bufferInLoop;
     }
     
+    public TimeType getTimeType(){
+        return this.timeType;
+    }
+    
+    public String getUpdateDescription(){
+        return this.updateDescription;
+    }
+    
     
     //Test Parameter Setters
     
@@ -548,6 +587,10 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */    
     public void setBufferInLoop(boolean bufferInLoop){
         this.bufferInLoop = bufferInLoop;
+    }
+    
+    public void setTimeType(TimeType timeType){
+        this.timeType = timeType;
     }
     
     

@@ -5,6 +5,9 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.epics.graphene.*;
 
 /**
@@ -138,4 +141,14 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     public String getGraphTitle() {
         return "IntensityGraph2D";
     }  
+
+    @Override
+    protected LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
+        LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
+        
+        map.put("None", new Graph2DRendererUpdate());
+        map.put("Not Draw Legend", new IntensityGraph2DRendererUpdate().drawLegend(false));
+        
+        return map;
+    }
 }

@@ -4,6 +4,8 @@
  */
 package org.epics.graphene.profile;
 
+import com.sun.management.OperatingSystemMXBean;
+import java.lang.management.ManagementFactory;
 import java.math.BigInteger;
 import java.util.Arrays;
 import org.epics.util.array.ArrayLong;
@@ -16,11 +18,18 @@ import org.epics.util.array.ListLong;
  * and then repeats multiple iterations.
  * 
  * @author carcassi
+ * @author asbarber
  */
 public class StopWatch {
+    public enum TimeType{ System, Cpu };
+    
     private long start;
     private int nAttempts = 0;
     private final long[] timings;
+    
+    private TimeType timeType = TimeType.System;
+    
+    private OperatingSystemMXBean bean;
     
     /**
      * Constructs and initializes the watch from the max number
@@ -31,6 +40,7 @@ public class StopWatch {
      */
     public StopWatch(int maxAttempts) {
         timings = new long[maxAttempts];
+        bean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();        
     }
     
     /**
@@ -43,7 +53,12 @@ public class StopWatch {
             throw new ArrayIndexOutOfBoundsException("The stop watch has reached the maximum timings it can track.");
         }
         
-        start = System.nanoTime();
+        if (timeType == TimeType.System){
+            start = System.nanoTime();
+        }
+        else{
+            start = bean.getProcessCpuTime();
+        }
     }
     
     /**
@@ -53,7 +68,13 @@ public class StopWatch {
      * This is NOT verified in the method call as to improve efficiency.
      */
     public void stop() {
-        timings[nAttempts] = System.nanoTime() - start;
+        if (timeType == TimeType.System){
+            timings[nAttempts] = System.nanoTime() - start;
+        }
+        else{
+            timings[nAttempts] = bean.getProcessCpuTime() - start;
+        }
+        
         nAttempts++;
     }
     
@@ -112,5 +133,45 @@ public class StopWatch {
             averages[i] = total.divide(BigInteger.valueOf(i+1)).longValue();
         }
         return new ArrayLong(averages);
+    }
+    
+    public void setToUseSystemTime(){
+        this.timeType = TimeType.System;
+    }
+    
+    public void setToUseCpuTime(){
+        this.timeType = TimeType.Cpu;
+    }
+    
+    public void setTimeType(TimeType type){
+        this.timeType = type;
+    }
+    
+    public boolean isUsingSystemTime(){
+        return this.timeType == TimeType.System;
+    }
+    
+    public boolean isUsingCpuTime(){
+        return !(this.timeType == TimeType.System);
+    }
+
+    public TimeType getTimeType(){
+        return this.timeType;
+    }
+    
+    
+    public static void main(String[] args){
+        OperatingSystemMXBean bean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();        
+        
+        System.out.println("CPU:" + bean.getProcessCpuTime());
+        System.out.println("Sys:" + System.nanoTime());
+        
+        int sum = 0;
+        for (int i = 0; i < 100; i++){
+            sum = sum + 1;
+        }
+        
+        System.out.println("CPU:" + bean.getProcessCpuTime());
+        System.out.println("Sys:" + System.nanoTime());       
     }
 }

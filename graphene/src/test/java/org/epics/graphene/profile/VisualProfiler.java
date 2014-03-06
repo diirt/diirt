@@ -12,6 +12,8 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -100,6 +103,12 @@ public class VisualProfiler extends JFrame{
     
     private JTextField          txtMaxAttempts;
     private JLabel              lblMaxAttempts;
+    
+    private JComboBox           listTimeTypes;
+    private JLabel              lblTimeTypes;
+    
+    private JComboBox           listUpdateTypes;
+    private JLabel              lblUpdateTypes;
     
     private JLabel              lblSaveMessage;
     private JTextField          txtSaveMessage;
@@ -218,6 +227,13 @@ public class VisualProfiler extends JFrame{
                 
         txtMaxAttempts = new JTextField("1000000");
         lblMaxAttempts = new JLabel("Max Attempts: ");
+        
+        listTimeTypes = new JComboBox(StopWatch.TimeType.values());
+        lblTimeTypes = new JLabel("Timing Based Off: ");
+        
+        listUpdateTypes = new JComboBox();
+        lblUpdateTypes = new JLabel("Apply Update: ");
+        this.updateUpdateVariations();
         
         lblSaveMessage = new JLabel("Save Message: ");
         txtSaveMessage = new JTextField("");
@@ -345,6 +361,17 @@ public class VisualProfiler extends JFrame{
      * with a method of the <code>VisualProfiler</code>.
      */
     private void addListeners(){
+       this.listRendererTypes.addItemListener(new ItemListener(){
+
+           @Override
+           public void itemStateChanged(ItemEvent e) {
+               if (e.getStateChange() == ItemEvent.SELECTED){
+                   VisualProfiler.this.updateUpdateVariations();
+               }
+           }
+           
+       });
+       
        this.btnSingleProfile.addActionListener(new ActionListener(){
 
            @Override
@@ -465,7 +492,13 @@ public class VisualProfiler extends JFrame{
 
             settingsPane.add(this.lblMaxAttempts);
             settingsPane.add(this.txtMaxAttempts);
-        
+            
+            settingsPane.add(this.lblTimeTypes);
+            settingsPane.add(this.listTimeTypes);            
+            
+            settingsPane.add(this.lblUpdateTypes);
+            settingsPane.add(this.listUpdateTypes);
+            
             settingsPane.add(lblSaveMessage);
             settingsPane.add(txtSaveMessage);
             
@@ -630,6 +663,13 @@ public class VisualProfiler extends JFrame{
     
     
     //Actions
+    
+    private void updateUpdateVariations(){
+        DefaultComboBoxModel model = new DefaultComboBoxModel(
+            getProfilerType().getVariations().keySet().toArray()
+        );
+        this.listUpdateTypes.setModel(model);        
+    }
     
     /**
      * Thread safe operation to start a <code>ProfileGraph2D</code>
@@ -1489,13 +1529,13 @@ public class VisualProfiler extends JFrame{
      */
     public ProfileGraph2D getProfiler(){
         //Get inputs
-        String strClass = listRendererTypes.getSelectedItem().toString();
         String strTestTime = this.txtTestTime.getText();
         String strMaxAttempts = this.txtMaxAttempts.getText();
         
         //Intended variables
         int testTime;
         int maxAttempts;
+        StopWatch.TimeType timeType;
         ProfileGraph2D renderer;
                 
         //Test Time
@@ -1510,7 +1550,7 @@ public class VisualProfiler extends JFrame{
             return null;
         }
         
-        //Test Time
+        //Max Attempts
         try{
             maxAttempts = Integer.parseInt(strMaxAttempts);
             
@@ -1521,6 +1561,26 @@ public class VisualProfiler extends JFrame{
             JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for max attempts.", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+        
+        //Time Type
+        timeType = (StopWatch.TimeType) this.listTimeTypes.getSelectedItem();
+        
+        //Instance creation                
+        renderer = getProfilerType();
+        if (renderer == null){ return null; }
+        
+        //Update
+        renderer.setTestTime(testTime);
+        renderer.setMaxTries(maxAttempts);
+        renderer.setTimeType(timeType);
+        
+        //Final Format
+        return renderer;
+    }
+    
+    public ProfileGraph2D getProfilerType(){
+        String strClass = listRendererTypes.getSelectedItem().toString();
+        ProfileGraph2D renderer;
         
         //Instance creation                
         try {
@@ -1537,11 +1597,6 @@ public class VisualProfiler extends JFrame{
             return null;
         }
         
-        //Update
-        renderer.setTestTime(testTime);
-        renderer.setMaxTries(maxAttempts);
-        
-        //Final Format
         return renderer;
     }
     

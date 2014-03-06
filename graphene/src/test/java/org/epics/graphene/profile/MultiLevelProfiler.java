@@ -368,11 +368,15 @@ public class MultiLevelProfiler{
            String quote = "\"";
            String header = quote + "Graph Type" + quote + delim +
                            quote + "Date" + quote + delim +
+                           quote + "Timing Type" + quote + delim +
+                           quote + "Update Applied" + quote + delim +
                            this.saveSettings.getOutputTitle() + delim +
                            this.saveSettings.getHardwareOutputTitle();
            
            String data = quote + profiler.getGraphTitle() + quote + delim +
                          quote + date + quote + delim +
+                         quote + this.profiler.getTimeType() + quote + delim +                   
+                         quote + this.profiler.getUpdateDescription() + quote + delim +
                          this.saveSettings.getOutputMessage() + delim +
                          this.saveSettings.getHardwareOutputMessage();
                          

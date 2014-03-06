@@ -5,6 +5,11 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.epics.graphene.Graph2DRendererUpdate;
+import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.SparklineGraph2DRenderer;
 import org.epics.graphene.SparklineGraph2DRendererUpdate;
@@ -61,4 +66,17 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
     public String getGraphTitle() {
         return "SparklineGraph2D";
     }      
+
+    @Override
+    protected LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
+        LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
+        
+        map.put("None", new Graph2DRendererUpdate());
+        map.put("Linear Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        map.put("Cubic Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        map.put("Nearest Neighbor Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        map.put("Not Draw Circles", new SparklineGraph2DRendererUpdate().drawCircles(false));
+        
+        return map;
+    }
 }

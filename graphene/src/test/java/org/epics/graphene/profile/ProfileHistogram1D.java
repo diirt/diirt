@@ -5,6 +5,9 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import org.epics.graphene.*;
 
@@ -73,5 +76,14 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     @Override
     public String getGraphTitle() {
         return "Histogram1D";
+    }
+
+    @Override
+    protected LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
+        LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
+        
+        map.put("None", new Graph2DRendererUpdate());
+        
+        return map;
     }
 }

@@ -45,7 +45,7 @@ public final class TestCaseProfiler {
          *      1:      invokes methods without memory requirements
          *      2:      invokes methods with memory requirements
          */
-        int invokeType = 1;
+        int invokeType = -1;
         
         
         switch(invokeType){
@@ -53,7 +53,7 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        
+                        TestCaseProfiler.setPixelVsDrawRect();
         }
     }    
 
@@ -561,8 +561,8 @@ public final class TestCaseProfiler {
     private static class SetPixelVsDrawRect{
         private boolean     profileSetPixel = true;
 
-        private int         width = 640, 
-                            height = 480;
+        private int         width = 1024, 
+                            height = 768;
 
         private StopWatch   stopWatch;
 
@@ -626,10 +626,10 @@ public final class TestCaseProfiler {
             graphics = image.createGraphics();
 
             //Makes Data
-            double[][] data = makeData();
+            double[] data = makeData();
 
             //Trials
-            while (end.compareTo(Timestamp.now()) >= 0) {
+            while (end.compareTo(Timestamp.now()) >= 0 && nTries < maxTries) {
                 nTries++;
                 stopWatch.start();
 
@@ -652,12 +652,12 @@ public final class TestCaseProfiler {
          * Set of locations representing each pixel of the image.
          * @return data for pixel locations and pixel values
          */
-        private double[][] makeData(){
+        private double[] makeData(){
             Random rand  = new Random(0);
-            double[][] values = new double[width][height];
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++){
-                    values[x][y] = rand.nextDouble();
+            double[] values = new double[width*height];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++){
+                    values[y*width + x] = rand.nextDouble();
                 }
             }        
 
@@ -668,10 +668,10 @@ public final class TestCaseProfiler {
          * Creates an image by setting the pixel value for every pixel.
          * @param values where to set the pixel
          */
-        private void doSetPixel(double[][] values){
-                for (int x = 0; x < width; x++){
-                    for (int y = 0; y < height; y++){
-                        image.setRGB(x, y, (int) (255*values[x][y]));                    
+        private void doSetPixel(double[] values){
+                for (int y = 0; y < height; y++){
+                    for (int x = 0; x < width; x++){
+                        image.setRGB(x, y, (int) (255*values[y*width + x]));                    
                     }
                 }      
         }
@@ -680,13 +680,13 @@ public final class TestCaseProfiler {
          * Creates an image by drawing a rectangle at every pixel.
          * @param values where to draw rectangles
          */
-        private void doDrawRect(double[][] values){
-                for (int x = 0; x < width; x++){
-                    for (int y = 0; y < height; y++){
-                        Color color = new Color((int)(255*values[x][y]));
+        private void doDrawRect(double[] values){
+                for (int y = 0; y < height; y++){
+                    for (int x = 0; x < width; x++){
+                        Color color = new Color((int)(255*values[y*width + x]));
                         graphics.setColor(color);
                         graphics.fillRect(x, y, 1, 1);                     
-                        image.setRGB(x, y, (int) (255*values[x][y]));                    
+                        image.setRGB(x, y, (int) (255*values[y*width + x]));                    
                     }
                 }
         }

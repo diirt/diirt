@@ -5,6 +5,9 @@
 package org.epics.graphene.profile;
 
 import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.epics.graphene.*;
 
 /**
@@ -56,4 +59,15 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
     public String getGraphTitle() {
         return "ScatterGraph2D";
     }   
+
+    @Override
+    protected LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
+        LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
+        
+        map.put("None", new Graph2DRendererUpdate());
+        map.put("Linear Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        map.put("Cubic Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
+        
+        return map;    
+    }
 }
