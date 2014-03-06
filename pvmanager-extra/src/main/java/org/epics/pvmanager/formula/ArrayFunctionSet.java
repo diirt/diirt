@@ -31,14 +31,14 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "expon") {
                     @Override
                     ListNumber calculate(ListNumber arg1, Number arg2) {
-                        return ListMath.listToPow(arg1, arg2.doubleValue());
+                        return ListMath.pow(arg1, arg2.doubleValue());
                     }
                 })
                 .addFormulaFunction(
                         new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(base, array[x])", "base", "array") {
                     @Override
                     ListNumber calculate(Number arg1, ListNumber arg2) {
-                        return ListMath.powList(arg1.doubleValue(), arg2);
+                        return ListMath.pow(arg1.doubleValue(), arg2);
                     }
                 })
                 .addFormulaFunction(new CaHistogramFormulaFunction())
@@ -50,7 +50,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 
                             @Override
                             ListNumber calculate(ListNumber array1, ListNumber array2) {
-                                return ListMath.mult(array1, array2);
+                                return ListMath.multiply(array1, array2);
                             }
                         })
                 .addFormulaFunction(
@@ -59,7 +59,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 
                             @Override
                             ListNumber calculate(ListNumber array1, ListNumber array2) {
-                                return ListMath.div(array1, array2);
+                                return ListMath.divide(array1, array2);
                             }
                         })
                 .addFormulaFunction(new SubArrayFormulaFunction())
@@ -71,7 +71,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 
                             @Override
                             ListNumber calculate(ListNumber array1, ListNumber array2) {
-                                return ListMath.sum(array1, array2);
+                                return ListMath.add(array1, array2);
                             }
                         })
                 .addFormulaFunction(
@@ -116,7 +116,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
 
                             @Override
                             ListNumber calculate(Number numerator, ListNumber array) {
-                                return ListMath.invrescale(array, numerator.doubleValue(), 0.0);
+                                return ListMath.inverseRescale(array, numerator.doubleValue(), 0.0);
                             }
                         })
                 .addFormulaFunction(
