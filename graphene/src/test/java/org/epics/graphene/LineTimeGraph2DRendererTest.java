@@ -102,4 +102,5 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.4", image);
     }
+    
 }
