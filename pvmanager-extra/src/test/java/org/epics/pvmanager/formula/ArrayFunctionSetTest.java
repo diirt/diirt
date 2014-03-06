@@ -273,15 +273,21 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void arrayWithBoundaries(){
-        // TODO: should test alarm, time and display
-        VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), timeNow(), displayNone());
+        Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Time time = timeNow();
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), time, displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(1,2,3,4), alarm, timeNow(), displayNone());
         ListNumberProvider generator = VTableFactory.step(-1, 0.5);
         VNumberArray expected = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(4),
                 Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
 	
-	testFunction(set, "arrayWithBoundaries", expected,
-		array,
-		generator);
+        FunctionTester.findBySignature(set, "arrayWithBoundaries", VNumberArray.class, ListNumberProvider.class)
+                .compareReturnValue(expected, array, generator)
+                .compareReturnValue(null, array, null)
+                .compareReturnValue(null, null, generator)
+                .compareReturnAlarm(alarmNone(), array, generator)
+                .compareReturnAlarm(alarm, array2, generator)
+                .compareReturnTime(time, array, generator);
     }
     
     @Test
