@@ -7,7 +7,6 @@ package org.epics.pvmanager.formula;
 import static org.epics.vtype.ValueFactory.*;
 
 import java.util.Arrays;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
@@ -225,14 +224,18 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     
     @Test
     public void subArray() {
-	ListDouble data = new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	ListDouble expectedData = new ArrayDouble(2, 3, 4);
-	VNumberArray expected = newVDoubleArray(expectedData, alarmNone(),
-		timeNow(), displayNone());
-	testFunction(set, "subArray", expected,
-		newVDoubleArray(data, alarmNone(), timeNow(), displayNone()),
-		newVNumber(2, alarmNone(), timeNow(), displayNone()),
-		newVNumber(5, alarmNone(), timeNow(), displayNone()));
+        VNumberArray data = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
+        VNumberArray expected = newVDoubleArray(new ArrayDouble(2, 3, 4), alarmNone(), timeNow(), displayNone());
+	VNumber start = newVNumber(2, alarmNone(), timeNow(), displayNone());
+	VNumber end = newVNumber(5, alarmNone(), timeNow(), displayNone());
+        
+        FunctionTester.findBySignature(set, "subArray", VNumberArray.class, VNumber.class, VNumber.class)
+                .compareReturnValue(expected, data, start, end)
+                .compareReturnValue(null, null, start, end)
+                .compareReturnValue(null, data, null, end)
+                .compareReturnValue(null, data, start, null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
     
     @Test
