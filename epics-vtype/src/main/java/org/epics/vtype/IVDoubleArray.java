@@ -29,7 +29,7 @@ class IVDoubleArray extends IVNumeric implements VDoubleArray {
         this.sizes = sizes;
         this.data = data;
         if (dimDisplay == null) {
-            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(this);
+            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(sizes);
         } else {
             this.dimensionDisplay = dimDisplay;
         }
