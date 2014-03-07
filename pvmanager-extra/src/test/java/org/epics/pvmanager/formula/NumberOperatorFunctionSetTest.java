@@ -267,4 +267,14 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
                 .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
     }
+    
+    @Test
+    public void logicalNot() {
+        FunctionTester.findByName(set, "!")
+                .compareReturnValue(true, false)
+                .compareReturnValue(false, true)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
 }
