@@ -166,4 +166,40 @@ public class ListNumbersTest {
         assertThat(list.getDouble(50), equalTo(500.0));
         assertThat(list.getDouble(100), equalTo(0.0));
     }
+    
+    @Test
+    public void toListNumber1() {
+        byte[] array = new byte[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayByte(array)));
+    }
+    
+    @Test
+    public void toListNumber2() {
+        short[] array = new short[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayShort(array)));
+    }
+    
+    @Test
+    public void toListNumber3() {
+        int[] array = new int[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayInt(array)));
+    }
+    
+    @Test
+    public void toListNumber4() {
+        long[] array = new long[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayLong(array)));
+    }
+    
+    @Test
+    public void toListNumber5() {
+        float[] array = new float[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayFloat(array)));
+    }
+    
+    @Test
+    public void toListNumber6() {
+        double[] array = new double[]{1,2,3};
+        assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayDouble(array)));
+    }
 }
