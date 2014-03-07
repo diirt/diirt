@@ -4,6 +4,10 @@
  */
 package org.epics.pvmanager.formula;
 
+import org.epics.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.junit.Test;
 import static org.epics.vtype.ValueFactory.*;
@@ -178,15 +182,20 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void conditionalAnd() {
-        FunctionTester.findByName(set, "&&")
-                .compareReturnValue(true, true, true)
-                .compareReturnValue(false, true, false)
-                .compareReturnValue(false, false, true)
-                .compareReturnValue(false, false, false)
-                .compareReturnValue(null, true, null)
-                .compareReturnValue(null, null, true)
-                .highestAlarmReturned()
-                .latestTimeReturned();
+    public void bitwiseXOR() {
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "xor")
+                .compareReturnValue(0b0110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
     }
 }
