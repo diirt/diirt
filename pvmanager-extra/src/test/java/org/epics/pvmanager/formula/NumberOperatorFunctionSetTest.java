@@ -139,4 +139,28 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
+    
+    @Test
+    public void equal() {
+        FunctionTester.findByName(set, "==")
+                .compareReturnValue(false, 1.0, 2.0)
+                .compareReturnValue(true, 2.0, 2.0)
+                .compareReturnValue(false, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void notEqual() {
+        FunctionTester.findByName(set, "!=")
+                .compareReturnValue(true, 1.0, 2.0)
+                .compareReturnValue(false, 2.0, 2.0)
+                .compareReturnValue(true, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
 }
