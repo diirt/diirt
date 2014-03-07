@@ -104,24 +104,6 @@ public class FunctionTester {
         return result;
     }
 
-    public FunctionTester compareReturnValue(double result, double arg1, double arg2) {
-	VNumber value = (VNumber) function.calculate(Arrays.<Object> asList(
-		newVDouble(arg1), newVDouble(arg2)));
-	assertThat("Wrong result for function '" + function.getName() + "(" + arg1 + ", "
-		+ arg2 + ")'.", value.getValue().doubleValue(),
-		closeTo(result, 0.0001));
-        return this;
-    }
-
-    public FunctionTester compareReturnValue(double result, double arg1) {
-	VNumber value = (VNumber) function.calculate(Arrays.<Object> asList(
-		newVDouble(arg1)));
-	assertThat("Wrong result for function '" + function.getName() + "(" + arg1 + 
-                ")'.", value.getValue().doubleValue(),
-		closeTo(result, 0.0001));
-        return this;
-    }
-
     public FunctionTester compareReturnAlarm(Alarm expected, Object... args) {
 	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
 	assertThat(
