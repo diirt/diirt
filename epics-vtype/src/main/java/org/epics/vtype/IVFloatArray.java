@@ -14,16 +14,25 @@ import org.epics.util.array.ListInt;
  */
 class IVFloatArray extends IVNumeric implements VFloatArray {
 
-    private final float[] array;
     private final ListFloat data;
     private final ListInt sizes;
-
+    private final List<ArrayDimensionDisplay> dimensionDisplay;
+    
     public IVFloatArray(ListFloat data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
+        this(data, sizes, null, alarm, time, display);
+    }
+
+    public IVFloatArray(ListFloat data, ListInt sizes, List<ArrayDimensionDisplay> dimDisplay,
+            Alarm alarm, Time time, Display display) {
         super(alarm, time, display);
-        this.array = null;
         this.sizes = sizes;
         this.data = data;
+        if (dimDisplay == null) {
+            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(this);
+        } else {
+            this.dimensionDisplay = dimDisplay;
+        }
     }
 
     @Override
@@ -43,7 +52,7 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
 
     @Override
     public List<ArrayDimensionDisplay> getDimensionDisplay() {
-        return ValueUtil.defaultArrayDisplay(this);
+        return dimensionDisplay;
     }
 
 }
