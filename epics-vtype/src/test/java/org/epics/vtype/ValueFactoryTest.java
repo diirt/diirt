@@ -213,6 +213,7 @@ public class ValueFactoryTest {
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType("A"), ValueFactory.newVString("A", alarmNone(), timeNow())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new String[] {"A", "B", "C"}), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(Arrays.asList("A", "B", "C")), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(true), ValueFactory.newVBoolean(true, alarmNone(), timeNow())), equalTo(true));
     }
 
 }

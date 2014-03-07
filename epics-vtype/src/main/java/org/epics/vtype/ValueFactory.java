@@ -718,6 +718,7 @@ public class ValueFactory {
      * <p>
      * Types are converted as follow:
      * <ul>
+     *   <li>Boolean -> VBoolean</li>
      *   <li>Number -> corresponding VNumber</li>
      *   <li>String -> VString</li>
      *   <li>number array -> corresponding VNumberArray</li>
@@ -735,8 +736,9 @@ public class ValueFactory {
         if (javaObject instanceof Number) {
             return ValueFactory.newVNumber((Number) javaObject, alarm, time, display);
         } else if (javaObject instanceof String) {
-            // Special support for strings
             return newVString((String) javaObject, alarm, time);
+        } else if (javaObject instanceof Boolean) {
+            return newVBoolean((Boolean) javaObject, alarm, time);
         } else if (javaObject instanceof byte[]
                 || javaObject instanceof short[]
                 || javaObject instanceof int[]
