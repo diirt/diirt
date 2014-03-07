@@ -16,6 +16,7 @@ import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -67,6 +68,15 @@ public class FunctionTester {
 			+ Arrays.toString(args) + ")'. Was (" + result
 			+ ") expected (" + expected + ")",
 		compare(result, expected), equalTo(true));
+        return this;
+    }
+
+    public FunctionTester compareReturnValue(boolean result, double arg1, double arg2) {
+	VBoolean value = (VBoolean) function.calculate(Arrays.<Object> asList(
+		newVDouble(arg1), newVDouble(arg2)));
+	assertThat("Wrong result for function '" + function.getName() + "(" + arg1 + ", "
+		+ arg2 + ")'.", value.getValue(),
+		equalTo(result));
         return this;
     }
 
