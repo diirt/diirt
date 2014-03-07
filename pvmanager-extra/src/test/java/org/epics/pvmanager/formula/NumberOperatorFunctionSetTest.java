@@ -176,4 +176,17 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
+    
+    @Test
+    public void conditionalAnd() {
+        FunctionTester.findByName(set, "&&")
+                .compareReturnValue(true, true, true)
+                .compareReturnValue(false, true, false)
+                .compareReturnValue(false, false, true)
+                .compareReturnValue(false, false, false)
+                .compareReturnValue(null, true, null)
+                .compareReturnValue(null, null, true)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
 }
