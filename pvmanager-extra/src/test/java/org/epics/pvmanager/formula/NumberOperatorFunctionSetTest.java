@@ -17,7 +17,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     private static FormulaFunctionSet set = new NumberOperatorFunctionSet();
     
     @Test
-    public void add() {
+    public void sum() {
         FunctionTester.findByName(set, "+")
                 .compareReturnValue(3.0, 1.0, 2.0)
                 .compareReturnValue(-1.0, 1.0, -2.0)
@@ -82,7 +82,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void pow1() {
+    public void pow() {
         FunctionTester.findByName(set, "^")
                 .compareReturnValue(64.0, 8.0, 2.0)
                 .compareReturnValue(2.0, 4.0, 0.5)
