@@ -105,6 +105,9 @@ public class FunctionTester {
     }
 
     public FunctionTester compareReturnAlarm(Alarm expected, Object... args) {
+        if (convertTypes) {
+            args = convertTypes(args);
+        }
 	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
 	assertThat(
 		"Wrong result for function '" + function.getName() + "("
@@ -115,6 +118,9 @@ public class FunctionTester {
     }
 
     public FunctionTester compareReturnTime(Time expected, Object... args) {
+        if (convertTypes) {
+            args = convertTypes(args);
+        }
 	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
 	assertThat(
 		"Wrong result for function '" + function.getName() + "("

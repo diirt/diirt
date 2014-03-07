@@ -277,4 +277,24 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
+    
+    @Test
+    public void conditionalOperator() {
+        Alarm alarm1 = alarmNone();
+        Alarm alarm2 = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "?:")
+                .compareReturnValue(1, true, 1, 0)
+                .compareReturnValue(0, false, 1, 0)
+                .compareReturnValue(null, null, 1, 0)
+                .compareReturnValue(null, true, null, 0)
+                .compareReturnValue(1, true, 1, null)
+                .compareReturnValue(0, false, null, 0)
+                .compareReturnValue(null, false, 1, null)
+                .compareReturnAlarm(alarm1, true, alarm1, alarm2)
+                .compareReturnAlarm(alarm2, false, alarm1, alarm2)
+                .compareReturnTime(time1, true, time1, time2)
+                .compareReturnTime(time2, false, time1, time2);
+    }
 }
