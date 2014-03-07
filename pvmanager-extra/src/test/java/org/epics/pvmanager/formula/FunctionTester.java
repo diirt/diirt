@@ -7,8 +7,6 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import java.util.Collection;
 import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
-import static org.epics.pvmanager.formula.BaseTestForFormula.compareAlarm;
-import static org.epics.pvmanager.formula.BaseTestForFormula.compareTime;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
@@ -17,6 +15,7 @@ import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
 import org.epics.vtype.VBoolean;
+import org.epics.vtype.VDouble;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -73,17 +72,25 @@ public class FunctionTester {
             args = convertTypes(args);
         }
 	Object result = function.calculate(Arrays.asList(args));
-	assertThat(
-		"Wrong result for function '" + function.getName() + "("
-			+ Arrays.toString(args) + ")'. Was (" + result
-			+ ") expected (" + expected + ")",
-		compare(result, expected), equalTo(true));
+        if (result instanceof VDouble && expected instanceof VDouble) {
+            assertThat("Wrong result for function '" + function.getName() + "("
+                    + Arrays.toString(args) + ")'.", ((VDouble) result).getValue().doubleValue(),
+		closeTo(((VDouble) expected).getValue().doubleValue(), 0.0001));
+        } else {
+            assertThat(
+                    "Wrong result for function '" + function.getName() + "("
+                            + Arrays.toString(args) + ")'. Was (" + result
+                            + ") expected (" + expected + ")",
+                    compare(result, expected), equalTo(true));
+        }
         return this;
     }
     
     private Object convertType(Object obj) {
         if (obj instanceof Boolean) {
             return newVBoolean((Boolean) obj, alarmNone(), timeNow());
+        } else if (obj instanceof Number) {
+            return newVNumber((Number) obj, alarmNone(), timeNow(), displayNone());
         }
         return obj;
     }
@@ -95,15 +102,6 @@ public class FunctionTester {
             
         }
         return result;
-    }
-
-    public FunctionTester compareReturnValue(boolean result, double arg1, double arg2) {
-	VBoolean value = (VBoolean) function.calculate(Arrays.<Object> asList(
-		newVDouble(arg1), newVDouble(arg2)));
-	assertThat("Wrong result for function '" + function.getName() + "(" + arg1 + ", "
-		+ arg2 + ")'.", value.getValue(),
-		equalTo(result));
-        return this;
     }
 
     public FunctionTester compareReturnValue(double result, double arg1, double arg2) {
