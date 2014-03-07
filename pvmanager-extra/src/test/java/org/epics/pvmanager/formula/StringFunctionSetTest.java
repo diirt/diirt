@@ -26,10 +26,6 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void concatStringArray() {
-	VStringArray data = newVStringArray(Arrays.asList("x", "y", "z"),
-		alarmNone(), timeNow());
-	VString expected = newVString("xyz", alarmNone(), timeNow());
-	testFunction(set, "concat", expected, data);
         FunctionTester.findBySignature(set, "concat", VStringArray.class)
                 .compareReturnValue("xyz", (Object) new String[] {"x", "y", "z"})
                 .compareReturnValue(null, (Object) null)
@@ -39,12 +35,12 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void concatStrings() {
-	VString dataA = newVString("a", alarmNone(), timeNow());
-	VString dataB = newVString("b", alarmNone(), timeNow());
-	VString dataC = newVString("c", alarmNone(), timeNow());
-
-	VString expected = newVString("abc", alarmNone(), timeNow());
-	testFunction(set, "concat", expected, dataA, dataB, dataC);
+        FunctionTester.findBySignature(set, "concat", VString.class)
+                .compareReturnValue("xyz", "x", "y", "z")
+                .compareReturnValue(null, "a", null)
+                .compareReturnValue(null, null, "b")
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
