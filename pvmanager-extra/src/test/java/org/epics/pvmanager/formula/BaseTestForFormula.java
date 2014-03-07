@@ -61,20 +61,6 @@ public class BaseTestForFormula {
 	}
     }
 
-    public static void testFunction(FormulaFunctionSet set, String name,
-	    Object expected, Object... args) {
-	FormulaFunction function = FormulaFunctions.findFirstMatch(
-		Arrays.asList(args), set.findFunctions(name));
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	Object result = function.calculate(Arrays.asList(args));
-	assertThat(
-		"Wrong result for function '" + name + "("
-			+ Arrays.toString(args) + ")'. Was (" + result
-			+ ") expected (" + expected + ")",
-		compare(result, expected), equalTo(true));
-    }
-
     public static boolean compare(Object obj1, Object obj2) {
 	if (obj1 == null && obj2 == null) {
 	    return true;

@@ -5,7 +5,6 @@
 package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.epics.util.array.ArrayDouble;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VStringArray;
