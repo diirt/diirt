@@ -160,6 +160,8 @@ public class FunctionTester {
             return newVNumberArray(new ArrayDouble(1.0), alarm, time, display);
         } else if (clazz.equals(VString.class)) {
             return newVString("A", alarm, time);
+        } else if (clazz.equals(VBoolean.class)) {
+            return newVBoolean(true, alarm, time);
         } else {
             throw new IllegalArgumentException("Can't create sample argument for class " + clazz);
         }
