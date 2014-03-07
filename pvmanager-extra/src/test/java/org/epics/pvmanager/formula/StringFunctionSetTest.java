@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager.formula;
 
-import java.util.Arrays;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VEnum;
 

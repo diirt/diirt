@@ -61,87 +61,6 @@ public class BaseTestForFormula {
 	}
     }
 
-    public static void testTwoArgNumericFunction(FormulaFunctionSet set,
-	    String name, double arg1, double arg2, double result) {
-	FormulaFunction function = null;
-	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
-	    if (formulaFunction.getArgumentTypes().size() == 2) {
-		function = formulaFunction;
-	    }
-	}
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	VNumber value = (VNumber) function.calculate(Arrays.<Object> asList(
-		newVDouble(arg1), newVDouble(arg2)));
-	assertThat("Wrong result for function '" + name + "(" + arg1 + ", "
-		+ arg2 + ")'.", value.getValue().doubleValue(),
-		closeTo(result, 0.0001));
-    }
-
-    public static void testTwoArgArrayFunction(FormulaFunctionSet set,
-	    String name, ListNumber arg1, ListNumber arg2, ListNumber result) {
-	FormulaFunction function = null;
-	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
-	    if (formulaFunction.getArgumentTypes().size() == 2) {
-		function = formulaFunction;
-	    }
-	}
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	VNumberArray value = (VNumberArray) function.calculate(Arrays
-		.<Object> asList(
-			newVNumberArray(arg1, alarmNone(), timeNow(),
-				displayNone()),
-			newVNumberArray(arg2, alarmNone(), timeNow(),
-				displayNone())));
-	assertThat(
-		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
-			+ ")'.",
-		compare(value,
-			newVNumberArray(result, alarmNone(), timeNow(),
-				displayNone())), equalTo(true));
-    }
-    
-    public static void testTwoArgArrayFunction(FormulaFunctionSet set,
-	    String name, ListNumber arg1, Number arg2, ListNumber result) {
-	FormulaFunction function = null;
-	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
-	    if (formulaFunction.getArgumentTypes().size() == 2) {
-		function = formulaFunction;
-	    }
-	}
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	VNumberArray value = (VNumberArray) function.calculate(Arrays
-		.<Object> asList(
-			newVNumberArray(arg1, alarmNone(), timeNow(),
-				displayNone()),
-			newVNumber(arg2, alarmNone(), timeNow(),
-				displayNone())));
-	assertThat(
-		"Wrong result for function '" + name + "(" + arg1 + ", " + arg2
-			+ ")'.",
-		compare(value,
-			newVNumberArray(result, alarmNone(), timeNow(),
-				displayNone())), equalTo(true));
-    }
-
-    public static void testFunction(FormulaFunctionSet set, String name,
-	    double arg, double result) {
-	FormulaFunction function = null;
-	for (FormulaFunction formulaFunction : set.findFunctions(name)) {
-	    if (formulaFunction.getArgumentTypes().size() == 1) {
-		function = formulaFunction;
-	    }
-	}
-	assertThat("Function '" + name + "' not found.", function,
-		not(nullValue()));
-	VNumber value = (VNumber) function.calculate(Arrays
-		.<Object> asList(newVDouble(arg)));
-	assertThat("Wrong result for function '" + name + "(" + arg + ")'.",
-		value.getValue().doubleValue(), closeTo(result, 0.0001));
-    }
-
     public static void testFunction(FormulaFunctionSet set, String name,
 	    Object expected, Object... args) {
 	FormulaFunction function = FormulaFunctions.findFirstMatch(
@@ -154,32 +73,6 @@ public class BaseTestForFormula {
 			+ Arrays.toString(args) + ")'. Was (" + result
 			+ ") expected (" + expected + ")",
 		compare(result, expected), equalTo(true));
-    }
-
-    public static boolean compareAlarm(Alarm alarm1, Alarm alarm2) {
-	if (alarm1 == null && alarm2 == null) {
-	    return true;
-	}
-
-	if (alarm1 == null || alarm2 == null) {
-	    return false;
-	}
-        
-        return alarm1.getAlarmSeverity().equals(alarm2.getAlarmSeverity()) &&
-                alarm1.getAlarmName().equals(alarm2.getAlarmName());
-    }
-
-    public static boolean compareTime(Time time1, Time time2) {
-	if (time1 == null && time2 == null) {
-	    return true;
-	}
-
-	if (time1 == null || time2 == null) {
-	    return false;
-	}
-        
-        return Objects.equals(time1.getTimestamp(), time2.getTimestamp()) &&
-                Objects.equals(time1.getTimeUserTag(), time2.getTimeUserTag());
     }
 
     public static boolean compare(Object obj1, Object obj2) {

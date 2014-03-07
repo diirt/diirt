@@ -6,12 +6,10 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testTwoArgNumericFunction;
 import org.epics.util.array.ArrayDouble;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.table.Column;
 import org.epics.vtype.table.VTableFactory;
