@@ -24,19 +24,16 @@ public class TableFunctionSetTest extends BaseTestForFormula {
     private static FormulaFunctionSet set = new TableFunctionSet();
     
     @Test
-    public void columnOf1() {
+    public void columnOf() {
         VTable data = newVTable(Arrays.<Class<?>>asList(String.class, double.class, double.class),
                 Arrays.asList("x", "y", "z"), Arrays.<Object>asList(Arrays.asList("a", "b", "c"), new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
-        VStringArray expected = newVStringArray(Arrays.asList("a", "b", "c"), alarmNone(), timeNow());
-        testFunction(set, "columnOf", expected, data, newVString("x", alarmNone(), timeNow()));
-    }
-    
-    @Test
-    public void columnOf2() {
-        VTable data = newVTable(Arrays.<Class<?>>asList(String.class, double.class, double.class),
-                Arrays.asList("x", "y", "z"), Arrays.<Object>asList(Arrays.asList("a", "b", "c"), new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
-        VNumberArray expected = newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone());
-        testFunction(set, "columnOf", expected, data, newVString("y", alarmNone(), timeNow()));
+        VStringArray expected1 = newVStringArray(Arrays.asList("a", "b", "c"), alarmNone(), timeNow());
+        VNumberArray expected2 = newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone());
+        FunctionTester.findByName(set, "columnOf")
+                .compareReturnValue(expected1, data, "x")
+                .compareReturnValue(expected2, data, "y")
+                .compareReturnValue(null, data, null)
+                .compareReturnValue(null, null, "y");
     }
     
     @Test
