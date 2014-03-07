@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.text.NumberFormats;
@@ -517,9 +518,20 @@ public class ValueUtil {
      * @return the array dimension display
      */
     public static List<ArrayDimensionDisplay> defaultArrayDisplay(VNumberArray array) {
+        return defaultArrayDisplay(array.getSizes());
+    }
+    
+    /**
+     * Returns the default array dimension display given the size
+     * of the n dimensional array and creating cell boundaries based on index.
+     * 
+     * @param sizes the shape of the array
+     * @return the array dimension display
+     */
+    public static List<ArrayDimensionDisplay> defaultArrayDisplay(ListInt sizes) {
         List<ArrayDimensionDisplay> displays = new ArrayList<>();
-        for (int i = 0; i < array.getSizes().size(); i++) {
-            displays.add(ValueFactory.newDisplay(array.getSizes().getInt(i)));
+        for (int i = 0; i < sizes.size(); i++) {
+            displays.add(ValueFactory.newDisplay(sizes.getInt(i)));
         }
         return displays;
     }
