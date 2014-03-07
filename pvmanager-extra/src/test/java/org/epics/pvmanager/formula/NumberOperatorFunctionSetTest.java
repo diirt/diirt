@@ -200,6 +200,34 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
+    public void bitwiseOR() {
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "or")
+                .compareReturnValue(0b1110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+        FunctionTester.findByName(set, "|")
+                .compareReturnValue(0b1110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+    }
+    
+    @Test
     public void bitwiseAND() {
         Alarm none = alarmNone();
         Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
