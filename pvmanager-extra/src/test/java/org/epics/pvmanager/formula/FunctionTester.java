@@ -34,6 +34,7 @@ import static org.junit.Assert.assertThat;
 public class FunctionTester {
     
     private final FormulaFunction function;
+    private boolean convertTypes = true;
     
     private FunctionTester(FormulaFunction function) {
         this.function = function;
@@ -60,8 +61,17 @@ public class FunctionTester {
 		equalTo(1));
         return new FunctionTester(functions.iterator().next());
     }
+    
+    public FunctionTester convertTypes(boolean convertTypes) {
+        this.convertTypes = convertTypes;
+        return this;
+    }
 
     public FunctionTester compareReturnValue(Object expected, Object... args) {
+        if (convertTypes) {
+            expected = convertType(expected);
+            args = convertTypes(args);
+        }
 	Object result = function.calculate(Arrays.asList(args));
 	assertThat(
 		"Wrong result for function '" + function.getName() + "("
@@ -69,6 +79,22 @@ public class FunctionTester {
 			+ ") expected (" + expected + ")",
 		compare(result, expected), equalTo(true));
         return this;
+    }
+    
+    private Object convertType(Object obj) {
+        if (obj instanceof Boolean) {
+            return newVBoolean((Boolean) obj, alarmNone(), timeNow());
+        }
+        return obj;
+    }
+    
+    private Object[] convertTypes(Object... obj) {
+        Object[] result = new Object[obj.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = convertType(obj[i]);
+            
+        }
+        return result;
     }
 
     public FunctionTester compareReturnValue(boolean result, double arg1, double arg2) {
