@@ -201,5 +201,18 @@ public class ValueFactoryTest {
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(value.toString(), equalTo("VIntArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
     }
+    
+    @Test
+    public void toVType() {
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1), ValueFactory.newVNumber(1, alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1.0), ValueFactory.newVNumber(1.0, alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new int[]{1,2,3}), ValueFactory.newVNumberArray(new ArrayInt(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new double[]{1,2,3}), ValueFactory.newVNumberArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new ArrayInt(1,2,3)), ValueFactory.newVNumberArray(new ArrayInt(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new ArrayDouble(1,2,3)), ValueFactory.newVNumberArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType("A"), ValueFactory.newVString("A", alarmNone(), timeNow())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new String[] {"A", "B", "C"}), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(Arrays.asList("A", "B", "C")), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
+    }
 
 }

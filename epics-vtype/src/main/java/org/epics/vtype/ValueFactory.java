@@ -5,6 +5,7 @@
 package org.epics.vtype;
 
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.epics.util.text.NumberFormats;
@@ -696,6 +697,74 @@ public class ValueFactory {
         } else {
             // TODO: need to implement all the other arrays
             throw new UnsupportedOperationException("Type " + value.getClass().getName() + "  is not yet supported");
+        }
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible. Calls {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display) 
+     * with no alarm, time now and no display.
+     * 
+     * @param javaObject the value to wrap
+     * @return the new VType value
+     */
+    public static VType toVType(Object javaObject) {
+        return toVType(javaObject, alarmNone(), timeNow(), displayNone());
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible.
+     * <p>
+     * Types are converted as follow:
+     * <ul>
+     *   <li>Number -> corresponding VNumber</li>
+     *   <li>String -> VString</li>
+     *   <li>number array -> corresponding VNumberArray</li>
+     *   <li>ListNumber -> corresponding VNumberArray</li>
+     *   <li>List-> if all elements are String, VStringArray</li>
+     * </ul>
+     * 
+     * @param javaObject the value to wrap
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new VType value
+     */
+    public static VType toVType(Object javaObject, Alarm alarm, Time time, Display display) {
+        if (javaObject instanceof Number) {
+            return ValueFactory.newVNumber((Number) javaObject, alarm, time, display);
+        } else if (javaObject instanceof String) {
+            // Special support for strings
+            return newVString((String) javaObject, alarm, time);
+        } else if (javaObject instanceof byte[]
+                || javaObject instanceof short[]
+                || javaObject instanceof int[]
+                || javaObject instanceof long[]
+                || javaObject instanceof float[]
+                || javaObject instanceof double[]) {
+            return newVNumberArray(ListNumbers.toListNumber(javaObject), alarm, time, display);
+        } else if (javaObject instanceof ListNumber) {
+            return newVNumberArray((ListNumber) javaObject, alarm, time, display);
+        } else if (javaObject instanceof String[]) {
+            return newVStringArray(Arrays.asList((String[]) javaObject), alarm, time);
+        } else if (javaObject instanceof List) {
+            boolean matches = true;
+            List list = (List) javaObject;
+            for (Object object : list) {
+                if (!(object instanceof String)) {
+                    matches = false;
+                }
+            }
+            if (matches) {
+                @SuppressWarnings("unchecked")
+                List<String> newList = (List<String>) list;
+                return newVStringArray(Collections.unmodifiableList(newList), alarm, time);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }

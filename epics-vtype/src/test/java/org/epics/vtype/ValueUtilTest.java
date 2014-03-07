@@ -168,17 +168,4 @@ public class ValueUtilTest {
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(null, null)), not(nullValue()));
     }
     
-    @Test
-    public void toVType() {
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(1), ValueFactory.newVNumber(1, alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(1.0), ValueFactory.newVNumber(1.0, alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(new int[]{1,2,3}), ValueFactory.newVNumberArray(new ArrayInt(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(new double[]{1,2,3}), ValueFactory.newVNumberArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(new ArrayInt(1,2,3)), ValueFactory.newVNumberArray(new ArrayInt(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(new ArrayDouble(1,2,3)), ValueFactory.newVNumberArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType("A"), ValueFactory.newVString("A", alarmNone(), timeNow())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(new String[] {"A", "B", "C"}), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
-        assertThat(VTypeValueEquals.valueEquals(ValueUtil.toVType(Arrays.asList("A", "B", "C")), ValueFactory.newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())), equalTo(true));
-    }
-    
 }

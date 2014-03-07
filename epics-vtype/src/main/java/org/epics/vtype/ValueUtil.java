@@ -354,59 +354,6 @@ public class ValueUtil {
     }
     
     /**
-     * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible.
-     * <p>
-     * Types are converted as follow:
-     * <ul>
-     *   <li>Number -> corresponding VNumber</li>
-     *   <li>String -> VString</li>
-     *   <li>number array -> corresponding VNumberArray</li>
-     *   <li>ListNumber -> corresponding VNumberArray</li>
-     *   <li>List-> if all elements are String, VStringArray</li>
-     * </ul>
-     * 
-     * @param javaObject
-     * @return 
-     */
-    public static VType toVType(Object javaObject) {
-        if (javaObject instanceof Number) {
-            return ValueFactory.newVNumber((Number) javaObject, alarmNone(), timeNow(), displayNone());
-        } else if (javaObject instanceof String) {
-            // Special support for strings
-            return newVString((String) javaObject, alarmNone(), timeNow());
-        } else if (javaObject instanceof byte[]
-                || javaObject instanceof short[]
-                || javaObject instanceof int[]
-                || javaObject instanceof long[]
-                || javaObject instanceof float[]
-                || javaObject instanceof double[]) {
-            return newVNumberArray(ListNumbers.toListNumber(javaObject), alarmNone(), timeNow(), displayNone());
-        } else if (javaObject instanceof ListNumber) {
-            return newVNumberArray((ListNumber) javaObject, alarmNone(), timeNow(), displayNone());
-        } else if (javaObject instanceof String[]) {
-            return newVStringArray(Arrays.asList((String[]) javaObject), alarmNone(), timeNow());
-        } else if (javaObject instanceof List) {
-            boolean matches = true;
-            List list = (List) javaObject;
-            for (Object object : list) {
-                if (!(object instanceof String)) {
-                    matches = false;
-                }
-            }
-            if (matches) {
-                @SuppressWarnings("unchecked")
-                List<String> newList = (List<String>) list;
-                return newVStringArray(Collections.unmodifiableList(newList), alarmNone(), timeNow());
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-    
-    /**
      * Returns true if the two displays contain the same information.
      * 
      * @param d1 the first display
