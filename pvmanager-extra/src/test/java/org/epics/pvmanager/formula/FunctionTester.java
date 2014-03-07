@@ -19,6 +19,7 @@ import org.epics.vtype.VDouble;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
 import static org.epics.vtype.ValueFactory.*;
@@ -91,6 +92,10 @@ public class FunctionTester {
             return newVBoolean((Boolean) obj, alarmNone(), timeNow());
         } else if (obj instanceof Number) {
             return newVNumber((Number) obj, alarmNone(), timeNow(), displayNone());
+        } else if (obj instanceof String) {
+            return newVString((String) obj, alarmNone(), timeNow());
+        } else if (obj instanceof String[]) {
+            return newVStringArray(Arrays.asList((String[]) obj), alarmNone(), timeNow());
         }
         return obj;
     }
@@ -146,6 +151,8 @@ public class FunctionTester {
             return newVNumberArray(new ArrayDouble(1.0), alarm, time, display);
         } else if (clazz.equals(VString.class)) {
             return newVString("A", alarm, time);
+        } else if (clazz.equals(VStringArray.class)) {
+            return newVStringArray(Arrays.asList("A"), alarm, time);
         } else if (clazz.equals(VBoolean.class)) {
             return newVBoolean(true, alarm, time);
         } else {

@@ -30,6 +30,11 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 		alarmNone(), timeNow());
 	VString expected = newVString("xyz", alarmNone(), timeNow());
 	testFunction(set, "concat", expected, data);
+        FunctionTester.findBySignature(set, "concat", VStringArray.class)
+                .compareReturnValue("xyz", (Object) new String[] {"x", "y", "z"})
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
