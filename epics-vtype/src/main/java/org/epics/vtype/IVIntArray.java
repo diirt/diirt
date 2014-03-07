@@ -29,7 +29,7 @@ class IVIntArray extends IVNumeric implements VIntArray {
         this.sizes = sizes;
         this.data = data;
         if (dimDisplay == null) {
-            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(this);
+            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(sizes);
         } else {
             this.dimensionDisplay = dimDisplay;
         }
