@@ -6,7 +6,6 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.Collection;
-import static org.epics.pvmanager.formula.BaseTestForFormula.compare;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
@@ -82,7 +81,7 @@ public class FunctionTester {
                     "Wrong result for function '" + function.getName() + "("
                             + Arrays.toString(args) + ")'. Was (" + result
                             + ") expected (" + expected + ")",
-                    compare(result, expected), equalTo(true));
+                    VTypeValueEquals.valueEquals(result, expected), equalTo(true));
         }
         return this;
     }
