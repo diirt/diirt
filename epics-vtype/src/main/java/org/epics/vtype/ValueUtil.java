@@ -10,14 +10,18 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.TimestampFormat;
+import static org.epics.vtype.ValueFactory.*;
 
 /**
  * Various utility methods for runtime handling of the types defined in
@@ -347,6 +351,59 @@ public class ValueUtil {
 
         byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         return ValueFactory.newVImage(image.getHeight(), image.getWidth(), buffer);
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible.
+     * <p>
+     * Types are converted as follow:
+     * <ul>
+     *   <li>Number -> corresponding VNumber</li>
+     *   <li>String -> VString</li>
+     *   <li>number array -> corresponding VNumberArray</li>
+     *   <li>ListNumber -> corresponding VNumberArray</li>
+     *   <li>List-> if all elements are String, VStringArray</li>
+     * </ul>
+     * 
+     * @param javaObject
+     * @return 
+     */
+    public static VType toVType(Object javaObject) {
+        if (javaObject instanceof Number) {
+            return ValueFactory.newVNumber((Number) javaObject, alarmNone(), timeNow(), displayNone());
+        } else if (javaObject instanceof String) {
+            // Special support for strings
+            return newVString((String) javaObject, alarmNone(), timeNow());
+        } else if (javaObject instanceof byte[]
+                || javaObject instanceof short[]
+                || javaObject instanceof int[]
+                || javaObject instanceof long[]
+                || javaObject instanceof float[]
+                || javaObject instanceof double[]) {
+            return newVNumberArray(ListNumbers.toListNumber(javaObject), alarmNone(), timeNow(), displayNone());
+        } else if (javaObject instanceof ListNumber) {
+            return newVNumberArray((ListNumber) javaObject, alarmNone(), timeNow(), displayNone());
+        } else if (javaObject instanceof String[]) {
+            return newVStringArray(Arrays.asList((String[]) javaObject), alarmNone(), timeNow());
+        } else if (javaObject instanceof List) {
+            boolean matches = true;
+            List list = (List) javaObject;
+            for (Object object : list) {
+                if (!(object instanceof String)) {
+                    matches = false;
+                }
+            }
+            if (matches) {
+                @SuppressWarnings("unchecked")
+                List<String> newList = (List<String>) list;
+                return newVStringArray(Collections.unmodifiableList(newList), alarmNone(), timeNow());
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
     
     /**
