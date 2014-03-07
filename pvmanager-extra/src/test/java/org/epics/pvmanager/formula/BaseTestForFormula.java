@@ -27,6 +27,7 @@ import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
@@ -217,6 +218,12 @@ public class BaseTestForFormula {
 	if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
 	    VNumber number1 = (VNumber) obj1;
 	    VNumber number2 = (VNumber) obj2;
+	    return number1.getValue().equals(number2.getValue());
+	}
+	
+	if((obj1 instanceof VBoolean) && (obj2 instanceof VBoolean)) {
+	    VBoolean number1 = (VBoolean) obj1;
+	    VBoolean number2 = (VBoolean) obj2;
 	    return number1.getValue().equals(number2.getValue());
 	}
 	
