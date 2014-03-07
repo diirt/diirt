@@ -651,7 +651,9 @@ public class ValueFactory {
      * 
      * @param value the value to wrap
      * @return the wrapped value
+     * @deprecated use {@link #toVType() }
      */
+    @Deprecated
     public static VType wrapValue(Object value) {
         return wrapValue(value, alarmNone());
     }
@@ -665,7 +667,9 @@ public class ValueFactory {
      * @param value the value to wrap
      * @param alarm the alarm for the value
      * @return the wrapped value
+     * @deprecated use {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display) }
      */
+    @Deprecated
     public static VType wrapValue(Object value, Alarm alarm) {
         if (value instanceof Number) {
             // Special support for numbers
