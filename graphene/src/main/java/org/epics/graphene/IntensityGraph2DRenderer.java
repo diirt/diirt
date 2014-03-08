@@ -615,9 +615,6 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
                 if(addYSum){
                     ySum[yPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
                 }
-                Rectangle2D.Double rect;
-                rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
-                g.fill(rect);
                 countX+=xDataPerBox;
                 xPositionInt+=1;
             }
