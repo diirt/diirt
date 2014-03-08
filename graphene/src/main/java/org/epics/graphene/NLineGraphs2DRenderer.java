@@ -130,9 +130,9 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin + topAreaMargin + bottomAreaMargin + xLabelMargin + 1;
         getNumGraphs(data);
         calculateRanges(dataRangesX,dataRangesY,numGraphs);
-        calculateLabels();
         setGraphBoundaries(data);
-        calculateGraphArea();        
+        calculateLabels();
+        calculateGraphArea();
         drawBackground();
         drawGraphArea();
         
@@ -257,7 +257,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
             yReferenceValues = new ArrayList<ListDouble>();
             for(int i = 0; i < yPlotRange.size(); i++){
                 if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
-                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
+                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, (graphBoundaries.get(i+1).intValue() - graphBoundaries.get(i).intValue()) / 60));
                     yReferenceLabels.add(Arrays.asList(yAxis.getTickLabels()));
                     yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));            
                 } else {
@@ -270,7 +270,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         else{
             for(int i = 0; i < yPlotRange.size(); i++){
                 if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
-                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
+                    ValueAxis yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, (graphBoundaries.get(i+1).intValue() - graphBoundaries.get(i).intValue()) / 60));
                     yReferenceLabels.set(i,Arrays.asList(yAxis.getTickLabels()));
                     yReferenceValues.set(i,new ArrayDouble(yAxis.getTickValues()));            
                 } else {
@@ -335,8 +335,7 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
                 yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
             }
         }
-        
-        //TODO: FINISH THIS PART OF THE METHOD. ACCOUNT FOR BEGINNING AND END GRAPHS, ACCOUNT FOR EXISTING LISTS
+       
         if(yAreaCoordStart == null || yAreaCoordStart.size() != numGraphs){
             yAreaCoordStart = new ArrayList<Integer>();
             yAreaCoordEnd = new ArrayList<Integer>();
