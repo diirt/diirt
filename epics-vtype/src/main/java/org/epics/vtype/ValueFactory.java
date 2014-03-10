@@ -11,6 +11,7 @@ import java.util.List;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
@@ -493,17 +494,19 @@ public class ValueFactory {
     /**
      * Creates a new VNumberArray based on the type of the data.
      * 
-     * @param data
-     * @param alarm
-     * @param time
-     * @param display
-     * @return
+     * @param data the array data
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return a new value
      */
     public static VNumberArray newVNumberArray(final ListNumber data, final Alarm alarm, final Time time, final Display display){
 	if(data instanceof ListDouble){
 	    return newVDoubleArray((ListDouble)data, alarm, time, display);
 	}else if(data instanceof ListInt){
 	    return newVIntArray((ListInt)data, alarm, time, display);
+	} else if(data instanceof ListByte){
+	    return new IVByteArray((ListByte)data, new ArrayInt(data.size()), alarm, time, display);
 	}	
 	throw new UnsupportedOperationException("TODO: support types other than double and int");
     }
@@ -511,11 +514,13 @@ public class ValueFactory {
     /**
      * Creates a new VNumberArray based on the type of the data.
      * 
-     * @param data
-     * @param alarm
-     * @param time
-     * @param display
-     * @return
+     * @param data the array data
+     * @param sizes the array shape
+     * @param dimensionDisplay the array axis display information
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return a new value
      */
     public static VNumberArray newVNumberArray(final ListNumber data, final ListInt sizes, final List<ArrayDimensionDisplay> dimensionDisplay,
             final Alarm alarm, final Time time, final Display display){
@@ -523,6 +528,8 @@ public class ValueFactory {
 	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
 	} else if(data instanceof ListInt){
 	    return new IVIntArray((ListInt)data, sizes, dimensionDisplay, alarm, time, display);
+	} else if(data instanceof ListByte){
+	    return new IVByteArray((ListByte)data, sizes, dimensionDisplay, alarm, time, display);
 	}	
 	throw new UnsupportedOperationException("TODO: support types other than double and int");
     }
