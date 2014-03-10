@@ -13,11 +13,13 @@ import static org.epics.vtype.ValueFactory.*;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayLong;
 import org.epics.util.array.ArrayShort;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
+import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
 import org.epics.util.time.Timestamp;
@@ -252,7 +254,23 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVNumberArray8() {
+        VNumberArray result = newVNumberArray(new ArrayLong(new long[] {3,5,2,4,1}),
+                new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
+                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        assertThat(result, instanceOf(VLongArray.class));
+        VLongArray value = (VLongArray) result;
+        assertThat(value.getData(), equalTo((ListLong) new ArrayLong(new long[] {3,5,2,4,1})));
+        assertThat(value.getDimensionDisplay().size(), equalTo(1));
+        assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
+        assertThat(value.getAlarmName(), equalTo("LOW"));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(value.toString(), equalTo("VLongArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
     public void toVType() {
+        assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1l), ValueFactory.newVNumber(1l, alarmNone(), timeNow(), displayNone())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1), ValueFactory.newVNumber(1, alarmNone(), timeNow(), displayNone())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1.0), ValueFactory.newVNumber(1.0, alarmNone(), timeNow(), displayNone())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(new int[]{1,2,3}), ValueFactory.newVNumberArray(new ArrayInt(1,2,3), alarmNone(), timeNow(), displayNone())), equalTo(true));

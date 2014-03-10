@@ -16,5 +16,5 @@ public interface VLong extends VNumber, VType {
      * {@inheritDoc }
      */
     @Override
-    Integer getValue();
+    Long getValue();
 }
