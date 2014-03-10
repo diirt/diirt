@@ -648,7 +648,7 @@ public class ValueFactory {
      * 
      * @param value the value to wrap
      * @return the wrapped value
-     * @deprecated use {@link #toVType() }
+     * @deprecated use {@link #toVType(java.lang.Object) }
      */
     @Deprecated
     public static VType wrapValue(Object value) {
@@ -703,7 +703,7 @@ public class ValueFactory {
     
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible. Calls {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display) 
+     * is possible. Calls {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display)} 
      * with no alarm, time now and no display.
      * 
      * @param javaObject the value to wrap
