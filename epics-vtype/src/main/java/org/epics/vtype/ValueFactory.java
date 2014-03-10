@@ -522,14 +522,16 @@ public class ValueFactory {
             final Alarm alarm, final Time time, final Display display){
 	if (data instanceof ListDouble){
 	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if(data instanceof ListInt){
-	    return new IVIntArray((ListInt)data, sizes, dimensionDisplay, alarm, time, display);
-	} else if(data instanceof ListByte){
-	    return new IVByteArray((ListByte)data, sizes, dimensionDisplay, alarm, time, display);
-	} else if(data instanceof ListShort){
-	    return new IVShortArray((ListShort)data, sizes, dimensionDisplay, alarm, time, display);
-	}	
-	throw new UnsupportedOperationException("TODO: support types other than double and int");
+	} else if (data instanceof ListFloat){
+	    return new IVFloatArray((ListFloat) data, sizes, dimensionDisplay, alarm, time, display);
+	} else if (data instanceof ListInt){
+	    return new IVIntArray((ListInt) data, sizes, dimensionDisplay, alarm, time, display);
+	} else if (data instanceof ListByte){
+	    return new IVByteArray((ListByte) data, sizes, dimensionDisplay, alarm, time, display);
+	} else if (data instanceof ListShort){
+	    return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
+	}
+	throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
     }
     
     /**

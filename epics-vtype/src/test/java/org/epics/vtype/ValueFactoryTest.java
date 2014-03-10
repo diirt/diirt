@@ -237,6 +237,21 @@ public class ValueFactoryTest {
     }
     
     @Test
+    public void newVNumberArray7() {
+        VNumberArray result = newVNumberArray(new ArrayFloat(new float[] {3,5,2,4,1}),
+                new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
+                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        assertThat(result, instanceOf(VFloatArray.class));
+        VFloatArray value = (VFloatArray) result;
+        assertThat(value.getData(), equalTo((ListFloat) new ArrayFloat(new float[] {3,5,2,4,1})));
+        assertThat(value.getDimensionDisplay().size(), equalTo(1));
+        assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
+        assertThat(value.getAlarmName(), equalTo("LOW"));
+        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
+        assertThat(value.toString(), equalTo("VFloatArray[[3.0, 5.0, 2.0, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
     public void toVType() {
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1), ValueFactory.newVNumber(1, alarmNone(), timeNow(), displayNone())), equalTo(true));
         assertThat(VTypeValueEquals.valueEquals(ValueFactory.toVType(1.0), ValueFactory.newVNumber(1.0, alarmNone(), timeNow(), displayNone())), equalTo(true));
