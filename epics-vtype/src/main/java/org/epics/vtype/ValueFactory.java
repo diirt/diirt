@@ -478,21 +478,6 @@ public class ValueFactory {
     }
     
     /**
-     * Creates a new VDoubleArray.
-     * 
-     * @param values array values
-     * @param sizes sizes
-     * @param alarm the alarm
-     * @param time the time
-     * @param display the display
-     * @return the new value
-     */
-    @Deprecated
-    public static VDoubleArray newVDoubleArray(final double[] values, final ListInt sizes, Alarm alarm, Time time, Display display) {
-        return new IVDoubleArray(new ArrayDouble(values), sizes, alarm, time, display);
-    }
-    
-    /**
      * Creates a new VNumberArray based on the type of the data.
      * 
      * @param data the array data
@@ -537,20 +522,6 @@ public class ValueFactory {
     /**
      * Creates a new VDoubleArray.
      * 
-     * @param values array values
-     * @param alarm the alarm
-     * @param time the time
-     * @param display the display
-     * @return the new value
-     */
-    @Deprecated
-    public static VDoubleArray newVDoubleArray(final double[] values, Alarm alarm, Time time, Display display) {
-        return newVDoubleArray(values, new ArrayInt(values.length), alarm, time, display);
-    }
-    
-    /**
-     * Creates a new VDoubleArray.
-     * 
      * @param data array data
      * @param alarm the alarm
      * @param time the time
@@ -574,18 +545,6 @@ public class ValueFactory {
     public static VFloatArray newVFloatArray(ListFloat data, Alarm alarm, Time time, Display display) {
         return new IVFloatArray(data, new ArrayInt(data.size()), alarm,
                 time, display);
-    }
-    
-    /**
-     * Creates a new VDoubleArray.
-     * 
-     * @param values array values
-     * @param display the display
-     * @return the new value
-     */
-    @Deprecated
-    public static VDoubleArray newVDoubleArray(final double[] values, Display display) {
-        return newVDoubleArray(values, new ArrayInt(values.length), alarmNone(), timeNow(), display);
     }
 
     /**
@@ -779,5 +738,38 @@ public class ValueFactory {
         } else {
             return null;
         }
+    }
+    
+    /**
+     * As {@link #toVType(java.lang.Object)} but throws an exception
+     * if conversion not possible.
+     * 
+     * @param javaObject the value to wrap
+     * @return the new VType value
+     */
+    public static VType toVTypeChecked(Object javaObject) {
+        VType value = toVType(javaObject);
+        if (value == null) {
+            throw new RuntimeException("Value " + value + " cannot be converted to VType.");
+        }
+        return value;
+    }
+    
+    /**
+     * As {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display)} but throws an exception
+     * if conversion not possible.
+     * 
+     * @param javaObject the value to wrap
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new VType value
+     */
+    public static VType toVTypeChecked(Object javaObject, Alarm alarm, Time time, Display display) {
+        VType value = toVType(javaObject, alarm, time, display);
+        if (value == null) {
+            throw new RuntimeException("Value " + value + " cannot be converted to VType.");
+        }
+        return value;
     }
 }
