@@ -7,6 +7,8 @@ package org.epics.graphene.profile;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -21,7 +23,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.IntensityGraph2DRenderer;
+import org.epics.graphene.ValueColorScheme;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
@@ -406,17 +410,26 @@ public final class TestCaseProfiler {
 
     @NoRequires
     public static void setPixelVsDrawRect(){
-        SetPixelVsDrawRect profiler = new SetPixelVsDrawRect();
+        RenderMethodProfiler profiler = new RenderMethodProfiler();
 
         //Uses the Set Pixel method in drawing the image
         profiler.profileSetPixel();
         profiler.printStatistics();
+        profiler.saveImage("_SetPixel");
 
         System.out.println();
 
         //Uses the Draw Rect method in drawing the image
         profiler.profileDrawRect();
         profiler.printStatistics();
+        profiler.saveImage("_DrawRect");
+        
+        System.out.println();
+        
+        //Uses the Byte Array method in drawing the image
+        profiler.profileByteArray();
+        profiler.printStatistics();
+        profiler.saveImage("_ByteArray");
     }
 
     
@@ -545,23 +558,31 @@ public final class TestCaseProfiler {
     //Helper
     
     /**
-     * Profiles for two different methods for drawing an image to see which
+     * Profiles for different methods for drawing an image to see which
      * is the more efficient method.
      * 
      * <p>
      * One method is "Set Pixel", which individually sets each pixel value of an image.
      * One method is "Draw Rect", which creates the image by drawing a rectangle
      * for every single pixel of the image.
+     * One method is "Byte Array", which directly writes to the byte array of the image
+     * buffer for every pixel.
      * 
      * <p>
-     * The results are that the "Set Pixel" method is 3 times as fast as
-     * the "Draw Rect" method.
+     * The results are:
+     * <ol>
+     *      <li>"Byte Array" has speed x</li>
+     *      <li>"Set Pixel"  has speed 3x</li>
+     *      <li>"Draw Rect"  has speed 9x</li>
+     *</ol>
+     * The "Byte Array" method is the fastest.
      * 
-     * @author carcassi
      * @author asbarber
      */
-    private static class SetPixelVsDrawRect{
-        private boolean     profileSetPixel = true;
+    private static class RenderMethodProfiler{
+        private enum RenderMethod {SET_PIXEL, DRAW_RECT, BYTE_ARRAY}
+        
+        private RenderMethod renderType;
 
         private int         width = 1024, 
                             height = 768;
@@ -577,18 +598,16 @@ public final class TestCaseProfiler {
 
         /**
          * Creates a profiler to test image render strategies.
-         * Default to use the "Set Pixel" method.
          */
-        public SetPixelVsDrawRect(){
+        public RenderMethodProfiler(){
         }
 
         /**
          * Creates a profiler to test image render strategies.
-         * Default to use the "Set Pixel" method.
          * @param width width in pixels of image
          * @param height height in pixels of image
          */
-        public SetPixelVsDrawRect(int width, int height){
+        public RenderMethodProfiler(int width, int height){
             this.width = width;
             this.height = height;
         }
@@ -599,7 +618,7 @@ public final class TestCaseProfiler {
          * Profiles creating the image by setting the value of each pixel.
          */
         public void profileSetPixel(){
-            this.profileSetPixel = true;
+            this.renderType = RenderMethod.SET_PIXEL;
             profile();
         }
 
@@ -607,10 +626,19 @@ public final class TestCaseProfiler {
          * Profiles creating the image by drawing a rectangle at each pixel.
          */
         public void profileDrawRect(){
-            this.profileSetPixel = false;
+            this.renderType = RenderMethod.DRAW_RECT;
             profile();
         }
 
+        /**
+         * Profiles creating the image by directly writing to the byte array
+         * of the image buffer.
+         */
+        public void profileByteArray(){
+            this.renderType = RenderMethod.BYTE_ARRAY;
+            profile();
+        }
+        
         /**
          * Creates a loop where an image is repeatedly drawn using the 
          * appropriate method being tested.
@@ -636,11 +664,14 @@ public final class TestCaseProfiler {
                 stopWatch.start();
 
                     //Profile action
-                    if (profileSetPixel){
+                    if (renderType == RenderMethod.SET_PIXEL){
                         doSetPixel(data);
                     }
-                    else{
+                    else if (renderType == RenderMethod.DRAW_RECT){
                         doDrawRect(data);
+                    }
+                    else if (renderType == RenderMethod.BYTE_ARRAY){
+                        doByteArray(data);
                     }
 
                 stopWatch.stop();
@@ -668,47 +699,108 @@ public final class TestCaseProfiler {
 
         /**
          * Creates an image by setting the pixel value for every pixel.
-         * @param values where to set the pixel
+         * @param values rgb values for all pixels
          */
         private void doSetPixel(double[] values){
-                for (int y = 0; y < height; y++){
-                    for (int x = 0; x < width; x++){
-                        image.setRGB(x, y, (int) (255*values[y*width + x]));                    
-                    }
-                }      
+            for (int y = 0; y < height; y++){
+                for (int x = 0; x < width; x++){
+                    image.setRGB(x, y, (int) (255*values[y*width + x]));                    
+                }
+            }      
         }
 
         /**
          * Creates an image by drawing a rectangle at every pixel.
-         * @param values where to draw rectangles
+         * @param values rgb values for all pixels
          */
         private void doDrawRect(double[] values){
-                for (int y = 0; y < height; y++){
-                    for (int x = 0; x < width; x++){
-                        Color color = new Color((int)(255*values[y*width + x]));
-                        graphics.setColor(color);
-                        graphics.fillRect(x, y, 1, 1);                     
-                        image.setRGB(x, y, (int) (255*values[y*width + x]));                    
-                    }
+            for (int y = 0; y < height; y++){
+                for (int x = 0; x < width; x++){
+                    Color color = new Color((int)(255*values[y*width + x]));
+                    graphics.setColor(color);
+                    graphics.fillRect(x, y, 1, 1);                     
+                    image.setRGB(x, y, (int) (255*values[y*width + x]));                    
                 }
+            }
         }
 
+        /**
+         * Creates an image by directly writing to the byte array of the image
+         * buffer.
+         * @param values rgb values for all pixels
+         */
+        private void doByteArray(double[] values){
+            byte[] pixels = (((DataBufferByte)image.getRaster().getDataBuffer()).getData());
+            boolean hasAlphaChannel = image.getAlphaRaster() != null;
+            
+            //all data
+            for (int y = 0; y < height; y++){
+                for (int x = 0; x < width; x++){
+                    //Value from values[] array
+                    int index = y*width + x;
+                    int rgb = (int)(255*values[index]);
 
+                    //if alpha channel
+                    if(hasAlphaChannel){
+                        final int pixelLength = 4;
+
+                        index = index*pixelLength;
+
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 0] = (byte)(rgb << 24 & 0xFF);
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 1] = (byte)(rgb & 0xFF);
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 2] = (byte)(rgb << 8 & 0xFF);
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 3] = (byte)(rgb << 16 & 0xFF);
+                    }
+                    //if no alpha channel
+                    else{
+                        final int pixelLength = 3;
+
+                        index = index*pixelLength;
+
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 0] = (byte)(rgb & 0xFF);
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 1] = (byte)(rgb << 8 & 0xFF);
+                        (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 2] = (byte)(rgb << 16 & 0xFF);
+                    }                        
+                }
+            }
+            
+//            //Updates image
+//            try {
+//                image = ImageIO.read(new ByteArrayInputStream(pixels));
+//            } catch (IOException ex) {
+//                System.out.println("The image could not be created from a byte array.");
+//            }
+        }    
+
+        
         //Post-Profile Options
 
         /**
          * Saves the image created in profiling.
          * Does nothing if <code>profile</code> has not been run.
-         * @throws IOException could not save image
          */
-        public void saveImage() throws IOException{
-            if (image == null){
-                return;
-            }
+        public void saveImage(){
+            saveImage("");
+        }
+        
+        /**
+         * Saves the image created in profiling.
+         * Does nothing if <code>profile</code> has not been run.
+         * @param name additional tag to add to the file name
+         */
+        public void saveImage(String name){
+            try {
+                if (image == null){
+                    return;
+                }
 
-            String fileName = ProfileGraph2D.LOG_FILEPATH + "SetPixelVsDrawRect.png";
+                String fileName = ProfileGraph2D.LOG_FILEPATH + "RenderMethod" + name + ".png";
 
-            ImageIO.write(image, "png", new File(fileName));
+                ImageIO.write(image, "png", new File(fileName));
+            } catch (IOException ex) {
+                System.out.println("Could not save image.");
+                Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
+            }            
         }
 
         /**
@@ -741,16 +833,21 @@ public final class TestCaseProfiler {
         }    
 
         /**
-         * Returns a string representing whether "Set Pixel" process was used or
-         * whether "Draw Rect" process was used.
-         * @return process that was tested in profiling
+         * Returns a string representing what method to render the image was used.
+         * @return render method that was tested in profiling
          */
         public String getTypeProfiled(){
-            if (profileSetPixel){
+            if (this.renderType == RenderMethod.SET_PIXEL){
                 return "Set Pixel";
             }
-            else{
+            else if (this.renderType == RenderMethod.DRAW_RECT){
                 return "Draw Rect";
+            }
+            else if (this.renderType == RenderMethod.BYTE_ARRAY){
+                return "Byte Array";
+            }
+            else{
+                return "";
             }
         }
     }   
