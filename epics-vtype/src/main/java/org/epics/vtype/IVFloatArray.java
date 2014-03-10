@@ -12,11 +12,9 @@ import org.epics.util.array.ListInt;
  *
  * @author carcassi
  */
-class IVFloatArray extends IVNumeric implements VFloatArray {
+class IVFloatArray extends IVNumberArray implements VFloatArray {
 
     private final ListFloat data;
-    private final ListInt sizes;
-    private final List<ArrayDimensionDisplay> dimensionDisplay;
     
     public IVFloatArray(ListFloat data, ListInt sizes,
             Alarm alarm, Time time, Display display) {
@@ -25,34 +23,13 @@ class IVFloatArray extends IVNumeric implements VFloatArray {
 
     public IVFloatArray(ListFloat data, ListInt sizes, List<ArrayDimensionDisplay> dimDisplay,
             Alarm alarm, Time time, Display display) {
-        super(alarm, time, display);
-        this.sizes = sizes;
+        super(sizes, dimDisplay, alarm, time, display);
         this.data = data;
-        if (dimDisplay == null) {
-            this.dimensionDisplay = ValueUtil.defaultArrayDisplay(sizes);
-        } else {
-            this.dimensionDisplay = dimDisplay;
-        }
-    }
-
-    @Override
-    public ListInt getSizes() {
-        return sizes;
     }
 
     @Override
     public ListFloat getData() {
         return data;
-    }
-
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
-    }
-
-    @Override
-    public List<ArrayDimensionDisplay> getDimensionDisplay() {
-        return dimensionDisplay;
     }
 
 }
