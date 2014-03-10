@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>epics-util changes</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="0.3" date="SNAPSHOT" description="CSV parser improvements. ListMath improvements">
+            <action dev="sfnrendra3"  type="add">
+                array: adding some element-wise operations in ListMath
+            </action>
+            <action dev="carcassi"  type="update">
+                text: greatly improved CSV parser
+            </action>
+        </release>
+    </body>
+</document>
+
