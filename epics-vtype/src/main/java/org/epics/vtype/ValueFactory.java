@@ -17,6 +17,7 @@ import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
+import org.epics.util.array.ListShort;
 import org.epics.util.time.Timestamp;
 
 /**
@@ -501,14 +502,9 @@ public class ValueFactory {
      * @return a new value
      */
     public static VNumberArray newVNumberArray(final ListNumber data, final Alarm alarm, final Time time, final Display display){
-	if(data instanceof ListDouble){
-	    return newVDoubleArray((ListDouble)data, alarm, time, display);
-	}else if(data instanceof ListInt){
-	    return newVIntArray((ListInt)data, alarm, time, display);
-	} else if(data instanceof ListByte){
-	    return new IVByteArray((ListByte)data, new ArrayInt(data.size()), alarm, time, display);
-	}	
-	throw new UnsupportedOperationException("TODO: support types other than double and int");
+        ListInt sizes = new ArrayInt(data.size());
+        List<ArrayDimensionDisplay> dimensionDisplay = ValueUtil.defaultArrayDisplay(sizes);
+        return newVNumberArray(data, sizes, dimensionDisplay, alarm, time, display);
     }
     
     /**
@@ -530,6 +526,8 @@ public class ValueFactory {
 	    return new IVIntArray((ListInt)data, sizes, dimensionDisplay, alarm, time, display);
 	} else if(data instanceof ListByte){
 	    return new IVByteArray((ListByte)data, sizes, dimensionDisplay, alarm, time, display);
+	} else if(data instanceof ListShort){
+	    return new IVShortArray((ListShort)data, sizes, dimensionDisplay, alarm, time, display);
 	}	
 	throw new UnsupportedOperationException("TODO: support types other than double and int");
     }
