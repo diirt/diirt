@@ -112,7 +112,6 @@ public class CSVIOTest {
         assertThat(io.canExport(value), equalTo(true));
         StringWriter writer = new StringWriter();
         io.export(value, writer);
-        System.out.println(writer.toString());
         assertThat(writer.toString(), equalTo(csv));
     }
 
