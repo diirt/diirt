@@ -28,17 +28,17 @@ abstract class IVNumberArray extends IVNumeric implements VNumberArray {
     }
 
     @Override
-    public ListInt getSizes() {
+    public final ListInt getSizes() {
         return sizes;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return VTypeToString.toString(this);
     }
 
     @Override
-    public List<ArrayDimensionDisplay> getDimensionDisplay() {
+    public final List<ArrayDimensionDisplay> getDimensionDisplay() {
         return dimensionDisplay;
     }
 
