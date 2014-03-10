@@ -8,7 +8,27 @@
     </properties>
   
     <body>
-        <release version="2.4" date="SNAPSHOT" description="Integration framework for ca regression tests.">
+        <release version="2.5" date="SNAPSHOT" description="PVA services support.">
+            <action dev="carcassi"  type="update">
+                vtype: factory cleanup
+            </action>
+            <action dev="sekoranja"  type="update">
+                pva: adding support for rpc services
+            </action>
+            <action dev="carcassi"  type="update">
+                io: using new epics-util CSV parser
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula function testing cleanup
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: review and cleanup of function implementations; better null/alarm/time handling
+            </action>
+            <action dev="sfnrendra3"  type="add">
+                formula: adding element-wise operations for array calculation
+            </action>
+        </release>
+        <release version="2.4" date="2014/01/25" description="Integration framework for ca regression tests.">
             <action dev="carcassi"  type="update">
                 vtype: adding display information to VNumberArray
             </action>
