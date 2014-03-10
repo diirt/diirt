@@ -364,11 +364,11 @@ public class ValueFactory {
     /**
      * Creates a new VNumber based on the type of the data
      * 
-     * @param value
-     * @param alarm
-     * @param time
-     * @param display
-     * @return
+     * @param value the value
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new number
      */
     public static VNumber newVNumber(Number value, Alarm alarm, Time time, Display display){
         if (value instanceof Double) {
