@@ -5,6 +5,7 @@
 package org.epics.graphene;
 import java.util.ArrayList;
 import java.awt.Color;
+import java.util.List;
 import static org.epics.graphene.ColorScheme.BONE;
 import static org.epics.graphene.ColorScheme.COOL;
 import static org.epics.graphene.ColorScheme.COPPER;
@@ -272,7 +273,27 @@ public class ValueColorSchemes {
     public static ValueColorScheme RangeGradient(final Range range, final ArrayList<Color> colors, final ArrayList<Double> percentages){
         return new ValueColorScheme() {
             
-            private Color nanColor = colors.get(colors.size()-1); 
+            private Color nanColor = colors.get(colors.size()-1);
+            private List<Integer> colorInts = new ArrayList<Integer>();
+            private boolean colorFromArray = false;
+            
+            public void setColors(){
+                colorInts.add(nanColor.getRGB());
+                double min = range.getMinimum().doubleValue();
+                double max = range.getMaximum().doubleValue();
+                double total = max-min;
+                for(int i = 0; i < 5000; i++){
+                    colorInts.add(colorFor(min + i*(total/5000.0)));
+                }
+            }
+            
+            public int getColor(double value){
+                double min = range.getMinimum().doubleValue();
+                double max = range.getMaximum().doubleValue();
+                double total = max-min;
+                return colorInts.get((int)((value - min)/total * 5000));
+            }
+            
             @Override
             public int colorFor(double value) {
                 if (Double.isNaN(value)) {

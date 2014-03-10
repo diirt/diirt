@@ -598,16 +598,16 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
                 if(hasAlphaChannel){
                     int rgb = colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
-                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 0] = (byte)(rgb << 24 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 0] = (byte)(rgb >> 24 & 0xFF);
                     pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 1] = (byte)(rgb & 0xFF);
-                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 2] = (byte)(rgb << 8 & 0xFF);
-                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 3] = (byte)(rgb << 16 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 2] = (byte)(rgb >> 8 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*4 + 4*xPositionInt + 3] = (byte)(rgb >> 16 & 0xFF);
                 }
                 else{
                     int rgb = colorScheme.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
                     pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 0] = (byte)(rgb & 0xFF);
-                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 1] = (byte)(rgb << 8 & 0xFF);
-                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 2] = (byte)(rgb << 16 & 0xFF);
+                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 1] = (byte)((rgb >> 8 & 0xFF) );
+                    pixels[yPositionInt*getImageWidth()*3 + 3*xPositionInt + 2] = (byte)((rgb >> 16 & 0xFF));
                 }
                 if(addXSum){
                     xSum[xPositionInt] += data.getValue((int)countX,data.getYCount()-1-((int)countY));
