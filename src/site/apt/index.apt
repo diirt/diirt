@@ -14,7 +14,9 @@ arrays or representation for nanosecond precision time instants and periods.
 
 Download
 
-  {{{http://epics.sourceforge.net/maven2/org/epics/epics-util/}All releases and development snapshots}}
+  {{{http://search.maven.org/#search|gav|1|g%3A%22org.epics%22%20AND%20a%3A%22epics-util%22}All releases in maven central}}
+
+  {{{http://oss.sonatype.org/content/repositories/snapshots/org/epics/epics-util/}Development SNAPSHOT}}
 
   {{{https://openepics.ci.cloudbees.com/job/EpicsUtil%20-%20Build/}Latest build}}
 
