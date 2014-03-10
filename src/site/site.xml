@@ -11,7 +11,7 @@
       <item name="CSS" href="http://cs-studio.sourceforge.net"/>
     </links>
 
-    <menu name="Epcis Utilities">
+    <menu name="Epics Utilities">
       <item name="About" href="index.html"/>
       <item name="Changes" href="changes-report.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/epics-util/"/>
