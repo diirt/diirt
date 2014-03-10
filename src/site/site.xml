@@ -13,6 +13,7 @@
 
     <menu name="Epcis Utilities">
       <item name="About" href="index.html"/>
+      <item name="Changes" href="changes-report.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/epics-util/"/>
     </menu>
 
