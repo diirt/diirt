@@ -245,7 +245,16 @@ public class ValueColorSchemes {
         }
         
         return new ValueColorScheme() {
+            
+            @Override
+            public int getColor(double value){
+                return 0;
+            }
 
+            @Override
+            public void setColors(){
+                
+            }
             @Override
             public int colorFor(double value) {
                 if (Double.isNaN(value)) {
@@ -275,23 +284,26 @@ public class ValueColorSchemes {
             
             private Color nanColor = colors.get(colors.size()-1);
             private List<Integer> colorInts = new ArrayList<Integer>();
-            private boolean colorFromArray = false;
+            private double min = 1, max = 0;
             
+            @Override
             public void setColors(){
-                colorInts.add(nanColor.getRGB());
-                double min = range.getMinimum().doubleValue();
-                double max = range.getMaximum().doubleValue();
-                double total = max-min;
-                for(int i = 0; i < 5000; i++){
-                    colorInts.add(colorFor(min + i*(total/5000.0)));
+                if(range.getMinimum().doubleValue() != min || range.getMaximum().doubleValue() != max){
+                    colorInts = new ArrayList<Integer>();
+                    colorInts.add(nanColor.getRGB());
+                    min = range.getMinimum().doubleValue();
+                    max = range.getMaximum().doubleValue();
+                    double total = max-min;
+                    for(int i = 0; i < 1000; i++){
+                        colorInts.add(colorFor(min + i*(total/999.0)));
+                    }
                 }
             }
             
+            @Override
             public int getColor(double value){
-                double min = range.getMinimum().doubleValue();
-                double max = range.getMaximum().doubleValue();
                 double total = max-min;
-                return colorInts.get((int)((value - min)/total * 5000));
+                return colorInts.get((int)((value - min)/total * 999 + 1));
             }
             
             @Override

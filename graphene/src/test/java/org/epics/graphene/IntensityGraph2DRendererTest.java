@@ -239,6 +239,10 @@ public class IntensityGraph2DRendererTest {
             double start = 0;
             double end = 0;
             start = System.currentTimeMillis();
+            renderer.drawTest(g,data,image);
+            end = System.currentTimeMillis();
+            System.out.println(end-start);
+            start = System.currentTimeMillis();
             renderer.draw(g, data);
             end = System.currentTimeMillis();
             System.out.println(end-start);
@@ -246,6 +250,7 @@ public class IntensityGraph2DRendererTest {
             renderer.drawTest(g,data,image);
             end = System.currentTimeMillis();
             System.out.println(end-start);
+            
             
             ImageAssert.compareImages("intensityGraph2D.10", image);
             
