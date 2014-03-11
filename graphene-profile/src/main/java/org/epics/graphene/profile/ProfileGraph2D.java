@@ -18,7 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +34,7 @@ import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.RangeUtil;
 import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.utils.ProfileSettings;
-import org.epics.graphene.profile.utils.StopWatch.TimeType;
+import org.epics.graphene.profile.utils.Resolution;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
@@ -82,9 +81,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     
     //Parameters
-    private int imageWidth  = 600,
-                imageHeight = 400;
-
+    private Resolution resolution = new Resolution(600, 400);
     private int nPoints     = 1000;
     
     //Statistics
@@ -112,7 +109,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         //Data and Render Objects (Implemented in subclasses)
         S data = getDataset();
-        T renderer = getRenderer(imageWidth, imageHeight);
+        T renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
         
         if (profileSettings.getUpdate() != null){ renderer.update(profileSettings.getUpdate()); }
         
@@ -311,8 +308,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                                  stopWatch.getOutput() + delim +
                                  nTries + delim +
                                  getNumDataPoints() + delim +
-                                 getImageWidth() + delim +
-                                 getImageHeight() + delim +
+                                 resolution.getOutput() + delim +
                                  profileSettings.getOutput() + delim +
                                  saveSettings.getOutput();
         
@@ -380,15 +376,14 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         //Header
         String quote = "\"";
         String delim = ",";
-        String header =quote + "Graph Type" + quote + delim +
-                       quote + "Date" + quote + delim +
-                       stopWatch.getTitle() + delim +
-                       quote + "Number of Tries" + quote + delim +
-                       quote + "Number of Data Points" + quote + delim +
-                       quote + "Image Width" + quote + delim +
-                       quote + "Image Height" + quote + delim +
-                       profileSettings.getTitle() + delim +
-                       saveSettings.getTitle();
+        String header = quote + "Graph Type" + quote + delim +
+                        quote + "Date" + quote + delim +
+                        stopWatch.getTitle() + delim +
+                        quote + "Number of Tries" + quote + delim +
+                        quote + "Number of Data Points" + quote + delim +
+                        resolution.getTitle() + delim +
+                        profileSettings.getTitle() + delim +
+                        saveSettings.getTitle();
         
         //Write to file
         try {
@@ -462,7 +457,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @return image width in pixels 
      */
     public int getImageWidth(){
-        return imageWidth;
+        return resolution.getWidth();
     }
     
     /**
@@ -473,7 +468,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @return image height in pixels 
      */    
     public int getImageHeight(){
-        return imageHeight;
+        return resolution.getHeight();
     }
     
     
@@ -499,7 +494,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @param imageWidth image width in pixels 
      */    
     public void setImageWidth(int imageWidth){
-        this.imageWidth = imageWidth;
+        this.resolution.setWidth(imageWidth);
     }   
     
     /**
@@ -510,7 +505,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @param imageHeight image height in pixels 
      */      
     public void setImageHeight(int imageHeight){
-        this.imageHeight = imageHeight;
+        this.resolution.setHeight(imageHeight);
     }
     
 
