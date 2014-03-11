@@ -4,14 +4,20 @@
  */
 package org.epics.graphene.profile;
 
+import org.epics.graphene.profile.implementations.ProfileSparklineGraph2D;
+import org.epics.graphene.profile.implementations.ProfileHistogram1D;
+import org.epics.graphene.profile.implementations.ProfileScatterGraph2D;
+import org.epics.graphene.profile.implementations.ProfileIntensityGraph2D;
+import org.epics.graphene.profile.implementations.ProfileLineGraph2D;
+import org.epics.graphene.profile.utils.Statistics;
+import org.epics.graphene.profile.utils.Resolution;
+import org.epics.graphene.profile.utils.StopWatch;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
@@ -23,9 +29,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.IntensityGraph2DRenderer;
-import org.epics.graphene.ValueColorScheme;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
@@ -343,7 +347,7 @@ public final class TestCaseProfiler {
             graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
             graph.getSaveSettings().setAuthorMessage("asbarber");
 
-            graph.setTestTime(20);
+            graph.getProfileSettings().setTestTime(20);
 
             //Run
             graph.profile();
@@ -396,7 +400,7 @@ public final class TestCaseProfiler {
             graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
             graph.getSaveSettings().setAuthorMessage("asbarber");
 
-            graph.setTestTime(20);
+            graph.getProfileSettings().setTestTime(20);
 
             //Run
             graph.profile();
@@ -506,7 +510,7 @@ public final class TestCaseProfiler {
                     profile.setImageWidth(resolution.getWidth());
                     profile.setImageHeight(resolution.getHeight());
                     
-                    profile.setTestTime(testTime);
+                    profile.getProfileSettings().setTestTime(testTime);
                     
                     profile.profile();
                     profile.saveStatistics();
@@ -546,7 +550,7 @@ public final class TestCaseProfiler {
         graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
         graph.getSaveSettings().setAuthorMessage("asbarber");
         
-        graph.setTestTime(20);
+        graph.getProfileSettings().setTestTime(20);
 
         //Run
         graph.profile();

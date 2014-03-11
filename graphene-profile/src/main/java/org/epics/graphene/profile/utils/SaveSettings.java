@@ -2,7 +2,7 @@
  * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.graphene.profile;
+package org.epics.graphene.profile.utils;
 
 import java.lang.management.ManagementFactory;
 
@@ -16,23 +16,13 @@ import java.lang.management.ManagementFactory;
  * 
  * @author asbarber
  */
-public class SaveSettings {
+public class SaveSettings implements Settings{
     
     /**
      * Conversion from bytes to gigabytes:
      * 2^30 BYTES per GB.
      */
     private static final double BYTES_TO_GB = 1073741824; //2^30
-    
-    /**
-     * Quote delimiter for a .CSV formatted output file.
-     */
-    public static final String QUOTE = "\"";
-    
-    /**
-     * Comma delimiter for a .CSV formatted output file.
-     */
-    public static final String DELIM = ",";
     
     private String datasetMessage = "",
                   saveMessage = "",
@@ -114,6 +104,9 @@ public class SaveSettings {
     }    
     
     
+    
+    //FORMATS FOR OUTPUT FILE
+    
     /**
      * Gets the .CSV formatted header for the:
      * (title row)
@@ -125,7 +118,7 @@ public class SaveSettings {
      * 
      * @return the header for the general comments output
      */
-    public String getOutputTitle(){
+    private String getSaveOutputHeader(){
         return        
                        QUOTE + "Dataset Comments" + QUOTE + DELIM +
                        QUOTE + "Author" + QUOTE + DELIM +               
@@ -143,7 +136,7 @@ public class SaveSettings {
      * 
      * @return the record for the general comments output
      */    
-    public String getOutputMessage(){
+    private String getSaveOutputMessage(){
         String quote = "\"";
         String delim = ",";
         
@@ -167,7 +160,7 @@ public class SaveSettings {
      * 
      * @return the header for the hardware comments output
      */    
-    public String getHardwareOutputTitle(){
+    private String getHardwareTitle(){
         String quote = "\"";
         String delim = ",";
 
@@ -192,7 +185,7 @@ public class SaveSettings {
      * 
      * @return the record for the hardware comments output
      */     
-    public String getHardwareOutputMessage(){
+    private String getHardwareMessage(){
         String quote = "\"";
         String delim = ",";
                 
@@ -217,4 +210,19 @@ public class SaveSettings {
                          quote + os + quote + delim +
                          quote + osVersion + quote;
     }
+
+    
+    //COMBINED FORMATS FOR OUTPUT FILE
+    
+    @Override
+    public String getTitle() {
+        return getSaveOutputHeader() + DELIM + getHardwareTitle();
+    }
+
+    @Override
+    public String getOutput() {
+        return getSaveOutputMessage() + DELIM + getHardwareMessage();
+    }
+    
+    
 }

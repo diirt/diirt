@@ -2,7 +2,7 @@
  * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.graphene.profile;
+package org.epics.graphene.profile.utils;
 
 import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
@@ -20,7 +20,8 @@ import org.epics.util.array.ListLong;
  * @author carcassi
  * @author asbarber
  */
-public class StopWatch {
+public class StopWatch implements Settings{
+    
     public enum TimeType{ System, Cpu };
     
     private long start;
@@ -157,6 +158,19 @@ public class StopWatch {
 
     public TimeType getTimeType(){
         return this.timeType;
+    }
+    
+    
+    @Override
+    public String getTitle() {
+        return QUOTE + "Average Time (ms)" + QUOTE + DELIM +
+               QUOTE + "Total Time (ms)" + QUOTE + DELIM;
+    }
+
+    @Override
+    public String getOutput() {
+        return getAverageMs() + DELIM +
+               getTotalMs() + DELIM;
     }
     
     

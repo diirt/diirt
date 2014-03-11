@@ -34,7 +34,6 @@ import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.RangeUtil;
 import org.epics.graphene.profile.image.ShowResizableGraph;
-import org.epics.graphene.profile.utils.ProfileSettings;
 import org.epics.graphene.profile.utils.StopWatch.TimeType;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
@@ -63,7 +62,6 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */
     public ProfileGraph2D(){   
         saveSettings = new SaveSettings();
-        profileSettings = new ProfileSettings(this);
     }
     
     /**
@@ -72,7 +70,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */
     public ProfileGraph2D(int testTimeSec){
         this();
-        this.profileSettings.setTestTime(testTimeSec);
+        this.testTimeSec = testTimeSec;
     }
     
     /**
@@ -80,6 +78,15 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */
     public static final String LOG_FILEPATH = "ProfileResults\\";
     
+    //Profile Parameters (Customizable)
+    private Graph2DRendererUpdate update;
+    private String updateDescription;
+    
+    private int maxTries    = 1000000,
+                testTimeSec = 20;
+    
+    private boolean bufferInLoop = false;
+    private TimeType timeType = StopWatch.TimeType.System;
     
     //Parameters
     private int imageWidth  = 600,
@@ -91,8 +98,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     private int         nTries = 0;
     private StopWatch   stopWatch;    
     
-    //Settings
-    private ProfileSettings profileSettings;    
+    //Save Parameters
     private SaveSettings saveSettings;
     
     
@@ -107,19 +113,19 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * </ol>
      */
     public void profile(){        
-        stopWatch = new StopWatch(profileSettings.getMaxTries());
-        stopWatch.setTimeType(profileSettings.getTimeType());
+        stopWatch = new StopWatch(maxTries);
+        stopWatch.setTimeType(getTimeType());
         
         //Data and Render Objects (Implemented in subclasses)
         S data = getDataset();
         T renderer = getRenderer(imageWidth, imageHeight);
         
-        if (profileSettings.getUpdate() != null){ renderer.update(profileSettings.getUpdate()); }
+        if (update != null){ renderer.update(update); }
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         BufferedImage image = null;
         Graphics2D graphics = null;
-        if (!profileSettings.getBufferInLoop()){
+        if (!bufferInLoop){
             image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
             graphics = image.createGraphics();
         }
@@ -128,33 +134,28 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         //System Time
         Timestamp start = Timestamp.now();
-        Timestamp end = start.plus(TimeDuration.ofSeconds(profileSettings.getTestTime()));   
+        Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));   
                 
         //Trials
-        while (end.compareTo(Timestamp.now()) >= 0 && 
-               !Thread.currentThread().isInterrupted() && 
-               nTries < profileSettings.getMaxTries()) {
+        while (end.compareTo(Timestamp.now()) >= 0 && !Thread.currentThread().isInterrupted() && nTries < maxTries) {
+            nTries++;
+            stopWatch.start();
             
-                    nTries++;
-                    stopWatch.start();
-
-                        //Create Image if necessary
-                        if (profileSettings.getBufferInLoop()){
-                            image = new BufferedImage(renderer.getImageWidth(), 
-                                                      renderer.getImageHeight(), 
-                                                      BufferedImage.TYPE_3BYTE_BGR);                    
-                            graphics = image.createGraphics();
-                        }
-
-                        //Subclass render
-                        render(graphics, renderer, data);
-
-                    stopWatch.stop();
-
-                    //Buffer clears
-                    if (image != null && image.getRGB(0, 0) == 0){
-                        System.out.println("Black");
-                    }
+                //Create Image if necessary
+                if (bufferInLoop){
+                    image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);                    
+                    graphics = image.createGraphics();
+                }
+                
+                //Subclass render
+                render(graphics, renderer, data);
+            
+            stopWatch.stop();
+            
+            //Buffer clears
+            if (image != null && image.getRGB(0, 0) == 0){
+                System.out.println("Black");
+            }
         }
     }    
 
@@ -192,9 +193,16 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */
     protected abstract void render(Graphics2D graphics, T renderer, S data);
     
-    public abstract LinkedHashMap<String, Graph2DRendererUpdate> getVariations();
+    protected abstract LinkedHashMap<String, Graph2DRendererUpdate> getVariations();
     
-
+    protected void setUpdate(String updateDescription, Graph2DRendererUpdate update){
+        this.update = update;
+        this.updateDescription = updateDescription;
+    }
+    
+    protected void setUpdate(String updateDescription){
+        setUpdate(updateDescription, getVariations().get(updateDescription));
+    }
     
     
     //Post-Profile Options
@@ -308,13 +316,16 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         String delim = ",";
         String results = quote + getGraphTitle() + quote + delim +
                          quote + dateFormat.format(new Date()) + quote + delim +
-                                 stopWatch.getOutput() + delim +
+                                 stopWatch.getAverageMs() + delim +
+                                 stopWatch.getTotalMs() + delim +
                                  nTries + delim +
                                  getNumDataPoints() + delim +
                                  getImageWidth() + delim +
                                  getImageHeight() + delim +
-                                 profileSettings.getOutput() + delim +
-                                 saveSettings.getOutput();
+                         quote + getTimeType() + quote + delim +
+                         quote + updateDescription + quote + delim +
+                                 saveSettings.getOutputMessage() + delim +
+                                 saveSettings.getHardwareOutputMessage();
         
         //Ensures file is created
         File outputFile = new File(LOG_FILEPATH + getLogFileName());
@@ -382,13 +393,16 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         String delim = ",";
         String header =quote + "Graph Type" + quote + delim +
                        quote + "Date" + quote + delim +
-                       stopWatch.getTitle() + delim +
+                       quote + "Average Time (ms)" + quote + delim +
+                       quote + "Total Time (ms)" + quote + delim +
                        quote + "Number of Tries" + quote + delim +
                        quote + "Number of Data Points" + quote + delim +
                        quote + "Image Width" + quote + delim +
                        quote + "Image Height" + quote + delim +
-                       profileSettings.getTitle() + delim +
-                       saveSettings.getTitle();
+                       quote + "Timing Type" + quote + delim +
+                       quote + "Update Applied" + quote + delim +
+                       saveSettings.getOutputTitle() + delim +
+                       saveSettings.getHardwareOutputTitle();
         
         //Write to file
         try {
@@ -437,9 +451,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return this.saveSettings;
     }
     
-    public ProfileSettings getProfileSettings(){
-        return this.profileSettings;
-    }
+    
     
     //Test Parameter Getters
     
@@ -476,6 +488,43 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return imageHeight;
     }
     
+    /**
+     * Gets the number of times the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return max tries the render loop will be run
+     */
+    public int getMaxTries(){
+        return maxTries;
+    }
+    
+    /**
+     * Gets the time limit (seconds) for how long the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return max time the render loop will be run (in seconds)
+     */
+    public int getTestTime(){
+        return testTimeSec;
+    }
+    
+    /**
+     * Gets whether the image buffer is created within the render loop or beforehand.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @return whether the image buffer is created in the render loop
+     */
+    public boolean getBufferInLoop(){
+        return this.bufferInLoop;
+    }
+    
+    public TimeType getTimeType(){
+        return this.timeType;
+    }
+    
+    public String getUpdateDescription(){
+        return this.updateDescription;
+    }
     
     
     //Test Parameter Setters
@@ -513,7 +562,39 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         this.imageHeight = imageHeight;
     }
     
-
+    /**
+     * Sets the number of times the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param maxTries max tries the render loop will be run in
+     */    
+    public void setMaxTries(int maxTries){
+        this.maxTries = maxTries;
+    }
+    
+    /**
+     * Sets the time limit (seconds) for how long the profiler will try to render.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param testTimeSec max time the render loop will be run in seconds
+     */    
+    public void setTestTime(int testTimeSec){
+        this.testTimeSec = testTimeSec;
+    }
+    
+    /**
+     * Sets whether the image buffer is created within the render loop or beforehand.
+     * Used in saving statistics to the CSV log file.
+     * 
+     * @param bufferInLoop whether the image buffer is created in the render loop
+     */    
+    public void setBufferInLoop(boolean bufferInLoop){
+        this.bufferInLoop = bufferInLoop;
+    }
+    
+    public void setTimeType(TimeType timeType){
+        this.timeType = timeType;
+    }
     
     
     //Dataset Generators

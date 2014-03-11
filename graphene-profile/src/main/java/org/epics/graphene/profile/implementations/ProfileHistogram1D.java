@@ -2,7 +2,7 @@
  * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.graphene.profile;
+package org.epics.graphene.profile.implementations;
 
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 import org.epics.graphene.*;
+import org.epics.graphene.profile.ProfileGraph2D;
 
 /**
  * Handles profiling for <code>Histogram1D</code>.
@@ -79,7 +80,7 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     }
 
     @Override
-    protected LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
+    public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
         map.put("None", new Graph2DRendererUpdate());
