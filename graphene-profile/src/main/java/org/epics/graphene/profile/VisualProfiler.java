@@ -4,6 +4,11 @@
  */
 package org.epics.graphene.profile;
 
+import org.epics.graphene.profile.utils.ProfileAnalysis;
+import org.epics.graphene.profile.implementations.ProfileIntensityGraph2D;
+import org.epics.graphene.profile.utils.Statistics;
+import org.epics.graphene.profile.utils.Resolution;
+import org.epics.graphene.profile.utils.StopWatch;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -943,8 +948,8 @@ public class VisualProfiler extends JFrame{
             }
             
             //Update
-            profilers.get(profilers.size()-1).setTestTime(testTime);
-            profilers.get(profilers.size()-1).setMaxTries(maxAttempts);   
+            profilers.get(profilers.size()-1).getProfileSettings().setTestTime(testTime);
+            profilers.get(profilers.size()-1).getProfileSettings().setMaxTries(maxAttempts);   
             profilers.get(profilers.size()-1).setNumDataPoints(datasetSize);
             profilers.get(profilers.size()-1).setImageWidth(imageWidth);
             profilers.get(profilers.size()-1).setImageHeight(imageHeight);
@@ -1570,9 +1575,9 @@ public class VisualProfiler extends JFrame{
         if (renderer == null){ return null; }
         
         //Update
-        renderer.setTestTime(testTime);
-        renderer.setMaxTries(maxAttempts);
-        renderer.setTimeType(timeType);
+        renderer.getProfileSettings().setTestTime(testTime);
+        renderer.getProfileSettings().setMaxTries(maxAttempts);
+        renderer.getProfileSettings().setTimeType(timeType);
         
         //Final Format
         return renderer;

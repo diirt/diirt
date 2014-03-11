@@ -2,7 +2,7 @@
  * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.graphene.profile;
+package org.epics.graphene.profile.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.epics.graphene.profile.ProfileGraph2D;
 
 /**
  * Provides the tools necessary for comparing the output tables of profiling

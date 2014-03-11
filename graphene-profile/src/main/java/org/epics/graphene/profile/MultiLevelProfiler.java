@@ -4,6 +4,9 @@
  */
 package org.epics.graphene.profile;
 
+import org.epics.graphene.profile.utils.SaveSettings;
+import org.epics.graphene.profile.utils.Statistics;
+import org.epics.graphene.profile.utils.Resolution;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
-import org.epics.graphene.profile.temp.ShowResizableGraph;
+import org.epics.graphene.profile.image.ShowResizableGraph;
 
 /**
  * Handles the profiling for testing rendering (specifically the draw) of a
@@ -89,7 +92,7 @@ public class MultiLevelProfiler{
         }
            
         //Can give warning about how long this method will run
-        this.processTimeWarning(datasetSizes.size() * resolutions.size() * profiler.getTestTime());
+        this.processTimeWarning(datasetSizes.size() * resolutions.size() * profiler.getProfileSettings().getTestTime());
         
         //Loop through combinations of settings
         for (int r = 0; r < resolutions.size() && !Thread.currentThread().isInterrupted(); r++){
@@ -368,17 +371,13 @@ public class MultiLevelProfiler{
            String quote = "\"";
            String header = quote + "Graph Type" + quote + delim +
                            quote + "Date" + quote + delim +
-                           quote + "Timing Type" + quote + delim +
-                           quote + "Update Applied" + quote + delim +
-                           this.saveSettings.getOutputTitle() + delim +
-                           this.saveSettings.getHardwareOutputTitle();
+                           this.profiler.getProfileSettings().getTitle() + delim +
+                           this.saveSettings.getTitle();
            
            String data = quote + profiler.getGraphTitle() + quote + delim +
                          quote + date + quote + delim +
-                         quote + this.profiler.getTimeType() + quote + delim +                   
-                         quote + this.profiler.getUpdateDescription() + quote + delim +
-                         this.saveSettings.getOutputMessage() + delim +
-                         this.saveSettings.getHardwareOutputMessage();
+                         this.profiler.getProfileSettings().getOutput() + delim +
+                         this.saveSettings.getOutput();
                          
            
            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
