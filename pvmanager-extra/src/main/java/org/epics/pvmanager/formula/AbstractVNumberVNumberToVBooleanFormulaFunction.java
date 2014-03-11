@@ -14,7 +14,6 @@ import org.epics.vtype.ValueUtil;
 
 
 /**
-/**
  * Abstract class for formula functions that take two VNumber as arguments
  * and return a VBoolean.
  * <p>
