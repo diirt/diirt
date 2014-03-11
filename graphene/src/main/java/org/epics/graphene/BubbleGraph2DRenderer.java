@@ -17,9 +17,25 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
     private Range zAggregatedRange;
     private AxisRange zAxisRange = AxisRanges.integrated();
     private Range zPlotRange;
+    private Integer focusPixelX;
+    private Integer focusPixelY;
+    private boolean highlightFocusValue = false;
 
     public BubbleGraph2DRenderer(int width, int height) {
         super(width, height);
+    }
+
+    @Override
+    public void update(BubbleGraph2DRendererUpdate update) {
+        if (update.getFocusPixelX()!= null) {
+            focusPixelX = update.getFocusPixelX();
+        }
+        if (update.getFocusPixelY()!= null) {
+            focusPixelY = update.getFocusPixelY();
+        }
+        if (update.getHighlightFocusValue()!= null) {
+            highlightFocusValue = update.getHighlightFocusValue();
+        }
     }
 
     protected void calculateRanges(Range xDataRange, Range yDataRange, Range zDataRange) {
