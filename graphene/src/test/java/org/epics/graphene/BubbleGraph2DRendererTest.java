@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.epics.util.array.ArrayDouble;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -43,6 +45,18 @@ public class BubbleGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("bubble2D.1", image);
+        
+        renderer.update(renderer.newUpdate().highlightFocusValue(true).focusPixel(178,90));
+        graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.1a", image);
+        assertThat(renderer.getFocusValueIndex(), equalTo(48));
+        
+        renderer.update(renderer.newUpdate().highlightFocusValue(true).focusPixel(171,88));
+        graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.1b", image);
+        assertThat(renderer.getFocusValueIndex(), equalTo(6));
     }
     
     @Test
