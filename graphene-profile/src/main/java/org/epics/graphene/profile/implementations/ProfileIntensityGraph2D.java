@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>IntensityGraph2DRenderer</code>.
@@ -104,7 +105,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
      */
     @Override
     protected Cell2DDataset getDataset() {
-        return ProfileGraph2D.makeCell2DGaussianRandomData(getNumXDataPoints(), getNumYDataPoints());
+        return DatasetFactory.makeCell2DGaussianRandomData(getNumXDataPoints(), getNumYDataPoints());
     }
 
     /**

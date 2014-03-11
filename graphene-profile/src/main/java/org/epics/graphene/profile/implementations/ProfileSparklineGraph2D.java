@@ -14,6 +14,7 @@ import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.SparklineGraph2DRenderer;
 import org.epics.graphene.SparklineGraph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>SparklineGraph2DRenderer</code>.
@@ -29,7 +30,7 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
      */      
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
+        return DatasetFactory.makePoint2DGaussianRandomData(getNumDataPoints());
     }
     
     /**

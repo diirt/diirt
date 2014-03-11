@@ -341,8 +341,8 @@ public final class TestCaseProfiler {
             //Apply SaveSettings
             graph.setNumDataPoints( (int)Math.pow(10, 6) );
 
-            graph.setImageWidth(600);
-            graph.setImageHeight(400);
+            graph.getResolution().setWidth(600);
+            graph.getResolution().setHeight(400);
 
             graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
             graph.getSaveSettings().setAuthorMessage("asbarber");
@@ -394,8 +394,8 @@ public final class TestCaseProfiler {
             //Apply SaveSettings
             graph.setNumDataPoints( size.get(0) );
 
-            graph.setImageWidth(600);
-            graph.setImageHeight(400);
+            graph.getResolution().setWidth(600);
+            graph.getResolution().setHeight(400);
 
             graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
             graph.getSaveSettings().setAuthorMessage("asbarber");
@@ -507,8 +507,8 @@ public final class TestCaseProfiler {
                     profile.setNumXDataPoints(datasetSize);
                     profile.setNumYDataPoints(datasetSize);
                     
-                    profile.setImageWidth(resolution.getWidth());
-                    profile.setImageHeight(resolution.getHeight());
+                    profile.getResolution().setWidth(resolution.getWidth());
+                    profile.getResolution().setHeight(resolution.getHeight());
                     
                     profile.getProfileSettings().setTestTime(testTime);
                     
@@ -543,8 +543,8 @@ public final class TestCaseProfiler {
         graph.setNumXDataPoints( 10000 );
         graph.setNumYDataPoints( 10000 );
         
-        graph.setImageWidth(600);
-        graph.setImageHeight(400);
+        graph.getResolution().setWidth(600);
+        graph.getResolution().setHeight(400);
         
         graph.getSaveSettings().setDatasetMessage("10000x10000");
         graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");

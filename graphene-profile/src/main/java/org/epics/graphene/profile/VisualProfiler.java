@@ -60,6 +60,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 
 /**
@@ -353,7 +354,7 @@ public class VisualProfiler extends JFrame{
             modelResolutions.addElement(resolution);
         }
         
-        for (Integer datasetSize : MultiLevelProfiler.defaultDatasetSizes()){
+        for (Integer datasetSize : DatasetFactory.defaultDatasetSizes()){
             modelNPoints.addElement(datasetSize);
         }
                 
@@ -778,8 +779,8 @@ public class VisualProfiler extends JFrame{
         else{
             profiler.setNumDataPoints(datasetSize);        
         }
-        profiler.setImageWidth(imageWidth);
-        profiler.setImageHeight(imageHeight);
+        profiler.getResolution().setWidth(imageWidth);
+        profiler.getResolution().setHeight(imageHeight);
         profiler.getSaveSettings().setSaveMessage(saveMessage);
         profiler.getSaveSettings().setAuthorMessage(strAuthor);
         
@@ -951,8 +952,8 @@ public class VisualProfiler extends JFrame{
             profilers.get(profilers.size()-1).getProfileSettings().setTestTime(testTime);
             profilers.get(profilers.size()-1).getProfileSettings().setMaxTries(maxAttempts);   
             profilers.get(profilers.size()-1).setNumDataPoints(datasetSize);
-            profilers.get(profilers.size()-1).setImageWidth(imageWidth);
-            profilers.get(profilers.size()-1).setImageHeight(imageHeight);
+            profilers.get(profilers.size()-1).getResolution().setWidth(imageWidth);
+            profilers.get(profilers.size()-1).getResolution().setHeight(imageHeight);
             profilers.get(profilers.size()-1).getSaveSettings().setSaveMessage(saveMessage);            
 
         }
@@ -1479,7 +1480,7 @@ public class VisualProfiler extends JFrame{
         
         @Override
         protected Object doInBackground() throws Exception {
-            this.multiProfiler.run();
+            this.multiProfiler.profile();
             
             if (!Thread.currentThread().isInterrupted()){
                 this.multiProfiler.saveStatistics();

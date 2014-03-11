@@ -22,6 +22,9 @@ import java.util.Map;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.profile.image.ShowResizableGraph;
+import org.epics.graphene.profile.io.CSVWriter;
+import org.epics.graphene.profile.io.DateUtils;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles the profiling for testing rendering (specifically the draw) of a
@@ -29,7 +32,7 @@ import org.epics.graphene.profile.image.ShowResizableGraph;
  * Has a <code>ProfileGraph2D</code> with the type of the
  * <code>Graph2DRenderer</code> being profiled.
  * <p>
- * Enables the <i>profile object</i> to be run at various image resolutions
+ * Enables the <i>profile object</i> to be profile at various image resolutions
  * and dataset sizes.  These statistics may then be graphed or saved.
  * 
  * @author asbarber
@@ -39,9 +42,6 @@ public class MultiLevelProfiler{
     
     private List<Resolution> resolutions;
     private List<Integer> datasetSizes;
-        
-    private boolean displayTimeWarning = true;
-    private boolean printResults = true;
     
     private SaveSettings saveSettings;
     
@@ -83,7 +83,7 @@ public class MultiLevelProfiler{
      * 
      * @see #getResults() 
      */
-    public void run(){
+    public void profile(){
         if (datasetSizes == null || datasetSizes.isEmpty()){
             throw new NullPointerException("Use the setter to list dataset sizes.");
         }
@@ -91,7 +91,7 @@ public class MultiLevelProfiler{
             throw new NullPointerException("Use the setter to list resolutions.");
         }
            
-        //Can give warning about how long this method will run
+        //Can give warning about how long this method will profile
         this.processTimeWarning(datasetSizes.size() * resolutions.size() * profiler.getProfileSettings().getTestTime());
         
         //Loop through combinations of settings
@@ -106,8 +106,8 @@ public class MultiLevelProfiler{
                     
                     //Apply settings
                     profiler.setNumDataPoints(datasetSizes.get(s));
-                    profiler.setImageWidth(resolutions.get(r).getWidth());
-                    profiler.setImageHeight(resolutions.get(r).getHeight());
+                    profiler.getResolution().setWidth(resolutions.get(r).getWidth());
+                    profiler.getResolution().setHeight(resolutions.get(r).getHeight());
 
                     //Profiler
                     profiler.profile();
@@ -137,7 +137,7 @@ public class MultiLevelProfiler{
      * The value of the outer map is the inner map.
      * The value of the inner map is the statistics of the profiling.
      * 
-     * Precondition: <code>#run()</code> has been called.
+     * Precondition: <code>#profile()</code> has been called.
      * 
      * @return a mapping that gets the results of running the profiler
      * associated resolution sizes to dataset sizes to statistical timing
@@ -158,7 +158,7 @@ public class MultiLevelProfiler{
      * 
      * Each point has the form (size, time).
      * 
-     * @return lines for each resolution composed of average run time and
+     * @return lines for each resolution composed of average profile time and
      * dataset size points, with the point have the form (size, time)
      */
     public List<Point2DDataset> getStatisticLineData(){
@@ -202,7 +202,7 @@ public class MultiLevelProfiler{
      * 
      * Plots the sizes on the x-axis and the times on the y-axis.
      * 
-     * Precondition: <code>#run()</code> has been called.
+     * Precondition: <code>#profile()</code> has been called.
      */
     public void graphStatistics(){
         if (results == null){
@@ -225,103 +225,64 @@ public class MultiLevelProfiler{
      * with the specific profile graph type as well as the <b>date</b>.
      * 
      * Precondition: results is non-null and not empty, meaning profiling 
-     * has been run.
+     * has been profile.
      */
     public void saveStatistics(){
-       if (Thread.currentThread().isInterrupted()){
-           return;
-       }
-       
-       if (results == null){
-           throw new NullPointerException("Profiling has not been run.");
-       }
-       //Should not occur since resolutions must be non-empty
-       if (results.isEmpty()){
-           return;
-       }
-       
-       //Assumption: the set of keys for dataset sizes are the same
-       //for each line (the Map<Integer,Statistics> keys are equivalent for
-       //each resolutioin)
-       Resolution[] resKeys = results.keySet().toArray(new Resolution[0]);
-       Integer[] sizeKeys = results.get(resKeys[0]).keySet().toArray(new Integer[0]);
-       String[] rows = new String[sizeKeys.length];
-       String header = ",";
-       String delim = ",";      
-       
-       SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-       String date = format.format(new Date());
+        if (Thread.currentThread().isInterrupted()){
+            return;
+        }
 
-       //Sorts keys so table has sorted columns/rows
-       Arrays.sort(resKeys);
-       Arrays.sort(sizeKeys);
-       
-       //Makes row header
-       for (Resolution res: resKeys){
-           header += res.toString() + delim;
-       }
-       
-       //For all dataset sizes
-       for (int i = 0; i < sizeKeys.length; i++){
-           //Include the dataset size in the row
-           rows[i] = "";
-           rows[i] += sizeKeys[i] + delim;
-           
-           //Finds the timings for the dataset size for all resolutions
-           for (int j = 0; j < resKeys.length; j++){
-               //Profile Time
-               double avgTime = results.get(resKeys[j]).get(sizeKeys[i]).getAverageTime();
-               
-               //Adds profile time formatted to the row
-               rows[i] +=  String.format("%.3f", avgTime) + delim;
-           }
-       }
-       
-       //Creates file
-       File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
-                                  date + 
-                                  "-" +
-                                  profiler.getGraphTitle() +
-                                  "-" +
-                                  "Table" + 
-                                  ".csv");
-       
-       //Prevent File Over Write
-       int tmpDuplicate = 1;       
-       while (outputFile.exists()){
-            outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
-                                  date + 
-                                  "-" +
-                                  profiler.getGraphTitle() +
-                                  "-" +
-                                  "Table" + 
-                                  ".csv" +
-                                  "." +
-                                  tmpDuplicate);
+        if (results == null){
+            throw new NullPointerException("Profiling has not been run.");
+        }
+        //Should not occur since resolutions must be non-empty
+        if (results.isEmpty()){
+            return;
+        }
+
+        //Assumption: the set of keys for dataset sizes are the same
+        //for each line (the Map<Integer,Statistics> keys are equivalent for
+        //each resolutioin)
+        Resolution[] resKeys = results.keySet().toArray(new Resolution[0]);
+        Integer[] sizeKeys = results.get(resKeys[0]).keySet().toArray(new Integer[0]);
+
+        List<List> data = new ArrayList();
+
+        //Sorts keys so table has sorted columns/rows
+        Arrays.sort(resKeys);
+        Arrays.sort(sizeKeys);
+
+        //For all dataset sizes
+        for (int i = 0; i < sizeKeys.length; i++){
+            ArrayList row = new ArrayList();
             
-            tmpDuplicate++;
-       }
-       
-       //Saves File Data
-        try {
-            outputFile.createNewFile();
+            //Dataset column
+            row.add(sizeKeys[i]);
             
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-            
-            //Prints header
-            out.println(header);
-            
-            //Prints rows
-            for (String row: rows){
-                out.println(row);
+            //Finds the timings for the dataset size for all resolutions
+            for (int j = 0; j < resKeys.length; j++){
+                row.add(
+                    String.format("%.3f",
+                    results.get(resKeys[j]).get(sizeKeys[i]).getAverageTime()
+                ));
             }
             
-            out.close();
-        } catch (IOException ex) {
-            System.err.println("Output errors exist.");
+            data.add(row);
         }
+
+        String filename =
+                        ProfileGraph2D.LOG_FILEPATH + 
+                        DateUtils.getDate(DateUtils.DateFormat.NONDELIMITED) + 
+                        "-" +
+                        profiler.getGraphTitle() +
+                        "-" +
+                        "Table";
         
-        saveAdditionalInfo();
+        File output = CSVWriter.createFile(filename);
+        CSVWriter.writeHeader(output, Arrays.asList(resKeys));
+        CSVWriter.writeData(output, data);
+        
+        saveAdditionalInfo(filename);
     }
     
     /**
@@ -332,70 +293,30 @@ public class MultiLevelProfiler{
      * Saves the CSV file to the same directory as general profile results,
      * with the specific profile graph type as well as the <b>date</b>.
      */
-    private void saveAdditionalInfo(){
-       SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-       String date = format.format(new Date());
-       
-       //Creates file
-       File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
-                                  date + 
-                                  "-" +
-                                  profiler.getGraphTitle() +
-                                  "-" +
-                                  "Table" + 
-                                  ".out" + 
-                                  ".csv");     
-       
-       //Prevent File Over Write
-       int tmpDuplicate = 1;       
-       while (outputFile.exists()){
-            outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
-                                  date + 
-                                  "-" +
-                                  profiler.getGraphTitle() +
-                                  "-" +
-                                  "Table" + 
-                                  ".out" + 
-                                  ".csv" +
-                                  "." +
-                                  tmpDuplicate);
-            
-            tmpDuplicate++;
-       }
-       
-       //Saves File Data
-       try {
-           outputFile.createNewFile();
-       
-           String delim = ",";
-           String quote = "\"";
-           String header = quote + "Graph Type" + quote + delim +
-                           quote + "Date" + quote + delim +
-                           this.profiler.getProfileSettings().getTitle() + delim +
-                           this.saveSettings.getTitle();
-           
-           String data = quote + profiler.getGraphTitle() + quote + delim +
-                         quote + date + quote + delim +
-                         this.profiler.getProfileSettings().getOutput() + delim +
-                         this.saveSettings.getOutput();
-                         
-           
-           PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-           
-           //Prints header
-           out.println(header);
-           
-           //Prints row
-           out.println(data);
-           
-           out.close();
-       } catch (IOException ex) {
-            System.err.println("Output errors exist.");
-       }
+    private void saveAdditionalInfo(String filename){
+        File output = CSVWriter.createFile(filename);
+
+        CSVWriter.writeHeader(output, Arrays.asList(new Object[]{
+            "Graph Type",
+            "Date",
+            "Number of Data Points",
+            profiler.getProfileSettings().getTitle(),
+            saveSettings.getTitle()
+        }));
+        
+        CSVWriter.writeRow(output, Arrays.asList(new Object[]{
+            profiler.getGraphTitle(),
+            DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
+            profiler.getProfileSettings().getOutput(),
+            saveSettings.getOutput()
+        }));
     }
 
+    
+    //During Profile
+    
     /**
-     * Performed after the call to <code>run</code> but prior to actual
+     * Performed after the call to <code>profile</code> but prior to actual
      * image rendering.  
      * <p>
      * Default behavior will display the estimated time based on the
@@ -403,13 +324,10 @@ public class MultiLevelProfiler{
      * 
      * @param estimatedTime  estimated time to profile
      * 
-     * @see #run()
-     * @see #setDisplayTimeEstimate(boolean)  
+     * @see #profile()
      */
     public void processTimeWarning(int estimatedTime){
-        if (displayTimeWarning){
-            System.out.println("The estimated run time is " + estimatedTime + " seconds.");
-        }
+        System.out.println("The estimated run time is " + estimatedTime + " seconds.");
     }
     
     /**
@@ -418,19 +336,14 @@ public class MultiLevelProfiler{
      * <p>
      * Default behavior is to print the resolution and dataset
      * size to the console.
-     * Note that printing only occurs if <code>printResults</code> is true.
      * <p>
      * Override this to provide custom behaviors.
      * 
      * @param resolution resolution about to be profiled (image width, height)
      * @param datasetSize size of data about to be profiled
-     * 
-     * @see #setPrintResults(boolean) 
      */    
     public void processPreResult(Resolution resolution, int datasetSize){
-        if (printResults){
-            System.out.print(resolution + ": " + datasetSize + ": " );
-        }
+        System.out.print(resolution + ": " + datasetSize + ": " );
     }
     
     /**
@@ -438,21 +351,15 @@ public class MultiLevelProfiler{
      * after knowing the statistics about the profile.
      * <p>
      * Default behavior is to print the average time to the console.
-     * Note that printing only occurs if <code>printResults</code>
-     * is true.
      * <p>
      * Override this to provide custom behaviors.
      * 
      * @param resolution resolution just profiled (image width, height)
      * @param datasetSize size of data just profiled
      * @param stats results of the profiling
-     * 
-     * @see #setPrintResults(boolean) 
      */
     public void processResult(Resolution resolution, int datasetSize, Statistics stats){
-        if (printResults){
-            System.out.println(stats.getAverageTime() + "ms");
-        }
+        System.out.println(stats.getAverageTime() + "ms");
     }
     
     
@@ -464,7 +371,7 @@ public class MultiLevelProfiler{
      * @param resolutions set of resolutions to profile
      * 
      * @see #defaultResolutions() 
-     * @see #run() 
+     * @see #profile() 
      * @see org.epics.graphene.profile.ProfileGraph2D#setImageWidth(int)       
      * @see org.epics.graphene.profile.ProfileGraph2D#setImageHeight(int) 
      */
@@ -486,7 +393,7 @@ public class MultiLevelProfiler{
      * @param nPoints 
      * 
      * @see #defaultDatasetSizes() 
-     * @see #run() 
+     * @see #profile() 
      * @see org.epics.graphene.profile.ProfileGraph2D#setNumDataPoints(int) 
      */
     public void setDatasetSizes(List<Integer> nPoints){
@@ -500,31 +407,6 @@ public class MultiLevelProfiler{
         this.datasetSizes = nPoints;
     }
     
-    /**
-     * Sets whether to show the time estimate for running the profiler.
-     * @param show true to show the time warning,
-     *             false to not show the time warning
-     * 
-     * @see #run() 
-     */
-    public void setDisplayTimeEstimate(boolean show){
-        this.displayTimeWarning = show;
-    }
-    
-    /**
-     * Sets whether to print the results to console while profiling.
-     * Default printing behavior shows the resolution and dataset size being
-     * profiled, as well as the average time for the profile.
-     * 
-     * @param show true to print the results
-     *             false to not print the results
-     * 
-     * @see #processPreResult(org.epics.graphene.profile.Resolution, int) 
-     * @see #processResult(org.epics.graphene.profile.Resolution, int, org.epics.graphene.profile.Statistics) 
-     */
-    public void setPrintResults(boolean show){
-        this.printResults = show;
-    }
     
     //Save Parameters
     
@@ -546,57 +428,7 @@ public class MultiLevelProfiler{
     
     
     //Defaults
-    
-    /**
-     * Default set of dataset sizes to test profiling on, 
-     * on a logarithmic scale.
-     * The values are 10^1, 10^2, ... , 10^6.
-     * 
-     * @return a list with values of 10^n for n = 1 to n = 6
-     * (a logarithmic scale from 10 to 1,000,000)
-     */
-    public static List<Integer> defaultDatasetSizes(){
-        int n = 6;
-        int base = 10;
-        List<Integer> sizes = new ArrayList<>(n);
-        
-        for (int power = 1; power <= n; power++){
-            sizes.add((int) Math.pow(base, power));
-        }
-        
-        return sizes;
-    }
-    
-    /**
-     * Generates a set of dataset sizes to test profiling on, 
-     * on a logarithmic scale.
-     * The values are base^min, base^(min+1), ... , base^max.
-     * 
-     * @param min minimum power to raise the base to
-     * @param max maximum power to raise the base to
-     * @param base raise this to the power of n
-     * @return a list with values of base^n for n = min to n = max
-     */
-    public static List<Integer> logarathmicDatasetSizes(int min, int max, int base){
-        List<Integer> sizes = new ArrayList<>(max);
-        
-        for (int power = min; power <= max; power++){
-            sizes.add((int) Math.pow(base, power));
-        }
-        
-        return sizes;
-    }    
 
-    /**
-     * Default set of resolutions (image width and height set) to test
-     * profiling on, based on standard computer resolutions.
-     * @return  a list with standard computer screen resolutions
-     * (160x120, 320x240, ... 1600x1200)
-     */
-    public static List<Resolution> defaultResolutions(){
-        return Resolution.defaultResolutions();
-    } 
-    
     /**
      * Sample multi-level profiling for a given renderer.
      * Uses the default resolutions and default datasets as data.
@@ -605,12 +437,12 @@ public class MultiLevelProfiler{
      * 
      * @param profiler renderer to profile at multiple levels
      */
-    public static void sampleProfile(ProfileGraph2D profiler){                
+    public static void defaultProfile(ProfileGraph2D profiler){                
         MultiLevelProfiler layer = new MultiLevelProfiler(profiler);
-        layer.setImageSizes(defaultResolutions());
-        layer.setDatasetSizes(defaultDatasetSizes());
+        layer.setImageSizes(Resolution.defaultResolutions());
+        layer.setDatasetSizes(DatasetFactory.defaultDatasetSizes());
         
-        layer.run();
+        layer.profile();
         
         layer.graphStatistics();
         layer.saveStatistics();        
