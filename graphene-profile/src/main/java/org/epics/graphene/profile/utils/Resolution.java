@@ -133,14 +133,18 @@ public class Resolution implements Comparable, Settings{
     }    
 
     @Override
-    public String getTitle() {
-        return QUOTE + "Image Width" + QUOTE + DELIM +
-               QUOTE + "Image Height" + QUOTE;
+    public Object[] getTitle() {
+        return new Object[]{
+            "Image Width",
+            "Image Height"
+        };
     }
 
     @Override
-    public String getOutput() {
-        return getWidth() + DELIM +
-               getHeight();
+    public Object[] getOutput() {
+        return new Object[]{
+            getWidth(),
+            getHeight()
+        };
     }
 }

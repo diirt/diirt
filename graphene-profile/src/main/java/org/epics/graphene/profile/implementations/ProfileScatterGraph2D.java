@@ -66,7 +66,7 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         map.put("Linear Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         

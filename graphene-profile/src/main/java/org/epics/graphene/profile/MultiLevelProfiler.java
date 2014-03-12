@@ -4,18 +4,12 @@
  */
 package org.epics.graphene.profile;
 
+import java.io.File;
 import org.epics.graphene.profile.utils.SaveSettings;
 import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.Resolution;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,7 +273,7 @@ public class MultiLevelProfiler{
                         "Table";
         
         File output = CSVWriter.createFile(filename);
-        CSVWriter.writeHeader(output, Arrays.asList(resKeys));
+        CSVWriter.writeHeader(output, CSVWriter.arrayCombine("", resKeys));
         CSVWriter.writeData(output, data);
         
         saveAdditionalInfo(filename);
@@ -294,22 +288,21 @@ public class MultiLevelProfiler{
      * with the specific profile graph type as well as the <b>date</b>.
      */
     private void saveAdditionalInfo(String filename){
-        File output = CSVWriter.createFile(filename);
+        File output = CSVWriter.createFile(filename + ".out");
 
-        CSVWriter.writeHeader(output, Arrays.asList(new Object[]{
+        CSVWriter.writeHeader(output, CSVWriter.arrayCombine(
             "Graph Type",
             "Date",
-            "Number of Data Points",
             profiler.getProfileSettings().getTitle(),
             saveSettings.getTitle()
-        }));
+        ));
         
-        CSVWriter.writeRow(output, Arrays.asList(new Object[]{
+        CSVWriter.writeRow(output, CSVWriter.arrayCombine(
             profiler.getGraphTitle(),
             DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
             profiler.getProfileSettings().getOutput(),
             saveSettings.getOutput()
-        }));
+        ));
     }
 
     

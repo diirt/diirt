@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -158,7 +159,9 @@ public class CSVWriter {
                 
                 //Write Entries
                 for (Object entry: row){
-                    out.print(formatEntry(entry));
+                    if (entry != null){
+                        out.print(formatEntry(entry));
+                    }
                 }
                 
                 //Clean-up
@@ -177,14 +180,29 @@ public class CSVWriter {
     }
     
     private static String formatEntry(Object entry){
-        if (entry instanceof Integer || entry instanceof Double ||
-            entry instanceof Float || entry instanceof Short ||
-            entry instanceof Long){
-            
-            return entry.toString();
+        return QUOTE + entry.toString() + QUOTE + DELIM;
+    }
+    
+    public static List arrayCombine(Object... items){
+        if (items == null){
+            throw new IllegalArgumentException("Arguments cannot be null");
         }
-        else{
-            return QUOTE + entry.toString() + QUOTE + DELIM;
+        
+        List l = new ArrayList();
+        
+        for (Object item: items){
+            if (item != null){
+                if (item instanceof Object[]){
+                    Object[] entries = (Object[]) item;
+                    for (int i = 0; i < entries.length; i++){
+                        l.add(entries[i]);
+                    }
+                }
+                else{
+                    l.add(item);
+                }
+            }
         }
+        return l;
     }
 }

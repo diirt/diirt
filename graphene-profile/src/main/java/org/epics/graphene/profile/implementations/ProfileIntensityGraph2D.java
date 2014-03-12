@@ -148,7 +148,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         map.put("Not Draw Legend", new IntensityGraph2DRendererUpdate().drawLegend(false));
         
         return map;

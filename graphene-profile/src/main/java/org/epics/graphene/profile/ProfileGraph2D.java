@@ -9,37 +9,20 @@ import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.StopWatch;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.epics.graphene.Cell2DDataset;
-import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DCircularBuffer;
-import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
-import org.epics.graphene.RangeUtil;
 import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.io.DateUtils;
-import org.epics.graphene.profile.io.DateUtils;
 import org.epics.graphene.profile.utils.ProfileSettings;
 import org.epics.graphene.profile.utils.Resolution;
-import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
 import org.epics.util.time.TimeDuration;
@@ -115,7 +98,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         S data = getDataset();
         T renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
         
-        if (profileSettings.getUpdate() != null){ renderer.update(profileSettings.getUpdate()); }
+        if (profileSettings.getUpdate() != null){ 
+            renderer.update(profileSettings.getUpdate()); 
+        }
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         BufferedImage image = null;
@@ -293,6 +278,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         if (stopWatch == null || nTries == 0){
             throw new NullPointerException("Has not been profiled.");
         }
+     
+        Object o = stopWatch.getOutput();
         
         
         //Data
@@ -300,11 +287,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         File output;
         
         //Creates if necessary
-        output = new File(fileName);
+        output = new File(fileName + ".csv");
         if (!output.exists()){
             output = CSVWriter.createNewFile(fileName);
 
-            CSVWriter.writeHeader(output, Arrays.asList(new Object[]{
+            CSVWriter.writeHeader(output, CSVWriter.arrayCombine(
                 "Graph Type",
                 "Date",
                 stopWatch.getTitle(),
@@ -313,11 +300,12 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
                 resolution.getTitle(),
                 profileSettings.getTitle(),
                 saveSettings.getTitle()
-            }));
+            ));
         }
 
+        
         //Adds data
-        CSVWriter.writeRow(output, Arrays.asList(new Object[]{
+        CSVWriter.writeRow(output, CSVWriter.arrayCombine(
             getGraphTitle(),
             DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
             stopWatch.getOutput(),
@@ -326,7 +314,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
             resolution.getOutput(),
             profileSettings.getOutput(),
             saveSettings.getOutput()
-        }));
+        ));
     }
     
     

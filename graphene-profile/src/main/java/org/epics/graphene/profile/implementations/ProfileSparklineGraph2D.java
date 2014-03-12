@@ -73,7 +73,7 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         map.put("Linear Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         map.put("Nearest Neighbor Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
