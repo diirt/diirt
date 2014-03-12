@@ -250,6 +250,10 @@ public class IntensityGraph2DRendererTest {
             renderer.drawTest(g,data,image);
             end = System.currentTimeMillis();
             System.out.println(end-start);
+            start = System.currentTimeMillis();
+            renderer.draw(g, data);
+            end = System.currentTimeMillis();
+            System.out.println(end-start);
             
             
             ImageAssert.compareImages("intensityGraph2D.10", image);
@@ -294,6 +298,8 @@ public class IntensityGraph2DRendererTest {
         update.valueColorScheme(ColorScheme.JET);
         renderer.update(update);
         renderer.draw(g, data);
+        renderer.drawTest(g,data,image);
+        System.out.println("AAAAAAAAAAA");
 
         ImageAssert.compareImages("intensityGraph2D.12", image);
     }

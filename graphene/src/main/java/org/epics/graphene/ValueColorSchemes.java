@@ -295,7 +295,13 @@ public class ValueColorSchemes {
                     max = range.getMaximum().doubleValue();
                     double total = max-min;
                     for(int i = 0; i < 1000; i++){
-                        colorInts.add(colorFor(min + i*(total/999.0)));
+                        //account for possible rounding errors on last entry.
+                        if(i == 999){
+                            colorInts.add(colorFor(max));
+                        }
+                        else{
+                            colorInts.add(colorFor(min + i*(total/999.0)));
+                        }
                     }
                 }
             }

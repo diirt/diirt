@@ -246,6 +246,9 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
             }
         }
         
+        labelFontMetrics = g.getFontMetrics(labelFont);
+        
+        xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
         
         // Compute y axis spacing
         int yLabelWidth = 0;
@@ -284,8 +287,8 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
             areaFromRight = rightMargin;
         }
         
-        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
-        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        xPlotValueStart = xPlotRange.getMinimum().doubleValue();
+        xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
         if (xPlotValueStart == xPlotValueEnd) {
             // If range is zero, fake a range
             xPlotValueStart -= 1.0;
@@ -312,6 +315,15 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
                 yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum().doubleValue());
             }
         }
+        
+        for(int i = 0; i < yPlotRange.size(); i++){
+            if (yPlotValueStart.get(i).doubleValue() == yPlotValueEnd.get(i).doubleValue()) {
+                // If range is zero, fake a range
+                yPlotValueStart.set(i, yPlotValueStart.get(i)-1.0);
+                yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
+            }
+        }
+        
         yAreaCoordStart = topMargin;
         yAreaCoordEnd = getImageHeight() - areaFromBottom;
         yPlotCoordStart = yAreaCoordStart + topAreaMargin + yPointMargin;
@@ -322,7 +334,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
             for (int i = 0; i < xRefCoords.length; i++) {
-                xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
+                xRefCoords[i] = scaledX1(xReferenceValues.getDouble(i));
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
         }
@@ -366,7 +378,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         int count = 0;
         for(int i = 0; i < numGraphs; i+=2){
             g.setColor(new Color(lineValueScheme.colorFor(i)));
-            Shape line = new Line2D.Double((xAreaCoordStart - (count+1)*(yLabelMargin - 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin)), yAreaCoordStart, (xAreaCoordStart - (count+1)*(yLabelMargin - 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin)), yAreaCoordEnd - 1);
+            Shape line = new Line2D.Double((xPlotCoordStart - (count+1)*(yLabelMargin + 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin + 1)), yAreaCoordStart, (xPlotCoordStart - (count+1)*(yLabelMargin + 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin + 1)), yAreaCoordEnd - 1);
             g.draw(line);
             count++;
         }
@@ -403,7 +415,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
 
                 // Draw first and last label
                 int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
-                int xRightLabel = (int) (xAreaCoordStart - yLabelMargin - 1);
+                int xRightLabel = (int) (xAreaCoordStart - (yLabelMargin + 1)*2);
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(0), (int) Math.floor(yTicks.getDouble(0)),
                     drawRange, xRightLabel, true, false);
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(yReferenceLabels.get(a).size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.get(a).size() - 1)),
@@ -452,5 +464,9 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
+    }
+    
+    private final double scaledX1(double value) {
+        return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
     }
 }
