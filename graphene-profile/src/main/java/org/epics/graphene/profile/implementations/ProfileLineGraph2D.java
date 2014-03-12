@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>LineGraph2DRenderer</code>.
@@ -25,7 +26,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
      */
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
+        return DatasetFactory.makePoint2DGaussianRandomData(getNumDataPoints());
     }
 
     /**
@@ -68,7 +69,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         map.put("Linear Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         map.put("Nearest Neighbor Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));

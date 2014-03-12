@@ -162,15 +162,19 @@ public class StopWatch implements Settings{
     
     
     @Override
-    public String getTitle() {
-        return QUOTE + "Average Time (ms)" + QUOTE + DELIM +
-               QUOTE + "Total Time (ms)" + QUOTE + DELIM;
+    public String[] getTitle() {
+        return new String[]{
+            "Average Time (ms)",
+            "Total Time (ms)"
+        };
     }
 
     @Override
-    public String getOutput() {
-        return getAverageMs() + DELIM +
-               getTotalMs() + DELIM;
+    public Object[] getOutput() {
+        return new String[]{
+            ((Double)getAverageMs()).toString(),
+            ((Long)getTotalMs()).toString()
+        };
     }
     
     

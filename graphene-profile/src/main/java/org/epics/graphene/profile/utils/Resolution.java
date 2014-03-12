@@ -12,7 +12,7 @@ import java.util.List;
  * 
  * @author asbarber
  */
-public class Resolution implements Comparable{
+public class Resolution implements Comparable, Settings{
     
     /**
      * Common screen resolution.
@@ -131,4 +131,20 @@ public class Resolution implements Comparable{
         r.add(new Resolution(1600, 1200));
         return r;        
     }    
+
+    @Override
+    public Object[] getTitle() {
+        return new Object[]{
+            "Image Width",
+            "Image Height"
+        };
+    }
+
+    @Override
+    public Object[] getOutput() {
+        return new Object[]{
+            getWidth(),
+            getHeight()
+        };
+    }
 }

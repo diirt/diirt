@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>ScatterGraph2DRenderer</code>.
@@ -25,7 +26,7 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
      */    
     @Override
     protected Point2DDataset getDataset() {
-        return ProfileGraph2D.makePoint2DGaussianRandomData(getNumDataPoints());
+        return DatasetFactory.makePoint2DGaussianRandomData(getNumDataPoints());
     }
 
     /**
@@ -65,7 +66,7 @@ public class ProfileScatterGraph2D extends ProfileGraph2D<ScatterGraph2DRenderer
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         map.put("Linear Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new ScatterGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         

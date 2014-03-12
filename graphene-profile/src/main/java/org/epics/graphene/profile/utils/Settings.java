@@ -5,17 +5,8 @@
 package org.epics.graphene.profile.utils;
 
 public interface Settings {
-    /**
-     * Quote delimiter for a .CSV formatted output file.
-     */
-    public static final String QUOTE = "\"";
+
+    public Object[] getTitle();
     
-    /**
-     * Comma delimiter for a .CSV formatted output file.
-     */
-    public static final String DELIM = ",";
-    
-    public String getTitle();
-    
-    public String getOutput();
+    public Object[] getOutput();
 }

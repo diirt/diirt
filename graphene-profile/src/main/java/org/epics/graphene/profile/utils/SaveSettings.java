@@ -118,11 +118,12 @@ public class SaveSettings implements Settings{
      * 
      * @return the header for the general comments output
      */
-    private String getSaveOutputHeader(){
-        return        
-                       QUOTE + "Dataset Comments" + QUOTE + DELIM +
-                       QUOTE + "Author" + QUOTE + DELIM +               
-                       QUOTE + "General Message" + QUOTE;        
+    private String[] getSaveOutputHeader(){
+        return new String[]{
+            "Dataset Comments",
+            "Author",
+            "General Message"
+        };      
     }
     
     /**
@@ -136,14 +137,15 @@ public class SaveSettings implements Settings{
      * 
      * @return the record for the general comments output
      */    
-    private String getSaveOutputMessage(){
+    private String[] getSaveOutputMessage(){
         String quote = "\"";
         String delim = ",";
         
-        return
-                         quote + getDatasetMessage() + quote + delim +
-                         quote + getAuthorMessage() + quote + delim +
-                         quote + getSaveMessage() + quote;    
+        return new String[]{
+            getDatasetMessage(),
+            getAuthorMessage(),
+            getSaveMessage()
+        }; 
     }
     
     
@@ -160,16 +162,14 @@ public class SaveSettings implements Settings{
      * 
      * @return the header for the hardware comments output
      */    
-    private String getHardwareTitle(){
-        String quote = "\"";
-        String delim = ",";
-
-        return
-                         quote + "JVM Version" + quote + delim +
-                         quote + "Available Memory (GB)"+ quote + delim +
-                         quote + "RAM (GB)" + quote + delim +
-                         quote + "OS" + quote + delim +
-                         quote + " OS Version" + quote;
+    private String[] getHardwareTitle(){
+        return new String[]{
+            "JVM Version",
+            "Available Memory (GB)",
+            "RAM (GB)",
+            "OS",
+            "OS Version"
+        };
     }
     
     /**
@@ -185,10 +185,7 @@ public class SaveSettings implements Settings{
      * 
      * @return the record for the hardware comments output
      */     
-    private String getHardwareMessage(){
-        String quote = "\"";
-        String delim = ",";
-                
+    private String[] getHardwareMessage(){
         //Get Environment Properties
         String javaVersion = System.getProperty("java.version");
         String os = System.getProperty("os.name");
@@ -203,25 +200,42 @@ public class SaveSettings implements Settings{
         double runtime  = Runtime.getRuntime().maxMemory() / SaveSettings.BYTES_TO_GB;
         double memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize() / SaveSettings.BYTES_TO_GB;
         
-        return
-                         quote + javaVersion + quote + delim +
-                         String.format("%.3f", runtime) + delim +
-                         String.format("%.3f", memorySize) + delim +
-                         quote + os + quote + delim +
-                         quote + osVersion + quote;
+        return new String[]{
+            javaVersion,
+            String.format("%.3f", runtime),
+            String.format("%.3f", memorySize),
+            os,
+            osVersion
+        };
     }
 
     
     //COMBINED FORMATS FOR OUTPUT FILE
     
     @Override
-    public String getTitle() {
-        return getSaveOutputHeader() + DELIM + getHardwareTitle();
+    public Object[] getTitle() {
+        Object[] s = getSaveOutputHeader();
+        Object[] h = getHardwareTitle();
+        
+        Object[] entries = new Object[s.length + h.length];
+        
+        System.arraycopy(s, 0, entries, 0, s.length);
+        System.arraycopy(h, 0, entries, s.length, h.length);
+        
+        return entries;
     }
 
     @Override
-    public String getOutput() {
-        return getSaveOutputMessage() + DELIM + getHardwareMessage();
+    public Object[] getOutput() {
+        Object[] s = getSaveOutputMessage();
+        Object[] h = getHardwareMessage();
+        
+        Object[] entries = new Object[s.length + h.length];
+        
+        System.arraycopy(s, 0, entries, 0, s.length);
+        System.arraycopy(h, 0, entries, s.length, h.length);
+        
+        return entries;        
     }
     
     

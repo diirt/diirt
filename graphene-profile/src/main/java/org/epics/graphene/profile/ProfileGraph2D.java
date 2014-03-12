@@ -9,34 +9,20 @@ import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.StopWatch;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.epics.graphene.Cell2DDataset;
-import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DCircularBuffer;
-import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
-import org.epics.graphene.RangeUtil;
 import org.epics.graphene.profile.image.ShowResizableGraph;
+import org.epics.graphene.profile.io.CSVWriter;
+import org.epics.graphene.profile.io.DateUtils;
 import org.epics.graphene.profile.utils.ProfileSettings;
-import org.epics.graphene.profile.utils.StopWatch.TimeType;
-import org.epics.util.array.ArrayDouble;
+import org.epics.graphene.profile.utils.Resolution;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
 import org.epics.util.time.TimeDuration;
@@ -82,10 +68,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     
     //Parameters
-    private int imageWidth  = 600,
-                imageHeight = 400;
-
-    private int nPoints     = 1000;
+    private Resolution resolution = new Resolution(600, 400);
+    private int        nPoints = 1000;
     
     //Statistics
     private int         nTries = 0;
@@ -93,7 +77,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     
     //Settings
     private ProfileSettings profileSettings;    
-    private SaveSettings saveSettings;
+    private SaveSettings    saveSettings;
     
     
     /**
@@ -112,9 +96,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
         //Data and Render Objects (Implemented in subclasses)
         S data = getDataset();
-        T renderer = getRenderer(imageWidth, imageHeight);
+        T renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
         
-        if (profileSettings.getUpdate() != null){ renderer.update(profileSettings.getUpdate()); }
+        if (profileSettings.getUpdate() != null){ 
+            renderer.update(profileSettings.getUpdate()); 
+        }
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         BufferedImage image = null;
@@ -193,9 +179,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     protected abstract void render(Graphics2D graphics, T renderer, S data);
     
     public abstract LinkedHashMap<String, Graph2DRendererUpdate> getVariations();
-    
-
-    
+        
     
     //Post-Profile Options
     
@@ -260,9 +244,6 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * If statistics do no exist, no operations are performed.
      * If errors occur in IO, a console message is printed.
      * 
-     * The format for the appended record is:
-     * "graphType","date","timeAverage","timeTotal","numberAttempts","numDataPoints","imageWidth","imageHeight","datasetComment","authorMessage","generalMessage"
-     * 
      * The delimiting is:
      * <ul>
      *      <li>Non-numeric components enclosed in quotes</li>
@@ -286,11 +267,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      *      <li>Comment about the author performing the profile</li>
      *      <li>General comment about rendering</li>
      * </ol>     
-     * 
-     * It is important that this method has a parallel format to createLog so that
-     * the file writes properly and can be read/open to make sense.
      */
     public void saveStatistics(){
+        //Verifies non-interrupted
         if (Thread.currentThread().isInterrupted()){
             return;
         }
@@ -299,106 +278,43 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         if (stopWatch == null || nTries == 0){
             throw new NullPointerException("Has not been profiled.");
         }
+     
+        Object o = stopWatch.getOutput();
         
-        //Format output string:
-        //  "graphType","date","average time","total time","number of tries","numDataPoints","Image Width","Image Height","datasetComment","author","message",
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         
-        String quote = "\"";
-        String delim = ",";
-        String results = quote + getGraphTitle() + quote + delim +
-                         quote + dateFormat.format(new Date()) + quote + delim +
-                                 stopWatch.getOutput() + delim +
-                                 nTries + delim +
-                                 getNumDataPoints() + delim +
-                                 getImageWidth() + delim +
-                                 getImageHeight() + delim +
-                                 profileSettings.getOutput() + delim +
-                                 saveSettings.getOutput();
+        //Data
+        String fileName = LOG_FILEPATH + getLogFileName();
+        File output;
         
-        //Ensures file is created
-        File outputFile = new File(LOG_FILEPATH + getLogFileName());
-        if (!outputFile.exists()){
-            createLog();
+        //Creates if necessary
+        output = new File(fileName + ".csv");
+        if (!output.exists()){
+            output = CSVWriter.createNewFile(fileName);
+
+            CSVWriter.writeHeader(output, CSVWriter.arrayCombine(
+                "Graph Type",
+                "Date",
+                stopWatch.getTitle(),
+                "Number of Tries",
+                "Number of Data Points",
+                resolution.getTitle(),
+                profileSettings.getTitle(),
+                saveSettings.getTitle()
+            ));
         }
+
         
-        //Write to file
-        try {
-            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-                out.println(results);
-                out.close();
-            }
-        } catch (IOException e) {
-            System.err.println("Output errors exist.");
-        }
-    }
-    
-    /**
-     * Creates a CSV file designated to the profile graph.
-     * Makes the file and appends the header.
-     * 
-     * Precondition: The designated file does not exist.
-     * 
-     * The file name is designated by getLogFileName(). 
-     * Each subclass should thus have its own CSV file.
-     * 
-     * If errors occur in creating the file, the exception is thrown and is logged.
-     * If errors occur in IO, a console message is printed.
-     * 
-     * The header delimiting is:
-     * <ul>
-     *      <li>Components are enclosed in quotes</li>
-     *      <li>Components separated by commas (no spaces)</li>
-     * </ul>
-     * 
-     * The header components are:
-     * <ol>
-     *      <li>Graph Type</li>
-     *      <li>Date</li>
-     *      <li>Average Time (ms)</li>
-     *      <li>Total Time (ms)</li>
-     *      <li>Number of tries</li>
-     *      <li>Number of Data Points</li>
-     *      <li>Image Width</li>
-     *      <li>Image Height</li>
-     *      <li>Timing Type</li>
-     *      <li>Update Applied</li>
-     *      <li>Dataset Comments</li>
-     *      <li>Author</li>
-     *      <li>General Message</li>
-     * </ol>     
-     */
-    private void createLog(){
-        File outputFile = new File(LOG_FILEPATH + getLogFileName());
-        try {
-            //Creates file
-            outputFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(ProfileGraph2D.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //Header
-        String quote = "\"";
-        String delim = ",";
-        String header =quote + "Graph Type" + quote + delim +
-                       quote + "Date" + quote + delim +
-                       stopWatch.getTitle() + delim +
-                       quote + "Number of Tries" + quote + delim +
-                       quote + "Number of Data Points" + quote + delim +
-                       quote + "Image Width" + quote + delim +
-                       quote + "Image Height" + quote + delim +
-                       profileSettings.getTitle() + delim +
-                       saveSettings.getTitle();
-        
-        //Write to file
-        try {
-            try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-                out.println(header);
-                out.close();
-            }
-        } catch (IOException e) {
-            System.err.println("Output errors exist.");
-        }    
+        //Adds data
+        CSVWriter.writeRow(output, CSVWriter.arrayCombine(
+            getGraphTitle(),
+            DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
+            stopWatch.getOutput(),
+            nTries,
+            getNumDataPoints(),
+            resolution.getOutput(),
+            profileSettings.getOutput(),
+            saveSettings.getOutput()
+        ));
     }
     
     
@@ -418,7 +334,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * @return the file name (not file path) of the CSV log file
      */
     public String getLogFileName(){
-        return getGraphTitle() + ".csv";
+        return getGraphTitle();
     }
     
     /**
@@ -440,6 +356,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public ProfileSettings getProfileSettings(){
         return this.profileSettings;
     }
+
+    public Resolution getResolution(){
+        return this.resolution;
+    }
+    
     
     //Test Parameter Getters
     
@@ -453,30 +374,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     public int getNumDataPoints(){
         return nPoints;
     }    
-    
-    /**
-     * Gets the width of the image rendered.
-     * Useful for creating the graph renderer.
-     * Used in saving statistics to the CSV log file.
-     * 
-     * @return image width in pixels 
-     */
-    public int getImageWidth(){
-        return imageWidth;
-    }
-    
-    /**
-     * Gets the height of the image rendered.
-     * Useful for creating the graph renderer.
-     * Used in saving statistics to the CSV log file.
-     * 
-     * @return image height in pixels 
-     */    
-    public int getImageHeight(){
-        return imageHeight;
-    }
-    
-    
+
     
     //Test Parameter Setters
     
@@ -489,131 +387,5 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      */
     public void setNumDataPoints(int nPoints){
         this.nPoints = nPoints;
-    }
-    
-    /**
-     * Sets the width of the image rendered.
-     * Useful for creating the graph renderer.
-     * Used in saving statistics to the CSV log file.
-     * 
-     * @param imageWidth image width in pixels 
-     */    
-    public void setImageWidth(int imageWidth){
-        this.imageWidth = imageWidth;
-    }   
-    
-    /**
-     * Sets the height of the image rendered.
-     * Useful for creating the graph renderer.
-     * Used in saving statistics to the CSV log file.
-     * 
-     * @param imageHeight image height in pixels 
-     */      
-    public void setImageHeight(int imageHeight){
-        this.imageHeight = imageHeight;
-    }
-    
-
-    
-    
-    //Dataset Generators
-    
-    /**
-     * Generates Point1D data that can be used in rendering.
-     * The data set has the following properties:
-     * <ol>
-     *      <li>Size of data (number of points) is nSamples<li>
-     *      <li>Random data</li>
-     *      <li>Gaussian distribution from 0 to 1</li>
-     * @param nSamples number of points in data
-     * @return a set of data to be drawn
-     */
-    public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
-        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
-        
-        //Creates data
-        Random rand = new Random(maxValue);
-        for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
-        }
-        dataset.update(update);   
-        
-        return dataset;
-    }
-    
-    /**
-     * Generates Point2D data that can be used in rendering.
-     * The data set has the following properties:
-     * <ol>
-     *      <li>Size of data (number of points) is nSamples<li>
-     *      <li>Random y-values</li>
-     *      <li>y-values are sorted ascending and plotted against sorted index (sorted index is x-value)</li>
-     *      <li>Gaussian distribution from 0 to 1</li>
-     * @param nSamples number of points in data
-     * @return a set of data to be drawn
-     */
-    public static Point2DDataset makePoint2DGaussianRandomData(int nSamples){
-        double[] waveform = new double[nSamples];
-        int maxValue = 1;
-        
-        //Creates data
-        Random rand = new Random(maxValue);        
-        for (int i = 0; i < nSamples; i++){
-            waveform[i] = rand.nextGaussian();
-        }
-        
-        return org.epics.graphene.Point2DDatasets.lineData(waveform);
-    }
-    
-    /**
-     * Generates Cell2D data that can be used in rendering.
-     * The data set has the following properties:
-     * <ol>
-     *      <li>Size of data is xSamples * ySamples<li>
-     *      <li>Random cell data</li>
-     *      <li>Gaussian distribution of values from 0 to 1</li>
-     * @param xSamples number of x-cells in data
-     * @param ySamples number of y-cells in data
-     * @return a set of data to be drawn
-     */    
-    public static Cell2DDataset makeCell2DGaussianRandomData(int xSamples, int ySamples){
-        int nSamples = xSamples * ySamples;
-        double[] waveform = new double[nSamples];
-        int maxValue = 1;
-        
-        //Creates data
-        Random rand = new Random(maxValue);        
-        for (int i = 0; i < nSamples; i++){
-            waveform[i] = rand.nextGaussian();
-        }
-        
-        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
-    }
-    
-    /**
-     * Generates Histogram1D data that can be used in rendering.
-     * The data set has the following properties:
-     * <ol>
-     *      <li>Size of data (number of points) is nSamples<li>
-     *      <li>Random values</li>
-     *      <li>Gaussian distribution from 0 to 1</li>
-     * @param nSamples number of points in data
-     * @return a set of data to be drawn
-     */    
-    public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
-        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
-        
-        //Creates data
-        Random rand = new Random(maxValue);                
-        for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
-        }
-        dataset.update(update);
-        
-        return Histograms.createHistogram(dataset);        
     }
 }

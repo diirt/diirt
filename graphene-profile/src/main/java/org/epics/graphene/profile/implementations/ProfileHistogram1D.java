@@ -83,7 +83,7 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
-        map.put("None", new Graph2DRendererUpdate());
+        map.put("None", null);
         
         return map;
     }

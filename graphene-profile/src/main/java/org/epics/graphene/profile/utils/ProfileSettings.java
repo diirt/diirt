@@ -6,13 +6,11 @@ package org.epics.graphene.profile.utils;
 
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
-import static org.epics.graphene.profile.utils.Settings.DELIM;
-import static org.epics.graphene.profile.utils.Settings.QUOTE;
 import org.epics.graphene.profile.utils.StopWatch.TimeType;
 
 public class ProfileSettings implements Settings{
     
-    private Graph2DRendererUpdate update = new Graph2DRendererUpdate();
+    private Graph2DRendererUpdate update;
     private String updateDescription;
     
     private boolean     bufferInLoop = false;
@@ -116,6 +114,8 @@ public class ProfileSettings implements Settings{
     }
     
     public String getUpdateDescription(){
+        if (updateDescription == null) return "";
+        
         return this.updateDescription;
     }    
 
@@ -123,14 +123,18 @@ public class ProfileSettings implements Settings{
     //FORMATS FOR OUTPUT FILES
     
     @Override
-    public String getTitle() {
-        return QUOTE + "Timing Type" + QUOTE + DELIM +
-               QUOTE + "Update Applied" + QUOTE;
+    public Object[] getTitle() {
+        return new Object[]{
+            "Timing Type",
+            "Update Applied"
+        };
     }
 
     @Override
-    public String getOutput() {
-        return QUOTE + getTimeType() + QUOTE + DELIM +
-               QUOTE + getUpdateDescription() + QUOTE;
+    public Object[] getOutput() {
+        return new Object[]{
+            getTimeType(),
+            getUpdateDescription()
+        };
     }
 }
