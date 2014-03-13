@@ -25,7 +25,8 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
     
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
-                new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))"}));
+                new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))",
+                "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'))"}));
     }
 
     @Override
