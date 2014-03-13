@@ -26,7 +26,8 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))",
-                "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'))"}));
+                "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'))",
+                "=tableOf(column(\"X\", arrayOf(1,2,3,4,5)), column(\"Y\", arrayOf(3,1,4,2,5)), column(\"NAMES\", arrayOf(\"A\", \"A\", \"A\", \"B\", \"B\")))"}));
     }
 
     @Override
@@ -51,9 +52,35 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         return xColumn;
     }
 
-    public void setxColumn(String xColumn) {
-        System.out.println(xColumn);
+    public void setXColumn(String xColumn) {
         this.xColumn = xColumn;
+        reconnect();
+    }
+
+    public String getYColumn() {
+        return yColumn;
+    }
+
+    public void setYColumn(String yColumn) {
+        this.yColumn = yColumn;
+        reconnect();
+    }
+
+    public String getSizeColumn() {
+        return sizeColumn;
+    }
+
+    public void setSizeColumn(String sizeColumn) {
+        this.sizeColumn = sizeColumn;
+        reconnect();
+    }
+
+    public String getColorColumn() {
+        return colorColumn;
+    }
+
+    public void setColorColumn(String colorColumn) {
+        this.colorColumn = colorColumn;
         reconnect();
     }
     
