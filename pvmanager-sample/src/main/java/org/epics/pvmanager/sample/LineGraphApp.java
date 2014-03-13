@@ -33,8 +33,8 @@ public class LineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
 
     public void setInterpolationScheme(InterpolationScheme interpolationScheme) {
         this.interpolationScheme = interpolationScheme;
-        if (plot != null) {
-            plot.update(plot.newUpdate().interpolation(interpolationScheme));
+        if (graph != null) {
+            graph.update(graph.newUpdate().interpolation(interpolationScheme));
         }
     }
 

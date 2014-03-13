@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
+import java.awt.event.MouseEvent;
 import org.epics.graphene.BubbleGraph2DRendererUpdate;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.ScatterGraph2DRendererUpdate;
@@ -27,7 +28,13 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))",
                 "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'))",
+                "=tableOf(column(\"X\", arrayOf(2,3,4,3,2,1,0,1)), column(\"Y\", arrayOf(0,1,2,3,4,3,2,1)), column(\"SIZE\", arrayOf(5,4,3,2,1,2,3,4)))",
                 "=tableOf(column(\"X\", arrayOf(1,2,3,4,5)), column(\"Y\", arrayOf(3,1,4,2,5)), column(\"NAMES\", arrayOf(\"A\", \"A\", \"A\", \"B\", \"B\")))"}));
+    }
+
+    @Override
+    protected void onMouseMove(MouseEvent e) {
+        BubbleGraph2DRendererUpdate update = graph.newUpdate().focusPixel(e.getX(), e.getY());
     }
 
     @Override
