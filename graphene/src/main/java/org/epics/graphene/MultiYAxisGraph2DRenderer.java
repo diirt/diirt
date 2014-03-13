@@ -10,13 +10,20 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import static org.epics.graphene.InterpolationScheme.CUBIC;
+import static org.epics.graphene.InterpolationScheme.LINEAR;
+import static org.epics.graphene.InterpolationScheme.NEAREST_NEIGHBOUR;
+import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
+import static org.epics.graphene.ReductionScheme.NONE;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
 
@@ -150,13 +157,28 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
             dataRangesY.add(data.get(i).getYStatistics());
         }
         getNumGraphs(data);
-        Range datasetRange = RangeUtil.range(0,numGraphs);
+        Range datasetRange = RangeUtil.range(0,numGraphs-1);
         lineValueScheme = ValueColorSchemes.schemeFor(lineScheme, datasetRange);
         calculateRanges(dataRangesX, dataRangesY, numGraphs);
         calculateLabels();
         calculateGraphArea();        
         drawBackground();
         drawGraphArea();
+        
+        List<SortedListView> xValues = new ArrayList<SortedListView>();
+        for(int i = 0; i < numGraphs; i++){
+            xValues.add(org.epics.util.array.ListNumbers.sortedView(data.get(i).getXValues()));
+        }
+        
+        List<ListNumber> yValues = new ArrayList<ListNumber>();
+        for(int i = 0; i < numGraphs; i++){
+            yValues.add(org.epics.util.array.ListNumbers.sortedView(data.get(i).getYValues(), xValues.get(i).getIndexes()));
+        }
+        
+        for(int i = 0; i < numGraphs; i++){
+            g.setColor(new Color(lineValueScheme.colorFor(i)));
+            drawValueExplicitLine(xValues.get(i), yValues.get(i), interpolation, reduction,i);
+        }
 
     }
     
@@ -378,14 +400,14 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         int count = 0;
         for(int i = 0; i < numGraphs; i+=2){
             g.setColor(new Color(lineValueScheme.colorFor(i)));
-            Shape line = new Line2D.Double((xPlotCoordStart - (count+1)*(yLabelMargin + 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin + 1)), yAreaCoordStart, (xPlotCoordStart - (count+1)*(yLabelMargin + 1) - count*(rightMargin + yLabelMaxWidth + yLabelMargin + 1)), yAreaCoordEnd - 1);
+            Shape line = new Line2D.Double((xAreaCoordStart - (count+1)*(yLabelMargin + 1) - count*(yLabelMaxWidth + yLabelMargin)), yAreaCoordStart, (xAreaCoordStart - (count+1)*(yLabelMargin + 1) - count*(yLabelMaxWidth + yLabelMargin)), yAreaCoordEnd - 1);
             g.draw(line);
             count++;
         }
         count = 0;
         for(int i = 1; i < numGraphs; i+=2){
             g.setColor(new Color(lineValueScheme.colorFor(i)));
-            Shape line = new Line2D.Double((xAreaCoordEnd + (count+1)*(yLabelMargin + 1) + count*(rightMargin + yLabelMaxWidth + yLabelMargin)), yAreaCoordStart, (xAreaCoordEnd + (count+1)*(yLabelMargin + 1) + count*(rightMargin + yLabelMaxWidth + yLabelMargin)), yAreaCoordEnd - 1);
+            Shape line = new Line2D.Double((xAreaCoordEnd + (count+1)*(yLabelMargin + 1) + count*(yLabelMaxWidth + yLabelMargin)), yAreaCoordStart, (xAreaCoordEnd + (count+1)*(yLabelMargin + 1) + count*(yLabelMaxWidth + yLabelMargin)), yAreaCoordEnd - 1);
             g.draw(line);
             count++;
         }
@@ -405,6 +427,8 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     @Override
     protected void drawYLabels() {
         // Draw Y labels
+        int evenCount = 0;
+        int oddCount = 0;
         for(int a = 0; a < numGraphs; a++){
             ListNumber yTicks = yReferenceCoords.get(a);
             if (yReferenceLabels.get(a) != null && !yReferenceLabels.get(a).isEmpty()) {
@@ -415,7 +439,15 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
 
                 // Draw first and last label
                 int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
-                int xRightLabel = (int) (xAreaCoordStart - (yLabelMargin + 1)*2);
+                int xRightLabel;
+                if(a % 2 == 0){
+                    xRightLabel = (int) (xAreaCoordStart - (evenCount+1)*(yLabelMargin + 1)*2 - evenCount*(yLabelMaxWidth - 1));
+                    evenCount++;
+                }
+                else{
+                    xRightLabel = (int) (xAreaCoordEnd + (oddCount+1)*(yLabelMargin + 1)*2 + (oddCount+1)*(yLabelMaxWidth) - oddCount - 1);
+                    oddCount++;
+                }
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(0), (int) Math.floor(yTicks.getDouble(0)),
                     drawRange, xRightLabel, true, false);
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(yReferenceLabels.get(a).size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.get(a).size() - 1)),
@@ -468,5 +500,238 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     
     private final double scaledX1(double value) {
         return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
+    }
+    
+    protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction, int index) {
+        MultiYAxisGraph2DRenderer.ScaledData scaledData;
+        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
+        // Narrow the data
+        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        
+        xValues = ListMath.limit(xValues, start, end + 1);
+        yValues = ListMath.limit(yValues, start, end + 1);
+        
+        switch (reduction) {
+            default:
+                throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
+            case NONE:
+                scaledData = scaleNoReduction(xValues, yValues, start,index);
+                break;
+            case FIRST_MAX_MIN_LAST:
+                scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start, index);
+                break;
+        }
+        
+        // create path
+        Path2D path;
+        switch (interpolation) {
+            default:
+            case NEAREST_NEIGHBOUR:
+                path = nearestNeighbour(scaledData);
+                break;
+            case LINEAR:
+                path = linearInterpolation(scaledData);
+                break;
+            case CUBIC:
+                path = cubicInterpolation(scaledData);
+                break;
+        }
+
+        // Draw the line
+        g.draw(path);
+    }
+    
+    private static class ScaledData {
+        private double[] scaledX;
+        private double[] scaledY;
+        private int start;
+        private int end;
+    }
+    
+    private MultiYAxisGraph2DRenderer.ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues, int dataStart, int index) {
+        MultiYAxisGraph2DRenderer.ScaledData scaledData = new MultiYAxisGraph2DRenderer.ScaledData();
+        int dataCount = xValues.size();
+        scaledData.scaledX = new double[dataCount];
+        scaledData.scaledY = new double[dataCount];
+        for (int i = 0; i < scaledData.scaledY.length; i++) {
+            scaledData.scaledX[i] = scaledX1(xValues.getDouble(i));
+            scaledData.scaledY[i] = scaledY(yValues.getDouble(i), index);
+            processScaledValue(dataStart + i, xValues.getDouble(i), yValues.getDouble(i), scaledData.scaledX[i], scaledData.scaledY[i]);
+        }
+        scaledData.end = dataCount;
+        return scaledData;
+    }
+    
+    private MultiYAxisGraph2DRenderer.ScaledData scaleFirstMaxMinLastReduction(ListNumber xValues, ListNumber yValues, int dataStart, int index) {
+        // The number of points generated by this is about 4 times the 
+        // number of points on the x axis. If the number of points is less
+        // than that, it's not worth it. Don't do the data reduction.
+        if (xValues.size() < xPlotCoordWidth * 4) {
+            return scaleNoReduction(xValues, yValues, dataStart, index);
+        }
+
+        MultiYAxisGraph2DRenderer.ScaledData scaledData = new MultiYAxisGraph2DRenderer.ScaledData();
+        scaledData.scaledX = new double[((int) xPlotCoordWidth + 1)*4 ];
+        scaledData.scaledY = new double[((int) xPlotCoordWidth + 1)*4];
+        int cursor = 0;
+        int previousPixel = (int) scaledX1(xValues.getDouble(0));
+        double last = scaledY(yValues.getDouble(0),index);
+        double min = last;
+        double max = last;
+        scaledData.scaledX[0] = previousPixel;
+        scaledData.scaledY[0] = min;
+        processScaledValue(dataStart, xValues.getDouble(0), yValues.getDouble(0), scaledX1(xValues.getDouble(0)), last);
+        cursor++;
+        for (int i = 1; i < xValues.size(); i++) {
+            double currentScaledX = scaledX1(xValues.getDouble(i));
+            int currentPixel = (int) currentScaledX;
+            if (currentPixel == previousPixel) {
+                last = scaledY(yValues.getDouble(i),index);
+                min = MathIgnoreNaN.min(min, last);
+                max = MathIgnoreNaN.max(max, last);
+                processScaledValue(dataStart + i, xValues.getDouble(i), yValues.getDouble(i), currentScaledX, last);
+            } else {
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = max;
+                cursor++;
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = min;
+                cursor++;
+                scaledData.scaledX[cursor] = previousPixel;
+                scaledData.scaledY[cursor] = last;
+                cursor++;
+                previousPixel = currentPixel;
+                last = scaledY(yValues.getDouble(i),index);
+                min = last;
+                max = last;
+                scaledData.scaledX[cursor] = currentPixel;
+                scaledData.scaledY[cursor] = last;
+                cursor++;
+            }
+        }
+        scaledData.scaledX[cursor] = previousPixel;
+        scaledData.scaledY[cursor] = max;
+        cursor++;
+        scaledData.scaledX[cursor] = previousPixel;
+        scaledData.scaledY[cursor] = min;
+        cursor++;
+        scaledData.end = cursor;
+        return scaledData;
+    }
+    
+    private static Path2D.Double nearestNeighbour(MultiYAxisGraph2DRenderer.ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[start], scaledY[start]);
+        for (int i = 1; i < end; i++) {
+            double halfX = scaledX[i - 1] + (scaledX[i] - scaledX[i - 1]) / 2;
+            if (!java.lang.Double.isNaN(scaledY[i-1])) {
+                line.lineTo(halfX, scaledY[i - 1]);
+                if (!java.lang.Double.isNaN(scaledY[i]))
+                    line.lineTo(halfX, scaledY[i]);
+            } else {
+                line.moveTo(halfX, scaledY[i]);
+            }
+        }
+        line.lineTo(scaledX[end - 1], scaledY[end - 1]);
+        return line;
+    }
+    
+    private static Path2D.Double linearInterpolation(MultiYAxisGraph2DRenderer.ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[start], scaledY[start]);
+        for (int i = 1; i < end; i++) {
+            if(i+1<end){
+                if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
+                    line.moveTo(scaledX[i]-1, scaledY[i]);
+                    line.lineTo(scaledX[i]+1, scaledY[i]);
+                }
+                else if(java.lang.Double.isNaN(scaledY[i])){
+                    line.moveTo(scaledX[i+1], scaledY[i + 1]);
+                }
+                else
+                    if(!java.lang.Double.isNaN(scaledY[i-1]))
+                        line.lineTo(scaledX[i], scaledY[i]);
+                }
+            else{
+                if(!java.lang.Double.isNaN(scaledY[i]))
+                    line.lineTo(scaledX[i], scaledY[i]);
+            }
+        }
+        return line;
+    }
+    
+    private static Path2D.Double cubicInterpolation(MultiYAxisGraph2DRenderer.ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double path = new Path2D.Double();
+        path.moveTo(scaledX[start], scaledY[start]);
+        for (int i = 1; i < end; i++) {
+            // Extract 4 points (take care of boundaries)
+            double y1 = scaledY[i - 1];
+            double y2 = scaledY[i];
+            double x1 = scaledX[i - 1];
+            double x2 = scaledX[i];
+            double y0;
+            double x0;
+            if (i > 1) {
+                y0 = scaledY[i - 2];
+                x0 = scaledX[i - 2];
+            } else {
+                y0 = y1 - (y2 - y1) / 2;
+                x0 = x1 - (x2 - x1);
+            }
+            double y3;
+            double x3;
+            if (i < end - 1) {
+                y3 = scaledY[i + 1];
+                x3 = scaledX[i + 1];
+            } else {
+                y3 = y2 + (y2 - y1) / 2;
+                x3 = x2 + (x2 - x1) / 2;
+            }
+
+            // Convert to Bezier
+            double bx0 = x1;
+            double by0 = y1;
+            double bx3 = x2;
+            double by3 = y2;
+            double bdy0 = (y2 - y0) / (x2 - x0);
+            double bdy3 = (y3 - y1) / (x3 - x1);
+            double bx1 = bx0 + (x2 - x0) / 6.0;
+            double by1 = (bx1 - bx0) * bdy0 + by0;
+            double bx2 = bx3 - (x3 - x1) / 6.0;
+            double by2 = (bx2 - bx3) * bdy3 + by3;
+            
+            if(i+1 < end){
+                if(java.lang.Double.isNaN(scaledY[i - 1]) && java.lang.Double.isNaN(scaledY[i + 1])){
+                    path.moveTo(scaledX[i]-1, scaledY[i]);
+                    path.lineTo(scaledX[i]+1, scaledY[i]);
+                }
+                else if(java.lang.Double.isNaN(scaledY[i])){
+                    path.moveTo(scaledX[i + 1], scaledY[i + 1]);
+                }
+                else
+                    path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+            }
+            else{
+                if(!java.lang.Double.isNaN(scaledY[i]))
+                    path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+            }
+        }
+        return path;
     }
 }
