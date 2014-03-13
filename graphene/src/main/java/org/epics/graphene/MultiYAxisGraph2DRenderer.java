@@ -148,14 +148,17 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
         
+        //Make a list containing the x range of each data set (each one should be the same).
         List<Range> dataRangesX = new ArrayList<Range>();
         for(int i = 0; i < data.size(); i++){
             dataRangesX.add(data.get(i).getXStatistics());
         }
+        //Make a list containing the y range of each data set (each one should be different).
         List<Range> dataRangesY = new ArrayList<Range>();
         for(int i = 0; i < data.size(); i++){
             dataRangesY.add(data.get(i).getYStatistics());
         }
+        //Find the number of graphs that can be drawn while still conforming to style standards.
         getNumGraphs(data);
         Range datasetRange = RangeUtil.range(0,numGraphs-1);
         lineValueScheme = ValueColorSchemes.schemeFor(lineScheme, datasetRange);
