@@ -111,6 +111,31 @@ public class ValueUtilTest {
                 Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6)));
         ValueUtil.numericColumnOf(data, "z");
     }
+    
+    @Test
+    public void stringColumnOf1() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, String.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(Arrays.asList("1", "2", "3"), Arrays.asList("a", "b", "c")));
+        assertThat(ValueUtil.stringColumnOf(data, null), equalTo(null));
+        assertThat(ValueUtil.stringColumnOf(data, "x"), equalTo(Arrays.asList("1", "2", "3")));
+        assertThat(ValueUtil.stringColumnOf(data, "y"), equalTo(Arrays.asList("a", "b", "c")));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void stringColumnOf2() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, String.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), Arrays.asList("a", "b", "c")));
+        assertThat(ValueUtil.stringColumnOf(data, null), equalTo(null));
+        assertThat(ValueUtil.stringColumnOf(data, "y"), equalTo(Arrays.asList("a", "b", "c")));
+        ValueUtil.stringColumnOf(data, "x");
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void sttringColumnOf3() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, String.class),
+                Arrays.asList("x", "y"), Arrays.<Object>asList(new ArrayDouble(1,2,3), Arrays.asList("a", "b", "c")));
+        ValueUtil.stringColumnOf(data, "z");
+    }
 
     @Test
     public void colorFor1() {
