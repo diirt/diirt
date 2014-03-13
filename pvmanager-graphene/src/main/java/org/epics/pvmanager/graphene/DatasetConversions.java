@@ -5,6 +5,7 @@
 package org.epics.pvmanager.graphene;
 
 import java.util.Collections;
+import java.util.List;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.Point3DWithLabelDataset;
@@ -68,11 +69,12 @@ public class DatasetConversions {
      * @return the dataset
      */
     public static Point3DWithLabelDataset point3DDatasetFromVTable(VTable vTable,
-            String xColumn, String yColumn, String sizeColumn) {
+            String xColumn, String yColumn, String sizeColumn, String colorColumn) {
         // Extract x and y using column names
         ListNumber xValues = ValueUtil.numericColumnOf(vTable, xColumn);
         ListNumber yValues = ValueUtil.numericColumnOf(vTable, yColumn);
         ListNumber sizeValues = ValueUtil.numericColumnOf(vTable, sizeColumn);
+        List<String> colorValues = ValueUtil.stringColumnOf(vTable, colorColumn);
         
         // Fill the missing columns with the first available columns
         for (int i = 0; i < vTable.getColumnCount(); i++) {
@@ -110,7 +112,10 @@ public class DatasetConversions {
                 }
             };
         }
+        if (colorValues == null) {
+            colorValues = Collections.nCopies(xValues.size(), "None");
+        }
         
-        return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, Collections.nCopies(xValues.size(), "None"));
+        return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, colorValues);
     }
 }
