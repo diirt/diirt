@@ -63,9 +63,10 @@ public class DatasetConversions {
      * Converts a VTable into a Point2DDataset.
      * 
      * @param vTable the table containing the data
-     * @param xColumn the column for the x values
-     * @param yColumn the column for the y values
-     * @param sizeColumn the column for the size values
+     * @param xColumn the column name for the x values
+     * @param yColumn the column name for the y values
+     * @param sizeColumn the column name for the size values
+     * @param colorColumn the column name for the size values
      * @return the dataset
      */
     public static Point3DWithLabelDataset point3DDatasetFromVTable(VTable vTable,
@@ -75,13 +76,12 @@ public class DatasetConversions {
         ListNumber yValues = ValueUtil.numericColumnOf(vTable, yColumn);
         ListNumber sizeValues = ValueUtil.numericColumnOf(vTable, sizeColumn);
         List<String> colorValues = ValueUtil.stringColumnOf(vTable, colorColumn);
-        
-        // Fill the missing columns with the first available columns
-        for (int i = 0; i < vTable.getColumnCount(); i++) {
-            if (vTable.getColumnType(i).isPrimitive()) {
-                // Don't reuse the same column
-                if (!vTable.getColumnName(i).equals(xColumn) &&
-                        !vTable.getColumnName(i).equals(yColumn)) {
+
+        // If none of the columns where specified, find the first column that fits
+        if (xValues == null && yValues == null && sizeValues == null && colorValues == null) {
+            // Fill the missing columns with the first available columns
+            for (int i = 0; i < vTable.getColumnCount(); i++) {
+                if (vTable.getColumnType(i).isPrimitive()) {
                     if (xValues == null) {
                         xValues = (ListNumber) vTable.getColumnData(i);
                     } else if (yValues == null) {
@@ -89,14 +89,25 @@ public class DatasetConversions {
                     } else if (sizeValues == null) {
                         sizeValues = (ListNumber) vTable.getColumnData(i);
                     }
+                } else if (vTable.getColumnType(i).equals(String.class)) {
+                    if (colorValues == null) {
+                        @SuppressWarnings("unchecked")
+                        List<String> list = (List<String>) vTable.getColumnData(i);
+                        colorValues = list;
+                    }
                 }
             }
+            
+            if (xValues == null || yValues == null) {
+                throw new IllegalArgumentException("Couldn't find two numeric columns for X and Y");
+            }            
         }
             
         if (xValues == null || yValues == null) {
-            throw new IllegalArgumentException("Couldn't find two numeric columns");
+            throw new IllegalArgumentException("X and Y must both be specified");
         }
-        
+
+        // If sizes is missing, generate a 0 columns
         final int nValues = xValues.size();
         if (sizeValues == null) {
             sizeValues = new ListDouble() {
@@ -112,6 +123,8 @@ public class DatasetConversions {
                 }
             };
         }
+        
+        // If color is missing, generate a "None" column
         if (colorValues == null) {
             colorValues = Collections.nCopies(xValues.size(), "None");
         }
