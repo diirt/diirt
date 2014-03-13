@@ -90,7 +90,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
                     3, 15);
             double x = scaledX(data.getXValues().getDouble(i));
             double y = scaledY(data.getYValues().getDouble(i));
-            Shape bubble = createShape(x, y, diameter, zValue > 0);
+            Shape bubble = createShape(x, y, diameter, zValue >= 0);
             newValue(x, y, diameter, i);
             g.setColor(new Color(labelColor.getColor(data.getLabels().get(i))));
             g.fill(bubble);
@@ -123,6 +123,11 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         if (minValue < 0) {
             throw new UnsupportedOperationException("No negative value should be reaching here");
         }
+        
+        if (minValue == maxValue) {
+            return minRadius + (maxRadius - minRadius) / 2;
+        }
+        
         if (value <= minValue) {
             return minRadius;
         }
