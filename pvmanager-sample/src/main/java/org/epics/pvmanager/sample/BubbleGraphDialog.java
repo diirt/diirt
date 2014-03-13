@@ -70,6 +70,11 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
                 task.run();
             }
         });
+        
+        xColumnField.setText(graph.getXColumn());
+        yColumnField.setText(graph.getYColumn());
+        sizeColumnField.setText(graph.getSizeColumn());
+        colorColumnField.setText(graph.getColorColumn());
     }
 
     /**
