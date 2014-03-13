@@ -9,6 +9,7 @@ import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.graphene.Point3DWithLabelDatasets;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.vtype.VTable;
@@ -94,6 +95,22 @@ public class DatasetConversions {
             throw new IllegalArgumentException("Couldn't find two numeric columns");
         }
         
-        return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, Collections.nCopies(sizeValues.size(), "None"));
+        final int nValues = xValues.size();
+        if (sizeValues == null) {
+            sizeValues = new ListDouble() {
+
+                @Override
+                public double getDouble(int index) {
+                    return 0;
+                }
+
+                @Override
+                public int size() {
+                    return nValues;
+                }
+            };
+        }
+        
+        return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, Collections.nCopies(xValues.size(), "None"));
     }
 }
