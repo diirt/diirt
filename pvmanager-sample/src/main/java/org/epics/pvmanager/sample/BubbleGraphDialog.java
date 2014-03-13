@@ -5,6 +5,9 @@
 package org.epics.pvmanager.sample;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.ScatterGraph2DRenderer;
 
@@ -19,10 +22,36 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
     /**
      * Creates new form ScatterGraphDialog
      */
-    public BubbleGraphDialog(java.awt.Frame parent, boolean modal, BubbleGraphApp graph) {
+    public BubbleGraphDialog(java.awt.Frame parent, boolean modal, final BubbleGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
+        onTextFieldChange(xColumnField, new Runnable() {
+            @Override
+            public void run() {
+                graph.setxColumn(xColumnField.getText());
+            }
+        });
+    }
+    
+    protected final void onTextFieldChange(JTextField field, final Runnable task) {
+        field.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                task.run();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                task.run();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                task.run();
+            }
+        });
     }
 
     /**
@@ -34,17 +63,32 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        xColumnField = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel1.setText("X Column:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(xColumnField, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(xColumnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -92,5 +136,7 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField xColumnField;
     // End of variables declaration//GEN-END:variables
 }

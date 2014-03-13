@@ -38,7 +38,9 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             @Override
             public void componentResized(ComponentEvent e) {
                 if (plot != null) {
-                    plot.update(plot.newUpdate().imageHeight(imagePanel.getHeight()).imageWidth(imagePanel.getWidth()));
+                    plot.update(plot.newUpdate()
+                            .imageHeight(Math.max(1, imagePanel.getHeight()))
+                            .imageWidth(Math.max(1, imagePanel.getWidth())));
                 }
             }
         });
@@ -136,6 +138,10 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
     }// </editor-fold>//GEN-END:initComponents
 
     private void dataFormulaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFormulaFieldActionPerformed
+        reconnect();
+    }//GEN-LAST:event_dataFormulaFieldActionPerformed
+
+    protected void reconnect() {
         if (pv != null) {
             pv.close();
             imagePanel.setImage(null);
@@ -164,9 +170,8 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
                     }
                 })
                 .maxRate(ofHertz(50));
-
-    }//GEN-LAST:event_dataFormulaFieldActionPerformed
-
+    }
+    
     protected abstract Graph2DExpression<T> createExpression(String dataFormula);
     protected abstract void openConfigurationDialog();
     

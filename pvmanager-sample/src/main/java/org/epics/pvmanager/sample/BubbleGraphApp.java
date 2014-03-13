@@ -8,7 +8,7 @@ import org.epics.graphene.BubbleGraph2DRendererUpdate;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
-import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
+import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.BubbleGraph2DExpression;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 
@@ -18,18 +18,23 @@ import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
  */
 public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
 
+    private String xColumn = null;
+    private String yColumn = null;
+    private String sizeColumn = null;
+    private String colorColumn = null;
+    
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
-                new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'))"}));
+                new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))"}));
     }
 
     @Override
     protected BubbleGraph2DExpression createExpression(String dataFormula) {
         BubbleGraph2DExpression plot = bubbleGraphOf(formula(dataFormula),
-                    null,
-                    null,
-                    null,
-                    null);
+                    formulaArg(xColumn),
+                    formulaArg(yColumn),
+                    formulaArg(sizeColumn),
+                    formulaArg(colorColumn));
         return plot;
     }
 
@@ -39,6 +44,16 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         dialog.setTitle("Configure...");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+    }
+
+    public String getXColumn() {
+        return xColumn;
+    }
+
+    public void setxColumn(String xColumn) {
+        System.out.println(xColumn);
+        this.xColumn = xColumn;
+        reconnect();
     }
     
     public static void main(String[] args) {
