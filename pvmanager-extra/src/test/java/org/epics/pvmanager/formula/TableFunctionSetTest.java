@@ -7,6 +7,7 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
 import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
 import static org.epics.vtype.ValueFactory.*;
@@ -62,5 +63,14 @@ public class TableFunctionSetTest extends BaseTestForFormula {
 
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(null, column1, null);
+    }
+    
+    @Test
+    public void column1() {
+        VStringArray array = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow());
+        Column column = VTableFactory.column("A", array);
+
+        FunctionTester.findBySignature(set, "column", VString.class, VStringArray.class)
+                .compareReturnValue(column, "A", array);
     }
 }

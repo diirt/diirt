@@ -6,6 +6,7 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
@@ -19,10 +20,12 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VType;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
+import org.epics.vtype.table.Column;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -81,9 +84,26 @@ public class FunctionTester {
                     "Wrong result for function '" + function.getName() + "("
                             + Arrays.toString(args) + ")'. Was (" + result
                             + ") expected (" + expected + ")",
-                    VTypeValueEquals.valueEquals(result, expected), equalTo(true));
+                    compareValues(result, expected), equalTo(true));
         }
         return this;
+    }
+    
+    public static boolean compareValues(Object obj1, Object obj2) {
+        if (Objects.equals(obj2, obj2)) {
+            return true;
+        }
+        if (obj1 instanceof VType && obj2 instanceof VType) {
+            return VTypeValueEquals.valueEquals(obj1, obj2);
+        } else if (obj1 instanceof Column && obj2 instanceof Column) {
+            Column column1 = (Column) obj1;
+            Column column2 = (Column) obj2;
+            return column1.getName().equals(column2.getName()) &&
+                    column1.isGenerated() == column2.isGenerated() &&
+                    column1.getType().equals(column2.getType()) &&
+                    column1.getData(10).equals(column2.getData(10));
+        }
+        return false;
     }
     
     private Object convertType(Object obj) {
