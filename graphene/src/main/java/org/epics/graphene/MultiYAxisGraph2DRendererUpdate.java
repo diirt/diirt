@@ -15,6 +15,13 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
     private Integer focusPixelX;
     private Boolean highlightFocusValue;
     
+    private Integer minimumGraphWidth;
+    
+    public MultiYAxisGraph2DRendererUpdate minimumGraphWidth(int minimumGraphWidth){
+        this.minimumGraphWidth = minimumGraphWidth;
+        return self();
+    }
+    
     /**
      *Sets this object's interpolation to the given scheme.
      * @param scheme can not be null, must be a supported scheme. Supported schemes:NEAREST_NEIGHBOUR,LINEAR,CUBIC.
@@ -107,4 +114,7 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
         return highlightFocusValue;
     }
     
+    public Integer getMinimumGraphWidth(){
+        return minimumGraphWidth;
+    }
 }

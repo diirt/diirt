@@ -188,4 +188,29 @@ public class MultiYAxisGraph2DRendererTest {
         //Compares to correct image
         ImageAssert.compareImages("multiyaxisgraph2D.SixGraphsWRange", image);
     }
+    
+    @Test
+    public void MinGraphWidthTest() throws Exception {
+        double [][] initialData= new double [6][100]; 
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = Math.pow((double)j, ((double)i)/5);
+            }
+        }
+
+        //Creates a sparkline graph
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 6; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiYAxisGraph2DRendererUpdate update = new MultiYAxisGraph2DRendererUpdate();
+        update.minimumGraphWidth(600);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("multiyaxisgraph2D.MinGraphWidth", image);
+    }
 }

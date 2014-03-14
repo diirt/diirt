@@ -66,7 +66,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     private int numGraphs;
     private int spaceForYAxes;
     private int minimumGraphWidth = 200;
-    private int yLabelMaxWidth;
+    private int yLabelMaxWidth = 0;
     private int xLabelMaxHeight;
     private ColorScheme lineScheme = ColorScheme.JET;
     private ValueColorScheme lineValueScheme;
@@ -137,6 +137,9 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         if (update.getHighlightFocusValue()!= null) {
             highlightFocusValue = update.getHighlightFocusValue();
         }
+        if (update.getMinimumGraphWidth() != null){
+            minimumGraphWidth = update.getMinimumGraphWidth();
+        }
     }
 
     /**
@@ -187,8 +190,25 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     
     private void getNumGraphs(List<Point2DDataset> data){
             numGraphs = data.size();
+            if(yLabelMaxWidth == 0){
+                yLabelMaxWidth = 15;
+            }
+            spaceForYAxes = leftMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs-(numGraphs/2)) - 1;
+            if(numGraphs > 1){
+                spaceForYAxes += rightMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs/2) + 1;
+            }
+            else{
+                spaceForYAxes += rightMargin;
+            }
             while((double)getImageWidth() - spaceForYAxes < minimumGraphWidth){
                 numGraphs-=1;
+                spaceForYAxes = leftMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs-(numGraphs/2)) - 1;
+                if(numGraphs > 1){
+                    spaceForYAxes += rightMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs/2) + 1;
+                }
+                else{
+                    spaceForYAxes += rightMargin;
+                }
             }
     }
     
@@ -303,10 +323,10 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     @Override
     protected void calculateGraphArea() {
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
-        int areaFromLeft = (leftMargin + yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs-(numGraphs/2));
+        int areaFromLeft = leftMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs-(numGraphs/2)) - 1;
         int areaFromRight;
         if(numGraphs > 1){
-            areaFromRight = (rightMargin + yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs/2);
+            areaFromRight = rightMargin + (yLabelMaxWidth + yLabelMargin*2 + 1)*(numGraphs/2) + 1;
         }
         else{
             areaFromRight = rightMargin;
