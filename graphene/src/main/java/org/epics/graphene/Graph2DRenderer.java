@@ -760,9 +760,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             //Do I have current value?
             if (!java.lang.Double.isNaN(scaledY[i])){
                 //Do I have previous value?
-                if (i > 1 && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                if (i > start && !java.lang.Double.isNaN(scaledY[i - 1])) {
                     //Do I have value two before?
-                    if (i > 1 && !java.lang.Double.isNaN(scaledY[i - 2])) {
+                    if (i > start + 1 && !java.lang.Double.isNaN(scaledY[i - 2])) {
                         //Do I have next value?
                         if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
                             y2 = scaledY[i];
@@ -814,9 +814,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                         y1 = scaledY[i - 1];
                         x1 = scaledX[i - 1];
                         y0 = y1 - (y2 - y1) / 2;
-                        x0 = x1 - (x2 - x1);
-                        y3 = y2 + (y2 - y1) / 2;
-                        x3 = x2 + (x2 - x1) / 2;
+                        x0 = x1 - (x2 - x1) / 2;
+                        y3 = scaledY[i + 1];
+                        x3 = scaledX[i + 1];
                         bx0 = x1;
                         by0 = y1;
                         bx3 = x2;
@@ -829,47 +829,23 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                         by2 = (bx2 - bx3) * bdy3 + by3;
                         path.curveTo(bx1, by1, bx2, by2, bx3, by3);
                     }else{//have current, previous, but not two before or next
-                        path.moveTo(scaledX[i - 1], scaledY[i - 1]);
                         path.lineTo(scaledX[i], scaledY[i]);
                     }
                 //have current, but not previous
                  
                 }else{
-                    if(i == 0){//At beginning
-                        if(i != end -1)//Not at end as well
-                            path.moveTo(scaledX[i], scaledY[i]);
-                        else{//only one value in data set
-                              path.moveTo(scaledX[i] - 1, scaledY[i]);
-                              path.lineTo(scaledX[i] + 1, scaledY[i]);
-                            }
-                     }else if(i == 1){//at second point
-                        if(i != end - 1){//not at end as well
-                            path.moveTo(scaledX[i - 1], scaledY[i - 1]);
-                        }else{//two values in data set
-                            if(!java.lang.Double.isNaN(scaledY[i - 1])){//you have both current and previous
-                                path.moveTo(scaledX[i - 1], scaledY[i - 1]);
-                                path.lineTo(scaledX[i], scaledY[i]);
-                            }
-                            else{//only have current
-                               path.moveTo(scaledX[i] - 1, scaledY[i]);
-                                path.lineTo(scaledX[i] + 1, scaledY[i]);
-                            }     
-                        }       
+                    // No previous value
+                    if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        // If we have the next value, just move, we'll draw later
+                        path.moveTo(scaledX[i], scaledY[i]);
+                    } else {
+                        // If not, write a small horizontal line
+                        path.moveTo(scaledX[i] - 1, scaledY[i]);
+                        path.lineTo(scaledX[i] + 1, scaledY[i]);
                     }
-                }if(i != end - 1 && java.lang.Double.isNaN(scaledY[i + 1])){//don't have previous or next but have current
-                    path.moveTo(scaledX[i] - 1, scaledY[i]);
-                    path.lineTo(scaledX[i] + 1, scaledY[i]);
-                 
                 }
             }else{ //do not have current
-               if(i == 0)//initial starting point
-                    path.moveTo(scaledX[i], scaledY[i]);
-               else if(i == 1 && i == end - 1){
-                    if(!java.lang.Double.isNaN(scaledY[i - 1])){//have previous but not current
-                        path.moveTo(scaledX[i - 1], scaledY[i - 1]);
-                        path.lineTo(scaledX[i - 1] + 1, scaledY[i - 1]);
-                    }
-                }
+               // Do nothing
              }
         }
         return path;
