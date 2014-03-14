@@ -18,13 +18,37 @@ import org.epics.util.array.*;
  *
  * @author smaceul
  */
-public class MultiYAxisGraph2DRendererTest {
+public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph2DRendererUpdate, MultiYAxisGraph2DRenderer>{
     /**
      * Tests the functions in MultiYAxisGraph2DRenderer
      */
     public MultiYAxisGraph2DRendererTest() {
+        super("multiyaxisgraph2D");
     }
 
+    @Override
+    public MultiYAxisGraph2DRenderer createRenderer() {
+        return new MultiYAxisGraph2DRenderer(300, 200);
+    }
+
+    @Override
+    public BufferedImage draw(MultiYAxisGraph2DRenderer renderer) {
+        double [][] initialData= new double [1][100]; 
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 1; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        renderer.draw(g, data);
+        return image;
+    }
     private static Point2DDataset largeDataset;
     
     /**
