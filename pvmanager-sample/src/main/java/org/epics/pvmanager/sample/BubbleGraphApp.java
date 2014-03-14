@@ -23,6 +23,7 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
     private String yColumn = null;
     private String sizeColumn = null;
     private String colorColumn = null;
+    private boolean highlightFocusValue;
     
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
@@ -34,7 +35,7 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
 
     @Override
     protected void onMouseMove(MouseEvent e) {
-        BubbleGraph2DRendererUpdate update = graph.newUpdate().focusPixel(e.getX(), e.getY());
+        graph.update(graph.newUpdate().focusPixel(e.getX(), e.getY()));
     }
 
     @Override
@@ -53,6 +54,15 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         dialog.setTitle("Configure...");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+    }
+
+    public boolean isHighlightFocusValue() {
+        return highlightFocusValue;
+    }
+
+    public void setHighlightFocusValue(boolean highlightFocusValue) {
+        this.highlightFocusValue = highlightFocusValue;
+        graph.update(graph.newUpdate().highlightFocusValue(highlightFocusValue));
     }
 
     public String getXColumn() {

@@ -4,7 +4,10 @@
  */
 package org.epics.pvmanager.sample;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -50,6 +53,18 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
                 graph.setColorColumn(colorColumnField.getText());
             }
         });
+        onCheckBoxChange(highlightFocusValueField, new Runnable() {
+            @Override
+            public void run() {
+                graph.setHighlightFocusValue(highlightFocusValueField.isSelected());
+            }
+        });
+        
+        xColumnField.setText(graph.getXColumn());
+        yColumnField.setText(graph.getYColumn());
+        sizeColumnField.setText(graph.getSizeColumn());
+        colorColumnField.setText(graph.getColorColumn());
+        highlightFocusValueField.setSelected(graph.isHighlightFocusValue());
     }
     
     protected final void onTextFieldChange(JTextField field, final Runnable task) {
@@ -70,11 +85,16 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
                 task.run();
             }
         });
-        
-        xColumnField.setText(graph.getXColumn());
-        yColumnField.setText(graph.getYColumn());
-        sizeColumnField.setText(graph.getSizeColumn());
-        colorColumnField.setText(graph.getColorColumn());
+    }
+    
+    protected final void onCheckBoxChange(JCheckBox field, final Runnable task) {
+        field.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                task.run();
+            }
+        });
     }
 
     /**
@@ -94,6 +114,7 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        highlightFocusValueField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,6 +125,8 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
         jLabel3.setText("Size Column:");
 
         jLabel4.setText("Color Column:");
+
+        highlightFocusValueField.setText("Highlight focus value");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,7 +151,10 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(yColumnField)
-                            .addComponent(xColumnField))))
+                            .addComponent(xColumnField)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(highlightFocusValueField)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -150,7 +176,9 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(colorColumnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(highlightFocusValueField)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,6 +227,7 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField colorColumnField;
+    private javax.swing.JCheckBox highlightFocusValueField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
