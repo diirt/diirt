@@ -28,7 +28,7 @@ public class StopWatch implements Settings{
     private int nAttempts = 0;
     private final long[] timings;
     
-    private TimeType timeType = TimeType.System;
+    private TimeType timeType = TimeType.Cpu;
     
     private OperatingSystemMXBean bean;
     
@@ -175,21 +175,5 @@ public class StopWatch implements Settings{
             ((Double)getAverageMs()).toString(),
             ((Long)getTotalMs()).toString()
         };
-    }
-    
-    
-    public static void main(String[] args){
-        OperatingSystemMXBean bean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();        
-        
-        System.out.println("CPU:" + bean.getProcessCpuTime());
-        System.out.println("Sys:" + System.nanoTime());
-        
-        int sum = 0;
-        for (int i = 0; i < 100; i++){
-            sum = sum + 1;
-        }
-        
-        System.out.println("CPU:" + bean.getProcessCpuTime());
-        System.out.println("Sys:" + System.nanoTime());       
     }
 }

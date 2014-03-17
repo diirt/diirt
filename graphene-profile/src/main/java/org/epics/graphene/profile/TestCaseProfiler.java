@@ -4,11 +4,11 @@
  */
 package org.epics.graphene.profile;
 
-import org.epics.graphene.profile.implementations.ProfileSparklineGraph2D;
-import org.epics.graphene.profile.implementations.ProfileHistogram1D;
-import org.epics.graphene.profile.implementations.ProfileScatterGraph2D;
-import org.epics.graphene.profile.implementations.ProfileIntensityGraph2D;
-import org.epics.graphene.profile.implementations.ProfileLineGraph2D;
+import org.epics.graphene.profile.impl.ProfileSparklineGraph2D;
+import org.epics.graphene.profile.impl.ProfileHistogram1D;
+import org.epics.graphene.profile.impl.ProfileScatterGraph2D;
+import org.epics.graphene.profile.impl.ProfileIntensityGraph2D;
+import org.epics.graphene.profile.impl.ProfileLineGraph2D;
 import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.Resolution;
 import org.epics.graphene.profile.utils.StopWatch;
@@ -61,7 +61,7 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        TestCaseProfiler.setPixelVsDrawRect();
+                        TestCaseProfiler.renderMethod();
         }
     }    
 
@@ -413,27 +413,27 @@ public final class TestCaseProfiler {
     }
 
     @NoRequires
-    public static void setPixelVsDrawRect(){
+    public static void renderMethod(){
         RenderMethodProfiler profiler = new RenderMethodProfiler();
 
         //Uses the Set Pixel method in drawing the image
         profiler.profileSetPixel();
         profiler.printStatistics();
-        profiler.saveImage("_SetPixel");
+        //profiler.saveImage("_SetPixel");
 
         System.out.println();
 
         //Uses the Draw Rect method in drawing the image
         profiler.profileDrawRect();
         profiler.printStatistics();
-        profiler.saveImage("_DrawRect");
+        //profiler.saveImage("_DrawRect");
         
         System.out.println();
         
         //Uses the Byte Array method in drawing the image
         profiler.profileByteArray();
         profiler.printStatistics();
-        profiler.saveImage("_ByteArray");
+        //profiler.saveImage("_ByteArray");
     }
 
     
@@ -467,7 +467,7 @@ public final class TestCaseProfiler {
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
                 
                 //TODO
-                //renderer.setLinearBoundaries(true);
+//                renderer.setLinearBoundaries(true);
                 
                 return renderer;
             }
@@ -480,7 +480,7 @@ public final class TestCaseProfiler {
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
 
                 //TODO
-                //renderer.setLinearBoundaries(false);
+//                renderer.setLinearBoundaries(false);
                 
                 return renderer;
             }

@@ -5,7 +5,7 @@
 package org.epics.graphene.profile;
 
 import org.epics.graphene.profile.utils.ProfileAnalysis;
-import org.epics.graphene.profile.implementations.ProfileIntensityGraph2D;
+import org.epics.graphene.profile.impl.ProfileIntensityGraph2D;
 import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.Resolution;
 import org.epics.graphene.profile.utils.StopWatch;
