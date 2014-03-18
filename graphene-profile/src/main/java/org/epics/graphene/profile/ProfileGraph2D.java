@@ -4,13 +4,13 @@
  */
 package org.epics.graphene.profile;
 
-import org.epics.graphene.profile.utils.SaveSettings;
+import org.epics.graphene.profile.settings.SaveSettings;
 import org.epics.graphene.profile.utils.Statistics;
-import org.epics.graphene.profile.utils.StopWatch;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.Histogram1D;
@@ -21,12 +21,10 @@ import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.io.DateUtils;
-import org.epics.graphene.profile.utils.ProfileSettings;
+import org.epics.graphene.profile.settings.RenderSettings;
 import org.epics.graphene.profile.utils.Resolution;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
 
 /**
  * Handles the profiling for testing rendering (specifically the draw) of a <code>Graph2DRenderer</code>.
@@ -42,23 +40,14 @@ import org.epics.util.time.Timestamp;
  * 
  * @author asbarber
  */
-public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
+public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profiler{
     
     /**
      * Creates a graph profiler.
      */
     public ProfileGraph2D(){   
         saveSettings = new SaveSettings();
-        profileSettings = new ProfileSettings(this);
-    }
-    
-    /**
-     * Creates a graph profiler with specified properties.
-     * @param testTimeSec the maximum time spent in the render loop
-     */
-    public ProfileGraph2D(int testTimeSec){
-        this();
-        this.profileSettings.setTestTime(testTimeSec);
+        renderSettings = new RenderSettings(this);
     }
     
     /**
@@ -71,78 +60,55 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
     private Resolution resolution = new Resolution(600, 400);
     private int        nPoints = 1000;
     
-    //Statistics
-    private int         nTries = 0;
-    private StopWatch   stopWatch;    
-    
     //Settings
-    private ProfileSettings profileSettings;    
+    private RenderSettings renderSettings;    
     private SaveSettings    saveSettings;
     
+    //Temporary (used in iteration)
+    private BufferedImage image = null;
+    private Graphics2D graphics = null;
     
-    /**
-     * Performs the necessary operation to 'profile' a graph renderer.
-     * Gathers statistics about the rendering time of a Graph2DRenderer.
-     * 
-     * <ol>
-     *      <li>Makes the data</li>
-     *      <li>Makes the renderer</li>
-     *      <li>Repeatedly renders</li>
-     * </ol>
-     */
-    public void profile(){        
-        stopWatch = new StopWatch(profileSettings.getMaxTries());
-        stopWatch.setTimeType(profileSettings.getTimeType());
-        
+    private S data = null;
+    private T renderer = null;
+    
+    @Override
+    protected void preLoopAction(){
         //Data and Render Objects (Implemented in subclasses)
-        S data = getDataset();
-        T renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
+        data = getDataset();
+        renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
         
-        if (profileSettings.getUpdate() != null){ 
-            renderer.update(profileSettings.getUpdate()); 
+        if (renderSettings.getUpdate() != null){ 
+            renderer.update(renderSettings.getUpdate()); 
         }
         
         //Creates the image buffer if parameter says to set it ouside of render loop
-        BufferedImage image = null;
-        Graphics2D graphics = null;
-        if (!profileSettings.getBufferInLoop()){
+        if (!renderSettings.getBufferInLoop()){
             image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
             graphics = image.createGraphics();
+        }        
+    }
+    
+    @Override
+    protected void iterationAction(){
+        //Create Image if necessary
+        if (renderSettings.getBufferInLoop()){
+            image = new BufferedImage(renderer.getImageWidth(), 
+                                      renderer.getImageHeight(), 
+                                      BufferedImage.TYPE_3BYTE_BGR);                    
+            graphics = image.createGraphics();
         }
-        
-        nTries = 0;
-        
-        //System Time
-        Timestamp start = Timestamp.now();
-        Timestamp end = start.plus(TimeDuration.ofSeconds(profileSettings.getTestTime()));   
-                
-        //Trials
-        while (end.compareTo(Timestamp.now()) >= 0 && 
-               !Thread.currentThread().isInterrupted() && 
-               nTries < profileSettings.getMaxTries()) {
-            
-                    nTries++;
-                    stopWatch.start();
 
-                        //Create Image if necessary
-                        if (profileSettings.getBufferInLoop()){
-                            image = new BufferedImage(renderer.getImageWidth(), 
-                                                      renderer.getImageHeight(), 
-                                                      BufferedImage.TYPE_3BYTE_BGR);                    
-                            graphics = image.createGraphics();
-                        }
-
-                        //Subclass render
-                        render(graphics, renderer, data);
-
-                    stopWatch.stop();
-
-                    //Buffer clears
-                    if (image != null && image.getRGB(0, 0) == 0){
-                        System.out.println("Black");
-                    }
-        }
-    }    
+        //Subclass render
+        render(graphics, renderer, data);        
+    }
+    
+    @Override
+    protected void postIterationAction(){
+        //Buffer clears
+        if (image != null && image.getRGB(0, 0) == 0){
+            System.out.println("Black");
+        }        
+    }  
 
     
     //During-Profile Sections
@@ -182,56 +148,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         
     
     //Post-Profile Options
-    
-    /**
-     * Gets profile statistics. 
-     * Returns null if the profile method has not been called and no statistics exist.
-     * 
-     * @return statistical information about profiling
-     */
-    public Statistics getStatistics(){
-        //Ensures profile() was called
-        if (stopWatch == null || nTries == 0){
-            throw new NullPointerException("Has not been profiled.");
-        }
-        
-        return new Statistics(nTries, stopWatch.getAverageMs(), stopWatch.getTotalMs());
-    }
-    
-    /**
-     * Prints the graph title and then the statistics.
-     * Does not print anything if statistics do not exist.
-     */
-    public void printStatistics(){
-        Statistics stats = getStatistics();
-        
-        if (stats != null){
-            System.out.println(getGraphTitle());            
-            stats.printStatistics();
-        }
-    }
-    
-    /**
-     * Graphs the profile statistics in a histogram, line graph, and averaged line graph.
-     */
-    public void graphStatistics(){
-        //Ensures profile() was called
-        if (stopWatch == null || nTries == 0){
-            throw new NullPointerException("Has not been profiled.");
-        }
-        
-        ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
-        ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
-        
-        Point1DCircularBuffer timings = new Point1DCircularBuffer(nTries);
-        timings.update(new Point1DDatasetUpdate().addData(timingsExcludeFirst));
-        Histogram1D hist = Histograms.createHistogram(timings);
-        Point2DDataset line = org.epics.graphene.Point2DDatasets.lineData(timingsExcludeFirst);
-        Point2DDataset averagedLine = org.epics.graphene.Point2DDatasets.lineData(averages);
-        ShowResizableGraph.showHistogram(hist);
-        ShowResizableGraph.showLineGraph(line);
-        ShowResizableGraph.showLineGraph(averagedLine);           
-    }
+
     
     /**
      * Writes the profile statistics to a CSV file designated to the profile graph.
@@ -269,56 +186,41 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
      * </ol>     
      */
     public void saveStatistics(){
-        //Verifies non-interrupted
-        if (Thread.currentThread().isInterrupted()){
-            return;
-        }
-        
-        //Ensures profile() was called
-        if (stopWatch == null || nTries == 0){
-            throw new NullPointerException("Has not been profiled.");
-        }
-     
-        Object o = stopWatch.getOutput();
-        
-        
-        //Data
         String fileName = LOG_FILEPATH + getLogFileName();
-        File output;
         
-        //Creates if necessary
-        output = new File(fileName + ".csv");
-        if (!output.exists()){
-            output = CSVWriter.createNewFile(fileName);
-
-            CSVWriter.writeHeader(output, CSVWriter.arrayCombine(
+        List header = CSVWriter.arrayCombine(
                 "Graph Type",
                 "Date",
                 stopWatch.getTitle(),
                 "Number of Tries",
                 "Number of Data Points",
                 resolution.getTitle(),
-                profileSettings.getTitle(),
+                getProfileSettings().getTitle(),
+                renderSettings.getTitle(),
                 saveSettings.getTitle()
-            ));
-        }
-
+        );
         
-        //Adds data
-        CSVWriter.writeRow(output, CSVWriter.arrayCombine(
+        List row = CSVWriter.arrayCombine(
             getGraphTitle(),
             DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
             stopWatch.getOutput(),
             nTries,
             getNumDataPoints(),
             resolution.getOutput(),
-            profileSettings.getOutput(),
+            getProfileSettings().getOutput(),
+            renderSettings.getOutput(),
             saveSettings.getOutput()
-        ));
+        );
+        
+        super.saveStatistics(fileName, header, row);
     }
     
     
     //Save Parameter Getters
+    @Override
+    public String getProfileTitle(){
+        return getGraphTitle();
+    }
     
     /**
      * Gets the type of graph renderer.
@@ -353,8 +255,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> {
         return this.saveSettings;
     }
     
-    public ProfileSettings getProfileSettings(){
-        return this.profileSettings;
+    public RenderSettings getRenderSettings(){
+        return this.renderSettings;
     }
 
     public Resolution getResolution(){

@@ -43,7 +43,6 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
     @Override
     protected SparklineGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(imageWidth, imageHeight);
-        renderer.update(new SparklineGraph2DRendererUpdate());
         
         return renderer;
     }

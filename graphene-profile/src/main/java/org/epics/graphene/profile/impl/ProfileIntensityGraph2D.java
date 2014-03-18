@@ -25,12 +25,6 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
                 numYData = 100;
     
     /**
-     * Creates a profiler for the intensity graph.
-     */
-    public ProfileIntensityGraph2D(){
-    }
-    
-    /**
      * Gets the size of the data determined by the size of x data and y data.
      * Found by treating the cells as a matrix with dimension x data size times y data size.
      * @return size of x data * size of y data
@@ -118,7 +112,6 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     @Override
     protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(imageWidth, imageHeight);
-        renderer.update(new IntensityGraph2DRendererUpdate());
         
         return renderer;
     }

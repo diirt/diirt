@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.profile.utils;
 
+import org.epics.graphene.profile.settings.Settings;
 import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
 import java.math.BigInteger;

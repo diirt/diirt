@@ -8,6 +8,8 @@ package org.epics.graphene.profile.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.epics.graphene.Cell1DDataset;
+import org.epics.graphene.Cell1DDatasets;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.Cell2DDatasets;
 import org.epics.graphene.Histogram1D;
@@ -16,7 +18,10 @@ import org.epics.graphene.Point1DCircularBuffer;
 import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point2DDataset;
+import org.epics.graphene.Point3DWithLabelDataset;
+import org.epics.graphene.Point3DWithLabelDatasets;
 import org.epics.graphene.RangeUtil;
+import org.epics.graphene.StatisticsUtil;
 import org.epics.util.array.ArrayDouble;
 
 public class DatasetFactory {
@@ -68,10 +73,10 @@ public class DatasetFactory {
     public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
+        int seed = 1;
         
         //Creates data
-        Random rand = new Random(maxValue);
+        Random rand = new Random(seed);
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
@@ -93,15 +98,51 @@ public class DatasetFactory {
      */
     public static Point2DDataset makePoint2DGaussianRandomData(int nSamples){
         double[] waveform = new double[nSamples];
-        int maxValue = 1;
+        int seed = 1;
         
         //Creates data
-        Random rand = new Random(maxValue);        
+        Random rand = new Random(seed);        
         for (int i = 0; i < nSamples; i++){
             waveform[i] = rand.nextGaussian();
         }
         
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
+    }
+    
+    public static Point3DWithLabelDataset makePoint3DWithLabelGaussianRandomData(int nSamples){
+        ArrayDouble x = new ArrayDouble(nSamples);
+        ArrayDouble y = new ArrayDouble(nSamples);
+        ArrayDouble z = new ArrayDouble(nSamples);
+
+        int seed = 1;
+        
+        List<String> labels = new ArrayList<>(nSamples);
+        String[] labelSet = new String[] {"First", "Second", "Third", "Fourth", "Fifth"};
+        
+        //Creates data
+        Random rand = new Random(seed);
+        for (int i = 0; i < nSamples; ++i){
+            x.setDouble(i, rand.nextGaussian());
+            y.setDouble(i, rand.nextGaussian());
+            z.setDouble(i, rand.nextGaussian());
+            labels.add(labelSet[rand.nextInt(labelSet.length)]);            
+        }
+        
+        return Point3DWithLabelDatasets.build(x, y, z, labels);
+    }
+            
+    public static Cell1DDataset makeCell1DGaussianRandomData(int nSamples){
+        double[] waveform = new double[nSamples];
+        int seed = 1;
+        
+        //Creates data
+        Random rand = new Random(seed);
+        for (int i = 0; i < nSamples; i++){
+            waveform[i] = rand.nextGaussian();
+        }
+        
+        org.epics.graphene.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
+        return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getMinimum().doubleValue(), stats.getMaximum().doubleValue());
     }
     
     /**
@@ -118,10 +159,10 @@ public class DatasetFactory {
     public static Cell2DDataset makeCell2DGaussianRandomData(int xSamples, int ySamples){
         int nSamples = xSamples * ySamples;
         double[] waveform = new double[nSamples];
-        int maxValue = 1;
+        int seed = 1;
         
         //Creates data
-        Random rand = new Random(maxValue);        
+        Random rand = new Random(seed);        
         for (int i = 0; i < nSamples; i++){
             waveform[i] = rand.nextGaussian();
         }
@@ -142,15 +183,16 @@ public class DatasetFactory {
     public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
         Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
         Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
+        int seed = 1;
         
         //Creates data
-        Random rand = new Random(maxValue);                
+        Random rand = new Random(seed);                
         for (int i = 0; i < nSamples; i++) {
             update.addData(rand.nextGaussian());
         }
         dataset.update(update);
         
         return Histograms.createHistogram(dataset);        
-    }    
+    }   
+    
 }

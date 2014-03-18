@@ -5,7 +5,7 @@
 package org.epics.graphene.profile;
 
 import java.io.File;
-import org.epics.graphene.profile.utils.SaveSettings;
+import org.epics.graphene.profile.settings.SaveSettings;
 import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.Resolution;
 import java.util.ArrayList;
@@ -294,6 +294,7 @@ public class MultiLevelProfiler{
             "Graph Type",
             "Date",
             profiler.getProfileSettings().getTitle(),
+            profiler.getRenderSettings().getTitle(),
             saveSettings.getTitle()
         ));
         
@@ -301,6 +302,7 @@ public class MultiLevelProfiler{
             profiler.getGraphTitle(),
             DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
             profiler.getProfileSettings().getOutput(),
+            profiler.getRenderSettings().getOutput(),
             saveSettings.getOutput()
         ));
     }

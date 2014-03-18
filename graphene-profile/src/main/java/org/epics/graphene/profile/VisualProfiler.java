@@ -60,6 +60,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 
@@ -88,9 +89,14 @@ public class VisualProfiler extends JFrame{
     /**
      * Java class names of all <code>ProfileGraph2D</code> subclasses.
      */
-    public static final String[] SUPPORTED_PROFILERS = {"Histogram1D",
+    public static final String[] SUPPORTED_PROFILERS = {"AreaGraph2D",
+                                                        "BubbleGraph2D",
+                                                        "Histogram1D",
                                                         "IntensityGraph2D",
                                                         "LineGraph2D",
+                                                        "MultiYAxisGraph2D",
+                                                        "MultilineGraph2D",
+                                                        "NLineGraphs",
                                                         "ScatterGraph2D",
                                                         "SparklineGraph2D"
                                                        };
@@ -1537,13 +1543,15 @@ public class VisualProfiler extends JFrame{
         //Get inputs
         String strTestTime = this.txtTestTime.getText();
         String strMaxAttempts = this.txtMaxAttempts.getText();
+        String strUpdateType = this.listUpdateTypes.getSelectedItem().toString();
         
         //Intended variables
         int testTime;
         int maxAttempts;
         StopWatch.TimeType timeType;
         ProfileGraph2D renderer;
-                
+        Graph2DRenderer update;
+        
         //Test Time
         try{
             testTime = Integer.parseInt(strTestTime);
@@ -1579,6 +1587,7 @@ public class VisualProfiler extends JFrame{
         renderer.getProfileSettings().setTestTime(testTime);
         renderer.getProfileSettings().setMaxTries(maxAttempts);
         renderer.getProfileSettings().setTimeType(timeType);
+        renderer.getRenderSettings().setUpdate(strUpdateType);
         
         //Final Format
         return renderer;
