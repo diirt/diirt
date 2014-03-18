@@ -118,9 +118,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      * @param g Graphics2D object used to perform drawing functions within draw.
      * @param data can not be null
      */
-    public void draw(Graphics2D g, Cell2DDataset data) {
+    public void draw(GraphBuffer graphBuffer, Cell2DDataset data) {
         //Use super class to draw basics of graph.
-        this.g = g;
+        this.g = graphBuffer.getGraphicsContext();
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();

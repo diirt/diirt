@@ -65,9 +65,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 10), 10);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.1", image);
             
@@ -82,9 +82,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 10), 10);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.2", image);
             
@@ -99,9 +99,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 10), 10);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.3", image);
             
@@ -116,9 +116,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.4", image);
             
@@ -133,9 +133,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.5", image);
             
@@ -150,9 +150,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.6", image);
             
@@ -167,9 +167,9 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.7", image);
             
@@ -185,12 +185,12 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             renderer.update(update);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.8", image);
             
@@ -208,12 +208,12 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             renderer.update(update);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.9", image);
             
@@ -230,39 +230,13 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             update.valueColorScheme(ColorScheme.JET);
             renderer.update(update);
-            double start = 0;
-            double end = 0;
-            start = System.currentTimeMillis();
-            //renderer.drawTest(g,data,image);    //draw array colors array
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
-            start = System.currentTimeMillis();
-            renderer.draw(g, data);             //draw rect colors find
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
-            start = System.currentTimeMillis();
-            //renderer.drawTest(g,data,image);    //draw array colors array
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
-            start = System.currentTimeMillis();
-            renderer.draw(g, data);             //draw rect colors find
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
-            renderer.useColorArray = true;
-            start = System.currentTimeMillis();
-            //renderer.drawTest(g, data, image);  //draw array colors array
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
-            start = System.currentTimeMillis();
-            //renderer.draw(g, data);             //draw rect colors array
-            end = System.currentTimeMillis();
-            System.out.println(end-start);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.10", image);
             
@@ -278,13 +252,13 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             update.valueColorScheme(ColorScheme.JET);
             renderer.update(update);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.11", image);
             
@@ -299,14 +273,13 @@ public class IntensityGraph2DRendererTest {
             }
         }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
         GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ColorScheme.JET);
         renderer.update(update);
-        renderer.draw(g, data);
+        renderer.draw(graphBuffer, data);
         renderer.drawTest(graphBuffer,data);
 
         ImageAssert.compareImages("intensityGraph2D.12", image);
@@ -321,7 +294,7 @@ public class IntensityGraph2DRendererTest {
             }
         }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
+        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
@@ -329,7 +302,7 @@ public class IntensityGraph2DRendererTest {
         update.xAxisRange(AxisRanges.absolute(20,80));
         update.yAxisRange(AxisRanges.absolute(20,80));
         renderer.update(update);
-        renderer.draw(g,data);
+        renderer.draw(graphBuffer,data);
         ImageAssert.compareImages("intensityGraph2D.ZoomIn", image);
     }
     
@@ -342,7 +315,7 @@ public class IntensityGraph2DRendererTest {
             }
         }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D g = (Graphics2D) image.getGraphics();
+        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
@@ -350,7 +323,7 @@ public class IntensityGraph2DRendererTest {
         update.xAxisRange(AxisRanges.absolute(-20, 120));
         update.yAxisRange(AxisRanges.absolute(-20,120));
         renderer.update(update);
-        renderer.draw(g,data);
+        renderer.draw(graphBuffer,data);
         ImageAssert.compareImages("intensityGraph2D.ZoomOut", image);
     }
     
@@ -364,14 +337,14 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             update.valueColorScheme(ColorScheme.JET);
             update.rightMargin(20);
             renderer.update(update);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", image);
             
@@ -387,13 +360,13 @@ public class IntensityGraph2DRendererTest {
             ArrayDouble dataList = new ArrayDouble(listOfData);
             Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 640), 640, RangeUtil.range(0, 480), 480);
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D g = (Graphics2D) image.getGraphics();
+            GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.valueColorScheme(ColorScheme.JET);
             update.rightMargin(20);
             renderer.update(update);
-            renderer.draw(g, data);
+            renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.UpdateRightMargin", image);
             

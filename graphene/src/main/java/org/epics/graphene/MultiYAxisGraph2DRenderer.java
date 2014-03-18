@@ -461,24 +461,27 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
                 FontMetrics metrics = g.getFontMetrics();
 
                 // Draw first and last label
+                int verticalLinePos;
                 int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
                 int xRightLabel;
                 if(a % 2 == 0){
                     xRightLabel = (int) (xAreaCoordStart - (evenCount+1)*(yLabelMargin + 1)*2 - evenCount*(yLabelMaxWidth - 1));
+                    verticalLinePos = (xAreaCoordStart - (evenCount+1)*(yLabelMargin + 1) - evenCount*(yLabelMaxWidth + yLabelMargin));
                     evenCount++;
                 }
                 else{
                     xRightLabel = (int) (xAreaCoordEnd + (oddCount+1)*(yLabelMargin + 1)*2 + (oddCount+1)*(yLabelMaxWidth) - oddCount - 1);
+                    verticalLinePos = (xAreaCoordEnd + (oddCount+1)*(yLabelMargin + 1) + oddCount*(yLabelMaxWidth + yLabelMargin));
                     oddCount++;
                 }
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(0), (int) Math.floor(yTicks.getDouble(0)),
-                    drawRange, xRightLabel, true, false);
+                    drawRange, xRightLabel, true, false, verticalLinePos);
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(yReferenceLabels.get(a).size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.get(a).size() - 1)),
-                    drawRange, xRightLabel, false, false);
+                    drawRange, xRightLabel, false, false, verticalLinePos);
 
                 for (int b = 1; b < yReferenceLabels.get(a).size() - 1; b++) {
                     drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(a).get(b), (int) Math.floor(yTicks.getDouble(b)),
-                        drawRange, xRightLabel, true, false);
+                        drawRange, xRightLabel, true, false, verticalLinePos);
                 }
             }
         }
@@ -486,7 +489,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     
     private static final int MIN = 0;
     private static final int MAX = 1;
-    private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
+    private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly, int verticalLinePos) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
@@ -513,7 +516,7 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
-        
+        graphics.drawLine(verticalLinePos - 1 , targetY, verticalLinePos + 1, targetY);
         if (updateMin) {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
