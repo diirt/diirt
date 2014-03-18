@@ -94,6 +94,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     private int zLabelMaxWidth;
     private boolean rightMarginChanged = false;
     private boolean rightMarginJustChanged = false;
+    public boolean useColorArray = false; 
     
     // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
     private boolean linearBoundaries = true;
@@ -282,9 +283,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
     }
     
-    public void drawTest(Graphics2D g, Cell2DDataset data, BufferedImage image) {
+    public void drawTest(GraphBuffer graphBuffer, Cell2DDataset data) {
         //Use super class to draw basics of graph.
-        this.g = g;
+        this.g = graphBuffer.getGraphicsContext();
+        BufferedImage image = graphBuffer.getBufferedImage();
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
@@ -743,7 +745,12 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         while (countY < newBoundariesY.size()-1){
                 countX = 0;
                 while (countX < newBoundariesX.size()-1){
-                    g.setColor(new Color(colorScheme.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
+                    if(!useColorArray){
+                        g.setColor(new Color(colorScheme.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
+                    }
+                    else{
+                        g.setColor(new Color(colorScheme.getColor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
+                    }
                     //Only add to xSum if the user specifies.
                     if(addXSum){
                         xSum[countX] += data.getValue(countX, data.getYCount()-1-countY);

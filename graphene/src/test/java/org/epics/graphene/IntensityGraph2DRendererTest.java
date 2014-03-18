@@ -239,22 +239,30 @@ public class IntensityGraph2DRendererTest {
             double start = 0;
             double end = 0;
             start = System.currentTimeMillis();
-            renderer.drawTest(g,data,image);
+            //renderer.drawTest(g,data,image);    //draw array colors array
             end = System.currentTimeMillis();
             System.out.println(end-start);
             start = System.currentTimeMillis();
-            renderer.draw(g, data);
+            renderer.draw(g, data);             //draw rect colors find
             end = System.currentTimeMillis();
             System.out.println(end-start);
             start = System.currentTimeMillis();
-            renderer.drawTest(g,data,image);
+            //renderer.drawTest(g,data,image);    //draw array colors array
             end = System.currentTimeMillis();
             System.out.println(end-start);
             start = System.currentTimeMillis();
-            renderer.draw(g, data);
+            renderer.draw(g, data);             //draw rect colors find
             end = System.currentTimeMillis();
             System.out.println(end-start);
-            
+            renderer.useColorArray = true;
+            start = System.currentTimeMillis();
+            //renderer.drawTest(g, data, image);  //draw array colors array
+            end = System.currentTimeMillis();
+            System.out.println(end-start);
+            start = System.currentTimeMillis();
+            //renderer.draw(g, data);             //draw rect colors array
+            end = System.currentTimeMillis();
+            System.out.println(end-start);
             
             ImageAssert.compareImages("intensityGraph2D.10", image);
             
@@ -292,14 +300,14 @@ public class IntensityGraph2DRendererTest {
         }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
+        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ColorScheme.JET);
         renderer.update(update);
         renderer.draw(g, data);
-        renderer.drawTest(g,data,image);
-        System.out.println("AAAAAAAAAAA");
+        renderer.drawTest(graphBuffer,data);
 
         ImageAssert.compareImages("intensityGraph2D.12", image);
     }
