@@ -75,7 +75,7 @@ public abstract class Profiler {
     
     public abstract String getProfileTitle();
     
-    public void saveStatistics(String fileName, List header, List row){
+    protected void saveStatistics(String fileName, List header, List row){
         //Verifies non-interrupted
         if (Thread.currentThread().isInterrupted()){
             return;
