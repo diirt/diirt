@@ -6,8 +6,6 @@ package org.epics.graphene.profile.settings;
 
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
-import org.epics.graphene.profile.utils.StopWatch;
-import org.epics.graphene.profile.utils.StopWatch.TimeType;
 
 public class RenderSettings implements Settings{
     

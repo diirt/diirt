@@ -5,6 +5,7 @@
 package org.epics.graphene.profile.impl;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +24,11 @@ import org.epics.graphene.profile.utils.DatasetFactory;
 public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRenderer, Cell2DDataset>{
     private int numXData = 100, 
                 numYData = 100;
+    
+    private GraphBuffer graphBuffer = null;
+
+    
+    //Getters (Dataset Size)
     
     /**
      * Gets the size of the data determined by the size of x data and y data.
@@ -49,6 +55,9 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     public int getNumYDataPoints(){
         return numYData;
     }
+    
+    
+    //Setters (Dataset Size)
     
     /**
      * Sets the number of x and y data points.
@@ -85,6 +94,9 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         this.createDatasetMessage();
     }
     
+    
+    //Handling 2D Dataset
+    
     /**
      * Creates a message about the x by y dimension of the cell data.
      * This message is saved in the log file as the comment about the data set.
@@ -92,6 +104,59 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     public final void createDatasetMessage(){
         super.getSaveSettings().setDatasetMessage(getNumXDataPoints() + "x" + getNumYDataPoints());
     }
+    
+    
+    //Handling GraphBuffer
+    
+    @Override
+    protected void preLoopAction(){
+        //Data and Render Objects (Implemented in subclasses)
+        data = getDataset();
+        renderer = getRenderer(getResolution().getWidth(), getResolution().getHeight());
+        
+        if (getRenderSettings().getUpdate() != null){ 
+            renderer.update(getRenderSettings().getUpdate()); 
+        }
+        
+        //Creates the image buffer if parameter says to set it ouside of render loop
+        if (!getRenderSettings().getBufferInLoop()){
+            graphBuffer = new GraphBuffer(
+                          new BufferedImage(renderer.getImageWidth(), 
+                                            renderer.getImageHeight(), 
+                                            BufferedImage.TYPE_3BYTE_BGR)
+            );
+        } 
+    }
+    
+    @Override
+    protected void iterationAction(){
+        //Create Image if necessary
+        if (getRenderSettings().getBufferInLoop()){
+            graphBuffer = new GraphBuffer(
+                          new BufferedImage(renderer.getImageWidth(), 
+                                            renderer.getImageHeight(), 
+                                            BufferedImage.TYPE_3BYTE_BGR)
+            );
+        }
+
+        //Subclass render
+        render(null, renderer, data);        
+    }    
+    
+    /**
+     * Draws the cell data in an intensity graph.
+     * Primary method in the render loop.
+     * @param graphics where image draws to (WILL BE PASSED AS <b>NULL</b>)
+     * @param renderer what draws the image
+     * @param data the cell data being drawn
+     */    
+    @Override
+    protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data) {
+        renderer.draw(graphBuffer, data);        
+    }
+    
+    
+    //IntensityGraph Specifics (Getters)
     
     /**
      * Gets a set of random Gaussian 2D cell data.
@@ -114,18 +179,6 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(imageWidth, imageHeight);
         
         return renderer;
-    }
-
-    /**
-     * Draws the cell data in an intensity graph.
-     * Primary method in the render loop.
-     * @param graphics where image draws to
-     * @param renderer what draws the image
-     * @param data the cell data being drawn
-     */    
-    @Override
-    protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data) {
-        renderer.draw(graphics, data);        
     }
     
     /**

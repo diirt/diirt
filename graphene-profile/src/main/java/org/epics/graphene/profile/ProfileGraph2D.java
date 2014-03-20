@@ -5,26 +5,16 @@
 package org.epics.graphene.profile;
 
 import org.epics.graphene.profile.settings.SaveSettings;
-import org.epics.graphene.profile.utils.Statistics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Graph2DRendererUpdate;
-import org.epics.graphene.Histogram1D;
-import org.epics.graphene.Histograms;
-import org.epics.graphene.Point1DCircularBuffer;
-import org.epics.graphene.Point1DDatasetUpdate;
-import org.epics.graphene.Point2DDataset;
-import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.io.DateUtils;
 import org.epics.graphene.profile.settings.RenderSettings;
 import org.epics.graphene.profile.utils.Resolution;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListMath;
 
 /**
  * Handles the profiling for testing rendering (specifically the draw) of a <code>Graph2DRenderer</code>.
@@ -68,8 +58,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     private BufferedImage image = null;
     private Graphics2D graphics = null;
     
-    private S data = null;
-    private T renderer = null;
+    protected S data = null;
+    protected T renderer = null;
     
     @Override
     protected void preLoopAction(){
