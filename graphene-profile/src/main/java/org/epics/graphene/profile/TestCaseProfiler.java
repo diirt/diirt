@@ -466,8 +466,7 @@ public final class TestCaseProfiler {
             protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
                 
-                //TODO
-//                renderer.setLinearBoundaries(true);
+                renderer.setLinearBoundaries(true);
                 
                 return renderer;
             }
@@ -479,8 +478,7 @@ public final class TestCaseProfiler {
             protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
 
-                //TODO
-//                renderer.setLinearBoundaries(false);
+                renderer.setLinearBoundaries(false);
                 
                 return renderer;
             }
@@ -574,11 +572,19 @@ public final class TestCaseProfiler {
      * 
      * <p>
      * The results are:
-     * <ol>
-     *      <li>"Byte Array" has speed x</li>
-     *      <li>"Set Pixel"  has speed 3x</li>
-     *      <li>"Draw Rect"  has speed 9x</li>
-     *</ol>
+     * 
+     *      Render Method       Resolution      Average Time (ms)
+     *      -------------       ----------      ----------------
+     *      Set Pixel           1024x768	113.06
+     *      Draw Rect           1024x768	252.89
+     *      Byte Array          1024x768	16.22
+     *      Set Pixel           1440x1080	263.84
+     *      Draw Rect           1440x1080	748.26
+     *      Byte Array          1440x1080	89.22
+     *      Set Pixel           1600x1200	298.23
+     *      Draw Rect           1600x1200	921.2
+     *      Byte Array          1600x1200	68.57
+     *
      * The "Byte Array" method is the fastest.
      * 
      * @author asbarber
@@ -588,8 +594,8 @@ public final class TestCaseProfiler {
         
         private RenderMethod renderType;
 
-        private int         width = 1024, 
-                            height = 768;
+        private int         width = 1600, 
+                            height = 1200;
 
         private StopWatch   stopWatch;
 

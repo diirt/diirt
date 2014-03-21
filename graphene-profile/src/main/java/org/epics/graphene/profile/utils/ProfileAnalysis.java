@@ -4,22 +4,15 @@
  */
 package org.epics.graphene.profile.utils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.io.CSVFinder;
+import org.epics.graphene.profile.io.CSVReader;
+import org.epics.graphene.profile.io.CSVWriter;
+import org.epics.graphene.profile.io.DateUtils;
 
 /**
  * Provides the tools necessary for comparing the output tables of profiling
@@ -52,19 +45,7 @@ public class ProfileAnalysis {
      * significant and thus take appropriate (warning) action.
      */
     public static final double STATISTICALLY_SIGNIFICANT = 0.05;
-    
-    /**
-     * The file names of the tables supported by 1D table analysis
-     * (not <code>MultiLevelProfiler</code> tables).
-     * 
-     * @see #findTables1D() 
-     */
-    public static String[] SUPPORTED_TABLES_1D = new String[]   {"Histogram1D.csv",
-                                                                "IntensityGraph2D.csv",
-                                                                "LineGraph2D.csv",
-                                                                "ScatterGraph2D.csv",
-                                                                "SparklineGraph2D.csv"
-                                                                };
+
     /**
      * Brings a dialog box to ask the user to select two table based
      * CSV files and compares the differences of the tables.
@@ -86,27 +67,11 @@ public class ProfileAnalysis {
         
         File fileA, fileB;
         
-        //File Choosers
-        final JFileChooser fc = new JFileChooser(ProfileGraph2D.LOG_FILEPATH);
-        fc.setFileFilter(new FileNameExtensionFilter("Graphene Tables (*.csv)", "csv"));
+        fileA = CSVFinder.browseCSV();
+        if (fileA == null){ return; }
         
-        //File A
-        int returnValueA = fc.showOpenDialog(null);
-        if (returnValueA == JFileChooser.APPROVE_OPTION){
-            fileA = fc.getSelectedFile();
-        }
-        else{
-            return;
-        }
-        
-        //File B
-        int returnValueB = fc.showOpenDialog(null);
-        if (returnValueB == JFileChooser.APPROVE_OPTION){
-            fileB = fc.getSelectedFile();
-        }
-        else{
-            return;
-        }
+        fileB = CSVFinder.browseCSV();
+        if (fileB == null){ return; }
         
         compareTables2D(fileA, fileB);
     }
@@ -124,177 +89,72 @@ public class ProfileAnalysis {
      *              considered initial file (compares fileA - fileB)
      */
     public static void compareTables2D(File fileA, File fileB){
-        List<String[]> rowsOfA = readTable(fileA);
-        List<String[]> rowsOfB = readTable(fileB);
+        CSVReader.validate2DTablesNames(fileA, fileB);
         
-        List<String[]> differenceRows = new ArrayList<>();
+        List<List<String>> dataA = CSVReader.parseCSV(fileA);
+        List<List<String>> dataB = CSVReader.parseCSV(fileB);
         
-        //Ensures the same number of rows in both tables
-        if (rowsOfA.size() != rowsOfB.size()){
-            throw new IllegalArgumentException("The tables must have the same number of rows.");
+        CSVReader.validate2DTables(dataA, dataB);
+        if (dataA.isEmpty() || dataB.isEmpty()){ return; }
+        
+        String badCell = "*Error in reading this cell*";
+        List<List> output = new ArrayList<>();
+        
+        //Header
+        List<String> outputHeader = new ArrayList<>();
+        for (int c = 0; c < dataA.get(0).size(); ++c){
+            //Entry in both headers are the same
+            if (dataA.get(0).get(c).equals(dataB.get(0).get(c))){
+                outputHeader.add(dataA.get(0).get(c));
+            }
+            //Different entry in dataA vs dataB
+            else{
+                outputHeader.add(badCell);
+            }
+        }
+        output.add(outputHeader);
+        
+        //Rows
+        for (int r = 1; r < dataA.size(); ++r){
+            List<String> outputRow = new ArrayList<>();
+            
+            for (int c = 0; c < dataA.get(r).size(); ++c){
+                try{
+                    double numA = Double.parseDouble(dataA.get(r).get(c));
+                    double numB = Double.parseDouble(dataB.get(r).get(c));
+                    double diff = (numA - numB) / numA * 100;
+                    outputRow.add(String.format("%.3f", diff + "%"));
+                }
+                catch (NumberFormatException ex){
+                    outputRow.add(badCell);
+                }                
+            }
+            
+            output.add(outputRow);
         }
         
-        //Every row (applies to both tables)
-        for (int i = 0; i < rowsOfA.size(); i++){
-            String[] rowA = rowsOfA.get(i);
-            String[] rowB = rowsOfB.get(i);
-            
-            //Ensures same number of cells in the row of both tables
-            if (rowA.length != rowB.length){
-                throw new IllegalArgumentException("The tables must have the same number of columns.");
-            }
-            
-            String[] diffRow = new String[rowA.length];
-            
-            //Column header (first cell in each row)
-            if (rowA[0].equals(rowB[0])){
-                diffRow[0] = rowA[0];
-            }
-            else{
-                diffRow[0] = "*Error in reading this cell*";
-            }
-            
-            //All cells in the row (applies to both tables) (starts at cell 1, ignores column header)
-            for (int j = 1; j < rowA.length; j++){
-                String cellA = rowA[j];
-                String cellB = rowB[j];
-                
-                if (cellA == null || cellB == null){
-                    diffRow[j] = "";
-                }
-                else{
-                    //Tries to find a numerical values (for times)
-                    try{
-                        double numberA = Double.parseDouble(rowA[j]);
-                        double numberB = Double.parseDouble(rowB[j]);
-                        diffRow[j] = String.format("%.3f", (numberA - numberB)/numberA*100) + "%";
-                    }catch(NumberFormatException e){
-                        //When 
-                        if (cellA.equals(cellB)){
-                            diffRow[j] = cellA;
-                        }
-                        else{
-                            diffRow[j] = "*Error In Reading This Cell*";
-                        }
-                    }                    
-                }
-            }
-            
-            differenceRows.add(diffRow);
-        }
+        //Saving
+        String[] compA = fileA.getName().split("-");
+        String[] compB = fileB.getName().split("-");
         
-        
-        
-        //File Output
-        String delim = ",";
-        String filenameA = fileA.getName();
-        String filenameB = fileB.getName();
-        
-        int delimA1 = filenameA.indexOf("-"),
-            delimA2 = filenameA.lastIndexOf("-"),
-            delimB1 = filenameB.indexOf("-");
-                
-            //How to name output file
-            String graphType;        
-            if (delimA2 == -1){
-                graphType = "Unknown Graph Type";
-            }
-            else{
-                graphType = filenameA.substring(delimA1 + 1, delimA2);
-            }
-            
-        String dateA, dateB;
-            if (delimA1 == -1){
-                dateA = filenameA;
-            }
-            else{
-                dateA = filenameA.substring(0, delimA1);
-            }
+        String date = DateUtils.getDate(DateUtils.DateFormat.NONDELIMITED),
+               dateA = compA[0],
+               dateB = compB[0],
+               graphType = compA[1];
 
-            if (delimB1 == -1){
-                dateB = filenameB;
-            }
-            else{
-                dateB = filenameB.substring(0, delimB1);
-            }
+
+        File outputFile = CSVWriter.createNewFile(  ProfileGraph2D.LOG_FILEPATH + 
+                                                    date +
+                                                    "-" +
+                                                    graphType +
+                                                    "-Table Difference-" + 
+                                                    dateA +
+                                                    "vs" +
+                                                    dateB +
+                                                    ".csv");
         
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String todaysDate = format.format(new Date());
-       
-        File outputFile = new File(ProfileGraph2D.LOG_FILEPATH + 
-                                   todaysDate +
-                                   "-" +
-                                   graphType +
-                                   "-Table Difference-" + 
-                                   dateA +
-                                   "vs" +
-                                   dateB +
-                                   ".csv");
-        
-        try {
-            outputFile.createNewFile();
-            
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
-            
-            //Prints rows
-            for (String[] row: differenceRows){
-                for (String element: row){
-                    out.print(element + delim);
-                }
-                out.println();
-            }
-            
-            out.close();
-        } catch (IOException ex) {
-            System.err.println("Output errors exist.");
-        }        
-    }    
-    
-    /**
-     * Reads a <code>MultiLevelProfiler</code> table CSV file
-     * and gets the input of every cell.
-     * 
-     * The output is a list of each row formatted as an array.
-     * @param file
-     * @return a list of each row, with the row formatted as an array
-     */
-    public static List<String[]> readTable(File file){
-        List<String[]> rows = new ArrayList<>();
-        String delim = ",";
-        FileReader fr = null;
-        
-        try{
-            fr = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fr);
-            
-            String header = reader.readLine();
-            rows.add(header.split(delim));
-            
-            String row;
-            while ( (row = reader.readLine()) != null ){
-                rows.add(row.split(delim));
-            }
-            
-            reader.close();
-        }
-        catch(FileNotFoundException ex){
-            System.err.println("The first file could not be found.");
-        }
-        catch (IOException ex){
-            System.err.println("Output errors exist.");
-        } 
-        finally {
-           try {
-               if (fr != null){
-                   fr.close();
-               }
-           } 
-           catch (IOException ex){
-           }
-        }
-        
-        return rows;
-    }    
+        CSVWriter.writeData(outputFile, output);    
+    }      
     
     /**
      * Computes the difference between the last two records
@@ -314,49 +174,43 @@ public class ProfileAnalysis {
      *         the results of the analysis (significant increase/decrease)
      */
     public static List<String> analyzeTables1D(){
-        List<File>              files = findTables1D();
+        List<File>              files = CSVFinder.findTables1D();
         List<String>            results = new ArrayList<>();
         
         //All files that are supported and found
         for (File tableFile: files){
             if (tableFile != null){
-                List<String[]> tableRows = readTable(tableFile);
+                List<List<String>> tableRows = CSVReader.parseCSV(tableFile);
+
 
                 //Includes a header plus two rows of data
                 if (tableRows.size() > 2){
-                    String[] previous = tableRows.get(tableRows.size() - 2);
-                    String[] recent = tableRows.get(tableRows.size() - 1);
+                    List<String> previous = tableRows.get(tableRows.size() - 2);
+                    List<String> recent = tableRows.get(tableRows.size() - 1);
 
-                    //Index 2 represents "Average Time"
-                    //Index 0 represents "Graph Type"
+                    //Graph Type
+                    String graphType = previous.get(0);
+                    
+                    //Average Time
+                    double percentChange = percentChange(
+                            Double.parseDouble(previous.get(2)),
+                            Double.parseDouble(recent.get(2))
+                    );         
+                    
+                    //Performance Change
+                    String performance = performanceChange(
+                            Double.parseDouble(previous.get(2)),
+                            Double.parseDouble(recent.get(2))
+                    );
 
-                    double previousTime = Double.parseDouble(previous[2]);
-                    double recentTime = Double.parseDouble(recent[2]);
-                    String graphType = previous[0];
-
-                    double percentChange = (recentTime - previousTime) / previousTime * 100;
-                    String performanceMessage;
-
-                    //Signficant performance decrease
-                    if (percentChange > ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
-                        performanceMessage = "Performance Decrease";
-                    }
-                    //Significant performance increase
-                    else if (percentChange < ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
-                        performanceMessage = "Performance Increase";                    
-                    }
-                    //No Significant performance change
-                    else{
-                        performanceMessage = "Performance Stable";                    
-                    }
-
-                        results.add(graphType +
-                                    ": " +
-                                    performanceMessage +
-                                    ": " + 
-                                    String.format("%.3f", percentChange) +
-                                    "% changed"
-                                   );                
+                    //Analysis
+                    results.add(graphType +
+                                ": " +
+                                performance +
+                                ": " + 
+                                String.format("%.3f", percentChange) +
+                                "% changed"
+                   );   
                 } 
             }
         }
@@ -365,35 +219,25 @@ public class ProfileAnalysis {
         return results;
     }
     
-    /**
-     * Returns any file in the appropriate log file path that is supported
-     * by the profile analyzer and thus able to be further analyzed.
-     * 
-     * @return any file in the <code>ProfileGraph2D</code> specified log
-     *         file path that is supported by the profile analyzer
-     * 
-     * @see org.epics.graphene.profile.ProfileGraph2D#LOG_FILEPATH
-     * @see #SUPPORTED_TABLES_1D
-     */
-    public static List<File> findTables1D(){
-        List<File> tables1D = new ArrayList<>();
-        
-        File root = new File(ProfileGraph2D.LOG_FILEPATH);
-        
-        //All files in the directory
-        for (File subfile : root.listFiles()){
-            for (int i = 0; i < SUPPORTED_TABLES_1D.length; i++){
-                
-                //If supported file name
-                if (SUPPORTED_TABLES_1D[i].equals(subfile.getName())){
-                    tables1D.add(subfile);
-                    i = SUPPORTED_TABLES_1D.length;    //break
-                }
-                
-            }
-        }
-        
-        return tables1D;
+    public static double percentChange(double valInit, double valFinal){
+        return (valFinal - valInit) / valInit * 100;        
     }
     
+    public static String performanceChange(double valInit, double valFinal){
+        double percentChange = percentChange(valInit, valFinal);
+        
+        //Signficant performance decrease
+        if (percentChange > ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
+            return "Performance Decrease";
+        }
+        //Significant performance increase
+        else if (percentChange < ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
+            return "Performance Increase";                    
+        }
+        //No Significant performance change
+        else{
+            return "Performance Stable";                    
+        }        
+    }
+
 }

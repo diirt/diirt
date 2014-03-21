@@ -47,7 +47,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     
     
     //Parameters
-    private Resolution resolution = new Resolution(600, 400);
+    private Resolution  resolution = new Resolution(600, 400);    
     private int        nPoints = 1000;
     
     //Settings
@@ -250,7 +250,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     }
 
     public Resolution getResolution(){
-        return this.resolution;
+        return resolution;
     }
     
     

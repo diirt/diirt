@@ -6,6 +6,7 @@ package org.epics.graphene.profile.settings;
 
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.graphene.profile.utils.Resolution;
 
 public class RenderSettings implements Settings{
     
@@ -60,8 +61,6 @@ public class RenderSettings implements Settings{
     }    
     
     //Getters
-    
-
     
     /**
      * Gets whether the image buffer is created within the render loop or beforehand.
