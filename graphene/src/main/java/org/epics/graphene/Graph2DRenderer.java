@@ -832,7 +832,6 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                         path.lineTo(scaledX[i], scaledY[i]);
                     }
                 //have current, but not previous
-                 
                 }else{
                     // No previous value
                     if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {

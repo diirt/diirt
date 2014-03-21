@@ -62,7 +62,7 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
      * 
      * @throws Exception test fails
      */    
-    
+  
     @Test
     public void testMinEqualsLastValue() throws Exception{
         double[] initialDataY = new double[101];
@@ -493,8 +493,8 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("sparklineMultipleNaNCubic", image);
-    }
-    
+    } 
+ 
     /*@Test
     public void test1() throws Exception {
         double[] initialDataY = new double[101];
