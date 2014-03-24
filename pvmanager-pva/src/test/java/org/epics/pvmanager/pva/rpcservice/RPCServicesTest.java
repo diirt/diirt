@@ -219,7 +219,7 @@ public class RPCServicesTest implements Runnable {
     }
     VFloat vFloat = (VFloat) cache.getValue().get("c");
     assertThat(vFloat.getValue(), equalTo(30.0f));
-  }
+  }pvmanager-sample/src/main/java/org/epics/pvmanager/sample/SetupUtil.java
 */
 
   @Test
