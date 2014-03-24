@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
     <channelName>testChannel</channelName>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
     <methods>
         <method name="isGreaterThen" description="is a greater then b">
             <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
