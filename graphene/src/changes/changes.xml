@@ -8,7 +8,12 @@
     </properties>
   
     <body>
-        <release version="0.5" date="SNAPSHOT" description="Core consolidation. Adding sparkline. Improvements to intensity graph.">
+        <release version="0.6" date="SNAPSHOT" description=".">
+            <action dev="carcassi" type="update">
+                bubble graph: support for selection and negative numbers for size
+            </action>
+        </release>
+        <release version="0.5" date="2014/01/22" description="Core consolidation. Adding sparkline. Improvements to intensity graph.">
             <action dev="carcassi" type="fix">
                 core: revised use of interpolation in line graphs
             </action>
