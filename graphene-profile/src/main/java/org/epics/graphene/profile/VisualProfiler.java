@@ -84,7 +84,7 @@ public class VisualProfiler extends JFrame{
     /**
      * Package location for <code>ProfileGraph2D</code> subclasses.
      */
-    private static final String PROFILE_PATH = "org.epics.graphene.profile.implementations";
+    private static final String PROFILE_PATH = "org.epics.graphene.profile.impl";
     
     /**
      * Java class names of all <code>ProfileGraph2D</code> subclasses.
@@ -1196,7 +1196,7 @@ public class VisualProfiler extends JFrame{
                 threadStarted(this); 
                 
                 publish("--------\n");
-                publish("Opening Files\n\n");
+                publish("Deleting Files\n\n");
                 
                 TreePath[] paths = tree.getSelectionPaths();
 
