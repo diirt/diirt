@@ -16,7 +16,7 @@ import org.epics.util.array.*;
 
 /**
  *
- * @author smaceul
+ * @author sjdallst
  */
 public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph2DRendererUpdate, MultiYAxisGraph2DRenderer>{
     /**
