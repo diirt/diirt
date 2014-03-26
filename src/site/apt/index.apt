@@ -6,11 +6,13 @@
 
 Epics Utilties
 
-  This library contains basic utility class that should, in an ideal world,
+  This library contains basic Java utility classes that should, in an ideal world,
 be part of the JDK. They handle basic things like a read-only interface for
 arrays or representation for nanosecond precision time instants and periods.
 
   When suitable replacement will be available, these classes will be deprecated.
+
+  epics-util is a part of {{{http://diirt.org}DIIRT: Data Integration In Real-Time}}
 
 Download
 
