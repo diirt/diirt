@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.epics</groupId>
     <artifactId>epics-util</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>epics-util</name>
     <url>http://epics-util.sourceforge.net</url>
