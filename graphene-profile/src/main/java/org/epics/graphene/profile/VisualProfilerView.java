@@ -441,6 +441,7 @@ public class VisualProfilerView extends JPanel{
             txtTime.setEditable(false);
             btnCancelThread = new JButton("Cancel");
             btnCancelThread.setEnabled(false);
+            actionButtons.add(btnCancelThread);
         }
         
         private void initMnemonics(){
