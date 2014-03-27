@@ -48,7 +48,6 @@
     </properties>
     <modules>
         <module>graphene</module>
-        <module>graphene-rrdtool</module>
     </modules>
     <build>
         <plugins>
