@@ -163,7 +163,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         //Set color scheme
-        colorScheme = ValueColorSchemes.schemeFor(valueColorScheme, RangeUtil.range(zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue()));
+        colorScheme = ValueColorSchemes.schemeFor(valueColorScheme, data.getStatistics());
 
 
         double xStartGraph = super.xPlotCoordStart;

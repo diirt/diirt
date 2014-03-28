@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import org.epics.util.array.ArrayDouble;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -46,6 +48,18 @@ public class BubbleGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("bubble2D.1", image);
+        
+        renderer.update(renderer.newUpdate().highlightFocusValue(true).focusPixel(178,90));
+        graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.1a", image);
+        assertThat(renderer.getFocusValueIndex(), equalTo(48));
+        
+        renderer.update(renderer.newUpdate().highlightFocusValue(true).focusPixel(171,88));
+        graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.1b", image);
+        assertThat(renderer.getFocusValueIndex(), equalTo(6));
     }
     
     @Test
@@ -62,6 +76,54 @@ public class BubbleGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("bubble2D.2", image);
+    }
+    
+    @Test
+    public void test3() throws Exception {
+        ArrayDouble x = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble y = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble z = new ArrayDouble(-1,2,-3,4,-5,6,-7,8,-9,10);
+        List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
+                "First", "Second", "Third", "Fourth", "Fifth");
+        
+        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
+        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
+        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(600, 399);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.3", image);
+    }
+    
+    @Test
+    public void test4() throws Exception {
+        ArrayDouble x = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble y = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble z = new ArrayDouble(-1,-2,-3,-4,-5,-6,-7,-8,-9,-10);
+        List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
+                "First", "Second", "Third", "Fourth", "Fifth");
+        
+        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
+        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
+        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(600, 399);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.4", image);
+    }
+    
+    @Test
+    public void test5() throws Exception {
+        ArrayDouble x = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble y = new ArrayDouble(1,2,3,4,5,6,7,8,9,10);
+        ArrayDouble z = new ArrayDouble(0,0,0,0,0,0,0,0,0,0);
+        List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
+                "First", "Second", "Third", "Fourth", "Fifth");
+        
+        Point3DWithLabelDataset data = Point3DWithLabelDatasets.build(x, y, z, labels);
+        BufferedImage image = new BufferedImage(600, 400, BufferedImage.TYPE_3BYTE_BGR);
+        BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(600, 399);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("bubble2D.5", image);
     }
 //    
 //    @Test
