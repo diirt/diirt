@@ -359,7 +359,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     
     @Test
     public void testRandomNaNCubic() throws Exception {
-        double[] dataSet = {Double.NaN, 5, Double. NaN, 2, 3, 5, Double.NaN};
+        double[] dataSet = {Double.NaN, 5, Double.NaN, 2, 3, 5, Double.NaN};
         Point2DDataset data = Point2DDatasets.lineData(dataSet);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
@@ -421,14 +421,25 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
 
     @Test
-    public void testCubicInterpolation() throws Exception {
+    public void testLinearInterpolationOrderedDataset() throws Exception {
+        Point2DDataset data = new OrderedDataset2DT1();
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineGraphLinearInterpolationOrderedDataset", image);
+    }
+    
+    @Test
+    public void testCubicInterpolationOrderedDataset() throws Exception {
         Point2DDataset data = new OrderedDataset2DT1();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("lineGraphCubicInterpolation", image);
+        ImageAssert.compareImages("lineGraphCubicInterpolationOrderedDataset", image);
     }
 
     @Test
