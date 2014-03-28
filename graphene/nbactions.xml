@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
         <action>
+            <actionName>CUSTOM-Site</actionName>
+            <displayName>Site</displayName>
+            <goals>
+                <goal>site:site</goal>
+            </goals>
+        </action>
+        <action>
             <actionName>run</actionName>
             <goals>
                 <goal>process-classes</goal>
