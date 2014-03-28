@@ -14,6 +14,7 @@ public class NLineGraphs2DRendererUpdate extends Graph2DRendererUpdate<NLineGrap
     private Integer marginBetweenGraphs,
             minimumGraphHeight;
     
+    // TODO: should take a Map<Integer, Range>
     public NLineGraphs2DRendererUpdate setRanges(List<Integer> indices, List<Range> ranges){
         if(indices.size() != ranges.size()){
             throw new IllegalArgumentException("Index list is not as long as range list");

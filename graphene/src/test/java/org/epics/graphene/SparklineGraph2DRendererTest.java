@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 /**
+ * TODO: fix test names
  * 
  * @author asbarber, 
  * @author jkfeng,

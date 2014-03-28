@@ -31,6 +31,7 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
         if (scheme == null) {
             throw new NullPointerException("Interpolation scheme can't be null");
         }
+        // TODO: supported list should be taken from MultiYAxis not LineGraph
         if (!LineGraph2DRenderer.supportedInterpolationScheme.contains(scheme)) {
             throw new IllegalArgumentException("Interpolation " + scheme + " is not supported");
         }
@@ -47,6 +48,7 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
         if (scheme == null) {
             throw new NullPointerException("Data reduction scheme can't be null");
         }
+        // TODO: supported list should be taken from MultiYAxis not LineGraph
         if (!LineGraph2DRenderer.supportedReductionScheme.contains(scheme)) {
             throw new IllegalArgumentException("Data reduction " + scheme + " is not supported");
         }
@@ -56,6 +58,10 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
     
     /**
      *Sets the current value of the focused pixel to x.
+     * 
+     * TODO: focus pixel not implemented yes. Either remove relevant methods
+     * or set them to private
+     * 
      * @param x value of focused pixel.
      * @return this
      */

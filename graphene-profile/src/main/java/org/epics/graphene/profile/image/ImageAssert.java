@@ -34,7 +34,7 @@ public class ImageAssert {
         int x = 0;
         int y = 0;
         try{
-    
+            // TODO: Remove dependency on JUnit. Use if/then throw exception instead
             assertEquals("Images are not the same height", a.getHeight(), b.getHeight());
             assertEquals("Images are not the same width", a.getWidth(), b.getWidth());
 

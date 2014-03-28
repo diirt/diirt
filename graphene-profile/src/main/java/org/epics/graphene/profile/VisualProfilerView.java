@@ -74,13 +74,12 @@ public class VisualProfilerView extends JPanel{
     private List<JButton>           actionButtons;
     private VisualProfilerModel     model;
     private UserSettings            userSettings;
-    
-    private JTabbedPane tabs;
     //-------------------------------------------------------------------------
 
     
     //Panel Data Members
     //-------------------------------------------------------------------------
+    private JTabbedPane     tabs;    
     private SettingsPanel   settingsPanel;
     private Profile1DTable  profile1DTable;
     private Profile2DTable  profile2DTable;
@@ -480,56 +479,56 @@ public class VisualProfilerView extends JPanel{
     
     //Action Structure
     //-------------------------------------------------------------------------
-    private void startTimer(){
-        SwingWorker worker = new SwingWorker<Object, String>(){
-
-            @Override
-            protected Object doInBackground() throws Exception {
-                Timer t = new Timer();
-                t.scheduleAtFixedRate(new TimerTask(){
-
-                        @Override
-                        public void run() {         
-                            publish(getTime());
-                        }
-                                      
-                    }
-                    
-                    , 1000, 1000
-                );
-                return null;
-            }
-
-            @Override
-            protected void process(List<String> chunks){
-                for (String chunk: chunks){
-                    VisualProfilerView.this.console.txtTime.setText(chunk);
-                }
-            }
-            
-            /**
-             * Gets the current time (HH:MM:SS) to be displayed in the
-             * graphical user interface.
-             * @return current time (HH:MM:SS)
-             */
-            private String getTime(){
-                int hour = Calendar.getInstance().get(Calendar.HOUR);
-                int minute = Calendar.getInstance().get(Calendar.MINUTE);
-                int second = Calendar.getInstance().get(Calendar.SECOND);
-                String format = "%02d";     
-
-                return String.format(format, hour) +
-                       ":" +
-                       String.format(format, minute) +
-                       ":" +
-                       String.format(format, second);
-
-            }            
-        };
-        worker.execute();   
-    }    
-    
     private class VisualProfilerModel{
+        private void startTimer(){
+            SwingWorker worker = new SwingWorker<Object, String>(){
+
+                @Override
+                protected Object doInBackground() throws Exception {
+                    Timer t = new Timer();
+                    t.scheduleAtFixedRate(new TimerTask(){
+
+                            @Override
+                            public void run() {         
+                                publish(getTime());
+                            }
+
+                        }
+
+                        , 1000, 1000
+                    );
+                    return null;
+                }
+
+                @Override
+                protected void process(List<String> chunks){
+                    for (String chunk: chunks){
+                        VisualProfilerView.this.console.txtTime.setText(chunk);
+                    }
+                }
+
+                /**
+                 * Gets the current time (HH:MM:SS) to be displayed in the
+                 * graphical user interface.
+                 * @return current time (HH:MM:SS)
+                 */
+                private String getTime(){
+                    int hour = Calendar.getInstance().get(Calendar.HOUR);
+                    int minute = Calendar.getInstance().get(Calendar.MINUTE);
+                    int second = Calendar.getInstance().get(Calendar.SECOND);
+                    String format = "%02d";     
+
+                    return String.format(format, hour) +
+                           ":" +
+                           String.format(format, minute) +
+                           ":" +
+                           String.format(format, second);
+
+                }            
+            };
+            worker.execute();   
+        }    
+            
         /**
          * Simple login feature that ensures all output files generated
          * by profiling is associated with an author.
@@ -1076,120 +1075,120 @@ public class VisualProfilerView extends JPanel{
             console.txtConsole.setText("");
         }
 
+        private void threadStart(SwingWorker worker){
+            if (worker == null){
+                throw new IllegalArgumentException("Must have a non-null thread.");
+            }
 
-    }
-
-    private void threadStart(SwingWorker worker){
-        if (worker == null){
-            throw new IllegalArgumentException("Must have a non-null thread.");
+            thread = worker;
+            console.btnCancelThread.setEnabled(true);
         }
 
-        thread = worker;
-        console.btnCancelThread.setEnabled(true);
-    }
-
-    private void threadFinish(){
-        thread = null;
-        console.btnCancelThread.setEnabled(false);
-
-        setEnabledActions(true);
-    }
-
-    private void cancelThread(){
-        if (thread != null){
-            thread.cancel(true);
+        private void threadFinish(){
+            thread = null;
             console.btnCancelThread.setEnabled(false);
 
-            SwingWorker worker = new SwingWorker(){
+            setEnabledActions(true);
+        }
 
-                @Override
-                protected Object doInBackground() throws Exception {
-                    publish("\nAction Cancelled\n");                                
+        private void cancelThread(){
+            if (thread != null){
+                thread.cancel(true);
+                console.btnCancelThread.setEnabled(false);
+
+                SwingWorker worker = new SwingWorker(){
+
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        publish("\nAction Cancelled\n");                                
+                        publish("--------\n");
+                        return null;
+                    }
+
+                };
+                worker.execute();            
+            }
+        }
+        
+        /**
+         * Creates a thread safe <code>SwingWorker</code> that performs
+         * a <code>MultiLevelProfiler</code> profile and prints
+         * the results to the console log of the graphical user interface
+         * as the results are received.
+         */
+        private class Profile2DTableWorker extends SwingWorker<Object, String>{
+            private Profile2DTableWorker.VisualMultiLevelProfiler multiProfiler;
+
+            public Profile2DTableWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
+                setEnabledActions(false);        
+                model.threadStart(this);
+                publish("--------\n");
+                publish(profiler.getGraphTitle() + "\n\n");
+
+                String strAuthor = settingsPanel.txtAuthorMessage.getText();
+                String saveMessage = settingsPanel.txtSaveMessage.getText();   
+
+                this.multiProfiler = new Profile2DTableWorker.VisualMultiLevelProfiler(profiler);
+                this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
+                this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
+                this.multiProfiler.setImageSizes(resolutions);
+                this.multiProfiler.setDatasetSizes(datasetSizes);
+            }
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                this.multiProfiler.profile();
+
+                if (!Thread.currentThread().isInterrupted()){
+                    this.multiProfiler.saveStatistics();
+                    publish("\nProfiling complete." + "\n");
                     publish("--------\n");
-                    return null;
+                }
+                else{
+                    publish("\nProfiling cancelled." + "\n");
+                    publish("--------\n");                
                 }
 
-            };
-            worker.execute();            
-        }
-    }
-        
-    /**
-     * Creates a thread safe <code>SwingWorker</code> that performs
-     * a <code>MultiLevelProfiler</code> profile and prints
-     * the results to the console log of the graphical user interface
-     * as the results are received.
-     */
-    private class Profile2DTableWorker extends SwingWorker<Object, String>{
-        private Profile2DTableWorker.VisualMultiLevelProfiler multiProfiler;
-        
-        public Profile2DTableWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
-            setEnabledActions(false);        
-            threadStart(this);
-            publish("--------\n");
-            publish(profiler.getGraphTitle() + "\n\n");
-            
-            String strAuthor = settingsPanel.txtAuthorMessage.getText();
-            String saveMessage = settingsPanel.txtSaveMessage.getText();   
-            
-            this.multiProfiler = new Profile2DTableWorker.VisualMultiLevelProfiler(profiler);
-            this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
-            this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
-            this.multiProfiler.setImageSizes(resolutions);
-            this.multiProfiler.setDatasetSizes(datasetSizes);
-        }
-        
-        @Override
-        protected Object doInBackground() throws Exception {
-            this.multiProfiler.profile();
-            
-            if (!Thread.currentThread().isInterrupted()){
-                this.multiProfiler.saveStatistics();
-                publish("\nProfiling complete." + "\n");
-                publish("--------\n");
-            }
-            else{
-                publish("\nProfiling cancelled." + "\n");
-                publish("--------\n");                
-            }
-            
-            setEnabledActions(true);
-            threadFinish();
-            return true;
-        }
-        
-        @Override
-        protected void process(List<String> chunks){
-            for (String chunk: chunks){
-                print(chunk);
-            }
-        }        
-                
-        private class VisualMultiLevelProfiler extends MultiLevelProfiler{
-            public VisualMultiLevelProfiler(ProfileGraph2D profiler){
-                super(profiler);
+                setEnabledActions(true);
+                model.threadFinish();
+                return true;
             }
 
             @Override
-            public void processTimeWarning(int estimatedTime){
-                Profile2DTableWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
-            }
-
-            @Override
-            public void processPreResult(Resolution resolution, int datasetSize){
-                //Publishes
-                Profile2DTableWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
-            }
-
-            @Override
-            public void processResult(Resolution resolution, int datasetSize, Statistics stats){
-                Profile2DTableWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
+            protected void process(List<String> chunks){
+                for (String chunk: chunks){
+                    print(chunk);
+                }
             }        
-        };        
-    };    
+
+            private class VisualMultiLevelProfiler extends MultiLevelProfiler{
+                public VisualMultiLevelProfiler(ProfileGraph2D profiler){
+                    super(profiler);
+                }
+
+                @Override
+                public void processTimeWarning(int estimatedTime){
+                    Profile2DTableWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
+                }
+
+                @Override
+                public void processPreResult(Resolution resolution, int datasetSize){
+                    //Publishes
+                    Profile2DTableWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
+                }
+
+                @Override
+                public void processResult(Resolution resolution, int datasetSize, Statistics stats){
+                    Profile2DTableWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
+                }        
+            };        
+        };          
+    }
     //-------------------------------------------------------------------------
     
     
+    //Constructor
+    //-------------------------------------------------------------------------    
     public VisualProfilerView(){
         initPanel();
         initComponents();
@@ -1199,6 +1198,7 @@ public class VisualProfilerView extends JPanel{
         
         finalizePanel();
     }
+    //-------------------------------------------------------------------------    
     
     
     //Panel Setup
@@ -1281,7 +1281,7 @@ public class VisualProfilerView extends JPanel{
                     model.clearLog();
                 }
                 else if (o == console.btnCancelThread){
-                    cancelThread();
+                    model.cancelThread();
                 }
             }
             
@@ -1316,7 +1316,7 @@ public class VisualProfilerView extends JPanel{
         setAuthor(model.login());
         reloadUpdateVariations();
         model.reloadFiles(true);
-        startTimer();
+        model.startTimer();
     }
     
     //-------------------------------------------------------------------------
