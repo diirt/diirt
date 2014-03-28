@@ -16,6 +16,9 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 /**
+ * TODO: make this inherit from BaseGraphTest and make sure all other tests
+ * work
+ * TODO: better test names
  *
  * @author carcassi
  */

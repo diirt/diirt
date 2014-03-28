@@ -98,6 +98,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         ImageAssert.compareImages("multiyaxisgraph2D.singleGraph", image);
     }
     
+    // TODO: method names should be lower case
     @Test
     public void TwoGraphsTest() throws Exception {
         double [][] initialData= new double [2][100]; 
@@ -118,6 +119,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
+        // TODO: fix capitalization for names e.g.: multiYAxisGraph2D.twoGraphs
         ImageAssert.compareImages("multiyaxisgraph2D.TwoGraphs", image);
     }
     
