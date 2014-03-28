@@ -21,11 +21,13 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
+ * TODO: make the image follow the following format: $prefix.base.$testname.png
  *
  * @author Jiakung
  */
 public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extends Graph2DRenderer<T>> {
 
+    // TODO: make final
     private String resultPrefix;
 
     public BaseGraphTest(String resultPrefix) {
@@ -40,6 +42,7 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void rightMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().rightMargin(10));
+        // TODO: fix capitalization
         ImageAssert.compareImages(resultPrefix + "RightMargin", draw(renderer));
     }
 

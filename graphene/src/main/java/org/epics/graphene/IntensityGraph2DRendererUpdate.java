@@ -42,6 +42,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
+    // TODO: remove xsum and ysum - was not implemented
     public IntensityGraph2DRendererUpdate addXSum(boolean addXSum) {
         this.addXSum = addXSum;
         return self();

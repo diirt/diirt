@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 /**
+ * TODO: move this to Point2DDatasetsTest and add all other relevant tests
  *
  * @author carcassi
  */

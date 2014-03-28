@@ -61,7 +61,7 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        TestCaseProfiler.renderMethod();
+                        TestCaseProfiler.intensityGraphStrategies();
         }
     }    
 

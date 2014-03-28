@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 /**
+ * TODO: should inherit from base test class
+ * TODO: better test naming
  *
  * @author carcassi
  */

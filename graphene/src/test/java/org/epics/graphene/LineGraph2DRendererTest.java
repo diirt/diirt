@@ -69,6 +69,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
    
 
+    // TODO: remove the "test" from the method name
     @Test
     public void testOneDataPoint() throws Exception {
         double[] dataSet = new double[1];
@@ -79,6 +80,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
+        // TODO: fix image names to be something like "lineGraph.oneDataPoint.png"
+        // TODO: maybe use the names to group "lineGraph.cubic.NaN.Xxx.png"
         ImageAssert.compareImages("lineGraphOneDataPoint", image);
     }
 
