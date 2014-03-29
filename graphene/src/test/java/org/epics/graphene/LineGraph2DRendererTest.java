@@ -17,6 +17,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -434,7 +435,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         ImageAssert.compareImages("lineGraphLinearInterpolationOrderedDataset", image);
     }
     
-    @Test
+    @Test @Ignore
     public void testCubicInterpolationOrderedDataset() throws Exception {
         Point2DDataset data = new OrderedDataset2DT1();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
