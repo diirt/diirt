@@ -110,9 +110,9 @@ public class DatasetFactory {
     }
     
     public static Point3DWithLabelDataset makePoint3DWithLabelGaussianRandomData(int nSamples){
-        ArrayDouble x = new ArrayDouble(nSamples);
-        ArrayDouble y = new ArrayDouble(nSamples);
-        ArrayDouble z = new ArrayDouble(nSamples);
+        ArrayDouble x = new ArrayDouble(new double[nSamples], false);
+        ArrayDouble y = new ArrayDouble(new double[nSamples], false);
+        ArrayDouble z = new ArrayDouble(new double[nSamples], false);
 
         int seed = 1;
         

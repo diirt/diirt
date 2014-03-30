@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -25,8 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -52,7 +52,16 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.epics.graphene.Graph2DRenderer;
+import org.epics.graphene.profile.impl.ProfileAreaGraph2D;
+import org.epics.graphene.profile.impl.ProfileBubbleGraph2D;
+import org.epics.graphene.profile.impl.ProfileHistogram1D;
+import org.epics.graphene.profile.impl.ProfileIntensityGraph2D;
+import org.epics.graphene.profile.impl.ProfileLineGraph2D;
+import org.epics.graphene.profile.impl.ProfileMultiYAxisGraph2D;
+import org.epics.graphene.profile.impl.ProfileMultilineGraph2D;
+import org.epics.graphene.profile.impl.ProfileNLineGraphs2D;
+import org.epics.graphene.profile.impl.ProfileScatterGraph2D;
+import org.epics.graphene.profile.impl.ProfileSparklineGraph2D;
 import org.epics.graphene.profile.io.DateUtils;
 import org.epics.graphene.profile.io.DateUtils.DateFormat;
 import org.epics.graphene.profile.utils.DatasetFactory;
@@ -120,7 +129,7 @@ public class VisualProfilerView extends JPanel{
         }
         
         private void initComponents(){
-            listRendererTypes   = new JComboBox(VisualProfiler.SUPPORTED_PROFILERS);
+            listRendererTypes   = new JComboBox(SUPPORTED_PROFILERS);
             lblRendererTypes    = new JLabel("Renderer Type: ");
 
             txtTestTime         = new JTextField("20");
@@ -232,6 +241,16 @@ public class VisualProfilerView extends JPanel{
             this.add(blankPanel(btnProfile1D));
             this.add(blankPanel(btnProfile1DAll));            
         }
+        
+        /**
+         * Gets the input from the user interface on whether graphs of statistics
+         * are shown after profiling.
+         * @return true if graphs of profile statistics are shown after profiling,
+         *         false if graphs of profile statistics are not shown
+         */
+        public boolean getShowGraph(){
+            return profile1DTable.chkShowGraph.isSelected();
+        }        
     }
     private class Profile2DTable extends JSplitPane{
         private JLabel                          lblResolutions,
@@ -477,8 +496,135 @@ public class VisualProfilerView extends JPanel{
     //-------------------------------------------------------------------------
     
     
+    //Values, Constants
+    //-------------------------------------------------------------------------
+    /**
+     * Package location for <code>ProfileGraph2D</code> subclasses.
+     */
+    public static final String PROFILE_PATH = "org.epics.graphene.profile.impl";
+
+    /**
+     * Java class names of all <code>ProfileGraph2D</code> subclasses.
+     */
+    public static final String[] SUPPORTED_PROFILERS = {"AreaGraph2D",
+                                                        "BubbleGraph2D",
+                                                        "Histogram1D",
+                                                        "IntensityGraph2D",
+                                                        "LineGraph2D",
+                                                        "MultiYAxisGraph2D",
+                                                        "MultilineGraph2D",
+                                                        "NLineGraphs2D",
+                                                        "ScatterGraph2D",
+                                                        "SparklineGraph2D"
+                                                       };    
+
+    public static final String FRAME_TITLE = "Visual Profiler";
+
+    public static ProfileGraph2D factory(String strClass){
+        switch (strClass) {
+            case "AreaGraph2D":
+                return new ProfileAreaGraph2D();
+            case "BubbleGraph2D":
+                return new ProfileBubbleGraph2D();
+            case "Histogram1D":
+                return new ProfileHistogram1D();
+            case "IntensityGraph2D":
+                return new ProfileIntensityGraph2D();
+            case "LineGraph2D":
+                return new ProfileLineGraph2D();
+            case "MultiYAxisGraph2D":
+                return new ProfileMultiYAxisGraph2D();
+            case "MultilineGraph2D":
+                return new ProfileMultilineGraph2D();
+            case "NLineGraphs2D":
+                return new ProfileNLineGraphs2D();
+            case "ScatterGraph2D":
+                return new ProfileScatterGraph2D();
+            case "SparklineGraph2D":
+                return new ProfileSparklineGraph2D();
+        }
+
+        return null;    
+    }    
+    //-------------------------------------------------------------------------
+
+    
     //Action Structure
     //-------------------------------------------------------------------------
+    private class UserSettings{
+        
+        
+        public Integer getTestTime(){
+            String strTestTime = settingsPanel.txtTestTime.getText();
+
+            Integer testTime;
+
+            try{
+                testTime = Integer.parseInt(strTestTime);
+
+                if (testTime <= 0){
+                    throw new NumberFormatException();
+                }
+
+                return testTime;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for test time.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }            
+        }
+        
+        public Integer getMaxTries(){
+            String strMaxAttempts = settingsPanel.txtMaxAttempts.getText();
+            int maxAttempts;
+        
+            try{
+                maxAttempts = Integer.parseInt(strMaxAttempts);
+
+                if (maxAttempts <= 0){
+                    throw new NumberFormatException();
+                }
+                
+                return maxAttempts;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for max attempts.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }            
+        }
+        
+        public TimeType getTimeType(){
+            return (StopWatch.TimeType) settingsPanel.listTimeTypes.getSelectedItem();
+        }
+        
+        public String getUpdate(){
+            return settingsPanel.listUpdateTypes.getSelectedItem().toString();
+        }
+        
+        
+        public ProfileGraph2D getProfiler(){
+            ProfileGraph2D renderer = selectedProfiler();
+            if (renderer == null){ return null; }
+            
+            return applySettings(renderer);
+        }
+        
+        public ProfileGraph2D selectedProfiler(){
+            String strClass = settingsPanel.listRendererTypes.getSelectedItem().toString();
+            return makeProfiler(strClass);            
+        }
+
+        public ProfileGraph2D makeProfiler(String strClass){
+            return factory(strClass);
+        }
+        
+        public ProfileGraph2D applySettings(ProfileGraph2D renderer){
+            renderer.getProfileSettings().setTestTime(getTestTime());
+            renderer.getProfileSettings().setMaxTries(getMaxTries());
+            renderer.getProfileSettings().setTimeType(getTimeType());
+            renderer.getRenderSettings().setUpdate(getUpdate());
+            
+            return renderer;
+        }
+    }    
     private class VisualProfilerModel{
         private void startTimer(){
             SwingWorker worker = new SwingWorker<Object, String>(){
@@ -583,13 +729,13 @@ public class VisualProfilerView extends JPanel{
 
                     ///Begin message
                     publish("--------\n");
-                    publish(profiler.getGraphTitle() + ": Single Profile\n\n");
+                    publish(profiler.getGraphTitle() + ": Single Profile\n");
 
                     //Runs
-                    publish("Running...\n");
+                    publish(profiler.getResolution() + ": " + profiler.getNumDataPoints() + ":" + "    ");
                     profiler.profile();
-                    publish("Running finished.\n");
-
+                    publish(profiler.getStatistics().getAverageTime() + "ms" + "\n");                    
+                    
                     //Saves
                     if (!Thread.currentThread().isInterrupted()){
                         publish("Saving...\n");
@@ -598,7 +744,7 @@ public class VisualProfilerView extends JPanel{
 
 
                         //Displays results graph if checked
-                        if (getShowGraph()){
+                        if (profile1DTable.getShowGraph()){
                             publish("\nGraphing Results...\n");
                             profiler.graphStatistics();
                             publish("Graphing Complete.\n");
@@ -642,8 +788,8 @@ public class VisualProfilerView extends JPanel{
             final List<ProfileGraph2D> profilers = new ArrayList<>();
 
 
-            for (int i = 0; i < VisualProfileValues.SUPPORTED_PROFILERS.length; i++){
-                profilers.add(userSettings.applySettings(userSettings.makeProfiler(VisualProfileValues.SUPPORTED_PROFILERS[i])));;
+            for (int i = 0; i < SUPPORTED_PROFILERS.length; i++){
+                profilers.add(userSettings.applySettings(userSettings.makeProfiler(SUPPORTED_PROFILERS[i])));
 
             }
 
@@ -661,12 +807,13 @@ public class VisualProfilerView extends JPanel{
 
                         ///Begin message
                         publish("--------\n");
-                        publish(profiler.getGraphTitle() + ": Single Profile\n\n");
+                        publish(profiler.getGraphTitle() + ": Single Profile\n");
 
                         //Runs
-                        publish("Running...\n");
+                        publish(profiler.getResolution() + ": " + profiler.getNumDataPoints() + ":" + "    ");
                         profiler.profile();
-                        publish("Running finished.\n");
+                        publish(profiler.getStatistics().getAverageTime() + "ms" + "\n");                    
+                    
 
                         if (!Thread.currentThread().isInterrupted()){
                             //Saves
@@ -675,7 +822,7 @@ public class VisualProfilerView extends JPanel{
                             publish("Saving finished.\n");
 
                             //Displays results graph if checked
-                            if (getShowGraph()){
+                            if (profile1DTable.getShowGraph()){
                                 publish("\nGraphing Results...\n");
                                 profiler.graphStatistics();
                                 publish("Graphing Complete.\n");
@@ -798,6 +945,70 @@ public class VisualProfilerView extends JPanel{
             worker.execute();  
         }
 
+        private void openFiles(final List<File> files){
+            SwingWorker worker = new SwingWorker<Object, String>(){
+
+                @Override
+                protected Object doInBackground() throws Exception {
+                    setEnabledActions(false);     
+                    threadStart(this);
+                    publish("--------\n");
+                    publish("Opening Files\n\n");
+
+                    Desktop desktop = Desktop.getDesktop();
+                    TreePath[] paths = fileViewer.tree.getSelectionPaths();
+
+                    //Passed by parameter
+                    if (files != null && desktop != null){
+                        for (File file: files){
+                            if (Thread.currentThread().isInterrupted()){
+                                break;
+                            }
+                            
+                            if (file != null){
+                                try{
+                                        desktop.open(file);
+
+                                        publish(file.getName() + "...opened successfully!\n");
+                                    }
+                                    catch(IOException e){
+                                        publish("Unable to open: " +
+                                                file.getName() +
+                                                "\n"
+                                               );
+                                    }
+                                    catch(ClassCastException e){
+                                        //unable to open
+                                    }                                
+                            }
+                        }
+                    }
+                    
+                    if (!Thread.currentThread().isInterrupted()){
+                        publish("\nFile operations completed.\n");
+                        publish("--------\n");
+                    }
+                    else{
+                        publish("\nFile operations cancelled.\n");
+                        publish("--------\n");                    
+                    }
+
+                    setEnabledActions(true);    
+                    threadFinish();
+                    return null;
+
+                }
+
+                @Override
+                protected void process(List<String> chunks){
+                    for (String chunk: chunks){
+                        print(chunk);
+                    }
+                }
+            };
+            worker.execute();           
+        }
+        
         /**
          * Thread safe operation to open all selected files from the 
          * file tree with the default application to open the files.
@@ -814,8 +1025,9 @@ public class VisualProfilerView extends JPanel{
 
                     Desktop desktop = Desktop.getDesktop();
                     TreePath[] paths = fileViewer.tree.getSelectionPaths();
-
-                    if (paths != null && desktop != null){
+                    
+                    //Selected from tree
+                    if (paths != null && desktop != null){                        
                         for (TreePath path: paths){
                             if (Thread.currentThread().isInterrupted()){
                                 break;
@@ -1204,6 +1416,9 @@ public class VisualProfilerView extends JPanel{
     //Panel Setup
     //-------------------------------------------------------------------------
     
+    /**
+     * Initializes panel properties.
+     */    
     private void initPanel(){
         this.setLayout(new BorderLayout());
     }
@@ -1228,7 +1443,7 @@ public class VisualProfilerView extends JPanel{
     }    
 
     /**
-     * Adds all graphical user interface components to the <code>JFrame</code>.
+     * Adds all graphical user interface components to the <code>JPanel</code>.
      */
     private void addComponents(){
         //Tabs
@@ -1243,6 +1458,10 @@ public class VisualProfilerView extends JPanel{
         this.add(console, BorderLayout.SOUTH);                
     }
     
+    /**
+     * Adds action listeners to each button: associates each button
+     * with a method of the <code>VisualProfiler</code>.
+     */    
     private void addListeners(){
         ActionListener listener = new ActionListener(){
 
@@ -1309,99 +1528,38 @@ public class VisualProfilerView extends JPanel{
                }
            }
 
-        });        
+        });  
+        
+        fileViewer.tree.addMouseListener(new MouseAdapter(){
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int selRow = fileViewer.tree.getRowForLocation(e.getX(), e.getY());
+                TreePath selPath = fileViewer.tree.getPathForLocation(e.getX(), e.getY());
+                
+                if(selRow != -1) {
+                    if(e.getClickCount() == 1) {
+                        //single click does nothing
+                    }
+                    else if(e.getClickCount() == 2) {
+                        File o = (File)((DefaultMutableTreeNode) selPath.getLastPathComponent()).getUserObject();  
+                        List<File> files = new ArrayList<>();
+                        files.add(o);
+                        model.openFiles(files);
+                    }
+                }
+            }            
+        });
     }
     
+    /**
+     * Finalizes panel properties (login, list updates, timer start).
+     */    
     private void finalizePanel(){
         setAuthor(model.login());
         reloadUpdateVariations();
         model.reloadFiles(true);
         model.startTimer();
-    }
-    
-    //-------------------------------------------------------------------------
-    
-    
-    //Getters
-    //-------------------------------------------------------------------------
-    
-    public boolean getShowGraph(){
-        return profile1DTable.chkShowGraph.isSelected();
-    }
-
-    private class UserSettings{
-        
-        
-        public Integer getTestTime(){
-            String strTestTime = settingsPanel.txtTestTime.getText();
-
-            Integer testTime;
-
-            try{
-                testTime = Integer.parseInt(strTestTime);
-
-                if (testTime <= 0){
-                    throw new NumberFormatException();
-                }
-
-                return testTime;
-            }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for test time.", "Error", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }            
-        }
-        
-        public Integer getMaxTries(){
-            String strMaxAttempts = settingsPanel.txtMaxAttempts.getText();
-            int maxAttempts;
-        
-            try{
-                maxAttempts = Integer.parseInt(strMaxAttempts);
-
-                if (maxAttempts <= 0){
-                    throw new NumberFormatException();
-                }
-                
-                return maxAttempts;
-            }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for max attempts.", "Error", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }            
-        }
-        
-        public TimeType getTimeType(){
-            return (StopWatch.TimeType) settingsPanel.listTimeTypes.getSelectedItem();
-        }
-        
-        public String getUpdate(){
-            return settingsPanel.listUpdateTypes.getSelectedItem().toString();
-        }
-        
-        
-        public ProfileGraph2D getProfiler(){
-            ProfileGraph2D renderer = selectedProfiler();
-            if (renderer == null){ return null; }
-            
-            return applySettings(renderer);
-        }
-        
-        public ProfileGraph2D selectedProfiler(){
-            String strClass = settingsPanel.listRendererTypes.getSelectedItem().toString();
-            return makeProfiler(strClass);            
-        }
-
-        public ProfileGraph2D makeProfiler(String strClass){
-            return VisualProfileValues.factory(strClass);
-        }
-        
-        public ProfileGraph2D applySettings(ProfileGraph2D renderer){
-            renderer.getProfileSettings().setTestTime(getTestTime());
-            renderer.getProfileSettings().setMaxTries(getMaxTries());
-            renderer.getProfileSettings().setTimeType(getTimeType());
-            renderer.getRenderSettings().setUpdate(getUpdate());
-            
-            return renderer;
-        }
     }
     
     //-------------------------------------------------------------------------
@@ -1454,7 +1612,7 @@ public class VisualProfilerView extends JPanel{
     //-------------------------------------------------------------------------
     
     public static JFrame makeFrame(){
-            JFrame frame = new JFrame(VisualProfileValues.FRAME_TITLE);
+            JFrame frame = new JFrame(FRAME_TITLE);
             frame.add(new VisualProfilerView());
             frame.pack();
             frame.setVisible(true);
@@ -1464,6 +1622,13 @@ public class VisualProfilerView extends JPanel{
             return frame;
     }
     
+    /**
+     * Creates a panel with the default layout manager
+     * to add and center the component.
+     * @param itemToAdd component to add to the panel
+     * @return JPanel with default layout manager with
+     *         component added to it
+     */    
     private JPanel blankPanel(Component itemToAdd){
         JPanel tmp = new JPanel();
         tmp.add(itemToAdd);
