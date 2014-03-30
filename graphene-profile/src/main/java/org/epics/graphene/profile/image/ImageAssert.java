@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -34,13 +33,20 @@ public class ImageAssert {
         int x = 0;
         int y = 0;
         try{
-            // TODO: Remove dependency on JUnit. Use if/then throw exception instead
-            assertEquals("Images are not the same height", a.getHeight(), b.getHeight());
-            assertEquals("Images are not the same width", a.getWidth(), b.getWidth());
-
+            if (a.getHeight() != b.getHeight()){
+                throw new IllegalArgumentException("Images are not the same height.");
+            }
+            
+            if (a.getWidth() != b.getWidth()){
+                throw new IllegalArgumentException("Images are not the same width.");
+            }
+            
             for (x = 0; x < b.getWidth(); x++) {
                 for (y = 0; y < b.getHeight(); y++) {
-                    assertEquals(a.getRGB(x, y), b.getRGB(x, y));
+                    if (a.getRGB(x, y) != b.getRGB(x, y)){
+                        throw new IllegalArgumentException("Images are not the same.");
+                    
+                    }
                 }
             }
             
