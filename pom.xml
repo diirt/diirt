@@ -38,6 +38,20 @@
             <timezone>-5</timezone>
         </developer>
     </developers>
+    <mailingLists>
+        <mailingList>
+            <name>User support and announcements</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/diirt-users</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/diirt-users</unsubscribe>
+            <post>diirt-users@lists.sourceforge.net</post>
+        </mailingList>
+        <mailingList>
+            <name>Developer discussion</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/diirt-devel</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/diirt-devel</unsubscribe>
+            <post>diirt-devel@lists.sourceforge.net</post>
+        </mailingList>
+    </mailingLists>
     <ciManagement>
         <system>jenkins</system>
         <url>https://openepics.ci.cloudbees.com/</url>
