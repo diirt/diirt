@@ -35,7 +35,9 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer<MultilineGraph2DRe
     }
     
     private ValueColorScheme colorScheme;
-    private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;   
+    private ColorScheme valueColorScheme = ColorScheme.GRAY_SCALE;  
+    private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
+    private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
     /**
      *Supported interpolation schemes. 
      * Possible values:
@@ -57,8 +59,25 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer<MultilineGraph2DRe
      * </ul>
      */
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE); 
-
-    private InterpolationScheme interpolation = InterpolationScheme.LINEAR;
+    
+    /**
+     *Updates private data by getting new values from update.
+     * Parameter not already taken care of by the super class: valueColorScheme
+     * @param update
+     */
+    public void update(MultilineGraph2DRendererUpdate update) {
+        super.update(update);
+        
+        if(update.getValueColorScheme() != null){
+            valueColorScheme = update.getValueColorScheme();
+        }
+        if(update.getDataReduction() != null){
+            reduction = update.getDataReduction();
+        }
+        if(update.getInterpolation() != null){
+            interpolation = update.getInterpolation();
+        }
+    }
     
     /**
      *Draws a graph with multiple lines, each pertaining to a different set of data.
@@ -88,22 +107,8 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer<MultilineGraph2DRe
             ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());        
             setClip(g);
             g.setColor(new Color(colorScheme.colorFor((double)datasetNumber)));
-            drawValueExplicitLine(xValues, yValues, interpolation, ReductionScheme.FIRST_MAX_MIN_LAST);
+            drawValueExplicitLine(xValues, yValues, interpolation, reduction);
         }
     }
     
-
-    
-    /**
-     *Updates private data by getting new values from update.
-     * Parameter not already taken care of by the super class: valueColorScheme
-     * @param update
-     */
-    public void update(MultilineGraph2DRendererUpdate update) {
-        super.update(update);
-        
-        if(update.getValueColorScheme() != null){
-            valueColorScheme = update.getValueColorScheme();
-        }
-    }
 }

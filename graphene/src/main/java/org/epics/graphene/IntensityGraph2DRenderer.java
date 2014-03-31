@@ -114,7 +114,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
      *Draws an intensity graph in the given graphics context, using the given data.
      * All drawing is done within the bounds specified either at initialization or at update.
      *  Different colorSchemes may be specified using the IntensityGraph2DRendererUpdate class, in combination with the update function. 
-     * @param g Graphics2D object used to perform drawing functions within draw.
+     * @param graphBuffer Contains <code>imageBuffer</code> and <code>Graphics2D</code> objects used to perform drawing functions within draw.
      * @param data can not be null
      */
     public void draw(GraphBuffer graphBuffer, Cell2DDataset data) {

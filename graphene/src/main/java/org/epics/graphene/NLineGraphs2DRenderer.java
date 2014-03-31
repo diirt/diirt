@@ -37,6 +37,9 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer<NLineGraphs2DRenderer
         return new NLineGraphs2DRendererUpdate();
     }
     
+    public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOUR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
+    public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE);
+    
     private AxisRange xAxisRange = AxisRanges.integrated();
     private AxisRange yAxisRange = AxisRanges.integrated();
     private ValueScale xValueScale = ValueScales.linearScale();
@@ -110,6 +113,12 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer<NLineGraphs2DRenderer
         }
         if(update.getMinimumGraphHeight() != null){
             minimumGraphHeight = update.getMinimumGraphHeight();
+        }
+        if(update.getDataReduction() != null){
+            reduction = update.getDataReduction();
+        }
+        if(update.getInterpolation() != null){
+            interpolation = update.getInterpolation();
         }
     }
     
