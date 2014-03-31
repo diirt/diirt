@@ -42,6 +42,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
+    // TODO: add keepAspectRatio
+    // If enables, the plot should stretch but keep the ratio of the image
+    // the same as the one given by the range of the x and y boundaries
+    
     // TODO: remove xsum and ysum - was not implemented
     public IntensityGraph2DRendererUpdate addXSum(boolean addXSum) {
         this.addXSum = addXSum;
