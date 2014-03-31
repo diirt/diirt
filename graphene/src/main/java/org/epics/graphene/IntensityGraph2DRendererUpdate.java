@@ -27,7 +27,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
                     legendWidth,
                     legendMarginToEdge;
     
-      private Boolean drawLegend, addXSum, addYSum;
+      private Boolean drawLegend;
     
     private ColorScheme valueColorScheme;
     
@@ -39,17 +39,6 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public IntensityGraph2DRendererUpdate drawLegend(boolean drawLegend) {
         this.drawLegend = drawLegend;
-        return self();
-    }
-    
-    // TODO: remove xsum and ysum - was not implemented
-    public IntensityGraph2DRendererUpdate addXSum(boolean addXSum) {
-        this.addXSum = addXSum;
-        return self();
-    }
-    
-    public IntensityGraph2DRendererUpdate addYSum(boolean addYSum) {
-        this.addYSum = addYSum;
         return self();
     }
 
@@ -133,13 +122,5 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public Integer getLegendMarginToEdge(){
         return legendMarginToEdge;
-    }
-    
-    public Boolean getAddXSum() {
-        return addXSum;
-    }
-    
-    public Boolean getAddYSum() {
-        return addYSum;
     }
 }

@@ -18,7 +18,7 @@ import org.epics.util.array.SortedListView;
  * @author jkfeng 
  * @author sjdallst
  */
-public class MultilineGraph2DRenderer extends Graph2DRenderer{
+public class MultilineGraph2DRenderer extends Graph2DRenderer<MultilineGraph2DRendererUpdate>{
     
     /**
      *Uses constructor specified in super class (Graph2DRenderer)
@@ -27,6 +27,11 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
      */
     public MultilineGraph2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth, imageHeight);       
+    }
+    
+    @Override
+    public MultilineGraph2DRendererUpdate newUpdate() {
+        return new MultilineGraph2DRendererUpdate();
     }
     
     private ValueColorScheme colorScheme;
@@ -100,9 +105,5 @@ public class MultilineGraph2DRenderer extends Graph2DRenderer{
         if(update.getValueColorScheme() != null){
             valueColorScheme = update.getValueColorScheme();
         }
-    }
-    @Override
-    public Graph2DRendererUpdate newUpdate() {
-        return new MultilineGraph2DRendererUpdate();
     }
 }

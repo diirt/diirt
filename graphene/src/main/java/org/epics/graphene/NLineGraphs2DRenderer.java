@@ -26,9 +26,15 @@ import org.epics.util.array.*;
  *
  * @author sjdallst
  */
-public class NLineGraphs2DRenderer extends Graph2DRenderer{
+public class NLineGraphs2DRenderer extends Graph2DRenderer<NLineGraphs2DRendererUpdate>{
+    
     public NLineGraphs2DRenderer(int imageWidth, int imageHeight){
         super(imageWidth,imageHeight);
+    }
+    
+    @Override
+    public NLineGraphs2DRendererUpdate newUpdate() {
+        return new NLineGraphs2DRendererUpdate();
     }
     
     private AxisRange xAxisRange = AxisRanges.integrated();
@@ -150,11 +156,6 @@ public class NLineGraphs2DRenderer extends Graph2DRenderer{
         for(int i = 0; i < numGraphs; i++){
             drawValueExplicitLine(xValues.get(i), yValues.get(i), interpolation, reduction,i);
         }
-    }
-    
-    @Override
-    public Graph2DRendererUpdate newUpdate() {
-        return new NLineGraphs2DRendererUpdate();
     }
     
     private void getNumGraphs(List<Point2DDataset> data){
