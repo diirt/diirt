@@ -50,7 +50,7 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void leftMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().leftMargin(10));
-        ImageAssert.compareImages(resultPrefix + "LeftMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + ".leftMargin", draw(renderer));
     }
     
     @Test
