@@ -42,6 +42,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
 
+    // TODO: add keepAspectRatio
+    // If enables, the plot should stretch but keep the ratio of the image
+    // the same as the one given by the range of the x and y boundaries
+    
     /**
      * Sets this object's valueColorScheme to the given ColorScheme.
      * @param scheme supported schemes: any <code>ColorScheme</code> supported by the <code>ValueColorSchemes</code>
