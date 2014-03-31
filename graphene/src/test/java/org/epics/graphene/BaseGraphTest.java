@@ -70,7 +70,7 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     @Test
     public void labelFont() throws Exception {
         S renderer = createRenderer();
-        renderer.update(renderer.newUpdate().labelFont(new Font("Verdana", Font.BOLD, 12)));
+        renderer.update(renderer.newUpdate().labelFont(FontUtil.getLiberationSansRegular().deriveFont(Font.BOLD, 12)));
         ImageAssert.compareImages(resultPrefix + "labelFont", draw(renderer));
     }
     
