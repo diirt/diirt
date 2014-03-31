@@ -18,7 +18,7 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
     public IntensityGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "sim://gaussianWaveform",
-                    "sim://sineWaveform(1,50,2000,0.01)",
+                    "sim://sine2DWaveform(1,50,45,100,100,0.1)",
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
                     "=caHistogram(\"histo\")"}));
     }
