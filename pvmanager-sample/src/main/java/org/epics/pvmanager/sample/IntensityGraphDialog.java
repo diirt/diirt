@@ -5,6 +5,7 @@
 package org.epics.pvmanager.sample;
 
 import javax.swing.DefaultComboBoxModel;
+import org.epics.graphene.ColorScheme;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRenderer;
 
@@ -23,6 +24,10 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.graph = graph;
         initComponents();
+        colorSchemeField.setModel(new DefaultComboBoxModel<ColorScheme>(ColorScheme.values()));
+        if (graph != null) {
+            colorSchemeField.setSelectedItem(graph.getColorScheme());
+        }
     }
 
     /**
@@ -35,15 +40,15 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
+        colorSchemeField = new javax.swing.JComboBox<ColorScheme>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Interpolation:");
+        jLabel1.setText("Color Scheme:");
 
-        interpolationSchemeField.addActionListener(new java.awt.event.ActionListener() {
+        colorSchemeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                interpolationSchemeFieldActionPerformed(evt);
+                colorSchemeFieldActionPerformed(evt);
             }
         });
 
@@ -55,7 +60,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(interpolationSchemeField, 0, 287, Short.MAX_VALUE)
+                .addComponent(colorSchemeField, 0, 279, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -64,17 +69,16 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(interpolationSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(colorSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void interpolationSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpolationSchemeFieldActionPerformed
-
-        
-    }//GEN-LAST:event_interpolationSchemeFieldActionPerformed
+    private void colorSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSchemeFieldActionPerformed
+        graph.setColorScheme((ColorScheme) colorSchemeField.getSelectedItem());
+    }//GEN-LAST:event_colorSchemeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,7 +122,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
+    private javax.swing.JComboBox<ColorScheme> colorSchemeField;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
