@@ -56,16 +56,16 @@
 
     <mailingLists>
         <mailingList>
-            <name>Developer discussion</name>
-            <subscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-devel</subscribe>
-            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-devel</unsubscribe>
-            <post>pvmanager-devel@lists.sourceforge.net</post>
+            <name>User support and announcements</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/diirt-users</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/diirt-users</unsubscribe>
+            <post>diirt-users@lists.sourceforge.net</post>
         </mailingList>
         <mailingList>
-            <name>Build notifications</name>
-            <subscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-build</subscribe>
-            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/pvmanager-build</unsubscribe>
-            <post>pvmanager-build@lists.sourceforge.net</post>
+            <name>Developer discussion</name>
+            <subscribe>https://lists.sourceforge.net/lists/listinfo/diirt-devel</subscribe>
+            <unsubscribe>https://lists.sourceforge.net/lists/listinfo/diirt-devel</unsubscribe>
+            <post>diirt-devel@lists.sourceforge.net</post>
         </mailingList>
     </mailingLists>
     <build>
