@@ -48,7 +48,7 @@
                 <sendOnSuccess>false</sendOnSuccess>
                 <sendOnWarning>false</sendOnWarning>
                 <configuration>
-                    <address>pvmanager-build@lists.sourceforge.net</address>
+                    <address>diirt-devel@lists.sourceforge.net</address>
                 </configuration>
             </notifier>
         </notifiers>
