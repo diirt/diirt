@@ -133,19 +133,35 @@ public class DatasetConversions {
         return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, colorValues);
     }
 
-    public static List<Point2DDataset> point2DDatasetsFromVTable(VTable data, List<String> xColumns, List<String> yColumns) {
-        if (xColumns == null || yColumns == null) {
+    public static List<Point2DDataset> point2DDatasetsFromVTable(VTable vTable, List<String> xColumns, List<String> yColumns) {
+        List<ListNumber> xValues = new ArrayList<>();
+        List<ListNumber> yValues = new ArrayList<>();
+        
+        if (xColumns != null && yColumns != null) {
+            for (String column : xColumns) {
+                xValues.add(ValueUtil.numericColumnOf(vTable, column));
+            }
+
+            for (String column : yColumns) {
+                yValues.add(ValueUtil.numericColumnOf(vTable, column));
+            }
+        } else if (xColumns == null && yColumns == null) {
+            for (int i = 0; i < vTable.getColumnCount(); i++) {
+                if (vTable.getColumnType(i).isPrimitive()) {
+                    yValues.add((ListNumber) vTable.getColumnData(i));
+                }
+            }
+        } else {
             throw new UnsupportedOperationException("Not supported yet.");
         }
         
-        List<ListNumber> xValues = new ArrayList<>();
-        for (String column : xColumns) {
-            xValues.add(ValueUtil.numericColumnOf(data, column));
-        }
         
-        List<ListNumber> yValues = new ArrayList<>();
-        for (String column : yColumns) {
-            yValues.add(ValueUtil.numericColumnOf(data, column));
+        if (xValues.isEmpty()) {
+            List<Point2DDataset> datasets = new ArrayList<>();
+            for (int i = 0; i < yValues.size(); i++) {
+                datasets.add(Point2DDatasets.lineData(ListNumbers.linearList(0, 1, yValues.get(i).size()), yValues.get(i)));
+            }
+            return datasets;
         }
         
         if (xValues.size() == yValues.size()) {
