@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.graphene;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.epics.graphene.Point2DDataset;
@@ -130,5 +131,31 @@ public class DatasetConversions {
         }
         
         return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, colorValues);
+    }
+
+    public static List<Point2DDataset> point2DDatasetsFromVTable(VTable data, List<String> xColumns, List<String> yColumns) {
+        if (xColumns == null || yColumns == null) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        
+        List<ListNumber> xValues = new ArrayList<>();
+        for (String column : xColumns) {
+            xValues.add(ValueUtil.numericColumnOf(data, column));
+        }
+        
+        List<ListNumber> yValues = new ArrayList<>();
+        for (String column : yColumns) {
+            yValues.add(ValueUtil.numericColumnOf(data, column));
+        }
+        
+        if (xValues.size() == yValues.size()) {
+            List<Point2DDataset> datasets = new ArrayList<>();
+            for (int i = 0; i < xValues.size(); i++) {
+                datasets.add(Point2DDatasets.lineData(xValues.get(i), yValues.get(i)));
+            }
+            return datasets;
+        }
+        
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
