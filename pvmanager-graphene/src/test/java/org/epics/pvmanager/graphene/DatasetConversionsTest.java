@@ -130,4 +130,24 @@ public class DatasetConversionsTest {
         assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(10,20,30)));
         assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(50,40,60)));
     }
+
+    @Test
+    public void point2DDatsetsFromVTable2() {
+        VTable data = ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class, double.class, double.class),
+                Arrays.asList("x", "y1", "y2", "y3"), Arrays.<Object>asList(new ArrayDouble(1,2,3), new ArrayDouble(5,4,6), new ArrayDouble(10,20,30), new ArrayDouble(50,40,60)));
+        List<Point2DDataset> datasets = DatasetConversions.point2DDatasetsFromVTable(data, Arrays.asList("x"), Arrays.asList("y1", "y2", "y3"));
+        assertThat(datasets.size(), equalTo(3));
+        Point2DDataset dataset = datasets.get(0);
+        assertThat(dataset.getCount(), equalTo(3));
+        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(5,4,6)));
+        dataset = datasets.get(1);
+        assertThat(dataset.getCount(), equalTo(3));
+        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(10,20,30)));
+        dataset = datasets.get(2);
+        assertThat(dataset.getCount(), equalTo(3));
+        assertThat(dataset.getXValues(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        assertThat(dataset.getYValues(), equalTo((ListNumber) new ArrayDouble(50,40,60)));
+    }
 }

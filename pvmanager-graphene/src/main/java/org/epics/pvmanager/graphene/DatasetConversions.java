@@ -156,6 +156,14 @@ public class DatasetConversions {
             return datasets;
         }
         
+        if (xValues.size() == 1) {
+            List<Point2DDataset> datasets = new ArrayList<>();
+            for (int i = 0; i < yValues.size(); i++) {
+                datasets.add(Point2DDatasets.lineData(xValues.get(0), yValues.get(i)));
+            }
+            return datasets;
+        }
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
