@@ -28,6 +28,7 @@ import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.ValueCacheImpl;
 import org.epics.util.array.CollectionNumbers;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.VTypeToString;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -139,7 +140,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo(3.25F));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -148,7 +149,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VFloat[3.25, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -226,7 +227,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo(3.25));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -235,7 +236,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VDouble[3.25, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -313,7 +314,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo((byte) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -322,7 +323,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VByte[32, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -400,7 +401,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo((short) 32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -409,7 +410,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VShort[32, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -487,7 +488,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo(32));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -496,7 +497,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VInt[32, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -564,7 +565,8 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo("32"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -640,7 +642,8 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo("Testing"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -710,7 +713,8 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getValue(), equalTo("Two"));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -788,7 +792,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -797,7 +801,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VFloatArray[[3.25], size 1, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -875,7 +879,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -884,7 +888,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VDoubleArray[[3.25], size 1, UNDEFINED(Disconnected), 1970/01/15 01:56:07.000]"));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -963,7 +967,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -972,6 +976,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -1048,7 +1053,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -1057,6 +1062,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -1134,7 +1140,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
         assertThat(converted.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(converted.getUpperCtrlLimit(), equalTo(8.0));
         assertThat(converted.getUpperAlarmLimit(), equalTo(6.0));
@@ -1143,6 +1149,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getLowerAlarmLimit(), equalTo(-6.0));
         assertThat(converted.getLowerCtrlLimit(), equalTo(-8.0));
         assertThat(converted.getLowerDisplayLimit(), equalTo(-10.0));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     @Test
@@ -1212,7 +1219,8 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getData(), equalTo(Arrays.asList("Only")));
         assertThat(converted.getAlarmSeverity(), equalTo(AlarmSeverity.UNDEFINED));
         assertThat(converted.getAlarmName(), equalTo("Disconnected"));
-        assertThat(converted.getTimestamp(), equalTo(timestamp));
+        assertThat(converted.getTimestamp(), equalTo(connPayload.getEventTime()));
+        assertThat(converted.toString(), equalTo(VTypeToString.toString(converted)));
     }
 
     public static DBR_CTRL_Double createNumericMetadata() {
