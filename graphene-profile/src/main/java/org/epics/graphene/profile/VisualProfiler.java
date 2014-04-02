@@ -75,13 +75,13 @@ import org.epics.graphene.profile.utils.StopWatch.TimeType;
  *
  * @author Aaron
  */
-public class VisualProfilerView extends JPanel{
+public class VisualProfiler extends JPanel{
     
     //Data
     //-------------------------------------------------------------------------    
     private SwingWorker             thread;
     private List<JButton>           actionButtons;
-    private VisualProfilerModel     model;
+    private ActionModel             model;
     private UserSettings            userSettings;
     //-------------------------------------------------------------------------
 
@@ -113,6 +113,9 @@ public class VisualProfilerView extends JPanel{
         private JComboBox           listTimeTypes;
         private JLabel              lblTimeTypes;
 
+        private JLabel              lblSaveImage;
+        private JCheckBox           chkSaveImage;
+        
         private JComboBox           listUpdateTypes;
         private JLabel              lblUpdateTypes;
 
@@ -141,6 +144,9 @@ public class VisualProfilerView extends JPanel{
             listTimeTypes       = new JComboBox(StopWatch.TimeType.values());
             lblTimeTypes        = new JLabel("Timing Based Off: ");
 
+            lblSaveImage        = new JLabel("Save Images: ");
+            chkSaveImage        = new JCheckBox("Save Image");
+            
             listUpdateTypes     = new JComboBox();
             lblUpdateTypes      = new JLabel("Apply Update: ");
 
@@ -166,6 +172,9 @@ public class VisualProfilerView extends JPanel{
             this.add(this.lblTimeTypes);
             this.add(this.listTimeTypes);            
 
+            this.add(this.lblSaveImage);
+            this.add(this.chkSaveImage);
+            
             this.add(this.lblUpdateTypes);
             this.add(this.listUpdateTypes);
 
@@ -391,7 +400,8 @@ public class VisualProfilerView extends JPanel{
             };        
             tree                .setModel(treeModel);
             tree                .expandRow(0);
-
+            tree                .setShowsRootHandles(true);
+            
             btnOpenFiles        = new JButton("Open File(s)");
             actionButtons       .add(btnOpenFiles);
             btnDeleteFiles      = new JButton("Delete File(s)");
@@ -518,6 +528,14 @@ public class VisualProfilerView extends JPanel{
                                                         "SparklineGraph2D"
                                                        };    
 
+    
+    public static final String[] PROTECTED_FILES = {"ProfileResults",
+                                                    "1D Table Output",
+                                                    "2D Table Output",
+                                                    "Tests",
+                                                    "README.txt"
+                                                   };
+    
     public static final String FRAME_TITLE = "Visual Profiler";
 
     public static ProfileGraph2D factory(String strClass){
@@ -553,6 +571,9 @@ public class VisualProfilerView extends JPanel{
     //-------------------------------------------------------------------------
     private class UserSettings{
         
+        public boolean getSaveImage(){
+            return settingsPanel.chkSaveImage.isSelected();
+        }
         
         public Integer getTestTime(){
             String strTestTime = settingsPanel.txtTestTime.getText();
@@ -625,7 +646,7 @@ public class VisualProfilerView extends JPanel{
             return renderer;
         }
     }    
-    private class VisualProfilerModel{
+    private class ActionModel{
         private void startTimer(){
             SwingWorker worker = new SwingWorker<Object, String>(){
 
@@ -649,7 +670,7 @@ public class VisualProfilerView extends JPanel{
                 @Override
                 protected void process(List<String> chunks){
                     for (String chunk: chunks){
-                        VisualProfilerView.this.console.txtTime.setText(chunk);
+                        VisualProfiler.this.console.txtTime.setText(chunk);
                     }
                 }
 
@@ -736,20 +757,27 @@ public class VisualProfilerView extends JPanel{
                     profiler.profile();
                     publish(profiler.getStatistics().getAverageTime() + "ms" + "\n");                    
                     
-                    //Saves
+                    //Saves Data
                     if (!Thread.currentThread().isInterrupted()){
-                        publish("Saving...\n");
+                        publish("Saving...");
                         profiler.saveStatistics();
-                        publish("Saving finished.\n");
+                        publish("finished.\n");
 
 
                         //Displays results graph if checked
                         if (profile1DTable.getShowGraph()){
-                            publish("\nGraphing Results...\n");
+                            publish("Graphing Results...");
                             profiler.graphStatistics();
-                            publish("Graphing Complete.\n");
+                            publish("finished.\n");
                         }
 
+                        //Saves image if checked
+                        if (userSettings.getSaveImage()){
+                            publish("Saving Image...");
+                            profiler.saveImage();
+                            publish("finished.\n");
+                        }
+                        
                         //Finish message
                         publish("\nProfiling completed.\n");
                         publish("--------\n");                    
@@ -817,15 +845,22 @@ public class VisualProfilerView extends JPanel{
 
                         if (!Thread.currentThread().isInterrupted()){
                             //Saves
-                            publish("Saving...\n");
+                            publish("Saving...");
                             profiler.saveStatistics();
-                            publish("Saving finished.\n");
+                            publish("finished.\n");
 
                             //Displays results graph if checked
                             if (profile1DTable.getShowGraph()){
-                                publish("\nGraphing Results...\n");
+                                publish("Graphing Results...");
                                 profiler.graphStatistics();
-                                publish("Graphing Complete.\n");
+                                publish("finished.\n");
+                            }
+                            
+                            //Saves image if checked
+                            if (userSettings.getSaveImage()){
+                                publish("Saving Image...");
+                                profiler.saveImage();
+                                publish("finished.\n");
                             }
 
                             //Finish message
@@ -867,7 +902,7 @@ public class VisualProfilerView extends JPanel{
             ProfileGraph2D profiler = userSettings.getProfiler();
 
             if (!resolutions.isEmpty() && !datasetSizes.isEmpty() && userSettings.getProfiler() != null){
-                Profile2DTableWorker worker = new Profile2DTableWorker(profiler, resolutions, datasetSizes);
+                Profile2DTableThread worker = new Profile2DTableThread(profiler, resolutions, datasetSizes);
                 worker.execute();            
             }    
             else{
@@ -888,9 +923,9 @@ public class VisualProfilerView extends JPanel{
                     setEnabledActions(false);     
                     threadStart(this);
                     publish("--------\n");
-                    publish("Compare Tables\n");
+                    publish("Comparing Tables...");
                     ProfileAnalysis.compareTables2D();   
-                    publish("\nComparison completed.\n");
+                    publish("finished.\n");
                     publish("--------\n");
                     setEnabledActions(true); 
                     threadFinish();
@@ -921,14 +956,14 @@ public class VisualProfilerView extends JPanel{
                     setEnabledActions(false);        
                     threadStart(this);
                     publish("--------\n");
-                    publish("Comparing Single Profile Tables\n\n");
+                    publish("Comparing Single Profile Tables\n");
 
                     List<String> output = ProfileAnalysis.analyzeTables1D();
                     for (String out: output){
                         publish(out + "\n");
                     }
 
-                    publish("\nComparison completed.\n");
+                    publish("Comparison completed.\n");
                     publish("--------\n");
                     setEnabledActions(true);     
                     threadFinish();
@@ -953,7 +988,7 @@ public class VisualProfilerView extends JPanel{
                     setEnabledActions(false);     
                     threadStart(this);
                     publish("--------\n");
-                    publish("Opening Files\n\n");
+                    publish("Opening Files\n");
 
                     Desktop desktop = Desktop.getDesktop();
                     TreePath[] paths = fileViewer.tree.getSelectionPaths();
@@ -985,11 +1020,11 @@ public class VisualProfilerView extends JPanel{
                     }
                     
                     if (!Thread.currentThread().isInterrupted()){
-                        publish("\nFile operations completed.\n");
+                        publish("File operations completed.\n");
                         publish("--------\n");
                     }
                     else{
-                        publish("\nFile operations cancelled.\n");
+                        publish("File operations cancelled.\n");
                         publish("--------\n");                    
                     }
 
@@ -1021,7 +1056,7 @@ public class VisualProfilerView extends JPanel{
                     setEnabledActions(false);     
                     threadStart(this);
                     publish("--------\n");
-                    publish("Opening Files\n\n");
+                    publish("Opening Files\n");
 
                     Desktop desktop = Desktop.getDesktop();
                     TreePath[] paths = fileViewer.tree.getSelectionPaths();
@@ -1054,11 +1089,11 @@ public class VisualProfilerView extends JPanel{
                     }
 
                     if (!Thread.currentThread().isInterrupted()){
-                        publish("\nFile operations completed.\n");
+                        publish("File operations completed.\n");
                         publish("--------\n");
                     }
                     else{
-                        publish("\nFile operations cancelled.\n");
+                        publish("File operations cancelled.\n");
                         publish("--------\n");                    
                     }
 
@@ -1091,7 +1126,7 @@ public class VisualProfilerView extends JPanel{
                     threadStart(this); 
 
                     publish("--------\n");
-                    publish("Deleting Files\n\n");
+                    publish("Deleting Files\n");
 
                     TreePath[] paths = fileViewer.tree.getSelectionPaths();
 
@@ -1105,8 +1140,23 @@ public class VisualProfilerView extends JPanel{
                                 try{
                                     File toDelete = (File) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
 
-                                    Files.delete(toDelete.toPath());
-                                    publish(toDelete.getName() + "...deleted successfully!\n");
+                                    //Checks if file is protected
+                                    boolean protect = false;
+                                    for (String name: PROTECTED_FILES){
+                                        if (toDelete.getName().equals(name)){
+                                            protect = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    //Safe to delete
+                                    if (!protect){
+                                        Files.delete(toDelete.toPath());
+                                        publish(toDelete.getName() + "...deleted successfully!\n");
+                                    }
+                                    else{
+                                        publish("Unable to delete: " + toDelete.getName() + " (Protected)\n");
+                                    }
                                 }
                                 catch(IOException e){
                                     publish("Unable to delete: " +
@@ -1124,11 +1174,11 @@ public class VisualProfilerView extends JPanel{
                     fileViewer.reloadNodes();
 
                     if (!Thread.currentThread().isInterrupted()){
-                        publish("\nFile operations completed.\n");
+                        publish("File operations completed.\n");
                         publish("--------\n");
                     }
                     else{
-                        publish("\nFile operations cancelled.\n");
+                        publish("File operations cancelled.\n");
                         publish("--------\n");                    
                     }
 
@@ -1169,13 +1219,13 @@ public class VisualProfilerView extends JPanel{
                         setEnabledActions(false);     
                         threadStart(this);
                         publish("--------\n");
-                        publish("Refreshing File Browser\n");
+                        publish("Refreshing File Browser...");
                     }
 
                     fileViewer.reloadNodes();
 
                     if (!silent){
-                        publish("Refresh completed.\n");
+                        publish("finished.\n");
                         publish("--------\n");
                         setEnabledActions(true);     
                         threadFinish();
@@ -1239,11 +1289,11 @@ public class VisualProfilerView extends JPanel{
                     saveFile();
 
                     publish("--------\n");
-                    publish("Saving Log\n\n");
+                    publish("Saving Log...");
 
                     //Saves beforehand to prevent this from being in log
 
-                    publish("\nSaving completed.\n");
+                    publish("finished.\n");
                     publish("--------\n");
                     setEnabledActions(true);  
                     threadFinish();
@@ -1328,10 +1378,10 @@ public class VisualProfilerView extends JPanel{
          * the results to the console log of the graphical user interface
          * as the results are received.
          */
-        private class Profile2DTableWorker extends SwingWorker<Object, String>{
-            private Profile2DTableWorker.VisualMultiLevelProfiler multiProfiler;
+        private class Profile2DTableThread extends SwingWorker<Object, String>{
+            private Profile2DTableThread.VisualMultiLevelProfiler multiProfiler;
 
-            public Profile2DTableWorker(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
+            public Profile2DTableThread(ProfileGraph2D profiler, List<Resolution> resolutions, List<Integer> datasetSizes){
                 setEnabledActions(false);        
                 model.threadStart(this);
                 publish("--------\n");
@@ -1340,7 +1390,7 @@ public class VisualProfilerView extends JPanel{
                 String strAuthor = settingsPanel.txtAuthorMessage.getText();
                 String saveMessage = settingsPanel.txtSaveMessage.getText();   
 
-                this.multiProfiler = new Profile2DTableWorker.VisualMultiLevelProfiler(profiler);
+                this.multiProfiler = new Profile2DTableThread.VisualMultiLevelProfiler(profiler);
                 this.multiProfiler.getSaveSettings().setAuthorMessage(strAuthor);
                 this.multiProfiler.getSaveSettings().setSaveMessage(saveMessage);
                 this.multiProfiler.setImageSizes(resolutions);
@@ -1353,6 +1403,14 @@ public class VisualProfilerView extends JPanel{
 
                 if (!Thread.currentThread().isInterrupted()){
                     this.multiProfiler.saveStatistics();
+                    
+                    //Saves image if checked
+                    if (userSettings.getSaveImage()){
+                        publish("Saving Images...");
+                        this.multiProfiler.saveImages();
+                        publish("finished.\n");
+                    }                    
+                    
                     publish("\nProfiling complete." + "\n");
                     publish("--------\n");
                 }
@@ -1380,18 +1438,18 @@ public class VisualProfilerView extends JPanel{
 
                 @Override
                 public void processTimeWarning(int estimatedTime){
-                    Profile2DTableWorker.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
+                    Profile2DTableThread.this.publish("The estimated run time is " + estimatedTime + " seconds." + "\n\n");
                 }
 
                 @Override
                 public void processPreResult(Resolution resolution, int datasetSize){
                     //Publishes
-                    Profile2DTableWorker.this.publish(resolution + ": " + datasetSize + ":" + "    ");
+                    Profile2DTableThread.this.publish(resolution + ": " + datasetSize + ":" + "    ");
                 }
 
                 @Override
                 public void processResult(Resolution resolution, int datasetSize, Statistics stats){
-                    Profile2DTableWorker.this.publish(stats.getAverageTime() + "ms" + "\n");                    
+                    Profile2DTableThread.this.publish(stats.getAverageTime() + "ms" + "\n");                       
                 }        
             };        
         };          
@@ -1401,7 +1459,7 @@ public class VisualProfilerView extends JPanel{
     
     //Constructor
     //-------------------------------------------------------------------------    
-    public VisualProfilerView(){
+    public VisualProfiler(){
         initPanel();
         initComponents();
 
@@ -1430,7 +1488,7 @@ public class VisualProfilerView extends JPanel{
         //Data
         tabs = new JTabbedPane();
         actionButtons = new ArrayList<>();
-        model = new VisualProfilerModel();
+        model = new ActionModel();
         userSettings = new UserSettings();
         
         //Panels
@@ -1613,7 +1671,7 @@ public class VisualProfilerView extends JPanel{
     
     public static JFrame makeFrame(){
             JFrame frame = new JFrame(FRAME_TITLE);
-            frame.add(new VisualProfilerView());
+            frame.add(new VisualProfiler());
             frame.pack();
             frame.setVisible(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1661,7 +1719,7 @@ public class VisualProfilerView extends JPanel{
      * @param args no effect
      */
     public static void main(String[] args){
-        VisualProfilerView.invokeVisualAid();
+        VisualProfiler.invokeVisualAid();
     }    
     
     //-------------------------------------------------------------------------     
