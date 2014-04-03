@@ -13,6 +13,7 @@ import org.epics.graphene.Graph2DRenderer;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.io.DateUtils;
+import org.epics.graphene.profile.io.ImageWriter;
 import org.epics.graphene.profile.settings.RenderSettings;
 import org.epics.graphene.profile.utils.Resolution;
 
@@ -48,7 +49,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     
     //Parameters
     private Resolution  resolution = new Resolution(600, 400);    
-    private int        nPoints = 1000;
+    private int         nPoints = 1000;
     
     //Settings
     private RenderSettings renderSettings;    
@@ -63,6 +64,9 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     
     @Override
     protected void preLoopAction(){
+        //Clears
+        saveSettings.setSaveImage(null);
+        
         //Data and Render Objects (Implemented in subclasses)
         data = getDataset();
         renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
@@ -94,6 +98,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     
     @Override
     protected void postIterationAction(){
+        //Stores first image
+        if (getSaveSettings().getSaveImage() == null){
+            getSaveSettings().setSaveImage(image);
+        }
+        
         //Buffer clears
         if (image != null && image.getRGB(0, 0) == 0){
             System.out.println("Black");
@@ -203,6 +212,14 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
         );
         
         super.saveStatistics(fileName, header, row);
+    }
+    
+    public void saveImage(){
+        BufferedImage i = getSaveSettings().getSaveImage();
+        
+        if (i != null){
+            ImageWriter.saveImage(getGraphTitle() + ".img", i);
+        }
     }
     
     

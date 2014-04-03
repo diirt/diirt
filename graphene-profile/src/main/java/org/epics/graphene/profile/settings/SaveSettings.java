@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.profile.settings;
 
+import java.awt.image.BufferedImage;
 import java.lang.management.ManagementFactory;
 
 /**
@@ -27,6 +28,8 @@ public class SaveSettings implements Settings{
     private String datasetMessage = "",
                   saveMessage = "",
                   authorMessage = "";
+    
+    private BufferedImage saveImage = null;
     
     /**
      * Set the comment associated with the data set.
@@ -66,6 +69,10 @@ public class SaveSettings implements Settings{
         this.authorMessage = author;
     }    
     
+    public void setSaveImage(BufferedImage saveImage){
+        this.saveImage = saveImage;
+    }
+    
     
     /**
      * Gets the comment associated with the data set.
@@ -103,6 +110,9 @@ public class SaveSettings implements Settings{
         return this.authorMessage;
     }    
     
+    public BufferedImage getSaveImage(){
+        return saveImage;
+    }
     
     
     //FORMATS FOR OUTPUT FILE
