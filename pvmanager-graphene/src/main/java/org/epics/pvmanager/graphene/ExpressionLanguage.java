@@ -125,6 +125,13 @@ public class ExpressionLanguage {
 	return new MultilineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
     
+    public static NLineGraphs2DExpression multiAxisMultiLineMultiGraphOf(
+	    DesiredRateExpression<?> tableData,
+	    DesiredRateExpression<?> xColumnName,
+	    DesiredRateExpression<?> yColumnName) {
+	return new NLineGraphs2DExpression(tableData, xColumnName, yColumnName);
+    }
+    
     public static SparklineGraph2DExpression sparklineGraphOf(
 	    DesiredRateExpression<?> tableData,
 	    DesiredRateExpression<?> xColumnName,
