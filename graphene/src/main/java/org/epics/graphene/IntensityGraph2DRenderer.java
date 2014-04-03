@@ -28,7 +28,8 @@ import java.awt.image.DataBufferByte;
 public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
     private ValueColorSchemeInstance valueColorSchemeInstance;
-
+    private ValueColorSchemeInstanceOptimizer optimizer;
+    private Range optimizedRange;
     /**
      *Uses constructor specified in super class (Graph2DRenderer)
      * @param imageWidth should be equal to the width of the bufferedImage.
@@ -57,7 +58,9 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         }
         if(update.getValueColorScheme() != null){
             valueColorScheme = update.getValueColorScheme();
-            valueColorSchemeInstance = valueColorScheme.createInstance(zRange);
+        }
+        if(update.getOptimizer() != null){
+            optimizer = update.getOptimizer();
         }
         if(update.getZLabelMargin() != null){
             zLabelMargin = update.getZLabelMargin();
@@ -163,8 +166,24 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         //Set color scheme
-        valueColorSchemeInstance = valueColorScheme.createInstance(zRange);
-
+        if(optimizer == null){
+            valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+        }
+        else{
+            if(valueColorSchemeInstance == null && optimizedRange == null){
+                valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+            else if(optimizedRange == null){
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+            else{
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+        }
 
         double xStartGraph = super.xPlotCoordStart;
         double yEndGraph = super.yPlotCoordEnd;
@@ -275,7 +294,24 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         
         //Set color scheme
-        valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange); 
+        if(optimizer == null){
+            valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+        }
+        else{
+            if(valueColorSchemeInstance == null && optimizedRange == null){
+                valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+            else if(optimizedRange == null){
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+            else{
+                valueColorSchemeInstance = optimizer.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                optimizedRange = zPlotRange;
+            }
+        }
 
 
         double xStartGraph = super.xPlotCoordStart;

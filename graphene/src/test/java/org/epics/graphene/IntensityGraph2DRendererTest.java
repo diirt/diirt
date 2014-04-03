@@ -278,6 +278,7 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(new ValueColorSchemeJet());
+        update.optimizer(new ValueColorSchemeInstanceOptimizer());
         renderer.update(update);
         renderer.draw(graphBuffer, data);
         renderer.drawTest(graphBuffer,data);

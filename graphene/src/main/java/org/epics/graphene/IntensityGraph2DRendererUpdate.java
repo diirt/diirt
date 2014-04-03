@@ -31,6 +31,8 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
     private ValueColorScheme valueColorScheme;
     
+    private ValueColorSchemeInstanceOptimizer optimizer;
+    
     /**
      * Sets this object's drawLegend to the given boolean value.
      * To be used in conjunction with IntensityGraph2DRenderer's update function.
@@ -56,6 +58,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
+    public IntensityGraph2DRendererUpdate optimizer(ValueColorSchemeInstanceOptimizer optimizer){
+        this.optimizer = optimizer;
+        return self();
+    }
     /**
      * Sets this object's zLabelMargin to the given margin size.
      * @param margin integer distance(pixels) from the beginning of the z labels to the legend. 
@@ -102,6 +108,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public ValueColorScheme getValueColorScheme() {
         return valueColorScheme;
+    }
+    
+    public ValueColorSchemeInstanceOptimizer getOptimizer(){
+        return optimizer;
     }
     
     /**

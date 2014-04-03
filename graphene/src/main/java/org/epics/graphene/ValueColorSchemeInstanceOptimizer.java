@@ -60,7 +60,7 @@ public class ValueColorSchemeInstanceOptimizer {
         
         @Override
         public int colorFor(double value){
-            int index = (int)((value - min)/total * arrayLength);
+            int index = (int)((value - min)/total * (arrayLength-1));
             return colors[index];
         }
     }
