@@ -15,9 +15,13 @@ import java.util.List;
 public class ValueColorSchemeJet implements ValueColorScheme{
     public ValueColorSchemeInstance createInstance(Range range){
         List<Color> colors = new ArrayList<Color>();
-        colors.add(Color.black);
-        colors.add(Color.white);
-        ValueColorSchemeInstanceJet colorSchemeInstance = new ValueColorSchemeInstanceJet(colors, range, Color.red.getRGB());
+        colors.add(new Color(0,0,138)); //Dark Blue
+        colors.add(Color.BLUE);
+        colors.add(Color.CYAN);
+        colors.add(Color.YELLOW);
+        colors.add(Color.RED);
+        colors.add(new Color(138,0,0)); //Dark Red
+        ValueColorSchemeInstanceJet colorSchemeInstance = new ValueColorSchemeInstanceJet(colors, range, Color.black.getRGB());
         return colorSchemeInstance;
     }
     private class ValueColorSchemeInstanceJet extends ValueColorSchemeInstanceGeneral{
