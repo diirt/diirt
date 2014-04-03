@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.util.List;
 import org.junit.BeforeClass;
 import org.epics.util.array.*;
+import org.junit.Ignore;
 
 /**
  * 
@@ -324,6 +325,38 @@ public class NLineGraphs2DRendererTest {
         
         //Compares to correct image
         ImageAssert.compareImages("nlinegraphs2D.MarginTooBig", image);
+    }
+    
+    @Test
+    @Ignore("TODO: Currently this test crashes with an exception")
+    public void resizing() throws Exception {
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 3; i++){
+            data.add(Point2DTestDatasets.sineDataset(100, 50, 0, 1, 0, RangeUtil.range(0, 99)));
+        }
+        
+        BufferedImage image = new BufferedImage(640, 400, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        NLineGraphs2DRenderer renderer = new NLineGraphs2DRenderer(640,480);
+        
+        // Gradually reduce the image to simulate window being stretched
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(400));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(390));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(380));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(370));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(360));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(350));
+        renderer.draw(g, data);
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(340));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("nlinegraphs2D.resizing", image);
     }
     
     @Test

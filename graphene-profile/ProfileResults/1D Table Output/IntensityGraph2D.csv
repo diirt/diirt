@@ -1,11 +1,11 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS"," OS Version"
-"IntensityGraph2D","2014/02/28 11:50:17",49.31154750636134,19198,393,1000000,320,240,"1000x1000","asbarber","Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:50:37",31.13736458767768,19369,633,1000000,320,240,"1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:50:57",49.92914817857143,2772,56,100000000,320,240,"10000x10000","asbarber","Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:51:17",28.587675594470053,6090,217,100000000,320,240,"10000x10000","asbarber","Not Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:51:37",225.59445037078655,20037,89,1000000,1024,768,"1000x1000","asbarber","Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:51:57",269.7612433243243,19930,74,1000000,1024,768,"1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:52:18",282.969315413793,8192,29,100000000,1024,768,"10000x10000","asbarber","Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:52:38",204.57238993023253,8776,43,100000000,1024,768,"10000x10000","asbarber","Not Using Linear Boundaries","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 11:52:58",144.86791462068967,4187,29,100000000,600,400,"10000x10000","asbarber","Max Dataset Size Test","1.7.0_25",3.556,7.923,"Windows 8","6.2"
-"IntensityGraph2D","2014/02/28 12:01:15",9.293796809590289,18634,2148,10000,640,480,"100x100","","Initialize","1.7.0_25",1.762,7.923,"Windows 8","6.2"
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Timing Type","Update Applied","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS","OS Version",
+"IntensityGraph2D","2014/03/17 20:18:36","8.573702538461536","942","117","10000","640","480","System","","100x100","","","1.7.0_51","1.762","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/25 20:42:57","11.282342286516856","1911","178","10000","600","400","System","","","","","1.7.0_51","1.762","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:56:46","52.210052984334176","19820","383","1000000","320","240","System","","1000x1000","asbarber","Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:57:06","44.25688227876104","19721","452","1000000","320","240","System","","1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:57:42","37.102903551020404","19743","539","100000000","320","240","System","","10000x10000","asbarber","Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:58:19","41.10486837782339","19771","487","100000000","320","240","System","","10000x10000","asbarber","Not Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:58:39","542.7883964864865","20066","37","1000000","1024","768","System","","1000x1000","asbarber","Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:58:59","504.03705162499983","20144","40","1000000","1024","768","System","","1000x1000","asbarber","Not Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 11:59:39","503.49799042500007","20121","40","100000000","1024","768","System","","10000x10000","asbarber","Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",
+"IntensityGraph2D","2014/03/28 12:00:13","423.9638323541667","20326","48","100000000","1024","768","System","","10000x10000","asbarber","Not Using Linear Boundaries","1.7.0_51","3.556","7.922","Windows 8","6.2",

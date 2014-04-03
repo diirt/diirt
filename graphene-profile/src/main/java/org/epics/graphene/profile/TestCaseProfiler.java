@@ -30,6 +30,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.epics.graphene.IntensityGraph2DRenderer;
+import org.epics.graphene.profile.impl.ProfileAreaGraph2D;
+import org.epics.graphene.profile.impl.ProfileBubbleGraph2D;
+import org.epics.graphene.profile.impl.ProfileMultiYAxisGraph2D;
+import org.epics.graphene.profile.impl.ProfileMultilineGraph2D;
+import org.epics.graphene.profile.impl.ProfileNLineGraphs2D;
+import org.epics.graphene.profile.settings.SaveSettings;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
@@ -384,8 +390,8 @@ public final class TestCaseProfiler {
         //Add more 2D point dataset types here
         
         size.add( (int)Math.pow(10, 6) );
-        size.add( (int)Math.pow(10,3) );
-        size.add( (int)Math.pow(10,3) );
+        size.add( (int)Math.pow(10, 3) );
+        size.add( (int)Math.pow(10, 3) );
         //Add here to add dataset sizes
         
         while(!graphs.isEmpty() && !size.isEmpty()){
@@ -412,6 +418,157 @@ public final class TestCaseProfiler {
         }
     }
 
+    /**
+     * Test method for the maximum dataset size used on
+     * every 2D Point data renderer (ie - BubbleGraph).
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Renderers: {BubbleGraph}</li>
+     *      <li>Dataset Size: {10^6}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */     
+    @NoRequires
+    public static void maxDataset3DPoint(){        
+        ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
+        ArrayList<Integer> size = new ArrayList<>();
+        
+        graphs.add(new ProfileBubbleGraph2D());
+        //Add more 3D point dataset types here
+        
+        size.add( (int)Math.pow(10, 6) );
+        //Add here to add dataset sizes
+        
+        while(!graphs.isEmpty() && !size.isEmpty()){
+            ProfileGraph2D graph = graphs.get(0);
+            
+            //Apply SaveSettings
+            graph.setNumDataPoints( size.get(0) );
+
+            graph.getResolution().setWidth(600);
+            graph.getResolution().setHeight(400);
+
+            graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
+            graph.getSaveSettings().setAuthorMessage("asbarber");
+
+            graph.getProfileSettings().setTestTime(20);
+
+            //Run
+            graph.profile();
+            graph.saveStatistics();
+            
+            //Free up memory
+            graphs.remove(0);
+            size.remove(0);
+        }      
+    }
+    
+    /**
+     * Test method for the maximum dataset size used on
+     * every 2D Point data renderer (ie - AreaGraph).
+     * Saves the output to a <code>ProfileGraph2D</code>
+     * 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Renderers: {AreaGraph}</li>
+     *      <li>Dataset Size: {10^6}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */     
+    @NoRequires
+    public static void maxDataset1DCell(){        
+        ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
+        ArrayList<Integer> size = new ArrayList<>();
+        
+        graphs.add(new ProfileAreaGraph2D());
+        //Add more 3D point dataset types here
+        
+        size.add( (int)Math.pow(10, 6) );
+        //Add here to add dataset sizes
+        
+        while(!graphs.isEmpty() && !size.isEmpty()){
+            ProfileGraph2D graph = graphs.get(0);
+            
+            //Apply SaveSettings
+            graph.setNumDataPoints( size.get(0) );
+
+            graph.getResolution().setWidth(600);
+            graph.getResolution().setHeight(400);
+
+            graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
+            graph.getSaveSettings().setAuthorMessage("asbarber");
+
+            graph.getProfileSettings().setTestTime(20);
+
+            //Run
+            graph.profile();
+            graph.saveStatistics();
+            
+            //Free up memory
+            graphs.remove(0);
+            size.remove(0);
+        }      
+    }
+    
+    /**
+     * Test method for the maximum dataset size used on
+     * every Multiline (2D Point) data renderer (ie - NLineGraphs).
+     * Saves the output to a <code>ProfileGraph2D</code> 1D Table .CSV file.
+     * <p>
+     * Settings:
+     * <ul>
+     *      <li>Renderers: {MultiYAxisGraph, MultilineGraph, NLineGraphs}</li>
+     *      <li>Dataset Size: {10^6, 10^6, 10^6}</li>
+     *      <li>Image Width: 600</li>
+     *      <li>Image Height: 400</li>
+     *      <li>Test Time: 20s</li>
+     * </ul>
+     */      
+    @NoRequires
+    public static void maxDatasetMultiline(){
+        int maxLines = 10;
+        
+        ProfileMultiYAxisGraph2D multiy      = new ProfileMultiYAxisGraph2D();
+        ProfileMultilineGraph2D multiline   = new ProfileMultilineGraph2D();
+        ProfileNLineGraphs2D nline          = new ProfileNLineGraphs2D();
+
+        multiy.setNumGraphs(maxLines);
+        multiline.setNumGraphs(maxLines);
+        nline.setNumGraphs(maxLines);
+        
+        ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
+        graphs.add(multiy);
+        graphs.add(multiline);
+        graphs.add(nline);
+        
+        while( !graphs.isEmpty() ){
+            //Apply Settings
+            graphs.get(0).setNumDataPoints( (int)Math.pow(10, 6) );
+            graphs.get(0).getResolution().setWidth(600);
+            graphs.get(0).getResolution().setWidth(400);
+            
+            graphs.get(0).getSaveSettings().setSaveMessage("Max Dataset Size Test");
+            graphs.get(0).getSaveSettings().setAuthorMessage("asbarber");
+            
+            graphs.get(0).getProfileSettings().setTestTime(20);
+            
+            //Run
+            graphs.get(0).profile();
+            graphs.get(0).saveStatistics();
+            
+            //Free up memory
+            graphs.remove(0);
+        }
+    }
+    
     @NoRequires
     public static void renderMethod(){
         RenderMethodProfiler profiler = new RenderMethodProfiler();

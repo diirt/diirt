@@ -4,6 +4,7 @@
  */
 package org.epics.graphene.profile;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import org.epics.graphene.profile.settings.SaveSettings;
 import org.epics.graphene.profile.utils.Statistics;
@@ -18,6 +19,7 @@ import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.io.DateUtils;
+import org.epics.graphene.profile.io.ImageWriter;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
@@ -40,7 +42,8 @@ public class MultiLevelProfiler{
     private SaveSettings saveSettings;
     
     private Map<Resolution, Map<Integer, Statistics>> results;
-      
+    private Map<Resolution, Map<Integer, BufferedImage>> images;
+            
     /**
      * Creates a object to profile a <code>Graph2DRenderer</code>
      * using a <code>ProfileGraph2D</code> and analyzing performance
@@ -53,6 +56,7 @@ public class MultiLevelProfiler{
     public MultiLevelProfiler(ProfileGraph2D profiler){
         this.profiler = profiler;
         this.results = new HashMap<>();
+        this.images = new HashMap<>();
         this.saveSettings = new SaveSettings();
     }
     
@@ -92,6 +96,7 @@ public class MultiLevelProfiler{
         for (int r = 0; r < resolutions.size() && !Thread.currentThread().isInterrupted(); r++){
             
             HashMap<Integer, Statistics> map = new HashMap<>();
+            HashMap<Integer, BufferedImage> imageMap = new HashMap<>();
             
                 for (int s = 0; s < datasetSizes.size() && !Thread.currentThread().isInterrupted(); s++){
                     
@@ -108,6 +113,10 @@ public class MultiLevelProfiler{
 
                     //Track results (dataset size and statistics)
                     map.put(datasetSizes.get(s), profiler.getStatistics());
+                    imageMap.put(datasetSizes.get(s), profiler.getSaveSettings().getSaveImage());
+                    
+                    int h = profiler.getSaveSettings().getSaveImage().getHeight();
+                    int w = profiler.getSaveSettings().getSaveImage().getWidth();
                     
                     //Use to process the result, such as print to console
                     this.processResult(resolutions.get(r), datasetSizes.get(s), profiler.getStatistics());
@@ -115,6 +124,7 @@ public class MultiLevelProfiler{
             
             //Put dataSize & statistics map into resolution set
             results.put(resolutions.get(r), map);
+            images.put(resolutions.get(r), imageMap);
         }
     }
     
@@ -307,6 +317,62 @@ public class MultiLevelProfiler{
         ));
     }
 
+    public void saveImages(){
+        if (Thread.currentThread().isInterrupted()){
+            return;
+        }
+
+        if (images == null){
+            throw new NullPointerException("Profiling has not been run.");
+        }
+        //Should not occur since resolutions must be non-empty
+        if (images.isEmpty()){
+            return;
+        }
+
+        
+        //Makes directory
+        //--------------------------------------------------------------
+        String path = 
+            ProfileGraph2D.LOG_FILEPATH + 
+            DateUtils.getDate(DateUtils.DateFormat.NONDELIMITED) + 
+            "-" +
+            profiler.getGraphTitle() +
+            "-" +
+            "Table";
+        
+        boolean success = (new File(path)).mkdir(); 
+        
+        //Failed to make directory
+        if (!success){
+            return;
+        }
+        //--------------------------------------------------------------
+        
+        
+        //Assumption: the set of keys for dataset sizes are the same
+        //for each line (the Map<Integer,Statistics> keys are equivalent for
+        //each resolutioin)
+        Resolution[] resKeys = images.keySet().toArray(new Resolution[0]);
+        Integer[] sizeKeys = images.get(resKeys[0]).keySet().toArray(new Integer[0]);
+
+        //Sorts keys so table has sorted columns/rows
+        Arrays.sort(resKeys);
+        Arrays.sort(sizeKeys);
+
+        //For all dataset sizes
+        for (int i = 0; i < sizeKeys.length; i++){            
+            //For all resolutions
+            for (int j = 0; j < resKeys.length; j++){
+                BufferedImage img = images.get(resKeys[j]).get(sizeKeys[i]);
+                String name = resKeys[j].toString() +
+                              "." +
+                              sizeKeys[i].toString();
+                
+                ImageWriter.saveImage(path + "/", name, img);
+            }
+        }
+    }
     
     //During Profile
     
