@@ -29,7 +29,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
       private Boolean drawLegend;
     
-    private ColorScheme valueColorScheme;
+    private ValueColorScheme valueColorScheme;
     
     /**
      * Sets this object's drawLegend to the given boolean value.
@@ -51,7 +51,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      * @param scheme supported schemes: any <code>ColorScheme</code> supported by the <code>ValueColorSchemes</code>
      * @return this
      */
-    public IntensityGraph2DRendererUpdate valueColorScheme(ColorScheme scheme) {
+    public IntensityGraph2DRendererUpdate valueColorScheme(ValueColorScheme scheme) {
         this.valueColorScheme = scheme;
         return self();
     }
@@ -100,7 +100,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      * @return ColorScheme valueColorScheme, used to determine which color scheme will be used when drawing an intensity graph. 
      * Possible values include: GRAY_SCALE, JET, HOT, COOL, SPRING, BONE, COPPER, PINK
      */
-    public ColorScheme getValueColorScheme() {
+    public ValueColorScheme getValueColorScheme() {
         return valueColorScheme;
     }
     

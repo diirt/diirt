@@ -144,7 +144,7 @@ public class MultilineGraph2DRendererTest {
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(640,480);
         MultilineGraph2DRendererUpdate update = new MultilineGraph2DRendererUpdate();
-        update.valueColorScheme(ColorScheme.JET);
+        update.valueColorScheme(new ValueColorSchemeJet());
         renderer.update(update);
         renderer.draw(g, data);
         

@@ -17,6 +17,7 @@ public class ValueColorSchemeBlackAndWhite implements ValueColorScheme{
         List<Color> colors = new ArrayList<Color>();
         colors.add(Color.black);
         colors.add(Color.white);
+        colors.add(Color.red);
         ValueColorSchemeInstanceBlackAndWhite colorSchemeInstance = new ValueColorSchemeInstanceBlackAndWhite(colors, range, Color.red.getRGB());
         return colorSchemeInstance;
     }
@@ -25,7 +26,7 @@ public class ValueColorSchemeBlackAndWhite implements ValueColorScheme{
         this.range = range;
         this.colors = colors;
         this.nanColor = nanColor;
-        percentages = percentageRange(colors.size());
+        percentages = percentageRange(colors.size()-2);
         }
     }
 }

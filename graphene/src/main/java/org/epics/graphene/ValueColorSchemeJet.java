@@ -21,6 +21,7 @@ public class ValueColorSchemeJet implements ValueColorScheme{
         colors.add(Color.YELLOW);
         colors.add(Color.RED);
         colors.add(new Color(138,0,0)); //Dark Red
+        colors.add(Color.BLACK);    //NaN
         ValueColorSchemeInstanceJet colorSchemeInstance = new ValueColorSchemeInstanceJet(colors, range, Color.black.getRGB());
         return colorSchemeInstance;
     }
@@ -29,7 +30,7 @@ public class ValueColorSchemeJet implements ValueColorScheme{
         this.range = range;
         this.colors = colors;
         this.nanColor = nanColor;
-        percentages = percentageRange(colors.size());
+        percentages = percentageRange(colors.size()-2);
         }
     }
 }

@@ -32,12 +32,12 @@ public abstract class ValueColorSchemeInstanceGeneral implements ValueColorSchem
                     return nanColor;
                 }
                 if(range == null){
-            throw new NullPointerException("range can not be null.");
+                    throw new NullPointerException("range can not be null.");
                 }
                 double fullRange = range.getMaximum().doubleValue() - range.getMinimum().doubleValue();
                 int alpha = 0, red = 0, green = 0, blue = 0;
                 if(fullRange>0){
-                    for(int i = 0; i < colors.size();i++){
+                    for(int i = 0; i < percentages.size()-1;i++){
                         if(range.getMinimum().doubleValue()+percentages.get(i)*fullRange <= value && value <= range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange){
                             double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue()+percentages.get(i)*fullRange, range.getMinimum().doubleValue()+percentages.get(i+1)*fullRange);
                             normalValue = Math.min(normalValue, 1.0);
@@ -50,7 +50,7 @@ public abstract class ValueColorSchemeInstanceGeneral implements ValueColorSchem
                     }
                 }
                 else{
-                    for(int i = 0; i < colors.size();i++){
+                    for(int i = 0; i < percentages.size()-1;i++){
                         if(percentages.get(i) <= .5 && .5 <= percentages.get(i+1)){
                             double normalValue =0;
                             normalValue = Math.min(normalValue, 1.0);
