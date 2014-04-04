@@ -18,13 +18,37 @@ import java.math.*;
  * 
  * @authors asbarber, jkfeng, sjdallst
  */
-public class MultilineGraph2DRendererTest {
+public class MultilineGraph2DRendererTest extends BaseGraphTest<MultilineGraph2DRendererUpdate, MultilineGraph2DRenderer>{
     /**
      * Tests the functions in SparklineGraph2DRenderer
      */
     public MultilineGraph2DRendererTest() {
+        super("multilineGraph2D");
     }
 
+    @Override
+    public MultilineGraph2DRenderer createRenderer() {
+        return new MultilineGraph2DRenderer(300, 200);
+    }
+
+    @Override
+    public BufferedImage draw(MultilineGraph2DRenderer renderer) {
+        double [][] initialData= new double [1][100]; 
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 1; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        renderer.draw(g, data);
+        return image;
+    }
     private static Point2DDataset largeDataset;
     
     /**
@@ -62,7 +86,7 @@ public class MultilineGraph2DRendererTest {
      * @throws Exception Test fails
      */    
     @Test
-    public void SingleValueSingleLineTest() throws Exception {
+    public void singleValueSingleLine() throws Exception {
         double [][] initialData= new double [1][100]; 
         for(int i = 0; i < 1; i++){
             for(int j = 0; j < 100; j++){
@@ -80,11 +104,11 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.SingleValueSingleLine", image);
+        ImageAssert.compareImages("multilineGraph2D.singleValueSingleLine", image);
     }
     
     @Test
-    public void SingleValueMultipleLinesTest() throws Exception {
+    public void singleValueMultipleLines() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -102,11 +126,11 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.SingleValueMultipleLines", image);
+        ImageAssert.compareImages("multilineGraph2D.singleValueMultipleLines", image);
     }
     
     @Test
-    public void MultipleCosineTest() throws Exception {
+    public void multipleCosine() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -124,11 +148,11 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.MultipleCosine", image);
+        ImageAssert.compareImages("multilineGraph2D.multipleCosine", image);
     }
     
     @Test
-    public void MultipleCosineColorSchemeTest() throws Exception {
+    public void multipleCosineColorScheme() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -144,16 +168,16 @@ public class MultilineGraph2DRendererTest {
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(640,480);
         MultilineGraph2DRendererUpdate update = new MultilineGraph2DRendererUpdate();
-        update.valueColorScheme(ColorScheme.JET);
+        update.valueColorScheme(new ValueColorSchemeJet());
         renderer.update(update);
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.MultipleCosineColorScheme", image);
+        ImageAssert.compareImages("multilineGraph2D.multipleCosineColorScheme", image);
     }
     
     @Test
-    public void LinesEqualPixelsTest() throws Exception {
+    public void linesEqualPixels() throws Exception {
         double [][] initialData= new double [81][100]; 
         for(int i = 0; i < 81; i++){
             for(int j = 0; j < 100; j++){
@@ -171,11 +195,11 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.LinesEqualsPixels", image);
+        ImageAssert.compareImages("multilineGraph2D.linesEqualsPixels", image);
     }
     
     @Test
-    public void ManyLinesStressTest() throws Exception {
+    public void manyLinesStress() throws Exception {
         double [][] initialData= new double [5000][100]; 
         for(int i = 0; i < 5000; i++){
             for(int j = 0; j < 100; j++){
@@ -193,11 +217,11 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.ManyLinesStress", image);
+        ImageAssert.compareImages("multilineGraph2D.manyLinesStress", image);
     }
     
     @Test
-    public void UpdateInterpolation() throws Exception {
+    public void updateInterpolation() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -218,6 +242,6 @@ public class MultilineGraph2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiline2D.UpdateInterpolation", image);
+        ImageAssert.compareImages("multilineGraph2D.updateInterpolation", image);
     }
 }

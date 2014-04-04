@@ -23,7 +23,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
      * Tests the functions in MultiYAxisGraph2DRenderer
      */
     public MultiYAxisGraph2DRendererTest() {
-        super("multiyaxisgraph2D");
+        super("multiYAxisGraph2D");
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
     }
     
     @Test
-    public void singleGraphTest() throws Exception {
+    public void oneGraph() throws Exception {
         double [][] initialData= new double [1][100]; 
         for(int i = 0; i < 1; i++){
             for(int j = 0; j < 100; j++){
@@ -95,12 +95,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.singleGraph", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.oneGraph", image);
     }
     
-    // TODO: method names should be lower case
     @Test
-    public void TwoGraphsTest() throws Exception {
+    public void twoGraph() throws Exception {
         double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
@@ -119,12 +118,12 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        // TODO: fix capitalization for names e.g.: multiYAxisGraph2D.twoGraphs
-        ImageAssert.compareImages("multiyaxisgraph2D.TwoGraphs", image);
+     
+        ImageAssert.compareImages("multiYAxisGraph2D.twoGraph", image);
     }
     
     @Test
-    public void ThreeGraphsTest() throws Exception {
+    public void threeGraph() throws Exception {
         double [][] initialData= new double [3][100]; 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
@@ -143,11 +142,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.ThreeGraphs", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.threeGraph", image);
     }
     
     @Test
-    public void FiveGraphsTest() throws Exception {
+    public void fiveGraph() throws Exception {
         double [][] initialData= new double [5][100]; 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 100; j++){
@@ -166,11 +165,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.FiveGraphs", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.fiveGraph", image);
     }
     
     @Test
-    public void SixGraphsTest() throws Exception {
+    public void sixGraph() throws Exception {
         double [][] initialData= new double [6][100]; 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 100; j++){
@@ -189,11 +188,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.SixGraphs", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.sixGraph", image);
     }
     
     @Test
-    public void SixGraphsWRangeTest() throws Exception {
+    public void sixGraphWithRange() throws Exception {
         double [][] initialData= new double [6][100]; 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 100; j++){
@@ -212,11 +211,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.SixGraphsWRange", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.sixGraphWithRange", image);
     }
     
     @Test
-    public void MinGraphWidthTest() throws Exception {
+    public void minGraphWidth() throws Exception {
         double [][] initialData= new double [6][100]; 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 100; j++){
@@ -237,11 +236,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.MinGraphWidth", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.minGraphWidth", image);
     }
     
     @Test
-    public void UpdateInterpolation() throws Exception {
+    public void updateInterpolations() throws Exception {
         double [][] initialData= new double [6][100]; 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 100; j++){
@@ -262,6 +261,6 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiyaxisgraph2D.UpdateInterpolation", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.updateInterpolations", image);
     }
 }

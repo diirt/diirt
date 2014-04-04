@@ -21,17 +21,16 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * TODO: make the image follow the following format: $prefix.base.$testname.png
+ * 
  *
  * @author Jiakung
  */
 public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extends Graph2DRenderer<T>> {
 
-    // TODO: make final
-    private String resultPrefix;
+    private final String resultPrefix;
 
     public BaseGraphTest(String resultPrefix) {
-        this.resultPrefix = resultPrefix;
+        this.resultPrefix = resultPrefix + ".base.";
     }
     
     public abstract S createRenderer();
@@ -42,15 +41,14 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void rightMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().rightMargin(10));
-        // TODO: fix capitalization
-        ImageAssert.compareImages(resultPrefix + "RightMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "rightMargin", draw(renderer));
     }
 
     @Test
     public void leftMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().leftMargin(10));
-        ImageAssert.compareImages(resultPrefix + ".leftMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "leftMargin", draw(renderer));
     }
     
     @Test
@@ -78,14 +76,14 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void bottomMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().bottomMargin(10));
-        ImageAssert.compareImages(resultPrefix + "BottomMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "bottomMargin", draw(renderer));
     }
     
     @Test
     public void topMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().topMargin(10));
-        ImageAssert.compareImages(resultPrefix + "TopMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "topMargin", draw(renderer));
     }
     
     @Test
@@ -95,7 +93,7 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
         renderer.update(renderer.newUpdate().leftMargin(10));
         renderer.update(renderer.newUpdate().bottomMargin(10));
         renderer.update(renderer.newUpdate().topMargin(10));
-        ImageAssert.compareImages(resultPrefix + "AllMargins", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "allMargins", draw(renderer));
     }
     @Test
     public void xLabelMargin() throws Exception {
@@ -123,14 +121,14 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void bottomAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().bottomAreaMargin(10));
-        ImageAssert.compareImages(resultPrefix + "BottomAreaMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "bottomAreaMargin", draw(renderer));
     }
     
     @Test
     public void topAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().topAreaMargin(10));
-        ImageAssert.compareImages(resultPrefix + "TopAreaMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "topAreaMargin", draw(renderer));
     }
     
     @Test
@@ -144,6 +142,6 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public void xrightAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().rightAreaMargin(10));
-        ImageAssert.compareImages(resultPrefix + "RightAreaMargin", draw(renderer));
+        ImageAssert.compareImages(resultPrefix + "rightAreaMargin", draw(renderer));
     }
 }

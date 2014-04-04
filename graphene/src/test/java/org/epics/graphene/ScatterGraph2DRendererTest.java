@@ -18,17 +18,37 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 
 /**
- * TODO: should inherit from base test class
- * TODO: better test naming
  *
  * @author carcassi
  */
-public class ScatterGraph2DRendererTest {
+public class ScatterGraph2DRendererTest extends BaseGraphTest <ScatterGraph2DRendererUpdate, ScatterGraph2DRenderer> {
     
     public ScatterGraph2DRendererTest() {
+        super("scatterGraph2D");
     }
 
-    @BeforeClass
+    @Override
+    public ScatterGraph2DRenderer createRenderer() {
+        return new ScatterGraph2DRenderer(300, 200);
+    }
+
+    @Override
+    public BufferedImage draw(ScatterGraph2DRenderer renderer) {
+        Random rand = new Random(0);
+        int size = 1000;
+        double[] x = new double[size];
+        double[] y = new double[size];
+        for (int i = 0; i < size; i++) {
+            x[i] = rand.nextGaussian();
+            y[i] = rand.nextGaussian();
+        }
+        Point2DDataset data = Point2DDatasets.lineData(x,y);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        return image;
+    }
+    
     public static void setUpClass() throws Exception {
     }
 
@@ -37,7 +57,7 @@ public class ScatterGraph2DRendererTest {
     }
     
     @Test
-    public void test1() throws Exception {
+    public void randomData() throws Exception {
         Random rand = new Random(0);
         int size = 1000;
         double[] x = new double[size];
@@ -52,11 +72,11 @@ public class ScatterGraph2DRendererTest {
         ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("scatter2D.1", image);
+        ImageAssert.compareImages("scatterGraph2D.randomData", image);
     }
     
     @Test
-    public void test2() throws Exception {
+    public void regularData() throws Exception {
         Random rand = new Random(0);
         int size = 1000;
         double[] x = new double[] {0,10,20,30,40,50};
@@ -67,11 +87,11 @@ public class ScatterGraph2DRendererTest {
         ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("scatter2D.2", image);
+        ImageAssert.compareImages("scatterGraph2D.regularData", image);
     }
     
     @Test
-    public void test3() throws Exception {
+    public void oneNaN() throws Exception {
         double[] x = new double[] {Double.NaN,10, 20,30,40,50};
         double[] y = new double[] {Double.NaN,10,20, 30,40,50};
         
@@ -80,11 +100,11 @@ public class ScatterGraph2DRendererTest {
         ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("scatter2D.3", image);
+        ImageAssert.compareImages("scatterGraph2D.oneNaN", image);
     }
     
     @Test
-    public void test4() throws Exception {
+    public void negativeValues() throws Exception {
         double[] x = new double[] {-7, -10, -7, 0, 7, 10, 7};
         double[] y = new double[] {-7, 0, 7, 10, 7, 0, -7};
         
@@ -94,11 +114,11 @@ public class ScatterGraph2DRendererTest {
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("scatter2D.4", image);
+        ImageAssert.compareImages("scatterGraph2D.negativeValues", image);
     }
     
     @Test
-    public void test5() throws Exception {
+    public void constantXValues() throws Exception {
         double[] x = new double[] {3, 3, 3, 3, 3, 3, 3};
         double[] y = new double[] {0, 1, 2, 3, 4, 5, 6};
         
@@ -108,6 +128,6 @@ public class ScatterGraph2DRendererTest {
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("scatter2D.5", image);
+        ImageAssert.compareImages("scatterGraph2D.constantXValues", image);
     }
 }
