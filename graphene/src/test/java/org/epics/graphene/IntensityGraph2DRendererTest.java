@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.epics.util.array.*;
+import org.junit.Ignore;
 
 /**
  * 
@@ -283,6 +284,33 @@ public class IntensityGraph2DRendererTest {
         renderer.drawTest(graphBuffer,data);
 
         ImageAssert.compareImages("intensityGraph2D.12", image);
+    }
+    
+    @Test
+    @Ignore("This dataset does not draw correctly")
+    public void test13() throws Exception {
+        int size = 100;
+        double[] boundaries = new double[size];
+        boundaries[0] = 0;
+        for (int i = 1; i < boundaries.length; i++) {
+            boundaries[i] = 90.0 + i * 10.0 / size;
+        }
+        Cell2DDataset data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
+            @Override
+            public double getValue(double x, double y) {
+                return x * y;
+            }
+        }, new ArrayDouble(boundaries), new ArrayDouble(boundaries));
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        GraphBuffer graphBuffer = new GraphBuffer(image);
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
+        IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+        update.valueColorScheme(ColorScheme.JET);
+        renderer.update(update);
+        renderer.draw(graphBuffer, data);
+        renderer.drawTest(graphBuffer,data);
+
+        ImageAssert.compareImages("intensityGraph2D.13", image);
     }
     
     @Test
