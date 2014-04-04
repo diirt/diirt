@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author sjdallst
  */
-public class ValueColorSchemeJet implements ValueColorScheme{
+class ValueColorSchemeJet implements ValueColorScheme{
     public ValueColorSchemeInstance createInstance(Range range){
         List<Color> colors = new ArrayList<Color>();
         colors.add(new Color(0,0,138)); //Dark Blue
