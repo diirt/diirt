@@ -30,12 +30,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.epics.graphene.IntensityGraph2DRenderer;
+import org.epics.graphene.MultilineGraph2DRenderer;
+import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.impl.ProfileAreaGraph2D;
 import org.epics.graphene.profile.impl.ProfileBubbleGraph2D;
 import org.epics.graphene.profile.impl.ProfileMultiYAxisGraph2D;
 import org.epics.graphene.profile.impl.ProfileMultilineGraph2D;
 import org.epics.graphene.profile.impl.ProfileNLineGraphs2D;
+import org.epics.graphene.profile.io.ImageWriter;
 import org.epics.graphene.profile.settings.SaveSettings;
+import org.epics.graphene.profile.utils.DatasetFactory;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
@@ -67,7 +71,7 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        TestCaseProfiler.intensityGraphStrategies();
+                        TestCaseProfiler.lineGraph();
         }
     }    
 
@@ -593,6 +597,41 @@ public final class TestCaseProfiler {
         //profiler.saveImage("_ByteArray");
     }
 
+    @NoRequires
+    public static void lineGraph(){
+        //Profilers
+        ProfileLineGraph2D profiler = new ProfileLineGraph2D();
+        MultiLevelProfiler multi = new MultiLevelProfiler(profiler);
+        List<Point2DDataset> data = new ArrayList<>();
+        
+        //Resolutions
+        List<Resolution> resolutions = new ArrayList<>();
+        resolutions.add(Resolution.RESOLUTION_640x480);
+        
+        //Settings
+        multi.setImageSizes(resolutions);
+        multi.setDatasetSizes(DatasetFactory.defaultDatasetSizes());
+        
+            //Results (No Data Reduction)
+            multi.profile();
+            List<Point2DDataset> results = multi.getStatisticLineData();
+            assert(results.size() == 1);
+            data.add(results.get(0));
+            
+            //Results (Data Reduction)
+            profiler.getRenderSettings().setUpdate("First Max Min Last Reduction");
+            multi.profile();
+            results = multi.getStatisticLineData();
+            assert(results.size() == 1);
+            data.add(results.get(0));
+            
+        //Save
+        MultilineGraph2DRenderer graph = new MultilineGraph2DRenderer(640, 480);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        graph.draw(g, data);
+        ImageWriter.saveImage(profiler.getGraphTitle() + "-Table2D", image);
+    }
     
     //--------------------------------------------------------------------------
     //Test Methods (requiring more memory)
