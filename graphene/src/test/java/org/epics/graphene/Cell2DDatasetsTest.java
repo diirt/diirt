@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 public class Cell2DDatasetsTest {
 
     @Test
-    public void linearRange1() {
+    public void linearRangeFromFunction2D() {
         Cell2DDataset dataset = Cell2DDatasets.linearRange(new Cell2DDatasets.Function2D() {
 
             @Override
@@ -50,7 +50,13 @@ public class Cell2DDatasetsTest {
     }
     
     @Test
-    public void datasetFrom1() {
+    //Not sure how to test this method
+    public void linearRangeFromListNumber(){
+    
+    }
+    
+    @Test
+    public void datasetFromListNumber() {
         ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
         ListNumber xBoundaries = new ArrayDouble(-1, 0, 1);
         ListNumber yBoundaries = new ArrayDouble(0, 1, 2, 3);
@@ -85,7 +91,7 @@ public class Cell2DDatasetsTest {
     }
     
     @Test
-    public void datasetFrom2() {
+    public void datasetFromFunction2D() {
         Cell2DDataset dataset = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
 
             @Override

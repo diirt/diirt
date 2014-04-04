@@ -20,13 +20,37 @@ import org.junit.Ignore;
  * 
  * @authors asbarber, jkfeng, sjdallst
  */
-public class NLineGraphs2DRendererTest {
+public class NLineGraphs2DRendererTest extends BaseGraphTest<NLineGraphs2DRendererUpdate, NLineGraphs2DRenderer> {
     /**
      * Tests the functions in SparklineGraph2DRenderer
      */
     public NLineGraphs2DRendererTest() {
+        super("nLineGraphs2D");
     }
 
+    @Override
+    public NLineGraphs2DRenderer createRenderer() {
+        return new NLineGraphs2DRenderer(300, 200);
+    }
+
+    @Override
+    public BufferedImage draw(NLineGraphs2DRenderer renderer) {
+        double [][] initialData= new double [1][100]; 
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 1; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        renderer.draw(g, data);
+        return image;
+    }
     private static Point2DDataset largeDataset;
     
     /**
@@ -64,7 +88,7 @@ public class NLineGraphs2DRendererTest {
      * @throws Exception Test fails
      */    
     @Test
-    public void EvenSplitTest() throws Exception {
+    public void evenDivide() throws Exception {
         double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
@@ -83,11 +107,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.EvenSplit", image);
+        ImageAssert.compareImages("nLineGraphs2D.evenDivide", image);
     }
     
 @Test
-    public void singleGraphTest() throws Exception {
+    public void oneGraph() throws Exception {
         double [][] initialData= new double [1][100]; 
         for(int i = 0; i < 1; i++){
             for(int j = 0; j < 100; j++){
@@ -106,11 +130,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.singleGraph", image);
+        ImageAssert.compareImages("nLineGraphs2D.oneGraph", image);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void NoGraphsTest() throws Exception {
+    public void noGraphs() throws Exception {
 
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
      
@@ -122,7 +146,7 @@ public class NLineGraphs2DRendererTest {
     }
 
     @Test
-    public void MultiCosTest() throws Exception {
+    public void multipleCosine() throws Exception {
         double [][] initialData= new double [3][100]; 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
@@ -141,12 +165,12 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.MultiCos", image);
+        ImageAssert.compareImages("nLineGraphs2D.multipleCosine", image);
     }
 
 
     @Test
-    public void UnevenSplitTest() throws Exception {
+    public void unevenDivide() throws Exception {
         double [][] initialData= new double [3][100]; 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
@@ -165,12 +189,12 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.UnevenSplit", image);
+        ImageAssert.compareImages("nLineGraphs2D.unevenDivide", image);
     }
  
     
     @Test
-    public void TooManyGraphsTest() throws Exception {
+    public void excessGraphs() throws Exception {
         double [][] initialData= new double [5][100]; 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 100; j++){
@@ -188,11 +212,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.TooManyGraphs", image);
+        ImageAssert.compareImages("nLineGraphs2D.excessGraphs", image);
     }
     
     @Test
-    public void TooManyGraphsUpdateTest() throws Exception {
+    public void excessGraphsUpdate() throws Exception {
         double [][] initialData= new double [5][100]; 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 100; j++){
@@ -216,11 +240,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.TooManyGraphsUpdate", image);
+        ImageAssert.compareImages("nLineGraphsD.excessGraphsUpdate", image);
     }
     
     @Test
-    public void TooManyGraphsAfterUpdateTest() throws Exception {
+    public void excessGraphsAfterUpdate() throws Exception {
         double [][] initialData= new double [5][100]; 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 100; j++){
@@ -244,11 +268,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.TooManyGraphsAfterUpdate", image);
+        ImageAssert.compareImages("nLineGraphs2D.excessGraphsAfterUpdate", image);
     }
     
     @Test
-    public void UpdateMargin() throws Exception {
+    public void updateMargins() throws Exception {
         double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
@@ -270,11 +294,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.UpdateMargin", image);
+        ImageAssert.compareImages("nLineGraphs2D.updateMargins", image);
     }
     
     @Test
-    public void UpdateRangeTest() throws Exception {
+    public void updateRanges() throws Exception {
         double [][] initialData= new double [4][100]; 
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 100; j++){
@@ -298,11 +322,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.UpdateRange", image);
+        ImageAssert.compareImages("nLineGraphs2D.updateRanges", image);
     }
     
     @Test
-    public void MarginTooBig() throws Exception {
+    public void marginsTooBig() throws Exception {
         double [][] initialData= new double [3][100]; 
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
@@ -324,7 +348,7 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.MarginTooBig", image);
+        ImageAssert.compareImages("nLineGraphs2D.marginsTooBig", image);
     }
     
     @Test
@@ -356,11 +380,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.resizing", image);
+        ImageAssert.compareImages("nLineGraphs2D.resizing", image);
     }
     
     @Test
-    public void UpdateMinimumGraphHeightTest() throws Exception {
+    public void updateMinimumGraphHeights() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
@@ -381,11 +405,11 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.UpdateMinimumGraphHeight", image);
+        ImageAssert.compareImages("nLineGraphs2D.updateMinimumGraphHeights", image);
     }
     
     @Test
-    public void UpdateInterpolation() throws Exception {
+    public void updateInterpolations() throws Exception {
         double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
@@ -406,7 +430,7 @@ public class NLineGraphs2DRendererTest {
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("nlinegraphs2D.UpdateInterpolation", image);
+        ImageAssert.compareImages("nLineGraphs2D.updateInterpolations", image);
     }
     
 }
