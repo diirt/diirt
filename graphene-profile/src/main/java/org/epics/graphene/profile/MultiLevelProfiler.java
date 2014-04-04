@@ -280,7 +280,7 @@ public class MultiLevelProfiler{
                         "-" +
                         profiler.getGraphTitle() +
                         "-" +
-                        "Table";
+                        "Table2D";
         
         File output = CSVWriter.createFile(filename);
         CSVWriter.writeHeader(output, CSVWriter.arrayCombine("", resKeys));
@@ -339,7 +339,7 @@ public class MultiLevelProfiler{
             "-" +
             profiler.getGraphTitle() +
             "-" +
-            "Table";
+            "Table2D";
         
         boolean success = (new File(path)).mkdir(); 
         
