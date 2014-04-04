@@ -571,6 +571,42 @@ public class VisualProfiler extends JPanel{
     //-------------------------------------------------------------------------
     private class UserSettings{
         
+        public Integer getWidth(){
+            String strImageWidth = profile1DTable.txtImageWidth.getText();
+            int width;
+            
+            try{
+                width = Integer.parseInt(strImageWidth);
+                
+                if (width <= 0){
+                    throw new NumberFormatException();
+                }
+                
+                return width;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the height.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }        
+        }
+        
+        public Integer getHeight(){
+            String strImageHeight = profile1DTable.txtImageHeight.getText();
+            int height;
+            
+            try{
+                height = Integer.parseInt(strImageHeight);
+                
+                if (height <= 0){
+                    throw new NumberFormatException();
+                }
+                
+                return height;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the height.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+        }
+        
         public boolean getSaveImage(){
             return settingsPanel.chkSaveImage.isSelected();
         }
@@ -620,12 +656,21 @@ public class VisualProfiler extends JPanel{
             return settingsPanel.listUpdateTypes.getSelectedItem().toString();
         }
         
+        public String getAuthor(){
+            return settingsPanel.txtAuthorMessage.getText();
+        }
+
+        public String getSaveMessage(){
+            return settingsPanel.txtSaveMessage.getText();
+        }
+        
+        
         
         public ProfileGraph2D getProfiler(){
             ProfileGraph2D renderer = selectedProfiler();
             if (renderer == null){ return null; }
             
-            return applySettings(renderer);
+            return applyDataset(applySettings(renderer));
         }
         
         public ProfileGraph2D selectedProfiler(){
@@ -643,6 +688,45 @@ public class VisualProfiler extends JPanel{
             renderer.getProfileSettings().setTimeType(getTimeType());
             renderer.getRenderSettings().setUpdate(getUpdate());
             
+            renderer.getResolution().setWidth(getWidth());
+            renderer.getResolution().setHeight(getHeight());
+            
+            renderer.getSaveSettings().setAuthorMessage(getAuthor());
+            renderer.getSaveSettings().setSaveMessage(getSaveMessage());
+            
+            return renderer;
+        }
+        
+        public ProfileGraph2D applyDataset(ProfileGraph2D renderer){
+            String strSize = profile1DTable.txtDatasetSize.getText();
+            int size;
+            
+            try{
+                if (renderer instanceof ProfileIntensityGraph2D){
+                    ProfileIntensityGraph2D i = (ProfileIntensityGraph2D) renderer;
+                    
+                    int w, h;
+                    if (strSize.contains("x")){
+                        w = Integer.parseInt(strSize.substring(0, strSize.indexOf("x")));
+                        h = (Integer.parseInt(strSize.substring(strSize.indexOf("x")+1)));
+                        
+                        i.setNumXDataPoints(w);
+                        i.setNumYDataPoints(h);
+                        return i;
+                    }
+                }
+                
+                size = Integer.parseInt(strSize);
+                renderer.setNumDataPoints(size);
+                
+                if (size <= 0){
+                    throw new NumberFormatException();
+                }
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null, "Enter a positive non-zero integer for the dataset size. Use 1000x1000 for 2D cell data.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;                
+            }
+                    
             return renderer;
         }
     }    

@@ -218,7 +218,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
         BufferedImage i = getSaveSettings().getSaveImage();
         
         if (i != null){
-            ImageWriter.saveImage(getGraphTitle() + ".img", i);
+            ImageWriter.saveImage(getLogFileName(), i);
         }
     }
     
@@ -243,7 +243,7 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
      * @return the file name (not file path) of the CSV log file
      */
     public String getLogFileName(){
-        return getGraphTitle();
+        return getGraphTitle() + "-Table1D";
     }
     
     /**

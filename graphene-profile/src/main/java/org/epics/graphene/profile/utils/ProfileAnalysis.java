@@ -147,7 +147,7 @@ public class ProfileAnalysis {
                                                     date +
                                                     "-" +
                                                     graphType +
-                                                    "-Table Difference-" + 
+                                                    "-Table2D Difference-" + 
                                                     dateA +
                                                     "vs" +
                                                     dateB +
