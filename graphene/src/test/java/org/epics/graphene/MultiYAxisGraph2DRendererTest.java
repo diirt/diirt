@@ -215,7 +215,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
     }
     
     @Test
-    public void minGraphWidth() throws Exception {
+    public void minGraphWidth1() throws Exception {
         double [][] initialData= new double [6][100]; 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 100; j++){
@@ -236,7 +236,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         renderer.draw(g, data);
         
         //Compares to correct image
-        ImageAssert.compareImages("multiYAxisGraph2D.minGraphWidth", image);
+        ImageAssert.compareImages("multiYAxisGraph2D.minGraphWidth1", image);
     }
     
     @Test
