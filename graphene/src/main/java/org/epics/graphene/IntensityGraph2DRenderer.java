@@ -111,7 +111,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     // ^ (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE ^
     
-    private ValueColorScheme valueColorScheme = new ValueColorSchemeBlackAndWhite();
+    private ValueColorScheme valueColorScheme = ValueColorSchemes.GRAY_SCALE;
     
     
     /**
