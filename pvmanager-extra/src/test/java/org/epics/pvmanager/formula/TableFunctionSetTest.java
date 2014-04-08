@@ -10,9 +10,13 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
+import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.table.Column;
 import org.epics.vtype.table.VTableFactory;
+import static org.epics.vtype.table.VTableFactory.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 /**
@@ -73,4 +77,18 @@ public class TableFunctionSetTest extends BaseTestForFormula {
         FunctionTester.findBySignature(set, "column", VString.class, VStringArray.class)
                 .compareReturnValue(column, "A", array);
     }
+    
+    @Test
+    public void tableRangeFilter1() {
+        VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable expected = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286"), alarmNone(), timeNow())));
+
+        FunctionTester.findByName(set, "tableRangeFilter")
+                .compareReturnValue(expected, table, "Slot", 1.0, 2.5);
+    }
+    
 }
