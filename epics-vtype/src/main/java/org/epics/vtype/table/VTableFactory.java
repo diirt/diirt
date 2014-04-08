@@ -515,4 +515,16 @@ public class VTableFactory {
         
         return extractRows(table, indexes);
     }
+    
+    public static VTable tableRangeFilter(VTable table, String columnName, Object min, Object max) {
+        RangeFilter valueFilter = new RangeFilter(table, columnName, min, max);
+        BufferInt indexes = new BufferInt();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            if (valueFilter.filterRow(i)) {
+                indexes.addInt(i);
+            }
+        }
+        
+        return extractRows(table, indexes);
+    }
 }
