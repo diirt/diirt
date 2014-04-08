@@ -14,6 +14,7 @@ import org.epics.vtype.VDouble;
 import org.epics.vtype.VString;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
+import org.epics.vtype.ValueFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -298,5 +299,43 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A")));
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
+    }
+    
+    @Test
+    public void tableValueFilter1() {
+        VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable table = tableValueFilter(table1, "Slot", ValueFactory.toVType(2));
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(1));
+        assertThat(table.getColumnName(0), equalTo("Rack"));
+        assertThat(table.getColumnName(1), equalTo("Slot"));
+        assertThat(table.getColumnName(2), equalTo("CPU"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
+    }
+    
+    @Test
+    public void tableValueFilter2() {
+        VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable table = tableValueFilter(table1, "CPU", ValueFactory.toVType("286"));
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(2));
+        assertThat(table.getColumnName(0), equalTo("Rack"));
+        assertThat(table.getColumnName(1), equalTo("Slot"));
+        assertThat(table.getColumnName(2), equalTo("CPU"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A", "A")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1, 2)));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "286")));
     }
 }
