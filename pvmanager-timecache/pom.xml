@@ -8,4 +8,11 @@
   </parent>
   <artifactId>pvmanager-timecache</artifactId>
   <name>pvmanager-timecache</name>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>epics-vtype</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>
