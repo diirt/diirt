@@ -74,6 +74,7 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
         map.put("None", null);
         map.put("Nearest Neighbor Interpolation", new MultiYAxisGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
         map.put("First Max Min Last Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
+        map.put("No Data Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         
         return map;
     }
