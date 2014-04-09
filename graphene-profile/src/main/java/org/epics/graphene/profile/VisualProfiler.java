@@ -533,6 +533,7 @@ public class VisualProfiler extends JPanel{
                                                     "1D Table Output",
                                                     "2D Table Output",
                                                     "Tests",
+                                                    "HTML",
                                                     "README.txt"
                                                    };
     
