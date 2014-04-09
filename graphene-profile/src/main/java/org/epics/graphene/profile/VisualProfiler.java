@@ -72,8 +72,10 @@ import org.epics.graphene.profile.utils.StopWatch;
 import org.epics.graphene.profile.utils.StopWatch.TimeType;
 
 /**
- *
- * @author Aaron
+ * Displays options and actions for profiling of the Graphene project
+ * in a graphical-user-interface.
+ * 
+ * @author asbarber
  */
 public class VisualProfiler extends JPanel{
     
@@ -528,7 +530,10 @@ public class VisualProfiler extends JPanel{
                                                         "SparklineGraph2D"
                                                        };    
 
-    
+    /**
+     * File names of files that cannot be deleted (protected) by the
+     * <code>VisualProfiler</code>'s <code>FileViewer</code>.
+     */
     public static final String[] PROTECTED_FILES = {"ProfileResults",
                                                     "1D Table Output",
                                                     "2D Table Output",
@@ -537,8 +542,18 @@ public class VisualProfiler extends JPanel{
                                                     "README.txt"
                                                    };
     
+    /**
+     * Title of the auto-generated frame.
+     */
     public static final String FRAME_TITLE = "Visual Profiler";
 
+    /**
+     * Makes a Profile object based off of the class name.
+     * @param strClass name of Profile object to generate
+     * 
+     * @return a <code>ProfileGraph2D</code> object corresponding to the 
+     * class name, returns null if no matching name
+     */
     public static ProfileGraph2D factory(String strClass){
         switch (strClass) {
             case "AreaGraph2D":
@@ -1543,7 +1558,10 @@ public class VisualProfiler extends JPanel{
     
     
     //Constructor
-    //-------------------------------------------------------------------------    
+    //------------------------------------------------------------------------- 
+    /**
+     * Constructs a panel to perform profiling operations.
+     */
     public VisualProfiler(){
         initPanel();
         initComponents();
@@ -1711,10 +1729,19 @@ public class VisualProfiler extends JPanel{
     //Setters
     //-------------------------------------------------------------------------
 
+    /**
+     * Sets the current user, or author of the profiling.
+     * The author will be saved upon any profiling.
+     * @param author user of the profiling
+     */
     public void setAuthor(String author){
         this.settingsPanel.txtAuthorMessage.setText(author);
     }
-        
+       
+    /**
+     * Enables (or disables) all action buttons in the panel.
+     * @param enabled true to enable all buttons, otherwise false
+     */
     public void setEnabledActions(boolean enabled){
         for (JButton button: this.actionButtons){
             button.setEnabled(enabled);
@@ -1727,16 +1754,28 @@ public class VisualProfiler extends JPanel{
     //Actions
     //-------------------------------------------------------------------------
     
+    /**
+     * Prints the text to the console of the panel.
+     * @param chunk text to print to the console
+     */
     public void print(String chunk){
         ArrayList<String> tmp = new ArrayList<>();
         tmp.add(chunk);
         console.print(tmp);
     }
     
+    /**
+     * Prints all the text to the console of the panel.
+     * @param chunks text elements to print to the console
+     */
     public void print(List<String> chunks){
         console.print(chunks);
     }
-    
+
+    /**
+     * Updates the list box containing the <code>Graph2DRendererUpdate</code> 
+     * variations associated with the selected <code>ProfileGraph2D</code>.
+     */
     public void reloadUpdateVariations(){
         if (userSettings.selectedProfiler() == null){
             return;
@@ -1754,6 +1793,10 @@ public class VisualProfiler extends JPanel{
     //Helper
     //-------------------------------------------------------------------------
     
+    /**
+     * Makes a <code>JFrame</code> containing a <code>VisualProfiler</code>.
+     * @return visible frame with a <code>VisualProfiler</code>
+     */
     public static JFrame makeFrame(){
             JFrame frame = new JFrame(FRAME_TITLE);
             frame.add(new VisualProfiler());

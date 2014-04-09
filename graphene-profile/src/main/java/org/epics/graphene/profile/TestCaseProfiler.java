@@ -39,13 +39,23 @@ import org.epics.graphene.profile.impl.ProfileMultiYAxisGraph2D;
 import org.epics.graphene.profile.impl.ProfileMultilineGraph2D;
 import org.epics.graphene.profile.impl.ProfileNLineGraphs2D;
 import org.epics.graphene.profile.io.ImageWriter;
-import org.epics.graphene.profile.settings.SaveSettings;
 import org.epics.graphene.profile.utils.DatasetFactory;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 
-
+/**
+ * Provides individual and specialized cases to test the Graphene library
+ * through profiling.
+ * <p>
+ * Several invoke methods are provided to run the test methods all at once.
+ * 
+ * @author asbarber
+ */
 public final class TestCaseProfiler {
+    
+    /**
+     * Prevents instantiation.
+     */
     private TestCaseProfiler(){}
     
     
@@ -80,6 +90,10 @@ public final class TestCaseProfiler {
     //--------------------------------------------------------------------------
     //Invoking methods 
     
+    /**
+     * Runs every test method in <code>TestCaseProfile</code> that
+     * has a <code>NoRequires</code> annotation.
+     */
     public static void invokeNoRequirements(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
@@ -118,6 +132,10 @@ public final class TestCaseProfiler {
         }         
     }
     
+    /**
+     * Runs every test method in <code>TestCaseProfile</code> that
+     * has a <code>Requires</code> annotation.
+     */
     public static void invokeWithRequirements(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
@@ -181,7 +199,7 @@ public final class TestCaseProfiler {
      * <p>
      * Prints to the system console for each test being run.
      * <p>
-     * Methods excluded:
+     * Some methods excluded:
      * <ol>
      *      <li>Inherited Methods</li>
      *      <li>main</li>
@@ -247,6 +265,12 @@ public final class TestCaseProfiler {
         }         
     }
     
+    /**
+     * Determines whether a method should be ignored or run through the
+     * invocation methods.
+     * @param method method to test if it should be run
+     * @return true if method should not be run, otherwise false
+     */
     private static boolean ignoreMethod(Method method){
         List<String> names = Arrays.asList(new String[]{"main",
                                                         "TestCaseProfiler",
@@ -574,6 +598,10 @@ public final class TestCaseProfiler {
         }
     }
     
+    /**
+     * Tests the different types of rendering methods to write data
+     * to a buffered image.
+     */
     @NoRequires
     public static void renderMethod(){
         RenderMethodProfiler profiler = new RenderMethodProfiler();
@@ -598,6 +626,9 @@ public final class TestCaseProfiler {
         //profiler.saveImage("_ByteArray");
     }
 
+    /**
+     * Profiles the line graph with multiple update variations.
+     */
     @NoRequires
     public static void lineGraph(){
         //Profilers

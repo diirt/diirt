@@ -18,18 +18,28 @@ import java.lang.management.ManagementFactory;
  * @author asbarber
  */
 public class SaveSettings implements Settings{
-    
+
     /**
      * Conversion from bytes to gigabytes:
      * 2^30 BYTES per GB.
      */
     private static final double BYTES_TO_GB = 1073741824; //2^30
+   
     
+    //Member Fields
+    //--------------------------------------------------------------------------
+       
     private String datasetMessage = "",
                   saveMessage = "",
                   authorMessage = "";
     
     private BufferedImage saveImage = null;
+    
+    //--------------------------------------------------------------------------
+
+
+    //Setters
+    //--------------------------------------------------------------------------
     
     /**
      * Set the comment associated with the data set.
@@ -69,10 +79,19 @@ public class SaveSettings implements Settings{
         this.authorMessage = author;
     }    
     
+    /**
+     * Sets the image to be saved.
+     * The image is one of the images rendered during profiling.
+     * This field is not written to the comments of the CSV log file.
+     * @param saveImage image of the graph to be saved
+     */
     public void setSaveImage(BufferedImage saveImage){
         this.saveImage = saveImage;
     }
     
+
+    //Getters
+    //--------------------------------------------------------------------------
     
     /**
      * Gets the comment associated with the data set.
@@ -110,12 +129,21 @@ public class SaveSettings implements Settings{
         return this.authorMessage;
     }    
     
+    /**
+     * Gets the image to be saved.
+     * The image is one of the images rendered during profiling.
+     * This field is not written to the comments of the CSV log file.
+     * @return image of the graph to be saved
+     */    
     public BufferedImage getSaveImage(){
         return saveImage;
     }
     
+    //--------------------------------------------------------------------------
+    
     
     //FORMATS FOR OUTPUT FILE
+    //--------------------------------------------------------------------------
     
     /**
      * Gets the .CSV formatted header for the:
@@ -157,7 +185,6 @@ public class SaveSettings implements Settings{
             getSaveMessage()
         }; 
     }
-    
     
     /**
      * Gets the .CSV formatted header for the:
@@ -219,9 +246,16 @@ public class SaveSettings implements Settings{
         };
     }
 
+    //--------------------------------------------------------------------------
+
     
     //COMBINED FORMATS FOR OUTPUT FILE
+    //--------------------------------------------------------------------------
     
+    /**
+     * List of headers for the data members.
+     * @return header data fields
+     */    
     @Override
     public Object[] getTitle() {
         Object[] s = getSaveOutputHeader();
@@ -235,6 +269,10 @@ public class SaveSettings implements Settings{
         return entries;
     }
 
+    /**
+     * List of headers for the data members.
+     * @return header data fields
+     */    
     @Override
     public Object[] getOutput() {
         Object[] s = getSaveOutputMessage();
@@ -248,5 +286,6 @@ public class SaveSettings implements Settings{
         return entries;        
     }
     
+    //--------------------------------------------------------------------------
     
 }

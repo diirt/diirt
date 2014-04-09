@@ -24,9 +24,23 @@ import org.epics.graphene.RangeUtil;
 import org.epics.graphene.StatisticsUtil;
 import org.epics.util.array.ArrayDouble;
 
-public class DatasetFactory {
+/**
+ * Factory object to create datasets.
+ * 
+ * @author asbarber
+ */
+public final class DatasetFactory {
+    
+    
+    /**
+     * Prevents instantiation.
+     */
     private DatasetFactory(){}
    
+    
+    //Dataset Size Generators
+    //--------------------------------------------------------------------------
+        
     /**
      * Default set of dataset sizes to test profiling on, 
      * on a logarithmic scale.
@@ -58,7 +72,12 @@ public class DatasetFactory {
         
         return sizes;
     }  
+
+    //--------------------------------------------------------------------------
     
+    
+    //Dataset Generators
+    //--------------------------------------------------------------------------
     
     /**
      * Generates Point1D data that can be used in rendering.
@@ -109,6 +128,17 @@ public class DatasetFactory {
         return org.epics.graphene.Point2DDatasets.lineData(waveform);
     }
     
+    /**
+     * Generates Point3D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data (number of points) is nSamples<li>
+     *      <li>Random y-values</li>
+     *      <li>y-values are sorted ascending and plotted against sorted index (sorted index is x-value)</li>
+     *      <li>Gaussian distribution from 0 to 1</li>
+     * @param nSamples number of points in data
+     * @return a set of data to be drawn
+     */
     public static Point3DWithLabelDataset makePoint3DWithLabelGaussianRandomData(int nSamples){
         ArrayDouble x = new ArrayDouble(new double[nSamples], false);
         ArrayDouble y = new ArrayDouble(new double[nSamples], false);
@@ -130,7 +160,17 @@ public class DatasetFactory {
         
         return Point3DWithLabelDatasets.build(x, y, z, labels);
     }
-            
+      
+    /**
+     * Generates Cell1D data that can be used in rendering.
+     * The data set has the following properties:
+     * <ol>
+     *      <li>Size of data is xSamples * ySamples<li>
+     *      <li>Random cell data</li>
+     *      <li>Gaussian distribution of values from 0 to 1</li>
+     * @param nSamples number of points in data     
+     * @return a set of data to be drawn
+     */     
     public static Cell1DDataset makeCell1DGaussianRandomData(int nSamples){
         double[] waveform = new double[nSamples];
         int seed = 1;
@@ -195,4 +235,5 @@ public class DatasetFactory {
         return Histograms.createHistogram(dataset);        
     }   
     
+    //--------------------------------------------------------------------------
 }
