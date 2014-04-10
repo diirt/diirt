@@ -58,7 +58,7 @@ public class IntensityGraph2DRendererTest {
      * @throws Exception Test fails
      */    
     @Test
-    public void test1() throws Exception {
+    public void rectangles() throws Exception {
         double listOfData [] = new double[10*10];
             for(int i = 0; i < (10*10); i++){
                 listOfData[i] = i;
@@ -70,12 +70,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.1", image);
+            ImageAssert.compareImages("intensityGraph2D.rectangles", image);
             
     }
     
     @Test
-    public void test2() throws Exception {
+    public void rectanglesSolid() throws Exception {
         double listOfData [] = new double[640*10];
             for(int i = 0; i < (640*10); i++){
                 listOfData[i] = 1;
@@ -87,12 +87,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.2", image);
+            ImageAssert.compareImages("intensityGraph2D.rectanglesSolid", image);
             
     }
     
     @Test
-    public void test3() throws Exception {
+    public void smallX() throws Exception {
         double listOfData [] = new double[640*10];
             for(int i = 0; i < (640*10); i++){
                 listOfData[i] = i;
@@ -104,12 +104,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.3", image);
+            ImageAssert.compareImages("intensityGraph2D.smallX", image);
             
     }
     
     @Test
-    public void test4() throws Exception {
+    public void smallXSolid() throws Exception {
         double listOfData [] = new double[10*480];
             for(int i = 0; i < (10*480); i++){
                 listOfData[i] = 1;
@@ -121,12 +121,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.4", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXSolid", image);
             
     }
     
     @Test
-    public void test5() throws Exception {
+    public void smallY() throws Exception {
         double listOfData [] = new double[10*480];
             for(int i = 0; i < (10*480); i++){
                 listOfData[i] = i;
@@ -138,12 +138,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.5", image);
+            ImageAssert.compareImages("intensityGraph2D.smallY", image);
             
     }
     
     @Test
-    public void test6() throws Exception {
+    public void smallYSolid() throws Exception {
         double listOfData [] = new double[640*480];
             for(int i = 0; i < (640*480); i++){
                 listOfData[i] = 1;
@@ -155,12 +155,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.6", image);
+            ImageAssert.compareImages("intensityGraph2D.smallYSolid", image);
             
     }
     
     @Test
-    public void test7() throws Exception {
+    public void smallXAndY() throws Exception {
         double listOfData [] = new double[640*480];
             for(int i = 0; i < (640*480); i++){
                 listOfData[i] = i;
@@ -172,12 +172,12 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.7", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXAndY", image);
             
     }
     
     @Test
-    public void test8() throws Exception {
+    public void smallXAndYWithLegend() throws Exception {
         double listOfData [] = new double[640*480];
         Random rand = new Random(0);
             for(int i = 0; i < (640*480); i++){
@@ -193,12 +193,12 @@ public class IntensityGraph2DRendererTest {
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.8", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXAndYWithLegend", image);
             
     }
     
     @Test
-    public void test9() throws Exception {
+    public void smallXandYSinglePixels() throws Exception {
         double listOfData [] = new double[640*480];
             for(int i = 0; i < (640*480); i++){
                 if(i%1240 == 0)
@@ -216,13 +216,13 @@ public class IntensityGraph2DRendererTest {
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.9", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXAndYSinglePixels", image);
             
     }
     
     //Tests ColorScheme with JET colors.
     @Test
-    public void test10() throws Exception {
+    public void smallXAndYJet() throws Exception {
         double listOfData [] = new double[640*480];
         Random rand = new Random(0);
             for(int i = 0; i < (640*480); i++){
@@ -239,13 +239,13 @@ public class IntensityGraph2DRendererTest {
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.10", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXAndYJet", image);
             
     } 
     
     //Single-value test.
     @Test
-    public void test11() throws Exception {
+    public void smallXAndYSingleValue() throws Exception {
         double listOfData [] = new double[640*480];
             for(int i = 0; i < (640*480); i++){
                 listOfData[i] = 10000000;
@@ -261,12 +261,12 @@ public class IntensityGraph2DRendererTest {
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
-            ImageAssert.compareImages("intensityGraph2D.11", image);
+            ImageAssert.compareImages("intensityGraph2D.smallXAndYSingleValue", image);
             
     }
     
     @Test
-    public void test12() throws Exception {
+    public void customBoundaries() throws Exception {
         Cell2DDataset data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
             @Override
             public double getValue(double x, double y) {
@@ -279,16 +279,16 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.valueColorScheme(ValueColorSchemes.JET);
-        update.optimizer(new ValueColorSchemeInstanceOptimizer());
+        renderer.optimizeColorScheme = true;
         renderer.update(update);
         renderer.draw(graphBuffer, data);
-        renderer.drawTest(graphBuffer,data);
+        renderer.drawArray(graphBuffer,data);
 
-        ImageAssert.compareImages("intensityGraph2D.12", image);
+        ImageAssert.compareImages("intensityGraph2D.customBoundaries", image);
     }
     
     @Test
-    @Ignore("This dataset does not draw correctly")
+    //@Ignore("This dataset does not draw correctly")
     public void test13() throws Exception {
         int size = 100;
         double[] boundaries = new double[size];
@@ -309,7 +309,7 @@ public class IntensityGraph2DRendererTest {
         update.valueColorScheme(ValueColorSchemes.JET);
         renderer.update(update);
         renderer.draw(graphBuffer, data);
-        renderer.drawTest(graphBuffer,data);
+        renderer.drawArray(graphBuffer,data);
 
         ImageAssert.compareImages("intensityGraph2D.13", image);
     }
@@ -332,6 +332,7 @@ public class IntensityGraph2DRendererTest {
         update.yAxisRange(AxisRanges.absolute(20,80));
         renderer.update(update);
         renderer.draw(graphBuffer,data);
+        
         ImageAssert.compareImages("intensityGraph2D.ZoomIn", image);
     }
     
@@ -353,6 +354,7 @@ public class IntensityGraph2DRendererTest {
         update.yAxisRange(AxisRanges.absolute(-20,120));
         renderer.update(update);
         renderer.draw(graphBuffer,data);
+        
         ImageAssert.compareImages("intensityGraph2D.ZoomOut", image);
     }
     
