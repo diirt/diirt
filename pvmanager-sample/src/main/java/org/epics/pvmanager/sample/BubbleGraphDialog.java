@@ -4,15 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRenderer;
+import static org.epics.pvmanager.sample.SwingBindingUtil.*;
 
 /**
  *
@@ -65,36 +57,6 @@ public class BubbleGraphDialog extends javax.swing.JDialog {
         sizeColumnField.setText(graph.getSizeColumn());
         colorColumnField.setText(graph.getColorColumn());
         highlightFocusValueField.setSelected(graph.isHighlightFocusValue());
-    }
-    
-    protected final void onTextFieldChange(JTextField field, final Runnable task) {
-        field.getDocument().addDocumentListener(new DocumentListener() {
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                task.run();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                task.run();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                task.run();
-            }
-        });
-    }
-    
-    protected final void onCheckBoxChange(JCheckBox field, final Runnable task) {
-        field.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                task.run();
-            }
-        });
     }
 
     /**

@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
+import java.awt.event.MouseEvent;
 import org.epics.graphene.AreaGraph2DRendererUpdate;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRendererUpdate;
@@ -19,6 +20,8 @@ import org.epics.pvmanager.graphene.LineGraph2DExpression;
  * @author carcassi
  */
 public class HistogramGraphApp extends BaseGraphApp<AreaGraph2DRendererUpdate> {
+    
+    private boolean highlightFocusValue;
 
     public HistogramGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
@@ -30,7 +33,22 @@ public class HistogramGraphApp extends BaseGraphApp<AreaGraph2DRendererUpdate> {
     @Override
     protected HistogramGraph2DExpression createExpression(String dataFormula) {
         HistogramGraph2DExpression plot = histogramGraphOf(formula(dataFormula));
+        plot.update(plot.newUpdate().highlightFocusValue(highlightFocusValue));
         return plot;
+    }
+
+    @Override
+    protected void onMouseMove(MouseEvent e) {
+        graph.update(graph.newUpdate().focusPixel(e.getX()));
+    }
+
+    public boolean isHighlightFocusValue() {
+        return highlightFocusValue;
+    }
+
+    public void setHighlightFocusValue(boolean highlightFocusValue) {
+        this.highlightFocusValue = highlightFocusValue;
+        graph.update(graph.newUpdate().highlightFocusValue(highlightFocusValue));
     }
 
     @Override
