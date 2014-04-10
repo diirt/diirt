@@ -69,5 +69,17 @@ public class AreaGraph2DRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.4", image);
     }
+    
+    @Test
+    public void highlightSelection() throws Exception {
+        Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+                                        350, 230, 180, 220, 170, 130, 80, 30, 40), 0, 2);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
+        renderer.update(renderer.newUpdate().focusPixel(150).highlightFocusValue(true));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, dataset);
+        compareImages("bar1DChart.highlightSelection", image);
+    }
 
 }
