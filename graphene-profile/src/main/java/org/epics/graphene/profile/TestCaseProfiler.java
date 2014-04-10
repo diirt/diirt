@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.IntensityGraph2DRenderer;
 import org.epics.graphene.MultilineGraph2DRenderer;
 import org.epics.graphene.Point2DDataset;
@@ -601,6 +602,7 @@ public final class TestCaseProfiler {
     public static void lineGraph(){
         //Profilers
         ProfileLineGraph2D profiler = new ProfileLineGraph2D();
+        profiler.getProfileSettings().setTestTime(2);
         MultiLevelProfiler multi = new MultiLevelProfiler(profiler);
         List<Point2DDataset> data = new ArrayList<>();
         
@@ -636,6 +638,9 @@ public final class TestCaseProfiler {
     //--------------------------------------------------------------------------
     //Test Methods (requiring more memory)
     
+    //TODO: run and then delete
+    //TODO: make TestProfileIntensityGraph2D optimize value color scheme
+    //Final Test on intensity graph to determine combinations
     /**
      * Test method for the different <code>IntensityGraph2D</code> renderers.
      * Saves the output to a <code>ProfileGraph2D</code>
@@ -652,67 +657,82 @@ public final class TestCaseProfiler {
      */
     @Requires (xmx = "-Xmx4g", memory = 3.50, unit = Unit.GIGABYTE)
     public static void intensityGraphStrategies(){
-        //Index 0:  Linear Boundaries
-        //Index 1:  Non Linear Boundaries
-        ProfileIntensityGraph2D profilers[] = new ProfileIntensityGraph2D[2];
+        String opt1[] = {"Non-Linear Boundaries", "Linear Boundaries"};
+        String opt2[] = {"Draw Rect", "Draw Byte Array"};
+        String opt3[] = {"Non-Optimized Value Color", "Optimized Value Color"};
         
-        //Setup Profilers
-        profilers[0] = new ProfileIntensityGraph2D(){
-            @Override
-            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
-                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
-                
-                renderer.setLinearBoundaries(true);
-                
-                return renderer;
-            }
+        //Index     Linear Bounds      (Y)Byte / Rect   Optimized Value Color
+        //0         Y                   Y               Y
+        //1         Y                   Y               N
+        //2         Y                   N               Y
+        //3         Y                   N               N
+        //4         N                   Y               Y
+        //5         N                   Y               N
+        //6         N                   N               Y
+        //7         N                   N               N        
+        int opts[][] = {
+            {1, 1, 1},
+            {1, 1, 0},
+            {1, 0, 1},
+            {1, 0, 0},
+            {0, 1, 1},
+            {0, 1, 0},
+            {0, 0, 1},
+            {0, 0, 0}            
         };
-        profilers[0].getSaveSettings().setSaveMessage("Using Linear Boundaries");
-        
-        profilers[1] = new ProfileIntensityGraph2D(){
-            @Override
-            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
-                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
 
-                renderer.setLinearBoundaries(false);
-                
-                return renderer;
-            }
-        };  
-        profilers[1].getSaveSettings().setSaveMessage("Not Using Linear Boundaries");
-        
-        //Apply To Both, One Time
-        for (ProfileIntensityGraph2D profile : profilers){
+
+        MultiLevelProfiler multi;
+        TestProfileIntensityGraph2D profile;
+        String msg;
+        for (int i = 0; i < opts.length; ++i){
+            profile = new TestProfileIntensityGraph2D();
+            
+            //Testing...
+            profile.apply(opts[i][0], opts[i][1], opts[i][2]);
+            msg = opt1[opts[i][0]] + ", " + opt2[opts[i][1]] + ", " + opt3[opts[i][2]];
+            
+            //Settings
+            profile.getSaveSettings().setSaveMessage(msg);
             profile.getSaveSettings().setAuthorMessage("asbarber");
-        }
-        
-        
-        //Test Parameters
-        int datasetSizes[] = {1000, 10000};
-        Resolution resolutions[] = {Resolution.RESOLUTION_320x240, Resolution.RESOLUTION_1024x768};
-        int testTime = 20;
-        
-        //Multiple Test Runs        
-        for (Resolution resolution: resolutions){
-            for (int datasetSize : datasetSizes){
-                
-                for (ProfileIntensityGraph2D profile : profilers){
-                    //Updates
-                    profile.setNumXDataPoints(datasetSize);
-                    profile.setNumYDataPoints(datasetSize);
-                    
-                    profile.getResolution().setWidth(resolution.getWidth());
-                    profile.getResolution().setHeight(resolution.getHeight());
-                    
-                    profile.getProfileSettings().setTestTime(testTime);
-                    
-                    profile.profile();
-                    profile.saveStatistics();
-                }
-                
-            }
+            
+            //Profile
+            multi = new MultiLevelProfiler(profile);
+            multi.profile();
+            multi.saveStatistics();
         }
     }
+    private static class TestProfileIntensityGraph2D extends ProfileIntensityGraph2D{
+            boolean linearBounds = true;
+            boolean drawByte = true;
+            boolean optimizeValueColor = true;
+            
+            public void apply(int opt1, int opt2, int opt3){
+                linearBounds = opt1 == 1;
+                drawByte = opt2 == 1;
+                optimizeValueColor = opt3 == 1;
+            }
+            
+            @Override
+            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
+                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
+                
+                renderer.setLinearBoundaries(linearBounds);
+                
+                return renderer;
+            }
+            
+            @Override
+            protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data){
+                if (drawByte){
+                    renderer.drawTest(graphBuffer, data);
+                }
+                else{
+                    renderer.draw(graphBuffer, data);
+                }
+            }        
+    }
+    
     
     /**
      * Test method for the maximum dataset size used on

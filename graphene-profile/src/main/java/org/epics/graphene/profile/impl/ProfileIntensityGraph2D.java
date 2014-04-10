@@ -25,7 +25,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     private int numXData = 100, 
                 numYData = 100;
     
-    private GraphBuffer graphBuffer = null;
+    protected GraphBuffer graphBuffer = null;
 
     
     //Getters (Dataset Size)
