@@ -2,13 +2,6 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/*******************************************************************************
- * Copyright (c) 2010-2014 ITER Organization.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- ******************************************************************************/
 package org.epics.pvmanager.timecache.storage;
 
 import java.util.SortedSet;
@@ -39,9 +32,9 @@ public interface DataStorage extends DataSource {
 
 	/**
 	 * Stores all {@link Data} of the specified {@link DataChunk} and returns
-	 * the corresponding set of {@link StoredData} ordered by {@link Timestamp}.
-	 * @param chunk, the {@link DataChunk} to store.
-	 * @return
+	 * the corresponding set of {@link Data} ordered by {@link Timestamp}.
+	 * @param chunk to store.
+	 * @return set of {@link Data} ordered by {@link Timestamp}.
 	 */
 	public SortedSet<Data> storeData(DataChunk chunk);
 

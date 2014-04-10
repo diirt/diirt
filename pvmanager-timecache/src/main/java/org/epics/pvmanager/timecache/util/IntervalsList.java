@@ -2,13 +2,6 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/*******************************************************************************
- * Copyright (c) 2010-2014 ITER Organization.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- ******************************************************************************/
 package org.epics.pvmanager.timecache.util;
 
 import java.util.ArrayList;
@@ -149,8 +142,8 @@ public class IntervalsList {
 
 	/**
 	 * Check if the list contains a point.
-	 * @param x point to check
-	 * @return true if the list contains x
+	 * @param t point to check
+	 * @return true if the list contains t
 	 */
 	public boolean contains(Timestamp t) {
 		if (t == null)
