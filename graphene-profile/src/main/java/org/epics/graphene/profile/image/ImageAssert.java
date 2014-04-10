@@ -12,11 +12,19 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Handles image comparisons.
+ * 
  * @author asbarber
  */
 public class ImageAssert {
     
+    /**
+     * Determines whether the images specified by the file paths are identical.
+     * 
+     * @param a file path of one image
+     * @param b file path of another image
+     * @return true if the same, otherwise false
+     */
     public static boolean sameImages(String a, String b){
         try {
             BufferedImage aImage = ImageIO.read(new File(a));
@@ -29,6 +37,13 @@ public class ImageAssert {
         }
     }
     
+    /**
+     * Determines whether the images are identical by checking every pixel.
+     * 
+     * @param a one image
+     * @param b another image
+     * @return true if the same, otherwise false
+     */
     public static boolean sameImages(BufferedImage a, BufferedImage b){
         int x = 0;
         int y = 0;

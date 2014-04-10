@@ -283,7 +283,7 @@ public class MultiLevelProfiler{
                         "Table2D";
         
         File output = CSVWriter.createFile(filename);
-        CSVWriter.writeHeader(output, CSVWriter.arrayCombine("", resKeys));
+        CSVWriter.writeRow(output, CSVWriter.arrayCombine("", resKeys));
         CSVWriter.writeData(output, data);
         
         saveAdditionalInfo(filename);
@@ -300,7 +300,7 @@ public class MultiLevelProfiler{
     private void saveAdditionalInfo(String filename){
         File output = CSVWriter.createFile(filename + ".out");
 
-        CSVWriter.writeHeader(output, CSVWriter.arrayCombine(
+        CSVWriter.writeRow(output, CSVWriter.arrayCombine(
             "Graph Type",
             "Date",
             profiler.getProfileSettings().getTitle(),

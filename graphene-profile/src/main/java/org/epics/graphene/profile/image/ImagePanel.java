@@ -10,20 +10,23 @@ import java.awt.Image;
 import javax.swing.JComponent;
 
 /**
- *
+ * Puts the image in a panel.
+ * 
  * @author carcassi
  */
 public class ImagePanel extends JComponent {
 
     private Image image;
 
+    /**
+     * Sets the image of the panel.
+     * @param image image to put in the panel
+     */
     public void setImage(Image image) {
         this.image = image;
         if (image != null) {
             setSize(new Dimension(image.getWidth(this), image.getHeight(this)));
             setPreferredSize(new Dimension(image.getWidth(this), image.getHeight(this)));
-            //setMaximumSize(new Dimension(image.getHeight(this), image.getWidth(this)));
-            //setMinimumSize(new Dimension(image.getHeight(this), image.getWidth(this)));
         } else {
             
         }
@@ -31,6 +34,10 @@ public class ImagePanel extends JComponent {
         repaint();
     }
 
+    /**
+     * Gets the image of the panel
+     * @return image stored in the panel
+     */
     public Image getImage() {
         return image;
     }

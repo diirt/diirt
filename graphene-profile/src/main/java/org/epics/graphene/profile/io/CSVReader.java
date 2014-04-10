@@ -13,7 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Handles reading from the .CSV file.
+ * 
+ * @author asbarber
+ */
 public class CSVReader {
+    
     /**
      * Quote delimiter for a .CSV formatted output file.
      */
@@ -24,11 +30,21 @@ public class CSVReader {
      */
     public static final String DELIM = ",";
     
+    /**
+     * Prevents instantiation.
+     */
     private CSVReader() {}
     
-    //Parsing CSV File
     
-    public static List<String>          parseRow(String row){
+    //Parsing CSV File
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Parse the entries from the row that are delimited by a comma.
+     * @param row the string to be parsed
+     * @return a List containing every entry from the row
+     */
+    private static List<String>          parseRow(String row){
         if (row == null){
             throw new IllegalArgumentException("Requires non-null row data.");
         }        
@@ -36,7 +52,12 @@ public class CSVReader {
         return Arrays.asList(row.split(DELIM));
     }
     
-    public static List<List<String>>    parseRows(List<String> rows){
+    /**
+     * Reads an entry for each entry in the .CSV file.
+     * @param csvFile .CSV file to read from
+     * @return a List containing every row represented as a List of entries
+     */
+    private static List<List<String>>    parseRows(List<String> rows){
         if (rows == null){
             throw new IllegalArgumentException("Requires non-null list of rows.");
         }
@@ -55,7 +76,13 @@ public class CSVReader {
         return parsed;
     }
 
-    public static List<String>          readRows(File csvFile){
+    /**
+     * Reads a string for each row in the .CSV file and validates the file
+     * as a valid .CSV file.
+     * @param csvFile .CSV file to read from
+     * @return a List with each row as a string
+     */
+    public static List<String>           readRows(File csvFile){
         CSVFinder.validateCSV(csvFile);
         
         List<String> rows = new ArrayList<>();
@@ -93,14 +120,36 @@ public class CSVReader {
         return rows;
     }
     
-    public static List<List<String>>    parseCSV(File csvFile){
+    /**
+     * Reads an entry for each entry in the .CSV file and validates the file
+     * as a valid .CSV file.
+     * @param csvFile .CSV file to read from
+     * @return a List container every row represented as a List of entries
+     */
+    public static List<List<String>>     parseCSV(File csvFile){
         CSVFinder.validateCSV(csvFile);
         
         return parseRows(readRows(csvFile));
     }
     
+    //--------------------------------------------------------------------------
+    
     
     //Validating CSV File
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Ensures that each file name contains three components as delimited
+     * by the "-" character.
+     * The first component represents a date, the second represents
+     * the graph type, and the third type represents Table2D.
+     * <p>
+     * Throws an illegal argument exception if the graph type and component
+     * sizes are incorrect.
+     * 
+     * @param csvA file A corresponding to one Table2D output file
+     * @param csvB file B corresponding to one Table2D output file
+     */
     public static void validate2DTablesNames(File csvA, File csvB){
         CSVFinder.validateCSV(csvA);
         CSVFinder.validateCSV(csvB);
@@ -121,6 +170,15 @@ public class CSVReader {
         }
     }
     
+    /**
+     * Ensures that the data is non-null, the data has the same size,
+     * and each inner list has the same size in both datasets.
+     * <p>
+     * Throws an illegal argument exception if these conditions are not met.
+     * 
+     * @param dataA one set of CSV entries
+     * @param dataB another set of CSV entries
+     */
     public static void validate2DTables(List<List<String>> dataA, List<List<String>> dataB){
         if (dataA == null){
             throw new IllegalArgumentException("Data must not be null.");            
@@ -149,5 +207,6 @@ public class CSVReader {
             }
         }
     }
-    
+
+    //--------------------------------------------------------------------------    
 }

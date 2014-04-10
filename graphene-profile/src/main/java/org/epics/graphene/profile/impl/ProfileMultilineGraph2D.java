@@ -14,13 +14,33 @@ import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
+/**
+ * Handles profiling for <code>MultilineGraph2DRenderer</code>.
+ * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
+ * through a <code>Point2DDataset</code>.
+ * 
+ * @author asbarber
+ */
 public class ProfileMultilineGraph2D extends ProfileGraph2D<MultilineGraph2DRenderer, List<Point2DDataset>>{
     private int numGraphs = 3;
     
+    
+    //Dataset Sepcific
+    //--------------------------------------------------------------------------
+        
+    /**
+     * Gets the number of graphs for the renderer.
+     * @return number of graphs being rendered
+     */    
     public int getNumGraphs(){
         return this.numGraphs;
     }
     
+    /**
+     * Sets the number of graphs for the renderer.
+     * Must be a value greater than zero.
+     * @param numGraphs number of graphs being rendered
+     */    
     public final void setNumGraphs(int numGraphs){
         if (numGraphs <= 0){
             throw new IllegalArgumentException("Invalid number of graphs");
@@ -38,11 +58,19 @@ public class ProfileMultilineGraph2D extends ProfileGraph2D<MultilineGraph2DRend
         this.createDatasetMessage();
     }
     
+    /**
+     * Creates a dataset message to output the number of graphs.
+     */    
     public final void createDatasetMessage(){
         super.getSaveSettings().setDatasetMessage(getNumDataPoints() + "," + numGraphs + "graphs");
     }
     
+    //--------------------------------------------------------------------------
     
+    
+    //Superclass
+    //--------------------------------------------------------------------------
+        
     @Override
     protected List<Point2DDataset> getDataset() {
         List<Point2DDataset> data = new ArrayList<>();
@@ -64,6 +92,11 @@ public class ProfileMultilineGraph2D extends ProfileGraph2D<MultilineGraph2DRend
         renderer.draw(graphics, data);
     }
 
+    /**
+     * Gets the updates associated with the renderer in a map, linking a 
+     * description of the update to the update object.
+     * @return map with description of update paired with an update
+     */    
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
@@ -78,4 +111,5 @@ public class ProfileMultilineGraph2D extends ProfileGraph2D<MultilineGraph2DRend
         return "MultilineGraph2D";
     }
     
+    //--------------------------------------------------------------------------    
 }

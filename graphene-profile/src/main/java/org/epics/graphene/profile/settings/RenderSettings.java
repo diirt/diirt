@@ -6,18 +6,28 @@ package org.epics.graphene.profile.settings;
 
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
-import org.epics.graphene.profile.utils.Resolution;
 
+/**
+ * Collection of settings associated with rendering a graph for a profiler.
+ * 
+ * @author asbarber
+ */
 public class RenderSettings implements Settings{
     
-    private Graph2DRendererUpdate update;
-    private String updateDescription;
+    //Data Members
+    //--------------------------------------------------------------------------
+    private Graph2DRendererUpdate   update;
+    private String                  updateDescription;
     
-    private boolean     bufferInLoop = false;
-
-    private ProfileGraph2D profiler;
+    private boolean                 bufferInLoop = false;
+    private ProfileGraph2D          profiler;
+    //--------------------------------------------------------------------------
     
     
+    /**
+     * Constructs a settings objects for rendering.
+     * @param profiler object that these are the render settings for
+     */
     public RenderSettings(ProfileGraph2D profiler){
         if (profiler == null){
             throw new IllegalArgumentException("Use a non-null profiler");
@@ -27,6 +37,8 @@ public class RenderSettings implements Settings{
     }
     
 
+    //Setters
+    //--------------------------------------------------------------------------
     
     /**
      * Sets whether the image buffer is created within the render loop or beforehand.
@@ -37,9 +49,14 @@ public class RenderSettings implements Settings{
     public void setBufferInLoop(boolean bufferInLoop){
         this.bufferInLoop = bufferInLoop;
     }
-    
 
-
+    /**
+     * Sets the update to be applied to the renderer with a description
+     * corresponding to the update.
+     * Requires the update to be non-null.
+     * @param updateDescription description of the update
+     * @param update update to be applied to the renderer
+     */
     public void setUpdate(String updateDescription, Graph2DRendererUpdate update){
         if (update == null){
             throw new IllegalArgumentException("Invalid update");
@@ -49,6 +66,11 @@ public class RenderSettings implements Settings{
         this.updateDescription = updateDescription;
     }
     
+    /**
+     * Looks for a corresponding update based on the description,
+     * and does nothing if no update is found, else updates.
+     * @param updateDescription update description to search for to apply
+     */
     public void setUpdate(String updateDescription){
         Object tmp = profiler.getVariations().get(updateDescription);
 
@@ -60,7 +82,11 @@ public class RenderSettings implements Settings{
         setUpdate(updateDescription, (Graph2DRendererUpdate) tmp);
     }    
     
+    //--------------------------------------------------------------------------
+
+    
     //Getters
+    //--------------------------------------------------------------------------
     
     /**
      * Gets whether the image buffer is created within the render loop or beforehand.
@@ -71,22 +97,35 @@ public class RenderSettings implements Settings{
     public boolean getBufferInLoop(){
         return this.bufferInLoop;
     }
-    
 
-    
+    /**
+     * Gets the update to be applied to the renderer.
+     * @return update to be applied, null if no update
+     */
     public Graph2DRendererUpdate getUpdate(){
         return update;
     }
     
+    /**
+     * Gets the update of the description.
+     * @return update description to be applied, empty string if no description
+     */
     public String getUpdateDescription(){
         if (updateDescription == null) return "";
         
         return this.updateDescription;
     }    
 
+    //--------------------------------------------------------------------------
+
     
     //FORMATS FOR OUTPUT FILES
+    //--------------------------------------------------------------------------
     
+    /**
+     * List of headers for the data members.
+     * @return header data fields
+     */      
     @Override
     public Object[] getTitle() {
         return new Object[]{
@@ -94,10 +133,16 @@ public class RenderSettings implements Settings{
         };
     }
 
+    /**
+     * List of headers for the data members.
+     * @return header data fields
+     */      
     @Override
     public Object[] getOutput() {
         return new Object[]{
             getUpdateDescription()
         };
     }
+    
+    //--------------------------------------------------------------------------    
 }

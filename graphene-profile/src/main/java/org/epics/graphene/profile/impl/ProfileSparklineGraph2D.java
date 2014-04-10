@@ -68,6 +68,11 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
         return "SparklineGraph2D";
     }      
 
+    /**
+     * Gets the updates associated with the renderer in a map, linking a 
+     * description of the update to the update object.
+     * @return map with description of update paired with an update
+     */
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
