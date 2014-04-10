@@ -1,4 +1,0 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Timing Type","Update Applied","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS","OS Version",
-"AreaGraph2D","2014/03/25 21:39:27","7.262959887272729","1806","275","1000","600","400","System","","","","","1.7.0_51","1.762","7.922","Windows 8","6.2",
-"AreaGraph2D","2014/03/29 21:06:06","6.300867111111111","4701","792","1000","600","400","System","","","","","1.7.0_51","3.556","7.922","Windows 8","6.2",
-"AreaGraph2D","2014/03/29 21:07:33","8.054014870967745","1865","248","1000","600","400","System","","","","","1.7.0_51","3.556","7.922","Windows 8","6.2",

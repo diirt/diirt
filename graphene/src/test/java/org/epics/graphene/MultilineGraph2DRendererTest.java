@@ -168,7 +168,7 @@ public class MultilineGraph2DRendererTest extends BaseGraphTest<MultilineGraph2D
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultilineGraph2DRenderer renderer = new MultilineGraph2DRenderer(640,480);
         MultilineGraph2DRendererUpdate update = new MultilineGraph2DRendererUpdate();
-        update.valueColorScheme(new ValueColorSchemeJet());
+        update.valueColorScheme(ValueColorSchemes.JET);
         renderer.update(update);
         renderer.draw(g, data);
         

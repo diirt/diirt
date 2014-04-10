@@ -1,3 +1,0 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS"," OS Version"
-"SparklineGraph2D","2014/02/28 11:57:00",31.753355063492076,19729,630,1000,600,400,"","asbarber","Max Dataset Size Test","1.7.0_25",1.762,7.923,"Windows 8","6.2"
-"SparklineGraph2D","2014/02/28 12:02:15",70.27862464561404,19878,285,10000,640,480,"","","Initialize","1.7.0_25",1.762,7.923,"Windows 8","6.2"

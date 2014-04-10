@@ -6,9 +6,7 @@ package org.epics.graphene.profile.impl;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
@@ -25,10 +23,14 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     private int numXData = 100, 
                 numYData = 100;
     
-    private GraphBuffer graphBuffer = null;
+    /**
+     * The data member containing the image being rendered.
+     */
+    protected GraphBuffer graphBuffer = null;
 
     
     //Getters (Dataset Size)
+    //--------------------------------------------------------------------------
     
     /**
      * Gets the size of the data determined by the size of x data and y data.
@@ -56,8 +58,11 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         return numYData;
     }
     
+    //--------------------------------------------------------------------------
+    
     
     //Setters (Dataset Size)
+    //--------------------------------------------------------------------------
     
     /**
      * Sets the number of x and y data points.
@@ -93,9 +98,12 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         this.numYData = numYData;
         this.createDatasetMessage();
     }
+
+    //--------------------------------------------------------------------------
     
     
     //Handling 2D Dataset
+    //--------------------------------------------------------------------------
     
     /**
      * Creates a message about the x by y dimension of the cell data.
@@ -105,9 +113,12 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         super.getSaveSettings().setDatasetMessage(getNumXDataPoints() + "x" + getNumYDataPoints());
     }
     
+    //--------------------------------------------------------------------------
+    
     
     //Handling GraphBuffer
-    
+    //--------------------------------------------------------------------------
+
     @Override
     protected void preLoopAction(){
         //Data and Render Objects (Implemented in subclasses)
@@ -155,8 +166,11 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         renderer.draw(graphBuffer, data);        
     }
     
+    //--------------------------------------------------------------------------
+
     
     //IntensityGraph Specifics (Getters)
+    //--------------------------------------------------------------------------
     
     /**
      * Gets a set of random Gaussian 2D cell data.
@@ -199,4 +213,6 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         
         return map;
     }
+    
+    //--------------------------------------------------------------------------    
 }

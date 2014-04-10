@@ -62,6 +62,11 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
         return "LineGraph2D";
     }   
 
+    /**
+     * Gets the updates associated with the renderer in a map, linking a 
+     * description of the update to the update object.
+     * @return map with description of update paired with an update
+     */    
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
@@ -71,6 +76,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
         map.put("Cubic Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
         map.put("Nearest Neighbor Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
         map.put("First Max Min Last Reduction", new LineGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
+        map.put("No Data Reduction", new LineGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         
         return map;
     }

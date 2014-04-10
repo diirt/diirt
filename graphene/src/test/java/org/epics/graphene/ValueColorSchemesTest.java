@@ -21,7 +21,7 @@ public class ValueColorSchemesTest {
     }
 
     @Test
-    @Ignore("TODO: Color schemes give wrong color outside range")
+    //@Ignore("TODO: Color schemes give wrong color outside range")
     public void jetScheme() {
         Range range = RangeUtil.range(0.0, 1.0);
         ValueColorSchemeInstance colorScheme = ValueColorSchemes.JET.createInstance(range);

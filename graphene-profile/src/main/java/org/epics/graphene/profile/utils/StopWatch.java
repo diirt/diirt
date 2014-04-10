@@ -23,15 +23,34 @@ import org.epics.util.array.ListLong;
  */
 public class StopWatch implements Settings{
     
-    public enum TimeType{ System, Cpu };
+    /**
+     * Type of measurement for time.
+     */
+    public enum TimeType{ 
+        /**
+         * Uses Sytem.nano() time.
+         */
+        System, 
+        
+        /**
+         * Uses OperatinSystemMXBean bean.getProcessCpuTime()
+         */
+        Cpu 
+    };
     
-    private long start;
-    private int nAttempts = 0;
-    private final long[] timings;
+    //Data Members
+    //--------------------------------------------------------------------------
+    private long            start;
+    private int             nAttempts = 0;
+    private final long[]    timings;
     
-    private TimeType timeType = TimeType.Cpu;
+    private TimeType                timeType = TimeType.Cpu;
+    private OperatingSystemMXBean   bean;
+    //--------------------------------------------------------------------------
     
-    private OperatingSystemMXBean bean;
+
+    //Constructor
+    //--------------------------------------------------------------------------    
     
     /**
      * Constructs and initializes the watch from the max number
@@ -44,6 +63,12 @@ public class StopWatch implements Settings{
         timings = new long[maxAttempts];
         bean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();        
     }
+    
+    //--------------------------------------------------------------------------
+    
+    
+    //Time Tracking
+    //--------------------------------------------------------------------------
     
     /**
      * Starts the watch.
@@ -79,6 +104,12 @@ public class StopWatch implements Settings{
         
         nAttempts++;
     }
+
+    //--------------------------------------------------------------------------
+    
+    
+    //Getters
+    //--------------------------------------------------------------------------
     
     /**
      * Returns the average time in ms in the set of timings.
@@ -137,30 +168,34 @@ public class StopWatch implements Settings{
         return new ArrayLong(averages);
     }
     
-    public void setToUseSystemTime(){
-        this.timeType = TimeType.System;
-    }
-    
-    public void setToUseCpuTime(){
-        this.timeType = TimeType.Cpu;
-    }
-    
-    public void setTimeType(TimeType type){
-        this.timeType = type;
-    }
-    
-    public boolean isUsingSystemTime(){
-        return this.timeType == TimeType.System;
-    }
-    
-    public boolean isUsingCpuTime(){
-        return !(this.timeType == TimeType.System);
-    }
-
+    /**
+     * Gets the type of time used by the watch.
+     * This corresponds to the utility used to measure time changes.
+     * @return type of time (sytem or cpu)
+     */
     public TimeType getTimeType(){
         return this.timeType;
     }
     
+    //--------------------------------------------------------------------------
+
+    
+    //Setters
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets the utility used to measure time changes.
+     * @param type type of time (system or cpu)
+     */
+    public void setTimeType(TimeType type){
+        this.timeType = type;
+    }
+
+    //--------------------------------------------------------------------------
+    
+
+    //FORMAT FOR OUTPUT FILES
+    //--------------------------------------------------------------------------
     
     @Override
     public String[] getTitle() {
@@ -177,4 +212,7 @@ public class StopWatch implements Settings{
             ((Long)getTotalMs()).toString()
         };
     }
+    
+    //--------------------------------------------------------------------------
+    
 }

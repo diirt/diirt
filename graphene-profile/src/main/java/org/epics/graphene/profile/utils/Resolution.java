@@ -134,6 +134,10 @@ public class Resolution implements Comparable, Settings{
     }    
 
     @Override
+    /**
+     * Gets the list of headers to output this as settings.
+     * @return width and height title
+     */
     public Object[] getTitle() {
         return new Object[]{
             "Image Width",
@@ -141,6 +145,10 @@ public class Resolution implements Comparable, Settings{
         };
     }
 
+    /**
+     * Gets the list of data to output this as settings.
+     * @return width and height data 
+     */
     @Override
     public Object[] getOutput() {
         return new Object[]{

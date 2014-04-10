@@ -6,12 +6,28 @@ package org.epics.graphene.profile.settings;
 
 import org.epics.graphene.profile.utils.StopWatch;
 
+/**
+ * The settings of a profile object that deal with the actual process of
+ * profiling.
+ * 
+ * @author asbarber
+ */
 public class ProfileSettings implements Settings{
+    
+    //Data Members
+    //--------------------------------------------------------------------------
+    
     private StopWatch.TimeType timeType = StopWatch.TimeType.System;
     
     private int maxTries    = 100000, //10^6
                 testTimeSec = 20;
 
+    //--------------------------------------------------------------------------
+
+    
+    //Setters
+    //--------------------------------------------------------------------------
+    
     /**
      * Sets the number of times the profiler will try to render.
      * Used in saving statistics to the CSV log file.
@@ -32,9 +48,20 @@ public class ProfileSettings implements Settings{
         this.testTimeSec = testTimeSec;
     }   
     
+    /**
+     * Sets the type of time to be measured.
+     * 
+     * @param timeType type of time
+     */
     public void setTimeType(StopWatch.TimeType timeType){
         this.timeType = timeType;
     }      
+
+    //--------------------------------------------------------------------------
+    
+    
+    //Getters
+    //--------------------------------------------------------------------------
     
     /**
      * Gets the number of times the profiler will try to render.
@@ -56,12 +83,20 @@ public class ProfileSettings implements Settings{
         return testTimeSec;
     }    
     
+    /**
+     * Gets the type of time measured in profiling
+     * @return type of time
+     */
     public StopWatch.TimeType getTimeType(){
         return this.timeType;
     }    
 
+    //--------------------------------------------------------------------------
+
+    
     
     //FORMATS FOR OUTPUT FILES
+    //--------------------------------------------------------------------------
     
     @Override
     public Object[] getTitle() {
@@ -76,4 +111,7 @@ public class ProfileSettings implements Settings{
             getTimeType(),
         };
     }
+
+    //--------------------------------------------------------------------------
+
 }

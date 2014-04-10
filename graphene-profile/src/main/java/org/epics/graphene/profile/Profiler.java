@@ -94,7 +94,7 @@ public abstract class Profiler {
         if (!output.exists()){
             output = CSVWriter.createNewFile(fileName);
 
-            CSVWriter.writeHeader(output, header);
+            CSVWriter.writeRow(output, header);
         }
 
         

@@ -7,9 +7,38 @@ package org.epics.graphene.profile.io;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils {
-    public static enum DateFormat{DELIMITED, NONDELIMITED};
+/**
+ * Handles date and time operations.
+ * 
+ * @author asbarber
+ */
+public final class DateUtils {
     
+    /**
+     * Prevents instantiation.
+     */
+    private DateUtils(){}
+    
+    /**
+     * Format of a date, either with delimiting characters or without.
+     */
+    public static enum DateFormat{
+        /**
+         * yyyy/MM/dd HH:mm:ss delimiting of a date
+         */
+        DELIMITED, 
+        
+        /**
+         * yyyyMMddHHmmss non-delimiting of a date
+         */
+        NONDELIMITED
+    };
+    
+    /**
+     * Gets the current date specified by the given format.
+     * @param format style to format the date
+     * @return the current date in the specified format
+     */
     public static String getDate(DateFormat format){
         SimpleDateFormat dateFormat;
         switch(format){

@@ -17,13 +17,33 @@ import org.epics.graphene.ReductionScheme;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
+/**
+ * Handles profiling for <code>MultiYAxisGraph2DRenderer</code>.
+ * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
+ * through a <code>Point2DDataset</code>.
+ * 
+ * @author asbarber
+ */
 public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRenderer, List<Point2DDataset>>{
     private int numGraphs = 3;
+
     
+    //Dataset Sepcific
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Gets the number of graphs for the renderer.
+     * @return number of graphs being rendered
+     */
     public int getNumGraphs(){
         return this.numGraphs;
     }
     
+    /**
+     * Sets the number of graphs for the renderer.
+     * Must be a value greater than zero.
+     * @param numGraphs number of graphs being rendered
+     */ 
     public final void setNumGraphs(int numGraphs){
         if (numGraphs <= 0){
             throw new IllegalArgumentException("Invalid number of graphs");
@@ -41,10 +61,18 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
         this.createDatasetMessage();
     }
     
+    /**
+     * Creates a dataset message to output the number of graphs.
+     */
     public final void createDatasetMessage(){
         super.getSaveSettings().setDatasetMessage(getNumDataPoints() + "," + numGraphs + "graphs");
     }
     
+    //--------------------------------------------------------------------------
+    
+    
+    //Superclass
+    //--------------------------------------------------------------------------
     
     @Override
     protected List<Point2DDataset> getDataset() {
@@ -74,6 +102,7 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
         map.put("None", null);
         map.put("Nearest Neighbor Interpolation", new MultiYAxisGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
         map.put("First Max Min Last Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
+        map.put("No Data Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         
         return map;
     }
@@ -83,4 +112,5 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
         return "MultiYAxisGraph2D";
     }
     
+    //--------------------------------------------------------------------------
 }
