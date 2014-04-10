@@ -725,7 +725,7 @@ public final class TestCaseProfiler {
             @Override
             protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data){
                 if (drawByte){
-                    renderer.drawTest(graphBuffer, data);
+                    renderer.drawArray(graphBuffer, data);
                 }
                 else{
                     renderer.draw(graphBuffer, data);
