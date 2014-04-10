@@ -219,10 +219,23 @@ public class ProfileAnalysis {
         return results;
     }
     
+    /**
+     * Calculates the percent change from initial to final.
+     * @param valInit initial value
+     * @param valFinal final value
+     * @return percent change (as decimal)
+     */
     public static double percentChange(double valInit, double valFinal){
         return (valFinal - valInit) / valInit * 100;        
     }
     
+    /**
+     * Determines the significance of the change from the initial value to
+     * the final value.
+     * @param valInit initial value
+     * @param valFinal final value
+     * @return message about the change in performance
+     */
     public static String performanceChange(double valInit, double valFinal){
         double percentChange = percentChange(valInit, valFinal);
         

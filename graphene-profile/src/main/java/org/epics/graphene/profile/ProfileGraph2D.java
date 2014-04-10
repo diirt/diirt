@@ -143,6 +143,11 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
      */
     protected abstract void render(Graphics2D graphics, T renderer, S data);
     
+    /**
+     * Gets the updates associated with the renderer in a map, linking a 
+     * description of the update to the update object.
+     * @return map with description of update paired with an update
+     */     
     public abstract LinkedHashMap<String, Graph2DRendererUpdate> getVariations();
         
     

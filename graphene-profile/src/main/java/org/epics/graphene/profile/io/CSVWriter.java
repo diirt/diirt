@@ -14,8 +14,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-public class CSVWriter {
+/**
+ * Handles writing data to a .CSV file.
+ * 
+ * @author asbarber
+ */
+public final class CSVWriter {
+    
     /**
      * Quote delimiter for a .CSV formatted output file.
      */
@@ -26,63 +31,22 @@ public class CSVWriter {
      */
     public static final String DELIM = ",";
     
+    /**
+     * Prevents instantiation.
+     */
     private CSVWriter(){}
     
-    /**
-     * Creates a CSV file (without overriding) based on the file name
-     * and writes the header and row data to the file.
-     * <p>
-     * The header and all row data must have the same number of entries as
-     * specified by the columns parameter.
-     * 
-     * @param cols number of entries per row of the CSV
-     * @param filename file path + name of file (Excluding .CSV extension)
-     * @param header data for the header, must have <i>cols</i> entries
-     * @param rows data of the csv, each row must have <i>cols</i> entries
-     * @return generated CSV file with data written to it,
-     *         null if invalid file write
-     */
-    public static File createCSV(int cols, String filename, List header, List<List> rows){
-        File csv = createFile(filename);
-        
-        //Invalid header
-        if (header == null){
-            throw new IllegalArgumentException("Cannot have null header data.");
-        }
-        
-        //Invalid rows
-        if (rows == null){
-            throw new IllegalArgumentException("Cannot have null rows data.");
-        }
-        
-        //Invalid header
-        if (header.size() != cols){
-            throw new IllegalArgumentException("Header must match the number of columns");
-        }
-        
-        //Invalid rows
-        for (List<Object> row: rows){
-            if (row == null){
-                throw new IllegalArgumentException("A row cannot be null.");
-            }
-            
-            if (row.size() != cols){
-                throw new IllegalArgumentException("Each row must match the number of columns.");
-            }
-        }
-        
-        //Invalid file write
-        if (csv == null){
-            return csv;
-        }
-        
-        //Writes data
-        writeHeader(csv, header);
-        writeData(csv, rows);
-        
-        return csv;
-    }
     
+    //File Creation
+    //--------------------------------------------------------------------------
+
+    /**
+     * Creates a CSV file with the specified name.
+     * <b>Will overwrite an existing file!</b>
+     * 
+     * @param filename path and name of file
+     * @return created CSV file
+     */
     public static File createNewFile(String filename){
         try {
             File outputFile = new File(filename + ".csv");
@@ -91,13 +55,21 @@ public class CSVWriter {
             outputFile.createNewFile();
             
             return outputFile;
-            
+                        
         } catch (IOException ex) {
             Logger.getLogger(CSVWriter.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }        
     }
     
+    /**
+     * Creates a CSV file with the specified name.
+     * <b>Will <i>not</i> overwrite an existing file!</b>
+     * Instead a unique name will be found by appending .# to the original name.
+     * 
+     * @param filename path and name of file
+     * @return created CSV file
+     */    
     public static File createFile(String filename){
         try {
             File outputFile = new File(filename + ".csv");
@@ -120,11 +92,20 @@ public class CSVWriter {
         }
     }
     
-    public static void writeHeader(File csvFile, List header){
-        //Writes header
-        writeRow(csvFile, header);
-    }
+    //--------------------------------------------------------------------------
     
+    
+    //Data Output
+    //--------------------------------------------------------------------------
+
+    /**
+     * Writes each row as a set of entries in the .CSV file and
+     * outputs a new line between each row.
+     * Essentially, each row contains items that represent the column
+     * entries within that row.
+     * @param csvFile file to write to
+     * @param rows cells to write
+     */
     public static void writeData(File csvFile, List<List> rows){
         //Invalid File
         if (csvFile == null){
@@ -142,6 +123,12 @@ public class CSVWriter {
         }     
     }
     
+    /**
+     * Writes each item in the list as a separate entry in the .CSV file
+     * and outputs a new line in the file.
+     * @param csvFile file to write to
+     * @param row entries to write
+     */
     public static void writeRow(File csvFile, List row){
         //Invalid File
         if (csvFile == null){
@@ -162,7 +149,7 @@ public class CSVWriter {
                         out.print(formatEntry(entry));
                     }
                 }
-                
+
                 //Clean-up
                 out.println();                
                 out.close();
@@ -172,16 +159,43 @@ public class CSVWriter {
         }            
     }
     
+    /**
+     * Writes the data as a string row in the .CSV file.
+     * @param csvFile file to write to
+     * @param data data to write
+     */
     public static void writeRow(File csvFile, Object data){
         List rows = new ArrayList<>();
         rows.add(data);
         writeRow(csvFile, rows);
     }
     
+    //--------------------------------------------------------------------------
+
+    
+    //Helper
+    //--------------------------------------------------------------------------    
+    
+    /**
+     * Formats the object by surrounding it in the delimiting values
+     * and converts the object to a string using it's <code>toString</code>
+     * property.
+     * @param entry data value to format
+     * @return formatted entry,
+     *         surrounded by quotes and ending with delimiter (ie - comma)
+     */
     private static String formatEntry(Object entry){
         return QUOTE + entry.toString() + QUOTE + DELIM;
     }
     
+    /**
+     * Combines all items as a list.  The primary use is if an item itself
+     * is a list, all the elements of the item is added to the complete list.
+     * That is, all sub-items of an item are added to the overall list.
+     * 
+     * @param items object elements to combine
+     * @return all items and sub-items combined into one collection
+     */
     public static List arrayCombine(Object... items){
         if (items == null){
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -204,4 +218,7 @@ public class CSVWriter {
         }
         return l;
     }
+
+    //--------------------------------------------------------------------------
+    
 }
