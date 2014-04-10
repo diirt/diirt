@@ -14,7 +14,6 @@ import org.epics.pvmanager.timecache.query.QueryParameters;
 import org.epics.vtype.VType;
 
 /**
- * {@inheritDoc}
  * @author Fred Arnaud (Sopra Group) - ITER
  */
 public class CacheImpl implements Cache {

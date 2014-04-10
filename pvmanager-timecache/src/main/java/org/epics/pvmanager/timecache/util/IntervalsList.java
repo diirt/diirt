@@ -142,8 +142,8 @@ public class IntervalsList {
 
 	/**
 	 * Check if the list contains a point.
-	 * @param x point to check
-	 * @return true if the list contains x
+	 * @param t point to check
+	 * @return true if the list contains t
 	 */
 	public boolean contains(Timestamp t) {
 		if (t == null)

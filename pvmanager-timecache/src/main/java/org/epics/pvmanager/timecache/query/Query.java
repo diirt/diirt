@@ -22,14 +22,12 @@ public interface Query {
 	/**
 	 * This method returns all data available for the specified
 	 * {@link TimeInterval}.
-	 * @return
 	 */
 	public QueryResult getResult();
 
 	/**
 	 * This method can be polled at regular interval and should return right
 	 * away with the data is already available, even if incomplete.
-	 * @return
 	 */
 	public QueryResult getUpdate();
 

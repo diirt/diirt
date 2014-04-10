@@ -38,7 +38,7 @@ public class TimestampsSet {
 
 	/**
 	 * Add a {@link Timestamp} to the set.
-	 * @param t, {@link Timestamp} to be added.
+	 * @param t {@link Timestamp} to be added.
 	 */
 	public void add(Timestamp t) {
 		if (t != null)

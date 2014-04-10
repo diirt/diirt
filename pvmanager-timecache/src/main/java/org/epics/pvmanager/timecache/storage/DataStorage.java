@@ -32,9 +32,9 @@ public interface DataStorage extends DataSource {
 
 	/**
 	 * Stores all {@link Data} of the specified {@link DataChunk} and returns
-	 * the corresponding set of {@link StoredData} ordered by {@link Timestamp}.
-	 * @param chunk, the {@link DataChunk} to store.
-	 * @return
+	 * the corresponding set of {@link Data} ordered by {@link Timestamp}.
+	 * @param chunk to store.
+	 * @return set of {@link Data} ordered by {@link Timestamp}.
 	 */
 	public SortedSet<Data> storeData(DataChunk chunk);
 
