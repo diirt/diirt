@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.IntensityGraph2DRenderer;
-import org.epics.graphene.MultilineGraph2DRenderer;
+import org.epics.graphene.LineGraph2DRenderer;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.impl.ProfileAreaGraph2D;
 import org.epics.graphene.profile.impl.ProfileBubbleGraph2D;
@@ -659,7 +659,7 @@ public final class TestCaseProfiler {
             data.add(results.get(0));
             
         //Save
-        MultilineGraph2DRenderer graph = new MultilineGraph2DRenderer(640, 480);
+        LineGraph2DRenderer graph = new LineGraph2DRenderer(640, 480);
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         graph.draw(g, data);
