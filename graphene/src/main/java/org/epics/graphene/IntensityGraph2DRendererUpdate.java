@@ -31,7 +31,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
     private ValueColorScheme valueColorScheme;
     
-    private ValueColorSchemeInstanceOptimizer optimizer;
+    private ValueColorSchemeInstanceOptimized optimizer;
     
     /**
      * Sets this object's drawLegend to the given boolean value.
@@ -58,7 +58,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return self();
     }
     
-    public IntensityGraph2DRendererUpdate optimizer(ValueColorSchemeInstanceOptimizer optimizer){
+    public IntensityGraph2DRendererUpdate optimizer(ValueColorSchemeInstanceOptimized optimizer){
         this.optimizer = optimizer;
         return self();
     }
@@ -110,7 +110,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         return valueColorScheme;
     }
     
-    public ValueColorSchemeInstanceOptimizer getOptimizer(){
+    public ValueColorSchemeInstanceOptimized getOptimizer(){
         return optimizer;
     }
     

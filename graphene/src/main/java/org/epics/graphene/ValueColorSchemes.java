@@ -37,4 +37,13 @@ public class ValueColorSchemes {
     public static Map<String, ValueColorScheme> getRegisteredColorSchemes() {
         return Collections.unmodifiableMap(registeredColorSchemes);
     }
+    
+    public static ValueColorSchemeInstance optimize(ValueColorSchemeInstance instance, Range range){
+        return new ValueColorSchemeInstanceOptimized(instance, range);
+    }
+    
+    public static ValueColorSchemeInstance optimize(ValueColorSchemeInstance instance, Range oldRange, Range newRange){
+        return new ValueColorSchemeInstanceOptimized(instance, oldRange, newRange);
+    }
+    
 }
