@@ -22,8 +22,7 @@ public class DataStorageFactory {
 	 * @return {@link Collection} of {@link DataStorage}
 	 * @throws Exception
 	 */
-	public static <V extends VType> DataStorage createStorage(Class<V> type)
-			throws Exception {
+	public static <V extends VType> DataStorage createStorage(Class<V> type) {
 		return new SimpleMemoryStorage();
 	}
 

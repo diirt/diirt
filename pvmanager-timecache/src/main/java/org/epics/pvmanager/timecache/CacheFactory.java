@@ -12,7 +12,7 @@ public class CacheFactory {
 
 	public static Cache cache = null;
 
-	public static Cache getCache() throws Exception {
+	public static Cache getCache() {
 		if (cache == null)
 			cache = new CacheImpl();
 		return cache;

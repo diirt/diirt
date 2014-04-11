@@ -24,7 +24,7 @@ public interface Cache {
 	 * @throws Exception
 	 */
 	public <V extends VType> Query createQuery(String channelName,
-			Class<V> type, QueryParameters parameters) throws Exception;
+			Class<V> type, QueryParameters parameters);
 
 	public void setStatisticsEnabled(boolean enabled);
 
