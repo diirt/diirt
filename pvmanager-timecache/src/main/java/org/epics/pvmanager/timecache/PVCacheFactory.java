@@ -13,8 +13,8 @@ import org.epics.vtype.VType;
  */
 public class PVCacheFactory {
 
-	public static <V extends VType> PVCache createPVCache(
-			String channelName, Class<V> type) throws Exception {
+	public static <V extends VType> PVCache createPVCache(String channelName,
+			Class<V> type) {
 		return new PVCacheImpl(channelName,
 				DataSourceFactory.createSources(type),
 				DataStorageFactory.createStorage(type));

@@ -25,7 +25,7 @@ public class DataSourceFactory {
 	 * @throws Exception
 	 */
 	public static <V extends VType> Collection<DataSource> createSources(
-			Class<V> type) throws Exception {
+			Class<V> type) {
 		List<DataSource> list = new ArrayList<DataSource>();
 		list.add(new SimpleFileDataSource("resources/test/archive-export.csv"));
 		list.add(new SimpleFileDataSource("resources/test/archive-export-singlePV.csv"));

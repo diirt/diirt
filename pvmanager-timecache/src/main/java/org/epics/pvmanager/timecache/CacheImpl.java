@@ -24,7 +24,7 @@ public class CacheImpl implements Cache {
 	/** {@inheritDoc} */
 	@Override
 	public <V extends VType> Query createQuery(String channelName,
-			Class<V> type, QueryParameters parameters) throws Exception {
+			Class<V> type, QueryParameters parameters) {
 		PVCache pvCache = (PVCache) cachedPVs.get(channelName);
 		if (pvCache == null) {
 			pvCache = PVCacheFactory.createPVCache(channelName, type);
