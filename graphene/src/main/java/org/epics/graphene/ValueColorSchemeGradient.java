@@ -14,12 +14,13 @@ import java.util.List;
  */
 class ValueColorSchemeGradient implements ValueColorScheme {
 
-    private Color[] colors;
+    private final Color[] colors;
 
     public ValueColorSchemeGradient(Color[] colors) {
         this.colors = colors;
     }
 
+    @Override
     public ValueColorSchemeInstance createInstance(Range range) {
         return new ValueColorSchemeInstanceGradient(colors, range);
     }
@@ -27,7 +28,7 @@ class ValueColorSchemeGradient implements ValueColorScheme {
     class ValueColorSchemeInstanceGradient implements ValueColorSchemeInstance {
 
         protected Color[] colors;
-        protected List<Double> percentages = new ArrayList<Double>();
+        protected List<Double> percentages = new ArrayList<>();
         protected int nanColor;
         protected Range range;
 
