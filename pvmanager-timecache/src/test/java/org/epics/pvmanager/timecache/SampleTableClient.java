@@ -124,7 +124,7 @@ public class SampleTableClient extends javax.swing.JFrame {
         
         resultField.setText("");
         
-        PVManager.read(resultOf(new OneArgFunction<VString, VTable>() {
+        pvReader = PVManager.read(resultOf(new OneArgFunction<VString, VTable>() {
 
             private VTable oldArg;
             private VString oldResult;
