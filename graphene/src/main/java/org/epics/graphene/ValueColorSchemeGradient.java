@@ -52,7 +52,7 @@ class ValueColorSchemeGradient implements ValueColorScheme {
             if (fullRange > 0) {
                 for (int i = 0; i < percentages.size() - 1; i++) {
                     if (range.getMinimum().doubleValue() + percentages.get(i) * fullRange <= value && value <= range.getMinimum().doubleValue() + percentages.get(i + 1) * fullRange) {
-                        double normalValue = NumberUtil.normalize(value, range.getMinimum().doubleValue() + percentages.get(i) * fullRange, range.getMinimum().doubleValue() + percentages.get(i + 1) * fullRange);
+                        double normalValue = MathUtil.normalize(value, range.getMinimum().doubleValue() + percentages.get(i) * fullRange, range.getMinimum().doubleValue() + percentages.get(i + 1) * fullRange);
                         normalValue = Math.min(normalValue, 1.0);
                         normalValue = Math.max(normalValue, 0.0);
                         alpha = 255;
