@@ -499,7 +499,6 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    //@Ignore("TODO: draws incorrect image")
     public void singleValueSingleLine() throws Exception {
         double [][] initialData= new double [1][100]; 
         for(int i = 0; i < 1; i++){
@@ -523,7 +522,6 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    //@Ignore("draws wrong image")
     public void singleValueMultipleLines() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
@@ -570,7 +568,6 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    @Ignore("TODO:draws incorrectly")
     public void linesEqualPixels() throws Exception {
         double [][] initialData= new double [81][100]; 
         for(int i = 0; i < 81; i++){
@@ -594,7 +591,6 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    //@Ignore("TODO: draws incorrectly")
     public void manyLinesStress() throws Exception {
         double [][] initialData= new double [5000][100]; 
         for(int i = 0; i < 5000; i++){
