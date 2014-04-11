@@ -6,14 +6,9 @@ package org.epics.pvmanager.sample;
 
 import java.awt.event.MouseEvent;
 import org.epics.graphene.AreaGraph2DRendererUpdate;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRendererUpdate;
-import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
-import org.epics.pvmanager.graphene.AreaGraph2DExpression;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.HistogramGraph2DExpression;
-import org.epics.pvmanager.graphene.LineGraph2DExpression;
 
 /**
  *
