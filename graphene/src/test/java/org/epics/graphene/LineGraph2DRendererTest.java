@@ -499,7 +499,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    @Ignore("TODO: draws incorrect image")
+    //@Ignore("TODO: draws incorrect image")
     public void singleValueSingleLine() throws Exception {
         double [][] initialData= new double [1][100]; 
         for(int i = 0; i < 1; i++){
@@ -514,7 +514,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         }
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(100,100);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
         
@@ -523,7 +523,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    @Ignore("draws wrong image")
+    //@Ignore("draws wrong image")
     public void singleValueMultipleLines() throws Exception {
         double [][] initialData= new double [10][100]; 
         for(int i = 0; i < 10; i++){
@@ -538,7 +538,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         }
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(100,100);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
         
@@ -585,7 +585,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         }
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(100,100);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
         
@@ -594,7 +594,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
     
     @Test
-    @Ignore("TODO: draws incorrectly")
+    //@Ignore("TODO: draws incorrectly")
     public void manyLinesStress() throws Exception {
         double [][] initialData= new double [5000][100]; 
         for(int i = 0; i < 5000; i++){
@@ -609,7 +609,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         }
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(100,100);
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
         
