@@ -178,6 +178,8 @@ public class IntensityGraph2DRendererTest {
     
     @Test
     public void smallXAndYWithLegend() throws Exception {
+        // TODO: fix formatting (indents do not follow)
+        
         double listOfData [] = new double[640*480];
         Random rand = new Random(0);
             for(int i = 0; i < (640*480); i++){
@@ -188,6 +190,8 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            // TODO: replace all the IntensityGraph2DRendererUpdate constructors with:
+            // renderer.newUpdate()
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             renderer.update(update);
