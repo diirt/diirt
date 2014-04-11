@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import junit.framework.AssertionFailedError;
@@ -463,5 +464,181 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         ImageAssert.compareImages("lineGraph2D.linear.xAxisRange", image);
+    }
+    
+    
+    
+    //here begin the tests of multiline
+    
+    
+    
+    @Test
+    public void multipleCosineColorScheme() throws Exception {
+        double [][] initialData= new double [10][100]; 
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = (double)i*Math.cos((double)j/100 * 6 * Math.PI);
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 10; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRendererUpdate update = new LineGraph2DRendererUpdate();
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        update.valueColorScheme(ValueColorSchemes.JET);
+        renderer.update(update);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.multipleCosineColorScheme", image);
+    }
+    
+    @Test
+    @Ignore("TODO: draws incorrect image")
+    public void singleValueSingleLine() throws Exception {
+        double [][] initialData= new double [1][100]; 
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 1; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.singleValueSingleLine", image);
+    }
+    
+    @Test
+    @Ignore("draws wrong image")
+    public void singleValueMultipleLines() throws Exception {
+        double [][] initialData= new double [10][100]; 
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 10; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.singleValueMultipleLines", image);
+    }
+    
+    @Test
+    public void multipleCosine() throws Exception {
+        double [][] initialData= new double [10][100]; 
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = (double)i*Math.cos((double)j/100 * 6 * Math.PI);
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 10; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.multipleCosine", image);
+    }
+    
+    @Test
+    @Ignore("TODO:draws incorrectly")
+    public void linesEqualPixels() throws Exception {
+        double [][] initialData= new double [81][100]; 
+        for(int i = 0; i < 81; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 81; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.linesEqualsPixels", image);
+    }
+    
+    @Test
+    @Ignore("TODO: draws incorrectly")
+    public void manyLinesStress() throws Exception {
+        double [][] initialData= new double [5000][100]; 
+        for(int i = 0; i < 5000; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = i;
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 5000; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.manyLinesStress", image);
+    }
+    
+    @Test
+    public void updateInterpolation() throws Exception {
+        double [][] initialData= new double [10][100]; 
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 100; j++){
+                initialData[i][j] = (double)i*Math.cos((double)j/100 * 6 * Math.PI);
+            }
+        }
+
+        List<Point2DDataset> data = new ArrayList<Point2DDataset>();
+        for(int i = 0; i < 10; i++){
+            data.add(Point2DDatasets.lineData(initialData[i]));
+        }
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
+        LineGraph2DRendererUpdate update = new LineGraph2DRendererUpdate();
+        update.interpolation(InterpolationScheme.NEAREST_NEIGHBOUR);
+        renderer.update(update);
+        renderer.draw(g, data);
+        
+        //Compares to correct image
+        ImageAssert.compareImages("lineGraph2D.updateInterpolation", image);
     }
 }
