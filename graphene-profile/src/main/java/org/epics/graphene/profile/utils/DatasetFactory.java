@@ -17,6 +17,7 @@ import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DCircularBuffer;
 import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasetUpdate;
+import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.graphene.Point3DWithLabelDatasets;
@@ -89,17 +90,18 @@ public final class DatasetFactory {
      * @param nSamples number of points in data
      * @return a set of data to be drawn
      */
-    public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){        
-        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int seed = 1;
+    public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){
+        // TODO: remove all usage of Point1DCircularBuffer
+        // Replace with something that looks lit:
         
         //Creates data
+        int seed = 1;
         Random rand = new Random(seed);
+        double[] data = new double[nSamples];
         for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
+            data[i] = rand.nextGaussian();
         }
-        dataset.update(update);   
+        Point1DDataset dataset = Point1DDatasets.of(new ArrayDouble(data));   
         
         return dataset;
     }
