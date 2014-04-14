@@ -5,14 +5,9 @@
 package org.epics.pvmanager.sample;
 
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRendererUpdate;
-import org.epics.graphene.MultilineGraph2DRendererUpdate;
 import org.epics.graphene.NLineGraphs2DRendererUpdate;
-import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
-import org.epics.pvmanager.graphene.LineGraph2DExpression;
-import org.epics.pvmanager.graphene.MultilineGraph2DExpression;
 import org.epics.pvmanager.graphene.NLineGraphs2DExpression;
 
 /**

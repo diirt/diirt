@@ -7,7 +7,6 @@ package org.epics.pvmanager.sample;
 import javax.swing.DefaultComboBoxModel;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRenderer;
-import org.epics.graphene.MultilineGraph2DRenderer;
 
 /**
  *
@@ -24,7 +23,7 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.graph = graph;
         initComponents();
-        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(MultilineGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
+        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(LineGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
         if (graph != null) {
             interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
         }
