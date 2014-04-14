@@ -38,9 +38,7 @@ public class MultiLevelProfiler{
     
     private List<Resolution> resolutions;
     private List<Integer> datasetSizes;
-    
-    private SaveSettings saveSettings;
-    
+        
     private Map<Resolution, Map<Integer, Statistics>> results;
     private Map<Resolution, Map<Integer, BufferedImage>> images;
             
@@ -57,7 +55,6 @@ public class MultiLevelProfiler{
         this.profiler = profiler;
         this.results = new HashMap<>();
         this.images = new HashMap<>();
-        this.saveSettings = new SaveSettings();
     }
     
     
@@ -114,10 +111,7 @@ public class MultiLevelProfiler{
                     //Track results (dataset size and statistics)
                     map.put(datasetSizes.get(s), profiler.getStatistics());
                     imageMap.put(datasetSizes.get(s), profiler.getSaveSettings().getSaveImage());
-                    
-                    int h = profiler.getSaveSettings().getSaveImage().getHeight();
-                    int w = profiler.getSaveSettings().getSaveImage().getWidth();
-                    
+
                     //Use to process the result, such as print to console
                     this.processResult(resolutions.get(r), datasetSizes.get(s), profiler.getStatistics());
                 }
@@ -305,7 +299,7 @@ public class MultiLevelProfiler{
             "Date",
             profiler.getProfileSettings().getTitle(),
             profiler.getRenderSettings().getTitle(),
-            saveSettings.getTitle()
+            profiler.getSaveSettings().getTitle()
         ));
         
         CSVWriter.writeRow(output, CSVWriter.arrayCombine(
@@ -313,7 +307,7 @@ public class MultiLevelProfiler{
             DateUtils.getDate(DateUtils.DateFormat.DELIMITED),
             profiler.getProfileSettings().getOutput(),
             profiler.getRenderSettings().getOutput(),
-            saveSettings.getOutput()
+            profiler.getSaveSettings().getOutput()
         ));
     }
 
@@ -493,7 +487,7 @@ public class MultiLevelProfiler{
      *         be saved to an output file
      */
     public SaveSettings getSaveSettings(){
-        return this.saveSettings;
+        return this.profiler.getSaveSettings();
     }
     
     
