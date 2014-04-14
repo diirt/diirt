@@ -724,7 +724,6 @@ public final class TestCaseProfiler {
             msg = opt1[opts[i][0]] + ", " + opt2[opts[i][1]] + ", " + opt3[opts[i][2]];
             
             //Settings
-            profile.getProfileSettings().setTestTime(1);
             profile.getSaveSettings().setSaveMessage(msg);
             profile.getSaveSettings().setAuthorMessage("asbarber");
             
