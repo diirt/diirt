@@ -13,6 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.epics.pvmanager.timecache.Data;
+import org.epics.pvmanager.timecache.DataChunk;
+import org.epics.pvmanager.timecache.DataRequestListener;
+import org.epics.pvmanager.timecache.DataRequestThread;
 import org.epics.pvmanager.timecache.PVCache;
 import org.epics.pvmanager.timecache.PVCacheListener;
 import org.epics.pvmanager.timecache.impl.SimpleFileDataSource;
@@ -27,7 +30,31 @@ import org.epics.util.time.Timestamp;
  */
 public class QueryImpl implements Query, PVCacheListener {
 
-	private static final Logger log = Logger.getLogger(SimpleFileDataSource.class.getName());
+	private static final Logger log = Logger
+			.getLogger(SimpleFileDataSource.class.getName());
+
+	private class StoredDataListener implements DataRequestListener {
+
+		@Override
+		public void newData(DataChunk chunk, DataRequestThread thread) {
+			log.log(Level.INFO, "STORAGE: " + CacheHelper.format(chunk.getInterval())
+							+ ": " + chunk.getDatas().size());
+			// TODO: more precise statistics ? there is some more informations available from thread
+			if (cache.isStatisticsEnabled() && !chunk.isEmpty())
+				cache.getStatistics().foundStoredData();
+			if (chunk != null && !chunk.isEmpty()) {
+				updateChunks(chunk.getDatas(), true);
+				completedInterval.addToSelf(chunk.getInterval());
+			}
+		}
+
+		@Override
+		public void intervalComplete(DataRequestThread thread) {
+			runningThreadToStorage = null;
+			completedInterval.addToSelf(interval);
+		}
+
+	}
 
 	private final PVCache cache;
 	private TimeInterval interval;
@@ -37,6 +64,8 @@ public class QueryImpl implements Query, PVCacheListener {
 
 	// Used for statistics
 	private Timestamp lastRequestStart = null;
+	private DataRequestThread runningThreadToStorage;
+	private IntervalsList completedInterval = new IntervalsList();
 
 	public QueryImpl(final PVCache cache) {
 		this.cache = cache;
@@ -48,9 +77,10 @@ public class QueryImpl implements Query, PVCacheListener {
 	/** {@inheritDoc} */
 	@Override
 	public void newData(SortedSet<Data> datas) {
-		log.log(Level.INFO,
-				"Received: " + CacheHelper.format(TimeInterval.between(
-						datas.first().getTimestamp(), datas.last().getTimestamp()))
+		log.log(Level.INFO, "SOURCE: "
+						+ CacheHelper.format(TimeInterval.between(
+								datas.first().getTimestamp(), 
+								datas.last().getTimestamp()))
 						+ ": " + datas.size());
 		if (datas != null && !datas.isEmpty()
 				&& interval.contains(datas.first().getTimestamp()))
@@ -112,7 +142,10 @@ public class QueryImpl implements Query, PVCacheListener {
 			lastRequestStart = Timestamp.now();
 			cache.getStatistics().intervalRequested(interval, lastRequestStart);
 		}
-		cache.retrieveDataAsync(interval);
+		completedInterval = new IntervalsList();
+		runningThreadToStorage = cache.retrieveDataAsync(interval);
+		runningThreadToStorage.addListener(new StoredDataListener());
+		runningThreadToStorage.start();
 	}
 
 	/** {@inheritDoc} */
@@ -158,6 +191,8 @@ public class QueryImpl implements Query, PVCacheListener {
 	// Request cache for completed intervals and update chunk status
 	private void checkCompletedIntervals() {
 		IntervalsList completedIntervals = cache.getCompletedIntervalsList();
+		if (runningThreadToStorage != null) // still retrieving data from storage
+			completedIntervals.intersectSelf(completedInterval);
 		for (QueryChunk chunk : chunks)
 			if (!chunk.isComplete()
 					&& completedIntervals.contains(chunk.getTimeInterval()))
@@ -173,6 +208,17 @@ public class QueryImpl implements Query, PVCacheListener {
 	// Usefull to debug
 	public PVCache getCache() {
 		return cache;
+	}
+
+	// Usefull to debug
+	public boolean isComplete() {
+		boolean allCompleted = true;
+		synchronized (chunks) {
+			for (QueryChunk chunk : chunks)
+				if (!chunk.isComplete())
+					allCompleted = false;
+		}
+		return allCompleted;
 	}
 
 }
