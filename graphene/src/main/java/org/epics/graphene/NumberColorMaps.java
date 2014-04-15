@@ -22,7 +22,7 @@ public class NumberColorMaps {
     // http://www.mathworks.com/help/matlab/ref/colormap.html
     
     /**
-     * JET ranges from blue to rad, going through cyan and yellow.
+     * JET ranges from blue to red, going through cyan and yellow.
      */
     public static final NumberColorMap JET = new NumberColorMapGradient(new Color[]{new Color(0,0,138), 
                                                                                 Color.BLUE,
