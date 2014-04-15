@@ -6,10 +6,6 @@ package org.epics.pvmanager.sample;
 
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.ColorScheme;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRenderer;
-import org.epics.graphene.NumberColorMap;
 import org.epics.graphene.NumberColorMaps;
 
 /**
@@ -29,7 +25,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
         initComponents();
         colorSchemeField.setModel(new DefaultComboBoxModel<String>(new ArrayList<String>(NumberColorMaps.getRegisteredColorSchemes().keySet()).toArray(new String[0])));
         if (graph != null) {
-            colorSchemeField.setSelectedItem(graph.getColorScheme());
+            colorSchemeField.setSelectedItem(graph.getColorMap());
         }
     }
 
@@ -80,7 +76,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void colorSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSchemeFieldActionPerformed
-        graph.setColorScheme(NumberColorMaps.getRegisteredColorSchemes().get(colorSchemeField.getSelectedItem()));
+        graph.setColorMap(NumberColorMaps.getRegisteredColorSchemes().get(colorSchemeField.getSelectedItem()));
     }//GEN-LAST:event_colorSchemeFieldActionPerformed
 
     /**

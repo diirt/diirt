@@ -4,9 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
-import org.epics.graphene.ColorScheme;
 import org.epics.graphene.IntensityGraph2DRendererUpdate;
-import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.NumberColorMap;
 import org.epics.graphene.NumberColorMaps;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
@@ -20,7 +18,7 @@ import org.epics.pvmanager.graphene.IntensityGraph2DExpression;
 public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpdate> {
 
     public IntensityGraphApp() {
-        dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
+        dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<>(
                 new String[] { "sim://gaussianWaveform",
                     "sim://sine2DWaveform(1,50,45,100,100,0.1)",
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
@@ -30,20 +28,20 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
     @Override
     protected IntensityGraph2DExpression createExpression(String dataFormula) {
         IntensityGraph2DExpression plot = intensityGraphOf(formula(dataFormula));
-        plot.update(plot.newUpdate().valueColorScheme(colorScheme));
+        plot.update(plot.newUpdate().colorMap(colorMap));
         return plot;
     }
     
-    private NumberColorMap colorScheme = NumberColorMaps.JET;
+    private NumberColorMap colorMap = NumberColorMaps.JET;
     
-    public NumberColorMap getColorScheme() {
-        return colorScheme;
+    public NumberColorMap getColorMap() {
+        return colorMap;
     }
 
-    public void setColorScheme(NumberColorMap colorScheme) {
-        this.colorScheme = colorScheme;
+    public void setColorMap(NumberColorMap colorMap) {
+        this.colorMap = colorMap;
         if (graph != null) {
-            graph.update(graph.newUpdate().valueColorScheme(colorScheme));
+            graph.update(graph.newUpdate().colorMap(colorMap));
         }
     }
 
