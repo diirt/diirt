@@ -7,8 +7,8 @@ package org.epics.pvmanager.sample;
 import org.epics.graphene.ColorScheme;
 import org.epics.graphene.IntensityGraph2DRendererUpdate;
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ValueColorScheme;
-import org.epics.graphene.ValueColorSchemes;
+import org.epics.graphene.NumberColorMap;
+import org.epics.graphene.NumberColorMaps;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.IntensityGraph2DExpression;
@@ -34,13 +34,13 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
         return plot;
     }
     
-    private ValueColorScheme colorScheme = ValueColorSchemes.JET;
+    private NumberColorMap colorScheme = NumberColorMaps.JET;
     
-    public ValueColorScheme getColorScheme() {
+    public NumberColorMap getColorScheme() {
         return colorScheme;
     }
 
-    public void setColorScheme(ValueColorScheme colorScheme) {
+    public void setColorScheme(NumberColorMap colorScheme) {
         this.colorScheme = colorScheme;
         if (graph != null) {
             graph.update(graph.newUpdate().valueColorScheme(colorScheme));
