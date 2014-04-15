@@ -4,11 +4,13 @@
  */
 package org.epics.pvmanager.sample;
 
+import org.epics.graphene.IntensityGraph2DRenderer;
 import org.epics.graphene.IntensityGraph2DRendererUpdate;
 import org.epics.graphene.NumberColorMap;
 import org.epics.graphene.NumberColorMaps;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
+import org.epics.pvmanager.graphene.Graph2DExpression;
 import org.epics.pvmanager.graphene.IntensityGraph2DExpression;
 
 /**
@@ -24,6 +26,16 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
                     "=caHistogram(\"histo\")"}));
     }
+    
+    protected void updateGraph() {
+        if (graph != null) {
+            update(graph);
+        }
+    }
+    
+    protected void update(Graph2DExpression<IntensityGraph2DRendererUpdate> graph) {
+        graph.update(graph.newUpdate().colorMap(colorMap).drawLegend(drawLegend));
+    }
 
     @Override
     protected IntensityGraph2DExpression createExpression(String dataFormula) {
@@ -32,7 +44,8 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
         return plot;
     }
     
-    private NumberColorMap colorMap = NumberColorMaps.JET;
+    private NumberColorMap colorMap = IntensityGraph2DRenderer.DEFAULT_COLOR_MAP;
+    private boolean drawLegend = IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND;
     
     public NumberColorMap getColorMap() {
         return colorMap;
@@ -40,11 +53,18 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
 
     public void setColorMap(NumberColorMap colorMap) {
         this.colorMap = colorMap;
-        if (graph != null) {
-            graph.update(graph.newUpdate().colorMap(colorMap));
-        }
+        updateGraph();
     }
 
+    public boolean isDrawLegend() {
+        return drawLegend;
+    }
+
+    public void setDrawLegend(boolean drawLegend) {
+        this.drawLegend = drawLegend;
+        updateGraph();
+    }
+    
     @Override
     protected void openConfigurationDialog() {
         IntensityGraphDialog dialog = new IntensityGraphDialog(new javax.swing.JFrame(), true, this);

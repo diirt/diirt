@@ -40,6 +40,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         colorSchemeField = new javax.swing.JComboBox<String>();
+        drawLegendField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,15 +52,27 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
             }
         });
 
+        drawLegendField.setText("Draw Legend");
+        drawLegendField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawLegendFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(colorSchemeField, 0, 279, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(colorSchemeField, 0, 279, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(drawLegendField)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -69,6 +82,8 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(colorSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(drawLegendField)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -78,6 +93,10 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
     private void colorSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSchemeFieldActionPerformed
         graph.setColorMap(NumberColorMaps.getRegisteredColorSchemes().get(colorSchemeField.getSelectedItem()));
     }//GEN-LAST:event_colorSchemeFieldActionPerformed
+
+    private void drawLegendFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawLegendFieldActionPerformed
+        graph.setDrawLegend(drawLegendField.isSelected());
+    }//GEN-LAST:event_drawLegendFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,6 +141,7 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> colorSchemeField;
+    private javax.swing.JCheckBox drawLegendField;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
