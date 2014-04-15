@@ -27,7 +27,7 @@ import java.awt.image.DataBufferByte;
  */
 public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
-    private ValueColorSchemeInstance valueColorSchemeInstance;
+    private NumberColorMapInstance valueColorSchemeInstance;
     private Range optimizedRange;
     public boolean optimizeColorScheme = false;
     /**
@@ -108,7 +108,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     // ^ (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE ^
     
-    private ValueColorScheme valueColorScheme = ValueColorSchemes.JET;
+    private NumberColorMap valueColorScheme = NumberColorMaps.JET;
     
     
     /**
@@ -169,15 +169,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         else{
             if(valueColorSchemeInstance == null && optimizedRange == null){
                 valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else if(optimizedRange == null){
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else{
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
                 optimizedRange = zPlotRange;
             }
         }
@@ -297,15 +297,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         else{
             if(valueColorSchemeInstance == null && optimizedRange == null){
                 valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else if(optimizedRange == null){
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else{
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
                 optimizedRange = zPlotRange;
             }
         }
@@ -974,7 +974,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
      * 
      * @return the color schemed used for the value; can't be null
      */
-    public ValueColorScheme getValueColorScheme() {
+    public NumberColorMap getValueColorScheme() {
         return valueColorScheme;
     }
 

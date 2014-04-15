@@ -30,7 +30,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
 
     private Boolean drawLegend;
 
-    private ValueColorScheme valueColorScheme;
+    private NumberColorMap valueColorScheme;
     
     // TODO: review comments (they mostly just repeat the method name)
     
@@ -51,10 +51,10 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     
     /**
      * Sets this object's valueColorScheme to the given ColorScheme.
-     * @param scheme supported schemes: any <code>ColorScheme</code> supported by the <code>ValueColorSchemes</code>
+     * @param scheme supported schemes: any <code>ColorScheme</code> supported by the <code>NumberColorMaps</code>
      * @return this
      */
-    public IntensityGraph2DRendererUpdate valueColorScheme(ValueColorScheme scheme) {
+    public IntensityGraph2DRendererUpdate valueColorScheme(NumberColorMap scheme) {
         this.valueColorScheme = scheme;
         return self();
     }
@@ -102,7 +102,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      * @return ColorScheme valueColorScheme, used to determine which color scheme will be used when drawing an intensity graph. 
      * Possible values include: GRAY_SCALE, JET, HOT, COOL, SPRING, BONE, COPPER, PINK
      */
-    public ValueColorScheme getValueColorScheme() {
+    public NumberColorMap getValueColorScheme() {
         return valueColorScheme;
     }
     
