@@ -50,7 +50,7 @@ public interface PVCache {
 	 * immediately available samples.
 	 * @param interval {@link TimeInterval} to be retrieved.
 	 */
-	public void retrieveDataAsync(TimeInterval interval);
+	public DataRequestThread retrieveDataAsync(TimeInterval interval);
 
 	/**
 	 * Synchronously requests {@link DataStorage} for immediately available

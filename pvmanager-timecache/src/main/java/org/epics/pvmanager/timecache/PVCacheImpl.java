@@ -70,26 +70,6 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	}
 
-	private class StoredDataListener implements DataRequestListener {
-
-		@Override
-		public void newData(DataChunk chunk, DataRequestThread thread) {
-			// TODO: more precise statistics ? there is some more informations
-			// available from thread
-			if (statisticsEnabled && !chunk.isEmpty())
-				stats.foundStoredData();
-			for (PVCacheListener l : listeners)
-				l.newData(chunk.getDatas());
-		}
-
-		@Override
-		public void intervalComplete(DataRequestThread thread) {
-			if (thread != null)
-				runningThreadsToStorage.remove(thread);
-		}
-
-	}
-
 	private boolean statisticsEnabled = false;
 	private final PVCacheStatistics stats = new PVCacheStatistics();
 
@@ -99,7 +79,6 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	private List<PVCacheListener> listeners;
 	private List<DataRequestThread> runningThreadsToSources;
-	private List<DataRequestThread> runningThreadsToStorage;
 
 	private Map<Integer, IntervalsList> completedIntervalsBySource;
 
@@ -110,7 +89,6 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 			DataStorage storage) {
 		this.listeners = Collections.synchronizedList(new LinkedList<PVCacheListener>());
 		this.runningThreadsToSources = Collections.synchronizedList(new LinkedList<DataRequestThread>());
-		this.runningThreadsToStorage = Collections.synchronizedList(new LinkedList<DataRequestThread>());
 		this.channelName = channelName;
 		this.storage = storage;
 		this.dataSources = Collections
@@ -148,9 +126,9 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public void retrieveDataAsync(TimeInterval interval) {
+	public DataRequestThread retrieveDataAsync(TimeInterval interval) {
 		if (interval == null)
-			return;
+			return null;
 		interval = CacheHelper.arrange(interval);
 		IntervalsList missingIntervals = retrieveMissingIntervals(interval);
 		if (statisticsEnabled && !missingIntervals.getIntervals().isEmpty())
@@ -172,12 +150,10 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 		}
 		requestedIntervals.addToSelf(interval);
 		try {
-			DataRequestThread thread = new DataRequestThread(channelName, storage, interval);
-			thread.addListener(new StoredDataListener());
-			thread.start();
-			runningThreadsToStorage.add(thread);
+			return new DataRequestThread(channelName, storage, interval);
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
+			return null;
 		}
 	}
 
@@ -215,7 +191,7 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	/** {@inheritDoc} */
 	@Override
 	public IntervalsList getCompletedIntervalsList() {
-		return this.completedIntervals;
+		return new IntervalsList(this.completedIntervals);
 	}
 
 	/** {@inheritDoc} */
@@ -240,11 +216,6 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	// Useful for debug
 	public boolean isProcessingSources() {
 		return runningThreadsToSources.size() > 0;
-	}
-
-	// Useful for debug
-	public boolean isProcessingStorage() {
-		return runningThreadsToStorage.size() > 0;
 	}
 
 	// Useful for debug

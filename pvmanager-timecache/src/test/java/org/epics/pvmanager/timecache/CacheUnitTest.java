@@ -17,6 +17,8 @@ import org.epics.pvmanager.timecache.query.QueryData;
 import org.epics.pvmanager.timecache.query.QueryImpl;
 import org.epics.pvmanager.timecache.query.QueryParameters;
 import org.epics.pvmanager.timecache.query.QueryResult;
+import org.epics.pvmanager.timecache.util.IntervalsList;
+import org.epics.util.time.TimeInterval;
 import org.epics.util.time.TimeRelativeInterval;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VType;
@@ -40,30 +42,31 @@ public class CacheUnitTest {
 	 * Test that a {@link PVCache} is created when none exists. Test that the
 	 * sum of Query.getUpdate samples count is equals to the Query.getResult
 	 * samples count. Test that when another query is created with the same
-	 * channel name, the same {@link PVCache} is used and the Query.getResult
-	 * samples count is the same.
+	 * channel name, the same {@link PVCache} is used and the Query.getUpdate &
+	 * Query.getResult samples count are the same.
 	 */
 	@Test
 	public void testCreateQuery() {
 		try {
 			Cache cache = CacheFactory.getCache();
 			start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
-			end = Timestamp.of(dateFormat.parse("2014-04-03 10:00"));
-			Query query1 = cache.createQuery("TEST-BTY0:AI1",
-					VType.class, new QueryParameters()
-							.timeInterval(TimeRelativeInterval.of(start, end)));
+			end = Timestamp.of(dateFormat.parse("2014-04-03 12:00"));
+			Query query1 = cache.createQuery("TEST-BTY0:AI1", VType.class,
+					new QueryParameters().timeInterval(TimeRelativeInterval.of(start, end)));
 			// test that the cache is holding 1 PV cache
 			Assert.assertEquals(1, ((CacheImpl) cache).getCount());
 
 			QueryResult result = null;
 			int updateCount = 0;
 			int limit = 0;
-			while (limit <= 10) { // 10s
+			while (limit <= 60) { // 60s
 				try {
 					Thread.sleep(1000);
 					result = query1.getUpdate();
 					for (QueryData data : result.getData())
 						updateCount += data.getCount();
+					if (((QueryImpl) query1).isComplete())
+						break;
 				} catch (InterruptedException e) {
 				}
 				limit++;
@@ -80,17 +83,38 @@ public class CacheUnitTest {
 			// test that the cache is still holding 1 PV cache
 			Assert.assertEquals(1, ((CacheImpl) cache).getCount());
 
+			// test that caches are the same
 			PVCacheImpl pvCache1 = (PVCacheImpl) ((QueryImpl) query1).getCache();
 			PVCacheImpl pvCache2 = (PVCacheImpl) ((QueryImpl) query2).getCache();
-			// test that caches are the same
 			Assert.assertEquals(pvCache1.getChannelName(), pvCache2.getChannelName());
 
+			IntervalsList iList = pvCache1.getCompletedIntervalsList();
+			Assert.assertTrue(iList.contains(TimeInterval.between(start, end)));
+
+			int newUpdateCount = 0;
+			limit = 0;
+			while (limit <= 60) { // 60s
+				try {
+					Thread.sleep(1000);
+					result = query2.getUpdate();
+					for (QueryData data : result.getData())
+						newUpdateCount += data.getCount();
+					if (((QueryImpl) query2).isComplete())
+						break;
+				} catch (InterruptedException e) {
+				}
+				limit++;
+			}
 			int newResultCount = 0;
-			result = query1.getResult();
+			result = query2.getResult();
 			for (QueryData data : result.getData())
 				newResultCount += data.getCount();
+
+			Assert.assertEquals(updateCount, newUpdateCount);
 			Assert.assertEquals(resultCount, newResultCount);
 
+			iList = pvCache1.getCompletedIntervalsList();
+			Assert.assertTrue(iList.contains(TimeInterval.between(start, end)));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());

@@ -38,6 +38,7 @@ public class PVCacheUnitTest {
 	private static Set<Timestamp> dataTimes = new TreeSet<Timestamp>();
 	private static Timestamp start = null;
 	private static Timestamp end = null;
+	private static boolean finished = false;
 
 	// listener that count data in the requested interval
 	private static class TUListener implements PVCacheListener {
@@ -55,6 +56,30 @@ public class PVCacheUnitTest {
 					dataTimes.add(d.getTimestamp());
 				}
 			}
+		}
+	}
+
+	// listener that counts data in the requested interval
+	private static class TUListener2 implements DataRequestListener {
+		@Override
+		public void newData(DataChunk chunk, DataRequestThread thread) {
+			System.out.println(CacheHelper.format(TimeInterval.between(
+					chunk.getDatas().first().getTimestamp(), 
+					chunk.getDatas().last().getTimestamp()))
+					+ ": " + chunk.getDatas().size());
+			for (Data d : chunk.getDatas()) {
+				if (d.getTimestamp().compareTo(start) >= 0
+						&& d.getTimestamp().compareTo(end) <= 0) {
+					if (dataTimes.contains(d.getTimestamp()))
+						System.out.println("D: " + CacheHelper.format(d.getTimestamp()));
+					dataTimes.add(d.getTimestamp());
+				}
+			}
+		}
+
+		@Override
+		public void intervalComplete(DataRequestThread thread) {
+			finished = true;
 		}
 	}
 
@@ -96,11 +121,13 @@ public class PVCacheUnitTest {
 			dataTimes.clear();
 
 			// ask for same interval and verify no thread is launched
-			cache.retrieveDataAsync(TimeInterval.between(start, end));
+			DataRequestThread thread = cache.retrieveDataAsync(TimeInterval.between(start, end));
 			Assert.assertFalse(cache.isProcessingSources());
-			Assert.assertTrue(cache.isProcessingStorage());
+			thread.addListener(new TUListener2());
+			finished = false;
+			thread.start();
 			limit = 0;
-			while (cache.isProcessingStorage() && limit <= 60) { // 30s
+			while (!finished && limit <= 60) { // 30s
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
