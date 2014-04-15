@@ -394,6 +394,35 @@ public class IntensityGraph2DRendererTest {
             
     }
     
+    private Cell2DDataset createRandomDataset(int width, int height) {
+        double listOfData [] = new double[width*height];
+        Random rand = new Random(0);
+        for(int i = 0; i < (width*height); i++){
+            listOfData[i] = rand.nextDouble();
+        }
+        ArrayDouble dataList = new ArrayDouble(listOfData);
+        return Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, width), width, RangeUtil.range(0, height), height);
+    }
+    
+    @Test
+    @Ignore("TODO: adding and removing the legend leaves a space")
+    public void addRemoveLegend() throws Exception {
+        Cell2DDataset data = createRandomDataset(640, 480);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        GraphBuffer graphBuffer = new GraphBuffer(image);
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
+        
+        renderer.update(renderer.newUpdate().drawLegend(true));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.2", image);
+        
+        renderer.update(renderer.newUpdate().drawLegend(false));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
+    }
+    
     @Test
     public void UpdateRightMarginTest() throws Exception {
         double listOfData [] = new double[640*480];
