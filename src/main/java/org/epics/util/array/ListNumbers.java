@@ -152,21 +152,7 @@ public class ListNumbers {
         if (size <= 0) {
             throw new IllegalArgumentException("Size must be positive (was " + size + " )");
         }
-        return new ListDouble() {
-
-            @Override
-            public double getDouble(int index) {
-                if (index < 0 || index >= size) {
-                    throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-                }
-                return minValue + (index * (maxValue - minValue)) / (size - 1);
-            }
-
-            @Override
-            public int size() {
-                return size;
-            }
-        };
+        return new LieanListDoubleFromRange(size, minValue, maxValue);
     }
     
     /**
@@ -182,21 +168,7 @@ public class ListNumbers {
         if (size <= 0) {
             throw new IllegalArgumentException("Size must be positive (was " + size + " )");
         }
-        return new ListDouble() {
-
-            @Override
-            public double getDouble(int index) {
-                if (index < 0 || index >= size) {
-                    throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-                }
-                return initialValue + index * increment;
-            }
-
-            @Override
-            public int size() {
-                return size;
-            }
-        };
+        return new LinearListDouble(size, initialValue, increment);
     }
     
     /**
@@ -223,5 +195,57 @@ public class ListNumbers {
         } else {
             throw new IllegalArgumentException(primitiveArray + " is not a an array of primitive numbers");
         }
+    }
+
+    private static class LieanListDoubleFromRange extends ListDouble {
+
+        private final int size;
+        private final double minValue;
+        private final double maxValue;
+
+        public LieanListDoubleFromRange(int size, double minValue, double maxValue) {
+            this.size = size;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
+
+        @Override
+        public double getDouble(int index) {
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+            }
+            return minValue + (index * (maxValue - minValue)) / (size - 1);
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
+    }
+
+    private static class LinearListDouble extends ListDouble {
+
+        private final int size;
+        private final double initialValue;
+        private final double increment;
+
+        public LinearListDouble(int size, double initialValue, double increment) {
+            this.size = size;
+            this.initialValue = initialValue;
+            this.increment = increment;
+        }
+
+        @Override
+        public double getDouble(int index) {
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+            }
+            return initialValue + index * increment;
+        }
+
+            @Override
+            public int size() {
+                return size;
+            }
     }
 }
