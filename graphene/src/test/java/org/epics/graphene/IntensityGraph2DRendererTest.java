@@ -292,7 +292,6 @@ public class IntensityGraph2DRendererTest {
     }
     
     @Test
-    //@Ignore("This dataset does not draw correctly")
     public void test13() throws Exception {
         int size = 100;
         double[] boundaries = new double[size];

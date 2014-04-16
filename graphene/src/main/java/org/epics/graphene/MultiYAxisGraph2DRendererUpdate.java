@@ -4,12 +4,18 @@
  */
 package org.epics.graphene;
 
+import java.util.HashMap;
+
 /**
  *
  * @author carcassi, sjdallst
  */
 public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<MultiYAxisGraph2DRendererUpdate> {
 
+    private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer, Range>();
+    private Integer marginBetweenGraphs,
+            minimumGraphHeight;
+    
     private InterpolationScheme interpolation;
     private ReductionScheme reduction;
     
@@ -50,6 +56,33 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
         }
         this.reduction = scheme;
         return this;
+    }
+    
+    public MultiYAxisGraph2DRendererUpdate marginBetweenGraphs(Integer margin){
+        marginBetweenGraphs = margin;
+        return this.self();
+    }
+    
+    public MultiYAxisGraph2DRendererUpdate minimumGraphHeight(Integer minimumGraphHeight){
+        this.minimumGraphHeight = minimumGraphHeight;
+        return this.self();
+    }
+    
+    public MultiYAxisGraph2DRendererUpdate setRanges(HashMap<Integer, Range> map){
+        IndexToRangeMap.putAll(map);
+        return this.self();
+    }
+    
+    public HashMap<Integer, Range> getIndexToRange(){
+        return IndexToRangeMap;
+    }
+    
+    public Integer getMarginBetweenGraphs(){
+        return marginBetweenGraphs;
+    }
+    
+    public Integer getMinimumGraphHeight(){
+        return minimumGraphHeight;
     }
     
     /**
