@@ -7,6 +7,7 @@ package org.epics.util.array;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.epics.util.array.ListNumbers.*;
 
 /**
  *
@@ -201,5 +202,15 @@ public class ListNumbersTest {
     public void toListNumber6() {
         double[] array = new double[]{1,2,3};
         assertThat(ListNumbers.toListNumber(array), equalTo((ListNumber) new ArrayDouble(array)));
+    }
+    
+    @Test
+    public void isLinear1() {
+        assertThat(isLinear(linearList(0, 0.1, 100000)), equalTo(true));
+        assertThat(isLinear(linearListFromRange(0, 100, 10000)), equalTo(true));
+        assertThat(isLinear(ListMath.add(linearList(0, 0.00001, 10000), 3.0)), equalTo(true));
+        assertThat(isLinear(linearListFromRange(0, 100, 10000)), equalTo(true));
+        assertThat(isLinear(new ArrayDouble(0,1,2,3,4,5)), equalTo(true));
+        assertThat(isLinear(new ArrayDouble(0,1.00001,2,3,4,5)), equalTo(false));
     }
 }

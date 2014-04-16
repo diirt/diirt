@@ -152,7 +152,7 @@ public class ListNumbers {
         if (size <= 0) {
             throw new IllegalArgumentException("Size must be positive (was " + size + " )");
         }
-        return new LieanListDoubleFromRange(size, minValue, maxValue);
+        return new LinearListDoubleFromRange(size, minValue, maxValue);
     }
     
     /**
@@ -169,6 +169,32 @@ public class ListNumbers {
             throw new IllegalArgumentException("Size must be positive (was " + size + " )");
         }
         return new LinearListDouble(size, initialValue, increment);
+    }
+    
+    /**
+     * Tests whether the list contains a equally spaced numbers.
+     * <p>
+     * Always returns true if the list was created with {@link #linearList(double, double, int) }
+     * or {@link #linearListFromRange(double, double, int) }. For all other cases,
+     * takes the first and last value, creates a linearListFromRange, and checks
+     * whether the difference is greater than the precision allowed by double.
+     * Note that this method is really strict, and it may rule out cases
+     * that may be considered to be linear.
+     * 
+     * @param listNumber
+     * @return 
+     */
+    public static boolean isLinear(ListNumber listNumber) {
+        if (listNumber instanceof LinearListDouble || listNumber instanceof LinearListDoubleFromRange) {
+            return true;
+        }
+        ListDouble diff = ListMath.subtract(listNumber, linearListFromRange(listNumber.getDouble(0), listNumber.getDouble(listNumber.size() - 1), listNumber.size()));
+        for (int i = 0; i < diff.size(); i++) {
+            if (Math.abs(diff.getDouble(i)) > Math.ulp(listNumber.getDouble(i))) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**
@@ -197,13 +223,13 @@ public class ListNumbers {
         }
     }
 
-    private static class LieanListDoubleFromRange extends ListDouble {
+    private static class LinearListDoubleFromRange extends ListDouble {
 
         private final int size;
         private final double minValue;
         private final double maxValue;
 
-        public LieanListDoubleFromRange(int size, double minValue, double maxValue) {
+        public LinearListDoubleFromRange(int size, double minValue, double maxValue) {
             this.size = size;
             this.minValue = minValue;
             this.maxValue = maxValue;
