@@ -15,6 +15,7 @@ import org.epics.util.text.NumberFormats;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.time.Timestamp;
@@ -191,6 +192,15 @@ public class ValueUtilTest {
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time4, time5, time3)), sameInstance(time4));
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time5)), not(sameInstance(time5)));
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(null, null)), not(nullValue()));
+    }
+    
+    @Test
+    public void subArray1() {
+        VNumberArray array = newVNumberArray(new ArrayDouble(1,2,3,4,5), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(123, 123)), displayNone());
+        VNumberArray selection = subArray(array, 2);
+        assertThat(selection.getData(), equalTo((ListNumber) new ArrayDouble(3)));
+        assertThat(selection.getSizes(), equalTo((ListInt) new ArrayInt(1)));
+        assertThat(selection.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(2,3)));
     }
     
 }
