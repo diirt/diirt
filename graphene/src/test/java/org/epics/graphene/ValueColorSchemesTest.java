@@ -24,7 +24,7 @@ public class ValueColorSchemesTest {
     //@Ignore("TODO: Color schemes give wrong color outside range")
     public void jetScheme() {
         Range range = RangeUtil.range(0.0, 1.0);
-        ValueColorSchemeInstance colorScheme = ValueColorSchemes.JET.createInstance(range);
+        NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(new Color(0,0,138).getRGB()));
         assertThat(colorScheme.colorFor(0.0), equalTo(new Color(0,0,138).getRGB()));
         assertThat(colorScheme.colorFor(0.6), equalTo(Color.YELLOW.getRGB()));

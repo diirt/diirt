@@ -490,7 +490,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(640,480);
         LineGraph2DRendererUpdate update = new LineGraph2DRendererUpdate();
         renderer.update(new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
-        update.valueColorScheme(ValueColorSchemes.JET);
+        update.valueColorScheme(NumberColorMaps.JET);
         renderer.update(update);
         renderer.draw(g, data);
         

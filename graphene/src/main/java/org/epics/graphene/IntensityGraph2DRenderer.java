@@ -11,23 +11,33 @@ import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.util.Arrays;
 import java.util.List;
-import java.math.*;
-import static org.epics.graphene.ColorScheme.BONE;
-import static org.epics.graphene.ColorScheme.PINK;
-import static org.epics.graphene.ColorScheme.SPRING;
 import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+
 /**
+ * A renderer for intensity graph (also known as heat graph), which visualizes
+ * the value of a 2D field using a color map.
  *
  * @author carcassi, sjdallst, asbarber, jkfeng
  */
-public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpdate>{
+public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRendererUpdate> {
+    
+    /**
+     * Default color map: JET.
+     */
+    public static NumberColorMap DEFAULT_COLOR_MAP = NumberColorMaps.JET;
+    
+    /**
+     * Default draw legend: false.
+     */
+    public static boolean DEFAULT_DRAW_LEGEND = false;
+    
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
-    private ValueColorSchemeInstance valueColorSchemeInstance;
+    private NumberColorMapInstance valueColorSchemeInstance;
     private Range optimizedRange;
     public boolean optimizeColorScheme = false;
     /**
@@ -56,8 +66,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         if(update.getDrawLegend() != null){
             drawLegend = update.getDrawLegend();
         }
-        if(update.getValueColorScheme() != null){
-            valueColorScheme = update.getValueColorScheme();
+        if(update.getColorMap() != null){
+            colorMap = update.getColorMap();
         }
         if(update.getZLabelMargin() != null){
             zLabelMargin = update.getZLabelMargin();
@@ -82,7 +92,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
                 legendMarginToGraph = 10,
                 legendMarginToEdge = 2;
     protected int zLabelMargin = 3;
-    private boolean drawLegend = false;
+    private boolean drawLegend = DEFAULT_DRAW_LEGEND;
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
@@ -108,7 +118,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
     }
     // ^ (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE ^
     
-    private ValueColorScheme valueColorScheme = ValueColorSchemes.GRAY_SCALE;
+    private NumberColorMap colorMap = DEFAULT_COLOR_MAP;
     
     
     /**
@@ -164,20 +174,20 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Set color scheme
         if(!optimizeColorScheme){
-            valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+            valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
         }
         else{
             if(valueColorSchemeInstance == null && optimizedRange == null){
-                valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else if(optimizedRange == null){
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else{
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
                 optimizedRange = zPlotRange;
             }
         }
@@ -292,20 +302,20 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
         //Set color scheme
         if(!optimizeColorScheme){
-            valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
+            valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
         }
         else{
             if(valueColorSchemeInstance == null && optimizedRange == null){
-                valueColorSchemeInstance = valueColorScheme.createInstance(zPlotRange);
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else if(optimizedRange == null){
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
             else{
-                valueColorSchemeInstance = ValueColorSchemes.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
                 optimizedRange = zPlotRange;
             }
         }
@@ -371,7 +381,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<Graph2DRendererUpd
         
     }
     @Override
-    public Graph2DRendererUpdate newUpdate() {
+    public IntensityGraph2DRendererUpdate newUpdate() {
         return new IntensityGraph2DRendererUpdate();
     }
     
@@ -958,9 +968,24 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
     protected final double scaledZ(double value) {
         return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
     }
-    
- 
-    /*protected final String formatSingleNumber(int number){
-        
-    }*/
+
+    /**
+     * Whether or not the legend for the value to color mapping should be drawn.
+     * Default is {@link #DEFAULT_DRAW_LEGEND}.
+     * 
+     * @return if true legend is drawn
+     */
+    public boolean isDrawLegend() {
+        return drawLegend;
+    }
+
+    /**
+     * Return the color scheme used for the value. Default is {@link #DEFAULT_COLOR_MAP}.
+     * 
+     * @return the color schemed used for the value; can't be null
+     */
+    public NumberColorMap getColorMap() {
+        return colorMap;
+    }
+
 }

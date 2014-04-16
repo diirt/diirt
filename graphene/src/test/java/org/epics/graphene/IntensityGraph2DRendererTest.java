@@ -68,6 +68,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.rectangles", image);
@@ -85,6 +86,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.rectanglesSolid", image);
@@ -102,6 +104,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.smallX", image);
@@ -119,6 +122,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.smallXSolid", image);
@@ -136,6 +140,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.smallY", image);
@@ -153,6 +158,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.smallYSolid", image);
@@ -170,6 +176,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.smallXAndY", image);
@@ -193,6 +200,7 @@ public class IntensityGraph2DRendererTest {
             // TODO: replace all the IntensityGraph2DRendererUpdate constructors with:
             // renderer.newUpdate()
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             update.drawLegend(true);
             renderer.update(update);
             renderer.draw(graphBuffer, data);
@@ -215,6 +223,7 @@ public class IntensityGraph2DRendererTest {
             BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+            renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
             renderer.update(update);
@@ -239,7 +248,7 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
-            update.valueColorScheme(ValueColorSchemes.JET);
+            update.colorMap(NumberColorMaps.JET);
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
@@ -261,7 +270,7 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
-            update.valueColorScheme(ValueColorSchemes.JET);
+            update.colorMap(NumberColorMaps.JET);
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
@@ -282,7 +291,7 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
-        update.valueColorScheme(ValueColorSchemes.JET);
+        update.colorMap(NumberColorMaps.JET);
         renderer.optimizeColorScheme = true;
         renderer.update(update);
         renderer.draw(graphBuffer, data);
@@ -309,7 +318,7 @@ public class IntensityGraph2DRendererTest {
         GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
-        update.valueColorScheme(ValueColorSchemes.JET);
+        update.colorMap(NumberColorMaps.JET);
         renderer.update(update);
         renderer.draw(graphBuffer, data);
         renderer.drawArray(graphBuffer,data);
@@ -330,7 +339,7 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
-        update.valueColorScheme(ValueColorSchemes.JET);
+        update.colorMap(NumberColorMaps.JET);
         update.xAxisRange(AxisRanges.absolute(20,80));
         update.yAxisRange(AxisRanges.absolute(20,80));
         renderer.update(update);
@@ -352,7 +361,7 @@ public class IntensityGraph2DRendererTest {
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
-        update.valueColorScheme(ValueColorSchemes.JET);
+        update.colorMap(NumberColorMaps.JET);
         update.xAxisRange(AxisRanges.absolute(-20, 120));
         update.yAxisRange(AxisRanges.absolute(-20,120));
         renderer.update(update);
@@ -375,13 +384,42 @@ public class IntensityGraph2DRendererTest {
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
             update.drawLegend(true);
-            update.valueColorScheme(ValueColorSchemes.JET);
+            update.colorMap(NumberColorMaps.JET);
             update.rightMargin(20);
             renderer.update(update);
             renderer.draw(graphBuffer, data);
             
             ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", image);
             
+    }
+    
+    private Cell2DDataset createRandomDataset(int width, int height) {
+        double listOfData [] = new double[width*height];
+        Random rand = new Random(0);
+        for(int i = 0; i < (width*height); i++){
+            listOfData[i] = rand.nextDouble();
+        }
+        ArrayDouble dataList = new ArrayDouble(listOfData);
+        return Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, width), width, RangeUtil.range(0, height), height);
+    }
+    
+    @Test
+    @Ignore("TODO: adding and removing the legend leaves a space")
+    public void addRemoveLegend() throws Exception {
+        Cell2DDataset data = createRandomDataset(640, 480);
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        GraphBuffer graphBuffer = new GraphBuffer(image);
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
+        
+        renderer.update(renderer.newUpdate().drawLegend(true));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.2", image);
+        
+        renderer.update(renderer.newUpdate().drawLegend(false));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
     }
     
     @Test
@@ -397,7 +435,7 @@ public class IntensityGraph2DRendererTest {
             GraphBuffer graphBuffer = new GraphBuffer(image);
             IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640,480);
             IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
-            update.valueColorScheme(ValueColorSchemes.JET);
+            update.colorMap(NumberColorMaps.JET);
             update.rightMargin(20);
             renderer.update(update);
             renderer.draw(graphBuffer, data);

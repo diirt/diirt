@@ -48,16 +48,16 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
     
     
     //Parameters
-    private Resolution  resolution = new Resolution(600, 400);    
-    private int         nPoints = 1000;
+    private Resolution      resolution = new Resolution(600, 400);    
+    private int             nPoints = 1000;
     
     //Settings
-    private RenderSettings renderSettings;    
+    private RenderSettings  renderSettings;    
     private SaveSettings    saveSettings;
     
     //Temporary (used in iteration)
-    private BufferedImage image = null;
-    private Graphics2D graphics = null;
+    private BufferedImage   image = null;
+    private Graphics2D      graphics = null;
     
     protected S data = null;
     protected T renderer = null;

@@ -82,7 +82,7 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        TestCaseProfiler.lineGraph();
+                        TestCaseProfiler.intensityGraphStrategies();
         }
     }    
 
@@ -729,6 +729,8 @@ public final class TestCaseProfiler {
             
             //Profile
             multi = new MultiLevelProfiler(profile);
+            multi.setImageSizes(Resolution.defaultResolutions());
+            multi.setDatasetSizes(DatasetFactory.defaultDatasetSizes());
             multi.profile();
             multi.saveStatistics();
         }
@@ -749,6 +751,7 @@ public final class TestCaseProfiler {
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
                 
                 renderer.setLinearBoundaries(linearBounds);
+                renderer.optimizeColorScheme = optimizeValueColor;
                 
                 return renderer;
             }
