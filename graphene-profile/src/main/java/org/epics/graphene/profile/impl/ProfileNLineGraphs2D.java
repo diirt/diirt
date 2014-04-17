@@ -15,7 +15,7 @@ import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
- * Handles profiling for <code>NLineGraphs2DRenderer</code>.
+ * Handles profiling for <code>MultiYAxisGraph2DRenderer</code> when drawing split graphs.
  * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
  * through a <code>Point2DDataset</code>.
  * 
@@ -89,6 +89,7 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<MultiYAxisGraph2DRender
 
     @Override
     protected void render(Graphics2D graphics, MultiYAxisGraph2DRenderer renderer, List<Point2DDataset> data) {
+        //To draw in the same way that NLine did, split must be set true.
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(graphics, data);
     }
