@@ -6,6 +6,8 @@ package org.epics.graphene.profile;
 
 import java.io.File;
 import java.util.List;
+import org.epics.graphene.Cell1DDataset;
+import org.epics.graphene.Cell1DDatasets;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DDataset;
@@ -142,7 +144,7 @@ public abstract class Profiler {
         ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
         
         Point1DDataset timings = Point1DDatasets.of(timingsExcludeFirst);
-        Histogram1D hist = Histograms.createHistogram(timings);
+        Cell1DDataset hist = Cell1DDatasets.createHistogram(timings);
         Point2DDataset line = org.epics.graphene.Point2DDatasets.lineData(timingsExcludeFirst);
         Point2DDataset averagedLine = org.epics.graphene.Point2DDatasets.lineData(averages);
         ShowResizableGraph.showHistogram(hist);

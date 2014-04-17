@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 import org.epics.graphene.AreaGraph2DRenderer;
 import org.epics.graphene.AreaGraph2DRendererUpdate;
+import org.epics.graphene.Cell1DDataset;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.LineGraph2DRenderer;
 import org.epics.graphene.LineGraph2DRendererUpdate;
@@ -87,7 +88,7 @@ public class ShowResizableGraph extends javax.swing.JFrame {
         });
     }
     
-    public static void showHistogram(final Histogram1D hist) {
+    public static void showHistogram(final Cell1DDataset hist) {
         final AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(200, 300);
         showGraph(new Renderer() {
 
