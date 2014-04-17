@@ -7,6 +7,7 @@ package org.epics.pvmanager.sample;
 import javax.swing.DefaultComboBoxModel;
 import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.LineGraph2DRenderer;
+import static org.epics.pvmanager.sample.SwingBindingUtil.onCheckBoxChange;
 
 /**
  *
@@ -19,7 +20,7 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
     /**
      * Creates new form ScatterGraphDialog
      */
-    public MultiYAxisLineGraphDialog(java.awt.Frame parent, boolean modal, MultiYAxisLineGraphApp graph) {
+    public MultiYAxisLineGraphDialog(java.awt.Frame parent, boolean modal, final MultiYAxisLineGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
@@ -27,6 +28,12 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
         if (graph != null) {
             interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
         }
+        onCheckBoxChange(splitField, new Runnable() {
+            @Override
+            public void run() {
+                graph.setSplit(splitField.isSelected());
+            }
+        });
     }
 
     /**
@@ -40,6 +47,7 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
+        splitField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,15 +59,22 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
             }
         });
 
+        splitField.setText("Split");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(interpolationSchemeField, 0, 287, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(splitField)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(interpolationSchemeField, 0, 287, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -69,7 +84,9 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(interpolationSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(splitField)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,5 +142,6 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox splitField;
     // End of variables declaration//GEN-END:variables
 }

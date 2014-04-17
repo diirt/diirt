@@ -9,7 +9,6 @@ import org.epics.graphene.MultiYAxisGraph2DRendererUpdate;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.MultiYAxisGraph2DExpression;
-import org.epics.pvmanager.graphene.NLineGraphs2DExpression;
 
 /**
  *
@@ -17,6 +16,7 @@ import org.epics.pvmanager.graphene.NLineGraphs2DExpression;
  */
 public class MultiYAxisLineGraphApp extends BaseGraphApp<MultiYAxisGraph2DRendererUpdate> {
     private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private boolean split = false;
 
     public MultiYAxisLineGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
@@ -43,7 +43,7 @@ public class MultiYAxisLineGraphApp extends BaseGraphApp<MultiYAxisGraph2DRender
         MultiYAxisGraph2DExpression plot = multiAxisMultiLineGraphOf(formula(dataFormula),
                     null,
                     null);
-        plot.update(plot.newUpdate().interpolation(interpolationScheme));
+        plot.update(plot.newUpdate().interpolation(interpolationScheme).split(split));
         return plot;
     }
 
@@ -57,6 +57,13 @@ public class MultiYAxisLineGraphApp extends BaseGraphApp<MultiYAxisGraph2DRender
     
     public static void main(String[] args) {
         main(MultiYAxisLineGraphApp.class);
+    }
+
+    void setSplit(boolean split) {
+        this.split = split;
+        if (graph != null) {
+            graph.update(graph.newUpdate().split(split));
+        }
     }
     
 }
