@@ -75,7 +75,7 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
      * @param data the histogram data being drawn
      */  
     @Override
-    public void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Histogram1D data){
+    public void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Cell1DDataset data){
         synchronized(datasetBuffer){
             super.render(graphics, renderer, data);
         }
