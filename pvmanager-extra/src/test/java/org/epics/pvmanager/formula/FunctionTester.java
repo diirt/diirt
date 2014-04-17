@@ -23,6 +23,7 @@ import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
 import org.epics.vtype.VTypeToString;
 import org.epics.vtype.VTypeValueEquals;
+import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
 import org.epics.vtype.table.Column;
@@ -107,14 +108,12 @@ public class FunctionTester {
     }
     
     private Object convertType(Object obj) {
-        if (obj instanceof Boolean) {
-            return newVBoolean((Boolean) obj, alarmNone(), timeNow());
-        } else if (obj instanceof Number) {
-            return newVNumber((Number) obj, alarmNone(), timeNow(), displayNone());
-        } else if (obj instanceof String) {
-            return newVString((String) obj, alarmNone(), timeNow());
-        } else if (obj instanceof String[]) {
-            return newVStringArray(Arrays.asList((String[]) obj), alarmNone(), timeNow());
+        if (obj instanceof VType) {
+            return obj;
+        }
+        Object converted = ValueFactory.toVType(obj);
+        if (converted != null) {
+            return converted;
         }
         return obj;
     }
