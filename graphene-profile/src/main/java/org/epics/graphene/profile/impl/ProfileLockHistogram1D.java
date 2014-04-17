@@ -5,11 +5,12 @@
 package org.epics.graphene.profile.impl;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.epics.graphene.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code> while synchronized.
@@ -32,17 +33,14 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
      * Updates the circular point data buffer with the histogram data.
      */
     private void initDatasets(){
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
-        
         //Creates data
-        Random rand = new Random(maxValue);                
+        Random rand = new Random(1);
+        double[] data = new double[nSamples];
         for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
+            data[i] = rand.nextGaussian();
         }
-        datasetBuffer.update(update);
         
-        dataset = Histograms.createHistogram(datasetBuffer);              
+        dataset = Cell1DDatasets.datasetFrom(new ArrayDouble(data), ListNumbers.linearList(0, 1, nSamples));
     }
     
     
@@ -53,8 +51,7 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
     
     //Dataset of each profiler
     private final int nSamples = getNumDataPoints();
-    private final Point1DCircularBuffer datasetBuffer = new Point1DCircularBuffer(nSamples);
-    private Histogram1D dataset;    
+    private Cell1DDataset dataset;
     
     
     /**
@@ -63,7 +60,7 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
      * @return the histogram data to be drawn
      */
     @Override
-    protected final Histogram1D getDataset() {
+    protected final Cell1DDataset getDataset() {
       return dataset;
     }
     
@@ -76,7 +73,7 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
      */  
     @Override
     public void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Cell1DDataset data){
-        synchronized(datasetBuffer){
+        synchronized(dataset){
             super.render(graphics, renderer, data);
         }
     }
