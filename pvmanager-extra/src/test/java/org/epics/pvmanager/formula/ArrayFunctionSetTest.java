@@ -337,4 +337,23 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .latestTimeReturned();
     }
    
+    @Test
+    public void arrayRangeOf(){
+        Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
+        Time time = timeNow();
+        VNumberArray array = newVDoubleArray(new ArrayDouble(1,2,3,4), alarmNone(), time, displayNone());
+        VNumberArray array2 = newVDoubleArray(new ArrayDouble(1,2,3,4), alarm, timeNow(), displayNone());
+        VNumberArray array3 = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(4),
+                Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
+        VNumberArray expected1 = ValueFactory.newVNumberArray(new ArrayDouble(0,4), alarmNone(), time, displayNone());
+        VNumberArray expected2 = ValueFactory.newVNumberArray(new ArrayDouble(-1,1), alarmNone(), time, displayNone());
+	
+        FunctionTester.findBySignature(set, "arrayRangeOf", VNumberArray.class)
+                .compareReturnValue(expected1, array)
+                .compareReturnValue(expected2, array3)
+                .compareReturnValue(null, (Object) null)
+                .compareReturnAlarm(alarmNone(), array)
+                .compareReturnAlarm(alarm, array2)
+                .compareReturnTime(time, array);
+    }
 }
