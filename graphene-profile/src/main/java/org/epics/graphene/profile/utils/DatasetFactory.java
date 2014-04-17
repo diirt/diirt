@@ -91,9 +91,6 @@ public final class DatasetFactory {
      * @return a set of data to be drawn
      */
     public static Point1DDataset makePoint1DGaussianRandomData(int nSamples){
-        // TODO: remove all usage of Point1DCircularBuffer
-        // Replace with something that looks lit:
-        
         //Creates data
         int seed = 1;
         Random rand = new Random(seed);
@@ -223,16 +220,14 @@ public final class DatasetFactory {
      * @return a set of data to be drawn
      */    
     public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
-        Point1DCircularBuffer dataset = new Point1DCircularBuffer(nSamples);
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int seed = 1;
-        
         //Creates data
-        Random rand = new Random(seed);                
+        int seed = 1;
+        Random rand = new Random(seed);
+        double[] data = new double[nSamples];
         for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
+            data[i] = rand.nextGaussian();
         }
-        dataset.update(update);
+        Point1DDataset dataset = Point1DDatasets.of(new ArrayDouble(data));   
         
         return Histograms.createHistogram(dataset);        
     }   

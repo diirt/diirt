@@ -62,7 +62,7 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<MultiYAxisGraph2DRender
      * Creates a dataset message to output the number of graphs.
      */    
     public final void createDatasetMessage(){
-        super.getSaveSettings().setDatasetMessage(getNumDataPoints() + "," + numGraphs + "graphs");
+        super.getSaveSettings().setDatasetMessage(getNumDataPoints() + " & " + numGraphs + "graphs");
     }
     
     //--------------------------------------------------------------------------

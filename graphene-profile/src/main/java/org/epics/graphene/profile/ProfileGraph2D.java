@@ -71,8 +71,8 @@ public abstract class ProfileGraph2D<T extends Graph2DRenderer, S> extends Profi
         data = getDataset();
         renderer = getRenderer(resolution.getWidth(), resolution.getHeight());
         
-        if (renderSettings.getUpdate() != null){ 
-            renderer.update(renderSettings.getUpdate()); 
+        for (Graph2DRendererUpdate u: renderSettings.getUpdates()){
+            renderer.update(u);
         }
         
         //Creates the image buffer if parameter says to set it ouside of render loop

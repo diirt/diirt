@@ -125,9 +125,9 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         data = getDataset();
         renderer = getRenderer(getResolution().getWidth(), getResolution().getHeight());
         
-        if (getRenderSettings().getUpdate() != null){ 
-            renderer.update((IntensityGraph2DRendererUpdate) getRenderSettings().getUpdate());
-        }
+        for (Graph2DRendererUpdate u: getRenderSettings().getUpdates()){
+            renderer.update((IntensityGraph2DRendererUpdate)u);
+        }        
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         if (!getRenderSettings().getBufferInLoop()){
