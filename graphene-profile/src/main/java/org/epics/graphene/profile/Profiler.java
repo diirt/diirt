@@ -8,8 +8,6 @@ import java.io.File;
 import java.util.List;
 import org.epics.graphene.Cell1DDataset;
 import org.epics.graphene.Cell1DDatasets;
-import org.epics.graphene.Histogram1D;
-import org.epics.graphene.Histograms;
 import org.epics.graphene.Point1DDataset;
 import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
