@@ -8,7 +8,7 @@ package org.epics.graphene;
  *
  * @author carcassi
  */
-public class Histogram1DUpdate {
+class Histogram1DUpdate {
 
     private Point1DDataset recalculateFrom;
     

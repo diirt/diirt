@@ -14,7 +14,7 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-class Histogram1DFromDataset1D implements Histogram1D {
+class Histogram1DFromDataset1D implements Cell1DDataset {
     
     private Statistics statistics;
     private Range xRange;
@@ -66,7 +66,6 @@ class Histogram1DFromDataset1D implements Histogram1D {
         values[bin]++;
     }
 
-    @Override
     public void update(Histogram1DUpdate update) {
         if (update.getDataset() != null)
             setDataset(update.getDataset());
