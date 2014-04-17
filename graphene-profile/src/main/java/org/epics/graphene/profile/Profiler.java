@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.List;
 import org.epics.graphene.Histogram1D;
 import org.epics.graphene.Histograms;
-import org.epics.graphene.Point1DCircularBuffer;
-import org.epics.graphene.Point1DDatasetUpdate;
+import org.epics.graphene.Point1DDataset;
+import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.image.ShowResizableGraph;
 import org.epics.graphene.profile.io.CSVWriter;
@@ -141,8 +141,7 @@ public abstract class Profiler {
         ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
         ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
         
-        Point1DCircularBuffer timings = new Point1DCircularBuffer(nTries);
-        timings.update(new Point1DDatasetUpdate().addData(timingsExcludeFirst));
+        Point1DDataset timings = Point1DDatasets.of(timingsExcludeFirst);
         Histogram1D hist = Histograms.createHistogram(timings);
         Point2DDataset line = org.epics.graphene.Point2DDatasets.lineData(timingsExcludeFirst);
         Point2DDataset averagedLine = org.epics.graphene.Point2DDatasets.lineData(averages);
