@@ -10,6 +10,7 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.table.Column;
@@ -87,7 +88,7 @@ public class TableFunctionSetTest extends BaseTestForFormula {
                                  column("Slot", newVDoubleArray(new ArrayDouble(1,2), alarmNone(), timeNow(), displayNone())),
                                  column("CPU", newVStringArray(Arrays.asList("286", "286"), alarmNone(), timeNow())));
 
-        FunctionTester.findByName(set, "tableRangeFilter")
+        FunctionTester.findBySignature(set, "tableRangeFilter", VTable.class, VString.class, VType.class, VType.class)
                 .compareReturnValue(expected, table, "Slot", 1.0, 2.5)
                 .compareReturnValue(null, null, "Slot", 1.0, 2.5)
                 .compareReturnValue(null, table, null, 1.0, 2.5)
@@ -109,6 +110,22 @@ public class TableFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(null, null, "CPU", "286")
                 .compareReturnValue(null, table, null, "286")
                 .compareReturnValue(null, table, "CPU", null);
+    }
+    
+    @Test
+    public void tableRangeFilter2() {
+        VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable expected = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286"), alarmNone(), timeNow())));
+
+        FunctionTester.findBySignature(set, "tableRangeFilter", VTable.class, VString.class, VNumberArray.class)
+                .compareReturnValue(expected, table, "Slot", new ArrayDouble(1.0, 2.5))
+                .compareReturnValue(null, null, "Slot", new ArrayDouble(1.0, 2.5))
+                .compareReturnValue(null, table, null, new ArrayDouble(1.0, 2.5))
+                .compareReturnValue(null, table, "Slot", null);
     }
     
 }
