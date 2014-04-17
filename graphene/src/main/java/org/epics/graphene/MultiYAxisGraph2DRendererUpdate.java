@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<MultiYAxisGraph2DRendererUpdate> {
 
-    private HashMap<Integer, Range> IndexToRangeMap = new HashMap<Integer, Range>();
+    private HashMap<Integer, Range> IndexToRangeMap;
     private Integer marginBetweenGraphs,
             minimumGraphHeight;
     
@@ -20,6 +20,8 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
     private ReductionScheme reduction;
     
     private Integer minimumGraphWidth;
+    
+    private Boolean split;
     
     public MultiYAxisGraph2DRendererUpdate minimumGraphWidth(int minimumGraphWidth){
         this.minimumGraphWidth = minimumGraphWidth;
@@ -69,7 +71,12 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
     }
     
     public MultiYAxisGraph2DRendererUpdate setRanges(HashMap<Integer, Range> map){
-        IndexToRangeMap.putAll(map);
+        IndexToRangeMap = map;
+        return this.self();
+    }
+    
+    public MultiYAxisGraph2DRendererUpdate split(boolean split){
+        this.split = split;
         return this.self();
     }
     
@@ -103,5 +110,9 @@ public class MultiYAxisGraph2DRendererUpdate extends Graph2DRendererUpdate<Multi
     
     public Integer getMinimumGraphWidth(){
         return minimumGraphWidth;
+    }
+    
+    public Boolean isSplit(){
+        return split;
     }
 }

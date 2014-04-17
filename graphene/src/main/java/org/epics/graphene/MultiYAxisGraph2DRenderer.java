@@ -149,6 +149,9 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         if(update.getMinimumGraphHeight() != null){
             minimumGraphHeight = update.getMinimumGraphHeight();
         }
+        if(update.isSplit() != null){
+            split = update.isSplit();
+        }
     }
 
     /**
@@ -170,15 +173,32 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         for(int i = 0; i < data.size(); i++){
             dataRangesY.add(data.get(i).getYStatistics());
         }
-        //Find the number of graphs that can be drawn while still conforming to style standards.
-        getNumGraphs(data);
-        Range datasetRange = RangeUtil.range(0,numGraphs-1);
-        valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
-        calculateRanges(dataRangesX, dataRangesY, numGraphs);
-        calculateLabels();
-        calculateGraphArea();        
-        drawBackground();
-        drawGraphArea();
+
+        labelFontMetrics = g.getFontMetrics(labelFont);
+        
+        if(split){
+            xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
+            totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin + topAreaMargin + bottomAreaMargin + xLabelMargin + 1;
+            getNumGraphsSplit(data);
+            Range datasetRange = RangeUtil.range(0,numGraphs-1);
+            valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+            calculateRanges(dataRangesX, dataRangesY, numGraphs);
+            setGraphBoundaries(data);
+            calculateLabels();
+            calculateGraphAreaSplit();        
+            drawBackground();
+            drawGraphArea();
+        }else{
+            getNumGraphs(data);
+            Range datasetRange = RangeUtil.range(0,numGraphs-1);
+            valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+            calculateRanges(dataRangesX, dataRangesY, numGraphs);
+            calculateLabels();
+            calculateGraphArea();        
+            drawBackground();
+            drawGraphArea();
+        }
+        
         
         List<SortedListView> xValues = new ArrayList<SortedListView>();
         for(int i = 0; i < numGraphs; i++){
@@ -189,10 +209,17 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
         for(int i = 0; i < numGraphs; i++){
             yValues.add(org.epics.util.array.ListNumbers.sortedView(data.get(i).getYValues(), xValues.get(i).getIndexes()));
         }
-        
-        for(int i = 0; i < numGraphs; i++){
-            g.setColor(new Color(valueColorSchemeInstance.colorFor(i)));
-            drawValueExplicitLine(xValues.get(i), yValues.get(i), interpolation, reduction,i);
+        if(split){
+            g.setColor(Color.BLACK);
+            for(int i = 0; i < numGraphs; i++){
+                drawValueExplicitLine(xValues.get(i), yValues.get(i), interpolation, reduction,i);
+            }
+        }
+        else{
+            for(int i = 0; i < numGraphs; i++){
+                g.setColor(new Color(valueColorSchemeInstance.colorFor(i)));
+                drawValueExplicitLine(xValues.get(i), yValues.get(i), interpolation, reduction,i);
+            }
         }
 
     }
