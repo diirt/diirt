@@ -4,17 +4,12 @@
  */
 package org.epics.graphene.profile.image;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
 import org.epics.graphene.AreaGraph2DRenderer;
 import org.epics.graphene.AreaGraph2DRendererUpdate;
-import org.epics.graphene.Histogram1D;
+import org.epics.graphene.Cell1DDataset;
 import org.epics.graphene.LineGraph2DRenderer;
 import org.epics.graphene.LineGraph2DRendererUpdate;
 import org.epics.graphene.Point2DDataset;
@@ -87,7 +82,7 @@ public class ShowResizableGraph extends javax.swing.JFrame {
         });
     }
     
-    public static void showHistogram(final Histogram1D hist) {
+    public static void showHistogram(final Cell1DDataset hist) {
         final AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(200, 300);
         showGraph(new Renderer() {
 

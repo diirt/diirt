@@ -12,11 +12,7 @@ import org.epics.graphene.Cell1DDataset;
 import org.epics.graphene.Cell1DDatasets;
 import org.epics.graphene.Cell2DDataset;
 import org.epics.graphene.Cell2DDatasets;
-import org.epics.graphene.Histogram1D;
-import org.epics.graphene.Histograms;
-import org.epics.graphene.Point1DCircularBuffer;
 import org.epics.graphene.Point1DDataset;
-import org.epics.graphene.Point1DDatasetUpdate;
 import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point3DWithLabelDataset;
@@ -208,29 +204,6 @@ public final class DatasetFactory {
         
         return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
     }
-    
-    /**
-     * Generates Histogram1D data that can be used in rendering.
-     * The data set has the following properties:
-     * <ol>
-     *      <li>Size of data (number of points) is nSamples<li>
-     *      <li>Random values</li>
-     *      <li>Gaussian distribution from 0 to 1</li>
-     * @param nSamples number of points in data
-     * @return a set of data to be drawn
-     */    
-    public static Histogram1D makeHistogram1DGaussianRandomData(int nSamples){
-        //Creates data
-        int seed = 1;
-        Random rand = new Random(seed);
-        double[] data = new double[nSamples];
-        for (int i = 0; i < nSamples; i++) {
-            data[i] = rand.nextGaussian();
-        }
-        Point1DDataset dataset = Point1DDatasets.of(new ArrayDouble(data));   
-        
-        return Histograms.createHistogram(dataset);        
-    }   
-    
+
     //--------------------------------------------------------------------------
 }
