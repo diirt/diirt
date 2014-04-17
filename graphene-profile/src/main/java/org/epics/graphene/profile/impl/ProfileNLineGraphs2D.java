@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import org.epics.graphene.Graph2DRendererUpdate;
-import org.epics.graphene.NLineGraphs2DRenderer;
+import org.epics.graphene.MultiYAxisGraph2DRenderer;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
@@ -21,7 +21,7 @@ import org.epics.graphene.profile.utils.DatasetFactory;
  * 
  * @author asbarber
  */
-public class ProfileNLineGraphs2D extends ProfileGraph2D<NLineGraphs2DRenderer, List<Point2DDataset>>{
+public class ProfileNLineGraphs2D extends ProfileGraph2D<MultiYAxisGraph2DRenderer, List<Point2DDataset>>{
     private int numGraphs = 3;
 
     
@@ -83,12 +83,13 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<NLineGraphs2DRenderer, 
     }
 
     @Override
-    protected NLineGraphs2DRenderer getRenderer(int imageWidth, int imageHeight) {
-        return new NLineGraphs2DRenderer(imageWidth, imageHeight);
+    protected MultiYAxisGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
+        return new MultiYAxisGraph2DRenderer(imageWidth, imageHeight);
     }
 
     @Override
-    protected void render(Graphics2D graphics, NLineGraphs2DRenderer renderer, List<Point2DDataset> data) {
+    protected void render(Graphics2D graphics, MultiYAxisGraph2DRenderer renderer, List<Point2DDataset> data) {
+        renderer.update(renderer.newUpdate().split(true));
         renderer.draw(graphics, data);
     }
 
