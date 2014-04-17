@@ -5,7 +5,6 @@
 package org.epics.graphene;
 
 import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.IteratorDouble;
 import org.epics.util.array.IteratorNumber;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
@@ -31,7 +30,11 @@ class Histogram1DFromDataset1D implements Cell1DDataset {
     private boolean autoValueRange = true;
     private int nBins = 100;
 
-    private void setDataset(Point1DDataset dataset) {
+    public Histogram1DFromDataset1D(Point1DDataset dataset) {
+        calculateFrom(dataset);
+    }
+
+    private void calculateFrom(Point1DDataset dataset) {
         if (dataset.getStatistics() == null) {
             throw new NullPointerException("dataset is null");
         }
@@ -64,11 +67,6 @@ class Histogram1DFromDataset1D implements Cell1DDataset {
         }
         
         values[bin]++;
-    }
-
-    public void update(Histogram1DUpdate update) {
-        if (update.getDataset() != null)
-            setDataset(update.getDataset());
     }
 
     @Override
