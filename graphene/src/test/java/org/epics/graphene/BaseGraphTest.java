@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
- * All rights reserved. Use is subject to license terms. See LICENSE.TXT
+ * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT All rights
+ * reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
 
@@ -21,7 +21,7 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * 
+ *
  *
  * @author Jiakung
  */
@@ -32,7 +32,7 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
     public BaseGraphTest(String resultPrefix) {
         this.resultPrefix = resultPrefix + ".base.";
     }
-    
+
     public abstract S createRenderer();
 
     public abstract BufferedImage draw(S renderer);
@@ -50,42 +50,42 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
         renderer.update(renderer.newUpdate().leftMargin(10));
         ImageAssert.compareImages(resultPrefix + "leftMargin", draw(renderer));
     }
-    
+
     @Test
     public void backgroundColor() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().backgroundColor(Color.BLUE));
         ImageAssert.compareImages(resultPrefix + "backgroundColor", draw(renderer));
     }
-    
+
     @Test
     public void labelColor() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().labelColor(Color.GREEN));
         ImageAssert.compareImages(resultPrefix + "labelColor", draw(renderer));
     }
-    
+
     @Test
     public void labelFont() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().labelFont(FontUtil.getLiberationSansRegular().deriveFont(Font.BOLD, 12)));
         ImageAssert.compareImages(resultPrefix + "labelFont", draw(renderer));
     }
-    
+
     @Test
     public void bottomMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().bottomMargin(10));
         ImageAssert.compareImages(resultPrefix + "bottomMargin", draw(renderer));
     }
-    
+
     @Test
     public void topMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().topMargin(10));
         ImageAssert.compareImages(resultPrefix + "topMargin", draw(renderer));
     }
-    
+
     @Test
     public void allMargins() throws Exception {
         S renderer = createRenderer();
@@ -95,20 +95,21 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
         renderer.update(renderer.newUpdate().topMargin(10));
         ImageAssert.compareImages(resultPrefix + "allMargins", draw(renderer));
     }
+
     @Test
     public void xLabelMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().xLabelMargin(10));
         ImageAssert.compareImages(resultPrefix + "xLabelMargin", draw(renderer));
     }
-    
+
     @Test
     public void yLabelMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().yLabelMargin(10));
         ImageAssert.compareImages(resultPrefix + "yLabelMargin", draw(renderer));
     }
-    
+
     @Test
     public void allLabelMargins() throws Exception {
         S renderer = createRenderer();
@@ -116,28 +117,28 @@ public abstract class BaseGraphTest<T extends Graph2DRendererUpdate<T>, S extend
         renderer.update(renderer.newUpdate().yLabelMargin(10));
         ImageAssert.compareImages(resultPrefix + "allLabelMargins", draw(renderer));
     }
-    
+
     @Test
     public void bottomAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().bottomAreaMargin(10));
         ImageAssert.compareImages(resultPrefix + "bottomAreaMargin", draw(renderer));
     }
-    
+
     @Test
     public void topAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().topAreaMargin(10));
         ImageAssert.compareImages(resultPrefix + "topAreaMargin", draw(renderer));
     }
-    
+
     @Test
     public void leftAreaMargin() throws Exception {
         S renderer = createRenderer();
         renderer.update(renderer.newUpdate().leftAreaMargin(10));
         ImageAssert.compareImages(resultPrefix + "leftAreaMargin", draw(renderer));
     }
-    
+
     @Test
     public void xrightAreaMargin() throws Exception {
         S renderer = createRenderer();

@@ -5,6 +5,7 @@
 package org.epics.graphene;
 
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -28,13 +29,22 @@ public class Point2DDatasetsTest {
     }
     
     @Test
-    public void lineDataFromList(){
-        
+    public void lineDataFromList() {
+        ListNumber data = new ArrayDouble(1,2,3);
+        Point2DDataset dataset = Point2DDatasets.lineData(data);
+        assertEquals(3, dataset.getCount());
+        assertEquals(0.0, dataset.getXValues().getDouble(0), 0.001);
+        assertEquals(1.0, dataset.getXValues().getDouble(1), 0.001);
+        assertEquals(2.0, dataset.getXValues().getDouble(2), 0.001);
+        assertEquals(1.0, dataset.getYValues().getDouble(0), 0.001);
+        assertEquals(2.0, dataset.getYValues().getDouble(1), 0.001);
+        assertEquals(3.0, dataset.getYValues().getDouble(2), 0.001);
     }
+
     
     @Test
     public void lineDataFromListAndOffset(){
-        
+       
     
     }
     
