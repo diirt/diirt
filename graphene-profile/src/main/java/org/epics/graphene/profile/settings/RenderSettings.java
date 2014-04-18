@@ -4,6 +4,9 @@
  */
 package org.epics.graphene.profile.settings;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.ProfileGraph2D;
 
@@ -16,8 +19,8 @@ public class RenderSettings implements Settings{
     
     //Data Members
     //--------------------------------------------------------------------------
-    private Graph2DRendererUpdate   update;
-    private String                  updateDescription;
+    private List<Graph2DRendererUpdate>   updates;
+    private List<String>                  updateDescriptions;
     
     private boolean                 bufferInLoop = false;
     private ProfileGraph2D          profiler;
@@ -33,6 +36,8 @@ public class RenderSettings implements Settings{
             throw new IllegalArgumentException("Use a non-null profiler");
         }
         
+        updates = new ArrayList<>();
+        updateDescriptions = new ArrayList<>();
         this.profiler = profiler;
     }
     
@@ -49,37 +54,40 @@ public class RenderSettings implements Settings{
     public void setBufferInLoop(boolean bufferInLoop){
         this.bufferInLoop = bufferInLoop;
     }
-
-    /**
-     * Sets the update to be applied to the renderer with a description
-     * corresponding to the update.
-     * Requires the update to be non-null.
-     * @param updateDescription description of the update
-     * @param update update to be applied to the renderer
-     */
-    public void setUpdate(String updateDescription, Graph2DRendererUpdate update){
-        if (update == null){
-            throw new IllegalArgumentException("Invalid update");
-        }
-        
-        this.update = update;
-        this.updateDescription = updateDescription;
-    }
-    
+ 
     /**
      * Looks for a corresponding update based on the description,
      * and does nothing if no update is found, else updates.
-     * @param updateDescription update description to search for to apply
+     * @param description update description to search for to apply
      */
-    public void setUpdate(String updateDescription){
-        Object tmp = profiler.getVariations().get(updateDescription);
-
-        //Will not update
-        if (tmp == null){
-            return;
+    public void setUpdate(String description){
+        setUpdate(Arrays.asList(new String[]{description}));
+    }   
+    
+    /**
+     * Looks for corresponding updates based on the descriptions,
+     * and does nothing if no update is found, else updates.
+     * @param descriptions update descriptions to search for to apply
+     */
+    public void setUpdate(List<String> descriptions){
+        if (descriptions == null){
+            throw new IllegalArgumentException("Invalid descriptions");
         }
+
+        this.updateDescriptions = descriptions;
         
-        setUpdate(updateDescription, (Graph2DRendererUpdate) tmp);
+        this.updates.clear();
+        for (String description: descriptions){
+            Object tmp = profiler.getVariations().get(description);
+
+            //Will not update
+            if (tmp == null){
+                throw new IllegalArgumentException("Update is not supported!");
+            }
+            
+            updates.add((Graph2DRendererUpdate)tmp);
+        }   
+
     }    
     
     //--------------------------------------------------------------------------
@@ -99,11 +107,11 @@ public class RenderSettings implements Settings{
     }
 
     /**
-     * Gets the update to be applied to the renderer.
-     * @return update to be applied, null if no update
+     * Gets the updates to be applied to the renderer.
+     * @return updates to be applied, empty list
      */
-    public Graph2DRendererUpdate getUpdate(){
-        return update;
+    public List<Graph2DRendererUpdate> getUpdates(){
+        return updates;
     }
     
     /**
@@ -111,9 +119,15 @@ public class RenderSettings implements Settings{
      * @return update description to be applied, empty string if no description
      */
     public String getUpdateDescription(){
-        if (updateDescription == null) return "";
-        
-        return this.updateDescription;
+        String tmp = "";
+
+        //Adds
+        for (int i = 0; i < this.updateDescriptions.size() - 1; ++i){
+            tmp += this.updateDescriptions.get(i) + " & ";
+        }
+        tmp += this.updateDescriptions.get(this.updateDescriptions.size() - 1);
+
+        return tmp;        
     }    
 
     //--------------------------------------------------------------------------

@@ -52,6 +52,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.profile.impl.ProfileAreaGraph2D;
 import org.epics.graphene.profile.impl.ProfileBubbleGraph2D;
 import org.epics.graphene.profile.impl.ProfileHistogram1D;
@@ -118,7 +119,7 @@ public class VisualProfiler extends JPanel{
         private JLabel              lblSaveImage;
         private JCheckBox           chkSaveImage;
         
-        private JComboBox           listUpdateTypes;
+        private JList               listUpdateTypes;
         private JLabel              lblUpdateTypes;
 
         private JLabel              lblSaveMessage;
@@ -149,7 +150,7 @@ public class VisualProfiler extends JPanel{
             lblSaveImage        = new JLabel("Save Images: ");
             chkSaveImage        = new JCheckBox("Save Image");
             
-            listUpdateTypes     = new JComboBox();
+            listUpdateTypes     = new JList();
             lblUpdateTypes      = new JLabel("Apply Update: ");
 
             lblSaveMessage      = new JLabel("Save Message: ");
@@ -160,31 +161,38 @@ public class VisualProfiler extends JPanel{
         }
         
         private void addComponents(){
-            this.setLayout(new GridLayout(0, 2));
-
-            this.add(this.lblRendererTypes);
-            this.add(this.listRendererTypes);
-
-            this.add(this.lblTestTime);
-            this.add(this.txtTestTime);
-
-            this.add(this.lblMaxAttempts);
-            this.add(this.txtMaxAttempts);
-
-            this.add(this.lblTimeTypes);
-            this.add(this.listTimeTypes);            
-
-            this.add(this.lblSaveImage);
-            this.add(this.chkSaveImage);
+            JPanel right = new JPanel();
+                right.setLayout(new BorderLayout());
+                right.add(this.lblUpdateTypes, BorderLayout.NORTH);
+                right.add(new JScrollPane(this.listUpdateTypes), BorderLayout.CENTER);
             
-            this.add(this.lblUpdateTypes);
-            this.add(this.listUpdateTypes);
+            JPanel left = new JPanel();
+                left.setLayout(new GridLayout(0, 2));
 
-            this.add(lblSaveMessage);
-            this.add(txtSaveMessage);
+                left.add(this.lblRendererTypes);
+                left.add(this.listRendererTypes);
 
-            this.add(lblAuthorMessage);
-            this.add(txtAuthorMessage);            
+                left.add(this.lblTestTime);
+                left.add(this.txtTestTime);
+
+                left.add(this.lblMaxAttempts);
+                left.add(this.txtMaxAttempts);
+
+                left.add(this.lblTimeTypes);
+                left.add(this.listTimeTypes);            
+
+                left.add(this.lblSaveImage);
+                left.add(this.chkSaveImage);
+
+                left.add(lblSaveMessage);
+                left.add(txtSaveMessage);
+
+                left.add(lblAuthorMessage);
+                left.add(txtAuthorMessage);   
+               
+            this.setLayout(new GridLayout(0,2));
+            this.add(left);
+            this.add(right);
         }
     }    
     private class Profile1DTable extends JPanel{
@@ -538,7 +546,6 @@ public class VisualProfiler extends JPanel{
                                                     "1D Table Output",
                                                     "2D Table Output",
                                                     "Tests",
-                                                    "HTML",
                                                     "README.txt"
                                                    };
     
@@ -668,10 +675,10 @@ public class VisualProfiler extends JPanel{
             return (StopWatch.TimeType) settingsPanel.listTimeTypes.getSelectedItem();
         }
         
-        public String getUpdate(){
-            return settingsPanel.listUpdateTypes.getSelectedItem().toString();
+        public List<String> getUpdateDescriptionList(){
+            return settingsPanel.listUpdateTypes.getSelectedValuesList();
         }
-        
+
         public String getAuthor(){
             return settingsPanel.txtAuthorMessage.getText();
         }
@@ -702,7 +709,7 @@ public class VisualProfiler extends JPanel{
             renderer.getProfileSettings().setTestTime(getTestTime());
             renderer.getProfileSettings().setMaxTries(getMaxTries());
             renderer.getProfileSettings().setTimeType(getTimeType());
-            renderer.getRenderSettings().setUpdate(getUpdate());
+            renderer.getRenderSettings().setUpdate(getUpdateDescriptionList());
             
             renderer.getResolution().setWidth(getWidth());
             renderer.getResolution().setHeight(getHeight());
@@ -1563,7 +1570,6 @@ public class VisualProfiler extends JPanel{
      * Constructs a panel to perform profiling operations.
      */
     public VisualProfiler(){
-        initPanel();
         initComponents();
 
         addComponents();
@@ -1576,13 +1582,6 @@ public class VisualProfiler extends JPanel{
     
     //Panel Setup
     //-------------------------------------------------------------------------
-    
-    /**
-     * Initializes panel properties.
-     */    
-    private void initPanel(){
-        this.setLayout(new BorderLayout());
-    }
     
     /**
      * Initializes all graphical user interface components.
@@ -1613,10 +1612,16 @@ public class VisualProfiler extends JPanel{
         tabs.addTab("Control Panel", analyzePanel);
         tabs.addTab("File Browser", fileViewer);
         
+        JSplitPane top = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        top.setTopComponent(settingsPanel);
+        top.setBottomComponent(tabs);
+        
+        JSplitPane bottom = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        bottom.setTopComponent(top);
+        bottom.setBottomComponent(console);
+        
         //Add to panel hiearchy
-        this.add(settingsPanel, BorderLayout.NORTH);
-        this.add(tabs, BorderLayout.CENTER);
-        this.add(console, BorderLayout.SOUTH);                
+        this.add(bottom);          
     }
     
     /**

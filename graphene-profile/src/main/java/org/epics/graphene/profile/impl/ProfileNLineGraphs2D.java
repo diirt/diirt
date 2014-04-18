@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import org.epics.graphene.Graph2DRendererUpdate;
-import org.epics.graphene.NLineGraphs2DRenderer;
+import org.epics.graphene.MultiYAxisGraph2DRenderer;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
- * Handles profiling for <code>NLineGraphs2DRenderer</code>.
+ * Handles profiling for <code>MultiYAxisGraph2DRenderer</code> when drawing split graphs.
  * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
  * through a <code>Point2DDataset</code>.
  * 
  * @author asbarber
  */
-public class ProfileNLineGraphs2D extends ProfileGraph2D<NLineGraphs2DRenderer, List<Point2DDataset>>{
+public class ProfileNLineGraphs2D extends ProfileGraph2D<MultiYAxisGraph2DRenderer, List<Point2DDataset>>{
     private int numGraphs = 3;
 
     
@@ -62,7 +62,7 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<NLineGraphs2DRenderer, 
      * Creates a dataset message to output the number of graphs.
      */    
     public final void createDatasetMessage(){
-        super.getSaveSettings().setDatasetMessage(getNumDataPoints() + "," + numGraphs + "graphs");
+        super.getSaveSettings().setDatasetMessage(getNumDataPoints() + " & " + numGraphs + "graphs");
     }
     
     //--------------------------------------------------------------------------
@@ -83,12 +83,14 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<NLineGraphs2DRenderer, 
     }
 
     @Override
-    protected NLineGraphs2DRenderer getRenderer(int imageWidth, int imageHeight) {
-        return new NLineGraphs2DRenderer(imageWidth, imageHeight);
+    protected MultiYAxisGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
+        return new MultiYAxisGraph2DRenderer(imageWidth, imageHeight);
     }
 
     @Override
-    protected void render(Graphics2D graphics, NLineGraphs2DRenderer renderer, List<Point2DDataset> data) {
+    protected void render(Graphics2D graphics, MultiYAxisGraph2DRenderer renderer, List<Point2DDataset> data) {
+        //To draw in the same way that NLine did, split must be set true.
+        renderer.update(renderer.newUpdate().split(true));
         renderer.draw(graphics, data);
     }
 

@@ -44,10 +44,10 @@ public class ShowHistogram extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private Histogram1D hist;
+    private Cell1DDataset hist;
     private AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
 
-    public void setHistogram(Histogram1D hist) {
+    public void setHistogram(Cell1DDataset hist) {
         this.hist = hist;
         imagePanel.setImage(new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
         pack();
@@ -72,7 +72,7 @@ public class ShowHistogram extends javax.swing.JFrame {
     
     
 
-    private static void showHistogram(final Histogram1D hist) {
+    private static void showHistogram(final Cell1DDataset hist) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -89,7 +89,7 @@ public class ShowHistogram extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws Exception {
         Point1DDataset dataset = MockDataset1D.gaussian(30000);
-        Histogram1D hist = Histograms.createHistogram(dataset);
+        Cell1DDataset hist = Cell1DDatasets.createHistogram(dataset);
         showHistogram(hist);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

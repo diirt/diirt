@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code>.
@@ -18,9 +20,7 @@ import org.epics.graphene.profile.ProfileGraph2D;
  * 
  * @author asbarber
  */
-public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Histogram1D>{
-    
-    private Point1DCircularBuffer datasetBuffer;
+public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell1DDataset> {
     
     /**
      * Generates <code>Histogram1D</code> data that can be used in rendering.
@@ -28,21 +28,17 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
      * @return data as a histogram
      */
     @Override
-    protected Histogram1D getDataset() {
+    protected Cell1DDataset getDataset() {
         int nSamples = getNumDataPoints();
         
-        datasetBuffer = new Point1DCircularBuffer(nSamples);
-        Point1DDatasetUpdate update = new Point1DDatasetUpdate();
-        int maxValue = 1;
-        
         //Creates data
-        Random rand = new Random(maxValue);                
+        Random rand = new Random(1);
+        double[] data = new double[nSamples];
         for (int i = 0; i < nSamples; i++) {
-            update.addData(rand.nextGaussian());
+            data[i] = rand.nextGaussian();
         }
-        datasetBuffer.update(update);
         
-        return Histograms.createHistogram(datasetBuffer);            
+        return Cell1DDatasets.datasetFrom(new ArrayDouble(data), ListNumbers.linearList(0, 1, nSamples));
     }
 
     /**
@@ -65,8 +61,7 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Hist
      * @param data the histogram being drawn
      */
     @Override
-    protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Histogram1D data) {
-        data.update(new Histogram1DUpdate().recalculateFrom(datasetBuffer));
+    protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Cell1DDataset data) {
         renderer.draw(graphics, data);            
     }
     

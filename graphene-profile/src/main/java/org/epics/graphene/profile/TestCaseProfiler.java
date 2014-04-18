@@ -670,7 +670,6 @@ public final class TestCaseProfiler {
     //Test Methods (requiring more memory)
     
     //TODO: run and then delete
-    //TODO: make TestProfileIntensityGraph2D optimize value color scheme
     //Final Test on intensity graph to determine combinations
     /**
      * Test method for the different <code>IntensityGraph2D</code> renderers.

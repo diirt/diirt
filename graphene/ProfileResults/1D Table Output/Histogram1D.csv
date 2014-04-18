@@ -1,3 +1,0 @@
-"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS"," OS Version"
-"Histogram1D","2014/02/28 11:57:20",36.21287113502936,18253,511,1000000,600,400,"","asbarber","Max Dataset Size Test","1.7.0_25",1.762,7.923,"Windows 8","6.2"
-"Histogram1D","2014/02/28 12:00:55",1.94689904387877,15790,10096,10000,640,480,"","","Initialize","1.7.0_25",1.762,7.923,"Windows 8","6.2"
