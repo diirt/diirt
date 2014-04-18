@@ -529,7 +529,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
     }
     
     @Test
-    @Ignore("TODO: Currently this test crashes with an exception")
+    //@Ignore("TODO: Currently this test crashes with an exception")
     public void resizing() throws Exception {
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
         for(int i = 0; i < 3; i++){
