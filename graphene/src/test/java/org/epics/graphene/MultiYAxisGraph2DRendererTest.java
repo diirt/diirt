@@ -32,7 +32,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         double [][] initialData= new double [2][100]; 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
-                initialData[i][j] = (double)i*Math.cos((double)j/100 * 6 * Math.PI);
+                initialData[i][j] = (double)(i)*Math.cos((double)j/100 * 6 * Math.PI);
             }
         }
 
@@ -466,7 +466,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
     }
     
     @Test
-    //@Ignore("TODO: Currently this test crashes with an exception")
+    @Ignore
     public void resizing() throws Exception {
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
         for(int i = 0; i < 3; i++){
