@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
- * All rights reserved. Use is subject to license terms. See LICENSE.TXT
+ * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT All rights
+ * reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
 
@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.*;
 /**
  *
  * TODO: add tests to cover remaining methods
- * 
+ *
  * @author carcassi
  */
 public class Cell2DDatasetsTest {
@@ -21,13 +21,12 @@ public class Cell2DDatasetsTest {
     @Test
     public void linearRangeFromFunction2D() {
         Cell2DDataset dataset = Cell2DDatasets.linearRange(new Cell2DDatasets.Function2D() {
-
             @Override
             public double getValue(double x, double y) {
                 return x + y;
             }
         }, RangeUtil.range(0, 1), 10, RangeUtil.range(0, 1), 20);
-        
+
         assertThat(dataset.getXCount(), equalTo(10));
         assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
         assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(1.0));
@@ -39,7 +38,7 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getStatistics().getCount(), equalTo(200));
         assertThat(dataset.getStatistics().getMinimum().doubleValue(), closeTo(0.075, 0.0001));
         assertThat(dataset.getStatistics().getMaximum().doubleValue(), closeTo(1.925, 0.0001));
-        
+
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
         assertThat(dataset.getYBoundaries().getDouble(0), equalTo(0.0));
@@ -48,20 +47,25 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getXBoundaries().getDouble(10), equalTo(1.0));
         assertThat(dataset.getYBoundaries().getDouble(20), equalTo(1.0));
     }
-    
-    @Test
-    //Not sure how to test this method
-    public void linearRangeFromListNumber(){
-    
-    }
-    
+
+//    @Test
+//    //Not sure how to test this method
+//    public void linearRangeFromListNumber(){
+//        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
+//        Range xRange = RangeUtil.range(0.0, 10.0);
+//        Range yRange = RangeUtil.range(0.0,20.0);
+//        int xCount = 5;
+//        int yCount = 10;
+//        Cell2DDataset dataset = Cell2DDatasets.linearRange(values, xRange, xCount, yRange, yCount);
+//    }
+
     @Test
     public void datasetFromListNumber() {
         ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
         ListNumber xBoundaries = new ArrayDouble(-1, 0, 1);
         ListNumber yBoundaries = new ArrayDouble(0, 1, 2, 3);
         Cell2DDataset dataset = Cell2DDatasets.datasetFrom(values, xBoundaries, yBoundaries);
-        
+
         assertThat(dataset.getXCount(), equalTo(2));
         assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(-1.0));
         assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(1.0));
@@ -73,7 +77,7 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getStatistics().getMinimum(), equalTo((Number) (-1.0)));
         assertThat(dataset.getStatistics().getMaximum(), equalTo((Number) 7.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(6));
-        
+
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(-1.0));
         assertThat(dataset.getXBoundaries().getDouble(1), equalTo(0.0));
@@ -89,17 +93,16 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getValue(0, 2), equalTo(2.0));
         assertThat(dataset.getValue(1, 2), equalTo(2.0));
     }
-    
+
     @Test
     public void datasetFromFunction2D() {
         Cell2DDataset dataset = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
-
             @Override
             public double getValue(double x, double y) {
                 return x + y;
             }
         }, new ArrayDouble(0, 2, 3, 5), new ArrayDouble(0, 1, 3));
-        
+
         assertThat(dataset.getXCount(), equalTo(3));
         assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
         assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(5.0));
@@ -111,7 +114,7 @@ public class Cell2DDatasetsTest {
         assertThat(dataset.getStatistics().getMinimum(), equalTo((Number) (1.5)));
         assertThat(dataset.getStatistics().getMaximum(), equalTo((Number) 6.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(6));
-        
+
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
         assertThat(dataset.getXBoundaries().getDouble(1), equalTo(2.0));
