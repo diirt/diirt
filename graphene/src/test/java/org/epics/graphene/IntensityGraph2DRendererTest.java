@@ -36,9 +36,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         }
         ArrayDouble dataList = new ArrayDouble(listOfData);
         Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 10), 10);
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         GraphBuffer graphBuffer = new GraphBuffer(image);
-        renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
         return image;
 
@@ -378,13 +377,13 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    @Ignore("This dataset does not draw correctly")
+//    @Ignore("This dataset does not draw correctly")
     public void test13() throws Exception {
         Cell2DDataset data = boundaryFunctionDataset();
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
-        renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
+        renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
         renderer.drawArray(graphBuffer, data);
 
