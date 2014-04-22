@@ -735,6 +735,7 @@ public final class TestCaseProfiler {
         }
     }
     private static class TestProfileIntensityGraph2D extends ProfileIntensityGraph2D{
+        // TODO This needs to be removed once done
             boolean linearBounds = true;
             boolean drawByte = true;
             boolean optimizeValueColor = true;
@@ -749,7 +750,6 @@ public final class TestCaseProfiler {
             protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
                 IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
                 
-                renderer.setLinearBoundaries(linearBounds);
                 renderer.optimizeColorScheme = optimizeValueColor;
                 
                 return renderer;
