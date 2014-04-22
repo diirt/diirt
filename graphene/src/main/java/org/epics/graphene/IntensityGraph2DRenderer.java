@@ -39,7 +39,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
     private NumberColorMapInstance valueColorSchemeInstance;
     private Range optimizedRange;
-    public boolean optimizeColorScheme = false;
+    public boolean optimizeColorScheme = true;
     /**
      *Uses constructor specified in super class (Graph2DRenderer)
      * @param imageWidth should be equal to the width of the bufferedImage.
