@@ -106,18 +106,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private boolean rightMarginJustChanged = false;
     public boolean useColorArray = false; 
     
-    // V (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE V
-    private boolean linearBoundaries = false;
-    
-    public void setLinearBoundaries(boolean drawBoundaries){
-        this.linearBoundaries = drawBoundaries;
-    }
-    
-    public boolean isLinearBoundaries(){
-        return linearBoundaries;
-    }
-    // ^ (Possibly) TO BE TAKEN OUT ONCE TESTING IS DONE ^
-    
     private NumberColorMap colorMap = DEFAULT_COLOR_MAP;
     
     
@@ -203,6 +191,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         double cellHeight = (yHeightTotal)/data.getYCount();
         double cellWidth = (xWidthTotal)/data.getXCount();
         
+        boolean linearBoundaries = ListNumbers.isLinear(data.getXBoundaries()) && ListNumbers.isLinear(data.getYBoundaries());
         
         //Draw the cells of data by filling rectangles, if the width and height are greater than one pixel.
         if(cellWidth >= 1 && cellHeight >= 1){
@@ -330,6 +319,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         
         double cellHeight = (yHeightTotal)/data.getYCount();
         double cellWidth = (xWidthTotal)/data.getXCount();
+        
+        boolean linearBoundaries = ListNumbers.isLinear(data.getXBoundaries()) && ListNumbers.isLinear(data.getYBoundaries());
         
         if(cellWidth >= 1 && cellHeight >= 1){
             if(!linearBoundaries){
