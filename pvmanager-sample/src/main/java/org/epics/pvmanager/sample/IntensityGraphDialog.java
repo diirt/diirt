@@ -5,7 +5,9 @@
 package org.epics.pvmanager.sample;
 
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import org.epics.graphene.NumberColorMap;
 import org.epics.graphene.NumberColorMaps;
 
 /**
@@ -25,7 +27,15 @@ public class IntensityGraphDialog extends javax.swing.JDialog {
         initComponents();
         colorSchemeField.setModel(new DefaultComboBoxModel<String>(new ArrayList<String>(NumberColorMaps.getRegisteredColorSchemes().keySet()).toArray(new String[0])));
         if (graph != null) {
-            colorSchemeField.setSelectedItem(graph.getColorMap());
+            String currentName = null;
+            for (Map.Entry<String, NumberColorMap> entry : NumberColorMaps.getRegisteredColorSchemes().entrySet()) {
+                String string = entry.getKey();
+                NumberColorMap numberColorMap = entry.getValue();
+                if (numberColorMap == graph.getColorMap()) {
+                    currentName = string;
+                }
+            }
+            colorSchemeField.setSelectedItem(currentName);
         }
     }
 
