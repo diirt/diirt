@@ -37,7 +37,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     public static boolean DEFAULT_DRAW_LEGEND = false;
     
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
-    private NumberColorMapInstance valueColorSchemeInstance;
+    private NumberColorMapInstance colorMapInstance;
     private Range optimizedRange;
     public boolean optimizeColorScheme = true;
     /**
@@ -68,6 +68,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         }
         if(update.getColorMap() != null){
             colorMap = update.getColorMap();
+            colorMapInstance = null;
         }
         if(update.getZLabelMargin() != null){
             zLabelMargin = update.getZLabelMargin();
@@ -166,21 +167,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         
         
         //Set color scheme
-        if(!optimizeColorScheme){
-            valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
-        }
-        else{
-            if(valueColorSchemeInstance == null && optimizedRange == null){
-                valueColorSchemeInstance = colorMap.createInstance(zPlotRange);
-                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
-                optimizedRange = zPlotRange;
-            }
-            else if(optimizedRange == null){
-                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, zPlotRange);
-                optimizedRange = zPlotRange;
-            }
-            else{
-                valueColorSchemeInstance = NumberColorMaps.optimize(valueColorSchemeInstance, optimizedRange, zPlotRange);
+        if (!optimizeColorScheme){
+            colorMapInstance = colorMap.createInstance(zPlotRange);
+        } else {
+            if (colorMapInstance == null || !RangeUtil.equals(optimizedRange, zRange)) {
+                colorMapInstance = colorMap.createInstance(zPlotRange);
+                colorMapInstance = NumberColorMaps.optimize(colorMapInstance, zPlotRange);
                 optimizedRange = zPlotRange;
             }
         }
@@ -264,7 +256,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 double xPosition = xStartGraph;
                 int xPositionInt = (int)xStartGraph;
                 while (countX < data.getXCount()){
-                    g.setColor(new Color(valueColorSchemeInstance.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
+                    g.setColor(new Color(colorMapInstance.colorFor(data.getValue(countX, data.getYCount()-1-countY))));
                     Rectangle2D.Double currentRectangle = new Rectangle2D.Double(xPositionInt, yPositionInt, (int)cellWidth+1, (int)cellHeight+1);
                     g.fill(currentRectangle);
                     xPosition = xPosition + cellWidth;
@@ -291,7 +283,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 double xPosition = xStartGraph;
                 int xPositionInt = (int)xStartGraph;
                 while (countX < data.getXCount()){
-                    int rgb = valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                    int rgb = colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
                     for(int w = 0; w < (int)cellWidth + 1; w++){
                         for(int h = 0; h < (int)cellHeight + 1; h++){
                             if(hasAlphaChannel){
@@ -339,7 +331,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 countX = 0;
                 int xPositionInt = (int)xStartGraph;
                 while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
-                    g.setColor(new Color(valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
+                    g.setColor(new Color(colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-countY))));
                     Rectangle2D.Double rect;
                     //check to see how far the end of the drawn box is from the end of the actual data box (due to truncation)
                     if((yPositionInt+((int)cellHeight)+1)-(yPosition+cellHeight) < 1)
@@ -377,7 +369,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 countX = 0;
                 int xPositionInt = (int)xStartGraph;
                 while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
-                    int rgb = valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                    int rgb = colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
                     for(int w = 0; w < (int)cellWidth + 1; w++){
                         for(int h = 0; h < (int)cellHeight + 1; h++){
                             if(hasAlphaChannel){
@@ -415,7 +407,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 countY = 0;
                 int yPositionInt = (int)(yEndGraph-yHeightTotal);
                 while (yPositionInt < (int)yEndGraph+1){
-                    g.setColor(new Color(valueColorSchemeInstance.colorFor(data.getValue(countX, data.getYCount()-1-((int)countY)))));
+                    g.setColor(new Color(colorMapInstance.colorFor(data.getValue(countX, data.getYCount()-1-((int)countY)))));
                     Rectangle2D.Double rect;
                     if((xPositionInt+(int)cellWidth+1)-(xPosition+cellWidth) < 1)
                         rect = new Rectangle2D.Double(xPositionInt,yPositionInt,(int)cellWidth+1,1);
@@ -446,7 +438,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 countY = 0;
                 int yPositionInt = (int)(yEndGraph-yHeightTotal);
                 while (yPositionInt < (int)yEndGraph+1){
-                    int rgb = valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                    int rgb = colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
                     for(int w = 0; w < (int)cellWidth + 1; w++){
                         for(int h = 0; h < (int)cellHeight + 1; h++){
                             if(hasAlphaChannel){
@@ -488,7 +480,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             countX = 0;
             xPositionInt = (int) xStartGraph;
             while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
-                g.setColor(new Color(valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
+                g.setColor(new Color(colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY))));
                 Rectangle2D.Double rect;
                 rect = new Rectangle2D.Double(xPositionInt,yPositionInt,1,1);
                 g.fill(rect);
@@ -517,7 +509,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
             countX = 0;
             xPositionInt = (int) xStartGraph;
             while (xPositionInt < (int)(xStartGraph+xWidthTotal)+1){
-                int rgb = valueColorSchemeInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
+                int rgb = colorMapInstance.colorFor(data.getValue((int)countX, data.getYCount()-1-(int)countY));
                 if(hasAlphaChannel){
                     pixels[(yPositionInt)*getImageWidth()*4 + 4*xPositionInt + 0] = (byte)(rgb >> 24 & 0xFF);
                     pixels[(yPositionInt)*getImageWidth()*4 + 4*xPositionInt + 1] = (byte)(rgb & 0xFF);
@@ -613,7 +605,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
         while (countY < newBoundariesY.size()-1){
                 countX = 0;
                 while (countX < newBoundariesX.size()-1){
-                    g.setColor(new Color(valueColorSchemeInstance.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
+                    g.setColor(new Color(colorMapInstance.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)))));
                     //make and fill the rectangle.
                     Rectangle2D.Double currentRectangle;
                     currentRectangle = new Rectangle2D.Double(newBoundariesX.get(countX), newBoundariesY.get(newBoundariesY.size()-1-countY)
@@ -705,7 +697,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
                 countX = 0;
                 while (countX < newBoundariesX.size()-1){
                     //make and fill the rectangle.
-                    int rgb = valueColorSchemeInstance.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)));
+                    int rgb = colorMapInstance.colorFor(data.getValue(valueIndicesX.get(countX), valueIndicesY.get(valueIndicesY.size()-2-countY)));
                     for(int w = 0; w < newBoundariesX.get(countX+1)-newBoundariesX.get(countX); w++){
                         for(int h = 0; h < newBoundariesY.get(newBoundariesY.size()-1-countY-1)-newBoundariesY.get(newBoundariesY.size()-1-countY); h++){
                             if(hasAlphaChannel){
