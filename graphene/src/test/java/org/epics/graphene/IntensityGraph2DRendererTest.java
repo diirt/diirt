@@ -187,6 +187,16 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         }, new ArrayDouble(boundaries), new ArrayDouble(boundaries));
         return data;
     }
+    
+    private Cell2DDataset ellipticParaboloid(int xPoints, Range xRange, int yPoints, Range yRange) {
+        return Cell2DDatasets.linearRange(new Cell2DDatasets.Function2D() {
+
+            @Override
+            public double getValue(double x, double y) {
+                return x*x + y*y;
+            }
+        }, xRange, xPoints, yRange, yPoints);
+    }
 
     /**
      * Sets up the large dataset used in the tests
@@ -400,6 +410,21 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.draw(graphBuffer, data);
 
         ImageAssert.compareImages("intensityGraph2D.ZoomIn", image);
+    }
+
+    @Test
+    @Ignore("FIXME: zoom in with linear boundaries does not seem to work")
+    public void linearBoundariesZoomIn() throws Exception {
+        Cell2DDataset data = ellipticParaboloid(200, RangeUtil.range(0, 100), 200, RangeUtil.range(0, 100));
+        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+        GraphBuffer graphBuffer = new GraphBuffer(image);
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.1", image);
+        
+        renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(20, 80)).yAxisRange(AxisRanges.absolute(20, 80)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.2", image);
     }
 
     @Test
