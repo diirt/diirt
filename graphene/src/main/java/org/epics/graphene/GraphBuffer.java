@@ -12,11 +12,11 @@ import java.awt.image.DataBufferByte;
  */
 public class GraphBuffer {
     
-    private BufferedImage image;
-    private Graphics2D graphics;
-    private byte[] pixels;
-    private boolean hasAlphaChannel;
-    private int width, height;
+    private final BufferedImage image;
+    private final Graphics2D graphics;
+    private final byte[] pixels;
+    private final boolean hasAlphaChannel;
+    private final int width, height;
     
     public GraphBuffer(BufferedImage image){
         this.image = image;
@@ -47,5 +47,27 @@ public class GraphBuffer {
     
     public Graphics2D getGraphicsContext(){
         return graphics;
+    }
+    
+    public void drawDataImage(int xStartPoint, int yStartPoint,
+            int[] xPointToDataMap, int[] yPointToDataMap,
+            Cell2DDataset data, NumberColorMapInstance colorMap) {
+        for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
+            int yData = yPointToDataMap[yOffset];
+            for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {
+                int xData = xPointToDataMap[xOffset];
+                int rgb = colorMap.colorFor(data.getValue(xData, yData));
+                if(hasAlphaChannel){
+                    pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 0] = (byte)(rgb >> 24 & 0xFF);
+                    pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 1] = (byte)(rgb & 0xFF);
+                    pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 2] = (byte)(rgb >> 8 & 0xFF);
+                    pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 3] = (byte)(rgb >> 16 & 0xFF);
+                } else {
+                    pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 0] = (byte)(rgb & 0xFF);
+                    pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 1] = (byte)((rgb >> 8 & 0xFF) );
+                    pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 2] = (byte)((rgb >> 16 & 0xFF));
+                }
+            }
+        }
     }
 }

@@ -183,44 +183,14 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         double cellWidth = (xWidthTotal)/data.getXCount();
         
         boolean linearBoundaries = ListNumbers.isLinear(data.getXBoundaries()) && ListNumbers.isLinear(data.getYBoundaries());
-        
-        if(cellWidth >= 1 && cellHeight >= 1){
-            if(!linearBoundaries){
-                drawRectanglesSmallXAndYBoundariesArray(g, data, image);
-            }
-            else{
-                drawRectanglesArray(g, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth, image);
-            }
-        }
-        
-        //Draw graph when cell width or height is smaller than one pixel.
-        if(cellWidth < 1 || cellHeight < 1){
-            if(cellHeight > 1){
-                if(!linearBoundaries){
-                    drawRectanglesSmallXAndYBoundariesArray(g, data, image);
-                }
-                else{
-                    drawRectanglesSmallXArray(g, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth, image);
-                }
-                
-            }
-            if(cellWidth > 1){
-                if(!linearBoundaries){
-                    drawRectanglesSmallXAndYBoundariesArray(g, data, image);
-                }
-                else{
-                    drawRectanglesSmallYArray(g, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal, cellHeight, cellWidth, image);
-                }
-            }
-            if(cellWidth < 1 && cellHeight < 1){
-                if(!linearBoundaries){
-                    drawRectanglesSmallXAndYBoundariesArray(g, data, image);
-                }
-                else{
-                    drawRectanglesSmallXAndYArray(g, data, xStartGraph, yEndGraph, xWidthTotal, yHeightTotal,cellHeight, cellWidth, image);
-                }
-            }
-        }
+
+        int startX = (int) Math.floor(xPlotCoordStart);
+        int startY = (int) Math.floor(yPlotCoordStart);
+        int endX = (int) Math.ceil(xPlotCoordEnd);
+        int endY = (int) Math.ceil(yPlotCoordEnd);
+        PointToDataMap xPointToDataMap = createPointToDataMap(startX, endX, getXPlotRange(), data.getXBoundaries(), false);
+        PointToDataMap yPointToDataMap = createPointToDataMap(startY, endY, getYPlotRange(), data.getYBoundaries(), true);
+        graphBuffer.drawDataImage(xPointToDataMap.startPoint, yPointToDataMap.startPoint, xPointToDataMap.pointToDataMap, yPointToDataMap.pointToDataMap, data, colorMapInstance);
         
         if(drawLegend && legendWidth>0){
             /*dataList is made by splitting the aggregated range of the z(color) data into a list of the
@@ -262,6 +232,80 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 yPositionInt = (int)yPosition;
                 countY++;
             }
+    }
+    
+    private class PointToDataMap {
+        public int[] pointToDataMap;
+        public int startPoint;
+    }
+    
+    PointToDataMap createPointToDataMap(int startPoint, int endPoint, Range xRange, ListNumber xBoundaries, boolean mirror) {
+        ListNumber pointBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), endPoint - startPoint + 1);
+        // Check any data in range
+        if (xBoundaries.getDouble(0) >= xRange.getMaximum().doubleValue() ||
+                xBoundaries.getDouble(xBoundaries.size() - 1) <= xRange.getMinimum().doubleValue()) {
+            PointToDataMap result = new PointToDataMap();
+            result.pointToDataMap = new int[0];
+            result.startPoint = startPoint;
+            return result;
+        }
+        
+        int startOffset = 0;
+        int endOffset = 0;
+        while (xBoundaries.getDouble(0) > pointBoundaries.getDouble(startOffset + 1)) {
+            startOffset++;
+        }
+        while (xBoundaries.getDouble(xBoundaries.size() - 1) < pointBoundaries.getDouble(pointBoundaries.size() - 1 - endOffset)) {
+            endOffset++;
+        }
+        int nPoints = endPoint - startPoint - endOffset - startOffset;
+        int[] pointToDataMap = new int[nPoints];
+        
+        int currentOffset = 0;
+        int dataPosition = 0;
+        while (currentOffset < nPoints) {
+            // Look for the first cell where the end value is after the 
+            // point start value
+            while (xBoundaries.getDouble(dataPosition + 1) <= pointBoundaries.getDouble(startOffset + currentOffset)) {
+                dataPosition++;
+            }
+
+            if (!mirror) {
+                pointToDataMap[currentOffset] = dataPosition;
+            } else {
+                pointToDataMap[nPoints - currentOffset - 1] = dataPosition;
+            }
+            currentOffset++;
+        }
+        
+        PointToDataMap result = new PointToDataMap();
+        result.pointToDataMap = pointToDataMap;
+        result.startPoint = startPoint + startOffset;
+        return result;
+    }
+    
+    private int[] createYPointToDataMap(int yStartPoint, int nPoints, ListNumber yBoundaries) {
+        int[] pointToDataMap = new int[nPoints];
+        int currentOffset = 0;
+        int dataPosition = 0;
+        while (currentOffset < nPoints) {
+            // Find next boundary that moves the point
+            int nextOffset = currentOffset;
+            while (nextOffset == currentOffset) {
+                dataPosition++;
+                if (dataPosition == yBoundaries.size()) {
+                    return pointToDataMap;
+                }
+                nextOffset = ((int) scaledX(yBoundaries.getDouble(dataPosition))) - yStartPoint;
+            }
+            
+            // Put the dataPosition for all the new points
+            while (currentOffset != nextOffset && currentOffset != nPoints - 1) {
+                currentOffset++;
+                pointToDataMap[currentOffset] = dataPosition;
+            }
+        }
+        return pointToDataMap;
     }
     
     private void drawRectanglesArray(Graphics2D g, Cell2DDataset data, double xStartGraph, double yEndGraph,
