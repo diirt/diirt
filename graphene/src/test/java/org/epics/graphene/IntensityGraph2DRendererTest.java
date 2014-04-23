@@ -443,7 +443,6 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    @Ignore("TODO: adding and removing the legend leaves a space")
     public void addRemoveLegend() throws Exception {
         Cell2DDataset data = createRandomDataset(640, 480);
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);

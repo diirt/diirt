@@ -76,22 +76,20 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         if(update.getLegendWidth() != null){
             legendWidth = update.getLegendWidth();
         }
-        if(update.getLegendMarginToEdge() != null){
-            legendMarginToEdge = update.getLegendMarginToEdge();
+        if(update.getGraphAreaToLegendMargin() != null){
+            graphAreaToLegendMargin = update.getGraphAreaToLegendMargin();
         }
         if(update.getRightMargin() != null){
-            rightMarginChanged = true;
-            rightMarginJustChanged = true;
-            rightMargin = update.getRightMargin();
+            originalRightMargin = update.getRightMargin();
         }
     }
     
-    /*legendWidth,legendMarginToGraph,legendMarginToEdge, and zLabelMargin are all lengths, in terms of pixels.
+    /*legendWidth,legendMarginToGraph,graphAreaToLegendMargin, and zLabelMargin are all lengths, in terms of pixels.
     legendMarginToGraph corresponds to the space between the original graph and the legend.
-    legendMarginToEdge -> the space between the legend labels and the edge of the picture.*/
+    graphAreaToLegendMargin -> the space between the legend labels and the edge of the picture.*/
     private int legendWidth = 10,
                 legendMarginToGraph = 10,
-                legendMarginToEdge = 2;
+                graphAreaToLegendMargin = 3;
     protected int zLabelMargin = 3;
     private boolean drawLegend = DEFAULT_DRAW_LEGEND;
     private Range zRange;
@@ -103,8 +101,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
-    private boolean rightMarginChanged = false;
-    private boolean rightMarginJustChanged = false;
+    private int originalRightMargin = super.rightMargin;
     public boolean useColorArray = false; 
     
     private NumberColorMap colorMap = DEFAULT_COLOR_MAP;
@@ -130,18 +127,15 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         calculateLabels();
         zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
         calculateZRange(zRange);
-        /*Calculate all margins necessary for drawing the legend. 
-        Only do calculations if user says to draw a legend.*/
+        
+        // TODO: the calculation for leaving space for the legend is somewhat hacked
+        // Instead of actually having a nice calculation, we increase the margin
+        // to the right before using the standard calculateGraphArea
         if(drawLegend){
             calculateZLabels();
-            if(!rightMarginChanged){
-                rightMargin = legendMarginToGraph+legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge;
-            }
-            else if(rightMarginJustChanged){
-                rightMargin+= (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge);
-                rightMarginJustChanged = false;
-            }
-                
+            rightMargin = graphAreaToLegendMargin + legendWidth + zLabelMargin + zLabelMaxWidth + originalRightMargin;
+        } else {
+            rightMargin = originalRightMargin;
         }
         
         calculateGraphArea();
@@ -234,7 +228,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum().doubleValue(),zPlotRange.getMaximum().doubleValue(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
-            drawRectanglesArray(g, legendData,xStartGraph + xWidthTotal+(rightMargin - (legendWidth+zLabelMargin+zLabelMaxWidth+legendMarginToEdge))+1,yEndGraph,legendWidth,yHeightTotal,1, legendWidth, image);
+            int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
+            drawRectanglesArray(g, legendData, xLegendStart, yEndGraph, legendWidth, yHeightTotal, 1, legendWidth, image);
             drawZLabels();
         }
         
@@ -771,7 +766,7 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
 
             // Draw first and last label
             int[] drawRange = new int[] {yAreaCoordStart, yAreaCoordEnd - 1};
-            int xRightLabel = (int) (getImageWidth() - legendMarginToEdge-1);
+            int xRightLabel = (int) (getImageWidth() - originalRightMargin - 1);
             drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(0), (int) Math.floor(zTicks.getDouble(0)),
                 drawRange, xRightLabel, true, false);
             drawHorizontalReferencesLabel(g, metrics, zReferenceLabels.get(zReferenceLabels.size() - 1), (int) Math.floor(zTicks.getDouble(zReferenceLabels.size() - 1)),
