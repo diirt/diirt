@@ -53,7 +53,6 @@ public class GraphBuffer {
             int[] xPointToDataMap, int[] yPointToDataMap,
             Cell2DDataset data, NumberColorMapInstance colorMap) {
         int previousYData = -1;
-        int previousXData = -1;
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
             int yData = yPointToDataMap[yOffset];
             if (yData != previousYData) {
