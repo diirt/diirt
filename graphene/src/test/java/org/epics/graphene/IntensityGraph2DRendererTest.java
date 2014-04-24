@@ -17,6 +17,7 @@ import org.junit.Ignore;
  *
  * @authors asbarber, jkfeng, sjdallst
  */
+@Ignore
 public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2DRendererUpdate, IntensityGraph2DRenderer> {
 
     public IntensityGraph2DRendererTest() {
