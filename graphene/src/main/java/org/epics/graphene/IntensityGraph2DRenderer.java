@@ -121,24 +121,31 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     public void drawArray(GraphBuffer graphBuffer, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = graphBuffer.getGraphicsContext();
+        GraphAreaData area = new GraphAreaData();
         BufferedImage image = graphBuffer.getImage();
         calculateRanges(data.getXRange(), data.getYRange());
-        drawBackground();
-        calculateLabels();
+        area.setGraphBuffer(graphBuffer);
+        graphBuffer.drawBackground(backgroundColor);
         zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
         calculateZRange(zRange);
         
         // TODO: the calculation for leaving space for the legend is somewhat hacked
         // Instead of actually having a nice calculation, we increase the margin
         // to the right before using the standard calculateGraphArea
+        int areaRightPixel;
         if(drawLegend){
             calculateZLabels();
-            rightMargin = graphAreaToLegendMargin + legendWidth + zLabelMargin + zLabelMaxWidth + originalRightMargin;
+            areaRightPixel = getImageWidth() - 1 - (graphAreaToLegendMargin + legendWidth + zLabelMargin + zLabelMaxWidth + rightMargin);
         } else {
-            rightMargin = originalRightMargin;
+            areaRightPixel = getImageWidth() - 1 - rightMargin;
         }
-        
-        calculateGraphArea();
+        area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
+        area.setGraphAreaMargins(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
+        area.setLabelMargin(xLabelMargin, yLabelMargin);
+        area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
+        area.prepareLabels(labelFont, labelColor);
+        area.prepareGraphArea(true, referenceLineColor);
+        area.drawGraphArea();
         
         /*Wait to calculate the coordinates of the legend labels till after yPlotCoordRange is calculated.
         Allows for the use of yPlotCoordEnd/start in calculations.*/
@@ -156,7 +163,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 zReferenceCoords = new ArrayDouble(zRefCoords);
             }
         }
-        drawGraphArea();
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         
@@ -173,23 +179,16 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
 
 
         double xStartGraph = super.xPlotCoordStart;
-        double yEndGraph = super.yPlotCoordEnd;
+        double yEndGraph = area.yGraphBottom;
 
-        //Get graph width and height from super class.
-        double xWidthTotal = super.xPlotCoordWidth;
-        double yHeightTotal = super.yPlotCoordHeight;
+        double yHeightTotal = area.yGraphBottom - area.yGraphTop + 1;
         
-        double cellHeight = (yHeightTotal)/data.getYCount();
-        double cellWidth = (xWidthTotal)/data.getXCount();
-        
-        boolean linearBoundaries = ListNumbers.isLinear(data.getXBoundaries()) && ListNumbers.isLinear(data.getYBoundaries());
-
-        int startX = (int) Math.floor(xPlotCoordStart);
-        int startY = (int) Math.floor(yPlotCoordStart);
-        int endX = (int) Math.ceil(xPlotCoordEnd);
-        int endY = (int) Math.ceil(yPlotCoordEnd);
-        PointToDataMap xPointToDataMap = createPointToDataMap(startX, endX, getXPlotRange(), data.getXBoundaries(), false);
-        PointToDataMap yPointToDataMap = createPointToDataMap(startY, endY, getYPlotRange(), data.getYBoundaries(), true);
+        int startX = area.xGraphLeft;//(int) Math.floor(xPlotCoordStart);
+        int startY = area.yGraphTop;//(int) Math.floor(yPlotCoordStart);
+        int endX = area.xGraphRight;//(int) Math.ceil(xPlotCoordEnd);
+        int endY = area.yGraphBottom;//(int) Math.ceil(yPlotCoordEnd);
+        PointToDataMap xPointToDataMap = createPointToDataMap(startX, endX+1, getXPlotRange(), data.getXBoundaries(), false);
+        PointToDataMap yPointToDataMap = createPointToDataMap(startY, endY+1, getYPlotRange(), data.getYBoundaries(), true);
         graphBuffer.drawDataImage(xPointToDataMap.startPoint, yPointToDataMap.startPoint, xPointToDataMap.pointToDataMap, yPointToDataMap.pointToDataMap, data, colorMapInstance);
         
         if(drawLegend && legendWidth>0){
@@ -751,7 +750,8 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
      *Sets private variables to account for the space required to draw in labels for the legend.
      * Only called if drawLegend is true.
      */
-    protected void calculateZLabels() {           
+    protected void calculateZLabels() {
+        labelFontMetrics = g.getFontMetrics(labelFont);
         // Calculate z axis references. If range is zero, use special logic
         if (!zPlotRange.getMinimum().equals(zPlotRange.getMaximum())) {
             ValueAxis zAxis = zValueScale.references(zPlotRange, 2, Math.max(2, getImageHeight() / 60));
