@@ -131,11 +131,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
         
         //Creates the image buffer if parameter says to set it ouside of render loop
         if (!getRenderSettings().getBufferInLoop()){
-            graphBuffer = new GraphBuffer(
-                          new BufferedImage(renderer.getImageWidth(), 
-                                            renderer.getImageHeight(), 
-                                            BufferedImage.TYPE_3BYTE_BGR)
-            );
+            graphBuffer = new GraphBuffer(renderer);
         } 
     }
     
@@ -143,11 +139,7 @@ public class ProfileIntensityGraph2D extends ProfileGraph2D<IntensityGraph2DRend
     protected void iterationAction(){
         //Create Image if necessary
         if (getRenderSettings().getBufferInLoop()){
-            graphBuffer = new GraphBuffer(
-                          new BufferedImage(renderer.getImageWidth(), 
-                                            renderer.getImageHeight(), 
-                                            BufferedImage.TYPE_3BYTE_BGR)
-            );
+            graphBuffer = new GraphBuffer(renderer);
         }
 
         //Subclass render
