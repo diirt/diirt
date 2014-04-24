@@ -21,7 +21,23 @@ import org.junit.Test;
 public class GraphBufferTest {
     
     @Test
-    public void xScalingAsCell() throws Exception {
+    public void yScalingAsCell1() throws Exception {
+        GraphBuffer graph = new GraphBuffer(300, 200);
+        graph.setGraphArea(4, 4, 295, 195);
+        graph.setXScaleAsCell(RangeUtil.range(0, 100), 0, 3, ValueScales.linearScale());
+        assertThat(graph.xValueToPixel(0), equalTo(0));
+        assertThat(graph.xValueToPixel(24.9999), equalTo(0));
+        assertThat(graph.xValueToPixel(25), equalTo(1));
+        assertThat(graph.xValueToPixel(49.9999), equalTo(1));
+        assertThat(graph.xValueToPixel(50), equalTo(2));
+        assertThat(graph.xValueToPixel(74.9999), equalTo(2));
+        assertThat(graph.xValueToPixel(75), equalTo(3));
+        assertThat(graph.xValueToPixel(99.9999), equalTo(3));
+        assertThat(graph.xValueToPixel(100), equalTo(4));
+    }
+    
+    @Test
+    public void xScalingAsCell2() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
         graph.setGraphArea(4, 4, 295, 195);
         graph.setXScaleAsCell(RangeUtil.range(0, 100), 4, 295, ValueScales.linearScale());
@@ -42,6 +58,22 @@ public class GraphBufferTest {
         assertThat(graph.xValueToPixel(99.99999), equalTo(295));
         assertThat(graph.xValueToPixel(50), equalTo(150));
         assertThat(graph.xValueToPixel(49.99999), equalTo(149));
+    }
+    
+    @Test
+    public void yScalingAsCell() throws Exception {
+        GraphBuffer graph = new GraphBuffer(300, 200);
+        graph.setGraphArea(4, 4, 295, 195);
+        graph.setYScaleAsCell(RangeUtil.range(0, 100), 3, 0, ValueScales.linearScale());
+        assertThat(graph.yValueToPixel(0), equalTo(3));
+        assertThat(graph.yValueToPixel(24.9999), equalTo(3));
+        assertThat(graph.yValueToPixel(25), equalTo(2));
+        assertThat(graph.yValueToPixel(49.9999), equalTo(2));
+        assertThat(graph.yValueToPixel(50), equalTo(1));
+        assertThat(graph.yValueToPixel(74.9999), equalTo(1));
+        assertThat(graph.yValueToPixel(75), equalTo(0));
+        assertThat(graph.yValueToPixel(99.9999), equalTo(0));
+        assertThat(graph.yValueToPixel(100), equalTo(-1));
     }
 
 }

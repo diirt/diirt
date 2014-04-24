@@ -169,4 +169,40 @@ public class GraphBuffer {
     public int xValueToPixel(double value) {
         return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
+    
+    private double yTopValue;
+    private double yBottomValue;
+    private double yTopPixel;
+    private double yBottomPixel;
+    private ValueScale yValueScale;
+
+
+    /**
+     * Sets the scaling data for the y axis assuming values are going
+     * to represent cells. The minimum value is going to be positioned at the
+     * bottom of the yMinPixel while the maximum value is going to be position
+     * at the top of the yMaxPixel.
+     * 
+     * @param range the range to be displayed
+     * @param yMinPixel the pixel corresponding to the minimum
+     * @param yMaxPixel the pixel corresponding to the maximum
+     * @param yValueScale the scale used to transform values to pixel
+     */
+    public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
+        yTopValue = range.getMaximum().doubleValue();
+        yBottomValue = range.getMinimum().doubleValue();
+        yTopPixel = yMaxPixel - 1;
+        yBottomPixel = yMinPixel;
+        this.yValueScale = yValueScale;
+    }
+
+    /**
+     * Converts the given value to the pixel position.
+     * 
+     * @param value the value
+     * @return the pixel where the value should be mapped
+     */
+    public int yValueToPixel(double value) {
+        return (int) Math.ceil(yValueScale.scaleValue(value, yBottomValue, yTopValue, yBottomPixel, yTopPixel));
+    }
 }
