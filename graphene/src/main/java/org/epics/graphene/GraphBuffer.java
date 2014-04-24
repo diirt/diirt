@@ -90,4 +90,64 @@ public class GraphBuffer {
             previousYData = yData;
         }
     }
+    
+    private int xAreaStart;
+    private int xAreaEnd;
+    private int yAreaStart;
+    private int yAreaEnd;
+
+    /**
+     * Change the portion of the buffer allocated to displaying the graph.
+     * It gives the range of pixels (inclusive of both sides) where the
+     * graph will be displayed.
+     * <p>
+     * The coordinate system is that of a standard image, where (0,0) is the
+     * top left corner.
+     * 
+     * @param xAreaStart the first pixel on the left (inclusive)
+     * @param yAreaStart the first pixel on the top (inclusive)
+     * @param xAreaEnd the last pixel on the right (inclusive)
+     * @param yAreaEnd the last pixel on the bottom (inclusive)
+     */
+    public void setGraphArea(int xAreaStart, int yAreaStart, int xAreaEnd, int yAreaEnd) {
+        this.xAreaStart = xAreaStart;
+        this.yAreaStart = yAreaStart;
+        this.xAreaEnd = xAreaEnd;
+        this.yAreaEnd = yAreaEnd;
+    }
+    
+    private double xLeftValue;
+    private double xRightValue;
+    private double xLeftPixel;
+    private double xRightPixel;
+    private ValueScale xValueScale;
+
+    /**
+     * Sets the scaling data for the x axis assuming values are going
+     * to represent cells. The minimum value is going to be positioned at the
+     * left of the xMinPixel while the maximum value is going to be position
+     * at the right of the xMaxPixel.
+     * 
+     * @param range the range to be displayed
+     * @param xMinPixel the pixel corresponding to the minimum
+     * @param xMaxPixel the pixel corresponding to the maximum
+     * @param xValueScale the scale used to transform values to pixel
+     */
+    public void setXScaleAsCell(Range range, int xMinPixel, int xMaxPixel, ValueScale xValueScale) {
+        xLeftValue = range.getMinimum().doubleValue();
+        xRightValue = range.getMaximum().doubleValue();
+        xLeftPixel = xMinPixel;
+        xRightPixel = xMaxPixel + 1;
+        this.xValueScale = xValueScale;
+    }
+
+    /**
+     * Converts the given value to the pixel position.
+     * 
+     * @param value the value
+     * @return the pixel where the value should be mapped
+     */
+    public int xValueToPixel(double value) {
+        return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
+    }
 }
