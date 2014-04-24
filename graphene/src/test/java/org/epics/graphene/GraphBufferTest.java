@@ -91,4 +91,15 @@ public class GraphBufferTest {
                 10, 289, 190);
         ImageAssert.compareImages("graphBuffer.drawBottomLabels", graphBuffer.getImage());
     }
+
+    @Test
+    public void drawLeftLabels() throws Exception {
+        GraphBuffer graphBuffer = new GraphBuffer(300, 200);
+        graphBuffer.drawBackground(Color.WHITE);
+        List<String> labels = Arrays.asList("0", "50", "100");
+        ArrayInt positions = new ArrayInt(189, 100, 10);
+        graphBuffer.drawLeftLabels(labels, positions, Color.BLACK, FontUtil.getLiberationSansRegular(),
+                189, 10, 35);
+        ImageAssert.compareImages("graphBuffer.drawLeftLabels", graphBuffer.getImage());
+    }
 }

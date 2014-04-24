@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 /**
@@ -249,20 +250,20 @@ public class GraphBuffer {
 
             // Draw first and last label
             int[] drawRange = new int[] {leftPixel, rightPixel};
-            drawVerticalReferenceLabel(g, metrics, labels.get(0), valuePixelPositions.getInt(0),
+            drawLineLabel(g, metrics, labels.get(0), valuePixelPositions.getInt(0),
                 drawRange, topPixel, true, false);
-            drawVerticalReferenceLabel(g, metrics, labels.get(labels.size() - 1),
+            drawLineLabel(g, metrics, labels.get(labels.size() - 1),
                     valuePixelPositions.getInt(labels.size() - 1),
                 drawRange, topPixel, false, false);
             
             for (int i = 1; i < labels.size() - 1; i++) {
-                drawVerticalReferenceLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
+                drawLineLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
                     drawRange, topPixel, true, false);
             }
         }
     }
     
-    private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
+    private static void drawLineLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
@@ -294,6 +295,63 @@ public class GraphBuffer {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
             drawRange[MAX] = targetX - metrics.getHeight();
+        }
+    }
+
+    void drawLeftLabels(List<String> labels, ArrayInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
+        // Draw Y labels
+        if (labels != null && !labels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {topPixel, bottomPixel};
+            drawColumnLabel(g, metrics, labels.get(0), valuePixelPositions.getInt(0),
+                drawRange, leftPixel, true, false);
+            drawColumnLabel(g, metrics, labels.get(labels.size() - 1), valuePixelPositions.getInt(labels.size() - 1),
+                drawRange, leftPixel, false, false);
+            
+            for (int i = 1; i < labels.size() - 1; i++) {
+                drawColumnLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
+                    drawRange, leftPixel, true, false);
+            }
+        }
+    }
+    
+    private static void drawColumnLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
+        int targetY = yCenter;
+        int halfHeight = metrics.getAscent() / 2;
+        if (yCenter < drawRange[MIN] + halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
+            targetY = drawRange[MIN];
+        } else if (yCenter > drawRange[MAX] - halfHeight) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.BOTTOM_RIGHT;
+            targetY = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
+        
+        if (updateMin) {
+            drawRange[MAX] = targetY - metrics.getHeight();
+        } else {
+            drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
 }
