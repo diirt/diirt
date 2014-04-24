@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
@@ -352,6 +355,14 @@ public class GraphBuffer {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
+        }
+    }
+    
+    void drawHorizontalReferenceLines(ListInt referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
+        g.setColor(lineColor);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        for (int i = 0; i < referencePixels.size(); i++) {
+            g.drawLine(graphLeftPixel, referencePixels.getInt(i), graphRightPixel, referencePixels.getInt(i));
         }
     }
 }

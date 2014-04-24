@@ -102,4 +102,13 @@ public class GraphBufferTest {
                 189, 10, 35);
         ImageAssert.compareImages("graphBuffer.drawLeftLabels", graphBuffer.getImage());
     }
+
+    @Test
+    public void drawHorizontalReferenceLines() throws Exception {
+        GraphBuffer graphBuffer = new GraphBuffer(300, 200);
+        graphBuffer.drawBackground(Color.WHITE);
+        ArrayInt positions = new ArrayInt(10, 100, 189);
+        graphBuffer.drawHorizontalReferenceLines(positions, Color.BLACK, 5, 294);
+        ImageAssert.compareImages("graphBuffer.drawHorizontalReferenceLines", graphBuffer.getImage());
+    }
 }
