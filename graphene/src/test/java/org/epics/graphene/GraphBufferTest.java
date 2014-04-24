@@ -4,12 +4,6 @@
  */
 package org.epics.graphene;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collections;
-import org.epics.util.array.ArrayDouble;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -21,7 +15,7 @@ import org.junit.Test;
 public class GraphBufferTest {
     
     @Test
-    public void yScalingAsCell1() throws Exception {
+    public void xScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
         graph.setGraphArea(4, 4, 295, 195);
         graph.setXScaleAsCell(RangeUtil.range(0, 100), 0, 3, ValueScales.linearScale());
@@ -37,33 +31,24 @@ public class GraphBufferTest {
     }
     
     @Test
-    public void xScalingAsCell2() throws Exception {
-        GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setGraphArea(4, 4, 295, 195);
-        graph.setXScaleAsCell(RangeUtil.range(0, 100), 4, 295, ValueScales.linearScale());
-        assertThat(graph.xValueToPixel(0), equalTo(4));
-        assertThat(graph.xValueToPixel(100), equalTo(296));
-        assertThat(graph.xValueToPixel(99.99999), equalTo(295));
-        assertThat(graph.xValueToPixel(50), equalTo(150));
-        assertThat(graph.xValueToPixel(49.99999), equalTo(149));
-    }
-    
-    @Test
     public void xScalingAsPoint() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setGraphArea(4, 4, 295, 195);
-        graph.setXScaleAsPoint(RangeUtil.range(0, 100), 4, 295, ValueScales.linearScale());
-        assertThat(graph.xValueToPixel(0), equalTo(4));
-        assertThat(graph.xValueToPixel(100), equalTo(295));
-        assertThat(graph.xValueToPixel(99.99999), equalTo(295));
-        assertThat(graph.xValueToPixel(50), equalTo(150));
-        assertThat(graph.xValueToPixel(49.99999), equalTo(149));
+        graph.setXScaleAsPoint(RangeUtil.range(0, 30), 0, 3, ValueScales.linearScale());
+        assertThat(graph.xValueToPixel(0), equalTo(0));
+        assertThat(graph.xValueToPixel(4.9999), equalTo(0));
+        assertThat(graph.xValueToPixel(5), equalTo(1));
+        assertThat(graph.xValueToPixel(10), equalTo(1));
+        assertThat(graph.xValueToPixel(14.9999), equalTo(1));
+        assertThat(graph.xValueToPixel(15), equalTo(2));
+        assertThat(graph.xValueToPixel(20), equalTo(2));
+        assertThat(graph.xValueToPixel(24.9999), equalTo(2));
+        assertThat(graph.xValueToPixel(25), equalTo(3));
+        assertThat(graph.xValueToPixel(30), equalTo(3));
     }
     
     @Test
     public void yScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setGraphArea(4, 4, 295, 195);
         graph.setYScaleAsCell(RangeUtil.range(0, 100), 3, 0, ValueScales.linearScale());
         assertThat(graph.yValueToPixel(0), equalTo(3));
         assertThat(graph.yValueToPixel(24.9999), equalTo(3));
@@ -74,6 +59,22 @@ public class GraphBufferTest {
         assertThat(graph.yValueToPixel(75), equalTo(0));
         assertThat(graph.yValueToPixel(99.9999), equalTo(0));
         assertThat(graph.yValueToPixel(100), equalTo(-1));
+    }
+    
+    @Test
+    public void yScalingAsPoint() throws Exception {
+        GraphBuffer graph = new GraphBuffer(300, 200);
+        graph.setYScaleAsPoint(RangeUtil.range(0, 30), 3, 0, ValueScales.linearScale());
+        assertThat(graph.yValueToPixel(0), equalTo(3));
+        assertThat(graph.yValueToPixel(4.9999), equalTo(3));
+        assertThat(graph.yValueToPixel(5), equalTo(2));
+        assertThat(graph.yValueToPixel(10), equalTo(2));
+        assertThat(graph.yValueToPixel(14.9999), equalTo(2));
+        assertThat(graph.yValueToPixel(15), equalTo(1));
+        assertThat(graph.yValueToPixel(20), equalTo(1));
+        assertThat(graph.yValueToPixel(24.9999), equalTo(1));
+        assertThat(graph.yValueToPixel(25), equalTo(0));
+        assertThat(graph.yValueToPixel(30), equalTo(0));
     }
 
 }

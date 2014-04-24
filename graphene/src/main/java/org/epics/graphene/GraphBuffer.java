@@ -197,6 +197,25 @@ public class GraphBuffer {
     }
 
     /**
+     * Sets the scaling data for the y axis assuming values are going
+     * to represent points. The minimum value is going to be positioned in the
+     * center of the yMinPixel while the maximum value is going to be position
+     * in the center of the yMaxPixel.
+     * 
+     * @param range the range to be displayed
+     * @param yMinPixel the pixel corresponding to the minimum
+     * @param yMaxPixel the pixel corresponding to the maximum
+     * @param yValueScale the scale used to transform values to pixel
+     */
+    public void setYScaleAsPoint(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
+        yTopValue = range.getMaximum().doubleValue();
+        yBottomValue = range.getMinimum().doubleValue();
+        yTopPixel = yMaxPixel - 0.5;
+        yBottomPixel = yMinPixel - 0.5;
+        this.yValueScale = yValueScale;
+    }
+
+    /**
      * Converts the given value to the pixel position.
      * 
      * @param value the value
