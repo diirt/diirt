@@ -21,7 +21,6 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setGraphArea(4, 4, 295, 195);
         graph.setXScaleAsCell(RangeUtil.range(0, 100), 0, 3, ValueScales.linearScale());
         assertThat(graph.xValueToPixel(0), equalTo(0));
         assertThat(graph.xValueToPixel(24.9999), equalTo(0));

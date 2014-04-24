@@ -101,31 +101,6 @@ public class GraphBuffer {
         }
     }
     
-    private int xAreaStart;
-    private int xAreaEnd;
-    private int yAreaStart;
-    private int yAreaEnd;
-
-    /**
-     * Change the portion of the buffer allocated to displaying the graph.
-     * It gives the range of pixels (inclusive of both sides) where the
-     * graph will be displayed.
-     * <p>
-     * The coordinate system is that of a standard image, where (0,0) is the
-     * top left corner.
-     * 
-     * @param xAreaStart the first pixel on the left (inclusive)
-     * @param yAreaStart the first pixel on the top (inclusive)
-     * @param xAreaEnd the last pixel on the right (inclusive)
-     * @param yAreaEnd the last pixel on the bottom (inclusive)
-     */
-    public void setGraphArea(int xAreaStart, int yAreaStart, int xAreaEnd, int yAreaEnd) {
-        this.xAreaStart = xAreaStart;
-        this.yAreaStart = yAreaStart;
-        this.xAreaEnd = xAreaEnd;
-        this.yAreaEnd = yAreaEnd;
-    }
-    
     private double xLeftValue;
     private double xRightValue;
     private double xLeftPixel;
@@ -301,7 +276,7 @@ public class GraphBuffer {
         }
     }
 
-    void drawLeftLabels(List<String> labels, ArrayInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
+    void drawLeftLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
         // Draw Y labels
         if (labels != null && !labels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
