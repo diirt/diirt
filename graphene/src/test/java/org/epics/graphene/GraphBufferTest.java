@@ -4,6 +4,10 @@
  */
 package org.epics.graphene;
 
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
+import org.epics.util.array.ArrayInt;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -77,4 +81,14 @@ public class GraphBufferTest {
         assertThat(graph.yValueToPixel(30), equalTo(0));
     }
 
+    @Test
+    public void drawBottomLabels() throws Exception {
+        GraphBuffer graphBuffer = new GraphBuffer(300, 200);
+        graphBuffer.drawBackground(Color.WHITE);
+        List<String> labels = Arrays.asList("0", "50", "100");
+        ArrayInt positions = new ArrayInt(10, 150, 289);
+        graphBuffer.drawBottomLabels(labels, positions, Color.BLACK, FontUtil.getLiberationSansRegular(),
+                10, 289, 190);
+        ImageAssert.compareImages("graphBuffer.drawBottomLabels", graphBuffer.getImage());
+    }
 }

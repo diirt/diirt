@@ -3,9 +3,15 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.List;
+import org.epics.util.array.ListInt;
+import org.epics.util.array.ListNumber;
 /**
  *
  * @author carcassi, sjdallst, asbarber, jkfeng
@@ -13,7 +19,7 @@ import java.awt.image.DataBufferByte;
 public class GraphBuffer {
     
     private final BufferedImage image;
-    private final Graphics2D graphics;
+    private final Graphics2D g;
     private final byte[] pixels;
     private final boolean hasAlphaChannel;
     private final int width, height;
@@ -24,7 +30,7 @@ public class GraphBuffer {
         height = image.getHeight();
         pixels = ((DataBufferByte)this.image.getRaster().getDataBuffer()).getData();
         hasAlphaChannel = image.getAlphaRaster() != null;
-        graphics = image.createGraphics();
+        g = image.createGraphics();
     }
     
     public GraphBuffer(int width, int height) {
@@ -54,7 +60,7 @@ public class GraphBuffer {
     }
     
     public Graphics2D getGraphicsContext(){
-        return graphics;
+        return g;
     }
     
     public void drawDataImage(int xStartPoint, int yStartPoint,
@@ -223,5 +229,71 @@ public class GraphBuffer {
      */
     public int yValueToPixel(double value) {
         return (int) Math.ceil(yValueScale.scaleValue(value, yBottomValue, yTopValue, yBottomPixel, yTopPixel));
+    }
+
+    void drawBackground(Color color) {
+        g.setColor(color);
+        g.fillRect(0, 0, width, height);
+    }
+    
+    private static final int MIN = 0;
+    private static final int MAX = 1;
+
+    void drawBottomLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int leftPixel, int rightPixel, int topPixel) {
+        // Draw X labels
+        if (labels != null && !labels.isEmpty()) {
+            //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            g.setColor(labelColor);
+            g.setFont(labelFont);
+            FontMetrics metrics = g.getFontMetrics();
+
+            // Draw first and last label
+            int[] drawRange = new int[] {leftPixel, rightPixel};
+            drawVerticalReferenceLabel(g, metrics, labels.get(0), valuePixelPositions.getInt(0),
+                drawRange, topPixel, true, false);
+            drawVerticalReferenceLabel(g, metrics, labels.get(labels.size() - 1),
+                    valuePixelPositions.getInt(labels.size() - 1),
+                drawRange, topPixel, false, false);
+            
+            for (int i = 1; i < labels.size() - 1; i++) {
+                drawVerticalReferenceLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
+                    drawRange, topPixel, true, false);
+            }
+        }
+    }
+    
+    private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
+        // If the center is not in the range, don't draw anything
+        if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
+            return;
+        
+        // If there is no space, don't draw anything
+        if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
+            return;
+        
+        Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
+        int targetX = xCenter;
+        int halfWidth = metrics.stringWidth(text) / 2;
+        if (xCenter < drawRange[MIN] + halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_LEFT;
+            targetX = drawRange[MIN];
+        } else if (xCenter > drawRange[MAX] - halfWidth) {
+            // Can't be drawn in the center
+            if (centeredOnly)
+                return;
+            alignment = Java2DStringUtilities.Alignment.TOP_RIGHT;
+            targetX = drawRange[MAX];
+        }
+
+        Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
+        
+        if (updateMin) {
+            drawRange[MIN] = targetX + metrics.getHeight();
+        } else {
+            drawRange[MAX] = targetX - metrics.getHeight();
+        }
     }
 }
