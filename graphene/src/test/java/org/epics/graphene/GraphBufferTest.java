@@ -107,8 +107,17 @@ public class GraphBufferTest {
     public void drawHorizontalReferenceLines() throws Exception {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         graphBuffer.drawBackground(Color.WHITE);
-        ArrayInt positions = new ArrayInt(10, 100, 189);
+        ArrayInt positions = new ArrayInt(189, 100, 10);
         graphBuffer.drawHorizontalReferenceLines(positions, Color.BLACK, 5, 294);
         ImageAssert.compareImages("graphBuffer.drawHorizontalReferenceLines", graphBuffer.getImage());
+    }
+
+    @Test
+    public void drawVerticalReferenceLines() throws Exception {
+        GraphBuffer graphBuffer = new GraphBuffer(300, 200);
+        graphBuffer.drawBackground(Color.WHITE);
+        ArrayInt positions = new ArrayInt(10, 150, 289);
+        graphBuffer.drawVerticalReferenceLines(positions, Color.BLACK, 5, 194);
+        ImageAssert.compareImages("graphBuffer.drawVerticalReferenceLines", graphBuffer.getImage());
     }
 }
