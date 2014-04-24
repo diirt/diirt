@@ -36,10 +36,9 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         }
         ArrayDouble dataList = new ArrayDouble(listOfData);
         Cell2DDataset data = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 10), 10, RangeUtil.range(0, 10), 10);
-        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        return image;
+        return graphBuffer.getImage();
 
     }
     private static Cell2DDataset largeDataset;
@@ -230,116 +229,107 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     @Test
     public void rectangles() throws Exception {
         Cell2DDataset data = rectangleDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.rectangles", image);
+        ImageAssert.compareImages("intensityGraph2D.rectangles", graphBuffer.getImage());
 
     }
 
     @Test
     public void rectanglesSolid() throws Exception {
         Cell2DDataset data = rectangleSolidDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.rectanglesSolid", image);
+        ImageAssert.compareImages("intensityGraph2D.rectanglesSolid", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallX() throws Exception {
         Cell2DDataset data = smallXDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallX", image);
+        ImageAssert.compareImages("intensityGraph2D.smallX", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallXSolid() throws Exception {
         Cell2DDataset data = smallXSolidDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallXSolid", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXSolid", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallY() throws Exception {
         Cell2DDataset data = smallYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallY", image);
+        ImageAssert.compareImages("intensityGraph2D.smallY", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallYSolid() throws Exception {
         Cell2DDataset data = smallYSolidDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallYSolid", image);
+        ImageAssert.compareImages("intensityGraph2D.smallYSolid", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallXAndY() throws Exception {
         Cell2DDataset data = smallXAndYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallXAndY", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXAndY", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallXAndYWithLegend() throws Exception {
         Cell2DDataset data = randomXYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.smallXAndYWithLegend", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXAndYWithLegend", graphBuffer.getImage());
 
     }
 
     @Test
     public void smallXandYSinglePixels() throws Exception {
         Cell2DDataset data = singlePixelDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.GRAY));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallXAndYSinglePixels", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXAndYSinglePixels", graphBuffer.getImage());
 
     }
 
@@ -347,13 +337,12 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     @Test
     public void smallXAndYJet() throws Exception {
         Cell2DDataset data = randomXYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallXAndYJet", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXAndYJet", graphBuffer.getImage());
 
     }
 
@@ -361,90 +350,83 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     @Test
     public void smallXAndYSingleValue() throws Exception {
         Cell2DDataset data = smallXSingleYValueDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.smallXAndYSingleValue", image);
+        ImageAssert.compareImages("intensityGraph2D.smallXAndYSingleValue", graphBuffer.getImage());
 
     }
 
     @Test
     public void customBoundaries() throws Exception {
         Cell2DDataset data = customBoundaryDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.optimizeColorScheme = true;
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
         renderer.drawArray(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.customBoundaries", image);
+        ImageAssert.compareImages("intensityGraph2D.customBoundaries", graphBuffer.getImage());
     }
 
     @Test
 //    @Ignore("This dataset does not draw correctly")
     public void test13() throws Exception {
         Cell2DDataset data = boundaryFunctionDataset();
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
         renderer.drawArray(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.13", image);
+        ImageAssert.compareImages("intensityGraph2D.13", graphBuffer.getImage());
     }
 
     @Test
     public void ZoomInTest() throws Exception {
         Cell2DDataset data = customBoundaryDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET).xAxisRange(AxisRanges.absolute(20, 80)).yAxisRange(AxisRanges.absolute(20, 80)));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.ZoomIn", image);
+        ImageAssert.compareImages("intensityGraph2D.ZoomIn", graphBuffer.getImage());
     }
 
     @Test
     @Ignore("FIXME: zoom in with linear boundaries does not seem to work")
     public void linearBoundariesZoomIn() throws Exception {
         Cell2DDataset data = ellipticParaboloid(200, RangeUtil.range(0, 100), 200, RangeUtil.range(0, 100));
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.1", image);
+        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.1", graphBuffer.getImage());
         
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(20, 80)).yAxisRange(AxisRanges.absolute(20, 80)));
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.2", image);
+        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.2", graphBuffer.getImage());
     }
 
     @Test
     public void ZoomOutTest() throws Exception {
         Cell2DDataset data = customBoundaryDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET).xAxisRange(AxisRanges.absolute(-20, 120)).yAxisRange(AxisRanges.absolute(-20, 120)));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.ZoomOut", image);
+        ImageAssert.compareImages("intensityGraph2D.ZoomOut", graphBuffer.getImage());
     }
 
     @Test
     public void UpdateRightMarginWLegendTest() throws Exception {
         Cell2DDataset data = randomXYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         IntensityGraph2DRendererUpdate update = new IntensityGraph2DRendererUpdate();
         update.drawLegend(true);
         update.colorMap(NumberColorMaps.JET);
@@ -453,7 +435,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET).rightMargin(20));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", image);
+        ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", graphBuffer.getImage());
 
     }
 
@@ -470,31 +452,29 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     @Test
     public void addRemoveLegend() throws Exception {
         Cell2DDataset data = createRandomDataset(640, 480);
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", graphBuffer.getImage());
 
         renderer.update(renderer.newUpdate().drawLegend(true));
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.2", image);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.2", graphBuffer.getImage());
 
         renderer.update(renderer.newUpdate().drawLegend(false));
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", image);
+        ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", graphBuffer.getImage());
     }
 
     @Test
     public void UpdateRightMarginTest() throws Exception {
         Cell2DDataset data = randomXYDataset();
-        BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
-        GraphBuffer graphBuffer = new GraphBuffer(image);
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.JET).rightMargin(20));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.UpdateRightMargin", image);
+        ImageAssert.compareImages("intensityGraph2D.UpdateRightMargin", graphBuffer.getImage());
 
     }
 }

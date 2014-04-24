@@ -18,13 +18,21 @@ public class GraphBuffer {
     private final boolean hasAlphaChannel;
     private final int width, height;
     
-    public GraphBuffer(BufferedImage image){
+    private GraphBuffer(BufferedImage image){
         this.image = image;
         width = image.getWidth();
         height = image.getHeight();
         pixels = ((DataBufferByte)this.image.getRaster().getDataBuffer()).getData();
         hasAlphaChannel = image.getAlphaRaster() != null;
         graphics = image.createGraphics();
+    }
+    
+    public GraphBuffer(int width, int height) {
+        this(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR));
+    }
+    
+    public GraphBuffer(Graph2DRenderer<?> renderer) {
+        this(renderer.getImageWidth(), renderer.getImageHeight());
     }
     
     public void setPixel(int x, int y, int color){
@@ -41,7 +49,7 @@ public class GraphBuffer {
         }
     }
     
-    public BufferedImage getBufferedImage(){
+    public BufferedImage getImage(){
         return image;
     }
     

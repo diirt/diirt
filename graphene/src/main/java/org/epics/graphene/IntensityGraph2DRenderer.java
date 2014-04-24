@@ -121,7 +121,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     public void drawArray(GraphBuffer graphBuffer, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = graphBuffer.getGraphicsContext();
-        BufferedImage image = graphBuffer.getBufferedImage();
+        BufferedImage image = graphBuffer.getImage();
         calculateRanges(data.getXRange(), data.getYRange());
         drawBackground();
         calculateLabels();
@@ -282,30 +282,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         result.pointToDataMap = pointToDataMap;
         result.startPoint = startPoint + startOffset;
         return result;
-    }
-    
-    private int[] createYPointToDataMap(int yStartPoint, int nPoints, ListNumber yBoundaries) {
-        int[] pointToDataMap = new int[nPoints];
-        int currentOffset = 0;
-        int dataPosition = 0;
-        while (currentOffset < nPoints) {
-            // Find next boundary that moves the point
-            int nextOffset = currentOffset;
-            while (nextOffset == currentOffset) {
-                dataPosition++;
-                if (dataPosition == yBoundaries.size()) {
-                    return pointToDataMap;
-                }
-                nextOffset = ((int) scaledX(yBoundaries.getDouble(dataPosition))) - yStartPoint;
-            }
-            
-            // Put the dataPosition for all the new points
-            while (currentOffset != nextOffset && currentOffset != nPoints - 1) {
-                currentOffset++;
-                pointToDataMap[currentOffset] = dataPosition;
-            }
-        }
-        return pointToDataMap;
     }
     
     private void drawRectanglesArray(Graphics2D g, Cell2DDataset data, double xStartGraph, double yEndGraph,
