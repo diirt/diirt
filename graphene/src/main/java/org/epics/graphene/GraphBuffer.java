@@ -142,6 +142,25 @@ public class GraphBuffer {
     }
 
     /**
+     * Sets the scaling data for the x axis assuming values are going
+     * to represent points. The minimum value is going to be positioned in the
+     * center of the xMinPixel while the maximum value is going to be position
+     * in the middle of the xMaxPixel.
+     * 
+     * @param range the range to be displayed
+     * @param xMinPixel the pixel corresponding to the minimum
+     * @param xMaxPixel the pixel corresponding to the maximum
+     * @param xValueScale the scale used to transform values to pixel
+     */
+    public void setXScaleAsPoint(Range range, int xMinPixel, int xMaxPixel, ValueScale xValueScale) {
+        xLeftValue = range.getMinimum().doubleValue();
+        xRightValue = range.getMaximum().doubleValue();
+        xLeftPixel = xMinPixel + 0.5;
+        xRightPixel = xMaxPixel + 0.5;
+        this.xValueScale = xValueScale;
+    }
+
+    /**
      * Converts the given value to the pixel position.
      * 
      * @param value the value
