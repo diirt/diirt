@@ -375,14 +375,12 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-//    @Ignore("This dataset does not draw correctly")
     public void test13() throws Exception {
         Cell2DDataset data = boundaryFunctionDataset();
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.JET));
         renderer.draw(graphBuffer, data);
-        renderer.drawArray(graphBuffer, data);
 
         ImageAssert.compareImages("intensityGraph2D.13", graphBuffer.getImage());
     }
