@@ -187,7 +187,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         int startY = area.yGraphTop;//(int) Math.floor(yPlotCoordStart);
         int endX = area.xGraphRight;//(int) Math.ceil(xPlotCoordEnd);
         int endY = area.yGraphBottom;//(int) Math.ceil(yPlotCoordEnd);
-        PointToDataMap xPointToDataMap = createPointToDataMap(startX, endX+1, getXPlotRange(), data.getXBoundaries(), false);
+        PointToDataMap xPointToDataMap = createXPointToDataMap(startX, endX, graphBuffer, data.getXBoundaries()); //createPointToDataMap(startX, endX+1, getXPlotRange(), data.getXBoundaries(), false);
         PointToDataMap yPointToDataMap = createPointToDataMap(startY, endY+1, getYPlotRange(), data.getYBoundaries(), true);
         graphBuffer.drawDataImage(xPointToDataMap.startPoint, yPointToDataMap.startPoint, xPointToDataMap.pointToDataMap, yPointToDataMap.pointToDataMap, data, colorMapInstance);
         
@@ -236,6 +236,42 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private class PointToDataMap {
         public int[] pointToDataMap;
         public int startPoint;
+    }
+    
+    PointToDataMap createXPointToDataMap(int leftPixel, int rightPixel, GraphBuffer buffer, ListNumber xBoundaries) {
+        // Check any data in range
+        int minValuePixel = buffer.xValueToPixel(xBoundaries.getDouble(0));
+        int maxValuePixel = buffer.xValueToPixel(xBoundaries.getDouble(xBoundaries.size() - 1));
+        if ( minValuePixel > rightPixel ||
+                maxValuePixel < leftPixel) {
+            PointToDataMap result = new PointToDataMap();
+            result.pointToDataMap = new int[0];
+            result.startPoint = leftPixel;
+            return result;
+        }
+
+        // Find the subset that fits
+        int startPixel = Math.max(minValuePixel, leftPixel);
+        int endPixel = Math.min(maxValuePixel, rightPixel);
+        int nPoints = endPixel - startPixel + 1;
+        int[] pointToDataMap = new int[nPoints];
+        
+        int currentValueIndex = 0;
+        int currentRightBoundaryPixel = minValuePixel;
+        
+        for (int currentOffset = 0; currentOffset < pointToDataMap.length; currentOffset++) {
+            while (currentRightBoundaryPixel < startPixel + currentOffset && currentValueIndex < xBoundaries.size() - 2) {
+                currentValueIndex++;
+                currentRightBoundaryPixel = buffer.xValueToPixel(xBoundaries.getDouble(currentValueIndex + 1));
+            }
+            
+            pointToDataMap[currentOffset] = currentValueIndex;
+        }
+        
+        PointToDataMap result = new PointToDataMap();
+        result.pointToDataMap = pointToDataMap;
+        result.startPoint = startPixel;
+        return result;
     }
     
     PointToDataMap createPointToDataMap(int startPoint, int endPoint, Range xRange, ListNumber xBoundaries, boolean mirror) {
