@@ -158,7 +158,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         return data;
     }
 
-    private Cell2DDataset customBoundaryDataset() {
+    private Cell2DDataset nonlinearBoundaries() {
         Cell2DDataset data = Cell2DDatasets.datasetFrom(new Cell2DDatasets.Function2D() {
             @Override
             public double getValue(double x, double y) {
@@ -326,17 +326,6 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    public void customBoundaries() throws Exception {
-        Cell2DDataset data = customBoundaryDataset();
-        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
-        GraphBuffer graphBuffer = new GraphBuffer(renderer);
-        renderer.update(renderer.newUpdate().drawLegend(true).colorMap(NumberColorMaps.JET));
-        renderer.draw(graphBuffer, data);
-
-        ImageAssert.compareImages("intensityGraph2D.customBoundaries", graphBuffer.getImage());
-    }
-
-    @Test
     public void largeAndSmallCells() throws Exception {
         Cell2DDataset data = largeAndSmallCellsDataset();
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
@@ -344,19 +333,6 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.draw(graphBuffer, data);
 
         ImageAssert.compareImages("intensityGraph2D.largeAndSmallCells", graphBuffer.getImage());
-    }
-
-    @Test
-    public void ZoomInTest() throws Exception {
-        Cell2DDataset data = customBoundaryDataset();
-        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
-        GraphBuffer graphBuffer = new GraphBuffer(renderer);
-        renderer.update(renderer.newUpdate().drawLegend(true)
-                .xAxisRange(AxisRanges.absolute(20, 80))
-                .yAxisRange(AxisRanges.absolute(20, 80)));
-        renderer.draw(graphBuffer, data);
-
-        ImageAssert.compareImages("intensityGraph2D.ZoomIn", graphBuffer.getImage());
     }
 
     @Test
@@ -394,16 +370,26 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    public void ZoomOutTest() throws Exception {
-        Cell2DDataset data = customBoundaryDataset();
+    public void nonlinearBoundariesZoomInAndZoomOut() throws Exception {
+        Cell2DDataset data = nonlinearBoundaries();
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
-        renderer.update(renderer.newUpdate().drawLegend(true)
+        renderer.update(renderer.newUpdate().drawLegend(true));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.nonlinearBoundariesZoomInAndZoomOut.1", graphBuffer.getImage());
+
+        renderer.update(renderer.newUpdate()
+                .xAxisRange(AxisRanges.absolute(20, 80))
+                .yAxisRange(AxisRanges.absolute(20, 80)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.nonlinearBoundariesZoomInAndZoomOut.2", graphBuffer.getImage());
+
+        renderer.update(renderer.newUpdate()
                 .xAxisRange(AxisRanges.absolute(-20, 120))
                 .yAxisRange(AxisRanges.absolute(-20, 120)));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.ZoomOut", graphBuffer.getImage());
+        ImageAssert.compareImages("intensityGraph2D.nonlinearBoundariesZoomInAndZoomOut.3", graphBuffer.getImage());
     }
 
     @Test
