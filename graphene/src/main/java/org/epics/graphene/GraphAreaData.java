@@ -151,7 +151,7 @@ class GraphAreaData {
         
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!xValueRange.getMinimum().equals(xValueRange.getMaximum())) {
-            ValueAxis xAxis = xValueScale.references(xValueRange, 2, Math.max(2, (xAreaRight - xAreaLeft + 1) / 60));
+            ValueAxis xAxis = xValueScale.references(xValueRange, 2, Math.max(2, (xAreaRight - xAreaLeft + 1) / 55));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
         } else {
@@ -162,7 +162,7 @@ class GraphAreaData {
         
         // Calculate vertical axis references. If range is zero, use special logic
         if (!yValueRange.getMinimum().equals(yValueRange.getMaximum())) {
-            ValueAxis yAxis = yValueScale.references(yValueRange, 2, Math.max(2, (yAreaBottom - yAreaTop + 1) / 60));
+            ValueAxis yAxis = yValueScale.references(yValueRange, 2, Math.max(2, (yAreaBottom - yAreaTop + 1) / 55));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
             yReferenceValues = new ArrayDouble(yAxis.getTickValues());
         } else {
