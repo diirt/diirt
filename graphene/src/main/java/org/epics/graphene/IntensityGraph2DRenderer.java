@@ -200,7 +200,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
             drawRectanglesArray(g, legendData, xLegendStart, yEndGraph, legendWidth, yHeightTotal, 1, legendWidth, image);
             graphBuffer.drawLeftLabels(zReferenceLabels, zReferenceCoords, labelColor, labelFont, area.yAreaBottom, area.yAreaTop, getImageWidth() - originalRightMargin - 1);
-            drawZLabels();
         }
         
     }

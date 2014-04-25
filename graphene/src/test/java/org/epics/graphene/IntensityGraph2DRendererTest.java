@@ -4,20 +4,17 @@
  */
 package org.epics.graphene;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.epics.util.array.*;
-import org.junit.Ignore;
 
 /**
  *
  * @authors asbarber, jkfeng, sjdallst
  */
-@Ignore
 public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2DRendererUpdate, IntensityGraph2DRenderer> {
 
     public IntensityGraph2DRendererTest() {
@@ -397,7 +394,6 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    @Ignore("FIXME: zoom in with linear boundaries does not seem to work")
     public void linearBoundariesZoomIn() throws Exception {
         Cell2DDataset data = ellipticParaboloid(200, RangeUtil.range(0, 100), 200, RangeUtil.range(0, 100));
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
