@@ -82,7 +82,6 @@ public final class TestCaseProfiler {
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
-                        TestCaseProfiler.intensityGraphStrategies();
         }
     }    
 
@@ -668,104 +667,6 @@ public final class TestCaseProfiler {
     
     //--------------------------------------------------------------------------
     //Test Methods (requiring more memory)
-    
-    //TODO: run and then delete
-    //Final Test on intensity graph to determine combinations
-    /**
-     * Test method for the different <code>IntensityGraph2D</code> renderers.
-     * Saves the output to a <code>ProfileGraph2D</code>
-     * 1D Table .CSV file.
-     * <p>
-     * Settings:
-     * <ul>
-     *      <li>Strategies: Using Linear Boundaries, Not Using Linear Boundaries</li>
-     *      <li>Dataset Size: {10^6, 10^3, 10^3}</li>
-     *      <li>Image Width: 600</li>
-     *      <li>Image Height: 400</li>
-     *      <li>Test Time: 20s</li>
-     * </ul>
-     */
-    @Requires (xmx = "-Xmx4g", memory = 3.50, unit = Unit.GIGABYTE)
-    public static void intensityGraphStrategies(){
-        String opt1[] = {"Non-Linear Boundaries", "Linear Boundaries"};
-        String opt2[] = {"Draw Rect", "Draw Byte Array"};
-        String opt3[] = {"Non-Optimized Value Color", "Optimized Value Color"};
-        
-        //Index     Linear Bounds      (Y)Byte / Rect   Optimized Value Color
-        //0         Y                   Y               Y
-        //1         Y                   Y               N
-        //2         Y                   N               Y
-        //3         Y                   N               N
-        //4         N                   Y               Y
-        //5         N                   Y               N
-        //6         N                   N               Y
-        //7         N                   N               N        
-        int opts[][] = {
-            {1, 1, 1},
-            {1, 1, 0},
-            {1, 0, 1},
-            {1, 0, 0},
-            {0, 1, 1},
-            {0, 1, 0},
-            {0, 0, 1},
-            {0, 0, 0}            
-        };
-
-
-        MultiLevelProfiler multi;
-        TestProfileIntensityGraph2D profile;
-        String msg;
-        for (int i = 0; i < opts.length; ++i){
-            profile = new TestProfileIntensityGraph2D();
-            
-            //Testing...
-            profile.apply(opts[i][0], opts[i][1], opts[i][2]);
-            msg = opt1[opts[i][0]] + ", " + opt2[opts[i][1]] + ", " + opt3[opts[i][2]];
-            
-            //Settings
-            profile.getSaveSettings().setSaveMessage(msg);
-            profile.getSaveSettings().setAuthorMessage("asbarber");
-            
-            //Profile
-            multi = new MultiLevelProfiler(profile);
-            multi.setImageSizes(Resolution.defaultResolutions());
-            multi.setDatasetSizes(DatasetFactory.defaultDatasetSizes());
-            multi.profile();
-            multi.saveStatistics();
-        }
-    }
-    private static class TestProfileIntensityGraph2D extends ProfileIntensityGraph2D{
-        // TODO This needs to be removed once done
-            boolean linearBounds = true;
-            boolean drawByte = true;
-            boolean optimizeValueColor = true;
-            
-            public void apply(int opt1, int opt2, int opt3){
-                linearBounds = opt1 == 1;
-                drawByte = opt2 == 1;
-                optimizeValueColor = opt3 == 1;
-            }
-            
-            @Override
-            protected IntensityGraph2DRenderer getRenderer(int imageWidth, int imageHeight){
-                IntensityGraph2DRenderer renderer = super.getRenderer(imageWidth, imageHeight);
-                
-                renderer.optimizeColorScheme = optimizeValueColor;
-                
-                return renderer;
-            }
-            
-            @Override
-            protected void render(Graphics2D graphics, IntensityGraph2DRenderer renderer, Cell2DDataset data){
-                if (drawByte){
-                    renderer.drawArray(graphBuffer, data);
-                }
-                else{
-                    renderer.draw(graphBuffer, data);
-                }
-            }        
-    }
-    
     
     /**
      * Test method for the maximum dataset size used on
