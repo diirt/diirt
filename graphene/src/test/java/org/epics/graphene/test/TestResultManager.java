@@ -18,7 +18,7 @@ public class TestResultManager {
     private File outputDirectory = new File("src/test/resources/org/epics/graphene");
 
     public TestResultManager() {
-        searchFailedResults();
+        refresh();
     }
     
     
@@ -52,7 +52,7 @@ public class TestResultManager {
     
     private List<Result> currentResults;
     
-    private void searchFailedResults() {
+    public void refresh() {
         File[] failedFiles = outputDirectory.listFiles(new FilenameFilter() {
             
             @Override
@@ -83,7 +83,7 @@ public class TestResultManager {
     
     public static void main(String[] args) {
         TestResultManager manager = new TestResultManager();
-        manager.searchFailedResults();
+        manager.refresh();
         System.out.println(manager.currentResults);
     }
 }

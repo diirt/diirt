@@ -168,7 +168,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         return data;
     }
 
-    private Cell2DDataset boundaryFunctionDataset() {
+    private Cell2DDataset largeAndSmallCellsDataset() {
         int size = 100;
         double[] boundaries = new double[size];
         boundaries[0] = 0;
@@ -337,13 +337,13 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    public void test13() throws Exception {
-        Cell2DDataset data = boundaryFunctionDataset();
+    public void largeAndSmallCells() throws Exception {
+        Cell2DDataset data = largeAndSmallCellsDataset();
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(100, 100);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.13", graphBuffer.getImage());
+        ImageAssert.compareImages("intensityGraph2D.largeAndSmallCells", graphBuffer.getImage());
     }
 
     @Test
@@ -360,17 +360,37 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    public void linearBoundariesZoomIn() throws Exception {
+    public void smallCellsZoomInAndOut() throws Exception {
         Cell2DDataset data = ellipticParaboloid(200, RangeUtil.range(0, 100), 200, RangeUtil.range(0, 100));
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.1", graphBuffer.getImage());
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.1", graphBuffer.getImage());
         
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(20, 80))
                 .yAxisRange(AxisRanges.absolute(20, 80)));
         renderer.draw(graphBuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.linearBoundaries.zoomIn.2", graphBuffer.getImage());
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.2", graphBuffer.getImage());
+        
+        renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(0, 100))
+                .yAxisRange(AxisRanges.absolute(0, 100)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.1", graphBuffer.getImage());
+        
+        renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(-20, 120))
+                .yAxisRange(AxisRanges.absolute(-20, 120)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.3", graphBuffer.getImage());
+        
+        renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(-20, 120))
+                .yAxisRange(AxisRanges.absolute(40, 60)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.4", graphBuffer.getImage());
+        
+        renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.absolute(20, 40))
+                .yAxisRange(AxisRanges.absolute(-40, 120)));
+        renderer.draw(graphBuffer, data);
+        ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.5", graphBuffer.getImage());
     }
 
     @Test
