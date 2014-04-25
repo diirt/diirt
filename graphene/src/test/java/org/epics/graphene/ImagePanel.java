@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 public class ImagePanel extends JComponent {
 
     private Image image;
+    private boolean stretch = true;
 
     public void setImage(Image image) {
         this.image = image;
@@ -38,7 +39,20 @@ public class ImagePanel extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         if (image != null) {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            if (stretch) {
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            } else {
+                g.drawImage(image, 0, 0, this);
+            }
         }
     }
+
+    public void setStretch(boolean stretch) {
+        this.stretch = stretch;
+    }
+
+    public boolean isStretch() {
+        return stretch;
+    }
+    
 }
