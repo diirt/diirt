@@ -53,7 +53,19 @@ public class NumberColorMaps {
                                                                                        Color.RED,
                                                                                        Color.YELLOW,
                                                                                        Color.WHITE,
-                                                                                       Color.RED}, "HOT");
+                                                                                       Color.BLUE}, "HOT");
+    /**
+     * HSV goes through the color wheel: red, yellow, green, cyan, blue, magenta
+     * and back to red. Useful for periodic functions.
+     */
+    public static final NumberColorMap HSV = new NumberColorMapGradient(new Color[]{Color.RED,
+                                                                                       Color.YELLOW,
+                                                                                       Color.GREEN,
+                                                                                       Color.CYAN,
+                                                                                       Color.BLUE,
+                                                                                       Color.MAGENTA,
+                                                                                       Color.RED,
+                                                                                       Color.BLACK}, "HSV");
     private static final Map<String, NumberColorMap> registeredColorSchemes
             = new ConcurrentHashMap<>();
     
@@ -62,6 +74,7 @@ public class NumberColorMaps {
         registeredColorSchemes.put(GRAY.toString(), GRAY);
         registeredColorSchemes.put(BONE.toString(), BONE);
         registeredColorSchemes.put(HOT.toString(), HOT);
+        registeredColorSchemes.put(HSV.toString(), HSV);
     }
     
     /**
