@@ -37,12 +37,31 @@ public class NumberColorMaps {
     public static final NumberColorMap GRAY = new NumberColorMapGradient(new Color[]{Color.BLACK, 
                                                                                        Color.WHITE,
                                                                                        Color.RED}, "GRAY");
+    /**
+     * BONE ranges from black to white passing from blue.
+     */
+    public static final NumberColorMap BONE = new NumberColorMapGradient(new Color[]{Color.BLACK,
+                                                                                       new Color(57, 57, 86),
+                                                                                       new Color(107, 115, 140),
+                                                                                       new Color(165, 198, 198),
+                                                                                       Color.WHITE,
+                                                                                       Color.RED}, "BONE");
+    /**
+     * HOT ranges from black to white passing from red and yellow.
+     */
+    public static final NumberColorMap HOT = new NumberColorMapGradient(new Color[]{Color.BLACK,
+                                                                                       Color.RED,
+                                                                                       Color.YELLOW,
+                                                                                       Color.WHITE,
+                                                                                       Color.RED}, "HOT");
     private static final Map<String, NumberColorMap> registeredColorSchemes
-            = new ConcurrentHashMap<String, NumberColorMap>();
+            = new ConcurrentHashMap<>();
     
     static {
         registeredColorSchemes.put(JET.toString(), JET);
         registeredColorSchemes.put(GRAY.toString(), GRAY);
+        registeredColorSchemes.put(BONE.toString(), BONE);
+        registeredColorSchemes.put(HOT.toString(), HOT);
     }
     
     /**
