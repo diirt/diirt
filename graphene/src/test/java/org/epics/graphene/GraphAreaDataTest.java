@@ -23,7 +23,7 @@ public class GraphAreaDataTest {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         GraphAreaData data = new GraphAreaData();
         data.setGraphArea(5, 194, 294, 5);
-        data.setGraphAreaMargins(0, 0, 0, 0);
+        data.setGraphPadding(0, 0, 0, 0);
         data.setGraphBuffer(graphBuffer);
         data.setLabelMargin(5, 5);
         data.setRanges(RangeUtil.range(-5, 5), ValueScales.linearScale(), RangeUtil.range(-10, 10), ValueScales.linearScale());

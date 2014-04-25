@@ -140,7 +140,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             areaRightPixel = getImageWidth() - 1 - rightMargin;
         }
         area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
-        area.setGraphAreaMargins(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
+        area.setGraphPadding(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
         area.setLabelMargin(xLabelMargin, yLabelMargin);
         area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
         area.prepareLabels(labelFont, labelColor);
@@ -153,11 +153,11 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             if (zReferenceValues != null) {
                 int[] zRefCoords = new int[zReferenceValues.size()];
                 if(zRefCoords.length == 1){
-                    zRefCoords[0] = area.yAreaTop;
+                    zRefCoords[0] = area.areaTop;
                 }
                 else{
                     for (int i = 0; i < zRefCoords.length; i++) {
-                        zRefCoords[i] = (int) scaledZ(zReferenceValues.getDouble(i), area.yGraphBottom, area.yGraphTop);
+                        zRefCoords[i] = (int) scaledZ(zReferenceValues.getDouble(i), area.graphBottom, area.graphTop);
                     }
                 }
                 zReferenceCoords = new ArrayInt(zRefCoords);
@@ -179,14 +179,14 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
 
 
         double xStartGraph = super.xPlotCoordStart;
-        double yEndGraph = area.yGraphBottom;
+        double yEndGraph = area.graphBottom;
 
-        double yHeightTotal = area.yGraphBottom - area.yGraphTop + 1;
+        double yHeightTotal = area.graphBottom - area.graphTop + 1;
         
-        int startX = area.xGraphLeft;//(int) Math.floor(xPlotCoordStart);
-        int startY = area.yGraphTop;//(int) Math.floor(yPlotCoordStart);
-        int endX = area.xGraphRight;//(int) Math.ceil(xPlotCoordEnd);
-        int endY = area.yGraphBottom;//(int) Math.ceil(yPlotCoordEnd);
+        int startX = area.graphLeft;//(int) Math.floor(xPlotCoordStart);
+        int startY = area.graphTop;//(int) Math.floor(yPlotCoordStart);
+        int endX = area.graphRight;//(int) Math.ceil(xPlotCoordEnd);
+        int endY = area.graphBottom;//(int) Math.ceil(yPlotCoordEnd);
         PointToDataMap xPointToDataMap = createXPointToDataMap(startX, endX, graphBuffer, data.getXBoundaries()); //createPointToDataMap(startX, endX+1, getXPlotRange(), data.getXBoundaries(), false);
         PointToDataMap yPointToDataMap = createYPointToDataMap(startY, endY, graphBuffer, data.getYBoundaries());//getYPlotRange(), data.getYBoundaries(), true);
         graphBuffer.drawDataImage(xPointToDataMap.startPoint, yPointToDataMap.startPoint, xPointToDataMap.pointToDataMap, yPointToDataMap.pointToDataMap, data, colorMapInstance);
@@ -199,7 +199,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
             drawRectanglesArray(g, legendData, xLegendStart, yEndGraph, legendWidth, yHeightTotal, 1, legendWidth, image);
-            graphBuffer.drawLeftLabels(zReferenceLabels, zReferenceCoords, labelColor, labelFont, area.yAreaBottom, area.yAreaTop, getImageWidth() - originalRightMargin - 1);
+            graphBuffer.drawLeftLabels(zReferenceLabels, zReferenceCoords, labelColor, labelFont, area.areaBottom, area.areaTop, getImageWidth() - originalRightMargin - 1);
         }
         
     }
