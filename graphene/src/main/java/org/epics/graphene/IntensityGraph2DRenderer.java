@@ -257,11 +257,18 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         int[] pointToDataMap = new int[nPoints];
         
         int currentValueIndex = 0;
+        int currentLeftBoundaryPixel = minValuePixel;
         int currentRightBoundaryPixel = buffer.xValueToPixel(xBoundaries.getDouble(1));
         
         for (int currentOffset = 0; currentOffset < pointToDataMap.length; currentOffset++) {
-            while (currentRightBoundaryPixel < startPixel + currentOffset && currentValueIndex < xBoundaries.size() - 2) {
+            // Advance if the pixel is past the right boundary, or if it's the same
+            // but the left boundary is passed (to "encourage" the change of value
+            // from large cells)
+            int currentPixel = startPixel + currentOffset;
+            while ((currentRightBoundaryPixel < currentPixel || (currentRightBoundaryPixel == currentPixel && currentLeftBoundaryPixel != currentPixel))
+                    && currentValueIndex < xBoundaries.size() - 2) {
                 currentValueIndex++;
+                currentLeftBoundaryPixel = currentRightBoundaryPixel;
                 currentRightBoundaryPixel = buffer.xValueToPixel(xBoundaries.getDouble(currentValueIndex + 1));
             }
             
@@ -293,11 +300,18 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         int[] pointToDataMap = new int[nPoints];
         
         int currentValueIndex = 0;
+        int currentBottomBoundaryPixel = minValuePixel;
         int currentTopBoundaryPixel = buffer.yValueToPixel(yBoundaries.getDouble(1));
         
         for (int currentOffset = 0; currentOffset < pointToDataMap.length; currentOffset++) {
-            while (currentTopBoundaryPixel > endPixel - currentOffset && currentValueIndex < yBoundaries.size() - 2) {
+            // Advance if the pixel is past the top boundary, or if it's the same
+            // but the bottom boundary is passed (to "encourage" the change of value
+            // from large cells)
+            int currentPixel = endPixel - currentOffset;
+            while ((currentTopBoundaryPixel > currentPixel || (currentTopBoundaryPixel == currentPixel && currentBottomBoundaryPixel != currentPixel))
+                && currentValueIndex < yBoundaries.size() - 2) {
                 currentValueIndex++;
+                currentBottomBoundaryPixel = currentTopBoundaryPixel;
                 currentTopBoundaryPixel = buffer.yValueToPixel(yBoundaries.getDouble(currentValueIndex + 1));
             }
             
