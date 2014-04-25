@@ -39,7 +39,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     //Colors to be used when drawing the graph, gives a color based on a given value and the range of data.
     private NumberColorMapInstance colorMapInstance;
     private Range optimizedRange;
-    public boolean optimizeColorScheme = true;
+    private boolean optimizeColorScheme = true;
+    
     /**
      *Uses constructor specified in super class (Graph2DRenderer)
      * @param imageWidth should be equal to the width of the bufferedImage.
@@ -56,11 +57,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         this(300, 200);
     }
       
-    /**
-     *Updates private data by getting new values from update.
-     * Uses update from super class (Graph2DRenderer) for updates that are not specific to IntensityGraph2DRenderer. 
-     * @param update IntensityGraph2DRendererUpdate
-     */
+    @Override
     public void update(IntensityGraph2DRendererUpdate update) {
         super.update(update);
         if(update.getDrawLegend() != null){
@@ -115,10 +112,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
      * @param data can not be null
      */
     public void draw(GraphBuffer graphBuffer, Cell2DDataset data) {
-        drawArray(graphBuffer, data);
-    }
-    
-    public void drawArray(GraphBuffer graphBuffer, Cell2DDataset data) {
         //Use super class to draw basics of graph.
         this.g = graphBuffer.getGraphicsContext();
         GraphAreaData area = new GraphAreaData();
