@@ -393,14 +393,14 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
     }
 
     @Test
-    public void UpdateRightMarginWLegendTest() throws Exception {
+    public void rightMarginWithLegend() throws Exception {
         Cell2DDataset data = randomXYDataset();
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.update(renderer.newUpdate().drawLegend(true).rightMargin(20));
         renderer.draw(graphBuffer, data);
 
-        ImageAssert.compareImages("intensityGraph2D.UpdateRightMarginWLegend", graphBuffer.getImage());
+        ImageAssert.compareImages("intensityGraph2D.rightMarginWithLegend", graphBuffer.getImage());
 
     }
 
@@ -429,17 +429,5 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.update(renderer.newUpdate().drawLegend(false));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", graphBuffer.getImage());
-    }
-
-    @Test
-    public void UpdateRightMarginTest() throws Exception {
-        Cell2DDataset data = randomXYDataset();
-        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
-        GraphBuffer graphBuffer = new GraphBuffer(renderer);
-        renderer.update(renderer.newUpdate().rightMargin(20));
-        renderer.draw(graphBuffer, data);
-
-        ImageAssert.compareImages("intensityGraph2D.UpdateRightMargin", graphBuffer.getImage());
-
     }
 }
