@@ -97,7 +97,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private Range zPlotRange;
     private AxisRange zAxisRange = AxisRanges.integrated();
     private ValueScale zValueScale = ValueScales.linearScale();
-    protected ListDouble zReferenceCoords;
+    protected ListInt zReferenceCoords;
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
@@ -151,16 +151,16 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         Allows for the use of yPlotCoordEnd/start in calculations.*/
         if(drawLegend){
             if (zReferenceValues != null) {
-                double[] zRefCoords = new double[zReferenceValues.size()];
+                int[] zRefCoords = new int[zReferenceValues.size()];
                 if(zRefCoords.length == 1){
-                    zRefCoords[0] = Math.max(2, getImageHeight() / 60);
+                    zRefCoords[0] = area.yAreaTop;
                 }
                 else{
                     for (int i = 0; i < zRefCoords.length; i++) {
-                        zRefCoords[i] = scaledZ(zReferenceValues.getDouble(i));
+                        zRefCoords[i] = (int) scaledZ(zReferenceValues.getDouble(i), area.yGraphBottom, area.yGraphTop);
                     }
                 }
-                zReferenceCoords = new ArrayDouble(zRefCoords);
+                zReferenceCoords = new ArrayInt(zRefCoords);
             }
         }
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -199,6 +199,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, RangeUtil.range(0, 1), 1, RangeUtil.range(0, (int)yHeightTotal), (int)yHeightTotal);
             int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
             drawRectanglesArray(g, legendData, xLegendStart, yEndGraph, legendWidth, yHeightTotal, 1, legendWidth, image);
+            graphBuffer.drawLeftLabels(zReferenceLabels, zReferenceCoords, labelColor, labelFont, area.yAreaBottom, area.yAreaTop, getImageWidth() - originalRightMargin - 1);
             drawZLabels();
         }
         
@@ -925,8 +926,8 @@ Draws boxes only 1 pixel wide and 1 pixel tall.*/
      * @param value raw value
      * @return double(scaled value)
      */
-    protected final double scaledZ(double value) {
-        return zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), yPlotCoordEnd, yPlotCoordStart);
+    protected final double scaledZ(double value, int bottomPixel, int topPixel) {
+        return Math.ceil(zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), bottomPixel, topPixel));
     }
 
     /**
