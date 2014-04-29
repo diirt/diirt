@@ -13,6 +13,10 @@
     <name>epics-util</name>
     <url>http://epics-util.sourceforge.net</url>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
+    <issueManagement>
+        <url>https://github.com/diirt/diirt/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
     <licenses>
         <license>
             <name>GNU General Public License 2 with the Classpath Exception</name>
@@ -20,9 +24,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:hg:http://hg.code.sf.net/p/epics-util/code</connection>
-        <developerConnection>scm:hg:ssh://epics-jenkins@hg.code.sf.net/p/epics-util/code</developerConnection>
-        <url>https://sourceforge.net/p/epics-util/code</url>
+        <url>https://github.com/diirt/util</url>
+        <connection>scm:git:git://github.com/diirt/util.git</connection>
+        <developerConnection>scm:git:git@github.com:diirt/util.git</developerConnection>
     </scm>
     <developers>
         <developer>
