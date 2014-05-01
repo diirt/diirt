@@ -15,6 +15,11 @@ public class ConfigurationException extends RuntimeException {
     public ConfigurationException() {
     }
     
+    /**
+     * Creates a new configuration exception with the given message.
+     * 
+     * @param message a message
+     */
     public ConfigurationException(String message) {
         super(message);
     }
