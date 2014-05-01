@@ -148,7 +148,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <github.global.server>github</github.global.server>
+        <github.global.server>github.com</github.global.server>
     </properties>
 
     <dependencies>
