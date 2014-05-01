@@ -12,6 +12,9 @@ package org.epics.util.exceptions;
  */
 public class ConfigurationException extends RuntimeException {
 
+    /**
+     * Creates a new configuration exception.
+     */
     public ConfigurationException() {
     }
     
