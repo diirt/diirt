@@ -15,4 +15,12 @@
                 <goal>release:perform</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-github deploy</actionName>
+            <displayName>github deploy</displayName>
+            <goals>
+                <goal>site:site</goal>
+                <goal>ghSite:site</goal>
+            </goals>
+        </action>
     </actions>
