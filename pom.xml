@@ -12,6 +12,10 @@
     <name>graphene</name>
     <description>A library to create graphs suitable for real time scientific
         data visualization.</description>
+    <issueManagement>
+        <url>https://github.com/diirt/diirt/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
     <packaging>pom</packaging>
     <url>http://graphene.sourceforge.net</url>
     <organization>
@@ -25,9 +29,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:hg:http://hg.code.sf.net/p/graphene/code</connection>
-        <developerConnection>scm:hg:ssh://carcassi@hg.code.sf.net/p/graphene/code</developerConnection>
-        <url>https://sourceforge.net/p/graphene/code</url>
+        <url>https://github.com/diirt/graphene</url>
+        <connection>scm:git:git://github.com/diirt/graphene</connection>
+        <developerConnection>scm:git:git@github.com:diirt/graphene.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -59,6 +63,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github.com</github.global.server>
     </properties>
     <modules>
         <module>graphene</module>
@@ -66,6 +71,27 @@
   </modules>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.8</version>
+                <configuration>
+                    <message>Creating site for ${project.artifactId}, ${project.version}</message>
+                    <repositoryOwner>diirt</repositoryOwner>
+                    <repositoryName>graphene-pages</repositoryName>
+                    <branch>refs/heads/gh-pages</branch>
+                    <merge>true</merge>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>github-site</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>site-deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin> 
                 <artifactId>maven-deploy-plugin</artifactId> 
                 <version>2.7</version> 
