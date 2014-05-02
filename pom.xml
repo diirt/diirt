@@ -12,13 +12,13 @@
     <name>pvmanager</name>
     <description>A library to create well behaved clients for aggregating and processing
         real-time live data.</description>
+    <issueManagement>
+        <url>https://github.com/diirt/diirt/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
     <packaging>pom</packaging>
     <url>http://pvmanager.sourceforge.net</url>
     <inceptionYear>2010</inceptionYear>    
-    <issueManagement>
-        <system>JIRA</system>
-        <url>http://java.net/jira/browse/PVMANAGER</url>
-    </issueManagement>
     <licenses>
         <license>
             <name>GNU General Public License 2 with the Classpath Exception</name>
@@ -26,15 +26,17 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:hg:http://hg.code.sf.net/p/pvmanager/pvmanager</connection>
-        <developerConnection>scm:hg:ssh://carcassi@hg.code.sf.net/p/pvmanager/pvmanager</developerConnection>
-        <url>http://pvmanager.hg.sourceforge.net/hgweb/pvmanager/pvmanager/</url>
+        <url>https://github.com/diirt/pvmanager</url>
+        <connection>scm:git:git://github.com/diirt/pvmanager</connection>
+        <developerConnection>scm:git:git@github.com:diirt/pvmanager</developerConnection>
     </scm>
     <developers>
         <developer>
-            <name>carcassi</name>
-            <email>carcassi_AT_bnl.gov</email>
-            <organization>Brookhaven National Laboratory</organization>
+            <id>carcassi</id>
+            <name>Gabriele Carcassi</name>
+            <email>carcassi@bnl.gov</email>
+            <organization>BNL</organization>
+            <timezone>-5</timezone>
         </developer>
     </developers>
     <ciManagement>
@@ -70,6 +72,27 @@
     </mailingLists>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.8</version>
+                <configuration>
+                    <message>Creating site for ${project.artifactId}, ${project.version}</message>
+                    <repositoryOwner>diirt</repositoryOwner>
+                    <repositoryName>pvmanager-pages</repositoryName>
+                    <branch>refs/heads/gh-pages</branch>
+                    <merge>true</merge>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>github-site</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>site-deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin> 
                 <artifactId>maven-deploy-plugin</artifactId> 
                 <version>2.7</version> 
@@ -192,6 +215,7 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github.com</github.global.server>
     </properties>
     <modules>
         <module>pvmanager-jca</module>
