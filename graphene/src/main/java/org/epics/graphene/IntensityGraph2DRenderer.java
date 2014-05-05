@@ -120,7 +120,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         area.setGraphBuffer(graphBuffer);
         graphBuffer.drawBackground(backgroundColor);
         zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
-        calculateZRange(zRange);
+        calculateZRange(zRange, data.getDisplayRange());
         
         // TODO: the calculation for leaving space for the legend is somewhat hacked
         // Instead of actually having a nice calculation, we increase the margin
@@ -342,10 +342,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
      *be raised to match the current range.
      * @param zDataRange current data range.
      */
-    protected void calculateZRange(Range zDataRange) {
+    protected void calculateZRange(Range zDataRange, Range displayRange) {
        
         zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
-        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
+        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange, displayRange);
     }
     /**
      *Sets private variables to account for the space required to draw in labels for the legend.

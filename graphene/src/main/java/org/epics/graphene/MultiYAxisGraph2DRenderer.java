@@ -299,7 +299,8 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
     protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
         for(int i = 0; i < length; i++){
             xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
-            xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xAggregatedRange);
+            // TODO: should be update to use display range
+            xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xAggregatedRange, xDataRange.get(i));
         }  
         if(yAggregatedRange == null || yDataRange.size() != yAggregatedRange.size() || yDataRange.size() != length){
             yAggregatedRange = new ArrayList<Range>();
@@ -307,7 +308,8 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
             for(int i = 0; i < length; i++){
                 if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
                     yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
-                    yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                    // TODO: should be update to use display range
+                    yPlotRange.add(yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i), yDataRange.get(i)));
                 }
                 else{
                     if(indexToRangeMap.containsKey(i)){
@@ -321,7 +323,8 @@ public class MultiYAxisGraph2DRenderer extends Graph2DRenderer<MultiYAxisGraph2D
             for(int i = 0; i < length; i++){
                 if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
                     yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
-                    yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i)));
+                    // TODO: should be update to use display range
+                    yPlotRange.set(i,yAxisRange.axisRange(yDataRange.get(i), yAggregatedRange.get(i), yDataRange.get(i)));
                 }
                 else{
                     if(indexToRangeMap.containsKey(i)){

@@ -18,7 +18,7 @@ public class AxisRanges {
         return new AxisRange() {
 
             @Override
-            public Range axisRange(Range dataRange, Range aggregatedRange) {
+            public Range axisRange(Range dataRange, Range aggregatedRange, Range displayRange) {
                 return axisRange;
             }
         };
@@ -28,7 +28,7 @@ public class AxisRanges {
         return new AxisRange() {
 
             @Override
-            public Range axisRange(Range dataRange, Range aggregatedRange) {
+            public Range axisRange(Range dataRange, Range aggregatedRange, Range displayRange) {
                 return dataRange;
             }
         };
@@ -43,8 +43,18 @@ public class AxisRanges {
         return new AxisRange() {
 
             @Override
-            public Range axisRange(Range dataRange, Range aggregatedRange) {
+            public Range axisRange(Range dataRange, Range aggregatedRange, Range displayRange) {
                 return aggregatedRange;
+            }
+        };
+    }
+    
+    public static AxisRange display() {
+        return new AxisRange() {
+
+            @Override
+            public Range axisRange(Range dataRange, Range aggregatedRange, Range displayRange) {
+                return displayRange;
             }
         };
     }

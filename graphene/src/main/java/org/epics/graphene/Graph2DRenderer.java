@@ -299,8 +299,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected void calculateRanges(Range xDataRange, Range yDataRange) {
         xAggregatedRange = aggregateRange(xDataRange, xAggregatedRange);
         yAggregatedRange = aggregateRange(yDataRange, yAggregatedRange);
-        xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange);
-        yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange);
+        // TODO: should be update to use display range
+        xPlotRange = xAxisRange.axisRange(xDataRange, xAggregatedRange,xDataRange);
+        yPlotRange = yAxisRange.axisRange(yDataRange, yAggregatedRange,yDataRange);
     }
     
     /**

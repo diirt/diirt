@@ -45,7 +45,8 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
     protected void calculateRanges(Range xDataRange, Range yDataRange, Range zDataRange) {
         super.calculateRanges(xDataRange, yDataRange);
         zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
-        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange);
+        // TODO: should be update to use display range
+        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange, zDataRange);
     }
 
     /**

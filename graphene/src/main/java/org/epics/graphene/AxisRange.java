@@ -9,5 +9,5 @@ package org.epics.graphene;
  * @author carcassi
  */
 public interface AxisRange {
-    public Range axisRange(Range dataRange, Range aggregatedRange);
+    public Range axisRange(Range dataRange, Range aggregatedRange, Range displayRange);
 }
