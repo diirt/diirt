@@ -92,7 +92,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
-    private AxisRange zAxisRange = AxisRanges.display();
+    private AxisRangeInstance zAxisRange = AxisRanges.display().createInstance();
     private ValueScale zValueScale = ValueScales.linearScale();
     protected ListInt zReferenceCoords;
     protected ListDouble zReferenceValues;
@@ -343,9 +343,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
      * @param zDataRange current data range.
      */
     protected void calculateZRange(Range zDataRange, Range displayRange) {
-       
-        zAggregatedRange = aggregateRange(zDataRange, zAggregatedRange);
-        zPlotRange = zAxisRange.axisRange(zDataRange, zAggregatedRange, displayRange);
+        zPlotRange = zAxisRange.axisRange(zDataRange, displayRange);
     }
     /**
      *Sets private variables to account for the space required to draw in labels for the legend.
