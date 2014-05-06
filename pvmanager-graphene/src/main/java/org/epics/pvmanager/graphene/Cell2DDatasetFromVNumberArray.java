@@ -58,7 +58,7 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
     @Override
     public Statistics getStatistics() {
         if (statistics == null) {
-            statistics =  StatisticsUtil.statisticsOf(values);
+            statistics =  StatisticsUtil.lazyStatisticsOf(values);
         }
         return statistics;
     }
