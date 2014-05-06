@@ -92,7 +92,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private Range zRange;
     private Range zAggregatedRange;
     private Range zPlotRange;
-    private AxisRange zAxisRange = AxisRanges.integrated();
+    private AxisRange zAxisRange = AxisRanges.display();
     private ValueScale zValueScale = ValueScales.linearScale();
     protected ListInt zReferenceCoords;
     protected ListDouble zReferenceValues;
