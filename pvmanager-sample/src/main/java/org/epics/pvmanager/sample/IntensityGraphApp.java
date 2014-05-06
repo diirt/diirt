@@ -24,7 +24,7 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
                 new String[] { "sim://gaussianWaveform",
                     "sim://sine2DWaveform(1,50,45,100,100,0.1)",
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
-                    "=caHistogram(\"histo\")"}));
+                    "sim://square2DWaveform(1,50,45,10000,10000,0.1)"}));
     }
     
     protected void updateGraph() {
