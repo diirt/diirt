@@ -4,17 +4,12 @@
  */
 package org.epics.graphene;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.*;
 import java.util.Arrays;
 import java.util.List;
-import static org.epics.graphene.Graph2DRenderer.aggregateRange;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.*;
-import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
@@ -119,8 +114,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         calculateRanges(data.getXRange(), data.getYRange());
         area.setGraphBuffer(graphBuffer);
         graphBuffer.drawBackground(backgroundColor);
-        zRange = RangeUtil.range(data.getStatistics().getMinimum().doubleValue(),data.getStatistics().getMaximum().doubleValue());
-        calculateZRange(zRange, data.getDisplayRange());
+        calculateZRange(data.getStatistics(), data.getDisplayRange());
         
         // TODO: the calculation for leaving space for the legend is somewhat hacked
         // Instead of actually having a nice calculation, we increase the margin
