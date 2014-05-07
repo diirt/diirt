@@ -319,7 +319,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -333,7 +333,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -358,7 +358,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -372,7 +372,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -386,7 +386,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -400,7 +400,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().imageHeight(550));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -414,7 +414,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,550);
         renderer.update(renderer.newUpdate().imageHeight(550));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -428,7 +428,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().marginBetweenGraphs(50));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -444,7 +444,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         HashMap<Integer, Range> map = new HashMap<Integer, Range>();
         map.put(1, RangeUtil.range(-50,50));
         renderer.update(renderer.newUpdate().setRanges(map));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -458,7 +458,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().marginBetweenGraphs(100));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -476,7 +476,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         BufferedImage image = new BufferedImage(640, 400, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         
         // Gradually reduce the image to simulate window being stretched
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(400));
@@ -505,7 +505,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().minimumGraphHeight(50));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
@@ -519,7 +519,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
-        renderer.update(renderer.newUpdate().split(true));
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
         
         //Compares to correct image
