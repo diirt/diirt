@@ -20,10 +20,10 @@ import org.junit.Ignore;
  *
  * @author sjdallst
  */
-public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph2DRendererUpdate, MultiYAxisGraph2DRenderer> {
+public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGraph2DRendererUpdate, MultiAxisLineGraph2DRenderer> {
 
     /**
-     * Tests the functions in MultiYAxisGraph2DRenderer
+     * Tests the functions in MultiAxisLineGraph2DRenderer
      */
     public MultiYAxisGraph2DRendererTest() {
         super("multiYAxisGraph2D");
@@ -179,12 +179,12 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
 
 
     @Override
-    public MultiYAxisGraph2DRenderer createRenderer() {
-        return new MultiYAxisGraph2DRenderer(300, 200);
+    public MultiAxisLineGraph2DRenderer createRenderer() {
+        return new MultiAxisLineGraph2DRenderer(300, 200);
     }
 
     @Override
-    public BufferedImage draw(MultiYAxisGraph2DRenderer renderer) {
+    public BufferedImage draw(MultiAxisLineGraph2DRenderer renderer) {
         List<Point2DDataset> data = linear1Dataset();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -219,7 +219,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear1Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -231,7 +231,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear2Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -244,7 +244,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear3Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -256,7 +256,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear5Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -268,7 +268,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear6Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -280,7 +280,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = rangeDataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -292,7 +292,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = rangeDataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.update(renderer.newUpdate().minimumGraphWidth(600));
         renderer.draw(g, data);
 
@@ -305,7 +305,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = rangeDataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640, 480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640, 480);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
 
@@ -318,7 +318,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset>data = linear2Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
         
@@ -332,7 +332,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear1Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
         
@@ -347,7 +347,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
      
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.draw(g, data);
     
     }
@@ -357,7 +357,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = cosine3Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
         
@@ -371,7 +371,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear3Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
         
@@ -385,7 +385,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset>data = linear5Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
         
@@ -398,7 +398,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset>data = linear5Dataset();
         BufferedImage image = new BufferedImage(640, 550, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().imageHeight(550));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
@@ -412,7 +412,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset>data = linear5Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,550);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,550);
         renderer.update(renderer.newUpdate().imageHeight(550));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
@@ -426,7 +426,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = cosine2Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().marginBetweenGraphs(50));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
@@ -440,7 +440,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear4Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         HashMap<Integer, Range> map = new HashMap<Integer, Range>();
         map.put(1, RangeUtil.range(-50,50));
         renderer.update(renderer.newUpdate().setRanges(map));
@@ -456,7 +456,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = cosine3Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().marginBetweenGraphs(100));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
@@ -475,7 +475,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         
         BufferedImage image = new BufferedImage(640, 400, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().split(true));
         
         // Gradually reduce the image to simulate window being stretched
@@ -503,7 +503,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = linear10Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().minimumGraphHeight(50));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
@@ -517,7 +517,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiYAxisGraph
         List<Point2DDataset> data = cosine2Dataset();
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
-        MultiYAxisGraph2DRenderer renderer = new MultiYAxisGraph2DRenderer(640,480);
+        MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.update(renderer.newUpdate().split(true));
         renderer.draw(g, data);
