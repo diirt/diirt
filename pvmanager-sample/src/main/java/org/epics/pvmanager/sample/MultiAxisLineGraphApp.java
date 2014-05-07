@@ -8,7 +8,7 @@ import org.epics.graphene.InterpolationScheme;
 import org.epics.graphene.MultiAxisLineGraph2DRendererUpdate;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
-import org.epics.pvmanager.graphene.MultiYAxisGraph2DExpression;
+import org.epics.pvmanager.graphene.MultiAxisLineGraph2DExpression;
 
 /**
  *
@@ -39,8 +39,8 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
     }
 
     @Override
-    protected MultiYAxisGraph2DExpression createExpression(String dataFormula) {
-        MultiYAxisGraph2DExpression plot = multiAxisLineGraphOf(formula(dataFormula),
+    protected MultiAxisLineGraph2DExpression createExpression(String dataFormula) {
+        MultiAxisLineGraph2DExpression plot = multiAxisLineGraphOf(formula(dataFormula),
                     null,
                     null);
         plot.update(plot.newUpdate().interpolation(interpolationScheme).split(split));
