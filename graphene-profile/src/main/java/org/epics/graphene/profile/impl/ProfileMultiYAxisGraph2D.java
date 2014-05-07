@@ -10,21 +10,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import org.epics.graphene.Graph2DRendererUpdate;
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.MultiYAxisGraph2DRenderer;
-import org.epics.graphene.MultiYAxisGraph2DRendererUpdate;
+import org.epics.graphene.MultiAxisLineGraph2DRenderer;
+import org.epics.graphene.MultiAxisLineGraph2DRendererUpdate;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.ReductionScheme;
 import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
- * Handles profiling for <code>MultiYAxisGraph2DRenderer</code>.
+ * Handles profiling for <code>MultiAxisLineGraph2DRenderer</code>.
  * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
  * through a <code>Point2DDataset</code>.
  * 
  * @author asbarber
  */
-public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRenderer, List<Point2DDataset>>{
+public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiAxisLineGraph2DRenderer, List<Point2DDataset>>{
     private int numGraphs = 3;
 
     
@@ -86,12 +86,12 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
     }
 
     @Override
-    protected MultiYAxisGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
-        return new MultiYAxisGraph2DRenderer(imageWidth, imageHeight);
+    protected MultiAxisLineGraph2DRenderer getRenderer(int imageWidth, int imageHeight) {
+        return new MultiAxisLineGraph2DRenderer(imageWidth, imageHeight);
     }
 
     @Override
-    protected void render(Graphics2D graphics, MultiYAxisGraph2DRenderer renderer, List<Point2DDataset> data) {
+    protected void render(Graphics2D graphics, MultiAxisLineGraph2DRenderer renderer, List<Point2DDataset> data) {
         renderer.draw(graphics, data);
     }
 
@@ -100,9 +100,9 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiYAxisGraph2DRe
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
         map.put("None", null);
-        map.put("Nearest Neighbor Interpolation", new MultiYAxisGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
-        map.put("First Max Min Last Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
-        map.put("No Data Reduction", new MultiYAxisGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
+        map.put("Nearest Neighbor Interpolation", new MultiAxisLineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        map.put("First Max Min Last Reduction", new MultiAxisLineGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
+        map.put("No Data Reduction", new MultiAxisLineGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         
         return map;
     }
