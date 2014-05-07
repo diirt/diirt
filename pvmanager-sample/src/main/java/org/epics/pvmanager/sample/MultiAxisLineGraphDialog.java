@@ -13,14 +13,14 @@ import static org.epics.pvmanager.sample.SwingBindingUtil.onCheckBoxChange;
  *
  * @author carcassi
  */
-public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
+public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
 
-    private final MultiYAxisLineGraphApp graph;
+    private final MultiAxisLineGraphApp graph;
     
     /**
      * Creates new form ScatterGraphDialog
      */
-    public MultiYAxisLineGraphDialog(java.awt.Frame parent, boolean modal, final MultiYAxisLineGraphApp graph) {
+    public MultiAxisLineGraphDialog(java.awt.Frame parent, boolean modal, final MultiAxisLineGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
@@ -115,20 +115,20 @@ public class MultiYAxisLineGraphDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MultiYAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MultiYAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MultiYAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MultiYAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MultiAxisLineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MultiYAxisLineGraphDialog dialog = new MultiYAxisLineGraphDialog(new javax.swing.JFrame(), true, null);
+                MultiAxisLineGraphDialog dialog = new MultiAxisLineGraphDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
