@@ -349,7 +349,7 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
         BufferedImage image = new BufferedImage(100, 50, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(100, 50);
-        renderer.update(renderer.newUpdate().aspectRatio(5).interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        renderer.update(renderer.newUpdate().aspectRatio(5).interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -473,7 +473,7 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
         Point2DDataset data = Point2DTestDatasets.oneNaNDataset();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("sparklineGraph2D.nearestNeighbor.NaN.1", image);
@@ -484,7 +484,7 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
         Point2DDataset data = twoNaNDataset();
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         SparklineGraph2DRenderer renderer = new SparklineGraph2DRenderer(300, 200);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("sparklineGraph2D.nearestNeighbor.NaN.2", image);

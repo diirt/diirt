@@ -43,7 +43,7 @@ public class LineTimeGraph2DRendererTest {
                 start.plus(TimeDuration.ofMillis(15000))));
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
-        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.1", image);

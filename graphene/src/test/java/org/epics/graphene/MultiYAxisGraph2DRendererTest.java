@@ -479,19 +479,19 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().split(true));
         
         // Gradually reduce the image to simulate window being stretched
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(400));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(400));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(390));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(390));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(380));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(380));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(370));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(370));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(360));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(360));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(350));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(350));
         renderer.draw(g, data);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR).imageHeight(340));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(340));
         renderer.draw(g, data);
         
         //Compares to correct image
