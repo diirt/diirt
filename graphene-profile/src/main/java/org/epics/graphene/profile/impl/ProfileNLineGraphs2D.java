@@ -15,7 +15,7 @@ import org.epics.graphene.profile.ProfileGraph2D;
 import org.epics.graphene.profile.utils.DatasetFactory;
 
 /**
- * Handles profiling for <code>MultiAxisLineGraph2DRenderer</code> when drawing split graphs.
+ * Handles profiling for <code>MultiAxisLineGraph2DRenderer</code> when drawing separateAreas graphs.
  * Takes a <code>Point2DDataset</code> dataset and repeatedly renders 
  * through a <code>Point2DDataset</code>.
  * 
@@ -89,8 +89,8 @@ public class ProfileNLineGraphs2D extends ProfileGraph2D<MultiAxisLineGraph2DRen
 
     @Override
     protected void render(Graphics2D graphics, MultiAxisLineGraph2DRenderer renderer, List<Point2DDataset> data) {
-        //To draw in the same way that NLine did, split must be set true.
-        renderer.update(renderer.newUpdate().split(true));
+        //To draw in the same way that NLine did, separateAreas must be set true.
+        renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(graphics, data);
     }
 
