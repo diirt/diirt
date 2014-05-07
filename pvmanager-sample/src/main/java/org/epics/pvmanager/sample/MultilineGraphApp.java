@@ -18,7 +18,7 @@ import org.epics.pvmanager.graphene.MultilineGraph2DExpression;
  * @author carcassi
  */
 public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
-    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOR;
 
     public MultilineGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(

@@ -15,7 +15,7 @@ import org.epics.pvmanager.graphene.MultiYAxisGraph2DExpression;
  * @author carcassi
  */
 public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRendererUpdate> {
-    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOUR;
+    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOR;
     private boolean split = false;
 
     public MultiAxisLineGraphApp() {
