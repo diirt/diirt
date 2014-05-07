@@ -80,7 +80,7 @@ public class ProfileSparklineGraph2D extends ProfileGraph2D<SparklineGraph2DRend
         map.put("None", null);
         map.put("Linear Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
-        map.put("Nearest Neighbor Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        map.put("Nearest Neighbor Interpolation", new SparklineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         map.put("Not Draw Circles", new SparklineGraph2DRendererUpdate().drawCircles(false));
         
         return map;

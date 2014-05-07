@@ -100,7 +100,7 @@ public class ProfileMultiYAxisGraph2D extends ProfileGraph2D<MultiAxisLineGraph2
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
         
         map.put("None", null);
-        map.put("Nearest Neighbor Interpolation", new MultiAxisLineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        map.put("Nearest Neighbor Interpolation", new MultiAxisLineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         map.put("First Max Min Last Reduction", new MultiAxisLineGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
         map.put("No Data Reduction", new MultiAxisLineGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         

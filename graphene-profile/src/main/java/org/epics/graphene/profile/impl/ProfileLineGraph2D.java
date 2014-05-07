@@ -74,7 +74,7 @@ public class ProfileLineGraph2D extends ProfileGraph2D<LineGraph2DRenderer, Poin
         map.put("None", null);
         map.put("Linear Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR));
         map.put("Cubic Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.CUBIC));
-        map.put("Nearest Neighbor Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOUR));
+        map.put("Nearest Neighbor Interpolation", new LineGraph2DRendererUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         map.put("First Max Min Last Reduction", new LineGraph2DRendererUpdate().dataReduction(ReductionScheme.FIRST_MAX_MIN_LAST));
         map.put("No Data Reduction", new LineGraph2DRendererUpdate().dataReduction(ReductionScheme.NONE));
         
