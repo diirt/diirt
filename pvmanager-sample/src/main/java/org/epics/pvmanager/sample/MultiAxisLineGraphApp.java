@@ -16,7 +16,7 @@ import org.epics.pvmanager.graphene.MultiAxisLineGraph2DExpression;
  */
 public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRendererUpdate> {
     private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOR;
-    private boolean split = false;
+    private boolean separateAreas = false;
 
     public MultiAxisLineGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
@@ -43,7 +43,7 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
         MultiAxisLineGraph2DExpression plot = multiAxisLineGraphOf(formula(dataFormula),
                     null,
                     null);
-        plot.update(plot.newUpdate().interpolation(interpolationScheme).split(split));
+        plot.update(plot.newUpdate().interpolation(interpolationScheme).separateAreas(separateAreas));
         return plot;
     }
 
@@ -59,10 +59,10 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
         main(MultiAxisLineGraphApp.class);
     }
 
-    void setSplit(boolean split) {
-        this.split = split;
+    void setSeparateAreas(boolean separateAreas) {
+        this.separateAreas = separateAreas;
         if (graph != null) {
-            graph.update(graph.newUpdate().split(split));
+            graph.update(graph.newUpdate().separateAreas(separateAreas));
         }
     }
     

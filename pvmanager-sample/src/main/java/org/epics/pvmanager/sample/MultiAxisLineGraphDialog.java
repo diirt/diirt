@@ -28,10 +28,10 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
         if (graph != null) {
             interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
         }
-        onCheckBoxChange(splitField, new Runnable() {
+        onCheckBoxChange(separateAreasField, new Runnable() {
             @Override
             public void run() {
-                graph.setSplit(splitField.isSelected());
+                graph.setSeparateAreas(separateAreasField.isSelected());
             }
         });
     }
@@ -47,7 +47,7 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
-        splitField = new javax.swing.JCheckBox();
+        separateAreasField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,7 +59,7 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
             }
         });
 
-        splitField.setText("Split");
+        separateAreasField.setText("Separate Areas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,7 +69,7 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(splitField)
+                        .addComponent(separateAreasField)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -85,7 +85,7 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(interpolationSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(splitField)
+                .addComponent(separateAreasField)
                 .addContainerGap(62, Short.MAX_VALUE))
         );
 
@@ -142,6 +142,6 @@ public class MultiAxisLineGraphDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JCheckBox splitField;
+    private javax.swing.JCheckBox separateAreasField;
     // End of variables declaration//GEN-END:variables
 }
