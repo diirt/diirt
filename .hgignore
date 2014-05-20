@@ -1,7 +1,0 @@
-syntax: glob
-**/target/
-*.failed.png
-*~
-~*
-*.orig
-Thumbs.db
