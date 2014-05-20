@@ -22,6 +22,7 @@
       <item name="About" href="index.html"/>
       <item name="Changes" href="changes-report.html"/>
       <item name="Profile Results - Line Graph" href="LineGraph.html"/>
+      <item name="Profile Results - Intensity Graph" href="IntensityGraph.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/graphene/"/>
     </menu>
 
