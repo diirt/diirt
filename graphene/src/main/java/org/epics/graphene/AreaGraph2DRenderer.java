@@ -16,7 +16,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
 
     public AreaGraph2DRenderer(int imageWidth, int imageHeight) {
         super(imageWidth, imageHeight);
-        update(newUpdate().xAxisRange(DEFAULT_X_RANGE));
+        super.update(new AreaGraph2DRendererUpdate().xAxisRange(DEFAULT_X_RANGE));
     }
 
     @Override
