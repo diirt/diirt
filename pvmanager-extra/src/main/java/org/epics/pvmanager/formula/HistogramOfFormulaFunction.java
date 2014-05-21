@@ -17,6 +17,7 @@ import org.epics.util.stats.Range;
 import org.epics.util.stats.Ranges;
 import org.epics.util.stats.Statistics;
 import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.text.NumberFormats;
 
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
@@ -79,6 +80,7 @@ class HistogramOfFormulaFunction implements FormulaFunction {
         Range xRange = stats;
         String unit = numberArray.getUnits();
         int[] binData = new int[nBins];
+        double maxCount = 0;
         while (newValues.hasNext()) {
             double value = newValues.nextDouble();
             // Check value in range
@@ -90,11 +92,14 @@ class HistogramOfFormulaFunction implements FormulaFunction {
                 }
 
                 binData[bin]++;
+                if (binData[bin] > maxCount) {
+                    maxCount = binData[bin];
+                }
             }
         }
         
 	return newVNumberArray(new ArrayInt(binData), new ArrayInt(nBins), Arrays.asList(newDisplay(xBoundaries, unit)),
-		numberArray, numberArray, displayNone());
+		numberArray, numberArray, newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
     }
 
 }
