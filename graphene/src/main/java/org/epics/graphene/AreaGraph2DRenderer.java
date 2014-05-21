@@ -11,9 +11,12 @@ import java.awt.*;
  * @author carcassi
  */
 public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpdate> {
+    
+    private static final AxisRange DEFAULT_X_RANGE = AxisRanges.relative();
 
     public AreaGraph2DRenderer(int imageWidth, int imageHeight) {
         super(imageWidth, imageHeight);
+        update(newUpdate().xAxisRange(DEFAULT_X_RANGE));
     }
 
     @Override
