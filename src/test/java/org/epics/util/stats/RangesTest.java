@@ -99,4 +99,53 @@ public class RangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
     }
+    
+    @Test
+    public void overlap1() {
+        Range range1 = Ranges.range(0.0, 6.0);
+        Range range2 = Ranges.range(3.0, 6.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.5));
+    }
+    
+    @Test
+    public void overlap2() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(2.0, 4.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.25));
+    }
+    
+    @Test
+    public void overlap3() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(2.0, 4.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.25));
+    }
+    
+    @Test
+    public void overlap4() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(0.0, 4.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.5));
+    }
+    
+    @Test
+    public void overlap5() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(-1.0, 4.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.5));
+    }
+    
+    @Test
+    public void overlap6() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(-1.0, 14.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(1.0));
+    }
+    
+    @Test
+    public void overlap7() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        Range range2 = Ranges.range(2.0, 14.0);
+        assertThat(Ranges.overlap(range1, range2), equalTo(0.75));
+    }
 }
