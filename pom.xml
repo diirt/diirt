@@ -24,9 +24,9 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/diirt/util</url>
-        <connection>scm:git:git://github.com/diirt/util.git</connection>
-        <developerConnection>scm:git:git@github.com:diirt/util.git</developerConnection>
+        <connection>scm:git:https://github.com/diirt/util.git</connection>
+        <developerConnection>scm:git:git@github.com:github-user/diirt/util.git</developerConnection>
+        <url>https://github.com/diirt/util.git</url>
     </scm>
     <developers>
         <developer>
