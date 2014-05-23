@@ -29,9 +29,9 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/diirt/graphene</url>
-        <connection>scm:git:git://github.com/diirt/graphene</connection>
-        <developerConnection>scm:git:git@github.com:diirt/graphene.git</developerConnection>
+        <url>https://github.com/diirt/graphene.git</url>
+        <connection>scm:git:https://github.com/diirt/graphene.git</connection>
+        <developerConnection>scm:git:https://github.com/diirt/graphene.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -137,6 +137,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
             </plugin>
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
