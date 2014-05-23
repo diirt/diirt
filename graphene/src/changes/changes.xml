@@ -8,6 +8,29 @@
     </properties>
   
     <body>
+        <release version="0.7" date="SNAPSHOT" description="Winter semester student work integrated. Multi-line graphs. Intensity graph.">
+            <action dev="students" type="fix">
+                Better support of NaN in line graphs.
+            </action>
+            <action dev="carcassi" type="update">
+                Consolidated much of the code with epics-util
+            </action>
+            <action dev="students" type="add">
+                intensity graph: good implementation of the intensity graph
+            </action>
+            <action dev="students" type="update">
+                color scheme: finalized spec and implementation (including performance analysis)
+            </action>
+            <action dev="students" type="add">
+                line graph: added first prototype for multi-line graphs
+            </action>
+            <action dev="students" type="fix">
+                profile: extended profiling framework and performed performance studies
+            </action>
+            <action dev="carcassi" type="update">
+                Moved to github
+            </action>
+        </release>
         <release version="0.6" date="SNAPSHOT" description="Improvements to bubble graph.">
             <action dev="carcassi" type="update">
                 bubble graph: support for selection and negative numbers for size
@@ -20,7 +43,7 @@
             <action dev="students" type="add">
                 color scheme: more flexible implementation that can work with an array of colors and values
             </action>
-            <action dev="students" type="fix">
+            <action dev="students" type="add">
                 profile: initial skeleton for a mini profiling framework
             </action>
             <action dev="students" type="fix">
