@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.epics</groupId>
     <artifactId>graphene-all</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1-SNAPSHOT</version>
     <name>graphene</name>
     <description>A library to create graphs suitable for real time scientific
         data visualization.</description>
@@ -32,7 +32,7 @@
         <url>https://github.com/diirt/graphene.git</url>
         <connection>scm:git:https://github.com/diirt/graphene.git</connection>
         <developerConnection>scm:git:https://github.com/diirt/graphene.git</developerConnection>
-      <tag>graphene-all-0.7.0</tag>
+      <tag>HEAD</tag>
   </scm>
     <developers>
         <developer>
