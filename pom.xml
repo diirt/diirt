@@ -26,9 +26,9 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/diirt/pvmanager</url>
-        <connection>scm:git:git://github.com/diirt/pvmanager</connection>
-        <developerConnection>scm:git:git@github.com:diirt/pvmanager</developerConnection>
+        <url>https://github.com/diirt/pvmanager.git</url>
+        <connection>scm:git:https://github.com/diirt/pvmanager.git</connection>
+        <developerConnection>scm:git:https://github.com/diirt/pvmanager.git</developerConnection>
     </scm>
     <developers>
         <developer>
@@ -164,6 +164,11 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+            </plugin>
+            <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
                 <version>1.9.0</version>
@@ -210,7 +215,7 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
-            <version>0.3.1-SNAPSHOT</version>
+            <version>0.3.1</version>
         </dependency>
     </dependencies>
     <properties>
