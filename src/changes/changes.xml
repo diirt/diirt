@@ -8,6 +8,17 @@
     </properties>
   
     <body>
+        <release version="0.3.1" date="SNAPSHOT" description="Move to github. Minor improvements.">
+            <action dev="carcassi"  type="add">
+                stats: minor improvements to numeric range support
+            </action>
+            <action dev="carcassi"  type="add">
+                array: better support for linear numeric lists
+            </action>
+            <action dev="carcassi"  type="update">
+                infrastructure: move to github
+            </action>
+        </release>
         <release version="0.3" date="SNAPSHOT" description="CSV parser improvements. ListMath improvements">
             <action dev="sfnrendra3"  type="add">
                 array: adding some element-wise operations in ListMath
