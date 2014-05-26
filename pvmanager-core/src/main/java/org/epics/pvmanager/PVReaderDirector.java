@@ -276,6 +276,7 @@ public class PVReaderDirector<T> {
         
         // Calculate new value
         T newValue = null;
+        Exception calculationException = null;
         boolean calculationSucceeded = false;
         try {
             // Tries to calculate the value
@@ -286,14 +287,16 @@ public class PVReaderDirector<T> {
             calculationSucceeded = true;
         } catch(RuntimeException ex) {
             // Calculation failed
-            exceptionCollector.writeValue(ex);
+            calculationException = ex;
         }
         
         // Calculate new connection
         final boolean connected = connCollector.readValue();
         List<Exception> exceptions = exceptionCollector.readValue();
         final Exception lastException;
-        if (exceptions.isEmpty()) {
+        if (calculationException != null) {
+            lastException = calculationException;
+        } else if (exceptions.isEmpty()) {
             lastException = null;
         } else {
             lastException = exceptions.get(exceptions.size() - 1);
