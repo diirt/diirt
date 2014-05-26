@@ -19,15 +19,23 @@ public class CountDownPVReaderListener implements PVReaderListener<Object> {
 
     private volatile CountDownLatch latch;
     private volatile PVReaderEvent<Object> event;
+    private final int mask;
     
     public CountDownPVReaderListener(int count) {
+        this(count, PVReaderEvent.CONNECTION_MASK | PVReaderEvent.EXCEPTION_MASK | PVReaderEvent.VALUE_MASK);
+    }
+    
+    public CountDownPVReaderListener(int count, int mask) {
         latch = new CountDownLatch(count);
+        this.mask = mask;
     }
 
     @Override
     public void pvChanged(PVReaderEvent<Object> event) {
-        this.event = event;
-        latch.countDown();
+        if ((event.getNotificationMask() & mask) != 0) {
+            this.event = event;
+            latch.countDown();
+        }
     }
 
     /**
