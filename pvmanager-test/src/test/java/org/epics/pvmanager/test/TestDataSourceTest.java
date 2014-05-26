@@ -4,11 +4,14 @@
  */
 package org.epics.pvmanager.test;
 
+import java.util.Objects;
 import org.epics.pvmanager.DataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.PVReaderEvent;
+import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.TimeoutException;
 import org.epics.util.time.TimeDuration;
@@ -238,7 +241,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadConnectionWithTimeout() throws Exception {
-        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1);
+        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK | PVReaderEvent.EXCEPTION_MASK);
         pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500))
                 .readListener(readListener)
                 .from(dataSource).maxRate(ofMillis(50));
@@ -266,7 +269,7 @@ public class TestDataSourceTest {
     
     @Test
     public void delayedReadOnPVWithTimeout() throws Exception {
-        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1);
+        CountDownPVReaderListener readListener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK | PVReaderEvent.EXCEPTION_MASK);
         pv = PVManager.readAndWrite(channel("delayedConnection"))
                 .timeout(ofMillis(500))
                 .readListener(readListener)
