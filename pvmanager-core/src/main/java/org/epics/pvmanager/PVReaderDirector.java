@@ -89,7 +89,9 @@ public class PVReaderDirector<T> {
 
             @Override
             public void run() {
-                scanner.collectorChange();
+                if (scanner != null) {
+                    scanner.collectorChange();
+                }
             }
         });
     }
