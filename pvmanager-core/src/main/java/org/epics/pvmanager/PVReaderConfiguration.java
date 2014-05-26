@@ -135,6 +135,10 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         
         PVReaderDirector<T> director = new PVReaderDirector<T>(pv, aggregatedFunction, PVManager.getReadScannerExecutorService(),
                 notificationExecutor, dataSource, exceptionHandler);
+        Scanner scanner = new ScannerParameters().type(ScannerParameters.Type.ACTIVE)
+                .readerDirector(director)
+                .scannerExecutor(PVManager.getReadScannerExecutorService())
+                .maxDuration(rate).build();
         pv.setDirector(director);
         if (timeout != null) {
             if (timeoutMessage == null)
@@ -142,7 +146,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
             director.timeout(timeout, timeoutMessage);
         }
         director.connectExpression(aggregatedPVExpression);
-        director.startScan(rate);
+        scanner.start();
 
         return pv;
     }

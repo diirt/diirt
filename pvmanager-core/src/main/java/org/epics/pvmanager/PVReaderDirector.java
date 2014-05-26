@@ -155,9 +155,9 @@ public class PVReaderDirector<T> {
     }
 
     /**
-     * Closed and disconnects all the child expressions.
+     * Close and disconnects all the child expressions.
      */
-    private void disconnect() {
+    void disconnect() {
         synchronized(lock) {
             while (!recipes.isEmpty()) {
                 DesiredRateExpression<?> expression = recipes.keySet().iterator().next();
