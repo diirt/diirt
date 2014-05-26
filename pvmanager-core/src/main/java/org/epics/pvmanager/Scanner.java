@@ -46,4 +46,9 @@ interface Scanner {
      * Called when a new notification reaches a collector.
      */
     void collectorChange();
+    
+    /**
+     * Called after a pv is notified.
+     */
+    void notifiedPv();
 }

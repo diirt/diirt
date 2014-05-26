@@ -80,5 +80,10 @@ class ActiveScanner implements Scanner {
     public void collectorChange() {
         // Do nothing
     }
+
+    @Override
+    public void notifiedPv() {
+        // Do nothing
+    }
     
 }

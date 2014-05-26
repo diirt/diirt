@@ -49,6 +49,9 @@ class PassiveScanner implements Scanner {
             if (readerDirector.isActive()) {
                 // If paused, simply skip without stopping the scan
                 if (!readerDirector.isPaused()) {
+                    synchronized (lock) {
+                        processingEvent = true;
+                    }
                     readerDirector.notifyPv();
                 }
             } else {
@@ -117,6 +120,26 @@ class PassiveScanner implements Scanner {
     @Override
     public void collectorChange() {
         newEvent();
+    }
+
+    @Override
+    public void notifiedPv() {
+        boolean submit;
+        synchronized(lock) {
+            processingEvent = false;
+            if (eventQueued) {
+                // If there is an event in queue, we should submit
+                // next execution
+                submit = true;
+                eventQueued = false;
+            } else {
+                // Do nothing
+                submit = false;
+            }
+        }
+        if (submit) {
+            scheduleNext();
+        }
     }
     
 }

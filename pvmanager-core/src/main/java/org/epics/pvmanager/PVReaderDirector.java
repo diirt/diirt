@@ -353,6 +353,7 @@ public class PVReaderDirector<T> {
                     }
                 } finally {
                     notificationInFlight = false;
+                    scanner.notifiedPv();
                 }
             }
         });
