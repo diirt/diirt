@@ -339,20 +339,19 @@ public class PVReaderDirector<T> {
             }
         }, 0, duration.toNanosLong(), TimeUnit.NANOSECONDS);
     }
-    
-    void timeout(TimeDuration timeout, final String timeoutMessage) {
-        scannerExecutor.schedule(new Runnable() {
 
-            @Override
-            public void run() {
-                PVReaderImpl<T> pv = pvRef.get();
-                if (pv != null && !pv.isSentFirsEvent()) {
-                    exceptionCollector.writeValue(new TimeoutException(timeoutMessage));
-                }
-            }
-        }, timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+    /**
+     * Posts a timeout exception in the exception queue.
+     * 
+     * @param timeoutMessage the message for the timeout
+     */
+    void processTimeout(String timeoutMessage) {
+        PVReaderImpl<T> pv = pvRef.get();
+        if (pv != null && !pv.isSentFirsEvent()) {
+            exceptionCollector.writeValue(new TimeoutException(timeoutMessage));
+        }
     }
-    
+       
     void stopScan() {
         if (scanTaskHandle != null) {
             scanTaskHandle.cancel(false);

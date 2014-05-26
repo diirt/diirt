@@ -21,10 +21,19 @@ class ActiveScanner implements Scanner {
     private final PVReaderDirector readerDirector;
     private final TimeDuration maxDuration;
 
-    ActiveScanner(ScheduledExecutorService scannerExecutor, PVReaderDirector readerDirector, TimeDuration maxDuration) {
+    ActiveScanner(ScheduledExecutorService scannerExecutor, PVReaderDirector readerDirector, TimeDuration maxDuration,
+            TimeDuration timeout, final String timeoutMessage) {
         this.scannerExecutor = scannerExecutor;
         this.readerDirector = readerDirector;
         this.maxDuration = maxDuration;
+        if (timeout != null) {
+            scannerExecutor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    ActiveScanner.this.readerDirector.processTimeout(timeoutMessage);
+                }
+            }, timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+        }
     }
     
     @Override

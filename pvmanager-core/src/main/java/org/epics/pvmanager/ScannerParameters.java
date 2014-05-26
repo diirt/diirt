@@ -20,7 +20,9 @@ class ScannerParameters {
     private ScheduledExecutorService scannerExecutor;
     private PVReaderDirector readerDirector;
     private TimeDuration maxDuration;
-
+    private TimeDuration timeout;
+    private String timeoutMessage;
+    
     public ScannerParameters type(Type type) {
         this.type = type;
         return this;
@@ -57,6 +59,12 @@ class ScannerParameters {
         return scannerExecutor;
     }
     
+    public ScannerParameters timeout(TimeDuration timeout, String timeoutMessage) {
+        this.timeout = timeout;
+        this.timeoutMessage = timeoutMessage;
+        return this;
+    }
+    
     public Scanner build() {
         if (type == Type.ACTIVE) {
             if (scannerExecutor == null) {
@@ -68,7 +76,7 @@ class ScannerParameters {
             if (maxDuration == null) {
                 throw new NullPointerException("Active scanner requires a maxDuration");
             }
-            return new ActiveScanner(scannerExecutor, readerDirector, maxDuration);
+            return new ActiveScanner(scannerExecutor, readerDirector, maxDuration, timeout, timeoutMessage);
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }
