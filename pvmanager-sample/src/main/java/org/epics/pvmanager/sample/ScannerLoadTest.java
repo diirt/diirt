@@ -14,6 +14,7 @@ import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.util.Executors;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -32,7 +33,7 @@ public class ScannerLoadTest {
         PVManager.setDefaultDataSource(new LocalDataSource());
         
         System.out.println("nChannels \"timeToStart (ms)\" \"avgLoad (ms)\"");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             int nPvs = (int) Math.pow(4, i);
             profile(nPvs);
         }
@@ -71,11 +72,11 @@ public class ScannerLoadTest {
         long timeStart = System.currentTimeMillis();
         for (int i = 0; i < nPvs; i++) {
             //PVReader<Object> pv = PVManager.read(constant(new Object())).maxRate(TimeDuration.ofHertz(50));
-            PV<Object, Object> pv = PVManager.readAndWrite(channel("channel " + i)).asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
+            PVReader<Object> pv = PVManager.read(channel("channel " + i)).maxRate(TimeDuration.ofHertz(50));
             pvs.add(pv);
         }
         long startTime = System.currentTimeMillis() - timeStart;
-        
+
         double avgLoad = measureLoad(5);
         
         System.out.println(nPvs + " " + startTime + " " + avgLoad);
