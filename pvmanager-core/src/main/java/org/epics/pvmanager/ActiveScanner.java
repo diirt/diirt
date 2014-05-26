@@ -75,5 +75,10 @@ class ActiveScanner implements Scanner {
     public void resume() {
         // Do nothing
     }
+
+    @Override
+    public void collectorChange() {
+        // Do nothing
+    }
     
 }

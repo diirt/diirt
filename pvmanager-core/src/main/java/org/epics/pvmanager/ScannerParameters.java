@@ -14,7 +14,7 @@ import org.epics.util.time.TimeDuration;
  */
 class ScannerParameters {
     
-    enum Type {ACTIVE}
+    enum Type {ACTIVE, PASSIVE}
     
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
@@ -77,6 +77,18 @@ class ScannerParameters {
                 throw new NullPointerException("Active scanner requires a maxDuration");
             }
             return new ActiveScanner(scannerExecutor, readerDirector, maxDuration, timeout, timeoutMessage);
+        }
+        if (type == Type.PASSIVE) {
+            if (scannerExecutor == null) {
+                throw new NullPointerException("Passive scanner requires a scannerExecutor");
+            }
+            if (readerDirector == null) {
+                throw new NullPointerException("Passive scanner requires a readerDirector");
+            }
+            if (maxDuration == null) {
+                throw new NullPointerException("Passive scanner requires a maxDuration");
+            }
+            return new PassiveScanner(scannerExecutor, readerDirector, maxDuration, timeout, timeoutMessage);
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }

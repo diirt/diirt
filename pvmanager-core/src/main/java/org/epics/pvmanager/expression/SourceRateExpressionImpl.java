@@ -105,6 +105,7 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
      * @return a data recipe
      */
     void fillDataRecipe(PVReaderDirector director, Collector<R, ?> collector, ReadRecipeBuilder builder) {
+        director.registerCollector(collector);
         for (Map.Entry<String, ValueCache<?>> entry : caches.entrySet()) {
             String channelName = entry.getKey();
             @SuppressWarnings("unchecked")

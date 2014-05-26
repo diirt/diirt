@@ -41,4 +41,9 @@ interface Scanner {
      * notified. Can't be restarted.
      */
     void stop();
+    
+    /**
+     * Called when a new notification reaches a collector.
+     */
+    void collectorChange();
 }

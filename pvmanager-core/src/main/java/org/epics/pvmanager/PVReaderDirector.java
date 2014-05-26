@@ -55,6 +55,7 @@ public class PVReaderDirector<T> {
     private final Object lock = new Object();
     private final Map<DesiredRateExpression<?>, ReadRecipe> recipes =
             new HashMap<>();
+    private Scanner scanner;
 
     // Required for multiple operations
     /** Connection collector required to connect/disconnect expressions and for connection notification */
@@ -63,6 +64,35 @@ public class PVReaderDirector<T> {
     /** Exception queue to be used to connect/disconnect expression and for exception notification */
     private final QueueCollector<Exception> exceptionCollector;
     
+    void setScanner(final Scanner scanner) {
+        synchronized(lock) {
+            this.scanner = scanner;
+        }
+        exceptionCollector.setChangeNotification(new Runnable() {
+
+            @Override
+            public void run() {
+                scanner.collectorChange();
+            }
+        });
+        connCollector.setChangeNotification(new Runnable() {
+
+            @Override
+            public void run() {
+                scanner.collectorChange();
+            }
+        });
+    }
+    
+    public void registerCollector(Collector<?, ?> collector) {
+        collector.setChangeNotification(new Runnable() {
+
+            @Override
+            public void run() {
+                scanner.collectorChange();
+            }
+        });
+    }
     
     ReadRecipe getCurrentReadRecipe() {
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
