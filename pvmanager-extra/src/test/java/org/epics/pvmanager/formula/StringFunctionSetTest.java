@@ -4,8 +4,6 @@
  */
 package org.epics.pvmanager.formula;
 
-import java.util.Arrays;
-import static org.epics.pvmanager.formula.BaseTestForFormula.testFunction;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VEnum;
 
@@ -26,39 +24,35 @@ public class StringFunctionSetTest extends BaseTestForFormula {
 
     @Test
     public void concatStringArray() {
-	VStringArray data = newVStringArray(Arrays.asList("x", "y", "z"),
-		alarmNone(), timeNow());
-	VString expected = newVString("xyz", alarmNone(), timeNow());
-	testFunction(set, "concat", expected, data);
+        FunctionTester.findBySignature(set, "concat", VStringArray.class)
+                .compareReturnValue("xyz", (Object) new String[] {"x", "y", "z"})
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
     public void concatStrings() {
-	VString dataA = newVString("a", alarmNone(), timeNow());
-	VString dataB = newVString("b", alarmNone(), timeNow());
-	VString dataC = newVString("c", alarmNone(), timeNow());
-
-	VString expected = newVString("abc", alarmNone(), timeNow());
-	testFunction(set, "concat", expected, dataA, dataB, dataC);
+        FunctionTester.findBySignature(set, "concat", VString.class)
+                .compareReturnValue("xyz", "x", "y", "z")
+                .compareReturnValue(null, "a", null)
+                .compareReturnValue(null, null, "b")
+                .highestAlarmReturned()
+                .latestTimeReturned();
     }
 
     @Test
-    public void highestSeverity1() {
+    public void highestSeverity() {
 	VString dataA = newVString("a", alarmNone(), timeNow());
 	VString dataB = newVString("b", alarmNone(), timeNow());
 	VString dataC = newVString("c", alarmNone(), timeNow());
+	VString dataD = newVString("d", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
 
-        VEnum expected = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
-        testFunction(set, "highestSeverity", expected, dataA, dataB, dataC);
-    }
-
-    @Test
-    public void highestSeverity2() {
-	VString dataA = newVString("a", alarmNone(), timeNow());
-	VString dataB = newVString("b", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
-	VString dataC = newVString("c", alarmNone(), timeNow());
-
-        VEnum expected = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
-        testFunction(set, "highestSeverity", expected, dataA, dataB, dataC);
+        VEnum expected1 = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
+        VEnum expected2 = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
+        
+        FunctionTester.findByName(set, "highestSeverity")
+                .compareReturnValue(expected1, dataA, dataB, dataC)
+                .compareReturnValue(expected2, dataB, dataC, dataD);
     }
 }

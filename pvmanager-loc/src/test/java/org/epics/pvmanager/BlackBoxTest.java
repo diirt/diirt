@@ -32,7 +32,7 @@ public class BlackBoxTest {
         assertThat(pv.isConnected(), equalTo(true));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(0.0));
         
-        pv.write(10);
+        pv.write(10.0);
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(10.0));
@@ -54,7 +54,7 @@ public class BlackBoxTest {
         assertThat(((VDouble) pv1.getValue()).getValue(), equalTo(0.0));
         assertThat(((VDouble) pv2.getValue()).getValue(), equalTo(0.0));
         
-        pv1.write(10);
+        pv1.write(10.0);
         Thread.sleep(50);
         assertThat(pv1.getValue(), not(nullValue()));
         assertThat(pv2.getValue(), not(nullValue()));

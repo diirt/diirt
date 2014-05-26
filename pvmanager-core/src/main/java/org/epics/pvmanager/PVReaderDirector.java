@@ -285,9 +285,11 @@ public class PVReaderDirector<T> {
                 NotificationSupport.findNotificationSupportFor(newValue);
             }
             calculationSucceeded = true;
-        } catch(RuntimeException ex) {
+        } catch (RuntimeException ex) {
             // Calculation failed
             calculationException = ex;
+        } catch (Throwable ex) {
+            log.log(Level.SEVERE, "Unrecoverable error during scanning", ex);
         }
         
         // Calculate new connection

@@ -4,6 +4,10 @@
  */
 package org.epics.pvmanager.formula;
 
+import org.epics.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.junit.Test;
 import static org.epics.vtype.ValueFactory.*;
@@ -17,7 +21,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     private static FormulaFunctionSet set = new NumberOperatorFunctionSet();
     
     @Test
-    public void add1() {
+    public void sum() {
         FunctionTester.findByName(set, "+")
                 .compareReturnValue(3.0, 1.0, 2.0)
                 .compareReturnValue(-1.0, 1.0, -2.0)
@@ -28,7 +32,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void subtract1() {
+    public void subtract() {
         FunctionTester.findBySignature(set, "-", VNumber.class, VNumber.class)
                 .compareReturnValue(-1.0, 1.0, 2.0)
                 .compareReturnValue(3.0, 1.0, -2.0)
@@ -39,7 +43,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void negate1() {
+    public void negate() {
         FunctionTester.findBySignature(set, "-", VNumber.class)
                 .compareReturnValue(-1.0, 1.0)
                 .compareReturnValue(2.0, -2.0)
@@ -49,7 +53,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void multiply1() {
+    public void multiply() {
         FunctionTester.findByName(set, "*")
                 .compareReturnValue(10.0, 2.0, 5.0)
                 .compareReturnValue(-6.0, 3.0, -2.0)
@@ -60,7 +64,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void divide1() {
+    public void divide() {
         FunctionTester.findByName(set, "/")
                 .compareReturnValue(4.0, 8.0, 2.0)
                 .compareReturnValue(-0.5, 1.0, -2.0)
@@ -71,7 +75,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void remainder1() {
+    public void remainder() {
         FunctionTester.findByName(set, "%")
                 .compareReturnValue(0.0, 8.0, 2.0)
                 .compareReturnValue(1.0, 3.0, 2.0)
@@ -82,7 +86,7 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
-    public void pow1() {
+    public void pow() {
         FunctionTester.findByName(set, "^")
                 .compareReturnValue(64.0, 8.0, 2.0)
                 .compareReturnValue(2.0, 4.0, 0.5)
@@ -90,5 +94,207 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(null, null, newVDouble(1.0))
                 .highestAlarmReturned()
                 .latestTimeReturned();
+    }
+    
+    @Test
+    public void lessThanOrEqual() {
+        FunctionTester.findByName(set, "<=")
+                .compareReturnValue(true, 1.0, 2.0)
+                .compareReturnValue(true, 2.0, 2.0)
+                .compareReturnValue(false, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void greaterThanOrEqual() {
+        FunctionTester.findByName(set, ">=")
+                .compareReturnValue(false, 1.0, 2.0)
+                .compareReturnValue(true, 2.0, 2.0)
+                .compareReturnValue(true, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void lessThan() {
+        FunctionTester.findByName(set, "<")
+                .compareReturnValue(true, 1.0, 2.0)
+                .compareReturnValue(false, 2.0, 2.0)
+                .compareReturnValue(false, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void greaterThan() {
+        FunctionTester.findByName(set, ">")
+                .compareReturnValue(false, 1.0, 2.0)
+                .compareReturnValue(false, 2.0, 2.0)
+                .compareReturnValue(true, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void equal() {
+        FunctionTester.findByName(set, "==")
+                .compareReturnValue(false, 1.0, 2.0)
+                .compareReturnValue(true, 2.0, 2.0)
+                .compareReturnValue(false, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void notEqual() {
+        FunctionTester.findByName(set, "!=")
+                .compareReturnValue(true, 1.0, 2.0)
+                .compareReturnValue(false, 2.0, 2.0)
+                .compareReturnValue(true, 2.0, 1.0)
+                .compareReturnValue(null, newVDouble(1.0), null)
+                .compareReturnValue(null, null, newVDouble(1.0))
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void conditionalOr() {
+        FunctionTester.findByName(set, "||")
+                .compareReturnValue(true, true, true)
+                .compareReturnValue(true, true, false)
+                .compareReturnValue(true, false, true)
+                .compareReturnValue(false, false, false)
+                .compareReturnValue(null, true, null)
+                .compareReturnValue(null, null, true)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void conditionalAnd() {
+        FunctionTester.findByName(set, "&&")
+                .compareReturnValue(true, true, true)
+                .compareReturnValue(false, true, false)
+                .compareReturnValue(false, false, true)
+                .compareReturnValue(false, false, false)
+                .compareReturnValue(null, true, null)
+                .compareReturnValue(null, null, true)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void bitwiseXOR() {
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "xor")
+                .compareReturnValue(0b0110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+    }
+    
+    @Test
+    public void bitwiseOR() {
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "or")
+                .compareReturnValue(0b1110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+        FunctionTester.findByName(set, "|")
+                .compareReturnValue(0b1110, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+    }
+    
+    @Test
+    public void bitwiseAND() {
+        Alarm none = alarmNone();
+        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "and")
+                .compareReturnValue(0b1000, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+        FunctionTester.findByName(set, "&")
+                .compareReturnValue(0b1000, 0b1100, 0b1010)
+                .compareReturnValue(null, 0b1100, null)
+                .compareReturnValue(null, null, 0b1010)
+                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
+                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
+                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
+                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+    }
+    
+    @Test
+    public void logicalNot() {
+        FunctionTester.findByName(set, "!")
+                .compareReturnValue(true, false)
+                .compareReturnValue(false, true)
+                .compareReturnValue(null, (Object) null)
+                .highestAlarmReturned()
+                .latestTimeReturned();
+    }
+    
+    @Test
+    public void conditionalOperator() {
+        Alarm alarm1 = alarmNone();
+        Alarm alarm2 = newAlarm(AlarmSeverity.MINOR, "LOW");
+        Time time1 = timeNow();
+        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        FunctionTester.findByName(set, "?:")
+                .compareReturnValue(1, true, 1, 0)
+                .compareReturnValue(0, false, 1, 0)
+                .compareReturnValue(null, null, 1, 0)
+                .compareReturnValue(null, true, null, 0)
+                .compareReturnValue(1, true, 1, null)
+                .compareReturnValue(0, false, null, 0)
+                .compareReturnValue(null, false, 1, null)
+                .compareReturnAlarm(alarm1, true, alarm1, alarm2)
+                .compareReturnAlarm(alarm2, false, alarm1, alarm2)
+                .compareReturnTime(time1, true, time1, time2)
+                .compareReturnTime(time2, false, time1, time2);
     }
 }

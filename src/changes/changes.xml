@@ -8,7 +8,50 @@
     </properties>
   
     <body>
-        <release version="2.4" date="SNAPSHOT" description="Integration framework for ca regression tests.">
+        <release version="2.5" date="SNAPSHOT" description="PVA services support.">
+            <action dev="carcassi"  type="update">
+                vtype: factory cleanup
+            </action>
+            <action dev="sekoranja"  type="update">
+                pva: adding support for rpc services
+            </action>
+            <action dev="carcassi"  type="update">
+                io: using new epics-util CSV parser
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula function testing cleanup
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: review and cleanup of function implementations; better null/alarm/time handling
+            </action>
+            <action dev="sfnrendra3"  type="add">
+                formula: adding element-wise operations for array calculation
+            </action>
+        </release>
+        <release version="2.5" date="SNAPSHOT" description="PVA services support.">
+            <action dev="carcassi"  type="update">
+                formula: better range detection for histogramOf function
+            </action>
+            <action dev="carcassi"  type="fix">
+                core: errors on background threads are now logged
+            </action>
+            <action dev="arnaud"  type="add">
+                timecache: first work on working prototype
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added a couple of function to filter tables based on values and numeric ranges
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: disconnected value should hole the time of the disconnect
+            </action>
+            <action dev="carcassi"  type="add">
+                graphene: integrated intensity and multi-line graphs
+            </action>
+            <action dev="carcassi"  type="add">
+                sim: adding a couple channels to test 2D array based widgets
+            </action>
+        </release>
+        <release version="2.4" date="2014/01/25" description="Integration framework for ca regression tests.">
             <action dev="carcassi"  type="update">
                 vtype: adding display information to VNumberArray
             </action>

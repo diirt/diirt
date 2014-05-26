@@ -82,3 +82,6 @@ dt {
 #banner {
   border-bottom: 1px solid #fff;
 }
+#leftColumn {
+    width: 20%
+}

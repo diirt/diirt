@@ -4,9 +4,7 @@
  */
 package org.epics.pvmanager.sample;
 
-import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRenderer;
+import static org.epics.pvmanager.sample.SwingBindingUtil.*;
 
 /**
  *
@@ -19,10 +17,19 @@ public class HistogramGraphDialog extends javax.swing.JDialog {
     /**
      * Creates new form ScatterGraphDialog
      */
-    public HistogramGraphDialog(java.awt.Frame parent, boolean modal, HistogramGraphApp graph) {
+    public HistogramGraphDialog(java.awt.Frame parent, boolean modal, final HistogramGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
+        
+        onCheckBoxChange(highlightFocusValueField, new Runnable() {
+            @Override
+            public void run() {
+                graph.setHighlightFocusValue(highlightFocusValueField.isSelected());
+            }
+        });
+        
+        highlightFocusValueField.setSelected(graph.isHighlightFocusValue());
     }
 
     /**
@@ -34,18 +41,11 @@ public class HistogramGraphDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
+        highlightFocusValueField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Interpolation:");
-
-        interpolationSchemeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                interpolationSchemeFieldActionPerformed(evt);
-            }
-        });
+        highlightFocusValueField.setText("Highlight focus value");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -53,28 +53,19 @@ public class HistogramGraphDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(interpolationSchemeField, 0, 287, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(highlightFocusValueField)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(interpolationSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(highlightFocusValueField)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void interpolationSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpolationSchemeFieldActionPerformed
-
-        
-    }//GEN-LAST:event_interpolationSchemeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,7 +109,6 @@ public class HistogramGraphDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox highlightFocusValueField;
     // End of variables declaration//GEN-END:variables
 }

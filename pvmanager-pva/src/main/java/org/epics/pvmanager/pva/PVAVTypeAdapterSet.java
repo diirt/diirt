@@ -12,8 +12,13 @@ import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.StandardFieldFactory;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalarArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVIntArray;
+import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVLongArray;
+import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTMatrixToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTNameValueToVTable;
 import org.epics.pvmanager.pva.adapters.PVFieldToVBoolean;
@@ -27,6 +32,8 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVFloatArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVImage;
 import org.epics.pvmanager.pva.adapters.PVFieldToVInt;
 import org.epics.pvmanager.pva.adapters.PVFieldToVIntArray;
+import org.epics.pvmanager.pva.adapters.PVFieldToVLong;
+import org.epics.pvmanager.pva.adapters.PVFieldToVLongArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVShort;
 import org.epics.pvmanager.pva.adapters.PVFieldToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVStatistics;
@@ -44,6 +51,9 @@ import org.epics.vtype.VFloatArray;
 import org.epics.vtype.VImage;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VIntArray;
+import org.epics.vtype.VLong;
+import org.epics.vtype.VLongArray;
+import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VShort;
 import org.epics.vtype.VShortArray;
 import org.epics.vtype.VStatistics;
@@ -134,9 +144,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvInt),
-    					fieldCreate.createScalar(ScalarType.pvUInt),
-    					fieldCreate.createScalar(ScalarType.pvLong),
-    					fieldCreate.createScalar(ScalarType.pvULong),
+    					fieldCreate.createScalar(ScalarType.pvUInt)
     				})
     	{
 
@@ -146,6 +154,22 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
         
+    //  -> VLong
+    final static PVATypeAdapter ToVLong = new PVATypeAdapter(
+    		VLong.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new Field[]
+    				{
+    					fieldCreate.createScalar(ScalarType.pvLong),
+    					fieldCreate.createScalar(ScalarType.pvULong),
+    				})
+    	{
+
+            @Override
+            public VLong createValue(final PVStructure message, Field valueType, boolean disconnected) {
+            	return new PVFieldToVLong(message, disconnected);
+            }
+        };
         
     //  -> VBoolean
     final static PVATypeAdapter ToVBoolean = new PVATypeAdapter(
@@ -223,6 +247,18 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
 
+    //  -> VArrayLong
+    final static PVATypeAdapter ToVArrayLong = new PVATypeAdapter(
+    		VLongArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		fieldCreate.createScalarArray(ScalarType.pvLong))
+    	{
+            @Override
+            public VLongArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
+            	return new PVFieldToVLongArray(message, disconnected);
+            }
+        };
+        
     //  -> VArrayShort
     final static PVATypeAdapter ToVArrayShort = new PVATypeAdapter(
     		VShortArray.class,
@@ -314,6 +350,31 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
 
+    //  -> VNumberArray (NTHistogram support) 
+    final static PVATypeAdapter ToVNumberArrayAsHistogram = new PVATypeAdapter(
+    		VNumberArray.class,
+    		new String[] { "uri:ev4:nt/2012/pwd:NTHistogram" })
+    	{
+            @Override
+            public VNumberArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
+            	PVField valueField = message.getSubField("value");
+            	if (valueField instanceof PVScalarArray)
+            	{
+            		switch (((PVScalarArray)valueField).getScalarArray().getElementType())
+            		{
+            			case pvShort: return new PVFieldNTHistogramToVShortArray(message, disconnected);
+            			case pvInt  : return new PVFieldNTHistogramToVIntArray(message, disconnected);
+            			case pvLong : return new PVFieldNTHistogramToVLongArray(message, disconnected);
+            			default:
+                    		throw new RuntimeException("NTHistogram 'value' scalar array must be { short[] | int[] | long[] }.");
+            		}
+            		
+            	}
+            	else
+            		throw new RuntimeException("NTHistogram does not have a scalar array 'value' field.");
+            }
+        };
+
     private static final Set<PVATypeAdapter> converters;
     
     static {
@@ -325,6 +386,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVByte);
         newFactories.add(ToVShort);
         newFactories.add(ToVInt);
+        newFactories.add(ToVLong);
         newFactories.add(ToVString);
         newFactories.add(ToVEnum);
         newFactories.add(ToVBoolean);
@@ -335,8 +397,10 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVArrayByte);
         newFactories.add(ToVArrayShort);
         newFactories.add(ToVArrayInt);
+        newFactories.add(ToVArrayLong);
         newFactories.add(ToVArrayString);
         //newFactories.add(ToVArrayEnum);
+        // no VBooleanArray
         
         newFactories.add(ToVImage);
         newFactories.add(ToVTable);
@@ -344,6 +408,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVTableAsNameValue);	// NTNameValue support
 
         newFactories.add(ToVStatistics); // NTAggregate support
+        newFactories.add(ToVNumberArrayAsHistogram); // NTHistogram support
 
         converters = Collections.unmodifiableSet(newFactories);
     }

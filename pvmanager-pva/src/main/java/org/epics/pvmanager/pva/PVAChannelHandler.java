@@ -19,7 +19,7 @@ import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.client.ChannelPut;
 import org.epics.pvaccess.client.ChannelPutRequester;
 import org.epics.pvaccess.client.ChannelRequester;
-import org.epics.pvaccess.client.CreateRequestFactory;
+import org.epics.pvaccess.client.CreateRequest;
 import org.epics.pvaccess.client.GetFieldRequester;
 import org.epics.pvdata.factory.ConvertFactory;
 import org.epics.pvdata.misc.BitSet;
@@ -29,6 +29,7 @@ import org.epics.pvdata.monitor.MonitorRequester;
 import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.MessageType;
+import org.epics.pvdata.pv.PVBoolean;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVScalar;
@@ -73,8 +74,10 @@ public class PVAChannelHandler extends
 
 	private static final Logger logger = Logger.getLogger(PVAChannelHandler.class.getName());
 
-	private static PVStructure standardPutPVRequest = CreateRequestFactory.createRequest("field(value)", null);
-	private static PVStructure enumPutPVRequest = CreateRequestFactory.createRequest("field(value.index)", null);
+	private static CreateRequest createRequest = CreateRequest.create();
+	private static PVStructure allPVRequest = createRequest.createRequest("field()");
+	private static PVStructure standardPutPVRequest = createRequest.createRequest("field(value)");
+	private static PVStructure enumPutPVRequest = createRequest.createRequest("field(value.index)");
 	
 	public PVAChannelHandler(String channelName,
 			ChannelProvider channelProvider, short priority,
@@ -441,6 +444,10 @@ public class PVAChannelHandler extends
 				convert.fromLong((PVScalar)field, ((Long)newValue).longValue());
 			else if (newValue instanceof Float)
 				convert.fromFloat((PVScalar)field, ((Float)newValue).floatValue());
+			else if (newValue instanceof Boolean)
+				//  TODO no convert.fromBoolean
+				//convert.fromBoolean((PVScalar)field, ((Boolean)newValue).booleanValue());
+				((PVBoolean)field).put(((Boolean)newValue).booleanValue());
     		else
     			throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into scalar '" + channelPutValueField.getField() + "'");
         }
@@ -528,7 +535,7 @@ public class PVAChannelHandler extends
 				} catch (InterruptedException e) { }
 			}
 			// TODO optimize fields
-			channel.createMonitor(this, CreateRequestFactory.createRequest("field()", this));
+			channel.createMonitor(this, allPVRequest);
 		}
 	}
 

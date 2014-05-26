@@ -2,6 +2,8 @@
 <pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
     <channelName>testChannel</channelName>
     <host>localhost</host>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
     <methods>
     <method name="sum" description="sum the two numbers"
       <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>

@@ -6,21 +6,18 @@
     <version>1.3.1</version>
   </skin>
   <bannerLeft>
-    <name>pvManager</name>
+    <name>pvmanager</name>
     <src>images/PVManagerLogo100.png</src>
     <href>http://pvmanager.sourceforge.net</href>
   </bannerLeft>
-  <!--<bannerRight>
-    <src>http://maven.apache.org/images/maven-small.gif</src>
-  </bannerRight>-->
   <body>
     <links>
+      <item name="DIIRT" href="http://diirt.org" />
       <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
       <item name="JCA-JCA" href="http://epics-jca.sourceforge.net/"/>
-      <item name="CSS" href="http://cs-studio.sourceforge.net"/>
     </links>
 
-    <menu name="PVManager">
+    <menu name="pvmanager">
       <item name="About" href="index.html"/>
       <item name="Changes" href="changes-report.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/pvmanager/"/>

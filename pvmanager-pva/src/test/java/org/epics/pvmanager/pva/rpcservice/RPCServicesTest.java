@@ -77,9 +77,9 @@ public class RPCServicesTest implements Runnable {
 
   @Test
   public void testCreateFromXml() {
-
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
+    
     assertThat(service.getName(), equalTo("pvRPCServiceSample"));
     assertThat(service.getDescription(), equalTo("A test pvRPC service"));
     assertThat(service.getServiceMethods().size(), equalTo(7));
@@ -219,7 +219,7 @@ public class RPCServicesTest implements Runnable {
     }
     VFloat vFloat = (VFloat) cache.getValue().get("c");
     assertThat(vFloat.getValue(), equalTo(30.0f));
-  }
+  }pvmanager-sample/src/main/java/org/epics/pvmanager/sample/SetupUtil.java
 */
 
   @Test

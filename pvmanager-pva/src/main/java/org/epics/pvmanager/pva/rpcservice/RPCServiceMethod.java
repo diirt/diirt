@@ -5,30 +5,22 @@
 package org.epics.pvmanager.pva.rpcservice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.epics.pvaccess.client.rpc.RPCClient;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
+import org.epics.pvdata.factory.ConvertFactory;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
+import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVBoolean;
-import org.epics.pvdata.pv.PVByte;
-import org.epics.pvdata.pv.PVByteArray;
-import org.epics.pvdata.pv.PVDouble;
-import org.epics.pvdata.pv.PVDoubleArray;
-import org.epics.pvdata.pv.PVFloat;
-import org.epics.pvdata.pv.PVFloatArray;
-import org.epics.pvdata.pv.PVInt;
-import org.epics.pvdata.pv.PVIntArray;
-import org.epics.pvdata.pv.PVShort;
-import org.epics.pvdata.pv.PVShortArray;
-import org.epics.pvdata.pv.PVString;
-import org.epics.pvdata.pv.PVStringArray;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalar;
+import org.epics.pvdata.pv.PVScalarArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.Structure;
@@ -46,6 +38,13 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVStringArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVTable;
 import org.epics.pvmanager.pva.rpcservice.rpcclient.PooledRPCClientFactory;
 import org.epics.pvmanager.service.ServiceMethod;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListByte;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListFloat;
+import org.epics.util.array.ListInt;
+import org.epics.util.array.ListLong;
+import org.epics.util.array.ListShort;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VByte;
 import org.epics.vtype.VByteArray;
@@ -56,6 +55,8 @@ import org.epics.vtype.VFloatArray;
 import org.epics.vtype.VImage;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VIntArray;
+import org.epics.vtype.VLong;
+import org.epics.vtype.VLongArray;
 import org.epics.vtype.VShort;
 import org.epics.vtype.VShortArray;
 import org.epics.vtype.VStatistics;
@@ -72,15 +73,16 @@ import org.epics.vtype.ValueFactory;
  */
 class RPCServiceMethod extends ServiceMethod {
 
-  //consts
-  private final static String FIELD_OPERATION_NAME = "op";
-
   private final static FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+  private final static Convert convert = ConvertFactory.getConvert();
+
   private final Structure requestStructure;
   private final Map<String, String> parameterNames;
   private final RPCServiceMethodDescription rpcServiceMethodDescription;
   private final String hostName;
   private final String channelName;
+  private final String methodFieldName;
+  private final boolean useNTQuery;
 
 
   /**
@@ -88,17 +90,38 @@ class RPCServiceMethod extends ServiceMethod {
    *
    * @param rpcServiceMethodDescription a method description
    */
-  RPCServiceMethod(RPCServiceMethodDescription rpcServiceMethodDescription, String hostName, String channelName) {
-    super(rpcServiceMethodDescription.serviceMethodDescription);
+  RPCServiceMethod(RPCServiceMethodDescription rpcServiceMethodDescription, String hostName, String channelName,
+		  String methodFieldName, boolean useNTQuery) {
+    super(rpcServiceMethodDescription.relaxedServiceMethodDescription);
+    //super(rpcServiceMethodDescription.serviceMethodDescription);
     this.rpcServiceMethodDescription = rpcServiceMethodDescription;
     this.parameterNames = rpcServiceMethodDescription.orderedParameterNames;
-    this.requestStructure = createRequestStructure(rpcServiceMethodDescription.structureId);
     this.hostName = hostName;
     this.channelName = channelName;
+    this.methodFieldName = methodFieldName;
+    this.useNTQuery = useNTQuery;
+
+    this.requestStructure = createRequestStructure(rpcServiceMethodDescription.structureId);
   }
 
-
   private Structure createRequestStructure(String structureId) {
+	  Structure paramStructure = createParametersRequestStructure(structureId);
+
+	  if (!useNTQuery)
+		  return paramStructure;
+	  else
+	  {
+		  return fieldCreate.createStructure("uri:ev4:nt/2012/pwd:NTURI", 
+						  new String[] { "scheme", "path", "query" },
+						  new Field[] { 
+						  	fieldCreate.createScalar(ScalarType.pvString),
+						  	fieldCreate.createScalar(ScalarType.pvString),
+						  	paramStructure,
+				  });
+	  }
+  }
+  
+  private Structure createParametersRequestStructure(String structureId) {
     if ((structureId == null) || (structureId.isEmpty())) {
       return fieldCreate.createStructure(createRequestFieldNames(), createRequestFieldTypes());
     } else
@@ -108,13 +131,15 @@ class RPCServiceMethod extends ServiceMethod {
 
   private String[] createRequestFieldNames() {
 
-    //only operation name
+    //only operation name, if specified
     if ((this.parameterNames == null) || (parameterNames.isEmpty())) {
-      return new String[]{FIELD_OPERATION_NAME};
+      return methodFieldName != null ? new String[]{ methodFieldName } : new String[0];
     }
 
-    //operation name + parameter names/fieldnames
-    List<String> fieldNames = new ArrayList<String>(Arrays.asList(FIELD_OPERATION_NAME));
+    //operation name (optional) + parameter names/fieldnames
+    List<String> fieldNames = new ArrayList<String>(this.parameterNames.size() + 1);
+    if (methodFieldName != null)
+    	fieldNames.add(methodFieldName);
     for (String parameterName : this.parameterNames.keySet()) {
       String fieldName = this.parameterNames.get(parameterName);
       if (fieldName.equals(RPCServiceMethodDescription.FIELD_NAME_EQUALS_NAME)) {
@@ -132,13 +157,27 @@ class RPCServiceMethod extends ServiceMethod {
 
     //only operation name type
     if ((this.parameterNames == null) || (parameterNames.isEmpty())) {
-      return new Field[]{fieldCreate.createScalar(ScalarType.pvString)};
+    	return methodFieldName != null ? new Field[]{fieldCreate.createScalar(ScalarType.pvString)} : new Field[0];
     }
 
-    //operation name type + parameter types
-    List<Field> fieldList = new ArrayList<Field>(Arrays.asList(fieldCreate.createScalar(ScalarType.pvString)));
+    //Map<String, Class<?>> argumentTypes = getArgumentTypes();
+    // create ServiceMethod to get access to argumentTypes of serviceMethodDescription (non-relaxed)
+    ServiceMethod sm = new ServiceMethod(rpcServiceMethodDescription.serviceMethodDescription) {
+		@Override
+		public void executeMethod(Map<String, Object> parameters,
+				WriteFunction<Map<String, Object>> callback,
+				WriteFunction<Exception> errorCallback) {
+			// noop
+		}
+    };
+    Map<String, Class<?>> argumentTypes = sm.getArgumentTypes();
+    
+    // operation name type + parameter types
+    List<Field> fieldList = new ArrayList<Field>(this.parameterNames.size() + 1);
+    if (methodFieldName != null)
+    	fieldList.add(fieldCreate.createScalar(ScalarType.pvString));
     for (String parameterName : this.parameterNames.keySet()) {
-      fieldList.add(convertToPvType(getArgumentTypes().get(parameterName)));
+      fieldList.add(convertToPvType(argumentTypes.get(parameterName)));
     }
 
     return fieldList.toArray(new Field[fieldList.size()]);
@@ -163,6 +202,8 @@ class RPCServiceMethod extends ServiceMethod {
       return fieldCreate.createScalar(ScalarType.pvInt);
     } else if (argType.isAssignableFrom(VShort.class)) {
       return fieldCreate.createScalar(ScalarType.pvShort);
+    } else if (argType.isAssignableFrom(VLong.class)) {
+      return fieldCreate.createScalar(ScalarType.pvLong);
     } else if (argType.isAssignableFrom(VByte.class)) {
       return fieldCreate.createScalar(ScalarType.pvByte);
     } else if (argType.isAssignableFrom(VBoolean.class)) {
@@ -176,6 +217,8 @@ class RPCServiceMethod extends ServiceMethod {
       return fieldCreate.createScalarArray(ScalarType.pvString);
     } else if (argType.isAssignableFrom(VIntArray.class)) {
       return fieldCreate.createScalarArray(ScalarType.pvInt);
+    } else if (argType.isAssignableFrom(VLongArray.class)) {
+      return fieldCreate.createScalarArray(ScalarType.pvLong);
     } else if (argType.isAssignableFrom(VShortArray.class)) {
       return fieldCreate.createScalarArray(ScalarType.pvShort);
     } else if (argType.isAssignableFrom(VByteArray.class)) {
@@ -215,7 +258,8 @@ class RPCServiceMethod extends ServiceMethod {
       String methodName = this.rpcServiceMethodDescription.getOperationName() != null ?
         this.rpcServiceMethodDescription.getOperationName() : this.rpcServiceMethodDescription.getName();
 
-      PVStructure pvResult = rpcClient.request(createPvRequest(parameters, methodName), 3.0);
+      PVStructure pvRequest = createPvRequest(parameters, methodName);
+      PVStructure pvResult = rpcClient.request(pvRequest, 3.0);
 
       VType vResult = createResult(pvResult);
       if (vResult != null) {
@@ -237,11 +281,19 @@ class RPCServiceMethod extends ServiceMethod {
   PVStructure createPvRequest(final Map<String, Object> parameters, String methodName) {
 
     PVStructure pvRequest = PVDataFactory.getPVDataCreate().createPVStructure(this.requestStructure);
+    PVStructure retVal = pvRequest;
+    if (useNTQuery)
+    {
+    	pvRequest.getStringField("scheme").put("pva");
+    	pvRequest.getStringField("path").put(channelName);
+    	pvRequest = pvRequest.getStructureField("query");
+    }
 
-    pvRequest.getStringField(FIELD_OPERATION_NAME).put(methodName);
+    if (methodFieldName != null)
+    	pvRequest.getStringField(methodFieldName).put(methodName);
 
     if ((parameters == null) || (parameters.isEmpty())) {
-      return pvRequest;
+      return retVal;
     }
 
     for (String parameterName : parameters.keySet()) {
@@ -254,172 +306,88 @@ class RPCServiceMethod extends ServiceMethod {
       }
 
       Object value = parameters.get(parameterName);
-
-      // TODO no unsigned types, and complex types (do we need to support them?)
       
-      if (value instanceof VString) {
+      // consider it as optional
+      if (value == null)
+    	  continue;
 
-        PVString field = pvRequest.getStringField(fieldName != null ? fieldName : parameterName);
-        if (field == null) {
-          throw new IllegalArgumentException("String field " + parameterName + " not found");
-        }
-        field.put(((VString) value).getValue());
-
-      } else if (value instanceof VDouble) {
-
-        PVDouble field = pvRequest.getDoubleField(fieldName != null ? fieldName : parameterName);
-        if (field == null) {
-          throw new IllegalArgumentException("Double field " + parameterName + " not found");
-        }
-        field.put(((VDouble) value).getValue());
-
-      } else if (value instanceof VFloat) {
-
-        PVFloat field = pvRequest.getFloatField(fieldName != null ? fieldName : parameterName);
-        if (field == null) {
-          throw new IllegalArgumentException("Float field " + parameterName + " not found");
-        }
-        field.put(((VFloat) value).getValue());
-
-      } else if (value instanceof VInt) {
-
-          PVInt field = pvRequest.getIntField(fieldName != null ? fieldName : parameterName);
-          if (field == null) {
-            throw new IllegalArgumentException("Int field " + parameterName + " not found");
-          }
-          field.put(((VInt) value).getValue());
-
-      } else if (value instanceof VShort) {
-
-    	  PVShort field = pvRequest.getShortField(fieldName != null ? fieldName : parameterName);
-          if (field == null) {
-            throw new IllegalArgumentException("Short field " + parameterName + " not found");
-          }
-          field.put(((VShort) value).getValue());
-
-      } else if (value instanceof VByte) {
-
-    	  PVByte field = pvRequest.getByteField(fieldName != null ? fieldName : parameterName);
-          if (field == null) {
-            throw new IllegalArgumentException("Byte field " + parameterName + " not found");
-          }
-          field.put(((VByte) value).getValue());
-          
-      } else if (value instanceof VBoolean) {
-
-        PVBoolean field = pvRequest.getBooleanField(fieldName != null ? fieldName : parameterName);
-        if (field == null) {
-          throw new IllegalArgumentException("Boolean field " + parameterName + " not found");
-        }
-        field.put(((VBoolean) value).getValue());
-
-      } else if (value instanceof VStringArray) {
-
-          PVStringArray field = (PVStringArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvString);
-          if (field == null) {
-            throw new IllegalArgumentException("StringArray field " + parameterName + " not found");
-          }
-
-          VStringArray vStringArray = (VStringArray) value;
-          String[] stringArr = new String[vStringArray.getData().size()];
-
-          for (int i = 0; i < stringArr.length; i++) {
-            stringArr[i] = vStringArray.getData().get(i);
-          }
-
-          field.put(0, stringArr.length, stringArr, 0);
-
-      } else if (value instanceof VDoubleArray) {
-
-          PVDoubleArray field = (PVDoubleArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvDouble);
-          if (field == null) {
-            throw new IllegalArgumentException("DoubleArray field " + parameterName + " not found");
-          }
-
-          VDoubleArray vDoubleArray = (VDoubleArray) value;
-          double[] doubleArr = new double[vDoubleArray.getData().size()];
-
-          for (int i = 0; i < doubleArr.length; i++) {
-            doubleArr[i] = vDoubleArray.getData().getDouble(i);
-          }
-
-          field.put(0, doubleArr.length, doubleArr, 0);
-          
-      } else if (value instanceof VFloatArray) {
-
-          PVFloatArray field = (PVFloatArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvFloat);
-          if (field == null) {
-            throw new IllegalArgumentException("FloatArray field " + parameterName + " not found");
-          }
-
-          VFloatArray vFloatArray = (VFloatArray) value;
-          float[] floatArr = new float[vFloatArray.getData().size()];
-
-          for (int i = 0; i < floatArr.length; i++) {
-            floatArr[i] = vFloatArray.getData().getFloat(i);
-          }
-
-          field.put(0, floatArr.length, floatArr, 0);
-          
-      } else if (value instanceof VIntArray) {
-
-          PVIntArray field = (PVIntArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvInt);
-          if (field == null) {
-            throw new IllegalArgumentException("IntArray field " + parameterName + " not found");
-          }
-
-          VIntArray vIntArray = (VIntArray) value;
-          int[] intArr = new int[vIntArray.getData().size()];
-
-          for (int i = 0; i < intArr.length; i++) {
-            intArr[i] = vIntArray.getData().getInt(i);
-          }
-
-          field.put(0, intArr.length, intArr, 0);
-          
-      } else if (value instanceof VShortArray) {
-
-          PVShortArray field = (PVShortArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvShort);
-          if (field == null) {
-            throw new IllegalArgumentException("ShortArray field " + parameterName + " not found");
-          }
-
-          VShortArray vShortArray = (VShortArray) value;
-          short[] shortArr = new short[vShortArray.getData().size()];
-
-          for (int i = 0; i < shortArr.length; i++) {
-            shortArr[i] = vShortArray.getData().getShort(i);
-          }
-
-          field.put(0, shortArr.length, shortArr, 0);
-          
-      } else if (value instanceof VByteArray) {
-
-          PVByteArray field = (PVByteArray) pvRequest.getScalarArrayField(
-            fieldName != null ? fieldName : parameterName, ScalarType.pvByte);
-          if (field == null) {
-            throw new IllegalArgumentException("ByteArray field " + parameterName + " not found");
-          }
-
-          VByteArray vByteArray = (VByteArray) value;
-          byte[] byteArr = new byte[vByteArray.getData().size()];
-
-          for (int i = 0; i < byteArr.length; i++) {
-            byteArr[i] = vByteArray.getData().getByte(i);
-          }
-
-          field.put(0, byteArr.length, byteArr, 0);
-          
-      } else {
+      PVField pvField = pvRequest.getSubField((fieldName != null ? fieldName : parameterName));
+      
+      
+      if (pvField instanceof PVScalar)
+      {
+    	  PVScalar pvScalar = (PVScalar)pvField;
+    	  if (value instanceof VDouble)
+    		  convert.fromDouble(pvScalar, ((VDouble)value).getValue());
+    	  else if (value instanceof VInt)
+    		  convert.fromInt(pvScalar, ((VInt)value).getValue());
+    	  else if (value instanceof VFloat)
+    		  convert.fromFloat(pvScalar, ((VFloat)value).getValue());
+    	  else if (value instanceof VLong)
+    		  convert.fromLong(pvScalar, ((VLong)value).getValue());
+    	  else if (value instanceof VShort)
+    		  convert.fromShort(pvScalar, ((VShort)value).getValue());
+    	  else if (value instanceof VByte)
+    		  convert.fromByte(pvScalar, ((VByte)value).getValue());
+    	  else if (value instanceof VBoolean)
+    		  ((PVBoolean)pvScalar).put(((VBoolean)value).getValue());		// TODO Convert is missing fromBoolean
+       	  else if (value instanceof VString)
+    		  convert.fromString(pvScalar, ((VString)value).getValue());
+      }
+      else if (pvField instanceof PVScalarArray)
+      {
+    	  PVScalarArray pvScalarArray = (PVScalarArray)pvField;
+    	  if (value instanceof VDoubleArray)
+    	  {
+    		  ListDouble list = ((VDoubleArray)value).getData();
+              double[] arr = CollectionNumbers.doubleArrayWrappedOrCopy(list);
+    		  convert.fromDoubleArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+    	  else if (value instanceof VIntArray)
+    	  {
+    		  ListInt list = ((VIntArray)value).getData();
+              int[] arr = CollectionNumbers.intArrayWrappedOrCopy(list);
+    		  convert.fromIntArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+    	  else if (value instanceof VFloatArray)
+    	  {
+    		  ListFloat list = ((VFloatArray)value).getData();
+              float[] arr = CollectionNumbers.floatArrayWrappedOrCopy(list);
+    		  convert.fromFloatArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+    	  else if (value instanceof VLongArray)
+    	  {
+    		  ListLong list = ((VLongArray)value).getData();
+              long[] arr = CollectionNumbers.longArrayWrappedOrCopy(list);
+    		  convert.fromLongArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+    	  else if (value instanceof VShortArray)
+    	  {
+    		  ListShort list = ((VShortArray)value).getData();
+              short[] arr = CollectionNumbers.shortArrayWrappedOrCopy(list);
+    		  convert.fromShortArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+    	  else if (value instanceof VByteArray)
+    	  {
+    		  ListByte list = ((VByteArray)value).getData();
+              byte[] arr = CollectionNumbers.byteArrayWrappedOrCopy(list);
+    		  convert.fromByteArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+       	  else if (value instanceof VStringArray)
+    	  {
+    		  List<String> list = ((VStringArray)value).getData();
+    		  String[] arr = list.toArray(new String[list.size()]);
+    		  convert.fromStringArray(pvScalarArray, 0, arr.length, arr, 0);
+    	  }
+      }
+      else
+      {
+         // TODO complex types (do we need to support them?)
         throw new RuntimeException("pvAccess RPC Service mapping support for " + value.getClass().getSimpleName() + " not implemented");
       }
     }
-    return pvRequest;
+    
+    return retVal;
   }
 
 
@@ -460,20 +428,22 @@ class RPCServiceMethod extends ServiceMethod {
     String resultName = getResultDescriptions().keySet().toArray(new String[getResultDescriptions().size()])[0];
     String fieldName = this.rpcServiceMethodDescription.getFieldNames().get(resultName);
 
+    // TODO missing ValueFactory.newVLong
+    
     if (resultType.isAssignableFrom(VDouble.class)) {
-      return ValueFactory.newVDouble(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+        return ValueFactory.newVDouble(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VFloat.class)) {
-      return ValueFactory.newVFloat(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+        return ValueFactory.newVFloat(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VString.class)) {
-      return ValueFactory.newVString(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
+        return ValueFactory.newVString(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
     } else if (resultType.isAssignableFrom(VInt.class)) {
-      return ValueFactory.newVInt(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+        return ValueFactory.newVInt(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VShort.class)) {
         return ValueFactory.newVShort(pvResult.getShortField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VByte.class)) {
         return ValueFactory.newVByte(pvResult.getByteField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
     } else if (resultType.isAssignableFrom(VBoolean.class)) {
-      return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
+        return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
     } else if (resultType.isAssignableFrom(VDoubleArray.class)) {
     	
 		if ("uri:ev4:nt/2012/pwd:NTMatrix".equals(pvResult.getStructure().getID()))

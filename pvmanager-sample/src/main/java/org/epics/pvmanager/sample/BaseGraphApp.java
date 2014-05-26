@@ -7,6 +7,8 @@ package org.epics.pvmanager.sample;
 import java.awt.EventQueue;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,10 +39,20 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
 
             @Override
             public void componentResized(ComponentEvent e) {
-                if (plot != null) {
-                    plot.update(plot.newUpdate().imageHeight(imagePanel.getHeight()).imageWidth(imagePanel.getWidth()));
+                if (graph != null) {
+                    graph.update(graph.newUpdate()
+                            .imageHeight(Math.max(1, imagePanel.getHeight()))
+                            .imageWidth(Math.max(1, imagePanel.getWidth())));
                 }
             }
+        });
+        imagePanel.addMouseMotionListener(new MouseAdapter() {
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                onMouseMove(e);
+            }
+            
         });
         EventQueue.invokeLater(new Runnable() {
 
@@ -51,8 +63,12 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
         });
     }
     
+    protected void onMouseMove(MouseEvent e) {
+        
+    }
+    
     private PVReader<Graph2DResult> pv;
-    protected Graph2DExpression<T> plot;
+    protected Graph2DExpression<T> graph;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -136,21 +152,25 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
     }// </editor-fold>//GEN-END:initComponents
 
     private void dataFormulaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFormulaFieldActionPerformed
+        reconnect();
+    }//GEN-LAST:event_dataFormulaFieldActionPerformed
+
+    protected void reconnect() {
         if (pv != null) {
             pv.close();
             imagePanel.setImage(null);
-            plot = null;
+            graph = null;
         }
         
         if (dataFormulaField.getSelectedItem() == null || dataFormulaField.getSelectedItem().toString().trim().isEmpty()) {
             return;
         }
         
-        plot = createExpression(dataFormulaField.getSelectedItem().toString());
+        graph = createExpression(dataFormulaField.getSelectedItem().toString());
         
-        plot.update(plot.newUpdate().imageHeight(imagePanel.getHeight())
+        graph.update(graph.newUpdate().imageHeight(imagePanel.getHeight())
                 .imageWidth(imagePanel.getWidth()));
-        pv = PVManager.read(plot)
+        pv = PVManager.read(graph)
                 .notifyOn(swingEDT())
                 .readListener(new PVReaderListener<Graph2DResult>() {
 
@@ -164,9 +184,8 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
                     }
                 })
                 .maxRate(ofHertz(50));
-
-    }//GEN-LAST:event_dataFormulaFieldActionPerformed
-
+    }
+    
     protected abstract Graph2DExpression<T> createExpression(String dataFormula);
     protected abstract void openConfigurationDialog();
     
