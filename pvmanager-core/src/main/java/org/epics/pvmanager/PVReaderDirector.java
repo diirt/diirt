@@ -151,6 +151,7 @@ public class PVReaderDirector<T> {
     private volatile boolean closed = false;
     
     void close() {
+        // XXX: may not be needed anymore
         closed = true;
     }
 
@@ -321,24 +322,6 @@ public class PVReaderDirector<T> {
             }
         });
     }
-    
-    void startScan(TimeDuration duration) {
-        scanTaskHandle = scannerExecutor.scheduleWithFixedDelay(new Runnable() {
-
-            @Override
-            public void run() {
-                if (isActive()) {
-                    // If paused, simply skip without stopping the scan
-                    if (!isPaused()) {
-                        notifyPv();
-                    }
-                } else {
-                    stopScan();
-                    disconnect();
-                }
-            }
-        }, 0, duration.toNanosLong(), TimeUnit.NANOSECONDS);
-    }
 
     /**
      * Posts a timeout exception in the exception queue.
@@ -349,15 +332,6 @@ public class PVReaderDirector<T> {
         PVReaderImpl<T> pv = pvRef.get();
         if (pv != null && !pv.isSentFirsEvent()) {
             exceptionCollector.writeValue(new TimeoutException(timeoutMessage));
-        }
-    }
-       
-    void stopScan() {
-        if (scanTaskHandle != null) {
-            scanTaskHandle.cancel(false);
-            scanTaskHandle = null;
-        } else {
-            throw new IllegalStateException("Scan was never started");
         }
     }
 

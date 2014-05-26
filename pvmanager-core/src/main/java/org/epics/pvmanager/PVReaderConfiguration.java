@@ -144,7 +144,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
                 .scannerExecutor(PVManager.getReadScannerExecutorService())
                 .timeout(timeout, timeoutMessage)
                 .maxDuration(rate).build();
-        pv.setDirector(director);
+        pv.setScanner(scanner);
         director.connectExpression(aggregatedPVExpression);
         scanner.start();
 

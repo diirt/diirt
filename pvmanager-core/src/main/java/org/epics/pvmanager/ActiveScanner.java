@@ -49,7 +49,6 @@ class ActiveScanner implements Scanner {
                     }
                 } else {
                     stop();
-                    readerDirector.disconnect();
                 }
             }
         }, 0, maxDuration.toNanosLong(), TimeUnit.NANOSECONDS);
@@ -57,6 +56,8 @@ class ActiveScanner implements Scanner {
     
     @Override
     public void stop() {
+        readerDirector.close();
+        readerDirector.disconnect();
         if (scanTaskHandle != null) {
             scanTaskHandle.cancel(false);
             scanTaskHandle = null;
