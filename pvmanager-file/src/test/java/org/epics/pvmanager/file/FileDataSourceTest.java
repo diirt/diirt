@@ -1,0 +1,100 @@
+/**
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
+ */
+package org.epics.pvmanager.file;
+
+import org.epics.pvmanager.test.CountDownPVReaderListener;
+import org.epics.pvmanager.test.MockDataSource;
+import java.util.Arrays;
+import java.util.concurrent.Executor;
+import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.expression.Queue;
+import static org.junit.Assert.*;
+import org.junit.*;
+import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.epics.util.time.TimeDuration.*;
+import static org.hamcrest.Matchers.*;
+
+/**
+ *
+ * @author carcassi
+ */
+public class FileDataSourceTest {
+
+    public FileDataSourceTest() {
+    }
+    
+    private static DataSource file;
+    
+    @BeforeClass
+    public static void createDataSource() {
+        file = new FileDataSource();
+    }
+    
+    @AfterClass
+    public static void destroyDataSource() {
+        file.close();
+        file = null;
+    }
+
+    @Before
+    public void setUp() {
+        pv = null;
+    }
+
+    @After
+    public void tearDown() {
+        if (pv != null) {
+            pv.close();
+            pv = null;
+        }
+    }
+
+    private volatile PVReader<?> pv;
+    
+    @Test
+    public void readFile() throws Exception {
+        CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
+        pv = PVManager.read(vType(getClass().getResource("data1.csv").getPath())).from(file)
+                .readListener(listener)
+                .maxRate(ofMillis(10));
+        
+        // Wait for connection
+        listener.await(ofMillis(700));
+        assertThat(listener.getCount(), equalTo(0));
+        
+        System.out.println(pv.getValue());
+//        listener.resetCount(1);
+//        
+//        // No new values, should get no new notification
+//        listener.await(ofMillis(500));
+//        assertThat(listener.getCount(), equalTo(1));
+//        
+//        // Add one value, notification should not come right away
+//        queue.add(1);
+//        listener.await(ofMillis(100));
+//        assertThat(listener.getCount(), equalTo(1));
+//        
+//        // Add a few other values, still no new notification
+//        queue.add(2);
+//        queue.add(3);
+//        listener.await(ofMillis(100));
+//        assertThat(listener.getCount(), equalTo(1));
+//        queue.add(4);
+//        
+//        // Wait longer for first notification
+//        listener.await(ofMillis(500));
+//        assertThat(listener.getCount(), equalTo(0));
+//        assertThat(pv.getValue(), equalTo((Object) Arrays.asList(1)));
+//        listener.resetCount(1);
+//        
+//        // Wait for second notification
+//        listener.await(ofMillis(700));
+//        assertThat(listener.getCount(), equalTo(0));
+//        assertThat(pv.getValue(), equalTo((Object) Arrays.asList(2,3,4)));
+    }
+
+}
