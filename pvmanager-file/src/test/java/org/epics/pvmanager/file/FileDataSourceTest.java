@@ -11,11 +11,13 @@ import java.util.concurrent.Executor;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
+import org.epics.vtype.VTable;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -57,16 +59,22 @@ public class FileDataSourceTest {
     
     @Test
     public void readFile() throws Exception {
-        CountDownPVReaderListener listener = new CountDownPVReaderListener(1);
+        CountDownPVReaderListener listener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK);
         pv = PVManager.read(vType(getClass().getResource("data1.csv").getPath())).from(file)
                 .readListener(listener)
                 .maxRate(ofMillis(10));
         
-        // Wait for connection
+        // Wait for value
         listener.await(ofMillis(700));
         assertThat(listener.getCount(), equalTo(0));
         
-        System.out.println(pv.getValue());
+        assertThat(pv.getValue(), instanceOf(VTable.class));
+        VTable vTable = (VTable) pv.getValue();
+        assertThat(vTable.getRowCount(), equalTo(3));
+        assertThat(vTable.getColumnCount(), equalTo(2));
+        assertThat(vTable.getColumnName(0), equalTo("Name"));
+        assertThat(vTable.getColumnName(1), equalTo("Value"));
+        assertThat(vTable.getColumnData(0), equalTo((Object) Arrays.asList("A", "B", "C")));
 //        listener.resetCount(1);
 //        
 //        // No new values, should get no new notification
