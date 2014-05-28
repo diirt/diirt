@@ -54,6 +54,9 @@ public final class FileDataSource extends DataSource {
         if (channelName.endsWith(".png") || channelName.endsWith(".bmp")) {
             return new ImageChannelHandler(this, channelName, new File(URI.create("file://" + channelName)));
         }
+        if (channelName.endsWith(".list")) {
+            return new ListChannelHandler(this, channelName, new File(URI.create("file://" + channelName)));
+        }
         return new FileChannelHandler(this, channelName, new File(URI.create("file://" + channelName)));
     }
 
