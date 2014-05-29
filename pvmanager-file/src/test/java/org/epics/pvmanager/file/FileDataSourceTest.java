@@ -4,8 +4,10 @@
  */
 package org.epics.pvmanager.file;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import org.epics.pvmanager.test.CountDownPVReaderListener;
@@ -13,6 +15,7 @@ import org.epics.pvmanager.test.MockDataSource;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
@@ -22,7 +25,11 @@ import org.junit.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.epics.util.array.ArrayDouble;
 import static org.epics.util.time.TimeDuration.*;
+import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+import org.epics.vtype.ValueFactory;
+import org.epics.vtype.ValueUtil;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -155,6 +162,53 @@ public class FileDataSourceTest {
         assertThat(vTable.getColumnName(1), equalTo("Value"));
         assertThat(vTable.getColumnData(0), equalTo((Object) Arrays.asList("Andrew", "Bob", "Charlie")));
         assertThat(vTable.getColumnData(1), equalTo((Object) new ArrayDouble(34,12,71)));
+    }
+    
+    @Test
+    public void writeToList1() throws Exception {
+        CountDownPVReaderListener listener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK);
+        File filename = File.createTempFile("file.", ".list");
+        PrintWriter writer = new PrintWriter(filename);
+        writer.println("A");
+        writer.println("B");
+        writer.println("C");
+        writer.close();
+        
+        PV<VType, Object> fullPv = PVManager.readAndWrite(vType(filename.toURI().getPath())).from(file)
+                .readListener(listener)
+                .synchWriteAndMaxReadRate(ofMillis(10));
+        pv = fullPv;
+        
+        // Wait for value
+        listener.await(ofMillis(700));
+        assertThat(listener.getCount(), equalTo(0));
+        
+        assertThat(pv.getValue(), instanceOf(VStringArray.class));
+        VStringArray array = (VStringArray) pv.getValue();
+        assertThat(array.getData(), equalTo(Arrays.asList("A", "B", "C")));
+
+        listener.resetCount(1);
+        fullPv.write(ValueFactory.toVType(Arrays.asList("A", "B", "C", "D")));
+        
+        listener.await(ofMillis(2000));
+        assertThat(listener.getCount(), equalTo(0));
+        
+        assertThat(pv.getValue(), instanceOf(VStringArray.class));
+        array = (VStringArray) pv.getValue();
+        assertThat(array.getData(), equalTo(Arrays.asList("A", "B", "C", "D")));
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line = reader.readLine();
+            assertThat(line, equalTo("A"));
+            line = reader.readLine();
+            assertThat(line, equalTo("B"));
+            line = reader.readLine();
+            assertThat(line, equalTo("C"));
+            line = reader.readLine();
+            assertThat(line, equalTo("D"));
+            line = reader.readLine();
+            assertThat(line, nullValue());
+        }
     }
 
 }
