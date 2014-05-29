@@ -277,7 +277,11 @@ public class CsvParser {
     private ListDouble convertToListDouble(List<String> tokens) {
         double[] values = new double[tokens.size()];
         for (int i = 0; i < values.length; i++) {
-            values[i] = Double.parseDouble(tokens.get(i));
+            if (tokens.get(i).isEmpty()) {
+                values[i] = Double.NaN;
+            } else {
+                values[i] = Double.parseDouble(tokens.get(i));
+            }
         }
         return new ArrayDouble(values);
     }
@@ -415,6 +419,9 @@ public class CsvParser {
      * @return true if token matches a double
      */
     private boolean isTokenNumberParsable(State state, String token) {
+        if (token.isEmpty()) {
+            return true;
+        }
         return state.mDouble.reset(token).matches();
     }
     

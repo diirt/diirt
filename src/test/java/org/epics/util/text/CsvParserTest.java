@@ -219,4 +219,19 @@ public class CsvParserTest {
         assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(Double.NaN, 1.456, 234567891234.0, 0.000000123, 123)));
         assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(Double.NaN,2,3,4,5)));
     }
+    
+    @Test
+    public void parseTable9CSV() throws Exception {
+        CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table9.csv").openStream()));
+        assertThat(result.getColumnNames().size(), equalTo(3));
+        assertThat(result.getColumnNames().get(0), equalTo("A"));
+        assertThat(result.getColumnNames().get(1), equalTo("B"));
+        assertThat(result.getColumnNames().get(2), equalTo("C"));
+        assertThat((Object) result.getColumnTypes().get(0), equalTo((Object) String.class));
+        assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
+        assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
+        assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("a", "b", "c", "d", "e")));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(1, Double.NaN, Double.NaN, 4, Double.NaN)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3, Double.NaN, Double.NaN)));
+    }
 }
