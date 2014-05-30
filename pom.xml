@@ -17,7 +17,7 @@
         <system>GitHub Issues</system>
     </issueManagement>
     <packaging>pom</packaging>
-    <url>http://pvmanager.sourceforge.net</url>
+    <url>http://pvmanager.diirt.org</url>
     <inceptionYear>2010</inceptionYear>    
     <licenses>
         <license>
