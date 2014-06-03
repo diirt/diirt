@@ -275,9 +275,19 @@ public class ListNumbers {
             }
     }
     
+    /**
+     * Returns a view of the given list that presents only the elements
+     * at the given indexes.
+     * 
+     * @param list a numeric list
+     * @param indexes the indexes with the values to expose
+     * @return a wrapper around list
+     */
     public static ListNumber listView(ListNumber list, ListInt indexes) {
         if (list instanceof ListDouble) {
             return new ListView.Double((ListDouble) list, indexes);
+        } else if (list instanceof ListFloat) {
+            return new ListView.Float((ListFloat) list, indexes);
         }
         throw new UnsupportedOperationException("Not yet supported");
     }

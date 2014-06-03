@@ -36,4 +36,28 @@ class ListView {
         }
         
     }
+
+    /**
+     * A ListView implementation for floats.
+     */
+    static class Float extends ListFloat {
+        private final ListFloat list;
+        private final ListInt indexes;
+
+        public Float(ListFloat list, ListInt indexes) {
+            this.list = list;
+            this.indexes = indexes;
+        }
+        
+        @Override
+        public float getFloat(int index) {
+            return list.getFloat(indexes.getInt(index));
+        }
+
+        @Override
+        public int size() {
+            return indexes.size();
+        }
+        
+    }
 }
