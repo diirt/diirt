@@ -8,7 +8,7 @@
     </properties>
   
     <body>
-        <release version="2.6" date="2012/05/23" description="Graphene integration of new plots.">
+        <release version="2.6" date="2014/05/23" description="Graphene integration of new plots.">
             <action dev="carcassi"  type="update">
                 formula: better range detection for histogramOf function
             </action>
