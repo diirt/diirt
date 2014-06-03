@@ -290,6 +290,8 @@ public class ListNumbers {
             return new ListView.Float((ListFloat) list, indexes);
         } else if (list instanceof ListLong) {
             return new ListView.Long((ListLong) list, indexes);
+        } else if (list instanceof ListInt) {
+            return new ListView.Int((ListInt) list, indexes);
         }
         throw new UnsupportedOperationException("Not yet supported");
     }

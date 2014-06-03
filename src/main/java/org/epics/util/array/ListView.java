@@ -84,4 +84,28 @@ class ListView {
         }
         
     }
+
+    /**
+     * A ListView implementation for ints.
+     */
+    static class Int extends ListInt {
+        private final ListInt list;
+        private final ListInt indexes;
+
+        public Int(ListInt list, ListInt indexes) {
+            this.list = list;
+            this.indexes = indexes;
+        }
+        
+        @Override
+        public int getInt(int index) {
+            return list.getInt(indexes.getInt(index));
+        }
+
+        @Override
+        public int size() {
+            return indexes.size();
+        }
+        
+    }
 }
