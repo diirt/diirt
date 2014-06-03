@@ -60,4 +60,28 @@ class ListView {
         }
         
     }
+
+    /**
+     * A ListView implementation for longs.
+     */
+    static class Long extends ListLong {
+        private final ListLong list;
+        private final ListInt indexes;
+
+        public Long(ListLong list, ListInt indexes) {
+            this.list = list;
+            this.indexes = indexes;
+        }
+        
+        @Override
+        public long getLong(int index) {
+            return list.getLong(indexes.getInt(index));
+        }
+
+        @Override
+        public int size() {
+            return indexes.size();
+        }
+        
+    }
 }

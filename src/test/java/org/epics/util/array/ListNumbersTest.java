@@ -233,4 +233,14 @@ public class ListNumbersTest {
         assertThat(values, equalTo(new ArrayFloat(5,3,1,4,2,0)));
         assertThat(sortedView, equalTo((ListNumber) new ArrayFloat(5,4,3,2,1,0)));
     }
+    
+    @Test
+    public void listView3() {
+        ArrayLong values = new ArrayLong(5,3,1,4,2,0);
+        ArrayInt indexes = new ArrayInt(0,3,1,4,2,5);
+        ListNumber sortedView = ListNumbers.listView(values, indexes);
+        assertThat(sortedView, instanceOf(ListLong.class));
+        assertThat(values, equalTo(new ArrayLong(5,3,1,4,2,0)));
+        assertThat(sortedView, equalTo((ListNumber) new ArrayLong(5,4,3,2,1,0)));
+    }
 }
