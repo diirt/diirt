@@ -174,21 +174,6 @@ public class VTableFactory {
         };
     }
     
-    private static ListNumber createView(final ListNumber list, final ListInt indexes) {
-        return new ListDouble() {
-
-            @Override
-            public double getDouble(int index) {
-                return list.getDouble(indexes.getInt(index));
-            }
-
-            @Override
-            public int size() {
-                return indexes.size();
-            }
-        };
-    }
-    
     private static Object createView(final Object columnData, final ListInt indexes) {
         if (columnData instanceof List) {
             List<?> data = (List<?>) columnData;
