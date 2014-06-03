@@ -213,4 +213,14 @@ public class ListNumbersTest {
         assertThat(isLinear(new ArrayDouble(0,1,2,3,4,5)), equalTo(true));
         assertThat(isLinear(new ArrayDouble(0,1.00001,2,3,4,5)), equalTo(false));
     }
+    
+    @Test
+    public void listView1() {
+        ArrayDouble values = new ArrayDouble(5,3,1,4,2,0);
+        ArrayInt indexes = new ArrayInt(0,3,1,4,2,5);
+        ListNumber sortedView = ListNumbers.listView(values, indexes);
+        assertThat(sortedView, instanceOf(ListDouble.class));
+        assertThat(values, equalTo(new ArrayDouble(5,3,1,4,2,0)));
+        assertThat(sortedView, equalTo((ListNumber) new ArrayDouble(5,4,3,2,1,0)));
+    }
 }

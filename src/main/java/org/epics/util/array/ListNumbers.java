@@ -274,4 +274,11 @@ public class ListNumbers {
                 return size;
             }
     }
+    
+    public static ListNumber listView(ListNumber list, ListInt indexes) {
+        if (list instanceof ListDouble) {
+            return new ListView.Double((ListDouble) list, indexes);
+        }
+        throw new UnsupportedOperationException("Not yet supported");
+    }
 }
