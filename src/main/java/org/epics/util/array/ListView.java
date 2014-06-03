@@ -108,4 +108,28 @@ class ListView {
         }
         
     }
+
+    /**
+     * A ListView implementation for shorts.
+     */
+    static class Short extends ListShort {
+        private final ListShort list;
+        private final ListInt indexes;
+
+        public Short(ListShort list, ListInt indexes) {
+            this.list = list;
+            this.indexes = indexes;
+        }
+        
+        @Override
+        public short getShort(int index) {
+            return list.getShort(indexes.getInt(index));
+        }
+
+        @Override
+        public int size() {
+            return indexes.size();
+        }
+        
+    }
 }

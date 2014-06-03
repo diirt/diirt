@@ -182,7 +182,7 @@ public class ListNumbers {
      * that may be considered to be linear.
      * 
      * @param listNumber
-     * @return 
+     * @return true if the elements of the list are equally spaced
      */
     public static boolean isLinear(ListNumber listNumber) {
         if (listNumber instanceof LinearListDouble || listNumber instanceof LinearListDoubleFromRange) {
@@ -292,6 +292,8 @@ public class ListNumbers {
             return new ListView.Long((ListLong) list, indexes);
         } else if (list instanceof ListInt) {
             return new ListView.Int((ListInt) list, indexes);
+        } else if (list instanceof ListShort) {
+            return new ListView.Short((ListShort) list, indexes);
         }
         throw new UnsupportedOperationException("Not yet supported");
     }
