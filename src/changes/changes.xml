@@ -8,27 +8,7 @@
     </properties>
   
     <body>
-        <release version="2.6" date="2012/05/23" description="PVA services support.">
-            <action dev="carcassi"  type="update">
-                vtype: factory cleanup
-            </action>
-            <action dev="sekoranja"  type="update">
-                pva: adding support for rpc services
-            </action>
-            <action dev="carcassi"  type="update">
-                io: using new epics-util CSV parser
-            </action>
-            <action dev="carcassi"  type="update">
-                formula: formula function testing cleanup
-            </action>
-            <action dev="carcassi"  type="update">
-                formula: review and cleanup of function implementations; better null/alarm/time handling
-            </action>
-            <action dev="sfnrendra3"  type="add">
-                formula: adding element-wise operations for array calculation
-            </action>
-        </release>
-        <release version="2.5" date="2014/03/27" description="PVA services support.">
+        <release version="2.6" date="2012/05/23" description="Graphene integration of new plots.">
             <action dev="carcassi"  type="update">
                 formula: better range detection for histogramOf function
             </action>
@@ -49,6 +29,26 @@
             </action>
             <action dev="carcassi"  type="add">
                 sim: adding a couple channels to test 2D array based widgets
+            </action>
+        </release>
+        <release version="2.5" date="2014/03/27" description="PVA services support.">
+            <action dev="carcassi"  type="update">
+                vtype: factory cleanup
+            </action>
+            <action dev="sekoranja"  type="update">
+                pva: adding support for rpc services
+            </action>
+            <action dev="carcassi"  type="update">
+                io: using new epics-util CSV parser
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula function testing cleanup
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: review and cleanup of function implementations; better null/alarm/time handling
+            </action>
+            <action dev="sfnrendra3"  type="add">
+                formula: adding element-wise operations for array calculation
             </action>
         </release>
         <release version="2.4" date="2014/01/25" description="Integration framework for ca regression tests.">
