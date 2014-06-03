@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * Copyright (C) 2012-14 epics-util developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 
