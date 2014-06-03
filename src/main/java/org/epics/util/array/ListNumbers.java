@@ -294,6 +294,8 @@ public class ListNumbers {
             return new ListView.Int((ListInt) list, indexes);
         } else if (list instanceof ListShort) {
             return new ListView.Short((ListShort) list, indexes);
+        } else if (list instanceof ListByte) {
+            return new ListView.Byte((ListByte) list, indexes);
         }
         throw new UnsupportedOperationException("Not yet supported");
     }

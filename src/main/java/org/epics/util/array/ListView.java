@@ -132,4 +132,28 @@ class ListView {
         }
         
     }
+
+    /**
+     * A ListView implementation for bytes.
+     */
+    static class Byte extends ListByte {
+        private final ListByte list;
+        private final ListInt indexes;
+
+        public Byte(ListByte list, ListInt indexes) {
+            this.list = list;
+            this.indexes = indexes;
+        }
+        
+        @Override
+        public byte getByte(int index) {
+            return list.getByte(indexes.getInt(index));
+        }
+
+        @Override
+        public int size() {
+            return indexes.size();
+        }
+        
+    }
 }

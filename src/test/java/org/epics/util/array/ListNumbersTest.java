@@ -263,4 +263,14 @@ public class ListNumbersTest {
         assertThat(values, equalTo(new ArrayShort(new short[] {5,3,1,4,2,0})));
         assertThat(sortedView, equalTo((ListNumber) new ArrayShort(new short[] {5,4,3,2,1,0})));
     }
+    
+    @Test
+    public void listView6() {
+        ArrayByte values = new ArrayByte(new byte[] {5,3,1,4,2,0});
+        ArrayInt indexes = new ArrayInt(0,3,1,4,2,5);
+        ListNumber sortedView = ListNumbers.listView(values, indexes);
+        assertThat(sortedView, instanceOf(ListByte.class));
+        assertThat(values, equalTo(new ArrayByte(new byte[] {5,3,1,4,2,0})));
+        assertThat(sortedView, equalTo((ListNumber) new ArrayByte(new byte[] {5,4,3,2,1,0})));
+    }
 }
