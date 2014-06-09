@@ -4,6 +4,7 @@
  */
 package org.epics.vtype.table;
 
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListNumber;
 
@@ -12,6 +13,33 @@ import org.epics.util.array.ListNumber;
  * @author carcassi
  */
 abstract class InvertListNumber implements ListNumber {
+    
+    static class Double extends ListDouble {
+        
+        private final ListDouble list;
+        private final ListInt sizes;
+        private final boolean[] invert;
+
+        public Double(ListDouble list, ListInt sizes, boolean[] invert) {
+            this.list = list;
+            this.sizes = sizes;
+            this.invert = invert;
+        }
+
+        @Override
+        public double getDouble(int index) {
+            int[] coords = new int[sizes.size()];
+            fillCoords(coords, index, sizes);
+            int vIndex = index(coords, sizes, invert);
+            return list.getDouble(vIndex);
+        }
+
+        @Override
+        public int size() {
+            return list.size();
+        }
+        
+    }
     
     static void fillCoords(int[] coords, int index, ListInt sizes) {
         for (int i = 0; i < coords.length; i++) {
