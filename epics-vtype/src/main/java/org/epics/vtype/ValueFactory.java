@@ -22,6 +22,8 @@ import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.ListShort;
 import org.epics.util.time.Timestamp;
+import org.epics.vtype.ndarray.DimensionInfo;
+import org.epics.vtype.table.ListNumberProvider;
 
 /**
  * Factory class for all concrete implementation of the types.
@@ -315,11 +317,19 @@ public class ValueFactory {
     }
     
     public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit) {
-        return newDisplay(boundaries, unit, false);
+        return newDisplay(boundaries, false, unit);
     }
     
-    public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit, final boolean reversed) {
+    public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final boolean reversed, final String unit) {
         return new IArrayDimensionDisplay(boundaries, reversed, unit);
+    }
+    
+    public static ArrayDimensionDisplay newDisplay(final int size, final ListNumberProvider boundaryProvider, final boolean invert) {
+        return newDisplay(boundaryProvider.createListNumber(size + 1), invert, "");
+    }
+    
+    public static ArrayDimensionDisplay newDisplay(final int size, final ListNumberProvider boundaryProvider) {
+        return newDisplay(boundaryProvider.createListNumber(size + 1), false, "");
     }
     
     /**
