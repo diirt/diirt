@@ -147,7 +147,7 @@ public class ValueFactoryTest {
         VBooleanArray value = newVBooleanArray(new ArrayBoolean(true, false, true, false), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
         assertThat(value.getData(), equalTo((ListBoolean) new ArrayBoolean(true, false, true, false)));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(4)));
-        assertThat(value.toString(), equalTo("VBooleanArray[[true, false, true, ...], size 3, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo("VBooleanArray[[true, false, true, ...], size 4, 2012/12/05 09:57:21.521]"));
     }
     
     @Test
