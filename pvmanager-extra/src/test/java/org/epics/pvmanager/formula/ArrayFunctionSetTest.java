@@ -16,13 +16,17 @@ import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.ValueFactory;
+import org.epics.vtype.ndarray.DimensionInfo;
+import org.epics.vtype.ndarray.VNumberArrayFactory;
 import org.epics.vtype.table.ListNumberProvider;
 import org.epics.vtype.table.VTableFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -355,5 +359,13 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .compareReturnAlarm(alarmNone(), array)
                 .compareReturnAlarm(alarm, array2)
                 .compareReturnTime(time, array);
+    }
+   
+    @Test
+    public void dimInfo(){
+        FunctionTester.findBySignature(set, "dimInfo", VNumber.class, VBoolean.class)
+                .compareReturnValue(VNumberArrayFactory.dimInfo(20, false), 20, false)
+                .compareReturnValue(null, null, true)
+                .compareReturnValue(null, 123, null);
     }
 }
