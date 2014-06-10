@@ -22,7 +22,6 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.ValueFactory;
-import org.epics.vtype.ndarray.VNumberArrayFactory;
 import org.epics.vtype.table.ListNumberProvider;
 import org.epics.vtype.table.VTableFactory;
 import org.junit.Test;
