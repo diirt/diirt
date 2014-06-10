@@ -318,24 +318,7 @@ public class ValueFactory {
     }
     
     public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit, final boolean reversed) {
-        return new ArrayDimensionDisplay() {
-
-            @Override
-            public ListNumber getCellBoundaries() {
-                return boundaries;
-            }
-
-            @Override
-            public String getUnits() {
-                return unit;
-            }
-
-            @Override
-            public boolean isReversed() {
-                return reversed;
-            }
-            
-        };
+        return new IArrayDimensionDisplay(boundaries, reversed, unit);
     }
     
     /**
