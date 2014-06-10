@@ -17,11 +17,11 @@ public class Array2DDouble {
     private final boolean x1Invert;
     private final boolean x0Invert;
 
-    public Array2DDouble(ListInt sizes, boolean[] invert) {
+    public Array2DDouble(ListInt sizes, boolean x1Invert, boolean x0Invert) {
         this.x0Size = sizes.getInt(0);
         this.x1Size = sizes.getInt(1);
-        this.x0Invert = invert[0];
-        this.x1Invert = invert[1];
+        this.x0Invert = x0Invert;
+        this.x1Invert = x1Invert;
     }
     
     public int getIndex(int x1, int x0) {
