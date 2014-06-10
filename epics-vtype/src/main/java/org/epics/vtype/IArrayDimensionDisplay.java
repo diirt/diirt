@@ -4,6 +4,7 @@
  */
 package org.epics.vtype;
 
+import java.util.Objects;
 import org.epics.util.array.ListNumber;
 
 class IArrayDimensionDisplay implements ArrayDimensionDisplay {
@@ -22,6 +23,10 @@ class IArrayDimensionDisplay implements ArrayDimensionDisplay {
     public ListNumber getCellBoundaries() {
         return cellBoundaries;
     }
+    
+    public int getSize() {
+        return getCellBoundaries().size() - 1;
+    }
 
     @Override
     public String getUnits() {
@@ -33,4 +38,23 @@ class IArrayDimensionDisplay implements ArrayDimensionDisplay {
         return reversed;
     }
     
+
+    @Override
+    public int hashCode() {
+        return getCellBoundaries().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof IArrayDimensionDisplay) {
+            IArrayDimensionDisplay info = (IArrayDimensionDisplay) obj;
+            return Objects.equals(info.getSize(), getSize()) &&
+                    Objects.equals(info.isReversed(), isReversed()) &&
+                    Objects.equals(info.getUnits(), getUnits()) &&
+                    Objects.equals(info.getCellBoundaries(), getCellBoundaries());
+                    
+        }
+        
+        return false;
+    }
 }
