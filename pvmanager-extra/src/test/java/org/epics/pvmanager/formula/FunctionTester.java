@@ -27,7 +27,9 @@ import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
 import org.epics.vtype.ValueUtil;
 import org.epics.vtype.table.Column;
+import org.hamcrest.Matcher;
 import static org.hamcrest.Matchers.*;
+import org.junit.Assert;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -69,6 +71,15 @@ public class FunctionTester {
         this.convertTypes = convertTypes;
         return this;
     }
+    
+    public FunctionTester matchReturnValue(Matcher<Object> matcher, Object... args) {
+        if (convertTypes) {
+            args = convertTypes(args);
+        }
+	Object result = function.calculate(Arrays.asList(args));
+        Assert.assertThat(result, matcher);
+        return this;
+    }
 
     public FunctionTester compareReturnValue(Object expected, Object... args) {
         if (convertTypes) {
@@ -91,7 +102,7 @@ public class FunctionTester {
     }
     
     public static boolean compareValues(Object obj1, Object obj2) {
-        if (Objects.equals(obj2, obj2)) {
+        if (Objects.equals(obj1, obj2)) {
             return true;
         }
         if (obj1 instanceof VType && obj2 instanceof VType) {
