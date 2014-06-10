@@ -22,7 +22,6 @@ import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.util.array.ListShort;
 import org.epics.util.time.Timestamp;
-import org.epics.vtype.ndarray.DimensionInfo;
 import org.epics.vtype.table.ListNumberProvider;
 
 /**
