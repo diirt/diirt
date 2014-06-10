@@ -11,6 +11,7 @@ import java.util.List;
 import org.epics.util.text.NumberFormats;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListBoolean;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
@@ -614,6 +615,18 @@ public class ValueFactory {
      */
     public static VEnumArray newVEnumArray(ListInt indexes, List<String> labels, Alarm alarm, Time time) {
         return new IVEnumArray(indexes, labels, new ArrayInt(indexes.size()), alarm, time);
+    }
+
+    /**
+     * Creates a new VBooleanArray.
+     * 
+     * @param data the strings
+     * @param alarm the alarm
+     * @param time the time
+     * @return the new value
+     */
+    public static VBooleanArray newVBooleanArray(ListBoolean data, Alarm alarm, Time time) {
+        return new IVBooleanArray(data, new ArrayInt(data.size()), alarm, time);
     }
 
     /**

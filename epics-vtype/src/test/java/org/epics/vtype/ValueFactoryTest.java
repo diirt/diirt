@@ -5,6 +5,7 @@
 package org.epics.vtype;
 
 import java.util.Arrays;
+import org.epics.util.array.ArrayBoolean;
 import org.epics.util.array.ArrayByte;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,6 +16,7 @@ import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayLong;
 import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ListBoolean;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
@@ -138,6 +140,14 @@ public class ValueFactoryTest {
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
         assertThat(value.toString(), equalTo("VEnumArray[[TWO, ONE, THREE], size 3, 2012/12/05 09:57:21.521]"));
+    }
+    
+    @Test
+    public void newVBooleanArray1() {
+        VBooleanArray value = newVBooleanArray(new ArrayBoolean(true, false, true, false), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        assertThat(value.getData(), equalTo((ListBoolean) new ArrayBoolean(true, false, true, false)));
+        assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(4)));
+        assertThat(value.toString(), equalTo("VBooleanArray[[true, false, true, ...], size 3, 2012/12/05 09:57:21.521]"));
     }
     
     @Test

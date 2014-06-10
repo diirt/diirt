@@ -5,6 +5,7 @@
 package org.epics.vtype;
 
 import java.util.Arrays;
+import org.epics.util.array.ArrayBoolean;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.vtype.ValueFactory.*;
@@ -66,6 +67,14 @@ public class VTypeToStringTest {
                 equalTo("VStringArray[[A, B, C, ...], size 4, 1970/01/15 01:56:07.123]"));
         assertThat(VTypeToString.toString(newVStringArray(Arrays.asList("A", "B", "C", "D"), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
                 equalTo("VStringArray[[A, B, C, ...], size 4, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
+    }
+
+    @Test
+    public void toStringVBooleanArray() {
+        assertThat(VTypeToString.toString(newVBooleanArray(new ArrayBoolean(true, false, true, false), alarmNone(), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VBooleanArray[[true, false, true, ...], size 4, 1970/01/15 01:56:07.123]"));
+        assertThat(VTypeToString.toString(newVBooleanArray(new ArrayBoolean(true, false, true, false), newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(1234567, 123000000)))),
+                equalTo("VBooleanArray[[true, false, true, ...], size 4, MINOR(HIGH), 1970/01/15 01:56:07.123]"));
     }
 
     @Test
