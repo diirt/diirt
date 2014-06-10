@@ -314,6 +314,10 @@ public class ValueFactory {
     }
     
     public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit) {
+        return newDisplay(boundaries, unit, false);
+    }
+    
+    public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit, final boolean reversed) {
         return new ArrayDimensionDisplay() {
 
             @Override
@@ -325,6 +329,12 @@ public class ValueFactory {
             public String getUnits() {
                 return unit;
             }
+
+            @Override
+            public boolean isReversed() {
+                return reversed;
+            }
+            
         };
     }
     
