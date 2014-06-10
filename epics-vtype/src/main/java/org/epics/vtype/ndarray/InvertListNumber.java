@@ -12,9 +12,9 @@ import org.epics.util.array.ListNumber;
  *
  * @author carcassi
  */
-abstract class InvertListNumber implements ListNumber {
+public abstract class InvertListNumber implements ListNumber {
     
-    static class Double extends ListDouble {
+    public static class Double extends ListDouble {
         
         private final ListDouble list;
         private final ListInt sizes;
@@ -37,6 +37,10 @@ abstract class InvertListNumber implements ListNumber {
         @Override
         public int size() {
             return list.size();
+        }
+        
+        public Array2DDouble get2DArray() {
+            return new Array2DDouble(sizes, invert);
         }
         
     }
