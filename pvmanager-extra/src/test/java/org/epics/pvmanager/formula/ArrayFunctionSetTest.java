@@ -22,11 +22,9 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.ValueFactory;
-import org.epics.vtype.ndarray.DimensionInfo;
 import org.epics.vtype.ndarray.VNumberArrayFactory;
 import org.epics.vtype.table.ListNumberProvider;
 import org.epics.vtype.table.VTableFactory;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -364,7 +362,7 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     @Test
     public void dimInfo(){
         FunctionTester.findBySignature(set, "dimInfo", VNumber.class, VBoolean.class)
-                .compareReturnValue(VNumberArrayFactory.dimInfo(20, false), 20, false)
+                .compareReturnValue(ValueFactory.newDisplay(20), 20, false)
                 .compareReturnValue(null, null, true)
                 .compareReturnValue(null, 123, null);
     }

@@ -6,11 +6,10 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.List;
+import org.epics.vtype.ArrayDimensionDisplay;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumber;
-import org.epics.vtype.ndarray.DimensionInfo;
-import org.epics.vtype.ndarray.VNumberArrayFactory;
-import org.epics.vtype.table.ListNumberProvider;
+import org.epics.vtype.ValueFactory;
 import org.epics.vtype.table.VTableFactory;
 
 /**
@@ -51,7 +50,7 @@ class DimInfoFormulaFunction implements FormulaFunction {
 
     @Override
     public Class<?> getReturnType() {
-        return DimensionInfo.class;
+        return ArrayDimensionDisplay.class;
     }
 
     @Override
@@ -63,7 +62,7 @@ class DimInfoFormulaFunction implements FormulaFunction {
             return null;
         }
         
-        return VNumberArrayFactory.dimInfo(size.getValue().intValue(), invert.getValue());
+        return ValueFactory.newDisplay(size.getValue().intValue(), VTableFactory.step(0, 1), invert.getValue());
     }
     
 }
