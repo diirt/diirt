@@ -4,6 +4,7 @@
  */
 package org.epics.vtype.ndarray;
 
+import java.util.Objects;
 import org.epics.util.array.ListNumber;
 
 /**
@@ -38,6 +39,25 @@ public class DimensionInfo {
 
     public ListNumber getBoundaries() {
         return boundaries;
+    }
+
+    @Override
+    public int hashCode() {
+        return getBoundaries().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof DimensionInfo) {
+            DimensionInfo info = (DimensionInfo) obj;
+            return Objects.equals(info.getSize(), getSize()) &&
+                    Objects.equals(info.isInvert(), isInvert()) &&
+                    Objects.equals(info.getUnit(), getUnit()) &&
+                    Objects.equals(info.getBoundaries(), getBoundaries());
+                    
+        }
+        
+        return false;
     }
     
 }
