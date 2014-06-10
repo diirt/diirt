@@ -5,6 +5,7 @@
 package org.epics.vtype;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -528,6 +529,25 @@ public class ValueFactory {
 	    return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
 	}
 	throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
+    }
+    
+    /**
+     * Constructs and nd array with the data, time and alarm in the first array and the given
+     * dimension information.
+     * 
+     * @param data the array with the data
+     * @param dimensions the dimension information
+     * @return a new array
+     */
+    public static VNumberArray ndArray(VNumberArray data, ArrayDimensionDisplay... dimensions) {
+        int[] sizes = new int[dimensions.length];
+        List<ArrayDimensionDisplay> displays = new ArrayList<>();
+        for (int i = 0; i < dimensions.length; i++) {
+            ArrayDimensionDisplay dimensionInfo = dimensions[i];
+            sizes[i] = dimensionInfo.getCellBoundaries().size() - 1;
+            displays.add(dimensionInfo);
+        }
+        return ValueFactory.newVNumberArray(data.getData(), new ArrayInt(sizes), displays, data, data, data);
     }
     
     /**

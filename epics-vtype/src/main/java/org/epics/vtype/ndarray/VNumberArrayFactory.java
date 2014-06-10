@@ -77,4 +77,15 @@ public class VNumberArrayFactory {
         }
         return ValueFactory.newVNumberArray(data.getData(), new ArrayInt(sizes), displays, data, data, data);
     }
+    
+    public static VNumberArray ndArray(VNumberArray data, ArrayDimensionDisplay... dimensions) {
+        int[] sizes = new int[dimensions.length];
+        List<ArrayDimensionDisplay> displays = new ArrayList<>();
+        for (int i = 0; i < dimensions.length; i++) {
+            ArrayDimensionDisplay dimensionInfo = dimensions[i];
+            sizes[i] = dimensionInfo.getCellBoundaries().size() - 1;
+            displays.add(dimensionInfo);
+        }
+        return ValueFactory.newVNumberArray(data.getData(), new ArrayInt(sizes), displays, data, data, data);
+    }
 }
