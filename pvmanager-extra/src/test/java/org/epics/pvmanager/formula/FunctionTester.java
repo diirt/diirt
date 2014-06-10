@@ -113,7 +113,7 @@ public class FunctionTester {
             return column1.getName().equals(column2.getName()) &&
                     column1.isGenerated() == column2.isGenerated() &&
                     column1.getType().equals(column2.getType()) &&
-                    column1.getData(10).equals(column2.getData(10));
+                    column1.getData(column1.isGenerated() ? 10 : -1).equals(column2.getData(column2.isGenerated() ? 10 : -1));
         }
         return false;
     }
