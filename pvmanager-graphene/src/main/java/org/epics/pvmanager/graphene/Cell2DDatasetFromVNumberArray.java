@@ -58,7 +58,7 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
 
     @Override
     public double getValue(int x, int y) {
-        return values.getDouble(array2D.getIndex(y, x));
+        return values.getDouble(array2D.getIndex(x, y));
     }
 
     @Override
