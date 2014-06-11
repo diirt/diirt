@@ -15,6 +15,7 @@ import org.epics.util.array.ListInt;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.ArrayDimensionDisplay;
 import org.epics.vtype.Time;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumber;
@@ -364,5 +365,14 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(ValueFactory.newDisplay(20), 20, false)
                 .compareReturnValue(null, null, true)
                 .compareReturnValue(null, 123, null);
+    }
+   
+    @Test
+    public void ndArray(){
+        FunctionTester.findBySignature(set, "ndArray", VNumberArray.class, ArrayDimensionDisplay.class)
+                .compareReturnValue(ValueFactory.toVType(new ArrayDouble(1,2,3)), new ArrayDouble(1,2,3), ValueFactory.newDisplay(3))
+                .compareReturnValue(ValueFactory.ndArray((VNumberArray) ValueFactory.toVType(new ArrayDouble(1,2,3)), ValueFactory.newDisplay(3, VTableFactory.range(0, 9))), new ArrayDouble(1,2,3), ValueFactory.newDisplay(new ArrayDouble(0,3,6,9), ""))
+                .compareReturnValue(null, null, ValueFactory.newDisplay(20))
+                .compareReturnValue(null, new ArrayDouble(1,2,3), null);
     }
 }
