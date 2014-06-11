@@ -12,6 +12,8 @@ import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import org.epics.vtype.VBoolean;
+import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -173,5 +175,21 @@ public class FormulaParserTest extends BaseTestForFormula {
         exp.writeValue("x", ValueFactory.newVDouble(5.0));
         result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(-3.0));
+    }
+
+    @Test
+    public void namedConstant1() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("PI").formula();
+        assertThat(exp, not(nullValue()));
+        VDouble result = (VDouble) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(Math.PI));
+    }
+
+    @Test
+    public void namedConstant2() throws RecognitionException {
+        DesiredRateExpression<?> exp = createParser("TRUE").formula();
+        assertThat(exp, not(nullValue()));
+        VBoolean result = (VBoolean) exp.getFunction().readValue();
+        assertThat(result.getValue(), equalTo(true));
     }
 }

@@ -120,6 +120,7 @@ primary returns [DesiredRateExpression<?> result]
     |   pv {result = $pv.result;}
     |   numericLiteral {result = $numericLiteral.result;}
     |   stringLiteral {result = $stringLiteral.result;}
+    |   constant {result = $constant.result;}
     ;
 
 functionExpression returns [DesiredRateExpression<?> result]
@@ -143,6 +144,10 @@ numericLiteral returns [DesiredRateExpression<?> result]
 
 stringLiteral returns [DesiredRateExpression<?> result]
     :	STRING {result = vConst(unquote($STRING.text));}
+    ;
+
+constant returns [DesiredRateExpression<?> result]
+    :	FUNCTION {result = namedConstant($FUNCTION.text);}
     ;
 
 
