@@ -27,6 +27,7 @@ public class SetupUtil {
     public static void defaultCASetup() {
         CompositeDataSource dataSource = new CompositeDataSource();
         dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
+        System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "10000000");
         dataSource.putDataSource("ca", new JCADataSourceBuilder().build());
         dataSource.putDataSource("loc", new LocalDataSource());
         dataSource.putDataSource("sys", new SystemDataSource());
