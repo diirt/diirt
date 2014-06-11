@@ -66,7 +66,6 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
             high = Math.min(Byte.MAX_VALUE, high);
         }
         this.displayRange = RangeUtil.range(low, high);
-        System.out.println(this.displayRange);
     }
 
     @Override
