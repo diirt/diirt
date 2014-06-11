@@ -359,8 +359,8 @@ public class ArrayFunctionSetTest extends BaseTestForFormula {
     }
    
     @Test
-    public void dimInfo(){
-        FunctionTester.findBySignature(set, "dimInfo", VNumber.class, VBoolean.class)
+    public void dimDisplay(){
+        FunctionTester.findBySignature(set, "dimDisplay", VNumber.class, VBoolean.class)
                 .compareReturnValue(ValueFactory.newDisplay(20), 20, false)
                 .compareReturnValue(null, null, true)
                 .compareReturnValue(null, 123, null);

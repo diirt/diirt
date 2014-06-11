@@ -16,7 +16,7 @@ import org.epics.vtype.table.VTableFactory;
  *
  * @author carcassi
  */
-class DimInfoFormulaFunction implements FormulaFunction {
+class DimDisplayFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -30,7 +30,7 @@ class DimInfoFormulaFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "dimInfo";
+        return "dimDisplay";
     }
 
     @Override
