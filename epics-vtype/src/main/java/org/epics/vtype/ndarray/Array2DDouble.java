@@ -26,16 +26,16 @@ public class Array2DDouble {
     
     public int getIndex(int x1, int x0) {
         int index;
-        if (!x1Invert) {
-            index = x1;
-        } else {
-            index = x1Size - x1 - 1;
-        }
-        index *= x0Size;
         if (!x0Invert) {
-            index += x0;
+            index = x0;
         } else {
-            index += x0Size - x0 - 1;
+            index = x0Size - x0 - 1;
+        }
+        index *= x1Size;
+        if (!x1Invert) {
+            index += x1;
+        } else {
+            index += x1Size - x1 - 1;
         }
         return index;
     }
