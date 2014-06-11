@@ -11,6 +11,7 @@ import org.epics.graphene.Statistics;
 import org.epics.graphene.StatisticsUtil;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListByte;
 import org.epics.util.array.ListNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.ndarray.Array2DDouble;
@@ -53,7 +54,19 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
         this.yRange = RangeUtil.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
         this.xCount = xBoundaries.size() - 1;
         this.yCount = yBoundaries.size() - 1;
-        this.displayRange = RangeUtil.range(data.getLowerDisplayLimit(), data.getUpperDisplayLimit());    
+        // TODO: better way to handle if display limits are not set?
+        double low = data.getLowerDisplayLimit();
+        double high = data.getUpperDisplayLimit();
+        if (values instanceof ListByte) {
+            if (low == high) {
+                low = Byte.MIN_VALUE;
+                high = Byte.MAX_VALUE;
+            }
+            low = Math.max(Byte.MIN_VALUE, low);
+            high = Math.min(Byte.MAX_VALUE, high);
+        }
+        this.displayRange = RangeUtil.range(low, high);
+        System.out.println(this.displayRange);
     }
 
     @Override
