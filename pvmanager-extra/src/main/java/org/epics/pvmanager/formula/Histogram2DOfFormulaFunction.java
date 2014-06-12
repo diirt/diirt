@@ -138,7 +138,9 @@ class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
             }
         }
         
-        if (previousMaxCount > maxCount && previousMaxCount < maxCount * 2.0) {
+        // TODO: Need a better logic to auto-size dynamic display... some kind of
+        // time based "forget"
+        if (previousMaxCount > maxCount && (previousMaxCount < maxCount * 2.0 || maxCount < 9)) {
             maxCount = previousMaxCount;
         }
         
