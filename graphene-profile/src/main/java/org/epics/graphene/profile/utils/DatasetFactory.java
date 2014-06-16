@@ -176,7 +176,7 @@ public final class DatasetFactory {
             waveform[i] = rand.nextGaussian();
         }
         
-        org.epics.graphene.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
+        org.epics.util.stats.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
         return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getMinimum().doubleValue(), stats.getMaximum().doubleValue());
     }
     
