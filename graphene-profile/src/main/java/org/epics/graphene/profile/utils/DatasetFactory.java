@@ -17,7 +17,7 @@ import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.graphene.Point3DWithLabelDatasets;
-import org.epics.graphene.StatisticsUtil;
+import org.epics.util.stats.StatisticsUtil;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.stats.Ranges;
 
