@@ -52,7 +52,7 @@ public class AreaGraph2DRendererTest {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,5,10,5,0,5,10,0,5,10), 0, 10);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
-        renderer.update(renderer.newUpdate().yAxisRange(AxisRanges.integrated()));
+        renderer.update(renderer.newUpdate().yAxisRange(AxisRanges.integrated(0.0)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.2", image);
