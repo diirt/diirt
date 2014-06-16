@@ -18,27 +18,34 @@ public class AxisRanges {
     
     public static AxisRange absolute(final double min, final double max) {
         final Range absoluteRange = RangeUtil.range(min, max);
-        return new AxisRange() {
-            
-            private final AxisRange axisRange = this;
+        return new Absolute(absoluteRange);
+    }
+    
+    private static class Absolute implements AxisRange {
+        
+        private final AxisRange axisRange = this;
+        private final Range absoluteRange;
 
-            @Override
-            public AxisRangeInstance createInstance() {
-                return new AxisRangeInstance() {
+        private Absolute(Range absoluteRange) {
+            this.absoluteRange = absoluteRange;
+        }
 
-                    @Override
-                    public Range axisRange(Range dataRange, Range displayRange) {
+        @Override
+        public AxisRangeInstance createInstance() {
+            return new AxisRangeInstance() {
+
+                @Override
+                public Range axisRange(Range dataRange, Range displayRange) {
                         return absoluteRange;
-                    }
+                }
 
-                    @Override
-                    public AxisRange getAxisRange() {
-                        return axisRange;
-                    }
-                    
-                };
-            }
-        };
+                @Override
+                public AxisRange getAxisRange() {
+                    return axisRange;
+                }
+            };
+        }
+        
     }
     
     public static AxisRange data() {
