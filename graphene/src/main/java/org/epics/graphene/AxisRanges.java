@@ -129,6 +129,11 @@ public class AxisRanges {
                 public Range axisRange(Range dataRange, Range displayRange) {
                     if (Ranges.isValid(displayRange)) {
                         return displayRange;
+                    } else if (previousDataRange == null) {
+                        previousDataRange = dataRange;
+                        return previousDataRange;
+                    } else {
+                        return previousDataRange;
                     }
                 }
 
