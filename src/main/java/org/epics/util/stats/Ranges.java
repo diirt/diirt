@@ -186,4 +186,23 @@ public class Ranges {
         return min != max && !Double.isNaN(min) && !Double.isInfinite(min) &&
                 !Double.isNaN(max) && !Double.isInfinite(max);
     }
+    
+    /**
+     * True if the tow ranges have the same min and max.
+     * 
+     * @param r1 a range
+     * @param r2 another range
+     * @return true if equal
+     */
+    public static boolean equals(Range r1, Range r2) {
+        // Check null cases
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        
+        return r1.getMinimum().equals(r2.getMinimum()) && r1.getMaximum().equals(r2.getMaximum());
+    }
 }
