@@ -7,8 +7,7 @@ package org.epics.graphene;
 import org.epics.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Ranges;
 import org.epics.util.time.TimeDuration;
 import org.epics.util.time.TimeInterval;
 import org.epics.util.time.Timestamp;
@@ -74,18 +73,18 @@ public class TemporalGraph2DRendererTest {
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         
-        Range initialRange = RangeUtil.range(0, 10);
+        Range initialRange = Ranges.range(0, 10);
         Timestamp now = Timestamp.now();
         TimeInterval initialTimeInterval = TimeInterval.between(now, now.plus(TimeDuration.ofSeconds(1)));
         renderer.calculateRanges(initialRange, initialTimeInterval);
         assertThat(renderer.getPlotRange(), sameInstance(initialRange));
         assertThat(renderer.getPlotTimeInterval(), sameInstance(initialTimeInterval));
         
-        Range newRange = RangeUtil.range(5, 15);
+        Range newRange = Ranges.range(5, 15);
         TimeInterval newTimeInterval = TimeInterval.between(now.minus(TimeDuration.ofSeconds(1)), now);
         renderer.calculateRanges(newRange, newTimeInterval);
-        assertThat(renderer.getPlotRange().getMinimum(), equalTo(RangeUtil.range(0, 15).getMinimum()));
-        assertThat(renderer.getPlotRange().getMaximum(), equalTo(RangeUtil.range(0, 15).getMaximum()));
+        assertThat(renderer.getPlotRange().getMinimum(), equalTo(Ranges.range(0, 15).getMinimum()));
+        assertThat(renderer.getPlotRange().getMaximum(), equalTo(Ranges.range(0, 15).getMaximum()));
         assertThat(renderer.getPlotTimeInterval(), sameInstance(newTimeInterval));
     }
     
@@ -103,7 +102,7 @@ public class TemporalGraph2DRendererTest {
         renderer.g = graphics;
         Timestamp start = TimeScalesTest.create(2013, 1, 1, 12, 0, 0, 0);
         Timestamp end = TimeScalesTest.create(2013, 1, 1, 12, 0, 2, 0);
-        renderer.calculateRanges(RangeUtil.range(0, 10), TimeInterval.between(start, end));
+        renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
         ImageAssert.compareImages("timeGraph2DArea.1", image);

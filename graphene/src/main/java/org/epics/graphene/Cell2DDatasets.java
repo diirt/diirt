@@ -6,6 +6,7 @@ package org.epics.graphene;
 
 import org.epics.util.stats.Range;
 import org.epics.util.array.*;
+import org.epics.util.stats.Ranges;
 
 /**
  * Factory methods for wrapper datasets.
@@ -195,8 +196,8 @@ public class Cell2DDatasets {
 
     public static Cell2DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries, final ListNumber yBoundaries) {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
-        final Range xRange = RangeUtil.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
-        final Range yRange = RangeUtil.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
+        final Range xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
+        final Range yRange = Ranges.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
 
         // Check boundary sizes correspond match the number of points.
         final int xCount = xBoundaries.size() - 1;

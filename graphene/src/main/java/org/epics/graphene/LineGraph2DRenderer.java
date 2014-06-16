@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.SortedListView;
+import org.epics.util.stats.Ranges;
 
 /**
  * Renderer for a line graph.
@@ -162,7 +163,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         drawBackground();
         drawGraphArea();
         
-        Range datasetRangeCheck = RangeUtil.range(0,data.size());
+        Range datasetRangeCheck = Ranges.range(0,data.size());
         
         //Set color scheme
         if(valueColorSchemeInstance == null || datasetRange == null || datasetRange != datasetRangeCheck){

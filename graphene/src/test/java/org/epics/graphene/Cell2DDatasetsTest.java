@@ -6,6 +6,7 @@ package org.epics.graphene;
 
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -25,7 +26,7 @@ public class Cell2DDatasetsTest {
             public double getValue(double x, double y) {
                 return x + y;
             }
-        }, RangeUtil.range(0, 1), 10, RangeUtil.range(0, 1), 20);
+        }, Ranges.range(0, 1), 10, Ranges.range(0, 1), 20);
 
         assertThat(dataset.getXCount(), equalTo(10));
         assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
@@ -52,8 +53,8 @@ public class Cell2DDatasetsTest {
 //    //Not sure how to test this method
 //    public void linearRangeFromListNumber(){
 //        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
-//        Range xRange = RangeUtil.range(0.0, 10.0);
-//        Range yRange = RangeUtil.range(0.0,20.0);
+//        Range xRange = Ranges.range(0.0, 10.0);
+//        Range yRange = Ranges.range(0.0,20.0);
 //        int xCount = 5;
 //        int yCount = 10;
 //        Cell2DDataset dataset = Cell2DDatasets.linearRange(values, xRange, xCount, yRange, yCount);

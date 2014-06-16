@@ -7,6 +7,7 @@ package org.epics.graphene;
 import org.epics.util.stats.Range;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
+import org.epics.util.stats.Ranges;
 
 /**
  * Factory methods for wrapper datasets.
@@ -26,7 +27,7 @@ public class Cell1DDatasets {
      */
     public static Cell1DDataset linearRange(final ListNumber values, final double minValue, final double maxValue) {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
-        final Range range = RangeUtil.range(minValue, maxValue);
+        final Range range = Ranges.range(minValue, maxValue);
         final ListNumber xBoundaries = ListNumbers.linearListFromRange(minValue, maxValue, values.size() + 1);
         return new Cell1DDataset() {
 
@@ -69,7 +70,7 @@ public class Cell1DDatasets {
      */
     public static Cell1DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries) {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
-        final Range range = RangeUtil.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
+        final Range range = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
         return new Cell1DDataset() {
 
             @Override

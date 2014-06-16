@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setXScaleAsCell(RangeUtil.range(0, 100), 0, 3, ValueScales.linearScale());
+        graph.setXScaleAsCell(Ranges.range(0, 100), 0, 3, ValueScales.linearScale());
         assertThat(graph.xValueToPixel(0), equalTo(0));
         assertThat(graph.xValueToPixel(24.9999), equalTo(0));
         assertThat(graph.xValueToPixel(25), equalTo(1));
@@ -36,7 +37,7 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsPoint() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setXScaleAsPoint(RangeUtil.range(0, 30), 0, 3, ValueScales.linearScale());
+        graph.setXScaleAsPoint(Ranges.range(0, 30), 0, 3, ValueScales.linearScale());
         assertThat(graph.xValueToPixel(0), equalTo(0));
         assertThat(graph.xValueToPixel(4.9999), equalTo(0));
         assertThat(graph.xValueToPixel(5), equalTo(1));
@@ -52,7 +53,7 @@ public class GraphBufferTest {
     @Test
     public void yScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setYScaleAsCell(RangeUtil.range(0, 100), 3, 0, ValueScales.linearScale());
+        graph.setYScaleAsCell(Ranges.range(0, 100), 3, 0, ValueScales.linearScale());
         assertThat(graph.yValueToPixel(0), equalTo(3));
         assertThat(graph.yValueToPixel(24.9999), equalTo(3));
         assertThat(graph.yValueToPixel(25), equalTo(2));
@@ -67,7 +68,7 @@ public class GraphBufferTest {
     @Test
     public void yScalingAsPoint() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setYScaleAsPoint(RangeUtil.range(0, 30), 3, 0, ValueScales.linearScale());
+        graph.setYScaleAsPoint(Ranges.range(0, 30), 3, 0, ValueScales.linearScale());
         assertThat(graph.yValueToPixel(0), equalTo(3));
         assertThat(graph.yValueToPixel(4.9999), equalTo(3));
         assertThat(graph.yValueToPixel(5), equalTo(2));

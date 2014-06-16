@@ -7,10 +7,10 @@ package org.epics.graphene;
 
 import org.epics.util.stats.Range;
 import java.awt.Color;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -23,7 +23,7 @@ public class NumberColorMapTest {
 
     @Test
     public void jetScheme() {
-        Range range = RangeUtil.range(0.0, 1.0);
+        Range range = Ranges.range(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(new Color(0,0,138).getRGB()));
         assertThat(colorScheme.colorFor(0.0), equalTo(new Color(0,0,138).getRGB()));
@@ -34,7 +34,7 @@ public class NumberColorMapTest {
     
     @Test
     public void optimizedScheme() {
-        Range range = RangeUtil.range(0.0, 1.0);
+        Range range = Ranges.range(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.optimize(NumberColorMaps.JET.createInstance(range), range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(new Color(0,0,138).getRGB()));
         assertThat(colorScheme.colorFor(0.0), equalTo(new Color(0,0,138).getRGB()));

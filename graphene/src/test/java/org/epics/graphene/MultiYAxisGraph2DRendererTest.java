@@ -7,14 +7,13 @@ package org.epics.graphene;
 import org.epics.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.AfterClass;
 import org.junit.Test;
 import java.util.List;
 import org.junit.BeforeClass;
-import org.epics.util.array.*;
+import org.epics.util.stats.Ranges;
 import org.junit.Ignore;
 
 /**
@@ -443,7 +442,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         HashMap<Integer, Range> map = new HashMap<Integer, Range>();
-        map.put(1, RangeUtil.range(-50,50));
+        map.put(1, Ranges.range(-50,50));
         renderer.update(renderer.newUpdate().setRanges(map));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
@@ -471,7 +470,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
     public void resizing() throws Exception {
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
         for(int i = 0; i < 3; i++){
-            data.add(Point2DTestDatasets.sineDataset(100, 50, 0, 1, 0, RangeUtil.range(0, 99)));
+            data.add(Point2DTestDatasets.sineDataset(100, 50, 0, 1, 0, Ranges.range(0, 99)));
         }
         
         BufferedImage image = new BufferedImage(640, 400, BufferedImage.TYPE_3BYTE_BGR);

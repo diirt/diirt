@@ -5,12 +5,10 @@
 package org.epics.graphene;
 
 import org.epics.util.stats.Range;
-import org.epics.util.array.ArrayDouble;
-import org.junit.AfterClass;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.BeforeClass;
 
 /**
  *
@@ -24,7 +22,7 @@ public class AxisRangesTest {
     @Test
     public void absolute1() {
         AxisRangeInstance axisRange = AxisRanges.absolute(0.0, 10.0).createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(-3.0, 4.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 10.0));
     }
@@ -37,11 +35,11 @@ public class AxisRangesTest {
     @Test
     public void relative1() {
         AxisRangeInstance axisRange = AxisRanges.data().createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(-3.0, 4.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
 
-        range = axisRange.axisRange(RangeUtil.range(1.0, 5.0), RangeUtil.range(-3.0, 4.0));
+        range = axisRange.axisRange(Ranges.range(1.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 1.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
     }
@@ -49,11 +47,11 @@ public class AxisRangesTest {
     @Test
     public void integrated1() {
         AxisRangeInstance axisRange = AxisRanges.integrated().createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 5.0), RangeUtil.range(-3.0, 4.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
 
-        range = axisRange.axisRange(RangeUtil.range(4.0, 15.0), RangeUtil.range(-3.0, 4.0));
+        range = axisRange.axisRange(Ranges.range(4.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
@@ -61,11 +59,11 @@ public class AxisRangesTest {
     @Test
     public void integrated2() {
         AxisRangeInstance axisRange = AxisRanges.integrated().createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 5.0), RangeUtil.range(-3.0, 4.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
 
-        range = axisRange.axisRange(RangeUtil.range(1000000.0, 1000015.0), RangeUtil.range(-3.0, 4.0));
+        range = axisRange.axisRange(Ranges.range(1000000.0, 1000015.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 1000000.0));
         assertThat(range.getMaximum(), equalTo((Number) 1000015.0));
     }
@@ -73,7 +71,7 @@ public class AxisRangesTest {
     @Test
     public void display1() {
         AxisRangeInstance axisRange = AxisRanges.display().createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(-3.0, 4.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) (-3.0)));
         assertThat(range.getMaximum(), equalTo((Number) 4.0));
     }
@@ -81,7 +79,7 @@ public class AxisRangesTest {
     @Test
     public void display2() {
         AxisRangeInstance axisRange = AxisRanges.display().createInstance();
-        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(0.0, 0.0));
+        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(0.0, 0.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }

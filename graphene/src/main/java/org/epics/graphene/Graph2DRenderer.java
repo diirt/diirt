@@ -25,6 +25,7 @@ import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListMath;
 import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Ranges;
 
 /**
  * The base class for all graph renderers.
@@ -279,7 +280,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (aggregatedRange == null) {
             return dataRange;
         } else {
-            return RangeUtil.sum(dataRange, aggregatedRange);
+            return Ranges.sum(dataRange, aggregatedRange);
         }
     }
     

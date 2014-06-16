@@ -18,7 +18,7 @@ public class AxisRanges {
     }
     
     public static AxisRange absolute(final double min, final double max) {
-        final Range absoluteRange = RangeUtil.range(min, max);
+        final Range absoluteRange = Ranges.range(min, max);
         return new Absolute(absoluteRange);
     }
     
@@ -104,7 +104,7 @@ public class AxisRanges {
 
                 @Override
                 public Range axisRange(Range dataRange, Range displayRange) {
-                    aggregatedRange = RangeUtil.aggregateRange(dataRange, aggregatedRange);
+                    aggregatedRange = Ranges.aggregateRange(dataRange, aggregatedRange);
                     if (Ranges.overlap(aggregatedRange, dataRange) < minUsage) {
                         aggregatedRange = dataRange;
                     }

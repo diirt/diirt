@@ -17,6 +17,7 @@ import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
+import org.epics.util.stats.Ranges;
 
 /**
  *
@@ -194,7 +195,7 @@ class GraphAreaData {
      */
     private Range safeRange(Range range) {
         if (range.getMinimum().doubleValue() == range.getMaximum().doubleValue()) {
-            return RangeUtil.range(range.getMinimum().doubleValue() - 1.0, range.getMaximum().doubleValue() + 1.0);
+            return Ranges.range(range.getMinimum().doubleValue() - 1.0, range.getMaximum().doubleValue() + 1.0);
         } else {
             return range;
         }

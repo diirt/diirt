@@ -5,11 +5,7 @@
 package org.epics.graphene;
 
 import java.awt.Color;
-import java.util.Arrays;
-import java.util.List;
-import org.epics.util.array.ArrayInt;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 
 /**
@@ -26,7 +22,7 @@ public class GraphAreaDataTest {
         data.setGraphPadding(0, 0, 0, 0);
         data.setGraphBuffer(graphBuffer);
         data.setLabelMargin(5, 5);
-        data.setRanges(RangeUtil.range(-5, 5), ValueScales.linearScale(), RangeUtil.range(-10, 10), ValueScales.linearScale());
+        data.setRanges(Ranges.range(-5, 5), ValueScales.linearScale(), Ranges.range(-10, 10), ValueScales.linearScale());
         graphBuffer.drawBackground(Color.WHITE);
         data.prepareLabels(FontUtil.getLiberationSansRegular(), Color.BLACK);
         data.prepareGraphArea(true, Color.GRAY);
