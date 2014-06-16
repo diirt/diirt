@@ -588,7 +588,9 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
+                .xAxisRange(AxisRanges.integrated(0.0))
+                .yAxisRange(AxisRanges.integrated(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -614,7 +616,9 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
+                .xAxisRange(AxisRanges.integrated(0.0))
+                .yAxisRange(AxisRanges.integrated(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -627,7 +631,9 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
+                .xAxisRange(AxisRanges.integrated(0.0))
+                .yAxisRange(AxisRanges.integrated(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image
