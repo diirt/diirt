@@ -56,4 +56,16 @@ public class AxisRangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
+
+    @Test
+    public void integrated2() {
+        AxisRangeInstance axisRange = AxisRanges.integrated().createInstance();
+        Range range = axisRange.axisRange(RangeUtil.range(3.0, 5.0), RangeUtil.range(-3.0, 4.0));
+        assertThat(range.getMinimum(), equalTo((Number) 3.0));
+        assertThat(range.getMaximum(), equalTo((Number) 5.0));
+
+        range = axisRange.axisRange(RangeUtil.range(1000000.0, 1000015.0), RangeUtil.range(-3.0, 4.0));
+        assertThat(range.getMinimum(), equalTo((Number) 1000000.0));
+        assertThat(range.getMaximum(), equalTo((Number) 1000015.0));
+    }
 }

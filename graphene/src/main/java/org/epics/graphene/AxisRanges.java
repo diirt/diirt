@@ -4,6 +4,8 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Ranges;
+
 /**
  * TODO: finalize names
  *
@@ -63,30 +65,36 @@ public class AxisRanges {
     }
     
     public static AxisRange integrated() {
-        return new AxisRange() {
-            
-            private final AxisRange axisRange = this;
+        return INTEGRATED;
+    }
+    
+    private static Integrated INTEGRATED = new Integrated();
+    
+    private static class Integrated implements AxisRange {
 
-            @Override
-            public AxisRangeInstance createInstance() {
-                return new AxisRangeInstance() {
-                    
-                    Range aggregatedRange;
+        private final AxisRange axisRange = this;
 
-                    @Override
-                    public Range axisRange(Range dataRange, Range displayRange) {
-                        aggregatedRange = RangeUtil.aggregateRange(dataRange, aggregatedRange);
-                        return aggregatedRange;
+        @Override
+        public AxisRangeInstance createInstance() {
+            return new AxisRangeInstance() {
+
+                private Range aggregatedRange;
+
+                @Override
+                public Range axisRange(Range dataRange, Range displayRange) {
+                    aggregatedRange = RangeUtil.aggregateRange(dataRange, aggregatedRange);
+                    if (Ranges.overlap(aggregatedRange, dataRange) < 0.8) {
+                        aggregatedRange = dataRange;
                     }
+                    return aggregatedRange;
+                }
 
-                    @Override
-                    public AxisRange getAxisRange() {
-                        return axisRange;
-                    }
-                };
-            }
-            
-        };
+                @Override
+                public AxisRange getAxisRange() {
+                    return axisRange;
+                }
+            };
+        }
     }
     
     public static AxisRange display() {
