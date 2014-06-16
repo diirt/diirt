@@ -20,6 +20,7 @@ import org.epics.graphene.Point3DWithLabelDatasets;
 import org.epics.graphene.RangeUtil;
 import org.epics.graphene.StatisticsUtil;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Ranges;
 
 /**
  * Factory object to create datasets.
@@ -202,7 +203,7 @@ public final class DatasetFactory {
             waveform[i] = rand.nextGaussian();
         }
         
-        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), RangeUtil.range(0, xSamples), xSamples, RangeUtil.range(0, ySamples), ySamples);
+        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), Ranges.range(0, xSamples), xSamples, Ranges.range(0, ySamples), ySamples);
     }
 
     //--------------------------------------------------------------------------
