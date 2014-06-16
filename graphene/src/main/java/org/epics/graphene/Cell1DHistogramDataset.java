@@ -9,6 +9,7 @@ import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.IteratorNumber;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
 import org.epics.util.stats.Ranges;
 
 /**
@@ -19,13 +20,12 @@ class Cell1DHistogramDataset implements Cell1DDataset {
     
     private Statistics statistics;
     private Range xRange;
-    private ListDouble xBoundaries;
+    private ListNumber xBoundaries;
     
     private double minValueRange;
     private double maxValueRange;
     private int minCountRange;
     private int maxCountRange;
-    private double[] binValueBoundary;
     
     
     private double[] values;
@@ -45,9 +45,8 @@ class Cell1DHistogramDataset implements Cell1DDataset {
         if (autoValueRange) {
             this.minValueRange = dataset.getStatistics().getMinimum().doubleValue();
             this.maxValueRange = dataset.getStatistics().getMaximum().doubleValue();
-            binValueBoundary = RangeUtil.createBins(minValueRange, maxValueRange, nBins);
-            xBoundaries = new ArrayDouble(binValueBoundary);
-            xRange = Ranges.range(binValueBoundary[0], binValueBoundary[nBins]);
+            xBoundaries = ListNumbers.linearListFromRange(minValueRange, maxValueRange, nBins);
+            xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(nBins));
         }
         values = new double[nBins];
         while (newValues.hasNext()) {

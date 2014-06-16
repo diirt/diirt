@@ -42,10 +42,6 @@ public class MockDataset1D implements Point1DDataset {
         return values;
     }
     
-    public static Point1DDataset uniform(double minValue, double maxValue, int nSamples) {
-        return new MockDataset1D(RangeUtil.createBins(minValue, maxValue, nSamples));
-    }
-    
     public static Point1DDataset gaussian(int nSamples) {
         Random rand = new Random();
         double[] values = new double[nSamples];
