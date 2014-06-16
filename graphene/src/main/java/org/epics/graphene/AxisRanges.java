@@ -42,26 +42,31 @@ public class AxisRanges {
     }
     
     public static AxisRange relative() {
-        return new AxisRange() {
-            
-            private final AxisRange axisRange = this;
+        return DATA;
+    }
+    
+    private static Data DATA = new Data();
+    
+    private static class Data implements AxisRange {
+        
+        private final AxisRange axisRange = this;
 
-            @Override
-            public AxisRangeInstance createInstance() {
-                return new AxisRangeInstance() {
+        @Override
+        public AxisRangeInstance createInstance() {
+            return new AxisRangeInstance() {
 
-                    @Override
-                    public Range axisRange(Range dataRange, Range displayRange) {
-                        return dataRange;
-                    }
+                @Override
+                public Range axisRange(Range dataRange, Range displayRange) {
+                    return dataRange;
+                }
 
-                    @Override
-                    public AxisRange getAxisRange() {
-                        return axisRange;
-                    }
-                };
-            }
-        };
+                @Override
+                public AxisRange getAxisRange() {
+                    return axisRange;
+                }
+            };
+        }
+        
     }
     
     public static AxisRange integrated() {
