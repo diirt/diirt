@@ -80,11 +80,20 @@ public class AxisRanges {
         return INTEGRATED;
     }
     
-    private static Integrated INTEGRATED = new Integrated();
+    public static AxisRange integrated(double minUsage) {
+        return new Integrated(minUsage);
+    }
+    
+    private static final Integrated INTEGRATED = new Integrated(0.8);
     
     private static class Integrated implements AxisRange {
 
         private final AxisRange axisRange = this;
+        private final double minUsage;
+
+        public Integrated(double minUsage) {
+            this.minUsage = minUsage;
+        }
 
         @Override
         public AxisRangeInstance createInstance() {
@@ -95,7 +104,7 @@ public class AxisRanges {
                 @Override
                 public Range axisRange(Range dataRange, Range displayRange) {
                     aggregatedRange = RangeUtil.aggregateRange(dataRange, aggregatedRange);
-                    if (Ranges.overlap(aggregatedRange, dataRange) < 0.8) {
+                    if (Ranges.overlap(aggregatedRange, dataRange) < minUsage) {
                         aggregatedRange = dataRange;
                     }
                     return aggregatedRange;
