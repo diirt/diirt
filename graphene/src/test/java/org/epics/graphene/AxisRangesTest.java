@@ -21,8 +21,10 @@ public class AxisRangesTest {
 
     @Test
     public void absolute1() {
-        AxisRangeInstance axisRange = AxisRanges.absolute(0.0, 10.0).createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
+        AxisRange axisRange = AxisRanges.absolute(0.0, 10.0);
+        assertThat(axisRange.toString(), equalTo("absolute(0.0, 10.0)"));
+        AxisRangeInstance axisRangeInstance = axisRange.createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 10.0));
     }
@@ -34,52 +36,60 @@ public class AxisRangesTest {
 
     @Test
     public void relative1() {
-        AxisRangeInstance axisRange = AxisRanges.data().createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
+        AxisRange axisRange = AxisRanges.data();
+        assertThat(axisRange.toString(), equalTo("data"));
+        AxisRangeInstance axisRangeInstance = axisRange.createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
 
-        range = axisRange.axisRange(Ranges.range(1.0, 5.0), Ranges.range(-3.0, 4.0));
+        range = axisRangeInstance.axisRange(Ranges.range(1.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 1.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
     }
 
     @Test
     public void integrated1() {
-        AxisRangeInstance axisRange = AxisRanges.integrated().createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
+        AxisRange axisRange = AxisRanges.integrated();
+        assertThat(axisRange.toString(), equalTo("integrated(80%)"));
+        AxisRangeInstance axisRangeInstance = axisRange.createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
 
-        range = axisRange.axisRange(Ranges.range(4.0, 15.0), Ranges.range(-3.0, 4.0));
+        range = axisRangeInstance.axisRange(Ranges.range(4.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
 
     @Test
     public void integrated2() {
-        AxisRangeInstance axisRange = AxisRanges.integrated().createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
+        AxisRange axisRange = AxisRanges.integrated();
+        assertThat(axisRange.toString(), equalTo("integrated(80%)"));
+        AxisRangeInstance axisRangeInstance = axisRange.createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 5.0));
 
-        range = axisRange.axisRange(Ranges.range(1000000.0, 1000015.0), Ranges.range(-3.0, 4.0));
+        range = axisRangeInstance.axisRange(Ranges.range(1000000.0, 1000015.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 1000000.0));
         assertThat(range.getMaximum(), equalTo((Number) 1000015.0));
     }
 
     @Test
     public void display1() {
-        AxisRangeInstance axisRange = AxisRanges.display().createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
+        AxisRange axisRange = AxisRanges.display();
+        assertThat(axisRange.toString(), equalTo("display"));
+        AxisRangeInstance axisRangeInstance = axisRange.createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) (-3.0)));
         assertThat(range.getMaximum(), equalTo((Number) 4.0));
     }
 
     @Test
     public void display2() {
-        AxisRangeInstance axisRange = AxisRanges.display().createInstance();
-        Range range = axisRange.axisRange(Ranges.range(3.0, 15.0), Ranges.range(0.0, 0.0));
+        AxisRangeInstance axisRangeInstance = AxisRanges.display().createInstance();
+        Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(0.0, 0.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
