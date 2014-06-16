@@ -7,6 +7,7 @@ package org.epics.util.stats;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.epics.util.stats.Ranges.*;
 
 /**
  *
@@ -33,6 +34,36 @@ public class RangesTest {
     @Test(expected=IllegalArgumentException.class)
     public void range3() throws Exception {
         Range range = Ranges.range(10.0, 0.0);
+    }
+    
+    public void absRange1() {
+        Range range = absRange(range(1, 3));
+        assertThat(range.getMinimum(), equalTo((Number) 1.0));
+        assertThat(range.getMaximum(), equalTo((Number) 3.0));
+    }
+    
+    public void absRange2() {
+        Range range = absRange(range(0, 3));
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 3.0));
+    }
+    
+    public void absRange3() {
+        Range range = absRange(range(-2, 3));
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 3.0));
+    }
+    
+    public void absRange4() {
+        Range range = absRange(range(-4, 2));
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 4.0));
+    }
+    
+    public void absRange5() {
+        Range range = absRange(range(-4, -2));
+        assertThat(range.getMinimum(), equalTo((Number) 2.0));
+        assertThat(range.getMaximum(), equalTo((Number) 4.0));
     }
     
     @Test
