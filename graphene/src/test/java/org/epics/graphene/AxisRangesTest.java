@@ -68,4 +68,20 @@ public class AxisRangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 1000000.0));
         assertThat(range.getMaximum(), equalTo((Number) 1000015.0));
     }
+
+    @Test
+    public void display1() {
+        AxisRangeInstance axisRange = AxisRanges.display().createInstance();
+        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(-3.0, 4.0));
+        assertThat(range.getMinimum(), equalTo((Number) (-3.0)));
+        assertThat(range.getMaximum(), equalTo((Number) 4.0));
+    }
+
+    @Test
+    public void display2() {
+        AxisRangeInstance axisRange = AxisRanges.display().createInstance();
+        Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(0.0, 0.0));
+        assertThat(range.getMinimum(), equalTo((Number) 3.0));
+        assertThat(range.getMaximum(), equalTo((Number) 15.0));
+    }
 }

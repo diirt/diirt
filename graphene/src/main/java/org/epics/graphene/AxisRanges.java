@@ -122,10 +122,14 @@ public class AxisRanges {
         @Override
         public AxisRangeInstance createInstance() {
             return new AxisRangeInstance() {
+                
+                private Range previousDataRange;
 
                 @Override
                 public Range axisRange(Range dataRange, Range displayRange) {
-                    return displayRange;
+                    if (Ranges.isValid(displayRange)) {
+                        return displayRange;
+                    }
                 }
 
                 @Override
