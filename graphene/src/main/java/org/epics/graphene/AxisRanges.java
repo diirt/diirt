@@ -41,7 +41,7 @@ public class AxisRanges {
         };
     }
     
-    public static AxisRange relative() {
+    public static AxisRange data() {
         return DATA;
     }
     

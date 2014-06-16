@@ -35,7 +35,7 @@ public class AxisRangesTest {
 
     @Test
     public void relative1() {
-        AxisRangeInstance axisRange = AxisRanges.relative().createInstance();
+        AxisRangeInstance axisRange = AxisRanges.data().createInstance();
         Range range = axisRange.axisRange(RangeUtil.range(3.0, 15.0), RangeUtil.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
