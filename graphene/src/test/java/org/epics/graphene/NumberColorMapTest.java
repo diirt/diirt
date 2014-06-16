@@ -5,6 +5,7 @@
 
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import java.awt.Color;
 import org.junit.Test;
 import static org.junit.Assert.*;

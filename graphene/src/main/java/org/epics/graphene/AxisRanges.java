@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import org.epics.util.stats.Ranges;
 
 /**

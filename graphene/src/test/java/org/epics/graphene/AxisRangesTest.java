@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;

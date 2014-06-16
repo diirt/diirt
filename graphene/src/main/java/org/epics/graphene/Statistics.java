@@ -4,6 +4,8 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
+
 /**
  * The statistics of a given set of numbers.
  * <p>

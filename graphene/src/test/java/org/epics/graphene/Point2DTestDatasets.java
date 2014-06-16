@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

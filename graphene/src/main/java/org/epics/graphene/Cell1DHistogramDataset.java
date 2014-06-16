@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.IteratorNumber;
 import org.epics.util.array.ListDouble;

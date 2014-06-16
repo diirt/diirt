@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.junit.AfterClass;
