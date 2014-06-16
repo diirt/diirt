@@ -90,25 +90,29 @@ public class AxisRanges {
     }
     
     public static AxisRange display() {
-        return new AxisRange() {
+        return DISPLAY;
+    }
+    
+    private static Display DISPLAY = new Display();
+    
+    private static class Display implements AxisRange {
             
-            private final AxisRange axisRange = this;
+        private final AxisRange axisRange = this;
 
-            @Override
-            public AxisRangeInstance createInstance() {
-                return new AxisRangeInstance() {
+        @Override
+        public AxisRangeInstance createInstance() {
+            return new AxisRangeInstance() {
 
-                    @Override
-                    public Range axisRange(Range dataRange, Range displayRange) {
-                        return displayRange;
-                    }
+                @Override
+                public Range axisRange(Range dataRange, Range displayRange) {
+                    return displayRange;
+                }
 
-                    @Override
-                    public AxisRange getAxisRange() {
-                        return axisRange;
-                    }
-                };
-            }
-        };
+                @Override
+                public AxisRange getAxisRange() {
+                    return axisRange;
+                }
+            };
+        }
     }
 }
