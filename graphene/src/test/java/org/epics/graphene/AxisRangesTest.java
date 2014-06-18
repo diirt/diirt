@@ -93,4 +93,27 @@ public class AxisRangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
+    
+    @Test
+    public void absoluteEquals() {
+        assertThat(AxisRanges.absolute(0, 1), equalTo(AxisRanges.absolute(0, 1)));
+        assertThat(AxisRanges.absolute(0, 1), not(equalTo(AxisRanges.absolute(0, 5))));
+    }
+    
+    @Test
+    public void displayEquals() {
+        assertThat(AxisRanges.display(), equalTo(AxisRanges.display()));
+    }
+    
+    @Test
+    public void dataEquals() {
+        assertThat(AxisRanges.data(), equalTo(AxisRanges.data()));
+    }
+    
+    @Test
+    public void integratedEquals() {
+        assertThat(AxisRanges.integrated(), equalTo(AxisRanges.integrated()));
+        assertThat(AxisRanges.integrated(0.5), equalTo(AxisRanges.integrated(0.5)));
+        assertThat(AxisRanges.integrated(0.5), not(equalTo(AxisRanges.integrated(0.8))));
+    }
 }
