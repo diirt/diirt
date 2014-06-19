@@ -112,6 +112,43 @@ public class Cell1DDatasets {
         };
     }
     
+    public static Cell1DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries, final Range displayRange) {
+        final Statistics statistics = StatisticsUtil.statisticsOf(values);
+        final Range range = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
+        return new Cell1DDataset() {
+
+            @Override
+            public Range getDisplayRange() {
+                return displayRange;
+            }
+
+            @Override
+            public double getValue(int x) {
+                return values.getDouble(x);
+            }
+
+            @Override
+            public Statistics getStatistics() {
+                return statistics;
+            }
+
+            @Override
+            public ListNumber getXBoundaries() {
+                return xBoundaries;
+            }
+
+            @Override
+            public Range getXRange() {
+                return range;
+            }
+
+            @Override
+            public int getXCount() {
+                return values.size();
+            }
+        };
+    }
+    
     public static Cell1DDataset createHistogram(Point1DDataset dataset) {
         Cell1DHistogramDataset histogram = new Cell1DHistogramDataset(dataset);
         return histogram;
