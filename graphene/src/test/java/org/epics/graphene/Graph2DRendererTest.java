@@ -154,7 +154,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10));
+        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -175,7 +175,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(3, 3));
+        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(3, 3), Ranges.range(3, 3));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -196,7 +196,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(3, 3), Ranges.range(0, 10));
+        renderer.calculateRanges(Ranges.range(3, 3), Ranges.range(3, 3), Ranges.range(0, 10), Ranges.range(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();   
         renderer.drawBackground();
@@ -219,7 +219,7 @@ public class Graph2DRendererTest {
         renderer.g = graphics;
         renderer.xPointMargin = 2.5;
         renderer.yPointMargin = 2.5;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10));
+        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();   
         renderer.drawBackground();
@@ -274,7 +274,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
+        renderer.calculateRanges(data.getXStatistics(), data.getXDisplayRange(), data.getYStatistics(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
@@ -298,7 +298,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(data.getXStatistics(), data.getYStatistics());
+        renderer.calculateRanges(data.getXStatistics(), data.getXDisplayRange(), data.getYStatistics(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
@@ -322,7 +322,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(2.5, 4.5), data.getYStatistics());
+        renderer.calculateRanges(Ranges.range(2.5, 4.5), null, data.getYStatistics(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
@@ -346,7 +346,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(2.5, 4.5), data.getYStatistics());
+        renderer.calculateRanges(Ranges.range(2.5, 4.5), null, data.getYStatistics(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
