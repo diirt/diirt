@@ -12,6 +12,7 @@ import org.epics.util.array.CollectionDouble;
 import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.IteratorDouble;
 import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
 
 /**
  *
@@ -32,6 +33,11 @@ public class MockDataset1D implements Point1DDataset {
     @Override
     public Statistics getStatistics() {
         return statistics;
+    }
+
+    @Override
+    public Range getDisplayRange() {
+        return null;
     }
 
     @Override
