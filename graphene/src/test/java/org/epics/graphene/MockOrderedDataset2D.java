@@ -8,6 +8,7 @@ import org.epics.util.stats.StatisticsUtil;
 import org.epics.util.stats.Statistics;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
 
 /**
  *
@@ -46,7 +47,16 @@ public class MockOrderedDataset2D implements Point2DDataset {
     public Statistics getYStatistics() {
         return yStatistics;
     }
-    
+
+    @Override
+    public Range getXDisplayRange() {
+        return null;
+    }
+
+    @Override
+    public Range getYDisplayRange() {
+        return null;
+    }
 
     @Override
     public int getCount() {
