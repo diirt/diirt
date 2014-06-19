@@ -215,4 +215,9 @@ public class RangesTest {
         Range range1 = Ranges.range(0.0, Double.POSITIVE_INFINITY);
         assertThat(Ranges.isValid(range1), equalTo(false));
     }
+    
+    @Test
+    public void isValid7() {
+        assertThat(Ranges.isValid(null), equalTo(false));
+    }
 }
