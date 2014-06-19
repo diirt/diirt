@@ -34,6 +34,11 @@ public class Cell1DDatasets {
         return new Cell1DDataset() {
 
             @Override
+            public Range getDisplayRange() {
+                return null;
+            }
+
+            @Override
             public double getValue(int x) {
                 return values.getDouble(x);
             }
@@ -74,6 +79,11 @@ public class Cell1DDatasets {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
         final Range range = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
         return new Cell1DDataset() {
+
+            @Override
+            public Range getDisplayRange() {
+                return null;
+            }
 
             @Override
             public double getValue(int x) {
