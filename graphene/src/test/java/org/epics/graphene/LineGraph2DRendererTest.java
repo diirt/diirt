@@ -562,7 +562,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(640, 480);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR).valueColorScheme(NumberColorMaps.JET));
+        renderer.update(renderer.newUpdate().yAxisRange(AxisRanges.data())
+                .interpolation(InterpolationScheme.LINEAR).valueColorScheme(NumberColorMaps.JET));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -603,7 +604,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(640, 480);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
+        renderer.update(renderer.newUpdate().yAxisRange(AxisRanges.data())
+                .interpolation(InterpolationScheme.LINEAR));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -646,7 +648,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(640, 480);
-        renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
+        renderer.update(renderer.newUpdate().yAxisRange(AxisRanges.data())
+                .interpolation(InterpolationScheme.NEAREST_NEIGHBOR));
         renderer.draw(g, data);
 
         //Compares to correct image
