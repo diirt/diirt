@@ -10,26 +10,36 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+
 import org.epics.pvmanager.test.CountDownPVReaderListener;
 import org.epics.pvmanager.test.MockDataSource;
+
 import java.util.Arrays;
 import java.util.concurrent.Executor;
+
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.expression.Queue;
+
 import static org.junit.Assert.*;
+
 import org.junit.*;
+
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+
 import org.epics.util.array.ArrayDouble;
+
 import static org.epics.util.time.TimeDuration.*;
+
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.ValueFactory;
 import org.epics.vtype.ValueUtil;
+
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -42,10 +52,16 @@ public class FileDataSourceTest {
     }
     
     private static DataSource file;
+    private static FileFormatRegister register = FileFormatRegister.getDefault();
     
     @BeforeClass
     public static void createDataSource() {
         file = new FileDataSource();
+        // Register the default file formats
+	register.registerFileFormat("bmp", new ImageFileFormat());
+	register.registerFileFormat("png", new ImageFileFormat());
+	register.registerFileFormat("list", new ListFileFormat());
+	register.registerFileFormat("csv", new CSVFileFormat());
     }
     
     @AfterClass
