@@ -69,6 +69,8 @@ public class FileDataSourceTest {
 
     private volatile PVReader<?> pv;
     
+    // TODO: Add a test for the image
+    
     @Test
     public void readFile() throws Exception {
         CountDownPVReaderListener listener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK);
