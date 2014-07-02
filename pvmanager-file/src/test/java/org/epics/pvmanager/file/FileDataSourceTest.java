@@ -52,7 +52,7 @@ public class FileDataSourceTest {
     }
     
     private static DataSource file;
-    private static FileFormatRegister register = FileFormatRegister.getDefault();
+    private static FileFormatRegistry register = FileFormatRegistry.getDefault();
     
     @BeforeClass
     public static void createDataSource() {

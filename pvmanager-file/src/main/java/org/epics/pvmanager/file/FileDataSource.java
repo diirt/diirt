@@ -29,7 +29,7 @@ import org.epics.util.time.TimeDuration;
  * @author carcassi
  */
 public final class FileDataSource extends DataSource {
-    private final static FileFormatRegister register = FileFormatRegister.getDefault();
+    private final static FileFormatRegistry register = FileFormatRegistry.getDefault();
     static {
 	// Install type support for the types it generates.
 	DataTypeSupport.install();
