@@ -58,15 +58,12 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
     }
     
     protected Object readValueFromFile(File file) {
-	try {	    
-	    FileInputStream in = new FileInputStream(file);
-	    Object value = format.readValue(in);
-	    in.close();
-	    return value;
-	} catch (Exception e) {
-	    reportExceptionToAllReadersAndWriters(e);
-	}
-	return null;
+        try (FileInputStream in = new FileInputStream(file)) {
+            return format.readValue(in);
+        } catch (Exception e) {
+            reportExceptionToAllReadersAndWriters(e);
+        }
+        return null;
     }
 
     @Override
