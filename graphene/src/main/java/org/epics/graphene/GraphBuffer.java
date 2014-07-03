@@ -155,6 +155,36 @@ public class GraphBuffer {
     public int xValueToPixel(double value) {
         return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
+
+    /**
+     * Converts the left side of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double xPixelLeftToValue(int pixelValue) {
+        return xValueScale.invScaleValue(pixelValue, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
+    }
+
+    /**
+     * Converts the right side of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double xPixelRightToValue(int pixelValue) {
+        return xValueScale.invScaleValue(pixelValue + 1, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
+    }
+
+    /**
+     * Converts the center of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double xPixelCenterToValue(int pixelValue) {
+        return xValueScale.invScaleValue(pixelValue + 0.5, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
+    }
     
     private double yTopValue;
     private double yBottomValue;

@@ -32,6 +32,18 @@ public class GraphBufferTest {
         assertThat(graph.xValueToPixel(75), equalTo(3));
         assertThat(graph.xValueToPixel(99.9999), equalTo(3));
         assertThat(graph.xValueToPixel(100), equalTo(4));
+        assertThat(graph.xPixelLeftToValue(0), equalTo(0.0));
+        assertThat(graph.xPixelCenterToValue(0), equalTo(12.5));
+        assertThat(graph.xPixelRightToValue(0), equalTo(25.0));
+        assertThat(graph.xPixelLeftToValue(1), equalTo(25.0));
+        assertThat(graph.xPixelCenterToValue(1), equalTo(37.5));
+        assertThat(graph.xPixelRightToValue(1), equalTo(50.0));
+        assertThat(graph.xPixelLeftToValue(2), equalTo(50.0));
+        assertThat(graph.xPixelCenterToValue(2), equalTo(62.5));
+        assertThat(graph.xPixelRightToValue(2), equalTo(75.0));
+        assertThat(graph.xPixelLeftToValue(3), equalTo(75.0));
+        assertThat(graph.xPixelCenterToValue(3), equalTo(87.5));
+        assertThat(graph.xPixelRightToValue(3), equalTo(100.0));
     }
     
     @Test
@@ -48,6 +60,18 @@ public class GraphBufferTest {
         assertThat(graph.xValueToPixel(24.9999), equalTo(2));
         assertThat(graph.xValueToPixel(25), equalTo(3));
         assertThat(graph.xValueToPixel(30), equalTo(3));
+        assertThat(graph.xPixelLeftToValue(0), equalTo(-5.0));
+        assertThat(graph.xPixelCenterToValue(0), equalTo(0.0));
+        assertThat(graph.xPixelRightToValue(0), equalTo(5.0));
+        assertThat(graph.xPixelLeftToValue(1), equalTo(5.0));
+        assertThat(graph.xPixelCenterToValue(1), equalTo(10.0));
+        assertThat(graph.xPixelRightToValue(1), equalTo(15.0));
+        assertThat(graph.xPixelLeftToValue(2), equalTo(15.0));
+        assertThat(graph.xPixelCenterToValue(2), equalTo(20.0));
+        assertThat(graph.xPixelRightToValue(2), equalTo(25.0));
+        assertThat(graph.xPixelLeftToValue(3), equalTo(25.0));
+        assertThat(graph.xPixelCenterToValue(3), equalTo(30.0));
+        assertThat(graph.xPixelRightToValue(3), equalTo(35.0));
     }
     
     @Test
