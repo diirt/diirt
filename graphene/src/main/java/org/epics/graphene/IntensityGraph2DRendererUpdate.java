@@ -4,6 +4,9 @@
  */
 package org.epics.graphene;
 
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+
 /**
  * A set of parameters that can be applied to a <code>IntensityGraph2DRenderer</code>
  * to update its settings.
@@ -31,6 +34,9 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     private Boolean drawLegend;
 
     private NumberColorMap colorMap;
+    
+    private Range xPixelSelectionRange;
+    private Range yPixelSelectionRange;
     
     // TODO: review comments (they mostly just repeat the method name)
     
@@ -86,6 +92,30 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public IntensityGraph2DRendererUpdate graphAreaToLegendMargin(int margin) {
         this.graphAreaToLegendMargin = margin;
+        return self();
+    }
+    
+    /**
+     * Changes the current region of interest. The selection is given in pixels.
+     * The ordering of the boundaries does not matter.
+     * 
+     * @param x1 one of the horizontal boundaries
+     * @param x2 the other horizontal boundary
+     * @param y1 one of the vertical boundaries
+     * @param y2 the other vertical boundary
+     * @return 
+     */
+    public IntensityGraph2DRendererUpdate pixelSelectionRange(int x1, int x2, int y1, int y2) {
+        if (x1 > x2) {
+            xPixelSelectionRange = Ranges.range(x2, x1);
+        } else {
+            xPixelSelectionRange = Ranges.range(x1, x2);
+        }
+        if (y1 > y2) {
+            yPixelSelectionRange = Ranges.range(y2, y1);
+        } else {
+            yPixelSelectionRange = Ranges.range(y1, y2);
+        }
         return self();
     }
     
