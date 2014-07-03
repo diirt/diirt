@@ -240,6 +240,36 @@ public class GraphBuffer {
     public int yValueToPixel(double value) {
         return (int) Math.ceil(yValueScale.scaleValue(value, yBottomValue, yTopValue, yBottomPixel, yTopPixel));
     }
+    
+    /**
+     * Converts the top side of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double yPixelTopToValue(int pixelValue) {
+        return yValueScale.invScaleValue(pixelValue - 1, yBottomValue, yTopValue, yBottomPixel, yTopPixel);
+    }
+    
+    /**
+     * Converts the center of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double yPixelCenterToValue(int pixelValue) {
+        return yValueScale.invScaleValue(pixelValue - 0.5, yBottomValue, yTopValue, yBottomPixel, yTopPixel);
+    }
+    
+    /**
+     * Converts the bottom side of given pixel position to the actual value.
+     * 
+     * @param pixelValue the pixel
+     * @return the value at the pixel
+     */
+    public double yPixelBottomToValue(int pixelValue) {
+        return yValueScale.invScaleValue(pixelValue, yBottomValue, yTopValue, yBottomPixel, yTopPixel);
+    }
 
     void drawBackground(Color color) {
         g.setColor(color);

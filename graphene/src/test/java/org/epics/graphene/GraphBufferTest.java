@@ -87,6 +87,18 @@ public class GraphBufferTest {
         assertThat(graph.yValueToPixel(75), equalTo(0));
         assertThat(graph.yValueToPixel(99.9999), equalTo(0));
         assertThat(graph.yValueToPixel(100), equalTo(-1));
+        assertThat(graph.yPixelBottomToValue(3), equalTo(0.0));
+        assertThat(graph.yPixelCenterToValue(3), equalTo(12.5));
+        assertThat(graph.yPixelTopToValue(3), equalTo(25.0));
+        assertThat(graph.yPixelBottomToValue(2), equalTo(25.0));
+        assertThat(graph.yPixelCenterToValue(2), equalTo(37.5));
+        assertThat(graph.yPixelTopToValue(2), equalTo(50.0));
+        assertThat(graph.yPixelBottomToValue(1), equalTo(50.0));
+        assertThat(graph.yPixelCenterToValue(1), equalTo(62.5));
+        assertThat(graph.yPixelTopToValue(1), equalTo(75.0));
+        assertThat(graph.yPixelBottomToValue(0), equalTo(75.0));
+        assertThat(graph.yPixelCenterToValue(0), equalTo(87.5));
+        assertThat(graph.yPixelTopToValue(0), equalTo(100.0));
     }
     
     @Test
