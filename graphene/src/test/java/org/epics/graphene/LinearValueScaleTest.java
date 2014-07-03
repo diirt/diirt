@@ -28,6 +28,18 @@ public class LinearValueScaleTest {
     }
 
     @Test
+    public void invScaleValue1() {
+        ValueScale linearScale = ValueScales.linearScale();
+        assertThat(linearScale.invScaleValue(50.0, 3, 4, 0, 100), equalTo(3.5));
+    }
+
+    @Test
+    public void invScaleValue2() {
+        ValueScale linearScale = ValueScales.linearScale();
+        assertThat(linearScale.invScaleValue(0.0, 3, 4, -100, 100), equalTo(3.5));
+    }
+
+    @Test
     public void references1() {
         ValueScale linearScale = ValueScales.linearScale();
         ValueAxis axis = linearScale.references(Ranges.range(1.0, 9.0), 2, 4);

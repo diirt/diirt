@@ -31,6 +31,18 @@ public class LogValueScaleTest {
     }
 
     @Test
+    public void invScaleValue1() {
+        ValueScale logScale = ValueScales.logScale();
+        assertThat(logScale.invScaleValue(50.0, 1, 100, 0, 100), equalTo(10.0));
+    }
+
+    @Test
+    public void invScaleValue2() {
+        ValueScale logScale = ValueScales.logScale();
+        assertThat(logScale.invScaleValue(0.0, 10, 1000, -100, 100), equalTo(100.0));
+    }
+
+    @Test
     public void references1() {
         ValueScale logScale = ValueScales.logScale();
         ValueAxis axis = logScale.references(Ranges.range(1.0, 1000.0), 2, 4);
