@@ -10,6 +10,8 @@ import java.util.Random;
 import org.junit.Test;
 import org.epics.util.array.*;
 import org.epics.util.stats.Ranges;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -429,5 +431,27 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.update(renderer.newUpdate().drawLegend(false));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.addRemoveLegend.1", graphBuffer.getImage());
+    }
+
+    @Test
+    public void selectedRegion() throws Exception {
+        Cell2DDataset data = ellipticParaboloid(200, Ranges.range(0, 100), 200, Ranges.range(0, 100));
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
+        renderer.update(renderer.newUpdate().pixelSelectionRange(100, 200, 150, 250));
+        GraphBuffer graphBuffer = new GraphBuffer(renderer);
+        renderer.draw(graphBuffer, data);
+        assertThat(renderer.getXPixelSelectionRange().getMinimum().intValue(), equalTo(100));
+        assertThat(renderer.getXPixelSelectionRange().getMaximum().intValue(), equalTo(200));
+        assertThat(renderer.getYPixelSelectionRange().getMinimum().intValue(), equalTo(150));
+        assertThat(renderer.getYPixelSelectionRange().getMaximum().intValue(), equalTo(250));
+        assertThat(renderer.getXValueSelectionRange().getMinimum().doubleValue(), closeTo(12.5203, 0.0001));
+        assertThat(renderer.getXValueSelectionRange().getMaximum().doubleValue(), closeTo(28.9430, 0.0001));
+        assertThat(renderer.getYValueSelectionRange().getMinimum().doubleValue(), closeTo(45.9869, 0.0001));
+        assertThat(renderer.getYValueSelectionRange().getMaximum().doubleValue(), closeTo(67.8958, 0.0001));
+        assertThat(renderer.getXIndexSelectionRange().getMinimum().intValue(), equalTo(25));
+        assertThat(renderer.getXIndexSelectionRange().getMaximum().intValue(), equalTo(57));
+        assertThat(renderer.getYIndexSelectionRange().getMinimum().intValue(), equalTo(92));
+        assertThat(renderer.getYIndexSelectionRange().getMaximum().intValue(), equalTo(135));
+        ImageAssert.compareImages("intensityGraph2D.selectedRegion.1", graphBuffer.getImage());
     }
 }

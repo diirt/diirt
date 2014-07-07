@@ -159,4 +159,23 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public Integer getGraphAreaToLegendMargin(){
         return graphAreaToLegendMargin;
     }
+
+    /**
+     * The new selection range on the x axis.
+     * 
+     * @return the selection range
+     */
+    public Range getXPixelSelectionRange() {
+        return xPixelSelectionRange;
+    }
+
+    /**
+     * The new selection range on the y axis.
+     * 
+     * @return the selection range
+     */
+    public Range getYPixelSelectionRange() {
+        return yPixelSelectionRange;
+    }
+    
 }
