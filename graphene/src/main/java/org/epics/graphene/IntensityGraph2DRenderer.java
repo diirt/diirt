@@ -247,6 +247,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 yIndexSelectionRange = Ranges.range(yPointToDataMap.pointToDataMap[yBottomOffset], yPointToDataMap.pointToDataMap[yTopOffset]);
             }
             
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
             graphBuffer.getGraphicsContext().drawRect(selectionLeftPixel, selectionTopPixel,
                     selectionRightPixel - selectionLeftPixel, selectionBottomPixel - selectionTopPixel);
         }
