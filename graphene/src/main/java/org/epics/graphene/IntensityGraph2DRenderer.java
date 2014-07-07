@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.awt.Color;
 import org.epics.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -247,7 +248,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                 yIndexSelectionRange = Ranges.range(yPointToDataMap.pointToDataMap[yBottomOffset], yPointToDataMap.pointToDataMap[yTopOffset]);
             }
             
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+            g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+            g.setColor(Color.BLACK);
             graphBuffer.getGraphicsContext().drawRect(selectionLeftPixel, selectionTopPixel,
                     selectionRightPixel - selectionLeftPixel, selectionBottomPixel - selectionTopPixel);
         }
