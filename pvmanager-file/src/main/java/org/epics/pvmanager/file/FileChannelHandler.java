@@ -85,6 +85,10 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
             callback.channelWritten(new RuntimeException("Channel is closed"));
         }
         
+        if (format == null || !format.isWriteSupported()) {
+            callback.channelWritten(new RuntimeException("Format does not support write"));
+        }
+        
         try (OutputStream out = new FileOutputStream(file)) {
             format.writeValue(newValue, out);
             callback.channelWritten(null);
