@@ -159,7 +159,7 @@
                         </goals>
                         <phase>site</phase>
                         <configuration>
-                            <docfilessubdirs />
+                            <docfilessubdirs/>
                         </configuration>
                     </execution>
                 </executions>
@@ -241,6 +241,7 @@
     <module>pvmanager-jdbc</module>
     <module>pvmanager-exec</module>
     <module>pvmanager-integration</module>
+    <module>vtype-seds</module>
   </modules>
     <reporting>
         <plugins>
