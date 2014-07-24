@@ -5,6 +5,7 @@
 
 package org.diirt.pods.web;
 
+import java.io.Writer;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -14,7 +15,7 @@ import javax.json.JsonString;
  * @author carcassi
  */
 public abstract class Message {
-    public static enum MessageType {SUBSCRIBE, WRITE, PAUSE, RESUME, UNSUBSCRIBE};
+    public static enum MessageType {SUBSCRIBE, CONNECTION, WRITE, PAUSE, RESUME, UNSUBSCRIBE};
     
     private final MessageType message;
     private final int id;
@@ -34,6 +35,10 @@ public abstract class Message {
 
     public int getId() {
         return id;
+    }
+    
+    public void toJson(Writer writer) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
     
     static MessageType typeMandatory(JsonObject jObject, String name) {
