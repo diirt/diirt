@@ -28,6 +28,8 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
         switch (messageType) {
             case "subscribe":
                 return new MessageSubscribe(jObject);
+            case "unsubscribe":
+                return new MessageUnsubscribe(jObject);
             default:
                 throw new UnsupportedOperationException("Message " + messageType + " is not supported");
         }

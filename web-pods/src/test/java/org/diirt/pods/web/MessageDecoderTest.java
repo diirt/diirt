@@ -69,5 +69,18 @@ public class MessageDecoderTest {
         assertThat(result.getType(), equalTo(null));
         assertThat(result.isReadOnly(), equalTo(true));
     }
+
+    @Test
+    public void decodeUnsubscribe1() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageUnsubscribe result = (MessageUnsubscribe) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"unsubscribe\","
+            + "    \"id\" : 1"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.UNSUBSCRIBE));
+        assertThat(result.getId(), equalTo(1));
+    }
     
 }

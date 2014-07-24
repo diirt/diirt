@@ -14,11 +14,15 @@ import javax.json.JsonString;
  * @author carcassi
  */
 public abstract class Message {
-    public static enum MessageType {SUBSCRIBE};
+    public static enum MessageType {SUBSCRIBE, UNSUBSCRIBE};
     
     private final MessageType message;
     private final int id;
 
+    public Message(JsonObject obj) {
+        this(Message.MessageType.valueOf(obj.getString("message").toUpperCase()), intMandatory(obj, "id"));
+    }
+    
     public Message(MessageType message, int id) {
         this.message = message;
         this.id = id;

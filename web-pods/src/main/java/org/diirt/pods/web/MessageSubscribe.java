@@ -19,7 +19,7 @@ public class MessageSubscribe extends Message {
     private final boolean readOnly;
 
     public MessageSubscribe(JsonObject obj) {
-        super(Message.MessageType.valueOf(obj.getString("message").toUpperCase()), intMandatory(obj, "id"));
+        super(obj);
         this.pv = stringMandatory(obj, "pv");
         this.type = stringOptional(obj, "type", null);
         this.maxRate = intOptional(obj, "maxRate", -1);
