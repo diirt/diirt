@@ -72,5 +72,23 @@ public class MessageEncoderTest {
         encoder.encode(event, writer);
         assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"error\",\"error\":\"Mayday\"}"));
     }
+
+    @Test
+    public void encodeWriteCompletedEvent1() throws Exception {
+        MessageWriteCompletedEvent event = new MessageWriteCompletedEvent(12);
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(event, writer);
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"writeCompleted\",\"successful\":true}"));
+    }
+
+    @Test
+    public void encodeWriteCompletedEvent2() throws Exception {
+        MessageWriteCompletedEvent event = new MessageWriteCompletedEvent(12, "Value too big");
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(event, writer);
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"writeCompleted\",\"successful\":false,\"error\":\"Value too big\"}"));
+    }
     
 }
