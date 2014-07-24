@@ -53,9 +53,9 @@ public class MessageDecoderTest {
     }
 
     @Test
-    public void decodeSubscribe() throws Exception {
+    public void decodeSubscribe1() throws Exception {
         MessageDecoder decoder = new MessageDecoder();
-        Message result = decoder.decode(new StringReader(
+        MessageSubscribe result = (MessageSubscribe) decoder.decode(new StringReader(
             "{ "
             + "    \"message\" : \"subscribe\","
             + "    \"id\" : 1,"
@@ -63,6 +63,11 @@ public class MessageDecoderTest {
             + "}"));
                 
         assertThat(result.getMessage(), equalTo(Message.MessageType.SUBSCRIBE));
+        assertThat(result.getId(), equalTo(1));
+        assertThat(result.getPv(), equalTo("sim://noise"));
+        assertThat(result.getMaxRate(), equalTo(-1));
+        assertThat(result.getType(), equalTo(null));
+        assertThat(result.isReadOnly(), equalTo(true));
     }
     
 }
