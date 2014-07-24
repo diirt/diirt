@@ -110,5 +110,18 @@ public class MessageDecoderTest {
         assertThat(result.getMessage(), equalTo(Message.MessageType.PAUSE));
         assertThat(result.getId(), equalTo(1));
     }
+
+    @Test
+    public void decodeResume1() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageResume result = (MessageResume) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"resume\","
+            + "    \"id\" : 1"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.RESUME));
+        assertThat(result.getId(), equalTo(1));
+    }
     
 }

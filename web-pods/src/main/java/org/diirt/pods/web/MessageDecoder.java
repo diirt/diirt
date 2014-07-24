@@ -32,6 +32,8 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
                 return new MessageWrite(jObject);
             case "pause":
                 return new MessagePause(jObject);
+            case "resume":
+                return new MessageResume(jObject);
             case "unsubscribe":
                 return new MessageUnsubscribe(jObject);
             default:
