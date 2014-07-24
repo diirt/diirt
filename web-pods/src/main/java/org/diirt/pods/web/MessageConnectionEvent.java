@@ -7,6 +7,7 @@ package org.diirt.pods.web;
 import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 /**
  *
@@ -31,6 +32,7 @@ public class MessageConnectionEvent extends Message {
         return writeConnected;
     }
     
+    @Override
     public void toJson(Writer writer) {
         Json.createGenerator(writer).writeStartObject()
                 .write("message", getMessage().toString().toLowerCase())

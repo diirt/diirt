@@ -45,5 +45,23 @@ public class MessageEncoderTest {
         encoder.encode(event, writer);
         assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":15,\"type\":\"connection\",\"connected\":false,\"writeConnected\":true}"));
     }
+
+    @Test
+    public void encodeValueEvent1() throws Exception {
+        MessageValueEvent event = new MessageValueEvent(12, 3.14);
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(event, writer);
+        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"value\",\"value\":3.14}"));
+    }
+
+    @Test
+    public void encodeValueEvent2() throws Exception {
+        MessageValueEvent event = new MessageValueEvent(12, "Hello");
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(event, writer);
+        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"value\",\"value\":\"Hello\"}"));
+    }
     
 }
