@@ -19,7 +19,7 @@ public class MessageConnectionEvent extends Message {
     private final boolean writeConnected;
 
     public MessageConnectionEvent(int id, boolean connected, boolean writeConnected) {
-        super(MessageType.CONNECTION, id);
+        super(MessageType.EVENT, id);
         this.connected = connected;
         this.writeConnected = writeConnected;
     }

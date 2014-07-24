@@ -16,7 +16,7 @@ public class MessageErrorEvent extends Message {
     private final String error;
 
     public MessageErrorEvent(int id, String error) {
-        super(MessageType.CONNECTION, id);
+        super(MessageType.EVENT, id);
         this.error = error;
     }
 

@@ -34,7 +34,7 @@ public class MessageEncoderTest {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"connection\",\"connected\":true,\"writeConnected\":false}"));
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"connection\",\"connected\":true,\"writeConnected\":false}"));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class MessageEncoderTest {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":15,\"type\":\"connection\",\"connected\":false,\"writeConnected\":true}"));
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":15,\"type\":\"connection\",\"connected\":false,\"writeConnected\":true}"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class MessageEncoderTest {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"value\",\"value\":3.14}"));
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"value\",\"value\":3.14}"));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class MessageEncoderTest {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"value\",\"value\":\"Hello\"}"));
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"value\",\"value\":\"Hello\"}"));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MessageEncoderTest {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"error\",\"error\":\"Mayday\"}"));
+        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"error\",\"error\":\"Mayday\"}"));
     }
     
 }

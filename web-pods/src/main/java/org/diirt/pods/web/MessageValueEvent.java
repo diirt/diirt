@@ -17,7 +17,7 @@ public class MessageValueEvent extends Message {
     private final Object value;
 
     public MessageValueEvent(int id, Object value) {
-        super(MessageType.CONNECTION, id);
+        super(MessageType.EVENT, id);
         this.value = value;
     }
 
