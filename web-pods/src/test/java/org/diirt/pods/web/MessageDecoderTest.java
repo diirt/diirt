@@ -97,5 +97,18 @@ public class MessageDecoderTest {
         assertThat(result.getId(), equalTo(1));
         // TODO: test the parsed value
     }
+
+    @Test
+    public void decodePause1() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessagePause result = (MessagePause) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"pause\","
+            + "    \"id\" : 1"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.PAUSE));
+        assertThat(result.getId(), equalTo(1));
+    }
     
 }
