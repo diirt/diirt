@@ -63,5 +63,14 @@ public class MessageEncoderTest {
         encoder.encode(event, writer);
         assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"value\",\"value\":\"Hello\"}"));
     }
+
+    @Test
+    public void encodeErrorEvent1() throws Exception {
+        MessageErrorEvent event = new MessageErrorEvent(12, "Mayday");
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(event, writer);
+        assertThat(writer.toString(), equalTo("{\"message\":\"connection\",\"id\":12,\"type\":\"error\",\"error\":\"Mayday\"}"));
+    }
     
 }
