@@ -28,6 +28,8 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
         switch (messageType) {
             case "subscribe":
                 return new MessageSubscribe(jObject);
+            case "write":
+                return new MessageWrite(jObject);
             case "unsubscribe":
                 return new MessageUnsubscribe(jObject);
             default:

@@ -14,7 +14,7 @@ import javax.json.JsonString;
  * @author carcassi
  */
 public abstract class Message {
-    public static enum MessageType {SUBSCRIBE, UNSUBSCRIBE};
+    public static enum MessageType {SUBSCRIBE, WRITE, UNSUBSCRIBE};
     
     private final MessageType message;
     private final int id;

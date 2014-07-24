@@ -82,5 +82,20 @@ public class MessageDecoderTest {
         assertThat(result.getMessage(), equalTo(Message.MessageType.UNSUBSCRIBE));
         assertThat(result.getId(), equalTo(1));
     }
+
+    @Test
+    public void decodeWrite1() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"write\","
+            + "    \"id\" : 1,"
+            + "    \"value\" : 3.14"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
+        assertThat(result.getId(), equalTo(1));
+        // TODO: test the parsed value
+    }
     
 }
