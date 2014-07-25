@@ -56,7 +56,7 @@ public class WSEndpoint {
                 onSubscribe(session, (MessageSubscribe) message);
                 return;
             case UNSUBSCRIBE:
-                onUnsubscribe(session, (MessageSubscribe) message);
+                onUnsubscribe(session, (MessageUnsubscribe) message);
                 return;
             default:
                 throw new UnsupportedOperationException("Message '" + message.getMessage() + "' not yet supported");
@@ -85,7 +85,7 @@ public class WSEndpoint {
         pvs.put(message.getId(), reader);
     }
 
-    private void onUnsubscribe(Session session, MessageSubscribe message) {
+    private void onUnsubscribe(Session session, MessageUnsubscribe message) {
         PVReader<?> pv = pvs.get(message.getId());
         if (pv != null) {
             pv.close();
