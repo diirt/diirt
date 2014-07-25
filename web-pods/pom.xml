@@ -27,6 +27,26 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>pvmanager-core</artifactId>
+            <version>2.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>pvmanager-sim</artifactId>
+            <version>2.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>pvmanager-loc</artifactId>
+            <version>2.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>pvmanager-extra</artifactId>
+            <version>2.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
