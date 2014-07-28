@@ -113,6 +113,22 @@ public class TableFunctionSetTest extends BaseTestForFormula {
     }
     
     @Test
+    public void tableValueFilter2() {
+        VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable expected = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286"), alarmNone(), timeNow())));
+
+        FunctionTester.findByName(set, "tableStringMatchFilter")
+                .compareReturnValue(expected, table, "CPU", "28")
+                .compareReturnValue(null, null, "CPU", "28")
+                .compareReturnValue(null, table, null, "28")
+                .compareReturnValue(null, table, "CPU", null);
+    }
+    
+    @Test
     public void tableRangeFilter2() {
         VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
                                  column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
