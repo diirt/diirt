@@ -340,6 +340,25 @@ public class VTableFactoryTest {
     }
     
     @Test
+    public void tableStringMatchFilter1() {
+        VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable table = tableStringMatchFilter(table1, "CPU", "28");
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(2));
+        assertThat(table.getColumnName(0), equalTo("Rack"));
+        assertThat(table.getColumnName(1), equalTo("Slot"));
+        assertThat(table.getColumnName(2), equalTo("CPU"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) String.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A", "A")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1, 2)));
+        assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "286")));
+    }
+    
+    @Test
     public void tableRangeFilter1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
                                  column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
