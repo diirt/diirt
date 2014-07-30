@@ -258,7 +258,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     protected void calculateRanges(Range valueRange, TimeInterval timeInterval) {
         aggregatedValueRange = aggregateRange(valueRange, aggregatedValueRange);
         aggregatedTimeInterval = aggregateTimeInterval(timeInterval, aggregatedTimeInterval);
-        // TODO: should be update to use suggested range
+        // TODO: should be update to use display range
         plotValueRange = axisRange.axisRange(valueRange, valueRange);
         plotTimeInterval = timeAxisRange.axisRange(timeInterval, aggregatedTimeInterval);
     }

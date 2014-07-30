@@ -78,7 +78,7 @@ public class AxisRangesTest {
 
     @Test
     public void display1() {
-        AxisRange axisRange = AxisRanges.suggested();
+        AxisRange axisRange = AxisRanges.display();
         assertThat(axisRange.toString(), equalTo("display"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
@@ -88,7 +88,7 @@ public class AxisRangesTest {
 
     @Test
     public void display2() {
-        AxisRangeInstance axisRangeInstance = AxisRanges.suggested().createInstance();
+        AxisRangeInstance axisRangeInstance = AxisRanges.display().createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(0.0, 0.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
@@ -102,7 +102,7 @@ public class AxisRangesTest {
     
     @Test
     public void displayEquals() {
-        assertThat(AxisRanges.suggested(), equalTo(AxisRanges.suggested()));
+        assertThat(AxisRanges.display(), equalTo(AxisRanges.display()));
     }
     
     @Test

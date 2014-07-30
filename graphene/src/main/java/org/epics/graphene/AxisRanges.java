@@ -14,7 +14,7 @@ import org.epics.util.stats.Ranges;
  * <p>
  * There are four cases:
  * <ul>
- *   <li><b>Suggested</b> (default): it’s the range that comes directly with the
+ *   <li><b>Display</b> (default): it’s the range that comes directly with the
  * data. If it’s not set, or if it’s invalid, then it’s calculated from
  * the data the first time and kept forever.</li>
  *   <li><b>Data</b>: it’s the range of the current data being displayed. To determine
@@ -197,17 +197,17 @@ public class AxisRanges {
         
     }
     
-    public static AxisRange suggested() {
-        return SUGGESTED;
+    public static AxisRange display() {
+        return DISPLAY;
     }
     
-    private static final Suggested SUGGESTED = new Suggested();
+    private static final Display DISPLAY = new Display();
     
-    public static class Suggested implements AxisRange {
+    public static class Display implements AxisRange {
             
         private final AxisRange axisRange = this;
 
-        private Suggested() {
+        private Display() {
         }
 
         @Override
@@ -237,7 +237,7 @@ public class AxisRanges {
 
         @Override
         public String toString() {
-            return "suggested";
+            return "display";
         }
     }
 }
