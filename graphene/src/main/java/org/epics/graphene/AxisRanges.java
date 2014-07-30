@@ -11,6 +11,24 @@ import org.epics.util.stats.Ranges;
 /**
  * Standard implementation for the logic to calculate the data range to
  * be displayed in a graph.
+ * <p>
+ * There are four cases:
+ * <ul>
+ *   <li><b>Suggested</b> (default): it’s the range that comes directly with the
+ * data. If it’s not set, or if it’s invalid, then it’s calculated from
+ * the data the first time and kept forever.</li>
+ *   <li><b>Data</b>: it’s the range of the current data being displayed. To determine
+ * the current range, all values may be scanned, and it can be costly if the dataset is large. If the
+ * data changes in time, the range displayed will grow and shrink, which may
+ * make the plot confusing.</li>
+ *   <li><b>Fixed</b>: use defined minimum and maximum.</li>
+ *   <li><b>Auto</b>: keeps growing the range so that incoming data always fits.
+ * In most cases, as data comes in, the Auto range will become stable.
+ * To deal with outliers you can specify the the minimum percentage of the range
+ * that must be used to display data. So, if you set a 80% threshold, the
+ * range will  shrinks if less than 80% of the range contains actual data.
+ * This option may have the same performance issues than Data.</li>
+ * </ul>
  *
  * @author carcassi
  */
