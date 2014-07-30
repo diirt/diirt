@@ -590,8 +590,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
-                .xAxisRange(AxisRanges.integrated(0.0))
-                .yAxisRange(AxisRanges.integrated(0.0)));
+                .xAxisRange(AxisRanges.auto(0.0))
+                .yAxisRange(AxisRanges.auto(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -619,8 +619,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
-                .xAxisRange(AxisRanges.integrated(0.0))
-                .yAxisRange(AxisRanges.integrated(0.0)));
+                .xAxisRange(AxisRanges.auto(0.0))
+                .yAxisRange(AxisRanges.auto(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image
@@ -634,8 +634,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         Graphics2D g = (Graphics2D) image.getGraphics();
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(100, 100);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR)
-                .xAxisRange(AxisRanges.integrated(0.0))
-                .yAxisRange(AxisRanges.integrated(0.0)));
+                .xAxisRange(AxisRanges.auto(0.0))
+                .yAxisRange(AxisRanges.auto(0.0)));
         renderer.draw(g, data);
 
         //Compares to correct image

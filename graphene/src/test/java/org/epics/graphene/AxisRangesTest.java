@@ -50,7 +50,7 @@ public class AxisRangesTest {
 
     @Test
     public void integrated1() {
-        AxisRange axisRange = AxisRanges.integrated();
+        AxisRange axisRange = AxisRanges.auto();
         assertThat(axisRange.toString(), equalTo("integrated(80%)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
@@ -64,7 +64,7 @@ public class AxisRangesTest {
 
     @Test
     public void integrated2() {
-        AxisRange axisRange = AxisRanges.integrated();
+        AxisRange axisRange = AxisRanges.auto();
         assertThat(axisRange.toString(), equalTo("integrated(80%)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
@@ -78,7 +78,7 @@ public class AxisRangesTest {
 
     @Test
     public void display1() {
-        AxisRange axisRange = AxisRanges.display();
+        AxisRange axisRange = AxisRanges.suggested();
         assertThat(axisRange.toString(), equalTo("display"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
@@ -88,7 +88,7 @@ public class AxisRangesTest {
 
     @Test
     public void display2() {
-        AxisRangeInstance axisRangeInstance = AxisRanges.display().createInstance();
+        AxisRangeInstance axisRangeInstance = AxisRanges.suggested().createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(0.0, 0.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
@@ -102,7 +102,7 @@ public class AxisRangesTest {
     
     @Test
     public void displayEquals() {
-        assertThat(AxisRanges.display(), equalTo(AxisRanges.display()));
+        assertThat(AxisRanges.suggested(), equalTo(AxisRanges.suggested()));
     }
     
     @Test
@@ -112,8 +112,8 @@ public class AxisRangesTest {
     
     @Test
     public void integratedEquals() {
-        assertThat(AxisRanges.integrated(), equalTo(AxisRanges.integrated()));
-        assertThat(AxisRanges.integrated(0.5), equalTo(AxisRanges.integrated(0.5)));
-        assertThat(AxisRanges.integrated(0.5), not(equalTo(AxisRanges.integrated(0.8))));
+        assertThat(AxisRanges.auto(), equalTo(AxisRanges.auto()));
+        assertThat(AxisRanges.auto(0.5), equalTo(AxisRanges.auto(0.5)));
+        assertThat(AxisRanges.auto(0.5), not(equalTo(AxisRanges.auto(0.8))));
     }
 }

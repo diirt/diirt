@@ -9,7 +9,8 @@ import org.epics.util.stats.Range;
 import org.epics.util.stats.Ranges;
 
 /**
- * TODO: finalize names
+ * Standard implementation for the logic to calculate the data range to
+ * be displayed in a graph.
  *
  * @author carcassi
  */
@@ -50,7 +51,7 @@ public class AxisRanges {
 
         @Override
         public String toString() {
-            return "absolute(" + absoluteRange.getMinimum() + ", " + absoluteRange.getMaximum() + ")";
+            return "fixed(" + absoluteRange.getMinimum() + ", " + absoluteRange.getMaximum() + ")";
         }
 
         public Range getAbsoluteRange() {
@@ -110,22 +111,22 @@ public class AxisRanges {
         }
     }
     
-    public static AxisRange integrated() {
-        return INTEGRATED;
+    public static AxisRange auto() {
+        return AUTO;
     }
     
-    public static AxisRange integrated(double minUsage) {
-        return new Integrated(minUsage);
+    public static AxisRange auto(double minUsage) {
+        return new Auto(minUsage);
     }
     
-    private static final Integrated INTEGRATED = new Integrated(0.8);
+    private static final Auto AUTO = new Auto(0.8);
     
-    public static class Integrated implements AxisRange {
+    public static class Auto implements AxisRange {
 
         private final AxisRange axisRange = this;
         private final double minUsage;
 
-        private Integrated(double minUsage) {
+        private Auto(double minUsage) {
             this.minUsage = minUsage;
         }
 
@@ -153,7 +154,7 @@ public class AxisRanges {
 
         @Override
         public String toString() {
-            return "integrated(" + (int) (minUsage * 100) + "%)";
+            return "auto(" + (int) (minUsage * 100) + "%)";
         }
 
         public double getMinUsage() {
@@ -162,8 +163,8 @@ public class AxisRanges {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof Integrated) {
-                return getMinUsage() == ((Integrated) obj).getMinUsage();
+            if (obj instanceof Auto) {
+                return getMinUsage() == ((Auto) obj).getMinUsage();
             } else {
                 return false;
             }
@@ -178,17 +179,17 @@ public class AxisRanges {
         
     }
     
-    public static AxisRange display() {
-        return DISPLAY;
+    public static AxisRange suggested() {
+        return SUGGESTED;
     }
     
-    private static final Display DISPLAY = new Display();
+    private static final Suggested SUGGESTED = new Suggested();
     
-    public static class Display implements AxisRange {
+    public static class Suggested implements AxisRange {
             
         private final AxisRange axisRange = this;
 
-        private Display() {
+        private Suggested() {
         }
 
         @Override
@@ -218,7 +219,7 @@ public class AxisRanges {
 
         @Override
         public String toString() {
-            return "display";
+            return "suggested";
         }
     }
 }

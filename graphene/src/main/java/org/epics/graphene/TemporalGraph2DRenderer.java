@@ -89,7 +89,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     private int imageHeight;
     // Strategy for calculating the axis range
     private TimeAxisRange timeAxisRange = TimeAxisRanges.relative();
-    private AxisRangeInstance axisRange = AxisRanges.integrated(0.0).createInstance();
+    private AxisRangeInstance axisRange = AxisRanges.auto(0.0).createInstance();
     // Strategy for generating labels and scaling value of the axis
     private TimeScale timeScale = TimeScales.linearAbsoluteScale();
     private ValueScale valueScale = ValueScales.linearScale();
@@ -258,7 +258,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     protected void calculateRanges(Range valueRange, TimeInterval timeInterval) {
         aggregatedValueRange = aggregateRange(valueRange, aggregatedValueRange);
         aggregatedTimeInterval = aggregateTimeInterval(timeInterval, aggregatedTimeInterval);
-        // TODO: should be update to use display range
+        // TODO: should be update to use suggested range
         plotValueRange = axisRange.axisRange(valueRange, valueRange);
         plotTimeInterval = timeAxisRange.axisRange(timeInterval, aggregatedTimeInterval);
     }

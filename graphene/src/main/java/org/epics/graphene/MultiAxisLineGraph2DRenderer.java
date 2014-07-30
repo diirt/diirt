@@ -72,8 +72,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     private List<ListDouble> yReferenceValues;
     private List<List<String>> yReferenceLabels;
     private Range emptyRange;
-    private AxisRangeInstance xAxisRange = AxisRanges.integrated().createInstance();
-    private AxisRangeInstance yAxisRange = AxisRanges.integrated().createInstance();
+    private AxisRangeInstance xAxisRange = AxisRanges.auto().createInstance();
+    private AxisRangeInstance yAxisRange = AxisRanges.auto().createInstance();
     private List<AxisRangeInstance> yAxisRanges;
     private ValueScale xValueScale = ValueScales.linearScale();
     private ValueScale yValueScale = ValueScales.linearScale();
@@ -182,8 +182,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     /**
      * Draws the graph on the given graphics context.
      * 
-     * @param g the graphics on which to display the data
-     * @param data the data to display
+     * @param g the graphics on which to suggested the data
+     * @param data the data to suggested
      */
     public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
@@ -324,7 +324,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
         for(int i = 0; i < length; i++){
             xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
-            // TODO: should be update to use display range
+            // TODO: should be update to use suggested range
             xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xDataRange.get(i));
         }  
         if(yAggregatedRange == null || yDataRange.size() != yAggregatedRange.size() || yDataRange.size() != length){
@@ -336,7 +336,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                     yAggregatedRange.add(aggregateRange(yDataRange.get(i), emptyRange));
                     AxisRangeInstance instance = yAxisRange.getAxisRange().createInstance();
                     yAxisRanges.add(instance);
-                    // TODO: should be update to use display range
+                    // TODO: should be update to use suggested range
                     yPlotRange.add(instance.axisRange(yDataRange.get(i), yDataRange.get(i)));
                 }
                 else{
@@ -351,7 +351,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             for(int i = 0; i < length; i++){
                 if(indexToRangeMap.isEmpty() || !indexToRangeMap.containsKey(i)){
                     yAggregatedRange.set(i,aggregateRange(yDataRange.get(i), yAggregatedRange.get(i)));
-                    // TODO: should be update to use display range
+                    // TODO: should be update to use suggested range
                     yPlotRange.set(i,yAxisRanges.get(i).axisRange(yDataRange.get(i), yDataRange.get(i)));
                 }
                 else{
