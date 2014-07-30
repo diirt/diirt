@@ -18,17 +18,17 @@ public class AxisRanges {
     private AxisRanges() {
     }
     
-    public static AxisRange absolute(final double min, final double max) {
-        final Range absoluteRange = Ranges.range(min, max);
-        return new Absolute(absoluteRange);
+    public static AxisRange fixed(final double min, final double max) {
+        final Range fixedRange = Ranges.range(min, max);
+        return new Fixed(fixedRange);
     }
     
-    public static class Absolute implements AxisRange {
+    public static class Fixed implements AxisRange {
         
         private final AxisRange axisRange = this;
         private final Range absoluteRange;
 
-        private Absolute(Range absoluteRange) {
+        private Fixed(Range absoluteRange) {
             this.absoluteRange = absoluteRange;
         }
 
@@ -59,8 +59,8 @@ public class AxisRanges {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof Absolute) {
-                return Ranges.equals(getAbsoluteRange(), ((Absolute) obj).getAbsoluteRange());
+            if (obj instanceof Fixed) {
+                return Ranges.equals(getAbsoluteRange(), ((Fixed) obj).getAbsoluteRange());
             } else {
                 return false;
             }

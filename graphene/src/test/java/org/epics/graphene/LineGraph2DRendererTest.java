@@ -549,7 +549,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR)
-                .xAxisRange(AxisRanges.absolute(10, 20)));
+                .xAxisRange(AxisRanges.fixed(10, 20)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         ImageAssert.compareImages("lineGraph2D.linear.xAxisRange", image);

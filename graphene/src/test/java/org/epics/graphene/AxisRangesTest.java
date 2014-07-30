@@ -21,7 +21,7 @@ public class AxisRangesTest {
 
     @Test
     public void absolute1() {
-        AxisRange axisRange = AxisRanges.absolute(0.0, 10.0);
+        AxisRange axisRange = AxisRanges.fixed(0.0, 10.0);
         assertThat(axisRange.toString(), equalTo("absolute(0.0, 10.0)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
@@ -31,7 +31,7 @@ public class AxisRangesTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void absolute2() {
-        AxisRange axisRange = AxisRanges.absolute(10.0, 0.0);
+        AxisRange axisRange = AxisRanges.fixed(10.0, 0.0);
     }
 
     @Test
@@ -96,8 +96,8 @@ public class AxisRangesTest {
     
     @Test
     public void absoluteEquals() {
-        assertThat(AxisRanges.absolute(0, 1), equalTo(AxisRanges.absolute(0, 1)));
-        assertThat(AxisRanges.absolute(0, 1), not(equalTo(AxisRanges.absolute(0, 5))));
+        assertThat(AxisRanges.fixed(0, 1), equalTo(AxisRanges.fixed(0, 1)));
+        assertThat(AxisRanges.fixed(0, 1), not(equalTo(AxisRanges.fixed(0, 5))));
     }
     
     @Test

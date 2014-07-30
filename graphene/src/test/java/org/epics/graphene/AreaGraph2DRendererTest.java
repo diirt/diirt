@@ -41,7 +41,7 @@ public class AreaGraph2DRendererTest {
                                         350, 230, 180, 220, 170, 130, 80, 30, 40), 0, 2);
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
-        renderer.update(new AreaGraph2DRendererUpdate().yAxisRange(AxisRanges.absolute(0, 550)));
+        renderer.update(new AreaGraph2DRendererUpdate().yAxisRange(AxisRanges.fixed(0, 550)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.1", image);
