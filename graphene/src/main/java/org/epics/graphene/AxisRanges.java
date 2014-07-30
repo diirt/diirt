@@ -37,11 +37,21 @@ public class AxisRanges {
     private AxisRanges() {
     }
     
+    /**
+     * A fixed range from the given values.
+     * 
+     * @param min minimum value displayed on the axis
+     * @param max maximum value displayed on the axis
+     * @return the axis range; never null
+     */
     public static AxisRange fixed(final double min, final double max) {
         final Range fixedRange = Ranges.range(min, max);
         return new Fixed(fixedRange);
     }
-    
+
+    /**
+     * An AxisRange with Fixed value range.
+     */
     public static class Fixed implements AxisRange {
         
         private final AxisRange axisRange = this;
@@ -72,14 +82,19 @@ public class AxisRanges {
             return "fixed(" + absoluteRange.getMinimum() + ", " + absoluteRange.getMaximum() + ")";
         }
 
-        public Range getAbsoluteRange() {
+        /**
+         * Returns the value range of the axis.
+         * 
+         * @return the range; never null
+         */
+        public Range getFixedRange() {
             return absoluteRange;
         }
 
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof Fixed) {
-                return Ranges.equals(getAbsoluteRange(), ((Fixed) obj).getAbsoluteRange());
+                return Ranges.equals(getFixedRange(), ((Fixed) obj).getFixedRange());
             } else {
                 return false;
             }
@@ -94,12 +109,20 @@ public class AxisRanges {
         
     }
     
+    /**
+     * A range for the axis that fits the data.
+     * 
+     * @return the range; never null
+     */
     public static AxisRange data() {
         return DATA;
     }
     
     private static Data DATA = new Data();
-    
+
+    /**
+     * An AxisRange with Fixed value range.
+     */
     public static class Data implements AxisRange {
         
         private final AxisRange axisRange = this;
@@ -129,16 +152,33 @@ public class AxisRanges {
         }
     }
     
+    /**
+     * A range that grows to fit the current and past data.
+     * If will shrink if the data shrinks to less than 80% of the range.
+     * 
+     * @return an axis range; never null
+     */
     public static AxisRange auto() {
         return AUTO;
     }
     
+    /**
+     * A range that grows to fit the current and past data, and shrinks
+     * if the data shrinks more than minUsage. minUsage represents the
+     * minimum percentage to be used to display actual data.
+     * 
+     * @param minUsage a number from 0.0 to 1.0
+     * @return an axis range; never null
+     */
     public static AxisRange auto(double minUsage) {
         return new Auto(minUsage);
     }
     
     private static final Auto AUTO = new Auto(0.8);
     
+    /**
+     * An AxisRange with Auto value range.
+     */
     public static class Auto implements AxisRange {
 
         private final AxisRange axisRange = this;
@@ -175,6 +215,11 @@ public class AxisRanges {
             return "auto(" + (int) (minUsage * 100) + "%)";
         }
 
+        /**
+         * The minimum percentage of the range to be used for actual data.
+         * 
+         * @return a number from 0.0 to 1.0
+         */
         public double getMinUsage() {
             return minUsage;
         }
@@ -196,13 +241,21 @@ public class AxisRanges {
         }
         
     }
-    
+
+    /**
+     * The suggested range for the data.
+     * 
+     * @return an axis range; never null
+     */
     public static AxisRange display() {
         return DISPLAY;
     }
     
     private static final Display DISPLAY = new Display();
-    
+
+    /**
+     * An AxisRange with Display value range.
+     */
     public static class Display implements AxisRange {
             
         private final AxisRange axisRange = this;
