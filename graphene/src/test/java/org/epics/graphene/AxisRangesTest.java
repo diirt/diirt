@@ -20,9 +20,9 @@ public class AxisRangesTest {
     }
 
     @Test
-    public void absolute1() {
+    public void fixed1() {
         AxisRange axisRange = AxisRanges.fixed(0.0, 10.0);
-        assertThat(axisRange.toString(), equalTo("absolute(0.0, 10.0)"));
+        assertThat(axisRange.toString(), equalTo("fixed(0.0, 10.0)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 15.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
@@ -30,7 +30,7 @@ public class AxisRangesTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void absolute2() {
+    public void fixed2() {
         AxisRange axisRange = AxisRanges.fixed(10.0, 0.0);
     }
 
@@ -49,9 +49,9 @@ public class AxisRangesTest {
     }
 
     @Test
-    public void integrated1() {
+    public void auto1() {
         AxisRange axisRange = AxisRanges.auto();
-        assertThat(axisRange.toString(), equalTo("integrated(80%)"));
+        assertThat(axisRange.toString(), equalTo("auto(80%)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
@@ -63,9 +63,9 @@ public class AxisRangesTest {
     }
 
     @Test
-    public void integrated2() {
+    public void auto2() {
         AxisRange axisRange = AxisRanges.auto();
-        assertThat(axisRange.toString(), equalTo("integrated(80%)"));
+        assertThat(axisRange.toString(), equalTo("auto(80%)"));
         AxisRangeInstance axisRangeInstance = axisRange.createInstance();
         Range range = axisRangeInstance.axisRange(Ranges.range(3.0, 5.0), Ranges.range(-3.0, 4.0));
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
@@ -95,7 +95,7 @@ public class AxisRangesTest {
     }
     
     @Test
-    public void absoluteEquals() {
+    public void fixedEquals() {
         assertThat(AxisRanges.fixed(0, 1), equalTo(AxisRanges.fixed(0, 1)));
         assertThat(AxisRanges.fixed(0, 1), not(equalTo(AxisRanges.fixed(0, 5))));
     }
@@ -111,7 +111,7 @@ public class AxisRangesTest {
     }
     
     @Test
-    public void integratedEquals() {
+    public void autoEquals() {
         assertThat(AxisRanges.auto(), equalTo(AxisRanges.auto()));
         assertThat(AxisRanges.auto(0.5), equalTo(AxisRanges.auto(0.5)));
         assertThat(AxisRanges.auto(0.5), not(equalTo(AxisRanges.auto(0.8))));
