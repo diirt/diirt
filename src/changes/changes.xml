@@ -8,7 +8,7 @@
     </properties>
   
     <body>
-        <release version="0.3.2" date="SNAPSHOT" description="Minor improvements.">
+        <release version="0.3.2" date="2014/07/31" description="Minor improvements.">
             <action dev="carcassi"  type="update">
                 text: handles empty columns as the first column
             </action>
