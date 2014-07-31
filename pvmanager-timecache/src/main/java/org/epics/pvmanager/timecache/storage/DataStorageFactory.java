@@ -20,7 +20,6 @@ public class DataStorageFactory {
 	 * type. TODO: build the list from extension points.
 	 * @param type {@link VType}
 	 * @return {@link Collection} of {@link DataStorage}
-	 * @throws Exception
 	 */
 	public static <V extends VType> DataStorage createStorage(Class<V> type) {
 		return new SimpleMemoryStorage();

@@ -22,7 +22,6 @@ public class DataSourceFactory {
 	 * TODO: build the list from extension points.
 	 * @param type {@link VType}
 	 * @return {@link Collection} of {@link DataSource}
-	 * @throws Exception
 	 */
 	public static <V extends VType> Collection<DataSource> createSources(
 			Class<V> type) {

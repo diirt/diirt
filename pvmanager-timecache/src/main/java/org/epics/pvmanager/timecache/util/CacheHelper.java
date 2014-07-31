@@ -75,7 +75,7 @@ public class CacheHelper {
 	}
 
 	/**
-	 * Returns the result of {@link TimeInterval} i1 & i2 intersection,
+	 * Returns the result of {@link TimeInterval} i1 &amp; i2 intersection,
 	 * <code>null</code> if i1 does not intersects i2 (<code>null</code> border
 	 * means infinity).
 	 */

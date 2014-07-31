@@ -21,7 +21,6 @@ public interface Cache {
 	 * @param type VType of data to be pulled by the query.
 	 * @param parameters {@link QueryParameters}.
 	 * @return initialised query without data.
-	 * @throws Exception
 	 */
 	public <V extends VType> Query createQuery(String channelName,
 			Class<V> type, QueryParameters parameters);
