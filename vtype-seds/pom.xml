@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.epics</groupId>
         <artifactId>pvmanager</artifactId>
-        <version>2.7.0</version>
+        <version>2.7.1-SNAPSHOT</version>
     </parent>
     <groupId>org.epics</groupId>
     <artifactId>vtype-seds</artifactId>
-    <version>2.7.0</version>
+    <version>2.7.1-SNAPSHOT</version>
     <name>vtype-seds</name>
     <url>http://maven.apache.org</url>
     <properties>
