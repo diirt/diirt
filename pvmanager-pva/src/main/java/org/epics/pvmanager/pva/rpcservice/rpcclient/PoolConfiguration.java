@@ -332,7 +332,7 @@ public interface PoolConfiguration {
   /**
    * Time in milliseconds to keep this rpc client  alive even when used.
    * When a rpc client is returned to the pool, the pool will check to see if the
-   * ((now - time-when-connected) > maxAge) has been reached, and if so,
+   * ((now - time-when-connected) &gt; maxAge) has been reached, and if so,
    * it closes the rpc client rather than returning it to the pool.
    * The default value is 0, which implies that rpc clients will be left open and no
    * age check will be done upon returning the rpc client to the pool.
@@ -344,7 +344,7 @@ public interface PoolConfiguration {
   /**
    * Time in milliseconds to keep this rpc client alive even when used.
    * When a rpc client is returned to the pool, the pool will check to see if the
-   * ((now - time-when-connected) > maxAge) has been reached, and if so,
+   * ((now - time-when-connected) &gt; maxAge) has been reached, and if so,
    * it closes the rpc client rather than returning it to the pool.
    * The default value is 0, which implies that rpc clients will be left open and no
    * age check will be done upon returning the rpc client to the pool.
