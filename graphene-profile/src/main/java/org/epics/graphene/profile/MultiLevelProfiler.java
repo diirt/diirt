@@ -433,11 +433,6 @@ public class MultiLevelProfiler{
      * Sets the resolution sizes to be profiled.
      * Precondition: resolution set is not null and not empty
      * @param resolutions set of resolutions to profile
-     * 
-     * @see #defaultResolutions() 
-     * @see #profile() 
-     * @see org.epics.graphene.profile.ProfileGraph2D#setImageWidth(int)       
-     * @see org.epics.graphene.profile.ProfileGraph2D#setImageHeight(int) 
      */
     public void setImageSizes(List<Resolution> resolutions){
         if (resolutions == null){
@@ -455,10 +450,6 @@ public class MultiLevelProfiler{
      * The <code>ProfileGraph2D</code> field of this object will profile
      * repeatedly updating the number of data points in rendering.
      * @param nPoints 
-     * 
-     * @see #defaultDatasetSizes() 
-     * @see #profile() 
-     * @see org.epics.graphene.profile.ProfileGraph2D#setNumDataPoints(int) 
      */
     public void setDatasetSizes(List<Integer> nPoints){
         if (nPoints == null){

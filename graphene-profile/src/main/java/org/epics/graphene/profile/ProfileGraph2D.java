@@ -27,7 +27,7 @@ import org.epics.graphene.profile.utils.Resolution;
  * Various options are provided to handle the profile statistics.
  * 
  * @param <T> type of graph render being profiled that is subclass of <code>Graph2DRenderer</code>
- * @param <S> dataset type that is associated with <T> the graph renderer
+ * @param <S> dataset type that is associated with T the graph renderer
  * 
  * @author asbarber
  */

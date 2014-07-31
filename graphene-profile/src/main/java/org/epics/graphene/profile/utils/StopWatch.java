@@ -55,7 +55,7 @@ public class StopWatch implements Settings{
     /**
      * Constructs and initializes the watch from the max number
      * of times the watch will be stopped.
-     * The watch cannot <coe>stop</code> more than the
+     * The watch cannot <code>stop</code> more than the
      * number of <code>maxAttempts</code>.
      * @param maxAttempts max number of times that will be tracked 
      */

@@ -83,6 +83,7 @@ public final class DatasetFactory {
      *      <li>Size of data (number of points) is nSamples<li>
      *      <li>Random data</li>
      *      <li>Gaussian distribution from 0 to 1</li>
+     * </ol>
      * @param nSamples number of points in data
      * @return a set of data to be drawn
      */
@@ -107,6 +108,7 @@ public final class DatasetFactory {
      *      <li>Random y-values</li>
      *      <li>y-values are sorted ascending and plotted against sorted index (sorted index is x-value)</li>
      *      <li>Gaussian distribution from 0 to 1</li>
+     * </ol>
      * @param nSamples number of points in data
      * @return a set of data to be drawn
      */
@@ -131,6 +133,7 @@ public final class DatasetFactory {
      *      <li>Random y-values</li>
      *      <li>y-values are sorted ascending and plotted against sorted index (sorted index is x-value)</li>
      *      <li>Gaussian distribution from 0 to 1</li>
+     * </ol>
      * @param nSamples number of points in data
      * @return a set of data to be drawn
      */
@@ -163,6 +166,7 @@ public final class DatasetFactory {
      *      <li>Size of data is xSamples * ySamples<li>
      *      <li>Random cell data</li>
      *      <li>Gaussian distribution of values from 0 to 1</li>
+     * </ol>
      * @param nSamples number of points in data     
      * @return a set of data to be drawn
      */     
@@ -187,6 +191,7 @@ public final class DatasetFactory {
      *      <li>Size of data is xSamples * ySamples<li>
      *      <li>Random cell data</li>
      *      <li>Gaussian distribution of values from 0 to 1</li>
+     * </ol>
      * @param xSamples number of x-cells in data
      * @param ySamples number of y-cells in data
      * @return a set of data to be drawn
