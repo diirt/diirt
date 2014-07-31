@@ -8,7 +8,7 @@
     </properties>
   
     <body>
-        <release version="0.8" date="SNAPSHOT" description="Finalized axis range options.">
+        <release version="0.8" date="2014/07/31" description="Finalized axis range options.">
             <action dev="carcassi" type="update">
                 core: using Range and Statistics from epics-util
             </action>
