@@ -317,12 +317,12 @@ public interface PoolConfiguration {
    /**
    * Returns true if the pool sweeper is enabled for the rpc client pool.
    * The pool sweeper is enabled if any settings that require async intervention in the pool are turned on
-   * <source>
-   boolean result = getTimeBetweenEvictionRunsMillis()>0;
-   result = result && (isRemoveAbandoned() && getRemoveAbandonedTimeout()>0);
+   * <pre>
+   boolean result = getTimeBetweenEvictionRunsMillis()&gt;0;
+   result = result &amp;&amp; (isRemoveAbandoned() &amp;&amp; getRemoveAbandonedTimeout()&gt;0);
    result = result || (isTestWhileIdle();
    return result;
-   </source>
+   </pre>
    *
    * @return true if a background thread is or will be enabled for this pool
    */
