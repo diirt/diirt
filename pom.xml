@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.epics</groupId>
     <artifactId>epics-util</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.2</version>
     <packaging>jar</packaging>
     <name>epics-util</name>
     <url>http://epics-util.sourceforge.net</url>
@@ -27,7 +27,7 @@
         <connection>scm:git:https://github.com/diirt/util.git</connection>
         <developerConnection>scm:git:https://github.com/diirt/util.git</developerConnection>
         <url>https://github.com/diirt/util.git</url>
-      <tag>HEAD</tag>
+      <tag>epics-util-0.3.2</tag>
   </scm>
     <developers>
         <developer>
