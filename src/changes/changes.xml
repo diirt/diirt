@@ -8,7 +8,18 @@
     </properties>
   
     <body>
-        <release version="0.3.1" date="SNAPSHOT" description="Move to github. Minor improvements.">
+        <release version="0.3.2" date="SNAPSHOT" description="Move to github. Minor improvements.">
+            <action dev="carcassi"  type="update">
+                text: handles empty columns as the first column
+            </action>
+            <action dev="carcassi"  type="add">
+                array: sublist support
+            </action>
+            <action dev="carcassi"  type="add">
+                stats: consolidating from graphene
+            </action>
+        </release>
+        <release version="0.3.1" date="2014/05/23" description="Move to github. Minor improvements.">
             <action dev="carcassi"  type="add">
                 stats: minor improvements to numeric range support
             </action>
@@ -19,7 +30,7 @@
                 infrastructure: move to github
             </action>
         </release>
-        <release version="0.3" date="SNAPSHOT" description="CSV parser improvements. ListMath improvements">
+        <release version="0.3" date="2014/03/27" description="CSV parser improvements. ListMath improvements">
             <action dev="sfnrendra3"  type="add">
                 array: adding some element-wise operations in ListMath
             </action>
