@@ -8,7 +8,18 @@
     </properties>
   
     <body>
-        <release version="0.7" date="SNAPSHOT" description="Winter semester student work integrated. Multi-line graphs. Intensity graph.">
+        <release version="0.8" date="SNAPSHOT" description="Finalized axis range options.">
+            <action dev="carcassi" type="update">
+                core: using Range and Statistics from epics-util
+            </action>
+            <action dev="carcassi" type="update">
+                core: finalized axis range options
+            </action>
+            <action dev="carcassi" type="add">
+                core: adding drawing support for inverted axis
+            </action>
+        </release>
+        <release version="0.7" date="2014/05/23" description="Winter semester student work integrated. Multi-line graphs. Intensity graph.">
             <action dev="students" type="fix">
                 Better support of NaN in line graphs.
             </action>
@@ -31,7 +42,7 @@
                 Moved to github
             </action>
         </release>
-        <release version="0.6" date="SNAPSHOT" description="Improvements to bubble graph.">
+        <release version="0.6" date="2014/03/27" description="Improvements to bubble graph.">
             <action dev="carcassi" type="update">
                 bubble graph: support for selection and negative numbers for size
             </action>
