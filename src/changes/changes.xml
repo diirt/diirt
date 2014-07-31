@@ -8,7 +8,7 @@
     </properties>
   
     <body>
-        <release version="2.7" date="SNAPSHOT" description="File change notification. First review of VNumberArray to better support intensity graphs.">
+        <release version="2.7" date="2014/07/31" description="File change notification. First review of VNumberArray to better support intensity graphs.">
             <action dev="carcassi"  type="fix">
                 formula: better range handling for histogramOf function
             </action>
