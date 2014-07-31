@@ -8,6 +8,35 @@
     </properties>
   
     <body>
+        <release version="2.7" date="SNAPSHOT" description="File change notification. First review of VNumberArray to better support intensity graphs.">
+            <action dev="carcassi"  type="fix">
+                formula: better range handling for histogramOf function
+            </action>
+            <action dev="carcassi"  type="add">
+                file: .list format for string and number arrays
+            </action>
+            <action dev="carcassi"  type="add">
+                file: notification if file changes
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding VBooleanArray
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: VNumberArray review (support for inverted DimensionInfo)
+            </action>
+            <action dev="carcassi"  type="add">
+                file: adding pluggable support adding functions to compose VNumberArray metadata from different pvs
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding TRUE, FALSE, E, PI as constants
+            </action>
+            <action dev="shroffk"  type="add">
+                file: pluggable file format
+            </action>
+            <action dev="tonlyttt"  type="add">
+                formula: indexOf(VEnum)
+            </action>
+        </release>
         <release version="2.6" date="2014/05/23" description="Graphene integration of new plots.">
             <action dev="carcassi"  type="update">
                 formula: better range detection for histogramOf function
