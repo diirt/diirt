@@ -49,6 +49,8 @@ public class PVReaderDirector<T> {
     private final WeakReference<PVReaderImpl<T>> pvRef;
     /** Function for the new value */
     private final ReadFunction<T> function;
+    /** Creation for stack trace */
+    private Exception creationStackTrace = new Exception("PV was never closed (stack trace for creation)");
     
     // Required to connect/disconnect expressions
     private final DataSource dataSource;
@@ -241,7 +243,7 @@ public class PVReaderDirector<T> {
         if (pv != null && !pv.isClosed()) {
             return true;
         } else if (pv == null && closed != true) {
-            log.warning("PVReader wasn't properly closed and it was garbage collected. Closing the associated connections...");
+            log.log(Level.WARNING, "PVReader wasn't properly closed and it was garbage collected. Closing the associated connections...", creationStackTrace);
             return false;
         } else {
             return false;
