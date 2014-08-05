@@ -4,12 +4,17 @@
  */
 package org.epics.pvmanager.sample;
 
+import com.sun.management.OperatingSystemMXBean;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.loc.LocalDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.PVReader;
+import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.util.Executors;
 import org.epics.util.time.TimeDuration;
 
 /**
@@ -27,20 +32,59 @@ public class ScannerLoadTest {
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(new LocalDataSource());
         
-        List<PV<Object, Object>> pvs = new ArrayList<>();
-        int nPvs = 100000;
-        for (int i = 0; i < nPvs; i++) {
-            PV<Object, Object> pv = PVManager.readAndWrite(channel("channel " + i)).asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
-            pvs.add(pv);
-            
+        System.out.println("nChannels \"timeToStart (ms)\" \"avgLoad (ms)\"");
+        for (int i = 0; i < 9; i++) {
+            int nPvs = (int) Math.pow(4, i);
+            profile(nPvs);
         }
-        System.out.println("Started");
+    }
+    
+    static OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    
+    public static double measureLoad(int nSec) throws InterruptedException {
+        long timeStart = System.currentTimeMillis();
+        double totalSum = 0.0;
+        int count = 0;
+        while (System.currentTimeMillis() - timeStart < nSec * 1000) {
+            Thread.sleep(250);
+            double load = bean.getProcessCpuLoad();
+            if (load >= 0) {
+                totalSum += load;
+                count++;
+            }
+        }
+        return totalSum / count;
+    }
+    
+    public static void waitForZeroLoad(int timeoutSec) throws InterruptedException {
+        long timeStart = System.currentTimeMillis();
+        while (System.currentTimeMillis() - timeStart < timeoutSec * 1000) {
+            double load = bean.getProcessCpuLoad();
+            if (load == 0.0) {
+                return;
+            }
+            Thread.sleep(250);
+        }
+    }
+    
+    public static void profile(int nPvs) throws Exception {
+        List<PVReader<Object>> pvs = new ArrayList<>();
+        long timeStart = System.currentTimeMillis();
+        for (int i = 0; i < nPvs; i++) {
+            //PVReader<Object> pv = PVManager.read(constant(new Object())).maxRate(TimeDuration.ofHertz(50));
+            PVReader<Object> pv = PVManager.read(channel("channel " + i)).maxRate(TimeDuration.ofHertz(50));
+            pvs.add(pv);
+        }
+        long startTime = System.currentTimeMillis() - timeStart;
+
+        double avgLoad = measureLoad(5);
         
-        Thread.sleep(60000);
+        System.out.println(nPvs + " " + startTime + " " + avgLoad);
         
-        for (PV<Object, Object> pv : pvs) {
+        for (PVReader<Object> pv : pvs) {
             pv.close();
         }
         
+        waitForZeroLoad(5);
     }
 }

@@ -41,7 +41,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath -Djava.util.logging.config.file=logging.properties ${packageClassName}</exec.args>
+                <exec.args>-Xmx1G -classpath %classpath -Djava.util.logging.config.file=logging.properties ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.classpathScope>${classPathScope}</exec.classpathScope>
             </properties>
