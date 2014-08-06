@@ -125,7 +125,7 @@ abstract class SourceDesiredRateDecoupler {
     /**
      * Called when a write operation terminated unsuccessfully.
      */
-    abstract void newWriteFailedEvent();
+    abstract void newWriteFailedEvent(Exception ex);
     
     /**
      * Call when a new event should be triggered at the desired rate.
@@ -148,7 +148,7 @@ abstract class SourceDesiredRateDecoupler {
      */
     final void readyForNextEvent() {
         synchronized(lock) {
-            if (isEventProcessing()) {
+            if (!isEventProcessing()) {
                 log.warning("Event processing is done, but no event was in flight");
             }
             eventProcessing = false;

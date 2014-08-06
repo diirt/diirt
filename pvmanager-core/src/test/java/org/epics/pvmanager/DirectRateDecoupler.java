@@ -9,7 +9,7 @@ package org.epics.pvmanager;
  *
  * @author carcassi
  */
-public class DirectRateDecoupler extends SourceDesiredRateDecoupler {
+class DirectRateDecoupler extends SourceDesiredRateDecoupler {
 
     public DirectRateDecoupler(DesiredRateEventListener listener) {
         super(listener);
@@ -58,9 +58,9 @@ public class DirectRateDecoupler extends SourceDesiredRateDecoupler {
     }
 
     @Override
-    void newWriteFailedEvent() {
+    void newWriteFailedEvent(Exception ex) {
         DesiredRateEvent event = new DesiredRateEvent();
-        event.addWriteFailed(new RuntimeException());
+        event.addWriteFailed(ex);
         sendDesiredRateEvent(event);
     }
     

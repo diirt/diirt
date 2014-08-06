@@ -43,7 +43,7 @@ public class SourceDesiredRateDecouplerTest {
         decoupler.newValueEvent();
         decoupler.newWriteConnectionEvent();
         decoupler.newWriteExceptionEvent();
-        decoupler.newWriteFailedEvent();
+        decoupler.newWriteFailedEvent(new Exception());
         decoupler.newWriteSuccededEvent();
         decoupler.stop();
         assertThat(log.getEvents().size(), equalTo(7));
