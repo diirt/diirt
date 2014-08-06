@@ -1,0 +1,67 @@
+/**
+ * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
+ */
+
+package org.epics.pvmanager;
+
+/**
+ *
+ * @author carcassi
+ */
+public class DirectRateDecoupler extends SourceDesiredRateDecoupler {
+
+    public DirectRateDecoupler(DesiredRateEventListener listener) {
+        super(listener);
+    }
+
+    @Override
+    void newReadConnectionEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.READ_CONNECTION);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newWriteConnectionEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.WRITE_CONNECTION);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newValueEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.VALUE);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newReadExceptionEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.READ_EXCEPTION);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newWriteExceptionEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.WRITE_EXCEPTION);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newWriteSuccededEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addType(DesiredRateEvent.Type.WRITE_SUCCEEDED);
+        sendDesiredRateEvent(event);
+    }
+
+    @Override
+    void newWriteFailedEvent() {
+        DesiredRateEvent event = new DesiredRateEvent();
+        event.addWriteFailed(new RuntimeException());
+        sendDesiredRateEvent(event);
+    }
+    
+}
