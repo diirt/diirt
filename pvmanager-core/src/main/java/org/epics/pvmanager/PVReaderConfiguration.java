@@ -149,11 +149,11 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
 //        } else {
             scannerParameters.type(ScannerParameters.Type.ACTIVE);
 //        }
-        Scanner scanner = scannerParameters.build();
-        pv.setScanner(scanner);
-        director.setScanner(scanner);
+        SourceDesiredRateDecoupler rateDecoupler = scannerParameters.build();
+        pv.setDirector(director);
+        director.setScanner(rateDecoupler);
         director.connectExpression(aggregatedPVExpression);
-        scanner.start();
+        rateDecoupler.start();
 
         return pv;
     }

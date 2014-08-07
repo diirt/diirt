@@ -65,7 +65,7 @@ class ScannerParameters {
         return this;
     }
     
-    public Scanner build() {
+    public SourceDesiredRateDecoupler build() {
         if (type == Type.ACTIVE) {
             if (scannerExecutor == null) {
                 throw new NullPointerException("Active scanner requires a scannerExecutor");
@@ -76,7 +76,8 @@ class ScannerParameters {
             if (maxDuration == null) {
                 throw new NullPointerException("Active scanner requires a maxDuration");
             }
-            return new ActiveScanner(scannerExecutor, readerDirector, maxDuration, timeout, timeoutMessage);
+            // TODO: add timeout
+            return new ActiveScanDecoupler(scannerExecutor, maxDuration, readerDirector.getDesiredRateEventListener());
         }
         if (type == Type.PASSIVE) {
             if (scannerExecutor == null) {
@@ -88,7 +89,7 @@ class ScannerParameters {
             if (maxDuration == null) {
                 throw new NullPointerException("Passive scanner requires a maxDuration");
             }
-            return new PassiveScanner(scannerExecutor, readerDirector, maxDuration, timeout, timeoutMessage);
+            return new PassiveScanDecoupler(scannerExecutor, maxDuration, readerDirector.getDesiredRateEventListener());
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }

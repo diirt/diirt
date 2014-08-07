@@ -52,7 +52,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
             throw new IllegalStateException("Scan was never started");
         }
     }
-
+    
     @Override
     void newReadConnectionEvent() {
         // Do nothing

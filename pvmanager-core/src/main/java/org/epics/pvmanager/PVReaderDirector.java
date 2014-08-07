@@ -57,7 +57,7 @@ public class PVReaderDirector<T> {
     private final Object lock = new Object();
     private final Map<DesiredRateExpression<?>, ReadRecipe> recipes =
             new HashMap<>();
-    private Scanner scanner;
+    private SourceDesiredRateDecoupler scanStrategy;
 
     // Required for multiple operations
     /** Connection collector required to connect/disconnect expressions and for connection notification */
@@ -66,22 +66,22 @@ public class PVReaderDirector<T> {
     /** Exception queue to be used to connect/disconnect expression and for exception notification */
     private final QueueCollector<Exception> exceptionCollector;
     
-    void setScanner(final Scanner scanner) {
+    void setScanner(final SourceDesiredRateDecoupler scanStrategy) {
         synchronized(lock) {
-            this.scanner = scanner;
+            this.scanStrategy = scanStrategy;
         }
         exceptionCollector.setChangeNotification(new Runnable() {
 
             @Override
             public void run() {
-                scanner.collectorChange();
+                scanStrategy.newReadExceptionEvent();
             }
         });
         connCollector.setChangeNotification(new Runnable() {
 
             @Override
             public void run() {
-                scanner.collectorChange();
+                scanStrategy.newReadConnectionEvent();
             }
         });
     }
@@ -91,8 +91,8 @@ public class PVReaderDirector<T> {
 
             @Override
             public void run() {
-                if (scanner != null) {
-                    scanner.collectorChange();
+                if (scanStrategy != null) {
+                    scanStrategy.newValueEvent();
                 }
             }
         });
@@ -185,8 +185,8 @@ public class PVReaderDirector<T> {
     private volatile boolean closed = false;
     
     void close() {
-        // XXX: may not be needed anymore
         closed = true;
+        disconnect();
     }
 
     /**
@@ -262,6 +262,14 @@ public class PVReaderDirector<T> {
         } else {
             return false;
         }
+    }
+    
+    void pause() {
+        scanStrategy.pause();
+    }
+    
+    void resume() {
+        scanStrategy.resume();
     }
     
     private volatile boolean notificationInFlight = false;
@@ -357,7 +365,7 @@ public class PVReaderDirector<T> {
                     }
                 } finally {
                     notificationInFlight = false;
-                    scanner.notifiedPv();
+                    scanStrategy.readyForNextEvent();
                 }
             }
         });
@@ -374,5 +382,23 @@ public class PVReaderDirector<T> {
             exceptionCollector.writeValue(new TimeoutException(timeoutMessage));
         }
     }
+    
+    private DesiredRateEventListener desiredRateEventListener = new DesiredRateEventListener() {
 
+        @Override
+        public void desiredRateEvent(DesiredRateEvent event) {
+            if (isActive()) {
+                notifyPv();
+            } else {
+                close();
+            }
+        }
+
+    };
+
+    DesiredRateEventListener getDesiredRateEventListener() {
+        return desiredRateEventListener;
+    }
+    
+    
 }
