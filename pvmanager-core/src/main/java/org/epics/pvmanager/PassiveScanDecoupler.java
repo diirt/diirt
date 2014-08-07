@@ -25,6 +25,9 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     public PassiveScanDecoupler(ScheduledExecutorService scannerExecutor,
             TimeDuration maxDuration, DesiredRateEventListener listener) {
         super(scannerExecutor, maxDuration, listener);
+        synchronized(lock) {
+            lastSubmission = Timestamp.now().minus(getMaxDuration());
+        }
     }
     
     private final Runnable notificationTask = new Runnable() {
