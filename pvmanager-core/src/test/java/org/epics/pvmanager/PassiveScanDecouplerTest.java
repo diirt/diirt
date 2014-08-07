@@ -109,6 +109,29 @@ public class PassiveScanDecouplerTest {
             }
         });
     }
+
+    @Test
+    public void slowResponse() throws Exception {
+        repeatTest(10, new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                DesiredRateEventLog log = new DesiredRateEventLog(100);
+                SourceDesiredRateDecoupler decoupler = new PassiveScanDecoupler(PVManager.getReadScannerExecutorService(), TimeDuration.ofHertz(50), log);
+                log.setDecoupler(decoupler);
+                decoupler.start();
+                Thread.sleep(25);
+                decoupler.newValueEvent();
+                Thread.sleep(25);
+                decoupler.newValueEvent();
+                Thread.sleep(25);
+                decoupler.newValueEvent();
+                Thread.sleep(100);
+                decoupler.stop();
+                assertThat(log.getEvents().size(), equalTo(2));
+                return null;
+            }
+        });
+    }
     
     
     public static void repeatTest(int nTimes, Callable<?> task) throws Exception {

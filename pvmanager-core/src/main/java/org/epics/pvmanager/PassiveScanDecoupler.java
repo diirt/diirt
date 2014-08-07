@@ -92,7 +92,6 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     @Override
     void onDesiredEventProcessed() {
         TimeDuration delay = null;
-        DesiredRateEvent nextEvent = null;
         synchronized (lock) {
             if (queuedEvent != null) {
                 Timestamp nextSubmission = lastSubmission.plus(getMaxDuration());
@@ -102,7 +101,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             }
         }
         
-        if (nextEvent != null) {
+        if (delay != null) {
             scheduleNext(delay);
         }
     }
@@ -141,7 +140,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     }
     
     private void scheduleNext(TimeDuration delay) {
-        if (delay == null) {
+        if (delay == null || delay.isNegative()) {
             getScannerExecutor().submit(notificationTask);
         } else {
             getScannerExecutor().schedule(notificationTask, delay.toNanosLong(), TimeUnit.NANOSECONDS);

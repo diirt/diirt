@@ -7,6 +7,8 @@ package org.epics.pvmanager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,8 +16,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
  class DesiredRateEventLog implements DesiredRateEventListener {
     
-    private List<DesiredRateEvent> events = new CopyOnWriteArrayList<DesiredRateEvent>();
+    private final List<DesiredRateEvent> events = new CopyOnWriteArrayList<>();
     private volatile SourceDesiredRateDecoupler decoupler;
+    private final Integer pause;
+
+    public DesiredRateEventLog() {
+        pause = null;
+    }
+
+    public DesiredRateEventLog(Integer msPause) {
+        this.pause = msPause;
+    }
 
     public void setDecoupler(SourceDesiredRateDecoupler decoupler) {
         this.decoupler = decoupler;
@@ -28,6 +39,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
     @Override
     public void desiredRateEvent(DesiredRateEvent event) {
         events.add(event);
+        if (pause != null) {
+            try {
+                Thread.sleep(pause);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DesiredRateEventLog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         decoupler.readyForNextEvent();
     }
     
