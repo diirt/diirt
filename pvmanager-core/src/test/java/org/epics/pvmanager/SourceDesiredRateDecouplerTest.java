@@ -17,7 +17,7 @@ public class SourceDesiredRateDecouplerTest {
 
     @Test
     public void pauseResume() {
-        SourceDesiredRateDecoupler decoupler = new DirectRateDecoupler(null);
+        SourceDesiredRateDecoupler decoupler = new DirectRateDecoupler(null, null, null);
         decoupler.start();
         assertThat(decoupler.isPaused(), equalTo(false));
         assertThat(decoupler.isStopped(), equalTo(false));
@@ -35,7 +35,7 @@ public class SourceDesiredRateDecouplerTest {
     @Test
     public void directRateDecoupler() throws Exception {
         DesiredRateEventLog log = new DesiredRateEventLog();
-        SourceDesiredRateDecoupler decoupler = new DirectRateDecoupler(log);
+        SourceDesiredRateDecoupler decoupler = new DirectRateDecoupler(null, null, log);
         log.setDecoupler(decoupler);
         decoupler.start();
         decoupler.newReadConnectionEvent();

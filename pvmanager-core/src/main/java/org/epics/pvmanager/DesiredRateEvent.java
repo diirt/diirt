@@ -27,7 +27,10 @@ class DesiredRateEvent {
     }
     
     public void addType(Type type) {
-        types.add(type);
+        // TODO: may want to preserve ordering
+        if (!types.contains(type)) {
+            types.add(type);
+        }
     }
     
     public void addWriteFailed(Exception ex) {

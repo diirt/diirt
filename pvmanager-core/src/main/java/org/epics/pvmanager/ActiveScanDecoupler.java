@@ -17,20 +17,16 @@ import org.epics.util.time.TimeDuration;
  */
 class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
     
-    private final ScheduledExecutorService scannerExecutor;
-    private final TimeDuration maxDuration;
     private volatile ScheduledFuture<?> scanTaskHandle;
 
     public ActiveScanDecoupler(ScheduledExecutorService scannerExecutor,
             TimeDuration maxDuration, DesiredRateEventListener listener) {
-        super(listener);
-        this.scannerExecutor = scannerExecutor;
-        this.maxDuration = maxDuration;
+        super(scannerExecutor, maxDuration, listener);
     }
 
     @Override
     void onStart() {
-        scanTaskHandle = scannerExecutor.scheduleWithFixedDelay(new Runnable() {
+        scanTaskHandle = getScannerExecutor().scheduleWithFixedDelay(new Runnable() {
 
             @Override
             public void run() {
@@ -44,7 +40,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
                     sendDesiredRateEvent(event);
                 }
             }
-        }, 0, maxDuration.toNanosLong(), TimeUnit.NANOSECONDS);
+        }, 0, getMaxDuration().toNanosLong(), TimeUnit.NANOSECONDS);
     }
 
     @Override
@@ -104,7 +100,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
         if (!isEventProcessing()) {
             sendDesiredRateEvent(event);
         } else {
-            scannerExecutor.submit(new Runnable() {
+            getScannerExecutor().submit(new Runnable() {
 
                 @Override
                 public void run() {

@@ -5,7 +5,9 @@
 
 package org.epics.pvmanager;
 
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
+import org.epics.util.time.TimeDuration;
 
 /**
  * Represent a strategy to decouple desired rate events from source rate
@@ -17,6 +19,9 @@ abstract class SourceDesiredRateDecoupler {
     
     private static final Logger log = Logger.getLogger(SourceDesiredRateDecoupler.class.getName());
     private final DesiredRateEventListener listener;
+    private final ScheduledExecutorService scannerExecutor;
+    private final TimeDuration maxDuration;
+    
     protected final Object lock = new Object();
     private boolean eventProcessing = false;
     private boolean paused = false;
@@ -26,10 +31,23 @@ abstract class SourceDesiredRateDecoupler {
      * Creates a new rate decoupler that will send the events to the
      * given listener.
      * 
+     * @param scannerExecutor executor for the scanner tasks
+     * @param maxDuration max interval between notifications
      * @param listener the event callback
      */
-    public SourceDesiredRateDecoupler(DesiredRateEventListener listener) {
+    public SourceDesiredRateDecoupler(ScheduledExecutorService scannerExecutor, TimeDuration maxDuration,
+            DesiredRateEventListener listener) {
         this.listener = listener;
+        this.scannerExecutor = scannerExecutor;
+        this.maxDuration = maxDuration;
+    }
+
+    public ScheduledExecutorService getScannerExecutor() {
+        return scannerExecutor;
+    }
+
+    public TimeDuration getMaxDuration() {
+        return maxDuration;
     }
     
     /**

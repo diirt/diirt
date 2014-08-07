@@ -5,14 +5,17 @@
 
 package org.epics.pvmanager;
 
+import java.util.concurrent.ScheduledExecutorService;
+import org.epics.util.time.TimeDuration;
+
 /**
  *
  * @author carcassi
  */
 class DirectRateDecoupler extends SourceDesiredRateDecoupler {
 
-    public DirectRateDecoupler(DesiredRateEventListener listener) {
-        super(listener);
+    public DirectRateDecoupler(ScheduledExecutorService scannerExecutor, TimeDuration maxDuration, DesiredRateEventListener listener) {
+        super(scannerExecutor, maxDuration, listener);
     }
 
     @Override
