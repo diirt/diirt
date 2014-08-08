@@ -383,6 +383,15 @@ public class PVReaderDirector<T> {
         }
     }
     
+    void timeout(TimeDuration timeout, final String timeoutMessage) {
+        scannerExecutor.schedule(new Runnable() {
+            @Override
+            public void run() {
+                processTimeout(timeoutMessage);
+            }
+        }, timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+    }
+    
     private DesiredRateEventListener desiredRateEventListener = new DesiredRateEventListener() {
 
         @Override

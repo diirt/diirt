@@ -142,7 +142,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         if (timeout != null) {
             if (timeoutMessage == null)
                 timeoutMessage = "Read timeout";
-            scannerParameters.timeout(timeout, timeoutMessage);
+            director.timeout(timeout, timeoutMessage);
         }
 //        if (aggregatedFunction instanceof Collector || aggregatedFunction instanceof ValueCache) {
 //            scannerParameters.type(ScannerParameters.Type.PASSIVE);
