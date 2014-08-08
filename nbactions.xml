@@ -16,4 +16,15 @@
                 <goal>release:perform</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-ReleasePerform</actionName>
+            <displayName>ReleasePerform</displayName>
+            <goals>
+                <goal>release:perform</goal>
+            </goals>
+            <properties>
+                <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
+                <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
+            </properties>
+        </action>
     </actions>
