@@ -48,7 +48,8 @@ public class PassiveScanDecouplerTest {
                 decoupler.start();
                 Thread.sleep(500);
                 decoupler.stop();
-                assertThat(log.getEvents().size(), equalTo(0));
+                // 1 event: connection
+                assertThat(log.getEvents().size(), equalTo(1));
                 return null;
             }
         });
@@ -71,7 +72,8 @@ public class PassiveScanDecouplerTest {
                 decoupler.newValueEvent();
                 Thread.sleep(100);
                 decoupler.stop();
-                assertThat(log.getEvents().size(), equalTo(3));
+                // 4 events, connection and 3 values
+                assertThat(log.getEvents().size(), equalTo(4));
                 return null;
             }
         });
@@ -104,7 +106,8 @@ public class PassiveScanDecouplerTest {
                 decoupler.newValueEvent();
                 Thread.sleep(100);
                 decoupler.stop();
-                assertThat(log.getEvents().size(), equalTo(2));
+                // 3 events: connection, first value, last value
+                assertThat(log.getEvents().size(), equalTo(3));
                 return null;
             }
         });
