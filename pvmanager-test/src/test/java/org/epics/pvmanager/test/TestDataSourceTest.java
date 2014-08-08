@@ -315,14 +315,15 @@ public class TestDataSourceTest {
         
         readListener.await(TimeDuration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
-        readListener.resetCount(1);
+        readListener.resetCount(2);
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
         assertThat(ex.getMessage(), equalTo(message));
         
         readListener.await(TimeDuration.ofMillis(1000));
-        assertThat(readListener.getCount(), equalTo(0));
+        // It may get CONNECTION and VALUE event separate
+        assertThat(readListener.getCount(), lessThanOrEqualTo(1));
         
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
