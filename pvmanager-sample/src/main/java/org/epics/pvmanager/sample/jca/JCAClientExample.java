@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.jca;
 
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
