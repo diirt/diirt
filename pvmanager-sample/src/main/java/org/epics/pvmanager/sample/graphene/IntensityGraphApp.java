@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.graphene;
 
 import org.epics.graphene.IntensityGraph2DRenderer;
 import org.epics.graphene.IntensityGraph2DRendererUpdate;

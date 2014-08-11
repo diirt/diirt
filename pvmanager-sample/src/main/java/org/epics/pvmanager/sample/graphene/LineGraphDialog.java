@@ -2,28 +2,28 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.graphene;
 
 import javax.swing.DefaultComboBoxModel;
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRenderer;
+import org.epics.graphene.LineGraph2DRenderer;
 
 /**
  *
  * @author carcassi
  */
-public class ScatterGraphDialog extends javax.swing.JDialog {
+public class LineGraphDialog extends javax.swing.JDialog {
 
-    private final ScatterGraphApp graph;
+    private final LineGraphApp graph;
     
     /**
      * Creates new form ScatterGraphDialog
      */
-    public ScatterGraphDialog(java.awt.Frame parent, boolean modal, ScatterGraphApp graph) {
+    public LineGraphDialog(java.awt.Frame parent, boolean modal, LineGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
-        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(ScatterGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
+        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(LineGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
         if (graph != null) {
             interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
         }
@@ -98,20 +98,20 @@ public class ScatterGraphDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ScatterGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, null);
+                LineGraphDialog dialog = new LineGraphDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

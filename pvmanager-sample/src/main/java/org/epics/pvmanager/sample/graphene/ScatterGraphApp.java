@@ -2,33 +2,29 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.graphene;
 
 import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRendererUpdate;
-import org.epics.graphene.LineGraph2DRendererUpdate;
+import org.epics.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
-import org.epics.pvmanager.graphene.LineGraph2DExpression;
-import org.epics.pvmanager.graphene.MultilineGraph2DExpression;
 
 /**
  *
  * @author carcassi
  */
-public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
-    private InterpolationScheme interpolationScheme = InterpolationScheme.NEAREST_NEIGHBOR;
+public class ScatterGraphApp extends BaseGraphApp<ScatterGraph2DRendererUpdate> {
+    private InterpolationScheme interpolationScheme = InterpolationScheme.NONE;
 
-    public MultilineGraphApp() {
+    public ScatterGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
-                new String[] { "=tableOf(column(\"Sine\", 'sim://sineWaveform(1,50,100,0.01)'), column(\"Triangle\", 'sim://triangleWaveform(2,50,100,0.01)'), column(\"Triangle\", 'sim://squareWaveform(3,50,100,0.01)'))",
-                    "sim://gaussianWaveform",
-                    "sim://sineWaveform",
-                    "sim://triangleWaveform",
-                    "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))"}));
+                new String[] { "sim://table", 
+                    "=tableOf(column(\"X\", step(0, 1)), column(\"Y\", 'sim://gaussianWaveform'))", 
+                    "=tableOf(column(\"X\", 'sim://sineWaveform(1,100,100,0.01)'), column(\"Y\", 'sim://sineWaveform(10,100,100,0.01)'))",
+                    "=tableOf(column(\"X\", 'sim://triangleWaveform(10,100,100,0.01)'), column(\"Y\", 'sim://triangleWaveform(20,100,100,0.01)'))" }));
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }
@@ -41,8 +37,9 @@ public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
     }
 
     @Override
-    protected MultilineGraph2DExpression createExpression(String dataFormula) {
-        MultilineGraph2DExpression plot = multilineGraphOf(formula(dataFormula),
+    protected ScatterGraph2DExpression createExpression(String dataFormula) {
+        ScatterGraph2DExpression plot = scatterGraphOf(formula(dataFormula),
+                    null,
                     null,
                     null);
         plot.update(plot.newUpdate().interpolation(interpolationScheme));
@@ -51,14 +48,14 @@ public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
 
     @Override
     protected void openConfigurationDialog() {
-        MultilineGraphDialog dialog = new MultilineGraphDialog(new javax.swing.JFrame(), true, this);
+        ScatterGraphDialog dialog = new ScatterGraphDialog(new javax.swing.JFrame(), true, this);
         dialog.setTitle("Configure...");
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
     
     public static void main(String[] args) {
-        main(MultilineGraphApp.class);
+        main(ScatterGraphApp.class);
     }
     
 }

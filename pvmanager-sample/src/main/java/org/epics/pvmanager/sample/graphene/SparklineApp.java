@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.graphene;
 
 import java.awt.EventQueue;
 import java.awt.TextField;
@@ -28,7 +28,9 @@ import org.epics.pvmanager.graphene.Graph2DExpression;
 import org.epics.pvmanager.graphene.Graph2DResult;
 import org.epics.pvmanager.graphene.LineGraph2DExpression;
 import org.epics.pvmanager.graphene.SparklineGraph2DExpression;
-import static org.epics.pvmanager.sample.BaseGraphApp.main;
+import org.epics.pvmanager.sample.ImagePanel;
+import org.epics.pvmanager.sample.SetupUtil;
+import static org.epics.pvmanager.sample.graphene.BaseGraphApp.main;
 import static org.epics.pvmanager.util.Executors.swingEDT;
 import static org.epics.util.time.TimeDuration.ofHertz;
 import org.epics.vtype.ValueUtil;

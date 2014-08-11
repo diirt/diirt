@@ -2,31 +2,34 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sample;
+package org.epics.pvmanager.sample.graphene;
 
-import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRenderer;
+import static org.epics.pvmanager.sample.SwingBindingUtil.*;
 
 /**
  *
  * @author carcassi
  */
-public class LineGraphDialog extends javax.swing.JDialog {
+public class HistogramGraphDialog extends javax.swing.JDialog {
 
-    private final LineGraphApp graph;
+    private final HistogramGraphApp graph;
     
     /**
      * Creates new form ScatterGraphDialog
      */
-    public LineGraphDialog(java.awt.Frame parent, boolean modal, LineGraphApp graph) {
+    public HistogramGraphDialog(java.awt.Frame parent, boolean modal, final HistogramGraphApp graph) {
         super(parent, modal);
         this.graph = graph;
         initComponents();
-        interpolationSchemeField.setModel(new DefaultComboBoxModel<InterpolationScheme>(LineGraph2DRenderer.supportedInterpolationScheme.toArray(new InterpolationScheme[0])));
-        if (graph != null) {
-            interpolationSchemeField.setSelectedItem(graph.getInterpolationScheme());
-        }
+        
+        onCheckBoxChange(highlightFocusValueField, new Runnable() {
+            @Override
+            public void run() {
+                graph.setHighlightFocusValue(highlightFocusValueField.isSelected());
+            }
+        });
+        
+        highlightFocusValueField.setSelected(graph.isHighlightFocusValue());
     }
 
     /**
@@ -38,18 +41,11 @@ public class LineGraphDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        interpolationSchemeField = new javax.swing.JComboBox<InterpolationScheme>();
+        highlightFocusValueField = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Interpolation:");
-
-        interpolationSchemeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                interpolationSchemeFieldActionPerformed(evt);
-            }
-        });
+        highlightFocusValueField.setText("Highlight focus value");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,29 +53,19 @@ public class LineGraphDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(interpolationSchemeField, 0, 287, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(highlightFocusValueField)
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(interpolationSchemeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(highlightFocusValueField)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void interpolationSchemeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interpolationSchemeFieldActionPerformed
-        if (graph != null) {
-            graph.setInterpolationScheme((InterpolationScheme) interpolationSchemeField.getSelectedItem());
-        }
-    }//GEN-LAST:event_interpolationSchemeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,20 +84,20 @@ public class LineGraphDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LineGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HistogramGraphDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LineGraphDialog dialog = new LineGraphDialog(new javax.swing.JFrame(), true, null);
+                HistogramGraphDialog dialog = new HistogramGraphDialog(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -123,7 +109,6 @@ public class LineGraphDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<InterpolationScheme> interpolationSchemeField;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JCheckBox highlightFocusValueField;
     // End of variables declaration//GEN-END:variables
 }
