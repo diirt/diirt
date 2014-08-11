@@ -5,11 +5,8 @@
 package org.epics.pvmanager.sample;
 
 import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PV;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVWriterEvent;
-import org.epics.pvmanager.PVWriterListener;
 import org.epics.pvmanager.PVManager;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.ValueFormat;
@@ -24,7 +21,8 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.epics.pvmanager.*;
+import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
 import org.epics.util.time.TimeDuration;
 
@@ -32,14 +30,14 @@ import org.epics.util.time.TimeDuration;
  *
  * @author carcassi
  */
-public class MockProbe extends javax.swing.JFrame {
+public class SimpleProbe extends javax.swing.JFrame {
 
     Map<AlarmSeverity, Border> borders = new EnumMap<AlarmSeverity, Border>(AlarmSeverity.class);
 
     /**
      * Creates new form MockPVFrame
      */
-    public MockProbe() {
+    public SimpleProbe() {
         initComponents();
         borders.put(AlarmSeverity.NONE, pvTextValue.getBorder());
         borders.put(AlarmSeverity.MINOR, new LineBorder(Color.YELLOW));
@@ -224,34 +222,23 @@ public class MockProbe extends javax.swing.JFrame {
             lastError.setText("");
         }
 
-        try {
-            pv = PVManager.readAndWrite(channel(pvName.getText()))
-                    .timeout(TimeDuration.ofSeconds(5))
-                    .readListener(new PVReaderListener<Object>() {
-                            @Override
-                            public void pvChanged(PVReaderEvent<Object> event) {
-                                setLastError(pv.lastException());
-                                Object value = pv.getValue();
-                                setTextValue(format.format(value));
-                                setType(ValueUtil.typeOf(value));
-                                setAlarm(ValueUtil.alarmOf(value));
-                                setTime(ValueUtil.timeOf(value));
-                                setIndicator(ValueUtil.normalizedNumericValueOf(value));
-                                setMetadata(ValueUtil.displayOf(value));
-                                setConnected(pv.isConnected());
-                            }
-                        })
-                    .writeListener(new PVWriterListener<Object>() {
-
+        pv = PVManager.read(formula(pvName.getText()))
+                .timeout(TimeDuration.ofSeconds(5))
+                .readListener(new PVReaderListener<Object>() {
                         @Override
-                        public void pvChanged(PVWriterEvent<Object> event) {
-                            setWriteConnected(pv.isWriteConnected());
+                        public void pvChanged(PVReaderEvent<Object> event) {
+                            setLastError(pv.lastException());
+                            Object value = pv.getValue();
+                            setTextValue(format.format(value));
+                            setType(ValueUtil.typeOf(value));
+                            setAlarm(ValueUtil.alarmOf(value));
+                            setTime(ValueUtil.timeOf(value));
+                            setIndicator(ValueUtil.normalizedNumericValueOf(value));
+                            setMetadata(ValueUtil.displayOf(value));
+                            setConnected(pv.isConnected());
                         }
                     })
-                    .asynchWriteAndMaxReadRate(ofHertz(10));
-        } catch (RuntimeException ex) {
-            setLastError(ex);
-        }
+                .maxRate(ofHertz(10));
 
     }//GEN-LAST:event_pvNameActionPerformed
 
@@ -273,7 +260,7 @@ public class MockProbe extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_channelDetailsButtonActionPerformed
-    PV<?,?> pv;
+    PVReader<?> pv;
 
     private void setTextValue(String value) {
         if (value == null) {
@@ -355,7 +342,7 @@ public class MockProbe extends javax.swing.JFrame {
         SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MockProbe().setVisible(true);
+                new SimpleProbe().setVisible(true);
             }
         });
     }
