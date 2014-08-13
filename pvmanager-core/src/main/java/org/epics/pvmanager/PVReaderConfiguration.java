@@ -125,7 +125,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         
         preparePv();
         
-        PVReaderDirector<T> director = prepareDirector(this);
+        PVDirector<T> director = prepareDirector(this);
         prepareDecoupler(director, this);
 
         return pv;
@@ -136,18 +136,18 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         validateReaderConfiguration();
     }
     
-    static <T> PVReaderDirector<T> prepareDirector(PVReaderConfiguration<T> readConfiguration) {
-        PVReaderDirector<T> director = new PVReaderDirector<>(readConfiguration.pv, readConfiguration.aggregatedFunction, PVManager.getReadScannerExecutorService(),
+    static <T> PVDirector<T> prepareDirector(PVReaderConfiguration<T> readConfiguration) {
+        PVDirector<T> director = new PVDirector<>(readConfiguration.pv, readConfiguration.aggregatedFunction, PVManager.getReadScannerExecutorService(),
                 readConfiguration.notificationExecutor, readConfiguration.dataSource, readConfiguration.exceptionHandler);
         if (readConfiguration.timeout != null) {
             if (readConfiguration.timeoutMessage == null)
                 readConfiguration.timeoutMessage = "Read timeout";
-            director.timeout(readConfiguration.timeout, readConfiguration.timeoutMessage);
+            director.readTimeout(readConfiguration.timeout, readConfiguration.timeoutMessage);
         }
         return director;
     }
     
-    static <T> void prepareDecoupler(PVReaderDirector<T> director, PVReaderConfiguration<T> readConfiguration) {
+    static <T> void prepareDecoupler(PVDirector<T> director, PVReaderConfiguration<T> readConfiguration) {
         ScannerParameters scannerParameters = new ScannerParameters()
                 .readerDirector(director)
                 .scannerExecutor(PVManager.getReadScannerExecutorService())
@@ -161,7 +161,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         
         readConfiguration.pv.setDirector(director);
         director.setScanner(rateDecoupler);
-        director.connectExpression(readConfiguration.aggregatedPVExpression);
+        director.connectReadExpression(readConfiguration.aggregatedPVExpression);
         rateDecoupler.start();
     }
     

@@ -18,7 +18,7 @@ class ScannerParameters {
     
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
-    private PVReaderDirector readerDirector;
+    private PVDirector readerDirector;
     private TimeDuration maxDuration;
     private TimeDuration timeout;
     private String timeoutMessage;
@@ -41,12 +41,12 @@ class ScannerParameters {
         return maxDuration;
     }
 
-    public ScannerParameters readerDirector(PVReaderDirector readerDirector) {
+    public ScannerParameters readerDirector(PVDirector readerDirector) {
         this.readerDirector = readerDirector;
         return this;
     }
 
-    public PVReaderDirector getReaderDirector() {
+    public PVDirector getReaderDirector() {
         return readerDirector;
     }
 

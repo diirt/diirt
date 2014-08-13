@@ -14,11 +14,11 @@ public class ReadExpressionTester {
 
     private DesiredRateExpression<?> expression;
     private ReadRecipe readRecipe;
-    private PVReaderDirector<?> pvReaderDirector = new PVReaderDirector<Object>(null, null, null, null, null, null);
+    private PVDirector<?> pvReaderDirector = new PVDirector<Object>(null, null, null, null, null, null);
 
     public ReadExpressionTester(DesiredRateExpression<?> expression) {
         this.expression = expression;
-        pvReaderDirector.connectExpression(expression);
+        pvReaderDirector.connectReadExpression(expression);
     }
     
     public ReadRecipe getCurrentReadRecipe() {
