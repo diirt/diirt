@@ -21,7 +21,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     private static final Logger log = Logger.getLogger(PassiveScanDecoupler.class.getName());
     // TODO: this could be made configurable between FINEST and OFF, and the if
     // modified so that code elimination would remove the logging completely
-    private static final Level logLevel = Level.FINEST;
+    private static final Level logLevel = Level.WARNING;
     
     private DesiredRateEvent queuedEvent;
     private Timestamp lastSubmission;
@@ -108,12 +108,21 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     void onDesiredEventProcessed() {
         TimeDuration delay = null;
         synchronized (lock) {
+            // If an event is pending submit it
             if (queuedEvent != null) {
                 Timestamp nextSubmission = lastSubmission.plus(getMaxDuration());
                 delay = nextSubmission.durationFrom(Timestamp.now());
-                lastSubmission = nextSubmission;
-                if (log.isLoggable(logLevel)) {
-                    log.log(Level.WARNING, "Schedule next {0}", Timestamp.now());
+                if (delay.isPositive()) {
+                    lastSubmission = nextSubmission;
+                    if (log.isLoggable(logLevel)) {
+                        log.log(Level.WARNING, "Schedule next {0}", Timestamp.now());
+                    }
+                } else {
+                    lastSubmission = Timestamp.now();
+                    delay = null;
+                    if (log.isLoggable(logLevel)) {
+                        log.log(Level.WARNING, "Schedule now {0}", Timestamp.now());
+                    }
                 }
             } else {
                 scanActive = false;
