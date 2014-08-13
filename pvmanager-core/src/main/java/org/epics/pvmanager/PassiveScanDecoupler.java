@@ -21,7 +21,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     private static final Logger log = Logger.getLogger(PassiveScanDecoupler.class.getName());
     // TODO: this could be made configurable between FINEST and OFF, and the if
     // modified so that code elimination would remove the logging completely
-    private static final Level logLevel = Level.WARNING;
+    private static final Level logLevel = Level.FINEST;
     
     private DesiredRateEvent queuedEvent;
     private Timestamp lastSubmission;
