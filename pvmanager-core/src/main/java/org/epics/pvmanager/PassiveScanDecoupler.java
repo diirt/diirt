@@ -119,7 +119,6 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                     }
                 } else {
                     lastSubmission = Timestamp.now();
-                    delay = null;
                     if (log.isLoggable(logLevel)) {
                         log.log(Level.WARNING, "Schedule now {0}", Timestamp.now());
                     }
