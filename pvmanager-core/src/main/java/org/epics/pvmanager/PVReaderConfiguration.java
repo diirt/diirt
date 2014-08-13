@@ -123,7 +123,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     public PVReader<T> maxRate(TimeDuration rate) {
         maxRateAndValidate(rate);
         
-        preparePv();
+        preparePvReader();
         
         PVDirector<T> director = prepareDirector(this);
         prepareDecoupler(director, this);
@@ -173,7 +173,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         checkDataSourceAndThreadSwitch();
     }
     
-    void preparePv() {
+    void preparePvReader() {
         pv = new PVReaderImpl<>(aggregatedPVExpression.getName(), Executors.localThread() == notificationExecutor);
         for (PVReaderListener<T> pVReaderListener : readListeners) {
             pv.addPVReaderListener(pVReaderListener);
