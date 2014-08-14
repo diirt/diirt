@@ -45,7 +45,7 @@ public class NotificationTest {
         assertThat(reader.isPaused(), equalTo(true));
         int currentCounter = listener.getNextExpected();
         Thread.sleep(100);
-        assertThat("Notifications were sent when paused.", listener.getNextExpected(), equalTo(currentCounter));
+        assertThat("Notifications were sent when paused.", listener.getNextExpected(), lessThanOrEqualTo(currentCounter+1));
         
         // Resume
         reader.setPaused(false);
