@@ -10,14 +10,14 @@
     <name>pvmanager-pva</name>
     <dependencies>
         <dependency>
-            <groupId>epics</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>pvDataJava</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>epics</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>pvAccessJava</artifactId>
-            <version>3.0.5</version>
+            <version>3.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
