@@ -5,6 +5,7 @@
 
 package org.epics.vtype.seds;
 
+import java.math.BigDecimal;
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
@@ -34,20 +35,8 @@ public class Seds2VType {
     public static JsonObject toJson(VNumber vNumber) {
         return new JsonVTypeBuilder()
                 .add("value", vNumber.getValue().doubleValue())
-                .add("alarm", alarmToJson(vNumber))
-                .add("time", timeToJson(vNumber))
+                .addAlarm(vNumber)
+                .addTime(vNumber)
                 .build();
-    }
-    
-    private static JsonObjectBuilder alarmToJson(Alarm alarm) {
-        return Json.createObjectBuilder()
-                .add("severity", alarm.getAlarmSeverity().toString())
-                .add("status", alarm.getAlarmName());
-    }
-    
-    private static JsonObjectBuilder timeToJson(Time time) {
-        return Json.createObjectBuilder()
-                .add("unixSec", time.getTimestamp().getSec())
-                .add("nanoSec", time.getTimestamp().getNanoSec());
     }
 }

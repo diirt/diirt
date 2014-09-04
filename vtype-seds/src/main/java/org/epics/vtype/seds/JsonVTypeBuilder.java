@@ -13,6 +13,8 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
 
 /**
  *
@@ -91,6 +93,18 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
     @Override
     public JsonObject build() {
         return builder.build();
+    }
+    
+    public JsonVTypeBuilder addAlarm(Alarm alarm) {
+        return add("alarm", new JsonVTypeBuilder()
+                .add("severity", alarm.getAlarmSeverity().toString())
+                .add("status", alarm.getAlarmName()));
+    }
+    
+    public JsonVTypeBuilder addTime(Time time) {
+        return add("time", new JsonVTypeBuilder()
+                .add("unixSec", time.getTimestamp().getSec())
+                .add("nanoSec", time.getTimestamp().getNanoSec()));
     }
     
 }
