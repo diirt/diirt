@@ -18,7 +18,7 @@ import org.epics.vtype.VType;
  * 
  * @author carcassi
  */
-public class Seds2VType {
+public class VTypeToJson {
 
     public static VType toVType(JsonObject json) {
         throw new UnsupportedOperationException("Not implemented yet");
