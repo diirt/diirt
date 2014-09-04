@@ -64,10 +64,10 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
 
     @Override
     public JsonVTypeBuilder add(String string, double d) {
-        if (Double.isFinite(d)) {
-            builder.add(string, d);
-        } else {
+        if (Double.isNaN(d) || Double.isInfinite(d)) {
             builder.addNull(string);
+        } else {
+            builder.add(string, d);
         }
         return this;
     }
