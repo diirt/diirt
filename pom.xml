@@ -29,8 +29,8 @@
         <url>https://github.com/diirt/pvmanager.git</url>
         <connection>scm:git:https://github.com/diirt/pvmanager.git</connection>
         <developerConnection>scm:git:https://github.com/diirt/pvmanager.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <developers>
         <developer>
             <id>carcassi</id>
@@ -237,12 +237,12 @@
         <module>epics-vtype</module>
         <module>pvmanager-sys</module>
         <module>pvmanager-timecache</module>
-    <module>pvmanager-file</module>
-    <module>pvmanager-jdbc</module>
-    <module>pvmanager-exec</module>
-    <module>pvmanager-integration</module>
-    <module>vtype-seds</module>
-  </modules>
+        <module>pvmanager-file</module>
+        <module>pvmanager-jdbc</module>
+        <module>pvmanager-exec</module>
+        <module>pvmanager-integration</module>
+        <module>vtype-json</module>
+    </modules>
     <reporting>
         <plugins>
             <plugin>

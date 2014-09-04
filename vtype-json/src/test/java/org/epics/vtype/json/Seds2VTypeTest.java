@@ -3,8 +3,9 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 
-package org.epics.vtype.seds;
+package org.epics.vtype.json;
 
+import org.epics.vtype.json.Seds2VType;
 import java.io.StringWriter;
 import javax.json.Json;
 import javax.json.JsonObject;

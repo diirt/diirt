@@ -4,7 +4,7 @@
  */
 
 
-package org.epics.vtype.seds;
+package org.epics.vtype.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

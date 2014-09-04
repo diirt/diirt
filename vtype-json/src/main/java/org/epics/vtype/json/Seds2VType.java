@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 
-package org.epics.vtype.seds;
+package org.epics.vtype.json;
 
 import javax.json.JsonObject;
 import org.epics.vtype.VBoolean;
