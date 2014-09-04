@@ -14,6 +14,11 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import org.epics.util.array.ListByte;
+import org.epics.util.array.ListInt;
+import org.epics.util.array.ListLong;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListShort;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
@@ -139,6 +144,30 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
         return this;
     }
     
+    public JsonVTypeBuilder addListNumber(String string, ListNumber ln) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        if (ln instanceof ListByte || ln instanceof ListShort || ln instanceof ListInt) {
+            for (int i = 0; i < ln.size(); i++) {
+                b.add(ln.getInt(i));
+            }
+        } else if (ln instanceof ListLong) {
+            for (int i = 0; i < ln.size(); i++) {
+                b.add(ln.getLong(i));
+            }
+        } else {
+            for (int i = 0; i < ln.size(); i++) {
+                double value = ln.getDouble(i);
+                if (Double.isNaN(value) || Double.isInfinite(value)) {
+                    b.addNull();
+                } else {
+                    b.add(value);
+                }
+            }
+        }
+        add(string, b);
+        return this;
+    }
+    
     public JsonVTypeBuilder addNullableObject(String string, Object o) {
         if (o == null) {
             addNull(string);
@@ -159,6 +188,8 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
             add(string, ((Number) o).intValue());
         } else if (o instanceof Long) {
             add(string, ((Number) o).longValue());
+        } else if (o instanceof ListNumber) {
+            addListNumber(string, (ListNumber) o);
         } else {
             throw new UnsupportedOperationException("Class " + o.getClass() + " not supported");
         }

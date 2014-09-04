@@ -11,9 +11,11 @@ import java.util.Arrays;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VString;
@@ -69,6 +71,13 @@ public class Seds2VTypeTest {
         VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
         JsonObject json = Seds2VType.toJson((VType) vEnum);
         compareJson(json, "{\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
+    }
+
+    @Test
+    public void testVDoubleArray() {
+        VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        JsonObject json = Seds2VType.toJson(vDoubleArray);
+        compareJson(json, "{\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
     
 }

@@ -9,6 +9,7 @@ import javax.json.JsonObject;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VType;
 
@@ -41,6 +42,15 @@ public class Seds2VType {
                 .addAlarm(vNumber)
                 .addTime(vNumber)
                 .addDisplay(vNumber)
+                .build();
+    }
+    
+    static JsonObject toJson(VNumberArray vNumberArray) {
+        return new JsonVTypeBuilder()
+                .addObject("value", vNumberArray.getData())
+                .addAlarm(vNumberArray)
+                .addTime(vNumberArray)
+                .addDisplay(vNumberArray)
                 .build();
     }
     
