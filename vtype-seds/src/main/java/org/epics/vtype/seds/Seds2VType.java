@@ -34,7 +34,7 @@ public class Seds2VType {
     
     public static JsonObject toJson(VNumber vNumber) {
         return new JsonVTypeBuilder()
-                .add("value", vNumber.getValue().doubleValue())
+                .addObject("value", vNumber.getValue())
                 .addAlarm(vNumber)
                 .addTime(vNumber)
                 .addDisplay(vNumber)
