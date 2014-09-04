@@ -9,6 +9,8 @@ import javax.json.Json;
 import javax.json.stream.JsonGenerator;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
+import org.epics.vtype.VType;
+import org.epics.vtype.json.VTypeToJson;
 
 /**
  *
@@ -38,10 +40,8 @@ public class MessageValueEvent extends Message {
             gen.write("value", ((Number) getValue()).doubleValue());
         } else if (getValue() instanceof String) {
             gen.write("value", (String) getValue());
-        } else if (getValue() instanceof VNumber) {
-            gen.write("value", ((VNumber) getValue()).getValue().doubleValue());
-        } else if (getValue() instanceof VString) {
-            gen.write("value", ((VString) getValue()).getValue());
+        } else if (getValue() instanceof VType) {
+            gen.write("value", VTypeToJson.toJson((VType) getValue()));
         }
         
         gen.writeEnd().close();

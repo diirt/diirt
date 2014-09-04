@@ -1,0 +1,4 @@
+{"message":"subscribe","id":1,"pv":"sim://noise"}
+{"message":"subscribe","id":2,"pv":"sim://strings","maxRate":3}
+{"message":"unsubscribe","id":1}
+{"message":"unsubscribe","id":2}
