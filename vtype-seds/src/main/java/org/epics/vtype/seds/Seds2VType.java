@@ -37,6 +37,7 @@ public class Seds2VType {
                 .add("value", vNumber.getValue().doubleValue())
                 .addAlarm(vNumber)
                 .addTime(vNumber)
+                .addDisplay(vNumber)
                 .build();
     }
 }

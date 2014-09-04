@@ -14,6 +14,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
 import org.epics.vtype.Time;
 
 /**
@@ -62,7 +63,11 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
 
     @Override
     public JsonVTypeBuilder add(String string, double d) {
-        builder.add(string, d);
+        if (Double.isFinite(d)) {
+            builder.add(string, d);
+        } else {
+            builder.addNull(string);
+        }
         return this;
     }
 
@@ -106,6 +111,17 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
                 .add("unixSec", time.getTimestamp().getSec())
                 .add("nanoSec", time.getTimestamp().getNanoSec())
                 .addNullableObject("userTag", time.getTimeUserTag()));
+    }
+    
+    public JsonVTypeBuilder addDisplay(Display display) {
+        return add("time", new JsonVTypeBuilder()
+                .add("lowAlarm", display.getLowerAlarmLimit())
+                .add("highAlarm", display.getUpperAlarmLimit())
+                .add("lowDisplay", display.getLowerDisplayLimit())
+                .add("highDisplay", display.getUpperDisplayLimit())
+                .add("lowWarning", display.getLowerWarningLimit())
+                .add("highWarning", display.getUpperDisplayLimit())
+                .add("units", display.getUnits()));
     }
     
     public JsonVTypeBuilder addNullableObject(String string, Object o) {
