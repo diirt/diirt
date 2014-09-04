@@ -104,7 +104,35 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
     public JsonVTypeBuilder addTime(Time time) {
         return add("time", new JsonVTypeBuilder()
                 .add("unixSec", time.getTimestamp().getSec())
-                .add("nanoSec", time.getTimestamp().getNanoSec()));
+                .add("nanoSec", time.getTimestamp().getNanoSec())
+                .addNullableObject("userTag", time.getTimeUserTag()));
+    }
+    
+    public JsonVTypeBuilder addNullableObject(String string, Object o) {
+        if (o == null) {
+            addNull(string);
+        } else {
+            addObject(string, o);
+        }
+        return this;
+    }
+    
+    public JsonVTypeBuilder addObject(String string, Object o) {
+        if (o == null) {
+            return this;
+        }
+        
+        if (o instanceof Double || o instanceof Float) {
+            add(string, ((Number) o).doubleValue());
+        } else if (o instanceof Byte || o instanceof Short || o instanceof Integer) {
+            add(string, ((Number) o).intValue());
+        } else if (o instanceof Long) {
+            add(string, ((Number) o).longValue());
+        } else {
+            throw new UnsupportedOperationException("Class " + o.getClass() + " not supported");
+        }
+    
+        return this;
     }
     
 }
