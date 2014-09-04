@@ -12,6 +12,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VType;
 
@@ -28,6 +29,8 @@ public class Seds2VType {
     public static JsonObject toJson(VType vType) {
         if (vType instanceof VNumber) {
             return toJson((VNumber) vType);
+        } else if (vType instanceof VBoolean) {
+            return toJson((VBoolean) vType);
         }
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -38,6 +41,14 @@ public class Seds2VType {
                 .addAlarm(vNumber)
                 .addTime(vNumber)
                 .addDisplay(vNumber)
+                .build();
+    }
+    
+    public static JsonObject toJson(VBoolean vBoolean) {
+        return new JsonVTypeBuilder()
+                .add("value", vBoolean.getValue())
+                .addAlarm(vBoolean)
+                .addTime(vBoolean)
                 .build();
     }
 }
