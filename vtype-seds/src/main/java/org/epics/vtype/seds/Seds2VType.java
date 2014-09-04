@@ -10,6 +10,7 @@ import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VType;
 
@@ -32,7 +33,9 @@ public class Seds2VType {
     
     public static JsonObject toJson(VNumber vNumber) {
         return Json.createObjectBuilder()
+                .add("value", vNumber.getValue().doubleValue())
                 .add("alarm", alarmToJson(vNumber))
+                .add("time", timeToJson(vNumber))
                 .build();
     }
     
@@ -40,5 +43,11 @@ public class Seds2VType {
         return Json.createObjectBuilder()
                 .add("severity", alarm.getAlarmSeverity().toString())
                 .add("status", alarm.getAlarmName());
+    }
+    
+    private static JsonObjectBuilder timeToJson(Time time) {
+        return Json.createObjectBuilder()
+                .add("unixSec", time.getTimestamp().getSec())
+                .add("nanoSec", time.getTimestamp().getNanoSec());
     }
 }
