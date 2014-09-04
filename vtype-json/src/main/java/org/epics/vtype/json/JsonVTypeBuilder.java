@@ -8,6 +8,7 @@ package org.epics.vtype.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -122,6 +123,20 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
                 .add("lowWarning", display.getLowerWarningLimit())
                 .add("highWarning", display.getUpperDisplayLimit())
                 .add("units", display.getUnits()));
+    }
+    
+    public JsonVTypeBuilder addEnum(org.epics.vtype.Enum en) {
+        return add("enum", new JsonVTypeBuilder()
+                .addListString("labels", en.getLabels()));
+    }
+    
+    public JsonVTypeBuilder addListString(String string, List<String> ls) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (String element : ls) {
+            b.add(element);
+        }
+        add(string, b);
+        return this;
     }
     
     public JsonVTypeBuilder addNullableObject(String string, Object o) {

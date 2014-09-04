@@ -7,12 +7,14 @@ package org.epics.vtype.json;
 
 import org.epics.vtype.json.Seds2VType;
 import java.io.StringWriter;
+import java.util.Arrays;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VDouble;
+import org.epics.vtype.VEnum;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VString;
 import org.epics.vtype.VType;
@@ -60,6 +62,13 @@ public class Seds2VTypeTest {
         VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
         JsonObject json = Seds2VType.toJson((VType) vString);
         compareJson(json, "{\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+    }
+
+    @Test
+    public void testVEnum() {
+        VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
+        JsonObject json = Seds2VType.toJson((VType) vEnum);
+        compareJson(json, "{\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
     }
     
 }

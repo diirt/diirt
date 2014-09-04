@@ -7,6 +7,7 @@ package org.epics.vtype.json;
 
 import javax.json.JsonObject;
 import org.epics.vtype.VBoolean;
+import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
 import org.epics.vtype.VType;
@@ -28,6 +29,8 @@ public class Seds2VType {
             return toJson((VBoolean) vType);
         } else if (vType instanceof VString) {
             return toJson((VString) vType);
+        } else if (vType instanceof VEnum) {
+            return toJson((VEnum) vType);
         }
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -54,6 +57,15 @@ public class Seds2VType {
                 .add("value", vString.getValue())
                 .addAlarm(vString)
                 .addTime(vString)
+                .build();
+    }
+    
+    static JsonObject toJson(VEnum vEnum) {
+        return new JsonVTypeBuilder()
+                .add("value", vEnum.getValue())
+                .addAlarm(vEnum)
+                .addTime(vEnum)
+                .addEnum(vEnum)
                 .build();
     }
 }
