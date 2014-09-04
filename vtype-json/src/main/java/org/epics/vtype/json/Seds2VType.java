@@ -11,6 +11,7 @@ import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
 
 /**
@@ -26,10 +27,14 @@ public class Seds2VType {
     public static JsonObject toJson(VType vType) {
         if (vType instanceof VNumber) {
             return toJson((VNumber) vType);
+        } else if (vType instanceof VNumberArray) {
+            return toJson((VNumberArray) vType);
         } else if (vType instanceof VBoolean) {
             return toJson((VBoolean) vType);
         } else if (vType instanceof VString) {
             return toJson((VString) vType);
+        } else if (vType instanceof VStringArray) {
+            return toJson((VStringArray) vType);
         } else if (vType instanceof VEnum) {
             return toJson((VEnum) vType);
         }
@@ -67,6 +72,14 @@ public class Seds2VType {
                 .add("value", vString.getValue())
                 .addAlarm(vString)
                 .addTime(vString)
+                .build();
+    }
+    
+    static JsonObject toJson(VStringArray vStringArray) {
+        return new JsonVTypeBuilder()
+                .addListString("value", vStringArray.getData())
+                .addAlarm(vStringArray)
+                .addTime(vStringArray)
                 .build();
     }
     

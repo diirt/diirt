@@ -19,6 +19,7 @@ import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -76,8 +77,15 @@ public class Seds2VTypeTest {
     @Test
     public void testVDoubleArray() {
         VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        JsonObject json = Seds2VType.toJson(vDoubleArray);
+        JsonObject json = Seds2VType.toJson((VType) vDoubleArray);
         compareJson(json, "{\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+    }
+
+    @Test
+    public void testVStringArray() {
+        VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
+        JsonObject json = Seds2VType.toJson((VType) vStringArray);
+        compareJson(json, "{\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
     }
     
 }
