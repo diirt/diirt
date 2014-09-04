@@ -13,7 +13,8 @@ import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VInt;
-import org.epics.vtype.ValueFactory;
+import org.epics.vtype.VString;
+import org.epics.vtype.VType;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.vtype.ValueFactory.*;
@@ -42,15 +43,22 @@ public class Seds2VTypeTest {
     @Test
     public void testVInt() {
         VInt vInt = newVInt(314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        JsonObject json = Seds2VType.toJson(vInt);
+        JsonObject json = Seds2VType.toJson((VType) vInt);
         compareJson(json, "{\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
     public void testVBoolean() {
         VBoolean vBoolean = newVBoolean(true, alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = Seds2VType.toJson(vBoolean);
+        JsonObject json = Seds2VType.toJson((VType) vBoolean);
         compareJson(json, "{\"value\":true,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+    }
+
+    @Test
+    public void testVString() {
+        VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
+        JsonObject json = Seds2VType.toJson((VType) vString);
+        compareJson(json, "{\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
     }
     
 }
