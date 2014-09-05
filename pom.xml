@@ -242,6 +242,7 @@
         <module>pvmanager-exec</module>
         <module>pvmanager-integration</module>
         <module>vtype-json</module>
+        <module>pvmanager-file-json</module>
     </modules>
     <reporting>
         <plugins>
