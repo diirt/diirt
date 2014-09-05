@@ -49,7 +49,7 @@ public class JVTypeFileFormat implements FileFormat {
 
     @Override
     public Collection<String> getFileExtensions() {
-        return Arrays.asList(".jvtype");
+        return Arrays.asList("jvtype");
     }
     
 }
