@@ -54,5 +54,16 @@
             <artifactId>pvmanager-graphene</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvmanager-file-json</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 </project>
