@@ -6,6 +6,7 @@
 package org.epics.pvmanager.file;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,6 +24,14 @@ public class FileFormatRegistry {
         return registry;
     }
     
+    static {
+        // Find file formats to register using the ServiceLoader
+        ServiceLoader<FileFormat> sl = ServiceLoader.load(FileFormat.class);
+        for (FileFormat fileFormat : sl) {
+            registry.registerFileFormat(fileFormat);
+        }
+    }
+    
     /**
      * Register a new FileFormat for a given file extension
      *  
@@ -31,6 +40,18 @@ public class FileFormatRegistry {
      */
     public void registerFileFormat(String extension, FileFormat format) {
 	fileFormatRegistry.put(extension, format);
+    }
+    
+    /**
+     * Register a new FileFormat for the extensions declared by the format
+     * itself.
+     *  
+     * @param format the FileFormat
+     */
+    public void registerFileFormat(FileFormat format) {
+        for (String extension : format.getFileExtensions()) {
+            registerFileFormat(extension, format);
+        }
     }
     
     /**
