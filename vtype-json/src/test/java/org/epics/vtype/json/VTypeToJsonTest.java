@@ -13,12 +13,14 @@ import javax.json.JsonWriter;
 import org.epics.util.array.ArrayBoolean;
 import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
+import org.epics.vtype.VEnumArray;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -75,6 +77,13 @@ public class VTypeToJsonTest {
         VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
         JsonObject json = VTypeToJson.toJson((VType) vEnum);
         compareJson(json, "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
+    }
+
+    @Test
+    public void testVEnumArray() {
+        VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
+        JsonObject json = VTypeToJson.toJson((VType) vEnumArray);
+        compareJson(json, "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[\"Two\",\"One\",\"Two\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
     }
 
     @Test

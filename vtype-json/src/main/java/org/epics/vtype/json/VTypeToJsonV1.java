@@ -9,6 +9,7 @@ import javax.json.JsonObject;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VEnum;
+import org.epics.vtype.VEnumArray;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -40,6 +41,8 @@ class VTypeToJsonV1 {
             return toJson((VStringArray) vType);
         } else if (vType instanceof VEnum) {
             return toJson((VEnum) vType);
+        } else if (vType instanceof VEnumArray) {
+            return toJson((VEnumArray) vType);
         }
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -104,6 +107,16 @@ class VTypeToJsonV1 {
         return new JsonVTypeBuilder()
                 .addType(vEnum)
                 .add("value", vEnum.getValue())
+                .addAlarm(vEnum)
+                .addTime(vEnum)
+                .addEnum(vEnum)
+                .build();
+    }
+    
+    static JsonObject toJson(VEnumArray vEnum) {
+        return new JsonVTypeBuilder()
+                .addType(vEnum)
+                .addListString("value", vEnum.getData())
                 .addAlarm(vEnum)
                 .addTime(vEnum)
                 .addEnum(vEnum)
