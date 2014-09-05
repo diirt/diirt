@@ -10,10 +10,12 @@ import java.util.Arrays;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
+import org.epics.util.array.ArrayBoolean;
 import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
+import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
@@ -94,6 +96,13 @@ public class VTypeToJsonTest {
         VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
         JsonObject json = VTypeToJson.toJson((VType) vStringArray);
         compareJson(json, "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+    }
+
+    @Test
+    public void testVBooleanArray() {
+        VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
+        JsonObject json = VTypeToJson.toJson((VType) vBooleanArray);
+        compareJson(json, "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
     }
     
 }

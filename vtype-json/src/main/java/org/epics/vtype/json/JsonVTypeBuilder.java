@@ -14,6 +14,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import org.epics.util.array.ListBoolean;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
@@ -170,6 +171,15 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
         return this;
     }
     
+    public JsonVTypeBuilder addListBoolean(String string, ListBoolean lb) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (int i = 0; i < lb.size(); i++) {
+            b.add(lb.getBoolean(i));
+        }
+        add(string, b);
+        return this;
+    }
+    
     public JsonVTypeBuilder addNullableObject(String string, Object o) {
         if (o == null) {
             addNull(string);
@@ -192,6 +202,8 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
             add(string, ((Number) o).longValue());
         } else if (o instanceof ListNumber) {
             addListNumber(string, (ListNumber) o);
+        } else if (o instanceof ListBoolean) {
+            addListBoolean(string, (ListBoolean) o);
         } else {
             throw new UnsupportedOperationException("Class " + o.getClass() + " not supported");
         }

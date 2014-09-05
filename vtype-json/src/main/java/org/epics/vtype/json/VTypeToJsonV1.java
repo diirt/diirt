@@ -7,6 +7,7 @@ package org.epics.vtype.json;
 
 import javax.json.JsonObject;
 import org.epics.vtype.VBoolean;
+import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
@@ -31,6 +32,8 @@ class VTypeToJsonV1 {
             return toJson((VNumberArray) vType);
         } else if (vType instanceof VBoolean) {
             return toJson((VBoolean) vType);
+        } else if (vType instanceof VBooleanArray) {
+            return toJson((VBooleanArray) vType);
         } else if (vType instanceof VString) {
             return toJson((VString) vType);
         } else if (vType instanceof VStringArray) {
@@ -67,6 +70,15 @@ class VTypeToJsonV1 {
                 .add("value", vBoolean.getValue())
                 .addAlarm(vBoolean)
                 .addTime(vBoolean)
+                .build();
+    }
+    
+    static JsonObject toJson(VBooleanArray vBooleanArray) {
+        return new JsonVTypeBuilder()
+                .addType(vBooleanArray)
+                .addObject("value", vBooleanArray.getData())
+                .addAlarm(vBooleanArray)
+                .addTime(vBooleanArray)
                 .build();
     }
     
