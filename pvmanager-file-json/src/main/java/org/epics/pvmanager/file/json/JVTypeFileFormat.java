@@ -6,6 +6,8 @@ package org.epics.pvmanager.file.json;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collection;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.json.JsonWriter;
@@ -45,4 +47,9 @@ public class JVTypeFileFormat implements FileFormat {
 	return true;
     }
 
+    @Override
+    public Collection<String> getFileExtensions() {
+        return Arrays.asList(".jvtype");
+    }
+    
 }
