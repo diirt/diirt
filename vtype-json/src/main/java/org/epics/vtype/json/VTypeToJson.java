@@ -43,6 +43,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VNumber vNumber) {
         return new JsonVTypeBuilder()
+                .addType(vNumber)
                 .addObject("value", vNumber.getValue())
                 .addAlarm(vNumber)
                 .addTime(vNumber)
@@ -52,6 +53,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VNumberArray vNumberArray) {
         return new JsonVTypeBuilder()
+                .addType(vNumberArray)
                 .addObject("value", vNumberArray.getData())
                 .addAlarm(vNumberArray)
                 .addTime(vNumberArray)
@@ -61,6 +63,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VBoolean vBoolean) {
         return new JsonVTypeBuilder()
+                .addType(vBoolean)
                 .add("value", vBoolean.getValue())
                 .addAlarm(vBoolean)
                 .addTime(vBoolean)
@@ -69,6 +72,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VString vString) {
         return new JsonVTypeBuilder()
+                .addType(vString)
                 .add("value", vString.getValue())
                 .addAlarm(vString)
                 .addTime(vString)
@@ -77,6 +81,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VStringArray vStringArray) {
         return new JsonVTypeBuilder()
+                .addType(vStringArray)
                 .addListString("value", vStringArray.getData())
                 .addAlarm(vStringArray)
                 .addTime(vStringArray)
@@ -85,6 +90,7 @@ public class VTypeToJson {
     
     static JsonObject toJson(VEnum vEnum) {
         return new JsonVTypeBuilder()
+                .addType(vEnum)
                 .add("value", vEnum.getValue())
                 .addAlarm(vEnum)
                 .addTime(vEnum)

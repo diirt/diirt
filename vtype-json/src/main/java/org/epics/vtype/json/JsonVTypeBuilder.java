@@ -22,6 +22,8 @@ import org.epics.util.array.ListShort;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
+import org.epics.vtype.VType;
+import org.epics.vtype.ValueUtil;
 
 /**
  *
@@ -197,4 +199,10 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
         return this;
     }
     
+    public JsonVTypeBuilder addType(VType vType) {
+        Class<?> clazz = ValueUtil.typeOf(vType);
+        return add("type", new JsonVTypeBuilder()
+                .add("name", clazz.getSimpleName())
+                .add("version", 1));
+    }
 }
