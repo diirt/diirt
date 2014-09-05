@@ -8,6 +8,8 @@ package org.epics.pvmanager.file;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Place to registers file formats so that the file datasource can use them.
@@ -19,6 +21,7 @@ public class FileFormatRegistry {
     private final static FileFormatRegistry registry = new FileFormatRegistry();
     
     private static final Map<String, FileFormat> fileFormatRegistry = new ConcurrentHashMap<>();
+    private static final Logger log = Logger.getLogger(FileFormatRegistry.class.getName());
     
     public static FileFormatRegistry getDefault() {
         return registry;
@@ -39,6 +42,7 @@ public class FileFormatRegistry {
      * @param format the FileFormat
      */
     public void registerFileFormat(String extension, FileFormat format) {
+        log.log(Level.FINE, "File datasource: registering extension {0}", extension);
 	fileFormatRegistry.put(extension, format);
     }
     
