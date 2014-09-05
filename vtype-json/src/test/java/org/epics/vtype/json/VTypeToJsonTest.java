@@ -5,12 +5,12 @@
 
 package org.epics.vtype.json;
 
-import org.epics.vtype.json.VTypeToJson;
 import java.io.StringWriter;
 import java.util.Arrays;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
+import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
@@ -18,6 +18,7 @@ import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VInt;
+import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
@@ -79,6 +80,13 @@ public class VTypeToJsonTest {
         VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         JsonObject json = VTypeToJson.toJson((VType) vDoubleArray);
         compareJson(json, "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+    }
+
+    @Test
+    public void testVByteArray() {
+        VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        JsonObject json = VTypeToJson.toJson((VType) vByteArray);
+        compareJson(json, "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
