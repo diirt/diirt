@@ -76,7 +76,7 @@ class VTypeToJsonV1 {
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
-                return newVNumber(value, alarmNone(), timeNow(), displayNone());
+        return newVNumber(value, mapper.getAlarm(), timeNow(), displayNone());
     }
     
     static JsonObject toJson(VNumber vNumber) {

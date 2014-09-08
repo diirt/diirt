@@ -27,9 +27,11 @@ import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
 import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
 import org.epics.vtype.VType;
+import org.epics.vtype.ValueFactory;
 import org.epics.vtype.ValueUtil;
 
 /**
@@ -50,6 +52,14 @@ public class VTypeJsonMapper implements JsonObject {
             return null;
         }
         return type.getString("name");
+    }
+    
+    public Alarm getAlarm() {
+        JsonObject alarm = json.getJsonObject("alarm");
+        if (alarm == null) {
+            return null;
+        }
+        return ValueFactory.newAlarm(AlarmSeverity.valueOf(alarm.getString("severity")), alarm.getString("status"));
     }
 
     @Override
