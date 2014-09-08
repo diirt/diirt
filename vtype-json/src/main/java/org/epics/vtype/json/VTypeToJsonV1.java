@@ -6,6 +6,8 @@
 package org.epics.vtype.json;
 
 import javax.json.JsonObject;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VEnum;
@@ -33,6 +35,8 @@ class VTypeToJsonV1 {
             case "VShort":
             case "VByte":
                 return toVNumber(json);
+            case "VDoubleArray":
+                return toVNumberArray(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
@@ -93,6 +97,19 @@ class VTypeToJsonV1 {
                 throw new UnsupportedOperationException("Not implemented yet");
         }
         return newVNumber(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
+    }
+    
+    static VNumberArray toVNumberArray(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        ListNumber value;
+        switch(mapper.getTypeName()) {
+            case "VDoubleArray":
+                value = mapper.getListDouble("value");
+                break;
+            default:
+                throw new UnsupportedOperationException("Not implemented yet");
+        }
+        return newVNumberArray(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
     }
     
     static JsonObject toJson(VNumber vNumber) {

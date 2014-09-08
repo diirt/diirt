@@ -20,8 +20,10 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ListBoolean;
 import org.epics.util.array.ListByte;
+import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
@@ -85,6 +87,19 @@ public class VTypeJsonMapper implements JsonObject {
                 display.getNotNullDouble("highDisplay"),
                 Double.NaN,
                 Double.NaN);
+    }
+    
+    public ListDouble getListDouble(String string) {
+        JsonArray array = getJsonArray(string);
+        double[] values = new double[array.size()];
+        for (int i = 0; i < values.length; i++) {
+            if (array.isNull(i)) {
+                values[i] = Double.NaN;
+            } else {
+                values[i] = array.getJsonNumber(i).doubleValue();
+            }
+        }
+        return new ArrayDouble(values);
     }
     
     public Integer getInteger(String string) {
