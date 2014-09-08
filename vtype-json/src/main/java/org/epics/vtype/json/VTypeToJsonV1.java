@@ -15,6 +15,8 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
+import org.epics.vtype.ValueFactory;
+import static org.epics.vtype.ValueFactory.*;
 
 /**
  * 
@@ -23,7 +25,20 @@ import org.epics.vtype.VType;
 class VTypeToJsonV1 {
 
     static VType toVType(JsonObject json) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        switch(typeNameOf(json)) {
+            case "VDouble":
+                return toVNumber(json);
+            default:
+                throw new UnsupportedOperationException("Not implemented yet");
+        }
+    }
+    
+    static String typeNameOf(JsonObject json) {
+        JsonObject type = json.getJsonObject("type");
+        if (type == null) {
+            return null;
+        }
+        return type.getString("name");
     }
     
     static JsonObject toJson(VType vType) {
@@ -45,6 +60,18 @@ class VTypeToJsonV1 {
             return toJson((VEnumArray) vType);
         }
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+    
+    static VNumber toVNumber(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        Number value;
+        switch(mapper.getTypeName()) {
+            case "VDouble":
+                value = mapper.getJsonNumber("value").doubleValue();
+                return newVNumber(value, alarmNone(), timeNow(), displayNone());
+            default:
+                throw new UnsupportedOperationException("Not implemented yet");
+        }
     }
     
     static JsonObject toJson(VNumber vNumber) {

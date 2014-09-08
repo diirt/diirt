@@ -5,10 +5,12 @@
 
 package org.epics.vtype.json;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import org.epics.util.array.ArrayBoolean;
 import org.epics.util.array.ArrayByte;
@@ -26,6 +28,7 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
+import org.epics.vtype.VTypeValueEquals;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.epics.vtype.ValueFactory.*;
@@ -112,6 +115,17 @@ public class VTypeToJsonTest {
         VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
         JsonObject json = VTypeToJson.toJson((VType) vBooleanArray);
         compareJson(json, "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+    }
+
+    @Test
+    public void parseVDouble() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VDouble expected = newVDouble(3.14, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
     }
     
 }
