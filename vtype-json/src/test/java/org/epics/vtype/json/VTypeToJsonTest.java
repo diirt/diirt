@@ -23,6 +23,7 @@ import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VEnumArray;
+import org.epics.vtype.VFloat;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
@@ -125,6 +126,17 @@ public class VTypeToJsonTest {
         }
         VType vType = VTypeToJson.toVType(json);
         VDouble expected = newVDouble(3.14, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVFloat() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VFloat\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VFloat expected = newVFloat((float) 3.14, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
     }
     

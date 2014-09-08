@@ -27,6 +27,7 @@ class VTypeToJsonV1 {
     static VType toVType(JsonObject json) {
         switch(typeNameOf(json)) {
             case "VDouble":
+            case "VFloat":
                 return toVNumber(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
@@ -68,10 +69,14 @@ class VTypeToJsonV1 {
         switch(mapper.getTypeName()) {
             case "VDouble":
                 value = mapper.getJsonNumber("value").doubleValue();
-                return newVNumber(value, alarmNone(), timeNow(), displayNone());
+                break;
+            case "VFloat":
+                value = (float) mapper.getJsonNumber("value").doubleValue();
+                break;
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
+                return newVNumber(value, alarmNone(), timeNow(), displayNone());
     }
     
     static JsonObject toJson(VNumber vNumber) {
