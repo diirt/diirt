@@ -71,11 +71,34 @@ public class VTypeJsonMapper implements JsonObject {
         return ValueFactory.newTime(Timestamp.of(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
     }
     
+    public Display getDisplay() {
+        VTypeJsonMapper display = getJsonObject("display");
+        if (display == null) {
+            return null;
+        }
+        return ValueFactory.newDisplay(display.getNotNullDouble("lowDisplay"),
+                display.getNotNullDouble("lowAlarm"),
+                display.getNotNullDouble("lowWarning"),
+                display.getString("units"), null,
+                display.getNotNullDouble("highWarning"),
+                display.getNotNullDouble("highAlarm"),
+                display.getNotNullDouble("highDisplay"),
+                Double.NaN,
+                Double.NaN);
+    }
+    
     public Integer getInteger(String string) {
         if (isNull(string)) {
             return null;
         }
         return getInt(string);
+    }
+    
+    public Double getNotNullDouble(String string) {
+        if (isNull(string)) {
+            return Double.NaN;
+        }
+        return getJsonNumber(string).doubleValue();
     }
 
     @Override
