@@ -38,6 +38,9 @@ class VTypeToJsonV1 {
             case "VDoubleArray":
             case "VFloatArray":
             case "VLongArray":
+            case "VIntArray":
+            case "VShortArray":
+            case "VByteArray":
                 return toVNumberArray(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
@@ -113,6 +116,15 @@ class VTypeToJsonV1 {
                 break;
             case "VLongArray":
                 value = mapper.getListLong("value");
+                break;
+            case "VIntArray":
+                value = mapper.getListInt("value");
+                break;
+            case "VShortArray":
+                value = mapper.getListShort("value");
+                break;
+            case "VByteArray":
+                value = mapper.getListByte("value");
                 break;
             default:
                 throw new UnsupportedOperationException("Not implemented yet");

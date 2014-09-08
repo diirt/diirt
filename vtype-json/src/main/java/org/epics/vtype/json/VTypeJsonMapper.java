@@ -14,12 +14,18 @@ import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
+import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayLong;
+import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
+import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
+import org.epics.util.array.ListShort;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
@@ -112,6 +118,33 @@ public class VTypeJsonMapper implements JsonObject {
             values[i] = (long) array.getJsonNumber(i).longValue();
         }
         return new ArrayLong(values);
+    }
+    
+    public ListInt getListInt(String string) {
+        JsonArray array = getJsonArray(string);
+        int[] values = new int[array.size()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = (int) array.getJsonNumber(i).intValue();
+        }
+        return new ArrayInt(values);
+    }
+    
+    public ListShort getListShort(String string) {
+        JsonArray array = getJsonArray(string);
+        short[] values = new short[array.size()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = (short) array.getJsonNumber(i).intValue();
+        }
+        return new ArrayShort(values);
+    }
+    
+    public ListByte getListByte(String string) {
+        JsonArray array = getJsonArray(string);
+        byte[] values = new byte[array.size()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = (byte) array.getJsonNumber(i).intValue();
+        }
+        return new ArrayByte(values);
     }
     
     public Integer getInteger(String string) {
