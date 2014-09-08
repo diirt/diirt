@@ -123,7 +123,7 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
     }
     
     public JsonVTypeBuilder addDisplay(Display display) {
-        return add("time", new JsonVTypeBuilder()
+        return add("display", new JsonVTypeBuilder()
                 .add("lowAlarm", display.getLowerAlarmLimit())
                 .add("highAlarm", display.getUpperAlarmLimit())
                 .add("lowDisplay", display.getLowerDisplayLimit())

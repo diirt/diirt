@@ -54,14 +54,14 @@ public class VTypeToJsonTest {
     public void testVDouble() {
         VDouble vDouble = newVDouble(3.14, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         JsonObject json = VTypeToJson.toJson(vDouble);
-        compareJson(json, "{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(json, "{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
     public void testVInt() {
         VInt vInt = newVInt(314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         JsonObject json = VTypeToJson.toJson((VType) vInt);
-        compareJson(json, "{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(json, "{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
@@ -96,14 +96,14 @@ public class VTypeToJsonTest {
     public void testVDoubleArray() {
         VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         JsonObject json = VTypeToJson.toJson((VType) vDoubleArray);
-        compareJson(json, "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(json, "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
     public void testVByteArray() {
         VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         JsonObject json = VTypeToJson.toJson((VType) vByteArray);
-        compareJson(json, "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(json, "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class VTypeToJsonTest {
     @Test
     public void parseVDouble() {
         JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
             json = reader.readObject();
         }
         VType vType = VTypeToJson.toVType(json);
@@ -131,12 +131,13 @@ public class VTypeToJsonTest {
         assertThat(vType, instanceOf(VDouble.class));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
         assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
+        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (VNumber) vType), equalTo(true));
     }
 
     @Test
     public void parseVFloat() {
         JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VFloat\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VFloat\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
             json = reader.readObject();
         }
         VType vType = VTypeToJson.toVType(json);

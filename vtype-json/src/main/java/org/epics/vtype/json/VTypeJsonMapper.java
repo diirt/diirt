@@ -26,6 +26,7 @@ import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Display;
@@ -61,6 +62,21 @@ public class VTypeJsonMapper implements JsonObject {
         }
         return ValueFactory.newAlarm(AlarmSeverity.valueOf(alarm.getString("severity")), alarm.getString("status"));
     }
+    
+    public Time getTime() {
+        VTypeJsonMapper time = getJsonObject("time");
+        if (time == null) {
+            return null;
+        }
+        return ValueFactory.newTime(Timestamp.of(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
+    }
+    
+    public Integer getInteger(String string) {
+        if (isNull(string)) {
+            return null;
+        }
+        return getInt(string);
+    }
 
     @Override
     public JsonArray getJsonArray(String string) {
@@ -68,8 +84,8 @@ public class VTypeJsonMapper implements JsonObject {
     }
 
     @Override
-    public JsonObject getJsonObject(String string) {
-        return json.getJsonObject(string);
+    public VTypeJsonMapper getJsonObject(String string) {
+        return new VTypeJsonMapper(json.getJsonObject(string));
     }
 
     @Override
