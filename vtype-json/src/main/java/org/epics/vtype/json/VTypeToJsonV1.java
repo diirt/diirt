@@ -42,6 +42,8 @@ class VTypeToJsonV1 {
             case "VShortArray":
             case "VByteArray":
                 return toVNumberArray(json);
+            case "VString":
+                return toVString(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
@@ -102,6 +104,11 @@ class VTypeToJsonV1 {
                 throw new UnsupportedOperationException("Not implemented yet");
         }
         return newVNumber(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
+    }
+    
+    static VString toVString(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        return newVString(mapper.getString("value"), mapper.getAlarm(), mapper.getTime());
     }
     
     static VNumberArray toVNumberArray(JsonObject json) {
