@@ -20,6 +20,7 @@ import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
+import org.epics.vtype.VByte;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
@@ -29,6 +30,7 @@ import org.epics.vtype.VInt;
 import org.epics.vtype.VLong;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VShort;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VType;
@@ -146,6 +148,7 @@ public class VTypeToJsonTest {
         assertThat(vType, instanceOf(VFloat.class));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
         assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
+        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (VNumber) vType), equalTo(true));
     }
 
     @Test
@@ -155,8 +158,48 @@ public class VTypeToJsonTest {
             json = reader.readObject();
         }
         VType vType = VTypeToJson.toVType(json);
-        VLong expected = newVLong(314l, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
+        VLong expected = newVLong(314L, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
         assertThat(vType, instanceOf(VLong.class));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
+        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
+        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (VNumber) vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVInt() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VInt expected = newVInt(314, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat(vType, instanceOf(VInt.class));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
+        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVShort() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VShort\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VShort expected = newVShort((short) 314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat(vType, instanceOf(VShort.class));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
+        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVByte() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VByte\",\"version\":1},\"value\":31,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VByte expected = newVByte((byte) 31, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat(vType, instanceOf(VByte.class));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
         assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (VNumber) vType), equalTo(true));
     }
