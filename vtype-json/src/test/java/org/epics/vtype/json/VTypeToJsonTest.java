@@ -17,6 +17,7 @@ import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayLong;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
@@ -32,6 +33,7 @@ import org.epics.vtype.VFloat;
 import org.epics.vtype.VFloatArray;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VLong;
+import org.epics.vtype.VLongArray;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VShort;
@@ -239,6 +241,24 @@ public class VTypeToJsonTest {
         VType vType = VTypeToJson.toVType(json);
         VFloatArray expected = newVFloatArray(new ArrayFloat(new float[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
         assertThat(vType, instanceOf(VFloatArray.class));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
+        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
+        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVLongArray() {
+        JsonObject json;
+        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VLongArray\",\"version\":1},"
+                + "\"value\":[0,1,2],"
+                + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
+            json = reader.readObject();
+        }
+        VType vType = VTypeToJson.toVType(json);
+        VLongArray expected = newVLongArray(new ArrayLong(new long[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat(vType, instanceOf(VLongArray.class));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
         assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
         assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
