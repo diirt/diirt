@@ -5,6 +5,7 @@
 
 package org.epics.vtype.json;
 
+import java.util.List;
 import javax.json.JsonObject;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListNumber;
@@ -44,6 +45,8 @@ class VTypeToJsonV1 {
                 return toVNumberArray(json);
             case "VString":
                 return toVString(json);
+            case "VEnum":
+                return toVEnum(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
@@ -109,6 +112,12 @@ class VTypeToJsonV1 {
     static VString toVString(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVString(mapper.getString("value"), mapper.getAlarm(), mapper.getTime());
+    }
+    
+    static VEnum toVEnum(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        List<String> labels = mapper.getJsonObject("enum").getListString("labels");
+        return newVEnum(labels.indexOf(mapper.getString("value")), labels, mapper.getAlarm(), mapper.getTime());
     }
     
     static VNumberArray toVNumberArray(JsonObject json) {

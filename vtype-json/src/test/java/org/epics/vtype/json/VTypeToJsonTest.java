@@ -62,6 +62,23 @@ public class VTypeToJsonTest {
         jsonWriter.writeObject(json);
         assertThat(writer.toString(), equalTo(text));
     }
+    
+    public void compareVType(VType actual, VType expected) {
+        assertThat("Type mismatch", VTypeValueEquals.typeEquals(expected, actual), equalTo(true));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, actual), equalTo(true));
+        if (expected instanceof Alarm) {
+            assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals((Alarm) expected, (Alarm) actual), equalTo(true));
+        }
+        if (expected instanceof Time) {
+            assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) expected, (Time) actual), equalTo(true));
+        }
+    }
+    
+    public JsonObject parseJson(String json) {
+        try (JsonReader reader = Json.createReader(new StringReader(json))) {
+            return reader.readObject();
+        }
+    }
 
     @Test
     public void testVDouble() {
@@ -90,12 +107,13 @@ public class VTypeToJsonTest {
         JsonObject json = VTypeToJson.toJson((VType) vString);
         compareJson(json, "{\"type\":{\"name\":\"VString\",\"version\":1},\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
     }
+    
+    public VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
 
     @Test
     public void testVEnum() {
-        VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vEnum);
-        compareJson(json, "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
+        compareJson(VTypeToJson.toJson((VType) vEnum), vEnumJson);
     }
 
     @Test
@@ -337,6 +355,11 @@ public class VTypeToJsonTest {
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
         assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
         assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+    }
+
+    @Test
+    public void parseVEnum() {
+        compareVType(vEnum, VTypeToJson.toVType(parseJson(vEnumJson)));
     }
     
 }

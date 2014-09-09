@@ -6,7 +6,9 @@
 
 package org.epics.vtype.json;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.json.JsonArray;
@@ -145,6 +147,15 @@ public class VTypeJsonMapper implements JsonObject {
             values[i] = (byte) array.getJsonNumber(i).intValue();
         }
         return new ArrayByte(values);
+    }
+    
+    public List<String> getListString(String string) {
+        JsonArray array = getJsonArray(string);
+        List<String> strings = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            strings.add(array.getString(i));
+        }
+        return strings;
     }
     
     public Integer getInteger(String string) {
