@@ -110,6 +110,8 @@ public class VTypeToJsonTest {
     
     public VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
     public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
+    public VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vStringArrayJson = "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
 
     @Test
     public void testVEnum() {
@@ -139,9 +141,7 @@ public class VTypeToJsonTest {
 
     @Test
     public void testVStringArray() {
-        VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vStringArray);
-        compareJson(json, "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+        compareJson(VTypeToJson.toJson((VType) vStringArray), vStringArrayJson);
     }
 
     @Test
@@ -360,6 +360,11 @@ public class VTypeToJsonTest {
     @Test
     public void parseVEnum() {
         compareVType(vEnum, VTypeToJson.toVType(parseJson(vEnumJson)));
+    }
+
+    @Test
+    public void parseVStringArray() {
+        compareVType(vStringArray, VTypeToJson.toVType(parseJson(vStringArrayJson)));
     }
     
 }

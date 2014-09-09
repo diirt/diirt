@@ -45,6 +45,8 @@ class VTypeToJsonV1 {
                 return toVNumberArray(json);
             case "VString":
                 return toVString(json);
+            case "VStringArray":
+                return toVStringArray(json);
             case "VEnum":
                 return toVEnum(json);
             default:
@@ -112,6 +114,11 @@ class VTypeToJsonV1 {
     static VString toVString(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVString(mapper.getString("value"), mapper.getAlarm(), mapper.getTime());
+    }
+    
+    static VStringArray toVStringArray(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        return newVStringArray(mapper.getListString("value"), mapper.getAlarm(), mapper.getTime());
     }
     
     static VEnum toVEnum(JsonObject json) {
