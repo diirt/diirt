@@ -5,6 +5,8 @@
 
 package org.diirt.pods.common;
 
+import java.util.List;
+
 /**
  * Given a channel name, it translates it to a channel or formula. This allows
  * the server to provide aliases for actual channels or formulas.
@@ -32,5 +34,16 @@ public abstract class ChannelTranslator {
      */
     public static ChannelTranslator regexTranslator(String regex, String substitution, boolean readOnly) {
         return new RegexChannelTranslator(regex, substitution, readOnly);
+    }
+    
+    /**
+     * Creates a channel translator that returns the first successful match
+     * from the list of give translators.
+     * 
+     * @param translators a list of translators
+     * @return the combined translator
+     */
+    public static ChannelTranslator compositeTranslator(List<ChannelTranslator> translators) {
+        return new CompositeChannelTranslator(translators);
     }
 }

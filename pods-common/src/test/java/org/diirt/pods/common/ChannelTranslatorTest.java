@@ -6,9 +6,11 @@
 
 package org.diirt.pods.common;
 
+import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.diirt.pods.common.ChannelTranslator.*;
 
 /**
  *
@@ -17,8 +19,8 @@ import static org.hamcrest.Matchers.*;
 public class ChannelTranslatorTest {
 
     @Test
-    public void translate1() {
-        ChannelTranslator translator = ChannelTranslator.regexTranslator("(.*)", "$1", true);
+    public void regexTranslator1() {
+        ChannelTranslator translator = regexTranslator("(.*)", "$1", true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target.getFormula(), equalTo("sim://noise"));
         assertThat(target.isReadOnly(), equalTo(true));
@@ -33,8 +35,8 @@ public class ChannelTranslatorTest {
     }
 
     @Test
-    public void translate2() {
-        ChannelTranslator translator = ChannelTranslator.regexTranslator(".*", null, true);
+    public void regexTranslator2() {
+        ChannelTranslator translator = regexTranslator(".*", null, true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target.getFormula(), equalTo("sim://noise"));
         assertThat(target.isReadOnly(), equalTo(true));
@@ -49,8 +51,8 @@ public class ChannelTranslatorTest {
     }
 
     @Test
-    public void translate3() {
-        ChannelTranslator translator = ChannelTranslator.regexTranslator("abc-.*", null, true);
+    public void regexTranslator3() {
+        ChannelTranslator translator = regexTranslator("abc-.*", null, true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target, nullValue());
         
@@ -63,8 +65,8 @@ public class ChannelTranslatorTest {
     }
 
     @Test
-    public void translate4() {
-        ChannelTranslator translator = ChannelTranslator.regexTranslator("(.*)-(.*)", "$2-$1", false);
+    public void regexTranslator4() {
+        ChannelTranslator translator = regexTranslator("(.*)-(.*)", "$2-$1", false);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target, nullValue());
         
@@ -73,6 +75,22 @@ public class ChannelTranslatorTest {
         
         target = translator.translate("abc-345{dfkj:34}");
         assertThat(target.getFormula(), equalTo("345{dfkj:34}-abc"));
+        assertThat(target.isReadOnly(), equalTo(false));
+    }
+    
+    @Test
+    public void compositeTranslator1() {
+        ChannelTranslator translator = compositeTranslator(Arrays.asList(regexTranslator("abc-(.*)", null, false), regexTranslator(".*", null, true)));
+        ChannelTranslation target = translator.translate("sim://noise");
+        assertThat(target.getFormula(), equalTo("sim://noise"));
+        assertThat(target.isReadOnly(), equalTo(true));
+        
+        target = translator.translate("=1+2");
+        assertThat(target.getFormula(), equalTo("=1+2"));
+        assertThat(target.isReadOnly(), equalTo(true));
+        
+        target = translator.translate("abc-345{dfkj:34}");
+        assertThat(target.getFormula(), equalTo("abc-345{dfkj:34}"));
         assertThat(target.isReadOnly(), equalTo(false));
     }
     
