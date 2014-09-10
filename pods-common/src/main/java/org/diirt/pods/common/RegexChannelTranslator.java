@@ -16,13 +16,13 @@ class RegexChannelTranslator extends ChannelTranslator {
     private final Pattern p;
     private final String regex;
     private final String substitution;
-    private final boolean readOnly;
+    private final ChannelTranslation.Permission permission;
 
-    public RegexChannelTranslator(String regex, String substitution, boolean readOnly) {
+    public RegexChannelTranslator(String regex, String substitution, ChannelTranslation.Permission permission) {
         p = Pattern.compile(regex);
         this.regex = regex;
         this.substitution = substitution;
-        this.readOnly = readOnly;
+        this.permission = permission;
     }
 
     @Override
@@ -35,7 +35,7 @@ class RegexChannelTranslator extends ChannelTranslator {
             } else {
                 translation = channelName;
             }
-            return new ChannelTranslation(translation, readOnly);
+            return new ChannelTranslation(translation, permission);
         } else {
             return null;
         }

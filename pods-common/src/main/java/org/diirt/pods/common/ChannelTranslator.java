@@ -29,11 +29,11 @@ public abstract class ChannelTranslator {
      * 
      * @param regex a regular expression
      * @param substitution the substitution string; can be null
-     * @param readOnly whether to allow write or not
+     * @param permission the permission to enforce on the channel
      * @return the translator
      */
-    public static ChannelTranslator regexTranslator(String regex, String substitution, boolean readOnly) {
-        return new RegexChannelTranslator(regex, substitution, readOnly);
+    public static ChannelTranslator regexTranslator(String regex, String substitution, ChannelTranslation.Permission permission) {
+        return new RegexChannelTranslator(regex, substitution, permission);
     }
     
     /**

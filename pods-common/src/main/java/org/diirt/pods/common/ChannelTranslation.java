@@ -12,20 +12,22 @@ package org.diirt.pods.common;
  * @author carcassi
  */
 public class ChannelTranslation {
+    public enum Permission {READ_WRITE, READ_ONLY, NONE};
+    
     private final String formula;
-    private final boolean readOnly;
+    private final Permission permission;
 
-    ChannelTranslation(String formula, boolean readOnly) {
+    ChannelTranslation(String formula, Permission permission) {
         this.formula = formula;
-        this.readOnly = readOnly;
+        this.permission = permission;
     }
 
     public String getFormula() {
         return formula;
     }
 
-    public boolean isReadOnly() {
-        return readOnly;
+    public Permission getPermission() {
+        return permission;
     }
     
 }
