@@ -144,6 +144,12 @@ public class VTypeToJsonTest {
     public String vEnumArrayJson = "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
     public VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vDoubleArrayJson = "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VFloatArray vFloatArray = newVFloatArray(new ArrayFloat(new float[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vFloatArrayJson = "{\"type\":{\"name\":\"VFloatArray\",\"version\":1},"
+                + "\"value\":[0.0,1.0,2.0],"
+                + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vByteArrayJson = "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
@@ -162,6 +168,11 @@ public class VTypeToJsonTest {
     @Test
     public void testVDoubleArray() {
         compareJson(VTypeToJson.toJson(vDoubleArray), vDoubleArrayJson);
+    }
+
+    @Test
+    public void testVFloatArray() {
+        compareJson(VTypeToJson.toJson(vFloatArray), vFloatArrayJson);
     }
 
     @Test
@@ -216,20 +227,7 @@ public class VTypeToJsonTest {
 
     @Test
     public void parseVFloatArray() {
-        JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VFloatArray\",\"version\":1},"
-                + "\"value\":[0.0,1.0,2.0],"
-                + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
-                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
-                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
-            json = reader.readObject();
-        }
-        VType vType = VTypeToJson.toVType(json);
-        VFloatArray expected = newVFloatArray(new ArrayFloat(new float[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(vType, instanceOf(VFloatArray.class));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
-        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
-        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+        compareVType(vFloatArray, VTypeToJson.toVType(parseJson(vFloatArrayJson)));
     }
 
     @Test
