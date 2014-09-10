@@ -81,29 +81,63 @@ public class VTypeToJsonTest {
     }
     
     public VDouble vDouble = newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vDoubleJson = "{\"type\":{\"name\":\"VDouble\",\"version\":1},\"value\":3.14,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vDoubleJson = "{\"type\":{\"name\":\"VDouble\",\"version\":1},"
+            + "\"value\":3.14,"
+            + "\"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VFloat vFloat = newVFloat((float) 3.125, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vFloatJson = "{\"type\":{\"name\":\"VFloat\",\"version\":1},\"value\":3.125,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vFloatJson = "{\"type\":{\"name\":\"VFloat\",\"version\":1},"
+            + "\"value\":3.125,"
+            + "\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VLong vLong = newVLong(313L, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vLongJson = "{\"type\":{\"name\":\"VLong\",\"version\":1},\"value\":313,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vLongJson = "{\"type\":{\"name\":\"VLong\",\"version\":1},"
+            + "\"value\":313,"
+            + "\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VInt vInt = newVInt(314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vIntJson = "{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vIntJson = "{\"type\":{\"name\":\"VInt\",\"version\":1},"
+            + "\"value\":314,"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VShort vShort = newVShort((short) 314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vShortJson = "{\"type\":{\"name\":\"VShort\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vShortJson = "{\"type\":{\"name\":\"VShort\",\"version\":1},"
+            + "\"value\":314,"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VByte vByte = newVByte((byte) 31, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vByteJson = "{\"type\":{\"name\":\"VByte\",\"version\":1},\"value\":31,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vByteJson = "{\"type\":{\"name\":\"VByte\",\"version\":1},"
+            + "\"value\":31,"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VBoolean vBoolean = newVBoolean(true, alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vBooleanJson = "{\"type\":{\"name\":\"VBoolean\",\"version\":1},\"value\":true,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public String vBooleanJson = "{\"type\":{\"name\":\"VBoolean\",\"version\":1},"
+            + "\"value\":true,"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
     public VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vStringJson = "{\"type\":{\"name\":\"VString\",\"version\":1},\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public String vStringJson = "{\"type\":{\"name\":\"VString\",\"version\":1},"
+            + "\"value\":\"Flower\","
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
     public VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":1,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
-    public VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vStringArrayJson = "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
-    public VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vEnumArrayJson = "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
+    public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},"
+            + "\"value\":1,"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
     public VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-    public String vDoubleArrayJson = "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public String vDoubleArrayJson = "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},"
+            + "\"value\":[0.0,0.1,0.2],"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VFloatArray vFloatArray = newVFloatArray(new ArrayFloat(new float[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vFloatArrayJson = "{\"type\":{\"name\":\"VFloatArray\",\"version\":1},"
                 + "\"value\":[0.0,1.0,2.0],"
@@ -130,11 +164,25 @@ public class VTypeToJsonTest {
                 + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vByteArrayJson = "{\"type\":{\"name\":\"VByteArray\",\"version\":1},"
-            + "\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"value\":[0,1,2],"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
             + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
             + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vBooleanArrayJson = "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public String vBooleanArrayJson = "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},"
+            + "\"value\":[true,false,true],"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vStringArrayJson = "{\"type\":{\"name\":\"VStringArray\",\"version\":1},"
+            + "\"value\":[\"A\",\"B\",\"C\"],"
+            + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vEnumArrayJson = "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},"
+            + "\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+            + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
     
     @Test
     public void serializeVDouble() {
