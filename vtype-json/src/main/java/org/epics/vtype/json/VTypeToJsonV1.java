@@ -49,6 +49,8 @@ class VTypeToJsonV1 {
                 return toVStringArray(json);
             case "VEnum":
                 return toVEnum(json);
+            case "VEnumArray":
+                return toVEnumArray(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
@@ -124,7 +126,12 @@ class VTypeToJsonV1 {
     static VEnum toVEnum(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         List<String> labels = mapper.getJsonObject("enum").getListString("labels");
-        return newVEnum(labels.indexOf(mapper.getString("value")), labels, mapper.getAlarm(), mapper.getTime());
+        return newVEnum(mapper.getInt("value"), labels, mapper.getAlarm(), mapper.getTime());
+    }
+    
+    static VEnumArray toVEnumArray(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        return newVEnumArray(mapper.getListInt("value"), mapper.getJsonObject("enum").getListString("labels"), mapper.getAlarm(), mapper.getTime());
     }
     
     static VNumberArray toVNumberArray(JsonObject json) {
@@ -214,7 +221,7 @@ class VTypeToJsonV1 {
     static JsonObject toJson(VEnum vEnum) {
         return new JsonVTypeBuilder()
                 .addType(vEnum)
-                .add("value", vEnum.getValue())
+                .add("value", vEnum.getIndex())
                 .addAlarm(vEnum)
                 .addTime(vEnum)
                 .addEnum(vEnum)
@@ -224,7 +231,7 @@ class VTypeToJsonV1 {
     static JsonObject toJson(VEnumArray vEnum) {
         return new JsonVTypeBuilder()
                 .addType(vEnum)
-                .addListString("value", vEnum.getData())
+                .addListNumber("value", vEnum.getIndexes())
                 .addAlarm(vEnum)
                 .addTime(vEnum)
                 .addEnum(vEnum)

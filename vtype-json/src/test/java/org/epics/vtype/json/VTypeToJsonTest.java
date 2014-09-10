@@ -109,9 +109,11 @@ public class VTypeToJsonTest {
     }
     
     public VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
-    public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":\"Two\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
+    public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":1,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
     public VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
     public String vStringArrayJson = "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vEnumArrayJson = "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
 
     @Test
     public void testVEnum() {
@@ -120,9 +122,7 @@ public class VTypeToJsonTest {
 
     @Test
     public void testVEnumArray() {
-        VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vEnumArray);
-        compareJson(json, "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[\"Two\",\"One\",\"Two\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}");
+        compareJson(VTypeToJson.toJson((VType) vEnumArray), vEnumArrayJson);
     }
 
     @Test
@@ -360,6 +360,11 @@ public class VTypeToJsonTest {
     @Test
     public void parseVEnum() {
         compareVType(vEnum, VTypeToJson.toVType(parseJson(vEnumJson)));
+    }
+
+    @Test
+    public void parseVEnumArray() {
+        compareVType(vEnumArray, VTypeToJson.toVType(parseJson(vEnumArrayJson)));
     }
 
     @Test
