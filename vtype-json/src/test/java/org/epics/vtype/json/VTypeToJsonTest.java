@@ -114,41 +114,41 @@ public class VTypeToJsonTest {
     public String vStringArrayJson = "{\"type\":{\"name\":\"VStringArray\",\"version\":1},\"value\":[\"A\",\"B\",\"C\"],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
     public VEnumArray vEnumArray = newVEnumArray(new ArrayInt(1,0,1), Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
     public String vEnumArrayJson = "{\"type\":{\"name\":\"VEnumArray\",\"version\":1},\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
-
+    public VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vDoubleArrayJson = "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vByteArrayJson = "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vBooleanArrayJson = "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+        
     @Test
     public void testVEnum() {
-        compareJson(VTypeToJson.toJson((VType) vEnum), vEnumJson);
+        compareJson(VTypeToJson.toJson(vEnum), vEnumJson);
     }
 
     @Test
     public void testVEnumArray() {
-        compareJson(VTypeToJson.toJson((VType) vEnumArray), vEnumArrayJson);
+        compareJson(VTypeToJson.toJson(vEnumArray), vEnumArrayJson);
     }
 
     @Test
     public void testVDoubleArray() {
-        VDoubleArray vDoubleArray = newVDoubleArray(new ArrayDouble(0.0, 0.1, 0.2), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        JsonObject json = VTypeToJson.toJson((VType) vDoubleArray);
-        compareJson(json, "{\"type\":{\"name\":\"VDoubleArray\",\"version\":1},\"value\":[0.0,0.1,0.2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(VTypeToJson.toJson(vDoubleArray), vDoubleArrayJson);
     }
 
     @Test
     public void testVByteArray() {
-        VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        JsonObject json = VTypeToJson.toJson((VType) vByteArray);
-        compareJson(json, "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}");
+        compareJson(VTypeToJson.toJson(vByteArray), vByteArrayJson);
     }
 
     @Test
     public void testVStringArray() {
-        compareJson(VTypeToJson.toJson((VType) vStringArray), vStringArrayJson);
+        compareJson(VTypeToJson.toJson(vStringArray), vStringArrayJson);
     }
 
     @Test
     public void testVBooleanArray() {
-        VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vBooleanArray);
-        compareJson(json, "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+        compareJson(VTypeToJson.toJson(vBooleanArray), vBooleanArrayJson);
     }
 
     @Test
