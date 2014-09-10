@@ -79,7 +79,7 @@ public class VTypeToJsonTest {
             return reader.readObject();
         }
     }
-
+    
     @Test
     public void testVDouble() {
         VDouble vDouble = newVDouble(3.14, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
@@ -96,18 +96,18 @@ public class VTypeToJsonTest {
 
     @Test
     public void testVBoolean() {
-        VBoolean vBoolean = newVBoolean(true, alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vBoolean);
-        compareJson(json, "{\"type\":{\"name\":\"VBoolean\",\"version\":1},\"value\":true,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+        compareJson(VTypeToJson.toJson(vBoolean), vBooleanJson);
     }
 
     @Test
     public void testVString() {
-        VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
-        JsonObject json = VTypeToJson.toJson((VType) vString);
-        compareJson(json, "{\"type\":{\"name\":\"VString\",\"version\":1},\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}");
+        compareJson(VTypeToJson.toJson(vString), vStringJson);
     }
     
+    public VBoolean vBoolean = newVBoolean(true, alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vBooleanJson = "{\"type\":{\"name\":\"VBoolean\",\"version\":1},\"value\":true,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
+    public VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
+    public String vStringJson = "{\"type\":{\"name\":\"VString\",\"version\":1},\"value\":\"Flower\",\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
     public VEnum vEnum = newVEnum(1, Arrays.asList("One", "Two", "Three"), alarmNone(), newTime(Timestamp.of(0, 0)));
     public String vEnumJson = "{\"type\":{\"name\":\"VEnum\",\"version\":1},\"value\":1,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
     public VStringArray vStringArray = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), newTime(Timestamp.of(0, 0)));
