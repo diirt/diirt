@@ -47,5 +47,33 @@ public class RegexChannelTranslatorTest {
         assertThat(target.getFormula(), equalTo("abc-345{dfkj:34}"));
         assertThat(target.isReadOnly(), equalTo(true));
     }
+
+    @Test
+    public void translate3() {
+        RegexChannelTranslator translator = new RegexChannelTranslator("abc-.*", null, true);
+        ChannelTranslation target = translator.translate("sim://noise");
+        assertThat(target, nullValue());
+        
+        target = translator.translate("=1+2");
+        assertThat(target, nullValue());
+        
+        target = translator.translate("abc-345{dfkj:34}");
+        assertThat(target.getFormula(), equalTo("abc-345{dfkj:34}"));
+        assertThat(target.isReadOnly(), equalTo(true));
+    }
+
+    @Test
+    public void translate4() {
+        RegexChannelTranslator translator = new RegexChannelTranslator("(.*)-(.*)", "$2-$1", false);
+        ChannelTranslation target = translator.translate("sim://noise");
+        assertThat(target, nullValue());
+        
+        target = translator.translate("=1+2");
+        assertThat(target, nullValue());
+        
+        target = translator.translate("abc-345{dfkj:34}");
+        assertThat(target.getFormula(), equalTo("345{dfkj:34}-abc"));
+        assertThat(target.isReadOnly(), equalTo(false));
+    }
     
 }
