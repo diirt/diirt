@@ -103,7 +103,10 @@
                         <artifactId>wagon-ssh</artifactId> 
                         <version>2.6</version>
                     </dependency> 
-                </dependencies> 
+                </dependencies>
+                <configuration>
+                    <retryFailedDeploymentCount>10</retryFailedDeploymentCount>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
