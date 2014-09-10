@@ -43,6 +43,10 @@ class VTypeToJsonV1 {
             case "VShortArray":
             case "VByteArray":
                 return toVNumberArray(json);
+            case "VBoolean":
+                return toVBoolean(json);
+            case "VBooleanArray":
+                return toVBooleanArray(json);
             case "VString":
                 return toVString(json);
             case "VStringArray":
@@ -160,6 +164,16 @@ class VTypeToJsonV1 {
                 throw new UnsupportedOperationException("Not implemented yet");
         }
         return newVNumberArray(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
+    }
+    
+    static VBoolean toVBoolean(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        return newVBoolean(mapper.getBoolean("value"), mapper.getAlarm(), mapper.getTime());
+    }
+    
+    static VBooleanArray toVBooleanArray(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        return newVBooleanArray(mapper.getListBoolean("value"), mapper.getAlarm(), mapper.getTime());
     }
     
     static JsonObject toJson(VNumber vNumber) {

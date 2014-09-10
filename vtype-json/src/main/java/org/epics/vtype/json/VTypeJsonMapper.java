@@ -16,12 +16,14 @@ import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import org.epics.util.array.ArrayBoolean;
 import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayLong;
 import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ListBoolean;
 import org.epics.util.array.ListByte;
 import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
@@ -147,6 +149,15 @@ public class VTypeJsonMapper implements JsonObject {
             values[i] = (byte) array.getJsonNumber(i).intValue();
         }
         return new ArrayByte(values);
+    }
+
+    public ListBoolean getListBoolean(String string) {
+        JsonArray array = getJsonArray(string);
+        boolean[] values = new boolean[array.size()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = array.getBoolean(i);
+        }
+        return new ArrayBoolean(values);
     }
     
     public List<String> getListString(String string) {

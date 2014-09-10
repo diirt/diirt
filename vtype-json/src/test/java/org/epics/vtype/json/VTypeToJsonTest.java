@@ -257,6 +257,11 @@ public class VTypeToJsonTest {
     }
 
     @Test
+    public void parseVBoolean() {
+        compareVType(vBoolean, VTypeToJson.toVType(parseJson(vBooleanJson)));
+    }
+
+    @Test
     public void parseVString() {
         compareVType(vString, VTypeToJson.toVType(parseJson(vStringJson)));
     }
@@ -294,6 +299,11 @@ public class VTypeToJsonTest {
     @Test
     public void parseVByteArray() {
         compareVType(vByteArray, VTypeToJson.toVType(parseJson(vByteArrayJson)));
+    }
+
+    @Test
+    public void parseVBooleanArray() {
+        compareVType(vBooleanArray, VTypeToJson.toVType(parseJson(vBooleanArrayJson)));
     }
 
     @Test
