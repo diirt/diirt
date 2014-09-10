@@ -169,7 +169,7 @@ public class FileDataSourceTest {
         writer.close();
         
         // Wait for value
-        listener.await(ofMillis(2000));
+        listener.await(ofMillis(3000));
         assertThat(listener.getCount(), equalTo(0));
         
         assertThat(pv.getValue(), instanceOf(VTable.class));
