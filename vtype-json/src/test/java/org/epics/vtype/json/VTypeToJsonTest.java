@@ -150,6 +150,12 @@ public class VTypeToJsonTest {
                 + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
                 + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
                 + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VLongArray vLongArray = newVLongArray(new ArrayLong(new long[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vLongArrayJson = "{\"type\":{\"name\":\"VLongArray\",\"version\":1},"
+                + "\"value\":[0,1,2],"
+                + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
+                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VNumberArray vByteArray = newVNumberArray(new ArrayByte(new byte[]{0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vByteArrayJson = "{\"type\":{\"name\":\"VByteArray\",\"version\":1},\"value\":[0,1,2],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VBooleanArray vBooleanArray = newVBooleanArray(new ArrayBoolean(true, false, true), alarmNone(), newTime(Timestamp.of(0, 0)));
@@ -173,6 +179,11 @@ public class VTypeToJsonTest {
     @Test
     public void testVFloatArray() {
         compareJson(VTypeToJson.toJson(vFloatArray), vFloatArrayJson);
+    }
+
+    @Test
+    public void testVLongArray() {
+        compareJson(VTypeToJson.toJson(vLongArray), vLongArrayJson);
     }
 
     @Test
@@ -232,20 +243,7 @@ public class VTypeToJsonTest {
 
     @Test
     public void parseVLongArray() {
-        JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VLongArray\",\"version\":1},"
-                + "\"value\":[0,1,2],"
-                + "\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
-                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
-                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
-            json = reader.readObject();
-        }
-        VType vType = VTypeToJson.toVType(json);
-        VLongArray expected = newVLongArray(new ArrayLong(new long[] {0, 1, 2}), alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(vType, instanceOf(VLongArray.class));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
-        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
-        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+        compareVType(vLongArray, VTypeToJson.toVType(parseJson(vLongArrayJson)));
     }
 
     @Test
