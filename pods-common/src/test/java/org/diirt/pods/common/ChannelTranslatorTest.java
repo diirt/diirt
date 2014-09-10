@@ -14,11 +14,11 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class RegexChannelTranslatorTest {
+public class ChannelTranslatorTest {
 
     @Test
     public void translate1() {
-        RegexChannelTranslator translator = new RegexChannelTranslator("(.*)", "$1", true);
+        ChannelTranslator translator = ChannelTranslator.regexTranslator("(.*)", "$1", true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target.getFormula(), equalTo("sim://noise"));
         assertThat(target.isReadOnly(), equalTo(true));
@@ -34,7 +34,7 @@ public class RegexChannelTranslatorTest {
 
     @Test
     public void translate2() {
-        RegexChannelTranslator translator = new RegexChannelTranslator(".*", null, true);
+        ChannelTranslator translator = ChannelTranslator.regexTranslator(".*", null, true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target.getFormula(), equalTo("sim://noise"));
         assertThat(target.isReadOnly(), equalTo(true));
@@ -50,7 +50,7 @@ public class RegexChannelTranslatorTest {
 
     @Test
     public void translate3() {
-        RegexChannelTranslator translator = new RegexChannelTranslator("abc-.*", null, true);
+        ChannelTranslator translator = ChannelTranslator.regexTranslator("abc-.*", null, true);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target, nullValue());
         
@@ -64,7 +64,7 @@ public class RegexChannelTranslatorTest {
 
     @Test
     public void translate4() {
-        RegexChannelTranslator translator = new RegexChannelTranslator("(.*)-(.*)", "$2-$1", false);
+        ChannelTranslator translator = ChannelTranslator.regexTranslator("(.*)-(.*)", "$2-$1", false);
         ChannelTranslation target = translator.translate("sim://noise");
         assertThat(target, nullValue());
         

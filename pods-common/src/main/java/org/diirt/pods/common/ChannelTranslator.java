@@ -20,4 +20,17 @@ public abstract class ChannelTranslator {
      * @return the translation; null if the translator can't provide one
      */
     public abstract ChannelTranslation translate(String channelName);
+    
+    /**
+     * Creates a channel translator that uses the regex to match the channel and
+     * the optional substitution string to perform the translation.
+     * 
+     * @param regex a regular expression
+     * @param substitution the substitution string; can be null
+     * @param readOnly whether to allow write or not
+     * @return the translator
+     */
+    public static ChannelTranslator regexTranslator(String regex, String substitution, boolean readOnly) {
+        return new RegexChannelTranslator(regex, substitution, readOnly);
+    }
 }
