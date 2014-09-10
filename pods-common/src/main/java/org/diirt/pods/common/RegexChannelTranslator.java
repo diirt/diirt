@@ -29,7 +29,12 @@ class RegexChannelTranslator extends ChannelTranslator {
     public ChannelTranslation translate(String channelName) {
         Matcher matcher = p.matcher(channelName);
         if (matcher.matches()) {
-            String translation = matcher.replaceFirst(substitution);
+            String translation;
+            if (substitution != null) {
+                translation = matcher.replaceFirst(substitution);
+            } else {
+                translation = channelName;
+            }
             return new ChannelTranslation(translation, readOnly);
         } else {
             return null;
