@@ -145,6 +145,10 @@ public class VTypeValueEquals {
     public static boolean valueEquals(VBoolean bool1, VBoolean bool2) {
         return bool1.getValue().equals(bool2.getValue());
     }
+    
+    public static boolean valueEquals(VBooleanArray bool1, VBooleanArray bool2) {
+        return bool1.getData().equals(bool2.getData());
+    }
 
     public static boolean valueEquals(VString str1, VString str2) {
         return str1.getValue().equals(str2.getValue());
@@ -197,6 +201,10 @@ public class VTypeValueEquals {
 	
 	if((obj1 instanceof VBoolean) && (obj2 instanceof VBoolean)) {
 	    return valueEquals((VBoolean) obj1, (VBoolean) obj2);
+	}
+
+	if ((obj1 instanceof VBooleanArray) && (obj2 instanceof VBooleanArray)) {
+	    return valueEquals((VBooleanArray) obj1, (VBooleanArray) obj2);
 	}
 	
 	if((obj1 instanceof VTable) && (obj2 instanceof VTable)) {
