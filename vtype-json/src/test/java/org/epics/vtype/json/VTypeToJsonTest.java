@@ -81,42 +81,42 @@ public class VTypeToJsonTest {
     }
     
     @Test
-    public void testVDouble() {
+    public void serializeVDouble() {
         compareJson(VTypeToJson.toJson(vDouble), vDoubleJson);
     }
     
     @Test
-    public void testVFloat() {
+    public void serializeVFloat() {
         compareJson(VTypeToJson.toJson(vFloat), vFloatJson);
     }
 
     @Test
-    public void testVLong() {
+    public void serializeVLong() {
         compareJson(VTypeToJson.toJson(vLong), vLongJson);
     }
 
     @Test
-    public void testVInt() {
+    public void serializeVInt() {
         compareJson(VTypeToJson.toJson(vInt), vIntJson);
     }
 
     @Test
-    public void testVShort() {
+    public void serializeVShort() {
         compareJson(VTypeToJson.toJson(vShort), vShortJson);
     }
 
     @Test
-    public void testVByte() {
+    public void serializeVByte() {
         compareJson(VTypeToJson.toJson(vByte), vByteJson);
     }
 
     @Test
-    public void testVBoolean() {
+    public void serializeVBoolean() {
         compareJson(VTypeToJson.toJson(vBoolean), vBooleanJson);
     }
 
     @Test
-    public void testVString() {
+    public void serializeVString() {
         compareJson(VTypeToJson.toJson(vString), vStringJson);
     }
     
@@ -177,52 +177,52 @@ public class VTypeToJsonTest {
     public String vBooleanArrayJson = "{\"type\":{\"name\":\"VBooleanArray\",\"version\":1},\"value\":[true,false,true],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
         
     @Test
-    public void testVEnum() {
+    public void serializeVEnum() {
         compareJson(VTypeToJson.toJson(vEnum), vEnumJson);
     }
 
     @Test
-    public void testVEnumArray() {
+    public void serializeVEnumArray() {
         compareJson(VTypeToJson.toJson(vEnumArray), vEnumArrayJson);
     }
 
     @Test
-    public void testVDoubleArray() {
+    public void serializeVDoubleArray() {
         compareJson(VTypeToJson.toJson(vDoubleArray), vDoubleArrayJson);
     }
 
     @Test
-    public void testVFloatArray() {
+    public void serializeVFloatArray() {
         compareJson(VTypeToJson.toJson(vFloatArray), vFloatArrayJson);
     }
 
     @Test
-    public void testVLongArray() {
+    public void serializeVLongArray() {
         compareJson(VTypeToJson.toJson(vLongArray), vLongArrayJson);
     }
 
     @Test
-    public void testVIntArray() {
+    public void serializeVIntArray() {
         compareJson(VTypeToJson.toJson(vIntArray), vIntArrayJson);
     }
 
     @Test
-    public void testVShortArray() {
+    public void serializeVShortArray() {
         compareJson(VTypeToJson.toJson(vShortArray), vShortArrayJson);
     }
 
     @Test
-    public void testVByteArray() {
+    public void serializeVByteArray() {
         compareJson(VTypeToJson.toJson(vByteArray), vByteArrayJson);
     }
 
     @Test
-    public void testVStringArray() {
+    public void serializeVStringArray() {
         compareJson(VTypeToJson.toJson(vStringArray), vStringArrayJson);
     }
 
     @Test
-    public void testVBooleanArray() {
+    public void serializeVBooleanArray() {
         compareJson(VTypeToJson.toJson(vBooleanArray), vBooleanArrayJson);
     }
 
