@@ -224,7 +224,8 @@
     </properties>
     <modules>
     <module>web-pods</module>
-  </modules>
+        <module>pods-common</module>
+    </modules>
     <reporting>
         <plugins>
             <plugin>
