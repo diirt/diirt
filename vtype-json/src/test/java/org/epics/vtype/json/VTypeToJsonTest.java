@@ -101,6 +101,16 @@ public class VTypeToJsonTest {
     }
 
     @Test
+    public void testVShort() {
+        compareJson(VTypeToJson.toJson(vShort), vShortJson);
+    }
+
+    @Test
+    public void testVByte() {
+        compareJson(VTypeToJson.toJson(vByte), vByteJson);
+    }
+
+    @Test
     public void testVBoolean() {
         compareJson(VTypeToJson.toJson(vBoolean), vBooleanJson);
     }
@@ -118,6 +128,10 @@ public class VTypeToJsonTest {
     public String vLongJson = "{\"type\":{\"name\":\"VLong\",\"version\":1},\"value\":313,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VInt vInt = newVInt(314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
     public String vIntJson = "{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VShort vShort = newVShort((short) 314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vShortJson = "{\"type\":{\"name\":\"VShort\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
+    public VByte vByte = newVByte((byte) 31, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
+    public String vByteJson = "{\"type\":{\"name\":\"VByte\",\"version\":1},\"value\":31,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}";
     public VBoolean vBoolean = newVBoolean(true, alarmNone(), newTime(Timestamp.of(0, 0)));
     public String vBooleanJson = "{\"type\":{\"name\":\"VBoolean\",\"version\":1},\"value\":true,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null}}";
     public VString vString = newVString("Flower", alarmNone(), newTime(Timestamp.of(0, 0)));
@@ -182,44 +196,17 @@ public class VTypeToJsonTest {
 
     @Test
     public void parseVInt() {
-        JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VInt\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"MINOR\",\"status\":\"HIGH\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
-            json = reader.readObject();
-        }
-        VType vType = VTypeToJson.toVType(json);
-        VInt expected = newVInt(314, newAlarm(AlarmSeverity.MINOR, "HIGH"), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(vType, instanceOf(VInt.class));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
-        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
-        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+        compareVType(vInt, VTypeToJson.toVType(parseJson(vIntJson)));
     }
 
     @Test
     public void parseVShort() {
-        JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VShort\",\"version\":1},\"value\":314,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
-            json = reader.readObject();
-        }
-        VType vType = VTypeToJson.toVType(json);
-        VShort expected = newVShort((short) 314, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(vType, instanceOf(VShort.class));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
-        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
-        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+        compareVType(vShort, VTypeToJson.toVType(parseJson(vShortJson)));
     }
 
     @Test
     public void parseVByte() {
-        JsonObject json;
-        try (JsonReader reader = Json.createReader(new StringReader("{\"type\":{\"name\":\"VByte\",\"version\":1},\"value\":31,\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"))) {
-            json = reader.readObject();
-        }
-        VType vType = VTypeToJson.toVType(json);
-        VByte expected = newVByte((byte) 31, alarmNone(), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(vType, instanceOf(VByte.class));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, vType), equalTo(true));
-        assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals(expected, (Alarm) vType), equalTo(true));
-        assertThat("Time mismatch", VTypeValueEquals.timeEquals(expected, (Time) vType), equalTo(true));
+        compareVType(vByte, VTypeToJson.toVType(parseJson(vByteJson)));
     }
 
     @Test
