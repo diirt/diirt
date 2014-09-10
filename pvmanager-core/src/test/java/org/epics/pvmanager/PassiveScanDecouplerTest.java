@@ -150,7 +150,7 @@ public class PassiveScanDecouplerTest {
                 decoupler.newValueEvent();
                 Thread.sleep(25);
                 decoupler.newValueEvent();
-                Thread.sleep(100);
+                Thread.sleep(200);
                 decoupler.stop();
                 assertThat(log.getEvents().size(), equalTo(2));
                 return null;
