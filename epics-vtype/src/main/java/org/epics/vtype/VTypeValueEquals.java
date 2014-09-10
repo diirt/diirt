@@ -154,6 +154,10 @@ public class VTypeValueEquals {
         return enum1.getValue().equals(enum2.getValue()) && enum1.getLabels().equals(enum2.getLabels());
     }
 
+    public static boolean valueEquals(VEnumArray enum1, VEnumArray enum2) {
+        return enum1.getIndexes().equals(enum2.getIndexes()) && enum1.getLabels().equals(enum2.getLabels());
+    }
+
     public static boolean valueEquals(VStringArray array1, VStringArray array2) {
         return array1.getData().equals(array2.getData());
     }
@@ -181,6 +185,10 @@ public class VTypeValueEquals {
 
 	if ((obj1 instanceof VEnum) && (obj2 instanceof VEnum)) {
 	    return valueEquals((VEnum) obj1, (VEnum) obj2);
+	}
+
+	if ((obj1 instanceof VEnumArray) && (obj2 instanceof VEnumArray)) {
+	    return valueEquals((VEnumArray) obj1, (VEnumArray) obj2);
 	}
 	
 	if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
