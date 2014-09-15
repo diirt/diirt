@@ -374,5 +374,10 @@ public class VTypeToJsonTest {
     public void parseVEnumArray() {
         compareVType(vEnumArray, VTypeToJson.toVType(parseJson(vEnumArrayJson)));
     }
+
+    @Test
+    public void parseVTable() {
+        compareVType(vTable, VTypeToJson.toVType(parseJson(vTableJson)));
+    }
     
 }

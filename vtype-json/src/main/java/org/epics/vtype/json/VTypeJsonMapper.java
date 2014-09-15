@@ -91,6 +91,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListDouble getListDouble(String string) {
         JsonArray array = getJsonArray(string);
+        return toListDouble(array);
+    }
+    
+    private ListDouble toListDouble(JsonArray array) {
         double[] values = new double[array.size()];
         for (int i = 0; i < values.length; i++) {
             if (array.isNull(i)) {
@@ -104,6 +108,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListFloat getListFloat(String string) {
         JsonArray array = getJsonArray(string);
+        return toListFloat(array);
+    }
+    
+    private ListFloat toListFloat(JsonArray array) {
         float[] values = new float[array.size()];
         for (int i = 0; i < values.length; i++) {
             if (array.isNull(i)) {
@@ -117,6 +125,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListLong getListLong(String string) {
         JsonArray array = getJsonArray(string);
+        return toListLong(array);
+    }
+    
+    private ListLong toListLong(JsonArray array) {
         long[] values = new long[array.size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = (long) array.getJsonNumber(i).longValue();
@@ -126,6 +138,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListInt getListInt(String string) {
         JsonArray array = getJsonArray(string);
+        return toListInt(array);
+    }
+    
+    private ListInt toListInt(JsonArray array) {
         int[] values = new int[array.size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = (int) array.getJsonNumber(i).intValue();
@@ -135,6 +151,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListShort getListShort(String string) {
         JsonArray array = getJsonArray(string);
+        return toListShort(array);
+    }
+    
+    private ListShort toListShort(JsonArray array) {
         short[] values = new short[array.size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = (short) array.getJsonNumber(i).intValue();
@@ -144,6 +164,10 @@ public class VTypeJsonMapper implements JsonObject {
     
     public ListByte getListByte(String string) {
         JsonArray array = getJsonArray(string);
+        return toListByte(array);
+    }
+    
+    private ListByte toListByte(JsonArray array) {
         byte[] values = new byte[array.size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = (byte) array.getJsonNumber(i).intValue();
@@ -162,11 +186,67 @@ public class VTypeJsonMapper implements JsonObject {
     
     public List<String> getListString(String string) {
         JsonArray array = getJsonArray(string);
+        return toListString(array);
+    }
+    
+    private List<String> toListString(JsonArray array) {
         List<String> strings = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
             strings.add(array.getString(i));
         }
         return strings;
+    }
+
+    public List<Class<?>> getColumnTypes(String string) {
+        JsonArray array = getJsonArray(string);
+        List<Class<?>> types = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            String type = array.getString(i);
+            if ("String".equals(type)) {
+                types.add(String.class);
+            } else if ("double".equals(type)) {
+                types.add(double.class);
+            } else if ("float".equals(type)) {
+                types.add(float.class);
+            } else if ("long".equals(type)) {
+                types.add(long.class);
+            } else if ("int".equals(type)) {
+                types.add(int.class);
+            } else if ("short".equals(type)) {
+                types.add(short.class);
+            } else if ("byte".equals(type)) {
+                types.add(byte.class);
+            } else {
+                throw new IllegalArgumentException("Column type " + type + " not supported");
+            }
+        }
+        return types;
+    }
+
+    public List<Object> getColumnValues(String string, List<Class<?>> types) {
+        JsonArray array = getJsonArray(string);
+        List<Object> result = new ArrayList<>();
+        for (int i = 0; i < types.size(); i++) {
+            Class<?> type = types.get(i);
+            if (String.class.equals(type)) {
+                result.add(toListString(array.getJsonArray(i)));
+            } else if (double.class.equals(type)) {
+                result.add(toListDouble(array.getJsonArray(i)));
+            } else if (float.class.equals(type)) {
+                result.add(toListFloat(array.getJsonArray(i)));
+            } else if (long.class.equals(type)) {
+                result.add(toListLong(array.getJsonArray(i)));
+            } else if (int.class.equals(type)) {
+                result.add(toListInt(array.getJsonArray(i)));
+            } else if (short.class.equals(type)) {
+                result.add(toListShort(array.getJsonArray(i)));
+            } else if (byte.class.equals(type)) {
+                result.add(toListByte(array.getJsonArray(i)));
+            } else {
+                throw new IllegalArgumentException("Column type " + type + " not supported");
+            }
+        }
+        return result;
     }
     
     public Integer getInteger(String string) {

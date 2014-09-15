@@ -57,6 +57,8 @@ class VTypeToJsonV1 {
                 return toVEnum(json);
             case "VEnumArray":
                 return toVEnumArray(json);
+            case "VTable":
+                return toVTable(json);
             default:
                 throw new UnsupportedOperationException("Not implemented yet");
         }
@@ -140,6 +142,12 @@ class VTypeToJsonV1 {
     static VEnumArray toVEnumArray(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVEnumArray(mapper.getListInt("value"), mapper.getJsonObject("enum").getListString("labels"), mapper.getAlarm(), mapper.getTime());
+    }
+    
+    static VTable toVTable(JsonObject json) {
+        VTypeJsonMapper mapper = new VTypeJsonMapper(json);
+        List<Class<?>> types = mapper.getColumnTypes("columnTypes");
+        return newVTable(types, mapper.getListString("columnNames"), mapper.getColumnValues("columnValues", types));
     }
     
     static VNumberArray toVNumberArray(JsonObject json) {
