@@ -43,6 +43,7 @@ import org.epics.vtype.VShort;
 import org.epics.vtype.VShortArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.VTypeValueEquals;
 import org.junit.Test;
@@ -183,6 +184,11 @@ public class VTypeToJsonTest {
             + "\"value\":[1,0,1],\"alarm\":{\"severity\":\"NONE\",\"status\":\"NONE\"},"
             + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
             + "\"enum\":{\"labels\":[\"One\",\"Two\",\"Three\"]}}";
+    public VTable vTable = newVTable(Arrays.<Class<?>>asList(String.class, int.class, double.class), Arrays.asList("Name", "Index", "Value"), Arrays.asList(Arrays.asList("A", "B", "C"), new ArrayInt(1,2,3), new ArrayDouble(3.14, 1.25, -0.1)));
+    public String vTableJson = "{\"type\":{\"name\":\"VTable\",\"version\":1},"
+            + "\"columnNames\":[\"Name\",\"Index\",\"Value\"],"
+            + "\"columnTypes\":[\"String\",\"int\",\"double\"],"
+            + "\"columnValues\":[[\"A\",\"B\",\"C\"],[1,2,3],[3.14,1.25,-0.1]]}";
     
     @Test
     public void serializeVDouble() {
@@ -272,6 +278,11 @@ public class VTypeToJsonTest {
     @Test
     public void serializeVEnumArray() {
         compareJson(VTypeToJson.toJson(vEnumArray), vEnumArrayJson);
+    }
+
+    @Test
+    public void serializeVTableArray() {
+        compareJson(VTypeToJson.toJson(vTable), vTableJson);
     }
 
     @Test

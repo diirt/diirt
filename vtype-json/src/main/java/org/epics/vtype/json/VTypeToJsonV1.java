@@ -17,9 +17,11 @@ import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
+import org.epics.vtype.table.VTableFactory;
 
 /**
  * 
@@ -85,6 +87,8 @@ class VTypeToJsonV1 {
             return toJson((VEnum) vType);
         } else if (vType instanceof VEnumArray) {
             return toJson((VEnumArray) vType);
+        } else if (vType instanceof VTable) {
+            return toJson((VTable) vType);
         }
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -249,6 +253,15 @@ class VTypeToJsonV1 {
                 .addAlarm(vEnum)
                 .addTime(vEnum)
                 .addEnum(vEnum)
+                .build();
+    }
+    
+    static JsonObject toJson(VTable vTable) {
+        return new JsonVTypeBuilder()
+                .addType(vTable)
+                .addListString("columnNames", VTableFactory.columnNames(vTable))
+                .addListColumnType("columnTypes", VTableFactory.columnTypes(vTable))
+                .addListColumnValues("columnValues", vTable)
                 .build();
     }
 }

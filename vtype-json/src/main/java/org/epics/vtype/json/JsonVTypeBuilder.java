@@ -23,6 +23,7 @@ import org.epics.util.array.ListShort;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
+import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.ValueUtil;
 
@@ -138,16 +139,58 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
                 .addListString("labels", en.getLabels()));
     }
     
-    public JsonVTypeBuilder addListString(String string, List<String> ls) {
+    private JsonArrayBuilder listStringToJson(List<String> ls) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (String element : ls) {
             b.add(element);
+        }
+        return b;
+    }
+    
+    public JsonVTypeBuilder addListString(String string, List<String> ls) {
+        add(string, listStringToJson(ls));
+        return this;
+    }
+    
+    public JsonVTypeBuilder addListColumnType(String string, List<Class<?>> ls) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (Class<?> element : ls) {
+            if (element.equals(String.class)) {
+                b.add("String");
+            } else if (element.equals(double.class)) {
+                b.add("double");
+            } else if (element.equals(float.class)) {
+                b.add("float");
+            } else if (element.equals(long.class)) {
+                b.add("long");
+            } else if (element.equals(int.class)) {
+                b.add("int");
+            } else if (element.equals(short.class)) {
+                b.add("short");
+            } else if (element.equals(byte.class)) {
+                b.add("byte");
+            }
+        }
+        add(string, b);
+        return this;
+    }
+
+    public JsonVTypeBuilder  addListColumnValues(String string, VTable vTable) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (int column = 0; column < vTable.getColumnCount(); column++) {
+            Class<?> type = vTable.getColumnType(column);
+            if (type.equals(String.class)) {
+                b.add(listStringToJson((List<String>) vTable.getColumnData(column)));
+            } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
+                    type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
+                b.add(listNumberToJson((ListNumber) vTable.getColumnData(column)));
+            }
         }
         add(string, b);
         return this;
     }
     
-    public JsonVTypeBuilder addListNumber(String string, ListNumber ln) {
+    private JsonArrayBuilder listNumberToJson(ListNumber ln) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         if (ln instanceof ListByte || ln instanceof ListShort || ln instanceof ListInt) {
             for (int i = 0; i < ln.size(); i++) {
@@ -167,7 +210,11 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
                 }
             }
         }
-        add(string, b);
+        return b;
+    }
+    
+    public JsonVTypeBuilder addListNumber(String string, ListNumber ln) {
+        add(string, listNumberToJson(ln));
         return this;
     }
     
