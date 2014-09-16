@@ -5,6 +5,9 @@
 
 package org.diirt.pods.common;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -108,6 +111,29 @@ public class ChannelTranslatorTest {
         target = translator.translate("abc-345{dfkj:34}");
         assertThat(target.getFormula(), equalTo("abc-345{dfkj:34}"));
         assertThat(target.getPermission(), equalTo(READ_ONLY));
+    }
+    
+    @Test
+    public void loadTranslator1() throws Exception{
+        File file = new File(getClass().getResource("mappings1.xml").toURI());
+        try (InputStream input = new FileInputStream(file)) {
+            ChannelTranslator translator = loadTranslator(input);
+            ChannelTranslation target = translator.translate("specialchannel");
+            assertThat(target.getFormula(), equalTo("specialchannel"));
+            assertThat(target.getPermission(), equalTo(READ_WRITE));
+
+            target = translator.translate("ABC-DEF");
+            assertThat(target.getFormula(), equalTo("DEF"));
+            assertThat(target.getPermission(), equalTo(READ_ONLY));
+
+            target = translator.translate("diff-ABC-DEF");
+            assertThat(target.getFormula(), equalTo("='ABC'-'DEF'"));
+            assertThat(target.getPermission(), equalTo(READ_ONLY));
+
+            target = translator.translate("abc-345{dfkj:34}");
+            assertThat(target.getFormula(), equalTo("abc-345{dfkj:34}"));
+            assertThat(target.getPermission(), equalTo(NONE));
+        }
     }
     
 }

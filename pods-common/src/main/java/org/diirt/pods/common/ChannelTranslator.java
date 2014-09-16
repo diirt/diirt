@@ -5,7 +5,23 @@
 
 package org.diirt.pods.common;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * Given a channel name, it translates it to a channel or formula. This allows
@@ -45,5 +61,43 @@ public abstract class ChannelTranslator {
      */
     public static ChannelTranslator compositeTranslator(List<ChannelTranslator> translators) {
         return new CompositeChannelTranslator(translators);
+    }
+    
+    public static ChannelTranslator loadTranslator(InputStream input) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(input);
+            
+            XPathFactory xpathFactory = XPathFactory.newInstance();
+            XPath xPath = xpathFactory.newXPath();
+            
+            String ver = xPath.evaluate("/mappings/@version", document);
+            if (!ver.equals("1")) {
+                throw new IllegalArgumentException("Unsupported version " + ver);
+            }
+            
+            List<ChannelTranslator> translators = new ArrayList<>();
+
+            NodeList mappings = (NodeList) xPath.evaluate("/mappings/mapping", document, XPathConstants.NODESET);
+            for (int i = 0; i < mappings.getLength(); i++) {
+                Node method = mappings.item(i);
+                String regex = xPath.evaluate("@channel", method);
+                Node substitutionNode = method.getAttributes().getNamedItem("substitution");
+                String substitution = null;
+                if (substitutionNode != null) {
+                    substitution = substitutionNode.getNodeValue();
+                }
+                String permissionName = xPath.evaluate("@permission", method);
+                ChannelTranslation.Permission permission = ChannelTranslation.Permission.valueOf(permissionName);
+                
+                translators.add(regexTranslator(regex, substitution, permission));
+            }
+            
+            return compositeTranslator(translators);
+        } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
+            Logger.getLogger(ChannelTranslator.class.getName()).log(Level.FINEST, "Couldn't load mapping", ex);
+            throw new IllegalArgumentException("Couldn't load mapping", ex);
+        }
     }
 }
