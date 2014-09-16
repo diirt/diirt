@@ -19,9 +19,9 @@ class CompositeChannelTranslator extends ChannelTranslator {
     }
 
     @Override
-    public ChannelTranslation translate(String channelName) {
+    public ChannelTranslation translate(ChannelRequest request) {
         for (ChannelTranslator channelTranslator : translators) {
-            ChannelTranslation translation = channelTranslator.translate(channelName);
+            ChannelTranslation translation = channelTranslator.translate(request);
             if (translation != null) {
                 return translation;
             }

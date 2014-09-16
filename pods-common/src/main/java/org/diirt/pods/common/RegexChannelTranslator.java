@@ -26,14 +26,14 @@ class RegexChannelTranslator extends ChannelTranslator {
     }
 
     @Override
-    public ChannelTranslation translate(String channelName) {
-        Matcher matcher = p.matcher(channelName);
+    public ChannelTranslation translate(ChannelRequest request) {
+        Matcher matcher = p.matcher(request.getChannel());
         if (matcher.matches()) {
             String translation;
             if (substitution != null) {
                 translation = matcher.replaceFirst(substitution);
             } else {
-                translation = channelName;
+                translation = request.getChannel();
             }
             return new ChannelTranslation(translation, permission);
         } else {

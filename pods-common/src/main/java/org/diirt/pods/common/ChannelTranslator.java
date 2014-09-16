@@ -34,10 +34,20 @@ public abstract class ChannelTranslator {
     /**
      * Translates the channel name to the actual channel or formula to connect.
      * 
-     * @param channelName the incoming channel name
+     * @param channel the incoming channel name
      * @return the translation; null if the translator can't provide one
      */
-    public abstract ChannelTranslation translate(String channelName);
+    public ChannelTranslation translate(String channel) {
+        return translate(new ChannelRequest(channel));
+    }
+    
+    /**
+     * Translates the channel request to the actual channel or formula to connect.
+     * 
+     * @param request the incoming channel request
+     * @return the translation; null if the translator can't provide one
+     */
+    public abstract ChannelTranslation translate(ChannelRequest request);
     
     /**
      * Creates a channel translator that uses the regex to match the channel and
