@@ -20,6 +20,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
 import org.diirt.pods.common.Configuration;
 import org.epics.pvmanager.CompositeDataSource;
@@ -89,14 +90,16 @@ public class WSEndpoint {
             maxRate = message.getMaxRate();
         }
         
+        ChannelTranslation translation = channelTranslator.translate(message.getPv());
+        
         PVReader<?> reader;
         if (message.isReadOnly()) {
-            reader = PVManager.read(formula(message.getPv()))
+            reader = PVManager.read(formula(translation.getFormula()))
                 .readListener(new ReadOnlyListener(session, message))
                 .maxRate(TimeDuration.ofHertz(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
-            reader = PVManager.readAndWrite(formula(message.getPv()))
+            reader = PVManager.readAndWrite(formula(translation.getFormula()))
                 .readListener(readWriteListener)
                 .writeListener(readWriteListener)
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(maxRate));
