@@ -4,9 +4,14 @@
  */
 package org.diirt.pods.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -15,6 +20,8 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.diirt.pods.common.ChannelTranslator;
+import org.diirt.pods.common.Configuration;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
@@ -44,7 +51,19 @@ public class WSEndpoint {
         datasource.putDataSource("sim", new SimulationDataSource());
         datasource.putDataSource("loc", new LocalDataSource());
         PVManager.setDefaultDataSource(datasource);
+        
+        File mappings = new File(Configuration.getDirectory(), "pods/web/mappings.xml");
+        ChannelTranslator temp = null;
+        try (FileInputStream input = new FileInputStream(mappings)) {
+            temp = ChannelTranslator.loadTranslator(input);
+            Logger.getLogger(WSEndpoint.class.getName()).log(Level.INFO, "Mappings loaded from " + mappings);
+        } catch (Exception ex) {
+            Logger.getLogger(WSEndpoint.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/pods/web/mappings", ex);
+        }
+        channelTranslator = temp;
     }
+    
+    private static final ChannelTranslator channelTranslator;
     
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> pvs = new ConcurrentHashMap<Integer, PVReader<?>>();
