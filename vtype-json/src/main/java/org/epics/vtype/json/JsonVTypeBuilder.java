@@ -180,7 +180,9 @@ public class JsonVTypeBuilder implements JsonObjectBuilder {
         for (int column = 0; column < vTable.getColumnCount(); column++) {
             Class<?> type = vTable.getColumnType(column);
             if (type.equals(String.class)) {
-                b.add(listStringToJson((List<String>) vTable.getColumnData(column)));
+                @SuppressWarnings("unchecked")
+                List<String> listString = (List<String>) vTable.getColumnData(column);
+                b.add(listStringToJson(listString));
             } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
                     type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
                 b.add(listNumberToJson((ListNumber) vTable.getColumnData(column)));
