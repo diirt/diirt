@@ -4,10 +4,7 @@
  */
 package org.diirt.pods.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -26,7 +23,6 @@ import org.diirt.pods.common.Configuration;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
-import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PV;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
@@ -53,11 +49,9 @@ public class WSEndpoint {
         datasource.putDataSource("loc", new LocalDataSource());
         PVManager.setDefaultDataSource(datasource);
         
-        File mappings = new File(Configuration.getDirectory(), "pods/web/mappings.xml");
         ChannelTranslator temp = null;
-        try (FileInputStream input = new FileInputStream(mappings)) {
+        try (InputStream input = Configuration.getFileAsStream("pods/web/mappings.xml", new WSEndpoint(), "mappings.default.xml")) {
             temp = ChannelTranslator.loadTranslator(input);
-            Logger.getLogger(WSEndpoint.class.getName()).log(Level.INFO, "Mappings loaded from " + mappings);
         } catch (Exception ex) {
             Logger.getLogger(WSEndpoint.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/pods/web/mappings", ex);
         }
