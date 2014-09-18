@@ -62,7 +62,7 @@ public class WSEndpoint {
     private static final ChannelTranslator channelTranslator;
     
     // XXX: need to understand how state can actually be used
-    private final Map<Integer, PVReader<?>> pvs = new ConcurrentHashMap<Integer, PVReader<?>>();
+    private final Map<Integer, PVReader<?>> pvs = new ConcurrentHashMap<>();
 
     @OnMessage
     public void onMessage(Session session, Message message) {
@@ -72,6 +72,12 @@ public class WSEndpoint {
                 return;
             case UNSUBSCRIBE:
                 onUnsubscribe(session, (MessageUnsubscribe) message);
+                return;
+            case PAUSE:
+                onPause(session, (MessagePause) message);
+                return;
+            case RESUME:
+                onResume(session, (MessageResume) message);
                 return;
             default:
                 throw new UnsupportedOperationException("Message '" + message.getMessage() + "' not yet supported");
@@ -106,6 +112,20 @@ public class WSEndpoint {
         PVReader<?> pv = pvs.get(message.getId());
         if (pv != null) {
             pv.close();
+        }
+    }
+
+    private void onPause(Session session, MessagePause message) {
+        PVReader<?> pv = pvs.get(message.getId());
+        if (pv != null) {
+            pv.setPaused(true);
+        }
+    }
+
+    private void onResume(Session session, MessageResume message) {
+        PVReader<?> pv = pvs.get(message.getId());
+        if (pv != null) {
+            pv.setPaused(false);
         }
     }
 
