@@ -99,7 +99,7 @@ public class MessageDecoderTest {
                 
         assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
         assertThat(result.getId(), equalTo(1));
-        // TODO: test the parsed value
+        assertThat((Double) result.getValue(), equalTo(3.14));
     }
 
     @Test

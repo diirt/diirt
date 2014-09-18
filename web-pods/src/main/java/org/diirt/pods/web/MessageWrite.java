@@ -4,7 +4,9 @@
  */
 package org.diirt.pods.web;
 
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 /**
  *
@@ -16,8 +18,13 @@ public class MessageWrite extends Message {
 
     public MessageWrite(JsonObject obj) {
         super(obj);
+        JsonValue msgValue = obj.get("value");
         // TODO: parse the value
-        value = null;
+        if (msgValue instanceof JsonNumber) {
+            value = ((JsonNumber) msgValue).doubleValue();
+        } else {
+            value = null;
+        }
     }
 
     public Object getValue() {
