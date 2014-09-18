@@ -79,6 +79,9 @@ public class WSEndpoint {
             case RESUME:
                 onResume(session, (MessageResume) message);
                 return;
+            case WRITE:
+                onWrite(session, (MessageWrite) message);
+                return;
             default:
                 throw new UnsupportedOperationException("Message '" + message.getMessage() + "' not yet supported");
         }
@@ -129,6 +132,21 @@ public class WSEndpoint {
         }
     }
 
+    private void onWrite(Session session, MessageWrite message) {
+        PVReader<?> pv = pvs.get(message.getId());
+        if (pv instanceof PVWriter) {
+            @SuppressWarnings("unchecked")
+            PVWriter<Object> pvWriter = (PVWriter<Object>) pv;
+            pvWriter.write(message.getValue());
+        } else {
+            if (pv == null) {
+                sendError(session, message.getId(), "Channel id '" + message.getId() + "' is not open");
+            } else {
+                sendError(session, message.getId(), "Channel id '" + message.getId() + "' is read-only");
+            }
+        }
+    }
+
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         System.out.println(session.getRequestURI() + ": OPEN");
@@ -149,6 +167,10 @@ public class WSEndpoint {
     public void onError(Session session, Throwable cause) {
         System.out.println(session.getRequestURI() + ": ERROR");
         cause.printStackTrace();
+    }
+    
+    public void sendError(Session session, int id, String message) {
+        session.getAsyncRemote().sendObject(new MessageErrorEvent(id, message));
     }
 
     private class ReadOnlyListener implements PVReaderListener<Object> {
