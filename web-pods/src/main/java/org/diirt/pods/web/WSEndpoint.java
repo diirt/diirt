@@ -58,6 +58,7 @@ public class WSEndpoint {
         channelTranslator = temp;
     }
     
+    private static Logger log = Logger.getLogger(WSEndpoint.class.getName());
     private static final ChannelTranslator channelTranslator;
     
     // XXX: need to understand how state can actually be used
@@ -119,7 +120,10 @@ public class WSEndpoint {
             PVReader<?> pvReader = entry.getValue();
             pvReader.close();
         }
+        closed = true;
     }
+    
+    private volatile boolean closed = false;
 
     @OnError
     public void onError(Session session, Throwable cause) {
@@ -127,7 +131,7 @@ public class WSEndpoint {
         cause.printStackTrace();
     }
 
-    private static class ReadOnlyListener implements PVReaderListener<Object> {
+    private class ReadOnlyListener implements PVReaderListener<Object> {
 
         private final Session session;
         private final MessageSubscribe message;
@@ -139,6 +143,11 @@ public class WSEndpoint {
 
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
+            if (closed) {
+                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvReader().getName());
+                event.getPvReader().close();
+                return;
+            }
             if (event.isConnectionChanged()) {
                 session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), event.getPvReader().isConnected(), false));
             }
@@ -157,7 +166,7 @@ public class WSEndpoint {
         return pv;
     }
 
-    private static class ReadWriteListener implements PVReaderListener<Object>, PVWriterListener<Object> {
+    private class ReadWriteListener implements PVReaderListener<Object>, PVWriterListener<Object> {
 
         private final Session session;
         private final MessageSubscribe message;
@@ -169,6 +178,11 @@ public class WSEndpoint {
 
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
+            if (closed) {
+                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvReader().getName());
+                event.getPvReader().close();
+                return;
+            }
             if (event.isValueChanged()) {
                 session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
             }
@@ -179,6 +193,11 @@ public class WSEndpoint {
 
         @Override
         public void pvChanged(PVWriterEvent<Object> event) {
+            if (closed) {
+                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvWriter());
+                event.getPvWriter().close();
+                return;
+            }
             if (event.isConnectionChanged()) {
                 session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), pv(event.getPvWriter()).isConnected(), event.getPvWriter().isWriteConnected()));
             }
