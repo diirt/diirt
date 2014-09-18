@@ -6,6 +6,7 @@ package org.diirt.pods.web;
 
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 /**
@@ -22,6 +23,8 @@ public class MessageWrite extends Message {
         // TODO: parse the value
         if (msgValue instanceof JsonNumber) {
             value = ((JsonNumber) msgValue).doubleValue();
+        } else if (msgValue instanceof JsonString){
+            value = ((JsonString) msgValue).getString();
         } else {
             value = null;
         }

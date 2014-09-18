@@ -103,6 +103,21 @@ public class MessageDecoderTest {
     }
 
     @Test
+    public void decodeWrite2() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"write\","
+            + "    \"id\" : 1,"
+            + "    \"value\" : \"Green\""
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
+        assertThat(result.getId(), equalTo(1));
+        assertThat((String) result.getValue(), equalTo("Green"));
+    }
+
+    @Test
     public void decodePause1() throws Exception {
         MessageDecoder decoder = new MessageDecoder();
         MessagePause result = (MessagePause) decoder.decode(new StringReader(
