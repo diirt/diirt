@@ -5,6 +5,13 @@
 package org.diirt.pods.common;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Entry point for all configuration in diirt.
@@ -24,6 +31,7 @@ import java.io.File;
  */
 public class Configuration {
    
+    private static Logger log = Logger.getLogger(Configuration.class.getName());
     private static final File configurationDirectory = configurationDirectory();
     
     private static File configurationDirectory() {
@@ -49,4 +57,23 @@ public class Configuration {
     public static File getDirectory() {
         return configurationDirectory;
     }
+    
+    public static InputStream getFileAsStream(String relativeFilePath, Object obj, String defaultResource) throws IOException {
+        File mappings = new File(Configuration.getDirectory(), relativeFilePath);
+        if (!mappings.exists()) {
+            try (InputStream input = obj.getClass().getResourceAsStream(defaultResource);
+                    OutputStream output = new FileOutputStream(mappings)) {
+                byte[] buffer = new byte[8 * 1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+            }
+            log.log(Level.INFO, "Initializing configuration file " + mappings);
+        }
+        
+        log.log(Level.INFO, "Loading " + mappings);
+        return new FileInputStream(mappings);
+    }
+
 }
