@@ -2,21 +2,15 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package org.diirt.pods.web;
 
-import java.io.Reader;
 import java.io.StringReader;
-import javax.websocket.EndpointConfig;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.epics.util.time.Timestamp;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VTypeValueEquals;
+import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -115,6 +109,25 @@ public class MessageDecoderTest {
         assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
         assertThat(result.getId(), equalTo(1));
         assertThat((String) result.getValue(), equalTo("Green"));
+    }
+
+    @Test
+    public void decodeWrite3() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"write\","
+            + "    \"id\" : 1,"
+            + "    \"value\" : {\"type\":{\"name\":\"VDouble\",\"version\":1},"
+            + "        \"value\":3.14,"
+            + "        \"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},"
+            + "        \"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+            + "        \"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
+            + "}"));
+        VDouble expected = newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone());
+        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
+        assertThat(result.getId(), equalTo(1));
+        assertThat(VTypeValueEquals.valueEquals(expected, result.getValue()), equalTo(true));
     }
 
     @Test

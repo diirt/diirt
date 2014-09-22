@@ -8,6 +8,8 @@ import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import org.epics.vtype.VType;
+import org.epics.vtype.json.VTypeToJson;
 
 /**
  *
@@ -20,8 +22,10 @@ public class MessageWrite extends Message {
     public MessageWrite(JsonObject obj) {
         super(obj);
         JsonValue msgValue = obj.get("value");
-        // TODO: parse the value
-        if (msgValue instanceof JsonNumber) {
+        // Parse value
+        if (msgValue instanceof JsonObject) {
+            value = VTypeToJson.toVType((JsonObject) msgValue);
+        } else if (msgValue instanceof JsonNumber) {
             value = ((JsonNumber) msgValue).doubleValue();
         } else if (msgValue instanceof JsonString){
             value = ((JsonString) msgValue).getString();
