@@ -41,7 +41,7 @@ import org.epics.vtype.ValueFactory;
  *
  * @author carcassi
  */
-public class VTypeJsonMapper implements JsonObject {
+class VTypeJsonMapper implements JsonObject {
     
     private final JsonObject json;
 

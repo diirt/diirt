@@ -31,7 +31,7 @@ import org.epics.vtype.ValueUtil;
  *
  * @author carcassi
  */
-public class JsonVTypeBuilder implements JsonObjectBuilder {
+class JsonVTypeBuilder implements JsonObjectBuilder {
     
     private final JsonObjectBuilder builder = Json.createObjectBuilder();
 
