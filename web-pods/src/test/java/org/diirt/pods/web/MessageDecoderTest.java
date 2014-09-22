@@ -6,6 +6,10 @@
 package org.diirt.pods.web;
 
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VDouble;
@@ -128,6 +132,40 @@ public class MessageDecoderTest {
         assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
         assertThat(result.getId(), equalTo(1));
         assertThat(VTypeValueEquals.valueEquals(expected, result.getValue()), equalTo(true));
+    }
+
+    @Test
+    public void decodeWrite4() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"write\","
+            + "    \"id\" : 1,"
+            + "    \"value\" : [1,2,3,4,5]"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
+        assertThat(result.getId(), equalTo(1));
+        assertThat((ListDouble) result.getValue(), equalTo((ListDouble) new ArrayDouble(1,2,3,4,5)));
+
+    }
+
+    @Test
+    public void decodeWrite5() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
+            "{ "
+            + "    \"message\" : \"write\","
+            + "    \"id\" : 1,"
+            + "    \"value\" : [\"A\",\"B\",\"C\"]"
+            + "}"));
+                
+        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
+        assertThat(result.getId(), equalTo(1));
+        @SuppressWarnings("unchecked")
+        List<String> list = (List<String>) result.getValue();
+        assertThat(list, equalTo(Arrays.asList("A", "B", "C")));
+
     }
 
     @Test
