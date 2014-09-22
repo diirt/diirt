@@ -7,6 +7,9 @@ package org.epics.vtype.json;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.JsonArray;
+import javax.json.JsonNumber;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
@@ -21,11 +24,41 @@ import org.epics.util.array.ListLong;
 import org.epics.util.array.ListShort;
 
 /**
- * Utility classes to convert JSON arrays to and from Lists and ListNumbers
+ * Utility classes to convert JSON arrays to and from Lists and ListNumbers.
  *
  * @author carcassi
  */
 public class JsonArrays {
+    
+    /**
+     * Checks whether the array contains only numbers.
+     * 
+     * @param array a JSON array
+     * @return true if all elements are JSON numbers
+     */
+    public static boolean isNumericArray(JsonArray array) {
+        for (JsonValue value : array) {
+            if (!(value instanceof JsonNumber)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Checks whether the array contains only strings.
+     * 
+     * @param array a JSON array
+     * @return true if all elements are JSON strings
+     */
+    public static boolean isStringArray(JsonArray array) {
+        for (JsonValue value : array) {
+            if (!(value instanceof JsonString)) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     /**
      * Converts the given numeric JSON array to a ListDouble.
