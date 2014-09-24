@@ -461,9 +461,9 @@
                 
                 <h3>VString</h3>                
                 <div>
-                    <p>A scalar stringvalue:</p>
+                    <p>A scalar string value:</p>
                     <pre>
-    <span class="seds">VEnum</span> :=
+    <span class="seds">VString</span> :=
                 Type        type
                 String      value
                 Alarm       alarm
@@ -513,89 +513,263 @@
                     <hr />
                 </div>
 
-                <!-- ScalarArray -->
-                <h3>ScalarArray</h3>                
-                <div id="seds_scalar_array">
-                    <p>A ScalarArray of <span class="seds">Type T</span>:</p>
+                <h3>VNumberArray (VDoubleArray, VFloatArray, VLongArray, VIntArray, VShortArray, VByteArray)</h3>                
+                <div>
+                    <p>A numeric array value:</p>
                     <pre>
-    <span class="seds">ScalarArray_T</span> :=
-                T[]         value
-                Alarm       alarm     :optional
-                Control     control   :optional
-                Display     display   :optional
-                Time        time      :optional
+    <span class="seds">VNumberArray</span> :=
+                Type        type
+                Number[]    value
+                Alarm       alarm
+                Time        time
+                Display     display
                     </pre>
 
-                    <p>Note that the <span class="seds">Type T</span> must be of the following <a href="#seds_field_types">types</a> defined by SEDS:</p>
-                    <pre>
-    <span class="seds">T</span> :=
-            Boolean
-         |  SedsEnum
-         |  Integer
-         |  Number
-         |  String
-         |  Null
-                    </pre>
+                    <p>The type/name MUST be one of VDoubleArray/VFloatArray/VLongArray/VIntArray/VShortArray/VByteArray.
+                        The value is always a JSON number array,
+                        but the type/name will define the range allowed to such value.</p>
 
                     <p>Descriptions:</p>                    
                     <pre>
-    ScalarArray:
-        Basic type definition for all scalar array types, containing a value
-        (array) and metadata. One must always look at the alarm severity to be 
-        able to correctly interpret the value.
-
-        Note that the value of scalar array is a homogeneous array of a given
-        primitive type. Specifically, a scalar array is NOT a SedsScalar[].
-        The exception is that NULL values are allowed as elements.
+    VNumberArray:
+        Type definition for all numeric array types, containing a value and 
+        metadata. One must always look at the alarm severity to be able to 
+        correctly interpret the value.
                     </pre>
                     <pre>
-    valueArray:
-        The primary data array associated with the scalar.
+    value:
+        The numeric array.
 
     alarm:
-        Alarm metadata linked with the value.
-
-    control:
-        Control metadata linked with the value.
-
-    display:
-        Display metadata linked with the value.
+        Alarm linked with the value.
 
     time:
-        Time metadata linked with the value.
-                    </pre>                       
+        Time linked with the value.
 
-                    <!-- Schema -->
-                    <p>The JSON Schema of a ScalarArray is as follows:
-                        <a href="schema/prototype/SedsScalarArray.json">ScalarArray Schema</a></p>
+    display:
+        Display linked with the value.
+                    </pre>                      
 
-                    <p>An example of a JSON instance of a ScalarArray:</p>
+                    <p>An example of a JSON instance of a VDoubleArray:</p>
                     <pre>                
     {
-        "value": [1, 2, 3, 4],
+        "type" : {
+            "name": "VDoubleArray",
+            "version": "1"
+        }
+        "value": [
+            0.0,
+            0.1,
+            0.2
+        ],
         "alarm": {
-            "severity": 2,
-            "status": 3,
-            "messsage": sampleAlarm
-        },
-        "control": {
-            "lowLimit": 10,
-            "highLimit": 100
-        },
-        "display": {
-            "lowDisplay": 10,
-            "highDisplay": 100,
-            "messsage": sampleDisplay,
-            "units": "meters"
+            "severity": "NONE",
+            "status": "NONE",
         },
         "time": {
             "unixSec": 1354719441,
             "nanoSec": 521786982,
-            "userTag": 1
+            "userTag": 0
+        }
+        "display": {
+            "lowAlarm": -80,
+            "highAlarm": 80,
+            "lowDisplay": -100,
+            "highDisplay": 100,
+            "lowWarning": 75,
+            "highWarning": 75,
+            "units": "m"
+        },
+    }
+                    </pre>                
+                    <hr />
+                </div>
+
+                <h3>VBooleanArray</h3>
+                <div>
+                    <p>A boolean array value:</p>
+                    <pre>
+    <span class="seds">VBooleanArray</span> :=
+                Type        type
+                Boolean[]   value
+                Alarm       alarm
+                Time        time
+                    </pre>
+
+                    <p>The type/name MUST be VBooleanArray. The value MUST be an array
+                        that contains only the JSON constants TRUE or FALSE.</p>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    VBooleanArray:
+        Type definition for boolean array, containing a value and 
+        metadata. One must always look at the alarm severity to be able to 
+        correctly interpret the value.
+                    </pre>
+                    <pre>
+    value:
+        The boolean array.
+
+    alarm:
+        Alarm linked with the value.
+
+    time:
+        Time linked with the value.
+
+    display:
+        Display linked with the value.
+                    </pre>                      
+
+                    <p>An example of a JSON instance of a VBoolean:</p>
+                    <pre>                
+    {
+        "type" : {
+            "name": "VBoolean",
+            "version": "1"
+        }
+        "value": [
+            true,
+            false,
+            true
+        ]
+        "alarm": {
+            "severity": "NONE",
+            "status": "NONE",
+        },
+        "time": {
+            "unixSec": 1354719441,
+            "nanoSec": 521786982,
+            "userTag": 0
         }
     }
-                    </pre>             
-                    <hr />            
+                    </pre>                
+                    <hr />
+                </div>
+                
+                <h3>VEnumArray</h3>                
+                <div>
+                    <p>A enumeration array value:</p>
+                    <pre>
+    <span class="seds">VEnumArray</span> :=
+                Type        type
+                Integer[]   value
+                Alarm       alarm
+                Time        time
+                Enum        enum
+                    </pre>
+
+                    <p>The type/name MUST be VEnumArray. The value MUST be an array of integers in the range given by enum/labels.</p>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    VEnumArray:
+        Type definition for enum array, containing a value and 
+        metadata. One must always look at the alarm severity to be able to 
+        correctly interpret the value.
+                    </pre>
+                    <pre>
+    value:
+        The array of indexes of the values in the enum/labels array.
+
+    alarm:
+        Alarm linked with the value.
+
+    time:
+        Time linked with the value.
+
+    enum:
+        Enum linked with the value.
+                    </pre>                      
+
+                    <p>An example of a JSON instance of a VEnumArray:</p>
+                    <pre>                
+    {
+        "type" : {
+            "name": "VEnumArray",
+            "version": "1"
+        }
+        "value": [
+            1,
+            0,
+            1
+        ]
+        "alarm": {
+            "severity": "NONE",
+            "status": "NONE",
+        },
+        "time": {
+            "unixSec": 1354719441,
+            "nanoSec": 521786982,
+            "userTag": 0
+        }
+        "enum": {
+            "labels": [
+                "ON", 
+                "OFF", 
+                "DISABLED"
+            ]
+        }
+    }
+                    </pre>                
+                    <hr />
+                </div>
+                
+                <h3>VStringArray</h3>                
+                <div>
+                    <p>A string array value:</p>
+                    <pre>
+    <span class="seds">VStringArray</span> :=
+                Type        type
+                String[]    value
+                Alarm       alarm
+                Time        time
+                    </pre>
+
+                    <p>The type/name MUST be VStringArray. The value MUST be a JSON string array.</p>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    VStringArray:
+        Type definition for scalar string, containing a value and 
+        metadata. One must always look at the alarm severity to be able to 
+        correctly interpret the value.
+                    </pre>
+                    <pre>
+    value:
+        The string array value.
+
+    alarm:
+        Alarm linked with the value.
+
+    time:
+        Time linked with the value.
+
+                    </pre>                      
+
+                    <p>An example of a JSON instance of a VStringArray:</p>
+                    <pre>                
+    {
+        "type" : {
+            "name": "VString",
+            "version": "1"
+        }
+        "value": [
+            "A",
+            "B",
+            "C"
+        ]
+        "alarm": {
+            "severity": "NONE",
+            "status": "NONE",
+        },
+        "time": {
+            "unixSec": 1354719441,
+            "nanoSec": 521786982,
+            "userTag": 0
+        }
+    }
+                    </pre>                
+                    <hr />
                 </div>
 
                 <!-- Table -->
