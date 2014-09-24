@@ -8,6 +8,26 @@
     </properties>
   
     <body>
+        <release version="2.8" date="2014/09/26" description="File change notification. First review of VNumberArray to better support intensity graphs.">
+            <action dev="carcassi"  type="update">
+                file: use ServiceLoader to find supported FileFormats
+            </action>
+            <action dev="carcassi"  type="add">
+                file-json: adding JSON serialization support for file datasource
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype-json: adding JSON serialization for vTypes
+            </action>
+            <action dev="carcassi"  type="update">
+                core: improve throughput of creating readers
+            </action>
+            <action dev="carcassi"  type="add">
+                core: printing stack trace for unclosed pvs
+            </action>
+            <action dev="carcassi"  type="update">
+                core: passive scanning
+            </action>
+        </release>
         <release version="2.7" date="2014/07/31" description="File change notification. First review of VNumberArray to better support intensity graphs.">
             <action dev="carcassi"  type="fix">
                 formula: better range handling for histogramOf function
