@@ -1,6 +1,6 @@
 #!/bin/bash
 cd target
-clone git@github.com:diirt/pvmanager-pages.git
+git clone git@github.com:diirt/pvmanager-pages.git
 cd pvmanager-pages
 rm -rf *
 cp -R ../site .
