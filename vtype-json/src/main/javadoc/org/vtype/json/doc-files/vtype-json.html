@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>JSON serialization for vTypes</title>
+    </head>
+
+    <body>
+
+        <div class="head">
+
+            <h1>JSON serialization for vTypes</h1>
+
+            <h2>Version 1</h2>
+            <hr />
+
+        </div>
+
+        <div id="contents" class="contents">
+
+            <div id="introduction">
+                <h2>Introduction</h2>
+
+                <p>This document describes the serialization to JSON of vTypes as provided
+                    by this library. The purpose of the JSON serialization is to interoperate
+                    with different domains, such as web services/sockets and python scripting.
+                    </p>
+
+                <p>Current support is included for the following types:</p>
+                <ul>
+                    <li>VNumber (VDouble, VFloat, VLong, VInt, VShort, VByte)</li> 
+                    <li>VBoolean</li>
+                    <li>VEnum</li>
+                    <li>VString</li>
+                    <li>VNumberArray (VDoubleArray, VFloatArray, VLongArray, VIntArray, VShortArray, VByteArray)</li> 
+                    <li>VBooleanArray</li>
+                    <li>VEnumArray</li>
+                    <li>VStringArray</li>
+                    <li>VTable</li>
+                </ul>              
+                <p>Note that JSON serialization in verbose and not efficient. Therefore
+                it can be used for data of moderate size and slow update rate.
+                Hopefully, in the future, BSON will reach a standardization point
+                and availability, to handle more efficient encoding.</p>
+
+                <p>The JSON serialization is broken down into the basic vTypes components:</p>
+                <ul id="seds_types">
+                    <li>Alarm</li>
+                    <li>Display</li>
+                    <li>Enum</li>
+                    <li>Time</li>
+                </ul>
+                <p>The serialization of each element is common across vTypes.</p>
+                <hr /> 
+            </div>
+
+            <div id = "definitions">
+                <h2>JSON definitions</h2>
+                <h3>Type</h3>
+                <p>The purpose of the type field is to signal that a particular
+                    JSON object is the serialization of a vType. It will also contain
+                    all information needed to de-serialize or use the object,
+                    including the version and actual type name.</p>
+
+                <p>Type definition:</p>
+                <pre>
+    type :=
+                String      name
+                String      version
+                </pre>
+
+                <p>The type name can be one of supported types: </p>
+                <pre>
+    <u>Scalars</u>         <u>Arrays</u>                 <u>Complex</u>
+    VDouble         VDoubleArray           VTable
+    VFloat          VFloatArray
+    VLong           VLongArray
+    VInt            VIntArray
+    VShort          VShortArray
+    VByte           VByteArray
+    VBoolean        VBooleanArray
+    VEnum           VEnumArray
+    VString         VStringArray
+                </pre>
+                <p>This document refers to version "1"</p>
+
+                <p>An example of a JSON instance of Type:</p>
+                <pre>
+    {
+        "name": "VDouble",
+        "version": "1"
+    }                   
+                </pre>
+
+
+                <h3>Alarm</h3>                
+                <div>
+                    <p>An Alarm:</p>
+                    <pre>
+    <span class="seds">Alarm</span> :=
+                String      severity
+                String      status
+                    </pre>
+
+                    <p>Descriptions:</p>
+                    <pre>
+    Alarm:
+        Alarm information. Represents the severity and name of the highest alarm
+        associated with the channel.
+                    </pre>
+                    <pre>
+    severity:
+        Severity that MUST be a value in the enumeration:
+        [NONE, MINOR, MAJOR, INVALID, UNDEFINED].
+
+    status:
+        Status is a short string that represents the alarm.
+
+                    </pre>
+
+
+                    <p>Example of a JSON fields for an Alarm:</p>
+                    <pre>                
+    {
+        "severity": "NONE",
+        "status": "NONE",
+    }
+
+    {
+        "severity": "MINOR",
+        "status": "LOW",
+    }
+                    </pre>
+                    <hr />
+                </div>
+
+
+                <h3>Display</h3>
+                <div>
+                    <p>A Display:</p>
+                    <pre>
+    <span class="seds">Display</span> :=
+                Number      lowAlarm
+                Number      highAlarm
+                Number      lowDisplay
+                Number      highDisplay
+                Number      lowWarning
+                Number      highWarning
+                String      units
+                    </pre>
+
+                    <p>Descriptions:</p>
+                    <pre>
+    Display:
+        Limit and unit information needed for display.
+        The numeric limits are given in double precision no matter which numeric
+        type. The unit is a simple String, which can be empty if no unit 
+        information is provided.
+                    </pre>
+                    <pre>
+    lowAlarm:
+        Lowest value of the alarm range.
+
+    highAlarm:
+        Highest value of the alarm range.
+
+    lowDisplay:
+        Lowest value of the display range.
+
+    highDisplay:
+        Highest value of the display range.
+
+    lowWarning:
+        Lowest value of the warning range.
+
+    highWarning:
+        Highest value of the warning range.
+
+    units:
+        Text representation of the units used for values.
+                    </pre>                    
+
+
+                    <p>An example of a JSON instance of a Display:</p>
+                    <pre>                
+    {
+        "lowAlarm": -80,
+        "highAlarm": 80,
+        "lowDisplay": -100,
+        "highDisplay": 100,
+        "lowWarning": 75,
+        "highWarning": 75,
+        "units": "m"
+    }
+                    </pre>            
+                    <hr />
+                </div>
+
+                <h3>Enum</h3>
+                <div>
+                    <p>An Enum:</p>
+                    <pre>
+    <span class="seds">Enum</span> :=
+                String      selected
+                String[]    elements   :optional
+                    </pre>
+
+                    <p>Descriptions:</p>
+                    <pre>
+    Enum:
+        Complete representation of an enumeration, or a structure describing a 
+        value drawn from a given set of valid values also given.
+                    </pre>
+                    <pre>
+    selected:
+        The value that MUST be taken from the enumeration elements.
+
+    elements:
+        All the possible labels.
+        MUST contain at least one element. 
+        MUST contain unique elements.
+                    </pre>                       
+
+                    <!-- Schema -->
+                    <p>The JSON Schema of a Enum is as follows:
+                        <a href="schema/prototype/SedsEnum.json">Enum Schema</a></p>
+
+                    <p>An example of a JSON instance of an Enum</p>
+                    <pre>                
+    {
+        "selected": "CLUBS",
+        "constants": [
+            "SPADES", 
+            "HEARTS", 
+            "DIAMONDS", 
+            "CLUBS"
+        ]
+    }
+                    </pre>                 
+                    <hr />
+                </div>
+
+                <!-- Time -->
+                <h3>Time</h3>                
+                <div id="seds_time">
+                    <p>A Time:</p>
+                    <pre>
+    <span class="seds">Time</span> :=
+                Integer     unixSec
+                Integer     nanoSec
+                Integer     userTag     :optional
+                    </pre>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    Time:
+        Time information.
+                    </pre>
+                    <pre>
+    unixSec:
+        Unix seconds portion of the timestamp.
+        The timestamp of the value typically indicates when it was generated. If
+        never connected, the timestamp is the time when it was last determined
+        that no connection was made.
+        Note, SEDS protocol defines an Integer as 32-bit signed mathematical
+        integer. The unix seconds should be represented in 64-bit signed
+        integer precision. Therefore this field is classified as an integer 
+        (SEDS Integer) because it MUST be a mathematical integer 
+        (no fractional component) but in reality SHOULD be treated with 64-bit 
+        precision (SEDS Number).
+        
+    nanoSec:
+        Nano seconds portion of the timestamp.
+        The timestamp of the value typically indicates when it was generated. If
+        never connected, the timestamp is the time when it was last determined
+        that no connection was made.
+
+    userTag:
+        A user defined tag, that can be used to store extra time information, 
+        such as beam shot.
+                    </pre>                      
+
+                    <!-- Schema -->
+                    <p>The JSON Schema of a Time is as follows:
+                        <a href="schema/prototype/SedsTime.json">Time Schema</a></p>
+
+                    <p>An example of a JSON instance of a Time:</p>
+                    <pre>                
+    {
+        "unixSec": 1354719441,
+        "nanoSec": 521786982,
+        "userTag": 1
+    }
+                    </pre>    
+                    <hr />
+                </div>
+
+                <!-- Scalar -->
+                <h3>Scalar</h3>                
+                <div id="seds_scalar">
+                    <p>A Scalar of <span class="seds">Type T</span>:</p>
+                    <pre>
+    <span class="seds">Scalar_T</span> :=
+                T           value
+                Alarm       alarm     :optional
+                Control     control   :optional
+                Display     display   :optional
+                Time        time      :optional
+                    </pre>
+
+                    <p>Note that the <span class="seds">Type T</span> must be of the following <a href="#seds_field_types">types</a> defined by SEDS:</p>
+                    <pre>
+    <span class="seds">T</span> :=
+            Boolean
+         |  SedsEnum
+         |  Integer
+         |  Number
+         |  String
+         |  Null
+                    </pre>  
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    Scalar:
+        Basic type definition for all scalar types, containing a value and 
+        metadata. One must always look at the alarm severity to be able to 
+        correctly interpret the value.
+                    </pre>
+                    <pre>
+    value:
+        The primary data associated with the scalar.
+
+    alarm:
+        Alarm metadata linked with the value.
+
+    control:
+        Control metadata linked with the value.
+
+    display:
+        Display metadata linked with the value.
+
+    time:
+        Time metadata linked with the value.
+                    </pre>                      
+
+                    <!-- Schema -->
+                    <p>The JSON Schema of a Scalar is as follows:
+                        <a href="schema/prototype/SedsScalar.json">Scalar Schema</a></p>
+
+                    <p>An example of a JSON instance of a Scalar:</p>
+                    <pre>                
+    {
+        "value": 3.1415,
+        "alarm": {
+            "severity": 2,
+            "status": 3,
+            "messsage": sampleAlarm
+        },
+        "control": {
+            "lowLimit": 10,
+            "highLimit": 100
+        },
+        "display": {
+            "lowDisplay": 10,
+            "highDisplay": 100,
+            "messsage": sampleDisplay,
+            "units": "meters"
+        },
+        "time": {
+            "unixSec": 1354719441,
+            "nanoSec": 521786982,
+            "userTag": 1
+        }
+    }
+                    </pre>                
+                    <hr />
+                </div>
+
+                <!-- ScalarArray -->
+                <h3>ScalarArray</h3>                
+                <div id="seds_scalar_array">
+                    <p>A ScalarArray of <span class="seds">Type T</span>:</p>
+                    <pre>
+    <span class="seds">ScalarArray_T</span> :=
+                T[]         value
+                Alarm       alarm     :optional
+                Control     control   :optional
+                Display     display   :optional
+                Time        time      :optional
+                    </pre>
+
+                    <p>Note that the <span class="seds">Type T</span> must be of the following <a href="#seds_field_types">types</a> defined by SEDS:</p>
+                    <pre>
+    <span class="seds">T</span> :=
+            Boolean
+         |  SedsEnum
+         |  Integer
+         |  Number
+         |  String
+         |  Null
+                    </pre>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    ScalarArray:
+        Basic type definition for all scalar array types, containing a value
+        (array) and metadata. One must always look at the alarm severity to be 
+        able to correctly interpret the value.
+
+        Note that the value of scalar array is a homogeneous array of a given
+        primitive type. Specifically, a scalar array is NOT a SedsScalar[].
+        The exception is that NULL values are allowed as elements.
+                    </pre>
+                    <pre>
+    valueArray:
+        The primary data array associated with the scalar.
+
+    alarm:
+        Alarm metadata linked with the value.
+
+    control:
+        Control metadata linked with the value.
+
+    display:
+        Display metadata linked with the value.
+
+    time:
+        Time metadata linked with the value.
+                    </pre>                       
+
+                    <!-- Schema -->
+                    <p>The JSON Schema of a ScalarArray is as follows:
+                        <a href="schema/prototype/SedsScalarArray.json">ScalarArray Schema</a></p>
+
+                    <p>An example of a JSON instance of a ScalarArray:</p>
+                    <pre>                
+    {
+        "value": [1, 2, 3, 4],
+        "alarm": {
+            "severity": 2,
+            "status": 3,
+            "messsage": sampleAlarm
+        },
+        "control": {
+            "lowLimit": 10,
+            "highLimit": 100
+        },
+        "display": {
+            "lowDisplay": 10,
+            "highDisplay": 100,
+            "messsage": sampleDisplay,
+            "units": "meters"
+        },
+        "time": {
+            "unixSec": 1354719441,
+            "nanoSec": 521786982,
+            "userTag": 1
+        }
+    }
+                    </pre>             
+                    <hr />            
+                </div>
+
+                <!-- Table -->
+                <h3>Table</h3>                
+                <div id="seds_table">
+                    <p>A Table:</p>
+                    <pre>
+    <span class="seds">Table</span> :=
+                Integer          numRows
+                Integer          numColumns
+                String[]    	 names
+                String[]    	 columnTypes
+                ScalarArray[] 	 values
+                    </pre>
+
+                    <p>Descriptions:</p>                    
+                    <pre>
+    Table:
+        A table. Tables are collections of columns, each of which is composed of 
+        a column name, unit, type, and data array. All elements of the same 
+        column SHOULD be of the same type.
+
+        Unit information is contained within the ScalarArray columns Display 
+        field.
+                    </pre>
+                    <pre>
+    numRows:
+        The number of rows.
+
+    numColumns:
+        The number of columns.
+
+    names:
+        The name of each column.
+
+    columnTypes:
+        The types (represented as strings) of each column.
+
+    values:
+        The column data, where each column is a SedsScalarArray.
+                    </pre>                            
+
+                    <!-- Schema -->
+                    <p>The JSON Schema of a Table is as follows:
+                        <a href="schema/prototype/SedsTable.json">Table Schema</a></p>
+
+                    <p>An example of a JSON instance of a Table:</p>
+                    <pre>                
+    {
+        "names": [
+            "NumberColumn",
+            "IntegerColumn",
+            "StringColumn"
+        ],
+        "units": [
+            "meters",
+            "seconds",
+            "properties"
+        ],
+        "columnTypes": [
+            "SedsScalarArray_String",
+            "SedsScalarArray_Number",
+            "SedsScalarArray_String"
+        ],
+        "values": [
+            {
+                "valueArray":[
+                    "A",
+                    "B",
+                    "C"
+                ]
+            },
+            {
+                "valueArray":[
+                    3.1,
+                    3.2,
+                    3.3
+                ]
+            },
+            {
+                "valueArray":[
+                    "NONE",
+                    "MINOR",
+                    "NONE"
+                ]
+            }
+        ]
+    }
+                    </pre>              
+                    <hr />                     
+                </div>
+
+            </div>
+
+            <!-- Summary -->
+            <div id="summary">
+                <h2>Summary</h2>
+
+                <h3>Schema</h3>
+                <div>
+                    <p>Provided below are the JSON Schemas that SHOULD actually
+                        be used to validate SEDS data.</p>
+                    <p>Note that the previous
+                        schemas may have referenced other SEDS schemas but
+                        did not actually define the referenced schemas. The
+                        schemas in this section define all references and
+                        provide the protocol for serializing:</p>
+                    <ul>
+                        <li>
+                            SEDS (Metadata and Raw data combined):
+                            <a href="schema/SEDS_type.json">SEDS Schema</a>
+                        </li>
+                        <li>
+                            SEDS Metadata:
+                            <a href="schema/SEDS_meta.json">SEDS_meta Schema</a>                          
+                        </li>
+                        <li>
+                            SEDS Raw data:
+                            <a href="schema/SEDS_raw.json">SEDS_raw Schema</a>                                
+                        </li>
+                    </ul>
+
+                    <!-- Schema List-->
+                    <div>
+                        <p>The full list of all SEDS schemas:</p>
+                        <ul>
+                            <li><a href="schema/SEDS_type.json">SEDS Schema</a></li>
+                            <li><a href="schema/SEDS_meta.json">SEDS_meta Schema</a></li>
+                            <li><a href="schema/SEDS_raw.json">SEDS_raw Schema</a></li>     
+                        </ul>
+                        <ul>
+                            <li><a href="schema/prototype/SedsMetadata.json">Metadata Schema</a></li>
+                            <li><a href="schema/prototype/SedsAlarm.json">Alarm Schema</a></li>
+                            <li><a href="schema/prototype/SedsControl.json">Control Schema</a></li>                            
+                            <li><a href="schema/prototype/SedsDisplay.json">Display Schema</a></li>
+                            <li><a href="schema/prototype/SedsEnum.json">Enum Schema</a></li>
+                            <li><a href="schema/prototype/SedsTime.json">Time Schema</a></li>
+                            <li><a href="schema/prototype/SedsScalar.json">Scalar Schema</a></li>
+                            <li><a href="schema/prototype/SedsScalarArray.json">ScalarArray Schema</a></li>
+                            <li><a href="schema/prototype/SedsTable.json">Table Schema</a></li>
+                        </ul>
+                    </div> 
+
+                    <hr />
+                </div>
+
+                <h3>UML Diagrams</h3>                
+                <div>
+
+                    <p>Provided below is UML class diagram to show an overview
+                        of the SEDS Types. For each SEDS Type, the diagrams 
+                        summarize each field, the type of each field, 
+                        and the optionality of each field.</p>
+
+                    <pre>
+UML Diagram:
+
+<img src='uml/datatypes.png' alt='UML Diagram' />
+                    </pre>
+
+                    <pre>
+Detailed UML Diagram:
+
+<img src='uml/datatypes-detail.png' alt='UML Diagram (Details)' />
+                    </pre>
+
+                </div>
+            </div>            
+
+            <!-- References -->
+            <div id="references">
+
+                <!-- In-text References -->
+                <h2>References</h2>
+                <dl>
+                    <dd>[1] <a href="http://www.aps.anl.gov/epics/">EPICS</a></dd>
+                    <dd>[2] <a href="http://www.json.org/">JSON Format</a></dd>
+                    <dd>[3] <a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf">ECMA-404 The Json Data Interchange Format</a></dd>								
+                    <dd>[4] <a href="http://json-schema.org/">JSON Schemas</a></dd>
+                </dl>
+
+                <!-- Related References -->
+                <div>
+                    <p>Useful Links:</p>
+                    <dl>
+                        <dd>[1] <a href='http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html'>Normative Types</a></dd>
+                        <dd>[2] <a href='http://docs.oracle.com/javaee/7/tutorial/doc/jsonp008.htm'>Java EE - Json Tutorial</a></dd>
+                        <dd>[3] <a href='http://docs.oracle.com/javaee/7/api/javax/json/package-summary.html'>Java EE - Json Java Documentation</a></dd>
+                        <dd>[4] <a href='http://json-schema-validator.herokuapp.com/'>JSON Schema Validator</a></dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
