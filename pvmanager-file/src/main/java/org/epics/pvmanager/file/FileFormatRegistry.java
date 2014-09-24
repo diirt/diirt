@@ -23,6 +23,12 @@ public class FileFormatRegistry {
     private static final Map<String, FileFormat> fileFormatRegistry = new ConcurrentHashMap<>();
     private static final Logger log = Logger.getLogger(FileFormatRegistry.class.getName());
     
+    /**
+     * The default registry. This registry is the one used by the framework
+     * to look for currently supported file format.
+     * 
+     * @return the default registry; not null
+     */
     public static FileFormatRegistry getDefault() {
         return registry;
     }
