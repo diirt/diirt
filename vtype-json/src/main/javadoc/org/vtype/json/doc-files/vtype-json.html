@@ -772,90 +772,64 @@
                     <hr />
                 </div>
 
-                <!-- Table -->
-                <h3>Table</h3>                
-                <div id="seds_table">
-                    <p>A Table:</p>
+                <h3>VTable</h3>                
+                <div>
+                    <p>A table:</p>
                     <pre>
-    <span class="seds">Table</span> :=
-                Integer          numRows
-                Integer          numColumns
-                String[]    	 names
-                String[]    	 columnTypes
-                ScalarArray[] 	 values
+    <span class="seds">VTable</span> :=
+                Type          type
+                String[]    columnNames
+                String[]    columnTypes
+                Object[][]  columnValues
                     </pre>
 
                     <p>Descriptions:</p>                    
                     <pre>
     Table:
         A table. Tables are collections of columns, each of which is composed of 
-        a column name, unit, type, and data array. All elements of the same 
-        column SHOULD be of the same type.
+        a column name, type, and data array. All elements of the same 
+        column MUST be of the same type.
 
         Unit information is contained within the ScalarArray columns Display 
         field.
                     </pre>
                     <pre>
-    numRows:
-        The number of rows.
-
-    numColumns:
-        The number of columns.
-
-    names:
-        The name of each column.
+    columnNames:
+        A string array with the names of the columns.
 
     columnTypes:
-        The types (represented as strings) of each column.
+        A string array with the type of each column. MUST be the same
+        size of columnNames. The type MUST be one of the following: String,
+        double, float, long, integer, short, byte.
 
-    values:
-        The column data, where each column is a SedsScalarArray.
+    columnValues:
+        An array where each element is an array with the data of each column.
+        The data MUST match the type. The data for a String column MUST
+        contain only JSON strings. The data of a double/float/long/integer/short/byte
+        column must contain only JSON numbers within the range and precision.
                     </pre>                            
 
-                    <!-- Schema -->
-                    <p>The JSON Schema of a Table is as follows:
-                        <a href="schema/prototype/SedsTable.json">Table Schema</a></p>
-
-                    <p>An example of a JSON instance of a Table:</p>
+                    <p>An example of a JSON instance of a VTable:</p>
                     <pre>                
     {
-        "names": [
-            "NumberColumn",
-            "IntegerColumn",
-            "StringColumn"
-        ],
-        "units": [
-            "meters",
-            "seconds",
-            "properties"
+        "type": {
+            "name": "VTable",
+            "version": 1
+        },
+        "columnNames": [
+            "Name",
+            "Index",
+            "Value"
         ],
         "columnTypes": [
-            "SedsScalarArray_String",
-            "SedsScalarArray_Number",
-            "SedsScalarArray_String"
+            "String",
+            "int",
+            "double"
         ],
-        "values": [
-            {
-                "valueArray":[
-                    "A",
-                    "B",
-                    "C"
-                ]
-            },
-            {
-                "valueArray":[
-                    3.1,
-                    3.2,
-                    3.3
-                ]
-            },
-            {
-                "valueArray":[
-                    "NONE",
-                    "MINOR",
-                    "NONE"
-                ]
-            }
+        "columnValues": [
+            ["A", "B", "C"],
+            [1, 2, 3],
+            [3.14, 1.25, -0.1]
         ]
     }
                     </pre>              
@@ -864,85 +838,8 @@
 
             </div>
 
-            <!-- Summary -->
-            <div id="summary">
-                <h2>Summary</h2>
-
-                <h3>Schema</h3>
-                <div>
-                    <p>Provided below are the JSON Schemas that SHOULD actually
-                        be used to validate SEDS data.</p>
-                    <p>Note that the previous
-                        schemas may have referenced other SEDS schemas but
-                        did not actually define the referenced schemas. The
-                        schemas in this section define all references and
-                        provide the protocol for serializing:</p>
-                    <ul>
-                        <li>
-                            SEDS (Metadata and Raw data combined):
-                            <a href="schema/SEDS_type.json">SEDS Schema</a>
-                        </li>
-                        <li>
-                            SEDS Metadata:
-                            <a href="schema/SEDS_meta.json">SEDS_meta Schema</a>                          
-                        </li>
-                        <li>
-                            SEDS Raw data:
-                            <a href="schema/SEDS_raw.json">SEDS_raw Schema</a>                                
-                        </li>
-                    </ul>
-
-                    <!-- Schema List-->
-                    <div>
-                        <p>The full list of all SEDS schemas:</p>
-                        <ul>
-                            <li><a href="schema/SEDS_type.json">SEDS Schema</a></li>
-                            <li><a href="schema/SEDS_meta.json">SEDS_meta Schema</a></li>
-                            <li><a href="schema/SEDS_raw.json">SEDS_raw Schema</a></li>     
-                        </ul>
-                        <ul>
-                            <li><a href="schema/prototype/SedsMetadata.json">Metadata Schema</a></li>
-                            <li><a href="schema/prototype/SedsAlarm.json">Alarm Schema</a></li>
-                            <li><a href="schema/prototype/SedsControl.json">Control Schema</a></li>                            
-                            <li><a href="schema/prototype/SedsDisplay.json">Display Schema</a></li>
-                            <li><a href="schema/prototype/SedsEnum.json">Enum Schema</a></li>
-                            <li><a href="schema/prototype/SedsTime.json">Time Schema</a></li>
-                            <li><a href="schema/prototype/SedsScalar.json">Scalar Schema</a></li>
-                            <li><a href="schema/prototype/SedsScalarArray.json">ScalarArray Schema</a></li>
-                            <li><a href="schema/prototype/SedsTable.json">Table Schema</a></li>
-                        </ul>
-                    </div> 
-
-                    <hr />
-                </div>
-
-                <h3>UML Diagrams</h3>                
-                <div>
-
-                    <p>Provided below is UML class diagram to show an overview
-                        of the SEDS Types. For each SEDS Type, the diagrams 
-                        summarize each field, the type of each field, 
-                        and the optionality of each field.</p>
-
-                    <pre>
-UML Diagram:
-
-<img src='uml/datatypes.png' alt='UML Diagram' />
-                    </pre>
-
-                    <pre>
-Detailed UML Diagram:
-
-<img src='uml/datatypes-detail.png' alt='UML Diagram (Details)' />
-                    </pre>
-
-                </div>
-            </div>            
-
-            <!-- References -->
             <div id="references">
 
-                <!-- In-text References -->
                 <h2>References</h2>
                 <dl>
                     <dd>[1] <a href="http://www.aps.anl.gov/epics/">EPICS</a></dd>
