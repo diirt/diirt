@@ -67,7 +67,7 @@ public class FileFormatRegistry {
     /**
      * Find the registered FileFormat for the given file extension
      * 
-     * @param extension
+     * @param extension the file extension to register the file format for
      * @return the FileFormat registered for this extension
      */
     public FileFormat getFileFormatFor(String extension) {
@@ -77,7 +77,7 @@ public class FileFormatRegistry {
     /**
      * Returns true if there is a FileFormat registered for the given file extension
      * 
-     * @param extension
+     * @param extension the file extension to register the file format for
      * @return true if there is a FileFormat registered for this file extension
      */
     public boolean contains(String extension) {
