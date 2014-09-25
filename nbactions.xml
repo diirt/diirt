@@ -10,10 +10,9 @@
         </action>
         <action>
             <actionName>CUSTOM-Release</actionName>
-            <displayName>Release</displayName>
+            <displayName>ReleasePrepare</displayName>
             <goals>
                 <goal>release:prepare</goal>
-                <goal>release:perform</goal>
             </goals>
         </action>
         <action>
@@ -25,6 +24,7 @@
             <properties>
                 <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
                 <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
+                <skipTests></skipTests>
             </properties>
         </action>
     </actions>
