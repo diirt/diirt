@@ -24,7 +24,7 @@
             <properties>
                 <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
                 <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
-                <skipTests></skipTests>
+                <skipTests>arguments="-DskipTests"</skipTests>
             </properties>
         </action>
     </actions>
