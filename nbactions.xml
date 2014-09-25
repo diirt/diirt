@@ -27,4 +27,11 @@
                 <skipTests>arguments="-DskipTests"</skipTests>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-ChangeVersion</actionName>
+            <displayName>ChangeVersion</displayName>
+            <goals>
+                <goal>release:update-versions</goal>
+            </goals>
+        </action>
     </actions>
