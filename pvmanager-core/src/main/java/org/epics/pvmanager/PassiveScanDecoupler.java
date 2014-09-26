@@ -66,6 +66,11 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     }
 
     @Override
+    void onResume() {
+        onDesiredEventProcessed();
+    }
+
+    @Override
     void newReadConnectionEvent() {
         newEvent(DesiredRateEvent.Type.READ_CONNECTION);
     }
@@ -151,7 +156,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             queuedEvent.addType(type);
 
             // If scan is not active, submit the next scan
-            if (!scanActive) {
+            if (!scanActive && !isPaused()) {
                 submit = true;
                 Timestamp currentTimestamp = Timestamp.now();
                 Timestamp nextTimeSlot = lastSubmission.plus(getMaxDuration());
