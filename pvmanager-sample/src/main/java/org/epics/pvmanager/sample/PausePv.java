@@ -28,6 +28,8 @@ import org.epics.vtype.VNumber;
 public class PausePv {
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(new SimulationDataSource());
+        System.out.println("Note that events cannot be stopped while they are in-flight.");
+        System.out.println("Therefore you may see one event arriving after the pause or after the close.");
         
         System.out.println("Starting pv");
         PVReader<List<VNumber>> reader = PVManager.read(ExpressionLanguage.newValuesOf(vNumber("ramp()")))
