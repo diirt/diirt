@@ -20,6 +20,27 @@ package org.epics.pvmanager;
  * the atomicity and also the other safeguards (like rate throttling).
  * The callback does not lock the object, so other threads can still access
  * the object while listeners are executing.
+ * <p>
+ * Note that <b>you may get one event after pausing or closing the reader</b>, and there
+ * is no plan to address this. The event processing starts with the clearing
+ * of the queues. From that moment on, the event processing cannot be stopped
+ * without dropping data. The pause could arrive at any moment after that, and
+ * at that point the framework has only two choices: send the event anyway
+ * or dropping the data which would be forever lost. The first choice is preferable.
+ * The third way would be to allow a "roll-back" of the event processing to the
+ * state before the event processing started: since each element in the event
+ * processing may be stateful, this becomes a non-trivial task. It would also not
+ * cover a much simpler hole: the processing may be finished and the pause/stop
+ * arrive during the use event callback. At that point, the framework has no control, so
+ * you would still have a small chance of part of the callback executed after
+ * pausing/closing. The solution there would be to lock the pause/close until
+ * after all callbacks are done. This, which was the original implementation, has
+ * a severe drawback: it exposes the internal locks and, in conjuction with
+ * other badly placed user locks, would introduce deadlocks (user lock -&gt; close[internal lock],
+ * callback[internal lock] -&gt; user lock). Given that the point
+ * of the library is to make it relative simple for beginners to write multi-threaded
+ * correct code, the choice is to avoid the chance of deadlock and let the user
+ * deal with the extra possible event.
  *
  * @author carcassi
  * @param <T> the type of the PVReader.
