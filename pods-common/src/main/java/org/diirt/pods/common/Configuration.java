@@ -61,6 +61,7 @@ public class Configuration {
     public static InputStream getFileAsStream(String relativeFilePath, Object obj, String defaultResource) throws IOException {
         File mappings = new File(Configuration.getDirectory(), relativeFilePath);
         if (!mappings.exists()) {
+            mappings.getParentFile().mkdirs();
             try (InputStream input = obj.getClass().getResourceAsStream(defaultResource);
                     OutputStream output = new FileOutputStream(mappings)) {
                 byte[] buffer = new byte[8 * 1024];
