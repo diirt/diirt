@@ -23,6 +23,7 @@ import org.epics.util.array.ListDouble;
 import org.epics.util.array.ListFloat;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
+import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
 
 /**
@@ -171,7 +172,7 @@ public class JsonArrays {
     /**
      * Converts the given List of String to a string JSON array.
      * 
-     * @param list a new List of Strings
+     * @param list a List of Strings
      * @return an array of strings
      */
     public static JsonArrayBuilder fromListString(List<String> list) {
@@ -182,5 +183,33 @@ public class JsonArrays {
         return b;
     }
 
+    /**
+     * Converts the given ListNumber to a number JSON array.
+     * 
+     * @param list a list of numbers
+     * @return an array of numbers
+     */
+    public static JsonArrayBuilder fromListNumber(ListNumber list) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        if (list instanceof ListByte || list instanceof ListShort || list instanceof ListInt) {
+            for (int i = 0; i < list.size(); i++) {
+                b.add(list.getInt(i));
+            }
+        } else if (list instanceof ListLong) {
+            for (int i = 0; i < list.size(); i++) {
+                b.add(list.getLong(i));
+            }
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                double value = list.getDouble(i);
+                if (Double.isNaN(value) || Double.isInfinite(value)) {
+                    b.addNull();
+                } else {
+                    b.add(value);
+                }
+            }
+        }
+        return b;
+    }
     
 }
