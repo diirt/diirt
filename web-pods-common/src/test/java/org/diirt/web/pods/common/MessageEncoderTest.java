@@ -98,6 +98,16 @@ public class MessageEncoderTest {
     public void encode1Write() throws Exception {
         testEncoding(write1Message, write1Json);
     }
+
+    @Test
+    public void encode2Write() throws Exception {
+        testEncoding(write2Message, write2Json);
+    }
+
+    @Test
+    public void encode3Write() throws Exception {
+        testEncoding(write3Message, write3Json);
+    }
     
     public static void testEncoding(Message message, String json) throws Exception {
         MessageEncoder encoder = new MessageEncoder();

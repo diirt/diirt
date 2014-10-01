@@ -4,6 +4,10 @@
  */
 package org.diirt.web.pods.common;
 
+import org.epics.util.time.Timestamp;
+import org.epics.vtype.AlarmSeverity;
+import static org.epics.vtype.ValueFactory.*;
+
 /**
  *
  * @author carcassi
@@ -39,5 +43,22 @@ public class MessageTestConstants {
             + "}";
     public static MessageWrite write1Message = new MessageWrite(1, 3.14);
     
-
+    public static String write2Json = "{"
+            + "\"message\":\"write\","
+            + "\"id\":1,"
+            + "\"value\":\"Green\""
+            + "}";
+    public static MessageWrite write2Message = new MessageWrite(1, "Green");
+    
+    public static String write3Json = "{"
+            + "\"message\":\"write\","
+            + "\"id\":1,"
+            + "\"value\":{\"type\":{\"name\":\"VDouble\",\"version\":1},"
+                + "\"value\":3.14,"
+                + "\"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},"
+                + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
+                + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
+            + "}";
+    public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone()));
+    
 }

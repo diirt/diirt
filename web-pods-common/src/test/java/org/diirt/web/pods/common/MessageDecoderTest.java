@@ -19,6 +19,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.web.pods.common.MessageTestConstants.*;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -100,7 +101,11 @@ public class MessageDecoderTest {
     public static void compareMessage(MessageWrite expected, MessageWrite result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
-        assertThat(result.getValue(), equalTo(expected.getValue()));
+        if (expected.getValue() instanceof VType) {
+            assertThat(VTypeValueEquals.valueEquals(expected.getValue(), result.getValue()), equalTo(true));
+        } else {
+            assertThat(result.getValue(), equalTo(expected.getValue()));
+        }
     }
 
     @Test
@@ -115,36 +120,12 @@ public class MessageDecoderTest {
 
     @Test
     public void decodeWrite2() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"write\","
-            + "    \"id\" : 1,"
-            + "    \"value\" : \"Green\""
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
-        assertThat(result.getId(), equalTo(1));
-        assertThat((String) result.getValue(), equalTo("Green"));
+        testDecoding(write2Message, write2Json);
     }
 
     @Test
     public void decodeWrite3() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"write\","
-            + "    \"id\" : 1,"
-            + "    \"value\" : {\"type\":{\"name\":\"VDouble\",\"version\":1},"
-            + "        \"value\":3.14,"
-            + "        \"alarm\":{\"severity\":\"MINOR\",\"status\":\"LOW\"},"
-            + "        \"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
-            + "        \"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
-            + "}"));
-        VDouble expected = newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone());
-        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
-        assertThat(result.getId(), equalTo(1));
-        assertThat(VTypeValueEquals.valueEquals(expected, result.getValue()), equalTo(true));
+        testDecoding(write3Message, write3Json);
     }
 
     @Test
