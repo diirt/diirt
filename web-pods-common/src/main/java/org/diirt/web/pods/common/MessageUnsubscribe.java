@@ -15,5 +15,9 @@ public class MessageUnsubscribe extends Message {
     public MessageUnsubscribe(JsonObject obj) {
         super(obj);
     }
+
+    public MessageUnsubscribe(int id) {
+        super(MessageType.UNSUBSCRIBE, id);
+    }
     
 }

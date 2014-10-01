@@ -74,6 +74,8 @@ public class MessageDecoderTest {
     public static void compareMessage(Message expected, Message result) {
         if (expected instanceof MessageSubscribe && result instanceof MessageSubscribe) {
             compareMessage((MessageSubscribe) expected, (MessageSubscribe) result);
+        } else if (expected instanceof MessageUnsubscribe && result instanceof MessageUnsubscribe) {
+            compareMessage((MessageUnsubscribe) expected, (MessageUnsubscribe) result);
         } else {
             throw new UnsupportedOperationException("Can't compare " + expected.getClass() + " with " + result.getClass());
         }
@@ -87,18 +89,15 @@ public class MessageDecoderTest {
         assertThat(result.getType(), equalTo(expected.getType()));
         assertThat(result.isReadOnly(), equalTo(expected.isReadOnly()));
     }
+    
+    public static void compareMessage(MessageUnsubscribe expected, MessageUnsubscribe result) {
+        assertThat(result.getMessage(), equalTo(expected.getMessage()));
+        assertThat(result.getId(), equalTo(expected.getId()));
+    }
 
     @Test
     public void decodeUnsubscribe1() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageUnsubscribe result = (MessageUnsubscribe) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"unsubscribe\","
-            + "    \"id\" : 1"
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.UNSUBSCRIBE));
-        assertThat(result.getId(), equalTo(1));
+        testDecoding(unsubscribe1Message, unsubscribe1Json);
     }
 
     @Test

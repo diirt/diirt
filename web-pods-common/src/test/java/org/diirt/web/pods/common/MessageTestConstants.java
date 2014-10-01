@@ -25,4 +25,10 @@ public class MessageTestConstants {
             + "\"readOnly\":false"
             + "}";
     public static MessageSubscribe subscribe2Message = new MessageSubscribe(1, "sim://noise", "VDouble", 10, false);
+    
+    public static String unsubscribe1Json = "{"
+            + "\"message\":\"unsubscribe\","
+            + "\"id\":1"
+            + "}";
+    public static MessageUnsubscribe unsubscribe1Message = new MessageUnsubscribe(1);
 }
