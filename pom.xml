@@ -225,6 +225,8 @@
     <modules>
     <module>web-pods</module>
         <module>pods-common</module>
+        <module>web-pods-datasource</module>
+        <module>web-pods-common</module>
     </modules>
     <reporting>
         <plugins>
