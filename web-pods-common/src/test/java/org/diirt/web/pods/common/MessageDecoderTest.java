@@ -18,6 +18,7 @@ import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.diirt.web.pods.common.MessageTestConstants.*;
 
 /**
  *
@@ -58,18 +59,25 @@ public class MessageDecoderTest {
     public void decodeSubscribe1() throws Exception {
         MessageDecoder decoder = new MessageDecoder();
         MessageSubscribe result = (MessageSubscribe) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"subscribe\","
-            + "    \"id\" : 1,"
-            + "    \"pv\" : \"sim://noise\""
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.SUBSCRIBE));
-        assertThat(result.getId(), equalTo(1));
-        assertThat(result.getPv(), equalTo("sim://noise"));
-        assertThat(result.getMaxRate(), equalTo(-1));
-        assertThat(result.getType(), equalTo(null));
-        assertThat(result.isReadOnly(), equalTo(true));
+            subscribe1Json));
+        compareMessage(result, subscribe1Message);
+    }
+
+    @Test
+    public void decodeSubscribe2() throws Exception {
+        MessageDecoder decoder = new MessageDecoder();
+        MessageSubscribe result = (MessageSubscribe) decoder.decode(new StringReader(
+            subscribe2Json));
+        compareMessage(result, subscribe2Message);
+    }
+    
+    public static void compareMessage(MessageSubscribe expected, MessageSubscribe result) {
+        assertThat(result.getMessage(), equalTo(expected.getMessage()));
+        assertThat(result.getId(), equalTo(expected.getId()));
+        assertThat(result.getPv(), equalTo(expected.getPv()));
+        assertThat(result.getMaxRate(), equalTo(expected.getMaxRate()));
+        assertThat(result.getType(), equalTo(expected.getType()));
+        assertThat(result.isReadOnly(), equalTo(expected.isReadOnly()));
     }
 
     @Test
