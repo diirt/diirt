@@ -4,7 +4,10 @@
  */
 package org.diirt.web.pods.common;
 
+import java.io.Writer;
+import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.stream.JsonGenerator;
 
 /**
  *
@@ -18,6 +21,15 @@ public class MessageUnsubscribe extends Message {
 
     public MessageUnsubscribe(int id) {
         super(MessageType.UNSUBSCRIBE, id);
+    }
+    
+    @Override
+    public void toJson(Writer writer) {
+        JsonGenerator gen = Json.createGenerator(writer).writeStartObject();
+        gen.write("message", getMessage().toString().toLowerCase())
+            .write("id", getId())
+            .writeEnd()
+            .close();
     }
     
 }
