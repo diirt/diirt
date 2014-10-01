@@ -2,30 +2,13 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.diirt.web.pods.common;
 
-import org.diirt.web.pods.common.MessageValueEvent;
-import org.diirt.web.pods.common.MessageEncoder;
-import org.diirt.web.pods.common.MessageErrorEvent;
-import org.diirt.web.pods.common.MessageWriteCompletedEvent;
-import org.diirt.web.pods.common.MessageConnectionEvent;
-import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
-import javax.websocket.EndpointConfig;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.diirt.web.pods.common.MessageTestConstants.*;
 
 /**
  *
@@ -94,6 +77,14 @@ public class MessageEncoderTest {
         StringWriter writer = new StringWriter();
         encoder.encode(event, writer);
         assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"writeCompleted\",\"successful\":false,\"error\":\"Value too big\"}"));
+    }
+
+    @Test
+    public void encodeSubscribe() throws Exception {
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(subscribeMessage, writer);
+        assertThat(writer.toString(), equalTo(subscribeJson));
     }
     
 }
