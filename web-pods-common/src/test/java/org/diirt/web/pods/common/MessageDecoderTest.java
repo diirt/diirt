@@ -57,18 +57,26 @@ public class MessageDecoderTest {
 
     @Test
     public void decodeSubscribe1() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageSubscribe result = (MessageSubscribe) decoder.decode(new StringReader(
-            subscribe1Json));
-        compareMessage(result, subscribe1Message);
+        testDecoding(subscribe1Message, subscribe1Json);
     }
 
     @Test
     public void decodeSubscribe2() throws Exception {
+        testDecoding(subscribe2Message, subscribe2Json);
+    }
+    
+    public static void testDecoding(Message message, String json) throws Exception {
         MessageDecoder decoder = new MessageDecoder();
-        MessageSubscribe result = (MessageSubscribe) decoder.decode(new StringReader(
-            subscribe2Json));
-        compareMessage(result, subscribe2Message);
+        Message result = (Message) decoder.decode(new StringReader(json));
+        compareMessage(message, result);
+    }
+    
+    public static void compareMessage(Message expected, Message result) {
+        if (expected instanceof MessageSubscribe && result instanceof MessageSubscribe) {
+            compareMessage((MessageSubscribe) expected, (MessageSubscribe) result);
+        } else {
+            throw new UnsupportedOperationException("Can't compare " + expected.getClass() + " with " + result.getClass());
+        }
     }
     
     public static void compareMessage(MessageSubscribe expected, MessageSubscribe result) {
