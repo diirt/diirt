@@ -80,11 +80,19 @@ public class MessageEncoderTest {
     }
 
     @Test
-    public void encodeSubscribe() throws Exception {
+    public void encode1Subscribe() throws Exception {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
-        encoder.encode(subscribeMessage, writer);
-        assertThat(writer.toString(), equalTo(subscribeJson));
+        encoder.encode(subscribe1Message, writer);
+        assertThat(writer.toString(), equalTo(subscribe1Json));
+    }
+
+    @Test
+    public void encode2Subscribe() throws Exception {
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(subscribe2Message, writer);
+        assertThat(writer.toString(), equalTo(subscribe2Json));
     }
     
 }
