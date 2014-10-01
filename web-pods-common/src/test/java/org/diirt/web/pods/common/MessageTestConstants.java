@@ -31,4 +31,13 @@ public class MessageTestConstants {
             + "\"id\":1"
             + "}";
     public static MessageUnsubscribe unsubscribe1Message = new MessageUnsubscribe(1);
+    
+    public static String write1Json = "{"
+            + "\"message\":\"write\","
+            + "\"id\":1,"
+            + "\"value\":3.14"
+            + "}";
+    public static MessageWrite write1Message = new MessageWrite(1, 3.14);
+    
+
 }

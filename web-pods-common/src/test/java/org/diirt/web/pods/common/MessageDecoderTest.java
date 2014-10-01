@@ -76,6 +76,8 @@ public class MessageDecoderTest {
             compareMessage((MessageSubscribe) expected, (MessageSubscribe) result);
         } else if (expected instanceof MessageUnsubscribe && result instanceof MessageUnsubscribe) {
             compareMessage((MessageUnsubscribe) expected, (MessageUnsubscribe) result);
+        } else if (expected instanceof MessageWrite && result instanceof MessageWrite) {
+            compareMessage((MessageWrite) expected, (MessageWrite) result);
         } else {
             throw new UnsupportedOperationException("Can't compare " + expected.getClass() + " with " + result.getClass());
         }
@@ -94,6 +96,12 @@ public class MessageDecoderTest {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
     }
+    
+    public static void compareMessage(MessageWrite expected, MessageWrite result) {
+        assertThat(result.getMessage(), equalTo(expected.getMessage()));
+        assertThat(result.getId(), equalTo(expected.getId()));
+        assertThat(result.getValue(), equalTo(expected.getValue()));
+    }
 
     @Test
     public void decodeUnsubscribe1() throws Exception {
@@ -102,17 +110,7 @@ public class MessageDecoderTest {
 
     @Test
     public void decodeWrite1() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageWrite result = (MessageWrite) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"write\","
-            + "    \"id\" : 1,"
-            + "    \"value\" : 3.14"
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.WRITE));
-        assertThat(result.getId(), equalTo(1));
-        assertThat((Double) result.getValue(), equalTo(3.14));
+        testDecoding(write1Message, write1Json);
     }
 
     @Test

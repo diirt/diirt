@@ -45,6 +45,11 @@ public class MessageWrite extends Message {
         }
     }
 
+    public MessageWrite(int id, Object value) {
+        super(MessageType.WRITE, id);
+        this.value = value;
+    }
+
     public Object getValue() {
         return value;
     }
