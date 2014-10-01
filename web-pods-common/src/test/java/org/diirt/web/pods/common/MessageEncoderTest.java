@@ -93,6 +93,11 @@ public class MessageEncoderTest {
     public void encode1Unsubscribe() throws Exception {
         testEncoding(unsubscribe1Message, unsubscribe1Json);
     }
+
+    @Test
+    public void encode1Write() throws Exception {
+        testEncoding(write1Message, write1Json);
+    }
     
     public static void testEncoding(Message message, String json) throws Exception {
         MessageEncoder encoder = new MessageEncoder();
