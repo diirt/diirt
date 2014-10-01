@@ -81,18 +81,19 @@ public class MessageEncoderTest {
 
     @Test
     public void encode1Subscribe() throws Exception {
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(subscribe1Message, writer);
-        assertThat(writer.toString(), equalTo(subscribe1Json));
+        testEncoding(subscribe1Message, subscribe1Json);
     }
 
     @Test
     public void encode2Subscribe() throws Exception {
+        testEncoding(subscribe2Message, subscribe2Json);
+    }
+    
+    public static void testEncoding(Message message, String json) throws Exception {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
-        encoder.encode(subscribe2Message, writer);
-        assertThat(writer.toString(), equalTo(subscribe2Json));
+        encoder.encode(message, writer);
+        assertThat(writer.toString(), equalTo(json));
     }
     
 }
