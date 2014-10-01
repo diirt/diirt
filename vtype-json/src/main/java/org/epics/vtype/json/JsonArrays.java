@@ -6,7 +6,9 @@ package org.epics.vtype.json;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonString;
 import javax.json.JsonValue;
@@ -164,6 +166,20 @@ public class JsonArrays {
             strings.add(array.getString(i));
         }
         return strings;
+    }
+
+    /**
+     * Converts the given List of String to a string JSON array.
+     * 
+     * @param list a new List of Strings
+     * @return an array of strings
+     */
+    public static JsonArrayBuilder fromListString(List<String> list) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (String element : list) {
+            b.add(element);
+        }
+        return b;
     }
 
     

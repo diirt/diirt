@@ -24,6 +24,7 @@ import org.epics.vtype.Time;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 import org.epics.vtype.ValueUtil;
+import static org.epics.vtype.json.JsonArrays.*;
 
 /**
  *
@@ -137,16 +138,8 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 .addListString("labels", en.getLabels()));
     }
     
-    private JsonArrayBuilder listStringToJson(List<String> ls) {
-        JsonArrayBuilder b = Json.createArrayBuilder();
-        for (String element : ls) {
-            b.add(element);
-        }
-        return b;
-    }
-    
     public JsonVTypeBuilder addListString(String string, List<String> ls) {
-        add(string, listStringToJson(ls));
+        add(string, fromListString(ls));
         return this;
     }
     
@@ -180,7 +173,7 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
             if (type.equals(String.class)) {
                 @SuppressWarnings("unchecked")
                 List<String> listString = (List<String>) vTable.getColumnData(column);
-                b.add(listStringToJson(listString));
+                b.add(fromListString(listString));
             } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
                     type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
                 b.add(listNumberToJson((ListNumber) vTable.getColumnData(column)));
