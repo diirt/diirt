@@ -4,6 +4,8 @@
  */
 package org.diirt.web.pods.common;
 
+import java.util.Arrays;
+import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import static org.epics.vtype.ValueFactory.*;
@@ -61,4 +63,18 @@ public class MessageTestConstants {
             + "}";
     public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone()));
     
+    public static String write4Json = "{"
+            + "\"message\":\"write\","
+            + "\"id\":1,"
+            + "\"value\":[1,2,3,4,5]"
+            + "}";
+    public static MessageWrite write4Message = new MessageWrite(1, new ArrayDouble(1,2,3,4,5));
+    
+    public static String write5Json = "{"
+            + "\"message\":\"write\","
+            + "\"id\":1,"
+            + "\"value\":[\"A\",\"B\",\"C\"]"
+            + "}";
+    public static MessageWrite write5Message = new MessageWrite(1, Arrays.asList("A", "B", "C"));
+
 }
