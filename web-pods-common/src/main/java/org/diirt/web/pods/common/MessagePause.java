@@ -4,6 +4,7 @@
  */
 package org.diirt.web.pods.common;
 
+import java.io.Writer;
 import javax.json.JsonObject;
 
 /**
@@ -18,6 +19,11 @@ public class MessagePause extends Message {
 
     public MessagePause(int id) {
         super(MessageType.PAUSE, id);
+    }
+    
+    @Override
+    public void toJson(Writer writer) {
+        basicToJson(writer);
     }
     
 }

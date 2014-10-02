@@ -24,68 +24,88 @@ public class MessageEncoderTest {
     }
 
     @Test
-    public void encodeConnectionEvent1() throws Exception {
-        testEncoding(connectionEvent1Message, connectionEvent1Json);
-    }
-
-    @Test
-    public void encodeConnectionEvent2() throws Exception {
-        testEncoding(connectionEvent2Message, connectionEvent2Json);
-    }
-
-    @Test
-    public void encodeValueEvent1() throws Exception {
-        testEncoding(valueEvent1Message, valueEvent1Json);
-    }
-
-    @Test
-    public void encodeValueEvent2() throws Exception {
-        testEncoding(valueEvent2Message, valueEvent2Json);
-    }
-
-    @Test
-    public void encodeErrorEvent1() throws Exception {
-        testEncoding(errorEvent1Message, errorEvent1Json);
-    }
-
-    @Test
-    public void encodeWriteCompletedEvent1() throws Exception {
-        testEncoding(writeEvent1Message, writeEvent1Json);
-    }
-
-    @Test
-    public void encodeWriteCompletedEvent2() throws Exception {
-        testEncoding(writeEvent2Message, writeEvent2Json);
-    }
-
-    @Test
-    public void encode1Subscribe() throws Exception {
+    public void subscribe1Encode() throws Exception {
         testEncoding(subscribe1Message, subscribe1Json);
     }
 
     @Test
-    public void encode2Subscribe() throws Exception {
+    public void subscribe2Encode() throws Exception {
         testEncoding(subscribe2Message, subscribe2Json);
     }
 
     @Test
-    public void encode1Unsubscribe() throws Exception {
+    public void unsubscribe1Encode() throws Exception {
         testEncoding(unsubscribe1Message, unsubscribe1Json);
     }
 
     @Test
-    public void encode1Write() throws Exception {
+    public void write1Encode() throws Exception {
         testEncoding(write1Message, write1Json);
     }
 
     @Test
-    public void encode2Write() throws Exception {
+    public void write2Encode() throws Exception {
         testEncoding(write2Message, write2Json);
     }
 
     @Test
-    public void encode3Write() throws Exception {
+    public void write3Encode() throws Exception {
         testEncoding(write3Message, write3Json);
+    }
+
+    @Test
+    public void write4Encode() throws Exception {
+        testEncoding(write4Message, write4Json);
+    }
+
+    @Test
+    public void write5Encode() throws Exception {
+        testEncoding(write5Message, write5Json);
+    }
+
+    @Test
+    public void pause1Encode() throws Exception {
+        testEncoding(pause1Message, pause1Json);
+    }
+
+    @Test
+    public void resume1Encode() throws Exception {
+        testEncoding(resume1Message, resume1Json);
+    }
+
+    @Test
+    public void connectionEvent1Encode() throws Exception {
+        testEncoding(connectionEvent1Message, connectionEvent1Json);
+    }
+
+    @Test
+    public void connectionEvent2Encode() throws Exception {
+        testEncoding(connectionEvent2Message, connectionEvent2Json);
+    }
+
+    @Test
+    public void valueEvent1Encode() throws Exception {
+        testEncoding(valueEvent1Message, valueEvent1Json);
+    }
+
+    @Test
+    public void valueEvent2Encode() throws Exception {
+        testEncoding(valueEvent2Message, valueEvent2Json);
+    }
+
+    @Test
+    public void errorEvent1Encode() throws Exception {
+        testEncoding(errorEvent1Message, errorEvent1Json);
+    }
+
+    @Test
+    public void writeEvent1Encode() throws Exception {
+        testEncoding(writeEvent1Message, writeEvent1Json);
+    }
+
+    @Test
+    public void writeEvent2Encode() throws Exception {
+        testEncoding(writeEvent2Message, writeEvent2Json);
     }
     
 }

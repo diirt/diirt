@@ -5,9 +5,11 @@
 package org.diirt.web.pods.common;
 
 import java.io.Writer;
+import javax.json.Json;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
+import javax.json.stream.JsonGenerator;
 
 /**
  *
@@ -38,6 +40,14 @@ public abstract class Message {
     
     public void toJson(Writer writer) {
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+    
+    void basicToJson(Writer writer) {
+        JsonGenerator gen = Json.createGenerator(writer).writeStartObject();
+        gen.write("message", getMessage().toString().toLowerCase())
+            .write("id", getId())
+            .writeEnd()
+            .close();
     }
     
     static MessageType typeMandatory(JsonObject jObject, String name) {

@@ -66,7 +66,7 @@ public class MessageTestConstants {
     public static String write4Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
-            + "\"value\":[1,2,3,4,5]"
+            + "\"value\":[1.0,2.0,3.0,4.0,5.0]"
             + "}";
     public static MessageWrite write4Message = new MessageWrite(1, new ArrayDouble(1,2,3,4,5));
     
