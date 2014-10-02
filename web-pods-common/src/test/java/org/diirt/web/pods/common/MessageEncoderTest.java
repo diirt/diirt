@@ -15,6 +15,13 @@ import static org.diirt.web.pods.common.MessageTestConstants.*;
  * @author carcassi
  */
 public class MessageEncoderTest {
+    
+    public static void testEncoding(Message message, String json) throws Exception {
+        MessageEncoder encoder = new MessageEncoder();
+        StringWriter writer = new StringWriter();
+        encoder.encode(message, writer);
+        assertThat(writer.toString(), equalTo(json));
+    }
 
     @Test
     public void encodeConnectionEvent1() throws Exception {
@@ -38,29 +45,17 @@ public class MessageEncoderTest {
 
     @Test
     public void encodeErrorEvent1() throws Exception {
-        MessageErrorEvent event = new MessageErrorEvent(12, "Mayday");
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"error\",\"error\":\"Mayday\"}"));
+        testEncoding(errorEvent1Message, errorEvent1Json);
     }
 
     @Test
     public void encodeWriteCompletedEvent1() throws Exception {
-        MessageWriteCompletedEvent event = new MessageWriteCompletedEvent(12);
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"writeCompleted\",\"successful\":true}"));
+        testEncoding(writeEvent1Message, writeEvent1Json);
     }
 
     @Test
     public void encodeWriteCompletedEvent2() throws Exception {
-        MessageWriteCompletedEvent event = new MessageWriteCompletedEvent(12, "Value too big");
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"writeCompleted\",\"successful\":false,\"error\":\"Value too big\"}"));
+        testEncoding(writeEvent2Message, writeEvent2Json);
     }
 
     @Test
@@ -91,13 +86,6 @@ public class MessageEncoderTest {
     @Test
     public void encode3Write() throws Exception {
         testEncoding(write3Message, write3Json);
-    }
-    
-    public static void testEncoding(Message message, String json) throws Exception {
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(message, writer);
-        assertThat(writer.toString(), equalTo(json));
     }
     
 }

@@ -123,4 +123,29 @@ public class MessageTestConstants {
             + "}";
     public static MessageValueEvent valueEvent2Message = new MessageValueEvent(12, "Hello");
 
+    public static String errorEvent1Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"error\","
+            + "\"error\":\"Mayday\""
+            + "}";
+    public static MessageErrorEvent errorEvent1Message = new MessageErrorEvent(12, "Mayday");
+
+    public static String writeEvent1Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"writeCompleted\","
+            + "\"successful\":true"
+            + "}";
+    public static MessageWriteCompletedEvent writeEvent1Message = new MessageWriteCompletedEvent(12);
+
+    public static String writeEvent2Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"writeCompleted\","
+            + "\"successful\":false,"
+            + "\"error\":\"Value too big\""
+            + "}";
+    public static MessageWriteCompletedEvent writeEvent2Message = new MessageWriteCompletedEvent(12, "Value too big");
+
 }
