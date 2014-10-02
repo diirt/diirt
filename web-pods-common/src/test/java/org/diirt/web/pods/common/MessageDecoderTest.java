@@ -76,7 +76,9 @@ public class MessageDecoderTest {
         if (expected instanceof MessageSubscribe && result instanceof MessageSubscribe) {
             compareMessage((MessageSubscribe) expected, (MessageSubscribe) result);
         } else if (expected instanceof MessageUnsubscribe && result instanceof MessageUnsubscribe) {
-            compareMessage((MessageUnsubscribe) expected, (MessageUnsubscribe) result);
+            compareBaseMessage(expected, result);
+        } else if (expected instanceof MessagePause && result instanceof MessagePause) {
+            compareBaseMessage(expected, result);
         } else if (expected instanceof MessageWrite && result instanceof MessageWrite) {
             compareMessage((MessageWrite) expected, (MessageWrite) result);
         } else {
@@ -93,7 +95,7 @@ public class MessageDecoderTest {
         assertThat(result.isReadOnly(), equalTo(expected.isReadOnly()));
     }
     
-    public static void compareMessage(MessageUnsubscribe expected, MessageUnsubscribe result) {
+    public static void compareBaseMessage(Message expected, Message result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
     }
@@ -141,15 +143,7 @@ public class MessageDecoderTest {
 
     @Test
     public void decodePause1() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessagePause result = (MessagePause) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"pause\","
-            + "    \"id\" : 1"
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.PAUSE));
-        assertThat(result.getId(), equalTo(1));
+        testDecoding(pause1Message, pause1Json);
     }
 
     @Test

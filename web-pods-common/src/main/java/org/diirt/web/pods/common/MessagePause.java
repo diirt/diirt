@@ -15,5 +15,9 @@ public class MessagePause extends Message {
     public MessagePause(JsonObject obj) {
         super(obj);
     }
+
+    public MessagePause(int id) {
+        super(MessageType.PAUSE, id);
+    }
     
 }

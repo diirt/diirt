@@ -76,5 +76,11 @@ public class MessageTestConstants {
             + "\"value\":[\"A\",\"B\",\"C\"]"
             + "}";
     public static MessageWrite write5Message = new MessageWrite(1, Arrays.asList("A", "B", "C"));
+    
+    public static String pause1Json = "{"
+            + "\"message\":\"pause\","
+            + "\"id\":3"
+            + "}";
+    public static MessagePause pause1Message = new MessagePause(3);
 
 }
