@@ -44,8 +44,6 @@ public class MessageWriteCompletedEvent extends Message {
         return successful;
     }
     
-    
-    
     @Override
     public void toJson(Writer writer) {
         JsonGenerator gen = Json.createGenerator(writer).writeStartObject()

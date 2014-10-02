@@ -19,7 +19,7 @@ public class MessageValueEvent extends Message {
     
     public MessageValueEvent(JsonObject obj) {
         super(obj);
-        value = MessageWrite.readValueFromJson(obj.get("value"));
+        value = readValueFromJson(obj.get("value"));
     }
 
     public MessageValueEvent(int id, Object value) {
@@ -37,7 +37,7 @@ public class MessageValueEvent extends Message {
                 .write("message", getMessage().toString().toLowerCase())
                 .write("id", getId())
                 .write("type", "value");
-        MessageWrite.writeValueToJson(gen, "value", value);        
+        writeValueToJson(gen, "value", value);        
         gen.writeEnd().close();
     }
     

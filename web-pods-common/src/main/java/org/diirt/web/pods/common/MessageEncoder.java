@@ -5,13 +5,7 @@
 package org.diirt.web.pods.common;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.websocket.DecodeException;
-import javax.websocket.Decoder;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
