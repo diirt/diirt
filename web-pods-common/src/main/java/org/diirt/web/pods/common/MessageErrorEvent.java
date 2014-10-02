@@ -6,6 +6,7 @@ package org.diirt.web.pods.common;
 
 import java.io.Writer;
 import javax.json.Json;
+import javax.json.JsonObject;
 
 /**
  *
@@ -15,6 +16,11 @@ public class MessageErrorEvent extends Message {
     
     private final String error;
 
+    public MessageErrorEvent(JsonObject obj) {
+        super(obj);
+        this.error = stringMandatory(obj, "error");
+    }
+    
     public MessageErrorEvent(int id, String error) {
         super(MessageType.EVENT, id);
         this.error = error;

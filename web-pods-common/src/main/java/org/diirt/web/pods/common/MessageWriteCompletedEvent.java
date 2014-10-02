@@ -6,6 +6,7 @@ package org.diirt.web.pods.common;
 
 import java.io.Writer;
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
 
 /**
@@ -16,6 +17,12 @@ public class MessageWriteCompletedEvent extends Message {
     
     private final String error;
     private final boolean successful;
+
+    public MessageWriteCompletedEvent(JsonObject obj) {
+        super(obj);
+        this.error = stringOptional(obj, "error", null);
+        this.successful = booleanAttribute(obj, "successful");
+    }
 
     public MessageWriteCompletedEvent(int id) {
         super(MessageType.EVENT, id);

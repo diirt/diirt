@@ -7,7 +7,6 @@ package org.diirt.web.pods.common;
 import java.io.Writer;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 
 /**
  *
@@ -17,6 +16,12 @@ public class MessageConnectionEvent extends Message {
     
     private final boolean connected;
     private final boolean writeConnected;
+    
+    public MessageConnectionEvent(JsonObject obj) {
+        super(obj);
+        this.connected = booleanAttribute(obj, "connected");
+        this.writeConnected = booleanAttribute(obj, "writeConnected");
+    }
 
     public MessageConnectionEvent(int id, boolean connected, boolean writeConnected) {
         super(MessageType.EVENT, id);

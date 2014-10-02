@@ -35,6 +35,20 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
                 return new MessageResume(jObject);
             case "unsubscribe":
                 return new MessageUnsubscribe(jObject);
+            case "event":
+                String eventType = jObject.getString("type");
+                switch(eventType) {
+                    case "connection":
+                        return new MessageConnectionEvent(jObject);
+                    case "value":
+                        return new MessageValueEvent(jObject);
+                    case "writeCompleted":
+                        return new MessageWriteCompletedEvent(jObject);
+                    case "error":
+                        return new MessageErrorEvent(jObject);
+                    default:
+                        throw new UnsupportedOperationException("Event " + eventType + " is not supported");
+                }
             default:
                 throw new UnsupportedOperationException("Message " + messageType + " is not supported");
         }
