@@ -89,4 +89,38 @@ public class MessageTestConstants {
             + "}";
     public static MessageResume resume1Message = new MessageResume(4);
 
+    public static String connectionEvent1Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"connection\","
+            + "\"connected\":true,"
+            + "\"writeConnected\":false"
+            + "}";
+    public static MessageConnectionEvent connectionEvent1Message = new MessageConnectionEvent(12, true, false);
+
+    public static String connectionEvent2Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":15,"
+            + "\"type\":\"connection\","
+            + "\"connected\":false,"
+            + "\"writeConnected\":true"
+            + "}";
+    public static MessageConnectionEvent connectionEvent2Message = new MessageConnectionEvent(15, false, true);
+
+    public static String valueEvent1Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"value\","
+            + "\"value\":3.14"
+            + "}";
+    public static MessageValueEvent valueEvent1Message = new MessageValueEvent(12, 3.14);
+
+    public static String valueEvent2Json = "{"
+            + "\"message\":\"event\","
+            + "\"id\":12,"
+            + "\"type\":\"value\","
+            + "\"value\":\"Hello\""
+            + "}";
+    public static MessageValueEvent valueEvent2Message = new MessageValueEvent(12, "Hello");
+
 }

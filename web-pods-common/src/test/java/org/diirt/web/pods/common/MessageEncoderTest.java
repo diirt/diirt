@@ -18,38 +18,22 @@ public class MessageEncoderTest {
 
     @Test
     public void encodeConnectionEvent1() throws Exception {
-        MessageConnectionEvent event = new MessageConnectionEvent(12, true, false);
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"connection\",\"connected\":true,\"writeConnected\":false}"));
+        testEncoding(connectionEvent1Message, connectionEvent1Json);
     }
 
     @Test
     public void encodeConnectionEvent2() throws Exception {
-        MessageConnectionEvent event = new MessageConnectionEvent(15, false, true);
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":15,\"type\":\"connection\",\"connected\":false,\"writeConnected\":true}"));
+        testEncoding(connectionEvent2Message, connectionEvent2Json);
     }
 
     @Test
     public void encodeValueEvent1() throws Exception {
-        MessageValueEvent event = new MessageValueEvent(12, 3.14);
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"value\",\"value\":3.14}"));
+        testEncoding(valueEvent1Message, valueEvent1Json);
     }
 
     @Test
     public void encodeValueEvent2() throws Exception {
-        MessageValueEvent event = new MessageValueEvent(12, "Hello");
-        MessageEncoder encoder = new MessageEncoder();
-        StringWriter writer = new StringWriter();
-        encoder.encode(event, writer);
-        assertThat(writer.toString(), equalTo("{\"message\":\"event\",\"id\":12,\"type\":\"value\",\"value\":\"Hello\"}"));
+        testEncoding(valueEvent2Message, valueEvent2Json);
     }
 
     @Test

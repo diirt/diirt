@@ -6,15 +6,7 @@
 package org.diirt.web.pods.common;
 
 import java.io.StringReader;
-import java.util.Arrays;
-import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.time.Timestamp;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VDouble;
 import org.epics.vtype.VTypeValueEquals;
-import static org.epics.vtype.ValueFactory.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -54,16 +46,6 @@ public class MessageDecoderTest {
             + "    \"message\" : \"subscribe\","
             + "    \"id\" : 3.14"
             + "}"));
-    }
-
-    @Test
-    public void decodeSubscribe1() throws Exception {
-        testDecoding(subscribe1Message, subscribe1Json);
-    }
-
-    @Test
-    public void decodeSubscribe2() throws Exception {
-        testDecoding(subscribe2Message, subscribe2Json);
     }
     
     public static void testDecoding(Message message, String json) throws Exception {
@@ -110,6 +92,16 @@ public class MessageDecoderTest {
         } else {
             assertThat(result.getValue(), equalTo(expected.getValue()));
         }
+    }
+
+    @Test
+    public void decodeSubscribe1() throws Exception {
+        testDecoding(subscribe1Message, subscribe1Json);
+    }
+
+    @Test
+    public void decodeSubscribe2() throws Exception {
+        testDecoding(subscribe2Message, subscribe2Json);
     }
 
     @Test
