@@ -15,5 +15,9 @@ public class MessageResume extends Message {
     public MessageResume(JsonObject obj) {
         super(obj);
     }
+
+    public MessageResume(int id) {
+        super(MessageType.RESUME, id);
+    }
     
 }

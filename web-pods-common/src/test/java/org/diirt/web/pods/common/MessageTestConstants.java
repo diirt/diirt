@@ -82,5 +82,11 @@ public class MessageTestConstants {
             + "\"id\":3"
             + "}";
     public static MessagePause pause1Message = new MessagePause(3);
+    
+    public static String resume1Json = "{"
+            + "\"message\":\"resume\","
+            + "\"id\":4"
+            + "}";
+    public static MessageResume resume1Message = new MessageResume(4);
 
 }

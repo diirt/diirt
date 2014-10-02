@@ -79,6 +79,8 @@ public class MessageDecoderTest {
             compareBaseMessage(expected, result);
         } else if (expected instanceof MessagePause && result instanceof MessagePause) {
             compareBaseMessage(expected, result);
+        } else if (expected instanceof MessageResume && result instanceof MessageResume) {
+            compareBaseMessage(expected, result);
         } else if (expected instanceof MessageWrite && result instanceof MessageWrite) {
             compareMessage((MessageWrite) expected, (MessageWrite) result);
         } else {
@@ -148,15 +150,7 @@ public class MessageDecoderTest {
 
     @Test
     public void decodeResume1() throws Exception {
-        MessageDecoder decoder = new MessageDecoder();
-        MessageResume result = (MessageResume) decoder.decode(new StringReader(
-            "{ "
-            + "    \"message\" : \"resume\","
-            + "    \"id\" : 1"
-            + "}"));
-                
-        assertThat(result.getMessage(), equalTo(Message.MessageType.RESUME));
-        assertThat(result.getId(), equalTo(1));
+        testDecoding(resume1Message, resume1Json);
     }
     
 }
