@@ -220,11 +220,20 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             channel.put((float[]) newValue, listener);
         } else if (newValue instanceof double[]) {
             channel.put((double[]) newValue, listener);
-        } else if (newValue instanceof Byte || newValue instanceof Short
-                || newValue instanceof Integer || newValue instanceof Long) {
-            channel.put(((Number) newValue).longValue(), listener);
-        } else if (newValue instanceof Float || newValue instanceof Double) {
-            channel.put(((Number) newValue).doubleValue(), listener);
+        } else if (newValue instanceof Byte) {
+            channel.put((Byte) newValue, listener);
+        } else if (newValue instanceof Short) {
+            channel.put((Short) newValue, listener);
+        } else if (newValue instanceof Integer) {
+            channel.put((Integer) newValue, listener);
+        } else if (newValue instanceof Long) {
+            // XXX: Channel access does not support 64 bit integers
+            // Converting to 32 bit integer
+            channel.put(((Long) newValue).intValue(), listener);
+        } else if (newValue instanceof Float) {
+            channel.put((Float) newValue, listener);
+        } else if (newValue instanceof Double) {
+            channel.put((Double) newValue, listener);
         } else {
             throw new RuntimeException("Unsupported type for CA: " + newValue.getClass());
         }
@@ -282,11 +291,20 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             channel.put((float[]) newValue);
         } else if (newValue instanceof double[]) {
             channel.put((double[]) newValue);
-        } else if (newValue instanceof Byte || newValue instanceof Short
-                || newValue instanceof Integer || newValue instanceof Long) {
-            channel.put(((Number) newValue).longValue());
-        } else if (newValue instanceof Float || newValue instanceof Double) {
-            channel.put(((Number) newValue).doubleValue());
+        } else if (newValue instanceof Byte) {
+            channel.put((Byte) newValue);
+        } else if (newValue instanceof Short) {
+            channel.put((Short) newValue);
+        } else if (newValue instanceof Integer) {
+            channel.put((Integer) newValue);
+        } else if (newValue instanceof Long) {
+            // XXX: Channel access does not support 64 bit integers
+            // Converting to 32 bit integer
+            channel.put(((Long) newValue).intValue());
+        } else if (newValue instanceof Float) {
+            channel.put((Float) newValue);
+        } else if (newValue instanceof Double) {
+            channel.put((Double) newValue);
         } else {
             callback.channelWritten(new Exception(new RuntimeException("Unsupported type for CA: " + newValue.getClass())));
             return;
