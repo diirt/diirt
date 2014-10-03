@@ -4,14 +4,18 @@
  */
 package org.diirt.datasource.pods.web;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.Executors;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.websocket.ContainerProvider;
+import javax.websocket.DeploymentException;
+import javax.websocket.WebSocketContainer;
 
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.util.time.TimeDuration;
 
 /**
  * Data source for locally written data. Each instance of this
@@ -25,19 +29,32 @@ public final class WebPodsDataSource extends DataSource {
 	// Install type support for the types it generates.
 	DataTypeSupport.install();
     }
+    
+    private final WebPodsClient client;
 
     /**
      * Creates a new data source.
      */
     public WebPodsDataSource() {
         super(true);
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        client = new WebPodsClient();
+        try {
+            container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
+        } catch (DeploymentException | IOException | URISyntaxException ex) {
+            Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void close() {
         super.close();
     }
-    
+
+    WebPodsClient getClient() {
+        return client;
+    }
+   
     @Override
     protected ChannelHandler createChannel(String channelName) {	
 	return new WebPodsChannelHandler(this, channelName);

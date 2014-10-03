@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource.pods.web;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +23,6 @@ import org.diirt.web.pods.common.MessageConnectionEvent;
 import org.diirt.web.pods.common.MessageDecoder;
 import org.diirt.web.pods.common.MessageEncoder;
 import org.diirt.web.pods.common.MessageErrorEvent;
-import org.diirt.web.pods.common.MessageSubscribe;
 import org.diirt.web.pods.common.MessageValueEvent;
 import org.diirt.web.pods.common.MessageWriteCompletedEvent;
 
@@ -82,7 +78,7 @@ public class WebPodsClient {
     private AtomicInteger counter = new AtomicInteger();
     private final Map<Integer, WebPodsChannelListener> listeners = new ConcurrentHashMap<>();
     
-    public WebPodsChannel subscribe(String channelName, WebPodsChannelListener listener) throws Exception{
+    public WebPodsChannel subscribe(String channelName, WebPodsChannelListener listener) {
         int id = counter.incrementAndGet();
         WebPodsChannel channel = new WebPodsChannel(channelName, id, session, listener);
         listeners.put(id, listener);
@@ -93,8 +89,8 @@ public class WebPodsClient {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         WebPodsClient client = new WebPodsClient();
         container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
-        client.subscribe("sim://noise", new WebPodsChannelListener() {
-
+        WebPodsChannel channel = client.subscribe("sim://noise", new WebPodsChannelListener() {
+            
             @Override
             public void onConnectionEvent(boolean connected, boolean writeConnected) {
                 System.out.println("Connected: " + connected + "; Write connected: " + writeConnected);
@@ -106,6 +102,21 @@ public class WebPodsClient {
             }
             
         });
+        WebPodsChannel channel2 = client.subscribe("sim://table", new WebPodsChannelListener() {
+            
+            @Override
+            public void onConnectionEvent(boolean connected, boolean writeConnected) {
+                System.out.println("Connected: " + connected + "; Write connected: " + writeConnected);
+            }
+
+            @Override
+            public void onValueEvent(Object value) {
+                System.out.println("New value: " + value);
+            }
+            
+        });
+        Thread.sleep(5000);
+        channel.unsubscribe();
         Thread.sleep(5000);
     }
 }
