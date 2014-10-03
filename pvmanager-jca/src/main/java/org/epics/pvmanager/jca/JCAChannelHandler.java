@@ -228,8 +228,14 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             channel.put((Integer) newValue, listener);
         } else if (newValue instanceof Long) {
             // XXX: Channel access does not support 64 bit integers
-            // Converting to 32 bit integer
-            channel.put(((Long) newValue).intValue(), listener);
+            // If fits 32 bits, use int. Use double otherwise
+            long value64 = (Long) newValue;
+            int value32 = (int) value64;
+            if (value32 == value64) {
+                channel.put(value32, listener);
+            } else {
+                channel.put((double) value64, listener);
+            }
         } else if (newValue instanceof Float) {
             channel.put((Float) newValue, listener);
         } else if (newValue instanceof Double) {
@@ -299,8 +305,14 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             channel.put((Integer) newValue);
         } else if (newValue instanceof Long) {
             // XXX: Channel access does not support 64 bit integers
-            // Converting to 32 bit integer
-            channel.put(((Long) newValue).intValue());
+            // If fits 32 bits, use int. Use double otherwise
+            long value64 = (Long) newValue;
+            int value32 = (int) value64;
+            if (value32 == value64) {
+                channel.put(value32);
+            } else {
+                channel.put((double) value64);
+            }
         } else if (newValue instanceof Float) {
             channel.put((Float) newValue);
         } else if (newValue instanceof Double) {
