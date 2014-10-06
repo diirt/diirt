@@ -18,6 +18,7 @@ import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.Display;
 import org.epics.vtype.Time;
@@ -160,6 +161,10 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 b.add("short");
             } else if (element.equals(byte.class)) {
                 b.add("byte");
+            } else if (element.equals(Timestamp.class)) {
+                b.add("Timestamp");
+            } else {
+                throw new IllegalArgumentException("Column type " + element + " not supported");
             }
         }
         add(string, b);
@@ -177,6 +182,12 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
             } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
                     type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
                 b.add(fromListNumber((ListNumber) vTable.getColumnData(column)));
+            } else if (type.equals(Timestamp.class)) {
+                @SuppressWarnings("unchecked")
+                List<Timestamp> listTimestamp = (List<Timestamp>) vTable.getColumnData(column);
+                b.add(fromListTimestamp(listTimestamp));
+            } else {
+                throw new IllegalArgumentException("Column type " + type.getSimpleName() + " not supported");
             }
         }
         add(string, b);

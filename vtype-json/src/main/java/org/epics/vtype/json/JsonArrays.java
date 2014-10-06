@@ -25,6 +25,7 @@ import org.epics.util.array.ListInt;
 import org.epics.util.array.ListLong;
 import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListShort;
+import org.epics.util.time.Timestamp;
 
 /**
  * Utility classes to convert JSON arrays to and from Lists and ListNumbers.
@@ -169,6 +170,21 @@ public class JsonArrays {
         return strings;
     }
 
+
+    /**
+     * Converts the given JSON array to a List of Timestamp.
+     * 
+     * @param array an array
+     * @return a new List of Timestamps
+     */
+    public static List<Timestamp> toListTimestamp(JsonArray array) {
+        List<Timestamp> timestamps = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+            timestamps.add(Timestamp.of(array.getJsonNumber(i).longValue(), 0));
+        }
+        return timestamps;
+    }
+
     /**
      * Converts the given List of String to a string JSON array.
      * 
@@ -179,6 +195,20 @@ public class JsonArrays {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (String element : list) {
             b.add(element);
+        }
+        return b;
+    }
+
+    /**
+     * Converts the given List of Timestamp to a JSON array.
+     * 
+     * @param list a List of Timestamps
+     * @return an array
+     */
+    public static JsonArrayBuilder fromListTimestamp(List<Timestamp> list) {
+        JsonArrayBuilder b = Json.createArrayBuilder();
+        for (Timestamp element : list) {
+            b.add(element.getSec());
         }
         return b;
     }
