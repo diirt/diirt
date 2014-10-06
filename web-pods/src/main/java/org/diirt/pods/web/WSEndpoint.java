@@ -41,6 +41,7 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
+import org.epics.pvmanager.file.FileDataSource;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
@@ -59,6 +60,7 @@ public class WSEndpoint {
         CompositeDataSource datasource = new CompositeDataSource();
         datasource.putDataSource("sim", new SimulationDataSource());
         datasource.putDataSource("loc", new LocalDataSource());
+        datasource.putDataSource("file", new FileDataSource());
         PVManager.setDefaultDataSource(datasource);
         
         ChannelTranslator temp = null;
