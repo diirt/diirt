@@ -19,8 +19,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
- * Data source for locally written data. Each instance of this
- * data source will have its own separate channels and values.
+ * Data source for web=pods.
  *
  * @author carcassi
  */
@@ -32,26 +31,33 @@ public final class WebPodsDataSource extends DataSource {
     }
     
     private final WebPodsClient client;
+    private final WebPodsDataSourceConfiguration configuration;
+
+    public WebPodsDataSource() {
+        this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceFactory().getDefaultConfPath()));
+    }
 
     /**
      * Creates a new data source.
+     * 
+     * @param configuration datasource configuration
      */
-    public WebPodsDataSource() {
+    public WebPodsDataSource(WebPodsDataSourceConfiguration configuration) {
         super(true);
         client = new WebPodsClient();
+        this.configuration = configuration;
         PVManager.getReadScannerExecutorService().execute(new Runnable() {
 
             @Override
             public void run() {
                 try {
                     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-                    container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
-                } catch (DeploymentException | IOException | URISyntaxException ex) {
+                    container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
+                } catch (DeploymentException | IOException ex) {
                     Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
-        
     }
 
     @Override
