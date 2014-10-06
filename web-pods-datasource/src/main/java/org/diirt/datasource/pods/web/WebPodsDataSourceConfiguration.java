@@ -7,34 +7,16 @@ package org.diirt.datasource.pods.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.websocket.ContainerProvider;
-import javax.websocket.DeploymentException;
-import javax.websocket.WebSocketContainer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.diirt.pods.common.ChannelTranslation;
-import org.diirt.pods.common.ChannelTranslator;
-import static org.diirt.pods.common.ChannelTranslator.compositeTranslator;
-import static org.diirt.pods.common.ChannelTranslator.regexTranslator;
-
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.util.config.Configuration;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -77,7 +59,7 @@ public final class WebPodsDataSourceConfiguration {
             String socketLocationString = xPath.evaluate("/wp/connection/@socketLocation", document);
             socketLocation = URI.create(socketLocationString);
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
-            Logger.getLogger(ChannelTranslator.class.getName()).log(Level.FINEST, "Couldn't load wp configuration", ex);
+            Logger.getLogger(WebPodsDataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load wp configuration", ex);
             throw new IllegalArgumentException("Couldn't load wp configuration", ex);
         }
     }
