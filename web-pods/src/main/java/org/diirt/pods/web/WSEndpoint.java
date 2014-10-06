@@ -31,7 +31,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
-import org.diirt.pods.common.Configuration;
+import org.epics.util.config.Configuration;
 import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
