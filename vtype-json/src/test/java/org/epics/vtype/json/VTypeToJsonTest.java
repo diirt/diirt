@@ -64,14 +64,14 @@ public class VTypeToJsonTest {
         assertThat(writer.toString(), equalTo(text));
     }
     
-    public void compareVType(VType actual, VType expected) {
-        assertThat("Type mismatch", VTypeValueEquals.typeEquals(expected, actual), equalTo(true));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, actual), equalTo(true));
+    public void compareVType(VType expected, VType actual) {
+        assertThat("Type mismatch", VTypeValueEquals.typeEquals(actual, expected), equalTo(true));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(actual, expected), equalTo(true));
         if (expected instanceof Alarm) {
-            assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals((Alarm) expected, (Alarm) actual), equalTo(true));
+            assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals((Alarm) actual, (Alarm) expected), equalTo(true));
         }
         if (expected instanceof Time) {
-            assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) expected, (Time) actual), equalTo(true));
+            assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) actual, (Time) expected), equalTo(true));
         }
     }
     
