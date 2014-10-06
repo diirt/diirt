@@ -15,6 +15,7 @@ import javax.websocket.WebSocketContainer;
 
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
@@ -37,13 +38,20 @@ public final class WebPodsDataSource extends DataSource {
      */
     public WebPodsDataSource() {
         super(true);
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         client = new WebPodsClient();
-        try {
-            container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
-        } catch (DeploymentException | IOException | URISyntaxException ex) {
-            Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PVManager.getReadScannerExecutorService().execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+                    container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
+                } catch (DeploymentException | IOException | URISyntaxException ex) {
+                    Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
     }
 
     @Override
