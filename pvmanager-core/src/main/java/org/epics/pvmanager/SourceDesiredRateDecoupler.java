@@ -89,6 +89,15 @@ abstract class SourceDesiredRateDecoupler {
             }
             paused = false;
         }
+        onResume();
+    }
+    
+    /**
+     * Task to be executed on pv resume.
+     * <p>
+     * Empty task to be overridden.
+     */
+    void onResume() {
     }
     
     /**

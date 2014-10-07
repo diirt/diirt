@@ -64,14 +64,14 @@ public class VTypeToJsonTest {
         assertThat(writer.toString(), equalTo(text));
     }
     
-    public void compareVType(VType actual, VType expected) {
-        assertThat("Type mismatch", VTypeValueEquals.typeEquals(expected, actual), equalTo(true));
-        assertThat("Value mismatch", VTypeValueEquals.valueEquals(expected, actual), equalTo(true));
+    public void compareVType(VType expected, VType actual) {
+        assertThat("Type mismatch", VTypeValueEquals.typeEquals(actual, expected), equalTo(true));
+        assertThat("Value mismatch", VTypeValueEquals.valueEquals(actual, expected), equalTo(true));
         if (expected instanceof Alarm) {
-            assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals((Alarm) expected, (Alarm) actual), equalTo(true));
+            assertThat("Alarm mismatch", VTypeValueEquals.alarmEquals((Alarm) actual, (Alarm) expected), equalTo(true));
         }
         if (expected instanceof Time) {
-            assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) expected, (Time) actual), equalTo(true));
+            assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) actual, (Time) expected), equalTo(true));
         }
     }
     
@@ -189,6 +189,11 @@ public class VTypeToJsonTest {
             + "\"columnNames\":[\"Name\",\"Index\",\"Value\"],"
             + "\"columnTypes\":[\"String\",\"int\",\"double\"],"
             + "\"columnValues\":[[\"A\",\"B\",\"C\"],[1,2,3],[3.14,1.25,-0.1]]}";
+    public VTable vTable2 = newVTable(Arrays.<Class<?>>asList(String.class, int.class, double.class, Timestamp.class), Arrays.asList("Name", "Index", "Value", "Timestamp"), Arrays.asList(Arrays.asList("A", "B", "C"), new ArrayInt(1,2,3), new ArrayDouble(3.14, 1.25, -0.1), Arrays.asList(Timestamp.of(1234, 0), Timestamp.of(2345, 0), Timestamp.of(3456, 0))));
+    public String vTable2Json = "{\"type\":{\"name\":\"VTable\",\"version\":1},"
+            + "\"columnNames\":[\"Name\",\"Index\",\"Value\",\"Timestamp\"],"
+            + "\"columnTypes\":[\"String\",\"int\",\"double\",\"Timestamp\"],"
+            + "\"columnValues\":[[\"A\",\"B\",\"C\"],[1,2,3],[3.14,1.25,-0.1],[1234,2345,3456]]}";
     
     @Test
     public void serializeVDouble() {
@@ -281,8 +286,13 @@ public class VTypeToJsonTest {
     }
 
     @Test
-    public void serializeVTableArray() {
+    public void serializeVTable1() {
         compareJson(VTypeToJson.toJson(vTable), vTableJson);
+    }
+
+    @Test
+    public void serializeVTable2() {
+        compareJson(VTypeToJson.toJson(vTable2), vTable2Json);
     }
 
     @Test
@@ -378,6 +388,11 @@ public class VTypeToJsonTest {
     @Test
     public void parseVTable() {
         compareVType(vTable, VTypeToJson.toVType(parseJson(vTableJson)));
+    }
+
+    @Test
+    public void parseVTable2() {
+        compareVType(vTable2, VTypeToJson.toVType(parseJson(vTable2Json)));
     }
     
 }
