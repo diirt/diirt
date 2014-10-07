@@ -30,7 +30,6 @@ import org.epics.pvmanager.pva.adapters.PVFieldNTNameValueToVTable;
 import org.epics.pvmanager.pva.adapters.PVFieldToVByteArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVFloatArray;
-import org.epics.pvmanager.pva.adapters.PVFieldToVImage;
 import org.epics.pvmanager.pva.adapters.PVFieldToVIntArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVStatistics;
@@ -52,7 +51,6 @@ import org.epics.vtype.VDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VFloat;
 import org.epics.vtype.VFloatArray;
-import org.epics.vtype.VImage;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VIntArray;
 import org.epics.vtype.VLong;
@@ -411,8 +409,9 @@ class RPCServiceMethod extends ServiceMethod {
         else
         	return new PVFieldToVTable(pvResult, false);
         
-      } else if (resultType.isAssignableFrom(VImage.class)) {
-        return new PVFieldToVImage(pvResult, false);
+        // TODO !!!
+      //} else if (resultType.isAssignableFrom(VImage.class)) {
+      //  return new PVFieldToVImage(pvResult, false);
       } else if (resultType.isAssignableFrom(VStatistics.class)) {
           return new PVFieldToVStatistics(pvResult, false);
       } else if (resultType.isAssignableFrom(VDoubleArray.class) &&
@@ -466,8 +465,9 @@ class RPCServiceMethod extends ServiceMethod {
             return new PVFieldNTNameValueToVTable(pvResult, false);
           else
           	return new PVFieldToVTable(pvResult, false);
-    } else if (resultType.isAssignableFrom(VImage.class)) {
-        return new PVFieldToVImage(pvResult,false);
+        // TODO !!!
+    //} else if (resultType.isAssignableFrom(VImage.class)) {
+     //   return new PVFieldToVImage(pvResult,false);
     } else if (resultType.isAssignableFrom(VStatistics.class)) {
         return new PVFieldToVStatistics(pvResult,false);
     }

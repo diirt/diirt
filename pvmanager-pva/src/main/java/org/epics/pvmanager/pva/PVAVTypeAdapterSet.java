@@ -16,6 +16,7 @@ import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVScalarArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvmanager.pva.adapters.PVANTNDArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVIntArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVLongArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVShortArray;
@@ -29,7 +30,6 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVEnum;
 import org.epics.pvmanager.pva.adapters.PVFieldToVFloat;
 import org.epics.pvmanager.pva.adapters.PVFieldToVFloatArray;
-import org.epics.pvmanager.pva.adapters.PVFieldToVImage;
 import org.epics.pvmanager.pva.adapters.PVFieldToVInt;
 import org.epics.pvmanager.pva.adapters.PVFieldToVIntArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVLong;
@@ -48,7 +48,6 @@ import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VEnum;
 import org.epics.vtype.VFloat;
 import org.epics.vtype.VFloatArray;
-import org.epics.vtype.VImage;
 import org.epics.vtype.VInt;
 import org.epics.vtype.VIntArray;
 import org.epics.vtype.VLong;
@@ -76,7 +75,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VDouble
     final static PVATypeAdapter ToVDouble = new PVATypeAdapter(
     		VDouble.class, 
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" }, 
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" }, 
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvDouble)
@@ -91,7 +90,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VFloat
     final static PVATypeAdapter ToVFloat = new PVATypeAdapter(
     		VFloat.class, 
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" }, 
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" }, 
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvFloat)
@@ -106,7 +105,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VByte
     final static PVATypeAdapter ToVByte = new PVATypeAdapter(
     		VByte.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvByte),
@@ -123,7 +122,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VShort
     final static PVATypeAdapter ToVShort = new PVATypeAdapter(
     		VShort.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvShort),
@@ -140,7 +139,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VInt
     final static PVATypeAdapter ToVInt = new PVATypeAdapter(
     		VInt.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvInt),
@@ -157,7 +156,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VLong
     final static PVATypeAdapter ToVLong = new PVATypeAdapter(
     		VLong.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvLong),
@@ -174,7 +173,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VBoolean
     final static PVATypeAdapter ToVBoolean = new PVATypeAdapter(
     		VBoolean.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvBoolean)
@@ -190,7 +189,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VString
     final static PVATypeAdapter ToVString = new PVATypeAdapter(
     		VString.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalar", "scalar_t" },
+    		new String[] { "ev4:nt/NTScalar:1.0", "scalar_t" },
 			fieldCreate.createScalar(ScalarType.pvString))
     	{
             @Override
@@ -202,7 +201,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VEnum
     final static PVATypeAdapter ToVEnum = new PVATypeAdapter(
     		VEnum.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTEnum", "enum_t" },
+    		new String[] { "ev4:nt/NTEnum:1.0", "enum_t" },
     		StandardFieldFactory.getStandardField().enumerated())
     	{
             @Override
@@ -214,7 +213,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayDouble
     final static PVATypeAdapter ToVArrayDouble = new PVATypeAdapter(
     		VDoubleArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvDouble))
     	{
             @Override
@@ -226,7 +225,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayFloat
     final static PVATypeAdapter ToVArrayFloat = new PVATypeAdapter(
     		VFloatArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvFloat))
     	{
             @Override
@@ -238,7 +237,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayInt
     final static PVATypeAdapter ToVArrayInt = new PVATypeAdapter(
     		VIntArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvInt))
     	{
             @Override
@@ -250,7 +249,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayLong
     final static PVATypeAdapter ToVArrayLong = new PVATypeAdapter(
     		VLongArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvLong))
     	{
             @Override
@@ -262,7 +261,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayShort
     final static PVATypeAdapter ToVArrayShort = new PVATypeAdapter(
     		VShortArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvShort))
     	{
             @Override
@@ -274,7 +273,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayByte
     final static PVATypeAdapter ToVArrayByte = new PVATypeAdapter(
     		VByteArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvByte))
     	{
             @Override
@@ -286,7 +285,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VArrayString
     final static PVATypeAdapter ToVArrayString = new PVATypeAdapter(
     		VStringArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTScalarArray", "scalar_t[]" },
+    		new String[] { "ev4:nt/NTScalarArray:1.0", "scalar_t[]" },
     		fieldCreate.createScalarArray(ScalarType.pvString))
     	{
             @Override
@@ -295,21 +294,10 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
         
-    //  -> VImage
-    final static PVATypeAdapter ToVImage = new PVATypeAdapter(
-    		VImage.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTImage" })
-    	{
-            @Override
-            public VImage createValue(final PVStructure message, Field valueType, boolean disconnected) {
-            	return new PVFieldToVImage(message, disconnected);
-            }
-        };
-
     //  -> VTable
     final static PVATypeAdapter ToVTable = new PVATypeAdapter(
     		VTable.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTTable" })
+    		new String[] { "ev4:nt/NTTable:1.0" })
     	{
             @Override
             public VTable createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -320,7 +308,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VDoubleArray as matrix (NTMatrix support)
     final static PVATypeAdapter ToVDoubleArrayAsMatrix = new PVATypeAdapter(
     		VDoubleArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTMatrix" })
+    		new String[] { "ev4:nt/NTMatrix:1.0" })
     	{
             @Override
             public VDoubleArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -331,7 +319,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VTable as name-value (NTNameValue support)
     final static PVATypeAdapter ToVTableAsNameValue = new PVATypeAdapter(
     		VTable.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTNameValue" })
+    		new String[] { "ev4:nt/NTNameValue:1.0" })
     	{
             @Override
             public VTable createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -342,7 +330,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VStatistics 
     final static PVATypeAdapter ToVStatistics = new PVATypeAdapter(
     		VStatistics.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTAggregate" })
+    		new String[] { "ev4:nt/NTAggregate:1.0" })
     	{
             @Override
             public VStatistics createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -353,7 +341,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     //  -> VNumberArray (NTHistogram support) 
     final static PVATypeAdapter ToVNumberArrayAsHistogram = new PVATypeAdapter(
     		VNumberArray.class,
-    		new String[] { "uri:ev4:nt/2012/pwd:NTHistogram" })
+    		new String[] { "ev4:nt/NTHistogram:1.0" })
     	{
             @Override
             public VNumberArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
@@ -375,6 +363,17 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
 
+    //  -> VStatistics 
+    final static PVATypeAdapter ToNTNDArray = new PVATypeAdapter(
+    		PVANTNDArray.class,
+    		new String[] { "ev4:nt/NTNDArray:1.0" })
+    	{
+            @Override
+            public PVANTNDArray createValue(final PVStructure message, Field valueType, boolean disconnected) {
+            	return new PVANTNDArray(message, disconnected);
+            }
+        };
+            
     private static final Set<PVATypeAdapter> converters;
     
     static {
@@ -402,13 +401,14 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         //newFactories.add(ToVArrayEnum);
         // no VBooleanArray
         
-        newFactories.add(ToVImage);
         newFactories.add(ToVTable);
         newFactories.add(ToVDoubleArrayAsMatrix);	// NTMatrix support
         newFactories.add(ToVTableAsNameValue);	// NTNameValue support
 
         newFactories.add(ToVStatistics); // NTAggregate support
         newFactories.add(ToVNumberArrayAsHistogram); // NTHistogram support
+
+        newFactories.add(ToNTNDArray); // NTNDArray support
 
         converters = Collections.unmodifiableSet(newFactories);
     }

@@ -9,6 +9,8 @@ import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
+import org.epics.pvmanager.formula.FormulaRegistry;
+import org.epics.pvmanager.pva.formula.NTNDArrayFunctionSet;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
@@ -20,6 +22,10 @@ public class PVADataSource extends DataSource {
     static {
         // Install type support for the types it generates.
         DataTypeSupport.install();
+        
+        // TODO move this out
+        // Install formulas
+        FormulaRegistry.getDefault().registerFormulaFunctionSet(new NTNDArrayFunctionSet());
     }
 
     //private static final Logger logger = Logger.getLogger(PVADataSource.class.getName());
