@@ -5,6 +5,8 @@
 package org.diirt.datasource.pods.web;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.ContainerProvider;
@@ -14,6 +16,7 @@ import javax.websocket.WebSocketContainer;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.PVManager;
+import static org.epics.pvmanager.util.Executors.namedPool;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
@@ -30,6 +33,8 @@ public final class WebPodsDataSource extends DataSource {
     
     private final WebPodsClient client;
     private final WebPodsDataSourceConfiguration configuration;
+    private static ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("diirt web-pods datasource connection "));
+    private static Logger log = Logger.getLogger(WebPodsDataSource.class.getName());
 
     public WebPodsDataSource() {
         this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceFactory().getDefaultConfPath()));
@@ -44,13 +49,6 @@ public final class WebPodsDataSource extends DataSource {
         super(true);
         client = new WebPodsClient();
         this.configuration = configuration;
-        PVManager.getReadScannerExecutorService().execute(new Runnable() {
-
-            @Override
-            public void run() {
-                reconnect();
-            }
-        });
     }
 
     @Override
@@ -59,12 +57,22 @@ public final class WebPodsDataSource extends DataSource {
     }
     
     private void reconnect() {
-        try {
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
-        } catch (DeploymentException | IOException ex) {
-            Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    if (client.isConnected()) {
+                        return;
+                    }
+                    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+                    container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
+                    log.info("Web-pods datasource connected");
+                } catch (DeploymentException | IOException ex) {
+                    log.log(Level.WARNING, "Web-pods datasource connection problems", ex);
+                }
+            }
+        });
     }
 
     WebPodsClient getClient() {
