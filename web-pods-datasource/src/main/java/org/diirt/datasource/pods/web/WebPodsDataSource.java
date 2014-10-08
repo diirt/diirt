@@ -5,8 +5,6 @@
 package org.diirt.datasource.pods.web;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.ContainerProvider;
@@ -50,12 +48,7 @@ public final class WebPodsDataSource extends DataSource {
 
             @Override
             public void run() {
-                try {
-                    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-                    container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
-                } catch (DeploymentException | IOException ex) {
-                    Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                reconnect();
             }
         });
     }
@@ -64,8 +57,20 @@ public final class WebPodsDataSource extends DataSource {
     public void close() {
         super.close();
     }
+    
+    private void reconnect() {
+        try {
+            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
+        } catch (DeploymentException | IOException ex) {
+            Logger.getLogger(WebPodsDataSource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     WebPodsClient getClient() {
+        if (!client.isConnected()) {
+            reconnect();
+        }
         return client;
     }
    

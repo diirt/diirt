@@ -37,11 +37,37 @@ import org.diirt.web.pods.common.MessageWriteCompletedEvent;
 public class WebPodsClient {
  
     private static final Logger log = Logger.getLogger(WebPodsClient.class.getName());
-    private volatile Session session;
+    private final Object lock = new Object();
+    private Session session;
+    private boolean connected = false;
+    private String disconnectReason = "Connection failed";
  
     @OnOpen
     public void onOpen(Session session) {
-        this.session = session;
+        synchronized(lock) {
+            this.session = session;
+            connected = true;
+            disconnectReason = null;
+        }
+    }
+    
+    @OnClose
+    public void onClose(Session session, CloseReason closeReason) {
+        synchronized(lock) {
+            this.session = null;
+            connected = false;
+            disconnectReason = closeReason.getReasonPhrase();
+        }
+    }
+
+    public boolean isConnected() {
+        synchronized(lock) {
+            return connected;
+        }
+    }
+
+    public String getDisconnectReason() {
+        return disconnectReason;
     }
  
     @OnMessage
@@ -70,17 +96,22 @@ public class WebPodsClient {
         }
     }
  
-    @OnClose
-    public void onClose(Session session, CloseReason closeReason) {
-        log.info(String.format("Session %s close because of %s", session.getId(), closeReason));
-    }
     
     private AtomicInteger counter = new AtomicInteger();
     private final Map<Integer, WebPodsChannelListener> listeners = new ConcurrentHashMap<>();
     
     public WebPodsChannel subscribe(String channelName, WebPodsChannelListener listener) {
+        Session currentSession;
+        String currentDisconnectReason;
+        synchronized(lock) {
+            currentSession = session;
+            currentDisconnectReason = this.disconnectReason;
+        }
+        if (currentSession == null) {
+            throw new RuntimeException("No connection. " + currentDisconnectReason);
+        }
         int id = counter.incrementAndGet();
-        WebPodsChannel channel = new WebPodsChannel(channelName, id, session, listener);
+        WebPodsChannel channel = new WebPodsChannel(channelName, id, currentSession, listener);
         listeners.put(id, listener);
         return channel;
     }
