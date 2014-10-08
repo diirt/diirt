@@ -38,6 +38,7 @@ public final class WebPodsDataSource extends DataSource {
 
     public WebPodsDataSource() {
         this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceFactory().getDefaultConfPath()));
+        reconnect();
     }
 
     /**
