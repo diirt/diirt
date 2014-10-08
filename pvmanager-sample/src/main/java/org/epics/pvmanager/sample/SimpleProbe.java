@@ -217,12 +217,19 @@ public class SimpleProbe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pvNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pvNameActionPerformed
+
+        long startTime = System.currentTimeMillis();
         if (pv != null) {
             pv.close();
             lastError.setText("");
         }
+        long total = System.currentTimeMillis() - startTime;
+        if (total > 1) {
+            System.out.println("Disconnect took " + total + " ms");
+        }
 
         try {
+            startTime = System.currentTimeMillis();
             pv = PVManager.read(formula(pvName.getText()))
                     .timeout(TimeDuration.ofSeconds(5))
                     .readListener(new PVReaderListener<Object>() {
@@ -240,6 +247,10 @@ public class SimpleProbe extends javax.swing.JFrame {
                             }
                         })
                     .maxRate(ofHertz(10));
+            total = System.currentTimeMillis() - startTime;
+            if (total > 1) {
+                System.out.println("Reconnect took " + total + " ms");
+            }
         } catch(Throwable t) {
             System.out.println("EXCEPTION WHILE CREATING PV!!! SHOULD NEVER HAPPEN!!!");
             t.printStackTrace();
