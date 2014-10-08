@@ -4,6 +4,8 @@
  */
 package org.diirt.datasource.pods.web;
 
+import javax.websocket.CloseReason;
+
 /**
  *
  * @author carcassi
@@ -23,6 +25,10 @@ public class WebPodsChannelListener {
     }
 
     public void onWriteCompletedEvent(boolean successful, String error){
+        
+    }
+    
+    public void onDisconnect(CloseReason reason) {
         
     }
 

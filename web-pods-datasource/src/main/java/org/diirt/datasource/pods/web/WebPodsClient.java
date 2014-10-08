@@ -23,6 +23,10 @@ import org.diirt.web.pods.common.MessageConnectionEvent;
 import org.diirt.web.pods.common.MessageDecoder;
 import org.diirt.web.pods.common.MessageEncoder;
 import org.diirt.web.pods.common.MessageErrorEvent;
+import org.diirt.web.pods.common.MessagePause;
+import org.diirt.web.pods.common.MessageResume;
+import org.diirt.web.pods.common.MessageSubscribe;
+import org.diirt.web.pods.common.MessageUnsubscribe;
 import org.diirt.web.pods.common.MessageValueEvent;
 import org.diirt.web.pods.common.MessageWriteCompletedEvent;
 
@@ -49,6 +53,10 @@ public class WebPodsClient {
             connected = true;
             disconnectReason = null;
         }
+        for (Map.Entry<Integer, WebPodsChannel> entrySet : channels.entrySet()) {
+            WebPodsChannel channel = entrySet.getValue();
+            subscribeChannel(channel);
+        }
     }
     
     @OnClose
@@ -57,6 +65,11 @@ public class WebPodsClient {
             this.session = null;
             connected = false;
             disconnectReason = closeReason.getReasonPhrase();
+        }
+        
+        for (Map.Entry<Integer, WebPodsChannel> entrySet : channels.entrySet()) {
+            WebPodsChannel channel = entrySet.getValue();
+            channel.getListener().onDisconnect(closeReason);
         }
     }
 
@@ -67,18 +80,20 @@ public class WebPodsClient {
     }
 
     public String getDisconnectReason() {
-        return disconnectReason;
+        synchronized(lock) {
+            return disconnectReason;
+        }
     }
  
     @OnMessage
     public void onMessage(Message message, Session session) {
         int channelId = message.getId();
-        WebPodsChannelListener listener = listeners.get(channelId);
-        if (listener == null) {
+        WebPodsChannel channel = channels.get(channelId);
+        if (channel == null) {
             log.log(Level.WARNING, "Received an event for id " + channelId + " but no listener was found");
             return;
         }
-        
+        WebPodsChannelListener listener = channel.getListener();
         if (message instanceof MessageValueEvent) {
             MessageValueEvent event = (MessageValueEvent) message;
             listener.onValueEvent(event.getValue());
@@ -97,23 +112,62 @@ public class WebPodsClient {
     }
  
     
-    private AtomicInteger counter = new AtomicInteger();
-    private final Map<Integer, WebPodsChannelListener> listeners = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger();
+    private final Map<Integer, WebPodsChannel> channels = new ConcurrentHashMap<>();
     
     public WebPodsChannel subscribe(String channelName, WebPodsChannelListener listener) {
+        int id = counter.incrementAndGet();
+        WebPodsChannel channel = new WebPodsChannel(channelName, id, this, listener);
+        channels.put(id, channel);
+        subscribeChannel(channel);
+        return channel;
+    }
+    
+    void subscribeChannel(WebPodsChannel channel) {
         Session currentSession;
-        String currentDisconnectReason;
         synchronized(lock) {
             currentSession = session;
-            currentDisconnectReason = this.disconnectReason;
         }
         if (currentSession == null) {
-            throw new RuntimeException("No connection. " + currentDisconnectReason);
+            return;
         }
-        int id = counter.incrementAndGet();
-        WebPodsChannel channel = new WebPodsChannel(channelName, id, currentSession, listener);
-        listeners.put(id, listener);
-        return channel;
+        currentSession.getAsyncRemote().sendObject(new MessageSubscribe(channel.getId(), channel.getChannelName(), null, -1, true));
+    }
+    
+    void unsubscribeChannel(WebPodsChannel channel) {
+        channels.remove(channel.getId());
+        Session currentSession;
+        synchronized(lock) {
+            currentSession = session;
+        }
+        if (currentSession == null) {
+            return;
+        }
+        currentSession.getAsyncRemote().sendObject(new MessageUnsubscribe(channel.getId()));
+    }
+    
+    void pauseChannel(WebPodsChannel channel) {
+        channels.remove(channel.getId());
+        Session currentSession;
+        synchronized(lock) {
+            currentSession = session;
+        }
+        if (currentSession == null) {
+            return;
+        }
+        session.getAsyncRemote().sendObject(new MessagePause(channel.getId()));
+    }
+    
+    void resumeChannel(WebPodsChannel channel) {
+        channels.remove(channel.getId());
+        Session currentSession;
+        synchronized(lock) {
+            currentSession = session;
+        }
+        if (currentSession == null) {
+            return;
+        }
+        session.getAsyncRemote().sendObject(new MessageResume(channel.getId()));
     }
     
     public static void main(String[] args) throws Exception {

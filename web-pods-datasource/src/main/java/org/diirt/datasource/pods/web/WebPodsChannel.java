@@ -4,12 +4,6 @@
  */
 package org.diirt.datasource.pods.web;
 
-import javax.websocket.Session;
-import org.diirt.web.pods.common.MessagePause;
-import org.diirt.web.pods.common.MessageResume;
-import org.diirt.web.pods.common.MessageSubscribe;
-import org.diirt.web.pods.common.MessageUnsubscribe;
-
 /**
  *
  * @author carcassi
@@ -17,25 +11,39 @@ import org.diirt.web.pods.common.MessageUnsubscribe;
 public class WebPodsChannel {
 
     private final int id;
-    private final Session session;
     private final WebPodsChannelListener listener;
+    private final WebPodsClient client;
+    private final String channelName;
 
-    public WebPodsChannel(String channelName, int id, Session session, WebPodsChannelListener listener) {
+    public WebPodsChannel(String channelName, int id, WebPodsClient client, WebPodsChannelListener listener) {
         this.id = id;
-        this.session = session;
+        this.client = client;
         this.listener = listener;
-        session.getAsyncRemote().sendObject(new MessageSubscribe(id, channelName, null, -1, true));
+        this.channelName = channelName;
     }
     
     public void pause() {
-        session.getAsyncRemote().sendObject(new MessagePause(id));
+        client.pauseChannel(this);
     }
     
     public void resume() {
-        session.getAsyncRemote().sendObject(new MessageResume(id));
+        client.resumeChannel(this);
     }
     
     public void unsubscribe() {
-        session.getAsyncRemote().sendObject(new MessageUnsubscribe(id));
+        client.unsubscribeChannel(this);
     }
+    
+    public WebPodsChannelListener getListener() {
+        return listener;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+    
 }

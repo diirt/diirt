@@ -5,6 +5,7 @@
 package org.diirt.datasource.pods.web;
 
 
+import javax.websocket.CloseReason;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.MultiplexedChannelHandler;
 
@@ -27,6 +28,11 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
         public void onValueEvent(Object value) {
             processMessage(value);
         }
+
+        @Override
+        public void onDisconnect(CloseReason reason) {
+            processConnection(null);
+        }
         
     };
     private WebPodsChannel channel;
@@ -39,11 +45,16 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
     @Override
     public void connect() {
         channel = dataSource.getClient().subscribe(getChannelName(), listener);
+        if (!dataSource.getClient().isConnected()) {
+            throw new RuntimeException("No connection." + dataSource.getClient().getDisconnectReason());
+        }
     }
 
     @Override
     public void disconnect() {
-        channel.unsubscribe();
+        if (channel != null) {
+            channel.unsubscribe();
+        }
         processConnection(null);
     }
 
