@@ -198,7 +198,9 @@ public abstract class DataSource {
      *
      * @param readRecipe the instructions for the data connection
      */
-    public void disconnectRead(ReadRecipe readRecipe) {
+    public void disconnectRead(final ReadRecipe readRecipe) {
+        // Find the channels to disconnect
+        final Map<ChannelHandler, ChannelHandlerReadSubscription> handlers = new HashMap<>();
         for (ChannelReadRecipe channelRecipe : readRecipe.getChannelReadRecipes()) {
             if (!readRecipes.contains(channelRecipe)) {
                 log.log(Level.WARNING, "ChannelReadRecipe {0} was disconnected but was never connected. Ignoring it.", channelRecipe);
@@ -209,11 +211,26 @@ public abstract class DataSource {
                 // connection and a proper notification was sent then. Silently
                 // ignore it.
                 if (channelHandler != null) {
-                    channelHandler.removeReader(channelRecipe.getReadSubscription());
+                    handlers.put(channelHandler, channelRecipe.getReadSubscription());
                 }
                 readRecipes.remove(channelRecipe);
             }
         }
+        
+        // Schedule disconnection and return right away.
+        exec.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                for (Map.Entry<ChannelHandler, ChannelHandlerReadSubscription> entry : handlers.entrySet()) {
+                    ChannelHandler channelHandler = entry.getKey();
+                    ChannelHandlerReadSubscription channelHandlerReadSubscription = entry.getValue();
+                    channelHandler.removeReader(channelHandlerReadSubscription);
+                }
+            }
+            
+        });
+
     }
     
     /**
@@ -311,7 +328,7 @@ public abstract class DataSource {
             }
         }
 
-        // Connect using another thread
+        // Disconnect using another thread
         exec.execute(new Runnable() {
 
             @Override
