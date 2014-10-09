@@ -37,9 +37,10 @@ import org.epics.pvmanager.formula.FormulaFunction;
 import org.epics.pvmanager.formula.FormulaFunctionSet;
 import org.epics.pvmanager.formula.FormulaFunctionSetDescription;
 import org.epics.pvmanager.pva.adapters.AlarmTimeDisplayExtractor;
+import org.epics.pvmanager.pva.adapters.NTUtils;
 import org.epics.pvmanager.pva.adapters.PVANTNDArray;
-import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ListNumber;
 import org.epics.util.array.ListNumbers;
 import org.epics.vtype.ArrayDimensionDisplay;
 import org.epics.vtype.VImage;
@@ -70,7 +71,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 	{
 
 		static final String[] COLUMN_NAMES = new String[] { "name", "value", "descriptor", "sourceType", "source" };
-		static final Class<?>[] COLUMN_TYPES = new Class<?>[] { String.class, String.class, String.class, Integer.class, String.class };
+		static final Class<?>[] COLUMN_TYPES = new Class<?>[] { String.class, String.class, String.class, int.class, String.class };
 
 		@Override
 		public Object calculate(List<Object> args) {
@@ -117,7 +118,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 					}
 					columnValues.add(columnData);
 				}
-				else if (columnType.equals(Integer.class))
+				else if (columnType.equals(int.class))
 				{
 					ArrayList<Integer> columnData = new ArrayList<Integer>();
 					for (int i = 0; i < rows; i++)
@@ -188,11 +189,12 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			AlarmTimeDisplayExtractor atd = new AlarmTimeDisplayExtractor(pvStructure, false);
 
 			PVUnion valueUnion = pvStructure.getUnionField("value");
-			// TODO for now we support only byteArray
-			PVByteArray pvArray = valueUnion.get(PVByteArray.class);
-			ByteArrayData arrayData = new ByteArrayData();
-			pvArray.get(0, pvArray.getLength(), arrayData);
-			ArrayByte data = new ArrayByte(arrayData.data, true);
+			
+			PVScalarArray scalarArray = valueUnion.get(PVScalarArray.class);
+			Object list = NTUtils.scalarArrayToList(scalarArray, true);
+			if (!(list instanceof ListNumber))
+				throw new IllegalArgumentException("value array not a list of numbers");
+			ListNumber data = (ListNumber)list;
 
 			PVStructureArray pvDimension = pvStructure.getStructureArrayField("dimension");
 			StructureArrayData dimensionArrayData = new StructureArrayData();

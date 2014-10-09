@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.epics.pvdata.factory.ConvertFactory;
 import org.epics.pvdata.pv.ByteArrayData;
-import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.FloatArrayData;
 import org.epics.pvdata.pv.IntArrayData;
+import org.epics.pvdata.pv.LongArrayData;
 import org.epics.pvdata.pv.PVByteArray;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVFloatArray;
@@ -34,6 +33,7 @@ import org.epics.util.array.ArrayByte;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.array.ArrayFloat;
 import org.epics.util.array.ArrayInt;
+import org.epics.util.array.ArrayLong;
 import org.epics.util.array.ArrayShort;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VTypeToString;
@@ -47,8 +47,6 @@ public class PVFieldNTNameValueToVTable implements VTable {
   private Class<?> valueType;
   private List<String> names;
   private List<Object> values;
-
-  private static final Convert convert = ConvertFactory.getConvert();
 
   /**
    * @param pvField
@@ -91,6 +89,14 @@ public class PVFieldNTNameValueToVTable implements VTable {
 			for (int i = 0; i < numCols; i++)
 				values.add(new ArrayFloat(data.data[i]));
 
+		} else if (scalarArray instanceof PVStringArray) {
+
+			valueType = String.class;
+			StringArrayData data = new StringArrayData();
+			((PVStringArray) scalarArray).get(0, numCols, data);
+			for (int i = 0; i < numCols; i++)
+				values.add(Arrays.asList(data.data[i]));
+
 		} else if (scalarArray instanceof PVIntArray) {
 
 			valueType = int.class;
@@ -106,6 +112,22 @@ public class PVFieldNTNameValueToVTable implements VTable {
 			((PVUIntArray) scalarArray).get(0, numCols, data);
 			for (int i = 0; i < numCols; i++)
 				values.add(new ArrayInt(data.data[i]));
+
+		} else if (scalarArray instanceof PVLongArray) {
+
+			valueType = long.class;
+			LongArrayData data = new LongArrayData();
+			((PVLongArray) scalarArray).get(0, numCols, data);
+			for (int i = 0; i < numCols; i++)
+				values.add(new ArrayLong(data.data[i]));
+
+		} else if (scalarArray instanceof PVULongArray) {
+
+			valueType = long.class;
+			LongArrayData data = new LongArrayData();
+			((PVULongArray) scalarArray).get(0, numCols, data);
+			for (int i = 0; i < numCols; i++)
+				values.add(new ArrayLong(data.data[i]));
 
 		} else if (scalarArray instanceof PVByteArray) {
 
@@ -123,15 +145,6 @@ public class PVFieldNTNameValueToVTable implements VTable {
 			for (int i = 0; i < numCols; i++)
 				values.add(new ArrayByte(data.data[i]));
 
-		} else if (scalarArray instanceof PVLongArray
-				|| scalarArray instanceof PVULongArray) {
-
-			valueType = int.class;
-			int[] intArr = new int[numCols];
-			convert.toIntArray(scalarArray, 0, numCols, intArr, 0);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayInt(intArr[i]));
-
 		} else if (scalarArray instanceof PVShortArray) {
 
 			valueType = short.class;
@@ -147,14 +160,6 @@ public class PVFieldNTNameValueToVTable implements VTable {
 			((PVUShortArray) scalarArray).get(0, numCols, data);
 			for (int i = 0; i < numCols; i++)
 				values.add(new ArrayShort(data.data[i]));
-
-		} else if (scalarArray instanceof PVStringArray) {
-
-			valueType = String.class;
-			StringArrayData data = new StringArrayData();
-			((PVStringArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(Arrays.asList(data.data[i]));
 
 		} else {
 			throw new IllegalArgumentException("Unsupported type for NTNameValue.value array field");

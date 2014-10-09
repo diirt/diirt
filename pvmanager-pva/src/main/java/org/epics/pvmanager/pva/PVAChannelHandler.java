@@ -30,7 +30,6 @@ import org.epics.pvdata.monitor.MonitorRequester;
 import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.MessageType;
-import org.epics.pvdata.pv.PVBoolean;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVScalar;
@@ -448,7 +447,7 @@ public class PVAChannelHandler extends
 			else if (newValue instanceof Boolean)
 				//  TODO no convert.fromBoolean
 				//convert.fromBoolean((PVScalar)field, ((Boolean)newValue).booleanValue());
-				((PVBoolean)field).put(((Boolean)newValue).booleanValue());
+				convert.fromByte((PVScalar)field, ((Boolean)newValue).booleanValue() ? (byte)1 : (byte)0);
     		else
     			throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into scalar '" + channelPutValueField.getField() + "'");
         }
@@ -500,6 +499,14 @@ public class PVAChannelHandler extends
     			convert.fromLongArray((PVScalarArray)field, 0, ((long[])newValue).length, (long[])newValue, 0);
     		else if (newValue instanceof float[])
     			convert.fromFloatArray((PVScalarArray)field, 0, ((float[])newValue).length, (float[])newValue, 0);
+    		else if (newValue instanceof boolean[])
+    		{
+    			boolean[] bArray = (boolean[])newValue;
+    			byte[] byteArray = new byte[bArray.length];
+    			for (int i = 0; i < bArray.length; i++)
+    				byteArray[i] = bArray[i] ? (byte)1 : (byte)0;
+    			convert.fromByteArray((PVScalarArray)field, 0, byteArray.length, byteArray, 0);
+    		}
     		else
     			throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into array'" + channelPutValueField.getField() + "'");
         }

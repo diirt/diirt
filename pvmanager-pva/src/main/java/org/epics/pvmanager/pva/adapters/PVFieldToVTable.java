@@ -5,33 +5,14 @@
 package org.epics.pvmanager.pva.adapters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.epics.pvdata.pv.ByteArrayData;
-import org.epics.pvdata.pv.DoubleArrayData;
-import org.epics.pvdata.pv.FloatArrayData;
-import org.epics.pvdata.pv.IntArrayData;
-import org.epics.pvdata.pv.PVByteArray;
-import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVField;
-import org.epics.pvdata.pv.PVFloatArray;
-import org.epics.pvdata.pv.PVIntArray;
 import org.epics.pvdata.pv.PVScalarArray;
-import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.PVUByteArray;
-import org.epics.pvdata.pv.PVUIntArray;
-import org.epics.pvdata.pv.PVUShortArray;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvdata.pv.ShortArrayData;
 import org.epics.pvdata.pv.StringArrayData;
-import org.epics.util.array.ArrayByte;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayFloat;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ArrayShort;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VTypeToString;
 
@@ -79,90 +60,13 @@ public class PVFieldToVTable implements VTable {
 	        for (PVField pvColumn : valueField.getPVFields())
 	        {
 	        	PVScalarArray scalarArray = (PVScalarArray)pvColumn;
+
+	        	types.add(NTUtils.scalarArrayElementClass(scalarArray));
+	        	values.add(NTUtils.scalarArrayToList(scalarArray, true));
+	        	names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
+
 	        	int len = scalarArray.getLength(); 
-	        	
-	        	boolean skipped = false;
-	        	if (scalarArray instanceof PVDoubleArray)
-	        	{
-		        	types.add(double.class);
-		        	
-		        	DoubleArrayData data = new DoubleArrayData();
-		        	((PVDoubleArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayDouble(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVIntArray)
-	        	{
-		        	types.add(int.class);
-		        	
-		        	IntArrayData data = new IntArrayData();
-		        	((PVIntArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayInt(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVUIntArray)
-	        	{
-		        	types.add(int.class);
-		        	
-		        	IntArrayData data = new IntArrayData();
-		        	((PVUIntArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayInt(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVStringArray)
-	        	{
-		        	types.add(String.class);
-		        	
-		        	StringArrayData data = new StringArrayData();
-		        	((PVStringArray)scalarArray).get(0, len, data);
-		        	values.add(Arrays.asList(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVFloatArray)
-	        	{
-		        	types.add(float.class);
-		        	
-		        	FloatArrayData data = new FloatArrayData();
-		        	((PVFloatArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayFloat(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVByteArray)
-	        	{
-		        	types.add(byte.class);
-		        	
-		        	ByteArrayData data = new ByteArrayData();
-		        	((PVByteArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayByte(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVUByteArray)
-	        	{
-		        	types.add(byte.class);
-		        	
-		        	ByteArrayData data = new ByteArrayData();
-		        	((PVUByteArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayByte(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVShortArray)
-	        	{
-		        	types.add(short.class);
-		        	
-		        	ShortArrayData data = new ShortArrayData();
-		        	((PVShortArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayShort(data.data));
-	        	}
-	        	else if (scalarArray instanceof PVUShortArray)
-	        	{
-		        	types.add(short.class);
-		        	
-		        	ShortArrayData data = new ShortArrayData();
-		        	((PVUShortArray)scalarArray).get(0, len, data);
-		        	values.add(new ArrayShort(data.data));
-	        	}
-	        	// TODO no long/ulong support
-	        	else
-	        		skipped = true;
-	        	
-	        	if (!skipped)
-	        	{
-		        	names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
-	        		if (len > maxRowCount) maxRowCount = len;
-	        	}
+        		if (len > maxRowCount) maxRowCount = len;
 	        	
 	        	nameIndex++;
 	        }
