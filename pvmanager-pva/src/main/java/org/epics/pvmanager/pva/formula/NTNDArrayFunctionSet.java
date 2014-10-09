@@ -9,16 +9,28 @@ import java.util.List;
 
 import org.epics.pvdata.pv.BooleanArrayData;
 import org.epics.pvdata.pv.ByteArrayData;
+import org.epics.pvdata.pv.DoubleArrayData;
+import org.epics.pvdata.pv.FloatArrayData;
 import org.epics.pvdata.pv.IntArrayData;
+import org.epics.pvdata.pv.LongArrayData;
 import org.epics.pvdata.pv.PVBooleanArray;
 import org.epics.pvdata.pv.PVByteArray;
+import org.epics.pvdata.pv.PVDoubleArray;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVIntArray;
+import org.epics.pvdata.pv.PVLongArray;
 import org.epics.pvdata.pv.PVScalarArray;
 import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.PVStructureArray;
+import org.epics.pvdata.pv.PVUByteArray;
+import org.epics.pvdata.pv.PVUIntArray;
+import org.epics.pvdata.pv.PVULongArray;
+import org.epics.pvdata.pv.PVUShortArray;
 import org.epics.pvdata.pv.PVUnion;
+import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.ShortArrayData;
 import org.epics.pvdata.pv.StructureArrayData;
 import org.epics.pvmanager.formula.FormulaFunction;
@@ -58,7 +70,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 	{
 
 		static final String[] COLUMN_NAMES = new String[] { "name", "value", "descriptor", "sourceType", "source" };
-		static final Class<?>[] COLUMN_TYPES = new Class<?>[] { String.class, Object.class, String.class, Integer.class, String.class };
+		static final Class<?>[] COLUMN_TYPES = new Class<?>[] { String.class, String.class, String.class, Integer.class, String.class };
 
 		@Override
 		public Object calculate(List<Object> args) {
@@ -83,10 +95,26 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 				if (columnType.equals(String.class))
 				{
 					ArrayList<String> columnData = new ArrayList<String>();
-					for (int i = 0; i < rows; i++)
-						columnData.add(
-								attributeArrayData.data[i].getStringField(COLUMN_NAMES[index]).get()
-						);
+					
+					if (index == 1)
+					{
+						// value is a special case, convert any to string
+						for (int i = 0; i < rows; i++)
+						{
+							PVField pvData = attributeArrayData.data[i].getUnionField(COLUMN_NAMES[index]).get();
+							columnData.add(
+									pvData != null ? pvData.toString() : null
+							);
+						}
+						
+					}
+					else
+					{
+						for (int i = 0; i < rows; i++)
+							columnData.add(
+									attributeArrayData.data[i].getStringField(COLUMN_NAMES[index]).get()
+							);
+					}
 					columnValues.add(columnData);
 				}
 				else if (columnType.equals(Integer.class))
@@ -96,18 +124,6 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 						columnData.add(
 								attributeArrayData.data[i].getIntField(COLUMN_NAMES[index]).get()
 						);
-					columnValues.add(columnData);
-				}
-				else if (columnType.equals(Object.class))
-				{
-					ArrayList<Object> columnData = new ArrayList<Object>();
-					for (int i = 0; i < rows; i++)
-					{
-						// TODO for now we convert all to string
-						columnData.add(
-								attributeArrayData.data[i].getUnionField(COLUMN_NAMES[index]).get().toString()
-						);
-					}
 					columnValues.add(columnData);
 				}
 				else
@@ -374,7 +390,8 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 				width = nx;
 				height = ny;
 				
-				switch (valueArray.getScalarArray().getElementType())
+				ScalarType scalarType = valueArray.getScalarArray().getElementType(); 
+				switch (scalarType)
 				{
 					case pvBoolean:
 					{
@@ -395,9 +412,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 					}
 					
 					case pvByte:
+					case pvUByte:
 					{
 						ByteArrayData bad = new ByteArrayData();
-						((PVByteArray)valueArray).get(0, valueArraySize, bad);
+						if (scalarType == ScalarType.pvByte)
+							((PVByteArray)valueArray).get(0, valueArraySize, bad);
+						else
+							((PVUByteArray)valueArray).get(0, valueArraySize, bad);
 						// convert grayscale to BGR
 						data = new byte[3*valueArraySize];
 						int p = 0;
@@ -413,9 +434,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 					}
 					
 					case pvShort:
+					case pvUShort:
 					{
 						ShortArrayData bad = new ShortArrayData();
-						((PVShortArray)valueArray).get(0, valueArraySize, bad);
+						if (scalarType == ScalarType.pvShort)
+							((PVShortArray)valueArray).get(0, valueArraySize, bad);
+						else
+							((PVUShortArray)valueArray).get(0, valueArraySize, bad);
 						// convert grayscale to BGR
 						data = new byte[3*valueArraySize];
 						int p = 0;
@@ -431,9 +456,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 					}
 
 					case pvInt:
+					case pvUInt:
 					{
 						IntArrayData bad = new IntArrayData();
-						((PVIntArray)valueArray).get(0, valueArraySize, bad);
+						if (scalarType == ScalarType.pvInt)
+							((PVIntArray)valueArray).get(0, valueArraySize, bad);
+						else
+							((PVUIntArray)valueArray).get(0, valueArraySize, bad);
 						// convert grayscale to BGR
 						data = new byte[3*valueArraySize];
 						int p = 0;
@@ -448,7 +477,28 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 						break;
 					}
 
-					/*
+					case pvLong:
+					case pvULong:
+					{
+						LongArrayData bad = new LongArrayData();
+						if (scalarType == ScalarType.pvLong)
+							((PVLongArray)valueArray).get(0, valueArraySize, bad);
+						else
+							((PVULongArray)valueArray).get(0, valueArraySize, bad);
+						// convert grayscale to BGR
+						data = new byte[3*valueArraySize];
+						int p = 0;
+						for (int i = 0; i < valueArraySize; i++)
+						{
+							byte c = (byte)(bad.data[i] >>> 56);
+							// B = G = R = c
+							data[p++] = c; 
+							data[p++] = c; 
+							data[p++] = c;
+						}
+						break;
+					}
+					
 					case pvFloat:
 					{
 						FloatArrayData bad = new FloatArrayData();
@@ -486,7 +536,6 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 						}
 						break;
 					}
-					*/
 					
 					default:
 						throw new IllegalArgumentException("unsupported scalar_t[] value type");
