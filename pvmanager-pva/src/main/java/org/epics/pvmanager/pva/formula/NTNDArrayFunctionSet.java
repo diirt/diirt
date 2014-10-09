@@ -120,12 +120,10 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 				}
 				else if (columnType.equals(int.class))
 				{
-					ArrayList<Integer> columnData = new ArrayList<Integer>();
+					int columnData[] = new int[rows];
 					for (int i = 0; i < rows; i++)
-						columnData.add(
-								attributeArrayData.data[i].getIntField(COLUMN_NAMES[index]).get()
-						);
-					columnValues.add(columnData);
+						columnData[i] = attributeArrayData.data[i].getIntField(COLUMN_NAMES[index]).get();
+					columnValues.add(new ArrayInt(columnData));
 				}
 				else
 					throw new RuntimeException("unsupported attribute field type");
