@@ -19,36 +19,81 @@ import static org.epics.vtype.json.JsonArrays.*;
 import org.epics.vtype.json.VTypeToJson;
 
 /**
+ * A message being sent as part of the WebPods protocol.
+ * <p>
+ * Subclasses provide serialization (through {@link #toJson(java.io.Writer)} and
+ * de-serialization (through the constructor) of JSON messages. Each instance of
+ * the message is immutable.
  *
  * @author carcassi
  */
 public abstract class Message {
+    
+    /**
+     * The type of message.
+     */
     public static enum MessageType {SUBSCRIBE, CONNECTION, EVENT, WRITE, PAUSE, RESUME, UNSUBSCRIBE};
     
     private final MessageType message;
     private final int id;
 
-    public Message(JsonObject obj) {
+    /**
+     * Constructor for JSON parsing. Retrieves message and id from payload.
+     * 
+     * @param obj the JSON message
+     */
+    Message(JsonObject obj) {
         this(Message.MessageType.valueOf(obj.getString("message").toUpperCase()), intMandatory(obj, "id"));
     }
     
-    public Message(MessageType message, int id) {
+    /**
+     * Constructor for direct message creation.
+     * 
+     * @param message the type of the message
+     * @param id the id for the channel
+     */
+    Message(MessageType message, int id) {
+        if (message == null)
+            throw new NullPointerException("The message type cannot be null");
         this.message = message;
         this.id = id;
     }
 
+    /**
+     * The message type. Can't be null.
+     * 
+     * @return the message type
+     */
     public MessageType getMessage() {
         return message;
     }
 
+    /**
+     * The id of the channel this message refers to.
+     * 
+     * @return the channel id
+     */
     public int getId() {
         return id;
     }
-    
+
+    /**
+     * Serializes this message as JSON onto the given writer.
+     * 
+     * @param writer the destination where to serialize the message
+     */
     public void toJson(Writer writer) {
+        // Default implementation just throws an exception, so it is easy
+        // to find messages with unimplemented serializations
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    
+
+    /**
+     * Utility to serialize just the message and id. More then one message
+     * only serialize those two parameters, so it is useful to make it common.
+     * 
+     * @param writer the destination where to serialize the message
+     */
     void basicToJson(Writer writer) {
         JsonGenerator gen = Json.createGenerator(writer).writeStartObject();
         gen.write("message", getMessage().toString().toLowerCase())
@@ -56,7 +101,14 @@ public abstract class Message {
             .writeEnd()
             .close();
     }
-    
+
+    /**
+     * Un-marshals the message type, or throws an exception if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the type is stored
+     * @return the message type
+     */
     static MessageType typeMandatory(JsonObject jObject, String name) {
         String message = stringMandatory(jObject, name);
         try {
@@ -65,7 +117,14 @@ public abstract class Message {
             throw new IllegalArgumentException("Message attribute '" + name + "' must be a valid message type (was '" + message + "')", e);
         }
     }
-    
+
+    /**
+     * Un-marshals a string, or throws an exception if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the string is stored
+     * @return the message string
+     */
     static String stringMandatory(JsonObject jObject, String name) {
         try {
             JsonString jsonString = jObject.getJsonString(name);
@@ -78,7 +137,15 @@ public abstract class Message {
             throw new IllegalArgumentException("Message attribute '" + name + "' is not a string", e);
         }
     }
-    
+
+    /**
+     * Un-marshals a string, or returns the default value if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the string is stored
+     * @param defaultValue the value to use if no attribute is found
+     * @return the message string
+     */
     static String stringOptional(JsonObject jObject, String name, String defaultValue) {
         try {
             JsonString jsonString = jObject.getJsonString(name);
@@ -92,6 +159,13 @@ public abstract class Message {
         }
     }
     
+    /**
+     * Un-marshals an integer, or throws an exception if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the integer is stored
+     * @return the message integer
+     */
     static int intMandatory(JsonObject jObject, String name) {
         try {
             JsonNumber jsonNumber = jObject.getJsonNumber(name);
@@ -105,6 +179,14 @@ public abstract class Message {
         }
     }
     
+    /**
+     * Un-marshals an integer, or returns the default value if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the integer is stored
+     * @param defaultValue the value to use if no attribute is found
+     * @return the message integer
+     */
     static int intOptional(JsonObject jObject, String name, int defaultValue) {
         try {
             JsonNumber jsonNumber = jObject.getJsonNumber(name);
@@ -118,6 +200,13 @@ public abstract class Message {
         }
     }
     
+    /**
+     * Un-marshals a boolean, or throws an exception if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the boolean is stored
+     * @return the message boolean
+     */
     static boolean booleanAttribute(JsonObject jObject, String name) {
         try {
             return jObject.getBoolean(name);
@@ -128,6 +217,14 @@ public abstract class Message {
         }
     }
     
+    /**
+     * Un-marshals an boolean, or returns the default value if it's not able to.
+     * 
+     * @param jObject the JSON object
+     * @param name the attribute name where the boolean is stored
+     * @param defaultValue the value to use if no attribute is found
+     * @return the message boolean
+     */
     static boolean booleanOptional(JsonObject jObject, String name, boolean defaultValue) {
         try {
             return jObject.getBoolean(name, defaultValue);
@@ -136,6 +233,13 @@ public abstract class Message {
         }
     }
     
+    /**
+     * Converts the given JSON value to either a vtype, a Java time or a
+     * ListNumber.
+     * 
+     * @param msgValue the JSON value
+     * @return the converted type
+     */
     public static Object readValueFromJson(JsonValue msgValue) {
         if (msgValue instanceof JsonObject) {
             return VTypeToJson.toVType((JsonObject) msgValue);
@@ -156,7 +260,14 @@ public abstract class Message {
             return null;
         }
     }
-    
+
+    /**
+     * Converts the given value to a JSON representation.
+     * 
+     * @param gen the object to create/store the JSON representation
+     * @param name the JSON name to store the value as
+     * @param value the value to store
+     */
     public static void writeValueToJson(JsonGenerator gen, String name, Object value) {
         if (value instanceof Number) {
             gen.write(name, ((Number) value).doubleValue());
