@@ -2,8 +2,17 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.web.pods.common;
+package org.diirt.pods.web.common;
 
+import org.diirt.pods.web.common.MessageValueEvent;
+import org.diirt.pods.web.common.MessageErrorEvent;
+import org.diirt.pods.web.common.MessageConnectionEvent;
+import org.diirt.pods.web.common.MessageResume;
+import org.diirt.pods.web.common.MessageUnsubscribe;
+import org.diirt.pods.web.common.MessageWrite;
+import org.diirt.pods.web.common.MessageSubscribe;
+import org.diirt.pods.web.common.MessageWriteCompletedEvent;
+import org.diirt.pods.web.common.MessagePause;
 import java.util.Arrays;
 import org.epics.util.array.ArrayDouble;
 import org.epics.util.time.Timestamp;

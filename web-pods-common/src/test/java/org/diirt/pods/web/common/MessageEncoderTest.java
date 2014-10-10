@@ -2,13 +2,15 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.web.pods.common;
+package org.diirt.pods.web.common;
 
+import org.diirt.pods.web.common.Message;
+import org.diirt.pods.web.common.MessageEncoder;
 import java.io.StringWriter;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.diirt.web.pods.common.MessageTestConstants.*;
+import static org.diirt.pods.web.common.MessageTestConstants.*;
 
 /**
  *

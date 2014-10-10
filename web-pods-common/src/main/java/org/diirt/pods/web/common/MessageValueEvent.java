@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.web.pods.common;
+package org.diirt.pods.web.common;
 
 import java.io.Writer;
 import javax.json.Json;
@@ -13,17 +13,17 @@ import javax.json.stream.JsonGenerator;
  *
  * @author carcassi
  */
-public class MessageWrite extends Message {
-
+public class MessageValueEvent extends Message {
+    
     private final Object value;
-
-    public MessageWrite(JsonObject obj) {
+    
+    public MessageValueEvent(JsonObject obj) {
         super(obj);
         value = readValueFromJson(obj.get("value"));
     }
 
-    public MessageWrite(int id, Object value) {
-        super(MessageType.WRITE, id);
+    public MessageValueEvent(int id, Object value) {
+        super(MessageType.EVENT, id);
         this.value = value;
     }
 
@@ -33,11 +33,12 @@ public class MessageWrite extends Message {
     
     @Override
     public void toJson(Writer writer) {
-        JsonGenerator gen = Json.createGenerator(writer).writeStartObject();
-        gen.write("message", getMessage().toString().toLowerCase())
-            .write("id", getId());
-        writeValueToJson(gen, "value", value);
-        gen.writeEnd()
-            .close();
+        JsonGenerator gen = Json.createGenerator(writer).writeStartObject()
+                .write("message", getMessage().toString().toLowerCase())
+                .write("id", getId())
+                .write("type", "value");
+        writeValueToJson(gen, "value", value);        
+        gen.writeEnd().close();
     }
+    
 }

@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.web.pods.common;
+package org.diirt.pods.web.common;
 
 import java.io.Writer;
 import javax.json.JsonObject;
@@ -11,14 +11,14 @@ import javax.json.JsonObject;
  *
  * @author carcassi
  */
-public class MessageResume extends Message {
+public class MessagePause extends Message {
 
-    public MessageResume(JsonObject obj) {
+    public MessagePause(JsonObject obj) {
         super(obj);
     }
 
-    public MessageResume(int id) {
-        super(MessageType.RESUME, id);
+    public MessagePause(int id) {
+        super(MessageType.PAUSE, id);
     }
     
     @Override
