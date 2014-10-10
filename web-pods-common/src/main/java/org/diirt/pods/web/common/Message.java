@@ -207,7 +207,7 @@ public abstract class Message {
      * @param name the attribute name where the boolean is stored
      * @return the message boolean
      */
-    static boolean booleanAttribute(JsonObject jObject, String name) {
+    static boolean booleanMandatory(JsonObject jObject, String name) {
         try {
             return jObject.getBoolean(name);
         } catch (NullPointerException  e) {

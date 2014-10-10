@@ -21,7 +21,7 @@ public class MessageWriteCompletedEvent extends Message {
     public MessageWriteCompletedEvent(JsonObject obj) {
         super(obj);
         this.error = stringOptional(obj, "error", null);
-        this.successful = booleanAttribute(obj, "successful");
+        this.successful = booleanMandatory(obj, "successful");
     }
 
     public MessageWriteCompletedEvent(int id) {

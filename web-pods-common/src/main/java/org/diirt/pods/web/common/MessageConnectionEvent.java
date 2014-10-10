@@ -19,8 +19,8 @@ public class MessageConnectionEvent extends Message {
     
     public MessageConnectionEvent(JsonObject obj) {
         super(obj);
-        this.connected = booleanAttribute(obj, "connected");
-        this.writeConnected = booleanAttribute(obj, "writeConnected");
+        this.connected = booleanMandatory(obj, "connected");
+        this.writeConnected = booleanMandatory(obj, "writeConnected");
     }
 
     public MessageConnectionEvent(int id, boolean connected, boolean writeConnected) {
