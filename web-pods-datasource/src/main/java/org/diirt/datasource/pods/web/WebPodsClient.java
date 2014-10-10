@@ -18,17 +18,17 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-import org.diirt.web.pods.common.Message;
-import org.diirt.web.pods.common.MessageConnectionEvent;
-import org.diirt.web.pods.common.MessageDecoder;
-import org.diirt.web.pods.common.MessageEncoder;
-import org.diirt.web.pods.common.MessageErrorEvent;
-import org.diirt.web.pods.common.MessagePause;
-import org.diirt.web.pods.common.MessageResume;
-import org.diirt.web.pods.common.MessageSubscribe;
-import org.diirt.web.pods.common.MessageUnsubscribe;
-import org.diirt.web.pods.common.MessageValueEvent;
-import org.diirt.web.pods.common.MessageWriteCompletedEvent;
+import org.diirt.pods.web.common.Message;
+import org.diirt.pods.web.common.MessageConnectionEvent;
+import org.diirt.pods.web.common.MessageDecoder;
+import org.diirt.pods.web.common.MessageEncoder;
+import org.diirt.pods.web.common.MessageErrorEvent;
+import org.diirt.pods.web.common.MessagePause;
+import org.diirt.pods.web.common.MessageResume;
+import org.diirt.pods.web.common.MessageSubscribe;
+import org.diirt.pods.web.common.MessageUnsubscribe;
+import org.diirt.pods.web.common.MessageValueEvent;
+import org.diirt.pods.web.common.MessageWriteCompletedEvent;
 
 /**
  *
