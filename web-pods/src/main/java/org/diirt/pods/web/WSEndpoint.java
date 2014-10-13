@@ -76,7 +76,7 @@ public class WSEndpoint {
     private static final ChannelTranslator channelTranslator;
     
     // XXX: need to understand how state can actually be used
-    private final Map<Integer, PVReader<?>> pvs = new ConcurrentHashMap<>();
+    private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
 
     @OnMessage
     public void onMessage(Session session, Message message) {
@@ -122,38 +122,38 @@ public class WSEndpoint {
                 .writeListener(readWriteListener)
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(maxRate));
         }
-        pvs.put(message.getId(), reader);
+        channels.put(message.getId(), reader);
     }
 
     private void onUnsubscribe(Session session, MessageUnsubscribe message) {
-        PVReader<?> pv = pvs.get(message.getId());
-        if (pv != null) {
-            pv.close();
+        PVReader<?> channel = channels.get(message.getId());
+        if (channel != null) {
+            channel.close();
         }
     }
 
     private void onPause(Session session, MessagePause message) {
-        PVReader<?> pv = pvs.get(message.getId());
-        if (pv != null) {
-            pv.setPaused(true);
+        PVReader<?> channel = channels.get(message.getId());
+        if (channel != null) {
+            channel.setPaused(true);
         }
     }
 
     private void onResume(Session session, MessageResume message) {
-        PVReader<?> pv = pvs.get(message.getId());
-        if (pv != null) {
-            pv.setPaused(false);
+        PVReader<?> channel = channels.get(message.getId());
+        if (channel != null) {
+            channel.setPaused(false);
         }
     }
 
     private void onWrite(Session session, MessageWrite message) {
-        PVReader<?> pv = pvs.get(message.getId());
-        if (pv instanceof PVWriter) {
+        PVReader<?> channel = channels.get(message.getId());
+        if (channel instanceof PVWriter) {
             @SuppressWarnings("unchecked")
-            PVWriter<Object> pvWriter = (PVWriter<Object>) pv;
-            pvWriter.write(message.getValue());
+            PVWriter<Object> channelWriter = (PVWriter<Object>) channel;
+            channelWriter.write(message.getValue());
         } else {
-            if (pv == null) {
+            if (channel == null) {
                 sendError(session, message.getId(), "Channel id '" + message.getId() + "' is not open");
             } else {
                 sendError(session, message.getId(), "Channel id '" + message.getId() + "' is read-only");
@@ -168,9 +168,9 @@ public class WSEndpoint {
 
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-        for (Map.Entry<Integer, PVReader<?>> entry : pvs.entrySet()) {
-            PVReader<?> pvReader = entry.getValue();
-            pvReader.close();
+        for (Map.Entry<Integer, PVReader<?>> entry : channels.entrySet()) {
+            PVReader<?> channel = entry.getValue();
+            channel.close();
         }
         closed = true;
     }
@@ -218,8 +218,8 @@ public class WSEndpoint {
     
     private static PV<Object, Object> pv(PVWriter<Object> reader) {
         @SuppressWarnings("unchecked")
-        PV<Object, Object> pv = (PV<Object, Object>) reader;
-        return pv;
+        PV<Object, Object> channel = (PV<Object, Object>) reader;
+        return channel;
     }
 
     private class ReadWriteListener implements PVReaderListener<Object>, PVWriterListener<Object> {
