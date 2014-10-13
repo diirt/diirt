@@ -10,6 +10,7 @@ import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
 
 /**
+ * Message event for change of value.
  *
  * @author carcassi
  */
@@ -17,16 +18,32 @@ public class MessageValueEvent extends Message {
     
     private final Object value;
     
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageValueEvent(JsonObject obj) {
         super(obj);
         value = readValueFromJson(obj.get("value"));
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     * @param value the new value
+     */
     public MessageValueEvent(int id, Object value) {
         super(MessageType.EVENT, id);
         this.value = value;
     }
 
+    /**
+     * The new value.
+     * 
+     * @return the new value
+     */
     public Object getValue() {
         return value;
     }

@@ -8,15 +8,26 @@ import java.io.Writer;
 import javax.json.JsonObject;
 
 /**
+ * Message to resume notifications of a channel.
  *
  * @author carcassi
  */
 public class MessageResume extends Message {
 
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageResume(JsonObject obj) {
         super(obj);
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     */
     public MessageResume(int id) {
         super(MessageType.RESUME, id);
     }

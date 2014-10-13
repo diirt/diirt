@@ -10,6 +10,7 @@ import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
 
 /**
+ * Message to write a new value to a channel.
  *
  * @author carcassi
  */
@@ -17,16 +18,32 @@ public class MessageWrite extends Message {
 
     private final Object value;
 
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageWrite(JsonObject obj) {
         super(obj);
         value = readValueFromJson(obj.get("value"));
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     * @param value the value to write
+     */
     public MessageWrite(int id, Object value) {
         super(MessageType.WRITE, id);
         this.value = value;
     }
 
+    /**
+     * The value to write.
+     * 
+     * @return the new value
+     */
     public Object getValue() {
         return value;
     }

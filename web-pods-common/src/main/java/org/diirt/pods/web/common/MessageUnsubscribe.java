@@ -8,15 +8,26 @@ import java.io.Writer;
 import javax.json.JsonObject;
 
 /**
+ * Message to unsubscribe from a channel.
  *
  * @author carcassi
  */
 public class MessageUnsubscribe extends Message {
 
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageUnsubscribe(JsonObject obj) {
         super(obj);
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     */
     public MessageUnsubscribe(int id) {
         super(MessageType.UNSUBSCRIBE, id);
     }

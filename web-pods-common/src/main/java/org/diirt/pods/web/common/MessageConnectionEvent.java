@@ -9,6 +9,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 /**
+ * Message event for change of connection status.
  *
  * @author carcassi
  */
@@ -17,22 +18,44 @@ public class MessageConnectionEvent extends Message {
     private final boolean connected;
     private final boolean writeConnected;
     
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageConnectionEvent(JsonObject obj) {
         super(obj);
         this.connected = booleanMandatory(obj, "connected");
         this.writeConnected = booleanMandatory(obj, "writeConnected");
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     * @param connected whether it's connected
+     * @param writeConnected whether the write is connected
+     */
     public MessageConnectionEvent(int id, boolean connected, boolean writeConnected) {
         super(MessageType.EVENT, id);
         this.connected = connected;
         this.writeConnected = writeConnected;
     }
 
+    /**
+     * Whether the channel is connected.
+     * 
+     * @return true if connected
+     */
     public boolean isConnected() {
         return connected;
     }
 
+    /**
+     * Whether the channel can be written to.
+     * 
+     * @return true if write connected
+     */
     public boolean isWriteConnected() {
         return writeConnected;
     }

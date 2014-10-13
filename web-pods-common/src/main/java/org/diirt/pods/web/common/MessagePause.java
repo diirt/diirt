@@ -8,15 +8,26 @@ import java.io.Writer;
 import javax.json.JsonObject;
 
 /**
+ * Message to pause notifications from a channel.
  *
  * @author carcassi
  */
 public class MessagePause extends Message {
 
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessagePause(JsonObject obj) {
         super(obj);
     }
 
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     */
     public MessagePause(int id) {
         super(MessageType.PAUSE, id);
     }

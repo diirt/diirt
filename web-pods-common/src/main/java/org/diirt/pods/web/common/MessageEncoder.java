@@ -11,6 +11,7 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 /**
+ * Encodes messages from a Message object to a JSON text stream.
  *
  * @author carcassi
  */

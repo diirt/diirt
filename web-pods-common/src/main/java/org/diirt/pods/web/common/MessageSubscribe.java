@@ -10,6 +10,7 @@ import javax.json.JsonObject;
 import javax.json.stream.JsonGenerator;
 
 /**
+ * Message to subscribe to a channel.
  *
  * @author carcassi
  */
@@ -20,6 +21,11 @@ public class MessageSubscribe extends Message {
     private final int maxRate;
     private final boolean readOnly;
 
+    /**
+     * Creates a new message based on the JSON representation.
+     * 
+     * @param obj JSON object
+     */
     public MessageSubscribe(JsonObject obj) {
         super(obj);
         this.pv = stringMandatory(obj, "pv");
@@ -28,6 +34,15 @@ public class MessageSubscribe extends Message {
         this.readOnly = booleanOptional(obj, "readOnly", true);
     }
     
+    /**
+     * Creates a new message based on the given parameters.
+     * 
+     * @param id the channel id
+     * @param pv the channel name
+     * @param type the type for the value
+     * @param maxRate the maximum notification rate
+     * @param readOnly whether it's read only
+     */
     public MessageSubscribe(int id, String pv, String type, int maxRate, boolean readOnly) {
         super(MessageType.SUBSCRIBE, id);
         this.pv = pv;
@@ -36,18 +51,38 @@ public class MessageSubscribe extends Message {
         this.readOnly = readOnly;
     }
 
+    /**
+     * The channel name.
+     * 
+     * @return the channel name
+     */
     public String getPv() {
         return pv;
     }
 
+    /**
+     * The requested type for values.
+     * 
+     * @return the type name
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * The maximum notification rate.
+     * 
+     * @return min time in ms between sample
+     */
     public int getMaxRate() {
         return maxRate;
     }
-    
+
+    /**
+     * Whether the channel should be read-only.
+     * 
+     * @return true if read-only connection
+     */
     public boolean isReadOnly() {
         return readOnly;
     }
