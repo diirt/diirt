@@ -5,17 +5,6 @@
 
 package org.diirt.pods.web.common;
 
-import org.diirt.pods.web.common.MessageValueEvent;
-import org.diirt.pods.web.common.MessageErrorEvent;
-import org.diirt.pods.web.common.MessageConnectionEvent;
-import org.diirt.pods.web.common.MessageResume;
-import org.diirt.pods.web.common.MessageDecoder;
-import org.diirt.pods.web.common.MessageUnsubscribe;
-import org.diirt.pods.web.common.MessageWrite;
-import org.diirt.pods.web.common.MessageSubscribe;
-import org.diirt.pods.web.common.Message;
-import org.diirt.pods.web.common.MessageWriteCompletedEvent;
-import org.diirt.pods.web.common.MessagePause;
 import java.io.StringReader;
 import org.epics.vtype.VTypeValueEquals;
 import org.junit.Test;

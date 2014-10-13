@@ -4,8 +4,6 @@
  */
 package org.diirt.pods.web.common;
 
-import org.diirt.pods.web.common.Message;
-import org.diirt.pods.web.common.MessageEncoder;
 import java.io.StringWriter;
 import org.junit.Test;
 import static org.junit.Assert.*;
