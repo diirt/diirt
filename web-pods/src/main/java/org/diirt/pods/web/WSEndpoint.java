@@ -200,7 +200,7 @@ public class WSEndpoint {
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
             if (closed) {
-                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvReader().getName());
+                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
                 event.getPvReader().close();
                 return;
             }
@@ -235,7 +235,7 @@ public class WSEndpoint {
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
             if (closed) {
-                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvReader().getName());
+                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
                 event.getPvReader().close();
                 return;
             }
@@ -250,7 +250,7 @@ public class WSEndpoint {
         @Override
         public void pvChanged(PVWriterEvent<Object> event) {
             if (closed) {
-                log.log(Level.SEVERE, "Getting event after pv was closed for " + event.getPvWriter());
+                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvWriter());
                 event.getPvWriter().close();
                 return;
             }
