@@ -108,7 +108,7 @@ public class WSEndpoint {
             maxRate = message.getMaxRate();
         }
         
-        ChannelTranslation translation = channelTranslator.translate(message.getPv());
+        ChannelTranslation translation = channelTranslator.translate(message.getChannel());
         
         PVReader<?> reader;
         if (message.isReadOnly()) {
