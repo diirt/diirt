@@ -27,14 +27,14 @@ public class MessageTestConstants {
     public static String subscribe1Json = "{"
             + "\"message\":\"subscribe\","
             + "\"id\":1,"
-            + "\"pv\":\"sim://noise\""
+            + "\"channel\":\"sim://noise\""
             + "}";
     public static MessageSubscribe subscribe1Message = new MessageSubscribe(1, "sim://noise", null, -1, true);
 
     public static String subscribe2Json = "{"
             + "\"message\":\"subscribe\","
             + "\"id\":1,"
-            + "\"pv\":\"sim://noise\","
+            + "\"channel\":\"sim://noise\","
             + "\"type\":\"VDouble\","
             + "\"maxRate\":10,"
             + "\"readOnly\":false"

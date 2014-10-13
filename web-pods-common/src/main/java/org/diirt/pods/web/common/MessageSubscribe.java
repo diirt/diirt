@@ -16,7 +16,7 @@ import javax.json.stream.JsonGenerator;
  */
 public class MessageSubscribe extends Message {
 
-    private final String pv;
+    private final String channel;
     private final String type;
     private final int maxRate;
     private final boolean readOnly;
@@ -28,7 +28,7 @@ public class MessageSubscribe extends Message {
      */
     public MessageSubscribe(JsonObject obj) {
         super(obj);
-        this.pv = stringMandatory(obj, "pv");
+        this.channel = stringMandatory(obj, "channel");
         this.type = stringOptional(obj, "type", null);
         this.maxRate = intOptional(obj, "maxRate", -1);
         this.readOnly = booleanOptional(obj, "readOnly", true);
@@ -38,14 +38,14 @@ public class MessageSubscribe extends Message {
      * Creates a new message based on the given parameters.
      * 
      * @param id the channel id
-     * @param pv the channel name
+     * @param channel the channel name
      * @param type the type for the value
      * @param maxRate the maximum notification rate
      * @param readOnly whether it's read only
      */
-    public MessageSubscribe(int id, String pv, String type, int maxRate, boolean readOnly) {
+    public MessageSubscribe(int id, String channel, String type, int maxRate, boolean readOnly) {
         super(MessageType.SUBSCRIBE, id);
-        this.pv = pv;
+        this.channel = channel;
         this.type = type;
         this.maxRate = maxRate;
         this.readOnly = readOnly;
@@ -56,8 +56,8 @@ public class MessageSubscribe extends Message {
      * 
      * @return the channel name
      */
-    public String getPv() {
-        return pv;
+    public String getChannel() {
+        return channel;
     }
 
     /**
@@ -92,7 +92,7 @@ public class MessageSubscribe extends Message {
         JsonGenerator gen = Json.createGenerator(writer).writeStartObject();
         gen.write("message", getMessage().toString().toLowerCase())
             .write("id", getId())
-            .write("pv", getPv());
+            .write("channel", getChannel());
         if (getType() != null) {
             gen.write("type", getType());
         }

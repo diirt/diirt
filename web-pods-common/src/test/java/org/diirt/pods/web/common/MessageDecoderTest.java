@@ -92,7 +92,7 @@ public class MessageDecoderTest {
     public static void compareMessage(MessageSubscribe expected, MessageSubscribe result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
-        assertThat(result.getPv(), equalTo(expected.getPv()));
+        assertThat(result.getChannel(), equalTo(expected.getChannel()));
         assertThat(result.getMaxRate(), equalTo(expected.getMaxRate()));
         assertThat(result.getType(), equalTo(expected.getType()));
         assertThat(result.isReadOnly(), equalTo(expected.isReadOnly()));
