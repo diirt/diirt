@@ -6,12 +6,12 @@
         <artifactId>oss-parent</artifactId>
         <version>9</version>
     </parent>
-    <groupId>org.epics</groupId>
-    <artifactId>epics-util</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+    <groupId>org.diirt</groupId>
+    <artifactId>util</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>epics-util</name>
-    <url>http://epics-util.sourceforge.net</url>
+    <name>diirt-util</name>
+    <url>http://diirt.org</url>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
     <issueManagement>
         <url>https://github.com/diirt/diirt/issues</url>
@@ -19,16 +19,16 @@
     </issueManagement>
     <licenses>
         <license>
-            <name>GNU General Public License 2 with the Classpath Exception</name>
+            <name>The MIT License (MIT)</name>
             <url>LICENSE.TXT</url>
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://github.com/diirt/util.git</connection>
-        <developerConnection>scm:git:https://github.com/diirt/util.git</developerConnection>
-        <url>https://github.com/diirt/util.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:https://github.com/diirt/diirt.git</connection>
+        <developerConnection>scm:git:https://github.com/diirt/diirt.git</developerConnection>
+        <url>https://github.com/diirt/diirt.git</url>
+        <tag>HEAD</tag>
+    </scm>
     <developers>
         <developer>
             <id>carcassi</id>
