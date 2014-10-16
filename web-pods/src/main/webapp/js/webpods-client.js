@@ -69,6 +69,9 @@ function Client(url, debug, debugMessageBox) {
 
     this.subscribeChannel = function(name, readOnly, type, version, maxRate) {
         var typeJson;
+        if(readOnly == null) {
+            readOnly = true;
+        }
         if (type != null) {
             if (version == null)
                 version = defaultVersion;
