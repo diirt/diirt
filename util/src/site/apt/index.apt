@@ -20,7 +20,7 @@ Download
 
   {{{http://search.maven.org/#search|gav|1|g%3A%22org.diirt%22%20AND%20a%3A%22util%22}All releases in maven central}}
 
-  {{{http://oss.sonatype.org/content/repositories/snapshots/org/epics/epics-util/}Development SNAPSHOT}}
+  {{{http://oss.sonatype.org/content/repositories/snapshots/org/diirt/util/}Development SNAPSHOT}}
 
   {{{https://openepics.ci.cloudbees.com/job/EpicsUtil%20-%20Build/}Latest build}}
 
