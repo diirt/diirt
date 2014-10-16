@@ -181,7 +181,7 @@ public class ListNumbers {
      * Note that this method is really strict, and it may rule out cases
      * that may be considered to be linear.
      * 
-     * @param listNumber
+     * @param listNumber a list number
      * @return true if the elements of the list are equally spaced
      */
     public static boolean isLinear(ListNumber listNumber) {
