@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>pods</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="page-wrapper">
+    <div id="status">Connection status</div> <!--Displays connection status-->
+    
+    <form id="message-form" action="#" method="post">
+      <textarea id="server" placeholder="SERVER" required></textarea>
+      <textarea id="channel" placeholder="CHANNEL" required></textarea>
+      <button type="button" id="connect">CONNECT</button>
+      <button type="button" id="pause">PAUSE</button>
+      <button type="button" id="close">CLOSE</button>
+    </form>
+    
+     <div id="result"><pre id="json"></pre></div>
+  </div>
+
+  <script src="web-pods-client.js"></script>
+</body>
+</html>
