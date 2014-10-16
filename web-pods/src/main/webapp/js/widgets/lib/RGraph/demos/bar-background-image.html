@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.effects.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.key.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A grouped Bar chart with background image</title>
+
+    <meta name="keywords" content="bar grouped background image" />
+    <meta name="description" content="A grouped Bar chart with background image" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A grouped bar chart with background image</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var bar = new RGraph.Bar('cvs', [[5,6],[7, 7],[6, 9],[8, 12],[12, 13],[15, 18],[45, 42],[55, 53],[36, 37],[25, 28],[20, 24],[15, 18]])
+                .Set('background.image', '../images/bg.png')
+                .Set('background.grid', false)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Set('key', ['Sunshine in 2000', 'Sunshine in 2005'])
+                .Set('key.position.gutter.boxed', false)
+                .Set('key.position', 'gutter')
+                .Set('key.background', 'rgb(255,255,255)')
+                .Set('colors', ['yellow', 'red'])
+                .Set('shadow', true)
+                .Set('shadow.blur', 15)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('shadow.color', '#aaa')
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('gutter.left', 55)
+                .Set('gutter.right', 5)
+                .Set('hmargin.grouped', 1)
+            RGraph.Effects.Fade.In(bar, {'duration': 500, 'frames': 10});
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

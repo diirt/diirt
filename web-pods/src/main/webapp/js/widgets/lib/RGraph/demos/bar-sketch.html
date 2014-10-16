@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <meta name="keywords" content="demo bar sketch variant" />
+    <meta name="description" content="A Bar chart that is using the sketch variant" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <div style="text-align: center; font-family: Comic sans MS; width: 800px">
+        <h1>Fruit consumed at the luncheon</h1>
+    
+        <canvas id="cvs" width="800" height="250">[No canvas support]</canvas>
+    
+        <script>
+            window.onload = function ()
+            {
+                var bar7 = new RGraph.Bar('cvs', [248,243,180,160,120,43])
+                    .Set('colors', ['black'])
+                    .Set('labels.above', true)
+                    .Set('labels.above.specific', ['Apples', 'Oranges', 'Kiwi', 'Grapes', 'Mango', 'Kum-quat'])
+                    .Set('labels.above.size', 8)
+                    .Set('ylabels.specific', [
+                                                    'Lots',
+                                                    '','','','','','','','','','','','','','','','','','','','',
+                                                    '','','','','','','','','','','','','','','','','','','','',
+                                                    'Not so much'])
+                    .Set('gutter.top', 50)
+                    .Set('gutter.left', 100)
+                    .Set('gutter.bottom', 25)
+                    .Set('variant', 'sketch')
+                    .Set('variant.sketch.verticals', true)
+                    .Set('text.font', 'Comic sans MS')
+                    .Set('text.size', 8)
+                    .Set('background.grid', false)
+                    .Draw();
+            }
+        </script>
+    </div>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

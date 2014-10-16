@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.circle.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Scatter chart with the ability to add markers</title>
+    
+    <meta name="keywords" content="demo scatter markers" />
+    <meta name="description" content="A Scatter chart with the ability to add markers" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Scatter chart with the ability to add markers</h1>
+    
+    <p>
+        You can click on the Scatter chart to add a red circle. When the circles are then clicked on nothing happens.
+    </p>
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var over_circle = false;
+
+            var scatter = new RGraph.Scatter('cvs', [[15,91]])
+                .Set('gutter.left', 25)
+                .Set('xmax', 365)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Draw();
+
+        
+            scatter.canvas.onmousemove = function (e)
+            {
+                var obj = RGraph.ObjectRegistry.getObjectByXY(e);
+                
+                if (obj && obj.type == 'drawing.circle') {
+                    over_circle = obj;
+                    e.target.style.cursor = 'pointer';
+                } else {
+                    over_circle = false;
+                    e.target.style.cursor = 'default';
+                }
+            }
+
+            scatter.canvas.onclick = function (e)
+            {
+                if (over_circle == false) {
+                    var obj = scatter;
+                    var xValue = obj.getXValue(e);
+                    var yValue = obj.getYValue(e);
+                    var xCoord = obj.getXCoord(xValue);
+                    var yCoord = obj.getYCoord(yValue);
+
+                    var circle = new RGraph.Drawing.Circle('cvs', xCoord, yCoord, 15);
+                    circle.Set('fillstyle', 'rgba(255,0,0,0.5)');
+                    circle.Set('strokestyle', 'black');
+                    circle.Set('tooltips', ['A tooltip from the circle with UID: ' + circle.uid]);
+                    circle.Draw();
+                }
+            }
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

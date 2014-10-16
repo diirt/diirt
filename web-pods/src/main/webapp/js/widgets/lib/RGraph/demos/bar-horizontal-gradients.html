@@ -1,0 +1,57 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    
+    <title>A bar chart with horizontal gradients</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="bar horizontal gradients" />
+    <meta name="description" content="A regular Bar chart but with horizontal gradients that are tailored to each individual bar" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A bar chart with horizontal gradients</h1>
+    
+    <p>
+        This bar chart draws the chart then uses the coordinates of the bars to create gradients (each is specific to a bar),
+        changes the colors to the gradients and finally redraws the chart.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        var bar = new RGraph.Bar('cvs', [4,8,5,3,4,6,8])
+            .Set('labels', ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])
+            .Set('colors.sequential', true)
+            .Set('shadow', true)
+            .Set('shadow.color', '#ccc')
+            .Draw();
+        
+        /**
+        * Now the chart has been drawn use the coords to create some appropriate gradients
+        */
+        for (var i=0,colors=[]; i<bar.coords.length; ++i) {
+        
+            // Because it's a horizontal gradient the Y coords don't matter
+            var x1 = bar.coords[i][0];
+            var y1 = 0;
+            var x2 = bar.coords[i][0] + bar.coords[i][2];
+            var y2 = 0;
+
+            colors[i] = RGraph.LinearGradient(bar, x1, y1, x2, y2, '#c00', 'red')
+        }
+
+        bar.Set('chart.colors', colors);
+        RGraph.Clear(bar.canvas);
+        RGraph.Redraw();
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

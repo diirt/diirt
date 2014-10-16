@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+    <script>
+        var wsUri = "ws://localhost.gov:8080/web-pods-0.1-SNAPSHOT/socket";
+            var wp = new Client(wsUri);
+    </script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/gauge.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/xygraph.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/textinput.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/spinner.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/slider.js"></script>
+    <link href="../js/widgets/lib/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css">
+    <link href="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.css" rel="stylesheet"  type="text/css">
+    <script src="../js/widgets/lib/RGraph/libraries/RGraph.common.core.js" ></script>
+    <script src="../js/widgets/lib/RGraph/libraries/RGraph.gauge.js" ></script>
+    <script src="../js/widgets/lib/RGraph/excanvas/excanvas.js"></script>
+    <script src="../js/widgets/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.js"></script>
+
+    <title></title>
+</head>
+<body>
+<style>
+    .ui-slider-wrapper.vertical {float:left;}
+</style>
+
+<div class="row" style="padding-bottom:40px; padding-top:20px; overflow:hidden;">
+    <div id="title" style="float:left; padding-right: 40px">loc://test31(3) </div>
+    <div id="title2" style="padding-left:300px;">loc://asda(1)</div>
+    <br>
+    <div id = "my-widget1" class="gauge" data-channel="loc://test31(3)" displayLow=10 style="float:left; height: 180px;"></div>
+    <div id = "slider1" class="slider" data-channel="loc://asda(1)" min="0" max="100" step="1"  style="height: 160px"></div>
+
+</div>
+<br>
+<div class="row2" style="padding-bottom:20px; overflow:hidden;">
+    <div id="title3" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim://ramp(0, 100, 1, 1)</div>
+    <div id = "my-widget2" class="textinput" data-channel="sim://ramp(0, 100, 1, 1)" style="border-style: solid; border-width: 1px; overflow: hidden; width: 133px; height: 27px;" resize ="false"></div>
+</div>
+
+<div class="row3" style="padding-bottom:20px; overflow:hidden;">
+    <div id="title4" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim://ramp(0, 100, 1, 1)</div>
+    <input id = "spinner-test" class="spinner" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" step="1">
+</div>
+</body>
+</html>

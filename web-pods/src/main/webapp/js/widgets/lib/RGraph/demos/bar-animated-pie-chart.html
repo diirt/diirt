@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Bar chart with animated Pie chart</title>
+    
+    <meta name="keywords" content="bar animated pie" />
+    <meta name="description" content="A Bar chart with an animated Pie chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Bar chart with animated Pie chart</h1>
+    
+    <p>
+        This demo shows a simple effect created with the RGraph.Animate() function to alter the centerx/centery/radius properties
+        of the Pie chart.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            function MovePie (obj)
+            {
+                setTimeout(function () {RGraph.Effects.Animate(obj, {'chart.radius': 30, 'chart.centerx': 60, 'chart.centery': 60,'frames': 5});},  500);
+            }
+
+            var bar = new RGraph.Bar('cvs', [5,4,5,6,8,5,3])
+                .Set('gutter.bottom', 40)
+                .Set('labels', ['Monday','\r\nTuesday','Wednesday','\r\nThursday','Friday','\r\nSaturday','Sunday'])
+                .Draw();
+            
+            var pie = new RGraph.Pie('cvs', [4,8,6])
+                .Set('centerx', 300)
+                .Set('centery', 125)
+                .Set('radius', 125)
+                .Set('exploded', [5])
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('shadow', true)
+            RGraph.Effects.Pie.RoundRobin(pie, null, MovePie);
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

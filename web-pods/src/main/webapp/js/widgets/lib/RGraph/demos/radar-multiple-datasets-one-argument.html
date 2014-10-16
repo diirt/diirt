@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+
+    <title>An Radar chart using one argument</title>
+
+    <meta name="keywords" content="demo non filled array" />
+    <meta name="description" content="A non-filled Radar chart with two data series with datasets as one argument" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An Radar chart using one argument for multiple datasets</h1>
+
+    <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var radar3 = new RGraph.Radar('cvs', [[10,13,15,12,16,15,14], [1,5,3,4,8,6]])
+                .Set('labels', ['', 'Barry', 'Gary','Dave','Paul','Rich'])
+                .Set('background.circles.poly', true)
+                .Set('background.circles.spacing', 30)
+                .Set('colors', ['transparent'])
+                .Set('axes.color', 'transparent')
+                .Set('highlights', true)
+                .Set('strokestyle', ['black', 'green'])
+                .Set('linewidth', 2)
+                .Set('linewidth', 2)
+                .Set('labels.axes', 'n')
+                .Set('text.size', 16)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

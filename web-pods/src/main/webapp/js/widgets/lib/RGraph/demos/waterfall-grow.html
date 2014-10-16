@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Waterfall chart with Grow effect</title>
+
+    <meta name="keywords" content="demo waterfall grow effect" />
+    <meta name="description" content="A Waterfall chart using the Grow effect" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Waterfall chart with Grow effect</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            waterfall1 = new RGraph.Waterfall('cvs', [50,12,-50,-19, -130, -30])
+                .Set('background.grid.autofit', true)
+                .Set('background.grid.autofit.numhlines', 10)
+                .Set('background.grid.autofit.numvlines', 14)
+                .Set('title', 'A chart showing income/expenditure')
+                .Set('colors', ['black','red','blue'])
+                .Set('strokestyle', 'white')
+                .Set('units.pre', '$')
+                .Set('units.post', 'k')
+                .Set('total', true)
+                .Set('labels', ['Sales', 'Misc', 'Wages','Fees','Supplies','Food','Gross'])
+                .Set('tooltips', ['Total sales of product and services rendered',
+                                  'Miscellaneous income',
+                                  'Wages provided to the staff',
+                                  'Fees (eg bank, transaction)',
+                                  'Supplies to the office and daily running costs',
+                                  'Food to keep the staff alive and running at peak efficiency',
+                                  'Gross income before any taxes have been paid'])
+                .Set('highlight.stroke', 'rgba(0,0,0,0)')
+                .Set('shadow', navigator.userAgent.indexOf('Firefox') == -1) // In Firefox this seriously slows down the Grow animation
+                .Set('shadow.color', '#aaa')
+                .Set('shadow.blur', 5)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('gutter.left', 50)
+                .Set('xaxispos', 'center')
+            
+            RGraph.Effects.Waterfall.Grow(waterfall1);
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

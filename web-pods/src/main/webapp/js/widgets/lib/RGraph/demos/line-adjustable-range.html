@@ -1,0 +1,49 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    
+    <title>An adjustablerange Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo filled line range adjustable adjusting" />
+    <meta name="description" content="A range Line chart which is adjustable - so you can drag the data points up and down" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An adjustable range Line chart</h1>
+    
+    <p>
+        An adjustable range chart.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var l1 = new RGraph.Line('cvs', [51,52,56,54,53,54,21,65,32,48,51,52,56,54,53,54,21,65,32,48,51,52,56,54,53,54,21,65,32,48],[4,5,3,2,5,6,8,9,5,6,4,5,3,2,5,6,8,9,5,6,4,5,3,2,5,6,8,9,5,6])
+                .Set('labels', ['13th','14th','15th','16th','15th','16th','17th','18th','19th'])
+                .Set('title', 'Range of fuel consumption')
+                .Set('background.grid.autofit.align', true)
+                .Set('filled', true)
+                .Set('filled.range', true)
+                .Set('fillstyle', 'rgba(128,255,128,0.5)')
+                .Set('linewidth', 2)
+                .Set('colors', ['green'])
+                .Set('numxticks', 8)
+                .Set('adjustable', 8)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A line chart with different linewidths</title>
+    
+    <meta name="keywords" content="demo line linewidths" />
+    <meta name="description" content="A line chart with different linewidths" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A line chart with different linewidths</h1>
+
+    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function (e)
+        {
+            var line = new RGraph.Line('cvs', [31,25,23,41,35,36,56,66,46,13,32,41], [45,12,83,53,52,54,12,32,65,98,87,86])
+                .Set('fillstyle', 'rgba(255,0,0,0.3)')
+                .Set('colors', ['gray', 'green'])
+                .Set('linewidth', [7, 3])
+                .Set('title', 'Multiple lines with differing line widths')
+                .Set('key', ['Thursday', 'Wednesday'])
+                .Set('key.background', 'rgba(255,255,255,0.8)')
+                .Set('key.rounded', true)
+                .Set('labels', ['Jobe', 'Violet', 'Olga', 'Kev', 'Bob', 'Lynn', 'Pete', 'Lou', 'John', 'Hope', 'Fred', 'John'])
+                .Set('shadow', true)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('shadow.blur', 15)
+                .Set('shadow.color', ['gray','green'])
+                .Set('noaxes', true)
+                .Set('yaxispos', 'right')
+                .Set('gutter.left', 5)
+                .Set('gutter.right', 35)
+                .Set('background.grid.autofit.numvlines', 11)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+</body>
+</html>

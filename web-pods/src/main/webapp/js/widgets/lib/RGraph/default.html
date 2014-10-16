@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <title>RGraph - Free HTML5 and JavaScript charts</title>
+
+    <link rel="stylesheet" href="css/website.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/animations.css" type="text/css" media="screen" />
+
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    
+    <script src="libraries/RGraph.common.core.js" ></script>
+    <script src="libraries/RGraph.common.dynamic.js" ></script>
+    <script src="libraries/RGraph.common.key.js" ></script>
+    <script src="libraries/RGraph.drawing.rect.js" ></script>
+    <script src="libraries/RGraph.common.effects.js" ></script>
+    <script src="libraries/RGraph.common.tooltips.js" ></script>
+    <script src="libraries/RGraph.bar.js" ></script>
+    <script src="libraries/jquery.min.js" ></script>
+
+    <script>
+        window.onload = function ()
+        {
+            var bar = new RGraph.Bar('cvs_bar', [[45,-60],[-65,-30],[40,80],[59,-48]])
+                .Set('colors', ['rgba(255, 176, 176, 0.5)', 'rgba(153, 208, 249,0.5)']) 
+                .Set('labels', ['Luis', 'Kevin', 'John', 'Gregory'])
+                .Set('tooltips', ['Luis','Luis','Kevin','Kevin','John','John','Gregory','Gregory'])
+                .Set('tooltips.event', 'onmousemove')
+                .Set('ymax', 100)
+                .Set('ylabels.count', 4)
+                .Set('numyticks', 8)
+                .Set('strokestyle', '#ccc')
+                .Set('hmargin.grouped', 2)
+                .Set('units.pre', '£')
+                .Set('title', 'Bar chart with tooltips and interactive key')
+                .Set('gutter.top', 50)
+                .Set('gutter.left', 40)
+                .Set('gutter.right', 15)
+                .Set('xaxispos', 'center')
+                .Set('key', ['Results from Monday','Results from Tuesday'])
+                .Set('key.interactive', true)
+                .Set('key.position', 'gutter')
+                .Set('key.interactive.highlight.chart', 'rgba(255,255,255,0.7)')
+            
+            RGraph.Effects.Fade.In(bar, {'duration': 250});
+            RGraph.Effects.jQuery.Expand(bar, {bounce: false});
+        }
+    </script>
+</head>
+<body>
+
+    <a href="http://www.rgraph.net" target="_blank" rel="nofollow"><div style="display: inline; width: 64px; height: 64px; padding-bottom: 5px"><img border="0" src="images/logo.png" alt="The RGraph logo" width="64" height="64" title="The RGraph logo" /></div></a>
+    
+    <img src="images/title.png" width="666" height="69" alt="RGraph: Free HTML5 and Javascript charts" />
+    
+
+    <canvas width="600" height="250" id="cvs_bar" style="float: right" class="animated rotateIn"></canvas>
+
+    <h2>Demos <span>of charts (local)</span></h2>
+        <p>
+            Demos of some of the various charts and features provided by RGraph
+        </p>
+        
+        <p align="left">
+            <a href="./demos/" rel="nofollow"><b>Go to the demos (local) &raquo;</b></a>
+        </p>
+
+    <h2>Pages <span>on rgraph.net</span></h2>
+        <ul>
+            <li>
+                <a href="http://www.rgraph.net" target="_blank" rel="nofollow">Home page</a><br />
+                The RGraph homepage on www.rgraph.net<br /><br />
+            </li>
+            <li>
+                <a href="http://www.rgraph.net/examples" rel="nofollow" target="_blank">Examples</a><br />
+                Examples of the types of charts that are supported by RGraph.<br /><br />
+            </li>
+            <li>
+                <a href="http://www.rgraph.net/docs" rel="nofollow" target="_blank">Documentation</a><br />
+                Documentation for RGraph<br /><br />
+            </li>
+            <li>
+                <a href="http://www.rgraph.net/docs/howto-index.html" rel="nofollow" target="_blank">HOWTO guides</a><br />
+                Guides for doing specififc tasks with RGraph.<br /><br />
+            </li>
+            <li>
+                <a href="http://www.rgraph.net/docs/basic-index.html" rel="nofollow" target="_blank">Basic examples</a><br />
+                Basic guides with straight-forward source code that can help you when trying to get RGraph setup.
+            </li>
+        </ul>
+</body>
+</html>

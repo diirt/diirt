@@ -1,0 +1,49 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Horizontal Bar chart example that is animated</title>
+    
+    <meta name="keywords" content="demo hbar animated grow" />
+    <meta name="description" content="A Horizontal Bar chart that is animated using the Grow animation" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart example</h1>
+
+
+   <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var hbar = new RGraph.HBar('cvs', [0.1,0.2,0.3,3.2,0.2,0.5,0.5,0.2,0.4,0.8,0,0.1])
+                .Set('background.grid.hlines', false)
+                .Set('xmax', 3.5)
+                .Set('scale.decimals', 1)
+                .Set('colors', ['#164366','#164366','#164366','#FDB515','#164366'])
+                .Set('colors.sequential', true)
+                .Set('labels', ['Norway','Australia','Netherlands','United States','New Zealand','Canada','Ireland','Germany','Sweden','Switzerland','Japan','England and Wales'])
+                .Set('gutter.left', 125)
+                .Set('labels.above', true)
+                .Set('labels.above.decimals', 1)
+                .Set('noxaxis', true)
+                .Set('xlabels', false)
+
+            RGraph.Effects.HBar.Grow(hbar);
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

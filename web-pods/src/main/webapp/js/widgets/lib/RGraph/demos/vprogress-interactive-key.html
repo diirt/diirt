@@ -1,0 +1,43 @@
+
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.drawing.rect.js" ></script>
+    <script src="../libraries/RGraph.vprogress.js" ></script>
+    
+    <title>An example of a VProgress chart with an interactive key</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo vprogress interactive key" />
+    <meta name="description" content="An example of a VProgress chart with an interactive key" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An example of a VProgress chart with an interactive key</h1>
+    
+    <p>
+        The interactive key has been re-implemented as of June 2013 and added to more chart types.
+    </p>
+
+    <canvas id="cvs" width="250" height="500">[No canvas support]</canvas>
+    <script>
+        var vprogress = new RGraph.VProgress('cvs', 0,100,[10,12,13,16,18])
+            .Set('key', ['Jim','Jack','Joseph','Jane', 'Jimmy'])
+            .Set('key.interactive', true)
+            .Set('key.position.x', 140)
+            .Set('key.position.y', 20)
+            .Set('gutter.right', 150)
+            .Draw();
+    </script>
+    
+    <br />
+    
+    <a href="./">&lt;Back</a><br />
+
+</body>
+</html>

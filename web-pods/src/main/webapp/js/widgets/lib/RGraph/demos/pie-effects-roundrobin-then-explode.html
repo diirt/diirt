@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>Pie chart RoundRobin then Explode</title>
+
+    <meta name="keywords" content="demo pie roudrobin effects explode exploding" />
+    <meta name="description" content=" Pie chart using the RoundRobin effect then exploding" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>Pie chart RoundRobin then Explode</h1>
+
+    <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var pie = new RGraph.Pie('cvs', [4,3,5,1,2]);
+            RGraph.Effects.Pie.RoundRobin(pie, null, function () {pie.Explode(0, 20);})
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

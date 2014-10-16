@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/jquery.min.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A basic Line chart</title>
+    
+    <meta name="keywords" content="demo line basic" />
+    <meta name="description" content="A basic Line chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>The line chart from the front page</h1>
+    
+    <p>
+        It uses the RGraph <i>ondraw</i> event to draw the Y labels in a custom fashion.
+    </p>
+
+    <canvas id="cvs" width="400" height="200">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var data1 = [4,6,12,16,8,4,2,8,18,16,14,16];
+            var data2 = [2,4,8,4,2,6,6,12,8,10,6,8];
+
+            var myLine = new RGraph.Line('cvs',data1, data2)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Set('gutter.left', 40)
+                .Set('gutter.right', 15)
+                .Set('gutter.bottom', 20)
+                .Set('colors', ['red', 'black'])
+                .Set('units.post', '%')
+                .Set('linewidth', 5)
+                .Set('hmargin', 15)
+                .Set('text.color', '#333')
+                .Set('text.font', 'Arial')
+                .Set('background.grid.autofit', true)
+                .Set('background.grid.autofit.numvlines', 11)
+                .Set('shadow', true)
+                .Set('shadow.color', 'rgba(20,20,20,0.3)')
+                .Set('shadow.blur',  10)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('background.grid.vlines', false)
+                .Set('background.grid.border', true)
+                .Set('noxaxis', true)
+                .Set('title', 'An example Line chart')
+                .Set('axis.color', '#666')
+                .Set('text.color', '#666')
+                .Set('spline', true)
+
+            /**
+            * Use the Trace animation to show the chart
+            */
+            if (ISOLD) {
+                // IE7/8 don't support shadow blur, so set custom shadow properties
+                myLine.Set('chart.shadow.offsetx', 3)
+                    .Set('chart.shadow.offsety', 3)
+                    .Set('chart.shadow.color', '#aaa')
+                    .Draw();
+            } else {
+                myLine.Set('chart.tooltips', [
+                                              '<b>January</b><br />Started off the year quite averagely',
+                                              '<b>February</b><br />Better than January, rising quite nicely',
+                                              '<b>March</b><br />March was quite a spike',
+                                              '<b>April</b><br />Rising very impressively',
+                                              '<b>May</b><br />Dropping after the last two month spike',
+                                              '<b>June</b><br />Still dropping',
+                                              '<b>July</b><br />The fall is beginning to subside, but still dropping',
+                                              '<b>August</b><br />A good rise after the fall',
+                                              '<b>September</b><br />A very good peak',
+                                              '<b>October</b><br />The peak is now subsiding',
+                                              '<b>November</b><br />Still subsiding',
+                                              '<b>December</b><br />Rising again after the last fall',
+    
+    
+                                              '<b>January</b><br />Started off the year quite averagely as with Robert',
+                                              '<b>February</b><br />Rising as with Robert',
+                                              '<b>March</b><br />Not as good as Robert, but OK',
+                                              '<b>April</b><br />Dropping after the peak',
+                                              '<b>May</b><br />The low point as with last year',
+                                              '<b>June</b><br />Rising higher than Robert',
+                                              '<b>July</b><br />Consistent with last month',
+                                              '<b>August</b><br />A nice high point',
+                                              '<b>September</b><br />A low point',
+                                              '<b>October</b><br />A nice rise',
+                                              '<b>November</b><br />Falling for fall...',
+                                              '<b>December</b><br />Rising again for Christmas'
+                                             ]);
+
+                
+                RGraph.Effects.Line.jQuery.UnfoldFromCenterTrace(myLine, {'duration': 1000});
+            }
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

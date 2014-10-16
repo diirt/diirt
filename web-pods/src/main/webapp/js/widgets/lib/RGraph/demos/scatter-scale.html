@@ -1,0 +1,40 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A basic Scatter chart</title>
+    
+    <meta name="keywords" content="demo basic scatter scale" />
+    <meta name="description" content="A basic Scatter chart that shows an appropriate scale" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A basic Scatter chart with an appropriate scale</h1>
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var scatter = new RGraph.Scatter('cvs', [
+                                                 [31,7],[51,1],[132,2],[166,3],[311,4],[322,5],[56,6],[10,5],[355,6],[124,7],
+                                                 [52,6],[53,1],[225,3],[311,5],[144,2],[133,5]
+                                                ])
+                .Set('xmax', 365)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Draw();
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

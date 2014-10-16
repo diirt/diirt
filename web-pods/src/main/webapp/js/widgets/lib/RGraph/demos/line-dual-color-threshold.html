@@ -1,0 +1,57 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    
+    <title>A Line chart with different colors above a certain point</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo line range threshold dual colors" />
+    <meta name="description" content="A Line chart with different colors above a certain point. It uses a filled range chart to achieve this effect." />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Line chart with different colors above a certain point</h1>
+    
+    <p>
+        A Line chart with different colors above a certain point. It uses a filled range chart to achieve this effect.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var d1  = [1,4,8,5,2,3,6,5,15,16,12,13,18,19,15,16];
+            var d2  = [];
+            
+            // Create the data
+            for (var i=0; i<d1.length; i+=1) {
+                 d1[i] = d1[i] - 0.2; // The +/- 0.2 determines the width of the line
+                 d2[i] = d1[i] + 0.2;
+            }
+
+        
+            var line = new RGraph.Line('cvs', d1, d2)
+                .Set('background.grid.autofit.numhlines', 5)
+                .Set('background.grid.autofit.numvlines', 15)
+                .Set('filled', true)
+                .Set('filled.range', true)
+                .Set('filled.range.threshold',10)
+                .Set('filled.range.threshold.colors', ['red', 'blue'])
+                .Set('labels',['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'])
+                .Set('colors', ['transparent', 'transparent'])
+                .Set('numxticks', 15)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
+

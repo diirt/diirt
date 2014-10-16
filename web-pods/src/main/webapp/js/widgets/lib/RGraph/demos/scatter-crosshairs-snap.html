@@ -1,0 +1,62 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    
+    <title>A Scatter chart with the crosshairs snap option</title>
+    
+    <meta name="keywords" content="demo scatter crosshairs snap" />
+    <meta name="description" content="A Scatter chart which is using crosshairs and the snap option" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Scatter chart demonstrating  the crosshairs snap option</h1>
+    
+    <p>
+        This Scatter chart demonstrates how you can extract the Scatter charts dataset and index from the variables set on the canvas tag
+        by RGraph.
+    </p>
+
+    <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var scatter = new RGraph.Scatter('cvs', [[0,0,'red'],[5,5,'red'],[10,10,'red'],[15,15,'red'],[20,20,'red'],[25,25,'red'],[30,30,'red'],[35,35,'red'],[40,40,'red'],[45,45,'red'],[50,50,'red']],
+                                                    [[0,0,'green'],[5,1,'green'],[10,2,'green'],[15,3,'green'],[20,4,'green'],[25,5,'green'],[30,6,'green'],[35,7,'green'],[40,8,'green'],[45,9,'green'],[50,10,'green']])
+                .Set('xmax', 100)
+                .Set('crosshairs', true)
+                .Set('crosshairs.snap', true)
+                .Set('gutter.left', 50)
+                .Set('line', true)
+                .Set('line.colors', ['red','green'])
+                .Set('labels', ['Q1','Q2','Q3','Q4'])
+                .Draw();
+            
+            scatter.oncrosshairs = function (obj)
+            {
+                document.getElementById("dataset").value =  obj.canvas.__crosshairs_snap_dataset__;
+                document.getElementById("point").value =  obj.canvas.__crosshairs_snap_point__;
+            }
+        }
+    </script>
+    
+    <p />
+    
+    Dataset:<br />
+    <input id="dataset" type="text" /><br /><br />
+
+    Point:<br />
+    <input id="point" type="text" />
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

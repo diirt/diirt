@@ -1,0 +1,62 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    
+    <title>Pie chart with custom border highlighting</title>
+    
+    <meta name="keywords" content="demo pie exploded border" />
+    <meta name="description" content="A Pie chart that has been exploded and drawn with a border and custom highlighting" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>Pie chart custom border highlighting</h1>
+    
+    <p>
+        Tooltips and other dynamic features may be affected by the redrawing.
+    </p>
+
+    <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+    
+<script>
+    window.onload = function ()
+    {
+        // Create the Pie chart
+        var pie = new RGraph.Pie('cvs', [4,6,3,5,2,5,8])
+            .Set('labels', ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])
+            .Set('tooltips', ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])
+            .Set('tooltips.event', 'mousemove')
+            .Set('tooltips.highlight', false)
+            .Set('text.color', '#aaa')
+            .Set('strokestyle', 'rgba(0,0,0,0)')
+            .Set('exploded', [,25])
+            .Draw();
+        
+        pie.ontooltip = function (obj)
+        {
+            var co = obj.context;
+            var index = RGraph.Registry.Get('chart.tooltip').__index__
+            var shape = obj.angles[index];
+            var color = ['red','#ccc','#0f0','blue','pink','yellow','black'][index];
+
+            co.fillStyle = color;
+            co.beginPath();
+                co.arc(shape[2], shape[3], obj.radius, shape[0], shape[1], false)
+                co.arc(shape[2], shape[3], obj.radius + 5, shape[1], shape[0], true)
+            co.fill();
+        }
+    }
+</script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

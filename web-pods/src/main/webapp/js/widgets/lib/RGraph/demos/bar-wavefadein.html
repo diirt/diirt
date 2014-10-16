@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    
+    <title>An example of the Bar chart effect: FadeWave</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="bar effects fadewave wave colors fadein fade in" />
+    <meta name="description" content="An example of the new Bar chart effect - FadeWave - which fades in the bars in a Wave pattern" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+    
+    <h1>An example of the Bar chart effect: FadeWaveIn</h1>
+
+    <p>
+        This is a an example of the new effect for Bar charts - FadeWave - which gradually fades in the bars using a Wave pattern.
+    </p>
+    
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+    
+    <button onclick="RGraph.Effects.Bar.WaveFadeIn(window.__bar__)">WaveFadeIn</button>
+    <button onclick="RGraph.Effects.Bar.WaveFadeOut(window.__bar__)">WaveFadeOut</button>
+
+    <script>
+        window.onload = function (e)
+        {
+            var bar = new RGraph.Bar('cvs', [4,8,6,3,5,2,5,6,4,8,7,8])
+                .Set('colors', ['rgba(255,0,0,0)',
+                                'rgba(255,255,0,0)',
+                                'rgba(255,0,255,0)',
+                                'rgba(0,255,255,0)',
+                                'rgba(0,255,0,0)',
+                                'rgba(0,0,255,0)',
+                                'rgba(255,255,0,0)',
+                                'rgba(255,0,255,0)',
+                                'rgba(0,255,255,0)',
+                                'rgba(0,0,255,0)',
+                                'rgba(0,0,0,0)',
+                                'rgba(255,0,0,0)'])
+                .Set('colors.sequential', true)
+                .Set('background.grid.autofit.numvlines', 12)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Draw();
+            
+            window.__bar__ = bar;   
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
