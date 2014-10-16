@@ -9,8 +9,8 @@
     <groupId>org.diirt</groupId>
     <artifactId>util</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>diirt-util</name>
+    <packaging>bundle</packaging>
+    <name>org.diirt.util</name>
     <url>http://diirt.org</url>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
     <issueManagement>
@@ -54,6 +54,18 @@
     </mailingLists>
     <build>
         <plugins>
+            <!--
+              This plugin is reponsible for packaging artifacts
+              as OSGi bundles.  Please refer to
+              http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html
+              for more information about how to use this plugin.
+            -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+            </plugin>
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
