@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>epics-util changes</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="0.3.2" date="2014/07/31" description="Minor improvements.">
+            <action dev="carcassi"  type="update">
+                text: handles empty columns as the first column
+            </action>
+            <action dev="carcassi"  type="add">
+                array: sublist support
+            </action>
+            <action dev="carcassi"  type="add">
+                stats: consolidating from graphene
+            </action>
+        </release>
+        <release version="0.3.1" date="2014/05/23" description="Move to github. Minor improvements.">
+            <action dev="carcassi"  type="add">
+                stats: minor improvements to numeric range support
+            </action>
+            <action dev="carcassi"  type="add">
+                array: better support for linear numeric lists
+            </action>
+            <action dev="carcassi"  type="update">
+                infrastructure: move to github
+            </action>
+        </release>
+        <release version="0.3" date="2014/03/27" description="CSV parser improvements. ListMath improvements">
+            <action dev="sfnrendra3"  type="add">
+                array: adding some element-wise operations in ListMath
+            </action>
+            <action dev="carcassi"  type="update">
+                text: greatly improved CSV parser
+            </action>
+        </release>
+    </body>
+</document>
+

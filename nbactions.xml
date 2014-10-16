@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Site</actionName>
+            <displayName>Site</displayName>
+            <goals>
+                <goal>site</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release</actionName>
+            <displayName>Release</displayName>
+            <goals>
+                <goal>release:prepare</goal>
+                <goal>release:perform</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-github deploy</actionName>
+            <displayName>github deploy</displayName>
+            <goals>
+                <goal>site:site</goal>
+                <goal>ghSite:site</goal>
+            </goals>
+        </action>
+    </actions>

@@ -1,0 +1,26 @@
+   ----
+   epics-util home
+   ----
+   Gabriele Carcassi
+   ----
+
+Epics Utilties
+
+  This library contains basic Java utility classes that should, in an ideal world,
+be part of the JDK. They handle basic things like a read-only interface for
+arrays or representation for nanosecond precision time instants and periods.
+When suitable replacement will be available, these classes will be deprecated.
+
+  Despite the name of the package, <<these classes have no dependencies whatsoever on
+EPICS or DIIRT>>. They are meant to be general purpose.
+
+  epics-util is a part of {{{http://diirt.org}DIIRT: Data Integration In Real-Time}}
+
+Download
+
+  {{{http://search.maven.org/#search|gav|1|g%3A%22org.epics%22%20AND%20a%3A%22epics-util%22}All releases in maven central}}
+
+  {{{http://oss.sonatype.org/content/repositories/snapshots/org/epics/epics-util/}Development SNAPSHOT}}
+
+  {{{https://openepics.ci.cloudbees.com/job/EpicsUtil%20-%20Build/}Latest build}}
+
