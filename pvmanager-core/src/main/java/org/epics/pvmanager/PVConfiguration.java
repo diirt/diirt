@@ -145,7 +145,9 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         PVReader<R> pvReader = pvReaderConfiguration.maxRate(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.async();
         PV<R, W> pv = new PV<R, W>(pvReader, pvWriter);
+        // This should really be set before the scanning starts
         PVReaderImpl.implOf(pvReader).setReaderForNotification(pv);
+        PVWriterImpl.implOf(pvWriter).setWriterForNotification(pv);
         return pv;
     }
     
