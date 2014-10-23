@@ -307,6 +307,54 @@ public class TimeScalesTest {
     }
     
     @Test
+    public void createReferencesBoundary10() {
+	//test two references, that don't fit perfectly so that we have
+	//one unit extra space on each side of the graph
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 6 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
+    }
+    
+    @Test
+    public void createReferencesBoundary11() {
+	//test two references, that don't fit perfectly so that we have
+	//one unit extra space on left (smaller numbers) side only
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 5 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
+    }
+    
+        @Test
+    public void createReferencesBoundary12() {
+	//test two references, that don't fit perfectly so that we have
+	//one unit extra space on right (larger numbers) side only
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 5 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
+    }
+    
+    @Test
     public void createLabels1() {
         List<String> labels = TimeScales.createLabels(Arrays.asList(create(2013,03,12,1,30,15,123),
                 create(2013,03,12,1,30,16,123),
