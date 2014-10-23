@@ -111,6 +111,68 @@ public class TimeScales {
                     return new TimePeriod(GregorianCalendar.SECOND, 30);
                 }
                 return new TimePeriod(GregorianCalendar.MINUTE, 1);
+	    case GregorianCalendar.MINUTE:
+		if ( period.amount < 2 ) {
+		    return new TimePeriod( GregorianCalendar.MINUTE , 2 );
+		}
+		if ( period.amount < 5 ) {
+		    return new TimePeriod( GregorianCalendar.MINUTE , 5 );
+		}
+		if ( period.amount < 10 ) {
+		    return new TimePeriod( GregorianCalendar.MINUTE , 10 );
+		}
+		if ( period.amount < 15 ) {
+		    return new TimePeriod( GregorianCalendar.MINUTE , 15 );
+		}
+		if ( period.amount < 30 ) {
+		    return new TimePeriod( GregorianCalendar.MINUTE , 30 );
+		}
+		return new TimePeriod( GregorianCalendar.HOUR , 1 );
+	    case GregorianCalendar.HOUR:
+		if ( period.amount < 2 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 2 );
+		}
+		if ( period.amount < 3 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 3 );
+		}
+		if ( period.amount < 6 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 6 );
+		}
+		if ( period.amount < 12 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 12 );
+		}
+		
+		//TODO why is this necessary? otherwise, we get error
+		if ( period.amount < 24 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 24 );
+		}
+		return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 1 );
+	    case GregorianCalendar.DAY_OF_WEEK_IN_MONTH:
+		if ( period.amount < 2 ) {
+		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 2 );
+		}
+		if ( period.amount < 4 ) {
+		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 4 );
+		}
+		return new TimePeriod( GregorianCalendar.WEEK_OF_MONTH , 1 );
+	    case GregorianCalendar.WEEK_OF_MONTH:
+		if ( period.amount < 2 ) {
+		    return new TimePeriod( GregorianCalendar.WEEK_OF_MONTH , 2 );
+		}
+		return new TimePeriod( GregorianCalendar.MONTH , 1 );
+	    case GregorianCalendar.MONTH:
+		if ( period.amount < 2 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 2 );
+		}
+		if ( period.amount < 4 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 4 );
+		}
+		if ( period.amount < 8 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 8 );
+		}
+		return new TimePeriod( GregorianCalendar.YEAR , 1 );
+	    case GregorianCalendar.YEAR:
+		return new TimePeriod( GregorianCalendar.YEAR , period.amount/4+1 );
         }
         return null;
     }
@@ -160,6 +222,31 @@ public class TimeScales {
     
     static TimePeriod nextDown(TimePeriod period) {
         switch(period.fieldId) {
+	    case GregorianCalendar.DAY_OF_WEEK_IN_MONTH:
+		if ( period.amount > 3 ) {
+		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 3 );
+		}
+		if ( period.amount > 1 ) {
+		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 1 );
+		}
+		return new TimePeriod( GregorianCalendar.HOUR , 12 );
+	    case GregorianCalendar.HOUR:
+		if ( period.amount > 12 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 12 );
+		}
+		if ( period.amount > 8 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 8 );
+		}
+		if ( period.amount > 4 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 4 );
+		}
+		if ( period.amount > 2 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 2 );
+		}
+		if ( period.amount > 1 ) {
+		    return new TimePeriod( GregorianCalendar.HOUR , 1 );
+		}
+		return new TimePeriod( GregorianCalendar.MINUTE , 30 );
             case GregorianCalendar.MINUTE:
                 return new TimePeriod(GregorianCalendar.SECOND, 30);
             case GregorianCalendar.SECOND:
@@ -215,13 +302,19 @@ public class TimeScales {
     }
     
     static TimePeriod toTimePeriod(double seconds) {
+	if ( seconds >= 86400 ) {
+	    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , seconds/86400 );
+	}
+	if ( seconds >= 3600 ) {
+	    return new TimePeriod( GregorianCalendar.HOUR , seconds/3600 );
+	}
         if (seconds >= 60) {
             return new TimePeriod(GregorianCalendar.MINUTE, seconds / 60.0);
         }
         if (seconds >= 1) {
             return new TimePeriod(GregorianCalendar.SECOND, seconds);
         }
-        return new TimePeriod(GregorianCalendar.MILLISECOND, 100*seconds);
+        return new TimePeriod(GregorianCalendar.MILLISECOND, 1000*seconds);
     }
     
     static double normalize(Timestamp time, TimeInterval timeInterval) {

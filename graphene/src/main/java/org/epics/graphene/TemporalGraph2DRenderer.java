@@ -725,6 +725,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             // Draw first and last label
             int[] drawRange = new int[] {xAreaStart, xAreaEnd};
             int yTop = (int) (yAreaEnd + xLabelMargin + 1);
+	    if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
+		timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
+	    }
             String firstHalf = timeReferenceLabels.get(0).substring(0, timeReferenceLabels.get(0).indexOf(" "));
             String secondHalf = timeReferenceLabels.get(0).substring(timeReferenceLabels.get(0).indexOf(" ") + 1);
             drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(0)),

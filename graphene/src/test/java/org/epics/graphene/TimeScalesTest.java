@@ -109,6 +109,10 @@ public class TimeScalesTest {
         assertThat(period, equalTo(new TimePeriod(SECOND, 30)));
     }
     
+    //TODO nextDown and nextUp for minutes, hours, weeks, months,
+    //Test createReferences() for any time interval and period
+    //Leap years, crazy stuff
+    
     @Test
     public void round1() {
         GregorianCalendar cal = new GregorianCalendar(2013, 3, 14, 14, 23, 15);
@@ -163,6 +167,94 @@ public class TimeScalesTest {
         assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 30, 0)));
         assertThat(references.get(2), equalTo(create(2013, 3, 14, 14, 23, 40, 0)));
     }
+    
+    @Test
+    public void createReferencesLowerBoundary1() {
+	
+	//test lower boundary case: 2 references 1 millisecond apart
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 1 ) ) );
+	
+    }
+    
+    @Test
+    public void createReferencesLowerBoundary2() {
+	
+	//test lower boundary case: 2 references, milliseconds roll over to next second
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+    }
+    
+    @Test
+    public void createReferencesLowerBoundary3() {
+	//test lower boundary case: 2 references, milliseconds roll over to next second
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 2 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofMillis( 2 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 2 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 1 ) ) );
+    }
+    
+    /* TODO Test cases do not work
+    
+    @Test
+    public void createReferencesLowerBoundary4() {
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofMillis( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 2 ) ) );
+    }
+    
+    @Test
+    public void createReferencesLowerBoundary5() {
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 998 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 4 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofMillis( 4 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 998 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 2 ) ) );
+    }
+    
+    @Test
+    public void createReferencesLowerBoundary6() {
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 4 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 4 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 3 ) ) );
+    }*/
     
     @Test
     public void createLabels1() {

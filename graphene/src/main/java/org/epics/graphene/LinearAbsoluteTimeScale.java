@@ -43,11 +43,13 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         // Kepp increasing the time until you have the right amount of references
         List<Timestamp> references = TimeScales.createReferences(range, timePeriod);
         while(references.size() > maxRefs) {
+	    System.out.println( timePeriod );
             timePeriod = TimeScales.nextUp(timePeriod);
             references = TimeScales.createReferences(range, timePeriod);
         }
+	System.out.println( timePeriod + ", size(): " + references.size() + " minRefs: " + minRefs );
         if (references.size() < minRefs) {
-            throw new RuntimeException("Can't create the requested amount of references");
+            throw new RuntimeException("Can't create the requested amount of references. Requested: " + references.size() + ", minimum required: " + minRefs );
         }
 
         // Prepare normalized values

@@ -8,7 +8,10 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- *
+ * Stores desired property changes of graphs. We give a <code>Graph2DRendererUpdate</code>
+ * to a <code>GraphRenderer</code> to perform an atomic property update operation
+ * on the <code>GraphRenderer</code>
+ * 
  * @author carcassi
  */
 public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {

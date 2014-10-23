@@ -20,7 +20,11 @@ import org.epics.util.array.ListInt;
 import org.epics.util.stats.Ranges;
 
 /**
- *
+ * Stores information about a GraphBuffer. Example properties include the 
+ * human-defined range of values the GraphBuffer will have to display, 
+ * or the left and right pixels of the GraphBuffer. GraphAreaData also provides 
+ * methods for preparing a GraphBuffer for the plotting of data.
+ * 
  * @author carcassi
  */
 class GraphAreaData {
@@ -188,7 +192,9 @@ class GraphAreaData {
     }
     
     /**
-     * If the range is zero, fake a range.
+     * returns a default range that will be used when the range of an axis
+     * happens to be 0 (i.e. its minimum is the same as its maximum). 
+     * We cannot deal label axes with range 0, so this method is necessary.
      * 
      * @param range a range
      * @return the same range, or one that is safe to draw
@@ -251,6 +257,9 @@ class GraphAreaData {
         }
     }
     
+    /**
+     * draws the coordinate grid and labeled axes onto the image of the graph
+     */
     protected void drawGraphArea() {
         graphBuffer.getGraphicsContext().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
