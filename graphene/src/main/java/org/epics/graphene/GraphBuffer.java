@@ -21,7 +21,7 @@ import org.epics.util.array.ListInt;
  * 
  * @author carcassi, sjdallst, asbarber, jkfeng
  */
-class GraphBuffer {
+public class GraphBuffer {
     
     private final BufferedImage image;
     private final Graphics2D g;
