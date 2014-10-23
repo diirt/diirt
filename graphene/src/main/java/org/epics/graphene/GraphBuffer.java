@@ -47,11 +47,11 @@ public class GraphBuffer {
     }
     
     public void setPixel(int x, int y, int color){
-        if(hasAlphaChannel){
-            pixels[y*image.getWidth()*4 + x*4 + 3] = (byte)(color >> 24 & 0xFF);
-            pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
-            pixels[y*image.getWidth()*4 + x*4 + 1] = (byte)(color >> 8 & 0xFF);
-            pixels[y*image.getWidth()*4 + x*4 + 2] = (byte)(color >> 16 & 0xFF);
+        if(hasAlphaChannel){ //???how does the indexing work? what does it mean 
+            pixels[y*image.getWidth()*4 + x*4 + 3] = (byte)(color >> 24 & 0xFF);//alpha
+            pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);//blue
+            pixels[y*image.getWidth()*4 + x*4 + 1] = (byte)(color >> 8 & 0xFF);//green
+            pixels[y*image.getWidth()*4 + x*4 + 2] = (byte)(color >> 16 & 0xFF);//red
         }
         else{
             pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
@@ -75,10 +75,10 @@ public class GraphBuffer {
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
             int yData = yPointToDataMap[yOffset];
             if (yData != previousYData) {
-                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {
+                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {  
                     int xData = xPointToDataMap[xOffset];
                     int rgb = colorMap.colorFor(data.getValue(xData, yData));
-                    if(hasAlphaChannel){
+                    if(hasAlphaChannel){ 
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 0] = (byte)(rgb >> 24 & 0xFF);
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 1] = (byte)(rgb & 0xFF);
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 2] = (byte)(rgb >> 8 & 0xFF);
@@ -152,7 +152,7 @@ public class GraphBuffer {
      * @param value the value
      * @return the pixel where the value should be mapped
      */
-    public int xValueToPixel(double value) {
+    public int xValueToPixel(double value) {   
         return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
 
@@ -204,7 +204,7 @@ public class GraphBuffer {
      * @param yMaxPixel the pixel corresponding to the maximum
      * @param yValueScale the scale used to transform values to pixel
      */
-    public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
+    public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {  
         yTopValue = range.getMaximum().doubleValue();
         yBottomValue = range.getMinimum().doubleValue();
         yTopPixel = yMaxPixel - 1;
