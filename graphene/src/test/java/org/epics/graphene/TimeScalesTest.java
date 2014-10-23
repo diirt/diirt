@@ -338,7 +338,7 @@ public class TimeScalesTest {
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
     
-        @Test
+    @Test
     public void createReferencesBoundary12() {
 	//test two references, that don't fit perfectly so that we have
 	//one unit extra space on right (larger numbers) side only
@@ -352,6 +352,166 @@ public class TimeScalesTest {
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
+    }
+    
+    @Test
+    public void createReferenceBad1() {
+	//test end before start
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( -5 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferenceBad2() {
+	//test end equals start and is not a multiple of the time period
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 1 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 0 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferenceBad3() {
+	//test end equals start and is a multiple of the time period
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 0 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(1) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+    }
+    
+    @Test
+    @Ignore //TODO uncaught / by 0 exception
+    public void createReferenceBad4() {
+	//time period is 0
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 0 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferencesEmpty1() {
+	//test time period too big
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 1 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 5 ) ) );
+	System.out.println( start + " " + start.plus( TimeDuration.ofMillis( 6 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 999 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferencesEmpty2() {
+	//test units do not get mixed up
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofMillis( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 3 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferencesEmpty3() {
+	//test units do not get mixed up
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofMillis( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(0) );
+    }
+    
+    @Test
+    public void createReferencesOverflowMilliseconds1() {
+	//test units do not get mixed up
+	//and they can overflow into a larger unit
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(1) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 0 ) ) );
+    }
+    
+    @Test
+    public void createReferencesOverflowMilliseconds2() {
+	//test units do not get mixed up and they can overflow into 
+	//a larger unit
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 999 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(3) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 333 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 999 ) ) );
+    }
+    
+    @Test
+    public void createReferencesOverflowMilliseconds3() {
+	//test units do not get mixed up and they can overflow into 
+	//a larger unit. also test when we are 1 millisecond off from next
+	//reference line
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 998 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(2) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 333 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
+    }
+    
+    @Test
+    public void createReferencesOverflowMilliseconds4() {
+	//test units do not get mixed up and they can overflow into 
+	//a larger unit. also test when we are 1 millisecond after next
+	//reference line
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	System.out.println( start + " "+ start.plus( TimeDuration.ofSeconds( 3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	System.out.println( references );
+	assertThat( references.size() , equalTo(3) );
+	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 333 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 666 ) ) );
     }
     
     @Test
