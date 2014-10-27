@@ -521,7 +521,7 @@ public class VisualProfiler extends JPanel{
     /**
      * Package location for <code>ProfileGraph2D</code> subclasses.
      */
-    public static final String PROFILE_PATH = "org.epics.graphene.profile.impl";
+    public static final String PROFILE_PATH = "org.diirt.graphene.profile.impl";
 
     /**
      * Java class names of all <code>ProfileGraph2D</code> subclasses.
