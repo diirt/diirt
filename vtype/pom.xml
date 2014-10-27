@@ -15,4 +15,11 @@
         <module>vtype</module>
         <module>vtype-json</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
