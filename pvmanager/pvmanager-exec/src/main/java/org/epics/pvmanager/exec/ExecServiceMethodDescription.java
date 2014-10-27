@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import org.epics.pvmanager.service.ServiceMethodDescription;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * The description for an executor service method (i.e. a shell command).

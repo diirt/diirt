@@ -15,17 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VString;
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.

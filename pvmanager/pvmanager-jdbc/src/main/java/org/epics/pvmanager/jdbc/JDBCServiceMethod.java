@@ -22,10 +22,10 @@ import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.diirt.util.array.CircularBufferDouble;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * The implementation of a JDBC service method.

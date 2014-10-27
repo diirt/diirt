@@ -19,10 +19,10 @@ import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ArrayShort;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListShort;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.VShortArray;
-import org.epics.vtype.VTypeToString;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.VShortArray;
+import org.diirt.vtype.VTypeToString;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * @author msekoranja

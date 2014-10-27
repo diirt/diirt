@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 import java.util.Arrays;
 
@@ -13,18 +13,18 @@ import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.Time;
-import org.epics.vtype.VBoolean;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VString;
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.table.ListNumberProvider;
-import org.epics.vtype.table.VTableFactory;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VBoolean;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.table.ListNumberProvider;
+import org.diirt.vtype.table.VTableFactory;
 import org.junit.Test;
 
 /**

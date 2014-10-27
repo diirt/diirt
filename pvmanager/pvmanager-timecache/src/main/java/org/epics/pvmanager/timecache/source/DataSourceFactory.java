@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.epics.pvmanager.timecache.impl.SimpleFileDataSource;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * {@link DataSource} factory.

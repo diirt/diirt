@@ -16,12 +16,12 @@ import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
 import org.diirt.util.time.Timestamp;
 import org.diirt.util.time.TimestampFormat;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VTypeToString;
-import org.epics.vtype.VTypeValueEquals;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VTypeToString;
+import org.diirt.vtype.VTypeValueEquals;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *

@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.epics.pvmanager.WriteFunction;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.io.CSVIO;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.io.CSVIO;
 
 /**
  *

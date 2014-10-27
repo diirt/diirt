@@ -20,7 +20,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.epics.pvmanager.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

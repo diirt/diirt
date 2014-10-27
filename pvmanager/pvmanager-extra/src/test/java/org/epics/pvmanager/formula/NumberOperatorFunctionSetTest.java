@@ -7,12 +7,12 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.util.time.TimeDuration;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Time;
-import org.epics.vtype.VNumber;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VNumber;
 import org.junit.Test;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

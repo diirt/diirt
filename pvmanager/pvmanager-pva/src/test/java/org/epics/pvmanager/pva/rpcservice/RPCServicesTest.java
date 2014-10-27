@@ -24,7 +24,7 @@ import org.epics.pvmanager.pva.rpcservice.rpcclient.PooledRPCClientFactory;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayFloat;
-import org.epics.vtype.*;
+import org.diirt.vtype.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

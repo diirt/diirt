@@ -9,20 +9,20 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import org.epics.pvmanager.service.ServiceMethodDescription;
-import org.epics.vtype.VByte;
-import org.epics.vtype.VByteArray;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VFloat;
-import org.epics.vtype.VFloatArray;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VIntArray;
-import org.epics.vtype.VLong;
-import org.epics.vtype.VLongArray;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VShort;
-import org.epics.vtype.VShortArray;
+import org.diirt.vtype.VByte;
+import org.diirt.vtype.VByteArray;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VFloat;
+import org.diirt.vtype.VFloatArray;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VIntArray;
+import org.diirt.vtype.VLong;
+import org.diirt.vtype.VLongArray;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VShort;
+import org.diirt.vtype.VShortArray;
 
 /**
  * The description for a pvAccess RPC rpcservice method.

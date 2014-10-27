@@ -5,7 +5,7 @@
 package org.epics.pvmanager.timecache;
 
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * Represents a sample.

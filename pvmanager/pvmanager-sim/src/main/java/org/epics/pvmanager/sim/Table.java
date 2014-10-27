@@ -13,8 +13,8 @@ import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VTable;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VTable;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  * Function to simulate a signal that generates VTables.

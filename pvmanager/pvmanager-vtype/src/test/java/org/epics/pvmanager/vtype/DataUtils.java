@@ -4,11 +4,11 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.VMultiDouble;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VMultiDouble;
+import org.diirt.vtype.VDouble;
 import java.util.List;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VMultiDouble;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VMultiDouble;
 
 /**
  *

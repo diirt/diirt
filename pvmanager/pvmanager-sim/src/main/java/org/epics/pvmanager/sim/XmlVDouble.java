@@ -5,7 +5,7 @@
 package org.epics.pvmanager.sim;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 
 /**
  *

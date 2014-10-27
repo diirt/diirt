@@ -4,17 +4,17 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VImage;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VImage;
+import org.diirt.vtype.ValueUtil;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import org.diirt.graphene.*;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.graphene.ArgumentExpressions.stringArgument;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
 
 /**
  *

@@ -6,7 +6,7 @@ package org.epics.pvmanager.graphene;
 
 import java.util.List;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.vtype.VStringArray;
+import org.diirt.vtype.VStringArray;
 
 /**
  *

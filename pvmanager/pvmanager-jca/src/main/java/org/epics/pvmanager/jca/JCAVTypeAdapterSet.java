@@ -4,19 +4,19 @@
  */
 package org.epics.pvmanager.jca;
 
-import org.epics.vtype.VFloat;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VString;
-import org.epics.vtype.VShort;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VIntArray;
-import org.epics.vtype.VByte;
-import org.epics.vtype.VByteArray;
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.VShortArray;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VFloatArray;
+import org.diirt.vtype.VFloat;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VShort;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VIntArray;
+import org.diirt.vtype.VByte;
+import org.diirt.vtype.VByteArray;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.VShortArray;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VFloatArray;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.*;
 import java.util.Collections;

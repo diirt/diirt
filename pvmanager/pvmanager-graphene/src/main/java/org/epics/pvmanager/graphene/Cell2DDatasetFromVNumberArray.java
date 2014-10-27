@@ -13,8 +13,8 @@ import org.diirt.util.stats.Range;
 import org.diirt.util.stats.Ranges;
 import org.diirt.util.stats.Statistics;
 import org.diirt.util.stats.StatisticsUtil;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.ndarray.Array2DDouble;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.ndarray.Array2DDouble;
 
 /**
  *

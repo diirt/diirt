@@ -12,7 +12,7 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * A FileFormat for reading .bmp and .png into VImage

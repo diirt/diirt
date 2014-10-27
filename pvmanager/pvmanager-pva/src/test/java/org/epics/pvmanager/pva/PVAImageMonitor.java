@@ -22,7 +22,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.diirt.util.time.TimeDuration;
-import org.epics.vtype.VImage;
+import org.diirt.vtype.VImage;
 
 public class PVAImageMonitor {
 

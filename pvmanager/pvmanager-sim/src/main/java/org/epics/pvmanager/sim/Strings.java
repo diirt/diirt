@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.vtype.VString;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VString;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  * Function to simulate a signal that generates Strings.

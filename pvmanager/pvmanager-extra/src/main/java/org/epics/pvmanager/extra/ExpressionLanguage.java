@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.extra;
 
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VNumber;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.List;
 import org.epics.pvmanager.BasicTypeSupport;

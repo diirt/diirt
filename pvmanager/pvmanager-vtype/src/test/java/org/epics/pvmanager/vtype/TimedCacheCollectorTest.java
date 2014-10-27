@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import org.diirt.util.time.Timestamp;

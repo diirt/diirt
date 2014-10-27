@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import org.epics.pvmanager.service.ServiceMethod;
 import org.epics.pvmanager.service.ServiceRegistry;
-import org.epics.vtype.VTable;
-import org.epics.vtype.io.CSVIO;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.io.CSVIO;
+import static org.diirt.vtype.ValueFactory.*;
 import static org.epics.pvmanager.service.ServiceUtil.*;
 
 /**

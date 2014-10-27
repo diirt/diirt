@@ -5,7 +5,7 @@
 package org.epics.pvmanager.sys;
 
 import java.util.Objects;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

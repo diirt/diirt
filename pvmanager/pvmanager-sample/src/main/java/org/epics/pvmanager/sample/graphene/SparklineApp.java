@@ -33,7 +33,7 @@ import org.epics.pvmanager.sample.SetupUtil;
 import static org.epics.pvmanager.sample.graphene.BaseGraphApp.main;
 import static org.epics.pvmanager.util.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.ofHertz;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *

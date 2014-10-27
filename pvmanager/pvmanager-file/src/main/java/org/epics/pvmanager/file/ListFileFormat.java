@@ -11,8 +11,8 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.epics.vtype.VType;
-import org.epics.vtype.io.TextIO;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.io.TextIO;
 
 /**
  * A file format for reading and writing lists from a .list file

@@ -6,11 +6,11 @@ package org.epics.pvmanager.integration;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

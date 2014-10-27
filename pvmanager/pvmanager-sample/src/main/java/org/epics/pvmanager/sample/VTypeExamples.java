@@ -16,15 +16,15 @@ import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 import static org.diirt.util.time.TimeDuration.*;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.Display;
-import org.epics.vtype.Time;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * Examples for using vType expressions.

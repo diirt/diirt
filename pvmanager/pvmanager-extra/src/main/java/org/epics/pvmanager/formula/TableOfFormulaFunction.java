@@ -7,10 +7,10 @@ package org.epics.pvmanager.formula;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.vtype.VTable;
-import org.epics.vtype.table.Column;
-import org.epics.vtype.table.ListNumberProvider;
-import org.epics.vtype.table.VTableFactory;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.table.Column;
+import org.diirt.vtype.table.ListNumberProvider;
+import org.diirt.vtype.table.VTableFactory;
 
 /**
  *

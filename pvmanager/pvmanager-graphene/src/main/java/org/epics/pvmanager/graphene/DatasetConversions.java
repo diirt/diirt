@@ -21,10 +21,10 @@ import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
 import org.diirt.util.stats.Range;
 import org.diirt.util.stats.Ranges;
-import org.epics.vtype.Display;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * Utility class to convert VTypes into graphene datasets.

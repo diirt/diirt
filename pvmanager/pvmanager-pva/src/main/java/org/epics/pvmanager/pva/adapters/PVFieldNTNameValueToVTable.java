@@ -35,8 +35,8 @@ import org.diirt.util.array.ArrayFloat;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ArrayLong;
 import org.diirt.util.array.ArrayShort;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VTypeToString;
 
 /**
  * @author msekoranja

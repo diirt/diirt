@@ -9,10 +9,10 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVManager;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.AlarmSeverity;
+import org.diirt.vtype.AlarmSeverity;
 import static org.epics.pvmanager.integration.VTypeMatchMask.*;
 import org.epics.pvmanager.jca.JCADataSource;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 import static org.epics.pvmanager.integration.Constants.*;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 

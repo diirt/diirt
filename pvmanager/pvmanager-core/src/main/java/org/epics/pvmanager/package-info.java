@@ -34,7 +34,7 @@
  * There are two distinct parts in the PVManager framework. The first part
  * includes all the elements that deal with data directly: read from various
  * sources ({@link org.epics.pvmanager.DataSource}), performing computation ({@link org.epics.pvmanager.ReadFunction}),
- * collecting data ({@link org.epics.pvmanager.Collector}), scanning at the UI rate ({@link org.epics.pvmanager.PVReaderDirector})
+ * collecting data ({@link org.epics.pvmanager.Collector}), scanning at the UI rate ({@link org.epics.pvmanager.PVDirector})
  * and notify on appropriate threads.
  * <p>
  * The second part consists of an expression language that allows to define

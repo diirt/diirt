@@ -11,8 +11,8 @@ import java.io.OutputStream;
 
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.

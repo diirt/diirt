@@ -7,12 +7,12 @@ package org.epics.pvmanager.jca;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Int;
 import java.util.List;
-import org.epics.vtype.VIntArray;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VIntArray;
+import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *

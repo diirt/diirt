@@ -6,7 +6,7 @@ package org.epics.pvmanager.timecache;
 
 import org.epics.pvmanager.timecache.query.Query;
 import org.epics.pvmanager.timecache.query.QueryParameters;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * Cache main interface: creates and manages all {@link PVCache}. Initialises

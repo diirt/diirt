@@ -9,9 +9,9 @@ import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

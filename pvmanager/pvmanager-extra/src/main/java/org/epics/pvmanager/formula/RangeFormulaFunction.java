@@ -6,9 +6,9 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.table.ListNumberProvider;
-import org.epics.vtype.table.VTableFactory;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.table.ListNumberProvider;
+import org.diirt.vtype.table.VTableFactory;
 
 /**
  *

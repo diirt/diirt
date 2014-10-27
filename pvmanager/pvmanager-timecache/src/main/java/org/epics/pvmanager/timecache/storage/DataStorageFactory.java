@@ -7,7 +7,7 @@ package org.epics.pvmanager.timecache.storage;
 import java.util.Collection;
 
 import org.epics.pvmanager.timecache.impl.SimpleMemoryStorage;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * {@link DataStorage} factory.

@@ -6,8 +6,8 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Float;
-import org.epics.vtype.VFloat;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VFloat;
+import org.diirt.vtype.VTypeToString;
 
 /**
  *

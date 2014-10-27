@@ -6,7 +6,7 @@ package org.epics.pvmanager.formula;
 
 import org.diirt.util.array.ListMath;
 import org.diirt.util.array.ListNumber;
-import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.VNumberArray;
 
 /**
  * A set of functions to work with {@link VNumberArray}s.

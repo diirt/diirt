@@ -24,10 +24,10 @@ import org.epics.pvmanager.timecache.util.CacheHelper;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * PVManager expression language support for additional operations.

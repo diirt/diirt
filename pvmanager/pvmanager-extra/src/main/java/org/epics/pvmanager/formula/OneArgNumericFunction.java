@@ -5,9 +5,9 @@
 package org.epics.pvmanager.formula;
 
 import org.epics.pvmanager.ExpressionLanguage;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.ValueFactory;
 
 
 /**

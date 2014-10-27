@@ -4,12 +4,12 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.VString;
-import org.epics.vtype.ValueUtil;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VTable;
-import org.epics.vtype.Scalar;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.Scalar;
+import org.diirt.vtype.VDouble;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
 import org.epics.pvmanager.ReadFunction;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ValueFactory;
 
 /**
  *

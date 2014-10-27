@@ -11,12 +11,12 @@ import java.util.List;
 import org.diirt.graphene.*;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.vtype.VImage;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VImage;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *

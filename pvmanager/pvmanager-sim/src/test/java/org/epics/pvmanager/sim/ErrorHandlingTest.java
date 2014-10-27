@@ -11,7 +11,7 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpression;

@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

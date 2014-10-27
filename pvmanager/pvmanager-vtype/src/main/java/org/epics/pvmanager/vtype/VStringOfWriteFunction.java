@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.ValueFormat;
-import org.epics.vtype.VType;
+import org.diirt.vtype.ValueFormat;
+import org.diirt.vtype.VType;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.WriteFunction;
 

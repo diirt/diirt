@@ -11,10 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.table.ListNumberProvider;
-import org.epics.vtype.table.VTableFactory;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.table.ListNumberProvider;
+import org.diirt.vtype.table.VTableFactory;
 
 /**
  *

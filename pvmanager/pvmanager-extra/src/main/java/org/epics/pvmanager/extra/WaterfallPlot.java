@@ -7,13 +7,13 @@ package org.epics.pvmanager.extra;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VImage;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VImage;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 
 /**

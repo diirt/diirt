@@ -12,8 +12,8 @@ import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.StringArrayData;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VTypeToString;
 
 public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
 	

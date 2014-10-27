@@ -5,9 +5,9 @@
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.dbr.TIME;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Time;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.Time;
 import org.diirt.util.time.Timestamp;
 
 /**

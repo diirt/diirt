@@ -5,7 +5,7 @@
 package org.epics.pvmanager.sim;
 
 import java.net.URI;
-import org.epics.vtype.AlarmSeverity;
+import org.diirt.vtype.AlarmSeverity;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

@@ -5,8 +5,8 @@
 package org.epics.pvmanager.jdbc;
 
 import java.util.concurrent.Executors;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VString;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VString;
 
 /**
  *

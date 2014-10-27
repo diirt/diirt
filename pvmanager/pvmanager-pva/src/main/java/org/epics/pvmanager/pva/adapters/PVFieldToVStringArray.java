@@ -12,8 +12,8 @@ import org.epics.pvdata.pv.StringArrayData;
 import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
 

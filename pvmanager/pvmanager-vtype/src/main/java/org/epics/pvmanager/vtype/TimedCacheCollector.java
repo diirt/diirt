@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.Time;
+import org.diirt.vtype.Time;
 import java.util.*;
 import org.epics.pvmanager.Collector;
 import org.epics.pvmanager.ReadFunction;

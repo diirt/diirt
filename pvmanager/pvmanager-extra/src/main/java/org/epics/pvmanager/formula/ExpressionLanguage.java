@@ -18,7 +18,7 @@ import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.WriteExpression;
 import org.diirt.util.text.StringUtil;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * Support for formula expressions.

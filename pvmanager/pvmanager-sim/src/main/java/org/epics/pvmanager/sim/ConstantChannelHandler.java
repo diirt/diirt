@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.util.FunctionParser;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ValueFactory;
 
 /**
  *

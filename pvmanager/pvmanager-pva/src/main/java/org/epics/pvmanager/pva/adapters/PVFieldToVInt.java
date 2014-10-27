@@ -7,8 +7,8 @@ package org.epics.pvmanager.pva.adapters;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VTypeToString;
 
 /**
  * @author msekoranja

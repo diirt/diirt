@@ -10,7 +10,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
 import org.diirt.util.time.TimeDuration;

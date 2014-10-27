@@ -4,15 +4,15 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
 
 /**
  * Extracts a columns from a VTable.

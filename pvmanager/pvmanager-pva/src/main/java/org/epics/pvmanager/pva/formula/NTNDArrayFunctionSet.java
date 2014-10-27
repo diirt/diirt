@@ -42,11 +42,11 @@ import org.epics.pvmanager.pva.adapters.PVANTNDArray;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.VImage;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.VImage;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.ValueFactory;
 
 
 

@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * The registry to add functions that will be used by the formula parser.

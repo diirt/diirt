@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.VString;
-import org.epics.vtype.Time;
-import org.epics.vtype.ValueFormat;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.ValueUtil;
-import org.epics.vtype.VType;
-import org.epics.vtype.Alarm;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.ValueFormat;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.Alarm;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.WriteFunction;
 

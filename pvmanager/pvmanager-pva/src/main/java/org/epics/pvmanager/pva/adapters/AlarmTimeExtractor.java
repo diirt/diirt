@@ -8,10 +8,10 @@ import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVStructure;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Time;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.ValueFactory;
 
 public class AlarmTimeExtractor implements Alarm, Time {
 

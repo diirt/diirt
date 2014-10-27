@@ -4,17 +4,17 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
 
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.util.NullUtils;
 
 import org.diirt.util.array.ListNumber;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import static org.epics.vtype.ValueFactory.newVNumberArray;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import static org.diirt.vtype.ValueFactory.newVNumberArray;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * Abstract class for formula functions that take a VNumber and a VNumberArray as arguments

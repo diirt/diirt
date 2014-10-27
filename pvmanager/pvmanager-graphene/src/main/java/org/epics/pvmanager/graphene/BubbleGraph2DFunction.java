@@ -11,9 +11,9 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 import org.diirt.graphene.Point3DWithLabelDataset;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.vtype.VImage;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VImage;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.ValueUtil;
 
 import static org.epics.pvmanager.graphene.ArgumentExpressions.*;
 

@@ -6,9 +6,9 @@ package org.epics.pvmanager.timecache;
 
 import static org.epics.pvmanager.ExpressionLanguage.resultOf;
 import static org.epics.pvmanager.timecache.ExpressionLanguage.timeTableOf;
-import static org.epics.vtype.ValueFactory.alarmNone;
-import static org.epics.vtype.ValueFactory.newVString;
-import static org.epics.vtype.ValueFactory.timeNow;
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.newVString;
+import static org.diirt.vtype.ValueFactory.timeNow;
 
 import java.io.StringWriter;
 import java.text.DateFormat;
@@ -25,9 +25,9 @@ import org.epics.pvmanager.timecache.query.QueryParameters;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeRelativeInterval;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
-import org.epics.vtype.io.CSVIO;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.io.CSVIO;
 
 /**
  * 

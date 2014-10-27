@@ -4,14 +4,14 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VEnum;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.VEnum;
 
-import org.epics.vtype.VString;
-import org.epics.vtype.VStringArray;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
 import org.junit.Test;
 
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 
 /**

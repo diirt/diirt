@@ -17,8 +17,8 @@ import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
 import org.diirt.util.text.NumberFormats;
-import org.epics.vtype.Display;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.ValueFactory;
 
 public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Display {
 

@@ -34,11 +34,11 @@ import org.diirt.util.array.ArrayDouble;
 
 import static org.diirt.util.time.TimeDuration.*;
 
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.VTable;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.ValueUtil;
 
 import static org.hamcrest.Matchers.*;
 

@@ -10,8 +10,8 @@ import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTable;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
         
 /**

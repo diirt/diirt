@@ -5,8 +5,8 @@
 package org.epics.pvmanager.sim;
 
 import java.util.Random;
-import org.epics.vtype.VDouble;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VDouble;
+import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.time.Timestamp;
 
 /**

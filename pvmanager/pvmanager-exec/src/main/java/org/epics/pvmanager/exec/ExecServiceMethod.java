@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.service.ServiceMethod;
-import org.epics.vtype.VString;
+import org.diirt.vtype.VString;
 
 /**
  * The implementation of an executor service method.

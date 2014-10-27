@@ -16,8 +16,8 @@ import org.epics.pvmanager.*;
 import org.diirt.util.text.NumberFormats;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.Display;
-import org.epics.vtype.DisplayBuilder;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.DisplayBuilder;
 
 /**
  *

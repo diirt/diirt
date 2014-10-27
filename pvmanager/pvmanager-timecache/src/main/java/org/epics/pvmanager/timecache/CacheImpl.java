@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.epics.pvmanager.timecache.query.Query;
 import org.epics.pvmanager.timecache.query.QueryImpl;
 import org.epics.pvmanager.timecache.query.QueryParameters;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER

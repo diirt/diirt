@@ -7,7 +7,7 @@ package org.epics.pvmanager.pva.adapters;
 import org.epics.pvdata.pv.PVDouble;
 import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.vtype.VStatistics;
+import org.diirt.vtype.VStatistics;
 
 /**
  * @author msekoranja

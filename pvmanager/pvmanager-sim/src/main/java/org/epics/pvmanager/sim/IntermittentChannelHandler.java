@@ -15,9 +15,9 @@ import java.util.logging.Logger;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.util.FunctionParser;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VType;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.VType;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.sys;
 
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

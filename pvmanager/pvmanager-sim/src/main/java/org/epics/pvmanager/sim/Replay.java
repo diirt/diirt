@@ -7,7 +7,7 @@ package org.epics.pvmanager.sim;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;

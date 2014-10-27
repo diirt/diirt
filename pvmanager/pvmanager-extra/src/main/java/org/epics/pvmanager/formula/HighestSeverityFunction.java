@@ -5,15 +5,15 @@
 package org.epics.pvmanager.formula;
 
 import java.util.AbstractList;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.vtype.Alarm;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.Time;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VType;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VType;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * Retrieves the highest alarm from the values.

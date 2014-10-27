@@ -6,7 +6,7 @@ package org.epics.pvmanager.timecache;
 
 import org.epics.pvmanager.timecache.source.DataSourceFactory;
 import org.epics.pvmanager.timecache.storage.DataStorageFactory;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER

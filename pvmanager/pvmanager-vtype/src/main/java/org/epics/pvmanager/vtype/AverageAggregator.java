@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.VDouble;
 import java.util.List;
 import org.epics.pvmanager.Aggregator;
 import org.epics.pvmanager.ReadFunction;
-import static org.epics.vtype.AlarmSeverity.*;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.AlarmSeverity.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  * Aggregates the values by taking the average.

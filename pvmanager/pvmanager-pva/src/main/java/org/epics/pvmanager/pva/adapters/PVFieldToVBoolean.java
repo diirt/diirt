@@ -6,8 +6,8 @@ package org.epics.pvmanager.pva.adapters;
 
 import org.epics.pvdata.pv.PVBoolean;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.vtype.VBoolean;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VBoolean;
+import org.diirt.vtype.VTypeToString;
 
 /**
  * @author dkumar

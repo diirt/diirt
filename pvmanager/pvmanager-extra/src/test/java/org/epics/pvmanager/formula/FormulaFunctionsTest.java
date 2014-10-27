@@ -9,16 +9,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VString;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VString;
 import org.epics.pvmanager.formula.LastOfChannelExpression;
-import org.epics.vtype.VNumber;
+import org.diirt.vtype.VNumber;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 import static org.mockito.Mockito.*;
 
 /**

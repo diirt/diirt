@@ -21,7 +21,7 @@ import org.epics.pvmanager.timecache.util.CacheHelper;
 import org.epics.pvmanager.timecache.util.TimestampsSet;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * {@link DataStorage} first implementation which handles only memory.

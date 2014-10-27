@@ -6,15 +6,15 @@ package org.epics.pvmanager.vtype;
 
 import org.epics.pvmanager.vtype.SynchronizedVDoubleAggregator;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.vtype.VDouble;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VDouble;
+import static org.diirt.vtype.ValueFactory.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.pvmanager.vtype.SynchronizedVDoubleAggregator;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.VDouble;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.Timestamp;
 import org.junit.BeforeClass;

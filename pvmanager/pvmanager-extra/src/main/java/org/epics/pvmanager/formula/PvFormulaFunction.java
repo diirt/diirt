@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.vtype.VString;
+import org.diirt.vtype.VString;
 
 /**
  * Formula function that returns the value of the pv matching the name

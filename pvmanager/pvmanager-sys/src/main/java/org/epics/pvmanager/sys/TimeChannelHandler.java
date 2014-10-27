@@ -6,7 +6,7 @@ package org.epics.pvmanager.sys;
 
 import org.diirt.util.time.Timestamp;
 import org.diirt.util.time.TimestampFormat;
-import static org.epics.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

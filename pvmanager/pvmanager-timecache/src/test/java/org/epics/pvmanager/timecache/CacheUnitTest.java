@@ -21,7 +21,7 @@ import org.epics.pvmanager.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.TimeRelativeInterval;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 import org.junit.Assert;
 import org.junit.Test;
 

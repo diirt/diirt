@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.displayNone;
-import static org.epics.vtype.ValueFactory.newVNumberArray;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newVNumberArray;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +13,9 @@ import org.epics.pvmanager.util.NullUtils;
 import org.diirt.util.array.ArrayDouble;
 
 import org.diirt.util.array.ListMath;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * @author carcassi

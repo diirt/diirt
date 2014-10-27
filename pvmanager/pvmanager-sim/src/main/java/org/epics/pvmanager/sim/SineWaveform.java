@@ -6,9 +6,9 @@ package org.epics.pvmanager.sim;
 
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.ValueFactory;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.ValueFactory;
+import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.time.Timestamp;
 
 /**

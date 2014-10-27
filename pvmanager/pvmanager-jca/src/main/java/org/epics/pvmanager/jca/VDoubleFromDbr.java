@@ -8,8 +8,8 @@ import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VTypeToString;
 
 /**
  *

@@ -8,8 +8,8 @@ import gov.aps.jca.dbr.DBR_LABELS_Enum;
 import gov.aps.jca.dbr.DBR_TIME_Enum;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VTypeToString;
 
 /**
  *

@@ -9,7 +9,7 @@ import java.lang.ref.SoftReference;
 
 import org.epics.pvmanager.timecache.Data;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * {@link Data} from {@link DataStorage} stored in memory.

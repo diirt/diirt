@@ -6,8 +6,8 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.dbr.DBR_TIME_Byte;
 import gov.aps.jca.dbr.DBR_TIME_String;
-import org.epics.vtype.VString;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTypeToString;
 
 /**
  *

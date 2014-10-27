@@ -12,16 +12,16 @@ import org.epics.pvmanager.NotificationSupport;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.TypeSupport;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.diirt.util.array.ListNumbers;
-import org.epics.vtype.VTable;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.ValueFactory;
 
 /**
  *

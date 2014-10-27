@@ -10,14 +10,14 @@ import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VTypeToString;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.ValueUtil;
 
 /**
  * @author msekoranja

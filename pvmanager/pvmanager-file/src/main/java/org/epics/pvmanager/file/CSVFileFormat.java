@@ -11,8 +11,8 @@ import java.io.OutputStreamWriter;
 import java.util.Collections;
 import java.util.Set;
 
-import org.epics.vtype.VTable;
-import org.epics.vtype.io.CSVIO;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.io.CSVIO;
 
 /**
  * A FileFormat for reading .csv files into VTables

@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.util.NullUtils;
-import org.epics.vtype.ArrayDimensionDisplay;
-import org.epics.vtype.VNumberArray;
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.table.ListNumberProvider;
+import org.diirt.vtype.ArrayDimensionDisplay;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.table.ListNumberProvider;
 
 /**
  * Formula function that constructs an array with given data and boundaries.

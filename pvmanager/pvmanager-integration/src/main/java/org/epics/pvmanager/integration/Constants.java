@@ -6,12 +6,12 @@ package org.epics.pvmanager.integration;
 
 import java.util.Arrays;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.AlarmSeverity;
-import org.epics.vtype.VDouble;
-import org.epics.vtype.VEnum;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VString;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.vtype.AlarmSeverity;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VEnum;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VString;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

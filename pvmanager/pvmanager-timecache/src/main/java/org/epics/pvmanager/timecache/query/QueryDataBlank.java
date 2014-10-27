@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  * Represents a completed chunk with no data available.

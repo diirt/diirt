@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.epics</groupId>
-        <artifactId>pvmanager</artifactId>
-        <version>2.9.0-SNAPSHOT</version>
+        <groupId>org.diirt</groupId>
+        <artifactId>pvmanager-all</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>pvmanager-vtype</artifactId>
     <name>pvmanager-vtype</name>
@@ -17,12 +17,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-core</artifactId>
+            <artifactId>pvmanager</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>epics-vtype</artifactId>
+            <artifactId>vtype</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

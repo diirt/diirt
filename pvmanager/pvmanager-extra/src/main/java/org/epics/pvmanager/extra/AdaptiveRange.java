@@ -6,9 +6,9 @@ package org.epics.pvmanager.extra;
 
 import java.text.NumberFormat;
 import java.util.List;
-import org.epics.vtype.Display;
-import org.epics.vtype.VDoubleArray;
-import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.VDoubleArray;
+import org.diirt.vtype.VNumberArray;
 import org.diirt.util.array.ListNumber;
 
 /**

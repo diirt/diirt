@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import org.epics.pvmanager.PVDirector;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *

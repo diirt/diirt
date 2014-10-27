@@ -4,15 +4,15 @@
  */
 package org.epics.pvmanager.formula;
 
-import static org.epics.vtype.ValueFactory.displayNone;
-import static org.epics.vtype.ValueFactory.newVNumber;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newVNumber;
 
 import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.util.NullUtils;
 
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
 
 /**
  * @author shroffk

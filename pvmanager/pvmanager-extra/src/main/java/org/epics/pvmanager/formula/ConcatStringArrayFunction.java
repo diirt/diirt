@@ -7,9 +7,9 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import java.util.List;
 
-import org.epics.vtype.VString;
-import org.epics.vtype.VStringArray;
-import org.epics.vtype.ValueFactory;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * @author shroffk

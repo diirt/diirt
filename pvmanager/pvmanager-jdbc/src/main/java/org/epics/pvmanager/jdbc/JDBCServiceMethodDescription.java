@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
 import org.epics.pvmanager.service.ServiceMethodDescription;
-import org.epics.vtype.VTable;
+import org.diirt.vtype.VTable;
 
 /**
  * The description for a JDBC service method (i.e. a query).

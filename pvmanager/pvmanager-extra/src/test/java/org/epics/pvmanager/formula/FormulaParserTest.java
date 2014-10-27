@@ -4,17 +4,17 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.vtype.ValueFactory;
-import org.epics.vtype.VInt;
-import org.epics.vtype.VDouble;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VDouble;
 import org.antlr.runtime.*;
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
-import org.epics.vtype.VBoolean;
-import org.epics.vtype.VNumber;
-import org.epics.vtype.VString;
+import org.diirt.vtype.VBoolean;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VString;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 

@@ -4,9 +4,9 @@
  */
 package org.epics.pvmanager.integration;
 
-import org.epics.vtype.VTypeToString;
-import org.epics.vtype.VTypeValueEquals;
-import org.epics.vtype.ValueUtil;
+import org.diirt.vtype.VTypeToString;
+import org.diirt.vtype.VTypeValueEquals;
+import org.diirt.vtype.ValueUtil;
 
 /**
  *
