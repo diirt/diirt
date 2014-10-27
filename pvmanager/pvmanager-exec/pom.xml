@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-exec</artifactId>
-    <name>pvmanager-exec</name>
+    <artifactId>service-exec</artifactId>
+    <name>org.diirt.service.exec</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

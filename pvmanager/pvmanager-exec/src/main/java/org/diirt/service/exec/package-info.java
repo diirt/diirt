@@ -5,4 +5,4 @@
 /**
  * Support for services based on command-line execution (<a href="doc-files/exec-xml-syntax.html">exec xml syntax</a>).
  */
-package org.epics.pvmanager.exec;
+package org.diirt.service.exec;
