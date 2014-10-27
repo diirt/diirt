@@ -4,11 +4,11 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.StatisticsUtil;
-import org.epics.util.stats.Statistics;
+import org.diirt.util.stats.StatisticsUtil;
+import org.diirt.util.stats.Statistics;
 import java.util.List;
-import org.epics.util.array.*;
-import org.epics.util.stats.Range;
+import org.diirt.util.array.*;
+import org.diirt.util.stats.Range;
 
 /**
  *

@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -22,12 +22,12 @@ import static org.epics.graphene.InterpolationScheme.LINEAR;
 import static org.epics.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
 import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
 import static org.epics.graphene.ReductionScheme.NONE;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListMath;
-import org.epics.util.array.ListNumber;
-import org.epics.util.array.SortedListView;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListMath;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.SortedListView;
+import org.diirt.util.stats.Ranges;
 
 /**
  * Renderer for a line graph with multiple y axes.
@@ -227,12 +227,12 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         
         List<SortedListView> xValues = new ArrayList<SortedListView>();
         for(int i = 0; i < numGraphs; i++){
-            xValues.add(org.epics.util.array.ListNumbers.sortedView(data.get(i).getXValues()));
+            xValues.add(org.diirt.util.array.ListNumbers.sortedView(data.get(i).getXValues()));
         }
         
         List<ListNumber> yValues = new ArrayList<ListNumber>();
         for(int i = 0; i < numGraphs; i++){
-            yValues.add(org.epics.util.array.ListNumbers.sortedView(data.get(i).getYValues(), xValues.get(i).getIndexes()));
+            yValues.add(org.diirt.util.array.ListNumbers.sortedView(data.get(i).getYValues(), xValues.get(i).getIndexes()));
         }
         if(separateAreas){
             g.setColor(Color.BLACK);
@@ -978,8 +978,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         // Narrow the data
-        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
-        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        int start = org.diirt.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.diirt.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
         
         xValues = ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);

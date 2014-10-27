@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -21,11 +21,11 @@ import static org.epics.graphene.InterpolationScheme.LINEAR;
 import static org.epics.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
 import static org.epics.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
 import static org.epics.graphene.ReductionScheme.NONE;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListMath;
-import org.epics.util.array.ListNumber;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListMath;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.stats.Ranges;
 
 /**
  * The base class for all graph renderers.
@@ -612,8 +612,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         // Narrow the data
-        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
-        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        int start = org.diirt.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.diirt.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
         
         xValues = ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);

@@ -4,12 +4,12 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.junit.Test;
-import org.epics.util.array.*;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.array.*;
+import org.diirt.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

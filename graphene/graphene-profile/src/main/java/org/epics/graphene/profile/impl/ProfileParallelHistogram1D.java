@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.epics.graphene.*;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumbers;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code> in parallel (by threading).

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import junit.framework.AssertionFailedError;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;

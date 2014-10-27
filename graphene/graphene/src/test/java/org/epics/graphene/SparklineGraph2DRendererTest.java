@@ -6,7 +6,7 @@ package org.epics.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;

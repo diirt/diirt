@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Random;
 import org.epics.graphene.*;
 import org.epics.graphene.profile.ProfileGraph2D;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumbers;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code>.

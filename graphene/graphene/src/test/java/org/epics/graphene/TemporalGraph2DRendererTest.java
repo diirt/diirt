@@ -4,13 +4,13 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import org.epics.util.stats.Ranges;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.stats.Ranges;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

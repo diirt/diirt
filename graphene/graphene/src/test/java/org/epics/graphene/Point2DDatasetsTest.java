@@ -4,8 +4,8 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumber;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;

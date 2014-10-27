@@ -9,8 +9,8 @@ import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
 import java.math.BigInteger;
 import java.util.Arrays;
-import org.epics.util.array.ArrayLong;
-import org.epics.util.array.ListLong;
+import org.diirt.util.array.ArrayLong;
+import org.diirt.util.array.ListLong;
 
 /**
  * A timing system to track a set of durations of a process.

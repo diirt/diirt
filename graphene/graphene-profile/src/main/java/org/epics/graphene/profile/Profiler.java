@@ -16,10 +16,10 @@ import org.epics.graphene.profile.io.CSVWriter;
 import org.epics.graphene.profile.settings.ProfileSettings;
 import org.epics.graphene.profile.utils.Statistics;
 import org.epics.graphene.profile.utils.StopWatch;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListMath;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListMath;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.Timestamp;
 
 public abstract class Profiler {
     protected int         nTries = 0;

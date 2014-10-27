@@ -5,8 +5,8 @@
 package org.epics.graphene;
 
 import java.util.Objects;
-import org.epics.util.stats.Range;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.stats.Range;
+import org.diirt.util.stats.Ranges;
 
 /**
  * Standard implementation for the logic to calculate the data range to

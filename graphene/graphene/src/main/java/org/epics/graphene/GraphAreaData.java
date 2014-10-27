@@ -5,7 +5,7 @@
 
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -13,11 +13,11 @@ import java.awt.RenderingHints;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListInt;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.stats.Ranges;
 
 /**
  *

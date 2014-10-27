@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Ranges;
+import org.diirt.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

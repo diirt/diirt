@@ -9,7 +9,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 
 /**
  *

@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -14,9 +14,9 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListNumber;
 /**
  *
  * @author carcassi, sjdallst, asbarber, jkfeng

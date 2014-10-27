@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.junit.BeforeClass;
 import static org.epics.graphene.ImageAssert.*;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

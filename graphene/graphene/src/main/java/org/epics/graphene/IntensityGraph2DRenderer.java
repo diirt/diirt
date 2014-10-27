@@ -5,16 +5,16 @@
 package org.epics.graphene;
 
 import java.awt.Color;
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.array.ListNumbers;
-import org.epics.util.array.*;
+import org.diirt.util.array.ListNumbers;
+import org.diirt.util.array.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.stats.Ranges;
 
 /**
  * A renderer for intensity graph (also known as heat graph), which visualizes

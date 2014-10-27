@@ -8,9 +8,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.graphene.LinearValueScaleTest.assertAxisEquals;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.stats.Ranges;
 
 /**
  *

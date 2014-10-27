@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.time.TimeInterval;
+import org.diirt.util.time.TimeInterval;
 
 /**
  *

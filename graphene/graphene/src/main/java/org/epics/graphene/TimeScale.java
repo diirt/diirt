@@ -4,8 +4,8 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * The scale to be used to create axis references and rescale time.

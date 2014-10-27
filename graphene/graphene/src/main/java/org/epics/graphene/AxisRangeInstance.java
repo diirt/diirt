@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 
 /**
  * A stateful object that computes the value range for a particular graph.

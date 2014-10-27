@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.array.IteratorDouble;
+import org.diirt.util.array.IteratorDouble;
 
 /**
  *

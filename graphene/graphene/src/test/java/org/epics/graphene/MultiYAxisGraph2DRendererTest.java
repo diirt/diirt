@@ -4,7 +4,7 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import java.util.List;
 import org.junit.BeforeClass;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.stats.Ranges;
 import org.junit.Ignore;
 
 /**

@@ -4,9 +4,9 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Statistics;
-import org.epics.util.stats.Range;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.stats.Range;
+import org.diirt.util.array.ListNumber;
 
 /**
  * Dataset consisting of a value for each cell of a 1D grid.

@@ -4,9 +4,9 @@
  */
 package org.epics.graphene;
 
-import org.epics.util.stats.Statistics;
-import org.epics.util.array.ListNumber;
-import org.epics.util.stats.Range;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.stats.Range;
 
 /**
  * A dataset consisting of a set of 2D points.

@@ -40,8 +40,8 @@ import org.epics.graphene.profile.impl.ProfileMultilineGraph2D;
 import org.epics.graphene.profile.impl.ProfileNLineGraphs2D;
 import org.epics.graphene.profile.io.ImageWriter;
 import org.epics.graphene.profile.utils.DatasetFactory;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Provides individual and specialized cases to test the Graphene library

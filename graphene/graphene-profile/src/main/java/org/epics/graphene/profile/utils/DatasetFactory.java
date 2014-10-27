@@ -17,9 +17,9 @@ import org.epics.graphene.Point1DDatasets;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point3DWithLabelDataset;
 import org.epics.graphene.Point3DWithLabelDatasets;
-import org.epics.util.stats.StatisticsUtil;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.stats.Ranges;
+import org.diirt.util.stats.StatisticsUtil;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.stats.Ranges;
 
 /**
  * Factory object to create datasets.
@@ -180,7 +180,7 @@ public final class DatasetFactory {
             waveform[i] = rand.nextGaussian();
         }
         
-        org.epics.util.stats.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
+        org.diirt.util.stats.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
         return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getMinimum().doubleValue(), stats.getMaximum().doubleValue());
     }
     

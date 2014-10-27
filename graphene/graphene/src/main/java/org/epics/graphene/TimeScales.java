@@ -9,11 +9,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
-import org.epics.util.time.TimestampFormat;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
+import org.diirt.util.time.TimestampFormat;
 
 /**
  *

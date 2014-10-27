@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import org.epics.graphene.Point2DDataset;
 import org.epics.graphene.Point2DDatasets;
-import org.epics.util.array.CircularBufferDouble;
+import org.diirt.util.array.CircularBufferDouble;
 
 /**
  *

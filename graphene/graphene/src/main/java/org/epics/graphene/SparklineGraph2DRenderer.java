@@ -7,8 +7,8 @@ package org.epics.graphene;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
-import org.epics.util.array.ListNumber;
-import org.epics.util.array.SortedListView;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.SortedListView;
 
 /**
  * Creates a renderer that is capable of drawing a sparkline graph.
@@ -134,8 +134,8 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         g.setColor(Color.BLACK);        
   
         //Calculates data values
-        SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
-        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
+        SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.getXValues());
+        ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());        
         setClip(g);
         
         //Draws Line  

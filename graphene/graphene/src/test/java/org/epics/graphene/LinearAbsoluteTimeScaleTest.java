@@ -6,11 +6,11 @@ package org.epics.graphene;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

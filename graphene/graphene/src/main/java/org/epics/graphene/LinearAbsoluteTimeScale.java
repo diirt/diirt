@@ -5,10 +5,10 @@
 package org.epics.graphene;
 
 import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * A time scale where absolute time is used linearly.
