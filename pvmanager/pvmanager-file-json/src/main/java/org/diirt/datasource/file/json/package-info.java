@@ -7,4 +7,4 @@
  * Support for vTypes serialized in JSON (.jvtype) according to the mechanism
  * provided by {@link org.diirt.vtype.json.VTypeToJson}.
  */
-package org.epics.pvmanager.file.json;
+package org.diirt.datasource.file.json;

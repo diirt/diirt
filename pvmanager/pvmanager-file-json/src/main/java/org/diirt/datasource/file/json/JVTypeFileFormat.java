@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.file.json;
+package org.diirt.datasource.file.json;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,7 +11,7 @@ import java.util.Collection;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.json.JsonWriter;
-import org.epics.pvmanager.file.FileFormat;
+import org.diirt.datasource.file.FileFormat;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.json.VTypeToJson;
 

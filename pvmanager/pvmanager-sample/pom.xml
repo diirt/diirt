@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-file</artifactId>
+            <artifactId>datasource-file</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -56,7 +56,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-file-json</artifactId>
+            <artifactId>datasource-file-json</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

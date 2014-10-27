@@ -6,4 +6,4 @@
  * Support for a data source for file based channels
  * (<a href="doc-files/file-datasource.html">channel syntax</a>).
  */
-package org.epics.pvmanager.file;
+package org.diirt.datasource.file;

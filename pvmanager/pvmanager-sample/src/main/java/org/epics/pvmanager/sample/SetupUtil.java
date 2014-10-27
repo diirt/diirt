@@ -6,7 +6,7 @@ package org.epics.pvmanager.sample;
 
 import org.diirt.datasource.CompositeDataSource;
 import org.diirt.datasource.PVManager;
-import org.epics.pvmanager.file.FileDataSource;
+import org.diirt.datasource.file.FileDataSource;
 import org.epics.pvmanager.formula.ArrayFunctionSet;
 import org.epics.pvmanager.formula.FormulaRegistry;
 import org.epics.pvmanager.formula.MathFunctionSet;

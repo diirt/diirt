@@ -2,8 +2,13 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.file;
+package org.diirt.datasource.file;
 
+import org.diirt.datasource.file.CSVFileFormat;
+import org.diirt.datasource.file.ListFileFormat;
+import org.diirt.datasource.file.FileDataSource;
+import org.diirt.datasource.file.ImageFileFormat;
+import org.diirt.datasource.file.FileFormatRegistry;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

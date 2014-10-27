@@ -6,8 +6,9 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-file-json</artifactId>
+    <artifactId>datasource-file-json</artifactId>
     <packaging>jar</packaging>
+    <name>org.diirt.datasource.file.json</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -16,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-file</artifactId>
+            <artifactId>datasource-file</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
