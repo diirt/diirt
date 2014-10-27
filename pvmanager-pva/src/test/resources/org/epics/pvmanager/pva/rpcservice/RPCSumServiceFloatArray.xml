@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
+    <methods>
+        <method name="addToFloatArray" description="add b to every member of a">
+            <argument name="a" description="float array" type="VFloatArray"/>
+            <argument name="b" description="add b to every member of the array a" type="VInt"/>
+            <result name="c" description="s result" type="VFloatArray"/>
+        </method>
+    </methods>
+</pvAccessRPCService>

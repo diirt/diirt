@@ -1,0 +1,87 @@
+/* 
+    Document   : site
+    Created on : Jul 21, 2011, 11:36:10 AM
+    Author     : carcassi
+    Description: CSS style for PVManager site
+*/
+
+a:link {
+  color:#619428;
+}
+a:visited  {
+  color:#619428;
+}
+#breadcrumbs a:link {
+  color:#000;
+}
+#breadcrumbs a:visited  {
+  color:#000;
+}
+a:active, a:hover {
+  color:#000;
+}
+h2 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #000;
+  color: #92D050;
+  background-color: #fff;
+  font-weight:900;
+  font-size: x-large;
+}
+h3 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #000;
+  color: #92D050;
+  background-color: #fff;
+  font-weight: normal;
+  font-size: large;
+}
+h4 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #000;
+  color: #92D050;
+  background-color: #fff;
+  font-weight: normal;
+  font-size: large;
+}
+h5 {
+  padding: 4px 4px 4px 6px;
+  color: #900;
+  font-size: normal;
+}
+ul.breadcrumb {
+  background-color: #DDFFBB;
+}
+
+table.bodyTable th {
+  color: white;
+  background-color: #C4E59F;
+  text-align: left;
+  font-weight: bold;
+}
+
+table.bodyTable tr.a {
+  background-color: #DAEFC0;
+}
+
+table.bodyTable tr.b {
+  background-color: #E9F5DB;
+}
+
+.source {
+  border: 1px solid #999;
+}
+dl {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #000;
+  background-color: #fff;
+}
+dt {
+  color: #900;
+}
+#banner {
+  border-bottom: 1px solid #fff;
+}
+#leftColumn {
+    width: 20%
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<values adjustTime="true">
+    <vDouble timeStamp="0" value="0.0" alarmSeverity="NONE" alarmName="NONE" timeUserTag="0"
+    lowerCtrlLimit="-10.0" lowerDisplayLimit="-10.0" lowerAlarmLimit="-9.0"  lowerWarningLimit="-8.0"
+    upperCtrlLimit="10.0" upperDisplayLimit="10.0" upperAlarmLimit="9.0"  upperWarningLimit="8.0"/>
+    <vDouble timeStamp="1" value="1.0" alarmSeverity="INVALID" alarmName="RECORD" />
+    <vDouble timeStamp="2" value="2.0" alarmSeverity="NONE" alarmName="NONE" />
+    <vDouble timeStamp="2.1" value="3.0" alarmSeverity="MINOR" alarmName="RECORD" />
+    <vDouble timeStamp="2.2" value="4.0" alarmSeverity="MAJOR" alarmName="RECORD" />
+    <vDouble timeStamp="2.5" value="5.0" alarmSeverity="NONE" alarmName="NONE" />
+    <vDouble timeStamp="5" value="6.0" alarmSeverity="UNDEFINED" alarmName="CLIENT" />
+</values>

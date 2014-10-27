@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
+    <methods>
+        <method name="sum" description="sum the two numbers">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a" description="first number" type="VDouble"/>
+            <argument name="b" description="second number" type="VDouble"/>
+            <result name="c" description="sum result" type="VDouble"/>
+        </method>
+        <method name="concate" description="concate two strings">
+            <argument name="a" description="first string" type="VString"/>
+            <argument name="b" description="second string" type="VString"/>
+            <result name="c" description="concate result" type="VString"/>
+        </method>
+        <method name="getTable" description="get table as a standalone result">
+            <result standalone="true" description="table result" type="VTable"/>
+        </method>
+        <method name="getImage" description="get image as a standalone result">
+            <result standalone="true" description="image result" type="VImage"/>
+        </method>
+        <method name="multipyString" description="multiply the string">
+            <argument name="string" description="string to multiply" type="VString"/>
+            <argument name="times" description="how many times to multiply" type="VInt"/>
+            <result name="c" description="multiply result" type="VString"/>
+        </method>
+        <method name="getTimeInMiliseconds" description="get time in milliseconds">
+            <result name="c" description="time result" type="VDouble"/>
+        </method>
+        <method name="nop" description="method without arguments and no result">
+        </method>
+    </methods>
+</pvAccessRPCService>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>pvmanager changes page</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="2.8" date="2014/09/26" description="File change notification. First review of VNumberArray to better support intensity graphs.">
+            <action dev="carcassi"  type="update">
+                file: use ServiceLoader to find supported FileFormats
+            </action>
+            <action dev="carcassi"  type="add">
+                file-json: adding JSON serialization support for file datasource
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype-json: adding JSON serialization for vTypes
+            </action>
+            <action dev="carcassi"  type="update">
+                core: improve throughput of creating readers
+            </action>
+            <action dev="carcassi"  type="add">
+                core: printing stack trace for unclosed pvs
+            </action>
+            <action dev="carcassi"  type="update">
+                core: passive scanning
+            </action>
+        </release>
+        <release version="2.7" date="2014/07/31" description="File change notification. First review of VNumberArray to better support intensity graphs.">
+            <action dev="carcassi"  type="fix">
+                formula: better range handling for histogramOf function
+            </action>
+            <action dev="carcassi"  type="add">
+                file: .list format for string and number arrays
+            </action>
+            <action dev="carcassi"  type="add">
+                file: notification if file changes
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding VBooleanArray
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: VNumberArray review (support for inverted DimensionInfo)
+            </action>
+            <action dev="carcassi"  type="add">
+                file: adding pluggable support adding functions to compose VNumberArray metadata from different pvs
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding TRUE, FALSE, E, PI as constants
+            </action>
+            <action dev="shroffk"  type="add">
+                file: pluggable file format
+            </action>
+            <action dev="tonlyttt"  type="add">
+                formula: indexOf(VEnum)
+            </action>
+        </release>
+        <release version="2.6" date="2014/05/23" description="Graphene integration of new plots.">
+            <action dev="carcassi"  type="update">
+                formula: better range detection for histogramOf function
+            </action>
+            <action dev="carcassi"  type="fix">
+                core: errors on background threads are now logged
+            </action>
+            <action dev="arnaud"  type="add">
+                timecache: first work on working prototype
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added a couple of function to filter tables based on values and numeric ranges
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: disconnected value should hole the time of the disconnect
+            </action>
+            <action dev="carcassi"  type="add">
+                graphene: integrated intensity and multi-line graphs
+            </action>
+            <action dev="carcassi"  type="add">
+                sim: adding a couple channels to test 2D array based widgets
+            </action>
+        </release>
+        <release version="2.5" date="2014/03/27" description="PVA services support.">
+            <action dev="carcassi"  type="update">
+                vtype: factory cleanup
+            </action>
+            <action dev="sekoranja"  type="update">
+                pva: adding support for rpc services
+            </action>
+            <action dev="carcassi"  type="update">
+                io: using new epics-util CSV parser
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula function testing cleanup
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: review and cleanup of function implementations; better null/alarm/time handling
+            </action>
+            <action dev="sfnrendra3"  type="add">
+                formula: adding element-wise operations for array calculation
+            </action>
+        </release>
+        <release version="2.4" date="2014/01/25" description="Integration framework for ca regression tests.">
+            <action dev="carcassi"  type="update">
+                vtype: adding display information to VNumberArray
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding function to calculate histograms
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: handling time with nanosec out of range
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: better handling of reconnects with type change and metadata monitors
+            </action>
+            <action dev="carcassi"  type="add">
+                integration: adding framework for regression tests for channel access
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: tableOf better handles unconnected arguments
+            </action>
+        </release>
+        <release version="2.3" date="2013/10/14" description="Exec service. Finalized operator support in formula.">
+            <action dev="carcassi"  type="update">
+                formula: better handling of time and alarm for operators
+            </action>
+            <action dev="carcassi"  type="add">
+                exec: adding service for command line execution
+            </action>
+            <action dev="carcassi"  type="update">
+                jdbc: more DB types supported in the mapping
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding boolean operators and logical operators
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added support for stateful functions, such as pv(VString) and pvs(String)
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding standard color map
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding VBoolean
+            </action>
+        </release>
+        <release version="2.2" date="2013/06/27" description="Service integration. Formula updates (including dynamic function registration). Better Graphene integration.">
+            <action dev="carcassi"  type="update">
+                formula: basic numeric math function return highest alarm and latest time of arguments; also handle null better
+            </action>
+            <action dev="carcassi"  type="add">
+                exec: first draft for services that execute commands; if output is a CSV, it's parsed to a VTable
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: add alarm and time compare, toString and other utility functions
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: significant refactoring in test code
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype/file: adding temporary support for images in file; review VImage conversion routines
+            </action>
+            <action dev="carcassi"  type="update">
+                jdbc: adding support for Timestamp/numeric/boolean/bit null, temporary support for images in file; review VImage conversion routines
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: VTable can handle timestamps
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: using the not sharing of channels to prevent concurrency issues
+            </action>
+            <action dev="carcassi"  type="add">
+                jdbc: ability to create database services from XML descriptions
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: VBoolean support
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: added color definitions for Alarm
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: highestSeverity
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added comparative operators, bitwise operator, logical operator
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added a few operators for arrays
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added toString/toRadians/toDegrees
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added dynamic pv and pvs functions (pointer like function)
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: added concat function for string concatenation
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: support for stateful and dynamic functions
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype/formula: adding natural join
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: adding alarm logic that uses both value and connection information
+            </action>
+            <action dev="carcassi"  type="update">
+                jca: support for Integer[], Double[] and long String with warnings
+            </action>
+            <action dev="carcassi"  type="add">
+                jdbc services: prototype for introducting database services
+            </action>
+            <action dev="carcassi"  type="fix">
+                jca: partial fix to double connection on the same channel with the different qualifiers
+            </action>
+            <action dev="carcassi"  type="update">
+                loc: default value is null, allow typed pvs, discard value when disconnect
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: single quotes allows for simple pv names
+            </action>
+            <action dev="carcassi"  type="add">
+                sim: adding new channels (intermittent channel and delayed connection channel, sine/square/sawtooth/triangle waveforms)
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: valueOf returns UNDEFINED for null values
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: support for bubble graph expression
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: graph result returns original data and selection index
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: formula now uses syntax with '=' before an actual formula
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: adding functions tableOf/column/range/step to generate tables from column data
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: utilities to assemble vTables
+            </action>
+            <action dev="carcassi"  type="fix">
+                core: better error message if a type is not setup for notification
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: utilities to compare values (only value, no timestamp/alarm/display)
+            </action>
+            <action dev="carcassi"  type="update">
+                graphene: line/scatter graphs now work on tables instead of multiple waveforms
+            </action>
+            <action dev="carcassi"  type="add">
+                vtype: added toString implementation for VTable
+            </action>
+            <action dev="carcassi"  type="remove">
+                core: moved StringUtils and ListNumbers to epics-util
+            </action>
+            <action dev="carcassi"  type="add">
+                file: new datasource to read files; can read a csv table
+            </action>
+            <action dev="carcassi"  type="update">
+                vtype: changing VTable definition so that returns List and ListNumbers instead of arrays
+            </action>
+            <action dev="carcassi" type="add">
+                vtype: adding CSV import/export for most types
+            </action>
+            <action dev="carcassi"  type="add">
+                service: first cut for service integration
+            </action>
+            <action dev="carcassi" type="add">
+                formula: formula functions dynamic registration; modularized all implemented functions
+            </action>
+            <action dev="carcassi" type="update">
+                formula: all single argument functions from java.util.Math are registered as formula functions
+            </action>
+            <action dev="carcassi" type="fix">
+                core: don't send TimeoutException if another exception was sent before
+            </action>
+            <action dev="carcassi" type="fix">
+                loc: add support for all VTypes
+            </action>
+            <action dev="carcassi" type="fix">
+                sim: add table simulation
+            </action>
+            <action dev="msekoranja" type="add">
+                pva: enum and array write support
+            </action>
+        </release>
+        <release version="2.1" date="2013/03/27" description="Stabilization. Bugfixes and improvements">
+            <action dev="carcassi" type="update">
+                jca: better behavior if native library is not found
+            </action>
+            <action dev="carcassi" type="update">
+                formula: read/write expression, allows write only if it's a single channel, if not reports exception
+            </action>
+            <action dev="carcassi" type="update">
+                core: adding machinery to support Exception handling while creating expressions, so that exceptions are reported on the reader/writer
+            </action>
+            <action dev="carcassi" type="update">
+                jca: workaround if Channel.getFieldType() returns UNKNOWN
+            </action>
+            <action dev="carcassi" type="update">
+                jca: workaround, accessright callback dispatched to a separate thread for JNI (needs to be removed)
+            </action>
+            <action dev="carcassi" type="update">
+                formula: added function to create array from expressions
+            </action>
+        </release>
+        <release version="2.0" date="2013/02/12" description="Internal refactoring">
+            <action dev="carcassi" type="fix">
+                core: expression using the same channel twice now work properly
+            </action>
+        </release>
+
+    </body>
+</document>
+

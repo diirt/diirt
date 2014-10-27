@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
+    <methods>
+        <method name="sumFloatAlias" operationName="sumFloat" description="sum the two float numbers">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a" description="first number" type="VFloat"/>
+            <argument name="b" description="second number" type="VFloat"/>
+            <result name="c" description="sum result" type="VFloat"/>
+        </method>
+    </methods>
+</pvAccessRPCService>

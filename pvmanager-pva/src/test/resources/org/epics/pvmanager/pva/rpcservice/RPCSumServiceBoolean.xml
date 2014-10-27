@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvAccessRPCService ver="1" name="pvRPCServiceSample" description="A test pvRPC service">
+    <channelName>testChannel</channelName>
+    <methodFieldName>op</methodFieldName>
+    <useNTQuery>false</useNTQuery>
+    <methods>
+        <method name="isGreaterThen" description="is a greater then b">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a" description="first number" type="VFloat"/>
+            <argument name="b" description="second number" type="VFloat"/>
+            <result name="c" description="isGreaterThen result" type="VBoolean"/>
+        </method>
+        <method name="andOperation" description="a and b">
+            <structureid>uri:ev4:nt/2012/pwd:NTXY</structureid>
+            <argument name="a" description="first argument" type="VBoolean"/>
+            <argument name="b" description="second argument" type="VBoolean"/>
+            <result name="c" description="and operation result" type="VBoolean"/>
+        </method>
+    </methods>
+</pvAccessRPCService>

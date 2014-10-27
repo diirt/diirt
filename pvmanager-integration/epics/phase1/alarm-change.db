@@ -1,0 +1,42 @@
+record(calcout, "$(P)ChangeTick-I_") {
+  field(SCAN, "$(SCAN=1 second)")
+  field(INPA, "$(P)ChangeTick-I_.VAL NPP")
+  field(CALC, "A<6?A+1:0")
+  field(FLNK, "$(P)ChangeState-I_")
+  field(TSEL, "$(TSEL=)")
+}
+
+record(mbbi, "$(P)ChangeState-I_") {
+  field(INP , "$(P)ChangeTick-I_")
+  field(ZRSV, "NO_ALARM")
+  field(ONSV, "MINOR")
+  field(TWSV, "NO_ALARM")
+  field(THSV, "MAJOR")
+  field(FRSV, "NO_ALARM")
+  field(FVSV, "INVALID")
+  field(TSEL, "$(P)ChangeTick-I_.TIME")
+}
+
+record(ai, "$(P)$(DBL)") {
+  field(VAL, "4.2")
+  field(UDF, "0")
+  field(DISV, "-1")
+  field(SDIS, "$(P)ChangeState-I_ MS CP")
+  field(TSEL, "$(P)ChangeState-I_.TIME CA")
+}
+
+record(longin, "$(P)$(LONG)") {
+  field(VAL, "42")
+  field(UDF, "0")
+  field(DISV, "-1")
+  field(SDIS, "$(P)ChangeState-I_ MS CP")
+  field(TSEL, "$(P)ChangeState-I_.TIME CA")
+}
+
+record(stringin, "$(P)$(STR)") {
+  field(VAL, "Hello")
+  field(UDF, "0")
+  field(DISV, "-1")
+  field(SDIS, "$(P)ChangeState-I_ MS CP")
+  field(TSEL, "$(P)ChangeState-I_.TIME CA")
+}
