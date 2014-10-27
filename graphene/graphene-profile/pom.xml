@@ -7,7 +7,7 @@
     <version>3.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>graphene-profile</artifactId>
-  <name>graphene-profile</name>
+  <name>org.diirt.graphene.profile</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
