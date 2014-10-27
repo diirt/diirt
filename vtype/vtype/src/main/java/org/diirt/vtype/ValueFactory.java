@@ -714,7 +714,7 @@ public class ValueFactory {
      * @param value the value to wrap
      * @param alarm the alarm for the value
      * @return the wrapped value
-     * @deprecated use {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display) }
+     * @deprecated use {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display) }
      */
     @Deprecated
     public static VType wrapValue(Object value, Alarm alarm) {
@@ -753,7 +753,7 @@ public class ValueFactory {
     
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible. Calls {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display)} 
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display)} 
      * with no alarm, time now and no display.
      * 
      * @param javaObject the value to wrap
@@ -837,7 +837,7 @@ public class ValueFactory {
     }
     
     /**
-     * As {@link #toVType(java.lang.Object, org.epics.vtype.Alarm, org.epics.vtype.Time, org.epics.vtype.Display)} but throws an exception
+     * As {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display)} but throws an exception
      * if conversion not possible.
      * 
      * @param javaObject the value to wrap

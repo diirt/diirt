@@ -5,7 +5,7 @@
 package org.diirt.vtype;
 
 /**
- * Represent a buffered image. Use {@link ValueUtil#toImage(org.epics.vtype.VImage) }
+ * Represent a buffered image. Use {@link ValueUtil#toImage(org.diirt.vtype.VImage) }
  * and {@link ValueUtil#toVImage(java.awt.image.BufferedImage)} to convert objects
  * of this class to and from awt images.
  * <p>
