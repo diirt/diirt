@@ -10,7 +10,7 @@ package org.epics.pvmanager.jca;
 
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBRType;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Represents the connection payload, which consists of the actual JCA

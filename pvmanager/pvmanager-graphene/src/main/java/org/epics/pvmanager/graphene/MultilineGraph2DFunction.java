@@ -11,12 +11,12 @@ import java.awt.image.BufferedImage;
 import java.util.AbstractList;
 import java.util.Collections;
 import java.util.List;
-import org.epics.graphene.*;
+import org.diirt.graphene.*;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.graphene.ArgumentExpressions.*;
-import org.epics.util.stats.Statistics;
-import org.epics.util.stats.StatisticsUtil;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.stats.StatisticsUtil;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VType;
 

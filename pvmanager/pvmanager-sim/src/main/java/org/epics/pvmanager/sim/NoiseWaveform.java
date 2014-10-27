@@ -5,11 +5,11 @@
 package org.epics.pvmanager.sim;
 
 import java.util.Random;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a waveform containing a uniformly distributed

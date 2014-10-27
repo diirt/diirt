@@ -30,9 +30,9 @@ import org.junit.*;
 
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTable;

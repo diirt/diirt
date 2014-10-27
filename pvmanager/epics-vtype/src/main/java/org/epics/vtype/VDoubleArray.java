@@ -4,7 +4,7 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.array.ListDouble;
+import org.diirt.util.array.ListDouble;
 
 /**
  * Double array with alarm, timestamp, display and control information.

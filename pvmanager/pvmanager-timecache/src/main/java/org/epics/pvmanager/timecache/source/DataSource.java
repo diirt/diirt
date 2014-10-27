@@ -6,7 +6,7 @@ package org.epics.pvmanager.timecache.source;
 
 import org.epics.pvmanager.timecache.DataChunk;
 import org.epics.pvmanager.timecache.DataRequestThread;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves samples from a source.

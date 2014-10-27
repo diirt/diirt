@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.epics.graphene.*;
+import org.diirt.graphene.*;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.VImage;

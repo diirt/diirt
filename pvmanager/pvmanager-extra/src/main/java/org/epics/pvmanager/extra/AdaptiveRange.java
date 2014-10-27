@@ -9,7 +9,7 @@ import java.util.List;
 import org.epics.vtype.Display;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VNumberArray;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

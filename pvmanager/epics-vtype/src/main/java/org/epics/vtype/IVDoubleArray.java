@@ -5,8 +5,8 @@
 package org.epics.vtype;
 
 import java.util.List;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListInt;
 
 /**
  *

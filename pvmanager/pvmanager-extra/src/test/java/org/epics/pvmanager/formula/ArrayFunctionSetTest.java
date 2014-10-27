@@ -8,11 +8,11 @@ import static org.epics.vtype.ValueFactory.*;
 
 import java.util.Arrays;
 
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListInt;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.ArrayDimensionDisplay;

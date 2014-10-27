@@ -43,8 +43,8 @@ import org.epics.pvmanager.ChannelHandlerReadSubscription;
 import org.epics.pvmanager.ChannelWriteCallback;
 import org.epics.pvmanager.MultiplexedChannelHandler;
 import org.epics.pvmanager.ValueCache;
-import org.epics.util.array.CollectionNumbers;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.CollectionNumbers;
+import org.diirt.util.array.ListNumber;
 
 /**
  * 

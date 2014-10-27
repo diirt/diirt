@@ -8,9 +8,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Transforms a set of {@link Timestamp} to an {@link IntervalsList}.

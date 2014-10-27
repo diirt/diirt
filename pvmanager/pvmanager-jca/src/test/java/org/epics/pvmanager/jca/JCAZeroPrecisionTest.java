@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 import org.epics.pvmanager.ValueCache;
 import org.epics.pvmanager.ValueCacheImpl;
 import org.epics.vtype.VDouble;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import static org.epics.pvmanager.jca.JCAVTypeAdapterSetTest.*;
 
 /**

@@ -10,7 +10,7 @@ import org.epics.pvmanager.PVManager;
 import java.util.concurrent.Callable;
 import org.epics.pvmanager.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;

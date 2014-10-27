@@ -6,9 +6,9 @@ package org.epics.pvmanager.graphene;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
-import org.epics.graphene.BubbleGraph2DRenderer;
-import org.epics.graphene.BubbleGraph2DRendererUpdate;
-import org.epics.graphene.Point3DWithLabelDataset;
+import org.diirt.graphene.BubbleGraph2DRenderer;
+import org.diirt.graphene.BubbleGraph2DRendererUpdate;
+import org.diirt.graphene.Point3DWithLabelDataset;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.VImage;

@@ -15,8 +15,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Helper for unit tests.

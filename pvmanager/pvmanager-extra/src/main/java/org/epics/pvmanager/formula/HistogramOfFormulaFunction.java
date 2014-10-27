@@ -8,16 +8,16 @@ import static org.epics.vtype.ValueFactory.*;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.IteratorNumber;
-import org.epics.util.array.ListNumber;
-import org.epics.util.array.ListNumbers;
-import org.epics.util.stats.Range;
-import org.epics.util.stats.Ranges;
-import org.epics.util.stats.Statistics;
-import org.epics.util.stats.StatisticsUtil;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.IteratorNumber;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.ListNumbers;
+import org.diirt.util.stats.Range;
+import org.diirt.util.stats.Ranges;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.stats.StatisticsUtil;
+import org.diirt.util.text.NumberFormats;
 
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;

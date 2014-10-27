@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.epics.pvmanager.timecache.source.DataSource;
 import org.epics.pvmanager.timecache.util.CacheHelper;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves chunks from the specified {@link DataSource}, channel name and

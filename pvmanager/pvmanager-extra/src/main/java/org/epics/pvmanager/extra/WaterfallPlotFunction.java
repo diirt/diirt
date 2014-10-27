@@ -15,9 +15,9 @@ import org.epics.vtype.Display;
 import org.epics.vtype.ValueUtil;
 import org.epics.vtype.VImage;
 import org.epics.pvmanager.extra.WaterfallPlotParameters.InternalCopy;
-import org.epics.util.array.ListNumber;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Implements the image calculation.

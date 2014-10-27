@@ -9,7 +9,7 @@ import org.epics.vtype.VImage;
 import org.epics.vtype.ValueUtil;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import org.epics.graphene.*;
+import org.diirt.graphene.*;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.pvmanager.graphene.ArgumentExpressions.stringArgument;

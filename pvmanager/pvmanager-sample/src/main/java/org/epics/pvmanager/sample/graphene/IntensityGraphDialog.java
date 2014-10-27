@@ -7,8 +7,8 @@ package org.epics.pvmanager.sample.graphene;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.NumberColorMap;
-import org.epics.graphene.NumberColorMaps;
+import org.diirt.graphene.NumberColorMap;
+import org.diirt.graphene.NumberColorMaps;
 
 /**
  *

@@ -9,10 +9,10 @@ import gov.aps.jca.dbr.DBR_TIME_Float;
 import java.util.List;
 import org.epics.vtype.VFloatArray;
 import org.epics.vtype.VTypeToString;
-import org.epics.util.array.ArrayFloat;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListFloat;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ArrayFloat;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListFloat;
+import org.diirt.util.array.ListInt;
 import org.epics.vtype.ArrayDimensionDisplay;
 import org.epics.vtype.ValueUtil;
 

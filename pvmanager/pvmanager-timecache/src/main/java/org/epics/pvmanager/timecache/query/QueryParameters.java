@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.timecache.query;
 
-import org.epics.util.time.TimeRelativeInterval;
+import org.diirt.util.time.TimeRelativeInterval;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER

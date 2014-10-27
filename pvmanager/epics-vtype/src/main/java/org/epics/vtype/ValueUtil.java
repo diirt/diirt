@@ -14,12 +14,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListNumber;
-import org.epics.util.text.NumberFormats;
-import org.epics.util.time.TimestampFormat;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.text.NumberFormats;
+import org.diirt.util.time.TimestampFormat;
 
 /**
  * Various utility methods for runtime handling of the types defined in

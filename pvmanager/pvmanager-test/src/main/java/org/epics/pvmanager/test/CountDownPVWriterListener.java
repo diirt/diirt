@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.epics.pvmanager.PVWriterEvent;
 import org.epics.pvmanager.PVWriterListener;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Write listener to wait that a certain number of notifications.

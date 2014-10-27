@@ -19,8 +19,8 @@ import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
 import static org.epics.pvmanager.util.Executors.*;
-import org.epics.util.text.NumberFormats;
-import static org.epics.util.time.TimeDuration.*;
+import org.diirt.util.text.NumberFormats;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  *

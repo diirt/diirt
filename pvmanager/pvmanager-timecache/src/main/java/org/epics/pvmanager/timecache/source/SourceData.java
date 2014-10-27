@@ -5,7 +5,7 @@
 package org.epics.pvmanager.timecache.source;
 
 import org.epics.pvmanager.timecache.Data;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**

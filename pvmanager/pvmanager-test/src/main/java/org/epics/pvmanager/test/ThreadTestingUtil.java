@@ -6,9 +6,9 @@ package org.epics.pvmanager.test;
 
 import java.util.concurrent.Callable;
 import org.epics.pvmanager.PVReader;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

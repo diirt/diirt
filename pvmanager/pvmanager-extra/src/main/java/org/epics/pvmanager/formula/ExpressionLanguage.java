@@ -17,7 +17,7 @@ import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
 import org.epics.pvmanager.expression.Expressions;
 import org.epics.pvmanager.expression.WriteExpression;
-import org.epics.util.text.StringUtil;
+import org.diirt.util.text.StringUtil;
 import org.epics.vtype.ValueUtil;
 
 /**

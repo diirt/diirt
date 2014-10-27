@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.epics.pvmanager.ReadFunction;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.array.ListDouble;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Converts numeric types to VDouble.

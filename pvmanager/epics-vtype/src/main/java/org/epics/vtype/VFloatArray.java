@@ -4,7 +4,7 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.array.ListFloat;
+import org.diirt.util.array.ListFloat;
 
 /**
  * Float array with alarm, timestamp, display and control information.

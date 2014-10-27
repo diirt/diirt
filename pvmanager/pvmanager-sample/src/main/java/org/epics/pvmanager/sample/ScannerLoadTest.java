@@ -15,7 +15,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.util.Executors;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Load test to see the effect on the performance of the scanning.

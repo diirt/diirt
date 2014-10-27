@@ -4,10 +4,10 @@
  */
 package org.epics.pvmanager.timecache.util;
 
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
-import org.epics.util.time.TimestampFormat;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
+import org.diirt.util.time.TimestampFormat;
 
 /**
  * Cache helper.

@@ -11,7 +11,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /*
  * Copyright 2011 Brookhaven National Laboratory

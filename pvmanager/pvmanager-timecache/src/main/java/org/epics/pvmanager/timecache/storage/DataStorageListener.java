@@ -5,7 +5,7 @@
 package org.epics.pvmanager.timecache.storage;
 
 import org.epics.pvmanager.timecache.util.TimestampsSet;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * {@link DataStorage} listener.

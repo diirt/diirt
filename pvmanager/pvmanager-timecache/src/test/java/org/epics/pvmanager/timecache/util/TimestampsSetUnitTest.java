@@ -8,8 +8,8 @@ import java.text.ParseException;
 
 import org.epics.pvmanager.timecache.util.IntervalsList;
 import org.epics.pvmanager.timecache.util.TimestampsSet;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 

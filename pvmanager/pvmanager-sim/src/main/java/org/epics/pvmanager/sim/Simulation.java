@@ -6,9 +6,9 @@ package org.epics.pvmanager.sim;
 
 import java.util.List;
 import java.util.logging.Logger;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Base class for all simulated signals. It provides the common mechanism for

@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.epics.vtype.VDouble;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Base class for all simulated functions. It provide constant rate data generation

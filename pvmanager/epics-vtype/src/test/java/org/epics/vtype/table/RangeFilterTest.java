@@ -5,7 +5,7 @@
 package org.epics.vtype.table;
 
 import java.util.Arrays;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 import org.junit.Test;

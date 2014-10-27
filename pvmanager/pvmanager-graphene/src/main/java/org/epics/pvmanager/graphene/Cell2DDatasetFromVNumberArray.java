@@ -4,15 +4,15 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.graphene.Cell2DDataset;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListByte;
-import org.epics.util.array.ListNumber;
-import org.epics.util.stats.Range;
-import org.epics.util.stats.Ranges;
-import org.epics.util.stats.Statistics;
-import org.epics.util.stats.StatisticsUtil;
+import org.diirt.graphene.Cell2DDataset;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListByte;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.stats.Range;
+import org.diirt.util.stats.Ranges;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.stats.StatisticsUtil;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.ndarray.Array2DDouble;
 

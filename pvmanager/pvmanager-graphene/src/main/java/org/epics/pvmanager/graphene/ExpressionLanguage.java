@@ -19,7 +19,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;
 import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.expression.SourceRateExpression;
-import org.epics.util.array.ListNumbers;
+import org.diirt.util.array.ListNumbers;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 

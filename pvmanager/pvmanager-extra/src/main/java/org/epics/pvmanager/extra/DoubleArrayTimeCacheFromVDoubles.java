@@ -16,12 +16,12 @@ import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.Display;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VNumber;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.CollectionNumbers;
-import org.epics.util.array.ListNumber;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.CollectionNumbers;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

@@ -29,12 +29,12 @@ import org.epics.pvdata.pv.PVUShortArray;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.ShortArrayData;
 import org.epics.pvdata.pv.StringArrayData;
-import org.epics.util.array.ArrayByte;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayFloat;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ArrayLong;
-import org.epics.util.array.ArrayShort;
+import org.diirt.util.array.ArrayByte;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayFloat;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ArrayLong;
+import org.diirt.util.array.ArrayShort;
 import org.epics.vtype.VTable;
 import org.epics.vtype.VTypeToString;
 

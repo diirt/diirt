@@ -13,8 +13,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
 
 /**
  *

@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.graphene.Graph2DRendererUpdate;
+import org.diirt.graphene.Graph2DRendererUpdate;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
@@ -21,7 +21,7 @@ import org.epics.pvmanager.graphene.Graph2DExpression;
 import org.epics.pvmanager.graphene.Graph2DResult;
 import org.epics.pvmanager.sample.SetupUtil;
 import static org.epics.pvmanager.util.Executors.swingEDT;
-import static org.epics.util.time.TimeDuration.ofHertz;
+import static org.diirt.util.time.TimeDuration.ofHertz;
 import org.epics.vtype.ValueUtil;
 
 /**

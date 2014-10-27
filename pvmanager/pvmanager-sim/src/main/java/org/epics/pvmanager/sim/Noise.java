@@ -7,7 +7,7 @@ package org.epics.pvmanager.sim;
 import java.util.Random;
 import org.epics.vtype.VDouble;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a signal that has a uniform distribution. The warning

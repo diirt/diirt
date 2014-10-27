@@ -7,8 +7,8 @@ package org.epics.pvmanager.timecache.util;
 import java.text.ParseException;
 
 import org.epics.pvmanager.timecache.util.CacheHelper;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 

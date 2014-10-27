@@ -6,7 +6,7 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.ValueFactory;
 

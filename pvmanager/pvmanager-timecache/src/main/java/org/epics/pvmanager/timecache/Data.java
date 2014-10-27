@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.timecache;
 
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**

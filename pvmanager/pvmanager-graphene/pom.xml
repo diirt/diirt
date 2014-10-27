@@ -10,9 +10,9 @@
     <name>pvmanager-graphene</name>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.diirt</groupId>
             <artifactId>graphene</artifactId>
-            <version>0.8.0</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

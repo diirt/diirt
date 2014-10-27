@@ -13,9 +13,9 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.vtype.VDouble;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import org.epics.util.time.TimeDuration;
-import static org.epics.util.time.TimeDuration.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.*;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

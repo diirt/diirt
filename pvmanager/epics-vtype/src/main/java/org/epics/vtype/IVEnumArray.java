@@ -6,7 +6,7 @@ package org.epics.vtype;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ListInt;
 
 /**
  *

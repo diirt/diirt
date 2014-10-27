@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.util.array.ListMath;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListMath;
+import org.diirt.util.array.ListNumber;
 import org.epics.vtype.VNumberArray;
 
 /**

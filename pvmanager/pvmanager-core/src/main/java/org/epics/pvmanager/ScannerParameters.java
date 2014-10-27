@@ -6,7 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.ScheduledExecutorService;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  *

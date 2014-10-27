@@ -14,8 +14,8 @@ import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.vtype.VStringArray;
 import org.epics.vtype.VTypeToString;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
 
 /**
  * @author msekoranja

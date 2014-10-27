@@ -5,10 +5,10 @@
 package org.epics.vtype.ndarray;
 
 import java.util.Arrays;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListInt;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 import org.junit.Test;

@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

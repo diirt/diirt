@@ -22,7 +22,7 @@ import org.junit.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.expression.ReadMap;
 import org.epics.pvmanager.expression.WriteMap;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 
 /**

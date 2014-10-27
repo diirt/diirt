@@ -4,8 +4,8 @@
  */
 package org.epics.vtype.ndarray;
 
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

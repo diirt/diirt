@@ -33,7 +33,7 @@ import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VStatistics;
 import org.epics.vtype.VString;
 import org.epics.vtype.VType;
-import org.epics.util.array.*;
+import org.diirt.util.array.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 

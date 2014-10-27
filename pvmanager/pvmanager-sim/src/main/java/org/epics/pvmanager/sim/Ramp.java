@@ -6,7 +6,7 @@ package org.epics.pvmanager.sim;
 
 import org.epics.vtype.VDouble;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a signal that increases constantly within a range

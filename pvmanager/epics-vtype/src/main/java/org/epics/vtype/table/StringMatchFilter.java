@@ -6,7 +6,7 @@ package org.epics.vtype.table;
 
 import java.util.List;
 import java.util.Objects;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VString;
 import org.epics.vtype.VTable;

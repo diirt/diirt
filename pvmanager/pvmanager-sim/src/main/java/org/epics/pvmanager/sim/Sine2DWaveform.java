@@ -4,13 +4,13 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListDouble;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListDouble;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.ValueFactory;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.ValueUtil;
 
 /**

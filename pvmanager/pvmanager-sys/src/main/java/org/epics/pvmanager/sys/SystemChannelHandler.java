@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.*;
-import org.epics.util.text.NumberFormats;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.text.NumberFormats;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.Display;
 import org.epics.vtype.DisplayBuilder;
 

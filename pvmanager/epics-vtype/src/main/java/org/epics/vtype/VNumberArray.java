@@ -5,7 +5,7 @@
 package org.epics.vtype;
 
 import java.util.List;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 
 /**
  * Numeric array with alarm, timestamp, display and control information.

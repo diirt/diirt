@@ -16,7 +16,7 @@ import org.epics.pvmanager.PVReaderListener;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.test.CountDownPVReaderListener;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  * This class tests opening and closing the same channel multiple times

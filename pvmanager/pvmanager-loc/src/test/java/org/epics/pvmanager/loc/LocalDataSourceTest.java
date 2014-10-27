@@ -35,8 +35,8 @@ import org.epics.vtype.VStringArray;
 import org.epics.pvmanager.expression.Queue;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.loc.LocalDataSource;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

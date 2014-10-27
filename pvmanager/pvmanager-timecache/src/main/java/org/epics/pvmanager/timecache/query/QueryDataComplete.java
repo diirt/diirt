@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**

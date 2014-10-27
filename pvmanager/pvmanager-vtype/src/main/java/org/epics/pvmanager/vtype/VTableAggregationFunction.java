@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.epics.pvmanager.ReadFunction;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayInt;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
 import org.epics.vtype.ValueFactory;
 
 /**

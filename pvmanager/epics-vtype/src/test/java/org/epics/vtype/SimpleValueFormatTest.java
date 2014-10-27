@@ -10,17 +10,17 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.vtype.ValueFactory.*;
-import org.epics.util.array.ArrayByte;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayFloat;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ArrayShort;
-import org.epics.util.array.ListByte;
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListFloat;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListShort;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.array.ArrayByte;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayFloat;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ArrayShort;
+import org.diirt.util.array.ListByte;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListFloat;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListShort;
+import org.diirt.util.text.NumberFormats;
 import org.mockito.Mockito;
 
 /**

@@ -6,9 +6,9 @@ package org.epics.pvmanager.graphene;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.graphene.Point2DDataset;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListNumber;
+import org.diirt.graphene.Point2DDataset;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListNumber;
 import org.epics.vtype.VTable;
 import org.epics.vtype.ValueFactory;
 import org.junit.Test;

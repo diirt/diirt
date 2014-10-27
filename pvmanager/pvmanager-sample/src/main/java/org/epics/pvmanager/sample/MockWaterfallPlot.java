@@ -26,7 +26,7 @@ import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  *

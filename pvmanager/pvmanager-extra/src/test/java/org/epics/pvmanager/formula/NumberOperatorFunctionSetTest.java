@@ -6,7 +6,7 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Time;

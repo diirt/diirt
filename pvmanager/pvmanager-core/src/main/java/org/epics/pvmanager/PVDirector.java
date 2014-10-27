@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Orchestrates the different elements of pvmanager to make a reader functional.

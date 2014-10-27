@@ -6,7 +6,7 @@ package org.epics.vtype.json;
 
 import java.util.List;
 import javax.json.JsonObject;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VEnum;

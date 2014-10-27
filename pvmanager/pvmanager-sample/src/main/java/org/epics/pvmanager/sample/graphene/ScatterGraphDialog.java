@@ -5,8 +5,8 @@
 package org.epics.pvmanager.sample.graphene;
 
 import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRenderer;
+import org.diirt.graphene.InterpolationScheme;
+import org.diirt.graphene.ScatterGraph2DRenderer;
 
 /**
  *

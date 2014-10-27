@@ -7,7 +7,7 @@ package org.epics.pvmanager;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Represent a strategy to decouple desired rate events from source rate

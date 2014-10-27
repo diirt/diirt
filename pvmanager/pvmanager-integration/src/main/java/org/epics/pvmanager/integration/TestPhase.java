@@ -15,7 +15,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderConfiguration;
 import org.epics.pvmanager.PVWriter;
 import org.epics.pvmanager.PVWriterConfiguration;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import static org.epics.vtype.ValueFactory.*;
 
 /**

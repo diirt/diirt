@@ -6,7 +6,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Callable;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

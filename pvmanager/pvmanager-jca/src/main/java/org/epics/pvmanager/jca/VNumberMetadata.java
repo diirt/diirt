@@ -9,7 +9,7 @@ import gov.aps.jca.dbr.DBR_CTRL_Float;
 import gov.aps.jca.dbr.PRECISION;
 import gov.aps.jca.dbr.TIME;
 import java.text.NumberFormat;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.text.NumberFormats;
 import org.epics.vtype.Display;
 
 /**

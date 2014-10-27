@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 
 import org.epics.pvmanager.timecache.Data;
 import org.epics.pvmanager.timecache.util.CacheHelper;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**

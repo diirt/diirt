@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.util.NullUtils;
 
-import org.epics.util.array.ListMath;
+import org.diirt.util.array.ListMath;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.ValueUtil;

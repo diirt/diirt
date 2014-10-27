@@ -7,9 +7,9 @@ package org.epics.pvmanager.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.text.StringUtil;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ListDouble;
+import org.diirt.util.text.StringUtil;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
 
 /**
  * Utility class to parse variable names and create simulated signals.

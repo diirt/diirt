@@ -5,9 +5,9 @@
 package org.epics.pvmanager.sample.graphene;
 
 import java.awt.event.MouseEvent;
-import org.epics.graphene.BubbleGraph2DRendererUpdate;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
+import org.diirt.graphene.BubbleGraph2DRendererUpdate;
+import org.diirt.graphene.InterpolationScheme;
+import org.diirt.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.BubbleGraph2DExpression;

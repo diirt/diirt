@@ -17,7 +17,7 @@ import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.SourceRateExpression;
 import org.epics.pvmanager.expression.SourceRateExpressionImpl;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;

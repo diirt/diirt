@@ -10,9 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.epics.pvmanager.timecache.util.CacheHelper;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Statistics of {@link PVCache}.

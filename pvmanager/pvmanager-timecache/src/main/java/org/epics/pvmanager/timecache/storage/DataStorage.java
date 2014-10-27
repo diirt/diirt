@@ -9,8 +9,8 @@ import java.util.SortedSet;
 import org.epics.pvmanager.timecache.Data;
 import org.epics.pvmanager.timecache.DataChunk;
 import org.epics.pvmanager.timecache.source.DataSource;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves and stores samples from/to a storage.

@@ -5,8 +5,8 @@
 package org.epics.pvmanager.sample.graphene;
 
 import javax.swing.DefaultComboBoxModel;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRenderer;
+import org.diirt.graphene.InterpolationScheme;
+import org.diirt.graphene.LineGraph2DRenderer;
 import static org.epics.pvmanager.sample.SwingBindingUtil.onCheckBoxChange;
 
 /**

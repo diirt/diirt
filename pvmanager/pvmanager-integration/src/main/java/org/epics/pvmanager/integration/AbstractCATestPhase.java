@@ -6,8 +6,8 @@ package org.epics.pvmanager.integration;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.pvmanager.PVManager;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import static org.epics.pvmanager.integration.VTypeMatchMask.*;
 import org.epics.pvmanager.jca.JCADataSource;

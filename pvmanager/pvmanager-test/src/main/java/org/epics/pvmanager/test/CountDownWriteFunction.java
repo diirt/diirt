@@ -7,7 +7,7 @@ package org.epics.pvmanager.test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.ExceptionHandler;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Read listener to wait that a certain number of notifications.

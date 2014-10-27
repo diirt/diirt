@@ -5,7 +5,7 @@
 package org.epics.pvmanager.integration;
 
 import java.util.Arrays;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VEnum;

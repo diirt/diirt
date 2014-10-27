@@ -5,7 +5,7 @@
 package org.epics.vtype;
 
 import java.util.Objects;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 
 class IArrayDimensionDisplay implements ArrayDimensionDisplay {
     

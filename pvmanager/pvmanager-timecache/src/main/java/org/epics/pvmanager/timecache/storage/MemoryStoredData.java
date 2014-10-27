@@ -8,7 +8,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 
 import org.epics.pvmanager.timecache.Data;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**

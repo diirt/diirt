@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.util.array.ListDouble;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

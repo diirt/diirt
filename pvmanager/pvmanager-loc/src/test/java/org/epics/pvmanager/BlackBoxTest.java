@@ -10,7 +10,7 @@ import static org.epics.pvmanager.ExpressionLanguage.*;
 import org.epics.vtype.VDouble;
 import org.epics.vtype.VString;
 import org.epics.pvmanager.loc.LocalDataSource;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;

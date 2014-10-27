@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.util.Executors;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -35,7 +35,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     /**
      * Sets a timeout for no values received.
      * <p>
-     * For more details, consult {@link #timeout(org.epics.util.time.TimeDuration, java.lang.String) }.
+     * For more details, consult {@link #timeout(org.diirt.util.time.TimeDuration, java.lang.String) }.
      *
      * @param timeout the duration of the timeout; can't be null
      * @return this expression

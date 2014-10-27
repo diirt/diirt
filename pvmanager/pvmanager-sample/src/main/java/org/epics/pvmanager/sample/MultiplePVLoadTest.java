@@ -12,7 +12,7 @@ import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.vtype.ExpressionLanguage;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import org.epics.vtype.VType;
 
 /**

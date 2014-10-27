@@ -15,8 +15,8 @@ import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.Display;
 import org.epics.vtype.VDoubleArray;
 import org.epics.vtype.VNumberArray;
-import org.epics.util.array.ListNumber;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

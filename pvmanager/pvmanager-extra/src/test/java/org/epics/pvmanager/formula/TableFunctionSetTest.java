@@ -5,7 +5,7 @@
 package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 import org.epics.vtype.VNumberArray;
 import org.epics.vtype.VString;
 import org.epics.vtype.VStringArray;

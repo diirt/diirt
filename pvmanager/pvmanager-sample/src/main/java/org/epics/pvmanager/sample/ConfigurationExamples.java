@@ -15,7 +15,7 @@ import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  * Examples for basic configuration of pvmanager

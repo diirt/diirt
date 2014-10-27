@@ -4,7 +4,7 @@
  */
 package org.epics.vtype.table;
 
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 
 /**
  *

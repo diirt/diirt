@@ -4,7 +4,7 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.array.ListByte;
+import org.diirt.util.array.ListByte;
 
 /**
  * Byte array with alarm, timestamp, display and control information.

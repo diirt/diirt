@@ -21,9 +21,9 @@ import org.epics.pvmanager.timecache.PVCacheListener;
 import org.epics.pvmanager.timecache.impl.SimpleFileDataSource;
 import org.epics.pvmanager.timecache.util.CacheHelper;
 import org.epics.pvmanager.timecache.util.IntervalsList;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER

@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.epics.pvmanager.ReadExpressionTester;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.vtype.ValueFactory.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

@@ -16,7 +16,7 @@ import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.text.NumberFormats;
 import org.epics.vtype.Display;
 import org.epics.vtype.ValueFactory;
 

@@ -9,10 +9,10 @@ import gov.aps.jca.dbr.DBR_TIME_Short;
 import java.util.List;
 import org.epics.vtype.VShortArray;
 import org.epics.vtype.VTypeToString;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ArrayShort;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListShort;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ArrayShort;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListShort;
 import org.epics.vtype.ArrayDimensionDisplay;
 import org.epics.vtype.ValueUtil;
 

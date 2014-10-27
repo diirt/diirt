@@ -4,10 +4,10 @@
  */
 package org.epics.pvmanager.sample.graphene;
 
-import org.epics.graphene.IntensityGraph2DRenderer;
-import org.epics.graphene.IntensityGraph2DRendererUpdate;
-import org.epics.graphene.NumberColorMap;
-import org.epics.graphene.NumberColorMaps;
+import org.diirt.graphene.IntensityGraph2DRenderer;
+import org.diirt.graphene.IntensityGraph2DRendererUpdate;
+import org.diirt.graphene.NumberColorMap;
+import org.diirt.graphene.NumberColorMaps;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.Graph2DExpression;

@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.epics.pvmanager.*;
-import org.epics.util.array.CollectionNumbers;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.CollectionNumbers;
+import org.diirt.util.array.ListNumber;
 
 /**
  * A ChannelHandler for the JCADataSource.
@@ -258,7 +258,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             }
         }
         if (newValue instanceof Double[]) {
-            log.warning("You are writing a Double[] to channel " + getChannelName() + ": use org.epics.util.array.ListDouble instead");
+            log.warning("You are writing a Double[] to channel " + getChannelName() + ": use org.diirt.util.array.ListDouble instead");
             final Double dbl[] = (Double[]) newValue;
             final double val[] = new double[dbl.length];
             for (int i = 0; i < val.length; ++i) {
@@ -267,7 +267,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             newValue = val;
         }
         if (newValue instanceof Integer[]) {
-            log.warning("You are writing a Integer[] to channel " + getChannelName() + ": use org.epics.util.array.ListInt instead");
+            log.warning("You are writing a Integer[] to channel " + getChannelName() + ": use org.diirt.util.array.ListInt instead");
             final Integer ival[] = (Integer[]) newValue;
             final int val[] = new int[ival.length];
             for (int i = 0; i < val.length; ++i) {

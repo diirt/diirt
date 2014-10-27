@@ -8,9 +8,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import org.epics.vtype.VDouble;
-import org.epics.util.time.TimeDuration;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Function that reads an xml file and simulates a pv by replaying it.

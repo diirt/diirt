@@ -11,14 +11,14 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.epics.vtype.ValueFactory.*;
 import static org.epics.vtype.ValueUtil.*;
-import org.epics.util.text.NumberFormats;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayFloat;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListNumber;
-import org.epics.util.text.NumberFormats;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.text.NumberFormats;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayFloat;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.text.NumberFormats;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

@@ -4,7 +4,7 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 
 /**

@@ -9,8 +9,8 @@ import org.epics.pvdata.pv.IntArrayData;
 import org.epics.pvdata.pv.PVIntArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.util.array.ArrayInt;
-import org.epics.util.array.ListInt;
+import org.diirt.util.array.ArrayInt;
+import org.diirt.util.array.ListInt;
 
 /**
  * @author msekoranja

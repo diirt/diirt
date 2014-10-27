@@ -5,9 +5,9 @@
 package org.epics.vtype;
 
 import java.util.List;
-import org.epics.util.array.CollectionNumbers;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.CollectionNumbers;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListNumber;
 
 /**
  * Multi dimensional array, which can be used for waveforms or more rich data.

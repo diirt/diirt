@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import org.epics.vtype.AlarmSeverity;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  * Utilities to convert JCA types to VData types.
@@ -40,11 +40,11 @@ class DataUtils {
      * @param epicsTimeStamp the epics timestamp
      * @return a new epics.util timestamp
      */
-    static org.epics.util.time.Timestamp timestampOf(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
+    static org.diirt.util.time.Timestamp timestampOf(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
         if (epicsTimeStamp == null)
             return null;
         
-        return org.epics.util.time.Timestamp.of(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, 0)
+        return org.diirt.util.time.Timestamp.of(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, 0)
                 .plus(TimeDuration.ofNanos(epicsTimeStamp.nsec()));
     }
 

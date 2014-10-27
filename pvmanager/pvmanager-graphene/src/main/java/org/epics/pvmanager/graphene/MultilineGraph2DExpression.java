@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.graphene.LineGraph2DRendererUpdate;
-import org.epics.graphene.LineGraph2DRendererUpdate;
+import org.diirt.graphene.LineGraph2DRendererUpdate;
+import org.diirt.graphene.LineGraph2DRendererUpdate;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import org.epics.pvmanager.expression.DesiredRateExpressionList;

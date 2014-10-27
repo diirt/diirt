@@ -5,7 +5,7 @@
 package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Includes parameters that are common for both reader and write configuration.

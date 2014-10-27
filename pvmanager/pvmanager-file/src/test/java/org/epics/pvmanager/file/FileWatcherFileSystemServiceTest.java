@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import org.epics.pvmanager.PVReaderEvent;
 import static org.junit.Assert.*;
 import org.junit.*;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 import static org.hamcrest.Matchers.*;
 
 /**

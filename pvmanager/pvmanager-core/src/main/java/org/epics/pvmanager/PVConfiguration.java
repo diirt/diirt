@@ -6,7 +6,7 @@ package org.epics.pvmanager;
 
 import java.util.concurrent.Executor;
 import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Allows to configure the type of read/write PV to create.

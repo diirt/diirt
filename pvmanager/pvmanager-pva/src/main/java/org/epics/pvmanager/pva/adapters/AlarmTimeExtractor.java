@@ -7,7 +7,7 @@ package org.epics.pvmanager.pva.adapters;
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.Alarm;
 import org.epics.vtype.AlarmSeverity;
 import org.epics.vtype.Time;
@@ -23,7 +23,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 	
 	private static final Alarm noAlarm = ValueFactory.alarmNone();
 	
-	private static final Timestamp noTimeStamp = org.epics.util.time.Timestamp.of(0,0);
+	private static final Timestamp noTimeStamp = org.diirt.util.time.Timestamp.of(0,0);
 	private static final Integer noTimeUserTag = null;
 	
 	public AlarmTimeExtractor(PVStructure pvField, boolean disconnected)
@@ -72,7 +72,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 			if (secsField == null || nanosField == null)
 				timeStamp = noTimeStamp;
 			else
-				timeStamp = org.epics.util.time.Timestamp.of(secsField.get(), nanosField.get());
+				timeStamp = org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
 			
 			PVInt userTagField = timeStampStructure.getIntField("userTag");
 			if (userTagField == null)
@@ -84,7 +84,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 		}
 		else
 		{
-			timeStamp = org.epics.util.time.Timestamp.now();
+			timeStamp = org.diirt.util.time.Timestamp.now();
 			timeUserTag = null;
 			isTimeValid = true;
 		}

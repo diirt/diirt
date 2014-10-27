@@ -4,8 +4,8 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.text.NumberFormats;
-import org.epics.util.time.TimestampFormat;
+import org.diirt.util.text.NumberFormats;
+import org.diirt.util.time.TimestampFormat;
 import org.epics.vtype.table.VTableFactory;
 
 /**

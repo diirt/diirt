@@ -14,8 +14,8 @@ import org.epics.pvmanager.timecache.DataChunk;
 import org.epics.pvmanager.timecache.impl.SimpleFileDataSource;
 import org.epics.pvmanager.timecache.impl.SimpleMemoryStorage;
 import org.epics.pvmanager.timecache.source.DataSource;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 

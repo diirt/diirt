@@ -5,7 +5,7 @@
 package org.epics.pvmanager.jca;
 
 import static org.epics.pvmanager.ExpressionLanguage.channel;
-import static org.epics.util.time.TimeDuration.ofHertz;
+import static org.diirt.util.time.TimeDuration.ofHertz;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;

@@ -14,7 +14,7 @@ import org.epics.pvmanager.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 
 /**

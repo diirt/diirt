@@ -6,10 +6,10 @@ package org.epics.pvmanager.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.util.array.ListDouble;
-import org.epics.util.stats.Statistics;
-import org.epics.util.stats.StatisticsUtil;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.array.ListDouble;
+import org.diirt.util.stats.Statistics;
+import org.diirt.util.stats.StatisticsUtil;
+import org.diirt.util.text.NumberFormats;
 import org.epics.vtype.Display;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;

@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Parameters for the waterfall plot

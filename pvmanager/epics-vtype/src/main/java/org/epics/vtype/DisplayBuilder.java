@@ -5,7 +5,7 @@
 package org.epics.vtype;
 
 import java.text.NumberFormat;
-import org.epics.util.text.NumberFormats;
+import org.diirt.util.text.NumberFormats;
 
 /**
  * Allows to build a Display object which can then be re-used to generate

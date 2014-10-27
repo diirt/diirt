@@ -16,7 +16,7 @@ import org.epics.pvmanager.ReadRecipe;
 import org.epics.pvmanager.WriteRecipe;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.epics.pvmanager.util.FunctionParser;
-import org.epics.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayDouble;
 
 /**
  * Data source for locally written data. Each instance of this

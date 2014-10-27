@@ -11,8 +11,8 @@ import org.epics.pvmanager.jca.JCADataSource;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.graphene.InterpolationScheme;
-import org.epics.graphene.LineGraph2DRendererUpdate;
+import org.diirt.graphene.InterpolationScheme;
+import org.diirt.graphene.LineGraph2DRendererUpdate;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReaderListener;
@@ -27,7 +27,7 @@ import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.Executors.*;
-import static org.epics.util.time.TimeDuration.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  *

@@ -8,7 +8,7 @@ import gov.aps.jca.dbr.TimeStamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.Timestamp;
 
 /**
  *

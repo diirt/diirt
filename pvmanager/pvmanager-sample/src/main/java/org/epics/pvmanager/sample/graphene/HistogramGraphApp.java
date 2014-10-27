@@ -5,7 +5,7 @@
 package org.epics.pvmanager.sample.graphene;
 
 import java.awt.event.MouseEvent;
-import org.epics.graphene.AreaGraph2DRendererUpdate;
+import org.diirt.graphene.AreaGraph2DRendererUpdate;
 import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.HistogramGraph2DExpression;

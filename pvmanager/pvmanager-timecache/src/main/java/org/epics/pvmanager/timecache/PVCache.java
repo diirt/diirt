@@ -9,7 +9,7 @@ import java.util.SortedSet;
 import org.epics.pvmanager.timecache.source.DataSource;
 import org.epics.pvmanager.timecache.storage.DataStorage;
 import org.epics.pvmanager.timecache.util.IntervalsList;
-import org.epics.util.time.TimeInterval;
+import org.diirt.util.time.TimeInterval;
 
 /**
  * Cache interface for a single PV. Retrieves samples from sources via

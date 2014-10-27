@@ -7,12 +7,12 @@ package org.epics.vtype;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.List;
-import org.epics.util.array.ListBoolean;
-import org.epics.util.array.ListByte;
-import org.epics.util.array.ListInt;
-import org.epics.util.array.ListLong;
-import org.epics.util.array.ListNumber;
-import org.epics.util.array.ListShort;
+import org.diirt.util.array.ListBoolean;
+import org.diirt.util.array.ListByte;
+import org.diirt.util.array.ListInt;
+import org.diirt.util.array.ListLong;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.ListShort;
 
 /**
  * Default implementation for formatting.

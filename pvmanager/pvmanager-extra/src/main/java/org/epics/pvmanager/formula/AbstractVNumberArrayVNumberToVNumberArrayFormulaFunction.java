@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.epics.pvmanager.util.NullUtils;
 
-import org.epics.util.array.ListNumber;
+import org.diirt.util.array.ListNumber;
 import org.epics.vtype.VNumber;
 import org.epics.vtype.VNumberArray;
 import static org.epics.vtype.ValueFactory.newVNumberArray;

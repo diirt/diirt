@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 /**
  * Data source for locally written data. Each instance of this

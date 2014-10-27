@@ -7,9 +7,9 @@ package org.epics.pvmanager.graphene;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import org.epics.graphene.Point2DDataset;
-import org.epics.graphene.ScatterGraph2DRenderer;
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
+import org.diirt.graphene.Point2DDataset;
+import org.diirt.graphene.ScatterGraph2DRenderer;
+import org.diirt.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.QueueCollector;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.vtype.VImage;

@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.graphene.ScatterGraph2DRendererUpdate;
+import org.diirt.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.ReadFunction;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;

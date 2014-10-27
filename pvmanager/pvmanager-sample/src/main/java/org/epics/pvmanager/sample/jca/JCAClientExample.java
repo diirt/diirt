@@ -36,8 +36,8 @@ import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
-import org.epics.util.time.TimeDuration;
-import static org.epics.util.time.TimeDuration.*;
+import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.*;
 
 /**
  *

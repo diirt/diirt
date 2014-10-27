@@ -4,7 +4,7 @@
  */
 package org.epics.vtype;
 
-import org.epics.util.array.ListLong;
+import org.diirt.util.array.ListLong;
 
 /**
  * Long array with alarm, timestamp, display and control information.

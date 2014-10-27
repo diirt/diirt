@@ -22,8 +22,8 @@ import org.epics.pvdata.pv.*;
 import org.epics.pvmanager.WriteCache;
 import org.epics.pvmanager.pva.rpcservice.rpcclient.PooledRPCClientFactory;
 import org.epics.pvmanager.service.ServiceMethod;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.array.ArrayFloat;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayFloat;
 import org.epics.vtype.*;
 import org.junit.Test;
 

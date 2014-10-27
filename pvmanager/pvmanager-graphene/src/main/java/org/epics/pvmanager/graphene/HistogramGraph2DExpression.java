@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.graphene.AreaGraph2DRendererUpdate;
+import org.diirt.graphene.AreaGraph2DRendererUpdate;
 import org.epics.pvmanager.expression.DesiredRateExpression;
 import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.functionOf;

@@ -10,7 +10,7 @@ import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.PVReader;
 import org.epics.pvmanager.PVReaderEvent;
 import org.epics.pvmanager.PVReaderListener;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.time.TimeDuration;
 
 public class PVASimpleExample {
 	

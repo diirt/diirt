@@ -19,8 +19,8 @@ import org.epics.pvmanager.timecache.storage.DataStorageListener;
 import org.epics.pvmanager.timecache.storage.MemoryStoredData;
 import org.epics.pvmanager.timecache.util.CacheHelper;
 import org.epics.pvmanager.timecache.util.TimestampsSet;
-import org.epics.util.time.TimeInterval;
-import org.epics.util.time.Timestamp;
+import org.diirt.util.time.TimeInterval;
+import org.diirt.util.time.Timestamp;
 import org.epics.vtype.VType;
 
 /**
