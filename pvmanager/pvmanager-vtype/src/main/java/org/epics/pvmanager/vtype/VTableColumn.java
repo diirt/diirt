@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.vtype;
 
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
 
 /**
  * An expression to build a column for an aggregated vTable.

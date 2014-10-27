@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.service.Service;
-import org.epics.pvmanager.service.ServiceFactory;
+import org.diirt.service.Service;
+import org.diirt.service.ServiceFactory;
 
 /**
  * A service factory that crawls a directory for xml files, and creates

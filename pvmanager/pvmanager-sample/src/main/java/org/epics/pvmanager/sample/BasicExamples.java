@@ -5,18 +5,18 @@
 package org.epics.pvmanager.sample;
 
 import java.util.List;
-import org.epics.pvmanager.ExceptionHandler;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVWriter;
-import org.epics.pvmanager.PVWriterEvent;
-import org.epics.pvmanager.PVWriterListener;
-import org.epics.pvmanager.TimeoutException;
-import org.epics.pvmanager.WriteFunction;
+import org.diirt.datasource.ExceptionHandler;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
+import org.diirt.datasource.PVWriter;
+import org.diirt.datasource.PVWriterEvent;
+import org.diirt.datasource.PVWriterListener;
+import org.diirt.datasource.TimeoutException;
+import org.diirt.datasource.WriteFunction;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

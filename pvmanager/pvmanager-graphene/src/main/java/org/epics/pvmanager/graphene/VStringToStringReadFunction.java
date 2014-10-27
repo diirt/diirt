@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.graphene;
 
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.VString;
 
 /**

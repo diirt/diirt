@@ -8,7 +8,7 @@ import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import org.epics.pvmanager.util.NullUtils;
+import org.diirt.datasource.util.NullUtils;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.vtype.VNumberArray;

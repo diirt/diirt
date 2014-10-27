@@ -5,11 +5,11 @@
 package org.epics.pvmanager.graphene;
 
 import org.diirt.graphene.ScatterGraph2DRendererUpdate;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;

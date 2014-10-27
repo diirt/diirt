@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.ExpressionLanguage;
+import org.diirt.datasource.ExpressionLanguage;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;

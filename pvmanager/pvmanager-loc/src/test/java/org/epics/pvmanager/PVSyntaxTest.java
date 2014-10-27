@@ -4,24 +4,31 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.expression.ChannelExpressionList;
+import org.diirt.datasource.WriteRecipe;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.ChannelWriteRecipe;
+import org.diirt.datasource.ReadRecipe;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.WriteCache;
+import org.diirt.datasource.expression.ChannelExpressionList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionList;
-import org.epics.pvmanager.expression.SourceRateReadWriteExpressionImpl;
-import org.epics.pvmanager.expression.WriteExpression;
+import org.diirt.datasource.expression.DesiredRateReadWriteExpressionList;
+import org.diirt.datasource.expression.SourceRateReadWriteExpressionImpl;
+import org.diirt.datasource.expression.WriteExpression;
 import java.util.Map;
 import java.util.Set;
-import org.epics.pvmanager.ReadExpressionTester;
-import org.epics.pvmanager.WriteExpressionTester;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
+import org.diirt.datasource.ReadExpressionTester;
+import org.diirt.datasource.WriteExpressionTester;
+import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

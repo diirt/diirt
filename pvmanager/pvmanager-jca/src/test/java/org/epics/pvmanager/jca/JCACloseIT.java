@@ -5,12 +5,12 @@
 package org.epics.pvmanager.jca;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderListener;
 import org.junit.Test;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReaderEvent;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

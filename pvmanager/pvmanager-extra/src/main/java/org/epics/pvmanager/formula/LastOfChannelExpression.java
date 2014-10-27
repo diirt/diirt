@@ -5,13 +5,13 @@
 package org.epics.pvmanager.formula;
 
 import java.util.List;
-import org.epics.pvmanager.ReadRecipeBuilder;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVDirector;
+import org.diirt.datasource.ReadRecipeBuilder;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVDirector;
 
 /**
  *

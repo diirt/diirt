@@ -6,9 +6,9 @@ package org.epics.pvmanager.sim;
 
 import java.util.List;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.pvmanager.util.FunctionParser;
+import org.diirt.datasource.ChannelWriteCallback;
+import org.diirt.datasource.MultiplexedChannelHandler;
+import org.diirt.datasource.util.FunctionParser;
 import org.diirt.vtype.ValueFactory;
 
 /**

@@ -7,13 +7,13 @@ package org.epics.pvmanager.vtype;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.List;
 
-import org.epics.pvmanager.ReadExpressionTester;
+import org.diirt.datasource.ReadExpressionTester;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.diirt.util.time.TimeDuration;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.*;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.junit.Assert.*;

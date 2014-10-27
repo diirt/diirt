@@ -7,14 +7,14 @@ package org.epics.pvmanager.sample;
 import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import java.util.concurrent.Executor;
-import org.epics.pvmanager.CompositeDataSource;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
+import org.diirt.datasource.CompositeDataSource;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import static org.epics.pvmanager.util.Executors.*;
+import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

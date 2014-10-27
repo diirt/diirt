@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.epics.pvmanager.ValueCache;
+import org.diirt.datasource.ValueCache;
 
 /**
  *

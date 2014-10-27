@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.exec;
 
-import org.epics.pvmanager.service.Service;
-import org.epics.pvmanager.service.ServiceDescription;
+import org.diirt.service.Service;
+import org.diirt.service.ServiceDescription;
 
 /**
  *

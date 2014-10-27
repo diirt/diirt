@@ -10,14 +10,14 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.diirt.vtype.VMultiDouble;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderListener;
 import javax.swing.table.TableModel;
-import org.epics.pvmanager.PVReaderEvent;
+import org.diirt.datasource.PVReaderEvent;
 import org.diirt.vtype.VDouble;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.Executors.*;
+import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

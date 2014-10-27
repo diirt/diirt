@@ -10,8 +10,8 @@ import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.DataSource;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.jni.JNIContext;
@@ -21,7 +21,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import static org.epics.pvmanager.util.Executors.namedPool;
+import static org.diirt.datasource.util.Executors.namedPool;
 
 /**
  * A data source that uses jca.

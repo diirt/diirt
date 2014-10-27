@@ -8,13 +8,13 @@ import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVManager;
 import org.epics.pvmanager.loc.LocalDataSource;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReader;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.util.Executors;
+import org.diirt.datasource.util.Executors;
 import org.diirt.util.time.TimeDuration;
 
 /**

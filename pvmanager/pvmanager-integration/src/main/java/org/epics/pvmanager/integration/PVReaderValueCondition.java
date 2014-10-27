@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.integration;
 
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
 
 /**
  *

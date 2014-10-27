@@ -10,12 +10,12 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.test.CountDownPVReaderListener;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderListener;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.test.CountDownPVReaderListener;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

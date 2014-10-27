@@ -12,10 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
@@ -24,7 +24,7 @@ import org.epics.pvmanager.extra.WaterfallPlotParameters;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
-import static org.epics.pvmanager.util.Executors.*;
+import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

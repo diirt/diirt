@@ -4,14 +4,17 @@
  */
 package org.epics.pvmanager;
 
-import org.epics.pvmanager.expression.ChannelExpression;
-import org.epics.pvmanager.expression.WriteExpression;
-import org.epics.pvmanager.expression.WriteExpressionImpl;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVWriter;
+import org.diirt.datasource.WriteCache;
+import org.diirt.datasource.expression.ChannelExpression;
+import org.diirt.datasource.expression.WriteExpression;
+import org.diirt.datasource.expression.WriteExpressionImpl;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.*;
 
 /**
  *

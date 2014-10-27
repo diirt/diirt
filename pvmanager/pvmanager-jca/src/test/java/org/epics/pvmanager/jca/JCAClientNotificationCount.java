@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.jca;
 
-import static org.epics.pvmanager.ExpressionLanguage.channel;
+import static org.diirt.datasource.ExpressionLanguage.channel;
 import static org.diirt.util.time.TimeDuration.ofHertz;
 
 import java.util.Random;
@@ -12,10 +12,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
 
 /**
  * This class tests connecting, getting a value,

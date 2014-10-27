@@ -11,8 +11,8 @@ import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.Alarm;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.WriteFunction;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.WriteFunction;
 
 /**
  * Converts the value of the argument to a VString.

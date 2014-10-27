@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderConfiguration;
-import org.epics.pvmanager.PVWriter;
-import org.epics.pvmanager.PVWriterConfiguration;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderConfiguration;
+import org.diirt.datasource.PVWriter;
+import org.diirt.datasource.PVWriterConfiguration;
 import org.diirt.util.time.TimeDuration;
 import static org.diirt.vtype.ValueFactory.*;
 

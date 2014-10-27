@@ -7,7 +7,7 @@ package org.epics.pvmanager.vtype;
 import org.diirt.vtype.VMultiDouble;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.Arrays;
-import org.epics.pvmanager.ReadExpressionTester;
+import org.diirt.datasource.ReadExpressionTester;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.diirt.vtype.VMultiDouble;
 import static org.diirt.vtype.ValueFactory.*;

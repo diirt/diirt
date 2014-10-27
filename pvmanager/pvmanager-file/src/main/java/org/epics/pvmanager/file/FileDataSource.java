@@ -8,8 +8,8 @@ import java.io.File;
 import java.net.URI;
 import java.util.concurrent.Executors;
 
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.DataSource;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import org.diirt.util.time.TimeDuration;
 
@@ -34,7 +34,7 @@ public final class FileDataSource extends DataSource {
     }
     
     private final FileWatcherService fileWatchService =
-            new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.epics.pvmanager.util.Executors.namedPool("diirt - file watch")),
+            new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")),
                     TimeDuration.ofSeconds(1.0));
 
     FileWatcherService getFileWatchService() {

@@ -7,10 +7,10 @@ package org.epics.pvmanager.sim;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.DataSource;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import static org.epics.pvmanager.util.Executors.*;
+import static org.diirt.datasource.util.Executors.*;
 
 /**
  * Data source to produce simulated signals that can be using during development

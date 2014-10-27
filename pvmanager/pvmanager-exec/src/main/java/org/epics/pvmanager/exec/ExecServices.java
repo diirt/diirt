@@ -35,7 +35,7 @@ public class ExecServices {
         // Prevent instanciation
     }
     
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.epics.pvmanager.util.Executors.namedPool("JDBC services"));
+    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.datasource.util.Executors.namedPool("JDBC services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.

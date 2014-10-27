@@ -7,12 +7,12 @@ package org.epics.pvmanager.jdbc;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
-import org.epics.pvmanager.service.ServiceMethod;
-import org.epics.pvmanager.service.ServiceRegistry;
+import org.diirt.service.ServiceMethod;
+import org.diirt.service.ServiceRegistry;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.io.CSVIO;
 import static org.diirt.vtype.ValueFactory.*;
-import static org.epics.pvmanager.service.ServiceUtil.*;
+import static org.diirt.service.ServiceUtil.*;
 
 /**
  *

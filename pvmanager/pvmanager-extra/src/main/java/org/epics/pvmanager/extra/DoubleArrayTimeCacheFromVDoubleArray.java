@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VNumberArray;

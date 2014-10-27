@@ -5,8 +5,8 @@
 package org.epics.pvmanager.integration;
 
 import java.util.Arrays;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVManager;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;

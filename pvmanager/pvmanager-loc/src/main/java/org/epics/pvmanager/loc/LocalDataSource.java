@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.ChannelReadRecipe;
-import org.epics.pvmanager.ChannelWriteRecipe;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.ReadRecipe;
-import org.epics.pvmanager.WriteRecipe;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.ChannelReadRecipe;
+import org.diirt.datasource.ChannelWriteRecipe;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.ReadRecipe;
+import org.diirt.datasource.WriteRecipe;
 import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.pvmanager.util.FunctionParser;
+import org.diirt.datasource.util.FunctionParser;
 import org.diirt.util.array.ArrayDouble;
 
 /**

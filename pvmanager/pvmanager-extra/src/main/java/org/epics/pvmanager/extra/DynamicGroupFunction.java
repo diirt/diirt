@@ -6,7 +6,7 @@ package org.epics.pvmanager.extra;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 
 /**
  * Function that implements the dynamic group.

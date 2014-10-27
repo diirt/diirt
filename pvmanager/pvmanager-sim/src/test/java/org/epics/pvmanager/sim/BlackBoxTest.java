@@ -4,17 +4,16 @@
  */
 package org.epics.pvmanager.sim;
 
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
 import java.util.concurrent.Callable;
-import org.epics.pvmanager.*;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import static org.epics.pvmanager.test.ThreadTestingUtil.*;
+import static org.diirt.datasource.test.ThreadTestingUtil.*;
 
 /**
  *

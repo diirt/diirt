@@ -7,7 +7,7 @@ package org.epics.pvmanager.integration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.logging.LogManager;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.PVManager;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**

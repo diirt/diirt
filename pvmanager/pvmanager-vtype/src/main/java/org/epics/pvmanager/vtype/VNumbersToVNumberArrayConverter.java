@@ -10,7 +10,7 @@ import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.time.Timestamp;

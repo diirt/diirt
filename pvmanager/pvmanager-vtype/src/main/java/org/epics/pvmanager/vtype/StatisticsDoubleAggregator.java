@@ -9,8 +9,8 @@ import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VDouble;
 import static java.lang.Math.*;
 import java.util.List;
-import org.epics.pvmanager.Aggregator;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.Aggregator;
+import org.diirt.datasource.ReadFunction;
 import static org.diirt.vtype.AlarmSeverity.*;
 import static org.diirt.vtype.ValueFactory.*;
 

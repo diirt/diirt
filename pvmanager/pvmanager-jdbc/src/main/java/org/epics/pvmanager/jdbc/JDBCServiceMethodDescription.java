@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
-import org.epics.pvmanager.service.ServiceMethodDescription;
+import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VTable;
 
 /**

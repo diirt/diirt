@@ -4,12 +4,12 @@
  */
 package org.epics.pvmanager.sample.jca;
 
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
 import org.epics.pvmanager.jca.JCADataSource;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VShortArray;
 import static org.diirt.util.time.TimeDuration.*;

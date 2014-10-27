@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PVReaderEvent;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderListener;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

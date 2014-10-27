@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.PVDirector;
+import org.diirt.datasource.PVDirector;
 
 /**
  * Formula function that can add and remove dynamically access to

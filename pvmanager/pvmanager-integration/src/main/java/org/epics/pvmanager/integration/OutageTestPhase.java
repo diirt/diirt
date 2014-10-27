@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.integration;
 
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 

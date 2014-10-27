@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.integration;
 
-import org.epics.pvmanager.PVReaderEvent;
+import org.diirt.datasource.PVReaderEvent;
 import org.diirt.util.time.Timestamp;
 
 /**

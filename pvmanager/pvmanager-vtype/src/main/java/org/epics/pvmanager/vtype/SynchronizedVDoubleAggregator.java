@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;

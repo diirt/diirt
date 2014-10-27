@@ -8,12 +8,12 @@ import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VNumber;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 import java.util.List;
-import org.epics.pvmanager.BasicTypeSupport;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.SourceRateExpression;
-import org.epics.pvmanager.expression.SourceRateExpressionList;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import org.diirt.datasource.BasicTypeSupport;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.SourceRateExpression;
+import org.diirt.datasource.expression.SourceRateExpressionList;
+import static org.diirt.datasource.ExpressionLanguage.*;
 
 /**
  * PVManager expression language support for additional operations.

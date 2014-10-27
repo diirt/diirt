@@ -5,7 +5,7 @@
 package org.epics.pvmanager.graphene;
 
 import org.diirt.graphene.Graph2DRendererUpdate;
-import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpression;
 
 /**
  *

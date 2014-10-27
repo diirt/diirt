@@ -11,11 +11,11 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.epics.pvmanager.BasicTypeSupport;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.BasicTypeSupport;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
 import org.epics.pvmanager.timecache.query.Query;
 import org.epics.pvmanager.timecache.query.QueryData;
 import org.epics.pvmanager.timecache.query.QueryParameters;

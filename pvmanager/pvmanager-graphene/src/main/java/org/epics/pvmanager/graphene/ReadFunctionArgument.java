@@ -5,7 +5,7 @@
 package org.epics.pvmanager.graphene;
 
 import java.util.Objects;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 
 /**
  *

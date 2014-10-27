@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.antlr.runtime.*;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpression;
-import org.epics.pvmanager.expression.DesiredRateReadWriteExpressionImpl;
-import org.epics.pvmanager.expression.Expressions;
-import org.epics.pvmanager.expression.WriteExpression;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
+import org.diirt.datasource.expression.DesiredRateReadWriteExpressionImpl;
+import org.diirt.datasource.expression.Expressions;
+import org.diirt.datasource.expression.WriteExpression;
 import org.diirt.util.text.StringUtil;
 import org.diirt.vtype.ValueUtil;
 
@@ -154,7 +154,7 @@ public class ExpressionLanguage {
         if (value == null) {
             throw new IllegalArgumentException("No constant named '" + constantName + "' is defined");
         }
-        return org.epics.pvmanager.ExpressionLanguage.constant(value, constantName);
+        return org.diirt.datasource.ExpressionLanguage.constant(value, constantName);
     }
     
     static <T> DesiredRateExpression<T> cast(Class<T> clazz, DesiredRateExpression<?> arg1) {

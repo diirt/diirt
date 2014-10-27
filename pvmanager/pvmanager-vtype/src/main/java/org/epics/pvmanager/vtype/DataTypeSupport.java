@@ -5,8 +5,8 @@
 package org.epics.pvmanager.vtype;
 
 import org.diirt.vtype.VType;
-import org.epics.pvmanager.NotificationSupport;
-import org.epics.pvmanager.TypeSupport;
+import org.diirt.datasource.NotificationSupport;
+import org.diirt.datasource.TypeSupport;
 
 /**
  * Adds support for control system standard value types.

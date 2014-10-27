@@ -7,7 +7,7 @@ package org.epics.pvmanager.formula;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.vtype.VString;
 
 /**

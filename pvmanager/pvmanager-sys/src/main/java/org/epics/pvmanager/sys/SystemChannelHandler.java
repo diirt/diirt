@@ -4,15 +4,14 @@
  */
 package org.epics.pvmanager.sys;
 
-import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.pvmanager.ChannelWriteCallback;
+import org.diirt.datasource.MultiplexedChannelHandler;
+import org.diirt.datasource.ChannelWriteCallback;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.epics.pvmanager.*;
 import org.diirt.util.text.NumberFormats;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;

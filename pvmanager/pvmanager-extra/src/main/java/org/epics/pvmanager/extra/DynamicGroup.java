@@ -6,13 +6,13 @@ package org.epics.pvmanager.extra;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.ReadRecipe;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.ExceptionHandler;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.ReadRecipe;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.ExceptionHandler;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
 
 /**
  * A expression that returns the result of a dynamically managed group.

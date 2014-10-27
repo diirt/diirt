@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.diirt.util.time.TimeDuration.*;
-import static org.epics.pvmanager.test.TimeMatchers.*;
+import static org.diirt.datasource.test.TimeMatchers.*;
 import org.diirt.util.time.Timestamp;
 import org.junit.BeforeClass;
 

@@ -4,11 +4,11 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.PVDirector;
-import org.epics.pvmanager.ReadFunction;
-import org.epics.pvmanager.ReadRecipeBuilder;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.PVDirector;
+import org.diirt.datasource.ReadFunction;
+import org.diirt.datasource.ReadRecipeBuilder;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
 
 /**
  *

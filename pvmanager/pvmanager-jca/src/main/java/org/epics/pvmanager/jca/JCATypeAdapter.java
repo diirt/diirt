@@ -4,11 +4,11 @@
  */
 package org.epics.pvmanager.jca;
 
-import org.epics.pvmanager.DataSourceTypeAdapter;
+import org.diirt.datasource.DataSourceTypeAdapter;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
-import org.epics.pvmanager.ValueCache;
+import org.diirt.datasource.ValueCache;
 
 /**
  * Type adapter for JCA data source. Will match a channel based on the value

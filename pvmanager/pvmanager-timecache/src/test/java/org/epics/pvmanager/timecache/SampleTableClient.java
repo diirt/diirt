@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.timecache;
 
-import static org.epics.pvmanager.ExpressionLanguage.resultOf;
+import static org.diirt.datasource.ExpressionLanguage.resultOf;
 import static org.epics.pvmanager.timecache.ExpressionLanguage.timeTableOf;
 import static org.diirt.vtype.ValueFactory.alarmNone;
 import static org.diirt.vtype.ValueFactory.newVString;
@@ -15,11 +15,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.epics.pvmanager.ExpressionLanguage.OneArgFunction;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.ExpressionLanguage.OneArgFunction;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.timecache.query.QueryParameters;
 import org.diirt.util.time.TimeDuration;

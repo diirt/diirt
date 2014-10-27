@@ -4,8 +4,8 @@
  */
 package org.epics.pvmanager.sample;
 
-import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.CompositeDataSource;
+import org.diirt.datasource.PVManager;
 import org.epics.pvmanager.file.FileDataSource;
 import org.epics.pvmanager.formula.ArrayFunctionSet;
 import org.epics.pvmanager.formula.FormulaRegistry;
@@ -16,7 +16,7 @@ import org.epics.pvmanager.formula.TableFunctionSet;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.util.Executors;
+import org.diirt.datasource.util.Executors;
 import org.epics.pvmanager.sys.SystemDataSource;
 
 /**

@@ -6,9 +6,9 @@ package org.epics.pvmanager.graphene;
 
 import org.diirt.graphene.LineGraph2DRendererUpdate;
 import org.diirt.graphene.LineGraph2DRendererUpdate;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.functionOf;
 
 /**

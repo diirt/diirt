@@ -4,9 +4,12 @@
  */
 package org.epics.pvmanager;
 
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import static org.epics.pvmanager.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VString;
 import org.epics.pvmanager.loc.LocalDataSource;

@@ -4,11 +4,11 @@
  */
 package org.epics.pvmanager.formula;
 
-import org.epics.pvmanager.PVWriterDirector;
-import org.epics.pvmanager.WriteFunction;
-import org.epics.pvmanager.WriteRecipeBuilder;
-import org.epics.pvmanager.expression.WriteExpressionImpl;
-import org.epics.pvmanager.expression.WriteExpressionListImpl;
+import org.diirt.datasource.PVWriterDirector;
+import org.diirt.datasource.WriteFunction;
+import org.diirt.datasource.WriteRecipeBuilder;
+import org.diirt.datasource.expression.WriteExpressionImpl;
+import org.diirt.datasource.expression.WriteExpressionListImpl;
 
 /**
  *

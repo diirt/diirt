@@ -5,10 +5,10 @@
 package org.epics.pvmanager.loc;
 
 import java.util.ArrayList;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ChannelHandlerReadSubscription;
-import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.pvmanager.ChannelHandlerWriteSubscription;
+import org.diirt.datasource.ChannelWriteCallback;
+import org.diirt.datasource.ChannelHandlerReadSubscription;
+import org.diirt.datasource.MultiplexedChannelHandler;
+import org.diirt.datasource.ChannelHandlerWriteSubscription;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

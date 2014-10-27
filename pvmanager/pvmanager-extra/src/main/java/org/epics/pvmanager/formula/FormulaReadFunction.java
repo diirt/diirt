@@ -7,8 +7,8 @@ package org.epics.pvmanager.formula;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.epics.pvmanager.PVDirector;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.PVDirector;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.ValueUtil;
 
 /**

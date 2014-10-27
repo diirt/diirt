@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.exec;
 
-import org.epics.pvmanager.service.Service;
+import org.diirt.service.Service;
 
 /**
  * A pvmanager service based on command line execution.

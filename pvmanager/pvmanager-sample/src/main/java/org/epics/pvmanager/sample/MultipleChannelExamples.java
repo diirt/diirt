@@ -6,13 +6,13 @@ package org.epics.pvmanager.sample;
 
 import java.util.HashMap;
 import java.util.Map;
-import static org.epics.pvmanager.ExpressionLanguage.*;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVWriter;
+import static org.diirt.datasource.ExpressionLanguage.*;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
+import org.diirt.datasource.PVWriter;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

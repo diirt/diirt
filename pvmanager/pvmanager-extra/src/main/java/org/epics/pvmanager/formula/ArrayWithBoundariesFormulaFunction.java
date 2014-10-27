@@ -7,7 +7,7 @@ package org.epics.pvmanager.formula;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.util.NullUtils;
+import org.diirt.datasource.util.NullUtils;
 import org.diirt.vtype.ArrayDimensionDisplay;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.ValueFactory;

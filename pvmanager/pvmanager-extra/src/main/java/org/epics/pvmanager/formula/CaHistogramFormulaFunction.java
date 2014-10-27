@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;

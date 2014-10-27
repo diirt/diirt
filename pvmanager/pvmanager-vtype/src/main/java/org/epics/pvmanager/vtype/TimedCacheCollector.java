@@ -6,8 +6,8 @@ package org.epics.pvmanager.vtype;
 
 import org.diirt.vtype.Time;
 import java.util.*;
-import org.epics.pvmanager.Collector;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.Collector;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 

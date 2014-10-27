@@ -9,8 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.diirt.datasource.ChannelWriteCallback;
+import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 

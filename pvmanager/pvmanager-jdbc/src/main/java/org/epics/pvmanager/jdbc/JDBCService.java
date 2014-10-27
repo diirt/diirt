@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.jdbc;
 
-import org.epics.pvmanager.service.Service;
+import org.diirt.service.Service;
 
 /**
  * A pvmanager service based on database queries.

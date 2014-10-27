@@ -6,8 +6,8 @@ package org.epics.pvmanager.exec;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import org.epics.pvmanager.WriteFunction;
-import org.epics.pvmanager.service.ServiceMethod;
+import org.diirt.datasource.WriteFunction;
+import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
 
 /**

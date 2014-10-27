@@ -11,18 +11,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import org.epics.pvmanager.test.CountDownPVReaderListener;
-import org.epics.pvmanager.test.MockDataSource;
+import org.diirt.datasource.test.CountDownPVReaderListener;
+import org.diirt.datasource.test.MockDataSource;
 
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.expression.Queue;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.expression.Queue;
 
 import static org.junit.Assert.*;
 

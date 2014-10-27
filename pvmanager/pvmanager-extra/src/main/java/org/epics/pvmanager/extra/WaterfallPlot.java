@@ -6,15 +6,15 @@ package org.epics.pvmanager.extra;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.ReadFunction;
+import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.VDouble;
-import org.epics.pvmanager.expression.DesiredRateExpression;
-import org.epics.pvmanager.expression.DesiredRateExpressionImpl;
+import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VImage;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
-import org.epics.pvmanager.expression.DesiredRateExpressionList;
+import org.diirt.datasource.expression.DesiredRateExpressionList;
 
 /**
  * A waterfall plot.

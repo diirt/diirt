@@ -5,8 +5,8 @@
 package org.epics.pvmanager.jca;
 
 import gov.aps.jca.Channel;
-import org.epics.pvmanager.DataSourceTypeSupport;
-import org.epics.pvmanager.ValueCache;
+import org.diirt.datasource.DataSourceTypeSupport;
+import org.diirt.datasource.ValueCache;
 
 /**
  * 

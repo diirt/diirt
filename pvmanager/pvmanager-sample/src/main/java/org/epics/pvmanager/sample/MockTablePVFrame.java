@@ -6,15 +6,15 @@ package org.epics.pvmanager.sample;
 
 import org.diirt.vtype.VStatistics;
 import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReaderListener;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import org.epics.pvmanager.PVReaderEvent;
+import org.diirt.datasource.PVReaderEvent;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.Executors.*;
+import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

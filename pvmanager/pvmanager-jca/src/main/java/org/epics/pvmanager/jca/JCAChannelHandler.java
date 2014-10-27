@@ -4,9 +4,10 @@
  */
 package org.epics.pvmanager.jca;
 
-import org.epics.pvmanager.MultiplexedChannelHandler;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.ValueCache;
+import org.diirt.datasource.ChannelHandlerWriteSubscription;
+import org.diirt.datasource.MultiplexedChannelHandler;
+import org.diirt.datasource.ChannelWriteCallback;
+import org.diirt.datasource.ValueCache;
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Monitor;
@@ -29,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.epics.pvmanager.*;
 import org.diirt.util.array.CollectionNumbers;
 import org.diirt.util.array.ListNumber;
 

@@ -7,7 +7,7 @@ package org.epics.pvmanager.vtype;
 import org.diirt.vtype.VTable;
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.expression.DesiredRateExpression;
+import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;

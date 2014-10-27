@@ -5,7 +5,7 @@
 package org.epics.pvmanager.jca;
 
 import java.util.Collection;
-import org.epics.pvmanager.DataSourceTypeAdapterSet;
+import org.diirt.datasource.DataSourceTypeAdapterSet;
 
 /**
  *

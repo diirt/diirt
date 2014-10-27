@@ -6,7 +6,7 @@ package org.epics.pvmanager.integration;
 
 import java.util.Arrays;
 import java.util.List;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
 import org.epics.pvmanager.jca.JCADataSourceBuilder;
 

@@ -7,7 +7,7 @@ package org.epics.pvmanager.exec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import org.epics.pvmanager.service.ServiceDescription;
+import org.diirt.service.ServiceDescription;
 
 /**
  * The description on how to construct an exec service.

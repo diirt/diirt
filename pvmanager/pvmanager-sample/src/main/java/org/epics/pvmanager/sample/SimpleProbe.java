@@ -4,10 +4,11 @@
  */
 package org.epics.pvmanager.sample;
 
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.PVReaderListener;
+import org.diirt.datasource.PVManager;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.ValueFormat;
 import org.diirt.vtype.ValueUtil;
@@ -21,7 +22,6 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import org.epics.pvmanager.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.TimeDuration;
