@@ -197,14 +197,12 @@
         <module>pvmanager-graphene</module>
         <module>pvmanager-vtype</module>
         <module>pvmanager-core</module>
-        <module>epics-vtype</module>
         <module>pvmanager-sys</module>
         <module>pvmanager-timecache</module>
         <module>pvmanager-file</module>
         <module>pvmanager-jdbc</module>
         <module>pvmanager-exec</module>
         <module>pvmanager-integration</module>
-        <module>vtype-json</module>
         <module>pvmanager-file-json</module>
     </modules>
     <reporting>
