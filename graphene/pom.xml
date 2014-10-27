@@ -6,34 +6,29 @@
         <artifactId>oss-parent</artifactId>
         <version>9</version>
     </parent>
-    <groupId>org.epics</groupId>
+    <groupId>org.diirt</groupId>
     <artifactId>graphene-all</artifactId>
     <version>3.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>graphene</name>
-    <description>A library to create graphs suitable for real time scientific
-        data visualization.</description>
+    <url>http://diirt.org</url>
+    <description>A library to create graphs suitable for real time scientific data visualization.</description>
     <issueManagement>
         <url>https://github.com/diirt/diirt/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
-    <packaging>pom</packaging>
-    <url>http://graphene.sourceforge.net</url>
-    <organization>
-        <name>Brookhaven National Laboratory, University of Michigan</name>
-    </organization>
-    <inceptionYear>2012</inceptionYear>    
     <licenses>
         <license>
-            <name>GNU General Public License 2 with the Classpath Exception</name>
+            <name>The MIT License (MIT)</name>
             <url>LICENSE.TXT</url>
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/diirt/graphene.git</url>
-        <connection>scm:git:https://github.com/diirt/graphene.git</connection>
-        <developerConnection>scm:git:https://github.com/diirt/graphene.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:https://github.com/diirt/diirt.git</connection>
+        <developerConnection>scm:git:https://github.com/diirt/diirt.git</developerConnection>
+        <url>https://github.com/diirt/diirt.git</url>
+        <tag>HEAD</tag>
+    </scm>
     <developers>
         <developer>
             <id>carcassi</id>
@@ -68,8 +63,8 @@
     </properties>
     <modules>
         <module>graphene</module>
-    <module>graphene-profile</module>
-  </modules>
+        <module>graphene-profile</module>
+    </modules>
     <build>
         <plugins>
             <plugin>
@@ -177,7 +172,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.epics</groupId>
             <artifactId>epics-util</artifactId>
             <version>0.3.2</version>
         </dependency>
