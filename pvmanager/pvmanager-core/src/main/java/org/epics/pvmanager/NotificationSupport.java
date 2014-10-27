@@ -4,6 +4,7 @@
  */
 package org.epics.pvmanager;
 
+import java.util.Objects;
 import org.epics.pvmanager.util.NullUtils;
 
 /**
@@ -86,7 +87,7 @@ public abstract class NotificationSupport<T> extends TypeSupport<T> {
         return new NotificationSupport<T>(clazz) {
             @Override
             public Notification<T> prepareNotification(final T oldValue, final T newValue) {
-                if (NullUtils.equalsOrBothNull(oldValue, newValue)) {
+                if (Objects.equals(oldValue, newValue)) {
                     return new Notification<T>(false, null);
                 }
                 return new Notification<T>(true, newValue);
