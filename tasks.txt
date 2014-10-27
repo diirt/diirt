@@ -1,0 +1,30 @@
+Possible tasks for students
+
+Time graphs
+-----------
+* line graph
+* waterfall
+
+Area graphs
+ * Multi line plot (single axis)
+ * Multi line plot (multiple y axis)
+
+Area graphs
+-----------
+* intensity graph
+
+Core
+-------
+* Add suggested range from datasets
+
+Tools
+-----
+* JavaFX integration (may have to wait Java 8)
+
+Stability
+---------
+ * Rationalize and develop a comprehensive testing strategy
+
+Performance
+-----------
+* Profile different graphs and fine ways to improve

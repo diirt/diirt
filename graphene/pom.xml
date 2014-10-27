@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.epics</groupId>
+        <artifactId>graphene-all</artifactId>
+        <version>0.8.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>graphene</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Graphene</name>
+    <description>Graph library for real time.</description>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <docfilessubdirs>true</docfilessubdirs>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <doctitle>API for ${project.name} ${project.version}</doctitle>
+                            <windowtitle>API for ${project.name} ${project.version}</windowtitle>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.9</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

@@ -1,0 +1,21 @@
+   ----
+   Home
+   ----
+   Gabriele Carcassi
+   ----
+
+Graphene
+
+  Library to create charts for real time data. The drawing engine just works
+against a buffer, decoupled from any UI subsystem, so that the plotting can
+be done in separate threads. The dataset definitions are done through interfaces
+that allow no-copy data manipulation.
+
+Download
+
+  {{{http://search.maven.org/#search|ga|1|org.epics%20graphene}Official releases are available on Maven central}}
+
+  {{{http://oss.sonatype.org/content/repositories/snapshots/org/epics/}All releases and development snapshots}}
+
+  {{{https://openepics.ci.cloudbees.com/job/Graphene%20-%20Build/}Latest build}}
+

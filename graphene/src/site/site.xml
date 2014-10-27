@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Graphene">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.3.1</version>
+  </skin>
+  <bannerLeft>
+    <name>Graphene</name>
+    <src>images/graphene-banner.png</src>
+    <href>http://graphene.sourceforge.net</href>
+  </bannerLeft>
+  <body>
+    <links>
+      <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
+      <item name="epics-util" href="http://epics-util.sourceforge.net/"/>
+      <item name="pvManager" href="http://pvmanager.sourceforge.net/"/>
+      <item name="CSS" href="http://cs-studio.sourceforge.net"/>
+    </links>
+
+    <menu name="Graphene">
+      <item name="About" href="index.html"/>
+      <item name="Changes" href="changes-report.html"/>
+      <item name="Profile Results - Line Graph" href="LineGraph.html"/>
+      <item name="Profile Results - Intensity Graph" href="IntensityGraph.html"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/graphene/"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+  </body>
+  <poweredBy>
+    <logo name="Cloudbees" href="https://openepics.ci.cloudbees.com/"
+          img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>    
+</project>
+

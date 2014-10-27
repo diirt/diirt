@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>graphene changes page</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="0.8" date="2014/07/31" description="Finalized axis range options.">
+            <action dev="carcassi" type="update">
+                core: using Range and Statistics from epics-util
+            </action>
+            <action dev="carcassi" type="update">
+                core: finalized axis range options
+            </action>
+            <action dev="carcassi" type="add">
+                core: adding drawing support for inverted axis
+            </action>
+        </release>
+        <release version="0.7" date="2014/05/23" description="Winter semester student work integrated. Multi-line graphs. Intensity graph.">
+            <action dev="students" type="fix">
+                Better support of NaN in line graphs.
+            </action>
+            <action dev="carcassi" type="update">
+                Consolidated much of the code with epics-util
+            </action>
+            <action dev="students" type="add">
+                intensity graph: good implementation of the intensity graph
+            </action>
+            <action dev="students" type="update">
+                color scheme: finalized spec and implementation (including performance analysis)
+            </action>
+            <action dev="students" type="add">
+                line graph: added first prototype for multi-line graphs
+            </action>
+            <action dev="students" type="fix">
+                profile: extended profiling framework and performed performance studies
+            </action>
+            <action dev="carcassi" type="update">
+                Moved to github
+            </action>
+        </release>
+        <release version="0.6" date="2014/03/27" description="Improvements to bubble graph.">
+            <action dev="carcassi" type="update">
+                bubble graph: support for selection and negative numbers for size
+            </action>
+        </release>
+        <release version="0.5" date="2014/01/22" description="Core consolidation. Adding sparkline. Improvements to intensity graph.">
+            <action dev="carcassi" type="fix">
+                core: revised use of interpolation in line graphs
+            </action>
+            <action dev="students" type="add">
+                color scheme: more flexible implementation that can work with an array of colors and values
+            </action>
+            <action dev="students" type="add">
+                profile: initial skeleton for a mini profiling framework
+            </action>
+            <action dev="students" type="fix">
+                intensity graph: improving correctness of the graph; adding color map
+            </action>
+            <action dev="students" type="update">
+                core: consolidated code for basic graph area calculation for all graphs
+            </action>
+            <action dev="students" type="add">
+                sparkline: new graph prototype for sparklines
+            </action>
+        </release>
+
+    </body>
+</document>
+

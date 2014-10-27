@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.epics</groupId>
+        <artifactId>graphene-all</artifactId>
+        <version>0.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>graphene-rrdtool</artifactId>
+    <packaging>jar</packaging>
+
+    <name>graphene-rrdtool</name>
+    <description>Graphene bindings for rrdtool data.</description>
+    <licenses>
+        <license>
+            <name>GNU General Public License 2 with the Classpath Exception</name>
+            <url>LICENSE.TXT</url>
+        </license>
+    </licenses>
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>graphene</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <docfilessubdirs>true</docfilessubdirs>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>html</id>
+                        <configuration>
+                            <doctitle>API for ${project.name} ${project.version}</doctitle>
+                            <windowtitle>API for ${project.name} ${project.version}</windowtitle>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>
