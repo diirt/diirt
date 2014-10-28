@@ -6,7 +6,7 @@ package org.epics.pvmanager.sample.jca;
 
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
-import org.epics.pvmanager.jca.JCADataSource;
+import org.diirt.datasource.ca.JCADataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;

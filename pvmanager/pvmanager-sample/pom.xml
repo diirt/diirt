@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-jca</artifactId>
+            <artifactId>datasource-ca</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

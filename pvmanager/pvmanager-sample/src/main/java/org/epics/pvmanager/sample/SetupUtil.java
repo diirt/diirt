@@ -6,6 +6,7 @@ package org.epics.pvmanager.sample;
 
 import org.diirt.datasource.CompositeDataSource;
 import org.diirt.datasource.PVManager;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 import org.diirt.datasource.file.FileDataSource;
 import org.epics.pvmanager.formula.ArrayFunctionSet;
 import org.epics.pvmanager.formula.FormulaRegistry;
@@ -13,7 +14,6 @@ import org.epics.pvmanager.formula.MathFunctionSet;
 import org.epics.pvmanager.formula.NumberOperatorFunctionSet;
 import org.epics.pvmanager.formula.StringFunctionSet;
 import org.epics.pvmanager.formula.TableFunctionSet;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
 import org.epics.pvmanager.loc.LocalDataSource;
 import org.epics.pvmanager.sim.SimulationDataSource;
 import org.diirt.datasource.util.Executors;

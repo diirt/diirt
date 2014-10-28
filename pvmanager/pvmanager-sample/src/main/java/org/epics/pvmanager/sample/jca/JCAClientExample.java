@@ -4,20 +4,7 @@
  */
 package org.epics.pvmanager.sample.jca;
 
-import gov.aps.jca.CAException;
-import gov.aps.jca.Channel;
-import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
-import gov.aps.jca.event.ConnectionEvent;
-import gov.aps.jca.event.ConnectionListener;
-import gov.aps.jca.event.MonitorEvent;
-import gov.aps.jca.event.MonitorListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VDouble;
@@ -33,9 +20,8 @@ import org.diirt.vtype.VShortArray;
 import org.diirt.vtype.VStringArray;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
-import org.epics.pvmanager.jca.JCADataSource;
 import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 import org.diirt.util.time.TimeDuration;
 import static org.diirt.util.time.TimeDuration.*;
 

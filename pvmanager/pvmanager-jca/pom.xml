@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-jca</artifactId>
-    <name>pvmanager-jca</name>
+    <artifactId>datasource-ca</artifactId>
+    <name>org.diirt.datasource.ca</name>
     <dependencies>
         <dependency>
             <groupId>org.epics</groupId>
