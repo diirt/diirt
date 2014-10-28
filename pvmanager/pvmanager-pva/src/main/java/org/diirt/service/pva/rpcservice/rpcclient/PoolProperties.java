@@ -1,8 +1,7 @@
 /**
- * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
