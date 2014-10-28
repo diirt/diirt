@@ -9,7 +9,7 @@
  * 
  * <h1>Examples</h1>
  * 
- * <p>You can find examples in <code>link org.epics.pvmanager.sample</code> package.
+ * <p>You can find examples in <code>link org.diirt.datasource.sample</code> package.
  * We stopped including examples in the documentation itself because they tend
  * to become stale. We link to actual code that is part of the build, so that
  * there is more of a guarantee that they stay correct</p>
@@ -33,14 +33,14 @@
  * <p>
  * There are two distinct parts in the PVManager framework. The first part
  * includes all the elements that deal with data directly: read from various
- * sources ({@link org.epics.pvmanager.DataSource}), performing computation ({@link org.epics.pvmanager.ReadFunction}),
- * collecting data ({@link org.epics.pvmanager.Collector}), scanning at the UI rate ({@link org.epics.pvmanager.PVDirector})
+ * sources ({@link org.diirt.datasource.DataSource}), performing computation ({@link org.diirt.datasource.ReadFunction}),
+ * collecting data ({@link org.diirt.datasource.Collector}), scanning at the UI rate ({@link org.diirt.datasource.PVDirector})
  * and notify on appropriate threads.
  * <p>
  * The second part consists of an expression language that allows to define
- * how to connect the first set of objects with each other. {@link org.epics.pvmanager.expression.SourceRateExpression}
- * describes data as it's coming out at the network rate, {@link org.epics.pvmanager.expression.DesiredRateExpression}
- * defines data at the scanning rate for the UI, and {@link org.epics.pvmanager.ExpressionLanguage}
+ * how to connect the first set of objects with each other. {@link org.diirt.datasource.expression.SourceRateExpression}
+ * describes data as it's coming out at the network rate, {@link org.diirt.datasource.expression.DesiredRateExpression}
+ * defines data at the scanning rate for the UI, and {@link org.diirt.datasource.ExpressionLanguage}
  * defines static methods that define the operator in the expression language.
  * <p>
  * Users can extend both the first part (by extending support for different types,
