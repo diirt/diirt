@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.diirt.vtype.ValueFactory;
@@ -19,6 +20,14 @@ import org.diirt.vtype.ValueFactory;
  */
 public class FormulaRegistry {
     private final static FormulaRegistry registry = new FormulaRegistry();
+    
+    static {
+        // Find file formats to register using the ServiceLoader
+        ServiceLoader<FormulaFunctionSet> sl = ServiceLoader.load(FormulaFunctionSet.class);
+        for (FormulaFunctionSet functionSet : sl) {
+            registry.registerFormulaFunctionSet(functionSet);
+        }
+    }
 
     /**
      * Returns the default formula registry.

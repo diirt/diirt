@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-public class FormulaFunctionSet {
+public abstract class FormulaFunctionSet {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
     
     private String name;
