@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-integration</artifactId>
-    <name>pvmanager-integration</name>
+    <artifactId>datasource-integration</artifactId>
+    <name>org.diirt.datasource.integration</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

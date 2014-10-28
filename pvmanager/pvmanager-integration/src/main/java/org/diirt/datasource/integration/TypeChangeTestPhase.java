@@ -2,14 +2,14 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.integration;
+package org.diirt.datasource.integration;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
-import static org.epics.pvmanager.integration.VTypeMatchMask.*;
+import static org.diirt.datasource.integration.VTypeMatchMask.*;
 import org.epics.pvmanager.jca.JCADataSource;
 import static org.diirt.vtype.ValueFactory.*;
 

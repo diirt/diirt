@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.integration;
+package org.diirt.datasource.integration;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
