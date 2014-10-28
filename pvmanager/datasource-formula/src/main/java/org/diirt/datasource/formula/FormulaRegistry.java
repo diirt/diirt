@@ -22,7 +22,7 @@ public class FormulaRegistry {
     private final static FormulaRegistry registry = new FormulaRegistry();
     
     static {
-        // Find file formats to register using the ServiceLoader
+        // Find formula functions to register using the ServiceLoader
         ServiceLoader<FormulaFunctionSet> sl = ServiceLoader.load(FormulaFunctionSet.class);
         for (FormulaFunctionSet functionSet : sl) {
             registry.registerFormulaFunctionSet(functionSet);
