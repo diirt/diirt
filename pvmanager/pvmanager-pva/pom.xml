@@ -2,31 +2,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.epics</groupId>
-        <artifactId>pvmanager</artifactId>
-        <version>2.8.0-SNAPSHOT</version>
+        <groupId>org.diirt</groupId>
+        <artifactId>pvmanager-all</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-pva</artifactId>
-    <name>pvmanager-pva</name>
+    <artifactId>datasource-pva</artifactId>
+    <name>org.diirt.datasource.pva</name>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.epics</groupId>
             <artifactId>pvDataJava</artifactId>
             <version>3.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.epics</groupId>
             <artifactId>pvAccessJava</artifactId>
             <version>3.1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-vtype</artifactId>
+            <artifactId>datasource-vtype</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-extra</artifactId>
+            <artifactId>datasource-extra</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
