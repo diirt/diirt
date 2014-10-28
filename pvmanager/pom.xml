@@ -36,7 +36,6 @@
         <module>pvmanager-exec</module>
         <module>pvmanager-integration</module>
         <module>pvmanager-file-json</module>
-        <module>formula</module>
         <module>datasource-formula</module>
     </modules>
     <reporting>
