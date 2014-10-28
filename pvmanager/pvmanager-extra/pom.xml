@@ -7,6 +7,7 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>datasource-extra</artifactId>
+    <packaging>bundle</packaging>
     <name>org.diirt.datasource.extra</name>
     <dependencies>
       <dependency>
