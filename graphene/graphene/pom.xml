@@ -8,7 +8,6 @@
     </parent>
 
     <artifactId>graphene</artifactId>
-    <packaging>bundle</packaging>
 
     <name>org.diirt.graphene</name>
     <description>Graph library for real time.</description>
