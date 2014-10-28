@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager;
+package org.diirt.datasource;
 
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PV;
@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VString;
-import org.epics.pvmanager.loc.LocalDataSource;
+import org.diirt.datasource.loc.LocalDataSource;
 import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

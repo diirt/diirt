@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager;
+package org.diirt.datasource;
 
 import org.diirt.datasource.WriteRecipe;
 import org.diirt.datasource.PVManager;
@@ -24,7 +24,7 @@ import java.util.Set;
 import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.datasource.WriteExpressionTester;
 import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
-import org.epics.pvmanager.loc.LocalDataSource;
+import org.diirt.datasource.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

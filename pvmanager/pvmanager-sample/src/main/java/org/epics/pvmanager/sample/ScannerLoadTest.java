@@ -9,9 +9,9 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import org.diirt.datasource.PVManager;
-import org.epics.pvmanager.loc.LocalDataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReader;
+import org.diirt.datasource.loc.LocalDataSource;
 import org.diirt.util.time.TimeDuration;
 
 /**

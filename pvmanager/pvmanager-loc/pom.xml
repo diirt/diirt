@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-loc</artifactId>
-    <name>pvmanager-loc</name>
+    <artifactId>datasource-loc</artifactId>
+    <name>org.diirt.datasource.loc</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

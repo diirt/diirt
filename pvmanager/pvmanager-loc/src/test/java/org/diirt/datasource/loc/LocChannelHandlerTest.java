@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.loc;
+package org.diirt.datasource.loc;
 
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ChannelHandlerWriteSubscription;
@@ -11,7 +11,7 @@ import org.diirt.datasource.WriteCache;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.ChannelHandlerReadSubscription;
 import org.diirt.vtype.VDouble;
-import org.epics.pvmanager.loc.LocalChannelHandler;
+import org.diirt.datasource.loc.LocalChannelHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.loc;
+package org.diirt.datasource.loc;
 
 import java.util.Arrays;
 import org.diirt.datasource.CompositeDataSource;
@@ -33,8 +33,8 @@ import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VStringArray;
 import org.diirt.datasource.expression.Queue;
-import org.epics.pvmanager.loc.LocalDataSource;
-import org.epics.pvmanager.loc.LocalDataSource;
+import org.diirt.datasource.loc.LocalDataSource;
+import org.diirt.datasource.loc.LocalDataSource;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListNumber;
 
