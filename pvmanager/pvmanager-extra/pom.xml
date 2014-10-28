@@ -9,11 +9,6 @@
     <artifactId>datasource-extra</artifactId>
     <name>org.diirt.datasource.extra</name>
     <dependencies>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>3.4</version>
-        </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>datasource-test</artifactId>
@@ -26,20 +21,4 @@
         <version>${project.version}</version>
       </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>3.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
