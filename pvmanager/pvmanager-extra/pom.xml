@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-extra</artifactId>
-    <name>pvmanager-extra</name>
+    <artifactId>datasource-extra</artifactId>
+    <name>org.diirt.datasource.extra</name>
     <dependencies>
         <dependency>
             <groupId>org.antlr</groupId>

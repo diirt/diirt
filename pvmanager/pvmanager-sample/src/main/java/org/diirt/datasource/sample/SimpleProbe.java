@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.TimeDuration;
 

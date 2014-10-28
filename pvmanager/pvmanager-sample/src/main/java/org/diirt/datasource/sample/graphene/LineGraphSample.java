@@ -22,7 +22,7 @@ import org.diirt.datasource.ca.JCADataSource;
 import org.epics.pvmanager.graphene.Graph2DResult;
 import org.epics.pvmanager.graphene.LineGraph2DExpression;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
-import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 

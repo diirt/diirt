@@ -8,7 +8,7 @@ import org.diirt.graphene.IntensityGraph2DRenderer;
 import org.diirt.graphene.IntensityGraph2DRendererUpdate;
 import org.diirt.graphene.NumberColorMap;
 import org.diirt.graphene.NumberColorMaps;
-import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
+import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.Graph2DExpression;
 import org.epics.pvmanager.graphene.IntensityGraph2DExpression;

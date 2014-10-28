@@ -27,12 +27,12 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
-import org.epics.pvmanager.extra.DynamicGroup;
+import org.diirt.datasource.extra.DynamicGroup;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.ca.JCADataSource;
 import org.diirt.datasource.loc.LocalDataSource;
-import static org.epics.pvmanager.extra.ExpressionLanguage.*;
+import static org.diirt.datasource.extra.ExpressionLanguage.*;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 

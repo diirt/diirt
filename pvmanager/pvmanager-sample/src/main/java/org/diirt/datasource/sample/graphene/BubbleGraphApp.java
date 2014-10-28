@@ -9,7 +9,7 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 import org.diirt.graphene.InterpolationScheme;
 import org.diirt.graphene.ScatterGraph2DRendererUpdate;
 import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
-import static org.epics.pvmanager.formula.ExpressionLanguage.*;
+import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.BubbleGraph2DExpression;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 

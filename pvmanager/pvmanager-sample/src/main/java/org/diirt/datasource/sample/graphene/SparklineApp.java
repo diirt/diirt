@@ -21,7 +21,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import static org.epics.pvmanager.formula.ExpressionLanguage.formula;
+import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import org.epics.pvmanager.graphene.ExpressionLanguage;
 import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
 import org.epics.pvmanager.graphene.Graph2DExpression;

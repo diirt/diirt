@@ -18,12 +18,12 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VImage;
-import org.epics.pvmanager.extra.ColorScheme;
-import org.epics.pvmanager.extra.WaterfallPlot;
-import org.epics.pvmanager.extra.WaterfallPlotParameters;
+import org.diirt.datasource.extra.ColorScheme;
+import org.diirt.datasource.extra.WaterfallPlot;
+import org.diirt.datasource.extra.WaterfallPlotParameters;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.epics.pvmanager.extra.ExpressionLanguage.*;
-import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
+import static org.diirt.datasource.extra.ExpressionLanguage.*;
+import static org.diirt.datasource.extra.WaterfallPlotParameters.*;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
