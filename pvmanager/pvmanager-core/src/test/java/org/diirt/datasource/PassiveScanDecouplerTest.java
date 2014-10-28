@@ -128,14 +128,21 @@ public class PassiveScanDecouplerTest {
                 SourceDesiredRateDecoupler decoupler = new PassiveScanDecoupler(PVManager.getReadScannerExecutorService(), TimeDuration.ofHertz(20), log);
                 log.setDecoupler(decoupler);
                 decoupler.start();
-                Thread.sleep(100);
+                // Wait for connection event
+                Thread.sleep(30);
+                
+                // Send events at 100Hz
                 long startTime = System.nanoTime();
-                for (int i = 0; i < 4*5+1; i++) {
+                for (int i = 0; i < 4*5+2; i++) {
                     decoupler.newValueEvent();
                     Thread.sleep(10);
                 }
-                decoupler.stop();
                 long period = System.nanoTime() - startTime;
+                
+                // Wait to drain
+                Thread.sleep(50);
+                decoupler.stop();
+                
                 // 1 event each 50ms + one at the end + one connections
                 int expectedEvents = (int) (period / 50000000) + 1 + 1;
                 assertThat(log.getEvents().size(), equalTo(expectedEvents));
@@ -175,7 +182,7 @@ public class PassiveScanDecouplerTest {
                 task.call();
             } catch (AssertionError er) {
                 if (log != null) {
-                    log.printLoc();
+                    log.printLog();
                 }
                 throw er;
             }

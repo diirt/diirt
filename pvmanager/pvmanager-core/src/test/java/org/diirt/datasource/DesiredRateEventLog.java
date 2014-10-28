@@ -80,9 +80,11 @@ import org.diirt.util.time.Timestamp;
         }
     }
     
-    public void printLoc() {
-        for (int i = 0; i < events.size(); i++) {
-            System.out.println(timestamps.get(i) + " " + events.get(i).getTypes());
+    public void printLog() {
+        synchronized(lock) {
+            for (int i = 0; i < events.size(); i++) {
+                System.out.println(timestamps.get(i) + " " + events.get(i).getTypes());
+            }
         }
     }
     
