@@ -29,8 +29,8 @@ public class BlackBoxTest {
         
         PVReader<Object> pv1 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
         PVReader<Object> pv2 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
-        waitForValue(pv1, ofMillis(100));
-        waitForValue(pv2, ofMillis(100));
+        waitForValue(pv1, ofMillis(200));
+        waitForValue(pv2, ofMillis(200));
 
         assertThat(pv1.getValue(), not(nullValue()));
         assertThat(pv2.getValue(), not(nullValue()));

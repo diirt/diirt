@@ -27,7 +27,7 @@ public class ReplayParserTest {
     @Test
     public void unmarshalParse1() throws Exception {
         // Unmarshal XML file
-        XmlValues values = ReplayParser.parse(new URI("./src/test/resources/org/epics/pvmanager/replay/parse1.xml"));
+        XmlValues values = ReplayParser.parse(new URI("./src/test/resources/org/diirt/datasource/replay/parse1.xml"));
         assertThat(values.getValues().size(), equalTo(4));
         assertThat(values.getValues().get(0), instanceOf(XmlVDouble.class));
 

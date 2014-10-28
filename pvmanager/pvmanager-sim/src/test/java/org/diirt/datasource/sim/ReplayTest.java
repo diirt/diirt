@@ -28,7 +28,7 @@ public class ReplayTest {
     public void replayValues() {
         // Creates the function
         Timestamp start = Timestamp.now();
-        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse1.xml\")");
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse1.xml\")");
         List<VDouble> values = replay.createValues(ofMillis(1000).after(start));
         assertThat(values.size(), equalTo(4));
 
@@ -75,7 +75,7 @@ public class ReplayTest {
     
     @BeforeClass
     public static void initializeParser() {
-        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse2.xml\")");
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse2.xml\")");
         if (replay.hashCode() == 0)
             System.out.println("");
     }
@@ -84,7 +84,7 @@ public class ReplayTest {
     public void adjustTime() {
         // Creates the function
         Timestamp start = Timestamp.now();
-        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse2.xml\")");
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse2.xml\")");
         List<VDouble> values = replay.createValues(ofMillis(6000).after(start));
         assertThat(values.size(), equalTo(7));
 

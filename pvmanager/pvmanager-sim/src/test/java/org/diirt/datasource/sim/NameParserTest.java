@@ -122,7 +122,7 @@ public class NameParserTest {
     @Test
     public void replay() {
         Timestamp start = Timestamp.now();
-        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/epics/pvmanager/replay/parse1.xml\")");
+        Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse1.xml\")");
         List<VDouble> values = replay.createValues(ofMillis(1000).after(start));
         assertThat(values.size(), equalTo(4));
 

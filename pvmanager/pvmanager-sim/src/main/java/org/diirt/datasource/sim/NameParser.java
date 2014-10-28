@@ -92,7 +92,7 @@ class NameParser {
      */
     static Simulation<?> createFunction(String string) {
         List<Object> parameters = parseFunction(string);
-        StringBuilder className = new StringBuilder("org.epics.pvmanager.sim.");
+        StringBuilder className = new StringBuilder("org.diirt.datasource.sim.");
         int firstCharPosition = className.length();
         className.append((String) parameters.get(0));
         className.setCharAt(firstCharPosition, Character.toUpperCase(className.charAt(firstCharPosition)));
