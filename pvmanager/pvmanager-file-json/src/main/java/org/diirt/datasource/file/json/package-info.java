@@ -1,8 +1,7 @@
 /**
- * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-
 /**
  * Support for vTypes serialized in JSON (.jvtype) according to the mechanism
  * provided by {@link org.diirt.vtype.json.VTypeToJson}.
