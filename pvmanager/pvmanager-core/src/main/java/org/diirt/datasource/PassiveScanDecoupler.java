@@ -47,7 +47,11 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                     log.log(Level.WARNING, "Submitted {0}", Timestamp.now());
                 }
             }
-            sendDesiredRateEvent(nextEvent);
+            
+            // If stopped, the event may be null. Skip the event.
+            if (nextEvent != null) {
+                sendDesiredRateEvent(nextEvent);
+            }
         }
     };
 
