@@ -51,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-graphene</artifactId>
+            <artifactId>datasource-graphene</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -6,8 +6,8 @@
         <artifactId>pvmanager-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>pvmanager-graphene</artifactId>
-    <name>pvmanager-graphene</name>
+    <artifactId>datasource-graphene</artifactId>
+    <name>org.diirt.datasource.graphene</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

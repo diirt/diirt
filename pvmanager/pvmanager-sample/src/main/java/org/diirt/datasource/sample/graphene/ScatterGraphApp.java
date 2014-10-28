@@ -6,9 +6,9 @@ package org.diirt.datasource.sample.graphene;
 
 import org.diirt.graphene.InterpolationScheme;
 import org.diirt.graphene.ScatterGraph2DRendererUpdate;
-import org.epics.pvmanager.graphene.ScatterGraph2DExpression;
+import org.diirt.datasource.graphene.ScatterGraph2DExpression;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
-import static org.epics.pvmanager.graphene.ExpressionLanguage.*;
+import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 
 /**
  *
