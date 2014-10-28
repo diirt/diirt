@@ -30,6 +30,7 @@
                 <configuration>
                     <services>
                         <param>org.diirt.datasource.file.FileFormat</param>
+                        <param>org.diirt.datasource.DataSourceFactory</param>
                     </services>
                 </configuration>
                 <executions>
