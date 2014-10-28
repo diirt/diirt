@@ -13,8 +13,7 @@ import org.diirt.datasource.vtype.DataTypeSupport;
 import static org.diirt.datasource.util.Executors.*;
 
 /**
- * Data source to produce simulated signals that can be using during development
- * and testing.
+ * Data source to monitor system information.
  *
  * @author carcassi
  */
