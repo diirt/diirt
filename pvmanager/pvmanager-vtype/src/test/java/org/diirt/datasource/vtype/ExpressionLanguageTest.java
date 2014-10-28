@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
@@ -18,7 +18,7 @@ import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.junit.Test;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.WriteExpressionTester;

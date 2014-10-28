@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.util.time.TimeDuration;
 
 /**

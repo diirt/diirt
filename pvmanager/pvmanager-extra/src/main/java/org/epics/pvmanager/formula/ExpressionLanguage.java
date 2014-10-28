@@ -82,7 +82,7 @@ public class ExpressionLanguage {
         DesiredRateExpression<?> exp = parseFormula(formula);
             
         if (exp instanceof LastOfChannelExpression) {
-            return new DesiredRateReadWriteExpressionImpl<>(exp, org.epics.pvmanager.vtype.ExpressionLanguage.vType(exp.getName()));
+            return new DesiredRateReadWriteExpressionImpl<>(exp, org.diirt.datasource.vtype.ExpressionLanguage.vType(exp.getName()));
         } else if (exp instanceof ErrorDesiredRateExpression) {
             return new DesiredRateReadWriteExpressionImpl<>(exp, readOnlyWriteExpression("Parsing error")); 
         } else {

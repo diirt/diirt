@@ -2,16 +2,16 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VMultiDouble;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.Arrays;
 import org.diirt.datasource.ReadExpressionTester;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.vtype.VMultiDouble;
 import static org.diirt.vtype.ValueFactory.*;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.Timestamp;
 import static org.junit.Assert.*;

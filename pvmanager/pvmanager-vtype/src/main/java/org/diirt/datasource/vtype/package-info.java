@@ -20,4 +20,4 @@
  * TODO: equals and hashcodes? Each object different? Compare on the data only?
  *       if we do, what about compare?
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;

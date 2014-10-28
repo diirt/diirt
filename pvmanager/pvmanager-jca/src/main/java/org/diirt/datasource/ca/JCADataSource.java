@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.jni.JNIContext;
 import java.lang.reflect.InvocationTargetException;

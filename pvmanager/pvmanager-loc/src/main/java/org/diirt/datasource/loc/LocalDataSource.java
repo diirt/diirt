@@ -14,7 +14,7 @@ import org.diirt.datasource.ChannelWriteRecipe;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.ReadRecipe;
 import org.diirt.datasource.WriteRecipe;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.datasource.util.FunctionParser;
 import org.diirt.util.array.ArrayDouble;
 

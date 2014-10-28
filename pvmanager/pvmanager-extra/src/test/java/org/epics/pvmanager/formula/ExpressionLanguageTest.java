@@ -16,7 +16,7 @@ import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.SourceRateExpression;
 import org.junit.Test;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.test.CountDownPVWriterListener;

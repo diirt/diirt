@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-vtype</artifactId>
+            <artifactId>datasource-vtype</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

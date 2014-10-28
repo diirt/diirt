@@ -2,18 +2,18 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;
 
-import org.epics.pvmanager.vtype.SynchronizedVDoubleAggregator;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.SynchronizedVDoubleAggregator;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.epics.pvmanager.vtype.DataTypeSupport;
-import org.epics.pvmanager.vtype.SynchronizedVDoubleAggregator;
+import org.diirt.datasource.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.SynchronizedVDoubleAggregator;
 import org.diirt.vtype.VDouble;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.Timestamp;

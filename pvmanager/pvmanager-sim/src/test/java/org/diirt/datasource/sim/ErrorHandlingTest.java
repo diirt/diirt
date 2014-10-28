@@ -10,7 +10,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.ReadFunction;
 import static org.diirt.datasource.ExpressionLanguage.*;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.vtype.VDouble;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;

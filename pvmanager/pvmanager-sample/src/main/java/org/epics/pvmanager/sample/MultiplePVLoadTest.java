@@ -11,7 +11,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.epics.pvmanager.vtype.ExpressionLanguage;
+import org.diirt.datasource.vtype.ExpressionLanguage;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VType;
 

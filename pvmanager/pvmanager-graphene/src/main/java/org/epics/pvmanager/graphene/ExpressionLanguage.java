@@ -11,7 +11,7 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.NotificationSupport;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.TypeSupport;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.datasource.expression.DesiredRateExpression;

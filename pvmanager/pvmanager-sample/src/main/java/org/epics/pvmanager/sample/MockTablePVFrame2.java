@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 

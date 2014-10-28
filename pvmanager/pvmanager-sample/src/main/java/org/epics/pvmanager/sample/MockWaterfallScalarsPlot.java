@@ -21,7 +21,7 @@ import org.diirt.vtype.VImage;
 import org.epics.pvmanager.extra.ColorScheme;
 import org.epics.pvmanager.extra.WaterfallPlot;
 import org.epics.pvmanager.extra.WaterfallPlotParameters;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.ExpressionLanguage.*;
 import static org.epics.pvmanager.extra.WaterfallPlotParameters.*;
 import static org.diirt.datasource.util.Executors.*;

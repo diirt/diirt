@@ -8,7 +8,7 @@ package org.epics.pvmanager.sample;
 import java.util.List;
 import org.diirt.datasource.ExpressionLanguage;
 import org.diirt.datasource.PVManager;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;

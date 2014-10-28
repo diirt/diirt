@@ -6,7 +6,7 @@ package org.epics.pvmanager.extra;
 
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VNumber;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.List;
 import org.diirt.datasource.BasicTypeSupport;
 import org.diirt.datasource.expression.DesiredRateExpression;

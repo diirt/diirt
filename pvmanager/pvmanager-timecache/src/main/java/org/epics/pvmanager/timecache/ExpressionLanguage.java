@@ -21,7 +21,7 @@ import org.epics.pvmanager.timecache.query.QueryData;
 import org.epics.pvmanager.timecache.query.QueryParameters;
 import org.epics.pvmanager.timecache.query.QueryResult;
 import org.epics.pvmanager.timecache.util.CacheHelper;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VDouble;

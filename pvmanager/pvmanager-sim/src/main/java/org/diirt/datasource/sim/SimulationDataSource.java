@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.vtype.DataTypeSupport;
 import static org.diirt.datasource.util.Executors.*;
 
 /**

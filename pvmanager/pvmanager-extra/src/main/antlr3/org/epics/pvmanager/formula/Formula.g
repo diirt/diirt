@@ -9,7 +9,7 @@ options {
   import org.diirt.datasource.expression.*;
   import static org.diirt.datasource.ExpressionLanguage.*;
   import static org.diirt.util.text.StringUtil.*;
-  import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+  import static org.diirt.datasource.vtype.ExpressionLanguage.*;
   import static org.epics.pvmanager.formula.ExpressionLanguage.*;
 }
 

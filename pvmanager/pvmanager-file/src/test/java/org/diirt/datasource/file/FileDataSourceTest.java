@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 
 import org.diirt.util.array.ArrayDouble;
 

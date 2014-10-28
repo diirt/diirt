@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VMultiDouble;
 import org.diirt.vtype.VDouble;

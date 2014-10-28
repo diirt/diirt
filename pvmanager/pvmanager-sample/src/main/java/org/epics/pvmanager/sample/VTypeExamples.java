@@ -12,7 +12,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 import static org.diirt.util.time.TimeDuration.*;

@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.vtype;
+package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VTable;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import org.diirt.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import static org.epics.pvmanager.vtype.ExpressionLanguage.*;
+import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 
