@@ -5,4 +5,4 @@
 /**
  * DataSource for system data (<a href="doc-files/sys-datasource.html">channel syntax</a>).
  */
-package org.epics.pvmanager.sys;
+package org.diirt.datasource.sys;

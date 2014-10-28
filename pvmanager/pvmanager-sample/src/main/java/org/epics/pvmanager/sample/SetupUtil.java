@@ -17,7 +17,7 @@ import org.epics.pvmanager.formula.StringFunctionSet;
 import org.epics.pvmanager.formula.TableFunctionSet;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.util.Executors;
-import org.epics.pvmanager.sys.SystemDataSource;
+import org.diirt.datasource.sys.SystemDataSource;
 
 /**
  *

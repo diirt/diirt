@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.sys;
+package org.diirt.datasource.sys;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
