@@ -34,11 +34,6 @@ public class SetupUtil {
         dataSource.putDataSource("file", new FileDataSource());
         dataSource.setDefaultDataSource("ca");
         PVManager.setDefaultDataSource(dataSource);
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new ArrayFunctionSet());
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new MathFunctionSet());
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new NumberOperatorFunctionSet());
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new TableFunctionSet());
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new StringFunctionSet());
     }
     public static void defaultCASetupForSwing() {
         PVManager.setDefaultNotificationExecutor(Executors.swingEDT());
