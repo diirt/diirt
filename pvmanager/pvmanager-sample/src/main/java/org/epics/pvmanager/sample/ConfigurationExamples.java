@@ -13,7 +13,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.ca.JCADataSource;
 import org.diirt.datasource.ca.JCADataSourceBuilder;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 

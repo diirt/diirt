@@ -16,7 +16,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>pvmanager-sim</artifactId>
+            <artifactId>datasource-sim</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

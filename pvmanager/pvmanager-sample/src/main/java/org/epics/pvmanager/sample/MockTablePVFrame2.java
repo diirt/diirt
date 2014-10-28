@@ -5,7 +5,7 @@
 package org.epics.pvmanager.sample;
 
 import org.diirt.vtype.VStatistics;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;

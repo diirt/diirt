@@ -10,7 +10,7 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.util.time.TimeDuration;
 
 /*

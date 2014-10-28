@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.diirt.vtype.VMultiDouble;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;

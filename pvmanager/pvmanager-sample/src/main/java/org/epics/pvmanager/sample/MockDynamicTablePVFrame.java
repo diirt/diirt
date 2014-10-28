@@ -13,7 +13,7 @@ import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
 import org.diirt.vtype.VStatistics;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import java.util.ArrayList;

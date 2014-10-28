@@ -14,7 +14,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
-import org.epics.pvmanager.sim.SimulationDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.ca.JCADataSource;
