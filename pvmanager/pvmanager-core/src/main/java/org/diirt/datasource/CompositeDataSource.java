@@ -20,7 +20,8 @@ public class CompositeDataSource extends DataSource {
     private static Logger log = Logger.getLogger(CompositeDataSource.class.getName());
 
     // Stores all data sources by name
-    private Map<String, DataSource> dataSources = new ConcurrentHashMap<String, DataSource>();
+    private Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
+    private Map<String, DataSourceFactory> dataSourceFactories = new ConcurrentHashMap<>();
 
     private volatile String delimiter = "://";
     private volatile String defaultDataSource;
@@ -58,8 +59,30 @@ public class CompositeDataSource extends DataSource {
      * @param name the name of the data source
      * @param dataSource the data source to add/replace
      */
-    public void putDataSource(String name, DataSource dataSource) {
-        dataSources.put(name, dataSource);
+    public void putDataSource(final String name, final DataSource dataSource) {
+        putDataSource(new DataSourceFactory() {
+
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public DataSource createInstance() {
+                return dataSource;
+            }
+        });
+    }
+
+    /**
+     * Adds/replaces the data source corresponding to the given name.
+     *
+     * @param dataSourceFactory the data source to add/replace
+     */
+    public void putDataSource(DataSourceFactory dataSourceFactory) {
+        // XXX: datasources should be closed
+        dataSources.remove(dataSourceFactory.getName());
+        dataSourceFactories.put(dataSourceFactory.getName(), dataSourceFactory);
     }
 
     /**
@@ -74,6 +97,8 @@ public class CompositeDataSource extends DataSource {
     
     /**
      * Returns the data sources registered to this composite data source.
+     * <p>
+     * Returns only the data sources that have been created.
      * 
      * @return the registered data sources
      */
@@ -88,7 +113,7 @@ public class CompositeDataSource extends DataSource {
      * @param defaultDataSource the default data source
      */
     public void setDefaultDataSource(String defaultDataSource) {
-        if (!dataSources.containsKey(defaultDataSource))
+        if (!dataSourceFactories.containsKey(defaultDataSource))
             throw new IllegalArgumentException("The data source " + defaultDataSource + " was not previously added, and therefore cannot be set as default");
 
         this.defaultDataSource = defaultDataSource;
@@ -111,7 +136,7 @@ public class CompositeDataSource extends DataSource {
             return defaultDataSource;
         } else {
             String source = channelName.substring(0, indexDelimiter);
-            if (dataSources.containsKey(source))
+            if (dataSourceFactories.containsKey(source))
                 return source;
             throw new IllegalArgumentException("Data source " + source + " for " + channelName + " was not configured.");
         }
@@ -152,11 +177,7 @@ public class CompositeDataSource extends DataSource {
         // Dispatch calls to all the data sources
         for (Map.Entry<String, ReadRecipe> entry : splitRecipe.entrySet()) {
             try {
-                DataSource dataSource = dataSources.get(entry.getKey());
-                if (dataSource == null) {
-                    throw new IllegalArgumentException("DataSource '" + entry.getKey() + delimiter + "' was not configured.");
-                }
-                dataSource.connectRead(entry.getValue());
+                retrieveDataSource(entry.getKey()).connectRead(entry.getValue());
             } catch (RuntimeException ex) {
                 // If data source fail, still go and connect the others
                 readRecipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().writeValue(ex);
@@ -203,6 +224,23 @@ public class CompositeDataSource extends DataSource {
         
         return splitRecipes;
     }
+    
+    private DataSource retrieveDataSource(String name) {
+        DataSource dataSource = dataSources.get(name);
+        if (dataSource == null) {
+            DataSourceFactory factory = dataSourceFactories.get(name);
+            if (factory == null) {
+                throw new IllegalArgumentException("DataSource '" + name + delimiter + "' was not configured.");
+            } else {
+                dataSource = factory.createInstance();
+                if (dataSource == null) {
+                    throw new IllegalStateException("DataSourceFactory '" + name + delimiter + "' did not create a valid datasource.");
+                }
+                dataSources.put(name, dataSource);
+            }
+        }
+        return dataSource;
+    }
 
     @Override
     public void connectWrite(WriteRecipe writeRecipe) {
@@ -210,7 +248,7 @@ public class CompositeDataSource extends DataSource {
         for (Entry<String, WriteRecipe> entry : splitRecipes.entrySet()) {
             String dataSource = entry.getKey();
             WriteRecipe splitWriteRecipe = entry.getValue();
-            dataSources.get(dataSource).connectWrite(splitWriteRecipe);
+            retrieveDataSource(dataSource).connectWrite(splitWriteRecipe);
         }
     }
 

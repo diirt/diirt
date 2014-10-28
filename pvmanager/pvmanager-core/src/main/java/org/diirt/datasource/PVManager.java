@@ -47,7 +47,7 @@ import org.diirt.datasource.expression.WriteExpression;
 public class PVManager {
 
     private static volatile Executor defaultNotificationExecutor = org.diirt.datasource.util.Executors.localThread();
-    private static volatile DataSource defaultDataSource = null;
+    private static volatile DataSource defaultDataSource = DataSourceFactory.createDataSource();
     private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1),
             org.diirt.datasource.util.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
