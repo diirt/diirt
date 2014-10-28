@@ -5,14 +5,14 @@
 package org.diirt.datasource.sys;
 
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.DataSourceFactory;
+import org.diirt.datasource.DataSourceProvider;
 
 /**
- * DataSourceFactory for system information.
+ * DataSourceProvider for system information.
  *
  * @author carcassi
  */
-public class SystemDataSourceFactory extends DataSourceFactory {
+public class SystemDataSourceProvider extends DataSourceProvider {
 
     @Override
     public String getName() {

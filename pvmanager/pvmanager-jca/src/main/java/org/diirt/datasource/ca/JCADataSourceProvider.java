@@ -5,14 +5,14 @@
 package org.diirt.datasource.ca;
 
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.DataSourceFactory;
+import org.diirt.datasource.DataSourceProvider;
 
 /**
- * DataSourceFactory for channel access.
+ * DataSourceProvider for channel access.
  *
  * @author carcassi
  */
-public class JCADataSourceFactory extends DataSourceFactory {
+public class JCADataSourceProvider extends DataSourceProvider {
 
     @Override
     public String getName() {

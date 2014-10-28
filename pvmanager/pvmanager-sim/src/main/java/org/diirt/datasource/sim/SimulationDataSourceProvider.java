@@ -5,14 +5,14 @@
 package org.diirt.datasource.sim;
 
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.DataSourceFactory;
+import org.diirt.datasource.DataSourceProvider;
 
 /**
- * DataSourceFactory for simulated data.
+ * DataSourceProvider for simulated data.
  *
  * @author carcassi
  */
-public class SimulationDataSourceFactory extends DataSourceFactory {
+public class SimulationDataSourceProvider extends DataSourceProvider {
 
     @Override
     public String getName() {

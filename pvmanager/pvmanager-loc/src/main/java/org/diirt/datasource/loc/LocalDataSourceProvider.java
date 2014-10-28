@@ -2,26 +2,26 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.file;
+package org.diirt.datasource.loc;
 
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.DataSourceFactory;
+import org.diirt.datasource.DataSourceProvider;
 
 /**
- * DataSourceFactory for file-system based data source.
+ * DataSourceProvider for local variables.
  *
  * @author carcassi
  */
-public class FileDataSourceFactory extends DataSourceFactory {
+public class LocalDataSourceProvider extends DataSourceProvider {
 
     @Override
     public String getName() {
-        return "file";
+        return "loc";
     }
 
     @Override
     public DataSource createInstance() {
-        return new FileDataSource();
+        return new LocalDataSource();
     }
     
 }

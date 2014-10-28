@@ -7,7 +7,7 @@ package org.diirt.datasource;
 import java.util.ServiceLoader;
 
 /**
- * A factory class to register a DataSource.
+ * A class that provides support for a DataSource.
  * <p>
  * This interface allows different modules to registers a DataSource through
  * the ServiceLoader. Implementations that are correctly registered will
@@ -19,7 +19,8 @@ import java.util.ServiceLoader;
  *
  * @author carcassi
  */
-public abstract class DataSourceFactory {
+public abstract class DataSourceProvider {
+    
     /**
      * The name to be used when registering the DataSource with the
      * CompositeDataSource.
@@ -44,8 +45,8 @@ public abstract class DataSourceFactory {
     public static CompositeDataSource createDataSource() {
         CompositeDataSource composite = new CompositeDataSource();
         // Find formula functions to register using the ServiceLoader
-        ServiceLoader<DataSourceFactory> sl = ServiceLoader.load(DataSourceFactory.class);
-        for (DataSourceFactory factory : sl) {
+        ServiceLoader<DataSourceProvider> sl = ServiceLoader.load(DataSourceProvider.class);
+        for (DataSourceProvider factory : sl) {
             composite.putDataSource(factory);
         }
         return composite;

@@ -21,7 +21,7 @@ public class CompositeDataSource extends DataSource {
 
     // Stores all data sources by name
     private Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
-    private Map<String, DataSourceFactory> dataSourceFactories = new ConcurrentHashMap<>();
+    private Map<String, DataSourceProvider> dataSourceFactories = new ConcurrentHashMap<>();
 
     private volatile String delimiter = "://";
     private volatile String defaultDataSource;
@@ -60,7 +60,7 @@ public class CompositeDataSource extends DataSource {
      * @param dataSource the data source to add/replace
      */
     public void putDataSource(final String name, final DataSource dataSource) {
-        putDataSource(new DataSourceFactory() {
+        putDataSource(new DataSourceProvider() {
 
             @Override
             public String getName() {
@@ -79,7 +79,7 @@ public class CompositeDataSource extends DataSource {
      *
      * @param dataSourceFactory the data source to add/replace
      */
-    public void putDataSource(DataSourceFactory dataSourceFactory) {
+    public void putDataSource(DataSourceProvider dataSourceFactory) {
         // XXX: datasources should be closed
         dataSources.remove(dataSourceFactory.getName());
         dataSourceFactories.put(dataSourceFactory.getName(), dataSourceFactory);
@@ -228,7 +228,7 @@ public class CompositeDataSource extends DataSource {
     private DataSource retrieveDataSource(String name) {
         DataSource dataSource = dataSources.get(name);
         if (dataSource == null) {
-            DataSourceFactory factory = dataSourceFactories.get(name);
+            DataSourceProvider factory = dataSourceFactories.get(name);
             if (factory == null) {
                 throw new IllegalArgumentException("DataSource '" + name + delimiter + "' was not configured.");
             } else {
