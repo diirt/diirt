@@ -77,12 +77,12 @@ public class CompositeDataSource extends DataSource {
     /**
      * Adds/replaces the data source corresponding to the given name.
      *
-     * @param dataSourceFactory the data source to add/replace
+     * @param dataSourceProvider the data source to add/replace
      */
-    public void putDataSource(DataSourceProvider dataSourceFactory) {
+    public void putDataSource(DataSourceProvider dataSourceProvider) {
         // XXX: datasources should be closed
-        dataSources.remove(dataSourceFactory.getName());
-        dataSourceFactories.put(dataSourceFactory.getName(), dataSourceFactory);
+        dataSources.remove(dataSourceProvider.getName());
+        dataSourceFactories.put(dataSourceProvider.getName(), dataSourceProvider);
     }
 
     /**
@@ -234,7 +234,7 @@ public class CompositeDataSource extends DataSource {
             } else {
                 dataSource = factory.createInstance();
                 if (dataSource == null) {
-                    throw new IllegalStateException("DataSourceFactory '" + name + delimiter + "' did not create a valid datasource.");
+                    throw new IllegalStateException("DataSourceProvider '" + name + delimiter + "' did not create a valid datasource.");
                 }
                 dataSources.put(name, dataSource);
             }
