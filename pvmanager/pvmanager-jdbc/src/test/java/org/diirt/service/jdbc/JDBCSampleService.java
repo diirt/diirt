@@ -2,8 +2,12 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.jdbc;
+package org.diirt.service.jdbc;
 
+import org.diirt.service.jdbc.JDBCServiceMethodDescription;
+import org.diirt.service.jdbc.SimpleDataSource;
+import org.diirt.service.jdbc.JDBCService;
+import org.diirt.service.jdbc.JDBCServiceDescription;
 import java.util.concurrent.Executors;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;

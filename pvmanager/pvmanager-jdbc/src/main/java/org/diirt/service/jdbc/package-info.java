@@ -5,4 +5,4 @@
 /**
  * Support for database services based on JDBC (<a href="doc-files/jdbc-xml-syntax.html">jdbc xml syntax</a>).
  */
-package org.epics.pvmanager.jdbc;
+package org.diirt.service.jdbc;

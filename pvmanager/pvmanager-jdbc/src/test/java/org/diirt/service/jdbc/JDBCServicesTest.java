@@ -2,8 +2,10 @@
  * Copyright (C) 2010-14 pvmanager developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.epics.pvmanager.jdbc;
+package org.diirt.service.jdbc;
 
+import org.diirt.service.jdbc.JDBCServices;
+import org.diirt.service.jdbc.JDBCService;
 import java.io.InputStream;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ChannelHandlerWriteSubscription;
