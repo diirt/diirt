@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.datasource.DesiredRateEvent.Type.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -85,6 +86,7 @@ public class PassiveScanDecouplerTest {
 
     @Test
     public void fastEvents() throws Exception {
+        // TODO: make this test always pass, and get debug info if it doesn't
         repeatTest(10, new Callable<Object>() {
             @Override
             public Object call() throws Exception {
@@ -122,18 +124,21 @@ public class PassiveScanDecouplerTest {
         repeatTest(10, new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                DesiredRateEventLog log = new DesiredRateEventLog(10);
+                log = new DesiredRateEventLog(10);
                 SourceDesiredRateDecoupler decoupler = new PassiveScanDecoupler(PVManager.getReadScannerExecutorService(), TimeDuration.ofHertz(20), log);
                 log.setDecoupler(decoupler);
                 decoupler.start();
                 Thread.sleep(100);
+                long startTime = System.nanoTime();
                 for (int i = 0; i < 4*5+1; i++) {
                     decoupler.newValueEvent();
                     Thread.sleep(10);
                 }
                 decoupler.stop();
-                // 6 events: connection, 5 value
-                assertThat(log.getEvents().size(), equalTo(6));
+                long period = System.nanoTime() - startTime;
+                // 1 event each 50ms + one at the end + one connections
+                int expectedEvents = (int) (period / 50000000) + 1 + 1;
+                assertThat(log.getEvents().size(), equalTo(expectedEvents));
                 return null;
             }
         });
@@ -162,10 +167,18 @@ public class PassiveScanDecouplerTest {
         });
     }
     
+    private DesiredRateEventLog log;
     
-    public static void repeatTest(int nTimes, Callable<?> task) throws Exception {
+    public void repeatTest(int nTimes, Callable<?> task) throws Exception {
         for (int i = 0; i < nTimes; i++) {
-            task.call();
+            try {
+                task.call();
+            } catch (AssertionError er) {
+                if (log != null) {
+                    log.printLoc();
+                }
+                throw er;
+            }
         }
     }
 }

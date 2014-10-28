@@ -5,6 +5,7 @@
 
 package org.diirt.datasource;
 
+import java.util.ArrayList;
 import org.diirt.datasource.DesiredRateEvent;
 import org.diirt.datasource.SourceDesiredRateDecoupler;
 import org.diirt.datasource.DesiredRateEventListener;
@@ -12,15 +13,19 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.time.Timestamp;
 
 /**
  *
  * @author carcassi
  */
  class DesiredRateEventLog implements DesiredRateEventListener {
+     
+    private final Object lock = new Object();
     
-    private final List<DesiredRateEvent> events = new CopyOnWriteArrayList<>();
-    private volatile SourceDesiredRateDecoupler decoupler;
+    private final List<DesiredRateEvent> events = new ArrayList<>();
+    private final List<Timestamp> timestamps = new ArrayList<>();
+    private SourceDesiredRateDecoupler decoupler;
     private final Integer pause;
 
     public DesiredRateEventLog() {
@@ -32,16 +37,23 @@ import java.util.logging.Logger;
     }
 
     public void setDecoupler(SourceDesiredRateDecoupler decoupler) {
-        this.decoupler = decoupler;
+        synchronized(lock) {
+            this.decoupler = decoupler;
+        }
     }
 
     public SourceDesiredRateDecoupler getDecoupler() {
-        return decoupler;
+        synchronized(lock) {
+            return decoupler;
+        }
     }
 
     @Override
     public void desiredRateEvent(DesiredRateEvent event) {
-        events.add(event);
+        synchronized(lock) {
+            events.add(event);
+            timestamps.add(Timestamp.now());
+        }
         if (pause != null) {
             try {
                 Thread.sleep(pause);
@@ -49,15 +61,29 @@ import java.util.logging.Logger;
                 Logger.getLogger(DesiredRateEventLog.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        SourceDesiredRateDecoupler decoupler;
+        synchronized(lock) {
+            decoupler = this.decoupler;
+        }
         decoupler.readyForNextEvent();
     }
     
     public List<DesiredRateEvent.Type> getEventTypes(int n) {
-        return events.get(n).getTypes();
+        synchronized(lock) {
+            return events.get(n).getTypes();
+        }
     }
 
     public List<DesiredRateEvent> getEvents() {
-        return events;
+        synchronized(lock) {
+            return events;
+        }
+    }
+    
+    public void printLoc() {
+        for (int i = 0; i < events.size(); i++) {
+            System.out.println(timestamps.get(i) + " " + events.get(i).getTypes());
+        }
     }
     
 }
