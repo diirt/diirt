@@ -10,18 +10,22 @@
     <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
     <script>
-        var wsUri = "ws://localhost:8080/web-pods-0.1-SNAPSHOT/socket";
+        var wsUri = "ws://eschuhmacher-thinkstation-e32.bnl.gov:8080/web-pods-0.1-SNAPSHOT/socket";
             var wp = new Client(wsUri);
     </script>
     <script type="text/javascript" language="javascript" src="../js/widgets/gauge.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/xygraph.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/textinput.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/spinner.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/thermometer.js"></script>
+
     <script type="text/javascript" language="javascript" src="../js/widgets/slider.js"></script>
     <link href="../js/widgets/lib/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css">
     <link href="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.css" rel="stylesheet"  type="text/css">
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.common.core.js" ></script>
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.gauge.js" ></script>
+    <script src="../js/widgets/lib/RGraph/libraries/RGraph.thermometer.js" ></script>
+
     <script src="../js/widgets/lib/RGraph/excanvas/excanvas.js"></script>
     <script src="../js/widgets/lib/jquery-ui/jquery-ui.js"></script>
     <script src="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.js"></script>
@@ -35,11 +39,13 @@
 
 <div class="row" style="padding-bottom:40px; padding-top:20px; overflow:hidden;">
     <div id="title" style="float:left; padding-right: 40px">loc://test31(3) </div>
-    <div id="title2" style="padding-left:300px;">loc://asda(1)</div>
-    <br>
-    <div id = "my-widget1" class="gauge" data-channel="loc://test31(3)" displayLow=10 style="float:left; height: 180px;"></div>
-    <div id = "slider1" class="slider" data-channel="loc://asda(1)" min="0" max="100" step="1"  style="height: 160px"></div>
+    <div id="title2" style="float:left;">loc://asda(1)</div>
+    <div id="title6" style="padding-left:300px;">sim://ramp(0, 100, 1, 1)</div>
 
+    <br>
+    <div id = "my-widget1" class="gauge" data-channel="loc://test31(3)" displayLow=10 style="float:left; height: 180px; width:180px;"></div>
+    <div id = "slider1" class="slider" data-channel="loc://asda(1)" min="0" max="100" step="1"  style="float:left;height: 160px"></div>
+    <div id = "thermo1" class="thermometer" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" style="height: 180px; width: 80px; overflow:hidden;" ></div>
 </div>
 <br>
 <div class="row2" style="padding-bottom:20px; overflow:hidden;">

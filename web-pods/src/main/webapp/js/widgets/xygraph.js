@@ -86,7 +86,7 @@ $(document).ready(function() {
                 break;
             case "writePermission":	// write permission changed.
                 break;
-            case "writeFinished": // write finished.
+            case "writeCompleted": // write finished.
                 break;
             default:
                 break;
