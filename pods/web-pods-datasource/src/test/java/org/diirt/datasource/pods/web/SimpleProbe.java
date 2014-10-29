@@ -15,8 +15,8 @@ import org.diirt.datasource.PVManager;
 public class SimpleProbe {
     public static void main(String[] args) {
         org.diirt.datasource.sample.SimpleProbe.main(args);
-        CompositeDataSource composite = (CompositeDataSource) PVManager.getDefaultDataSource();
-        composite.putDataSource("wp", new WebPodsDataSource());
-        System.out.println("Done");
+//        CompositeDataSource composite = (CompositeDataSource) PVManager.getDefaultDataSource();
+//        composite.putDataSource("wp", new WebPodsDataSource());
+//        System.out.println("Done");
     }
 }

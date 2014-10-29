@@ -4,21 +4,16 @@
  */
 package org.diirt.datasource.pods.web;
 
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.diirt.util.config.Configuration;
+import org.diirt.datasource.DataSourceProvider;
 
 /**
  * Factory for {@link WebPodsDataSource}.
  *
  * @author carcassi
  */
-public final class WebPodsDataSourceFactory {
-
-    public WebPodsDataSourceFactory() {
-    }
+public final class WebPodsDataSourceProvider extends DataSourceProvider {
     
+    @Override
     public String getName() {
         return "wp";
     }
@@ -27,11 +22,12 @@ public final class WebPodsDataSourceFactory {
         return "datasources/wp";
     }
     
-    public WebPodsDataSource createDataSource() {
-        return createDataSource(getDefaultConfPath());
+    @Override
+    public WebPodsDataSource createInstance() {
+        return createInstance(getDefaultConfPath());
     }
     
-    public WebPodsDataSource createDataSource(String confPath) {
+    public WebPodsDataSource createInstance(String confPath) {
         WebPodsDataSourceConfiguration conf = WebPodsDataSourceConfiguration.readConfiguration(confPath);
         if (conf != null) {
             return new WebPodsDataSource(conf);

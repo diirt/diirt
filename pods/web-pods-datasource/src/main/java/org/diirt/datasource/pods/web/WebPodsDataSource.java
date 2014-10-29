@@ -15,7 +15,6 @@ import javax.websocket.WebSocketContainer;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.PVManager;
 import static org.diirt.datasource.util.Executors.namedPool;
 import org.diirt.datasource.vtype.DataTypeSupport;
 
@@ -37,7 +36,7 @@ public final class WebPodsDataSource extends DataSource {
     private static Logger log = Logger.getLogger(WebPodsDataSource.class.getName());
 
     public WebPodsDataSource() {
-        this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceFactory().getDefaultConfPath()));
+        this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceProvider().getDefaultConfPath()));
         reconnect();
     }
 

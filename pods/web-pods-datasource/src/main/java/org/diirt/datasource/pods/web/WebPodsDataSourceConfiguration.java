@@ -37,7 +37,7 @@ public final class WebPodsDataSourceConfiguration {
             WebPodsDataSourceConfiguration conf = new WebPodsDataSourceConfiguration(input);
             return conf;
         } catch (Exception ex) {
-            Logger.getLogger(WebPodsDataSourceFactory.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/wp.xml", ex);
+            Logger.getLogger(WebPodsDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/wp.xml", ex);
             return null;
         }
     }
