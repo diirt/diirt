@@ -3,29 +3,30 @@
  *
  * scripts to be included on the html file
  * <script src="../js/widgets/lib/RGraph/libraries/RGraph.common.core.js" ></script>
- * <script type="text/javascript" language="javascript" src="../js/widgets/gauge.js"></script>
+ * <script type="text/javascript" language="javascript" src="../js/widgets/tank.js"></script>
  * <script src="../js/widgets/lib/RGraph/excanvas/excanvas.js"></script>
- * <script src="../js/widgets/lib/RGraph/libraries/RGraph.gauge.js" ></script>
+ * <script src="../js/widgets/lib/RGraph/libraries/RGraph.vprogress.js" ></script>
  * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
  ******************************************************************************/
 
 
 $(document).ready(function() {
-	var nodes = document.getElementsByClassName("gauge");
+	var nodes = document.getElementsByClassName("tank");
 	var len = nodes.length;
-    var gauges = {};
+    var tanks = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
-        var id='rgraph-gauge-'+i;
-        nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
+        var id='rgraph-vprogress-'+i;
+        nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support] </canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
             var channel = wp.subscribeChannel(channelname, false);
-            gauges[channel.getId()] = new RGraph.Gauge(id,
-                            displayLow, displayHigh,
-                            0).Set('colors.ranges', []);
+            tanks[channel.getId()] = new RGraph.VProgress(id,displayLow, displayHigh,0);
+            tanks[channel.getId()].Set('chart.scale.visible', true);
+            tanks[channel.getId()].Set('chart.shadow', false);
+            tanks[channel.getId()].Draw();
             channel.addCallback(function(evt, channel) {
                             switch (evt.type) {
                             case "connection": //connection state changed
@@ -33,24 +34,26 @@ $(document).ready(function() {
                             case "value": //value changed
                                 var channelValue = channel.getValue();
                                 if (channelValue.display.lowDisplay == null) {
-                                     gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
-                                            displayLow, displayHigh,
-                                            0).Set('colors.ranges', []);
+                                     tanks[channel.getId()] = new RGraph.VProgress(tanks[channel.getId()].id,
+                                                                         displayLow, displayHigh,
+                                                                         channelValue.value);
                                 } else {
-                                gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
-                                    channelValue.display.lowDisplay, channelValue.display.highDisplay,
-                                    channelValue.value).Set('colors.ranges', []);
+                                tanks[channel.getId()] =new RGraph.VProgress(tanks[channel.getId()].id,
+                                                                   channelValue.display.lowDisplay, channelValue.display.highDisplay,
+                                                                   channelValue.value);
                                 }
                                 var color = 'green';
-								if (channelValue.alarm.severity == "MAJOR")
-									color = 'red';
-								else if (channelValue.alarm.severity == "MINOR")
-									color = "yellow";
-								gauges[channel.getId()].Set("chart.needle.colors", [ color ]);
-								gauges[channel.getId()].value = channelValue.value;
-								gauges[channel.getId()].Set ('chart.colors.ranges', [[channelValue.display.lowAlarm, channelValue.display.highAlarm, 'Gradient(#060:#0f0:#060)'], [channelValue.display.lowDisplay, channelValue.display.lowAlarm, 'Gradient(#660:yellow:#660)'],
-                                                                                    [channelValue.display.highAlarm, channelValue.display.highDisplay, 'Gradient(#600:red:#600)']]);
-								gauges[channel.getId()].Draw();
+
+								if(channelValue.alarm.severity =="MINOR") {
+                                  tanks[channel.getId()].Set('chart.colors', ["Gradient(#660:yellow:#660)"]);
+                                } else if (channelValue.alarm.severity =="MAJOR") {
+                                   tanks[channel.getId()].Set('chart.colors', ["Gradient(#600:red:#600)"]);
+                                } else {
+                                   tanks[channel.getId()].Set('chart.colors', ["Gradient(#060:#0f0:#060)"]);
+                                }
+                                tanks[channel.getId()].Set('chart.scale.visible', true);
+                                tanks[channel.getId()].Set('chart.shadow', false);
+								tanks[channel.getId()].Draw();
                                 break;
                             case "error": //error happened
                                 break;
@@ -63,13 +66,13 @@ $(document).ready(function() {
                             }
             });
 
-            gauges[channel.getId()].canvas.onclick = function (e)
+            tanks[channel.getId()].canvas.onclick = function (e)
             {
                 var obj   = e.target.__object__;
                 var value = obj.getValue(e);
                 obj.value = value;
-                for(var sl in   gauges) {
-                    if(gauges[sl].id == obj.id) {
+                for(var sl in   tanks) {
+                    if(tanks[sl].id == obj.id) {
                         var ch = wp.getChannel(sl);
                         break;
                     }
