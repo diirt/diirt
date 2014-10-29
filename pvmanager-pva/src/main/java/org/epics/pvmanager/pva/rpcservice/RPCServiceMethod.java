@@ -111,7 +111,7 @@ class RPCServiceMethod extends ServiceMethod {
 		  return paramStructure;
 	  else
 	  {
-		  return fieldCreate.createStructure("ev4:nt/NTURI:1.0", 
+		  return fieldCreate.createStructure("epics:nt/NTURI:1.0", 
 						  new String[] { "scheme", "path", "query" },
 						  new Field[] { 
 						  	fieldCreate.createScalar(ScalarType.pvString),
@@ -375,7 +375,7 @@ class RPCServiceMethod extends ServiceMethod {
     if (this.rpcServiceMethodDescription.isResultStandalone) {
       if (resultType.isAssignableFrom(VTable.class)) {
 
-        if ("ev4:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID()))
+        if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID()))
           return new PVFieldNTNameValueToVTable(pvResult, false);
         else
         	return new PVFieldToVTable(pvResult, false);
@@ -386,7 +386,7 @@ class RPCServiceMethod extends ServiceMethod {
       } else if (resultType.isAssignableFrom(VStatistics.class)) {
           return new PVFieldToVStatistics(pvResult, false);
       } else if (resultType.isAssignableFrom(VDoubleArray.class) &&
-    		  "ev4:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
+    		  "epics:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
           return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
       }
 
@@ -416,7 +416,7 @@ class RPCServiceMethod extends ServiceMethod {
         return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
     } else if (resultType.isAssignableFrom(VDoubleArray.class)) {
     	
-		if ("ev4:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID()))
+		if ("epics:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID()))
 	      return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
 	    else
           return new PVFieldToVDoubleArray(pvResult, fieldName != null ? fieldName : resultName, true);
@@ -432,7 +432,7 @@ class RPCServiceMethod extends ServiceMethod {
     } else if (resultType.isAssignableFrom(VStringArray.class)) {
         return new PVFieldToVStringArray(pvResult, fieldName != null ? fieldName : resultName, true);
     } else if (resultType.isAssignableFrom(VTable.class)) {
-        if ("ev4:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID()))
+        if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID()))
             return new PVFieldNTNameValueToVTable(pvResult, false);
           else
           	return new PVFieldToVTable(pvResult, false);
