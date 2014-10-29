@@ -3,7 +3,6 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.epics.graphene;
-
 import org.epics.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
@@ -35,6 +34,8 @@ public class GraphBuffer {
     private final int width, height;
     
     /**
+     * TODO (MC): All comments start with upper case; use period at the end; do not
+     * use tabs
      * creates a GraphBuffer with the given image on which to draw a graph
      * 
      * @param image			an image on which we can draw a graph
@@ -59,20 +60,18 @@ public class GraphBuffer {
     }
     
     /**
-     * TODO why does this need to take a Graph2D renderer if all it does it
-     * extract its width and height?
+     * Creates a GraphBuffer suitable for the given renderer. Makes sure
+     * all the parameters from the renderer are consistent with the buffer itself.
      * 
-     * creates a GraphBuffer with the given renderer
-     * 
-     * @param renderer		the graph renderer
+     * @param renderer the graph renderer
      */
     public GraphBuffer(Graph2DRenderer<?> renderer) {
         this(renderer.getImageWidth(), renderer.getImageHeight());
     }
     
     /**
-     * TODO method is not even used! Why is it here?
-     * sets the pixel at (x, y) to have the given color
+     * Changes the pixel at the given coordinates to the given color.
+     * TODO: make sure all other plotting functions use this.
      * 
      * @param x		    x-coordinate of a pixel
      * @param y		    y-coordinate of a pixel
@@ -86,6 +85,7 @@ public class GraphBuffer {
             pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
             pixels[y*image.getWidth()*4 + x*4 + 1] = (byte)(color >> 8 & 0xFF);
             pixels[y*image.getWidth()*4 + x*4 + 2] = (byte)(color >> 16 & 0xFF);
+
         }
         else{
             pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
@@ -96,14 +96,16 @@ public class GraphBuffer {
     
     /**
      * 
-     * @return		the image that is currently drawn on this graph
+     * @return	the image that is currently drawn on this graph
      */
     public BufferedImage getImage(){
         return image;
     }
     
     /**
-     * TODO explain why we are giving access to the graphics2D object
+     * Temporary method to retrieve the graphics context. Will be removed once
+     * this class is finished.
+     * 
      * @return 
      */
     public Graphics2D getGraphicsContext(){
@@ -141,11 +143,12 @@ public class GraphBuffer {
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
             int yData = yPointToDataMap[yOffset];
             if (yData != previousYData) {
-                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {
+                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {  
                     int xData = xPointToDataMap[xOffset];
 		    
 		    //determine what color corresponds to the value at the given point
                     int rgb = colorMap.colorFor(data.getValue(xData, yData));
+
 		    
 		    //plot the point using the correct color
                     if(hasAlphaChannel){
@@ -162,10 +165,8 @@ public class GraphBuffer {
                     }
                 }
 		
-	    //if this data point was the same as the previous data point, copy
-	    //over the previous data point's color
-	    //TODO why? does it make it faster? how often does it happen that we get
-	    //to plot the same data point over and over and over again?
+	    // If the current line is the same as the previous, it's
+            // faster to make a copy
             } else {
                 if (hasAlphaChannel) {
                     System.arraycopy(pixels, (yStartPoint + yOffset - 1)*width*4 + 4*xStartPoint,
@@ -229,7 +230,7 @@ public class GraphBuffer {
      * @param value the value
      * @return the pixel where the value should be mapped
      */
-    public int xValueToPixel(double value) {
+    public int xValueToPixel(double value) {   
         return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
 
@@ -281,7 +282,7 @@ public class GraphBuffer {
      * @param yMaxPixel the pixel corresponding to the maximum
      * @param yValueScale the scale used to transform values to pixel
      */
-    public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
+    public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {  
         yTopValue = range.getMaximum().doubleValue();
         yBottomValue = range.getMinimum().doubleValue();
         yTopPixel = yMaxPixel - 1;
@@ -355,10 +356,11 @@ public class GraphBuffer {
     
     private static final int MIN = 0;
     private static final int MAX = 1;
+    
+    // TODO: methods to draw labels on the top and on the left side of the graph
 
     /**
-     * TODO consider renaming to drawXAxisLabels?
-     * labels the x-axis of the graph
+     * Draws the given labels a the bottom of the graph area.
      * 
      * @param labels			    a list of x-axis labels to be drawn
      * @param valuePixelPositions	    the central x-coordinate of each label
@@ -376,8 +378,7 @@ public class GraphBuffer {
             g.setFont(labelFont);
             FontMetrics metrics = g.getFontMetrics();
 
-	    // TODO why do we draw the first and last label first?
-            // Draw first and last label
+            // Draw first and last label to make sure they fit
             int[] drawRange = new int[] {leftPixel, rightPixel};
             drawLineLabel(g, metrics, labels.get(0), valuePixelPositions.getInt(0),
                 drawRange, topPixel, true, false);
