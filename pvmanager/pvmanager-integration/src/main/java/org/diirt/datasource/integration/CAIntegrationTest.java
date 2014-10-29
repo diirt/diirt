@@ -7,8 +7,8 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.PVManager;
-import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
+import org.diirt.datasource.ca.JCADataSource;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 
 /**
  *

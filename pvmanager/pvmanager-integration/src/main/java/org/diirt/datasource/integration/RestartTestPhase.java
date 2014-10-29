@@ -4,11 +4,8 @@
  */
 package org.diirt.datasource.integration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.logging.LogManager;
 import org.diirt.datasource.PVManager;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a server restart.

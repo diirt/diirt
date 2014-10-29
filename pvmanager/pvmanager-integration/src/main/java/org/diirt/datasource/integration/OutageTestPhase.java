@@ -5,8 +5,7 @@
 package org.diirt.datasource.integration;
 
 import org.diirt.datasource.PVManager;
-import org.epics.pvmanager.jca.JCADataSource;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a network outage.

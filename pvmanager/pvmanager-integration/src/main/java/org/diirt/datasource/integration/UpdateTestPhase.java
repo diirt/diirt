@@ -7,14 +7,13 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
+import org.diirt.datasource.ca.JCADataSourceBuilder;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
-import org.epics.pvmanager.jca.JCADataSource;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.integration.Constants.*;
-import org.epics.pvmanager.jca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a server restart.
