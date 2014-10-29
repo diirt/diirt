@@ -15,7 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.epics.util.config.Configuration;
+import org.diirt.util.config.Configuration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

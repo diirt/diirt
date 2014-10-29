@@ -13,11 +13,11 @@ import javax.websocket.ContainerProvider;
 import javax.websocket.DeploymentException;
 import javax.websocket.WebSocketContainer;
 
-import org.epics.pvmanager.ChannelHandler;
-import org.epics.pvmanager.DataSource;
-import org.epics.pvmanager.PVManager;
-import static org.epics.pvmanager.util.Executors.namedPool;
-import org.epics.pvmanager.vtype.DataTypeSupport;
+import org.diirt.datasource.ChannelHandler;
+import org.diirt.datasource.DataSource;
+import org.diirt.datasource.PVManager;
+import static org.diirt.datasource.util.Executors.namedPool;
+import org.diirt.datasource.vtype.DataTypeSupport;
 
 /**
  * Data source for web=pods.

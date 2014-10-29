@@ -31,21 +31,21 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
-import org.epics.util.config.Configuration;
-import org.epics.pvmanager.CompositeDataSource;
-import org.epics.pvmanager.PVManager;
-import org.epics.pvmanager.PVReader;
-import org.epics.pvmanager.PV;
-import org.epics.pvmanager.PVReaderEvent;
-import org.epics.pvmanager.PVReaderListener;
-import org.epics.pvmanager.PVWriter;
-import org.epics.pvmanager.PVWriterEvent;
-import org.epics.pvmanager.PVWriterListener;
-import org.epics.pvmanager.file.FileDataSource;
-import static org.epics.pvmanager.formula.ExpressionLanguage.*;
-import org.epics.pvmanager.loc.LocalDataSource;
-import org.epics.pvmanager.sim.SimulationDataSource;
-import org.epics.util.time.TimeDuration;
+import org.diirt.util.config.Configuration;
+import org.diirt.datasource.CompositeDataSource;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVReaderListener;
+import org.diirt.datasource.PVWriter;
+import org.diirt.datasource.PVWriterEvent;
+import org.diirt.datasource.PVWriterListener;
+import org.diirt.datasource.file.FileDataSource;
+import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.datasource.loc.LocalDataSource;
+import org.diirt.datasource.sim.SimulationDataSource;
+import org.diirt.util.time.TimeDuration;
 
 /**
  *

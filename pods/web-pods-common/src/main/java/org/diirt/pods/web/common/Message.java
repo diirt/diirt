@@ -13,10 +13,10 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
-import org.epics.util.array.ListNumber;
-import org.epics.vtype.VType;
-import static org.epics.vtype.json.JsonArrays.*;
-import org.epics.vtype.json.VTypeToJson;
+import org.diirt.util.array.ListNumber;
+import org.diirt.vtype.VType;
+import static org.diirt.vtype.json.JsonArrays.*;
+import org.diirt.vtype.json.VTypeToJson;
 
 /**
  * A message being sent as part of the WebPods protocol.

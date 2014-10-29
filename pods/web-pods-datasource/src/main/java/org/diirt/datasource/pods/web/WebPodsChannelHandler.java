@@ -6,8 +6,8 @@ package org.diirt.datasource.pods.web;
 
 
 import javax.websocket.CloseReason;
-import org.epics.pvmanager.ChannelWriteCallback;
-import org.epics.pvmanager.MultiplexedChannelHandler;
+import org.diirt.datasource.ChannelWriteCallback;
+import org.diirt.datasource.MultiplexedChannelHandler;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.

@@ -5,10 +5,10 @@
 package org.diirt.pods.web.common;
 
 import java.util.Arrays;
-import org.epics.util.array.ArrayDouble;
-import org.epics.util.time.Timestamp;
-import org.epics.vtype.AlarmSeverity;
-import static org.epics.vtype.ValueFactory.*;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.time.Timestamp;
+import org.diirt.vtype.AlarmSeverity;
+import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *

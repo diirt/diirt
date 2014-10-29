@@ -6,12 +6,12 @@
 package org.diirt.pods.web.common;
 
 import java.io.StringReader;
-import org.epics.vtype.VTypeValueEquals;
+import org.diirt.vtype.VTypeValueEquals;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.pods.web.common.MessageTestConstants.*;
-import org.epics.vtype.VType;
+import org.diirt.vtype.VType;
 
 /**
  *

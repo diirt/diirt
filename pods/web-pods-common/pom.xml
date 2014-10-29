@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.diirt</groupId>
-        <artifactId>pods</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <artifactId>pods-all</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>web-pods-common</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.epics</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>vtype-json</artifactId>
-            <version>2.9.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.websocket</groupId>
