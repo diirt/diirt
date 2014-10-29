@@ -17,11 +17,11 @@ import java.util.logging.Logger;
  */
 public class CompositeDataSource extends DataSource {
     
-    private static Logger log = Logger.getLogger(CompositeDataSource.class.getName());
+    private static final Logger log = Logger.getLogger(CompositeDataSource.class.getName());
 
     // Stores all data sources by name
-    private Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
-    private Map<String, DataSourceProvider> dataSourceFactories = new ConcurrentHashMap<>();
+    private final Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
+    private final Map<String, DataSourceProvider> dataSourceProviders = new ConcurrentHashMap<>();
 
     private volatile String delimiter = "://";
     private volatile String defaultDataSource;
@@ -82,7 +82,7 @@ public class CompositeDataSource extends DataSource {
     public void putDataSource(DataSourceProvider dataSourceProvider) {
         // XXX: datasources should be closed
         dataSources.remove(dataSourceProvider.getName());
-        dataSourceFactories.put(dataSourceProvider.getName(), dataSourceProvider);
+        dataSourceProviders.put(dataSourceProvider.getName(), dataSourceProvider);
     }
 
     /**
@@ -96,7 +96,7 @@ public class CompositeDataSource extends DataSource {
     }
     
     /**
-     * Returns the data sources registered to this composite data source.
+     * Returns the data sources used by this composite data source.
      * <p>
      * Returns only the data sources that have been created.
      * 
@@ -104,6 +104,17 @@ public class CompositeDataSource extends DataSource {
      */
     public Map<String, DataSource> getDataSources() {
         return Collections.unmodifiableMap(dataSources);
+    }
+    
+    /**
+     * Returns the data source providers registered to this composite data source.
+     * <p>
+     * Returns all registered data sources.
+     * 
+     * @return the registered data source providers
+     */
+    public Map<String, DataSourceProvider> getDataSourceProviders() {
+        return Collections.unmodifiableMap(dataSourceProviders);
     }
 
     /**
@@ -113,7 +124,7 @@ public class CompositeDataSource extends DataSource {
      * @param defaultDataSource the default data source
      */
     public void setDefaultDataSource(String defaultDataSource) {
-        if (!dataSourceFactories.containsKey(defaultDataSource))
+        if (!dataSourceProviders.containsKey(defaultDataSource))
             throw new IllegalArgumentException("The data source " + defaultDataSource + " was not previously added, and therefore cannot be set as default");
 
         this.defaultDataSource = defaultDataSource;
@@ -136,7 +147,7 @@ public class CompositeDataSource extends DataSource {
             return defaultDataSource;
         } else {
             String source = channelName.substring(0, indexDelimiter);
-            if (dataSourceFactories.containsKey(source))
+            if (dataSourceProviders.containsKey(source))
                 return source;
             throw new IllegalArgumentException("Data source " + source + " for " + channelName + " was not configured.");
         }
@@ -228,7 +239,7 @@ public class CompositeDataSource extends DataSource {
     private DataSource retrieveDataSource(String name) {
         DataSource dataSource = dataSources.get(name);
         if (dataSource == null) {
-            DataSourceProvider factory = dataSourceFactories.get(name);
+            DataSourceProvider factory = dataSourceProviders.get(name);
             if (factory == null) {
                 throw new IllegalArgumentException("DataSource '" + name + delimiter + "' was not configured.");
             } else {
