@@ -4,10 +4,6 @@
  */
 package org.diirt.datasource.pods.web;
 
-import org.diirt.datasource.CompositeDataSource;
-import org.diirt.datasource.DataSource;
-import org.diirt.datasource.PVManager;
-
 /**
  *
  * @author carcassi
@@ -15,8 +11,5 @@ import org.diirt.datasource.PVManager;
 public class SimpleProbe {
     public static void main(String[] args) {
         org.diirt.datasource.sample.SimpleProbe.main(args);
-//        CompositeDataSource composite = (CompositeDataSource) PVManager.getDefaultDataSource();
-//        composite.putDataSource("wp", new WebPodsDataSource());
-//        System.out.println("Done");
     }
 }
