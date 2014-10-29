@@ -43,13 +43,15 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                 nextEvent = queuedEvent;
                 queuedEvent = null;
                 if (log.isLoggable(logLevel)) {
-                    log.log(Level.WARNING, "Submitted {0}", Timestamp.now());
+                    log.log(logLevel, "Submitted {0}", Timestamp.now());
                 }
             }
             
             // If stopped, the event may be null. Skip the event.
             if (nextEvent != null) {
                 sendDesiredRateEvent(nextEvent);
+            } else {
+                log.log(logLevel, "Skipping null event {0}", Timestamp.now());
             }
         }
     };
@@ -123,18 +125,18 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                 if (delay.isPositive()) {
                     lastSubmission = nextSubmission;
                     if (log.isLoggable(logLevel)) {
-                        log.log(Level.WARNING, "Schedule next {0}", Timestamp.now());
+                        log.log(logLevel, "Schedule next {0}", Timestamp.now());
                     }
                 } else {
                     lastSubmission = Timestamp.now();
                     if (log.isLoggable(logLevel)) {
-                        log.log(Level.WARNING, "Schedule now {0}", Timestamp.now());
+                        log.log(logLevel, "Schedule now {0}", Timestamp.now());
                     }
                 }
             } else {
                 scanActive = false;
                 if (log.isLoggable(logLevel)) {
-                    log.log(Level.WARNING, "Do not schedule next {0}", Timestamp.now());
+                    log.log(logLevel, "Do not schedule next {0}", Timestamp.now());
                 }
             }
         }
@@ -153,7 +155,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             if (queuedEvent == null) {
                 queuedEvent = new DesiredRateEvent();
                 if (log.isLoggable(logLevel)) {
-                    log.log(Level.WARNING, "Creating queued event {0}", Timestamp.now());
+                    log.log(logLevel, "Creating queued event {0}", Timestamp.now());
                 }
             }
             queuedEvent.addType(type);
@@ -167,19 +169,19 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                     delay = nextTimeSlot.durationFrom(currentTimestamp);
                     lastSubmission = nextTimeSlot;
                     if (log.isLoggable(logLevel)) {
-                        log.log(Level.WARNING, "Submit delayed {0}", Timestamp.now());
+                        log.log(logLevel, "Submit delayed {0}", Timestamp.now());
                     }
                 } else {
                     lastSubmission = currentTimestamp;
                     if (log.isLoggable(logLevel)) {
-                        log.log(Level.WARNING, "Submit now {0}", Timestamp.now());
+                        log.log(logLevel, "Submit now {0}", Timestamp.now());
                     }
                 }
                 scanActive = true;
             } else {
                 submit = false;
                 if (log.isLoggable(logLevel)) {
-                    log.log(Level.WARNING, "Do not submit {0}", Timestamp.now());
+                    log.log(logLevel, "Do not submit {0}", Timestamp.now());
                 }
             }
             
