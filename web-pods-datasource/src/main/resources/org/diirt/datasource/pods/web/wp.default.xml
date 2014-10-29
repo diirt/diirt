@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wp version="1">
+    <!-- Change uri to the location of the web-pods socket -->
+    <connection socketLocation="ws://localhost:8080/web-pods/socket"/>
+</wp>

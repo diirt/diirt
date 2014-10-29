@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Site</actionName>
+            <displayName>Site</displayName>
+            <goals>
+                <goal>site:site</goal>
+                
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release</actionName>
+            <displayName>Release</displayName>
+            <goals>
+                <goal>release:prepare</goal>
+                <goal>release:perform</goal>
+            </goals>
+        </action>
+    </actions>
