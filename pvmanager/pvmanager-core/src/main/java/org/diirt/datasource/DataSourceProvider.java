@@ -5,6 +5,8 @@
 package org.diirt.datasource;
 
 import java.util.ServiceLoader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A class that provides support for a DataSource.
@@ -20,6 +22,8 @@ import java.util.ServiceLoader;
  * @author carcassi
  */
 public abstract class DataSourceProvider {
+    
+    private static final Logger log = Logger.getLogger(DataSourceProvider.class.getName());
     
     /**
      * The name to be used when registering the DataSource with the
@@ -43,12 +47,17 @@ public abstract class DataSourceProvider {
      * @return a new DataSource
      */
     public static CompositeDataSource createDataSource() {
+        log.config("Fetching data source providers");
         CompositeDataSource composite = new CompositeDataSource();
         // Find formula functions to register using the ServiceLoader
         ServiceLoader<DataSourceProvider> sl = ServiceLoader.load(DataSourceProvider.class);
+        int count = 0;
         for (DataSourceProvider factory : sl) {
+            log.log(Level.CONFIG, "Adding provider {0} ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
             composite.putDataSource(factory);
+            count++;
         }
+        log.log(Level.CONFIG, "Found {0} providers", count);
         return composite;
     }
 }

@@ -7,6 +7,7 @@ package org.diirt.datasource;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -248,6 +249,7 @@ public class CompositeDataSource extends DataSource {
                     throw new IllegalStateException("DataSourceProvider '" + name + delimiter + "' did not create a valid datasource.");
                 }
                 dataSources.put(name, dataSource);
+                log.log(Level.CONFIG, "Created instance for data source {0} ({1})", new Object[]{name, dataSource.getClass().getSimpleName()});
             }
         }
         return dataSource;
