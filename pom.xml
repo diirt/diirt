@@ -66,6 +66,7 @@
         <module>graphene</module>
         <module>pvmanager</module>
         <module>vtype</module>
+        <module>pods</module>
     </modules>
     <build>
         <plugins>
