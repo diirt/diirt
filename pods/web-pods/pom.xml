@@ -8,9 +8,8 @@
     </parent>
 
     <artifactId>web-pods</artifactId>
+    <name>org.diirt.pods.web</name>
     <packaging>war</packaging>
-
-    <name>web-pods</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
