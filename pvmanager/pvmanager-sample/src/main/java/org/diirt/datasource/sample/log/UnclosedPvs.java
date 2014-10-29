@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.sample;
+package org.diirt.datasource.sample.log;
 
 
 import org.diirt.datasource.PVManager;
@@ -10,7 +10,6 @@ import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VNumber;
 
@@ -25,10 +24,8 @@ import org.diirt.vtype.VNumber;
  */
 public class UnclosedPvs {
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new SimulationDataSource());
-        
         System.out.println("Starting pv");
-        PVReader<VNumber> reader = PVManager.read(vNumber("gaussianNoise()"))
+        PVReader<VNumber> reader = PVManager.read(vNumber("sim://gaussianNoise()"))
                 .readListener(new PVReaderListener<VNumber>() {
                     @Override
                     public void pvChanged(PVReaderEvent<VNumber> event) {
@@ -40,8 +37,10 @@ public class UnclosedPvs {
                 .maxRate(TimeDuration.ofMillis(500));
 	
 	Thread.sleep(2000);
-        System.out.println("Garbage collecting");
+        System.out.println("Voiding reference");
         reader = null;
+	Thread.sleep(100);
+        System.out.println("Garbage collecting");
         System.gc();
 	Thread.sleep(3000);
 	
