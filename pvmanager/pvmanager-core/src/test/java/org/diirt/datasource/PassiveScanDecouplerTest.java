@@ -9,6 +9,9 @@ import org.diirt.datasource.PassiveScanDecoupler;
 import org.diirt.datasource.SourceDesiredRateDecoupler;
 import org.diirt.datasource.ActiveScanDecoupler;
 import java.util.concurrent.Callable;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.diirt.util.time.TimeDuration;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -149,25 +152,41 @@ public class PassiveScanDecouplerTest {
             }
         });
     }
+    
+    public static void enableLog(Class<?> clazz, Level level) {
+        Handler handler = Logger.getLogger("").getHandlers()[0];
+        if (level.intValue() < handler.getLevel().intValue()) {
+            handler.setLevel(level);
+        }
+        Logger.getLogger(clazz.getName()).setLevel(level);
+    }
+    
+    public static void disableLog(Class<?> clazz) {
+        Logger.getLogger(clazz.getName()).setLevel(null);
+    }
 
     @Test
     public void slowResponse() throws Exception {
         repeatTest(10, new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                DesiredRateEventLog log = new DesiredRateEventLog(100);
+                log = new DesiredRateEventLog(100);
                 SourceDesiredRateDecoupler decoupler = new PassiveScanDecoupler(PVManager.getReadScannerExecutorService(), TimeDuration.ofHertz(50), log);
                 log.setDecoupler(decoupler);
                 decoupler.start();
-                Thread.sleep(25);
+                // Wait for connection event
+                Thread.sleep(125);
+                
                 decoupler.newValueEvent();
                 Thread.sleep(25);
                 decoupler.newValueEvent();
                 Thread.sleep(25);
                 decoupler.newValueEvent();
-                Thread.sleep(200);
+                Thread.sleep(500);
                 decoupler.stop();
-                assertThat(log.getEvents().size(), equalTo(2));
+                
+                // Expect 3 events: 1 conn, first value, last value
+                assertThat(log.getEvents().size(), equalTo(3));
                 return null;
             }
         });
