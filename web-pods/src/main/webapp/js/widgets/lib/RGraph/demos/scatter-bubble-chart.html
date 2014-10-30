@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Scatter chart as a Bubble chart variant using post-processing</title>
+    
+    <meta name="keywords" content="demo scatter bubbles tooltips" />
+    <meta name="description" content="A Scatter chart which is configured to use Bubbles and hides the tooltips when you move the mouse away from a Bubble" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Scatter chart as a Bubble chart variant using the new Bubble chart class</h1>
+    
+    <p>
+        The Scatter chart now has a dedicated Bubble chart class as part of the file.
+    </p>
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            // Create and configure the Scatter chart
+            var scatter = new RGraph.Scatter('cvs', [
+                                                 [30,15, 'red', 'Red bubble tooltip'],
+                                                 [60,5, 'blue', 'Blue bubble tooltip'],
+                                                 [90,8, 'pink', 'Pink bubble tooltip'],
+                                                 [120,19, 'green', 'Green bubble tooltip'],
+                                                 [150,14, 'gray', 'Gray bubble tooltip'],
+                                                 [50,12, 'red', 'Red bubble tooltip'],
+                                                 [180,24, 'gray', 'Gray bubble tooltip'],
+                                                 [250,21, 'black', 'Black bubble tooltip']
+                                                ])
+                .Set('xmax', 365)
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Set('tooltips.hotspot', 10)
+
+            bubble = new RGraph.Scatter.Bubble(scatter, 0,   // Minimum
+                                                        100, // Maximum
+                                                        25,  // Max width
+                                                        [50,60,70,80,90,84,86,87] // Bubble data
+                                                       )
+                .Draw();
+            
+            /**
+            * This custom onmousemove event listener hides the tooltip if the mouse
+            * is not over a mark.
+            */
+            scatter.canvas.onmousemove = function (e)
+            {
+                var obj   = e.target.__object__;
+                var shape = obj.getShape(e);
+
+                if (!shape) {
+                    RGraph.HideTooltip();
+                    RGraph.Redraw();
+                }
+            }
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

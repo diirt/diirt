@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="/libraries/RGraph.common.core.js" ></script>
+    <script src="/libraries/RGraph.bar.js" ></script>
+    
+    <title>A Bar chart with a dotted and dashed background grid</title>
+    
+    <meta name="keywords" content="bar background grid dotted dashed" />
+    <meta name="description" content="This Bar chart shows a dotted and a dashed background grid. Dotted/dashed lines are currently only supported in Chrome" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A demo of the Chrome-only dotted or dashed background grid</h1>
+    
+    <p>
+        This uses the relatively new Chrome only addition to canvas from the canvas v5 specification - dotted and dashed lines with
+        HTML5 canvas. As browsers add support you will be able to use the option in them too but currently (May 2013) it's only
+        supported in Chrome.
+    </p>
+    
+    <pre class="code">
+obj.Set('chart.background.grid.dashed', true);
+obj.Set('chart.background.grid.dotted', true);
+</pre>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        bar = new RGraph.Bar('cvs1', [4,5,3,8,4,9,6,5,3])
+            .Set('background.grid.dashed', true)
+            .Set('labels', ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'])
+            .Set('background.grid.dashed', true)
+            .Set('title', 'A dashed background grid')
+            .Draw();
+
+        bar2 = new RGraph.Bar('cvs2', [4,5,3,8,4,9,6,5,3])
+            .Set('labels', ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'])
+            .Set('background.grid.dotted', true)
+            .Set('title', 'A dotted background grid')
+            .Draw();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.drawing.rect.js" ></script>
+    <script src="../libraries/RGraph.rscatter.js" ></script>
+    
+    <title>An example of a RScatter chart with an interactive key</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo rscatter radial scatter interactive key" />
+    <meta name="description" content="An example of a RScatter chart with an interactive key" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An example of a RScatter chart with an interactive key</h1>
+    
+    <p>
+        The interactive key has been re-implemented as of June 2013 and added to more chart types.
+    </p>
+
+    <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+    <script>
+        data1 = [[45,51,'green'],[45,46,'green'],[45,35,'green']];
+        data2 = [[225,32,'red'],[225,25,'red'],[225,12,'red']];
+        data3 = [[315,13,'pink'],[315,26,'pink'],[315,36,'pink']];
+
+        var rscatter = new RGraph.RScatter('cvs', data1, data2, data3)
+            .Set('key', ['Richard','Dave','Charles'])
+            .Set('key.interactive', true)
+            .Set('key.colors', ['green','red','pink'])
+            .Set('margin', 5)
+            .Set('labels.axes', 'n')
+            .Draw();
+    </script>
+    
+    <br />
+    
+    <a href="./">&lt;Back</a><br />
+
+</body>
+</html>

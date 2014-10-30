@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>Line chart with scrolling effect</title>
+    
+    <meta name="keywords" content="demo line scrolling" />
+    <meta name="description" content="A chart which updates itself every 250ms producing a scrolling effect" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>Line chart with scrolling effect</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        data = RGraph.array_pad([], 500);
+
+        function DrawGraph ()
+        {
+            RGraph.Clear(document.getElementById("cvs"));
+            RGraph.ObjectRegistry.Clear();
+
+            var line = new RGraph.Line('cvs', data)
+                .Set('colors', ['green'])
+                .Set('linewidth', 1)
+                .Set('filled', true)
+                .Set('fillstyle', 'rgba(128,255,128,0.5)')
+                .Set('ymax', 60)
+                .Set('numxticks', 5)
+                .Set('labels', ['Now','25s','50s','75s','100s','125s'])
+                .Draw();
+
+            r    = RGraph.random(45,55);
+            data = [r].concat(data);
+            data.pop();
+
+            
+            setTimeout(DrawGraph, 250);
+        }
+        
+        window.onload = function ()
+        {
+            DrawGraph();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A customised and adjustable Gauge chart</title>
+    
+    <meta name="keywords" content="demo adjustable gauge customised" />
+    <meta name="description" content="A customised Gauge chart which can be adjusted" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A customised and adjustable Gauge chart</h1>
+
+    <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var gauge = new RGraph.Gauge('cvs', 0, 10, 7)
+                .Set('angles.start', PI - (PI / 8))
+                .Set('angles.end', TWOPI + (PI / 8))
+                .Set('shadow', false)
+                .Set('text.color', 'white')
+                .Set('tickmarks.big.color', 'white')
+                .Set('tickmarks.medium.color', 'white')
+                .Set('tickmarks.small.color', 'white')
+                .Set('border.outer', 'transparent')
+                .Set('border.inner', 'transparent')
+                .Set('colors.ranges', [])
+                .Set('background.color', 'transparent')
+                .Set('border.outline', 'transparent')
+                .Set('needle.colors', ['red'])
+                .Set('needle.type', 'line')
+                .Set('needle.tail', true)
+                .Set('needle.size', 55)
+                .Set('centerpin.radius', 0.1)
+                .Set('title.top', 'Speed')
+                .Set('title.top.color', 'white')
+                .Set('labels.centered', true)
+                .Set('labels.offset', 7)
+    
+            /**
+            * This draws a simple gray circle over the centerpin
+            */
+            function myCenterpin (obj)
+            {
+                // This circle becomes the border of the centerpin
+                obj.context.beginPath();
+                    obj.context.fillStyle = '#aaa';
+                    obj.context.arc(obj.centerx, obj.centery, 10, 0, TWOPI, false);
+                obj.context.fill();
+            }
+            RGraph.AddCustomEventListener(gauge, 'ondraw', myCenterpin);
+            
+            gauge.Draw();
+        
+            /**
+            * This event listener facilitates you being able to click and adjust the gauge
+            */
+            gauge.canvas.onclick_rgraph = function (e)
+            {
+                var obj   = e.target.__object__;
+                var value = obj.getValue(e);
+                
+                obj.value = value;
+                
+                RGraph.Effects.Gauge.Grow(obj);
+            }
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

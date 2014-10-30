@@ -1,0 +1,56 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Waterfall chart with Grow effect and a combo Line/Bar on the same page</title>
+
+    <meta name="keywords" content="demo waterfall animated" />
+    <meta name="description" content="Multiple chart types on one page and the Waterfall is animated" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Waterfall chart with Grow effect and a combo Line/Bar on the same page</h1>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+     <script>
+         window.onload = function ()
+         {
+      	    // Graph 1
+             var waterfall1 = new RGraph.Waterfall('cvs1', [4,5,-8,-6,-5,2,3,1,-5.03])
+                .Set('labels', ['sample', 'sample', 'sample'])
+                .Set('tooltips', ['sample', 'sample', 'sample'])
+                .Set('xaxispos', 'center')
+             
+             RGraph.Effects.Waterfall.Grow(waterfall1);
+             
+             // Combo - ensure the Bar chart is created first
+             var bar = new RGraph.Bar('cvs2', [14,3,5,2,2])
+                .Set('tooltips', ['A','B','C','D','E'])
+             
+             var line = new RGraph.Line('cvs2', [4,8,6,3,5])
+                .Set('tickmarks', 'endcircle')
+                .Set('linewidth', 3)
+             
+             var combo = new RGraph.CombinedChart(bar, line);
+             combo.Draw();
+    	 }
+     </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

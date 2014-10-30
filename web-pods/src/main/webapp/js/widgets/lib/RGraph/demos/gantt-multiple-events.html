@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.gantt.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>A Gantt chart showing multiple events per row</title>
+    
+    <meta name="keywords" content="demo gantt multiple events" />
+    <meta name="description" content="A Gantt chart showing multiple events per row" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Gantt chart showing multiple events per row</h1>
+    
+    <p>
+        By using nested arrays you can show multiple events per row (with tooltips).
+    </p>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var data = [
+                        // First row
+                        [
+                         [5, 10, null, 'Maths', 'Gradient(white:red)'],
+                         [16, 8, null, 'Maths', 'Gradient(white:red)']
+                        ],
+                        
+                        // Second row
+                        [
+                         [0, 10, null, 'French', 'Gradient(white:green)'],
+                         [14, 10, null, 'French', 'Gradient(white:green)']
+                        ],
+                        
+                        // Third row
+                        [
+                         [0, 5, null, 'German', 'Gradient(white:pink)'],
+                         [6, 5,null, 'German', 'Gradient(white:pink)'],
+                         [12, 5,null, 'German', 'Gradient(white:pink)'],
+                         [18, 5,null, 'German', 'Gradient(white:pink)']
+                        ],
+                        
+                        // Fourth row - only one event on this row
+                        [5, 15,null, 'Polish', 'Gradient(white:orange)']
+                       ];
+            
+            var gantt = new RGraph.Gantt('cvs', data)
+              .Set('tooltips', ['A','B','C','D','E','F','G','H','I'])
+              .Set('margin', 10)
+              .Set('xmax', 24)
+              .Draw();
+  }
+    </script>
+</body>
+</html>

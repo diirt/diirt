@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A basic HBar chart</title>
+    
+    <meta name="keywords" content="demo hbar basic" />
+    <meta name="description" content="A basic Horizontal Bar chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A horizontal bar chart showing Chrome speeds</h1>
+
+   <canvas id="cvs" width="350" height="176">[No canvas support]</canvas>
+
+   <script>
+       window.onload = function ()
+       {
+           var hbar = new RGraph.HBar('cvs', [215, 175])
+               .Set('labels', ['Chrome 18', 'Chrome 19'])
+               .Set('colors', ['#3266CC'])
+               .Set('title.xaxis', 'milliseconds (less is better)')
+               .Set('background.grid.hlines', false)
+               .Set('background.grid.autofit.numvlines', 4)
+               .Set('background.grid.border', false)
+               .Set('title', 'SunSpider score')
+               .Set('gutter.bottom', 50)
+               .Set('vmargin', 8)
+               .Draw();
+       }
+   </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
