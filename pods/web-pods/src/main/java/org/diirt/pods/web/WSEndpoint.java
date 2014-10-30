@@ -32,7 +32,6 @@ import javax.websocket.server.ServerEndpoint;
 import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
 import org.diirt.util.config.Configuration;
-import org.diirt.datasource.CompositeDataSource;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PV;
@@ -41,10 +40,7 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
-import org.diirt.datasource.file.FileDataSource;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
-import org.diirt.datasource.loc.LocalDataSource;
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.util.time.TimeDuration;
 
 /**
@@ -57,12 +53,6 @@ public class WSEndpoint {
     // TODO: understand lifecycle of whole web application and put
     // configuration there, including closing datasources.
     static {
-        CompositeDataSource datasource = new CompositeDataSource();
-        datasource.putDataSource("sim", new SimulationDataSource());
-        datasource.putDataSource("loc", new LocalDataSource());
-        datasource.putDataSource("file", new FileDataSource());
-        PVManager.setDefaultDataSource(datasource);
-        
         ChannelTranslator temp = null;
         try (InputStream input = Configuration.getFileAsStream("pods/web/mappings.xml", new WSEndpoint(), "mappings.default.xml")) {
             temp = ChannelTranslator.loadTranslator(input);
