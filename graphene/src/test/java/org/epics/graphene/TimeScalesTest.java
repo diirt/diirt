@@ -548,22 +548,59 @@ public class TimeScalesTest {
 	assertThat( references.get( 4 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 50 , 0 ) ) );
     }
     
-        @Test
-	@Ignore //Years not working, or test case is set up wrong?
+    @Test
     public void createReferencesYears1() {
-	//test seconds: straightforward, 50 years interval over 10 year period,
+	//test years: straightforward, 50 years interval over 5 year period,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 500 );
 	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*366 ) ) );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*366*50 ) ) );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
 	assertThat( references.size() , equalTo(5) );
-	assertThat( references.get( 0 ) , equalTo( create(2019 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
-	assertThat( references.get( 1 ) , equalTo( create(2024 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
-	assertThat( references.get( 2 ) , equalTo( create(2029 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
-	assertThat( references.get( 3 ) , equalTo( create(2034 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
-	assertThat( references.get( 4 ) , equalTo( create(2039 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
+	
+	//perhaps we should document why 2020/11/22 11:00:00:00 happens to align with the
+	//10 year period and not 2020/11/22 00:00:00:00?
+	assertThat( references.get( 0 ) , equalTo( create(2020 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2030 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create(2040 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 3 ) , equalTo( create(2050 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 4 ) , equalTo( create(2060 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
+    @Ignore //What's the maximum bound on years?
+    public void createReferencesOverflow() {
+	//test trying to overflow years
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
+	cal.set( GregorianCalendar.MILLISECOND , 0 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	long hours = 24l * 366l * 999999999l;
+	System.out.println( hours );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( hours ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 999999999l ) );
+	System.out.println( new TimePeriod( YEAR , 999999999l ) );
+	System.out.println( TimeDuration.ofHours( hours ) );
+	System.out.println( hours + " " + Double.valueOf( hours ).doubleValue() );
+	assertThat( references.size() , equalTo(1) );
+	assertThat( references.get( 0 ) , equalTo( create( 2014+999999999 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
+    public void createReferencesStructureTest1() {
+	//test the structure of the createReferences() method
+	//case 1: while (endCal.compareTo(cal) >= 0) exectures and
+	//if (timeInterval.contains(newTime)) executes.
+	//this is achieved in a prior test case:
+	createReferencesSeconds1();
+    }
+    
+    @Test
+    public void createReferencesStructureTest2() {
+	//test the structure of the createReferences() method
+	//case 2: while (endCal.compareTo(cal) >= 0) does not execute
+	//this is acheived in a prior test case:
+	createReferencesEmpty3();
     }
     
     @Test
