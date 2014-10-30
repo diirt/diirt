@@ -17,11 +17,12 @@ $(document).ready(function() {
     var sliders = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var max = parseFloat(nodes[i].getAttribute("max"));
         var min = parseFloat(nodes[i].getAttribute("min"));
         var step = parseFloat(nodes[i].getAttribute("step"));
         var id = nodes[i].getAttribute("id");
-        var channel = wp.subscribeChannel(channelname, false);
+        var channel = wp.subscribeChannel(channelname, readOnly);
         var slider = $("#" + id).labeledslider({max: max, step: step, orientation: 'vertical', range: false, tickInterval: 10  });
         sliders[channel.getId()] = slider;
         channel.addCallback(function(evt, channel) {

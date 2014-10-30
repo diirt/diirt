@@ -16,13 +16,14 @@ $(document).ready(function() {
     var progressbars = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var id='rgraph-hprogress-'+i;
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support] </canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, false);
+            var channel = wp.subscribeChannel(channelname, readOnly);
             progressbars[channel.getId()] = new RGraph.HProgress(id,0, displayHigh);
             progressbars[channel.getId()].Set('tickmarks.inner', true);
             progressbars[channel.getId()].Set('tickmarks.zerostart', true);

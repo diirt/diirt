@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var id = nodes[i].getAttribute("id");
         var input = document.createElement("textarea");
         input.id = id;
@@ -22,7 +23,7 @@ $(document).ready(function() {
         input.style = style;
         div.appendChild(input);
         if (channelname != null && channelname.trim().length > 0) {
-            var channel = wp.subscribeChannel(channelname, false);
+            var channel = wp.subscribeChannel(channelname, readOnly);
             inputs[channel.getId()] = input;
             channel.addCallback(function(evt, channel) {
                 switch (evt.type) {

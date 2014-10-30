@@ -19,9 +19,9 @@ $(document).ready(function() {
         var max = parseFloat(nodes[i].getAttribute("max"));
         var min = parseFloat(nodes[i].getAttribute("min"));
         var step = parseFloat(nodes[i].getAttribute("step"));
-
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var id = nodes[i].getAttribute("id");
-        var channel = wp.subscribeChannel(channelname, false);
+        var channel = wp.subscribeChannel(channelname, readOnly);
         var spinner = $("#" + id).spinner({ step: step, min: min, max: max});
         spinners[channel.getId()] = spinner;
         channel.addCallback(function(evt, channel) {

@@ -16,13 +16,14 @@ $(document).ready(function() {
     var thermometers = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var id='rgraph-thermomether-'+i;
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support] </canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, false);
+            var channel = wp.subscribeChannel(channelname, readOnly);
             thermometers[channel.getId()] = new RGraph.Thermometer(id,displayLow, displayHigh,0);
             thermometers[channel.getId()].Set('chart.scale.visible', true);
             thermometers[channel.getId()].Set('chart.shadow', false);

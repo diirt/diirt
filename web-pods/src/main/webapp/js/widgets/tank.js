@@ -16,13 +16,14 @@ $(document).ready(function() {
     var tanks = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
+        var readOnly = nodes[i].getAttribute("channel-readonly");
         var id='rgraph-vprogress-'+i;
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support] </canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, false);
+            var channel = wp.subscribeChannel(channelname, readOnly);
             tanks[channel.getId()] = new RGraph.VProgress(id,displayLow, displayHigh,0);
             tanks[channel.getId()].Set('chart.scale.visible', true);
             tanks[channel.getId()].Set('chart.shadow', false);
