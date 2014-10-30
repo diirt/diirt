@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A basic Funnel chart</title>
+    
+    <meta name="keywords" content="demo basic funnel" />
+    <meta name="description" content="A basic Funnel chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A basic Funnel chart</h1>
+
+    <canvas id="cvs" width="450" height="500">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var funnel = new RGraph.Funnel('cvs', [100,42,34,23])
+                .Set('labels', ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'])
+                .Set('gutter.left', 180)
+                .Set('labels.sticks', true)
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('text.boxed', false)
+                .Set('labels.x', 10)
+                .Set('shadow', true)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('shadow.blur', 15)
+                .Set('shadow.color', 'gray')
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

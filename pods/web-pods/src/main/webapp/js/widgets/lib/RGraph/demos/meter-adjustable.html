@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <meta name="keywords" content="demo meter adjustable" />
+    <meta name="description" content="An adjustable Meter chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Meter chart</h1>
+
+    <canvas id="cvs" width="600" height="250" style="border: 1px solid #ccc; border-radius: 15px">[No canvas support]</canvas>
+    <script>
+        window.onload = function ()
+        {
+            var meter = new RGraph.Meter('cvs', 0,100,75)
+                .Set('angles.start', PI + 0.5)
+                .Set('angles.end', TWOPI - 0.5)
+                .Set('linewidth.segments', 15)
+                .Set('text.size', 16)
+                .Set('strokestyle', 'white')
+                .Set('segment.radius.start', 175)
+                .Set('border', 0)
+                .Set('tickmarks.small.num', 0)
+                .Set('tickmarks.big.num', 0)
+                .Set('adjustable', true)
+                .Draw();
+            
+            meter.onbeforedraw = function (obj)
+            {
+                RGraph.Clear(obj.canvas, 'white');
+            }
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

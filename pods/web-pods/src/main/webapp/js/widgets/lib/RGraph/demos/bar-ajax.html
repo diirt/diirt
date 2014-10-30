@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    
+    <title>A Bar chart using AJAX</title>
+    
+    <meta name="keywords" content="bar data ajax" />
+    <meta name="description" content="A Bar chart fetching its data via AJAX" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Bar chart using AJAX</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        drawGraph = function (data)
+        {
+            var bar = new RGraph.Bar('cvs', data)
+                .Set('colors', ['red'])
+                .Set('labels', ['John', 'Fred', 'Joe', 'Rich', 'Pete', 'Lilly', 'Fred', 'Joe', 'Rich', 'Pete'])
+                .Set('numyticks', 5)
+                .Set('ylabels.count', 5)
+                .Set('gutter.left', 35)
+                .Set('variant', '3d')
+                .Set('strokestyle', 'transparent')
+                .Set('hmargin.grouped', 0)
+                .Set('scale.round', true)
+                .Draw();
+        }
+        
+        RGraph.AJAX.getCSV('/getdata.html', drawGraph)
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

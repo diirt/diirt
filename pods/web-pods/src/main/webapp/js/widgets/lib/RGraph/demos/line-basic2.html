@@ -1,0 +1,43 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    
+    <title>A basic line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo line basic" />
+    <meta name="description" content="A basic Line chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A basic line chart</h1>
+    
+    <p>
+        A simple black and white Line chart with Trace2- defaults have been changed though so there is some configuration required.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        var line = new RGraph.Line('cvs', [4,5,5,6,6,7,4,5,6,8,8,9,15,16,24,25, null, null])
+            .Set('numxticks', 0)
+            .Set('numyticks', 0)
+            .Set('background.grid', false)
+            .Set('colors', ['black'])
+            .Set('linewidth', 5)
+            .Set('hmargin', 5)
+            .Set('ylabels', false)
+        
+        RGraph.Effects.Line.Trace2(line);
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

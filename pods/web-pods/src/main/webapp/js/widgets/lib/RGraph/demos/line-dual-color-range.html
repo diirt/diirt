@@ -1,0 +1,85 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/jquery.min.js" ></script>
+    
+    <title>A dual color filled range Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo line filled range" />
+    <meta name="description" content="A range Line chart which shows two colors - the threshold of which is settable" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A dual-color filled range Line chart</h1>
+    
+    <p>
+        An dual-color filled range Line chart - so below the threshold it can be one color - and above it can be another.
+        The threshold is controllable by you. The chart below uses randomised data so if you refresh the page it will be
+        slightly different. It uses the Trace() effect as the Trace2() effect uses the clip() function also and so conflicts
+        with the range clipping
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+    Threshold: <input type="text" onkeyup="Update(event)" value="40" id="val" />
+
+
+    <script>
+        function Update ()
+        {
+            var obj = document.getElementById('cvs').__object__;
+
+            obj.Set('chart.filled.range.threshold', Number(document.getElementById('val').value));
+            RGraph.Clear(obj.canvas);
+            obj.Draw();
+        }
+
+
+        window.onload = function ()
+        {
+            var d1  = [];
+            var d2  = [];
+            var val = 47;
+
+            for (var i=0; i<90; ++i) {
+                d1.push(RGraph.random(45,50) *  Math.sin(i / 57.29));
+                d2.push(RGraph.random(35,45) * Math.sin(i / 57.29));
+            }
+
+            for (var i=0; i<90; ++i) {
+                val = RGraph.random(-2,2) + val
+                val = Math.min(val, 50);
+
+                d1.push(val + 3);
+                d2.push(val - 3);
+            }
+
+            var line = new RGraph.Line('cvs', d1, d2)
+                .Set('background.grid.autofit.numhlines', 10)
+
+                //.Set('chart.hmargin', 10)
+                .Set('filled', true)
+                .Set('fillstyle', 'red')
+                .Set('filled.range', true)
+                .Set('filled.range.threshold',40)
+                .Set('filled.range.threshold.colors', ['rgba(255,0,0,0.5)', 'rgba(0,0,255,0.5)'])
+
+                .Set('colors', ['rgba(0,0,0,1)'])
+                .Set('numxticks', 8)
+                .Set('linewidth',   0.0001)
+                .Set('ymax', 50)
+            RGraph.Effects.Line.jQuery.Trace(line);
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
+

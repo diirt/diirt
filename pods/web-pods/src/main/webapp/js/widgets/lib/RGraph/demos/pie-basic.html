@@ -1,0 +1,39 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+
+    <title>A basic Pie chart</title>
+    
+    <meta name="keywords" content="demo pie basic" />
+    <meta name="description" content="A basic Pie chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A basic Pie chart</h1>
+
+    <canvas id="cvs" width="350" height="250">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var pie = new RGraph.Pie('cvs', [4,8,4,6,5,3,2,5])
+                .Set('tooltips', ['Alvin','Pete','Hoolio','Jack','Kev','Luis','Lou','Jesse'])
+                .Set('labels', ['Alvin','Pete','Hoolio','Jack','Kev','Luis','Lou','Jesse'])
+                .Draw();
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

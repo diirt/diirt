@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <meta name="keywords" content="demo meter circular css" />
+    <meta name="description" content="A Meter chart that has been customised to appear circular. It use Meter chart customisations as well as CSS effects" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A circular Meter chart</h1>
+    
+    <p>
+        This is a customised Meter chart. The canvas is still the usual rectangle but it has ben placed inside a DIV which has a large
+        border-radius CSS property giving the circular appearance.
+    </p>
+
+    <div style="width: 450px; height: 450px; background-color: white; border-radius: 250px; text-align: center; font-family: Arial; box-shadow: 0px 0px 25px gray; border: 10   px solid #ddd">
+        <canvas id="cvs" width="450" height="250">[No canvas support]</canvas>
+        <br /><br />
+        <h1>Temperature</h1>
+        <h2>(°C)</h2>
+        <script>
+            meter = new RGraph.Meter('cvs', 0,100,56)
+                .Set('border', false)
+                .Set('tickmarks.small.num', 0)
+                .Set('tickmarks.big.num', 0)
+                .Set('segment.radius.start', 140)
+                .Set('text.size', 16)
+                .Set('colors.ranges', [
+                                       [0,40,'Gradient(#0c0:#cfc:#0c0)'],
+                                       [40,80,'Gradient(yellow:#ffc:yellow)'],
+                                       [80,100,'Gradient(red:#fcc:red)']
+                                      ])
+                .Set('needle.radius', 110)
+                .Set('gutter.bottom', 35)
+                .Draw();
+            
+            meter.canvas.onclick_rgraph = function (e)
+            {
+                var obj = e.target.__object__;
+                var value = obj.getValue(e);
+
+                if (typeof(value) == 'number') {
+                    obj.value = value;
+                    RGraph.Effects.Meter.Grow(obj);
+                }
+            }
+        </script>
+    </div>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

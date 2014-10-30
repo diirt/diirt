@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>The Bar chart from the front page</title>
+    
+    <meta name="keywords" content="bar front page website" />
+    <meta name="description" content="This is a Bar chart that has been used on the front page of the RGraph website" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+        
+    <h1>The Bar chart from the front page</h1>
+    
+    <p>
+        This is the Bar chart from the front page of the website (as of 10th September 2012).
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+
+            var bar = new RGraph.Bar('cvs', [[45,60],[65,30],[40,80],[62,48]])
+                .Set('labels', ['Luis', 'Kevin', 'John', 'Gregory'])
+                .Set('tooltips', ['Luis','Luis','Kevin','Kevin','John','John','Gregory','Gregory'])
+                .Set('tooltips.event', 'onmousemove')
+                .Set('ymax', 100)
+                .Set('strokestyle', 'white')
+                .Set('linewidth', 2)
+                .Set('shadow', true)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('shadow.blur', 10)
+                .Set('hmargin.grouped', 2)
+                .Set('units.pre', '£')
+                .Set('title', 'An example Bar chart')
+                .Set('gutter.bottom', 20)
+                .Set('gutter.left', 40)
+                .Set('gutter.right', 15)
+                .Set('colors', ['Gradient(white:rgba(255, 176, 176, 0.5))','Gradient(white:rgba(153, 208, 249,0.5))'])
+                .Set('background.grid.autofit.numhlines', 5)
+                .Set('background.grid.autofit.numvlines', 4)
+            
+            // This draws the chart
+            RGraph.Effects.Fade.In(bar, {'duration': 250});        
+        }
+    </script>
+
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

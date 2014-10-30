@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.vprogress.js" ></script>
+    
+    <title>An adjustable VProgress chart</title>
+
+    <meta name="keywords" content="demo vprogress adjustable" />
+    <meta name="description" content="An adjustable Vertical Progress bar" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A basic VProgress chart</h1>
+
+    <canvas id="cvs" width="100" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var vprogress = new RGraph.VProgress('cvs',0,100,89)
+                .Set('tickmarks', 100)
+                .Set('numticks', 20)
+                .Set('gutter.right', 30)
+                .Set('margin', 5)
+                .Draw();
+            
+            vprogress.canvas.onclick = function (e)
+            {
+                var value = vprogress.getValue(e);
+                vprogress.value = value;
+                
+                RGraph.Effects.VProgress.Grow(vprogress);
+            }
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

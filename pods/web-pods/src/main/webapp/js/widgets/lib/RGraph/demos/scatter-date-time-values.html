@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Scatter chart using Date/Time values</title>
+    
+    <meta name="keywords" content="demo scatter date time" />
+    <meta name="description" content="A Scatter chart which uses Dates as X values" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Scatter chart using Date/Time values</h1>
+    
+    <p>
+        This shows how you can use Date/Time values as X values with the Scatter chart. Although it's a Scatter chart it can also
+        show a line, as you can see. The chart has two lines, one of which is stepped.
+    </p>
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var data1 = [['2012/02/12 15:51:55', 5],['2012/03/01 21:45',10],[],[],['August 15 2012',7],['15 Nov 2012', 16]];
+            var data2 = [['2012/01/05 12:45:45', 6], ['2012/03/05 09:45:45',17],['2012/05/05 12:48:45',13],['2012/09/09 15:45:45',19],['2012/12/31 23:59:59',2]];
+
+            var scatter = new RGraph.Scatter('cvs', data1, data2)
+                .Set('xmin', '2012/01/01') // Start of year
+                .Set('xmax', '2012/12/31 23:59:59') // End of year
+                .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
+                .Set('line', true)
+                .Set('line.linewidth', 1)
+                .Set('line.stepped', [false,true])
+                .Set('line.colors', ['red'])
+                .Set('line.shadow.color', '#999')
+                .Set('line.shadow.blur', 15)
+                .Set('line.shadow.offsetx', 0)
+                .Set('line.shadow.offsety', 0)
+                .Set('tickmarks', null)
+                .Draw();
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

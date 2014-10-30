@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Scatter chart with background horizontal bars</title>
+    
+    <meta name="keywords" content="demo scatter background horizontal bars" />
+    <meta name="description" content="A Scatter chart with background horizontal bars" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Scatter chart with background horizontal bars</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var line = new RGraph.Scatter('cvs', [[45,36],[156,32],[142,23],[256,59],[123,48]])
+                .Set('xmax', 365)
+                .Set('ymax', 60)
+                .Set('labels', ['Q1','Q2','Q3','Q4'])
+                .Set('ylabels.count', 6)
+                .Set('numyticks', 12)
+                .Set('background.hbars', [
+                                          [0,45,'rgba(0,255,0,0.2)'],
+                                          [45,10,'rgba(255,255,0,0.2)'],
+                                          [55,5,'rgba(255,0,0,0.2)']
+                                         ])
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

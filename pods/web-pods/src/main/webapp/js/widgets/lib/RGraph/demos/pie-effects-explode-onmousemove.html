@@ -1,0 +1,70 @@
+ <!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    
+    <title>Pie chart Explode</title>
+
+    <meta name="keywords" content="demo pie events eplode exploding mousemove onmousemove" />
+    <meta name="description" content="A Pie chart that uses the custom events to explode the Pie chart using the mousemove event" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>Pie chart explode (onmousemove)</h1>
+
+    <p>
+        This Pie chart is similar to <a href="pie14.html">the pie14.html demo.</a> But instead of using the onclick event
+        this uses the onmousemove event.
+    </p>
+
+    <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+    
+<script>
+    window.onload = function ()
+    {
+        // Create the Pie chart
+        pie = new RGraph.Pie('cvs', [4,6,3,5,2,5,8])
+            .Set('labels', ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])
+            .Set('text.color', '#aaa')
+            .Set('exploded', 5)
+            .Set('radius', 100)
+            .Draw();
+        
+            
+        // Add the click listener for the third segment
+        pie.onmousemove = function (e, shape)
+        {
+            var idx = shape['index'];
+
+            if (typeof(pie.Get('chart.exploded')) == 'number' || pie.Get('chart.exploded')[idx] <= 5) {
+                pie.Set('exploded', 5)
+                pie.Explode(idx, 25);
+            }
+            
+            e.target.style.cursor = 'pointer';
+            
+            e.stopPropagation();
+        }
+
+        // Add the window click listener that resets the Pie chart
+        window.onclick = function (e)
+        {
+            pie.Set('exploded', 5);
+            RGraph.Redraw();
+        }
+    }
+</script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

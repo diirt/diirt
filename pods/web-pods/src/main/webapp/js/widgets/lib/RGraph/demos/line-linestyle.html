@@ -1,0 +1,48 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    
+    <title>An adjustable range Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="keywords" content="demo line range adjustable" />
+    <meta name="description" content="A range Line chart which is adjustable - so you can drag the data points up and down" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>Highlighting the Line chart</h1>
+    
+    <p>
+        By using two lines - the second with a smaller linewidth than the first, but using the same values as the first - the second is
+        drawn on top of the first.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var line = new RGraph.Line('cvs', [4,5,3,8,4,9,6,5,3], [4,5,3,8,4,9,6,5,3])
+                .Set('labels', ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'])
+                .Set('colors', ['black', 'white'])
+                .Set('linewidth', [5, 2])
+                .Set('hmargin', 5)
+                .Set('shadow', true)
+                .Set('shadow.offsetx', 0)
+                .Set('shadow.offsety', 0)
+                .Set('shadow.blur', 15)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+
+<html>
+<head>
+    <script src="/libraries/RGraph.common.core.js" ></script>
+    <script src="/libraries/RGraph.common.effects.js" ></script>
+    <script src="/libraries/RGraph.common.dynamic.js" ></script>
+    <script src="/libraries/RGraph.common.tooltips.js" ></script>
+    <script src="/libraries/RGraph.drawing.poly.js" ></script>
+    <script src="/libraries/RGraph.line.js" ></script>
+    <script src="/libraries/jquery.min.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>A dual color range chart Line chart</title>
+    
+    <meta name="keywords" content="demo range line adjustable" />
+    <meta name="description" content="A range Line chart which is adjustable - so you can drag the data points up and down" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A line chart with two colors</h1>
+    
+    <p>
+        A range Line chart with dual colors. This range chart is combined with the drawing API Poly object so that the range can
+        be given a tooltip.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var d1  = [];
+            var d2  = [];
+            var val = 47;
+            
+            // Create the data
+            for (var i=0; i<100; i+=1) d1[i] = RGraph.random(45,55);
+            for (var i=0; i<100; i+=1) d2[i] = RGraph.random(25,35);
+
+        
+            var line = new RGraph.Line('cvs', d1, d2)
+                .Set('background.grid.autofit.numhlines', 10)
+                .Set('hmargin', 10)
+                .Set('filled', true)
+                .Set('fillstyle', 'red')
+                .Set('filled.range', true)
+                .Set('filled.range.threshold',40)
+                .Set('filled.range.threshold.colors', ['rgba(255,0,0,0.5)', 'rgba(0,0,255,0.5)'])
+                .Set('labels',['Q1','Q2','Q3','Q4'])
+                .Set('colors', ['transparent', 'transparent'])
+                .Set('numxticks', 8)
+                .Set('linewidth', 1)
+                .Set('ymax', 60)
+            RGraph.Effects.Line.jQuery.Trace(line);
+            
+            var coords = []
+            for (var i=0; i<(line.coords.length/2); i+=1) {
+                coords.push(line.coords[i])
+            }
+            for (var i=(line.coords.length - 1); i>=(line.coords.length/2); i-=1) {
+                coords.push(line.coords[i])
+            }
+
+            var poly = new RGraph.Drawing.Poly('cvs', coords)
+                .Set('fillstyle', 'rgba(0,0,0,0)')
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('tooltips', ['The range chart'])
+                .Set('highlight.fill', 'rgba(255,255,255,0.3)')
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
+
