@@ -23,8 +23,8 @@ public class TimeScales {
     
     final public static int HOUR_FIELD_ID = GregorianCalendar.HOUR_OF_DAY;
     final public static int FIRST_HOUR = 0;
-    final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_MONTH;
-    final public static int FIRST_DAY = 0;
+    final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_WEEK;
+    final public static int FIRST_DAY = 1;
     final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_MONTH;
     final public static int FIRST_WEEK = 1;
     

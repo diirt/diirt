@@ -685,9 +685,7 @@ public class TimeScalesTest {
     @Test
     public void createReferencesLeapDay() {
 	//test days wrapping over to March when Feburary is of a leap year
-	GregorianCalendar cal = new GregorianCalendar( 2012 , 1 , 27 , 4 , 12 , 24 );
-	cal.set( GregorianCalendar.MILLISECOND , 234 );
-	Timestamp start = Timestamp.of( cal.getTime() );
+	Timestamp start = create(2012, 2, 27, 4, 12, 24, 234);
 	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7 ) ) );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 7 ) );
@@ -701,7 +699,7 @@ public class TimeScalesTest {
     }
     
     @Test
-    @Ignore	    //Weeks do not round up to the start of the next week
+    //@Ignore	    //Weeks do not round up to the start of the next week
 		    //rather, they just start on the day rounded up
 		    //Does setting the week have any effect on GregorianCalendar
 		    //the way we are using it?
