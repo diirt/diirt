@@ -25,7 +25,7 @@ public class TimeScales {
     final public static int FIRST_HOUR = 0;
     final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_MONTH;
     final public static int FIRST_DAY = 0;
-    final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_YEAR;
+    final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_MONTH;
     final public static int FIRST_WEEK = 1;
     
     public static TimeScale linearAbsoluteScale() {
@@ -215,7 +215,7 @@ public class TimeScales {
         return references;
     }
 
-    //TODO determien whether we use day_of_week, day_of_month, day_of_year, etc...?
+    //TODO determine whether we use day_of_week, day_of_month, day_of_year, etc...?
     static void round(GregorianCalendar cal, int field) {
         
         if (GregorianCalendar.MILLISECOND == field) {

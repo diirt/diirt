@@ -481,7 +481,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesSeconds1() {
-	//test seconds: straightforward, 5 seconds interval over 1 second period
+	//test seconds: straightforward, 5 seconds interval over 1 second periods
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
 	Timestamp start = Timestamp.of( cal.getTime() );
@@ -498,7 +498,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesSeconds2() {
-	//test seconds: straightforward, 10 second interval over 2 second period
+	//test seconds: straightforward, 10 second interval over 2 second periods
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
 	Timestamp start = Timestamp.of( cal.getTime() );
@@ -515,7 +515,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesSeconds3() {
-	//test seconds: straightforward, 30 second interval over 5 second period,
+	//test seconds: straightforward, 30 second interval over 5 second periods,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 1 );
@@ -533,7 +533,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesSeconds4() {
-	//test seconds: straightforward, 50 second interval over 10 second period,
+	//test seconds: straightforward, 50 second interval over 10 second periods,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 500 );
@@ -550,7 +550,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesMinutes1() {
-	//test minutes: straightforward, 10 minutes interval over 1 minute period,
+	//test minutes: straightforward, 10 minutes interval over 1 minute periods,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 500 );
@@ -573,7 +573,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesMinutes2() {
-	//test minutes: straightforward, 50 minutes interval over 10 minute period,
+	//test minutes: straightforward, 50 minutes interval over 10 minute periods,
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
@@ -592,7 +592,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesHours1() {
-	//test hours: straightforward, 3 hours interval over 1 hour period,
+	//test hours: straightforward, 3 hours interval over 1 hour periods,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 679 );
@@ -609,7 +609,7 @@ public class TimeScalesTest {
     //Note: this only works if hour type is set to HOUR_OF_DAY
     //This failes if hour type is set to HOUR
     public void createReferencesHours2() {
-	//test hours: straightforward, 30 hour interval over 5 hour period,
+	//test hours: straightforward, 30 hour interval over 5 hour periods,
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 0 , 0 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
@@ -628,7 +628,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesDays1() {
-	//test days: straightforward, 7 day interval over 1 hour period,
+	//test days: straightforward, 7 day interval over 1 hour periods,
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
@@ -647,7 +647,7 @@ public class TimeScalesTest {
     
     @Test
     public void createReferencesDays2() {
-	//test days: straightforward, 30 day interval over 5 day period,
+	//test days: straightforward, 30 day interval over 5 day periods,
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 20 , 0 , 0 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
@@ -682,10 +682,46 @@ public class TimeScalesTest {
 	assertThat( references.get( 6 ) , equalTo( create( 2015 , 1 , 3 , 0 , 0 , 0 , 0 ) ) );
     }
     
+    @Test
+    public void createReferencesLeapDay() {
+	//test days wrapping over to March when Feburary is of a leap year
+	GregorianCalendar cal = new GregorianCalendar( 2012 , 1 , 27 , 4 , 12 , 24 );
+	cal.set( GregorianCalendar.MILLISECOND , 234 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 7 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2012 , 2 , 28 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2012 , 2 , 29 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create( 2012 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 3 ) , equalTo( create( 2012 , 3 , 2 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 4 ) , equalTo( create( 2012 , 3 , 3 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 5 ) , equalTo( create( 2012 , 3 , 4 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 6 ) , equalTo( create( 2012 , 3 , 5 , 0 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
+    @Ignore	    //Weeks do not round up to the start of the next week
+		    //rather, they just start on the day rounded up
+		    //Does setting the week have any effect on GregorianCalendar
+		    //the way we are using it?
+    public void createReferencesWeeks1() {
+	//test weeks: straightforward, 3 weeks interval over 1 week periods
+	//not starting on perfect multiple of period
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
+	cal.set( GregorianCalendar.MILLISECOND , 234 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*3 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 3 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 30 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2014 , 12 , 7 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create( 2014 , 12 , 14 , 0 , 0 , 0 , 0 ) ) );
+    }
     
     @Test
     @Ignore //Failed: off by exactly 3 days because rounding down does not round
-	    //perfectly to January 1 - instead, it rounds down to January 3
+	    //perfectly to January 1 - instead, it rounds down to January 4
     public void createReferencesYears1() {
 	//test years: straightforward, 50 years interval over 10 year period,
 	//but does not start on perfect multiple of time period
@@ -696,7 +732,7 @@ public class TimeScalesTest {
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
 	assertThat( references.size() , equalTo(5) );
 
-	assertThat( references.get( 0 ) , equalTo( create(2020 , TimeScales.FIRST_WEEK , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 0 ) , equalTo( create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2030 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 2 ) , equalTo( create(2040 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 3 ) , equalTo( create(2050 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
