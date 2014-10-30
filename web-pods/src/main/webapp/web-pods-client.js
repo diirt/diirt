@@ -11,6 +11,7 @@ window.onload = function() {
     var closeBtn = document.getElementById('close');
     var paused = false;
     var socket;
+    var channel;
     
     function waitForConnection(callback) {
         setTimeout(
@@ -36,7 +37,7 @@ window.onload = function() {
     connectBtn.onclick = function(e) {
         e.preventDefault();
         var server = serverField.value;
-        var channel = channelField.value;
+        channel = channelField.value;
         socket = new WebSocket(server);
         var message = '{"message" : "subscribe", "id" : 0, "channel" :"' + channel + '"}';
         sendMessage(message); // Sends the message through socket
@@ -51,12 +52,13 @@ window.onload = function() {
       socket.onopen = function(e) { openSocket(e) };
       socket.onerror = function(e) { error(e) };
     };
-    
    
     // When a message is sent by the server, retrieve the data and display in div results
    function newMessage (event) {
         var response = JSON.parse(event.data);
-        json.innerHTML =  JSON.stringify(response, null, '    ');
+        console.log(response.value.value);
+        result.innerHTML = response.value.value + "<br>" + result.innerHTML;
+        //json.innerHTML =  JSON.stringify(response, null, '    ');
     };
     
     // Updates connection status
