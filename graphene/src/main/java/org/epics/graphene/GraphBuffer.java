@@ -26,7 +26,7 @@ public class GraphBuffer {
     private final Graphics2D g;
     
     /**
-     * represents the pixels of a 2D image. if a the image has a width w, then
+     * Represents the pixels of a 2D image. if a the image has a width w, then
      * the point (x, y) is represented by the y*width + x pixel.
      */
     private final byte[] pixels;
@@ -34,11 +34,9 @@ public class GraphBuffer {
     private final int width, height;
     
     /**
-     * TODO (MC): All comments start with upper case; use period at the end; do not
-     * use tabs
-     * creates a GraphBuffer with the given image on which to draw a graph
+     * Creates a GraphBuffer with the given image on which to draw a graph.
      * 
-     * @param image			an image on which we can draw a graph
+     * @param image an image on which we can draw a graph
      */
     private GraphBuffer(BufferedImage image){
         this.image = image;
@@ -50,10 +48,10 @@ public class GraphBuffer {
     }
     
     /**
-     * creates a GraphBuffer with the given width and height
+     * Creates a GraphBuffer with the given width and height.
      * 
-     * @param width		width of the graph
-     * @param height		height of the graph
+     * @param width width of the graph
+     * @param height height of the graph
      */
     public GraphBuffer(int width, int height) {
         this(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR));
@@ -73,13 +71,12 @@ public class GraphBuffer {
      * Changes the pixel at the given coordinates to the given color.
      * TODO: make sure all other plotting functions use this.
      * 
-     * @param x		    x-coordinate of a pixel
-     * @param y		    y-coordinate of a pixel
-     * @param color	    color-value of the pixel
+     * @param x	x-coordinate of a pixel
+     * @param y	y-coordinate of a pixel
+     * @param color color-value of the pixel
      */
     public void setPixel(int x, int y, int color){
 	
-	//TODO explain the bit shifting and bitwise or-ing
         if(hasAlphaChannel){
             pixels[y*image.getWidth()*4 + x*4 + 3] = (byte)(color >> 24 & 0xFF);
             pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
@@ -96,7 +93,7 @@ public class GraphBuffer {
     
     /**
      * 
-     * @return	the image that is currently drawn on this graph
+     * @return the image that is currently drawn on this graph
      */
     public BufferedImage getImage(){
         return image;
@@ -113,31 +110,21 @@ public class GraphBuffer {
     }
     
     /**
-     * plots the given data points on this buffer
-     * 
-     * @param xStartPoint		the starting x-coordinate of the data image
-     * 
-     * @param yStartPoint		the starting y-coordinate of the data image
-     * 
-     * @param xPointToDataMap		the x-coordinates of data points to plot
-     * 
-     * @param yPointToDataMap		the y-coordinates of data points to plot
-     * 
-     * @param data			a third-coordinate, z, of data points to plot
-     *					this third-coordinate gets represented by a color
-     * 
-     * @param colorMap			a mapping of real numbers to colors, so that
-     *					we can represent the z-coordinate of data points as
-     *					a color
+     * Plots the given data points on this buffer. 
+     * @param xStartPoint the starting x-coordinate of the data image
+     * @param yStartPoint the starting y-coordinate of the data image
+     * @param xPointToDataMap the x-coordinates of data points to plot
+     * @param yPointToDataMap the y-coordinates of data points to plot
+     * @param data a third-coordinate, z, of data points to plot 
+     * this third-coordinate gets represented by a color
+     * @param colorMap a mapping of real numbers to colors, so that 
+     * we can represent the z-coordinate of data points as a color
      */
     public void drawDataImage(int xStartPoint, int yStartPoint,
 			int[] xPointToDataMap, int[] yPointToDataMap,
 			Cell2DDataset data, NumberColorMapInstance colorMap) {
 	
         int previousYData = -1;
-	
-	//TODO perhaps it would be more clear to use an object to store
-	//x coordinate, y coordinate and value?
 	
 	//go through each data point
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
@@ -153,7 +140,6 @@ public class GraphBuffer {
 		    //plot the point using the correct color
                     if(hasAlphaChannel){
 			
-			//TODO the bit-shifting and bit-or-ing process needs to be put in its own method
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 0] = (byte)(rgb >> 24 & 0xFF);
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 1] = (byte)(rgb & 0xFF);
                         pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 2] = (byte)(rgb >> 8 & 0xFF);
@@ -394,16 +380,16 @@ public class GraphBuffer {
     }
     
     /**
-     * draws some labels, which are plaintext, on the graph
+     * Draws some labels, which are plaintext, on the graph.
      * 
-     * @param graphics		    the graphics object containing the graph
-     * @param metrics		    the font style
-     * @param text		    the text of the label
-     * @param xCenter		    x coordinate of where the label should be centered
-     * @param drawRange		    defines the range of coordinates where this label is allowed to be centered
-     * @param yTop		    define the y-coordinate of the top of the label
-     * @param updateMin		    TODO use of this is unclear
-     * @param centeredOnly	    if this label must be centered at the given x center coordinate
+     * @param graphics the graphics object containing the graph
+     * @param metrics the font style
+     * @param text the text of the label
+     * @param xCenter x coordinate of where the label should be centered
+     * @param drawRange defines the range of coordinates where this label is allowed to be centered
+     * @param yTop define the y-coordinate of the top of the label
+     * @param updateMin *MC I do not understand what this parameter is for
+     * @param centeredOnly if this label must be centered at the given x center coordinate
      */
     private static void drawLineLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
@@ -433,7 +419,7 @@ public class GraphBuffer {
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
         
-	//TODO why are we updating the x value with the height, a y-value property, of the label?
+	//*MC: why are we updating the x value with the height, a y-value property, of the label?
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
@@ -441,8 +427,8 @@ public class GraphBuffer {
         }
     }
 
-    //TODO how is this any different than draw top labels? Other than the fact that this
-    //is for the y-axis? consider combining this with drawTopLabels into one method
+    //*MC: This method is nearly an exact copy of drawBottomLabels()
+    //is it possible/useful to abstract this code out?
     void drawLeftLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
         // Draw Y labels
         if (labels != null && !labels.isEmpty()) {
@@ -466,8 +452,8 @@ public class GraphBuffer {
     }
     
     /**
-     * TODO is a column not linear? how is this different from drawLineLabel()? Consider
-     * renaming to drawHorizontalLabel and drawVerticalLabel.
+     * *MC: This is almost an exact copy of drawLineLabel(). Is it possible/useful
+     * to abstract it out?
      * 
      * @param graphics
      * @param metrics
@@ -514,12 +500,12 @@ public class GraphBuffer {
     }
     
     /**
-     * draws horizontal lines on the graph
+     * Draws horizontal lines on the graph.
      * 
-     * @param referencePixels		the y-coordinates of the horizontal reference lines to be drawn
-     * @param lineColor			the color of the reference lines
-     * @param graphLeftPixel		the leftmost x pixel coordinate of the graph
-     * @param graphRightPixel		the rightmost x pixel coordinate on the graph
+     * @param referencePixels the y-coordinates of the horizontal reference lines to be drawn
+     * @param lineColor	the color of the reference lines
+     * @param graphLeftPixel the leftmost x pixel coordinate of the graph
+     * @param graphRightPixel the rightmost x pixel coordinate on the graph
      */
     void drawHorizontalReferenceLines(ListInt referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
         g.setColor(lineColor);
@@ -532,9 +518,9 @@ public class GraphBuffer {
     }
     
     /**
-     * TODO how is this different from drawHorizontalReferenceLines? Consider abstracting out to one private method,
-     * drawLine, that draws a line from any (x1, y1) to any (x2, y2) and two public methods
-     * drawHorizontalReferenceLines, drawVerticalReferenceLines that use drawLine
+     * *MC: This is nearly identical to drawHorizontalReferenceLines(). Is it possible/useful 
+     * to abstract out to one private method, drawLine, that draws a line from any (x1, y1) to any (x2, y2) 
+     * and two public methods drawHorizontalReferenceLines, drawVerticalReferenceLines that use drawLine?
      * 
      * @param referencePixels
      * @param lineColor
