@@ -76,7 +76,6 @@ public class GraphBuffer {
      * @param color color-value of the pixel
      */
     public void setPixel(int x, int y, int color){
-	
         if(hasAlphaChannel){
             pixels[y*image.getWidth()*4 + x*4 + 3] = (byte)(color >> 24 & 0xFF);
             pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
@@ -85,9 +84,9 @@ public class GraphBuffer {
 
         }
         else{
-            pixels[y*image.getWidth()*4 + x*4 + 0] = (byte)(color >> 0 & 0xFF);
-            pixels[y*image.getWidth()*4 + x*4 + 1] = (byte)(color >> 8 & 0xFF);
-            pixels[y*image.getWidth()*4 + x*4 + 2] = (byte)(color >> 16 & 0xFF);
+            pixels[y*image.getWidth()*3 + x*3 + 0] = (byte)(color >> 0 & 0xFF);
+            pixels[y*image.getWidth()*3 + x*3 + 1] = (byte)(color >> 8 & 0xFF);
+            pixels[y*image.getWidth()*3 + x*3 + 2] = (byte)(color >> 16 & 0xFF);
         }
     }
     
@@ -135,20 +134,9 @@ public class GraphBuffer {
 		    
 		    //determine what color corresponds to the value at the given point
                     int rgb = colorMap.colorFor(data.getValue(xData, yData));
-
 		    
 		    //plot the point using the correct color
-                    if(hasAlphaChannel){
-			
-                        pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 0] = (byte)(rgb >> 24 & 0xFF);
-                        pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 1] = (byte)(rgb & 0xFF);
-                        pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 2] = (byte)(rgb >> 8 & 0xFF);
-                        pixels[(yStartPoint + yOffset)*width*4 + 4*(xStartPoint + xOffset) + 3] = (byte)(rgb >> 16 & 0xFF);
-                    } else {
-                        pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 0] = (byte)(rgb & 0xFF);
-                        pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 1] = (byte)((rgb >> 8 & 0xFF) );
-                        pixels[(yStartPoint + yOffset)*width*3 + 3*(xStartPoint + xOffset) + 2] = (byte)((rgb >> 16 & 0xFF));
-                    }
+		    setPixel( xStartPoint + xOffset  , yStartPoint + yOffset , rgb );
                 }
 		
 	    // If the current line is the same as the previous, it's
