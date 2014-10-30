@@ -20,10 +20,30 @@ import org.epics.util.array.ListInt;
 import org.epics.util.stats.Ranges;
 
 /**
- * Stores information about a GraphBuffer. Example properties include the 
- * human-defined range of values the GraphBuffer will have to display, 
- * or the left and right pixels of the GraphBuffer. GraphAreaData also provides 
- * methods for preparing a GraphBuffer for the plotting of data.
+ * Provides high level representation for a graph, based on user level settings,
+ * and the logic to layout those settings into low level, pixel based, elements.
+ * <p>
+ * The input of this class will be elements like:
+ * <ul>
+ *     <li>Margin and padding</li>
+ *     <li>Type of axis (linear or log scale)</li>
+ *     <li>Value range of the axis</li>
+ * </ul>
+ * The output will be elements like:
+ * <ul>
+ *     <li>The pixel coordinate of the reference lines</li>
+ *     <li>The position and text for each label</li>
+ *     <li>The pixel range of the graph</li>
+ * </ul>
+ * <p>
+ * Many of these elements have to be computed together. For example, the position
+ * of the origin of the graph is a function of the font (affects the space
+ * needed for the labels), the range of the axis (affect the size of the labels),
+ * the margin, the padding, ..., therefore the calculation of the layout cannot be
+ * separated.
+ * <p>
+ * This class should then use the {@link GraphBuffer} to perform the actual drawing
+ * operations.
  * 
  * @author carcassi
  */

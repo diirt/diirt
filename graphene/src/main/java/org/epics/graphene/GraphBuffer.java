@@ -15,8 +15,18 @@ import java.util.List;
 import org.epics.util.array.ListInt;
 
 /**
- * Provides general methods for drawing a graph and plotting its data points on
- * a <code>Graphics2D</code> object.
+ * Provides low level drawing operations, at the right granularity to perform
+ * them efficiently, but without performing any high level decisions (e.g. formatting,
+ * layout)
+ * <p>
+ * This class takes care of putting the pixels where it is told. It specifically
+ * does not concerns itself with the calculation of what/where to draw. It provides
+ * the drawing of aggregated data structures, so that the plotting can be 
+ * efficient and clean.
+ * <p>
+ * It also serves as a wrapper around Java2D (<code>Graphics2D</code>) so that
+ * the drawing can be re-implemented efficiently on other engines in the future,
+ * such as JavaFX.
  * 
  * @author carcassi, sjdallst, asbarber, jkfeng
  */
