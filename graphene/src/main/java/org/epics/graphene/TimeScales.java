@@ -20,6 +20,14 @@ import org.epics.util.time.TimestampFormat;
  * @author carcassi
  */
 public class TimeScales {
+    
+    final public static int HOUR_FIELD_ID = GregorianCalendar.HOUR_OF_DAY;
+    final public static int FIRST_HOUR = 0;
+    final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_MONTH;
+    final public static int FIRST_DAY = 0;
+    final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_YEAR;
+    final public static int FIRST_WEEK = 1;
+    
     public static TimeScale linearAbsoluteScale() {
         return new LinearAbsoluteTimeScale();
     }
@@ -127,37 +135,37 @@ public class TimeScales {
 		if ( period.amount < 30 ) {
 		    return new TimePeriod( GregorianCalendar.MINUTE , 30 );
 		}
-		return new TimePeriod( GregorianCalendar.HOUR , 1 );
-	    case GregorianCalendar.HOUR:
+		return new TimePeriod( HOUR_FIELD_ID, 1 );
+	    case HOUR_FIELD_ID:
 		if ( period.amount < 2 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 2 );
+		    return new TimePeriod( HOUR_FIELD_ID , 2 );
 		}
 		if ( period.amount < 3 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 3 );
+		    return new TimePeriod( HOUR_FIELD_ID , 3 );
 		}
 		if ( period.amount < 6 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 6 );
+		    return new TimePeriod( HOUR_FIELD_ID , 6 );
 		}
 		if ( period.amount < 12 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 12 );
+		    return new TimePeriod( HOUR_FIELD_ID , 12 );
 		}
 		
 		//TODO why is this necessary? otherwise, we get error
 		if ( period.amount < 24 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 24 );
+		    return new TimePeriod( HOUR_FIELD_ID , 24 );
 		}
-		return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 1 );
-	    case GregorianCalendar.DAY_OF_WEEK_IN_MONTH:
+		return new TimePeriod( DAY_FIELD_ID , 1 );
+	    case DAY_FIELD_ID:
 		if ( period.amount < 2 ) {
-		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 2 );
+		    return new TimePeriod( DAY_FIELD_ID , 2 );
 		}
 		if ( period.amount < 4 ) {
-		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 4 );
+		    return new TimePeriod( DAY_FIELD_ID , 4 );
 		}
-		return new TimePeriod( GregorianCalendar.WEEK_OF_MONTH , 1 );
-	    case GregorianCalendar.WEEK_OF_MONTH:
+		return new TimePeriod( WEEK_FIELD_ID , 1 );
+	    case WEEK_FIELD_ID:
 		if ( period.amount < 2 ) {
-		    return new TimePeriod( GregorianCalendar.WEEK_OF_MONTH , 2 );
+		    return new TimePeriod( WEEK_FIELD_ID , 2 );
 		}
 		return new TimePeriod( GregorianCalendar.MONTH , 1 );
 	    case GregorianCalendar.MONTH:
@@ -177,6 +185,16 @@ public class TimeScales {
         return null;
     }
     
+    /**
+     * Determines the time(s) that will be represented by reference lines on
+     * a time graph.
+     * 
+     * @param timeInterval the interval of time spanning the duration of the
+     * time graph
+     * @param period the interval of time between each reference line
+     * @return a list of times evenly spaced by the duration of <code>period</code>
+     * and encompassing the duration of <code>timeInterval</code>
+     */
     static List<Timestamp> createReferences(TimeInterval timeInterval, TimePeriod period) {
         Date start = timeInterval.getStart().toDate();
         Date end = timeInterval.getEnd().toDate();
@@ -197,54 +215,77 @@ public class TimeScales {
         return references;
     }
 
+    //TODO determien whether we use day_of_week, day_of_month, day_of_year, etc...?
     static void round(GregorianCalendar cal, int field) {
         
         if (GregorianCalendar.MILLISECOND == field) {
             return;
         }
-
         cal.set(GregorianCalendar.MILLISECOND, 0);
         
         if (GregorianCalendar.SECOND == field) {
             return;
         }
-
         cal.set(GregorianCalendar.SECOND, 0);
 
         if (GregorianCalendar.MINUTE == field) {
             return;
         }
-        
         cal.set(GregorianCalendar.MINUTE, 0);
-        
+	
+	if ( HOUR_FIELD_ID == field ) {
+	    return;
+	}
+	cal.set( HOUR_FIELD_ID , FIRST_HOUR );
+	
+	if ( DAY_FIELD_ID == field ) {
+	    return;
+	}
+	cal.set(DAY_FIELD_ID , FIRST_DAY );
+	
+	if ( WEEK_FIELD_ID == field ) {
+	    return;
+	}
+	cal.set(WEEK_FIELD_ID , FIRST_WEEK );
+	
+	if ( GregorianCalendar.MONTH == field ) {
+	    return;
+	}
+	cal.set( GregorianCalendar.MONTH , 0 );
+	
+	if ( GregorianCalendar.YEAR == field ) {
+	    return;
+	}
+	cal.set( GregorianCalendar.YEAR , 0 );
+	
         return;
     }
     
     static TimePeriod nextDown(TimePeriod period) {
         switch(period.fieldId) {
-	    case GregorianCalendar.DAY_OF_WEEK_IN_MONTH:
+	    case DAY_FIELD_ID:
 		if ( period.amount > 3 ) {
-		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 3 );
+		    return new TimePeriod( DAY_FIELD_ID , 3 );
 		}
 		if ( period.amount > 1 ) {
-		    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , 1 );
+		    return new TimePeriod( DAY_FIELD_ID , 1 );
 		}
-		return new TimePeriod( GregorianCalendar.HOUR , 12 );
-	    case GregorianCalendar.HOUR:
+		return new TimePeriod( HOUR_FIELD_ID , 12 );
+	    case HOUR_FIELD_ID:
 		if ( period.amount > 12 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 12 );
+		    return new TimePeriod( HOUR_FIELD_ID , 12 );
 		}
 		if ( period.amount > 8 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 8 );
+		    return new TimePeriod( HOUR_FIELD_ID , 8 );
 		}
 		if ( period.amount > 4 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 4 );
+		    return new TimePeriod( HOUR_FIELD_ID , 4 );
 		}
 		if ( period.amount > 2 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 2 );
+		    return new TimePeriod( HOUR_FIELD_ID , 2 );
 		}
 		if ( period.amount > 1 ) {
-		    return new TimePeriod( GregorianCalendar.HOUR , 1 );
+		    return new TimePeriod( HOUR_FIELD_ID , 1 );
 		}
 		return new TimePeriod( GregorianCalendar.MINUTE , 30 );
             case GregorianCalendar.MINUTE:
@@ -302,11 +343,20 @@ public class TimeScales {
     }
     
     static TimePeriod toTimePeriod(double seconds) {
+	if ( seconds >= 36288000 ) {
+	    return new TimePeriod( GregorianCalendar.YEAR , seconds/3024000 );
+	}
+	if ( seconds >= 3024000 ) {
+	    return new TimePeriod( GregorianCalendar.MONTH , seconds/3024000 );
+	}
+	if ( seconds >= 604800 ) {
+	    return new TimePeriod( WEEK_FIELD_ID , seconds/604800.0 );
+	}
 	if ( seconds >= 86400 ) {
-	    return new TimePeriod( GregorianCalendar.DAY_OF_WEEK_IN_MONTH , seconds/86400 );
+	    return new TimePeriod( DAY_FIELD_ID , seconds/86400.0 );
 	}
 	if ( seconds >= 3600 ) {
-	    return new TimePeriod( GregorianCalendar.HOUR , seconds/3600 );
+	    return new TimePeriod( HOUR_FIELD_ID , seconds/3600.0 );
 	}
         if (seconds >= 60) {
             return new TimePeriod(GregorianCalendar.MINUTE, seconds / 60.0);

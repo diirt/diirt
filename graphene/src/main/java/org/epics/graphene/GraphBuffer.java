@@ -336,13 +336,13 @@ public class GraphBuffer {
     /**
      * Draws the given labels a the bottom of the graph area.
      * 
-     * @param labels			    a list of x-axis labels to be drawn
-     * @param valuePixelPositions	    the central x-coordinate of each label
-     * @param labelColor		    color of the label text
-     * @param labelFont			    font style of the label text
-     * @param leftPixel			    the leftmost x-coordinate at which the label may be drawn
-     * @param rightPixel		    the rightmost x-coordinate at which the label may be drawn
-     * @param topPixel			    the y-coordinate of the top of the label
+     * @param labels a list of x-axis labels to be drawn
+     * @param valuePixelPositions the central x-coordinate of each label
+     * @param labelColor color of the label text
+     * @param labelFont font style of the label text
+     * @param leftPixel the leftmost x-coordinate at which the label may be drawn
+     * @param rightPixel the rightmost x-coordinate at which the label may be drawn
+     * @param topPixel the y-coordinate of the top of the label
      */
     void drawBottomLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int leftPixel, int rightPixel, int topPixel) {
         // Draw X labels
