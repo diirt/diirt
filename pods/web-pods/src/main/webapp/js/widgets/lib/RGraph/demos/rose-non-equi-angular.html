@@ -1,0 +1,37 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A non-equi-angular Rose chart </title>
+
+    <meta name="keywords" content="demo non equi angular rose" />
+    <meta name="description" content="A non-equi-angular Rose chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A non-equi-angular Rose chart</h1>
+
+    <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var rose = new RGraph.Rose('cvs', [[4,5],[9,1],[2,6],[4,2],[4,3]])
+                .Set('margin', 5)
+                .Set('variant', 'non-equi-angular')
+                .Draw();
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

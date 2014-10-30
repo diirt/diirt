@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+
+    <title>A Rose chart explode/implode transition</title>
+
+    <meta name="keywords" content="demo rose explode implode transition" />
+    <meta name="description" content="A Rose chart explode/implode transition effect" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Rose chart explode/implode transition effect</h1>
+
+    <button onclick="transition()">Switch!</button>
+    
+    <canvas id="cvs" width="450" height="400">[No canvas support]</canvas>
+
+    <script>
+        function transition ()
+        {
+            var cvs = document.getElementById('cvs');
+
+            RGraph.Effects.Rose.Explode(cvs.__object__, null, function () {visible === 1 ? drawRose2() : drawRose1();});
+        }
+
+
+
+
+        /**
+        * Draws the first Rose chart
+        */
+        function drawRose1 ()
+        {
+            var cvs = document.getElementById("cvs");
+            RGraph.Reset(cvs);
+            var rose = new RGraph.Rose('cvs', [4,8,6,5,3,2,9,4,2,8])
+                .Set('background.grid', false)
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('margin', 3)
+            RGraph.Effects.Rose.Implode(rose);
+            
+            // A global
+            visible = 1;
+        }
+
+
+
+
+        /**
+        * Draws the second Rose chart
+        */
+        function drawRose2 ()
+        {
+            var cvs = document.getElementById("cvs");
+            RGraph.Reset(cvs);
+            var rose = new RGraph.Rose('cvs', [1,8,8,8,4,6,3,2,5,6])
+                .Set('colors.sequential', true)
+                .Set('background.grid', false)
+                .Set('strokestyle', 'rgba(0,0,0,0)')
+                .Set('margin', 3)
+            RGraph.Effects.Rose.Implode(rose);
+            
+            // A global
+            visible = 2;
+        }
+
+        window.onload = function ()
+        {
+            drawRose1();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

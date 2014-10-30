@@ -1,0 +1,42 @@
+
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.drawing.rect.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    
+    <meta name="keywords" content="demo funnel interactive key" />
+    <title>An example of a Funnel chart with an interactive key</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <meta name="description" content="An example of a Funnel chart with an interactive key" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An example of a Funnel chart with an interactive key</h1>
+    
+    <p>
+        The interactive key has been re-implemented as of June 2013 and added to more chart types.
+    </p>
+
+    <canvas id="cvs" width="400" height="550">[No canvas support]</canvas>
+    <script>
+        var funnel = new RGraph.Funnel('cvs', [500,422,215,56,32,5])
+            .Set('key', ['Phone call','Interview','Selection','2nd Interview','Offer'])
+            .Set('key.interactive', true)
+            .Set('gutter.right', 125)
+            .Set('key.position.x', 295)
+            .Draw();
+    </script>
+    
+    <br />
+    
+    <a href="./">&lt;Back</a><br />
+
+</body>
+</html>

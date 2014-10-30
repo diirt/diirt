@@ -1,0 +1,43 @@
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>A combined bar and Line chart</title>
+    
+    <meta name="keywords" content="bar line combined combinedchart" />
+    <meta name="description" content="A combined Bar and Line chart that shows the CombinedChart class" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A combined bar and Line chart</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        var bar = new RGraph.Bar('cvs', [[3,4,6],[2,5,3],[1,5,2],[1,4,6],[1,6,8]])
+            .Set('labels', ['Mal', 'Barry', 'Gary', 'Neil', 'Kim'])
+            .Set('colors', ['Gradient(#99f:#27afe9:#058DC7:#058DC7)', 'Gradient(#94f776:#50B332:#B1E59F)', 'Gradient(#fe783e:#EC561B:#F59F7D)'])
+            .Set('hmargin', 15)
+            .Set('strokestyle', 'white')
+            .Set('linewidth', 2)
+            .Set('shadow', true)
+            .Set('shadow.offsetx', 1)
+            .Set('shadow.offsety', 0)
+            .Set('shadow.blur', 1)
+        
+        var line = new RGraph.Line('cvs', [2,3,2,1,5])
+            .Set('spline', true)
+            .Set('tickmarks', 'filledcircle')
+            .Set('colors', ['#CDE217'])
+            .Set('ymax', 10);
+
+        var combo = new RGraph.CombinedChart(bar, line);
+        combo.Draw();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+</head>
+
+<body>
+
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+    <header id="head">
+
+    </header>
+    WebSocket URL:
+    <input id="wsurl" size="47" type="text" placeholder="WebSocket URL" />
+    <input type="submit" value="Open" onclick="openWs();" />    <br>
+    <form onsubmit="return startChannel();">
+         Channel Name: <input id="channelName" class="text-field" type="text" name="channelname" value="sim://noise" placeholder="Channel Name" />
+         <input type="submit" value="Subscribe Channel" />
+        <select id="type">
+            <option value="Default" selected="selected">Default</option>
+            <option value="VDouble">VDouble</option>
+            <option value="VFloat">VFloat</option>
+            <option value="VLong">VLong</option>
+            <option value="VInt">VInt</option>
+            <option value="VString">VString</option>
+            <option value="VDoubleArray">VDoubleArray</option>
+            <option value="VFloatArray">VFloatArray</option>
+            <option value="VLongArray">VLongArray</option>
+        </select>
+        <input id="readOnlyBox" type="checkbox" name="readOnly" onclick = "updateReadOnly()" />Read Only?
+    </form>
+    <br>
+    <table id="channeltable" border="1">
+
+
+    </table>
+        <br>
+    <div id="text">Incoming Messages:</div>
+    <textarea id="textMessage" style="width:65%;height:150px;" type="text" readonly=true></textarea>
+
+    <br>
+    <div id="out">Outgoing Messages:</div>
+    <textarea id="outMessage" style="width:65%;height:150px;" type="text" readonly=true></textarea>
+    </div>
+
+    <script>
+        var protocol = "ws://";
+        if(window.location.protocol =="https")
+            protocol = "wss://";
+        var wp;
+        var readOnly = false;
+
+        function writeToIn(message) {
+            document.getElementById("textMessage").value = message;
+		}
+
+        function openWs() {
+            var wsUri = document.getElementById("wsurl").value.trim();
+            wp = new Client(wsUri, true, "outMessage");
+            wp.addOnServerMessageCallback(function(json) {
+                if (json.msg == "Error") {
+                    writeToIn('<span style="color: red;">ERROR: '
+                            +  json.title + " - " + json.details +'</span>');
+                } else if (json.msg == "Info") {
+                    writeToIn("Info: " + json.title + " - " + json.details);
+                }
+            });
+            wp.addWebSocketOnErrorCallback(function(evt) {
+                writeToIn('<span style="color: red;">ERROR:</span> '
+							+ evt.data);
+            });
+        }
+
+
+        function startChannel() {
+            var channelName = document.getElementById("channelName").value.trim();
+            var e = document.getElementById("type");
+            var channel = null;
+            if (e.selectedIndex != 0) {
+                var type = e.options[e.selectedIndex].value;
+                channel = wp.subscribeChannel(channelName, readOnly, type, 1);
+            } else {
+                channel = wp.subscribeChannel(channelName, readOnly);
+            }
+    		updateTable();
+            // add listener to the channel.
+            channel.addCallback(function(evt, channel) {
+                writeToIn(JSON.stringify(evt));
+                switch (evt.type) {
+                case "connection": //connection state changed
+                    writeToIn(channel.isConnected()?"Connected":"Disconnected.");
+                    break;
+                case "value": //value changed
+                   var valueCell = document.getElementById("channelvalue" + channel.id);
+						valueCell.innerHTML = channel.getValue().value;
+
+                    break;
+                case "error": //error happened
+                    writeToIn("Error: " + JSON.stringify(evt));
+                    break;
+                case "writePermission":	// write permission changed.
+                    break;
+                case "writeFinished": // write finished.
+                    break;
+                default:
+                    break;
+                }
+            });
+            return false;
+        }
+
+        function updateTable() {
+            var table = document.getElementById("channeltable");
+            var channelArray = wp.getAllChannels();
+            var innerHTML = '<tr><th>Channel Name</th><th>Connected</th><th>Value</th>'
+                    + '<th>Set Channel Value</th><th>Pause Channel</th><th>Close Channel</th></tr>';
+            for ( var i in channelArray) {
+                innerHTML += '<tr><td>'
+                        + channelArray[i].name
+                        + '</td>'
+                        + '<td id=channelconnected'
+                        + i
+                        + '>'
+                        + channelArray[i].isConnected()
+                        + '</td>'
+                        + '<td id=channelvalue'
+                        + i
+                        + ' width=600>'
+                        + channelArray[i].getValue()
+                        + '</td>'
+                        + '<td><input id=setvalue'
+                        + i
+                        + ' type="text" '
+                        + (channelArray[i].isWriteAllowed() ? '' : 'disabled =true')
+                        + ' /><input id=setvaluebutton'
+                        + i
+                        + ' type="submit" '
+                        + (channelArray[i].isWriteAllowed() ? '' : 'disabled = true')
+                        + ' value="Set" onclick="setValue('
+                        + i
+                        + ');" /></td>'
+                        + '<td><input id=pausechannel'
+                        + i
+                        + ' type="submit" value='
+                        + (channelArray[i].isPaused() ? "Resume" : "Pause")
+                        + ' onclick="pauseChannel('
+                        + i
+                        + ');" /></td>'
+                        + '<td><input type="submit" value="Close Channel" onclick="unsubscribe('
+                        + i
+                        + ');" /></td></tr>';
+            }
+            table.innerHTML = innerHTML;
+        }
+
+        function pauseChannel(id) {
+            var paused = wp.getChannel(id).isPaused();
+             document.getElementById("pausechannel" + id).value = (paused ? "Pause" : "Resume");
+            if(paused) {
+                wp.getChannel(id).resume();
+            } else {
+                wp.getChannel(id).pause();
+            }
+	    }
+
+        function unsubscribe(id) {
+            wp.getChannel(id).unsubscribe();
+        }
+
+        function setValue(id) {
+            var channel = wp.getChannel(id);
+            channel.value.value = document.getElementById("setvalue" + id).value.trim();
+            wp.getChannel(id).updateValue();
+        }
+
+        function updateReadOnly() {
+            readOnly = document.getElementById("readOnlyBox").checked;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+
+    <title>A Pie chart that retrieves JSON data via AJAX</title>
+    
+    <meta name="keywords" content="demo pie json ajax" />
+    <meta name="description" content="A Pie chart that retrieves JSON data via AJAX" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Pie chart that retrieves JSON data via AJAX</h1>
+
+    <canvas id="cvs" width="450" height="350">[No canvas support]</canvas>
+    
+    <script>
+        function drawPie (json)
+        {
+            var pie = new RGraph.Pie('cvs', json.data)
+                .Set('tooltips', json.labels)
+                .Set('key', json.labels)
+                .Set('key.position.graph.boxed', json.labels)
+                .Set('centerx', 175)
+                .Draw();
+        }
+        
+        RGraph.AJAX.getJSON('/getdata.html?json', drawPie);
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

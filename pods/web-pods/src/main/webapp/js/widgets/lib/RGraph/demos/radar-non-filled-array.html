@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+
+    <title>An non-filled Radar chart with array based arguments</title>
+
+    <meta name="keywords" content="demo non filled radar dataset array" />
+    <meta name="description" content="A non-filled Radar chart with two data series - and the datasets passed to the constructor as one multi-dimensional array" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>An non-filled Radar chart with array based arguments</h1>
+    
+    <p>
+        Similar to the non-filled Radar chart example but the charts data is passed as one multi-dimensional array instead of as
+        seperate argument. This method can be helpful when using AJAX.
+    </p>
+
+    <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var radar3 = new RGraph.Radar('cvs', [[8,7,6,7,8,6], [8,9,4,6,6,8]])
+                .Set('labels', ['', 'Barry', 'Gary','Dave','Paul','Rich'])
+                .Set('tooltips', [
+                                  'Mal', 'Barry', 'Gary','Dave','Paul', 'Rich',
+                                  'Mal', 'Barry', 'Gary','Dave','Paul', 'Rich'
+                                 ])
+                .Set('background.circles.poly', true)
+                .Set('background.circles.spacing', 30)
+                .Set('colors', ['transparent'])
+                .Set('axes.color', 'transparent')
+                .Set('highlights', true)
+                .Set('strokestyle', ['red', 'black'])
+                .Set('linewidth', 2)
+                .Set('linewidth', 2)
+                .Set('labels.axes', 'n')
+                .Set('text.size', 16)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

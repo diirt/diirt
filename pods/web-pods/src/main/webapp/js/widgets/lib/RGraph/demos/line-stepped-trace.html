@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/jquery.min.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A stepped Line chart with Trace effect</title>
+    
+    <meta name="keywords" content="demo line stepped trace effects" />
+    <meta name="description" content="A stepped Line chart that uses the Trace effect" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A stepped Line chart with Trace effect</h1>
+    
+    <p>
+        Also has a dashed line drawn at Y=50
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var line = new RGraph.Line('cvs', [70,60,80,50,50,60,70,60,50,40,50,50], [20,30,50,40,30,50,40,30,60,50,10,20]);
+            line.Set('gutter.left', 45);
+            line.Set('gutter.right', 100);
+            line.Set('background.grid.autofit.numvlines', 11);
+            line.Set('background.grid.autofit.numhlines', 8);
+            line.Set('noxaxis', true);
+            line.Set('stepped', true);
+            line.Set('units.pre', '$');
+            line.Set('units.post', 'K');
+            line.Set('ylabels.count', 8);
+            line.Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']);
+            line.Set('key', ['Credit limit','MTM + AR','AR','MTM']);
+            line.Set('key.position.graph.boxed', false);
+            line.Set('key.position.x', line.canvas.width - line.Get('chart.gutter.right'));
+            line.Set('key.color.shape', 'circle');
+            line.Set('linewidth', 3);
+            
+            line.ondraw = function (obj)
+            {
+                var y  = Math.round(obj.getYCoord(50));
+                var x1 = obj.Get('chart.gutter.left');
+                var x2 = obj.canvas.width - obj.Get('chart.gutter.right');
+
+                obj.context.beginPath();
+                    obj.context.strokeStyle = 'orange';
+                    RGraph.DashedLine(obj.context, x1, y, x2, y);
+                obj.context.stroke();
+            }
+
+            //line.Draw();
+            RGraph.Effects.Line.jQuery.Trace(line);
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

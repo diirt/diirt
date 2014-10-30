@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>A demo of the Chrome-only dotted or dashed background grid</title>
+
+    <script src="/libraries/RGraph.common.core.js" ></script>
+    <script src="/libraries/RGraph.gantt.js" ></script>
+    
+    <meta name="keywords" content="demo gantt background grid dotted dashed" />
+    <meta name="description" content="An example of the (currently) Chrome-only dotted or dashed background grid feature" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A demo of the Chrome-only dotted or dashed background grid</h1>
+    
+    <p>
+        This uses the relatively new Chrome only addition to canvas from the canvas v5 specification - native dotted and dashed lines.
+        As browsers add support you will be able to use the option in them too but currently (May 2013) it's only supported in Chrome.
+    </p>
+    
+    <pre class="code">
+obj.Set('chart.background.grid.dashed', true);
+obj.Set('chart.background.grid.dotted', true);
+</pre>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        gantt = new RGraph.Gantt('cvs1', [
+                                          [0,5,50,'Richard'],
+                                          [3,2,25,'John'],
+                                          [3,2,10,'Freed']
+                                         ])
+            .Set('xmax', 5)
+            .Set('labels', ['Monday','Tuesday','Wednesday','Thursday','Friday'])
+            .Set('background.grid.dashed', true)
+            .Set('gutter.right', 45)
+            .Set('title', 'A dashed background grid')
+            .Draw();
+
+        bargantt2 = new RGraph.Gantt('cvs2', [
+                                          [0,5,50,'Richard'],
+                                          [3,2,25,'John'],
+                                          [3,2,10,'Freed']
+                                         ])
+            .Set('xmax', 5)
+            .Set('labels', ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'])
+            .Set('background.grid.dotted', true)
+            .Set('gutter.right', 45)
+            .Set('title', 'A dotted background grid')
+            .Draw();
+    </script>
+
+</body>
+</html>

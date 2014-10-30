@@ -1,0 +1,82 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.effects.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.pie.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A Bar chart with Pie charts in tooltips</title>
+    
+    <meta name="keywords" content="demo bar tooltips ontooltip event pie" />
+    <meta name="description" content="A Bar chart that has tooltips and uses the ontooltip event to add Pie charts to the tooltips" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+        
+    <h1>A Bar chart with Pie charts in tooltips</h1>
+    
+    <p>
+        This Bar chart shows how you can have charts in tooltips. It uses the new DOM1 style of adding
+        the ontooltip event. This ontooltip event creates the chart in the tooltip.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        window.onload = function ()
+        {
+            var bar8 = new RGraph.Bar('cvs', [14,16,18,19,13,14])
+                .Set('labels', ['Fred','John','James','Louis','Pete','Kevin'])
+                .Set('tooltips', function (index)
+                                 {
+                                     var label = bar8.Get('chart.labels')[index];
+                                     return '<div style="text-align: center; font-weight: bold; font-size: 16pt">' + label + '</div><br  /><canvas id="tooltip_canvas" width="250" height="110"></canvas>';
+                                 })
+            RGraph.Effects.Bar.Grow(bar8);
+
+
+            /**
+            * The ontooltip event runs when a tooltip is shown and creates the Pie chart in the tooltip
+            */
+            bar8.ontooltip = function (obj)
+            {
+                var pie_data = [
+                                [80,75,65],
+                                [84,85,95],
+                                [43,54,85],
+                                [43,51,62],
+                                [74,75,65],
+                                [78,85,95],
+                                [46,35,52],
+                                [84,94,94]
+                               ]
+                var tooltip = RGraph.Registry.Get('chart.tooltip');
+                var index   = tooltip.__index__;
+
+                var pie = new RGraph.Pie('tooltip_canvas', pie_data[index])
+                    .Set('labels', ['Monday','Tuesday','Wednesday'])
+                    .Set('gutter.top', 10)
+                    .Set('gutter.bottom', 25)
+                    .Draw();
+                
+                pie.onmousemove = function (e, shape)
+                {
+                    alert('An alert triggered by the Pie chart! Segment: ' + shape.index);
+                }
+            }
+        }
+    </script>
+
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

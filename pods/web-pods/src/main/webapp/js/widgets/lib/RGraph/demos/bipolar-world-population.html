@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bipolar.js" ></script>
+    
+    <title>A basic Bipolar chart</title>
+    
+    <meta name="keywords" content="demo basic bipolar" />
+    <meta name="description" content="A straight-forward Bipolar chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A Bipolar chart showing world population by age</h1>
+
+    <canvas id="cvs" width="800" height="600">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var female   = RGraph.array_reverse([0.63,0.62,0.62,0.64,0.65,0.64,0.64,0.64,0.64,0.63,0.65,0.66,0.65,0.65,0.65,0.65,0.68,0.68,0.68,0.70,0.72,0.72,0.69,0.68,0.67,0.67,0.68,0.66,0.68,0.68,0.68,0.69,0.65,0.64,0.63,0.61,0.63,0.62,0.63,0.66,0.70,0.71,0.67,0.66,0.66,0.67,0.72,0.73,0.74,0.74,0.75,0.75,0.73,0.73,0.73,0.70,0.70,0.67,0.65,0.63,0.61,0.60,0.58,0.58,0.60,0.45,0.45,0.44,0.45,0.40,0.37,0.35,0.33,0.32,0.30,0.29,0.28,0.26,0.25,0.25,0.24,0.24,0.22,0.21,0.20,0.18,0.17,0.15,0.14,0.12,0.10,0.09,0.07,0.06,0.04,0.03,0.03,0.02,0.01,0.01,0.02]);
+            var male     = RGraph.array_reverse([0.66,0.65,0.65,0.67,0.68,0.67,0.67,0.67,0.66,0.66,0.68,0.69,0.68,0.68,0.68,0.68,0.70,0.71,0.73,0.74,0.75,0.75,0.72,0.71,0.69,0.70,0.70,0.68,0.69,0.69,0.68,0.70,0.65,0.64,0.63,0.61,0.63,0.61,0.62,0.65,0.69,0.70,0.66,0.65,0.65,0.66,0.70,0.72,0.72,0.71,0.72,0.73,0.71,0.70,0.69,0.67,0.66,0.63,0.61,0.58,0.57,0.55,0.54,0.53,0.56,0.41,0.40,0.39,0.40,0.35,0.32,0.30,0.28,0.27,0.25,0.24,0.22,0.20,0.19,0.18,0.17,0.17,0.15,0.14,0.12,0.11,0.10,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.02,0.01,0.01,0.01,0.00,0.00,0.00]);
+            var tooltips = [];
+            var colors   = [];
+
+            for (var i=0; i<male.length; i+=1) {tooltips.push('Age ' + String(100 - i) + ': ' +  String(male[i]));colors.push('#f66');}
+            for (var i=0; i<female.length; i+=1) {tooltips.push('Age ' + String(100 - i) + ': ' +  String(female[i]));colors.push('blue');}
+
+            var bipolar = new RGraph.Bipolar('cvs', male,female)
+                .Set('gutter.bottom', 50)
+                .Set('scale.decimals', 1)
+                .Set('numyticks', 0)
+                .Set('labels', [100,80,60,40,20])
+                .Set('text.size', 26)
+                .Set('text.color', '#bbb')
+                .Set('tooltips', tooltips)
+                .Set('tooltips.event', 'mousemove')
+                .Set('colors.sequential', true)
+                .Set('colors', colors)
+                .Draw();
+        }
+    </script>
+
+    <p>
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>

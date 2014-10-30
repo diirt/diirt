@@ -1,0 +1,41 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
+    
+    <title>A stacked Rose chart </title>
+
+    <meta name="keywords" content="demo rose stacked" />
+    <meta name="description" content="A stacked Rose chart" />
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+
+    <h1>A stacked Rose chart</h1>
+
+    <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    
+    <script>
+        window.onload = function ()
+        {
+            var rose = new RGraph.Rose('cvs', [[4,5,8],[1,3,5],[2,6,8],[4,2,2],[4,3,5]])
+                .Set('gutter.bottom', 35)
+                .Set('margin', 5)
+                .Set('labels', ['Harry','John','Pete','Louise','John'])
+                .Set('text.size', 26)
+                .Set('text.size.scale', 12)
+                .Set('labels.axes', 'n')
+                .Draw();
+        }
+    </script>
+
+    <p>        
+        <a href="./">&laquo; Back</a>
+    </p>
+
+</body>
+</html>
