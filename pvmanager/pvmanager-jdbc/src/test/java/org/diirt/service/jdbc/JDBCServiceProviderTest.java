@@ -4,7 +4,7 @@
  */
 package org.diirt.service.jdbc;
 
-import org.diirt.service.jdbc.JDBCXMLServiceFactory;
+import org.diirt.service.jdbc.JDBCServiceProvider;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
@@ -33,12 +33,12 @@ import org.mockito.InOrder;
  *
  * @author carcassi
  */
-public class JDBCXMLServiceFactoryTest {
+public class JDBCServiceProviderTest {
 
     @Test
     public void new1() throws Exception {
         File file = new File(getClass().getResource(".").toURI());
-        JDBCXMLServiceFactory factory = new JDBCXMLServiceFactory(file);
+        JDBCServiceProvider factory = new JDBCServiceProvider(file);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(1));
         Service service = services.iterator().next();
@@ -65,7 +65,7 @@ public class JDBCXMLServiceFactoryTest {
     @Test
     public void new2() throws Exception {
         File file = new File("DOES_NOT_EXISTS");
-        JDBCXMLServiceFactory factory = new JDBCXMLServiceFactory(file);
+        JDBCServiceProvider factory = new JDBCServiceProvider(file);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(0));
     }
