@@ -7,7 +7,10 @@ package org.diirt.service;
 import java.util.Collection;
 
 /**
- * A factory class for Services.
+ * Provides a set of services that can be registered to the framework.
+ * <p>
+ * Instances of this class made available to the ServiceLoader are automatically
+ * added to the ServiceRegistry at startup.
  *
  * @author carcassi
  */
