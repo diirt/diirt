@@ -15,9 +15,8 @@ import org.diirt.service.ServiceRegistry;
 public class ServiceConfigurationLog {
     public static void main(String[] args) throws Exception {
         // Increasing logging at CONFIG level
-        Logger log1 = Logger.getLogger(ServiceRegistry.class.getName());
-        log1.setLevel(Level.CONFIG);
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
+        Logger.getLogger("").setLevel(Level.CONFIG);
         
         System.out.println("Listing all services");
         for (String service : ServiceRegistry.getDefault().listServices()) {

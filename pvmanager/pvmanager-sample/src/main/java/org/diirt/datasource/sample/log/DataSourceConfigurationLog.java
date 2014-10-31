@@ -23,11 +23,8 @@ import org.diirt.vtype.VNumber;
 public class DataSourceConfigurationLog {
     public static void main(String[] args) throws Exception {
         // Increasing logging at CONFIG level
-        Logger log1 = Logger.getLogger(CompositeDataSource.class.getName());
-        log1.setLevel(Level.CONFIG);
-        Logger log2 = Logger.getLogger(DataSourceProvider.class.getName());
-        log2.setLevel(Level.CONFIG);
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
+        Logger.getLogger("").setLevel(Level.CONFIG);
         
         System.out.println("Open channel");
         PVReader<VNumber> reader = PVManager.read(vNumber("sim://noise"))
