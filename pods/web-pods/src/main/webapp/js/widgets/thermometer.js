@@ -23,50 +23,49 @@ $(document).ready(function() {
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, readOnly);
+            var callback = function(evt, channel) {
+                               switch (evt.type) {
+                               case "connection": //connection state changed
+                                   break;
+                               case "value": //value changed
+                                   var channelValue = channel.getValue();
+                                   if (channelValue.display.lowDisplay == null) {
+                                        thermometers[channel.getId()] = new RGraph.Thermometer(thermometers[channel.getId()].id,
+                                                                            displayLow, displayHigh,
+                                                                            channelValue.value);
+                                   } else {
+                                   thermometers[channel.getId()] =new RGraph.Thermometer(thermometers[channel.getId()].id,
+                                                                      channelValue.display.lowDisplay, channelValue.display.highDisplay,
+                                                                      channelValue.value);
+                                   }
+                                   var color = 'green';
+
+                                   if(channelValue.alarm.severity =="MINOR") {
+                                        thermometers[channel.getId()].Set('chart.colors', ["Gradient(#660:yellow:#660)"]);
+                                   } else if (channelValue.alarm.severity =="MAJOR") {
+                                        thermometers[channel.getId()].Set('chart.colors', ["Gradient(#600:red:#600)"]);
+                                   } else {
+                                        thermometers[channel.getId()].Set('chart.colors', ["Gradient(#060:#0f0:#060)"]);
+                                   }
+                                   thermometers[channel.getId()].Set('chart.scale.visible', true);
+                                   thermometers[channel.getId()].Set('chart.shadow', false);
+                                   thermometers[channel.getId()].Draw();
+                                   break;
+                               case "error": //error happened
+                                   break;
+                               case "writePermission":	// write permission changed.
+                                   break;
+                               case "writeCompleted": // write finished.
+                                   break;
+                               default:
+                                   break;
+                               }
+                        };
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             thermometers[channel.getId()] = new RGraph.Thermometer(id,displayLow, displayHigh,0);
             thermometers[channel.getId()].Set('chart.scale.visible', true);
             thermometers[channel.getId()].Set('chart.shadow', false);
             thermometers[channel.getId()].Draw();
-            channel.addCallback(function(evt, channel) {
-                            switch (evt.type) {
-                            case "connection": //connection state changed
-                                break;
-                            case "value": //value changed
-                                var channelValue = channel.getValue();
-                                if (channelValue.display.lowDisplay == null) {
-                                     thermometers[channel.getId()] = new RGraph.Thermometer(thermometers[channel.getId()].id,
-                                                                         displayLow, displayHigh,
-                                                                         channelValue.value);
-                                } else {
-                                thermometers[channel.getId()] =new RGraph.Thermometer(thermometers[channel.getId()].id,
-                                                                   channelValue.display.lowDisplay, channelValue.display.highDisplay,
-                                                                   channelValue.value);
-                                }
-                                var color = 'green';
-
-								if(channelValue.alarm.severity =="MINOR") {
-                                  thermometers[channel.getId()].Set('chart.colors', ["yellow"]);
-                                } else if (channelValue.alarm.severity =="MAJOR") {
-                                   thermometers[channel.getId()].Set('chart.colors', ["red"]);
-                                } else {
-                                   thermometers[channel.getId()].Set('chart.colors', ["green"]);
-                                }
-                                thermometers[channel.getId()].Set('chart.scale.visible', true);
-                                thermometers[channel.getId()].Set('chart.shadow', false);
-								thermometers[channel.getId()].Draw();
-                                break;
-                            case "error": //error happened
-                                break;
-                            case "writePermission":	// write permission changed.
-                                break;
-                            case "writeCompleted": // write finished.
-                                break;
-                            default:
-                                break;
-                            }
-            });
-
             thermometers[channel.getId()].canvas.onclick = function (e)
             {
                 var obj   = e.target.__object__;

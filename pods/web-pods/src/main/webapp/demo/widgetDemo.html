@@ -10,8 +10,9 @@
     <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
     <script>
-        var wsUri = "ws://localhost:8080/web-pods-0.1-SNAPSHOT/socket";
-            var wp = new Client(wsUri);
+        var pathName = document.location.pathname.replace("demo/widgetDemo.html", "");
+        var wsUri = "ws://"+document.location.host+pathName+"socket";
+        var wp = new Client(wsUri);
     </script>
     <script type="text/javascript" language="javascript" src="../js/widgets/gauge.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/xygraph.js"></script>

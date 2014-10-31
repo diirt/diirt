@@ -12,7 +12,7 @@ function Client(url, debug, debugMessageBox) {
 	var debugMessageBox = debugMessageBox;
 	var defaultTypeVersion = 1;
     this.isLive = false;
-
+    var  forcedClose = false;
 
 	openWebSocket(url);
 
@@ -67,7 +67,7 @@ function Client(url, debug, debugMessageBox) {
 		onServerMessageCallbacks.push(callback);
 	};
 
-    this.subscribeChannel = function(name, readOnly, type, version, maxRate) {
+    this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
         if(readOnly == null) {
             readOnly = true;
@@ -109,6 +109,7 @@ function Client(url, debug, debugMessageBox) {
             };
             this.addWebSocketOnOpenCallback(listener);
         }
+        channel.addCallback(callback);
         channelIDIndex++;
         return channel;
     };
@@ -137,6 +138,10 @@ function Client(url, debug, debugMessageBox) {
             fireOnError(evt);
         };
 
+        websocket.onclose = function(evt) {
+            fireOnClose(evt);
+        };
+
     }
 
     function writeToScreen(message) {
@@ -149,6 +154,7 @@ function Client(url, debug, debugMessageBox) {
      * Close Websocket.
      */
     this.close = function() {
+        forcedClose = true;
         if (websocket != null)
             websocket.close();
         websocket = null;
@@ -213,12 +219,17 @@ function Client(url, debug, debugMessageBox) {
     }
 
     function fireOnClose(evt) {
-        for(var channel in channelArray){
-            channel.unsubscribe();
+        if(fireOnClose) {
+            for(var c in channelArray){
+                    channelArray[c].unsubscribe();
+            }
+            for ( var i in webSocketOnCloseCallbacks) {
+                webSocketOnCloseCallbacks[i](evt);
+            }
+        } else {
+
         }
-        for ( var i in webSocketOnCloseCallbacks) {
-            webSocketOnCloseCallbacks[i](evt);
-        }
+
     }
 
 

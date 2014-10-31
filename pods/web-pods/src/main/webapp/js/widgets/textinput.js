@@ -23,33 +23,33 @@ $(document).ready(function() {
         input.style = style;
         div.appendChild(input);
         if (channelname != null && channelname.trim().length > 0) {
-            var channel = wp.subscribeChannel(channelname, readOnly);
+            var callback = function(evt, channel) {
+                               switch (evt.type) {
+                               case "connection": //connection state changed
+                                   break;
+                               case "value": //value changed
+                                   var channelValue = channel.getValue();
+                                   inputs[channel.getId()].value =(channelValue.value);
+                                   if(channelValue.alarm.severity =="MINOR") {
+                                       inputs[channel.getId()].style.backgroundColor ="yellow";
+                                   } else if (channelValue.alarm.severity =="MAJOR") {
+                                       inputs[channel.getId()].style.backgroundColor = "red";
+                                   } else {
+                                       inputs[channel.getId()].style.backgroundColor ="white";
+                                   }
+                                   break;
+                               case "error": //error happened
+                                   break;
+                               case "writePermission":	// write permission changed.
+                                   break;
+                               case "writeCompleted": // write finished.
+                                   break;
+                               default:
+                                   break;
+                               }
+                           };
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             inputs[channel.getId()] = input;
-            channel.addCallback(function(evt, channel) {
-                switch (evt.type) {
-                case "connection": //connection state changed
-                    break;
-                case "value": //value changed
-                    var channelValue = channel.getValue();
-                    inputs[channel.getId()].value =(channelValue.value);
-                    if(channelValue.alarm.severity =="MINOR") {
-                        inputs[channel.getId()].style.backgroundColor ="yellow";
-                    } else if (channelValue.alarm.severity =="MAJOR") {
-                        inputs[channel.getId()].style.backgroundColor = "red";
-                    } else {
-                        inputs[channel.getId()].style.backgroundColor ="white";
-                    }
-                    break;
-                case "error": //error happened
-                    break;
-                case "writePermission":	// write permission changed.
-                    break;
-                case "writeCompleted": // write finished.
-                    break;
-                default:
-                    break;
-                }
-            });
         }
         input.onkeyup = function(evt) {
             if (evt.keyCode == 13) {

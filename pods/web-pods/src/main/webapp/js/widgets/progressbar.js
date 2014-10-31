@@ -23,49 +23,49 @@ $(document).ready(function() {
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, readOnly);
+            var callback = function(evt, channel) {
+                               switch (evt.type) {
+                               case "connection": //connection state changed
+                                   break;
+                               case "value": //value changed
+                                    var channelValue = channel.getValue();
+                                    if (channelValue.display.lowDisplay == null) {
+                                    } else {
+                                    progressbars[channel.getId()] =new RGraph.HProgress(progressbars[channel.getId()].id,
+                                                                      channelValue.value, channelValue.display.highDisplay);
+                                    }
+                                    var color = 'green';
+
+                                    if(channelValue.alarm.severity =="MINOR") {
+                                         progressbars[channel.getId()].Set('chart.colors', ["Gradient(#660:yellow:#660)"]);
+                                       } else if (channelValue.alarm.severity =="MAJOR") {
+                                          progressbars[channel.getId()].Set('chart.colors', ["Gradient(#600:red:#600)"]);
+                                       } else {
+                                          progressbars[channel.getId()].Set('chart.colors', ["Gradient(#060:#0f0:#060)"]);
+                                       }
+                                       progressbars[channel.getId()].Set('tickmarks.inner', true);
+                                       progressbars[channel.getId()].Set('tickmarks.zerostart', true);
+                                       progressbars[channel.getId()].Set('bevel', true);
+                                       progressbars[channel.getId()].Set('margin', 10);
+                                    progressbars[channel.getId()].Draw();
+                                   break;
+                               case "error": //error happened
+                                   break;
+                               case "writePermission":	// write permission changed.
+                                   break;
+                               case "writeCompleted": // write finished.
+                                   break;
+                               default:
+                                   break;
+                               }
+                            };
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             progressbars[channel.getId()] = new RGraph.HProgress(id,0, displayHigh);
             progressbars[channel.getId()].Set('tickmarks.inner', true);
             progressbars[channel.getId()].Set('tickmarks.zerostart', true);
             progressbars[channel.getId()].Set('bevel', true);
             progressbars[channel.getId()].Set('margin', 10);
             progressbars[channel.getId()].Draw();
-            channel.addCallback(function(evt, channel) {
-                            switch (evt.type) {
-                            case "connection": //connection state changed
-                                break;
-                            case "value": //value changed
-                                var channelValue = channel.getValue();
-                                if (channelValue.display.lowDisplay == null) {
-                                } else {
-                                progressbars[channel.getId()] =new RGraph.HProgress(progressbars[channel.getId()].id,
-                                                                   channelValue.value, channelValue.display.highDisplay);
-                                }
-                                var color = 'green';
-
-								if(channelValue.alarm.severity =="MINOR") {
-                                  progressbars[channel.getId()].Set('chart.colors', ["Gradient(#660:yellow:#660)"]);
-                                } else if (channelValue.alarm.severity =="MAJOR") {
-                                   progressbars[channel.getId()].Set('chart.colors', ["Gradient(#600:red:#600)"]);
-                                } else {
-                                   progressbars[channel.getId()].Set('chart.colors', ["Gradient(#060:#0f0:#060)"]);
-                                }
-                                progressbars[channel.getId()].Set('tickmarks.inner', true);
-                                progressbars[channel.getId()].Set('tickmarks.zerostart', true);
-                                progressbars[channel.getId()].Set('bevel', true);
-                                progressbars[channel.getId()].Set('margin', 10);
-								progressbars[channel.getId()].Draw();
-                                break;
-                            case "error": //error happened
-                                break;
-                            case "writePermission":	// write permission changed.
-                                break;
-                            case "writeCompleted": // write finished.
-                                break;
-                            default:
-                                break;
-                            }
-            });
 
             progressbars[channel.getId()].canvas.onclick = function (e)
             {
