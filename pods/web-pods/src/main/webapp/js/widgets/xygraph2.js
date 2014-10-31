@@ -17,7 +17,31 @@ $(document).ready(function() {
 	    var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("channel-readonly");
 	    var buffer=[[new Date(), 0]], totalPoints=200;
-	    var channel = wp.subscribeChannel(channelname, readOnly);
+	    var callback = function(evt, channel) {
+                           switch (evt.type) {
+                           case "connection": //connection state changed
+                               break;
+                           case "value": //value changed
+                               var channelValue = channel.getValue();
+                               var c = charts[channel.getId()];
+                               var b = c.rawData_;
+                               if(b.length>=totalPoints) {
+                                   b=b.slice(1);
+                               }
+                               b.push([new Date(), channelValue.value]);
+                               c.updateOptions( { 'file': b } );
+                              break;
+                           case "error": //error happened
+                               break;
+                           case "writePermission":	// write permission changed.
+                               break;
+                           case "writeCompleted": // write finished.
+                               break;
+                           default:
+                               break;
+                           }
+                       };
+	    var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var id = nodes[i].getAttribute("id");
 
         var chart = new Dygraph(id, buffer,
@@ -26,30 +50,6 @@ $(document).ready(function() {
                                    labels: ['Time', channelname]
                                  });
         charts[channel.getId()] = chart;
-        channel.addCallback(function(evt, channel) {
-            switch (evt.type) {
-            case "connection": //connection state changed
-                break;
-            case "value": //value changed
-                var channelValue = channel.getValue();
-                var c = charts[channel.getId()];
-                var b = c.rawData_;
-                if(b.length>=totalPoints) {
-                    b=b.slice(1);
-                }
-                b.push([new Date(), channelValue.value]);
-                c.updateOptions( { 'file': b } );
-               break;
-            case "error": //error happened
-                break;
-            case "writePermission":	// write permission changed.
-                break;
-            case "writeCompleted": // write finished.
-                break;
-            default:
-                break;
-            }
-        });
     }
 });
 

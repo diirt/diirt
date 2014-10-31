@@ -22,34 +22,34 @@ $(document).ready(function() {
         var min = parseFloat(nodes[i].getAttribute("min"));
         var step = parseFloat(nodes[i].getAttribute("step"));
         var id = nodes[i].getAttribute("id");
-        var channel = wp.subscribeChannel(channelname, readOnly);
+        var callback = function(evt, channel) {
+                           switch (evt.type) {
+                           case "connection": //connection state changed
+                               break;
+                           case "value": //value changed
+                               var channelValue = channel.getValue();
+                               sliders[channel.getId()].labeledslider( "value", channelValue.value );
+                               if(channelValue.alarm.severity =="MINOR") {
+                                 sliders[channel.getId()].animate({ backgroundColor: "yellow"});
+                               } else if (channelValue.alarm.severity =="MAJOR") {
+                                  sliders[channel.getId()].animate({ backgroundColor: "red"});
+                               } else {
+                                  sliders[channel.getId()].animate({ backgroundColor: "blue"});
+                               }
+                               break;
+                           case "error": //error happened
+                               break;
+                           case "writePermission":	// write permission changed.
+                               break;
+                           case "writeCompleted": // write finished.
+                               break;
+                           default:
+                               break;
+                           }
+                       };
+        var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var slider = $("#" + id).labeledslider({max: max, step: step, orientation: 'vertical', range: false, tickInterval: 10  });
         sliders[channel.getId()] = slider;
-        channel.addCallback(function(evt, channel) {
-            switch (evt.type) {
-            case "connection": //connection state changed
-                break;
-            case "value": //value changed
-                var channelValue = channel.getValue();
-                sliders[channel.getId()].labeledslider( "value", channelValue.value );
-                if(channelValue.alarm.severity =="MINOR") {
-                  sliders[channel.getId()].animate({ backgroundColor: "yellow"});
-                } else if (channelValue.alarm.severity =="MAJOR") {
-                   sliders[channel.getId()].animate({ backgroundColor: "red"});
-                } else {
-                   sliders[channel.getId()].animate({ backgroundColor: "blue"});
-                }
-                break;
-            case "error": //error happened
-                break;
-            case "writePermission":	// write permission changed.
-                break;
-            case "writeCompleted": // write finished.
-                break;
-            default:
-                break;
-            }
-        });
         $( ".ui-slider-vertical" ).labeledslider({
             stop: function( event, ui ) {
                 for(var sl in   sliders) {

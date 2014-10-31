@@ -21,34 +21,34 @@ $(document).ready(function() {
         var step = parseFloat(nodes[i].getAttribute("step"));
         var readOnly = nodes[i].getAttribute("channel-readonly");
         var id = nodes[i].getAttribute("id");
-        var channel = wp.subscribeChannel(channelname, readOnly);
+        var callback = function(evt, channel) {
+                           switch (evt.type) {
+                           case "connection": //connection state changed
+                               break;
+                           case "value": //value changed
+                               var channelValue = channel.getValue();
+                               spinners[channel.getId()].spinner( "value", channelValue.value );
+                               if(channelValue.alarm.severity =="MINOR") {
+                               spinners[channel.getId()].animate({ backgroundColor: "yellow"});
+                               } else if (channelValue.alarm.severity =="MAJOR") {
+                                   spinners[channel.getId()].animate({ backgroundColor: "red"});
+                               } else {
+                                   spinners[channel.getId()].animate({ backgroundColor: "white"});
+                               }
+                               break;
+                           case "error": //error happened
+                               break;
+                           case "writePermission":	// write permission changed.
+                               break;
+                           case "writeCompleted": // write finished.
+                               break;
+                           default:
+                               break;
+                           }
+                       };
+        var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var spinner = $("#" + id).spinner({ step: step, min: min, max: max});
         spinners[channel.getId()] = spinner;
-        channel.addCallback(function(evt, channel) {
-            switch (evt.type) {
-            case "connection": //connection state changed
-                break;
-            case "value": //value changed
-                var channelValue = channel.getValue();
-                spinners[channel.getId()].spinner( "value", channelValue.value );
-                if(channelValue.alarm.severity =="MINOR") {
-                spinners[channel.getId()].animate({ backgroundColor: "yellow"});
-                } else if (channelValue.alarm.severity =="MAJOR") {
-                    spinners[channel.getId()].animate({ backgroundColor: "red"});
-                } else {
-                    spinners[channel.getId()].animate({ backgroundColor: "white"});
-                }
-                break;
-            case "error": //error happened
-                break;
-            case "writePermission":	// write permission changed.
-                break;
-            case "writeCompleted": // write finished.
-                break;
-            default:
-                break;
-            }
-        });
 
         $('.ui-spinner-button').click(function(event) {
             for(var sl in   spinners) {

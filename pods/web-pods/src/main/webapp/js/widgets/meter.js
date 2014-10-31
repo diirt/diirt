@@ -23,7 +23,44 @@ $(document).ready(function() {
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, readOnly);
+            var callback = function(evt, channel) {
+                               switch (evt.type) {
+                               case "connection": //connection state changed
+                                   break;
+                               case "value": //value changed
+                                   var channelValue = channel.getValue();
+                                   if (channelValue.display.lowDisplay == null) {
+                                   } else {
+                                   meters[channel.getId()] =new RGraph.Meter(meters[channel.getId()].id,
+                                                                      channelValue.display.lowDisplay, channelValue.display.highDisplay,
+                                                                      channelValue.value);
+                                   }
+                                   meters[channel.getId()].Set ('chart.colors.ranges', [[channelValue.display.lowAlarm,
+                                                                channelValue.display.highAlarm, 'Gradient(#060:#0f0:#060)'],
+                                                                [channelValue.display.lowDisplay, channelValue.display.lowAlarm, 'Gradient(#660:yellow:#660)'],
+                                                                [channelValue.display.highAlarm, channelValue.display.highDisplay, 'Gradient(#600:red:#600)']]);
+                                   meters[channel.getId()].Set('needle.linewidth', 2);
+                                   meters[channel.getId()].Set('needle.tail', false);
+                                   meters[channel.getId()].Set('segment.radius.start', 100);
+                                   meters[channel.getId()].Set('linewidth.segments', 3);
+                                   meters[channel.getId()].Set('border', false);
+                                   meters[channel.getId()].Set('tickmarks.big.num', 0);
+                                   meters[channel.getId()].Set('tickmarks.small.num', 0);
+                                   meters[channel.getId()].Set('chart.labels.position', 'inside');
+                                   meters[channel.getId()].Set('chart.strokestyle', 'white');
+                                   meters[channel.getId()].Draw();
+                                   break;
+                               case "error": //error happened
+                                   break;
+                               case "writePermission":	// write permission changed.
+                                   break;
+                               case "writeCompleted": // write finished.
+                                   break;
+                               default:
+                                   break;
+                               }
+                          };
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             meters[channel.getId()] = new RGraph.Meter(id,displayLow, displayHigh,0);
             meters[channel.getId()].Set('needle.linewidth', 2);
             meters[channel.getId()].Set('needle.tail', false);
@@ -35,42 +72,6 @@ $(document).ready(function() {
             meters[channel.getId()].Set('tickmarks.small.num', 0);
             meters[channel.getId()].Set('chart.labels.position', 'inside');
             meters[channel.getId()].Set('chart.strokestyle', 'white');
-            channel.addCallback(function(evt, channel) {
-                            switch (evt.type) {
-                            case "connection": //connection state changed
-                                break;
-                            case "value": //value changed
-                                var channelValue = channel.getValue();
-                                if (channelValue.display.lowDisplay == null) {
-                                } else {
-                                meters[channel.getId()] =new RGraph.Meter(meters[channel.getId()].id,
-                                                                   channelValue.display.lowDisplay, channelValue.display.highDisplay,
-                                                                   channelValue.value);
-                                }
-                                meters[channel.getId()].Set ('chart.colors.ranges', [[channelValue.display.lowAlarm, channelValue.display.highAlarm, 'Gradient(#060:#0f0:#060)'], [channelValue.display.lowDisplay, channelValue.display.lowAlarm, 'Gradient(#660:yellow:#660)'],
-                                                            [channelValue.display.highAlarm, channelValue.display.highDisplay, 'Gradient(#600:red:#600)']]);
-                                meters[channel.getId()].Set('needle.linewidth', 2);
-                                meters[channel.getId()].Set('needle.tail', false);
-                                meters[channel.getId()].Set('segment.radius.start', 100);
-                                meters[channel.getId()].Set('linewidth.segments', 3);
-                                meters[channel.getId()].Set('border', false);
-                                meters[channel.getId()].Set('tickmarks.big.num', 0);
-                                meters[channel.getId()].Set('tickmarks.small.num', 0);
-                                meters[channel.getId()].Set('chart.labels.position', 'inside');
-                                meters[channel.getId()].Set('chart.strokestyle', 'white');
-                                meters[channel.getId()].Draw();
-                                break;
-                            case "error": //error happened
-                                break;
-                            case "writePermission":	// write permission changed.
-                                break;
-                            case "writeCompleted": // write finished.
-                                break;
-                            default:
-                                break;
-                            }
-            });
-
             meters[channel.getId()].canvas.onclick = function (e)
             {
                 var obj   = e.target.__object__;

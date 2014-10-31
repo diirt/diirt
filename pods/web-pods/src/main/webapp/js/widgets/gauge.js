@@ -23,46 +23,48 @@ $(document).ready(function() {
         if (channelname != null && channelname.trim().length > 0) {
             var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
             var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
-            var channel = wp.subscribeChannel(channelname, readOnly);
+            var callback = function(evt, channel) {
+                                   switch (evt.type) {
+                                   case "connection": //connection state changed
+                                       break;
+                                   case "value": //value changed
+                                       var channelValue = channel.getValue();
+                                       if (channelValue.display.lowDisplay == null) {
+                                            gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
+                                                   displayLow, displayHigh,
+                                                   0).Set('colors.ranges', []);
+                                       } else {
+                                       gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
+                                           channelValue.display.lowDisplay, channelValue.display.highDisplay,
+                                           channelValue.value).Set('colors.ranges', []);
+                                       }
+                                       var color = 'green';
+                                       if (channelValue.alarm.severity == "MAJOR")
+                                            color = 'red';
+                                       else if (channelValue.alarm.severity == "MINOR")
+                                            color = "yellow";
+                                       gauges[channel.getId()].Set("chart.needle.colors", [ color ]);
+                                       gauges[channel.getId()].value = channelValue.value;
+                                       gauges[channel.getId()].Set ('chart.colors.ranges', [[channelValue.display.lowAlarm,
+                                                                channelValue.display.highAlarm, 'Gradient(#060:#0f0:#060)'],
+                                                                [channelValue.display.lowDisplay, channelValue.display.lowAlarm, 'Gradient(#660:yellow:#660)'],
+                                                                [channelValue.display.highAlarm, channelValue.display.highDisplay, 'Gradient(#600:red:#600)']]);
+                                       gauges[channel.getId()].Draw();
+                                       break;
+                                   case "error": //error happened
+                                       break;
+                                   case "writePermission":	// write permission changed.
+                                       break;
+                                   case "writeCompleted": // write finished.
+                                       break;
+                                   default:
+                                       break;
+                                   }
+                            };
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             gauges[channel.getId()] = new RGraph.Gauge(id,
                             displayLow, displayHigh,
                             0).Set('colors.ranges', []);
-            channel.addCallback(function(evt, channel) {
-                            switch (evt.type) {
-                            case "connection": //connection state changed
-                                break;
-                            case "value": //value changed
-                                var channelValue = channel.getValue();
-                                if (channelValue.display.lowDisplay == null) {
-                                     gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
-                                            displayLow, displayHigh,
-                                            0).Set('colors.ranges', []);
-                                } else {
-                                gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
-                                    channelValue.display.lowDisplay, channelValue.display.highDisplay,
-                                    channelValue.value).Set('colors.ranges', []);
-                                }
-                                var color = 'green';
-								if (channelValue.alarm.severity == "MAJOR")
-									color = 'red';
-								else if (channelValue.alarm.severity == "MINOR")
-									color = "yellow";
-								gauges[channel.getId()].Set("chart.needle.colors", [ color ]);
-								gauges[channel.getId()].value = channelValue.value;
-								gauges[channel.getId()].Set ('chart.colors.ranges', [[channelValue.display.lowAlarm, channelValue.display.highAlarm, 'Gradient(#060:#0f0:#060)'], [channelValue.display.lowDisplay, channelValue.display.lowAlarm, 'Gradient(#660:yellow:#660)'],
-                                                                                    [channelValue.display.highAlarm, channelValue.display.highDisplay, 'Gradient(#600:red:#600)']]);
-								gauges[channel.getId()].Draw();
-                                break;
-                            case "error": //error happened
-                                break;
-                            case "writePermission":	// write permission changed.
-                                break;
-                            case "writeCompleted": // write finished.
-                                break;
-                            default:
-                                break;
-                            }
-            });
 
             gauges[channel.getId()].canvas.onclick = function (e)
             {
@@ -77,6 +79,7 @@ $(document).ready(function() {
                 }
                 ch.value.value = value;
                 ch.updateValue();
+                obj.Draw();
             }
         }
     }

@@ -18,8 +18,33 @@ $(document).ready(function() {
         var k=1;
 	    var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("channel-readonly");
-
-	    var channel = wp.subscribeChannel(channelname, readOnly);
+        var callback = function(evt, channel) {
+                           switch (evt.type) {
+                           case "connection": //connection state changed
+                               break;
+                           case "value": //value changed
+                               var channelValue = channel.getValue();
+                               var time = (new Date()).getTime();
+                               var y = channelValue.value;
+                               var c = charts[channel.getId()];
+                               var series = c.options.series[0];
+                                   if (k % 50 == 0) {
+                                       c.series[0].addPoint([k++, y], true, true);
+                               } else {
+                                       c.series[0].addPoint([k++, y], true, false);
+                               }
+                              break;
+                           case "error": //error happened
+                               break;
+                           case "writePermission":	// write permission changed.
+                               break;
+                           case "writeCompleted": // write finished.
+                               break;
+                           default:
+                               break;
+                           }
+                       };
+	    var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var id = nodes[i].getAttribute("id");
         var options = {
             chart: {
@@ -66,32 +91,6 @@ $(document).ready(function() {
         }
         var chart = new Highcharts.Chart(options);
         charts[channel.getId()] = chart;
-        channel.addCallback(function(evt, channel) {
-            switch (evt.type) {
-            case "connection": //connection state changed
-                break;
-            case "value": //value changed
-                var channelValue = channel.getValue();
-                var time = (new Date()).getTime();
-                var y = channelValue.value;
-                var c = charts[channel.getId()];
-                var series = c.options.series[0];
-                    if (k % 50 == 0) {
-                        c.series[0].addPoint([k++, y], true, true);
-                } else {
-                        c.series[0].addPoint([k++, y], true, false);
-                }
-               break;
-            case "error": //error happened
-                break;
-            case "writePermission":	// write permission changed.
-                break;
-            case "writeCompleted": // write finished.
-                break;
-            default:
-                break;
-            }
-        });
     }
 });
 
