@@ -64,7 +64,7 @@ public class ExecServiceFactory implements ServiceFactory {
         }
         if (directory.exists()) {
             if (directory.isDirectory()) { // We have a configuration directory
-                log.log(Level.CONFIG, "Loading exec services from '{0}'", directory);
+                log.log(Level.CONFIG, "Loading exec services from ''{0}''", directory);
                 for (File file : directory.listFiles()) {
                     if (file.getName().endsWith(".xml")) {
                         try {
