@@ -10,29 +10,37 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author carcassi
  */
 public class ServiceRegistry {
-    private final static ServiceRegistry registry = new ServiceRegistry();
+    private static final Logger log = Logger.getLogger(ServiceRegistry.class.getName());
+    private static final ServiceRegistry registry = new ServiceRegistry();
 
     public static ServiceRegistry getDefault() {
         return registry;
     }
     
     static {
-        // Find formula functions to register using the ServiceLoader
+        log.config("Fetching service providers");
         ServiceLoader<ServiceFactory> sl = ServiceLoader.load(ServiceFactory.class);
+        int count = 0;
         for (ServiceFactory factory : sl) {
+            log.log(Level.CONFIG, "Adding service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
             registry.registerServices(factory);
+            count++;
         }
+        log.log(Level.CONFIG, "Found {0} service providers", count);
     }
     
-    private Map<String, Service> services = new ConcurrentHashMap<>();
+    private final Map<String, Service> services = new ConcurrentHashMap<>();
     
     public void registerService(Service service) {
+        log.log(Level.CONFIG, "Adding service {0} ({1})", new Object[] {service.getName(), service.getClass().getSimpleName()});
         services.put(service.getName(), service);
     }
     
