@@ -4,38 +4,20 @@
  */
 package org.diirt.service.exec;
 
-import org.diirt.service.exec.ExecXMLServiceFactory;
 import java.io.File;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.ChannelHandlerWriteSubscription;
-import org.diirt.datasource.WriteFunction;
-import org.diirt.datasource.WriteCache;
-import org.diirt.datasource.ChannelWriteCallback;
-import org.diirt.datasource.ChannelHandlerReadSubscription;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceUtil;
-import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
 
 /**
  *
@@ -46,7 +28,7 @@ public class ExecXMLServiceFactoryTest {
     @Test
     public void new1() throws Exception {
         File file = new File(getClass().getResource(".").toURI());
-        ExecXMLServiceFactory factory = new ExecXMLServiceFactory(file);
+        ExecServiceFactory factory = new ExecServiceFactory(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(1));
         Service service = services.iterator().next();
@@ -75,7 +57,7 @@ public class ExecXMLServiceFactoryTest {
     @Test
     public void new2() throws Exception {
         File file = new File("DOES_NOT_EXISTS");
-        ExecXMLServiceFactory factory = new ExecXMLServiceFactory(file);
+        ExecServiceFactory factory = new ExecServiceFactory(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(0));
     }
@@ -83,7 +65,7 @@ public class ExecXMLServiceFactoryTest {
     @Test
     public void runCommand1() throws URISyntaxException {
         File file = new File(getClass().getResource(".").toURI());
-        ExecXMLServiceFactory factory = new ExecXMLServiceFactory(file);
+        ExecServiceFactory factory = new ExecServiceFactory(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(1));
         Service service = services.iterator().next();
