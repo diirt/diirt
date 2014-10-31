@@ -57,9 +57,14 @@ public class ExecXMLServiceFactoryTest {
     @Test
     public void new2() throws Exception {
         File file = new File("DOES_NOT_EXISTS");
+        if (file.exists()) {
+            file.delete();
+        }
         ExecServiceFactory factory = new ExecServiceFactory(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(0));
+        assertThat(file.exists(), equalTo(true));
+        file.delete();
     }
 
     @Test
