@@ -52,7 +52,7 @@ public abstract class DataSourceProvider {
         ServiceLoader<DataSourceProvider> sl = ServiceLoader.load(DataSourceProvider.class);
         int count = 0;
         for (DataSourceProvider factory : sl) {
-            log.log(Level.CONFIG, "Adding data source provider '{0}' ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
+            log.log(Level.CONFIG, "Adding data source provider ''{0}'' ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
             composite.putDataSource(factory);
             count++;
         }
