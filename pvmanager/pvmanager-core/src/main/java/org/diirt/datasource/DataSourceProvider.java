@@ -49,15 +49,14 @@ public abstract class DataSourceProvider {
     public static CompositeDataSource createDataSource() {
         log.config("Fetching data source providers");
         CompositeDataSource composite = new CompositeDataSource();
-        // Find formula functions to register using the ServiceLoader
         ServiceLoader<DataSourceProvider> sl = ServiceLoader.load(DataSourceProvider.class);
         int count = 0;
         for (DataSourceProvider factory : sl) {
-            log.log(Level.CONFIG, "Adding provider {0} ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
+            log.log(Level.CONFIG, "Adding data source provider {0} ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
             composite.putDataSource(factory);
             count++;
         }
-        log.log(Level.CONFIG, "Found {0} providers", count);
+        log.log(Level.CONFIG, "Found {0} data source providers", count);
         return composite;
     }
 }
