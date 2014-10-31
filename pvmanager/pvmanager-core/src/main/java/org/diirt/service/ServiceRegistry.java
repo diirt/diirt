@@ -7,6 +7,7 @@ package org.diirt.service;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +20,14 @@ public class ServiceRegistry {
 
     public static ServiceRegistry getDefault() {
         return registry;
+    }
+    
+    static {
+        // Find formula functions to register using the ServiceLoader
+        ServiceLoader<ServiceFactory> sl = ServiceLoader.load(ServiceFactory.class);
+        for (ServiceFactory factory : sl) {
+            registry.registerServices(factory);
+        }
     }
     
     private Map<String, Service> services = new ConcurrentHashMap<>();
