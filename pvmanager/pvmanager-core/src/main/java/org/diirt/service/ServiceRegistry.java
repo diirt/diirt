@@ -40,7 +40,7 @@ public class ServiceRegistry {
     private final Map<String, Service> services = new ConcurrentHashMap<>();
     
     public void registerService(Service service) {
-        log.log(Level.CONFIG, "Adding service {0} ({1})", new Object[] {service.getName(), service.getClass().getSimpleName()});
+        log.log(Level.CONFIG, "Adding service '{0}' ({1})", new Object[] {service.getName(), service.getClass().getSimpleName()});
         services.put(service.getName(), service);
     }
     
