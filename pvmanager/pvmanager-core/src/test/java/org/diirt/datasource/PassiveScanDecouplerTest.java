@@ -92,7 +92,7 @@ public class PassiveScanDecouplerTest {
         repeatTest(10, new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                DesiredRateEventLog log = new DesiredRateEventLog();
+                log = new DesiredRateEventLog();
                 SourceDesiredRateDecoupler decoupler = new PassiveScanDecoupler(PVManager.getReadScannerExecutorService(), TimeDuration.ofHertz(10), log);
                 log.setDecoupler(decoupler);
                 decoupler.start();
