@@ -30,17 +30,16 @@ public class ServiceRegistry {
         ServiceLoader<ServiceProvider> sl = ServiceLoader.load(ServiceProvider.class);
         int count = 0;
         for (ServiceProvider factory : sl) {
-            log.log(Level.CONFIG, "Adding service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
+            log.log(Level.CONFIG, "Registering service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
             registry.registerServices(factory);
             count++;
         }
-        log.log(Level.CONFIG, "Found {0} service providers", count);
+        log.log(Level.CONFIG, "Registered {0} service providers", count);
     }
     
     private final Map<String, Service> services = new ConcurrentHashMap<>();
     
     public void registerService(Service service) {
-        log.log(Level.CONFIG, "Adding service ''{0}'' ({1})", new Object[] {service.getName(), service.getClass().getSimpleName()});
         services.put(service.getName(), service);
     }
     

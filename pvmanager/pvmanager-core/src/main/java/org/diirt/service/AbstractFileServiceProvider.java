@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,8 +56,28 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
     public File getDefaultConfigurationDirectory() {
         return new File(Configuration.getDirectory(), "services/" + getName()); 
     }
-    
+
+    /**
+     * Creates a service from the given file.
+     * <p>
+     * Implementors need not to care about logging and service registration.
+     * 
+     * @param file a file in the configuration directory
+     * @return the new service or null if no service corresponds to the file
+     * @throws Exception if there is a problem creating the service from the file
+     */
     public abstract Service createService(File file) throws Exception;
+
+    /**
+     * Creates additional services that are not read from files.
+     * <p>
+     * Implementors need not to care about logging and service registration.
+     * 
+     * @return a collection of services
+     */
+    public Collection<Service> additionalServices() {
+        return Collections.emptyList();
+    }
 
     /**
      * Crawls the directory and creates services.
@@ -78,7 +99,7 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
                         Service service = createService(file);
                         if (service != null) {
                             services.add(service);
-                            log.log(Level.CONFIG, "Adding {0} service ''{1}''", new Object[] {getName(), service.getName()});
+                            log.log(Level.CONFIG, "Created {0} service ''{1}'' from ''{2}''", new Object[] {getName(), service.getName(), file.getName()});
                         }
                     } catch (Exception ex) {
                         log.log(Level.WARNING, "Failed to create " + getName() + " service from '" + file + "'", ex);
@@ -91,6 +112,12 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
             path.mkdirs();
             log.log(Level.CONFIG, "Creating configuration path for {0} services at ''{1}''", new Object[] {getName(), path});
         }
+        for (Service additionalService : additionalServices()) {
+            services.add(additionalService);
+            log.log(Level.CONFIG, "Created {0} service ''{1}''", new Object[] {getName(), additionalService.getName()});
+        }
+        
+        log.log(Level.CONFIG, "Created {0} {1} services", new Object[] {services.size(), getName()});
         return services;
     }
 
