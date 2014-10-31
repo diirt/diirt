@@ -70,5 +70,15 @@
             <artifactId>datasource-formula</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>service-exec</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>service-jdbc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
