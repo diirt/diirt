@@ -6,7 +6,7 @@ package org.diirt.datasource.pva.rpcservice;
 
 import org.diirt.service.pva.rpcservice.RPCService;
 import org.diirt.service.pva.rpcservice.RPCServices;
-import org.diirt.service.pva.rpcservice.PVARPCXMLServiceFactory;
+import org.diirt.service.pva.rpcservice.PVARPCServiceProvider;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -691,7 +691,7 @@ public class RPCServicesTest implements Runnable {
         fail("an empty test file not created");
       }
 
-      PVARPCXMLServiceFactory factory = new PVARPCXMLServiceFactory(tempFile);
+      PVARPCServiceProvider factory = new PVARPCServiceProvider(tempFile);
       factory.createServices();
 
     } finally {
@@ -704,7 +704,7 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testRPCXmlServiceFactoryNonExistentDir() throws IOException {
 
-    PVARPCXMLServiceFactory factory = new PVARPCXMLServiceFactory(new File("nonexistentdirectory"));
+    PVARPCServiceProvider factory = new PVARPCServiceProvider(new File("nonexistentdirectory"));
     factory.createServices();
   }
 
@@ -722,7 +722,7 @@ public class RPCServicesTest implements Runnable {
         out.write("<invalidxml>");
       }
 
-      PVARPCXMLServiceFactory factory = new PVARPCXMLServiceFactory(tempDir);
+      PVARPCServiceProvider factory = new PVARPCServiceProvider(tempDir);
       factory.createServices();
 
     } finally {
@@ -757,7 +757,7 @@ public class RPCServicesTest implements Runnable {
           "</pvAccessRPCService>");
       }
 
-      PVARPCXMLServiceFactory factory = new PVARPCXMLServiceFactory(tempDir);
+      PVARPCServiceProvider factory = new PVARPCServiceProvider(tempDir);
       factory.createServices();
 
     } finally {
