@@ -10,6 +10,12 @@ import java.util.Map;
 import org.diirt.datasource.WriteFunction;
 
 /**
+ * A call that provides access to command/response type of communication for sources of
+ * data or RPC-like services. Each method can be executed with a set of parameters, and returns with a set
+ * of results. Methods are grouped into services.
+ * <p>
+ * This class is immutable and the method execution is thread-safe and asynchronous (non-blocking).
+ * Subclasses must guarantee these properties.
  *
  * @author carcassi
  */
@@ -21,6 +27,14 @@ public abstract class ServiceMethod {
     private final Map<String, Class<?>> resultTypes;
     private final Map<String, String> resultDescriptions;
 
+    /**
+     * Creates a new service method with the given description. All properties
+     * are copied out of the description, guaranteeing the immutability
+     * of objects of this class. Nonetheless, service method descriptions
+     * should not be reused for different services.
+     * 
+     * @param serviceMethodDescription the description of the service method, can't be null
+     */
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription) {
         this.name = serviceMethodDescription.name;
         this.description = serviceMethodDescription.description;
@@ -30,10 +44,20 @@ public abstract class ServiceMethod {
         this.resultDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultDescriptions));
     }
 
+    /**
+     * A brief name for the service method. Used for service registration and lookup.
+     * 
+     * @return the service method name, can't be null
+     */
     public final String getName() {
         return name;
     }
 
+    /**
+     * A description for the service method.
+     * 
+     * @return the service method description, can't be null
+     */
     public final String getDescription() {
         return description;
     }

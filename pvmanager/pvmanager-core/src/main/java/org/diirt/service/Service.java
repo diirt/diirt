@@ -28,9 +28,12 @@ public class Service {
     private final Map<String, ServiceMethod> serviceMethods;
 
     /**
-     * Creates a new service given the description.
+     * Creates a new service given the description. All properties
+     * are copied out of the description, guaranteeing the immutability
+     * of objects of this class. Nonetheless, service descriptions
+     * should not be reused for different services.
      * 
-     * @param serviceDescription the service description
+     * @param serviceDescription the description of the service, can't be null
      */
     public Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
@@ -39,8 +42,7 @@ public class Service {
     }
 
     /**
-     * Returns a brief name for the service. Used for registering and looking the
-     * service up.
+     * A brief name for the service. Used for service registration and lookup.
      * 
      * @return the service name, can't be null
      */
@@ -49,7 +51,7 @@ public class Service {
     }
 
     /**
-     * Returns a description for the service.
+     * A description for the service.
      * 
      * @return the service description, can't be null
      */
