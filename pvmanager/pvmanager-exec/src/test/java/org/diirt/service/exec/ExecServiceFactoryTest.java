@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class ExecXMLServiceFactoryTest {
+public class ExecServiceFactoryTest {
 
     @Test
     public void new1() throws Exception {
