@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import org.diirt.service.AbstractFileServiceProvider;
@@ -61,21 +62,13 @@ public class ExecServiceProvider extends AbstractFileServiceProvider {
         }
     }
 
-    /**
-     * Crawls the directory and creates exec services.
-     * <p>
-     * XML files that do not parse correctly are skipped.
-     *
-     * @return the created services
-     */
     @Override
-    public Collection<Service> createServices() {
-        List<Service> services = new ArrayList<>();
+    public Collection<Service> additionalServices() {
         if (includeGenericExecService) {
-            services.add(new GenericExecService());
+            return Collections.<Service>singleton(new GenericExecService());
+        } else {
+            return Collections.emptySet();
         }
-        services.addAll(super.createServices());
-        return services;
     }
 
 }
