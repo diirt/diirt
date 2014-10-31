@@ -19,7 +19,7 @@ public class ServiceConfigurationLog {
         Logger.getLogger("").setLevel(Level.CONFIG);
         
         System.out.println("Listing all services");
-        for (String service : ServiceRegistry.getDefault().listServices()) {
+        for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
             System.out.println("- " + service);
         }
         System.out.println("Done");
