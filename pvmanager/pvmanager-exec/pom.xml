@@ -28,7 +28,7 @@
                 <version>1.0.2</version>
                 <configuration>
                     <services>
-                        <param>org.diirt.service.ServiceFactory</param>
+                        <param>org.diirt.service.ServiceProvider</param>
                     </services>
                 </configuration>
                 <executions>

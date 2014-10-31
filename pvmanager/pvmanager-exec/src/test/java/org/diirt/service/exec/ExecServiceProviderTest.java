@@ -23,12 +23,12 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class ExecServiceFactoryTest {
+public class ExecServiceProviderTest {
 
     @Test
     public void new1() throws Exception {
         File file = new File(getClass().getResource(".").toURI());
-        ExecServiceFactory factory = new ExecServiceFactory(file, false);
+        ExecServiceProvider factory = new ExecServiceProvider(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(1));
         Service service = services.iterator().next();
@@ -60,7 +60,7 @@ public class ExecServiceFactoryTest {
         if (file.exists()) {
             file.delete();
         }
-        ExecServiceFactory factory = new ExecServiceFactory(file, false);
+        ExecServiceProvider factory = new ExecServiceProvider(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(0));
         assertThat(file.exists(), equalTo(true));
@@ -70,7 +70,7 @@ public class ExecServiceFactoryTest {
     @Test
     public void runCommand1() throws URISyntaxException {
         File file = new File(getClass().getResource(".").toURI());
-        ExecServiceFactory factory = new ExecServiceFactory(file, false);
+        ExecServiceProvider factory = new ExecServiceProvider(file, false);
         Collection<Service> services = factory.createServices();
         assertThat(services.size(), equalTo(1));
         Service service = services.iterator().next();
