@@ -11,7 +11,14 @@ import java.util.Collection;
  *
  * @author carcassi
  */
-public interface ServiceFactory {
+public interface ServiceProvider {
+    
+    /**
+     * Returns the name of the service provider.
+     * 
+     * @return a short name
+     */
+    public String getName();
     
     /**
      * Returns a collection of services to be registered.

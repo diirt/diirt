@@ -27,9 +27,9 @@ public class ServiceRegistry {
     
     static {
         log.config("Fetching service providers");
-        ServiceLoader<ServiceFactory> sl = ServiceLoader.load(ServiceFactory.class);
+        ServiceLoader<ServiceProvider> sl = ServiceLoader.load(ServiceProvider.class);
         int count = 0;
-        for (ServiceFactory factory : sl) {
+        for (ServiceProvider factory : sl) {
             log.log(Level.CONFIG, "Adding service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
             registry.registerServices(factory);
             count++;
@@ -44,7 +44,7 @@ public class ServiceRegistry {
         services.put(service.getName(), service);
     }
     
-    public void registerServices(ServiceFactory serviceFactory) {
+    public void registerServices(ServiceProvider serviceFactory) {
         for (Service service : serviceFactory.createServices()) {
             registerService(service);
         }

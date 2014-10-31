@@ -4,7 +4,7 @@
  */
 package org.diirt.service;
 
-import org.diirt.service.ServiceFactory;
+import org.diirt.service.ServiceProvider;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceRegistry;
 import java.util.Arrays;
@@ -87,7 +87,12 @@ public class ServiceRegistryTest {
         ServiceMethod serviceMethod = registry.findServiceMethod("math", "add");
         assertThat(serviceMethod, nullValue());
 
-        registry.registerServices(new ServiceFactory() {
+        registry.registerServices(new ServiceProvider() {
+
+            @Override
+            public String getName() {
+                return "test";
+            }
 
             @Override
             public Collection<Service> createServices() {
