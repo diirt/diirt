@@ -32,10 +32,10 @@ public class JDBCSampleClient {
         arguments.put("name", newVString("George", alarmNone(), timeNow()));
         arguments.put("index", newVDouble(4.1, alarmNone(), timeNow(), displayNone()));
         arguments.put("value", newVDouble(2.11, alarmNone(), timeNow(), displayNone()));
-        syncExecuteMethod(method, arguments);
+        method.syncExecute(arguments);
         
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/query");
-        table = (VTable) syncExecuteMethod(method, new HashMap<String, Object>()).get("result");
+        table = (VTable) method.syncExecute(new HashMap<String, Object>()).get("result");
         
         CSVIO io = new CSVIO();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
