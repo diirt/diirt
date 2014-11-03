@@ -84,8 +84,9 @@ $(document).ready(function() {
     }
 });
 
+
 window.onbeforeunload = function() {
-	ws.close();
+	wp.close();
 };
 
 function fitToContainer(canvas){

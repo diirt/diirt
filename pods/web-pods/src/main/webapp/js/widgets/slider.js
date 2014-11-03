@@ -66,7 +66,7 @@ $(document).ready(function() {
 
 });
 
-window.onbeforeunload = function() {
-	ws.close();
-};
 
+window.onbeforeunload = function() {
+	wp.close();
+};

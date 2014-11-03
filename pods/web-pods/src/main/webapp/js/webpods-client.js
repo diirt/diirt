@@ -94,7 +94,6 @@ function Client(url, debug, debugMessageBox) {
         channel.id = channelIDIndex;
         channel.name = name;
         channel.readOnly = readOnly;
-        channel.type = type;
         channel.connected = true;
         if(this.isLive)
             this.sendText(json);
@@ -114,7 +113,47 @@ function Client(url, debug, debugMessageBox) {
         return channel;
     };
 
-    function openWebSocket(url) {
+    this.resubscribeChannel = function(ch) {
+        var typeJson;
+        if (ch.value.type != null) {
+            typeJson = JSON.stringify({
+                "name" : ch.value.type.name,
+                "version" : ch.value.type.version
+            });
+
+        }
+        var json = JSON.stringify({
+            "message" : "subscribe",
+            "id" : ch.id,
+            "channel" : ch.name,
+            "readOnly" : ch.readOnly,
+            "type" : typeJson,
+            "maxRate" : ch.maxRate
+        });
+        var channel = new Channel(ch.name);
+            channelArray[ch.id] = channel;
+            channel.id = ch.id;
+            channel.name = ch.name;
+            channel.readOnly = ch.readOnly;
+            channel.connected = true;
+            if(this.isLive)
+                this.sendText(json);
+            else{
+                var webpdaSelf = this;
+                var listener = null;
+                listener = function(evt){
+                    clientSelf.sendText(json);
+                    setTimeout(function(){
+                        clientSelf.removeWebSocketOnOpenCallback(listener);
+                    }, 0);
+                };
+                this.addWebSocketOnOpenCallback(listener);
+            }
+            channel.addCallback(ch.channelCallbacks[0]);
+        return channel;
+    };
+
+    function openWebSocket(url, reconnect) {
         if ('WebSocket' in window) {
             websocket = new WebSocket(url, "org.client");
         } else if ('MozWebSocket' in window) {
@@ -141,7 +180,6 @@ function Client(url, debug, debugMessageBox) {
         websocket.onclose = function(evt) {
             fireOnClose(evt);
         };
-
     }
 
     function writeToScreen(message) {
@@ -212,6 +250,8 @@ function Client(url, debug, debugMessageBox) {
         }
     };
     function fireOnOpen(evt) {
+        console.log("Open");
+
         clientSelf.isLive = true;
         for ( var i in webSocketOnOpenCallbacks) {
             webSocketOnOpenCallbacks[i](evt);
@@ -219,15 +259,19 @@ function Client(url, debug, debugMessageBox) {
     }
 
     function fireOnClose(evt) {
-        if(fireOnClose) {
+        clientSelf.isLive = false;
+        if(forcedClose) {
             for(var c in channelArray){
-                    channelArray[c].unsubscribe();
+                channelArray[c].unsubscribe();
             }
             for ( var i in webSocketOnCloseCallbacks) {
                 webSocketOnCloseCallbacks[i](evt);
             }
         } else {
-
+            openWebSocket(evt.currentTarget.url);
+            for(c in channelArray) {
+                clientSelf.resubscribeChannel(channelArray[c]);
+            }
         }
 
     }
