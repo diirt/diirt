@@ -63,4 +63,16 @@ public class ServiceMethodTest {
         assertThat(cache.getValue().get("result"), equalTo((Object) 2.0));
         assertThat(exceptionCache.getValue(), nullValue());
     }
+    
+    @Test
+    public void toString1() {
+        ServiceMethod method = new MultiplyServiceMethod();
+        assertThat(method.toString(), equalTo("multiply(Number arg1, Number arg2): Number result"));
+    }
+    
+    @Test
+    public void toString2() {
+        ServiceMethod method = new AddServiceMethod();
+        assertThat(method.toString(), equalTo("add(Number arg1, Number arg2): Number result"));
+    }
 }

@@ -218,6 +218,42 @@ public abstract class ServiceMethod {
         throw new RuntimeException("Failed", exception.get());
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName()).append("(");
+        
+        boolean first = true;
+        for (DataDescription argument : getArguments()) {
+            if (!first) {
+                sb.append(", ");
+            } else {
+                first = false;
+            }
+            sb.append(argument.getType().getSimpleName())
+                    .append(" ")
+                    .append(argument.getName());
+        }
+        sb.append(")");
+        
+        if (!getResults().isEmpty()) {
+            sb.append(": ");
+        }
+        first = true;
+        for (DataDescription result : getResults()) {
+            if (!first) {
+                sb.append(", ");
+            } else {
+                first = false;
+            }
+            sb.append(result.getType().getSimpleName())
+                    .append(" ")
+                    .append(result.getName());
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Implementation of the service method.
      * <p>

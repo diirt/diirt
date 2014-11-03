@@ -4,16 +4,8 @@
  */
 package org.diirt.service;
 
-import org.diirt.service.ServiceProvider;
-import org.diirt.service.Service;
-import org.diirt.service.ServiceRegistry;
 import java.util.Arrays;
 import java.util.Collection;
-import org.diirt.service.ServiceMethod;
-import java.util.HashMap;
-import java.util.Map;
-import org.diirt.datasource.WriteCache;
-import org.diirt.datasource.WriteFunction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
