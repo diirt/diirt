@@ -6,7 +6,7 @@ package org.diirt.service.exec;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import org.diirt.datasource.WriteFunction;
+import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
 
@@ -36,7 +36,7 @@ class ExecServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
+    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
         String expandedCommand = command;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String name = entry.getKey();
@@ -47,7 +47,7 @@ class ExecServiceMethod extends ServiceMethod {
             } else if (object == null) {
                 value = "";
             } else {
-                errorCallback.writeValue(new IllegalArgumentException("Can't map parameter '" + name + "': was " + object));
+                errorCallback.accept(new IllegalArgumentException("Can't map parameter '" + name + "': was " + object));
                 return;
             }
             expandedCommand = expandedCommand.replaceAll("#" + name + "#", value);

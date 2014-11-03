@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.diirt.datasource.WriteFunction;
+import java.util.function.Consumer;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
@@ -33,7 +33,7 @@ class GenericExecServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
+    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         String shell = defaultShell();
         String shellArg = defaultShellArg();
@@ -61,7 +61,7 @@ class GenericExecServiceMethod extends ServiceMethod {
         return System.getProperties().get("os.name").toString().toLowerCase().indexOf("win") >= 0;
     }
 
-    static void executeCommand(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback,
+    static void executeCommand(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback,
             final ExecutorService executor, final String shell, final String shellArg, final String command) {
         executor.submit(new Runnable() {
 
@@ -86,7 +86,7 @@ class GenericExecServiceMethod extends ServiceMethod {
                         VTable table = io.importVTable(new StringReader(output));
                         Map<String, Object> resultMap = new HashMap<>();
                         resultMap.put("output", table);
-                        callback.writeValue(resultMap);
+                        callback.accept(resultMap);
                         return;
                     } catch(Exception ex) {
                         // Can't parse output to a table
@@ -95,7 +95,7 @@ class GenericExecServiceMethod extends ServiceMethod {
                     // Return output as a String
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("output", ValueFactory.newVString(output, ValueFactory.alarmNone(), ValueFactory.timeNow()));
-                    callback.writeValue(resultMap);
+                    callback.accept(resultMap);
 
                 } catch (Exception ex) {
                     if (process != null) {
@@ -106,7 +106,7 @@ class GenericExecServiceMethod extends ServiceMethod {
                             // Ignore any error
                         }
                     }
-                    errorCallback.writeValue(ex);
+                    errorCallback.accept(ex);
                 }
             }
         });
