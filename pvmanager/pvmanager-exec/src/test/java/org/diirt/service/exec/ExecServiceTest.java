@@ -4,15 +4,11 @@
  */
 package org.diirt.service.exec;
 
-import org.diirt.service.exec.ExecServiceDescription;
-import org.diirt.service.exec.ExecServiceMethodDescription;
-import org.diirt.service.exec.ExecService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.diirt.service.Service;
-import org.diirt.service.ServiceUtil;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
 import org.junit.Test;
@@ -33,7 +29,7 @@ public class ExecServiceTest {
                 .addServiceMethod(new ExecServiceMethodDescription("echo", "A simple command")
                                  .command("echo This is a test!")));
         Map<String, Object> params = new HashMap<>();
-        Map<String, Object> result = ServiceUtil.syncExecuteMethod(service.getServiceMethods().get("echo"), params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("This is a test!\n"));
     }
@@ -48,7 +44,7 @@ public class ExecServiceTest {
                                  .addArgument("param", "The parameter", VString.class)));
         Map<String, Object> params = new HashMap<>();
         params.put("param", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
-        Map<String, Object> result = ServiceUtil.syncExecuteMethod(service.getServiceMethods().get("echo"), params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("You entered FOO!\n"));
     }

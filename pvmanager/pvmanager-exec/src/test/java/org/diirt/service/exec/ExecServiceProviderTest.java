@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.diirt.service.Service;
-import org.diirt.service.ServiceUtil;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VType;
@@ -75,7 +74,7 @@ public class ExecServiceProviderTest {
         Service service = services.iterator().next();
         Map<String, Object> params = new HashMap<>();
         params.put("string", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
-        Map<String, Object> result = ServiceUtil.syncExecuteMethod(service.getServiceMethods().get("echo"), params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("You selected FOO!\n"));
     }
