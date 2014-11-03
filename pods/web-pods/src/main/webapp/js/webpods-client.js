@@ -153,7 +153,7 @@ function Client(url, debug, debugMessageBox) {
         return channel;
     };
 
-    function openWebSocket(url, reconnect) {
+    function openWebSocket(url) {
         if ('WebSocket' in window) {
             websocket = new WebSocket(url, "org.client");
         } else if ('MozWebSocket' in window) {
@@ -250,8 +250,6 @@ function Client(url, debug, debugMessageBox) {
         }
     };
     function fireOnOpen(evt) {
-        console.log("Open");
-
         clientSelf.isLive = true;
         for ( var i in webSocketOnOpenCallbacks) {
             webSocketOnOpenCallbacks[i](evt);
