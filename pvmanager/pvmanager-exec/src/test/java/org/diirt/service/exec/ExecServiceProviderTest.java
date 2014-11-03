@@ -37,21 +37,20 @@ public class ExecServiceProviderTest {
         assertThat(service.getServiceMethods().size(), equalTo(2));
         assertThat(service.getServiceMethods().get("echo").getName(), equalTo("echo"));
         assertThat(service.getServiceMethods().get("echo").getDescription(), equalTo("A test script"));
-        assertThat(service.getServiceMethods().get("echo").getArgumentDescriptions().size(), equalTo(1));
-        assertThat(service.getServiceMethods().get("echo").getArgumentDescriptions().get("string"), equalTo("The string"));
-        assertThat(service.getServiceMethods().get("echo").getArgumentTypes().get("string"), equalTo((Class) VString.class));
-        assertThat(service.getServiceMethods().get("echo").getResultTypes().size(), equalTo(1));
-        assertThat(service.getServiceMethods().get("echo").getResultDescriptions().size(), equalTo(1));
-        assertThat(service.getServiceMethods().get("echo").getResultTypes().get("result"), equalTo((Class) VType.class));
-        assertThat(service.getServiceMethods().get("echo").getResultDescriptions().get("result"), equalTo("The result"));
+        assertThat(service.getServiceMethods().get("echo").getArguments().size(), equalTo(1));
+        assertThat(service.getServiceMethods().get("echo").getArgumentMap().get("string").getDescription(), equalTo("The string"));
+        assertThat(service.getServiceMethods().get("echo").getArgumentMap().get("string").getType(), equalTo((Class) VString.class));
+        assertThat(service.getServiceMethods().get("echo").getResults().size(), equalTo(1));
+        assertThat(service.getServiceMethods().get("echo").getResultMap().get("result").getType(), equalTo((Class) VType.class));
+        assertThat(service.getServiceMethods().get("echo").getResultMap().get("result").getDescription(), equalTo("The result"));
         assertThat(service.getServiceMethods().get("script").getName(), equalTo("script"));
         assertThat(service.getServiceMethods().get("script").getDescription(), equalTo("My script"));
-        assertThat(service.getServiceMethods().get("script").getArgumentDescriptions().get("value"), equalTo("The value"));
-        assertThat(service.getServiceMethods().get("script").getArgumentTypes().get("value"), equalTo((Class) VNumber.class));
-        assertThat(service.getServiceMethods().get("script").getResultTypes().size(), equalTo(1));
-        assertThat(service.getServiceMethods().get("script").getResultDescriptions().size(), equalTo(1));
-        assertThat(service.getServiceMethods().get("script").getResultTypes().get("result"), equalTo((Class) VType.class));
-        assertThat(service.getServiceMethods().get("script").getResultDescriptions().get("result"), equalTo("The script result"));
+        assertThat(service.getServiceMethods().get("script").getArguments().size(), equalTo(1));
+        assertThat(service.getServiceMethods().get("script").getArgumentMap().get("value").getDescription(), equalTo("The value"));
+        assertThat(service.getServiceMethods().get("script").getArgumentMap().get("value").getType(), equalTo((Class) VNumber.class));
+        assertThat(service.getServiceMethods().get("script").getResults().size(), equalTo(1));
+        assertThat(service.getServiceMethods().get("script").getResultMap().get("result").getType(), equalTo((Class) VType.class));
+        assertThat(service.getServiceMethods().get("script").getResultMap().get("result").getDescription(), equalTo("The script result"));
     }
 
     @Test
