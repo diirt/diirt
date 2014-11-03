@@ -4,8 +4,10 @@
  */
 package org.diirt.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.diirt.datasource.WriteFunction;
 
@@ -20,12 +22,55 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 public abstract class ServiceMethod {
+    
+    /**
+     * The full description of an argument of a result of the service.
+     */
+    public final static class DataDescription {
+        private final String name;
+        private final String description;
+        private final Class<?> type;
+
+        DataDescription(String name, String description, Class<?> type) {
+            this.name = name;
+            this.description = description;
+            this.type = type;
+        }
+
+        /**
+         * The name of the argument/result.
+         * 
+         * @return a short name; not null
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * The description of the argument/result.
+         * 
+         * @return a meaningful description; not null
+         */
+        public String getDescription() {
+            return description;
+        }
+
+        /**
+         * The type of the argument/result.
+         * 
+         * @return the type; not null
+         */
+        public Class<?> getType() {
+            return type;
+        }
+        
+    }
     private final String name;
     private final String description;
-    private final Map<String, Class<?>> argumentTypes;
-    private final Map<String, String> argumentDescriptions;
-    private final Map<String, Class<?>> resultTypes;
-    private final Map<String, String> resultDescriptions;
+    private final List<DataDescription> arguments;
+    private final Map<String, DataDescription> argumentMap;
+    private final List<DataDescription> results;
+    private final Map<String, DataDescription> resultMap;
 
     /**
      * Creates a new service method with the given description. All properties
@@ -38,16 +83,16 @@ public abstract class ServiceMethod {
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription) {
         this.name = serviceMethodDescription.name;
         this.description = serviceMethodDescription.description;
-        this.argumentTypes = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentTypes));
-        this.argumentDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentDescriptions));
-        this.resultTypes = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultTypes));
-        this.resultDescriptions = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultDescriptions));
+        this.arguments = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.arguments));
+        this.argumentMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentMap));
+        this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
+        this.resultMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultMap));
     }
 
     /**
      * A brief name for the service method. Used for service registration and lookup.
      * 
-     * @return the service method name, can't be null
+     * @return the service method name; not null
      */
     public final String getName() {
         return name;
@@ -56,33 +101,53 @@ public abstract class ServiceMethod {
     /**
      * A description for the service method.
      * 
-     * @return the service method description, can't be null
+     * @return the service method description; not null
      */
     public final String getDescription() {
         return description;
     }
 
-    public final Map<String, Class<?>> getArgumentTypes() {
-        return argumentTypes;
+    /**
+     * The list of arguments, with their name, description and type.
+     * 
+     * @return the arguments for this method; not null
+     */
+    public List<DataDescription> getArguments() {
+        return arguments;
     }
 
-    public final Map<String, String> getArgumentDescriptions() {
-        return argumentDescriptions;
+    /**
+     * The arguments, indexed by name
+     * 
+     * @return the arguments for this method; not null
+     */
+    public Map<String, DataDescription> getArgumentMap() {
+        return argumentMap;
     }
 
-    public final Map<String, Class<?>> getResultTypes() {
-        return resultTypes;
+    /**
+     * The list of results, with their name, description and type.
+     * 
+     * @return the results for this method; not null
+     */
+    public List<DataDescription> getResults() {
+        return results;
     }
 
-    public final Map<String, String> getResultDescriptions() {
-        return resultDescriptions;
+    /**
+     * The results, indexed by name
+     * 
+     * @return the results for this method; not null
+     */
+    public Map<String, DataDescription> getResultMap() {
+        return resultMap;
     }
     
     void validateParameters(Map<String, Object> parameters) {
         for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
             String parameterName = parameter.getKey();
             Object parameterValue = parameter.getValue();
-            Class<?> parameterType = argumentTypes.get(parameterName);
+            Class<?> parameterType = argumentMap.get(parameterName).getType();
             if (parameterType == null) {
                 throw new IllegalArgumentException("ServiceMethod " + name + ": unexpected parameter " + parameterName);
             }
@@ -92,6 +157,16 @@ public abstract class ServiceMethod {
         }
     }
     
+    /**
+     * Executes the service method on the given parameters, the result of which
+     * will be communicated through the callbacks.
+     * <p>
+     * This method validates the parameters and then calls the implementation method.
+     * 
+     * @param parameters the parameters for the service; can't be  null
+     * @param callback the result callback, for success; can't be null
+     * @param errorCallback the error callback, for failures; can't be null
+     */
     public final void execute(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback) {
         try {
             validateParameters(parameters);
@@ -100,6 +175,18 @@ public abstract class ServiceMethod {
             errorCallback.writeValue(ex);
         }
     }
-    
-    public abstract void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback);
+
+    /**
+     * Implementation of the service method.
+     * <p>
+     * The call should be implemented asynchronously, only one callback
+     * should be called once with the result. If the method throws an exception,
+     * this will be sent to the errorCallbak, you can leave exceptions go through
+     * in which case no callback should be used.
+     * 
+     * @param parameters the parameters for the called, already type checked
+     * @param callback the result callback, for success; not null
+     * @param errorCallback the error callback, for failures; not null
+     */
+    protected abstract void executeMethod(Map<String, Object> parameters, WriteFunction<Map<String, Object>> callback, WriteFunction<Exception> errorCallback);
 }

@@ -4,7 +4,9 @@
  */
 package org.diirt.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import static org.diirt.service.Service.namePattern;
 
@@ -16,10 +18,10 @@ public class ServiceMethodDescription {
     
     String name;
     String description;
-    Map<String, Class<?>> argumentTypes = new HashMap<>();
-    Map<String, String> argumentDescriptions = new HashMap<>();
-    Map<String, Class<?>> resultTypes = new HashMap<>();
-    Map<String, String> resultDescriptions = new HashMap<>();
+    List<ServiceMethod.DataDescription> arguments = new ArrayList<>();
+    List<ServiceMethod.DataDescription> results = new ArrayList<>();
+    Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
+    Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
 
     public ServiceMethodDescription(String name, String description) {
         this.name = name;
@@ -33,8 +35,9 @@ public class ServiceMethodDescription {
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }
-        argumentTypes.put(name, type);
-        argumentDescriptions.put(name, description);
+        ServiceMethod.DataDescription dataDescription = new ServiceMethod.DataDescription(name, description, type);
+        arguments.add(dataDescription);
+        argumentMap.put(name, dataDescription);
         return this;
     }
     
@@ -42,8 +45,9 @@ public class ServiceMethodDescription {
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }
-        resultTypes.put(name, type);
-        resultDescriptions.put(name, description);
+        ServiceMethod.DataDescription dataDescription = new ServiceMethod.DataDescription(name, description, type);
+        results.add(dataDescription);
+        resultMap.put(name, dataDescription);
         return this;
     }
 }

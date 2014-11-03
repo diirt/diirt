@@ -17,7 +17,7 @@ import org.diirt.util.config.Configuration;
  * A service provider that can create a service instance for each file in
  * the configuration directory.
  * <p>
- * If the directory does not exist, it is created. If the path given is
+ * If the configuration directory does not exist, it is created. If the path given is
  * not a directory, an empty list is return and a warning message is logged.
  * By default, the configuration directory will be located in $DIIRT_HOME/services/SERVICE_PROVIDER_NAME.
  * <p>
