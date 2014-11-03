@@ -11,11 +11,17 @@ import java.util.Map;
 import static org.diirt.service.Service.namePattern;
 
 /**
+ * A utility class to gather all the elements that define the service method.
+ * <p>
+ * This class is not thread-safe and is meant to be used right before
+ * the creation of ServiceMethod objects.
  *
  * @author carcassi
  */
 public class ServiceMethodDescription {
     
+    // Access is package private so we don't even bother creating accessors for
+    // these
     String name;
     String description;
     List<ServiceMethod.DataDescription> arguments = new ArrayList<>();
@@ -23,6 +29,13 @@ public class ServiceMethodDescription {
     Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
     Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
 
+    /**
+     * Creates a new service method description with the given name and description,
+     * both of which are mandatory attributes of the service methods.
+     * 
+     * @param name the service method name, can't be null
+     * @param description the service method description, can't be null
+     */
     public ServiceMethodDescription(String name, String description) {
         this.name = name;
         this.description = description;
@@ -31,6 +44,16 @@ public class ServiceMethodDescription {
         }
     }
     
+    /**
+     * Adds an argument for this method, with the given name, description and type.
+     * The order in which arguments are added is retained as the preferred order
+     * of arguments for the service method.
+     * 
+     * @param name a short argument name; can't be null
+     * @param description a meaningful description; can't be null
+     * @param type the type of the argument
+     * @return this description
+     */
     public ServiceMethodDescription addArgument(String name, String description, Class<?> type) {
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
@@ -41,6 +64,16 @@ public class ServiceMethodDescription {
         return this;
     }
     
+    /**
+     * Adds a result for this method, with the given name, description and type.
+     * The order in which results are added is retained as the preferred order
+     * of arguments for the service method.
+     * 
+     * @param name a short result name; can't be null
+     * @param description a meaningful description; can't be null
+     * @param type the type of the result
+     * @return this description
+     */
     public ServiceMethodDescription addResult(String name, String description, Class<?> type) {
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
