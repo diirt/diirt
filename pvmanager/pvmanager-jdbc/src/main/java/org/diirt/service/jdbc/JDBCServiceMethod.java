@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 import javax.sql.DataSource;
-import org.diirt.datasource.WriteFunction;
 import org.diirt.service.ServiceMethod;
 import org.diirt.util.array.CircularBufferDouble;
 import org.diirt.util.time.Timestamp;
@@ -73,7 +73,7 @@ class JDBCServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
+    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
         getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
@@ -94,14 +94,14 @@ class JDBCServiceMethod extends ServiceMethod {
                         if (isResultQuery()) {
                             ResultSet resultSet = preparedStatement.executeQuery();
                             VTable table = resultSetToVTable(resultSet);
-                            callback.writeValue(Collections.<String, Object>singletonMap(getResults().get(0).getName(), table));
+                            callback.accept(Collections.<String, Object>singletonMap(getResults().get(0).getName(), table));
                         } else {
                             preparedStatement.execute();
-                            callback.writeValue(new HashMap<String, Object>());
+                            callback.accept(new HashMap<String, Object>());
                         }
                     }
                 } catch (Exception ex) {
-                    errorCallback.writeValue(ex);
+                    errorCallback.accept(ex);
                 }
             }
         });

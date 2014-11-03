@@ -4,10 +4,6 @@
  */
 package org.diirt.service.jdbc;
 
-import org.diirt.service.jdbc.JDBCServiceMethodDescription;
-import org.diirt.service.jdbc.SimpleDataSource;
-import org.diirt.service.jdbc.JDBCService;
-import org.diirt.service.jdbc.JDBCServiceDescription;
 import java.util.concurrent.Executors;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
@@ -21,7 +17,7 @@ public class JDBCSampleService extends JDBCService {
     public JDBCSampleService() {
         super(new JDBCServiceDescription("jdbcSample", "A test service")
                 .dataSource(new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root"))
-                .executorService(Executors.newSingleThreadExecutor(org.diirt.datasource.util.Executors.namedPool("jdbcSample")))
+                .executorService(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
                 .addServiceMethod(new JDBCServiceMethodDescription("query", "A test query")
                     .query("SELECT * FROM Data")
                     .queryResult("result", "The query result")
