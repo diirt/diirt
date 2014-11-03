@@ -93,54 +93,54 @@ public class RPCServicesTest implements Runnable {
 
     assertThat(service.getServiceMethods().get("sum").getName(), equalTo("sum"));
     assertThat(service.getServiceMethods().get("sum").getDescription(), equalTo("sum the two numbers"));
-    assertThat(service.getServiceMethods().get("sum").getResultTypes().get("c"), equalTo((Class) VDouble.class));
-    assertThat(service.getServiceMethods().get("sum").getResultDescriptions().get("c"), equalTo("sum result"));
-    assertThat(service.getServiceMethods().get("sum").getArgumentDescriptions().get("a"), equalTo("first number"));
-    assertThat(service.getServiceMethods().get("sum").getArgumentTypes().get("a"), equalTo((Class) VDouble.class));
-    assertThat(service.getServiceMethods().get("sum").getArgumentDescriptions().get("b"), equalTo("second number"));
-    assertThat(service.getServiceMethods().get("sum").getArgumentTypes().get("b"), equalTo((Class) VDouble.class));
+    assertThat(service.getServiceMethods().get("sum").getResultMap().get("c").getType(), equalTo((Class) VDouble.class));
+    assertThat(service.getServiceMethods().get("sum").getResultMap().get("c").getDescription(), equalTo("sum result"));
+    assertThat(service.getServiceMethods().get("sum").getArgumentMap().get("a").getDescription(), equalTo("first number"));
+    assertThat(service.getServiceMethods().get("sum").getArgumentMap().get("a").getType(), equalTo((Class) VDouble.class));
+    assertThat(service.getServiceMethods().get("sum").getArgumentMap().get("b").getDescription(), equalTo("second number"));
+    assertThat(service.getServiceMethods().get("sum").getArgumentMap().get("b").getType(), equalTo((Class) VDouble.class));
 
     assertThat(service.getServiceMethods().get("concate").getName(), equalTo("concate"));
     assertThat(service.getServiceMethods().get("concate").getDescription(), equalTo("concate two strings"));
-    assertThat(service.getServiceMethods().get("concate").getResultTypes().get("c"), equalTo((Class) VString.class));
-    assertThat(service.getServiceMethods().get("concate").getResultDescriptions().get("c"), equalTo("concate result"));
-    assertThat(service.getServiceMethods().get("concate").getArgumentDescriptions().get("a"), equalTo("first string"));
-    assertThat(service.getServiceMethods().get("concate").getArgumentTypes().get("a"), equalTo((Class) VString.class));
-    assertThat(service.getServiceMethods().get("concate").getArgumentDescriptions().get("b"), equalTo("second string"));
-    assertThat(service.getServiceMethods().get("concate").getArgumentTypes().get("b"), equalTo((Class) VString.class));
+    assertThat(service.getServiceMethods().get("concate").getResultMap().get("c").getType(), equalTo((Class) VString.class));
+    assertThat(service.getServiceMethods().get("concate").getResultMap().get("c").getDescription(), equalTo("concate result"));
+    assertThat(service.getServiceMethods().get("concate").getArgumentMap().get("a").getDescription(), equalTo("first string"));
+    assertThat(service.getServiceMethods().get("concate").getArgumentMap().get("a").getType(), equalTo((Class) VString.class));
+    assertThat(service.getServiceMethods().get("concate").getArgumentMap().get("b").getDescription(), equalTo("second string"));
+    assertThat(service.getServiceMethods().get("concate").getArgumentMap().get("b").getType(), equalTo((Class) VString.class));
 
     assertThat(service.getServiceMethods().get("getTable").getName(), equalTo("getTable"));
     assertThat(service.getServiceMethods().get("getTable").getDescription(), equalTo("get table as a standalone result"));
-    assertThat(service.getServiceMethods().get("getTable").getResultTypes().get("result"), equalTo((Class) VTable.class));
-    assertThat(service.getServiceMethods().get("getTable").getResultDescriptions().get("result"), equalTo("table result"));
-    assertThat(service.getServiceMethods().get("getTable").getArgumentDescriptions().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("getTable").getResultMap().get("result").getType(), equalTo((Class) VTable.class));
+    assertThat(service.getServiceMethods().get("getTable").getResultMap().get("result").getDescription(), equalTo("table result"));
+    assertThat(service.getServiceMethods().get("getTable").getArgumentMap().isEmpty(), equalTo(true));
 
     assertThat(service.getServiceMethods().get("getImage").getName(), equalTo("getImage"));
     assertThat(service.getServiceMethods().get("getImage").getDescription(), equalTo("get image as a standalone result"));
-    assertThat(service.getServiceMethods().get("getImage").getResultTypes().get("result"), equalTo((Class) VImage.class));
-    assertThat(service.getServiceMethods().get("getImage").getResultDescriptions().get("result"), equalTo("image result"));
-    assertThat(service.getServiceMethods().get("getImage").getArgumentDescriptions().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("getImage").getResultMap().get("result").getType(), equalTo((Class) VImage.class));
+    assertThat(service.getServiceMethods().get("getImage").getResultMap().get("result").getDescription(), equalTo("image result"));
+    assertThat(service.getServiceMethods().get("getImage").getArgumentMap().isEmpty(), equalTo(true));
 
     assertThat(service.getServiceMethods().get("multipyString").getName(), equalTo("multipyString"));
     assertThat(service.getServiceMethods().get("multipyString").getDescription(), equalTo("multiply the string"));
-    assertThat(service.getServiceMethods().get("multipyString").getResultTypes().get("c"), equalTo((Class) VString.class));
-    assertThat(service.getServiceMethods().get("multipyString").getResultDescriptions().get("c"), equalTo("multiply result"));
-    assertThat(service.getServiceMethods().get("multipyString").getArgumentDescriptions().get("string"), equalTo("string to multiply"));
-    assertThat(service.getServiceMethods().get("multipyString").getArgumentTypes().get("string"), equalTo((Class) VString.class));
-    assertThat(service.getServiceMethods().get("multipyString").getArgumentDescriptions().get("times"), equalTo("how many times to multiply"));
-    assertThat(service.getServiceMethods().get("multipyString").getArgumentTypes().get("times"), equalTo((Class) VInt.class));
+    assertThat(service.getServiceMethods().get("multipyString").getResultMap().get("c").getType(), equalTo((Class) VString.class));
+    assertThat(service.getServiceMethods().get("multipyString").getResultMap().get("c").getDescription(), equalTo("multiply result"));
+    assertThat(service.getServiceMethods().get("multipyString").getArgumentMap().get("string").getDescription(), equalTo("string to multiply"));
+    assertThat(service.getServiceMethods().get("multipyString").getArgumentMap().get("string").getType(), equalTo((Class) VString.class));
+    assertThat(service.getServiceMethods().get("multipyString").getArgumentMap().get("times").getDescription(), equalTo("how many times to multiply"));
+    assertThat(service.getServiceMethods().get("multipyString").getArgumentMap().get("times").getType(), equalTo((Class) VInt.class));
 
     assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getName(), equalTo("getTimeInMiliseconds"));
     assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getDescription(), equalTo("get time in milliseconds"));
-    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getResultTypes().get("c"), equalTo((Class) VDouble.class));
-    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getResultDescriptions().get("c"), equalTo("time result"));
-    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getArgumentDescriptions().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getResultMap().get("c").getType(), equalTo((Class) VDouble.class));
+    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getResultMap().get("c").getDescription(), equalTo("time result"));
+    assertThat(service.getServiceMethods().get("getTimeInMiliseconds").getArgumentMap().isEmpty(), equalTo(true));
 
     assertThat(service.getServiceMethods().get("nop").getName(), equalTo("nop"));
     assertThat(service.getServiceMethods().get("nop").getDescription(), equalTo("method without arguments and no result"));
-    assertThat(service.getServiceMethods().get("nop").getResultTypes().isEmpty(), equalTo(true));
-    assertThat(service.getServiceMethods().get("nop").getResultDescriptions().isEmpty(), equalTo(true));
-    assertThat(service.getServiceMethods().get("nop").getArgumentDescriptions().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("nop").getResultMap().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("nop").getResultMap().isEmpty(), equalTo(true));
+    assertThat(service.getServiceMethods().get("nop").getArgumentMap().isEmpty(), equalTo(true));
 
   }
 

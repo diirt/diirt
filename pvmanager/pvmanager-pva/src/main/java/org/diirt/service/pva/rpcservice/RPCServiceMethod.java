@@ -170,14 +170,13 @@ class RPCServiceMethod extends ServiceMethod {
 			// noop
 		}
     };
-    Map<String, Class<?>> argumentTypes = sm.getArgumentTypes();
     
     // operation name type + parameter types
     List<Field> fieldList = new ArrayList<Field>(this.parameterNames.size() + 1);
     if (methodFieldName != null)
     	fieldList.add(fieldCreate.createScalar(ScalarType.pvString));
     for (String parameterName : this.parameterNames.keySet()) {
-      fieldList.add(convertToPvType(argumentTypes.get(parameterName)));
+      fieldList.add(convertToPvType(sm.getArgumentMap().get(parameterName).getClass()));
     }
 
     return fieldList.toArray(new Field[fieldList.size()]);
@@ -194,7 +193,7 @@ class RPCServiceMethod extends ServiceMethod {
   */
 
   private boolean isResultQuery() {
-    return !getResultDescriptions().isEmpty();
+    return !getResults().isEmpty();
   }
 
 
@@ -223,7 +222,7 @@ class RPCServiceMethod extends ServiceMethod {
       VType vResult = createResult(pvResult);
       if (vResult != null) {
         Map<String, Object> resultMap = new HashMap<>();
-        String resultName = getResultDescriptions().keySet().toArray(new String[getResultDescriptions().size()])[0];
+        String resultName = getResultMap().keySet().toArray(new String[getResultMap().size()])[0];
         resultMap.put(resultName, vResult);
         callback.writeValue(resultMap);
       }
@@ -370,7 +369,7 @@ class RPCServiceMethod extends ServiceMethod {
       return null;
     }
 
-    Class<?> resultType = getResultTypes().values().toArray(new Class<?>[getResultTypes().size()])[0];
+    Class<?> resultType = getResults().get(0).getType();
 
     if (this.rpcServiceMethodDescription.isResultStandalone) {
       if (resultType.isAssignableFrom(VTable.class)) {
@@ -395,7 +394,7 @@ class RPCServiceMethod extends ServiceMethod {
 
     // TODO unsigned types, complex types 
 
-    String resultName = getResultDescriptions().keySet().toArray(new String[getResultDescriptions().size()])[0];
+    String resultName = getResults().get(0).getName();
     String fieldName = this.rpcServiceMethodDescription.getFieldNames().get(resultName);
 
     // TODO missing ValueFactory.newVLong
