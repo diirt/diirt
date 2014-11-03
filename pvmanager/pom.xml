@@ -37,6 +37,7 @@
         <module>pvmanager-integration</module>
         <module>pvmanager-file-json</module>
         <module>datasource-formula</module>
+        <module>service</module>
     </modules>
     <reporting>
         <plugins>
