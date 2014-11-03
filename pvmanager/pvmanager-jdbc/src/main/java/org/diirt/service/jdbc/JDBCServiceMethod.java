@@ -65,7 +65,7 @@ class JDBCServiceMethod extends ServiceMethod {
     }
     
     private boolean isResultQuery() {
-        return !getResultDescriptions().isEmpty();
+        return !getResults().isEmpty();
     }
 
     protected List<String> getParameterNames() {
@@ -94,7 +94,7 @@ class JDBCServiceMethod extends ServiceMethod {
                         if (isResultQuery()) {
                             ResultSet resultSet = preparedStatement.executeQuery();
                             VTable table = resultSetToVTable(resultSet);
-                            callback.writeValue(Collections.<String, Object>singletonMap(getResultDescriptions().keySet().iterator().next(), table));
+                            callback.writeValue(Collections.<String, Object>singletonMap(getResults().get(0).getName(), table));
                         } else {
                             preparedStatement.execute();
                             callback.writeValue(new HashMap<String, Object>());

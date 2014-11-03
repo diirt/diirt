@@ -4,30 +4,15 @@
  */
 package org.diirt.service.jdbc;
 
-import org.diirt.service.jdbc.JDBCServiceProvider;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Collection;
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.ChannelHandlerWriteSubscription;
-import org.diirt.datasource.WriteFunction;
-import org.diirt.datasource.WriteCache;
-import org.diirt.datasource.ChannelWriteCallback;
-import org.diirt.datasource.ChannelHandlerReadSubscription;
 import org.diirt.service.Service;
-import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
 
 /**
  *
@@ -47,19 +32,18 @@ public class JDBCServiceProviderTest {
         assertThat(service.getServiceMethods().size(), equalTo(2));
         assertThat(service.getServiceMethods().get("query").getName(), equalTo("query"));
         assertThat(service.getServiceMethods().get("query").getDescription(), equalTo("A test query"));
-        assertThat(service.getServiceMethods().get("query").getArgumentDescriptions().size(), equalTo(0));
-        assertThat(service.getServiceMethods().get("query").getResultTypes().get("result"), equalTo((Class) VTable.class));
-        assertThat(service.getServiceMethods().get("query").getResultDescriptions().get("result"), equalTo("The query result"));
+        assertThat(service.getServiceMethods().get("query").getArguments().size(), equalTo(0));
+        assertThat(service.getServiceMethods().get("query").getResultMap().get("result").getType(), equalTo((Class) VTable.class));
+        assertThat(service.getServiceMethods().get("query").getResultMap().get("result").getDescription(), equalTo("The query result"));
         assertThat(service.getServiceMethods().get("insert").getName(), equalTo("insert"));
         assertThat(service.getServiceMethods().get("insert").getDescription(), equalTo("A test insert query"));
-        assertThat(service.getServiceMethods().get("insert").getResultTypes().size(), equalTo(0));
-        assertThat(service.getServiceMethods().get("insert").getResultDescriptions().size(), equalTo(0));
-        assertThat(service.getServiceMethods().get("insert").getArgumentDescriptions().get("name"), equalTo("The name"));
-        assertThat(service.getServiceMethods().get("insert").getArgumentTypes().get("name"), equalTo((Class) VString.class));
-        assertThat(service.getServiceMethods().get("insert").getArgumentDescriptions().get("index"), equalTo("The index"));
-        assertThat(service.getServiceMethods().get("insert").getArgumentTypes().get("index"), equalTo((Class) VNumber.class));
-        assertThat(service.getServiceMethods().get("insert").getArgumentDescriptions().get("value"), equalTo("The value"));
-        assertThat(service.getServiceMethods().get("insert").getArgumentTypes().get("value"), equalTo((Class) VNumber.class));
+        assertThat(service.getServiceMethods().get("insert").getResults().size(), equalTo(0));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("name").getDescription(), equalTo("The name"));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("name").getType(), equalTo((Class) VString.class));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("index").getDescription(), equalTo("The index"));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("index").getType(), equalTo((Class) VNumber.class));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("value").getDescription(), equalTo("The value"));
+        assertThat(service.getServiceMethods().get("insert").getArgumentMap().get("value").getType(), equalTo((Class) VNumber.class));
     }
 
     @Test
