@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 import org.diirt.datasource.WriteFunction;
 
 /**
@@ -158,7 +160,7 @@ public abstract class ServiceMethod {
     }
     
     /**
-     * Executes the service method on the given parameters, the result of which
+     * Executes the service method with the given parameters, the result of which
      * will be communicated through the callbacks.
      * <p>
      * This method validates the parameters and then calls the implementation method.
@@ -174,6 +176,46 @@ public abstract class ServiceMethod {
         } catch (Exception ex) {
             errorCallback.writeValue(ex);
         }
+    }
+    
+    /**
+     * Executes the service methods with the given parameters, and waits for the
+     * response. This is a blocking call and should be used with caution.
+     * 
+     * @param parameters the parameters for the service; can't be  null
+     * @return the result callback, for success; can't be null
+     */
+    public final Map<String, Object> syncExecute(Map<String, Object> parameters) {
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
+        final AtomicReference<Exception> exception = new AtomicReference<>();
+        execute(parameters, new WriteFunction<Map<String, Object>>() {
+
+            @Override
+            public void writeValue(Map<String, Object> newValue) {
+                result.set(newValue);
+                latch.countDown();
+            }
+        }, new WriteFunction<Exception>() {
+
+            @Override
+            public void writeValue(Exception newValue) {
+                exception.set(newValue);
+                latch.countDown();
+            }
+        });
+        
+        try {
+            latch.await();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException("Interrupted", ex);
+        }
+        
+        if (result.get() != null) {
+            return result.get();
+        }
+        
+        throw new RuntimeException("Failed", exception.get());
     }
 
     /**
