@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.diirt.datasource.WriteFunction;
+import java.util.function.Consumer;
 
 import org.epics.pvaccess.client.rpc.RPCClient;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
@@ -165,8 +165,8 @@ class RPCServiceMethod extends ServiceMethod {
     ServiceMethod sm = new ServiceMethod(rpcServiceMethodDescription.serviceMethodDescription) {
 		@Override
 		public void executeMethod(Map<String, Object> parameters,
-				WriteFunction<Map<String, Object>> callback,
-				WriteFunction<Exception> errorCallback) {
+				Consumer<Map<String, Object>> callback,
+				Consumer<Exception> errorCallback) {
 			// noop
 		}
     };
@@ -198,7 +198,7 @@ class RPCServiceMethod extends ServiceMethod {
 
 
   @Override
-  public void executeMethod(final Map<String, Object> parameters, final WriteFunction<Map<String, Object>> callback, final WriteFunction<Exception> errorCallback) {
+  public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
 
     RPCClient rpcClient = null;
 
@@ -207,7 +207,7 @@ class RPCServiceMethod extends ServiceMethod {
       rpcClient = PooledRPCClientFactory.getRPCClient(this.hostName, this.channelName);
 
     } catch (RPCRequestException e) {
-      errorCallback.writeValue(e);
+      errorCallback.accept(e);
       return;
     }
 
@@ -224,10 +224,10 @@ class RPCServiceMethod extends ServiceMethod {
         Map<String, Object> resultMap = new HashMap<>();
         String resultName = getResultMap().keySet().toArray(new String[getResultMap().size()])[0];
         resultMap.put(resultName, vResult);
-        callback.writeValue(resultMap);
+        callback.accept(resultMap);
       }
     } catch (RPCRequestException rre) {
-      errorCallback.writeValue(rre);
+      errorCallback.accept(rre);
 
     } finally {
       //back to the pool

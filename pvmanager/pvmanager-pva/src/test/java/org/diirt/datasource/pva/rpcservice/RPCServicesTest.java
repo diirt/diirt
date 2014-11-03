@@ -150,17 +150,12 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     parameters.put("string", ValueFactory.newVString("thedude", null, null));
     parameters.put("times", ValueFactory.newVInt(3, null, null, null));
     ServiceMethod serviceMethod = service.getServiceMethods().get("multipyString");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VString vstring = (VString) cache.getValue().get("c");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VString vstring = (VString) result.get("c");
     assertThat(vstring.getValue(), equalTo("thedudethedudethedude"));
   }
 
@@ -170,17 +165,12 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     parameters.put("a", ValueFactory.newVString("hello ", null, null));
     parameters.put("b", ValueFactory.newVString("world", null, null));
     ServiceMethod serviceMethod = service.getServiceMethods().get("concate");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VString vstring = (VString) cache.getValue().get("c");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VString vstring = (VString) result.get("c");
     assertThat(vstring.getValue(), equalTo("hello world"));
   }
 
@@ -190,17 +180,12 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     parameters.put("a", ValueFactory.newVDouble(10.0));
     parameters.put("b", ValueFactory.newVDouble(20.0));
     ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VDouble vdouble = (VDouble) cache.getValue().get("c");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VDouble vdouble = (VDouble) result.get("c");
     assertThat(vdouble.getValue(), equalTo(30.0));
   }
 
@@ -230,18 +215,13 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumServiceFloatArray.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     parameters.put("a", ValueFactory.newVFloatArray(new ArrayFloat(new float[]{10.0f, 20.0f, 30.0f}),
       ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone()));
     parameters.put("b", ValueFactory.newVInt(1, null, null, null));
     ServiceMethod serviceMethod = service.getServiceMethods().get("addToFloatArray");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VFloatArray vFloatArray = (VFloatArray) cache.getValue().get("c");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VFloatArray vFloatArray = (VFloatArray) result.get("c");
     assertThat(vFloatArray.getData().size(), equalTo(3));
     assertThat(vFloatArray.getData().getFloat(0), equalTo(11.0f));
     assertThat(vFloatArray.getData().getFloat(1), equalTo(21.0f));
@@ -254,17 +234,12 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumServiceBoolean.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     parameters.put("a", ValueFactory.newVBoolean(true, ValueFactory.alarmNone(), ValueFactory.timeNow()));
     parameters.put("b", ValueFactory.newVBoolean(true, ValueFactory.alarmNone(), ValueFactory.timeNow()));
     ServiceMethod serviceMethod = service.getServiceMethods().get("andOperation");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VBoolean vIsGreaterThen = (VBoolean) cache.getValue().get("c");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VBoolean vIsGreaterThen = (VBoolean) result.get("c");
     assertThat(vIsGreaterThen.getValue(), equalTo(true));
   }
 
@@ -332,15 +307,10 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     ServiceMethod serviceMethod = service.getServiceMethods().get("getTable");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VTable table = (VTable) cache.getValue().get("result");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     ArrayDouble array = (ArrayDouble) table.getColumnData(0);
@@ -366,14 +336,9 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     ServiceMethod serviceMethod = service.getServiceMethods().get("getImage");
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    VImage image = (VImage) cache.getValue().get("result");
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    VImage image = (VImage) result.get("result");
   }
 
 
@@ -387,9 +352,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultLongNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("long");
+    Map<String, Object> result = callNTNameValueService("long");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -401,29 +366,24 @@ public class RPCServicesTest implements Runnable {
   }
 
 
-  private WriteCache<Map<String, Object>> callNTNameValueService(String arrType) throws Exception {
+  private Map<String, Object> callNTNameValueService(String arrType) throws Exception {
     InputStream stream = getClass().getResourceAsStream("RPCSumServiceNTNameValueResult.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
     parameters.put("arrType", ValueFactory.newVString(arrType, null, null));
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     ServiceMethod serviceMethod = service.getServiceMethods().get("createNTNameValue");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    return cache;
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    return result;
   }
 
 
   @Test
   public void testMethodWithResultULongNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("ulong");
+    Map<String, Object> result = callNTNameValueService("ulong");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -438,9 +398,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultShortNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("short");
+    Map<String, Object> result = callNTNameValueService("short");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -455,9 +415,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultUShortNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("ushort");
+    Map<String, Object> result = callNTNameValueService("ushort");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -473,9 +433,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultByteNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("byte");
+    Map<String, Object> result = callNTNameValueService("byte");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -491,9 +451,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultUByteNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("ubyte");
+    Map<String, Object> result = callNTNameValueService("ubyte");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -509,9 +469,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultIntNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("int");
+    Map<String, Object> result = callNTNameValueService("int");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -527,9 +487,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultUIntNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("uint");
+    Map<String, Object> result = callNTNameValueService("uint");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -545,9 +505,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultFloatNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("float");
+    Map<String, Object> result = callNTNameValueService("float");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -563,9 +523,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultDoubleNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("double");
+    Map<String, Object> result = callNTNameValueService("double");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -581,9 +541,9 @@ public class RPCServicesTest implements Runnable {
   @Test
   public void testMethodWithResultStringNTNameValue() throws Exception {
 
-    WriteCache<Map<String, Object>> cache = callNTNameValueService("string");
+    Map<String, Object> result = callNTNameValueService("string");
 
-    VTable table = (VTable) cache.getValue().get("result");
+    VTable table = (VTable) result.get("result");
     assertNotNull("table is null", table);
     assertEquals("column count mismatch", 2, table.getColumnCount());
     assertThat(table.getColumnName(0), equalTo("sett1"));
@@ -613,15 +573,10 @@ public class RPCServicesTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
     RPCService service = RPCServices.createFromXml(stream);
     Map<String, Object> parameters = new HashMap<>();
-    WriteCache<Map<String, Object>> cache = new WriteCache<>();
-    WriteCache<Exception> exceptionCache = new WriteCache<>();
     ServiceMethod serviceMethod = service.getServiceMethods().get("nop");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
-    assertNull(cache.getValue());
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
+    assertNull(result);
   }
 
 
@@ -643,11 +598,7 @@ public class RPCServicesTest implements Runnable {
     parameters.put("b", ValueFactory.newVDouble(20.0));
     ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
   }
 
 
@@ -669,10 +620,7 @@ public class RPCServicesTest implements Runnable {
     parameters.put("b", ValueFactory.newVDouble(20.0));
     ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
     assertNotNull("serviceMethod is null", serviceMethod);
-    serviceMethod.execute(parameters, cache, exceptionCache);
-    if (exceptionCache.getValue() != null) {
-      throw exceptionCache.getValue();
-    }
+    Map<String, Object> result = serviceMethod.syncExecute(parameters);
     VDouble vdouble = (VDouble) cache.getValue().get("c");
     assertThat(vdouble.getValue(), equalTo(30.0));
   }
