@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<file version="1">
+    <!-- By default, file notifications are done with the watch service only, which
+        works for most cases. In others, OS notification are not available
+        (e.g. network file systems), so in this case we provide polling as
+        a fallback. Use with caution as too many concurrent polling may
+        create performance problems. For this reason, intervals shorter
+        than 1 second are not supported. The unit for interval is seconds
+        and must be an integer. -->
+    <!--<poll interval="5"/>-->
+</file>
