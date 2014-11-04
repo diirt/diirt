@@ -30,8 +30,8 @@ function drawSeriesChart() {
                     
 
                     var options = {
-                        hAxis: {title: yColumn},
-                        vAxis: {title: xColumn},
+                        hAxis: {title: xColumn},
+                        vAxis: {title: yColumn},
                         bubble: {textStyle: {fontSize: 11}},
                         sizeAxis: {minValue: 0,  maxSize: 10}
                     };
