@@ -46,26 +46,26 @@
 </style>
 
 <div class="row" style="padding-bottom:40px; padding-top:20px;">
-    <div id = "my-widget1" class="gauge" data-channel="loc://test31(3)" displayLow=10 style="float:left; height: 180px;"></div>
-    <div id = "slider1" class="slider" data-channel="loc://asda(1)" min="0" max="100" step="1"  style="height: 160px"></div>
-    <div id = "thermo1" class="thermometer" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" style="padding-left:40px; height: 180px; width: 80px; overflow:hidden;" ></div>
+    <div id = "my-widget1" class="gauge" data-channel="loc/test31(3)" displayLow=10 style="float:left; height: 180px;"></div>
+    <div id = "slider1" class="slider" data-channel="loc/asda(1)" min="0" max="100" step="1"  style="height: 160px"></div>
+    <div id = "thermo1" class="thermometer" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" style="padding-left:40px; height: 180px; width: 80px; overflow:hidden;" ></div>
 </div>
 <br>
 <div class="row2" style="padding-bottom:20px; overflow:hidden;">
-    <div id = "tank" class="tank" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" style="float:left; height: 180px; width: 60px;" ></div>
-    <div id = "meter" class="meter" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" style="float:left; padding-left:40px; height: 180px; width: 200px;" ></div>
-    <div id = "progress" class="progressbar" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" style="padding-left:40px; padding-top:40px; height: 80px; width: 200px; overflow:hidden;" ></div>
+    <div id = "tank" class="tank" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" style="float:left; height: 180px; width: 60px;" ></div>
+    <div id = "meter" class="meter" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" style="float:left; padding-left:40px; height: 180px; width: 200px;" ></div>
+    <div id = "progress" class="progressbar" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" style="padding-left:40px; padding-top:40px; height: 80px; width: 200px; overflow:hidden;" ></div>
 
 </div>
 <br>
 <div class="row3" style="padding-bottom:20px; overflow:hidden;">
-    <div id="title3" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim://ramp(0, 100, 1, 1)</div>
-    <div id = "my-widget2" class="textinput" data-channel="sim://ramp(0, 100, 1, 1)" style="border-style: solid; border-width: 1px; overflow: hidden; width: 133px; height: 27px;" resize ="false"></div>
+    <div id="title3" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim/ramp(0, 100, 1, 1)</div>
+    <div id = "my-widget2" class="textinput" data-channel="sim/ramp(0, 100, 1, 1)" style="border-style: solid; border-width: 1px; overflow: hidden; width: 133px; height: 27px;" resize ="false"></div>
 </div>
 
 <div class="row3" style="padding-bottom:20px; overflow:hidden;">
-    <div id="title4" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim://ramp(0, 100, 1, 1)</div>
-    <input id = "spinner-test" class="spinner" data-channel="sim://ramp(0, 100, 1, 1)" min="0" max="100" step="1">
+    <div id="title4" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim/ramp(0, 100, 1, 1)</div>
+    <input id = "spinner-test" class="spinner" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" step="1">
 </div>
 </body>
 </html>
