@@ -30,9 +30,9 @@ public class ImageAssert {
             done = true;
         } finally {
             if (!done) {
-                ImageIO.write(image, "png", new File("src/test/resources/org/epics/graphene/" + imageName + ".failed.png"));
+                ImageIO.write(image, "png", new File("src/test/resources/org/diirt/graphene/" + imageName + ".failed.png"));
             } else {
-                File file = new File("src/test/resources/org/epics/graphene/" + imageName + ".failed.png");
+                File file = new File("src/test/resources/org/diirt/graphene/" + imageName + ".failed.png");
                 if (file.exists()) {
                     file.delete();
                 }
