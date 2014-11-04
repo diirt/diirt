@@ -45,9 +45,6 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
     @Override
     public void connect() {
         channel = dataSource.getClient().subscribe(getChannelName(), listener);
-        if (!dataSource.getClient().isConnected()) {
-            throw new RuntimeException("No connection." + dataSource.getClient().getDisconnectReason());
-        }
     }
 
     @Override
