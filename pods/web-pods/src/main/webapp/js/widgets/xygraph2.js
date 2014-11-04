@@ -53,5 +53,7 @@ $(document).ready(function() {
     }
 });
 
+
 window.onbeforeunload = function() {
+	wp.close();
 };

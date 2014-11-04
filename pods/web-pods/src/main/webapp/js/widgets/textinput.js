@@ -68,7 +68,8 @@ $(document).ready(function() {
 });
 
 
+
 window.onbeforeunload = function() {
-	ws.close();
+	wp.close();
 };
 
