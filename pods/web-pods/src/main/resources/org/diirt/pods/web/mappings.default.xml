@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <mappings version="1">
-    <!-- By default, allow only simulated data -->
+    <!-- By default, allow simulated data -->
     <mapping channel="sim/(.*)" substitution="sim://$1" permission="READ_ONLY"/>
+    <!-- By default, allow local variables -->
+    <mapping channel="loc/(.*)" substitution="loc://$1" permission="READ_WRITE"/>
     <!-- Forward all CA -->
     <!--<mapping channel=".*" substitution="ca://$1" permission="READ_ONLY"/>-->
     <!-- Allow read of a particular file -->
