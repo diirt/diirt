@@ -15,31 +15,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.diirt.util.config.Configuration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Configuration for {@link WebPodsDataSource}.
+ * Configuration for {@link WebPodsDataSource}. This object is mutable, and
+ * therefore not thread-safe.
  *
  * @author carcassi
  */
 public final class WebPodsDataSourceConfiguration {
     
-    private final URI socketLocation;
+    // Package private so we don't need getters
+    URI socketLocation;
 
     private WebPodsDataSourceConfiguration() {
         this.socketLocation = null;
-    }
-    
-    public static WebPodsDataSourceConfiguration readConfiguration(String confPath) {
-        try (InputStream input = Configuration.getFileAsStream(confPath + "/wp.xml", new WebPodsDataSourceConfiguration(), "wp.default.xml")) {
-            WebPodsDataSourceConfiguration conf = new WebPodsDataSourceConfiguration(input);
-            return conf;
-        } catch (Exception ex) {
-            Logger.getLogger(WebPodsDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/wp.xml", ex);
-            return null;
-        }
     }
 
     public WebPodsDataSourceConfiguration(InputStream input) {
@@ -66,6 +57,11 @@ public final class WebPodsDataSourceConfiguration {
 
     public URI getSocketLocation() {
         return socketLocation;
+    }
+    
+    public WebPodsDataSourceConfiguration socketLocation(URI socketLocation) {
+        this.socketLocation = socketLocation;
+        return this;
     }
     
 }

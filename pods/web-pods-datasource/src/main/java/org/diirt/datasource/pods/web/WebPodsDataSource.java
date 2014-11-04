@@ -5,6 +5,7 @@
 package org.diirt.datasource.pods.web;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -31,28 +32,32 @@ public final class WebPodsDataSource extends DataSource {
     }
     
     private final WebPodsClient client;
-    private final WebPodsDataSourceConfiguration configuration;
-    private static ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("diirt web-pods datasource connection "));
-    private static Logger log = Logger.getLogger(WebPodsDataSource.class.getName());
+    private final URI socketLocation;
+    private static final ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("diirt web-pods datasource connection "));
+    private static final Logger log = Logger.getLogger(WebPodsDataSource.class.getName());
 
+    /**
+     * Creates a new data source with the default configuration.
+     */
     public WebPodsDataSource() {
-        this(WebPodsDataSourceConfiguration.readConfiguration(new WebPodsDataSourceProvider().getDefaultConfPath()));
+        this(new WebPodsDataSourceProvider().readDefaultConfiguration());
         reconnect();
     }
 
     /**
-     * Creates a new data source.
+     * Creates a new data source with the given configuration.
      * 
-     * @param configuration datasource configuration
+     * @param configuration data source configuration
      */
     public WebPodsDataSource(WebPodsDataSourceConfiguration configuration) {
         super(true);
         client = new WebPodsClient();
-        this.configuration = configuration;
+        this.socketLocation = configuration.getSocketLocation();
     }
 
     @Override
     public void close() {
+        // TODO: close client
         super.close();
     }
     
@@ -66,7 +71,7 @@ public final class WebPodsDataSource extends DataSource {
                         return;
                     }
                     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-                    container.connectToServer(client, WebPodsDataSource.this.configuration.getSocketLocation());
+                    container.connectToServer(client, getSocketLocation());
                     log.info("Web-pods datasource connected");
                 } catch (DeploymentException | IOException ex) {
                     log.log(Level.WARNING, "Web-pods datasource connection problems", ex);
@@ -85,6 +90,15 @@ public final class WebPodsDataSource extends DataSource {
     @Override
     protected ChannelHandler createChannel(String channelName) {	
 	return new WebPodsChannelHandler(this, channelName);
+    }
+
+    /**
+     * The URI for the web pods server (e.g. ws://my.server.org/web-pods/socket).
+     * 
+     * @return URI for the socket
+     */
+    public URI getSocketLocation() {
+        return socketLocation;
     }
     
 }

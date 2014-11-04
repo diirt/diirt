@@ -4,7 +4,11 @@
  */
 package org.diirt.datasource.pods.web;
 
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.diirt.datasource.DataSourceProvider;
+import org.diirt.util.config.Configuration;
 
 /**
  * Factory for {@link WebPodsDataSource}.
@@ -19,7 +23,7 @@ public final class WebPodsDataSourceProvider extends DataSourceProvider {
     }
     
     public String getDefaultConfPath() {
-        return "datasources/wp";
+        return "datasources/" + getName();
     }
     
     @Override
@@ -28,10 +32,24 @@ public final class WebPodsDataSourceProvider extends DataSourceProvider {
     }
     
     public WebPodsDataSource createInstance(String confPath) {
-        WebPodsDataSourceConfiguration conf = WebPodsDataSourceConfiguration.readConfiguration(confPath);
+        WebPodsDataSourceConfiguration conf = readConfiguration(confPath);
         if (conf != null) {
             return new WebPodsDataSource(conf);
         } else {
+            return null;
+        }
+    }
+    
+    public WebPodsDataSourceConfiguration readDefaultConfiguration() {
+        return readConfiguration(getDefaultConfPath());
+    }
+    
+    public WebPodsDataSourceConfiguration readConfiguration(String confPath) {
+        try (InputStream input = Configuration.getFileAsStream(confPath + "/wp.xml", this, "wp.default.xml")) {
+            WebPodsDataSourceConfiguration conf = new WebPodsDataSourceConfiguration(input);
+            return conf;
+        } catch (Exception ex) {
+            Logger.getLogger(WebPodsDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/wp.xml", ex);
             return null;
         }
     }
