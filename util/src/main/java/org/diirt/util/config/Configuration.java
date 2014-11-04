@@ -58,23 +58,27 @@ public class Configuration {
         return configurationDirectory;
     }
     
-    public static InputStream getFileAsStream(String relativeFilePath, Object obj, String defaultResource) throws IOException {
-        File mappings = new File(Configuration.getDirectory(), relativeFilePath);
-        if (!mappings.exists()) {
-            mappings.getParentFile().mkdirs();
+    public static File getFile(String relativeFilePath, Object obj, String defaultResource) throws IOException {
+        File file = new File(Configuration.getDirectory(), relativeFilePath);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
             try (InputStream input = obj.getClass().getResourceAsStream(defaultResource);
-                    OutputStream output = new FileOutputStream(mappings)) {
+                    OutputStream output = new FileOutputStream(file)) {
                 byte[] buffer = new byte[8 * 1024];
                 int bytesRead;
                 while ((bytesRead = input.read(buffer)) != -1) {
                     output.write(buffer, 0, bytesRead);
                 }
             }
-            log.log(Level.INFO, "Initializing configuration file " + mappings);
+            log.log(Level.INFO, "Initializing configuration file " + file);
         }
         
-        log.log(Level.INFO, "Loading " + mappings);
-        return new FileInputStream(mappings);
+        log.log(Level.INFO, "Loading " + file);
+        return file;
+    }
+    
+    public static InputStream getFileAsStream(String relativeFilePath, Object obj, String defaultResource) throws IOException {
+        return new FileInputStream(getFile(relativeFilePath, obj, defaultResource));
     }
 
 }
