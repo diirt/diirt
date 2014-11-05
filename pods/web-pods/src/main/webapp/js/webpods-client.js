@@ -69,8 +69,10 @@ function Client(url, debug, debugMessageBox) {
 
     this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
-        if(readOnly == null) {
+        if(readOnly == null || readOnly =="true") {
             readOnly = true;
+        } else {
+            readOnly = false;
         }
         if (type != null) {
             if (version == null)
@@ -396,11 +398,15 @@ function Client(url, debug, debugMessageBox) {
      *        for example, a number for numeric Channel.
      */
     Channel.prototype.setValue = function(value) {
-        setChannelValue(this.id, value);
+        if(!this.readOnly) {
+            setChannelValue(this.id, value);
+        }
     };
 
     Channel.prototype.updateValue = function() {
+        if(!this.readOnly) {
             setChannelValue(this.id, this.value.value);
+        }
     };
 
     /**

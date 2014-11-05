@@ -24,6 +24,7 @@ $(document).ready(function() {
         var callback = function(evt, channel) {
                            switch (evt.type) {
                            case "connection": //connection state changed
+                               channel.readOnly = !evt.writeConnected;
                                break;
                            case "value": //value changed
                                var channelValue = channel.getValue();
@@ -70,8 +71,7 @@ $(document).ready(function() {
                         break;
                     }
                 }
-                ch.value.value = spinner.labeledspinner( "value");
-                ch.updateValue();
+                ch.setValue(spinner.labeledspinner( "value"));
             }
         });
     }
