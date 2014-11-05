@@ -30,12 +30,22 @@ public final class FileDataSource extends DataSource {
      * Creates a new data source.
      */
     public FileDataSource() {
-        super(true);
+        this(new FileDataSourceConfiguration());
     }
     
-    private final FileWatcherService fileWatchService =
-            new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")),
+    public FileDataSource(FileDataSourceConfiguration conf) {
+        super(true);
+        if (conf.isPollEnabled()) {
+            fileWatchService = new FileWatcherPollingService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")), conf.pollInterval);
+        } else {
+            fileWatchService = new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")),
                     TimeDuration.ofSeconds(1.0));
+            
+        }
+    }
+    
+    private final FileWatcherService fileWatchService;
+            
 
     FileWatcherService getFileWatchService() {
         return fileWatchService;
