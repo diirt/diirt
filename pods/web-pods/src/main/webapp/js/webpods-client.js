@@ -69,8 +69,10 @@ function Client(url, debug, debugMessageBox) {
 
     this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
-        if(readOnly == null) {
+        if(readOnly == null || readOnly =="true") {
             readOnly = true;
+        } else {
+            readOnly = false;
         }
         if (type != null) {
             if (version == null)
@@ -155,9 +157,9 @@ function Client(url, debug, debugMessageBox) {
 
     function openWebSocket(url) {
         if ('WebSocket' in window) {
-            websocket = new WebSocket(url, "org.client");
+            websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
-            websocket = new MozWebSocket(url, "org.client");
+            websocket = new MozWebSocket(url);
         } else {
             throw new Error('WebSocket is not supported by this browser.');
         }

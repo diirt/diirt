@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=9">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
     <script>
@@ -22,6 +22,7 @@
     <script type="text/javascript" language="javascript" src="../js/widgets/tank.js"></script>.
     <script type="text/javascript" language="javascript" src="../js/widgets/progressbar.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/meter.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/datepicker.js"></script>
 
 
     <script type="text/javascript" language="javascript" src="../js/widgets/slider.js"></script>
@@ -35,9 +36,10 @@
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.hprogress.js" ></script>
 
     <script src="../js/widgets/lib/RGraph/excanvas/excanvas.js"></script>
-    <script src="../js/widgets/lib/jquery-ui/jquery-ui.js"></script>
-    <script src="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.js"></script>
-
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="../js/widgets/jquery.ui.labeledslider.js"></script>
+    <link href=".../js/widgets/css/jquery.ui.labeledslider.css" rel="stylesheet"  type="text/css">
     <title></title>
 </head>
 <body>
@@ -66,6 +68,10 @@
 <div class="row3" style="padding-bottom:20px; overflow:hidden;">
     <div id="title4" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim/ramp(0, 100, 1, 1)</div>
     <input id = "spinner-test" class="spinner" data-channel="sim/ramp(0, 100, 1, 1)" min="0" max="100" step="1">
+</div>
+<div class="row4" style="padding-bottom:20px; overflow:hidden;">
+    <div id="title5" style="float:left; padding-right : 40px; width: 190px; height: 30px;">sim/ramp(0, 100, 1, 1)</div>
+    <input id = "datepicker" class="datepicker" data-channel="loc/test()">
 </div>
 </body>
 </html>

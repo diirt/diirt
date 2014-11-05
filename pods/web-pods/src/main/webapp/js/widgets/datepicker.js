@@ -12,9 +12,9 @@
 
 $(document).ready(function() {
 
-	var nodes = document.getElementsByClassName("slider");
+	var nodes = document.getElementsByClassName("datepicker");
     var len = nodes.length;
-    var sliders = {};
+    var datepickers = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("channel-readonly");
@@ -29,14 +29,7 @@ $(document).ready(function() {
                                break;
                            case "value": //value changed
                                var channelValue = channel.getValue();
-                               sliders[channel.getId()].labeledslider( "value", channelValue.value );
-                               if(channelValue.alarm.severity =="MINOR") {
-                                 sliders[channel.getId()].animate({ backgroundColor: "yellow"});
-                               } else if (channelValue.alarm.severity =="MAJOR") {
-                                  sliders[channel.getId()].animate({ backgroundColor: "red"});
-                               } else {
-                                  sliders[channel.getId()].animate({ backgroundColor: "blue"});
-                               }
+                               $("#" + datepickers[channel.getId()].id).datepicker("setDate", new Date(channelValue.value / 1000000));
                                break;
                            case "error": //error happened
                                break;
@@ -49,21 +42,24 @@ $(document).ready(function() {
                            }
                        };
         var channel = wp.subscribeChannel(channelname, callback, readOnly);
-        var slider = $("#" + id).labeledslider({max: max, step: step, orientation: 'vertical', range: false, tickInterval: 10  });
-        sliders[channel.getId()] = slider;
-        $( ".ui-slider-vertical" ).labeledslider({
-            stop: function( event, ui ) {
-                for(var sl in   sliders) {
-                    if(sliders[sl][0].id == event.target.id) {
-                        var ch = wp.getChannel(sl);
-                        break;
-                    }
-                }
-                ch.setValue(slider.labeledslider( "value"));
-            }
-        });;
+        var datepicker = $("#" + id).datepicker({
+                                 showOn: "button",
+                                 buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+                                 buttonImageOnly: true,
+                                 onSelect: function(dateText, inst)
+                                         {
+                                            for(var sl in   datepickers) {
+                                                if(datepickers[sl][0].id == inst.id) {
+                                                    var ch = wp.getChannel(sl);
+                                                    break;
+                                                }
+                                            }
+                                            var date = $("#" + inst.id).datepicker( "getDate" ).getTime() * 1000000;
+                                            ch.setValue(dateText);
+                                         }
+                                 });
+        datepickers[channel.getId()] = datepicker;
     }
-
 });
 
 
