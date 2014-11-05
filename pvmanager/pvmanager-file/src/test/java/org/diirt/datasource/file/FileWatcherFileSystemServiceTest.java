@@ -4,11 +4,11 @@
  */
 package org.diirt.datasource.file;
 
-import org.diirt.datasource.file.FileWatcherFileSystemService;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.time.Duration;
 import org.diirt.datasource.test.CountDownPVReaderListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 import org.diirt.datasource.PVReaderEvent;
 import static org.junit.Assert.*;
 import org.junit.*;
-import org.diirt.util.time.TimeDuration;
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -57,7 +56,7 @@ public class FileWatcherFileSystemServiceTest {
         writer.close();
         
         latch = new CountDownLatch(1);
-        FileWatcherFileSystemService service = new FileWatcherFileSystemService(exec, TimeDuration.ofMillis(100));
+        FileWatcherFileSystemService service = new FileWatcherFileSystemService(exec, Duration.ofMillis(100));
         service.addWatcher(filename, task);
         
         latch.await(1000, TimeUnit.MILLISECONDS);

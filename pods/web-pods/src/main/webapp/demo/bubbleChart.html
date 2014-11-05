@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
+    <head>
 
 
-    <meta http-equiv="X-UA-Compatible" content="IE=9">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="../js/webpods-client.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="../js/webpods-client.js"></script>
 
-    <script>
-        var pathName = "diirt.aglt2.org/web-pods/"; //document.location.pathname.replace("demo/widgetDemo.html", "");
-        var wsUri = "ws://"+pathName+"socket";
-        var wp = new Client(wsUri);
-    </script>
-    <script type="text/javascript" src="../js/widgets/bubble.js"></script>
+        <script>
+            var pathName = document.location.pathname.replace("demo/bubbleChart.html", "");
+            var wsUri = "ws://" + document.location.host + pathName + "socket";
+            var wp = new Client(wsUri);
+        </script>
+        <script type="text/javascript" src="../js/widgets/bubble.js"></script>
 
-    <title></title>
-</head>
-<body>
-    <div id="series_chart_div" class="bubble-graph" data-channel="UM/condor"
-         data-x-column="wall" data-y-column="cpu" data-color-column="queue"
-         style="width: 900px; height: 500px;"></div>
-</body>
+        <title></title>
+    </head>
+    <body>
+        <div id="series_chart_div" class="bubble-graph" data-channel="sim/table"
+             data-x-column="Index" data-y-column="Value" data-color-column="Text"
+             style="width: 640px; height: 480px;"></div>
+    </body>
 </html>
