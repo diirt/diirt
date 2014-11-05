@@ -398,11 +398,15 @@ function Client(url, debug, debugMessageBox) {
      *        for example, a number for numeric Channel.
      */
     Channel.prototype.setValue = function(value) {
-        setChannelValue(this.id, value);
+        if(!this.readOnly) {
+            setChannelValue(this.id, value);
+        }
     };
 
     Channel.prototype.updateValue = function() {
+        if(!this.readOnly) {
             setChannelValue(this.id, this.value.value);
+        }
     };
 
     /**
