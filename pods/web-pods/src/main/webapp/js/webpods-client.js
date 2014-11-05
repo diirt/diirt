@@ -155,9 +155,9 @@ function Client(url, debug, debugMessageBox) {
 
     function openWebSocket(url) {
         if ('WebSocket' in window) {
-            websocket = new WebSocket(url, "org.client");
+            websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
-            websocket = new MozWebSocket(url, "org.client");
+            websocket = new MozWebSocket(url);
         } else {
             throw new Error('WebSocket is not supported by this browser.');
         }
