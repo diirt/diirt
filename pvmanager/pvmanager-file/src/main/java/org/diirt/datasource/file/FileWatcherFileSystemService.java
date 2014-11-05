@@ -11,13 +11,13 @@ import static java.nio.file.StandardWatchEventKinds.*;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -37,9 +37,9 @@ class FileWatcherFileSystemService implements FileWatcherService {
     };
     private final List<Registration> registrations = new CopyOnWriteArrayList<>();
 
-    public FileWatcherFileSystemService(ScheduledExecutorService exec, TimeDuration scanRate) {
+    public FileWatcherFileSystemService(ScheduledExecutorService exec, Duration scanRate) {
         this.exec = exec;
-        exec.scheduleWithFixedDelay(scanTask, 0, scanRate.toNanosLong(), TimeUnit.NANOSECONDS);
+        exec.scheduleWithFixedDelay(scanTask, 0, scanRate.toNanos(), TimeUnit.NANOSECONDS);
     }
 
     @Override

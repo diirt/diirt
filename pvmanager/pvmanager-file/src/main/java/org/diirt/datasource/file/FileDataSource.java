@@ -6,12 +6,12 @@ package org.diirt.datasource.file;
 
 import java.io.File;
 import java.net.URI;
+import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.vtype.DataTypeSupport;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Data source for locally written data. Each instance of this
@@ -39,7 +39,7 @@ public final class FileDataSource extends DataSource {
             fileWatchService = new FileWatcherPollingService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")), conf.pollInterval);
         } else {
             fileWatchService = new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")),
-                    TimeDuration.ofSeconds(1.0));
+                    Duration.ofSeconds(1));
             
         }
     }
