@@ -30,7 +30,7 @@ public final class FileDataSource extends DataSource {
      * Creates a new data source.
      */
     public FileDataSource() {
-        this(new FileDataSourceConfiguration());
+        this(new FileDataSourceProvider().readDefaultConfiguration());
     }
     
     public FileDataSource(FileDataSourceConfiguration conf) {
