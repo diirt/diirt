@@ -721,13 +721,14 @@ public class TimeScalesTest {
     public void createReferencesMonths1() {
 	//test months: straightforward, 5 months interval over 1 month periods
 	//not starting on perfect multiple of period
+	
+	//Start: Thu Nov 27 04:12:24 EST 2014
+	//End: Thu May 21 05:12:24 EDT 2015
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
 	Timestamp start = Timestamp.of( cal.getTime() );
 	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*5*5 ) ) );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 1 ) );
-	System.out.println( start.plus( TimeDuration.ofHours( 24*7*5*5 ) ).toDate() );
-	System.out.println( references.get( 0 ).toDate().toString() );
 	assertThat( references.size() , equalTo( 6 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );	
@@ -735,6 +736,26 @@ public class TimeScalesTest {
 	assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );	
 	assertThat( references.get( 4 ) , equalTo( create( 2015 , 4 , 1 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 5 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
+    public void createReferencesMonths2() {
+	//test months: 13 months over 2 month periods
+	//starting on perfect multiple of period
+	
+	//Start: Sat Nov 01 00:00:00 EDT 2014
+	//End: Fri Dec 25 23:00:00 EST 2015
+	Timestamp start = create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*5*12 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 2 ) );
+	assertThat( references.size() , equalTo( 7 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 3 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 4 ) , equalTo( create( 2015 , 7 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 5 ) , equalTo( create( 2015 , 9 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 6 ) , equalTo( create( 2015 , 11 , 1 , 0 , 0 , 0 , 0 ) ) );
     }
     
     @Test
@@ -750,6 +771,8 @@ public class TimeScalesTest {
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
 	assertThat( references.size() , equalTo(5) );
 
+	System.out.println( references.get( 0 ).toDate() );
+	System.out.println(create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ).toDate() );
 	assertThat( references.get( 0 ) , equalTo( create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2030 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 2 ) , equalTo( create(2040 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );

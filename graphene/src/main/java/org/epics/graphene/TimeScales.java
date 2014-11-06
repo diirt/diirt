@@ -255,7 +255,10 @@ public class TimeScales {
 	if ( GregorianCalendar.MONTH == field ) {
 	    return;
 	}
-	cal.set( GregorianCalendar.MONTH , 0 );
+	
+	cal.set( DAY_FIELD_ID , 0 );
+	cal.set( WEEK_FIELD_ID , 1 );
+	cal.set( GregorianCalendar.MONTH , 1 );
 	
 	if ( GregorianCalendar.YEAR == field ) {
 	    return;
