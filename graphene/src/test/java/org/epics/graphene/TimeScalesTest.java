@@ -625,6 +625,46 @@ public class TimeScalesTest {
 	assertThat( references.get( 5 ) , equalTo( create( 2014 , 11 , 23 , 1 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 6 ) , equalTo( create( 2014 , 11 , 23 , 6 , 0 , 0 , 0 ) ) );
     }
+    
+    @Test
+    public void createReferencesHoursDST1() {
+	//Test spring forward daylight savings time (DST)
+	//Start: Sat Mar 07 23:00:00 EST 2015
+	//End: Sun Mar 08 3:00:00 EST 2015 (right after spring forward DST)
+	Timestamp start = create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 );
+	Timestamp end = start.plus( TimeDuration.ofHours( 3 ) );
+	TimeInterval timeInterval = TimeInterval.between( start , end );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 4 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 8 , 1 , 0 , 0 , 0 ) ) );	
+	
+	//DST makes us skip hour 2
+	assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 8 , 3 , 0 , 0 , 0 ) ) );	
+    }
+    
+    @Test
+    @Ignore //create() does not use EDT/EST correctly
+    public void createReferencesHoursDST2() {
+	//Test fall back daylight savings time (DST)
+	//Start: Sun Nov 02 00:00:00 EST 2014
+	//End: Sun Nov 02 3:00:00 EST 2014 (right after fall back DST)
+	Timestamp start = create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 );
+	Timestamp end = start.plus( TimeDuration.ofHours( 4 ) );
+	TimeInterval timeInterval = TimeInterval.between( start , end );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 5 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 ) ) );
+	System.out.println( references.get( 1 ).toDate() );
+	System.out.println( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ).toDate() );
+	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
+	
+	//hour 1 is repeated due to DST
+	assertThat( references.get( 3 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 4 ) , equalTo( create( 2014 , 11 , 2 , 3 , 0 , 0 , 0 ) ) );
+    }
      
     @Test
     public void createReferencesDays1() {
