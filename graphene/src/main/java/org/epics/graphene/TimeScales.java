@@ -256,9 +256,11 @@ public class TimeScales {
 	    return;
 	}
 	
-	cal.set( DAY_FIELD_ID , 0 );
-	cal.set( WEEK_FIELD_ID , 1 );
-	cal.set( GregorianCalendar.MONTH , 1 );
+	//*MC: When rounding down to January 1, we need to use
+	//the DAY_OF_MONTH field instead of DAY_OF_WEEK field
+	//does this cause any design problems?
+	cal.set( GregorianCalendar.DAY_OF_MONTH , 1 );
+	cal.set( GregorianCalendar.MONTH , 0 );
 	
 	if ( GregorianCalendar.YEAR == field ) {
 	    return;

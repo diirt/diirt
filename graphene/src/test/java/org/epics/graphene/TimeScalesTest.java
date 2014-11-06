@@ -759,25 +759,23 @@ public class TimeScalesTest {
     }
     
     @Test
-    @Ignore //Failed: off by exactly 3 days because rounding down does not round
-	    //perfectly to January 1 - instead, it rounds down to January 4
     public void createReferencesYears1() {
 	//test years: straightforward, 50 years interval over 10 year period,
 	//but does not start on perfect multiple of time period
-	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
-	cal.set( GregorianCalendar.MILLISECOND , 500 );
-	Timestamp start = Timestamp.of( cal.getTime() );
+	
+	//Start: Sat Nov 22 11:30:00 EST 2014
+	//End: Mon Dec 29 11:30:00 EST 2064
+	Timestamp start = create( 2014 , 11 , 22 , 11 , 30 , 0 , 500 );
 	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*366*50 ) ) );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
-	assertThat( references.size() , equalTo(5) );
-
+	assertThat( references.size() , equalTo( 5 ) );
 	System.out.println( references.get( 0 ).toDate() );
 	System.out.println(create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ).toDate() );
 	assertThat( references.get( 0 ) , equalTo( create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 1 ) , equalTo( create(2030 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 2 ) , equalTo( create(2040 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 3 ) , equalTo( create(2050 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 4 ) , equalTo( create(2060 , 0 , 0 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create(2030 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 2 ) , equalTo( create(2040 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 3 ) , equalTo( create(2050 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 4 ) , equalTo( create(2060 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
     }
     
     @Test
