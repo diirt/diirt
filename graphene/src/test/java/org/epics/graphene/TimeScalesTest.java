@@ -625,7 +625,7 @@ public class TimeScalesTest {
 	assertThat( references.get( 5 ) , equalTo( create( 2014 , 11 , 23 , 1 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 6 ) , equalTo( create( 2014 , 11 , 23 , 6 , 0 , 0 , 0 ) ) );
     }
-    
+     
     @Test
     public void createReferencesDays1() {
 	//test days: straightforward, 7 day interval over 1 hour periods,
@@ -718,6 +718,47 @@ public class TimeScalesTest {
     }
     
     @Test
+    public void createReferencesWeeks2() {
+	//test weeks: month has a last week that fully spans Sunday to Saturday
+	
+	//Start: Thu Jan 01 00:00:00 EST 2015
+	//End: Thu Feb 12 00:00:00 EST 2015
+	Timestamp start = create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 );
+	Timestamp end = start.plus( TimeDuration.ofHours( 24*7*6 ) );
+	TimeInterval timeInterval = TimeInterval.between( start , end );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 6 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2015 , 1 , 4 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 11 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 2 ) , equalTo( create( 2015 , 1 , 18 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 3 ) , equalTo( create( 2015 , 1 , 25 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 4 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 5 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
+    public void createReferencesWeeks3() {
+	//test weeks: month has a first week that fully spans Sunday to Saturday
+	//and does not need to be rounded down to a week in previous month
+	
+	//Start: Sun Feb 01 00:00:00 EST 2015
+	//End: Sun Mar 08 00:00:00 EST 2015
+	Timestamp start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
+	Timestamp end = start.plus( TimeDuration.ofHours( 24*7*5 ) );
+	System.out.println( start.toDate() );
+	System.out.println( end.toDate() );
+	TimeInterval timeInterval = TimeInterval.between( start , end );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	assertThat( references.size() , equalTo( 6 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 15 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 3 ) , equalTo( create( 2015 , 2 , 22 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 4 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 5 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
     public void createReferencesMonths1() {
 	//test months: straightforward, 5 months interval over 1 month periods
 	//not starting on perfect multiple of period
@@ -769,8 +810,6 @@ public class TimeScalesTest {
 	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*366*50 ) ) );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
 	assertThat( references.size() , equalTo( 5 ) );
-	System.out.println( references.get( 0 ).toDate() );
-	System.out.println(create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ).toDate() );
 	assertThat( references.get( 0 ) , equalTo( create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2030 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 2 ) , equalTo( create(2040 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
