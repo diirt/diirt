@@ -4,14 +4,20 @@ window.onload = function() {
     var form = document.getElementById('message-form');
     var serverField = document.getElementById('server');
     var channelField = document.getElementById('channel');
-    var json = document.getElementById('json');
-    var socketStatus = document.getElementById('status');
+    var idField = document.getElementById('idNum');
+    var result = document.getElementById('results');
+    var details = document.getElementById('details');
     var connectBtn = document.getElementById('connect');
+    var disconnectBtn = document.getElementById('disconnect');
+    var subscribeBtn = document.getElementById('subscribe');
     var pauseBtn = document.getElementById('pause');
-    var closeBtn = document.getElementById('close');
-    var paused = false;
+    var resumeBtn = document.getElementById('resume');
+    var unsubscribeBtn = document.getElementById('unsubscribe');
     var socket;
     var channel;
+    var id;
+    var resultsInfo = []; // Contains JSON
+    
     
     function waitForConnection(callback) {
         setTimeout(
@@ -25,6 +31,7 @@ window.onload = function() {
         },5);
     };
     
+    
     //Delays sending a message until the socket connection is established
     function sendMessage(message) {
         waitForConnection(function(){
@@ -37,36 +44,51 @@ window.onload = function() {
     connectBtn.onclick = function(e) {
         e.preventDefault();
         var server = serverField.value;
-        channel = channelField.value;
         socket = new WebSocket(server);
-        var message = '{"message" : "subscribe", "id" : 0, "channel" :"' + channel + '"}';
-        sendMessage(message); // Sends the message through socket
-        serverField.value = '';
-        channelField.value = '';
         testSocket();
         return false;
     };
     
+    
+    // Subscribe
+    subscribeBtn.onclick = function(e) {
+        channel = channelField.value;
+        id = idField.value;
+        var message = '{"message" : "subscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
+        sendMessage(message); // Sends the message through socket
+        result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        resultsInfo.unshift(message);
+        socket.onmessage = function(e) { newMessage(e) };
+    };
+    
+    
+    // Unsubscribe
+    unsubscribeBtn.onclick = function(e) {
+        var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
+        result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        resultsInfo.unshift(message);
+    };
+    
+    
     function testSocket() {
-      socket.onmessage = function(e) { newMessage(e) };
+      // socket.onmessage = function(e) { newMessage(e) };
       socket.onopen = function(e) { openSocket(e) };
       socket.onerror = function(e) { error(e) };
     };
    
+   
     // When a message is sent by the server, retrieve the data and display in div results
    function newMessage (event) {
         var response = JSON.parse(event.data);
-        console.log(response.value.value);
-        result.innerHTML = response.value.value + "<br>" + result.innerHTML;
-        //json.innerHTML =  JSON.stringify(response, null, '    ');
+        var value = response.value.value;
+        result.innerHTML = '<option>' + value + '</option>' + result.innerHTML;
+        resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
     };
     
     // Updates connection status
    function openSocket (event) {
-        socketStatus.innerHTML = 'Connected to: ' + socket.URL;
-        socketStatus.className = 'open';
-        pause.innerHTML = 'PAUSE';
-        paused = false;
+       result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
+       resultsInfo.unshift('Connected to ' + socket.URL);
     };
     
     
@@ -75,38 +97,47 @@ window.onload = function() {
         console.log('WebSocket Error: ' + error);
     };
     
-   
+    
     // Updates the connection status when socket is closed
     function closeSocket(event) {
-        socketStatus.innerHTML = 'Disconnected';
-        socketStatus.className = 'Closed';
-        result.innerHTML = '';
+        result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
+        resultsInfo.unshift('Disconnected from ' + socket.URL);
+        // socketStatus.innerHTML = 'Disconnected';
+        // socketStatus.className = 'Closed';
     };
 
-    // Close the socket when the close button is clicked
-    closeBtn.onclick = function(e) {
+
+    // Close the socket when the disconnect button is clicked
+    disconnectBtn.onclick = function(e) {
         e.preventDefault();
         socket.close(); // Close socket
         socket.onclose = function(e) { closeSocket(e) };
         return false;
     };
     
-    //Pause or unpause
+    // Pause
     pauseBtn.onclick = function(e) {
-        if (paused === false) {
-            var message = '{"message":"pause","id":0}';
-            sendMessage(message);
-            socketStatus.innerHTML = 'Paused';
-            pause.innerHTML = 'RESUME';
-            paused = true;
-        }
-        else if (paused === true) {
-            var message = '{"message" : "resume", "id" : 0}';
-            sendMessage(message);
-            socketStatus.innerHTML = 'Connected to: ' + socket.URL;
-            pause.innerHTML = 'PAUSE';
-            paused = false;
-        }
+        var message = '{"message":"pause","id": ' + id + '}';
+        sendMessage(message);
+        result.innerHTML = '<option>Paused</option>' + result.innerHTML;
+        resultsInfo.unshift(message);
+        // socketStatus.innerHTML = 'Paused';
+    };
+    
+    // Resume
+    resumeBtn.onclick = function(e) {
+        var message = '{"message" : "resume", "id" : ' + id + '}';
+        sendMessage(message);
+        result.innerHTML = '<option>Resume</option>' + result.innerHTML;
+        resultsInfo.unshift(message);
+        // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
+    };
+    
+    
+    // Displays details for selected event
+    results.onchange = function(e) {
+        var index = results.selectedIndex;
+        details.innerHTML = resultsInfo[index];
     };
  
 };
