@@ -246,6 +246,10 @@ public class TimeScales {
 	if ( WEEK_FIELD_ID == field ) {
 	    return;
 	}
+	
+	//*MC: Why do we need to set Day of week to 0 then?
+	//What does setting DAY_OF_WEEK to 0 do?
+	cal.set(DAY_FIELD_ID , 0 );
 	cal.set(WEEK_FIELD_ID , FIRST_WEEK );
 	
 	if ( GregorianCalendar.MONTH == field ) {

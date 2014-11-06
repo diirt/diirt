@@ -718,6 +718,26 @@ public class TimeScalesTest {
     }
     
     @Test
+    public void createReferencesMonths1() {
+	//test months: straightforward, 5 months interval over 1 month periods
+	//not starting on perfect multiple of period
+	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
+	cal.set( GregorianCalendar.MILLISECOND , 234 );
+	Timestamp start = Timestamp.of( cal.getTime() );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*5*5 ) ) );
+	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 1 ) );
+	System.out.println( start.plus( TimeDuration.ofHours( 24*7*5*5 ) ).toDate() );
+	System.out.println( references.get( 0 ).toDate().toString() );
+	assertThat( references.size() , equalTo( 6 ) );
+	assertThat( references.get( 0 ) , equalTo( create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );	
+	assertThat( references.get( 4 ) , equalTo( create( 2015 , 4 , 1 , 0 , 0 , 0 , 0 ) ) );
+	assertThat( references.get( 5 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );
+    }
+    
+    @Test
     @Ignore //Failed: off by exactly 3 days because rounding down does not round
 	    //perfectly to January 1 - instead, it rounds down to January 4
     public void createReferencesYears1() {
