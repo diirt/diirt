@@ -739,10 +739,6 @@ public class TimeScalesTest {
     }
     
     @Test
-    //@Ignore	    //Weeks do not round up to the start of the next week
-		    //rather, they just start on the day rounded up
-		    //Does setting the week have any effect on GregorianCalendar
-		    //the way we are using it?
     public void createReferencesWeeks1() {
 	//test weeks: straightforward, 3 weeks interval over 1 week periods
 	//not starting on perfect multiple of period
