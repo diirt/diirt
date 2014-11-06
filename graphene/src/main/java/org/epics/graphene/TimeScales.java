@@ -215,7 +215,6 @@ public class TimeScales {
         return references;
     }
 
-    //TODO determine whether we use day_of_week, day_of_month, day_of_year, etc...?
     static void round(GregorianCalendar cal, int field) {
         
         if (GregorianCalendar.MILLISECOND == field) {
@@ -247,19 +246,15 @@ public class TimeScales {
 	    return;
 	}
 	
-	//*MC: Why do we need to set Day of week to 0 then?
-	//What does setting DAY_OF_WEEK to 0 do?
-	cal.set(DAY_FIELD_ID , 0 );
-	cal.set(WEEK_FIELD_ID , FIRST_WEEK );
+	//here, we are rounding down to the first week (i.e. the first day of
+	//the month), so the day of the week and the week of the month no 
+	//longer matter - we just set the day to be the first day of the month
+	cal.set( GregorianCalendar.DAY_OF_MONTH , 1 );
 	
 	if ( GregorianCalendar.MONTH == field ) {
 	    return;
 	}
 	
-	//*MC: When rounding down to January 1, we need to use
-	//the DAY_OF_MONTH field instead of DAY_OF_WEEK field
-	//does this cause any design problems?
-	cal.set( GregorianCalendar.DAY_OF_MONTH , 1 );
 	cal.set( GregorianCalendar.MONTH , 0 );
 	
 	if ( GregorianCalendar.YEAR == field ) {
