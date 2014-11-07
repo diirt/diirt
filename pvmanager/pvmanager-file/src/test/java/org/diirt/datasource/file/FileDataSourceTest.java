@@ -61,7 +61,7 @@ public class FileDataSourceTest {
     
     @BeforeClass
     public static void createDataSource() {
-        file = new FileDataSource();
+        file = new FileDataSource(new FileDataSourceConfiguration());
         // Register the default file formats
 	register.registerFileFormat("bmp", new ImageFileFormat());
 	register.registerFileFormat("png", new ImageFileFormat());
