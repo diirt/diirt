@@ -131,7 +131,7 @@ public class PassiveScanDecouplerTest {
                 log.setDecoupler(decoupler);
                 decoupler.start();
                 // Wait for connection event
-                Thread.sleep(30);
+                Thread.sleep(60);
                 
                 // Send events at 100Hz
                 long startTime = System.nanoTime();
@@ -142,11 +142,12 @@ public class PassiveScanDecouplerTest {
                 long period = System.nanoTime() - startTime;
                 
                 // Wait to drain
-                Thread.sleep(50);
+                Thread.sleep(100);
                 decoupler.stop();
                 
-                // 1 event each 50ms + one at the end + one connections
-                int expectedEvents = (int) (period / 50000000) + 1 + 1;
+                // 1 event at the start of each full 50ms + 1 for the partial 50 ms
+                // + 1 at the end  of the last 50ms + 1 for connection
+                int expectedEvents = (int) (period / 50000000) + 1 + 1 + 1;
                 assertThat(log.getEvents().size(), equalTo(expectedEvents));
                 return null;
             }
