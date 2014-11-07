@@ -17,10 +17,12 @@ import org.diirt.pods.web.common.MessageEncoder;
 import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -47,7 +49,7 @@ import org.diirt.util.time.TimeDuration;
  *
  * @author carcassi
  */
-@ServerEndpoint(value = "/socket", encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class})
+@ServerEndpoint(value = "/socket", encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class}, configurator = WSEndpointConfigurator.class)
 public class WSEndpoint {
     
     // TODO: understand lifecycle of whole web application and put
@@ -153,7 +155,11 @@ public class WSEndpoint {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        System.out.println(session.getRequestURI() + ": OPEN");
+        HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
+        String remoteHost = (String) httpSession.getAttribute("remoteHost");
+        Principal user = session.getUserPrincipal();
+        System.out.println("Address " + remoteHost);
+        System.out.println("User " + user);
     }
 
     @OnClose
