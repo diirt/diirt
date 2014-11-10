@@ -146,9 +146,9 @@ public class PassiveScanDecouplerTest {
                 decoupler.stop();
                 
                 // 1 event at the start of each full 50ms + 1 for the partial 50 ms
-                // + 1 at the end  of the last 50ms + 1 for connection
-                int expectedEvents = (int) (period / 50000000) + 1 + 1 + 1;
-                assertThat(log.getEvents().size(), equalTo(expectedEvents));
+                // + 1 at the end  of the last 50ms (if event during notification) + 1 for connection
+                int expectedEvents = (int) (period / 50000000) + 1 + 1;
+                assertThat(log.getEvents().size(), isOneOf(expectedEvents, expectedEvents + 1));
                 return null;
             }
         });
