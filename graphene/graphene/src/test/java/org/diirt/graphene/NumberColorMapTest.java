@@ -1,8 +1,7 @@
 /**
- * Copyright (C) 2012-14 graphene developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-
 package org.diirt.graphene;
 
 import org.diirt.graphene.NumberColorMapInstance;
