@@ -19,7 +19,7 @@ public class JDBCService extends Service {
      * The description will consist of connection parameters, queries
      * and how arguments and results should be mapped.
      * 
-     * @param serviceDescription 
+     * @param serviceDescription the service description; can't be null
      */
     public JDBCService(JDBCServiceDescription serviceDescription) {
         super(serviceDescription.createService());
