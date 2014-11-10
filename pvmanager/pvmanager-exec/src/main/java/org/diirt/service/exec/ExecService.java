@@ -19,7 +19,7 @@ public class ExecService extends Service {
      * The description will consist of environment information, commands
      * and how arguments and results should be mapped.
      * 
-     * @param serviceDescription 
+     * @param serviceDescription the service description; can't be null
      */
     public ExecService(ExecServiceDescription serviceDescription) {
         super(serviceDescription.createService());
