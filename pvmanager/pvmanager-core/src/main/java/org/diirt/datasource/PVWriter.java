@@ -34,7 +34,7 @@ public interface PVWriter<T> {
      * Writes a new value. This method can be synchronous or synchronous
      * depending on how the PV was created.
      * 
-     * @param newValue 
+     * @param newValue the new value
      */
     public void write(T newValue);
 

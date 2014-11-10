@@ -68,8 +68,9 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
     }
     
     /**
+     * Adds a new value to the queue
      *
-     * @param newValue
+     * @param newValue the new value
      */
     public void add(T newValue) {
         getWriteFunction().writeValue(newValue);

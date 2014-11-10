@@ -346,8 +346,8 @@ public abstract class DataSource {
      * Writes the contents in the given write recipe to the channels
      * of this data sources.
      * <p>
-     * The write recipe needs to be first prepared with {@link #connectWrite(org.epics.pvmanager.WriteRecipe) }
-     * and then cleaned up with {@link #disconnectWrite(org.epics.pvmanager.WriteRecipe)  }.
+     * The write recipe needs to be first prepared with {@link #connectWrite(org.diirt.datasource.WriteRecipe) }
+     * and then cleaned up with {@link #disconnectWrite(org.diirt.datasource.WriteRecipe) }.
      * 
      * @param writeRecipe the recipe containing the data to write
      * @param callback function to call when the write is concluded

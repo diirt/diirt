@@ -152,7 +152,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * Process the next connection payload. This should be called whenever
      * the connection state has changed.
      * 
-     * @param connectionPayload 
+     * @param connectionPayload connection payload; not null
      */
     protected synchronized final void processConnection(ConnectionPayload connectionPayload) {
         if (log.isLoggable(Level.FINEST)) {
@@ -390,7 +390,7 @@ public abstract class MultiplexedChannelHandler<ConnectionPayload, MessagePayloa
      * By default, this always return false. One should override this
      * if it's implementing a write-able data source.
      * 
-     * @param payload
+     * @param payload connection payload; not null
      * @return true if ready for writes
      */
     protected boolean isWriteConnected(ConnectionPayload payload) {
