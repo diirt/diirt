@@ -85,7 +85,7 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
      * 
      * @param duration time to wait
      * @return false if count didn't go to zero
-     * @throws InterruptedException 
+     * @throws InterruptedException if interrupted
      */
     public boolean await(TimeDuration duration) 
     throws InterruptedException {
