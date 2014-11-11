@@ -60,9 +60,9 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
             throw new NullPointerException("g is null");
         this.g = g;
         
-        calculateRanges(data.getXStatistics(), data.getXDisplayRange(),
-                data.getYStatistics(), data.getYDisplayRange(),
-                data.getZStatistics(), data.getZDisplayRange());
+        calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(),
+                data.getYStatistics().getRange(), data.getYDisplayRange(),
+                data.getZStatistics().getRange(), data.getZDisplayRange());
         
         drawBackground();
         calculateLabels();
@@ -89,7 +89,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         for (int j = indexes.size() - 1; j >= 0; j--) {
             int i = indexes.getInt(j);
             double zValue = data.getZValues().getDouble(i);
-            double diameter = radiusScale(absZPlotRange.getMinimum().doubleValue(), Math.abs(zValue), absZPlotRange.getMaximum().doubleValue(),
+            double diameter = radiusScale(absZPlotRange.getMinimum(), Math.abs(zValue), absZPlotRange.getMaximum(),
                     3, 15);
             double x = scaledX(data.getXValues().getDouble(i));
             double y = scaledY(data.getYValues().getDouble(i));

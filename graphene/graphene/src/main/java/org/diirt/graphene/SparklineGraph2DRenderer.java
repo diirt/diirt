@@ -127,7 +127,7 @@ public class SparklineGraph2DRenderer extends Graph2DRenderer<SparklineGraph2DRe
         }
         
         //General Rendering
-        calculateRanges(data.getXStatistics(), data.getXDisplayRange(), data.getYStatistics(), data.getYDisplayRange());
+        calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
         calculateGraphArea();
 
         drawBackground();

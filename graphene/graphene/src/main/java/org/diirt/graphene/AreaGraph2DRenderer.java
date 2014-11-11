@@ -50,7 +50,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
 
         this.g = graphics;
         this.referenceLineColor = this.backgroundColor;
-        calculateRanges(dataset.getXRange(), dataset.getXRange(), dataset.getStatistics(), dataset.getDisplayRange());
+        calculateRanges(dataset.getXRange(), dataset.getXRange(), dataset.getStatistics().getRange(), dataset.getDisplayRange());
         calculateLabels();
         calculateGraphArea();
         drawBackground();
@@ -71,7 +71,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         binLimitsPx[dataset.getXCount()] = (int) scaledX(dataset.getXBoundaries().getDouble(dataset.getXCount()));
         
         // Draw histogram area
-        int plotStart = (int) scaledY(getYPlotRange().getMinimum().doubleValue());
+        int plotStart = (int) scaledY(getYPlotRange().getMinimum());
         for (int i = 0; i < binHeightsPx.length; i++) {
             graphics.setColor(histogramColor);
             // If focused value, leave it white

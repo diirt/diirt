@@ -66,7 +66,7 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
     public void draw(Graphics2D g, TimeSeriesDataset data) {
         this.g = g;
         
-        calculateRanges(data.getStatistics(), data.getTimeInterval());
+        calculateRanges(data.getStatistics().getRange(), data.getTimeInterval());
         calculateGraphArea();
         drawBackground();
         drawGraphArea();

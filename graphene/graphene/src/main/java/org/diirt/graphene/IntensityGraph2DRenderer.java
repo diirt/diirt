@@ -132,7 +132,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         calculateRanges(data.getXRange(), data.getXRange(), data.getYRange(), data.getYRange());
         area.setGraphBuffer(graphBuffer);
         graphBuffer.drawBackground(backgroundColor);
-        calculateZRange(data.getStatistics(), data.getDisplayRange());
+        calculateZRange(data.getStatistics().getRange(), data.getDisplayRange());
         
         // TODO: the calculation for leaving space for the legend is somewhat hacked
         // Instead of actually having a nice calculation, we increase the margin
@@ -199,7 +199,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         if(drawLegend && legendWidth>0){
             /*dataList is made by splitting the aggregated range of the z(color) data into a list of the
             same length as the the height of the graph in pixels.*/
-            ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum().doubleValue(),zPlotRange.getMaximum().doubleValue(),(int)yHeightTotal);
+            ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum(),zPlotRange.getMaximum(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
             Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 1), 1, Ranges.range(0, (int)yHeightTotal), (int)yHeightTotal);
             int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
@@ -210,10 +210,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         // Calculate selection and draw rectangle
         if (xPixelSelectionRange != null && yPixelSelectionRange != null) {
             // Calculate the selection pixel box
-            int selectionLeftPixel = xPixelSelectionRange.getMinimum().intValue();
-            int selectionRightPixel = xPixelSelectionRange.getMaximum().intValue();
-            int selectionTopPixel = yPixelSelectionRange.getMinimum().intValue();
-            int selectionBottomPixel = yPixelSelectionRange.getMaximum().intValue();
+            int selectionLeftPixel = (int) xPixelSelectionRange.getMinimum();
+            int selectionRightPixel = (int) xPixelSelectionRange.getMaximum();
+            int selectionTopPixel = (int) yPixelSelectionRange.getMinimum();
+            int selectionBottomPixel = (int) yPixelSelectionRange.getMaximum();
             
             // Calculate the selection value range
             double selectionLeftValue = graphBuffer.xPixelLeftToValue(selectionLeftPixel);
@@ -410,7 +410,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     protected void calculateZLabels() {
         labelFontMetrics = g.getFontMetrics(labelFont);
         // Calculate z axis references. If range is zero, use special logic
-        if (!zPlotRange.getMinimum().equals(zPlotRange.getMaximum())) {
+        if (!(zPlotRange.getMinimum() == zPlotRange.getMaximum())) {
             ValueAxis zAxis = zValueScale.references(zPlotRange, 2, Math.max(2, getImageHeight() / 60));
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
             zReferenceValues = new ArrayDouble(zAxis.getTickValues());            
@@ -418,7 +418,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             // TODO: use something better to format the number
             ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 1);
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
-            zReferenceValues = new ArrayDouble(zPlotRange.getMinimum().doubleValue());            
+            zReferenceValues = new ArrayDouble(zPlotRange.getMinimum());            
         }
         
         // Compute z axis spacing
@@ -436,7 +436,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
      * @return double(scaled value)
      */
     protected final double scaledZ(double value, int bottomPixel, int topPixel) {
-        return Math.ceil(zValueScale.scaleValue(value, zPlotRange.getMinimum().doubleValue(), zPlotRange.getMaximum().doubleValue(), bottomPixel, topPixel));
+        return Math.ceil(zValueScale.scaleValue(value, zPlotRange.getMinimum(), zPlotRange.getMaximum(), bottomPixel, topPixel));
     }
 
     /**

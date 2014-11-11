@@ -15,19 +15,17 @@ import org.diirt.util.array.IteratorNumber;
  * @author carcassi
  */
 public class StatisticsUtil {
-    
-    private static class StatisticsImpl implements Statistics {
+
+    private static class StatisticsImpl extends Statistics {
         
         private final int count;
-        private final double minimum;
-        private final double maximum;
+        private final Range range;
         private final double average;
         private final double stdDev;
 
-        public StatisticsImpl(int count, double minimum, double maximum, double average, double stdDev) {
+        public StatisticsImpl(Range range, int count, double average, double stdDev) {
             this.count = count;
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this.range = range;
             this.average = average;
             this.stdDev = stdDev;
         }
@@ -38,13 +36,8 @@ public class StatisticsUtil {
         }
 
         @Override
-        public Number getMinimum() {
-            return minimum;
-        }
-
-        @Override
-        public Number getMaximum() {
-            return maximum;
+        public Range getRange() {
+            return range;
         }
 
         @Override
@@ -100,7 +93,7 @@ public class StatisticsUtil {
         double average = total/count;
         double stdDev = Math.sqrt(totalSquare / count - average * average);
         
-        return new StatisticsImpl(count, min, max, average, stdDev);
+        return new StatisticsImpl(Ranges.range(min, max), count, average, stdDev);
     }
 
     /**
@@ -125,17 +118,13 @@ public class StatisticsUtil {
             return null;
         
         int count = first.getCount();
-        double min = first.getMinimum().doubleValue();
-        double max = first.getMaximum().doubleValue();
+        Range range = first.getRange();
         double total = first.getAverage() * first.getCount();
         double totalSquare = (first.getStdDev() * first.getStdDev() + first.getAverage() * first.getAverage()) * first.getCount();
         
         while (iterator.hasNext()) {
             Statistics stats = iterator.next();
-            if (stats.getMaximum().doubleValue() > max)
-                max = stats.getMaximum().doubleValue();
-            if (stats.getMinimum().doubleValue() < min)
-                min = stats.getMinimum().doubleValue();
+            range = Ranges.sum(range, stats.getRange());
             total += stats.getAverage() * stats.getCount();
             totalSquare += ( stats.getStdDev() * stats.getStdDev() + stats.getAverage() * stats.getAverage() ) * stats.getCount();
             count += stats.getCount();
@@ -144,7 +133,7 @@ public class StatisticsUtil {
         double average = total/count;
         double stdDev = Math.sqrt(totalSquare / count - average * average);
         
-        return new StatisticsImpl(count, min, max, average, stdDev);
+        return new StatisticsImpl(range, count, average, stdDev);
     }
     
     /**
@@ -158,7 +147,7 @@ public class StatisticsUtil {
         return new LazyStatistics(data);
     }
     
-    private static class LazyStatistics implements Statistics {
+    private static class LazyStatistics extends Statistics {
         
         private Statistics stats;
         private CollectionNumber data;
@@ -193,15 +182,9 @@ public class StatisticsUtil {
         }
 
         @Override
-        public Number getMinimum() {
+        public Range getRange() {
             calculateStats();
-            return stats.getMinimum();
-        }
-
-        @Override
-        public Number getMaximum() {
-            calculateStats();
-            return stats.getMaximum();
+            return stats.getRange();
         }
         
     }

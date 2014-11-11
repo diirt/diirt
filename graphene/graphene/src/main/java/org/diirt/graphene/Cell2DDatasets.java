@@ -43,8 +43,8 @@ public class Cell2DDatasets {
                     + ((xCount) * (yCount - 1) + xCount) + ", xCount = " + xCount + ", yCount = " + yCount);
         }
 
-        final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), xCount + 1);
-        final ListNumber yBoundaries = ListNumbers.linearListFromRange(yRange.getMinimum().doubleValue(), yRange.getMaximum().doubleValue(), yCount + 1);
+        final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum(), xRange.getMaximum(), xCount + 1);
+        final ListNumber yBoundaries = ListNumbers.linearListFromRange(yRange.getMinimum(), yRange.getMaximum(), yCount + 1);
 
         final Statistics stats = StatisticsUtil.statisticsOf(data);
         return new Cell2DDataset() {
@@ -60,7 +60,7 @@ public class Cell2DDatasets {
 
             @Override
             public Range getDisplayRange() {
-                return stats;
+                return stats.getRange();
             }
 
             @Override
@@ -97,8 +97,8 @@ public class Cell2DDatasets {
 
     public static Cell2DDataset linearRange(final Function2D function, final Range xRange, final int xCount, final Range yRange, final int yCount) {
 
-        final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), xCount + 1);
-        final ListNumber yBoundaries = ListNumbers.linearListFromRange(yRange.getMinimum().doubleValue(), yRange.getMaximum().doubleValue(), yCount + 1);
+        final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum(), xRange.getMaximum(), xCount + 1);
+        final ListNumber yBoundaries = ListNumbers.linearListFromRange(yRange.getMinimum(), yRange.getMaximum(), yCount + 1);
         final double xHalfStep = (xBoundaries.getDouble(1) - xBoundaries.getDouble(0)) / 2.0;
         final double yHalfStep = (yBoundaries.getDouble(1) - yBoundaries.getDouble(0)) / 2.0;
         CollectionNumber data = new CollectionDouble() {
@@ -146,7 +146,7 @@ public class Cell2DDatasets {
 
             @Override
             public Range getDisplayRange() {
-                return stats;
+                return stats.getRange();
             }
 
             @Override
@@ -221,7 +221,7 @@ public class Cell2DDatasets {
 
             @Override
             public Range getDisplayRange() {
-                return statistics;
+                return statistics.getRange();
             }
 
             @Override

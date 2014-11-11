@@ -120,8 +120,8 @@ public class GraphBuffer {
      * @param xValueScale the scale used to transform values to pixel
      */
     public void setXScaleAsCell(Range range, int xMinPixel, int xMaxPixel, ValueScale xValueScale) {
-        xLeftValue = range.getMinimum().doubleValue();
-        xRightValue = range.getMaximum().doubleValue();
+        xLeftValue = range.getMinimum();
+        xRightValue = range.getMaximum();
         xLeftPixel = xMinPixel;
         xRightPixel = xMaxPixel + 1;
         this.xValueScale = xValueScale;
@@ -139,8 +139,8 @@ public class GraphBuffer {
      * @param xValueScale the scale used to transform values to pixel
      */
     public void setXScaleAsPoint(Range range, int xMinPixel, int xMaxPixel, ValueScale xValueScale) {
-        xLeftValue = range.getMinimum().doubleValue();
-        xRightValue = range.getMaximum().doubleValue();
+        xLeftValue = range.getMinimum();
+        xRightValue = range.getMaximum();
         xLeftPixel = xMinPixel + 0.5;
         xRightPixel = xMaxPixel + 0.5;
         this.xValueScale = xValueScale;
@@ -205,8 +205,8 @@ public class GraphBuffer {
      * @param yValueScale the scale used to transform values to pixel
      */
     public void setYScaleAsCell(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
-        yTopValue = range.getMaximum().doubleValue();
-        yBottomValue = range.getMinimum().doubleValue();
+        yTopValue = range.getMaximum();
+        yBottomValue = range.getMinimum();
         yTopPixel = yMaxPixel - 1;
         yBottomPixel = yMinPixel;
         this.yValueScale = yValueScale;
@@ -224,8 +224,8 @@ public class GraphBuffer {
      * @param yValueScale the scale used to transform values to pixel
      */
     public void setYScaleAsPoint(Range range, int yMinPixel, int yMaxPixel, ValueScale yValueScale) {
-        yTopValue = range.getMaximum().doubleValue();
-        yBottomValue = range.getMinimum().doubleValue();
+        yTopValue = range.getMaximum();
+        yBottomValue = range.getMinimum();
         yTopPixel = yMaxPixel - 0.5;
         yBottomPixel = yMinPixel - 0.5;
         this.yValueScale = yValueScale;

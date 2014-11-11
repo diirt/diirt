@@ -20,12 +20,12 @@ public class Ranges {
      * @return the range of the absolute values
      */
     public static Range absRange(Range range) {
-        if (range.getMinimum().doubleValue() >= 0 && range.getMaximum().doubleValue() >= 0) {
+        if (range.getMinimum() >= 0 && range.getMaximum() >= 0) {
             return range;
-        } else if (range.getMinimum().doubleValue() < 0 && range.getMaximum().doubleValue() < 0) {
-            return range(- range.getMaximum().doubleValue(), - range.getMinimum().doubleValue());
+        } else if (range.getMinimum() < 0 && range.getMaximum() < 0) {
+            return range(- range.getMaximum(), - range.getMinimum());
         } else {
-            return range(0, Math.max(range.getMinimum().doubleValue(), range.getMaximum().doubleValue()));
+            return range(0, Math.max(range.getMinimum(), range.getMaximum()));
         }
     }
     
@@ -40,24 +40,7 @@ public class Ranges {
         if (minValue > maxValue) {
             throw new IllegalArgumentException("minValue should be less then or equal to maxValue (" + minValue+ ", " + maxValue + ")");
         }
-        return new Range() {
-
-            @Override
-            public Number getMinimum() {
-                return minValue;
-            }
-
-            @Override
-            public Number getMaximum() {
-                return maxValue;
-            }
-
-            @Override
-            public String toString() {
-                return Ranges.toString(this);
-            }
-            
-        };
+        return new Range(minValue, maxValue, false);
     }
     
     /**
@@ -68,8 +51,8 @@ public class Ranges {
      * @return true if subrange is contained in range
      */
     public static boolean contains(Range range, Range subrange) {
-        return range.getMinimum().doubleValue() <= subrange.getMinimum().doubleValue()
-                && range.getMaximum().doubleValue() >= subrange.getMaximum().doubleValue();
+        return range.getMinimum() <= subrange.getMinimum()
+                && range.getMaximum() >= subrange.getMaximum();
         
     }
 
@@ -82,15 +65,15 @@ public class Ranges {
      * @return the bigger range
      */
     public static Range sum(Range range1, Range range2) {
-        if (range1.getMinimum().doubleValue() <= range2.getMinimum().doubleValue()) {
-            if (range1.getMaximum().doubleValue() >= range2.getMaximum().doubleValue()) {
+        if (range1.getMinimum() <= range2.getMinimum()) {
+            if (range1.getMaximum() >= range2.getMaximum()) {
                 return range1;
             } else {
-                return range(range1.getMinimum().doubleValue(), range2.getMaximum().doubleValue());
+                return range(range1.getMinimum(), range2.getMaximum());
             }
         } else {
-            if (range1.getMaximum().doubleValue() >= range2.getMaximum().doubleValue()) {
-                return range(range2.getMinimum().doubleValue(), range1.getMaximum().doubleValue());
+            if (range1.getMaximum() >= range2.getMaximum()) {
+                return range(range2.getMinimum(), range1.getMaximum());
             } else {
                 return range2;
             }
@@ -118,7 +101,7 @@ public class Ranges {
      * @return the value transformed based on the range
      */
     public static double normalize(Range range, double value) {
-        return normalize(value, range.getMinimum().doubleValue(), range.getMaximum().doubleValue());
+        return normalize(value, range.getMinimum(), range.getMaximum());
     }
     
     private static double normalize(double value, double min, double max) {
@@ -133,7 +116,7 @@ public class Ranges {
      * @return true if the value is within the range
      */
     public static boolean contains(Range range, double value) {
-        return value >= range.getMinimum().doubleValue() && value <= range.getMaximum().doubleValue();
+        return value >= range.getMinimum() && value <= range.getMaximum();
     }
     
     /**
@@ -164,10 +147,10 @@ public class Ranges {
      * @return from 0 (if there is no intersection) to 1 (if the ranges are the same)
      */
     public static double overlap(Range range, Range otherRange) {
-        double minOverlap = Math.max(range.getMinimum().doubleValue(), otherRange.getMinimum().doubleValue());
-        double maxOverlap = Math.min(range.getMaximum().doubleValue(), otherRange.getMaximum().doubleValue());
+        double minOverlap = Math.max(range.getMinimum(), otherRange.getMinimum());
+        double maxOverlap = Math.min(range.getMaximum(), otherRange.getMaximum());
         double overlapWidth = maxOverlap - minOverlap;
-        double rangeWidth = range.getMaximum().doubleValue() - range.getMinimum().doubleValue();
+        double rangeWidth = range.getMaximum() - range.getMinimum();
         double fraction = Math.max(0.0, overlapWidth / rangeWidth);
         return fraction;
     }
@@ -184,8 +167,8 @@ public class Ranges {
             return false;
         }
         
-        double min = range.getMinimum().doubleValue();
-        double max = range.getMaximum().doubleValue();
+        double min = range.getMinimum();
+        double max = range.getMaximum();
         
         return min != max && !Double.isNaN(min) && !Double.isInfinite(min) &&
                 !Double.isNaN(max) && !Double.isInfinite(max);
@@ -207,6 +190,6 @@ public class Ranges {
             return false;
         }
         
-        return r1.getMinimum().equals(r2.getMinimum()) && r1.getMaximum().equals(r2.getMaximum());
+        return ((Double) r1.getMinimum()).equals((Double) r2.getMinimum()) && ((Double) r1.getMaximum()).equals((Double) r2.getMaximum());
     }
 }

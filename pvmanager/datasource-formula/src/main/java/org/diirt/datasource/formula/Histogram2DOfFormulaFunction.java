@@ -89,25 +89,25 @@ class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
         Statistics yStats = StatisticsUtil.statisticsOf(yData);
         int nXBins = 20;
         int nYBins = 20;
-        Range aggregatedXRange = Ranges.aggregateRange(xStats, previousXRange);
-        Range aggregatedYRange = Ranges.aggregateRange(yStats, previousYRange);
+        Range aggregatedXRange = Ranges.aggregateRange(xStats.getRange(), previousXRange);
+        Range aggregatedYRange = Ranges.aggregateRange(yStats.getRange(), previousYRange);
         Range xRange;
         Range yRange;
-        if (Ranges.overlap(aggregatedXRange, xStats) >= 0.90) {
+        if (Ranges.overlap(aggregatedXRange, xStats.getRange()) >= 0.90) {
             xRange = aggregatedXRange;
         } else {
-            xRange = xStats;
+            xRange = xStats.getRange();
         }
-        if (Ranges.overlap(aggregatedYRange, yStats) >= 0.90) {
+        if (Ranges.overlap(aggregatedYRange, yStats.getRange()) >= 0.90) {
             yRange = aggregatedYRange;
         } else {
-            yRange = yStats;
+            yRange = yStats.getRange();
         }
 
-        double minXValueRange = xRange.getMinimum().doubleValue();
-        double maxXValueRange = xRange.getMaximum().doubleValue();
-        double minYValueRange = yRange.getMinimum().doubleValue();
-        double maxYValueRange = yRange.getMaximum().doubleValue();
+        double minXValueRange = xRange.getMinimum();
+        double maxXValueRange = xRange.getMaximum();
+        double minYValueRange = yRange.getMinimum();
+        double maxYValueRange = yRange.getMaximum();
         
         ListNumber xBoundaries = ListNumbers.linearListFromRange(minXValueRange, maxXValueRange, nXBins + 1);
         ListNumber yBoundaries = ListNumbers.linearListFromRange(minYValueRange, maxYValueRange, nYBins + 1);

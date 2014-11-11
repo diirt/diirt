@@ -71,7 +71,7 @@ class HistogramGraph2DFunction implements ReadFunction<Graph2DResult> {
         
         return new Graph2DResult(data, ValueUtil.toVImage(image),
                 new GraphDataRange(renderer.getXPlotRange(), dataset.getXRange(), dataset.getXRange()),
-                new GraphDataRange(renderer.getYPlotRange(), dataset.getStatistics(), renderer.getYAggregatedRange()),
+                new GraphDataRange(renderer.getYPlotRange(), dataset.getStatistics().getRange(), renderer.getYAggregatedRange()),
                 index);
     }
     

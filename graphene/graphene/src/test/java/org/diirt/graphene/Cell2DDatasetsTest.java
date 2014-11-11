@@ -31,16 +31,16 @@ public class Cell2DDatasetsTest {
         }, Ranges.range(0, 1), 10, Ranges.range(0, 1), 20);
 
         assertThat(dataset.getXCount(), equalTo(10));
-        assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
-        assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(1.0));
+        assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));
+        assertThat(dataset.getXRange().getMaximum(), equalTo(1.0));
         assertThat(dataset.getYCount(), equalTo(20));
-        assertThat(dataset.getYRange().getMinimum().doubleValue(), equalTo(0.0));
-        assertThat(dataset.getYRange().getMaximum().doubleValue(), equalTo(1.0));
+        assertThat(dataset.getYRange().getMinimum(), equalTo(0.0));
+        assertThat(dataset.getYRange().getMaximum(), equalTo(1.0));
         assertThat(dataset.getStatistics().getAverage(), closeTo(1.0, 0.0001));
         assertThat(dataset.getStatistics().getStdDev(), closeTo(0.40697, 0.0001));
         assertThat(dataset.getStatistics().getCount(), equalTo(200));
-        assertThat(dataset.getStatistics().getMinimum().doubleValue(), closeTo(0.075, 0.0001));
-        assertThat(dataset.getStatistics().getMaximum().doubleValue(), closeTo(1.925, 0.0001));
+        assertThat(dataset.getStatistics().getRange().getMinimum(), closeTo(0.075, 0.0001));
+        assertThat(dataset.getStatistics().getRange().getMaximum(), closeTo(1.925, 0.0001));
 
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
@@ -70,15 +70,15 @@ public class Cell2DDatasetsTest {
         Cell2DDataset dataset = Cell2DDatasets.datasetFrom(values, xBoundaries, yBoundaries);
 
         assertThat(dataset.getXCount(), equalTo(2));
-        assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(-1.0));
-        assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(1.0));
+        assertThat(dataset.getXRange().getMinimum(), equalTo(-1.0));
+        assertThat(dataset.getXRange().getMaximum(), equalTo(1.0));
         assertThat(dataset.getYCount(), equalTo(3));
-        assertThat(dataset.getYRange().getMinimum().doubleValue(), equalTo(0.0));
-        assertThat(dataset.getYRange().getMaximum().doubleValue(), equalTo(3.0));
+        assertThat(dataset.getYRange().getMinimum(), equalTo(0.0));
+        assertThat(dataset.getYRange().getMaximum(), equalTo(3.0));
         assertThat(dataset.getStatistics().getAverage(), equalTo(3.0));
         assertThat(dataset.getStatistics().getStdDev(), closeTo(2.51661, 0.0001));
-        assertThat(dataset.getStatistics().getMinimum(), equalTo((Number) (-1.0)));
-        assertThat(dataset.getStatistics().getMaximum(), equalTo((Number) 7.0));
+        assertThat(dataset.getStatistics().getRange().getMinimum(), equalTo((Number) (-1.0)));
+        assertThat(dataset.getStatistics().getRange().getMaximum(), equalTo((Number) 7.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(6));
 
         // Check values
@@ -107,15 +107,15 @@ public class Cell2DDatasetsTest {
         }, new ArrayDouble(0, 2, 3, 5), new ArrayDouble(0, 1, 3));
 
         assertThat(dataset.getXCount(), equalTo(3));
-        assertThat(dataset.getXRange().getMinimum().doubleValue(), equalTo(0.0));
-        assertThat(dataset.getXRange().getMaximum().doubleValue(), equalTo(5.0));
+        assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));
+        assertThat(dataset.getXRange().getMaximum(), equalTo(5.0));
         assertThat(dataset.getYCount(), equalTo(2));
-        assertThat(dataset.getYRange().getMinimum().doubleValue(), equalTo(0.0));
-        assertThat(dataset.getYRange().getMaximum().doubleValue(), equalTo(3.0));
+        assertThat(dataset.getYRange().getMinimum(), equalTo(0.0));
+        assertThat(dataset.getYRange().getMaximum(), equalTo(3.0));
         assertThat(dataset.getStatistics().getAverage(), equalTo(3.75));
         assertThat(dataset.getStatistics().getStdDev(), closeTo(1.43614, 0.0001));
-        assertThat(dataset.getStatistics().getMinimum(), equalTo((Number) (1.5)));
-        assertThat(dataset.getStatistics().getMaximum(), equalTo((Number) 6.0));
+        assertThat(dataset.getStatistics().getRange().getMinimum(), equalTo((Number) (1.5)));
+        assertThat(dataset.getStatistics().getRange().getMaximum(), equalTo((Number) 6.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(6));
 
         // Check values

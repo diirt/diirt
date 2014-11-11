@@ -94,8 +94,8 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
         }
         
         ArrayDimensionDisplay xDisplay = data.getDimensionDisplay().get(1);
-        int leftIndex = renderer.getXIndexSelectionRange().getMinimum().intValue();
-        int rightIndex = renderer.getXIndexSelectionRange().getMaximum().intValue();
+        int leftIndex = (int) renderer.getXIndexSelectionRange().getMinimum();
+        int rightIndex = (int) renderer.getXIndexSelectionRange().getMaximum();
         final int xSize = rightIndex - leftIndex + 1;
         if (xDisplay.isReversed()) {
             leftIndex = data.getSizes().getInt(1) - 1 - leftIndex;
@@ -103,8 +103,8 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
         }
         
         ArrayDimensionDisplay yDisplay = data.getDimensionDisplay().get(0);
-        int bottomIndex = renderer.getYIndexSelectionRange().getMinimum().intValue();
-        int topIndex = renderer.getYIndexSelectionRange().getMaximum().intValue();
+        int bottomIndex = (int) renderer.getYIndexSelectionRange().getMinimum();
+        int topIndex = (int) renderer.getYIndexSelectionRange().getMaximum();
         if (yDisplay.isReversed()) {
             bottomIndex = data.getSizes().getInt(0) - 1 - bottomIndex;
             topIndex = data.getSizes().getInt(0) - 1 - topIndex;

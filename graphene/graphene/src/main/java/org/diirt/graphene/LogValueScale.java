@@ -41,8 +41,8 @@ final class LogValueScale implements ValueScale {
 
     @Override
     public ValueAxis references(Range range, int minRefs, int maxRefs) {
-        double minValue = range.getMinimum().doubleValue();
-        double maxValue = range.getMaximum().doubleValue();
+        double minValue = range.getMinimum();
+        double maxValue = range.getMaximum();
         if (minValue == 0 || maxValue == 0) {
             throw new IllegalArgumentException("The range for a log scale can't include 0");
         }
@@ -148,8 +148,8 @@ final class LogValueScale implements ValueScale {
     
     static ListDouble generateReferenceValues(Range range, int subdivisionFactor) {
         CircularBufferDouble values = new CircularBufferDouble(100000);
-        double minValue = range.getMinimum().doubleValue();
-        double maxValue = range.getMaximum().doubleValue();
+        double minValue = range.getMinimum();
+        double maxValue = range.getMaximum();
         int minExp = MathUtil.orderOf(minValue);
         int maxExp = MathUtil.orderOf(maxValue);
         

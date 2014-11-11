@@ -89,9 +89,9 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
                 display = firstNonNull;
             } else {
                 Statistics stats = StatisticsUtil.statisticsOf(data);
-                display = newDisplay(stats.getMinimum().doubleValue(), stats.getMinimum().doubleValue(), stats.getMinimum().doubleValue(), 
-                        "", NumberFormats.toStringFormat(), stats.getMaximum().doubleValue(), stats.getMaximum().doubleValue(), stats.getMaximum().doubleValue(),
-                        stats.getMinimum().doubleValue(), stats.getMaximum().doubleValue());
+                display = newDisplay(stats.getRange().getMinimum(), stats.getRange().getMinimum(), stats.getRange().getMinimum(), 
+                        "", NumberFormats.toStringFormat(), stats.getRange().getMaximum(), stats.getRange().getMaximum(), stats.getRange().getMaximum(),
+                        stats.getRange().getMinimum(), stats.getRange().getMaximum());
             }
             
         }

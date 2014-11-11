@@ -180,7 +180,7 @@ public final class DatasetFactory {
         }
         
         org.diirt.util.stats.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));        
-        return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getMinimum().doubleValue(), stats.getMaximum().doubleValue());
+        return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getRange().getMinimum(), stats.getRange().getMaximum());
     }
     
     /**

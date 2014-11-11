@@ -107,8 +107,8 @@ class MultiAxisLineGraph2DFunction implements ReadFunction<Graph2DResult> {
         });
         
         return new Graph2DResult(vType, previousImage,
-                new GraphDataRange(renderer.getXPlotRange(), xDataRange, renderer.getXAggregatedRange()),
-                new GraphDataRange(renderer.getYPlotRange(), yDataRange, renderer.getYAggregatedRange()),
+                new GraphDataRange(renderer.getXPlotRange(), xDataRange.getRange(), renderer.getXAggregatedRange()),
+                new GraphDataRange(renderer.getYPlotRange(), yDataRange.getRange(), renderer.getYAggregatedRange()),
                 -1);
     }
     

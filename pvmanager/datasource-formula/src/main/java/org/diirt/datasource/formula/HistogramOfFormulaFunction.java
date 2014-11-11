@@ -77,17 +77,17 @@ class HistogramOfFormulaFunction extends StatefulFormulaFunction {
         
         Statistics stats = StatisticsUtil.statisticsOf(numberArray.getData());
         int nBins = 100;
-        Range aggregatedRange = Ranges.aggregateRange(stats, previousXRange);
+        Range aggregatedRange = Ranges.aggregateRange(stats.getRange(), previousXRange);
         Range xRange;
-        if (Ranges.overlap(aggregatedRange, stats) >= 0.75) {
+        if (Ranges.overlap(aggregatedRange, stats.getRange()) >= 0.75) {
             xRange = aggregatedRange;
         } else {
-            xRange = stats;
+            xRange = stats.getRange();
         }
 
         IteratorNumber newValues = numberArray.getData().iterator();
-        double minValueRange = xRange.getMinimum().doubleValue();
-        double maxValueRange = xRange.getMaximum().doubleValue();
+        double minValueRange = xRange.getMinimum();
+        double maxValueRange = xRange.getMaximum();
         
         ListNumber xBoundaries = ListNumbers.linearListFromRange(minValueRange, maxValueRange, nBins + 1);
         String unit = numberArray.getUnits();

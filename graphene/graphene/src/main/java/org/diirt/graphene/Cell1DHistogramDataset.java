@@ -45,8 +45,8 @@ class Cell1DHistogramDataset implements Cell1DDataset {
         
         IteratorNumber newValues = dataset.getValues().iterator();
         if (autoValueRange) {
-            this.minValueRange = dataset.getStatistics().getMinimum().doubleValue();
-            this.maxValueRange = dataset.getStatistics().getMaximum().doubleValue();
+            this.minValueRange = dataset.getStatistics().getRange().getMinimum();
+            this.maxValueRange = dataset.getStatistics().getRange().getMaximum();
             xBoundaries = ListNumbers.linearListFromRange(minValueRange, maxValueRange, nBins);
             xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(nBins));
         }
@@ -64,7 +64,7 @@ class Cell1DHistogramDataset implements Cell1DDataset {
             return;
         }
         
-        int bin = (int) Math.floor(MathUtil.scale(value, xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), nBins));
+        int bin = (int) Math.floor(MathUtil.scale(value, xRange.getMinimum(), xRange.getMaximum(), nBins));
         if (bin == nBins) {
             bin--;
         }

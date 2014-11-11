@@ -58,12 +58,12 @@ class NumberColorMapGradient implements NumberColorMap {
             if (range == null) {
                 throw new NullPointerException("range can not be null.");
             }
-            double fullRange = range.getMaximum().doubleValue() - range.getMinimum().doubleValue();
+            double fullRange = range.getMaximum() - range.getMinimum();
             int alpha = 0, red = 0, green = 0, blue = 0;
             if (fullRange > 0) {
                 for (int i = 0; i < percentages.size() - 1; i++) {
-                    if (range.getMinimum().doubleValue() + percentages.get(i) * fullRange <= value && value <= range.getMinimum().doubleValue() + percentages.get(i + 1) * fullRange) {
-                        double normalValue = MathUtil.normalize(value, range.getMinimum().doubleValue() + percentages.get(i) * fullRange, range.getMinimum().doubleValue() + percentages.get(i + 1) * fullRange);
+                    if (range.getMinimum() + percentages.get(i) * fullRange <= value && value <= range.getMinimum() + percentages.get(i + 1) * fullRange) {
+                        double normalValue = MathUtil.normalize(value, range.getMinimum() + percentages.get(i) * fullRange, range.getMinimum() + percentages.get(i + 1) * fullRange);
                         normalValue = Math.min(normalValue, 1.0);
                         normalValue = Math.max(normalValue, 0.0);
                         alpha = 255;
@@ -85,13 +85,13 @@ class NumberColorMapGradient implements NumberColorMap {
                     }
                 }
             }
-            if (value > range.getMaximum().doubleValue()) {
+            if (value > range.getMaximum()) {
                 alpha = 255;
                 red = (colors[colors.length - 2].getRed());
                 green = (colors[colors.length - 2].getGreen());
                 blue = (colors[colors.length - 2].getBlue());
             }
-            if (value < range.getMinimum().doubleValue()) {
+            if (value < range.getMinimum()) {
                 alpha = 255;
                 red = (colors[0].getRed());
                 green = (colors[0].getGreen());

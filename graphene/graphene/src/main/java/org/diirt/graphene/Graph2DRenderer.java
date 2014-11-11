@@ -341,25 +341,25 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     protected void calculateLabels() {
         // Calculate horizontal axis references. If range is zero, use special logic
-        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
+        if (!(xPlotRange.getMinimum() == xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            xReferenceLabels = Collections.singletonList(xPlotRange.getMinimum().toString());
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());            
+            xReferenceLabels = Collections.singletonList(Double.toString(xPlotRange.getMinimum()));
+            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());            
         }      
         
         // Calculate vertical axis references. If range is zero, use special logic
-        if (!yPlotRange.getMinimum().equals(yPlotRange.getMaximum())) {
+        if (!(yPlotRange.getMinimum() == yPlotRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
             yReferenceValues = new ArrayDouble(yAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            yReferenceLabels = Collections.singletonList(yPlotRange.getMinimum().toString());
-            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum().doubleValue());            
+            yReferenceLabels = Collections.singletonList(Double.toString(yPlotRange.getMinimum()));
+            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum());
         }
         
         labelFontMetrics = g.getFontMetrics(labelFont);
@@ -393,8 +393,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
-        xPlotValueStart = getXPlotRange().getMinimum().doubleValue();
-        xPlotValueEnd = getXPlotRange().getMaximum().doubleValue();
+        xPlotValueStart = getXPlotRange().getMinimum();
+        xPlotValueEnd = getXPlotRange().getMaximum();
         if (xPlotValueStart == xPlotValueEnd) {
             // If range is zero, fake a range
             xPlotValueStart -= 1.0;
@@ -406,8 +406,8 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         xPlotCoordEnd = xAreaCoordEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         
-        yPlotValueStart = getYPlotRange().getMinimum().doubleValue();
-        yPlotValueEnd = getYPlotRange().getMaximum().doubleValue();
+        yPlotValueStart = getYPlotRange().getMinimum();
+        yPlotValueEnd = getYPlotRange().getMaximum();
         if (yPlotValueStart == yPlotValueEnd) {
             // If range is zero, fake a range
             yPlotValueStart -= 1.0;

@@ -118,7 +118,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
         
-        calculateRanges(data.getXStatistics(), data.getXDisplayRange(), data.getYStatistics(), data.getYDisplayRange());
+        calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
         calculateLabels();
         calculateGraphArea();        
         drawBackground();
@@ -156,7 +156,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         
         //Calculate range, range will end up being from the lowest point to highest in all of the given data.
         for(Point2DDataset dataPiece: data){
-          super.calculateRanges(dataPiece.getXStatistics(), dataPiece.getXDisplayRange(), dataPiece.getYStatistics(), dataPiece.getYDisplayRange());
+          super.calculateRanges(dataPiece.getXStatistics().getRange(), dataPiece.getXDisplayRange(), dataPiece.getYStatistics().getRange(), dataPiece.getYDisplayRange());
         }
         calculateLabels();
         calculateGraphArea();

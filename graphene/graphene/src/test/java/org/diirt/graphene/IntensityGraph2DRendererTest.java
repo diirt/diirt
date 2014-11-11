@@ -447,18 +447,18 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.update(renderer.newUpdate().pixelSelectionRange(100, 200, 150, 250));
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        assertThat(renderer.getXPixelSelectionRange().getMinimum().intValue(), equalTo(100));
-        assertThat(renderer.getXPixelSelectionRange().getMaximum().intValue(), equalTo(200));
-        assertThat(renderer.getYPixelSelectionRange().getMinimum().intValue(), equalTo(150));
-        assertThat(renderer.getYPixelSelectionRange().getMaximum().intValue(), equalTo(250));
-        assertThat(renderer.getXValueSelectionRange().getMinimum().doubleValue(), closeTo(12.5203, 0.0001));
-        assertThat(renderer.getXValueSelectionRange().getMaximum().doubleValue(), closeTo(28.9430, 0.0001));
-        assertThat(renderer.getYValueSelectionRange().getMinimum().doubleValue(), closeTo(45.9869, 0.0001));
-        assertThat(renderer.getYValueSelectionRange().getMaximum().doubleValue(), closeTo(67.8958, 0.0001));
-        assertThat(renderer.getXIndexSelectionRange().getMinimum().intValue(), equalTo(25));
-        assertThat(renderer.getXIndexSelectionRange().getMaximum().intValue(), equalTo(57));
-        assertThat(renderer.getYIndexSelectionRange().getMinimum().intValue(), equalTo(92));
-        assertThat(renderer.getYIndexSelectionRange().getMaximum().intValue(), equalTo(135));
+        assertThat(renderer.getXPixelSelectionRange().getMinimum(), equalTo(100.0));
+        assertThat(renderer.getXPixelSelectionRange().getMaximum(), equalTo(200.0));
+        assertThat(renderer.getYPixelSelectionRange().getMinimum(), equalTo(150.0));
+        assertThat(renderer.getYPixelSelectionRange().getMaximum(), equalTo(250.0));
+        assertThat(renderer.getXValueSelectionRange().getMinimum(), closeTo(12.5203, 0.0001));
+        assertThat(renderer.getXValueSelectionRange().getMaximum(), closeTo(28.9430, 0.0001));
+        assertThat(renderer.getYValueSelectionRange().getMinimum(), closeTo(45.9869, 0.0001));
+        assertThat(renderer.getYValueSelectionRange().getMaximum(), closeTo(67.8958, 0.0001));
+        assertThat(renderer.getXIndexSelectionRange().getMinimum(), equalTo(25.0));
+        assertThat(renderer.getXIndexSelectionRange().getMaximum(), equalTo(57.0));
+        assertThat(renderer.getYIndexSelectionRange().getMinimum(), equalTo(92.0));
+        assertThat(renderer.getYIndexSelectionRange().getMaximum(), equalTo(135.0));
         ImageAssert.compareImages("intensityGraph2D.selectedRegion.1", graphBuffer.getImage());
     }
 }

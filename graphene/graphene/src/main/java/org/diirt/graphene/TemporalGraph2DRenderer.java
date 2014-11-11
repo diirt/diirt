@@ -308,9 +308,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
         xPlotValueStart = 0.0;
-        yPlotValueStart = getPlotRange().getMinimum().doubleValue();
+        yPlotValueStart = getPlotRange().getMinimum();
         xPlotValueEnd = 1.0;
-        yPlotValueEnd = getPlotRange().getMaximum().doubleValue();
+        yPlotValueEnd = getPlotRange().getMaximum();
         xAreaStart = areaFromLeft;
         yAreaStart = topMargin;
         xAreaEnd = getImageWidth() - rightMargin - 1;

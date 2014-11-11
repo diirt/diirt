@@ -36,7 +36,7 @@ public class Point2DDatasets {
     }
     
     public static Point2DDataset lineData(final Range xRange, final ListNumber y) {
-        return lineData(ListNumbers.linearListFromRange(xRange.getMinimum().doubleValue(), xRange.getMaximum().doubleValue(), y.size()), y);
+        return lineData(ListNumbers.linearListFromRange(xRange.getMinimum(), xRange.getMaximum(), y.size()), y);
     }
 
     public static Point2DDataset lineData(final ListNumber x, final ListNumber y) {

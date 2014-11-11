@@ -5,31 +5,53 @@
 package org.diirt.util.stats;
 
 /**
- * The range of a series of values, either points or cells.
+ * A range of numeric values.
  * <p>
- * For the purpose of range calculation, NaNs should be skipped. That is,
- * they should not appear as minimum or maximum.
+ * For the purpose of range calculation, NaNs should be skipped. The only case
+ * where NaNs are allowed is for the UNDEFINED range.
  * <p>
- * The appropriate Range instance for
- * an unknown range, or for a range of NaN values, is null.
- * <p>
- * The minimum and maximum are Numbers to allow to retain the type of
- * values used.
+ * The minimum and maximum are simply double values.
  *
  * @author carcassi
  */
-public interface Range {
+public final class Range {
+    
+    private final double min;
+    private final double max;
+    private final boolean reversed;
+
+    Range(double min, double max, boolean reversed) {
+        this.min = min;
+        this.max = max;
+        this.reversed = reversed;
+    }
+    
     /**
      * The minimum value.
      * 
-     * @return a value; never null
+     * @return a value
      */
-    public Number getMinimum();
+    public double getMinimum() {
+        return min;
+    }
     
     /**
      * The maximum value.
      * 
-     * @return a value; never null
+     * @return a value
      */
-    public Number getMaximum();
+    public double getMaximum() {
+        return max;
+    }
+
+    /**
+     * Whether the range goes from min to max or from max to min.
+     * 
+     * @return true if range should be traversed from max to min
+     */
+    public boolean isReversed() {
+        return reversed;
+    }
+    
+    
 }

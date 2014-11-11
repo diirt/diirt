@@ -191,12 +191,12 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         //Make a list containing the x range of each data set (each one should be the same).
         List<Range> dataRangesX = new ArrayList<Range>();
         for(int i = 0; i < data.size(); i++){
-            dataRangesX.add(data.get(i).getXStatistics());
+            dataRangesX.add(data.get(i).getXStatistics().getRange());
         }
         //Make a list containing the y range of each data set (each one should be different).
         List<Range> dataRangesY = new ArrayList<Range>();
         for(int i = 0; i < data.size(); i++){
-            dataRangesY.add(data.get(i).getYStatistics());
+            dataRangesY.add(data.get(i).getYStatistics().getRange());
         }
 
         labelFontMetrics = g.getFontMetrics(labelFont);
@@ -366,14 +366,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     @Override
     protected void calculateLabels() {
         // Calculate horizontal axis references. If range is zero, use special logic
-        if (!xPlotRange.getMinimum().equals(xPlotRange.getMaximum())) {
+        if (!(xPlotRange.getMinimum() == xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            xReferenceLabels = Collections.singletonList(xPlotRange.getMinimum().toString());
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum().doubleValue());            
+            xReferenceLabels = Collections.singletonList(Double.toString(xPlotRange.getMinimum()));
+            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());
         }      
         
         // Calculate vertical axis references. If range is zero, use special logic
@@ -381,7 +381,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             yReferenceLabels = new ArrayList<List<String>>();
             yReferenceValues = new ArrayList<ListDouble>();
             for(int i = 0; i < yPlotRange.size(); i++){
-                if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
+                if (!(yPlotRange.get(i).getMinimum() == yPlotRange.get(i).getMaximum())) {
                     ValueAxis yAxis;
                     if(separateAreas){
                         yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, (graphBoundaries.get(i+1).intValue() - graphBoundaries.get(i).intValue()) / 60));
@@ -392,14 +392,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                     yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));            
                 } else {
                     // TODO: use something better to format the number
-                    yReferenceLabels.add(Collections.singletonList(yPlotRange.get(i).getMinimum().toString()));
-                    yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum().doubleValue()));            
+                    yReferenceLabels.add(Collections.singletonList(Double.toString(yPlotRange.get(i).getMinimum())));
+                    yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum()));            
                 }
             }
         }
         else{
             for(int i = 0; i < yPlotRange.size(); i++){
-                if (!yPlotRange.get(i).getMinimum().equals(yPlotRange.get(i).getMaximum())) {
+                if (!(yPlotRange.get(i).getMinimum() == yPlotRange.get(i).getMaximum())) {
                     ValueAxis yAxis;
                     if(separateAreas){
                         yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, (graphBoundaries.get(i+1).intValue() - graphBoundaries.get(i).intValue()) / 60));
@@ -410,8 +410,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                     yReferenceValues.set(i,new ArrayDouble(yAxis.getTickValues()));            
                 } else {
                     // TODO: use something better to format the number
-                    yReferenceLabels.set(i,Collections.singletonList(yPlotRange.get(i).getMinimum().toString()));
-                    yReferenceValues.set(i,new ArrayDouble(yPlotRange.get(i).getMinimum().doubleValue()));            
+                    yReferenceLabels.set(i,Collections.singletonList(Double.toString(yPlotRange.get(i).getMinimum())));
+                    yReferenceValues.set(i,new ArrayDouble(yPlotRange.get(i).getMinimum()));            
                 }
             }
         }
@@ -443,8 +443,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             areaFromRight = rightMargin;
         }
         
-        xPlotValueStart = xPlotRange.getMinimum().doubleValue();
-        xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
+        xPlotValueStart = xPlotRange.getMinimum();
+        xPlotValueEnd = xPlotRange.getMaximum();
         if (xPlotValueStart == xPlotValueEnd) {
             // If range is zero, fake a range
             xPlotValueStart -= 1.0;
@@ -461,14 +461,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             yPlotValueStart = new ArrayList<Double>();
             yPlotValueEnd = new ArrayList<Double>();
             for(int i = 0; i < yPlotRange.size(); i++){
-                yPlotValueStart.add(yPlotRange.get(i).getMinimum().doubleValue());
-                yPlotValueEnd.add(yPlotRange.get(i).getMaximum().doubleValue());
+                yPlotValueStart.add(yPlotRange.get(i).getMinimum());
+                yPlotValueEnd.add(yPlotRange.get(i).getMaximum());
             }
         }
         else{
             for(int i = 0; i < yPlotRange.size(); i++){
-                yPlotValueStart.set(i, yPlotRange.get(i).getMinimum().doubleValue());
-                yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum().doubleValue());
+                yPlotValueStart.set(i, yPlotRange.get(i).getMinimum());
+                yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum());
             }
         }
         
@@ -515,8 +515,8 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
 
-        xPlotValueStart = xPlotRange.getMinimum().doubleValue();
-        xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
+        xPlotValueStart = xPlotRange.getMinimum();
+        xPlotValueEnd = xPlotRange.getMaximum();
         if (xPlotValueStart == xPlotValueEnd) {
             // If range is zero, fake a range
             xPlotValueStart -= 1.0;
@@ -533,14 +533,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             yPlotValueStart = new ArrayList<Double>();
             yPlotValueEnd = new ArrayList<Double>();
             for(int i = 0; i < yPlotRange.size(); i++){
-                yPlotValueStart.add(yPlotRange.get(i).getMinimum().doubleValue());
-                yPlotValueEnd.add(yPlotRange.get(i).getMaximum().doubleValue());
+                yPlotValueStart.add(yPlotRange.get(i).getMinimum());
+                yPlotValueEnd.add(yPlotRange.get(i).getMaximum());
             }
         }
         else{
             for(int i = 0; i < yPlotRange.size(); i++){
-                yPlotValueStart.set(i, yPlotRange.get(i).getMinimum().doubleValue());
-                yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum().doubleValue());
+                yPlotValueStart.set(i, yPlotRange.get(i).getMinimum());
+                yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum());
             }
         }
         

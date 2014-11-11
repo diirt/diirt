@@ -151,25 +151,25 @@ class GraphAreaData {
         this.labelColor = labelColor;
         
         // Calculate horizontal axis references. If range is zero, use special logic
-        if (!xValueRange.getMinimum().equals(xValueRange.getMaximum())) {
+        if (!(xValueRange.getMinimum() == xValueRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xValueRange, 2, Math.max(2, (areaRight - areaLeft + 1) / 55));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
             xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
         } else {
             // TODO: use something better to format the number
-            xReferenceLabels = Collections.singletonList(xValueRange.getMinimum().toString());
-            xReferenceValues = new ArrayDouble(xValueRange.getMinimum().doubleValue());            
+            xReferenceLabels = Collections.singletonList(Double.toString(xValueRange.getMinimum()));
+            xReferenceValues = new ArrayDouble(xValueRange.getMinimum());  
         }      
         
         // Calculate vertical axis references. If range is zero, use special logic
-        if (!yValueRange.getMinimum().equals(yValueRange.getMaximum())) {
+        if (!(yValueRange.getMinimum() == yValueRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yValueRange, 2, Math.max(2, (areaBottom - areaTop + 1) / 55));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
             yReferenceValues = new ArrayDouble(yAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
-            yReferenceLabels = Collections.singletonList(yValueRange.getMinimum().toString());
-            yReferenceValues = new ArrayDouble(yValueRange.getMinimum().doubleValue());            
+            yReferenceLabels = Collections.singletonList(Double.toString(yValueRange.getMinimum()));
+            yReferenceValues = new ArrayDouble(yValueRange.getMinimum());  
         }
         
         FontMetrics labelFontMetrics = graphBuffer.getGraphicsContext().getFontMetrics(labelFont);
@@ -193,8 +193,8 @@ class GraphAreaData {
      * @return the same range, or one that is safe to draw
      */
     private Range safeRange(Range range) {
-        if (range.getMinimum().doubleValue() == range.getMaximum().doubleValue()) {
-            return Ranges.range(range.getMinimum().doubleValue() - 1.0, range.getMaximum().doubleValue() + 1.0);
+        if (range.getMinimum() == range.getMaximum()) {
+            return Ranges.range(range.getMinimum() - 1.0, range.getMaximum() + 1.0);
         } else {
             return range;
         }

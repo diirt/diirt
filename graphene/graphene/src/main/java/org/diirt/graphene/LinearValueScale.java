@@ -33,8 +33,8 @@ final class LinearValueScale implements ValueScale {
 
     @Override
     public ValueAxis references(Range range, int minRefs, int maxRefs) {
-        double minValue = range.getMinimum().doubleValue();
-        double maxValue = range.getMaximum().doubleValue();
+        double minValue = range.getMinimum();
+        double maxValue = range.getMaximum();
         double minIncrement = Double.MIN_VALUE;
         double increment = incrementForRange(minValue, maxValue, maxRefs, minIncrement);
         double[] ticks = createTicks(minValue, maxValue, increment);
