@@ -60,7 +60,7 @@ class Cell1DHistogramDataset implements Cell1DDataset {
     
     private void addValueToBin(double value) {
         // Discard value outsie the binning area
-        if (!Ranges.contains(xRange, value)) {
+        if (!xRange.contains(value)) {
             return;
         }
         
