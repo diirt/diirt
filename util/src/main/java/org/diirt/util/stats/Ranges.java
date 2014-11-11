@@ -42,19 +42,6 @@ public class Ranges {
         }
         return new Range(minValue, maxValue, false);
     }
-    
-    /**
-     * Determines whether the subrange is contained in the range or not.
-     * 
-     * @param range a range
-     * @param subrange a possible subrange
-     * @return true if subrange is contained in range
-     */
-    public static boolean contains(Range range, Range subrange) {
-        return range.getMinimum() <= subrange.getMinimum()
-                && range.getMaximum() >= subrange.getMaximum();
-        
-    }
 
     /**
      * Determines the range that can contain both ranges. If one of the
