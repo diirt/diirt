@@ -66,6 +66,18 @@ public final class Range {
     }
     
     /**
+     * Returns the value normalized within the range. It performs a linear
+     * transformation where the minimum value of the range becomes 0 while
+     * the maximum becomes 1.
+     * 
+     * @param value a value
+     * @return the value transformed based on the range
+     */
+    public double normalize(double value) {
+        return (value - getMinimum()) / (getMaximum() - getMinimum());
+    }
+    
+    /**
      * An undefined range.
      * 
      * @return the undefined range

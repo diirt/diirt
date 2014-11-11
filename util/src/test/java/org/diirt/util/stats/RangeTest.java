@@ -92,4 +92,22 @@ public class RangeTest {
         assertThat(range1.isFinite(), equalTo(false));
     }
     
+    @Test
+    public void normalize1() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.normalize(0.0), equalTo(0.5));
+    }
+    
+    @Test
+    public void normalize2() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.normalize(10.0), equalTo(1.0));
+    }
+    
+    @Test
+    public void normalize3() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.normalize(-10.0), equalTo(0.0));
+    }
+    
 }
