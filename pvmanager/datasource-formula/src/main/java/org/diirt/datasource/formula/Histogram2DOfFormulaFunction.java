@@ -117,8 +117,8 @@ class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
             double xValue = xData.getDouble(i);
             double yValue = yData.getDouble(i);
             // Check value in range
-            if (Ranges.contains(xRange, xValue)) {
-                if (Ranges.contains(yRange, yValue)) {
+            if (xRange.contains(xValue)) {
+                if (yRange.contains(yValue)) {
 
                     int xBin = (int) Math.floor(xRange.normalize(xValue) * nXBins);
                     int yBin = (int) Math.floor(yRange.normalize(yValue) * nYBins);
