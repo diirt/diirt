@@ -97,7 +97,31 @@ public final class Range {
         return getMinimum() <= range.getMinimum()
                 && getMaximum() >= range.getMaximum();
         
-    }    
+    }
+
+    /**
+     * Determines the range that can contain both ranges. If one of the
+     * ranges in contained in the other, the bigger range is returned.
+     * 
+     * @param other another range
+     * @return the bigger range
+     */
+    public Range combine(Range other) {
+        if (getMinimum() <= other.getMinimum()) {
+            if (getMaximum() >= other.getMaximum()) {
+                return this;
+            } else {
+                return create(getMinimum(), other.getMaximum());
+            }
+        } else {
+            if (getMaximum() >= other.getMaximum()) {
+                return create(other.getMinimum(), getMaximum());
+            } else {
+                return other;
+            }
+        }
+    }
+    
     /**
      * An undefined range.
      * 

@@ -143,4 +143,60 @@ public class RangeTest {
         assertThat(Range.create(0.0, 1.0).contains(Range.create(0.0, 1.75)), equalTo(false));
     }
     
+    @Test
+    public void sum1() {
+        Range range1 = Range.create(0.0, 5.0);
+        Range range2 = Range.create(1.0, 2.0);
+        assertThat(range1.combine(range2), sameInstance(range1));
+        assertThat(range2.combine(range1), sameInstance(range1));
+    }
+    
+    @Test
+    public void sum2() {
+        Range range1 = Ranges.range(0.0, 5.0);
+        Range range2 = Ranges.range(1.0, 6.0);
+        Range range = range1.combine(range2);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+        range = range2.combine(range1);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+    }
+    
+    @Test
+    public void sum3() {
+        Range range1 = Ranges.range(0.0, 3.0);
+        Range range2 = Ranges.range(4.0, 6.0);
+        Range range = Ranges.sum(range1, range2);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+        range = Ranges.sum(range2, range1);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+    }
+    
+    @Test
+    public void sum4() {
+        Range range1 = Ranges.range(0.0, 3.0);
+        Range range2 = Ranges.range(0.0, 6.0);
+        Range range = Ranges.sum(range1, range2);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+        range = Ranges.sum(range2, range1);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+    }
+    
+    @Test
+    public void sum5() {
+        Range range1 = Ranges.range(0.0, 6.0);
+        Range range2 = Ranges.range(3.0, 6.0);
+        Range range = Ranges.sum(range1, range2);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+        range = Ranges.sum(range2, range1);
+        assertThat(range.getMinimum(), equalTo((Number) 0.0));
+        assertThat(range.getMaximum(), equalTo((Number) 6.0));
+    }
+    
 }
