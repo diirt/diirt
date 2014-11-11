@@ -216,7 +216,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         if (aggregatedRange == null) {
             return dataRange;
         } else {
-            return Ranges.sum(dataRange, aggregatedRange);
+            return dataRange.combine(aggregatedRange);
         }
     }
     

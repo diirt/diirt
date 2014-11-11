@@ -280,7 +280,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (aggregatedRange == null) {
             return dataRange;
         } else {
-            return Ranges.sum(dataRange, aggregatedRange);
+            return dataRange.combine(aggregatedRange);
         }
     }
     
