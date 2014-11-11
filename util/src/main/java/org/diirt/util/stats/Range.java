@@ -107,6 +107,14 @@ public final class Range {
      * @return the bigger range
      */
     public Range combine(Range other) {
+        if (this == UNDEFINED) {
+            return other;
+        }
+        
+        if (other == UNDEFINED) {
+            return this;
+        }
+        
         if (getMinimum() <= other.getMinimum()) {
             if (getMaximum() >= other.getMaximum()) {
                 return this;

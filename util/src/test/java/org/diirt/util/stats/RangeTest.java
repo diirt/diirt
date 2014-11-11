@@ -144,7 +144,7 @@ public class RangeTest {
     }
     
     @Test
-    public void sum1() {
+    public void combine1() {
         Range range1 = Range.create(0.0, 5.0);
         Range range2 = Range.create(1.0, 2.0);
         assertThat(range1.combine(range2), sameInstance(range1));
@@ -152,7 +152,7 @@ public class RangeTest {
     }
     
     @Test
-    public void sum2() {
+    public void combine2() {
         Range range1 = Ranges.range(0.0, 5.0);
         Range range2 = Ranges.range(1.0, 6.0);
         Range range = range1.combine(range2);
@@ -164,39 +164,46 @@ public class RangeTest {
     }
     
     @Test
-    public void sum3() {
+    public void combine3() {
         Range range1 = Ranges.range(0.0, 3.0);
         Range range2 = Ranges.range(4.0, 6.0);
-        Range range = Ranges.sum(range1, range2);
+        Range range = range1.combine(range2);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
-        range = Ranges.sum(range2, range1);
+        range = range2.combine(range1);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
     }
     
     @Test
-    public void sum4() {
+    public void combine4() {
         Range range1 = Ranges.range(0.0, 3.0);
         Range range2 = Ranges.range(0.0, 6.0);
-        Range range = Ranges.sum(range1, range2);
+        Range range = range1.combine(range2);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
-        range = Ranges.sum(range2, range1);
+        range = range2.combine(range1);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
     }
     
     @Test
-    public void sum5() {
+    public void combine5() {
         Range range1 = Ranges.range(0.0, 6.0);
         Range range2 = Ranges.range(3.0, 6.0);
-        Range range = Ranges.sum(range1, range2);
+        Range range = range1.combine(range2);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
-        range = Ranges.sum(range2, range1);
+        range = range2.combine(range1);
         assertThat(range.getMinimum(), equalTo((Number) 0.0));
         assertThat(range.getMaximum(), equalTo((Number) 6.0));
+    }
+    @Test
+    public void combine6() {
+        Range range1 = Range.undefined();
+        Range range2 = Range.create(1.0, 2.0);
+        assertThat(range1.combine(range2), sameInstance(range2));
+        assertThat(range2.combine(range1), sameInstance(range2));
     }
     
 }
