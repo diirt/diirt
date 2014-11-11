@@ -90,23 +90,6 @@ public class Ranges {
     public static String toString(Range range) {
         return "[" + range.getMinimum() + " - " + range.getMaximum() + "]";
     }
-    
-    /**
-     * Returns the value normalized within the range. It performs a linear
-     * transformation where the minimum value of the range becomes 0 while
-     * the maximum becomes 1.
-     * 
-     * @param range a range
-     * @param value a value
-     * @return the value transformed based on the range
-     */
-    public static double normalize(Range range, double value) {
-        return normalize(value, range.getMinimum(), range.getMaximum());
-    }
-    
-    private static double normalize(double value, double min, double max) {
-        return (value - min) / (max - min);
-    }
 
     /**
      * Determines whether the value is contained by the range or not.
@@ -153,25 +136,6 @@ public class Ranges {
         double rangeWidth = range.getMaximum() - range.getMinimum();
         double fraction = Math.max(0.0, overlapWidth / rangeWidth);
         return fraction;
-    }
-    
-    /**
-     * Checks whether the range is of non-zero size and the boundaries are
-     * neither NaN or Infinity.
-     * 
-     * @param range the range
-     * @return true if range is of finite, non-zero size
-     */
-    public static boolean isValid(Range range) {
-        if (range == null) {
-            return false;
-        }
-        
-        double min = range.getMinimum();
-        double max = range.getMaximum();
-        
-        return min != max && !Double.isNaN(min) && !Double.isInfinite(min) &&
-                !Double.isNaN(max) && !Double.isInfinite(max);
     }
     
     /**

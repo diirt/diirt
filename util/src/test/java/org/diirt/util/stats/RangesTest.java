@@ -179,45 +179,4 @@ public class RangesTest {
         Range range2 = Ranges.range(2.0, 14.0);
         assertThat(Ranges.overlap(range1, range2), equalTo(0.75));
     }
-    
-    @Test
-    public void isValid1() {
-        Range range1 = Ranges.range(0.0, 8.0);
-        assertThat(Ranges.isValid(range1), equalTo(true));
-    }
-    
-    @Test
-    public void isValid2() {
-        Range range1 = Ranges.range(5.0, 5.0);
-        assertThat(Ranges.isValid(range1), equalTo(false));
-    }
-    
-    @Test
-    public void isValid3() {
-        Range range1 = Ranges.range(Double.NaN, 8.0);
-        assertThat(Ranges.isValid(range1), equalTo(false));
-    }
-    
-    @Test
-    public void isValid4() {
-        Range range1 = Ranges.range(Double.NEGATIVE_INFINITY, 8.0);
-        assertThat(Ranges.isValid(range1), equalTo(false));
-    }
-    
-    @Test
-    public void isValid5() {
-        Range range1 = Ranges.range(0.0, Double.NaN);
-        assertThat(Ranges.isValid(range1), equalTo(false));
-    }
-    
-    @Test
-    public void isValid6() {
-        Range range1 = Ranges.range(0.0, Double.POSITIVE_INFINITY);
-        assertThat(Ranges.isValid(range1), equalTo(false));
-    }
-    
-    @Test
-    public void isValid7() {
-        assertThat(Ranges.isValid(null), equalTo(false));
-    }
 }
