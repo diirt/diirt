@@ -271,7 +271,7 @@ public class AxisRanges {
 
                 @Override
                 public Range axisRange(Range dataRange, Range displayRange) {
-                    if (Ranges.isValid(displayRange)) {
+                    if (displayRange != null && displayRange.isFinite()) {
                         return displayRange;
                     } else if (previousDataRange == null) {
                         previousDataRange = dataRange;
