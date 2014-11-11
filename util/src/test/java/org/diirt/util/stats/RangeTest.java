@@ -20,13 +20,16 @@ public class RangeTest {
         assertThat(range.getMinimum(), equalTo(0.0));
         assertThat(range.getMaximum(), equalTo(10.0));
         assertThat(range.isReversed(), equalTo(false));
+        assertThat(range.toString(), equalTo("[0.0 - 10.0]"));
     }
     
+    @Test
     public void range2() throws Exception {
         Range range = Range.create(0.0, 0.0);
         assertThat(range.getMinimum(), equalTo(0.0));
         assertThat(range.getMaximum(), equalTo(0.0));
         assertThat(range.isReversed(), equalTo(false));
+        assertThat(range.toString(), equalTo("[0.0 - 0.0]"));
     }
     
     @Test
@@ -35,6 +38,7 @@ public class RangeTest {
         assertThat(range.getMinimum(), equalTo(0.0));
         assertThat(range.getMaximum(), equalTo(10.0));
         assertThat(range.isReversed(), equalTo(true));
+        assertThat(range.toString(), equalTo("[10.0 - 0.0]"));
     }
     
 }

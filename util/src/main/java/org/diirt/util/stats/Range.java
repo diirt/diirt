@@ -63,6 +63,15 @@ public final class Range {
     public static Range undefined() {
         return UNDEFINED;
     }
+
+    @Override
+    public String toString() {
+        if (!isReversed()) {
+            return "[" + getMinimum() + " - " + getMaximum() + "]";
+        } else {
+            return "[" + getMaximum() + " - " + getMinimum() + "]";
+        }
+    }
     
     /**
      * Range from given min and max. If max is greater than min, a reversed
