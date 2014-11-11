@@ -42,4 +42,30 @@ public abstract class VNumber extends Scalar implements AlarmProvider, TimeProvi
         return builder.toString();
     }
     
+    /**
+     * Creates a new VNumber based on the type of the data
+     * 
+     * @param value the value
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new number
+     */
+    public static VNumber create(Number value, Alarm alarm, org.diirt.vtype.Time time, org.diirt.vtype.Display display){
+        if (value instanceof Double) {
+            return VDouble.create((Double) value, alarm, time, display);
+//        } else if (value instanceof Float) {
+//            return newVFloat((Float) value, alarm, time, display);
+//        } else if (value instanceof Long) {
+//            return newVLong((Long) value, alarm, time, display);
+        } else if (value instanceof Integer) {
+            return VInt.create((Integer) value, alarm, time, display);
+//        } else if (value instanceof Short) {
+//            return newVShort((Short) value, alarm, time, display);
+//        } else if (value instanceof Byte) {
+//            return newVByte((Byte) value, alarm, time, display);
+        }
+	throw new UnsupportedOperationException();
+    }
+    
 }

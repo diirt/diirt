@@ -36,7 +36,7 @@ public abstract class VType {
             return null;
         
         for (Class<?> type : types) {
-            if (type.isInstance(type)) {
+            if (type.isInstance(obj)) {
                 return type;
             }
         }

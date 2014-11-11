@@ -18,4 +18,17 @@ public abstract class VDouble extends VNumber {
      */
     @Override
     public abstract Double getValue();
+    
+    /**
+     * Creates a new VDouble.
+     * 
+     * @param value the value
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
+    public static VDouble create(final Double value, final Alarm alarm, final Time time, final Display display) {
+        return new IVDouble(value, alarm, time, display);
+    }
 }
