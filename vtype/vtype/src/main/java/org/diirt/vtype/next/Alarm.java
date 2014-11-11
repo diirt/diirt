@@ -80,4 +80,26 @@ public abstract class Alarm {
         return alarmProvider.getAlarm().toString();
     }
     
+    /**
+     * New alarm with the given severity and status.
+     * 
+     * @param alarmSeverity the alarm severity
+     * @param alarmName the alarm name
+     * @return the new alarm
+     */
+    public static Alarm create(final AlarmSeverity alarmSeverity, final String alarmName) {
+        return new IAlarm(alarmSeverity, alarmName);
+    }
+    
+    private static final Alarm alarmNone = create(AlarmSeverity.NONE, "NONE");
+    
+    /**
+     * No alarm.
+     * 
+     * @return severity and status NONE
+     */
+    public static Alarm none() {
+        return alarmNone;
+    }
+    
 }
