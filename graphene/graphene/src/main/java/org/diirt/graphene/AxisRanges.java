@@ -94,7 +94,7 @@ public class AxisRanges {
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof Fixed) {
-                return Ranges.equals(getFixedRange(), ((Fixed) obj).getFixedRange());
+                return Objects.equals(getFixedRange(), ((Fixed) obj).getFixedRange());
             } else {
                 return false;
             }

@@ -14,6 +14,7 @@ import org.diirt.util.array.ListNumbers;
 import org.diirt.util.array.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.Objects;
 import org.diirt.util.stats.Ranges;
 
 /**
@@ -175,7 +176,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         if (!optimizeColorScheme){
             colorMapInstance = colorMap.createInstance(zPlotRange);
         } else {
-            if (colorMapInstance == null || !Ranges.equals(optimizedRange, zRange)) {
+            if (colorMapInstance == null || !Objects.equals(optimizedRange, zRange)) {
                 colorMapInstance = colorMap.createInstance(zPlotRange);
                 colorMapInstance = NumberColorMaps.optimize(colorMapInstance, zPlotRange);
                 optimizedRange = zPlotRange;
