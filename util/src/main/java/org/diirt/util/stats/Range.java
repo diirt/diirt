@@ -16,6 +16,8 @@ package org.diirt.util.stats;
  */
 public final class Range {
     
+    private static final Range UNDEFINED = new Range(Double.NaN, Double.NaN, false);
+    
     private final double min;
     private final double max;
     private final boolean reversed;
@@ -53,5 +55,28 @@ public final class Range {
         return reversed;
     }
     
+    /**
+     * An undefined range.
+     * 
+     * @return the undefined range
+     */
+    public static Range undefined() {
+        return UNDEFINED;
+    }
+    
+    /**
+     * Range from given min and max. If max is greater than min, a reversed
+     * range is returned.
+     * 
+     * @param minValue minimum value
+     * @param maxValue maximum value
+     * @return the range
+     */
+    public static Range create(final double minValue, final double maxValue) {
+        if (minValue > maxValue) {
+            return new Range(maxValue, minValue, true);
+        }
+        return new Range(minValue, maxValue, false);
+    }
     
 }
