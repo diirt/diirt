@@ -98,7 +98,7 @@ class HistogramOfFormulaFunction extends StatefulFormulaFunction {
             // Check value in range
             if (Ranges.contains(xRange, value)) {
 
-                int bin = (int) Math.floor(Ranges.normalize(xRange, value) * nBins);
+                int bin = (int) Math.floor(xRange.normalize( value) * nBins);
                 if (bin == nBins) {
                     bin--;
                 }
