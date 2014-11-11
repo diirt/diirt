@@ -80,17 +80,6 @@ public class Ranges {
         }
         
     }
-
-    /**
-     * Determines whether the value is contained by the range or not.
-     * 
-     * @param range a range
-     * @param value a value
-     * @return true if the value is within the range
-     */
-    public static boolean contains(Range range, double value) {
-        return value >= range.getMinimum() && value <= range.getMaximum();
-    }
     
     /**
      * Increases the given aggregated range with the new data range.
@@ -126,24 +115,5 @@ public class Ranges {
         double rangeWidth = range.getMaximum() - range.getMinimum();
         double fraction = Math.max(0.0, overlapWidth / rangeWidth);
         return fraction;
-    }
-    
-    /**
-     * True if the tow ranges have the same min and max.
-     * 
-     * @param r1 a range
-     * @param r2 another range
-     * @return true if equal
-     */
-    public static boolean equals(Range r1, Range r2) {
-        // Check null cases
-        if (r1 == null && r2 == null) {
-            return true;
-        }
-        if (r1 == null || r2 == null) {
-            return false;
-        }
-        
-        return ((Double) r1.getMinimum()).equals((Double) r2.getMinimum()) && ((Double) r1.getMaximum()).equals((Double) r2.getMaximum());
     }
 }
