@@ -54,6 +54,16 @@ public final class Range {
     public boolean isReversed() {
         return reversed;
     }
+
+    /**
+     * Whether the range is finite and non-zero.
+     * 
+     * @return true if range is finite and non-zero
+     */
+    public boolean isFinite() {
+        return min != max && !Double.isNaN(min) && !Double.isInfinite(min) &&
+                !Double.isNaN(max) && !Double.isInfinite(max);
+    }
     
     /**
      * An undefined range.

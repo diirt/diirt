@@ -56,4 +56,40 @@ public class RangeTest {
         assertThat(Range.undefined(), equalTo(Range.undefined()));
     }
     
+    @Test
+    public void isFinite1() {
+        Range range1 = Ranges.range(0.0, 8.0);
+        assertThat(range1.isFinite(), equalTo(true));
+    }
+    
+    @Test
+    public void isFinite2() {
+        Range range1 = Ranges.range(5.0, 5.0);
+        assertThat(range1.isFinite(), equalTo(false));
+    }
+    
+    @Test
+    public void isFinite3() {
+        Range range1 = Ranges.range(Double.NaN, 8.0);
+        assertThat(range1.isFinite(), equalTo(false));
+    }
+    
+    @Test
+    public void isFinite4() {
+        Range range1 = Ranges.range(Double.NEGATIVE_INFINITY, 8.0);
+        assertThat(range1.isFinite(), equalTo(false));
+    }
+    
+    @Test
+    public void isFinite5() {
+        Range range1 = Ranges.range(0.0, Double.NaN);
+        assertThat(range1.isFinite(), equalTo(false));
+    }
+    
+    @Test
+    public void isFinite6() {
+        Range range1 = Ranges.range(0.0, Double.POSITIVE_INFINITY);
+        assertThat(range1.isFinite(), equalTo(false));
+    }
+    
 }
