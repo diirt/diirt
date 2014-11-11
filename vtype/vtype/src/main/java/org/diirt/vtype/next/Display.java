@@ -7,6 +7,8 @@ package org.diirt.vtype.next;
 import java.text.NumberFormat;
 import java.util.Objects;
 import org.diirt.util.stats.Range;
+import org.diirt.util.stats.Ranges;
+import org.diirt.util.text.NumberFormats;
 
 /**
  * Limit and unit information needed for display and control.
@@ -22,38 +24,38 @@ public abstract class Display {
     /**
      * The range for the value when displayed.
      * 
-     * @return the display range; never null
+     * @return the display range; can be null
      */
     public abstract Range getDisplayRange();
 
     /**
      * The range for the alarm associated to the value.
      * 
-     * @return the alarm range; never null
+     * @return the alarm range; can be null
      */
     public abstract Range getAlarmRange();
 
     /**
      * The range for the warning associated to the value.
      * 
-     * @return the warning range; never null
+     * @return the warning range; can be null
      */
     public abstract Range getWarningRange();
 
     /**
      * The range used for changing the value.
      * 
-     * @return the control range; never null
+     * @return the control range; can be null
      */
     public abstract Range getControlRange();
 
     /**
-     * String representation of the units using for all values.
+     * String representation of the unit using for all values.
      * Never null. If not available, returns the empty String.
      *
-     * @return units
+     * @return unit
      */
-    public abstract String getUnits();
+    public abstract String getUnit();
 
     /**
      * Returns a NumberFormat that creates a String with just the value (no units).
@@ -74,7 +76,7 @@ public abstract class Display {
             Display other = (Display) obj;
         
             return Objects.equals(getFormat(), other.getFormat()) &&
-                Objects.equals(getUnits(), other.getUnits()) &&
+                Objects.equals(getUnit(), other.getUnit()) &&
                 Objects.equals(getDisplayRange(), other.getDisplayRange()) &&
                 Objects.equals(getAlarmRange(), other.getAlarmRange()) &&
                 Objects.equals(getWarningRange(), other.getWarningRange()) &&
@@ -88,11 +90,49 @@ public abstract class Display {
     public int hashCode() {
         int hash = 5;
         hash = 59 * hash + Objects.hashCode(getFormat());
-        hash = 59 * hash + Objects.hashCode(getUnits());
+        hash = 59 * hash + Objects.hashCode(getUnit());
         hash = 59 * hash + Objects.hashCode(getDisplayRange());
         hash = 59 * hash + Objects.hashCode(getAlarmRange());
         hash = 59 * hash + Objects.hashCode(getWarningRange());
         hash = 59 * hash + Objects.hashCode(getControlRange());
         return hash;
+    }
+    
+    /**
+     * Creates a new display
+     * 
+     * @param lowerDisplayLimit lower display limit
+     * @param lowerAlarmLimit lower alarm limit
+     * @param lowerWarningLimit lower warning limit
+     * @param units the units
+     * @param numberFormat the formatter
+     * @param upperWarningLimit the upper warning limit
+     * @param upperAlarmLimit the upper alarm limit
+     * @param upperDisplayLimit the upper display limit
+     * @param lowerCtrlLimit the lower control limit
+     * @param upperCtrlLimit the upper control limit
+     * @return the new display
+     */
+    public static Display create(final Double lowerDisplayLimit, final Double lowerAlarmLimit, final Double lowerWarningLimit,
+            final String units, final NumberFormat numberFormat, final Double upperWarningLimit,
+            final Double upperAlarmLimit, final Double upperDisplayLimit,
+            final Double lowerCtrlLimit, final Double upperCtrlLimit) {
+        return new IDisplay(Ranges.range(lowerDisplayLimit, upperDisplayLimit),
+                Ranges.range(lowerWarningLimit, upperWarningLimit),
+                Ranges.range(lowerAlarmLimit, upperAlarmLimit),
+                Ranges.range(lowerCtrlLimit, upperCtrlLimit), units, numberFormat);
+    }
+    
+    private static final Display displayNone = create(Double.NaN, Double.NaN, 
+            Double.NaN, "", NumberFormats.toStringFormat(), Double.NaN, Double.NaN,
+            Double.NaN, Double.NaN, Double.NaN);
+    
+    /**
+     * Empty display information.
+     * 
+     * @return no display
+     */
+    public static Display none() {
+        return displayNone;
     }
 }
