@@ -72,6 +72,31 @@ public final class Range {
             return "[" + getMaximum() + " - " + getMinimum() + "]";
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        
+        if (obj instanceof Range) {
+            Range other = (Range) obj;
+            return getMinimum() == other.getMinimum() &&
+                    getMaximum() == other.getMaximum() &&
+                    isReversed() == other.isReversed();
+        }
+        
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.min) ^ (Double.doubleToLongBits(this.min) >>> 32));
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.max) ^ (Double.doubleToLongBits(this.max) >>> 32));
+        hash = 97 * hash + (this.reversed ? 1 : 0);
+        return hash;
+    }
     
     /**
      * Range from given min and max. If max is greater than min, a reversed
@@ -82,6 +107,10 @@ public final class Range {
      * @return the range
      */
     public static Range create(final double minValue, final double maxValue) {
+        if (Double.isNaN(minValue) || Double.isNaN(maxValue)) {
+            return Range.UNDEFINED;
+        }
+        
         if (minValue > maxValue) {
             return new Range(maxValue, minValue, true);
         }

@@ -41,4 +41,19 @@ public class RangeTest {
         assertThat(range.toString(), equalTo("[10.0 - 0.0]"));
     }
     
+    @Test
+    public void range4() throws Exception {
+        Range range = Range.create(0.0, Double.NaN);
+        assertThat(range, sameInstance(Range.undefined()));
+    }
+    
+    @Test
+    public void equal1() throws Exception {
+        assertThat(Range.create(0.0, 10.0), equalTo(Range.create(0.0, 10.0)));
+        assertThat(Range.create(10.0, 0.0), not(equalTo(Range.create(0.0, 10.0))));
+        assertThat(Range.create(10.0, 0.0), not(equalTo(Range.create(1.0, 10.0))));
+        assertThat(Range.create(10.0, 0.0), not(equalTo(null)));
+        assertThat(Range.undefined(), equalTo(Range.undefined()));
+    }
+    
 }
