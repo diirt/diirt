@@ -82,16 +82,6 @@ public class Ranges {
     }
 
     /**
-     * Returns a String representation of the give range
-     * 
-     * @param range a range
-     * @return the string representation
-     */
-    public static String toString(Range range) {
-        return "[" + range.getMinimum() + " - " + range.getMaximum() + "]";
-    }
-
-    /**
      * Determines whether the value is contained by the range or not.
      * 
      * @param range a range

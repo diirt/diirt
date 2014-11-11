@@ -110,4 +110,28 @@ public class RangeTest {
         assertThat(range.normalize(-10.0), equalTo(0.0));
     }
     
+    @Test
+    public void contains1() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.contains(5.0), equalTo(true));
+    }
+    
+    @Test
+    public void contains2() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.contains(7.5), equalTo(true));
+    }
+    
+    @Test
+    public void contains3() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.contains(25.0), equalTo(false));
+    }
+    
+    @Test
+    public void contains4() {
+        Range range = Ranges.range(-10.0, 10.0);
+        assertThat(range.contains(-25.0), equalTo(false));
+    }
+    
 }

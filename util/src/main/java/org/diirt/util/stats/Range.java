@@ -76,6 +76,16 @@ public final class Range {
     public double normalize(double value) {
         return (value - getMinimum()) / (getMaximum() - getMinimum());
     }
+
+    /**
+     * Determines whether the value is contained by the range or not.
+     * 
+     * @param value a value
+     * @return true if the value is within the range
+     */
+    public boolean contains(double value) {
+        return value >= getMinimum() && value <= getMaximum();
+    }
     
     /**
      * An undefined range.
