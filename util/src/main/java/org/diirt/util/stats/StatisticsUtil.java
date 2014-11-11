@@ -124,7 +124,7 @@ public class StatisticsUtil {
         
         while (iterator.hasNext()) {
             Statistics stats = iterator.next();
-            range = Ranges.sum(range, stats.getRange());
+            range = range.combine(stats.getRange());
             total += stats.getAverage() * stats.getCount();
             totalSquare += ( stats.getStdDev() * stats.getStdDev() + stats.getAverage() * stats.getAverage() ) * stats.getCount();
             count += stats.getCount();
