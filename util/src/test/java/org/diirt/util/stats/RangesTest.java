@@ -67,15 +67,6 @@ public class RangesTest {
     }
     
     @Test
-    public void subrange1() {
-        assertThat(Ranges.contains(Ranges.range(0.0, 1.0), Ranges.range(0.5, 0.75)), equalTo(true));
-        assertThat(Ranges.contains(Ranges.range(0.0, 1.0), Ranges.range(0.5, 1.0)), equalTo(true));
-        assertThat(Ranges.contains(Ranges.range(0.0, 1.0), Ranges.range(0.0, 0.75)), equalTo(true));
-        assertThat(Ranges.contains(Ranges.range(0.0, 1.0), Ranges.range(-1.0, 0.75)), equalTo(false));
-        assertThat(Ranges.contains(Ranges.range(0.0, 1.0), Ranges.range(0.0, 1.75)), equalTo(false));
-    }
-    
-    @Test
     public void sum1() {
         Range range1 = Ranges.range(0.0, 5.0);
         Range range2 = Ranges.range(1.0, 2.0);

@@ -88,6 +88,17 @@ public final class Range {
     }
     
     /**
+     * Determines whether the given range is contained by the range or not.
+     * 
+     * @param range a range
+     * @return true if the range is a subrange of this
+     */
+    public boolean contains(Range range) {
+        return getMinimum() <= range.getMinimum()
+                && getMaximum() >= range.getMaximum();
+        
+    }    
+    /**
      * An undefined range.
      * 
      * @return the undefined range

@@ -134,4 +134,13 @@ public class RangeTest {
         assertThat(range.contains(-25.0), equalTo(false));
     }
     
+    @Test
+    public void containsRange1() {
+        assertThat(Range.create(0.0, 1.0).contains(Range.create(0.5, 0.75)), equalTo(true));
+        assertThat(Range.create(0.0, 1.0).contains(Range.create(0.5, 1.0)), equalTo(true));
+        assertThat(Range.create(0.0, 1.0).contains(Range.create(0.0, 0.75)), equalTo(true));
+        assertThat(Range.create(0.0, 1.0).contains(Range.create(-1.0, 0.75)), equalTo(false));
+        assertThat(Range.create(0.0, 1.0).contains(Range.create(0.0, 1.75)), equalTo(false));
+    }
+    
 }
