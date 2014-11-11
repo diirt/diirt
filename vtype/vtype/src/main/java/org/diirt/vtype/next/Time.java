@@ -67,16 +67,44 @@ public abstract class Time {
         return hash;
     }
 
-    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss.SSS");
-
     @Override
     public final String toString() {
         if (getUserTag() == null) {
-            return timeFormat.format(getTimestamp());
+            return getTimestamp().toString();
         } else {
-            return timeFormat.format(getTimestamp()) + "(" + getUserTag()+ ")";
+            return getTimestamp().toString() + "(" + getUserTag()+ ")";
         }
     }
-
+    
+    /**
+     * Creates a new time.
+     * 
+     * @param timestamp the timestamp
+     * @param userTag the user tag
+     * @param valid whether the time is valid
+     * @return the new time
+     */
+    public static Time create(final Instant timestamp, final Integer userTag, final boolean valid) {
+        return new ITime(timestamp, userTag, valid);
+    }
+    
+    /**
+     * New time, with no user tag and valid data.
+     * 
+     * @param timestamp the timestamp
+     * @return the new time
+     */
+    public static Time create(final Instant timestamp) {
+        return Time.create(timestamp, null, true);
+    }
+    
+    /**
+     * New time with the current timestamp, no user tag and valid data.
+     * 
+     * @return the new time
+     */
+    public static Time now() {
+        return Time.create(Instant.now(), null, true);
+    }
     
 }
