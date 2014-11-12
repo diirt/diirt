@@ -6,12 +6,7 @@ html {
 }
 
 h1 {
-	margin-top: 0;
-}
-
-#status {
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+    margin-top: 0;
 }
 
 .open {
@@ -49,23 +44,34 @@ ul li span {
 
 #message-form {
   margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 textarea {
   width: 25%;
-  padding: 0.5rem;
+  padding: 0.1rem;
   font-size: 1rem;
-  min-height: 30px;
-  margin-bottom: 1rem;
+  min-height: 15px;
 }
 
 button {
   display: inline-block;
   font-size: 0.9rem;
-  padding: 0.6rem 1em;
+ // padding: 0.6rem 1em;
   color: white;
-  margin: 0 0.25rem;
+  // margin: 0 0.25rem;
   text-align: center;
   background: #BABABA;
+}
+
+select, option {
+    width: 300px;
+    font-size: 1em;
+    float: left;
+}
+
+#details {
+    padding-left: 50px;
+    float: left;
 }
 
