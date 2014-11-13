@@ -570,6 +570,66 @@ public class LinearAbsoluteTimeScaleTest {
 	    ), 
 	    timeAxis); 
     }
+    
+    @Test
+    public void references500MsPeriod1() {
+	//test 4 references with a 500 ms period
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: March 23, 2014 6:29:45.156 PM
+	//End: March 23, 2014 6:29:47.156 PM
+        Timestamp start = TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 45 , 156 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 2000 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		344.0/2000.0,
+		844.0/2000.0,
+		1344.0/2000.0,
+		1844.0/2000.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 45 , 500 ),
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 0 ),
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 500 ),
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 47 , 0 )
+	    ),
+	    Arrays.asList(
+		"2014/03/23 18:29:45.5",
+		"18:29:46.0",
+		".5",
+		"18:29:47.0"
+	    ), 
+	    timeAxis); 
+    }
+    
+    @Test
+    public void references500MsPeriod2() {
+	//test 2 references on a 500 ms period
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: March 23, 2014 6:29:59.800 PM
+	//End: March 23, 2014 6:30:00.837 PM
+        Timestamp start = TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 59 , 800 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 1037 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 2 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		200.0/1037.0,
+		700.0/1037.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 500 )
+	    ),
+	    Arrays.asList(
+		"2014/03/23 18:30:00.0",
+		".5"
+	    ), 
+	    timeAxis); 
+    }
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));
