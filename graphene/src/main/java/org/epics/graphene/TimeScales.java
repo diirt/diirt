@@ -367,7 +367,7 @@ public class TimeScales {
                     return new TimePeriod(GregorianCalendar.MILLISECOND, 1);
                 }
         }
-        return null;
+        return new TimePeriod( GregorianCalendar.MILLISECOND , 1 );
     }
     
     static TimePeriod toTimePeriod(double seconds) {

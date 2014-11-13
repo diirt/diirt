@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.epics.util.array.ArrayDouble;
@@ -115,14 +116,222 @@ public class LinearAbsoluteTimeScaleTest {
                 ".5",
                 "16:13:48.0",
                 ".5",
-                "16:13:49.0"), timeAxis);
-        
+                "16:13:49.0"), timeAxis);    
     }
+    
+    @Test
+    public void referencesMillisecondsSmallPeriod1() {
+	//Test creating 2 references with the smallest milliseconds time interval
+	//possible or 1 ms.
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 1 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
+        assertAxisEquals(timeInterval, 
+		new ArrayDouble(
+		    0.0/1.0,
+		    1.0/1.0
+		), 
+                Arrays.asList(
+		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
+		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 )
+		),
+                Arrays.asList(
+		    "2014/11/13 10:31:23.053",
+		    ".054"
+		), 
+		timeAxis);    
+    }
+    
+    @Test
+    public void referencesMillisecondsSmallPeriod2() {
+	//Test creating 3 references with the smallest milliseconds time interval
+	//possible or 1 ms. 
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 2 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
+        assertAxisEquals(timeInterval, 
+		new ArrayDouble(
+		    0.0/2.0,
+		    1.0/2.0,
+		    2.0/2.0
+		), 
+                Arrays.asList(
+		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
+		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 ),
+		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 )
+		),
+                Arrays.asList(
+		    "2014/11/13 10:31:23.053",
+		    ".054",
+		    ".055"
+		), 
+		timeAxis);    
+    }
+    
+    @Test
+    public void referencesMillisecondsSmallPeriod3() {
+	//Test creating a large amount of references with a very small scale
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+	
+	//we can only go up to minutes, because going up to hours would make
+	//the interval >1000000, which would take a while to run
+	int MS_INTERVAL = 180000;
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( MS_INTERVAL ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
+	
+	double[] normalValues = new double[ MS_INTERVAL+1 ];
+	for ( int i=0 ; i<=MS_INTERVAL ; i++ ) {
+	    normalValues[ i ] = ((double)(i)/MS_INTERVAL);
+	}
+	ArrayList< Timestamp > times = new ArrayList< Timestamp >();
+	ArrayList< String > labels = new ArrayList< String >();
+	times.add( TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ) );
+	labels.add( "2014/11/13 10:31:23.053" );
+	
+	int timeLeft = MS_INTERVAL;
+	int hour = 10;
+	int minute = 31;
+	int second = 23;
+	int ms = 53;
+	while( timeLeft > 0 ) {
+	    timeLeft--;
+	    ms++;
+	    String nextLabel = "." + formatNumericalString( ms%1000 , 3 );
+	    boolean useFullLabel = false;
+
+	    if ( ms >= 1000 ) {
+		second += (int)(ms/1000);
+		ms %= 1000;
+		useFullLabel = true;
+	    }
+	    
+	    if ( second >= 60 ) {
+		minute += (int)(second/60);
+		second %= 60;
+		useFullLabel = true;
+	    }
+	    
+	    if ( minute >= 60 ) {
+		hour += (int)(minute/60);
+		minute %= 60;
+		useFullLabel = true;
+	    }
+	    
+	    times.add( TimeScalesTest.create( 2014 , 11  , 13 , hour , minute , second , ms ) );
+	    if ( useFullLabel ) {
+		String fullLabel = formatNumericalString( hour , 2 ) + ":" + formatNumericalString( minute , 2 ) + ":" + formatNumericalString( second , 2 ) + "." + formatNumericalString( ms , 3 );
+		labels.add( fullLabel );
+	    }
+	    else {
+		labels.add( nextLabel );
+	    }
+	}
+	
+        assertAxisEquals(timeInterval, 
+		new ArrayDouble(
+		    normalValues
+		), 
+		times,
+		labels, 
+		timeAxis);    
+    }
+    
+    @Test
+    public void referencesMillisecondsSmallPeriod4() {
+	//Test creating a medium amount of references with a very small scale
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+	
+	//we can only go up to minutes, because going up to hours would make
+	//the interval >1000000, which would take a while to run
+	int MS_INTERVAL = 4321;
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( MS_INTERVAL ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
+	
+	double[] normalValues = new double[ MS_INTERVAL+1 ];
+	for ( int i=0 ; i<=MS_INTERVAL ; i++ ) {
+	    normalValues[ i ] = ((double)(i)/MS_INTERVAL);
+	}
+	ArrayList< Timestamp > times = new ArrayList< Timestamp >();
+	ArrayList< String > labels = new ArrayList< String >();
+	times.add( TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ) );
+	labels.add( "2014/11/13 10:31:23.053" );
+	
+	int timeLeft = MS_INTERVAL;
+	int hour = 10;
+	int minute = 31;
+	int second = 23;
+	int ms = 53;
+	while( timeLeft > 0 ) {
+	    timeLeft--;
+	    ms++;
+	    String nextLabel = "." + formatNumericalString( ms%1000 , 3 );
+	    boolean useFullLabel = false;
+
+	    if ( ms >= 1000 ) {
+		second += (int)(ms/1000);
+		ms %= 1000;
+		useFullLabel = true;
+	    }
+	    
+	    if ( second >= 60 ) {
+		minute += (int)(second/60);
+		second %= 60;
+		useFullLabel = true;
+	    }
+	    
+	    if ( minute >= 60 ) {
+		hour += (int)(minute/60);
+		minute %= 60;
+		useFullLabel = true;
+	    }
+	    
+	    times.add( TimeScalesTest.create( 2014 , 11  , 13 , hour , minute , second , ms ) );
+	    if ( useFullLabel ) {
+		String fullLabel = formatNumericalString( hour , 2 ) + ":" + formatNumericalString( minute , 2 ) + ":" + formatNumericalString( second , 2 ) + "." + formatNumericalString( ms , 3 );
+		labels.add( fullLabel );
+	    }
+	    else {
+		labels.add( nextLabel );
+	    }
+	}
+	
+        assertAxisEquals(timeInterval, 
+		new ArrayDouble(
+		    normalValues
+		), 
+		times,
+		labels, 
+		timeAxis);    
+    }
+    
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));
         assertThat(axis.getNormalizedValues(), equalTo(normalizedValues));
         assertThat(axis.getTimestamps(), equalTo(timestamps));
         assertThat(axis.getTickLabels(), equalTo(labels));
+    }
+    
+    /**
+     * Formats the given string to contain the given number of digits, adding
+     * leading zeros if necessary.
+     * 
+     * @param number a number to format
+     * @param digits the number of digits the number must contain
+     * @return the formatted number that contains the given number of digits
+     */
+    public String formatNumericalString( int number , int digits ) {
+	String rtn = String.valueOf( number );
+	if ( rtn.length() > digits ) {
+	    throw new IllegalArgumentException( "Impossible to format " + number + " to have " + digits + " digits." );
+	}
+	while( rtn.length() < digits ) {
+	    rtn = "0" + rtn;
+	}
+	return rtn;
     }
 }
