@@ -245,8 +245,6 @@ public class LinearAbsoluteTimeScaleTest {
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
         Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
 	
-	//we can only go up to minutes, because going up to hours would make
-	//the interval >1000000, which would take a while to run
 	int MS_INTERVAL = 4321;
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( MS_INTERVAL ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
