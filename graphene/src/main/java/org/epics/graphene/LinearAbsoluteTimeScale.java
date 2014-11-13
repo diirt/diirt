@@ -33,6 +33,13 @@ final class LinearAbsoluteTimeScale implements TimeScale {
 
     @Override
     public TimeAxis references(TimeInterval range, int minRefs, int maxRefs) {
+	
+	//although it's the user's responsibility to check for improper inputs,
+	//we should check for them anyways.
+	//If the maximum references is less than the minimum references,
+	//or the maxium references is less than 0, then this method
+	//can enter an infinite loop, which we want to avoid, 
+	//so we should make an exception
 	if ( (maxRefs < minRefs) || (minRefs < 0 ) || (maxRefs < 0) ) {
 	    throw new IllegalArgumentException( "Invalid references range: " + minRefs + " < # references < " + maxRefs );
 	}
