@@ -438,6 +438,138 @@ public class LinearAbsoluteTimeScaleTest {
 	    ), 
 	    timeAxis); 
     }
+    
+    @Test
+    public void references5MsPeriod4() {
+	//test creating references that overflow into the next hour
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: Dec 24, 2014 10:59:59.989 PM
+	//End: Dec 24, 2014 11:00:00.007 PM
+        Timestamp start = TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 989 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 18 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		1.0/18.0,
+		6.0/18.0,
+		11.0/18.0,
+		16.0/18.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 990 ),
+		TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 995 ),
+		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 5 )
+	    ),
+	    Arrays.asList(
+		"2014/12/24 22:59:59.990",
+		".995",
+		"23:00:00.000",
+		".005"
+	    ), 
+	    timeAxis); 
+    }
+    
+    @Test
+    public void references5MsPeriod5() {
+	//test creating references that overflow into the next day
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: Dec 24, 2014 11:59:59.989 PM
+	//End: Dec 25, 2014 12:00:00.007 AM
+        Timestamp start = TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 989 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 18 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		1.0/18.0,
+		6.0/18.0,
+		11.0/18.0,
+		16.0/18.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 990 ),
+		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 995 ),
+		TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 5 )
+	    ),
+	    Arrays.asList(
+		"2014/12/24 23:59:59.990",
+		".995",
+		"2014/12/25 00:00:00.000",
+		".005"
+	    ), 
+	    timeAxis); 
+    }
+    
+    @Test
+    public void references5MsPeriod6() {
+	//test creating references that overflow into the next month
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: Nov 30, 2014 11:59:59.989 PM
+	//End: Dec 1, 2014 12:00:00.007 AM
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 989 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 18 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		1.0/18.0,
+		6.0/18.0,
+		11.0/18.0,
+		16.0/18.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 990 ),
+		TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 995 ),
+		TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 5 )
+	    ),
+	    Arrays.asList(
+		"2014/11/30 23:59:59.990",
+		".995",
+		"2014/12/01 00:00:00.000",
+		".005"
+	    ), 
+	    timeAxis); 
+    }
+    
+    @Test
+    public void references5MsPeriod7() {
+	//test creating references that overflow into the next year
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: Dec 31, 2014 11:59:59.989 PM
+	//End: Jan 1, 2015 12:00:00.007 AM
+        Timestamp start = TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 989 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 18 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		1.0/18.0,
+		6.0/18.0,
+		11.0/18.0,
+		16.0/18.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 990 ),
+		TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 995 ),
+		TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 5 )
+	    ),
+	    Arrays.asList(
+		"2014/12/31 23:59:59.990",
+		".995",
+		"2015/01/01 00:00:00.000",
+		".005"
+	    ), 
+	    timeAxis); 
+    }
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));
