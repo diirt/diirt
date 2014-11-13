@@ -41,7 +41,7 @@ public class LinearAbsoluteTimeScaleTest {
         assertThat(linearScale.scaleTimestamp(start.plus(TimeDuration.ofSeconds(4)), timeInterval, 1.0, 100.0), equalTo(50.5));
         assertThat(linearScale.scaleTimestamp(start.plus(TimeDuration.ofSeconds(8)), timeInterval, 1.0, 100.0), equalTo(100.0));
     }
-
+    
     @Test
     public void references1() {
         TimeScale linearScale = TimeScales.linearAbsoluteScale();
@@ -119,6 +119,45 @@ public class LinearAbsoluteTimeScaleTest {
                 "16:13:49.0"), timeAxis);    
     }
     
+    @Test
+    public void createZeroReferences() {
+	//Test for requiring 0 references
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 1 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 0 , 0 );
+	ArrayList< Timestamp > noTimestamps = new ArrayList< Timestamp >();
+	ArrayList< String > noLabels = new ArrayList< String >();
+	
+	assertAxisEquals(timeInterval, 
+		new ArrayDouble(
+
+		), 
+		noTimestamps,
+		noLabels,
+		timeAxis);   
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void createZeroReferences2() {
+	//Test for requiring negative amount of references
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 1 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, -100 , -10 );
+	assertTrue( false );
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void createZeroReferences3() {
+	//Test for max refs is less than min refs
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 1 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 99999 , 2 );
+	assertTrue( false );
+    }
+     
     @Test
     public void referencesMillisecondsSmallPeriod1() {
 	//Test creating 2 references with the smallest milliseconds time interval
