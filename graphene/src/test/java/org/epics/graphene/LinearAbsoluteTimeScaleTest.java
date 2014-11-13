@@ -630,6 +630,50 @@ public class LinearAbsoluteTimeScaleTest {
 	    ), 
 	    timeAxis); 
     }
+    
+    @Test
+    public void references1MonthPeriod1() {
+	//test 6 references with 1 month periods
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+	
+	//Start: Mar 23, 2014 18:00:00.000
+	//End: Oct 19, 2014 18:00:00.000
+        Timestamp start = TimeScalesTest.create( 2014 , 3 , 23 , 18 , 0 , 0 , 00 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofHours( 24*7*5*6 ) ) );
+	//System.out.println( start.toDate() );
+	//System.out.println( start.plus( TimeDuration.ofHours( 24*7*5*6 ) ).toDate() );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 7 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		    198.0/5040.0,
+		    918.0/5040.0,
+		    1662.0/5040.0,
+		    2382.0/5040.0,
+		    3126.0/5040.0,
+		    3870.0/5040.0,
+		    4590.0/5040.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 4 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 5 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 6 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 7 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 8 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 9 , 1 , 0 , 0 , 0 , 0 ),
+		TimeScalesTest.create( 2014 , 10 , 1 , 0 , 0 , 0 , 0 )
+	    ),
+	    Arrays.asList(
+		"2014/04",
+		"2014/05",
+		"2014/06",
+		"2014/07",
+		"2014/08",
+		"2014/09",
+		"2014/10"
+	    ), 
+	    timeAxis); 	
+    }
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));
