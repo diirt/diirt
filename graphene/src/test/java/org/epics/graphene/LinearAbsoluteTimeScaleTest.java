@@ -306,6 +306,34 @@ public class LinearAbsoluteTimeScaleTest {
 		timeAxis);    
     }
     
+    @Test
+    public void referencesMilliseconds5MsPeriod1() {
+	//Test creating 3 references with a medium milliseconds time interval
+	//of 5 ms
+	TimeScale linearScale = TimeScales.linearAbsoluteScale();
+        Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofMillis( 16 ) ) );
+        TimeAxis timeAxis = linearScale.references( timeInterval, 3 , 3 );
+        assertAxisEquals(
+	    timeInterval, 
+	    new ArrayDouble(
+		2.0/16.0,
+		7.0/16.0,
+		12.0/16.0
+	    ), 
+	    Arrays.asList(
+		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 ),
+		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 60 ),
+		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 65 )
+	    ),
+	    Arrays.asList(
+		"2014/11/13 10:31:23.055",
+		".060",
+		".065"
+	    ), 
+	    timeAxis); 
+    }
+    
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));

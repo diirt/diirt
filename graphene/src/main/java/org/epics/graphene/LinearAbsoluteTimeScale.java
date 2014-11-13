@@ -47,7 +47,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
             references = TimeScales.createReferences(range, timePeriod);
         }
         if (references.size() < minRefs) {
-            throw new RuntimeException("Can't create the requested amount of references. Requested: " + references.size() + ", minimum required: " + minRefs );
+            throw new RuntimeException("Can't create the requested amount of references. Could only create: " + references.size() + ", minimum required: " + minRefs );
         }
 
         // Prepare normalized values
