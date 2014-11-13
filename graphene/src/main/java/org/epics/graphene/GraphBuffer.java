@@ -367,6 +367,10 @@ public class GraphBuffer {
 
     /**
      * Draws the given labels a the bottom of the graph area.
+     * <p>
+     * This method may not display some labels in case they would overlap with
+     * each other. It does try, though, to make sure that the first and the
+     * last label are always displayed.
      * 
      * @param labels a list of x-axis labels to be drawn
      * @param valuePixelPositions the central x-coordinate of each label
@@ -408,8 +412,10 @@ public class GraphBuffer {
      * @param xCenter x coordinate of where the label should be centered
      * @param drawRange defines the range of coordinates where this label is allowed to be centered
      * @param yTop define the y-coordinate of the top of the label
-     * @param updateMin *MC I do not understand what this parameter is for
-     * @param centeredOnly if this label must be centered at the given x center coordinate
+     * @param updateMin whether we should be updating the minimum of the draw range
+     * or the maximum
+     * @param centeredOnly true if the label should be only displayed if it can be
+     * properly centered, and skipped if it cannot
      */
     private static void drawLineLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
@@ -439,7 +445,6 @@ public class GraphBuffer {
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
         
-	//*MC: why are we updating the x value with the height, a y-value property, of the label?
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
@@ -447,8 +452,6 @@ public class GraphBuffer {
         }
     }
 
-    //*MC: This method is nearly an exact copy of drawBottomLabels()
-    //is it possible/useful to abstract this code out?
     void drawLeftLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
         // Draw Y labels
         if (labels != null && !labels.isEmpty()) {
@@ -472,8 +475,6 @@ public class GraphBuffer {
     }
     
     /**
-     * *MC: This is almost an exact copy of drawLineLabel(). Is it possible/useful
-     * to abstract it out?
      * 
      * @param graphics
      * @param metrics
@@ -538,9 +539,6 @@ public class GraphBuffer {
     }
     
     /**
-     * *MC: This is nearly identical to drawHorizontalReferenceLines(). Is it possible/useful 
-     * to abstract out to one private method, drawLine, that draws a line from any (x1, y1) to any (x2, y2) 
-     * and two public methods drawHorizontalReferenceLines, drawVerticalReferenceLines that use drawLine?
      * 
      * @param referencePixels
      * @param lineColor

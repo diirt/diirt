@@ -23,8 +23,8 @@ public class TimeScales {
     
     final public static int HOUR_FIELD_ID = GregorianCalendar.HOUR_OF_DAY;
     final public static int FIRST_HOUR = 0;
-    final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_MONTH;
-    final public static int FIRST_DAY = 0;
+    final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_WEEK;
+    final public static int FIRST_DAY = 1;
     final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_MONTH;
     final public static int FIRST_WEEK = 1;
     
@@ -215,7 +215,6 @@ public class TimeScales {
         return references;
     }
 
-    //TODO determine whether we use day_of_week, day_of_month, day_of_year, etc...?
     static void round(GregorianCalendar cal, int field) {
         
         if (GregorianCalendar.MILLISECOND == field) {
@@ -246,11 +245,16 @@ public class TimeScales {
 	if ( WEEK_FIELD_ID == field ) {
 	    return;
 	}
-	cal.set(WEEK_FIELD_ID , FIRST_WEEK );
+	
+	//here, we are rounding down to the first week (i.e. the first day of
+	//the month), so the day of the week and the week of the month no 
+	//longer matter - we just set the day to be the first day of the month
+	cal.set( GregorianCalendar.DAY_OF_MONTH , 1 );
 	
 	if ( GregorianCalendar.MONTH == field ) {
 	    return;
 	}
+	
 	cal.set( GregorianCalendar.MONTH , 0 );
 	
 	if ( GregorianCalendar.YEAR == field ) {
