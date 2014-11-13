@@ -159,7 +159,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
      
     @Test
-    public void referencesMillisecondsSmallPeriod1() {
+    public void references1MsPeriod1() {
 	//Test creating 2 references with the smallest milliseconds time interval
 	//possible or 1 ms.
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
@@ -183,7 +183,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
     
     @Test
-    public void referencesMillisecondsSmallPeriod2() {
+    public void references1MsPeriod2() {
 	//Test creating 3 references with the smallest milliseconds time interval
 	//possible or 1 ms. 
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
@@ -210,7 +210,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
     
     @Test
-    public void referencesMillisecondsSmallPeriod3() {
+    public void references1MsPeriod3() {
 	//Test creating a large amount of references with a very small scale
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
         Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
@@ -279,7 +279,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
     
     @Test
-    public void referencesMillisecondsSmallPeriod4() {
+    public void references1MsPeriod4() {
 	//Test creating a medium amount of references with a very small scale
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
         Timestamp start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
@@ -346,7 +346,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
     
     @Test
-    public void referencesMilliseconds5MsPeriod1() {
+    public void references5MsPeriod1() {
 	//Test creating 3 references with a medium milliseconds time interval
 	//of 5 ms
 	TimeScale linearScale = TimeScales.linearAbsoluteScale();
@@ -372,7 +372,6 @@ public class LinearAbsoluteTimeScaleTest {
 	    ), 
 	    timeAxis); 
     }
-    
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Timestamp> timestamps, List<String> labels, TimeAxis axis) {
         assertThat(axis.getTimeInterval(), equalTo(timeInterval));
