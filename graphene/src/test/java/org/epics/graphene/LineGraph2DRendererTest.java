@@ -222,7 +222,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     public static void tearDownClass() throws Exception {
         largeDataset = null;
     }
-
+    
     @Test
     public void oneDataPointLinear() throws Exception {
         Point2DDataset data = Point2DTestDatasets.oneValueDataset();

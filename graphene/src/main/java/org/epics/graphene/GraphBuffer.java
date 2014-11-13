@@ -9,10 +9,14 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
 import org.epics.util.array.ListInt;
+import org.epics.util.array.ListMath;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.SortedListView;
 
 /**
  * Provides low level drawing operations, at the right granularity to perform
@@ -43,6 +47,19 @@ public class GraphBuffer {
     private final boolean hasAlphaChannel;
     private final int width, height;
     
+    // Strategy for calculating the axis range
+    private AxisRangeInstance xAxisRange = AxisRanges.display().createInstance();
+    private AxisRangeInstance yAxisRange = AxisRanges.display().createInstance();
+    
+    private double xPlotValueStart;
+    private double yPlotValueStart;
+    private double xPlotValueEnd;
+    private double yPlotValueEnd;
+ 
+    private  double xPlotCoordStart;
+    private  double yPlotCoordStart;
+    private  double yPlotCoordEnd;
+    private  double xPlotCoordEnd;
     /**
      * Creates a GraphBuffer with the given image on which to draw a graph.
      * 
@@ -55,6 +72,11 @@ public class GraphBuffer {
         pixels = ((DataBufferByte)this.image.getRaster().getDataBuffer()).getData();
         hasAlphaChannel = image.getAlphaRaster() != null;
         g = image.createGraphics();
+        
+        xPlotCoordStart=0; 
+        xPlotCoordEnd=width;
+        yPlotCoordStart=height; 
+        yPlotCoordEnd=0; 
     }
     
     /**
@@ -529,5 +551,277 @@ public class GraphBuffer {
         for (int i = 0; i < referencePixels.size(); i++) {
             g.drawLine(referencePixels.getInt(i), graphTopPixel, referencePixels.getInt(i), graphBottomPixel);
         }
+    }
+    
+     private static class ScaledData {
+        private double[] scaledX;
+        private double[] scaledY;
+        private int start;
+        private int end;
+    }
+    void drawLineGraph(Point2DDataset data, InterpolationScheme interpolation,ReductionScheme reduction){
+        
+        calculateGraphArea(data);
+        SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
+        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
+        
+        //g.setClip(0, 0, 300, 200);
+        g.setColor(Color.BLACK);
+        drawValueExplicitLine(xValues, yValues, interpolation, reduction);
+    
+    }
+    private void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction) {
+        
+        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
+        ScaledData scaledData;
+        
+     
+        //Narrow Data
+        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        
+        xValues = ListMath.limit(xValues, start, end + 1);
+        yValues = ListMath.limit(yValues, start, end + 1);
+        
+        switch (reduction) {
+            default:
+                throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
+            case NONE:
+                scaledData = scaleNoReduction(xValues, yValues, start);
+                break;
+           // case FIRST_MAX_MIN_LAST:
+           //     scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start);
+           //     break;
+        }
+        
+        // create path
+        Path2D path;
+        switch (interpolation) {
+            default:
+            case NEAREST_NEIGHBOR:
+                path = nearestNeighbour(scaledData);
+                break;
+            case LINEAR:
+                path = linearInterpolation(scaledData);
+                break;
+            case CUBIC:
+                path = cubicInterpolation(scaledData);
+                break;
+        }
+
+        // Draw the line
+        g.draw(path);
+    }
+    private void calculateGraphArea(Point2DDataset data){
+        
+        Range xPlotRange=xAxisRange.axisRange(data.getXStatistics(), data.getXDisplayRange()); 
+        Range yPlotRange=yAxisRange.axisRange(data.getYStatistics(), data.getYDisplayRange()); 
+        xPlotValueStart = xPlotRange.getMinimum().doubleValue();
+        xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
+        yPlotValueStart = yPlotRange.getMinimum().doubleValue();
+        yPlotValueEnd = yPlotRange.getMaximum().doubleValue();
+    }
+    
+    private double scaledX(double value) {
+        return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
+    }
+
+    private double scaledY(double value) {
+        return yValueScale.scaleValue(value, yPlotValueStart, yPlotValueEnd,yPlotCoordStart, yPlotCoordEnd);
+    }
+    private ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues) {
+        return scaleNoReduction(xValues, yValues, 0);
+    }
+
+    private ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues, int dataStart) {
+        ScaledData scaledData = new ScaledData();
+        int dataCount = xValues.size();
+        scaledData.scaledX = new double[dataCount];
+        scaledData.scaledY = new double[dataCount];
+        for (int i = 0; i < scaledData.scaledY.length; i++) {
+            scaledData.scaledX[i] = scaledX(xValues.getDouble(i));
+            scaledData.scaledY[i] = scaledY(yValues.getDouble(i));
+            //processScaledValue(dataStart + i, xValues.getDouble(i), yValues.getDouble(i), scaledData.scaledX[i], scaledData.scaledY[i]);
+        }
+        scaledData.end = dataCount;
+        return scaledData;
+    }
+    
+    
+    
+    private static Path2D.Double nearestNeighbour(ScaledData scaledData) {
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double line = new Path2D.Double();
+        line.moveTo(scaledX[start], scaledY[start]);
+        for (int i = 1; i < end; i++) {
+            double halfX = scaledX[i - 1] + (scaledX[i] - scaledX[i - 1]) / 2;
+            if (!java.lang.Double.isNaN(scaledY[i-1])) {
+                line.lineTo(halfX, scaledY[i - 1]);
+                if (!java.lang.Double.isNaN(scaledY[i]))
+                    line.lineTo(halfX, scaledY[i]);
+            } else {
+                line.moveTo(halfX, scaledY[i]);
+            }
+        }
+        line.lineTo(scaledX[end - 1], scaledY[end - 1]);
+        return line;
+    }
+    
+    private static Path2D.Double linearInterpolation(ScaledData scaledData){
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double line = new Path2D.Double();
+        
+        for (int i = start; i < end; i++) {
+            // Do I have a current value?
+            if (!java.lang.Double.isNaN(scaledY[i])) {
+                // Do I have a previous value?
+                if (i != start && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                    // Here I have both the previous value and the current value
+                    line.lineTo(scaledX[i], scaledY[i]);
+                } else {
+                    // Don't have a previous value
+                    // Do I have a next value?
+                    if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        // There is no value before, but there is a value after
+                        line.moveTo(scaledX[i], scaledY[i]);
+                    } else {
+                        // There is no value either before or after
+                        line.moveTo(scaledX[i] - 1, scaledY[i]);
+                        line.lineTo(scaledX[i] + 1, scaledY[i]);
+                    }
+                }
+            } 
+        }
+        return line;
+    }
+    
+    private static Path2D.Double cubicInterpolation(ScaledData scaledData){
+        double[] scaledX = scaledData.scaledX;
+        double[] scaledY = scaledData.scaledY;
+        int start = scaledData.start;
+        int end = scaledData.end;
+        Path2D.Double path = new Path2D.Double();
+        for (int i = start; i < end; i++) {
+            
+            double y1;
+            double y2;
+            double x1;
+            double x2;
+            double y0;
+            double x0;
+            double y3;
+            double x3;
+            
+            double bx0;
+            double by0;
+            double bx3;
+            double by3;
+            double bdy0;
+            double bdy3;
+            double bx1;
+            double by1;
+            double bx2;
+            double by2;
+            
+            //Do I have current value?
+            if (!java.lang.Double.isNaN(scaledY[i])){
+                //Do I have previous value?
+                if (i > start && !java.lang.Double.isNaN(scaledY[i - 1])) {
+                    //Do I have value two before?
+                    if (i > start + 1 && !java.lang.Double.isNaN(scaledY[i - 2])) {
+                        //Do I have next value?
+                        if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                            y2 = scaledY[i];
+                            x2 = scaledX[i];
+                            y0 = scaledY[i - 2];
+                            x0 = scaledX[i - 2];
+                            y3 = scaledY[i + 1];
+                            x3 = scaledX[i + 1];
+                            y1 = scaledY[i - 1];
+                            x1 = scaledX[i - 1];
+                            bx0 = x1;
+                            by0 = y1;
+                            bx3 = x2;
+                            by3 = y2;
+                            bdy0 = (y2 - y0) / (x2 - x0);
+                            bdy3 = (y3 - y1) / (x3 - x1);
+                            bx1 = bx0 + (x2 - x0) / 6.0;
+                            by1 = (bx1 - bx0) * bdy0 + by0;
+                            bx2 = bx3 - (x3 - x1) / 6.0;
+                            by2 = (bx2 - bx3) * bdy3 + by3;
+                            path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+                        } 
+                        else{//Have current, previous, two before, but not value after
+                            y2 = scaledY[i];
+                            x2 = scaledX[i];
+                            y1 = scaledY[i - 1];
+                            x1 = scaledX[i - 1];
+                            y0 = scaledY[i - 2];
+                            x0 = scaledX[i - 2];
+                            y3 = y2 + (y2 - y1) / 2;
+                            x3 = x2 + (x2 - x1) / 2;
+                            bx0 = x1;
+                            by0 = y1;
+                            bx3 = x2;
+                            by3 = y2;
+                            bdy0 = (y2 - y0) / (x2 - x0);
+                            bdy3 = (y3 - y1) / (x3 - x1);
+                            bx1 = bx0 + (x2 - x0) / 6.0;
+                            by1 = (bx1 - bx0) * bdy0 + by0;
+                            bx2 = bx3 - (x3 - x1) / 6.0;
+                            by2 = (bx2 - bx3) * bdy3 + by3;
+                            path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+                        } 
+                    } else if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        //Have current , previous, and next, but not two before
+                        path.moveTo(scaledX[i - 1], scaledY[i - 1]);
+                        y2 = scaledY[i];
+                        x2 = scaledX[i];
+                        y1 = scaledY[i - 1];
+                        x1 = scaledX[i - 1];
+                        y0 = y1 - (y2 - y1) / 2;
+                        x0 = x1 - (x2 - x1) / 2;
+                        y3 = scaledY[i + 1];
+                        x3 = scaledX[i + 1];
+                        bx0 = x1;
+                        by0 = y1;
+                        bx3 = x2;
+                        by3 = y2;
+                        bdy0 = (y2 - y0) / (x2 - x0);
+                        bdy3 = (y3 - y1) / (x3 - x1);
+                        bx1 = bx0 + (x2 - x0) / 6.0;
+                        by1 = (bx1 - bx0) * bdy0 + by0;
+                        bx2 = bx3 - (x3 - x1) / 6.0;
+                        by2 = (bx2 - bx3) * bdy3 + by3;
+                        path.curveTo(bx1, by1, bx2, by2, bx3, by3);
+                    }else{//have current, previous, but not two before or next
+                        path.lineTo(scaledX[i], scaledY[i]);
+                    }
+                //have current, but not previous
+                }else{
+                    // No previous value
+                    if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
+                        // If we have the next value, just move, we'll draw later
+                        path.moveTo(scaledX[i], scaledY[i]);
+                    } else {
+                        // If not, write a small horizontal line
+                        path.moveTo(scaledX[i] - 1, scaledY[i]);
+                        path.lineTo(scaledX[i] + 1, scaledY[i]);
+                    }
+                }
+            }else{ //do not have current
+               // Do nothing
+             }
+        }
+        return path;
     }
 }
