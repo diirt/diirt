@@ -267,6 +267,30 @@ public class TimeScales {
     
     static TimePeriod nextDown(TimePeriod period) {
         switch(period.fieldId) {
+	    case GregorianCalendar.YEAR:
+		return new TimePeriod( GregorianCalendar.YEAR , period.amount/4+1 );
+	    case GregorianCalendar.MONTH:
+		if ( period.amount > 8 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 8 );
+		}
+		if ( period.amount > 4 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 4 );
+		}
+		if ( period.amount > 2 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 2 );
+		}
+		if ( period.amount > 1 ) {
+		    return new TimePeriod( GregorianCalendar.MONTH , 1 );
+		}
+		return new TimePeriod( WEEK_FIELD_ID , 2 );
+	    case WEEK_FIELD_ID:
+		if ( period.amount > 2 ) {
+		    return new TimePeriod( WEEK_FIELD_ID , 2 );
+		}
+		if ( period.amount > 1 ) {
+		    return new TimePeriod( WEEK_FIELD_ID , 1 );
+		}
+		return new TimePeriod( DAY_FIELD_ID , 3 );
 	    case DAY_FIELD_ID:
 		if ( period.amount > 3 ) {
 		    return new TimePeriod( DAY_FIELD_ID , 3 );
