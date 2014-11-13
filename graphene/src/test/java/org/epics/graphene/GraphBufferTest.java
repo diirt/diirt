@@ -344,10 +344,44 @@ public class GraphBufferTest {
         test.drawDataImage(50,50, xPointToDataMap, yPointToDataMap, dataSet, colorMapInstance);
         
         ImageAssert.compareImages("graphBuffer.drawDataImage", test.getImage());        
+               
+    }
+    
+    @Test
+    public void drawLineGraphTwoValueData() throws Exception {
         
+        Point2DDataset data = Point2DTestDatasets.twoValueDataset();
+        GraphBuffer buffer=new GraphBuffer(300, 200);
+        buffer.setXScaleAsPoint(data.getXStatistics(), 0, 300, ValueScales.linearScale());
+        buffer.setYScaleAsPoint(data.getYStatistics(), 0, 200, ValueScales.linearScale());
+        buffer.drawBackground(Color.WHITE);
+        buffer.drawLineGraph(data, InterpolationScheme.CUBIC, ReductionScheme.NONE);
+        ImageAssert.compareImages("lineGraph2D.cubic.twoValues", buffer.getImage());
+    }
+    
+    @Test 
+    public void drawLineGraphOneNanCubic() throws Exception {
+        double[] dataSet = {1,8,27,Double.NaN, 125,216};
+        Point2DDataset data = Point2DDatasets.lineData(dataSet);
         
-        
+        GraphBuffer buffer=new GraphBuffer(300, 200); 
+        buffer.setXScaleAsPoint(data.getXStatistics(), 0, 300, ValueScales.linearScale());
+        buffer.setYScaleAsPoint(data.getYStatistics(), 0, 200, ValueScales.linearScale());
+        buffer.drawBackground(Color.WHITE);
+        buffer.drawLineGraph(data, InterpolationScheme.CUBIC, ReductionScheme.NONE);
+        ImageAssert.compareImages("lineGraph2D.cubic.NaN.1", buffer.getImage());
         
     }
     
+    @Test
+    public void drawLineGraphConsecNaNCubic ()throws Exception{
+        
+        Point2DDataset data = Point2DTestDatasets.consecNaNDataset();
+        GraphBuffer buffer=new GraphBuffer(300, 200); 
+        buffer.setXScaleAsPoint(data.getXStatistics(), 0, 300, ValueScales.linearScale());
+        buffer.setYScaleAsPoint(data.getYStatistics(), 0, 200, ValueScales.linearScale());
+        buffer.drawBackground(Color.WHITE);
+        buffer.drawLineGraph(data, InterpolationScheme.CUBIC, ReductionScheme.NONE);
+        ImageAssert.compareImages("lineGraph2D.cubic.NaN.consecutive", buffer.getImage());
+    }
 }
