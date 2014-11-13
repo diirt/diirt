@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
+import java.util.TimeZone;
 import org.junit.Ignore;
 
 /**
@@ -645,7 +647,7 @@ public class TimeScalesTest {
     }
     
     @Test
-    @Ignore //create() does not use EDT/EST correctly
+    //@Ignore //create() does not use EDT/EST correctly
     public void createReferencesHoursDST2() {
 	//Test fall back daylight savings time (DST)
 	//Start: Sun Nov 02 00:00:00 EST 2014
@@ -656,10 +658,16 @@ public class TimeScalesTest {
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 5 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 ) ) );
-	System.out.println( references.get( 1 ).toDate() );
-	System.out.println( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ).toDate() );
-	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
+	
+	//TODO resolve GregorianCalendar functioning improperly
+	//I do not know why when changing time zone, GregorianCalendar's hours
+	//remain in GMT time. For example, if you set time zone to GMT-5, setting the hours
+	//still sets the GMT hours. Therefore, we must add an additional four hours.
+	//The first two times November 2, 1:00 AM and November 2, 2:00 AM must be created
+	//as November 5, 5:00 AM GMT and November 5, 6:00 AM GMT because
+	//we have to manually change the time zone to EDT
+	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 5 , 0 , 0 , 0 , "EDT" ) ) );
+	assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 6 , 0 , 0 , 0 , "EDT" ) ) );
 	
 	//hour 1 is repeated due to DST
 	assertThat( references.get( 3 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
@@ -1003,4 +1011,38 @@ public class TimeScalesTest {
         cal.set(GregorianCalendar.MILLISECOND, millisecond);
         return Timestamp.of(cal.getTime());
     }
+    
+    /**
+     * Creates the timestamp corresponding to the given time in GMT,
+     * but with the specified timezone. If you wish to use times in 
+     * your own timezone, you must add or subtract the GMT difference
+     * to your day and hours parameter.
+     * 
+     * @param year
+     * @param month
+     * @param day
+     * @param hour
+     * @param minute
+     * @param second
+     * @param millisecond
+     * @param timezone
+     * @return 
+     */
+    static Timestamp create(int year , int month , int day , int hour , int minute , int second , int millisecond , String timezone ) {
+	GregorianCalendar cal = new GregorianCalendar( TimeZone.getTimeZone( timezone ) );
+	cal.set( YEAR , year );
+	cal.set( MONTH , month-1 );
+	cal.set( GregorianCalendar.DAY_OF_MONTH , day );
+	cal.set( HOUR_OF_DAY , hour );
+	cal.get( HOUR_OF_DAY );
+	cal.set( MINUTE , minute );
+	cal.set( SECOND , second );
+	cal.set( MILLISECOND , millisecond );
+	return Timestamp.of( cal.getTime() );
+    }
+    
+    //TODO create method for DST time zone creating
+    //*MC: test roundUp, roundDown
+    //*MC: go look at LinearAbsoluteTimeScale
+    //*MC: test LinearAbsoluteTimeScale.references(...)
 }
