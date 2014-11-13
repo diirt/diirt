@@ -18,6 +18,8 @@ window.onload = function() {
     var id;
     var resultsInfo = []; // Contains JSON
     
+    serverField.value = "ws://" + window.location.host + "/web-pods/socket";
+    
     
     function waitForConnection(callback) {
         setTimeout(
