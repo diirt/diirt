@@ -113,7 +113,11 @@ public class WSEndpoint {
     }
 
     private void onSubscribe(final Session session, final MessageSubscribe message) {
-        // TODO: check id already used
+        if (channels.get(message.getId()) != null) {
+            sendError(session, message.getId(), "Subscription with id '" + message.getId() + "' already exists");
+            return;
+        }
+        
         double maxRate = 1;
         if (message.getMaxRate() != -1) {
             maxRate = message.getMaxRate();
@@ -137,9 +141,11 @@ public class WSEndpoint {
     }
 
     private void onUnsubscribe(Session session, MessageUnsubscribe message) {
-        PVReader<?> channel = channels.get(message.getId());
+        PVReader<?> channel = channels.remove(message.getId());
         if (channel != null) {
             channel.close();
+        } else {
+            sendError(session, message.getId(), "Subscription with id '" + message.getId() + "' does not exist");
         }
     }
 
