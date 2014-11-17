@@ -48,10 +48,10 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
                     case "error":
                         return new MessageErrorEvent(jObject);
                     default:
-                        throw new UnsupportedOperationException("Event " + eventType + " is not supported");
+                        throw new DecodeException("", "Event " + eventType + " is not supported");
                 }
             default:
-                throw new UnsupportedOperationException("Message " + messageType + " is not supported");
+                throw MessageDecodeException.unsupportedMessage(jObject);
         }
     }
 
