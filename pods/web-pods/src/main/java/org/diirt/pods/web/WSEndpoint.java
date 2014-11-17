@@ -73,6 +73,10 @@ public class WSEndpoint {
     
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
+    
+    // XXX: as of 11/17/2014, the standard Decoder infrastructure does not allow to
+    // intercept ill-formatted messages. Therefore we have to manually create
+    // the decoder and handle the message parsing.
     private final MessageDecoder decoder = new MessageDecoder();
 
     @OnMessage
@@ -96,9 +100,9 @@ public class WSEndpoint {
                     onWrite(session, (MessageWrite) message);
                     return;
                 default:
-                    throw new UnsupportedOperationException("Message '" + message.getMessage() + "' not yet supported");
+                    sendError(session, message.getId(), "Message '" + message.getMessage() + "' not supported on this server");
             }
-        } catch(DecodeException | IOException | UnsupportedOperationException ex) {
+        } catch(DecodeException | IOException ex) {
             int id = -1;
             if (ex instanceof MessageDecodeException) {
                 MessageDecodeException de = (MessageDecodeException) ex;
