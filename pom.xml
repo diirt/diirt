@@ -203,6 +203,7 @@
         <module>pvmanager-file</module>
         <module>pvmanager-jdbc</module>
         <module>pvmanager-exec</module>
+        <module>pvmanager-pva</module>
         <module>pvmanager-integration</module>
         <module>vtype-json</module>
         <module>pvmanager-file-json</module>
