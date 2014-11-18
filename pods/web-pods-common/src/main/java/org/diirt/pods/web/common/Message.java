@@ -116,7 +116,7 @@ public abstract class Message {
         try {
             return MessageType.valueOf(message);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' must be a valid message type (was '" + message + "')", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "valid message type");
         }
     }
 
