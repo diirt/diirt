@@ -4,6 +4,7 @@
  */
 package org.diirt.pods.web;
 
+import java.io.IOException;
 import org.diirt.pods.web.common.MessageValueEvent;
 import org.diirt.pods.web.common.MessageConnectionEvent;
 import org.diirt.pods.web.common.Message;
@@ -17,6 +18,7 @@ import org.diirt.pods.web.common.MessageEncoder;
 import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
 import java.io.InputStream;
+import java.io.Reader;
 import java.security.Principal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
+import javax.websocket.DecodeException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -43,13 +46,14 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.pods.web.common.MessageDecodeException;
 import org.diirt.util.time.TimeDuration;
 
 /**
  *
  * @author carcassi
  */
-@ServerEndpoint(value = "/socket", encoders = {MessageEncoder.class}, decoders = {MessageDecoder.class}, configurator = WSEndpointConfigurator.class)
+@ServerEndpoint(value = "/socket", encoders = {MessageEncoder.class}, configurator = WSEndpointConfigurator.class)
 public class WSEndpoint {
     
     // TODO: understand lifecycle of whole web application and put
@@ -69,32 +73,51 @@ public class WSEndpoint {
     
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
+    
+    // XXX: as of 11/17/2014, the standard Decoder infrastructure does not allow to
+    // intercept ill-formatted messages. Therefore we have to manually create
+    // the decoder and handle the message parsing.
+    private final MessageDecoder decoder = new MessageDecoder();
 
     @OnMessage
-    public void onMessage(Session session, Message message) {
-        switch (message.getMessage()) {
-            case SUBSCRIBE:
-                onSubscribe(session, (MessageSubscribe) message);
-                return;
-            case UNSUBSCRIBE:
-                onUnsubscribe(session, (MessageUnsubscribe) message);
-                return;
-            case PAUSE:
-                onPause(session, (MessagePause) message);
-                return;
-            case RESUME:
-                onResume(session, (MessageResume) message);
-                return;
-            case WRITE:
-                onWrite(session, (MessageWrite) message);
-                return;
-            default:
-                throw new UnsupportedOperationException("Message '" + message.getMessage() + "' not yet supported");
+    public void onMessage(Session session, Reader reader) {
+        try {
+            Message message = decoder.decode(reader);
+            switch (message.getMessage()) {
+                case SUBSCRIBE:
+                    onSubscribe(session, (MessageSubscribe) message);
+                    return;
+                case UNSUBSCRIBE:
+                    onUnsubscribe(session, (MessageUnsubscribe) message);
+                    return;
+                case PAUSE:
+                    onPause(session, (MessagePause) message);
+                    return;
+                case RESUME:
+                    onResume(session, (MessageResume) message);
+                    return;
+                case WRITE:
+                    onWrite(session, (MessageWrite) message);
+                    return;
+                default:
+                    sendError(session, message.getId(), "Message '" + message.getMessage() + "' not supported on this server");
+            }
+        } catch(DecodeException | IOException ex) {
+            int id = -1;
+            if (ex instanceof MessageDecodeException) {
+                MessageDecodeException de = (MessageDecodeException) ex;
+                id = de.getId();
+            }
+            sendError(session, id, ex.getMessage());
         }
     }
 
     private void onSubscribe(final Session session, final MessageSubscribe message) {
-        // TODO: check id already used
+        if (channels.get(message.getId()) != null) {
+            sendError(session, message.getId(), "Subscription with id '" + message.getId() + "' already exists");
+            return;
+        }
+        
         double maxRate = 1;
         if (message.getMaxRate() != -1) {
             maxRate = message.getMaxRate();
@@ -118,9 +141,11 @@ public class WSEndpoint {
     }
 
     private void onUnsubscribe(Session session, MessageUnsubscribe message) {
-        PVReader<?> channel = channels.get(message.getId());
+        PVReader<?> channel = channels.remove(message.getId());
         if (channel != null) {
             channel.close();
+        } else {
+            sendError(session, message.getId(), "Subscription with id '" + message.getId() + "' does not exist");
         }
     }
 
@@ -155,6 +180,7 @@ public class WSEndpoint {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
+        decoder.init(config);
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
         String remoteHost = (String) httpSession.getAttribute("remoteHost");
         Principal user = session.getUserPrincipal();
@@ -169,6 +195,7 @@ public class WSEndpoint {
             channel.close();
         }
         closed = true;
+        decoder.destroy();
     }
     
     private volatile boolean closed = false;
