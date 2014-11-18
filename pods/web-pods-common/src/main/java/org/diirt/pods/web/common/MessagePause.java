@@ -18,8 +18,9 @@ public class MessagePause extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessagePause(JsonObject obj) {
+    public MessagePause(JsonObject obj) throws MessageDecodeException {
         super(obj);
     }
 

@@ -22,8 +22,9 @@ public class MessageValueEvent extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageValueEvent(JsonObject obj) {
+    public MessageValueEvent(JsonObject obj) throws MessageDecodeException {
         super(obj);
         value = readValueFromJson(obj.get("value"));
     }

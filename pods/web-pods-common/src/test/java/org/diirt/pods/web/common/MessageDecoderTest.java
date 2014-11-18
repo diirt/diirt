@@ -19,7 +19,7 @@ import org.diirt.vtype.VType;
  */
 public class MessageDecoderTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MessageDecodeException.class)
     public void decodeMissingAttribute() throws Exception {
         MessageDecoder decoder = new MessageDecoder();
         Message result = decoder.decode(new StringReader(

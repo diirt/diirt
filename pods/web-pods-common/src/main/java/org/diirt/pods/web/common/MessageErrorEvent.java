@@ -21,8 +21,9 @@ public class MessageErrorEvent extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageErrorEvent(JsonObject obj) {
+    public MessageErrorEvent(JsonObject obj) throws MessageDecodeException {
         super(obj);
         this.error = stringMandatory(obj, "error");
     }

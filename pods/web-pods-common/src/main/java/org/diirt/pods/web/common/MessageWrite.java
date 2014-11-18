@@ -22,8 +22,9 @@ public class MessageWrite extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageWrite(JsonObject obj) {
+    public MessageWrite(JsonObject obj) throws MessageDecodeException {
         super(obj);
         value = readValueFromJson(obj.get("value"));
     }

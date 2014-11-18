@@ -23,8 +23,9 @@ public class MessageWriteCompletedEvent extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageWriteCompletedEvent(JsonObject obj) {
+    public MessageWriteCompletedEvent(JsonObject obj) throws MessageDecodeException {
         super(obj);
         this.error = stringOptional(obj, "error", null);
         this.successful = booleanMandatory(obj, "successful");
