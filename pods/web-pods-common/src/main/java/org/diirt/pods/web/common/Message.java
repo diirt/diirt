@@ -137,7 +137,7 @@ public abstract class Message {
                 return jsonString.getString();
             }
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a string", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "string");
         }
     }
 
@@ -148,8 +148,9 @@ public abstract class Message {
      * @param name the attribute name where the string is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message string
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static String stringOptional(JsonObject jObject, String name, String defaultValue) {
+    static String stringOptional(JsonObject jObject, String name, String defaultValue) throws MessageDecodeException {
         try {
             JsonString jsonString = jObject.getJsonString(name);
             if (jsonString == null) {
@@ -158,7 +159,7 @@ public abstract class Message {
                 return jsonString.getString();
             }
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a string", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "string");
         }
     }
     
@@ -179,7 +180,7 @@ public abstract class Message {
                 return jsonNumber.intValueExact();
             }
         } catch (ClassCastException | ArithmeticException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not an integer", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
     
@@ -190,8 +191,9 @@ public abstract class Message {
      * @param name the attribute name where the integer is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message integer
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static int intOptional(JsonObject jObject, String name, int defaultValue) {
+    static int intOptional(JsonObject jObject, String name, int defaultValue) throws MessageDecodeException {
         try {
             JsonNumber jsonNumber = jObject.getJsonNumber(name);
             if (jsonNumber == null) {
@@ -200,7 +202,7 @@ public abstract class Message {
                 return jsonNumber.intValueExact();
             }
         } catch (ClassCastException | ArithmeticException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not an integer", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
     
@@ -218,7 +220,7 @@ public abstract class Message {
         } catch (NullPointerException  e) {
             throw MessageDecodeException.missingMandatoryAttribute(jObject, name);
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a boolean", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
     
@@ -229,12 +231,13 @@ public abstract class Message {
      * @param name the attribute name where the boolean is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message boolean
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static boolean booleanOptional(JsonObject jObject, String name, boolean defaultValue) {
+    static boolean booleanOptional(JsonObject jObject, String name, boolean defaultValue) throws MessageDecodeException {
         try {
             return jObject.getBoolean(name, defaultValue);
         } catch (NullPointerException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a boolean", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
     
