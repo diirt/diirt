@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
-        var readOnly = nodes[i].getAttribute("channel-readonly");
+        var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id = nodes[i].getAttribute("id");
         var input = document.createElement("textarea");
         input.id = id;

@@ -16,10 +16,10 @@ $(document).ready(function() {
     var spinners = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
-        var max = parseFloat(nodes[i].getAttribute("max"));
-        var min = parseFloat(nodes[i].getAttribute("min"));
-        var step = parseFloat(nodes[i].getAttribute("step"));
-        var readOnly = nodes[i].getAttribute("channel-readonly");
+        var max = parseFloat(nodes[i].getAttribute("data-max"));
+        var min = parseFloat(nodes[i].getAttribute("data-min"));
+        var step = parseFloat(nodes[i].getAttribute("data-step"));
+        var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id = nodes[i].getAttribute("id");
         var callback = function(evt, channel) {
                            switch (evt.type) {
