@@ -5,6 +5,7 @@ function drawSeriesChart() {
     var nodes = document.getElementsByClassName("bubble-graph");
     var len = nodes.length;
     var charts = {};
+    var values = {};
     for (var i = 0; i < len; i++) {
         // Extract the node and all its properties
         var masterDiv = nodes[i];
@@ -22,13 +23,15 @@ function drawSeriesChart() {
         tableDiv.style.width = "100%";
         masterDiv.appendChild(tableDiv);
         
+        var columnsDiv = document.createElement("div");
+        columnsDiv.style.display = "table-row";
+        tableDiv.appendChild(columnsDiv);
         var selectX = document.createElement("select");
         selectX.id = id + "-select-x";
-        var option = document.createElement("option");
-        option.text = "Kiwi";
-//        selectX.add(option);
-//        selectX.style.display = "table-row";
-        tableDiv.appendChild(selectX);
+        columnsDiv.appendChild(selectX);
+        var selectY = document.createElement("select");
+        selectY.id = id + "-select-y";
+        columnsDiv.appendChild(selectY);
 
         var graphDiv = document.createElement("div");
         graphDiv.style.display = "table-row";
@@ -58,7 +61,33 @@ function drawSeriesChart() {
                     select.remove(i);
                 }
             }
-        }
+        };
+        
+        var processValue = function (channel) {
+            var value = values[channel.getId()];
+            populateSelect(selectX, value.columnNames);
+            populateSelect(selectY, value.columnNames);
+            var xId = value.columnNames.indexOf(xColumn);
+            var yId = value.columnNames.indexOf(yColumn);
+            var colorId = value.columnNames.indexOf(colorColumn);
+            var dataArray = [];
+            dataArray[0] = ['ID', xColumn, yColumn, colorColumn];
+            var nPoints = value.columnValues[xId].length;
+            for (var i=0; i < nPoints; i++) {
+                dataArray[i+1] = ['', value.columnValues[xId][i], value.columnValues[yId][i], value.columnValues[colorId][i]];
+            }
+            var data = google.visualization.arrayToDataTable(dataArray);
+
+
+            var options = {
+                hAxis: {title: xColumn},
+                vAxis: {title: yColumn},
+                bubble: {textStyle: {fontSize: 11}},
+                sizeAxis: {minValue: 0,  maxSize: 10}
+            };
+
+            charts[channel.getId()].draw(data, options);
+        };
 
         // Connect to live data
         var callback = function (evt, channel) {
@@ -67,27 +96,8 @@ function drawSeriesChart() {
                     channel.readOnly = !evt.writeConnected;
                     break;
                 case "value": //value changed
-                    populateSelect(selectX, evt.value.columnNames);
-                    var xId = evt.value.columnNames.indexOf(xColumn);
-                    var yId = evt.value.columnNames.indexOf(yColumn);
-                    var colorId = evt.value.columnNames.indexOf(colorColumn);
-                    var dataArray = [];
-                    dataArray[0] = ['ID', xColumn, yColumn, colorColumn];
-                    var nPoints = evt.value.columnValues[xId].length;
-                    for (var i=0; i < nPoints; i++) {
-                        dataArray[i+1] = ['', evt.value.columnValues[xId][i], evt.value.columnValues[yId][i], evt.value.columnValues[colorId][i]];
-                    }
-                    var data = google.visualization.arrayToDataTable(dataArray);
-                    
-
-                    var options = {
-                        hAxis: {title: xColumn},
-                        vAxis: {title: yColumn},
-                        bubble: {textStyle: {fontSize: 11}},
-                        sizeAxis: {minValue: 0,  maxSize: 10}
-                    };
-                    
-                    charts[channel.getId()].draw(data, options);
+                    values[channel.getId()] = evt.value;
+                    processValue(channel);
                     break;
                 case "error": //error happened
                     break;
@@ -114,6 +124,7 @@ function drawSeriesChart() {
         };
         
         populateSelect(selectX, [xColumn]);
+        populateSelect(selectY, [yColumn]);
 
         var chart = new google.visualization.BubbleChart(graphDiv);
         chart.draw(data, options);
