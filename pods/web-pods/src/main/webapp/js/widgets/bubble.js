@@ -67,8 +67,8 @@ function drawSeriesChart() {
             var value = values[channel.getId()];
             populateSelect(selectX, value.columnNames);
             populateSelect(selectY, value.columnNames);
-            var xId = value.columnNames.indexOf(xColumn);
-            var yId = value.columnNames.indexOf(yColumn);
+            var xId = selectX.selectedIndex;
+            var yId = selectY.selectedIndex;
             var colorId = value.columnNames.indexOf(colorColumn);
             var dataArray = [];
             dataArray[0] = ['ID', xColumn, yColumn, colorColumn];
@@ -88,6 +88,7 @@ function drawSeriesChart() {
 
             charts[channel.getId()].draw(data, options);
         };
+        
 
         // Connect to live data
         var callback = function (evt, channel) {
@@ -130,5 +131,12 @@ function drawSeriesChart() {
         chart.draw(data, options);
 
         charts[channel.getId()] = chart;
+        
+        var onClick = function () {
+            processValue(channel);
+        };
+
+        
+        selectX.onclick = onClick;
     }
 }
