@@ -32,6 +32,9 @@ function drawSeriesChart() {
         var selectY = document.createElement("select");
         selectY.id = id + "-select-y";
         columnsDiv.appendChild(selectY);
+        var selectColor = document.createElement("select");
+        selectColor.id = id + "-select-color";
+        columnsDiv.appendChild(selectColor);
 
         var graphDiv = document.createElement("div");
         graphDiv.style.display = "table-row";
@@ -67,11 +70,12 @@ function drawSeriesChart() {
             var value = values[channel.getId()];
             populateSelect(selectX, value.columnNames);
             populateSelect(selectY, value.columnNames);
+            populateSelect(selectColor, value.columnNames);
             var xId = selectX.selectedIndex;
             var yId = selectY.selectedIndex;
-            var colorId = value.columnNames.indexOf(colorColumn);
+            var colorId = selectColor.selectedIndex;
             var dataArray = [];
-            dataArray[0] = ['ID', xColumn, yColumn, colorColumn];
+            dataArray[0] = ['ID', selectX.options[xId].text, selectY.options[yId].text, selectColor.options[colorId].text];
             var nPoints = value.columnValues[xId].length;
             for (var i=0; i < nPoints; i++) {
                 dataArray[i+1] = ['', value.columnValues[xId][i], value.columnValues[yId][i], value.columnValues[colorId][i]];
@@ -80,8 +84,8 @@ function drawSeriesChart() {
 
 
             var options = {
-                hAxis: {title: xColumn},
-                vAxis: {title: yColumn},
+                hAxis: {title: selectX.options[xId].text},
+                vAxis: {title: selectY.options[yId].text},
                 bubble: {textStyle: {fontSize: 11}},
                 sizeAxis: {minValue: 0,  maxSize: 10}
             };
@@ -126,6 +130,7 @@ function drawSeriesChart() {
         
         populateSelect(selectX, [xColumn]);
         populateSelect(selectY, [yColumn]);
+        populateSelect(selectColor, [colorColumn]);
 
         var chart = new google.visualization.BubbleChart(graphDiv);
         chart.draw(data, options);
@@ -138,5 +143,7 @@ function drawSeriesChart() {
 
         
         selectX.onclick = onClick;
+        selectY.onclick = onClick;
+        selectColor.onclick = onClick;
     }
 }
