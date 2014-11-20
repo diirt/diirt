@@ -115,16 +115,14 @@ public abstract class DataSource {
     protected abstract ChannelHandler createChannel(String channelName);
 
     // The executor used by the data source to perform asynchronous operations,
-    // such as connections and writes. I am current using a single thread for
-    // all data sources, which can be changed if needed.
-    // Since it's a single executor for all data sources, it should not be
-    // shut down at data source close.
-    private static ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("PVMgr DataSource Worker "));
+    // such as connections and writes. We use one extra thread for each datasource,
+    // mainly to be able to shut it down during cleanup
+    private final ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("PVMgr " + getClass().getSimpleName() + " Worker "));
     
     // Keeps track of the recipes that were opened with
     // this data source.
-    private Set<ChannelReadRecipe> readRecipes = Collections.synchronizedSet(new HashSet<ChannelReadRecipe>());
-    private Set<ChannelWriteRecipe> writeRecipes = Collections.synchronizedSet(new HashSet<ChannelWriteRecipe>());
+    private final Set<ChannelReadRecipe> readRecipes = Collections.synchronizedSet(new HashSet<ChannelReadRecipe>());
+    private final Set<ChannelWriteRecipe> writeRecipes = Collections.synchronizedSet(new HashSet<ChannelWriteRecipe>());
 
     /**
      * Connects to a set of channels based on the given recipe.
@@ -420,6 +418,7 @@ public abstract class DataSource {
      * Closes the DataSource and the resources associated with it.
      */
     public void close() {
+        exec.shutdownNow();
     }
     
 }
