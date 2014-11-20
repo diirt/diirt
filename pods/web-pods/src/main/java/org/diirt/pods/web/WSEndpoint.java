@@ -70,6 +70,7 @@ public class WSEndpoint {
     
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
+    private int defaultMaxRate;
 
     @OnMessage
     public void onMessage(Session session, Message message) {
@@ -100,8 +101,9 @@ public class WSEndpoint {
             return;
         }
         
-        double maxRate = 1;
-        if (message.getMaxRate() != -1) {
+        // TODO: add maxRate check during parsing
+        int maxRate = defaultMaxRate;
+        if (message.getMaxRate() >= 20) {
             maxRate = message.getMaxRate();
         }
         
@@ -111,7 +113,7 @@ public class WSEndpoint {
         if (message.isReadOnly()) {
             reader = PVManager.read(formula(translation.getFormula()))
                 .readListener(new ReadOnlyListener(session, message))
-                .maxRate(TimeDuration.ofHertz(maxRate));
+                .maxRate(TimeDuration.ofMillis(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
             reader = PVManager.readAndWrite(formula(translation.getFormula()))
@@ -162,6 +164,21 @@ public class WSEndpoint {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
+        System.out.println(session.getPathParameters());
+        String maxRate = session.getPathParameters().get("maxRate");
+        if (maxRate != null) {
+            try {
+                defaultMaxRate = Integer.parseInt(maxRate);
+                if (defaultMaxRate < 20) {
+                    sendError(session, -1, "maxRate must be greater than 20");
+                    defaultMaxRate = 1000;
+                }
+            } catch (NumberFormatException ex) {
+                sendError(session, -1, "maxRate must be an integer");
+            }
+        } else {
+            defaultMaxRate = 1000;
+        }
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
         String remoteHost = (String) httpSession.getAttribute("remoteHost");
         Principal user = session.getUserPrincipal();
