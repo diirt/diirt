@@ -1,3 +1,16 @@
+/**
+ * A javascript library for accessing live process data in web browser using
+ * WebSocket.
+ *
+ * @version 3.0.0
+ *
+ * @author Enrique Schuhmacher
+ *
+ */
+
+/**
+ * Global debug flag.
+ */
 function Client(url, debug, debugMessageBox) {
 
 	var channelIDIndex = 0;
@@ -28,6 +41,7 @@ function Client(url, debug, debugMessageBox) {
 	 * Remove a WebSocket onOpen callback.
 	 * @param {Client~WebSocketEventCallback} callback the callback function on WebSocket open event.
 	 */
+
 	this.removeWebSocketOnOpenCallback = function(callback){
 		webSocketOnOpenCallbacks.splice(webSocketOnOpenCallbacks.indexOf(callback), 1);
 	};
@@ -67,6 +81,16 @@ function Client(url, debug, debugMessageBox) {
 		onServerMessageCallbacks.push(callback);
 	};
 
+	/**
+	 * Create a control system channel.
+	 * @param {string} name name of the channel.
+	 * @param {object} callback related with the channel.
+	 * @param {boolean} readOnly select if the channel can be use as read/write or just read.
+     * @param {string} type select the vtype that the channel values will contain.
+	 * @param {string} version select version number of the vtype.
+     * @param {intiger} maxRate select update value rate.
+	 * @returns the channel.
+	 */
     this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
         if(readOnly == null || readOnly =="true") {
@@ -115,6 +139,11 @@ function Client(url, debug, debugMessageBox) {
         return channel;
     };
 
+	/**
+	 * reconnect a control system channel.
+	 * @param {Channel} ch channel that needs to reconnect.
+	 * @returns the channel.
+	 */
     this.resubscribeChannel = function(ch) {
         var typeJson;
         if (ch.value.type != null) {
@@ -155,6 +184,10 @@ function Client(url, debug, debugMessageBox) {
         return channel;
     };
 
+	/**
+	 * connect to a websocket.
+	 * @param {string} url url of the service websocket.
+	 */
     function openWebSocket(url) {
         if ('WebSocket' in window) {
             websocket = new WebSocket(url);
@@ -200,6 +233,11 @@ function Client(url, debug, debugMessageBox) {
         websocket = null;
     };
 
+    /**
+    * Send text to server using WebSocket.
+    * This function is for internal use only.
+    * @param {string} text
+	*/
     this.sendText =function(text) {
         websocket.send(text);
         if(debug)
@@ -210,14 +248,14 @@ function Client(url, debug, debugMessageBox) {
     /**
      * Get the Channel from its id.
      * @param {number} id id of the Channel.
-     * @returns {Client~Channel} the Channel.
+     * @returns {Channel} the Channel.
      */
     this.getChannel = function(id){
         return channelArray[id];
     };
 
     /**Get all Channels on this client.
-     * @returns {Array.<Client~Channel>} All Channels in an array.
+     * @returns {Array.<Channel>} All Channels in an array.
      */
     this.getAllChannels = function() {
         return channelArray;
@@ -251,6 +289,7 @@ function Client(url, debug, debugMessageBox) {
             break;
         }
     };
+
     function fireOnOpen(evt) {
         clientSelf.isLive = true;
         for ( var i in webSocketOnOpenCallbacks) {
@@ -289,6 +328,10 @@ function Client(url, debug, debugMessageBox) {
         }
     }
 
+    /**
+     * unsubscribe the Channel.
+     * @param {number} channelIDIndex id of the Channel.
+     */
     function unsubscribe(channelIDIndex) {
 		var json = JSON.stringify({
 			"message" : "unsubscribe",
@@ -298,6 +341,10 @@ function Client(url, debug, debugMessageBox) {
 		delete channelArray[channelIDIndex];
 	}
 
+    /**
+     * pause the Channel.
+     * @param {number} channelIDIndex id of the Channel.
+     */
 	function pauseChannel(channelIDIndex){
 		var json = JSON.stringify({
 			"message" : "pause",
@@ -306,6 +353,10 @@ function Client(url, debug, debugMessageBox) {
 		clientSelf.sendText(json);
 	}
 
+    /**
+     * resume the Channel.
+     * @param {number} channelIDIndex id of the Channel.
+     */
 	function resumeChannel(channelIDIndex){
 		var json = JSON.stringify({
 			"message" : "resume",
@@ -314,6 +365,11 @@ function Client(url, debug, debugMessageBox) {
 		clientSelf.sendText(json);
 	}
 
+    /**
+     * Set cahnnel value.
+     * @param {number} channelIDIndex id of the Channel.
+     * @param {object} value updated value to be set.
+     */
 	function setChannelValue(channelIDIndex, value){
 		var json = JSON.stringify({
             "message" : "write",
@@ -323,6 +379,12 @@ function Client(url, debug, debugMessageBox) {
 		clientSelf.sendText(json);
 	}
 
+    /**
+     * Represents a channel.
+     * @constructor
+     * @param {string} name - The name of the channel.
+     * @returns the channel object.
+    */
 	function Channel(name) {
         /**Name of the Channel.
          * @type {string}
@@ -336,12 +398,14 @@ function Client(url, debug, debugMessageBox) {
         this.readOnly = true;
 
     }
+
     /**If the channel is connected to the device.
      * @returns {boolean} true if the channel is connected.
      */
     Channel.prototype.isConnected = function(){
         return this.connected;
     };
+
     /**
      * Get id of the Channel.
      * return {object} the value which is a data structure depending on the Channel.
@@ -373,6 +437,7 @@ function Client(url, debug, debugMessageBox) {
     Channel.prototype.getValue = function(){
         return this.value;
     };
+
     /**
      * Add a callback to the Channel that will be notified on Channel's event.
      * @param {Client~Channel~ChannelCallback} callback the callback function.
@@ -391,6 +456,7 @@ function Client(url, debug, debugMessageBox) {
                 delete this.channelCallbacks[i];
         }
     };
+
     /**
      * Set channel value.
      * @param {object} value
@@ -403,6 +469,9 @@ function Client(url, debug, debugMessageBox) {
         }
     };
 
+    /**
+     * update channel value.
+     */
     Channel.prototype.updateValue = function() {
         if(!this.readOnly) {
             setChannelValue(this.id, this.value.value);
@@ -417,17 +486,23 @@ function Client(url, debug, debugMessageBox) {
         unsubscribe(this.id);
     };
 
+	/**
+	 * Pause notification on this channel.
+	 */
     Channel.prototype.pause = function() {
         this.paused = true;
         pauseChannel(this.id);
     };
 
+	/**
+	 * resume notification on this channel.
+	 */
     Channel.prototype.resume = function() {
         this.paused = false;
         resumeChannel(this.id);
     };
 
-
+	// fire a channel event
     Channel.prototype.fireChannelEventFunc = function(json) {
         // update the  properties of the channel
         // processJson should be implemented in specific protocol library
