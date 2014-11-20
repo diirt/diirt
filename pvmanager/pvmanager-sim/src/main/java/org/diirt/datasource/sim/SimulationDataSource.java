@@ -44,7 +44,7 @@ public final class SimulationDataSource extends DataSource {
     /**
      * ExecutorService on which all simulated data is generated.
      */
-    private static ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(namedPool("PVMgr Simulator "));
+    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(namedPool("PVMgr Simulator "));
 
     @Override
     @SuppressWarnings("unchecked")
@@ -61,6 +61,12 @@ public final class SimulationDataSource extends DataSource {
         
         SimFunction<?> simFunction = (SimFunction<?>) NameParser.createFunction(channelName);
         return new SimulationChannelHandler(channelName, simFunction, exec);
+    }
+
+    @Override
+    public void close() {
+        exec.shutdownNow();
+        super.close();
     }
 
 }
