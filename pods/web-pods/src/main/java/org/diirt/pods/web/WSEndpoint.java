@@ -164,7 +164,7 @@ public class WSEndpoint {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        System.out.println(session.getPathParameters());
+        // Read the maxRate parameter
         String maxRate = session.getPathParameters().get("maxRate");
         if (maxRate != null) {
             try {
@@ -179,11 +179,11 @@ public class WSEndpoint {
         } else {
             defaultMaxRate = 1000;
         }
+        
+        // Retrive user and remote host for security purposes
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
         String remoteHost = (String) httpSession.getAttribute("remoteHost");
         Principal user = session.getUserPrincipal();
-        System.out.println("Address " + remoteHost);
-        System.out.println("User " + user);
     }
 
     @OnClose
