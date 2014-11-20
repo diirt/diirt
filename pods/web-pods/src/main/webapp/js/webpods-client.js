@@ -9,7 +9,12 @@
  */
 
 /**
- * Global debug flag.
+ * Create a new Client object, which establish a new connection to the server.
+ * @class Client
+ * @constructor
+ * @param url url of the pods server.
+ * @param debug debug flag
+ * @returns a new Client object.
  */
 function Client(url, debug, debugMessageBox) {
 
