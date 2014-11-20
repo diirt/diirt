@@ -7,12 +7,16 @@ window.onload = function() {
     var idField = document.getElementById('idNum');
     var result = document.getElementById('results');
     var details = document.getElementById('details');
+    var subscriptionList = document.getElementById('subscriptions');
     var connectBtn = document.getElementById('connect');
     var disconnectBtn = document.getElementById('disconnect');
     var subscribeBtn = document.getElementById('subscribe');
     var pauseBtn = document.getElementById('pause');
     var resumeBtn = document.getElementById('resume');
     var unsubscribeBtn = document.getElementById('unsubscribe');
+    var clearBtn = document.getElementById('clear');
+    var filterBtn = document.getElementById('filter');
+    var showAllBtn = document.getElementById('showAll');
     var socket;
     var channel;
     var id;
@@ -59,7 +63,7 @@ window.onload = function() {
         var message = '{"message" : "subscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
         sendMessage(message); // Sends the message through socket
         result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
-        resultsInfo.unshift(message);
+       // resultsInfo.unshift(message);
         socket.onmessage = function(e) { newMessage(e) };
     };
     
@@ -80,19 +84,28 @@ window.onload = function() {
     };
    
    
-    // When a message is sent by the server, retrieve the data and display in div results
+    // Message received
    function newMessage (event) {
-       //console.log(event);
-        var response = JSON.parse(event.data);
-        var value = response.value.value;
-        result.innerHTML = '<option>' + value + '</option>' + result.innerHTML;
+       var response = JSON.parse(event.data);
+       var value;
+       if (response.type === "connection") {
+           subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
+       }
+       else if (response.type === "error") {
+           value = '<option class = "error">' + response.error + '</option>';
+       } 
+       else if (response.type === "value") {
+            value = '<option>' + response.value.value + '</option>';
+        }
+        result.innerHTML = value + result.innerHTML;
         resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
     };
     
     // Updates connection status
    function openSocket (event) {
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
-       resultsInfo.unshift('Connected to ' + socket.URL);
+       console.log('connected to socket');
+       resultsInfo.unshift('Connected to ' + serverField.value);
     };
     
     
@@ -106,6 +119,8 @@ window.onload = function() {
     function closeSocket(event) {
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
+        result.innerHTML= "";
+        details.innerHTML = "";
         // socketStatus.innerHTML = 'Disconnected';
         // socketStatus.className = 'Closed';
     };
@@ -136,6 +151,21 @@ window.onload = function() {
         resultsInfo.unshift(message);
         // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
     };
+    
+    
+    filterBtn.onclick = function(e) {
+        // TODO: filter event info by subscription
+    }
+    
+    showAllBtn.onclick = function(e) {
+        // TODO: remove subscription filter, show all data
+    }
+    
+    // Clears event info
+    clearBtn.onclick = function(e) {
+        result.innerHTML= "";
+        details.innerHTML = "";
+    }
     
     
     // Displays details for selected event
