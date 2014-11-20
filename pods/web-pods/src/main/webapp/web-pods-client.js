@@ -66,7 +66,8 @@ window.onload = function() {
     
     // Unsubscribe
     unsubscribeBtn.onclick = function(e) {
-        var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
+        var message = '{"message" : "unsubscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
+        sendMessage(message);
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
     };
@@ -81,6 +82,7 @@ window.onload = function() {
    
     // When a message is sent by the server, retrieve the data and display in div results
    function newMessage (event) {
+       //console.log(event);
         var response = JSON.parse(event.data);
         var value = response.value.value;
         result.innerHTML = '<option>' + value + '</option>' + result.innerHTML;
