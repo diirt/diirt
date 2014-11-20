@@ -91,10 +91,13 @@ window.onload = function() {
        if (response.type === "connection") {
            subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
-       else if (response.type === "error") {
+      // if (response.value.type.name === "VTable") {
+      //     value = '<option>table</option>';
+      // }
+       if (response.type === "error") {
            value = '<option class = "error">' + response.error + '</option>';
        } 
-       else if (response.type === "value") {
+       if (response.type === "value") {
             value = '<option>' + response.value.value + '</option>';
         }
         result.innerHTML = value + result.innerHTML;
@@ -121,6 +124,7 @@ window.onload = function() {
         resultsInfo.unshift('Disconnected from ' + socket.URL);
         result.innerHTML= "";
         details.innerHTML = "";
+        subscriptionList.innerHTML = "";
         // socketStatus.innerHTML = 'Disconnected';
         // socketStatus.className = 'Closed';
     };
