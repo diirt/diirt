@@ -347,6 +347,7 @@ public class GraphBufferTest {
                
     }
     
+    /*
     @Test
     public void drawLineGraphTwoValueData() throws Exception {
         
@@ -384,4 +385,5 @@ public class GraphBufferTest {
         buffer.drawLineGraph(data, InterpolationScheme.CUBIC, ReductionScheme.NONE);
         ImageAssert.compareImages("lineGraph2D.cubic.NaN.consecutive", buffer.getImage());
     }
+    */
 }

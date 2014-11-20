@@ -146,6 +146,23 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
     
+    public void GraphBufferDraw(GraphBuffer buffer,Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction ){
+        
+        ProcessValue pv=new ProcessValue() {
+
+            @Override
+            public void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                if (focusPixelX != null) {
+                    double scaledDiff = Math.abs(scaledX - focusPixelX);
+                    if (scaledDiff < currentScaledDiff) {
+                        currentIndex = index;
+                        currentScaledDiff = scaledDiff;
+            }
+        }
+            }
+        };
+        
+    }
     /**
      *Draws a graph with multiple lines, each pertaining to a different set of data.
      * @param g Graphics2D object used to perform drawing functions within draw.
