@@ -304,6 +304,7 @@ function Client(url, debug, debugMessageBox) {
 
     function fireOnClose(evt) {
         clientSelf.isLive = false;
+        var url = evt.currentTarget.url;
         if(forcedClose) {
             for(var c in channelArray){
                 channelArray[c].unsubscribe();
@@ -312,10 +313,12 @@ function Client(url, debug, debugMessageBox) {
                 webSocketOnCloseCallbacks[i](evt);
             }
         } else {
-            openWebSocket(evt.currentTarget.url);
-            for(c in channelArray) {
-                clientSelf.resubscribeChannel(channelArray[c]);
-            }
+            setTimeout(function(){
+                openWebSocket(url);
+                for(c in channelArray) {
+                    clientSelf.resubscribeChannel(channelArray[c]);
+                }
+            }, 10000);
         }
 
     }
