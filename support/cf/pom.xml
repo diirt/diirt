@@ -21,6 +21,11 @@
             <artifactId>service</artifactId>
             <version>3.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.epics.channelfinder</groupId>
+            <artifactId>cf-client-api</artifactId>
+            <version>2.2.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -31,6 +36,7 @@
                 <configuration>
                     <services>
                         <param>org.diirt.datasource.formula.FormulaFunctionSet</param>
+                        <param>org.diirt.service.ServiceProvider</param>
                     </services>
                 </configuration>
                 <executions>
