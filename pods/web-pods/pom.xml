@@ -79,11 +79,6 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>fr.mastah.maven.plugin</groupId>
-            <artifactId>jsdoc3-maven-plugin</artifactId>
-            <version>1.0.11</version>
-        </dependency>
     </dependencies>
 
     <build>
