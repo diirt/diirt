@@ -67,6 +67,7 @@
         <module>pvmanager</module>
         <module>vtype</module>
         <module>pods</module>
+        <module>support</module>
     </modules>
     <build>
         <plugins>

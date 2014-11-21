@@ -65,8 +65,8 @@ public class DatasourceTest {
         
         dataSource.connectRead(dataRecipe);
         
-        verify(dataSource).channel("first");
-        verify(channel1).addReader(exp.recipeFor("first").getReadSubscription());
+        verify(dataSource, timeout(100)).channel("first");
+        verify(channel1, timeout(100)).addReader(exp.recipeFor("first").getReadSubscription());
     }
 
     @Test
@@ -82,10 +82,10 @@ public class DatasourceTest {
         
         dataSource.connectRead(dataRecipe);
         
-        verify(dataSource).channel("first");
-        verify(dataSource).channel("second");
-        verify(channel1).addReader(exp.recipeFor("first").getReadSubscription());
-        verify(channel2).addReader(exp.recipeFor("second").getReadSubscription());
+        verify(dataSource, timeout(100)).channel("first");
+        verify(dataSource, timeout(100)).channel("second");
+        verify(channel1, timeout(100)).addReader(exp.recipeFor("first").getReadSubscription());
+        verify(channel2, timeout(100)).addReader(exp.recipeFor("second").getReadSubscription());
     }
 
     @Test
@@ -103,10 +103,10 @@ public class DatasourceTest {
         dataSource.connectRead(dataRecipe1);
         dataSource.connectRead(dataRecipe2);
         
-        verify(dataSource, times(2)).channel("first");
-        verify(dataSource).createChannel("first");
-        verify(channel1).addReader(exp1.recipeFor("first").getReadSubscription());
-        verify(channel1).addReader(exp2.recipeFor("first").getReadSubscription());
+        verify(dataSource, timeout(100).times(2)).channel("first");
+        verify(dataSource, timeout(100)).createChannel("first");
+        verify(channel1, timeout(100)).addReader(exp1.recipeFor("first").getReadSubscription());
+        verify(channel1, timeout(100)).addReader(exp2.recipeFor("first").getReadSubscription());
     }
 
     @Test
@@ -121,9 +121,9 @@ public class DatasourceTest {
         
         dataSource.connectRead(dataRecipe);
         
-        verify(dataSource).channel("changeit");
-        verify(dataSource).createChannel("changeit");
-        verify(channel1).addReader(exp.recipeFor("changeit").getReadSubscription());
+        verify(dataSource, timeout(100)).channel("changeit");
+        verify(dataSource, timeout(100)).createChannel("changeit");
+        verify(channel1, timeout(100)).addReader(exp.recipeFor("changeit").getReadSubscription());
         assertThat(dataSource.getChannels().get("first"), not(equalTo(null)));
         assertThat(dataSource.getChannels().get("changeit"), equalTo(null));
     }
