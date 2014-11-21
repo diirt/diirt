@@ -74,10 +74,39 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.mastah.maven.plugin</groupId>
+            <artifactId>jsdoc3-maven-plugin</artifactId>
+            <version>1.0.11</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>fr.mastah.maven.plugin</groupId>
+                <artifactId>jsdoc3-maven-plugin</artifactId>
+                <version>1.0.11</version>
+                <executions>
+                    <execution>
+                        <id>jsdoc3</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>jsdoc3</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/jsdoc3</outputDirectory>
+                    <jsdocInputs>
+                        <jsdocInput>
+                            <jsDir>${basedir}/src/main/webapp/js</jsDir>
+                            <pattern>webpods-client.js</pattern>
+                        </jsdocInput>
+                    </jsdocInputs>
+                    <options>-p</options>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -121,6 +150,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 
