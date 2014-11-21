@@ -8,6 +8,7 @@ import java.io.File;
 import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
@@ -33,12 +34,14 @@ public final class FileDataSource extends DataSource {
         this(new FileDataSourceProvider().readDefaultConfiguration());
     }
     
+    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch"));
+    
     public FileDataSource(FileDataSourceConfiguration conf) {
         super(true);
         if (conf.isPollEnabled()) {
-            fileWatchService = new FileWatcherPollingService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")), conf.pollInterval);
+            fileWatchService = new FileWatcherPollingService(exec, conf.pollInterval);
         } else {
-            fileWatchService = new FileWatcherFileSystemService(Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch")),
+            fileWatchService = new FileWatcherFileSystemService(exec,
                     Duration.ofSeconds(1));
             
         }
@@ -64,6 +67,12 @@ public final class FileDataSource extends DataSource {
 	}
 	return new FileChannelHandler(this, channelName, new File(
 		URI.create("file://" + channelName)), new CSVFileFormat());
+    }
+
+    @Override
+    public void close() {
+        exec.shutdownNow();
+        super.close();
     }
     
 }

@@ -18,8 +18,9 @@ public class MessageUnsubscribe extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageUnsubscribe(JsonObject obj) {
+    public MessageUnsubscribe(JsonObject obj) throws MessageDecodeException {
         super(obj);
     }
 

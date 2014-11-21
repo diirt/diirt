@@ -18,8 +18,9 @@ public class MessageResume extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageResume(JsonObject obj) {
+    public MessageResume(JsonObject obj) throws MessageDecodeException {
         super(obj);
     }
 

@@ -25,8 +25,9 @@ public class MessageSubscribe extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageSubscribe(JsonObject obj) {
+    public MessageSubscribe(JsonObject obj) throws MessageDecodeException {
         super(obj);
         this.channel = stringMandatory(obj, "channel");
         this.type = stringOptional(obj, "type", null);

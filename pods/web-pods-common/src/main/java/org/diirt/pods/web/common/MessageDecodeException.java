@@ -50,4 +50,12 @@ public class MessageDecodeException extends DecodeException {
         }
     }
     
+    public static MessageDecodeException missingMandatoryAttribute(JsonObject jObject, String name) {
+        return new MessageDecodeException("name", "Missing message attribute '" + name + "'", jObject);
+    }
+    
+    public static MessageDecodeException wrongAttributeType(JsonObject jObject, String name, String type) {
+        return new MessageDecodeException("name", "Message attribute '" + name + "' is not a " + type, jObject);
+    }
+    
 }

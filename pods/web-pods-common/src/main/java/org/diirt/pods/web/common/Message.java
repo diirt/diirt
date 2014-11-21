@@ -41,8 +41,9 @@ public abstract class Message {
      * Constructor for JSON parsing. Retrieves message and id from payload.
      * 
      * @param obj the JSON message
+     * @throws MessageDecodeException if json format is incorrect
      */
-    Message(JsonObject obj) {
+    Message(JsonObject obj) throws MessageDecodeException {
         this(Message.MessageType.valueOf(obj.getString("message").toUpperCase()), intMandatory(obj, "id"));
     }
     
@@ -108,13 +109,14 @@ public abstract class Message {
      * @param jObject the JSON object
      * @param name the attribute name where the type is stored
      * @return the message type
+     * @throws MessageDecodeException if the field is missing or of the wrong type
      */
-    static MessageType typeMandatory(JsonObject jObject, String name) {
+    static MessageType typeMandatory(JsonObject jObject, String name) throws MessageDecodeException {
         String message = stringMandatory(jObject, name);
         try {
             return MessageType.valueOf(message);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' must be a valid message type (was '" + message + "')", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "valid message type");
         }
     }
 
@@ -124,17 +126,18 @@ public abstract class Message {
      * @param jObject the JSON object
      * @param name the attribute name where the string is stored
      * @return the message string
+     * @throws MessageDecodeException if the field is missing or of the wrong type
      */
-    static String stringMandatory(JsonObject jObject, String name) {
+    static String stringMandatory(JsonObject jObject, String name) throws MessageDecodeException {
         try {
             JsonString jsonString = jObject.getJsonString(name);
             if (jsonString == null) {
-                throw new IllegalArgumentException("Missing message attribute '" + name + "'");
+                throw MessageDecodeException.missingMandatoryAttribute(jObject, name);
             } else {
                 return jsonString.getString();
             }
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a string", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "string");
         }
     }
 
@@ -145,8 +148,9 @@ public abstract class Message {
      * @param name the attribute name where the string is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message string
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static String stringOptional(JsonObject jObject, String name, String defaultValue) {
+    static String stringOptional(JsonObject jObject, String name, String defaultValue) throws MessageDecodeException {
         try {
             JsonString jsonString = jObject.getJsonString(name);
             if (jsonString == null) {
@@ -155,7 +159,7 @@ public abstract class Message {
                 return jsonString.getString();
             }
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a string", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "string");
         }
     }
     
@@ -165,17 +169,18 @@ public abstract class Message {
      * @param jObject the JSON object
      * @param name the attribute name where the integer is stored
      * @return the message integer
+     * @throws MessageDecodeException if the field is missing or of the wrong type
      */
-    static int intMandatory(JsonObject jObject, String name) {
+    static int intMandatory(JsonObject jObject, String name) throws MessageDecodeException {
         try {
             JsonNumber jsonNumber = jObject.getJsonNumber(name);
             if (jsonNumber == null) {
-                throw new IllegalArgumentException("Missing message attribute '" + name + "'");
+                throw MessageDecodeException.missingMandatoryAttribute(jObject, name);
             } else {
                 return jsonNumber.intValueExact();
             }
         } catch (ClassCastException | ArithmeticException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not an integer", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
     
@@ -186,8 +191,9 @@ public abstract class Message {
      * @param name the attribute name where the integer is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message integer
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static int intOptional(JsonObject jObject, String name, int defaultValue) {
+    static int intOptional(JsonObject jObject, String name, int defaultValue) throws MessageDecodeException {
         try {
             JsonNumber jsonNumber = jObject.getJsonNumber(name);
             if (jsonNumber == null) {
@@ -196,7 +202,7 @@ public abstract class Message {
                 return jsonNumber.intValueExact();
             }
         } catch (ClassCastException | ArithmeticException e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not an integer", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
     
@@ -206,14 +212,15 @@ public abstract class Message {
      * @param jObject the JSON object
      * @param name the attribute name where the boolean is stored
      * @return the message boolean
+     * @throws MessageDecodeException if the field is missing or of the wrong type
      */
-    static boolean booleanMandatory(JsonObject jObject, String name) {
+    static boolean booleanMandatory(JsonObject jObject, String name) throws MessageDecodeException {
         try {
             return jObject.getBoolean(name);
         } catch (NullPointerException  e) {
-            throw new IllegalArgumentException("Missing message attribute '" + name + "'");
+            throw MessageDecodeException.missingMandatoryAttribute(jObject, name);
         } catch (ClassCastException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a boolean", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
     
@@ -224,12 +231,13 @@ public abstract class Message {
      * @param name the attribute name where the boolean is stored
      * @param defaultValue the value to use if no attribute is found
      * @return the message boolean
+     * @throws MessageDecodeException if the field is of the wrong type
      */
-    static boolean booleanOptional(JsonObject jObject, String name, boolean defaultValue) {
+    static boolean booleanOptional(JsonObject jObject, String name, boolean defaultValue) throws MessageDecodeException {
         try {
             return jObject.getBoolean(name, defaultValue);
         } catch (NullPointerException  e) {
-            throw new IllegalArgumentException("Message attribute '" + name + "' is not a boolean", e);
+            throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
     

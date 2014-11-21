@@ -22,8 +22,9 @@ public class MessageConnectionEvent extends Message {
      * Creates a new message based on the JSON representation.
      * 
      * @param obj JSON object
+     * @throws MessageDecodeException if json format is incorrect
      */
-    public MessageConnectionEvent(JsonObject obj) {
+    public MessageConnectionEvent(JsonObject obj) throws MessageDecodeException {
         super(obj);
         this.connected = booleanMandatory(obj, "connected");
         this.writeConnected = booleanMandatory(obj, "writeConnected");
