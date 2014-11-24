@@ -6,6 +6,9 @@ function drawSeriesChart() {
     var len = nodes.length;
     var charts = {};
     var values = {};
+    var selectX = {};
+    var selectY = {};
+    var selectColor = {};
     for (var i = 0; i < len; i++) {
         // Extract the node and all its properties
         var masterDiv = nodes[i];
@@ -26,15 +29,15 @@ function drawSeriesChart() {
         var columnsDiv = document.createElement("div");
         columnsDiv.style.display = "table-row";
         tableDiv.appendChild(columnsDiv);
-        var selectX = document.createElement("select");
-        selectX.id = id + "-select-x";
-        columnsDiv.appendChild(selectX);
-        var selectY = document.createElement("select");
-        selectY.id = id + "-select-y";
-        columnsDiv.appendChild(selectY);
-        var selectColor = document.createElement("select");
-        selectColor.id = id + "-select-color";
-        columnsDiv.appendChild(selectColor);
+        selectX[i] = document.createElement("select");
+        selectX[i].id = id + "-select-x";
+        columnsDiv.appendChild(selectX[i]);
+        selectY[i] = document.createElement("select");
+        selectY[i].id = id + "-select-y";
+        columnsDiv.appendChild(selectY[i]);
+        selectColor[i] = document.createElement("select");
+        selectColor[i].id = id + "-select-color";
+        columnsDiv.appendChild(selectColor[i]);
 
         var graphDiv = document.createElement("div");
         graphDiv.style.display = "table-row";
@@ -47,35 +50,35 @@ function drawSeriesChart() {
             if (select.selectedIndex !== -1) {
                 currentSelection = select.options[select.selectedIndex].text;
             }
-            for (i = 0; i < list.length; i++) {
-                if (i < select.options.length) {
-                    select.options[i].text = list[i];
+            for (nElement = 0; nElement < list.length; nElement++) {
+                if (nElement < select.options.length) {
+                    select.options[nElement].text = list[nElement];
                 } else {
                     var option = document.createElement("option");
-                    option.text = list[i];
-                    select.add(option, select[i]);
+                    option.text = list[nElement];
+                    select.add(option, select[nElement]);
                 }
-                if (select[i].text === currentSelection) {
-                    select.selectedIndex = i;
+                if (select[nElement].text === currentSelection) {
+                    select.selectedIndex = nElement;
                 }
             }
             if (select.options.length > list.length) {
-                for (i = select.options.length - 1; i >= list.length; i--) {
-                    select.remove(i);
+                for (nElement = select.options.length - 1; nElement >= list.length; nElement--) {
+                    select.remove(nElement);
                 }
             }
         };
         
-        var processValue = function (channel) {
+        var processValue = function (channel, nNode) {
             var value = values[channel.getId()];
-            populateSelect(selectX, value.columnNames);
-            populateSelect(selectY, value.columnNames);
-            populateSelect(selectColor, value.columnNames);
-            var xId = selectX.selectedIndex;
-            var yId = selectY.selectedIndex;
-            var colorId = selectColor.selectedIndex;
+            populateSelect(selectX[nNode], value.columnNames);
+            populateSelect(selectY[nNode], value.columnNames);
+            populateSelect(selectColor[nNode], value.columnNames);
+            var xId = selectX[nNode].selectedIndex;
+            var yId = selectY[nNode].selectedIndex;
+            var colorId = selectColor[nNode].selectedIndex;
             var dataArray = [];
-            dataArray[0] = ['ID', selectX.options[xId].text, selectY.options[yId].text, selectColor.options[colorId].text];
+            dataArray[0] = ['ID', selectX[nNode].options[xId].text, selectY[nNode].options[yId].text, selectColor[nNode].options[colorId].text];
             var nPoints = value.columnValues[xId].length;
             for (var i=0; i < nPoints; i++) {
                 dataArray[i+1] = ['', value.columnValues[xId][i], value.columnValues[yId][i], value.columnValues[colorId][i]];
@@ -84,8 +87,8 @@ function drawSeriesChart() {
 
 
             var options = {
-                hAxis: {title: selectX.options[xId].text},
-                vAxis: {title: selectY.options[yId].text},
+                hAxis: {title: selectX[nNode].options[xId].text},
+                vAxis: {title: selectY[nNode].options[yId].text},
                 bubble: {textStyle: {fontSize: 11}},
                 sizeAxis: {minValue: 0,  maxSize: 10}
             };
@@ -93,28 +96,31 @@ function drawSeriesChart() {
             charts[channel.getId()].draw(data, options);
         };
         
+        var createCallback = function (nNode) {
 
-        // Connect to live data
-        var callback = function (evt, channel) {
-            switch (evt.type) {
-                case "connection": //connection state changed
-                    channel.readOnly = !evt.writeConnected;
-                    break;
-                case "value": //value changed
-                    values[channel.getId()] = evt.value;
-                    processValue(channel);
-                    break;
-                case "error": //error happened
-                    break;
-                case "writePermission":	// write permission changed.
-                    break;
-                case "writeCompleted": // write finished.
-                    break;
-                default:
-                    break;
-            }
+            return function (evt, channel) {
+                switch (evt.type) {
+                    case "connection": //connection state changed
+                        channel.readOnly = !evt.writeConnected;
+                        break;
+                    case "value": //value changed
+                        values[channel.getId()] = evt.value;
+                        processValue(channel, nNode);
+                        break;
+                    case "error": //error happened
+                        break;
+                    case "writePermission":	// write permission changed.
+                        break;
+                    case "writeCompleted": // write finished.
+                        break;
+                    default:
+                        break;
+                }
+            };
+        
         };
-        var channel = wp.subscribeChannel(channelname, callback, readOnly);
+        
+        var channel = wp.subscribeChannel(channelname, createCallback(i), readOnly);
 
         var data = google.visualization.arrayToDataTable([
             ['ID', 'X', 'Y', 'Color', 'Size'],
@@ -128,22 +134,23 @@ function drawSeriesChart() {
             bubble: {textStyle: {fontSize: 11}}
         };
         
-        populateSelect(selectX, [xColumn]);
-        populateSelect(selectY, [yColumn]);
-        populateSelect(selectColor, [colorColumn]);
+        populateSelect(selectX[i], [xColumn]);
+        populateSelect(selectY[i], [yColumn]);
+        populateSelect(selectColor[i], [colorColumn]);
 
         var chart = new google.visualization.BubbleChart(graphDiv);
         chart.draw(data, options);
 
         charts[channel.getId()] = chart;
         
-        var onClick = function () {
-            processValue(channel);
+        var createOnClick = function (theChannel, nNode) {
+            return function () {
+                processValue(theChannel, nNode);
+            };
         };
-
         
-        selectX.onclick = onClick;
-        selectY.onclick = onClick;
-        selectColor.onclick = onClick;
+        selectX[i].onclick = createOnClick(channel, i);
+        selectY[i].onclick = createOnClick(channel, i);
+        selectColor[i].onclick = createOnClick(channel, i);
     }
 }
