@@ -20,7 +20,13 @@ public abstract class VType {
 //            VMultiInt.class, VMultiString.class, VShort.class, VShortArray.class,
 //            VStatistics.class, VString.class, VStringArray.class, VBoolean.class, VBooleanArray.class, VTable.class,
 //            VImage.class);
-    private static final Collection<Class<?>> types = Arrays.<Class<?>>asList(VDouble.class);
+    private static final Collection<Class<?>> types = Arrays.<Class<?>>asList(
+            VByte.class,
+            VShort.class,
+            VInt.class,
+            VLong.class,
+            VFloat.class,
+            VDouble.class);
 
     /**
      * Returns the type of the object by returning the class object of one

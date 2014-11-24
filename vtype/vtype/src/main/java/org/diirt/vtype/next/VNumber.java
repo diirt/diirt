@@ -54,18 +54,18 @@ public abstract class VNumber extends Scalar implements AlarmProvider, TimeProvi
     public static VNumber create(Number value, Alarm alarm, org.diirt.vtype.Time time, org.diirt.vtype.Display display){
         if (value instanceof Double) {
             return VDouble.create((Double) value, alarm, time, display);
-//        } else if (value instanceof Float) {
-//            return newVFloat((Float) value, alarm, time, display);
-//        } else if (value instanceof Long) {
-//            return newVLong((Long) value, alarm, time, display);
+        } else if (value instanceof Float) {
+            return VFloat.create((Float) value, alarm, time, display);
+        } else if (value instanceof Long) {
+            return VLong.create((Long) value, alarm, time, display);
         } else if (value instanceof Integer) {
             return VInt.create((Integer) value, alarm, time, display);
-//        } else if (value instanceof Short) {
-//            return newVShort((Short) value, alarm, time, display);
-//        } else if (value instanceof Byte) {
-//            return newVByte((Byte) value, alarm, time, display);
+        } else if (value instanceof Short) {
+            return VShort.create((Short) value, alarm, time, display);
+        } else if (value instanceof Byte) {
+            return VByte.create((Byte) value, alarm, time, display);
         }
-	throw new UnsupportedOperationException();
+	throw new IllegalArgumentException("Only standard Java implementations of Number are supported");
     }
     
 }

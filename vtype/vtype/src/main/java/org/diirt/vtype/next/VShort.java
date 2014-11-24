@@ -5,22 +5,22 @@
 package org.diirt.vtype.next;
 
 /**
- * Scalar integer with alarm, timestamp, display and control information.
+ * Scalar short with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
  * 
  * @author carcassi
  */
-public abstract class VInt extends VNumber {
+public abstract class VShort extends VNumber {
     
     /**
      * {@inheritDoc }
      */
     @Override
-    public abstract Integer getValue();
+    public abstract Short getValue();
     
     /**
-     * Creates a new VInt.
+     * Creates a new VShort.
      * 
      * @param value the value
      * @param alarm the alarm
@@ -28,7 +28,7 @@ public abstract class VInt extends VNumber {
      * @param display the display
      * @return the new value
      */
-    public static VInt create(final Integer value, final Alarm alarm, final Time time, final Display display) {
-        return new IVInt(value, alarm, time, display);
+    public static VShort create(final Short value, final Alarm alarm, final Time time, final Display display) {
+        return new IVShort(value, alarm, time, display);
     }
 }
