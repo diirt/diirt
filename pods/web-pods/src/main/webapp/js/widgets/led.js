@@ -18,6 +18,13 @@ $(document).ready(function() {
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var type = nodes[i].getAttribute("data-type");
         var id = nodes[i].getAttribute("id");
+        nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
+        function fitToContainer(canvas){
+        	  canvas.style.width='100%';
+        	  canvas.style.height='100%';
+        	  canvas.width  = canvas.offsetWidth;
+        	  canvas.height = canvas.offsetHeight;
+        }
         if (channelname != null && channelname.trim().length > 0) {
             var callback = function(evt, channel) {
                                switch (evt.type) {
@@ -26,12 +33,12 @@ $(document).ready(function() {
                                    break;
                                case "value": //value changed
                                    var channelValue = channel.getValue();
-                                   var led_id = leds[channel.getId()].id;
                                    if(channelValue.value) {
-                                      Drinks.getElementById(led_id).on();
+                                      leds[channel.getId()].fillStyle = "#00FF00";
                                    } else {
-                                      Drinks.getElementById(led_id).off();
+                                      leds[channel.getId()].fillStyle = "#ccc";
                                    }
+                                   leds[channel.getId()].fill();
                                    break;
                                case "error": //error happened
                                    break;
@@ -44,12 +51,19 @@ $(document).ready(function() {
                                }
                           };
             var channel = wp.subscribeChannel(channelname, callback, readOnly);
-            leds[channel.getId()] = new Drinks.createElement('led', {"id":id, type:"round", radius:"20"});
-            Drinks.appendChild(id, leds[channel.getId()]);
-            leds[channel.getId()].onclick = function (e)
-            {
-
-            }
+            var canvas = nodes[i].firstChild;
+            var context = canvas.getContext("2d");
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var radius = 10;
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fillStyle = "#ccc";
+            context.fill();
+            context.lineWidth = 1;
+            context.strokeStyle = "black";
+            context.stroke();
+            leds[channel.getId()] = context;
         }
     }
 });
