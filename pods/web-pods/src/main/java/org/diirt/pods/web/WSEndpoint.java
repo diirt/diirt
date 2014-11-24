@@ -119,7 +119,7 @@ public class WSEndpoint {
             reader = PVManager.readAndWrite(formula(translation.getFormula()))
                 .readListener(readWriteListener)
                 .writeListener(readWriteListener)
-                .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(maxRate));
+                .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
         }
         channels.put(message.getId(), reader);
     }
