@@ -216,7 +216,7 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(Double.NaN, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(Double.NaN, 1.456, 234567891234.0, 0.000000123, 0.0)));
         assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(Double.NaN,2,3,4,5)));
     }
     
