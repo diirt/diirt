@@ -29,18 +29,25 @@ public abstract class VEnum extends Scalar implements AlarmProvider, TimeProvide
      * @return the current index
      */
     public abstract int getIndex();
+    
+    /**
+     * Returns the metadata, including all possible labels.
+     * 
+     * @return the metadata
+     */
+    public abstract EnumMetaData getMetaData();
 
     /**
      * Create a new VEnum.
      * 
      * @param index the index in the label array
-     * @param labels the labels
+     * @param metaData the metadata
      * @param alarm the alarm
      * @param time the time
      * @return the new value
      */
-    public static VEnum newVEnum(int index, List<String> labels, Alarm alarm, Time time) {
-        return new IVEnum(index, labels, alarm, time);
+    public static VEnum newVEnum(int index, EnumMetaData metaData, Alarm alarm, Time time) {
+        return new IVEnum(index, metaData, alarm, time);
     }
 
 }
