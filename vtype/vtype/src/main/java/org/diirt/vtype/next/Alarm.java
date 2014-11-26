@@ -92,6 +92,7 @@ public abstract class Alarm {
     }
     
     private static final Alarm alarmNone = create(AlarmSeverity.NONE, "NONE");
+    private static final Alarm alarmNoValue = create(AlarmSeverity.UNDEFINED, "No Value");
     
     /**
      * No alarm.
@@ -100,6 +101,15 @@ public abstract class Alarm {
      */
     public static Alarm none() {
         return alarmNone;
+    }
+    
+    /**
+     * Alarm condition for when a value is not present.
+     * 
+     * @return severity UNDEFINED and status "No Value"
+     */
+    public static Alarm noValue() {
+        return alarmNoValue;
     }
     
 }

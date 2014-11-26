@@ -6,6 +6,9 @@ package org.diirt.vtype.next;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.ListNumbers;
 
 /**
  * Tag interface to mark all the members of the value classes.
@@ -48,6 +51,117 @@ public abstract class VType {
         }
 
         return Object.class;
+    }
+    
+    /**
+     * Returns the value with highest severity. null values can either be ignored or
+     * treated as disconnected/missing value ({@link Alarm#noValue()}).
+     * 
+     * @param values a list of values
+     * @param ignoreNull true to simply skip null values
+     * @return the value with highest alarm; can't be null
+     */
+    public static Alarm highestAlarmOf(final List<?> values, final boolean ignoreNull) {
+        Alarm finalAlarm = Alarm.none();
+        for (Object value : values) {
+            Alarm newAlarm;
+            if (value == null && !ignoreNull) {
+                newAlarm = Alarm.noValue();
+            } else {
+                newAlarm = Alarm.none();
+                if (value instanceof AlarmProvider) {
+                    newAlarm = ((AlarmProvider) value).getAlarm();
+                }
+            }
+            if (newAlarm.getSeverity().compareTo(finalAlarm.getSeverity()) > 0) {
+                finalAlarm = newAlarm;
+            }
+        }
+        
+        return finalAlarm;
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) } 
+     * with no alarm, time now and no display.
+     * 
+     * @param javaObject the value to wrap
+     * @return the new VType value
+     */
+    public static VType toVType(Object javaObject) {
+        return toVType(javaObject, Alarm.none(), Time.now(), Display.none());
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) } 
+     * with the given alarm, time now and no display.
+     * 
+     * @param javaObject the value to wrap
+     * @param alarm the alarm
+     * @return the new VType value
+     */
+    public static VType toVType(Object javaObject, Alarm alarm) {
+        return toVType(javaObject, alarm, Time.now(), Display.none());
+    }
+    
+    /**
+     * Converts a standard java type to VTypes. Returns null if no conversion
+     * is possible.
+     * <p>
+     * Types are converted as follow:
+     * <ul>
+     *   <li>Boolean -&gt; VBoolean</li>
+     *   <li>Number -&gt; corresponding VNumber</li>
+     *   <li>String -&gt; VString</li>
+     *   <li>number array -&gt; corresponding VNumberArray</li>
+     *   <li>ListNumber -&gt; corresponding VNumberArray</li>
+     *   <li>List -&gt; if all elements are String, VStringArray</li>
+     * </ul>
+     * 
+     * @param javaObject the value to wrap
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new VType value
+     */
+    public static VType toVType(Object javaObject, Alarm alarm, Time time, Display display) {
+        if (javaObject instanceof Number) {
+            return VNumber.create((Number) javaObject, alarm, time, display);
+        } else if (javaObject instanceof String) {
+            return null; //newVString((String) javaObject, alarm, time);
+        } else if (javaObject instanceof Boolean) {
+            return null;//newVBoolean((Boolean) javaObject, alarm, time);
+        } else if (javaObject instanceof byte[]
+                || javaObject instanceof short[]
+                || javaObject instanceof int[]
+                || javaObject instanceof long[]
+                || javaObject instanceof float[]
+                || javaObject instanceof double[]) {
+            return VNumberArray.create(ListNumbers.toListNumber(javaObject), alarm, time, display);
+        } else if (javaObject instanceof ListNumber) {
+            return VNumberArray.create((ListNumber) javaObject, alarm, time, display);
+        } else if (javaObject instanceof String[]) {
+            return null;//newVStringArray(Arrays.asList((String[]) javaObject), alarm, time);
+        } else if (javaObject instanceof List) {
+            boolean matches = true;
+            List list = (List) javaObject;
+            for (Object object : list) {
+                if (!(object instanceof String)) {
+                    matches = false;
+                }
+            }
+            if (matches) {
+                @SuppressWarnings("unchecked")
+                List<String> newList = (List<String>) list;
+                return null;//newVStringArray(Collections.unmodifiableList(newList), alarm, time);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
 }

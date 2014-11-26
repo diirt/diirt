@@ -61,7 +61,7 @@ public abstract class VNumberArray extends Array implements AlarmProvider, TimeP
      * @param display the display
      * @return the new number
      */
-    public static VNumberArray create(ListNumber data, Alarm alarm, org.diirt.vtype.Time time, org.diirt.vtype.Display display){
+    public static VNumberArray create(ListNumber data, Alarm alarm, Time time, Display display){
         if (data instanceof ListDouble) {
             return VDoubleArray.create((ListDouble) data, alarm, time, display);
 //        } else if (value instanceof Float) {

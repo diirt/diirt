@@ -4,7 +4,11 @@
  */
 package org.diirt.vtype.next;
 
+import java.util.Arrays;
+import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.ValueUtil;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

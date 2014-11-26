@@ -51,7 +51,7 @@ public abstract class VNumber extends Scalar implements AlarmProvider, TimeProvi
      * @param display the display
      * @return the new number
      */
-    public static VNumber create(Number value, Alarm alarm, org.diirt.vtype.Time time, org.diirt.vtype.Display display){
+    public static VNumber create(Number value, Alarm alarm, Time time, Display display){
         if (value instanceof Double) {
             return VDouble.create((Double) value, alarm, time, display);
         } else if (value instanceof Float) {
