@@ -9,7 +9,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public interface DisplayProvider {
+interface DisplayProvider {
     
     /**
      * The display associated with this value.

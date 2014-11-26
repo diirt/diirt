@@ -9,7 +9,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public interface AlarmProvider {
+interface AlarmProvider {
     
     /**
      * The alarm associated with this value.

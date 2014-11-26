@@ -9,7 +9,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public interface TimeProvider {
+interface TimeProvider {
     
     /**
      * The time associated with this value.
