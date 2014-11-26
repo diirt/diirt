@@ -91,25 +91,41 @@ public abstract class Alarm {
         return new IAlarm(alarmSeverity, alarmName);
     }
     
-    private static final Alarm alarmNone = create(AlarmSeverity.NONE, "NONE");
-    private static final Alarm alarmNoValue = create(AlarmSeverity.UNDEFINED, "No Value");
+    private static final Alarm NONE = create(AlarmSeverity.NONE, "None");
+    private static final Alarm NO_VALUE = create(AlarmSeverity.INVALID, "No value");
+    private static final Alarm DISCONNECTED = create(AlarmSeverity.INVALID, "Disconnected");
     
     /**
-     * No alarm.
+     * No alarm. To be used whenever there is no alarm associated with the value.
+     * <p>
+     * To test for no alarm, one should always check the severity, and not
+     * equality to this specific alarm: depending on the data source the status
+     * may be different and contain extra information.
      * 
-     * @return severity and status NONE
+     * @return severity NONE and status "None"
      */
     public static Alarm none() {
-        return alarmNone;
+        return NONE;
     }
     
     /**
-     * Alarm condition for when a value is not present.
+     * Alarm condition for when a value is not present. To be used as
+     * the alarm associated to a null value.
      * 
-     * @return severity UNDEFINED and status "No Value"
+     * @return severity INVALID and status "No Value"
      */
     public static Alarm noValue() {
-        return alarmNoValue;
+        return NO_VALUE;
+    }
+    
+    /**
+     * Alarm condition for when a channel is disconnected. To be used as
+     * the alarm associated with a broken connection.
+     * 
+     * @return severity UNDEFINED and status "Disconnected"
+     */
+    public static Alarm disconnected() {
+        return DISCONNECTED;
     }
     
 }

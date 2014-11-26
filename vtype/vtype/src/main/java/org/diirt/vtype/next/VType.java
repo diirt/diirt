@@ -164,4 +164,46 @@ public abstract class VType {
         }
     }
 
+    /**
+     * Null and non-VType safe utility to extracts alarm information.
+     * <ul>
+     * <li>If the value is an {@link AlarmProvider}, the associate alarm is returned.</li>
+     * <li>If the value is not an {@link AlarmProvider}, {@link Alarm#NONE} is returned.</li>
+     * <li>If the value is null, {@link Alarm#NO_VALUE} is returned.</li>
+     * </ul>
+     *
+     * @param value the value
+     * @return the alarm information for the value
+     */
+    public static Alarm alarmOf(Object value) {
+        return alarmOf(value, true);
+    }
+    
+    /**
+     * Null and non-VType safe utility to extracts alarm information for a 
+     * connection.
+     * <ul>
+     * <li>If the value is an {@link AlarmProvider}, the associate alarm is returned.</li>
+     * <li>If the value is not an {@link AlarmProvider}, {@link Alarm#NONE} is returned.</li>
+     * <li>If the value is null and connected is true, {@link Alarm#NO_VALUE} is returned.</li>
+     * <li>If the value is null and disconnected is true, {@link Alarm#DISCONNECTED} is returned.</li>
+     * </ul>
+     * 
+     * @param value a value
+     * @param connected the connection status
+     * @return the alarm information
+     */
+    public static Alarm alarmOf(Object value, boolean connected) {
+        if (value != null) {
+            if (value instanceof AlarmProvider) {
+                return ((AlarmProvider) value).getAlarm();
+            } else {
+                return Alarm.none();
+            }
+        } else if (connected) {
+            return Alarm.noValue();
+        } else {
+            return Alarm.disconnected();
+        }
+    }
 }

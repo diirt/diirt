@@ -34,8 +34,8 @@ public class AlarmTest {
     public void none1() {
         Alarm alarm = Alarm.none();
         assertThat(alarm.getSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(alarm.getName(), equalTo("NONE"));
-        assertThat(alarm.toString(), equalTo("NONE(NONE)"));
+        assertThat(alarm.getName(), equalTo("None"));
+        assertThat(alarm.toString(), equalTo("NONE(None)"));
     }
     @Test
     public void equals1() {
