@@ -130,7 +130,7 @@ public abstract class VType {
         if (javaObject instanceof Number) {
             return VNumber.create((Number) javaObject, alarm, time, display);
         } else if (javaObject instanceof String) {
-            return null; //newVString((String) javaObject, alarm, time);
+            return VString.create((String) javaObject, alarm, time);
         } else if (javaObject instanceof Boolean) {
             return null;//newVBoolean((Boolean) javaObject, alarm, time);
         } else if (javaObject instanceof byte[]
