@@ -9,7 +9,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public abstract class VString extends Scalar implements AlarmProvider, TimeProvider {
+public abstract class VString extends Scalar {
     
     /**
      * {@inheritDoc }

@@ -12,7 +12,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public abstract class VNumber extends Scalar implements AlarmProvider, TimeProvider, DisplayProvider {
+public abstract class VNumber extends Scalar implements DisplayProvider {
     
     /**
      * The numeric value.

@@ -14,7 +14,7 @@ package org.diirt.vtype.next;
  *
  * @author carcassi
  */
-public abstract class Scalar extends VType {
+public abstract class Scalar extends VType implements AlarmProvider, TimeProvider {
 
     /**
      * Returns the value. Never null.

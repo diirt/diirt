@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author carcassi
  */
-public abstract class VEnum extends Scalar implements AlarmProvider, TimeProvider {
+public abstract class VEnum extends Scalar {
     
     /**
      * {@inheritDoc }

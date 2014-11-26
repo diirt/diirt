@@ -16,5 +16,5 @@ interface AlarmProvider {
      * 
      * @return the alarm; not null
      */
-    Alarm getAlarm();
+    public abstract Alarm getAlarm();
 }
