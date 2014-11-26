@@ -2,26 +2,29 @@
  * @author: eschuhmacher
  *
  * scripts to be included on the html file
- * <script type="text/javascript" language="javascript" src="../js/widgets/textinput.js"></script>
+ * <script src="../js/widgets/lib/Drinks/Drinks.js" ></script>
+ * <script type="text/javascript" language="javascript" src="../js/widgets/led.js"></script>
  * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
+ * <script src="../js/widgets/lib/Drinks/Led.js" ></script>
  ******************************************************************************/
 
+
 $(document).ready(function() {
-
-	var nodes = document.getElementsByClassName("textinput");
+	var nodes = document.getElementsByClassName("led");
 	var len = nodes.length;
-    var inputs = {};
-
+    var leds = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
+        var type = nodes[i].getAttribute("data-type");
         var id = nodes[i].getAttribute("id");
-        var input = document.createElement("textarea");
-        input.id = id;
-        var div = document.getElementById(id);
-        var style = nodes[i].getAttribute("style");
-        input.style = style;
-        div.appendChild(input);
+        nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
+        function fitToContainer(canvas){
+        	  canvas.style.width='100%';
+        	  canvas.style.height='100%';
+        	  canvas.width  = canvas.offsetWidth;
+        	  canvas.height = canvas.offsetHeight;
+        }
         if (channelname != null && channelname.trim().length > 0) {
             var callback = function(evt, channel) {
                                switch (evt.type) {
@@ -30,14 +33,12 @@ $(document).ready(function() {
                                    break;
                                case "value": //value changed
                                    var channelValue = channel.getValue();
-                                   inputs[channel.getId()].value =(channelValue.value);
-                                   if(channelValue.alarm.severity =="MINOR") {
-                                       inputs[channel.getId()].style.backgroundColor ="yellow";
-                                   } else if (channelValue.alarm.severity =="MAJOR") {
-                                       inputs[channel.getId()].style.backgroundColor = "red";
+                                   if(channelValue.value) {
+                                      leds[channel.getId()].fillStyle = "#00FF00";
                                    } else {
-                                       inputs[channel.getId()].style.backgroundColor ="white";
+                                      leds[channel.getId()].fillStyle = "#ccc";
                                    }
+                                   leds[channel.getId()].fill();
                                    break;
                                case "error": //error happened
                                    break;
@@ -48,25 +49,24 @@ $(document).ready(function() {
                                default:
                                    break;
                                }
-                           };
+                          };
             var channel = wp.subscribeChannel(channelname, callback, readOnly);
-            inputs[channel.getId()] = input;
+            var canvas = nodes[i].firstChild;
+            var context = canvas.getContext("2d");
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var radius = 10;
+            context.beginPath();
+            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+            context.fillStyle = "#ccc";
+            context.fill();
+            context.lineWidth = 1;
+            context.strokeStyle = "black";
+            context.stroke();
+            leds[channel.getId()] = context;
         }
-        input.onkeyup = function(evt) {
-            if (evt.keyCode == 13) {
-                for(var sl in   inputs  ) {
-                    if(inputs[sl].id == evt.target.id) {
-                        var ch = wp.getChannel(sl);
-                        break;
-                    }
-                }
-                ch.setValue(input.value.trim());
-            }
-        };
     }
-
 });
-
 
 
 window.onbeforeunload = function() {

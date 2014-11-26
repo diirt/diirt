@@ -16,13 +16,13 @@ $(document).ready(function() {
     var gauges = {};
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
-        var readOnly = nodes[i].getAttribute("channel-readonly");
+        var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id='rgraph-gauge-'+i;
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
-            var displayLow = nodes[i].getAttribute("displayLow") != null ? parseInt(nodes[i].getAttribute("displayLow")) : 0;
-            var displayHigh = nodes[i].getAttribute("displayHigh") != null ? parseInt(nodes[i].getAttribute("displayHigh")) : 100;
+            var displayLow = nodes[i].getAttribute("data-displayLow") != null ? parseInt(nodes[i].getAttribute("data-displayLow")) : 0;
+            var displayHigh = nodes[i].getAttribute("data-displayHigh") != null ? parseInt(nodes[i].getAttribute("data-displayHigh")) : 100;
             var callback = function(evt, channel) {
                                    switch (evt.type) {
                                    case "connection": //connection state changed

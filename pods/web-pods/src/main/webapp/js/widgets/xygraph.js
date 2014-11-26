@@ -17,7 +17,7 @@ $(document).ready(function() {
 	for ( var i = 0; i < len; i++) {
         var k=1;
 	    var channelname = nodes[i].getAttribute("data-channel");
-        var readOnly = nodes[i].getAttribute("channel-readonly");
+        var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var callback = function(evt, channel) {
                            switch (evt.type) {
                            case "connection": //connection state changed
