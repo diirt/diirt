@@ -75,7 +75,8 @@ public class TimeScales {
     }
 
     static TimePeriod nextUp(TimePeriod period) {
-        switch(period.fieldId) {
+	//TODO nanoseconds rounding up
+	switch(period.fieldId) {
             case GregorianCalendar.MILLISECOND:
                 if (period.amount < 2) {
                     return new TimePeriod(GregorianCalendar.MILLISECOND, 2);
@@ -150,7 +151,7 @@ public class TimeScales {
 		    return new TimePeriod( HOUR_FIELD_ID , 12 );
 		}
 		
-		//TODO why is this necessary? otherwise, we get error
+		//*MC why is this necessary? otherwise, we get error
 		if ( period.amount < 24 ) {
 		    return new TimePeriod( HOUR_FIELD_ID , 24 );
 		}
@@ -368,6 +369,8 @@ public class TimeScales {
                 }
         }
         return new TimePeriod( GregorianCalendar.MILLISECOND , 1 );
+	
+	//TODO nanoseconds rounding down
     }
     
     static TimePeriod toTimePeriod(double seconds) {

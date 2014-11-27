@@ -1041,8 +1041,5 @@ public class TimeScalesTest {
 	return Timestamp.of( cal.getTime() );
     }
     
-    //TODO create method for DST time zone creating
-    //*MC: test roundUp, roundDown
-    //*MC: go look at LinearAbsoluteTimeScale
-    //*MC: test LinearAbsoluteTimeScale.references(...)
+    //*MC: Trim labels
 }
