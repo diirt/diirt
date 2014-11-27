@@ -1128,10 +1128,10 @@ public class TimeScalesTest {
 	);
 	List< String > expected = Arrays.asList(
 		"2014/05/11" ,
-		"11/06" ,
-		"11/07" ,
-		"11/08" ,
-		"11/09"
+		"06/11" ,
+		"07/11" ,
+		"08/11" ,
+		"09/11"
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
