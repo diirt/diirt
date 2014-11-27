@@ -492,4 +492,9 @@ public class TimeScales {
         
         return result;
     }
+    
+    static List<String> trimLabels( List< String > labels ) {
+	//TODO
+	return null;
+    }
 }
