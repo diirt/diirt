@@ -1189,21 +1189,43 @@ public class TimeScalesTest {
     }
     
     @Test
-    public void trimLabelsSeconds1() {
-	//Test when the seconds are changing
+    public void trimLabelsMilliseconds2() {
+		//Test when the milliseconds are changing
 	List< String > input = Arrays.asList( 
 		"2014/11/26 09:01:00.000000000" , 
-		"2014/11/26 09:02:01.00000000" ,
-		"2014/11/26 09:03:02.000000000" ,
-		"2014/11/26 09:04:03.000000000" ,
-		"2014/11/26 09:05:04.000000000" 
+		"2014/11/26 09:02:00.002000000" ,
+		"2014/11/26 09:03:00.004000000" ,
+		"2014/11/26 09:04:00.006000000" ,
+		"2014/11/26 09:05:00.008000000" 
 	);
 	List< String > expected = Arrays.asList(
-		"2014/11/26 09:01:00" ,
-		"09:02:01" ,
-		"09:03:02" ,
-		"09:04:03" ,
-		"09:05:04" 
+		"2014/11/26 09:01:00.000" ,
+		"09:02:00.002" ,
+		"09:03:00.004" ,
+		"09:04:00.006" ,
+		"09:05:00.008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsSeconds1() {
+	//Test when the seconds are changing, but the nanoseconds are not
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000001" , 
+		"2014/11/26 09:02:01.000000001" ,
+		"2014/11/26 09:03:02.000000001" ,
+		"2014/11/26 09:04:03.000000001" ,
+		"2014/11/26 09:05:04.000000001" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000000001" ,
+		"09:02:01.000000001" ,
+		"09:03:02.000000001" ,
+		"09:04:03.000000001" ,
+		"09:05:04.000000001" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1250,6 +1272,49 @@ public class TimeScalesTest {
 		"09:19" ,
 		"09:20" ,
 		"09:21" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsHours1() {
+	//Test when the hours are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:00:00.000000000" , 
+		"2014/11/26 10:00:00.000000000" ,
+		"2014/11/26 11:00:00.000000000" ,
+		"2014/11/26 12:00:00.000000000" ,
+		"2014/11/26 13:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:00" ,
+		"10:00" ,
+		"11:00" ,
+		"12:00" ,
+		"13:00" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsHours2() {
+	//Test when the hours are changing, but the milliseconds aren't
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:00:00.003000000" , 
+		"2014/11/26 10:00:00.003000000" ,
+		"2014/11/26 11:00:00.003000000" ,
+		"2014/11/26 12:00:00.003000000" ,
+		"2014/11/26 13:00:00.003000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:00:00.003" ,
+		"10:00:00.003" ,
+		"11:00:00.003" ,
+		"12:00:00.003" ,
+		"13:00:00.003" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1426,6 +1491,30 @@ public class TimeScalesTest {
     }
     
     @Test
+    public void trimLabelsMonths3() {
+	//Test when the months are changing, but the seconds are not
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/09/01 00:00:23.000000000" , 
+		"2014/10/01 00:00:23.000000000" ,
+		"2014/11/01 00:00:23.000000000" ,
+		"2014/12/01 00:00:23.000000000" ,
+		"2015/01/01 00:00:23.000000000" , 
+		"2015/02/01 00:00:23.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/09/01 00:00:23" ,
+		"10/01 00:00:23" ,
+		"11/01 00:00:23" ,
+		"12/01 00:00:23" ,
+		"2015/01/01 00:00:23" ,
+		"02/01 00:00:23"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
     public void trimLabelsYears1() {
 	//Test when just the years are changing
 	List< String > input = Arrays.asList( 
@@ -1446,6 +1535,30 @@ public class TimeScalesTest {
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsYears2() {
+	//Test when just the years are changing, but
+	//the days and hours are not 1 and 0, respectively
+	List< String > input = Arrays.asList( 
+		"2014/01/05 20:00:00.000000000" , 
+		"2015/01/05 20:00:00.000000000" ,
+		"2016/01/05 20:00:00.000000000" ,
+		"2017/01/05 20:00:00.000000000" ,
+		"2018/01/05 20:00:00.000000000" , 
+		"2019/01/05 20:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/01/05 20:00" ,
+		"2015/01/05 20:00" ,
+		"2016/01/05 20:00" ,
+		"2017/01/05 20:00" ,
+		"2018/01/05 20:00" ,
+		"2019/01/05 20:00"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );	
     }
     
     static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {

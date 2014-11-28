@@ -679,12 +679,16 @@ public class TimeScales {
 		//if years are common, we cannot remove them unless both the months
 		//and days will be displayed. for example, we cannot have 06 (June)
 		//as a label. It needs to be like 2014/06 or 06/15 to make sense.
-		if ( redundantPrecision == YEAR_PRECISION && requiredPrecision > MONTH_PRECISION ) {
-		    rtn = rtn.substring( 5 , rtn.length() );
-		}
 		
-		//if the month and days had to remain, we can also trim the year
-		else if ( requiredPrecision == MONTH_PRECISION && this.m_day != 1 ) {
+		//if the days and months have to remain, we can trim the year
+		if ( (redundantPrecision == YEAR_PRECISION && requiredPrecision >= DAY_PRECISION) ||
+		    
+		     //if the month and days have to remain, we can also trim the year
+		     //note that the months and days also have to remain if any of
+	             //hours, minutes, seconds, or nanoseconds have to remain
+		     (requiredPrecision == MONTH_PRECISION && 
+			(this.m_day != 1 || this.m_hour != 0 || this.m_minute != 0 || 
+			this.m_second != 0 || this.m_nanosecond != 0))) {
 		    rtn = rtn.substring( 5 , rtn.length() );
 		}
 		
@@ -774,7 +778,9 @@ public class TimeScales {
 				    //in the removeRedunantPrecision() method
 				    else if ( redundantPrecision < YEAR_PRECISION ||
 					 (redundantPrecision != YEAR_PRECISION || requiredPrecision >= MONTH_PRECISION) ||
-					 (requiredPrecision != MONTH_PRECISION || this.m_month == 1) ) {
+					 (requiredPrecision != MONTH_PRECISION || (this.m_month == 1 && 
+					    this.m_day == 1 && this.m_hour == 0 && this.m_minute == 0 && 
+					    this.m_second == 0 && this.m_nanosecond==0) ) ) {
 					//we subtract 3 because there is an extra "/" between the
 					//day and the month
 					rtn = rtn.substring( 0 , rtn.length()-3 );
