@@ -19,6 +19,7 @@ import static org.epics.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
 import java.util.TimeZone;
 import org.junit.Ignore;
+import org.epics.graphene.TimeScales.DateFormatter;
 
 /**
  *
@@ -1015,7 +1016,173 @@ public class TimeScalesTest {
 		"2014/11/26 09:50:00.000000000"
 	);
 	List< String > expected = Arrays.asList(
-		"2014/11/26 09:50"
+		"2014/11/26 09:50:00.000000000"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void dateFormatterNano1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.000000001") );
+    }
+    
+    @Test
+    public void dateFormatterMilli1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1000000 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.001") );
+    }
+    
+    @Test
+    public void dateFormatterSeconds1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10") );
+    }
+
+    @Test
+    public void dateFormatterMinutes1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50" ) );
+    }
+    
+    @Test
+    public void dateFormatterHours1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterDays1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26" ) );
+    }
+    
+    @Test
+    public void dateFormatterMonths1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears1() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.YEAR_PRECISION );
+	assertThat( compactDate , equalTo( "2014" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears2() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears3() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000000000" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears4() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears5() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears6() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+
+    @Test
+    public void dateFormatterYears7() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+
+    @Test
+    public void dateFormatterYears8() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01/01" ) );
+    }
+
+    @Test
+    public void dateFormatterYears9() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01" ) );
+    }
+    
+    @Test
+    public void trimLabelsNanoseconds1() {
+	//Test when the nanoseconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.000000002" ,
+		"2014/11/26 09:03:00.000000004" ,
+		"2014/11/26 09:04:00.000000006" ,
+		"2014/11/26 09:05:00.000000008" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000000000" ,
+		"09:02:00.000000002" ,
+		"09:03:00.000000004" ,
+		"09:04:00.000000006" ,
+		"09:05:00.000000008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+       @Test
+    public void trimLabelsMilliseconds1() {
+	//Test when the nanoseconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.002000000" ,
+		"2014/11/26 09:03:00.004000000" ,
+		"2014/11/26 09:04:00.006000000" ,
+		"2014/11/26 09:05:00.008000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000" ,
+		"09:02:00.002" ,
+		"09:03:00.004" ,
+		"09:04:00.006" ,
+		"09:05:00.008" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1036,10 +1203,10 @@ public class TimeScalesTest {
 	);
 	List< String > expected = Arrays.asList(
 		"2014/11/26 09:01" ,
-		"9:02" ,
-		"9:03" ,
-		"9:04" ,
-		"9:05" 
+		"09:02" ,
+		"09:03" ,
+		"09:04" ,
+		"09:05" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1058,10 +1225,10 @@ public class TimeScalesTest {
 	);
 	List< String > expected = Arrays.asList(
 		"2014/11/26 09:17" ,
-		"9:18" ,
-		"9:19" ,
-		"9:20" ,
-		"9:21" 
+		"09:18" ,
+		"09:19" ,
+		"09:20" ,
+		"09:21" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1180,7 +1347,7 @@ public class TimeScalesTest {
 		"12/30" ,
 		"12/31" ,
 		"2015/01/01" ,
-		"2015/01/02"
+		"01/02"
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
@@ -1258,35 +1425,6 @@ public class TimeScalesTest {
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
-    }
-    
-    static String toDateString( int year , int month , int day , int hour , int minute , int second , int nanosecond ) {
-	String yearText = createNumericalString( year , 4 );
-	String monthText = createNumericalString( month , 2 );
-	String dayText = createNumericalString( day , 2 );
-	String hourText = createNumericalString( hour , 2 );
-	String minuteText = createNumericalString( minute , 2 );
-	String secondText = createNumericalString( second , 2 );
-	String nanosecondText = createNumericalString( nanosecond , 9 );
-	return yearText + "/" + monthText + "/" + dayText + " " + hourText + ":" + minuteText + ":" + secondText + "." + nanosecondText;
-    }
-    
-    /**
-     * Creates a string from an integer value that has at least the
-     * specified length. The integer is padded with 0s to ensure the
-     * specified length.
-     * 
-     * @param value the value to convert to a string
-     * @param minLength the minimum length the string must have
-     * @return the given value as a string with length at least the specified
-     * minimum
-     */
-    static String createNumericalString( int value , int minLength ) {
-	String rtn = String.valueOf( value );
-	while( rtn.length() < minLength ) {
-	    rtn = "0" + rtn;
-	}
-	return rtn;
     }
     
     static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
