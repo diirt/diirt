@@ -1167,9 +1167,9 @@ public class TimeScalesTest {
 	assertThat( found , equalTo( expected ) );
     }
     
-       @Test
+    @Test
     public void trimLabelsMilliseconds1() {
-	//Test when the nanoseconds are changing
+	//Test when the milliseconds are changing
 	List< String > input = Arrays.asList( 
 		"2014/11/26 09:01:00.000000000" , 
 		"2014/11/26 09:02:00.002000000" ,
@@ -1183,6 +1183,27 @@ public class TimeScalesTest {
 		"09:03:00.004" ,
 		"09:04:00.006" ,
 		"09:05:00.008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsSeconds1() {
+	//Test when the seconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:01.00000000" ,
+		"2014/11/26 09:03:02.000000000" ,
+		"2014/11/26 09:04:03.000000000" ,
+		"2014/11/26 09:05:04.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00" ,
+		"09:02:01" ,
+		"09:03:02" ,
+		"09:04:03" ,
+		"09:05:04" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
