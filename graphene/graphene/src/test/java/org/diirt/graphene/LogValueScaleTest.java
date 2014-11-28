@@ -15,6 +15,7 @@ import static org.diirt.graphene.LinearValueScaleTest.assertAxisEquals;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.stats.Ranges;
+import org.junit.Ignore;
 
 /**
  *
@@ -79,6 +80,21 @@ public class LogValueScaleTest {
         ValueScale logScale = ValueScales.logScale();
         ValueAxis axis = logScale.references(Ranges.range(5, 50), 2, 7);
         assertAxisEquals(5, 50, new double[]{6,8,10,20,40}, new String[]{"6", "8", "10", "20", "40"}, axis);
+    }
+    
+    @Test
+    public void references6() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(Ranges.range(100, 1000), 2, 12);
+        assertAxisEquals(100, 1000, new double[]{100,200,300,400,500,600,700,800,900,1000}, new String[]{"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"}, axis);
+    }
+    
+    @Test
+    @Ignore
+    public void references7() {
+        ValueScale logScale = ValueScales.logScale();
+        ValueAxis axis = logScale.references(Ranges.range(100, 100.1), 2, 6);
+        assertAxisEquals(100, 100.1, new double[]{100.00,100.02,100.04,100.06,100.08,100.10}, new String[]{"100.00", "100.02", "100.04", "100.06", "100.08", "100.10"}, axis);
     }
     
     @Test

@@ -41,6 +41,11 @@ final class LogValueScale implements ValueScale {
 
     @Override
     public ValueAxis references(Range range, int minRefs, int maxRefs) {
+        // XXX: Once the range is too short, the log scale should be using
+        // a linear scale to determine the references. For example: 100 to 100.1
+        // should be divided linearly as the more we zoom in, the more the 
+        // difference to a linear scale does not exist. The current code will
+        // probably not work well here.
         double minValue = range.getMinimum();
         double maxValue = range.getMaximum();
         if (minValue == 0 || maxValue == 0) {
@@ -72,7 +77,7 @@ final class LogValueScale implements ValueScale {
             format = NumberFormats.format(orderOfIncrement);
         } else {
             useExponentialNotation = false;
-            format = NumberFormats.format(orderOfIncrement - minExp);
+            format = NumberFormats.format(Math.max(0, orderOfIncrement - minExp));
         }
         
         String[] labels = new String[references.size()];
