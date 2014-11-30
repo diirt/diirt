@@ -4,17 +4,8 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point1DDataset;
-import org.diirt.graphene.Cell1DDataset;
-import org.diirt.graphene.AreaGraph2DRenderer;
-import org.diirt.graphene.Cell1DDatasets;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -88,9 +79,6 @@ public class ShowHistogram extends javax.swing.JFrame {
 
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) throws Exception {
         Point1DDataset dataset = MockDataset1D.gaussian(30000);
         Cell1DDataset hist = Cell1DDatasets.createHistogram(dataset);

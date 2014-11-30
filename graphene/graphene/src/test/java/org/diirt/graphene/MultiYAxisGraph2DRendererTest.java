@@ -200,22 +200,18 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
 
     /**
      * Sets up the large dataset used in the tests
-     *
-     * @throws Exception
      */
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
         double[] waveform = Point2DTestDatasets.randomDataset();
         largeDataset = org.diirt.graphene.Point2DDatasets.lineData(waveform);
     }
 
     /**
      * Empties the memory used in the large dataset
-     *
-     * @throws Exception
      */
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
         largeDataset = null;
     }
 

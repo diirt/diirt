@@ -4,14 +4,9 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Cell1DDataset;
-import org.diirt.graphene.AreaGraph2DRenderer;
-import org.diirt.graphene.Cell1DDatasets;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import org.diirt.util.array.ArrayDouble;
 
 /**
@@ -62,9 +57,6 @@ public class ShowImage extends javax.swing.JFrame {
 
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) throws Exception {
         Cell1DDataset hist = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
                                         350, 230, 180, 220, 170, 130, 80, 30, 40), 0.0, 2.0);

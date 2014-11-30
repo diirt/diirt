@@ -4,13 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Cell2DDatasets;
-import org.diirt.graphene.IntensityGraph2DRenderer;
-import org.diirt.graphene.IntensityGraph2DRendererUpdate;
-import org.diirt.graphene.NumberColorMaps;
-import org.diirt.graphene.Cell2DDataset;
-import org.diirt.graphene.AxisRanges;
-import org.diirt.graphene.GraphBuffer;
 import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -22,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @authors asbarber, jkfeng, sjdallst
+ * @author asbarber, jkfeng, sjdallst
  */
 public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2DRendererUpdate, IntensityGraph2DRenderer> {
 

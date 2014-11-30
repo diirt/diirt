@@ -4,20 +4,9 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.Cell1DDataset;
-import org.diirt.graphene.AreaGraph2DRendererUpdate;
-import org.diirt.graphene.AreaGraph2DRenderer;
-import org.diirt.graphene.LineGraph2DRenderer;
-import org.diirt.graphene.LineGraph2DRendererUpdate;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -31,9 +20,6 @@ public class ShowResizableGraph extends javax.swing.JFrame {
 
     private final Renderer renderer;
     
-    /**
-     * Creates new form ShowImage
-     */
     public ShowResizableGraph(final Renderer renderer) {
         initComponents();
         this.renderer = renderer;
