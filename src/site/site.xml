@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="epics-util">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.3.1</version>
+  </skin>
+  <bannerLeft>
+    <name>diirt: Data Integration in Real-Time</name>
+    <href>http://diirt.org</href>
+  </bannerLeft>
+  <body>
+    <links>
+      <item name="DIIRT" href="http://diirt.org" />
+      <item name="EPICS" href="http://www.aps.anl.gov/epics/" />
+      <item name="EPICSv4" href="http://epics-pvdata.sourceforge.net/" />
+      <item name="CS-Studio" href="http://controlsystemstudio.org/" />
+    </links>
+
+    <menu name="Epics Utilities">
+      <item name="About" href="index.html"/>
+      <item name="Changes" href="changes-report.html"/>
+      <item name="Github" href="http://github.com/diirt/diirt"/>
+    </menu>
+
+    <menu ref="modules"/>
+    
+    <menu ref="reports"/>
+
+  </body>
+  <poweredBy>
+    <logo name="Cloudbees" href="https://openepics.ci.cloudbees.com/view/Diirt/"
+          img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
+    <logo name="Maven" href="http://maven.apache.org/"
+          img="http://maven.apache.org/images/logos/maven-feather.png"/>
+  </poweredBy>    
+</project>
+
