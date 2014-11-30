@@ -537,11 +537,12 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     /**
      *Empty function, designed to be implemented in sub-classes.
      * <p>Used on every value in a dataset.</p>
-     * @param index
-     * @param valueX
-     * @param valueY
-     * @param scaledX
-     * @param scaledY
+     * 
+     * @param index the index of the value
+     * @param valueX the x value
+     * @param valueY the y value
+     * @param scaledX the x pixel
+     * @param scaledY the y pixel
      */
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
     }

@@ -44,8 +44,8 @@ public class Iterators {
     
     /**
      *Takes a list of IteratorDoubles and combines them into one IteratorDouble.
-     * @param iterators
-     * @return IteratorDouble
+     * @param iterators the iterators to combine
+     * @return the combined iterators
      */
     public static IteratorDouble combine(final Collection<IteratorNumber> iterators) {
         return new IteratorDouble() {

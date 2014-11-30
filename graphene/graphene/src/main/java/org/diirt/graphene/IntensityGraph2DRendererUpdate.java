@@ -103,7 +103,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      * @param x2 the other horizontal boundary
      * @param y1 one of the vertical boundaries
      * @param y2 the other vertical boundary
-     * @return 
+     * @return this
      */
     public IntensityGraph2DRendererUpdate pixelSelectionRange(int x1, int x2, int y1, int y2) {
         if (x1 > x2) {

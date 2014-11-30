@@ -104,10 +104,10 @@ public class NumberColorMaps {
     /**
      * TODO: what is this about?
      * 
-     * @param instance
-     * @param oldRange
-     * @param newRange
-     * @return 
+     * @param instance the color map instance to optimize
+     * @param oldRange TODO
+     * @param newRange TODO
+     * @return TODO
      */
     public static NumberColorMapInstance optimize(NumberColorMapInstance instance, Range oldRange, Range newRange){
         return new NumberColorMapInstanceOptimized(instance, oldRange, newRange);

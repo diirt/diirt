@@ -30,6 +30,11 @@ public class Cell2DDatasets {
      * @param data 1D list of z-values. x and y coordinates are calculated by
      * partitioning the matrix into pieces of length xCount. # of rows = yCount
      * # of cols = xCount.
+     * @param xRange the range of the x
+     * @param xCount the number of x cells
+     * @param yRange the range of the y
+     * @param yCount the number of y cells
+     * @return the new dataset
      */
     public static Cell2DDataset linearRange(final ListNumber data, final Range xRange, final int xCount, final Range yRange, final int yCount) {
         if (data.size() == 0) {

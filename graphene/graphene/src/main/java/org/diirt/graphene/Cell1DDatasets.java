@@ -25,6 +25,8 @@ public class Cell1DDatasets {
      * will not be changed in the future.
      * 
      * @param values the values for the dataset
+     * @param minValue the minimum value
+     * @param maxValue the maximum value
      * @return the dataset from the values; never null
      */
     public static Cell1DDataset linearRange(final ListNumber values, final double minValue, final double maxValue) {

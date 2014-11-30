@@ -70,7 +70,7 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
      *  <li>True - highlight and show the value the mouse is on.</li>
      *  <li>False - Avoid calculation involved with finding the highlighted value/ do not highlight the value.</li>
      * </ul>
-     * @param highlightFocusValue
+     * @param highlightFocusValue the new value
      * @return this
      */
     public LineGraph2DRendererUpdate highlightFocusValue(boolean highlightFocusValue) {

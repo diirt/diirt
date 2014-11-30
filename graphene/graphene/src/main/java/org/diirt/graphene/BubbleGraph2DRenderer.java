@@ -142,10 +142,11 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
     
     /**
      *Does nothing.
-     * @param x
-     * @param y
-     * @param size
-     * @param index
+     * 
+     * @param x the x value
+     * @param y the y value
+     * @param size the size
+     * @param index the index of the value
      */
     protected void newValue(double x, double y, double size, int index) {
         // Do nothing

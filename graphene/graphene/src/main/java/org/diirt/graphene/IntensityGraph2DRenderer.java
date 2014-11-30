@@ -399,7 +399,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
      *Calculates the range of the z values to be graphed based on the previous z range (if there is one).
      *  If there is a previous range, the minimum value can only be lowered and the maximum value can only
      *be raised to match the current range.
-     * @param zDataRange current data range.
+     * @param zDataRange current data range
+     * @param displayRange current display range
      */
     protected void calculateZRange(Range zDataRange, Range displayRange) {
         zPlotRange = zAxisRange.axisRange(zDataRange, displayRange);
@@ -434,6 +435,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     /**
      *Translates a value's position in the aggregated range to a position on the legend.
      * @param value raw value
+     * @param bottomPixel the first pixel from the bottom
+     * @param topPixel the first pixel from the top
      * @return double(scaled value)
      */
     protected final double scaledZ(double value, int bottomPixel, int topPixel) {
