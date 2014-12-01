@@ -155,7 +155,7 @@ public class FileDataSourceTest {
                 .maxRate(ofMillis(10));
         
         // Wait for value
-        listener.await(ofMillis(700));
+        listener.await(ofMillis(1500));
         assertThat(listener.getCount(), equalTo(0));
         
         assertThat(pv.getValue(), instanceOf(VTable.class));
