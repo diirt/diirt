@@ -60,8 +60,6 @@ public class ScatterGraph2DRendererTest extends BaseGraphTest<ScatterGraph2DRend
     }
 
     private Point2DDataset regularDataset() {
-        Random rand = new Random(0);
-        int size = 1000;
         double[] x = new double[]{0, 10, 20, 30, 40, 50};
         double[] y = new double[]{0, 10, 20, 30, 40, 50};
 

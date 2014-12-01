@@ -1097,7 +1097,6 @@ public class VisualProfiler extends JPanel{
                     publish("Opening Files\n");
 
                     Desktop desktop = Desktop.getDesktop();
-                    TreePath[] paths = fileViewer.tree.getSelectionPaths();
 
                     //Passed by parameter
                     if (files != null && desktop != null){

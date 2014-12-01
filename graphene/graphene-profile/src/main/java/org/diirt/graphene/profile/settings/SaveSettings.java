@@ -176,9 +176,6 @@ public class SaveSettings implements Settings{
      * @return the record for the general comments output
      */    
     private String[] getSaveOutputMessage(){
-        String quote = "\"";
-        String delim = ",";
-        
         return new String[]{
             getDatasetMessage(),
             getAuthorMessage(),

@@ -182,7 +182,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         }
 
 
-        double xStartGraph = super.xPlotCoordStart;
         double yEndGraph = area.graphBottom;
 
         double yHeightTotal = area.graphBottom - area.graphTop + 1;
