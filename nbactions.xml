@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Site stage</actionName>
+            <displayName>Site stage</displayName>
+            <goals>
+                <goal>site:site</goal>
+                <goal>site:stage</goal>
+            </goals>
+        </action>
+    </actions>
