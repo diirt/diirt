@@ -1,10 +1,10 @@
 #!/bin/bash
 cd target
-rm -rf pvmanager-pages
-git clone git@github.com:diirt/pvmanager-pages.git
+rm -rf maven-site
+git clone git@github.com:diirt/maven-site.git
 cd pvmanager-pages
 rm -rf *
-cp -R ../site/* .
+cp -R ../staging/* .
 git add -A
 git commit --author="Gabriele Carcassi <gabriele.carcassi@gmail.com>" -m "Website update"
 git push origin
