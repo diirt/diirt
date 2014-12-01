@@ -6,33 +6,8 @@
         <artifactId>diirt-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>util</artifactId>
+    <artifactId>diirt-util</artifactId>
     <name>org.diirt.util</name>
-    <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
-<!--    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.8</version>
-                <configuration>
-                    <message>Creating site for ${project.artifactId}, ${project.version}</message>
-                    <repositoryOwner>diirt</repositoryOwner>
-                    <repositoryName>util-pages</repositoryName>
-                    <branch>refs/heads/gh-pages</branch>
-                    <merge>true</merge>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>github-site</id>
-                        <goals>
-                            <goal>site</goal>
-                        </goals>
-                        <phase>site-deploy</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>-->
-
+    <description>Basic Java utility classes to be shared across projects until
+        suitable replacements are available in the JDK.</description>
 </project>
