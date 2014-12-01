@@ -10,7 +10,6 @@ import org.diirt.graphene.Cell2DDataset;
 import org.diirt.graphene.GraphBuffer;
 import org.diirt.graphene.Graph2DRendererUpdate;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import org.diirt.graphene.profile.ProfileGraph2D;
 import org.diirt.graphene.profile.utils.DatasetFactory;

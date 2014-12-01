@@ -11,16 +11,9 @@ import org.diirt.graphene.InterpolationScheme;
 import org.diirt.graphene.Point2DDatasets;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Random;
-import javax.imageio.ImageIO;
-import junit.framework.AssertionFailedError;
-import org.diirt.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 
 /**
  *

@@ -9,14 +9,10 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
-import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
-import org.diirt.util.array.ListNumber;
 /**
  *
  * @author carcassi, sjdallst, asbarber, jkfeng

@@ -9,7 +9,6 @@ import org.diirt.util.stats.Statistics;
 import org.diirt.util.stats.Range;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.IteratorNumber;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
 import org.diirt.util.stats.Ranges;

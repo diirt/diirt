@@ -8,7 +8,6 @@ import org.diirt.util.stats.Range;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import static org.diirt.graphene.ValueAxis.orderOfMagnitude;
 import org.diirt.util.text.NumberFormats;
 
 /**

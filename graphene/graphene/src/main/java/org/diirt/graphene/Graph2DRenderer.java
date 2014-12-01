@@ -16,16 +16,10 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import static org.diirt.graphene.InterpolationScheme.CUBIC;
-import static org.diirt.graphene.InterpolationScheme.LINEAR;
-import static org.diirt.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
-import static org.diirt.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
-import static org.diirt.graphene.ReductionScheme.NONE;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListMath;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Ranges;
 
 /**
  * The base class for all graph renderers.

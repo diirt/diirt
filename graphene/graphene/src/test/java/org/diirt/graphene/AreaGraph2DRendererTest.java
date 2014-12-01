@@ -11,17 +11,11 @@ import org.diirt.graphene.AreaGraph2DRenderer;
 import org.diirt.graphene.Cell1DDatasets;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import junit.framework.AssertionFailedError;
 import org.junit.AfterClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import org.junit.BeforeClass;
 import static org.diirt.graphene.ImageAssert.*;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
 
 /**
  *
