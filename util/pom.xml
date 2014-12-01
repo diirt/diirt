@@ -9,7 +9,7 @@
     <artifactId>util</artifactId>
     <name>org.diirt.util</name>
     <description>Basic Java utility classes to be shared across projects until suitable replacements are available in the JDK.</description>
-    <build>
+<!--    <build>
         <plugins>
             <plugin>
                 <groupId>com.github.github</groupId>
@@ -33,6 +33,6 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>
