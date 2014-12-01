@@ -25,8 +25,6 @@ class Cell1DHistogramDataset implements Cell1DDataset {
     
     private double minValueRange;
     private double maxValueRange;
-    private int minCountRange;
-    private int maxCountRange;
     
     
     private double[] values;

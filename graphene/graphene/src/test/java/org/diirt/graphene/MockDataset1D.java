@@ -19,8 +19,6 @@ import org.diirt.util.stats.Range;
 public class MockDataset1D implements Point1DDataset {
     
     private ListNumber values;
-    private double minValue = Double.POSITIVE_INFINITY;
-    private double maxValue = Double.NEGATIVE_INFINITY;
     private Statistics statistics;
 
     public MockDataset1D(double[] data) {

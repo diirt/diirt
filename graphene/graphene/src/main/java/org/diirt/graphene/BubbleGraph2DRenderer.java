@@ -17,7 +17,6 @@ import org.diirt.util.stats.Ranges;
  */
 public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRendererUpdate> {
     
-    private Range zAggregatedRange;
     private AxisRangeInstance zAxisRange = AxisRanges.display().createInstance();
     private Range zPlotRange;
     private Integer focusPixelX;
