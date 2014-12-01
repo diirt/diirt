@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class Cell1DatasetsTest {
+public class Cell1DDatasetsTest {
 
     @Test
     public void linearRange1() {
