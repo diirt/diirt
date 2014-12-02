@@ -8,6 +8,7 @@
     </parent>
     <artifactId>diirt-pva</artifactId>
     <name>org.diirt.support.pva</name>
+    <description>Diirt support for pvAccess (Epics v4)</description>
     <dependencies>
         <dependency>
             <groupId>org.epics</groupId>

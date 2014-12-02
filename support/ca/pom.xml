@@ -8,6 +8,7 @@
     </parent>
     <artifactId>diirt-ca</artifactId>
     <name>org.diirt.support.ca</name>
+    <description>Diirt support for Channel Access (Epics v3)</description>
     <dependencies>
         <dependency>
             <groupId>org.epics</groupId>

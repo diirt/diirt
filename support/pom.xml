@@ -7,8 +7,9 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <groupId>org.diirt.support</groupId>
-    <name>support</name>
     <artifactId>support-all</artifactId>
+    <name>support</name>
+    <description>Meta module all integration to other protocols, services and tools.</description>
     <packaging>pom</packaging>
     <modules>
         <module>cf</module>
