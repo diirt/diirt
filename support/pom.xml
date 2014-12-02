@@ -7,7 +7,7 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <name>support</name>
-    <artifactId>support</artifactId>
+    <artifactId>support-all</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>cf</module>
