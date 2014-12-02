@@ -19,7 +19,6 @@
         </dependency>
     </dependencies>
     <modules>
-        <module>pvmanager-jca</module>
         <module>pvmanager-pva</module>
         <module>pvmanager-sample</module>
         <module>pvmanager-loc</module>
