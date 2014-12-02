@@ -6,6 +6,7 @@
         <artifactId>diirt-all</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
+    <groupId>org.diirt.support</groupId>
     <name>support</name>
     <artifactId>support-all</artifactId>
     <packaging>pom</packaging>
