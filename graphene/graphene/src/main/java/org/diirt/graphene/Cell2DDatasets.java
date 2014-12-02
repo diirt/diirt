@@ -43,9 +43,12 @@ public class Cell2DDatasets {
         if (xCount <= 0 || yCount <= 0) {
             throw new IllegalArgumentException("Number of X (or Y) values must be greater than 0. xCount = " + xCount + " yCount = " + yCount);
         }
-        if (((xCount) * (yCount - 1) + xCount - 1) != (data.size() - 1)) {
+
+        final int expectedSize = xCount * yCount;
+
+        if (expectedSize != data.size()) {
             throw new IllegalArgumentException("Unexpected number of X (or Y) values. Array length = " + (data.size()) + ", Predicted size(given X and Y) = "
-                    + ((xCount) * (yCount - 1) + xCount) + ", xCount = " + xCount + ", yCount = " + yCount);
+                    + expectedSize + ", xCount = " + xCount + ", yCount = " + yCount);
         }
 
         final ListNumber xBoundaries = ListNumbers.linearListFromRange(xRange.getMinimum(), xRange.getMaximum(), xCount + 1);
