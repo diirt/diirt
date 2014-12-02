@@ -5,7 +5,7 @@
 package org.diirt.datasource.integration;
 
 import org.diirt.datasource.PVManager;
-import org.diirt.datasource.ca.JCADataSourceBuilder;
+import org.diirt.support.ca.JCADataSourceBuilder;
 
 /**
  * Tests reconnects caused by a server restart.

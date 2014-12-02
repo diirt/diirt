@@ -6,7 +6,7 @@ package org.diirt.datasource.integration;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
-import org.diirt.datasource.ca.JCADataSource;
+import org.diirt.support.ca.JCADataSource;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
