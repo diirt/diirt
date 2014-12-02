@@ -2,7 +2,7 @@
 cd target
 rm -rf maven-site
 git clone git@github.com:diirt/maven-site.git
-cd pvmanager-pages
+cd maven-site
 rm -rf *
 cp -R ../staging/* .
 git add -A
