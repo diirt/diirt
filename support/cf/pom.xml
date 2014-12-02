@@ -8,7 +8,7 @@
     </parent>
     <groupId>org.diirt.support</groupId>
     <name>org.diirt.support.cf</name>
-    <artifactId>cf</artifactId>
+    <artifactId>diirt-cf</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
