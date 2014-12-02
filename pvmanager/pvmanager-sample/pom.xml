@@ -10,8 +10,8 @@
     <name>org.diirt.datasource.sample</name>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>datasource-ca</artifactId>
+            <groupId>org.diirt.support</groupId>
+            <artifactId>diirt-ca</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

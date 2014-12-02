@@ -8,17 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JTextField;
-import org.diirt.datasource.CompositeDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
-import org.diirt.datasource.sim.SimulationDataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.ca.JCADataSource;
-import static org.diirt.datasource.util.Executors.*;
 import org.diirt.util.text.NumberFormats;
 import static org.diirt.util.time.TimeDuration.*;
 
@@ -78,12 +74,7 @@ public class ScaleFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("epics", new JCADataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {

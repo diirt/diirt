@@ -8,12 +8,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
-import org.diirt.datasource.CompositeDataSource;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
 import org.diirt.vtype.VStatistics;
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import java.util.ArrayList;
@@ -30,8 +28,6 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.extra.DynamicGroup;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.ca.JCADataSource;
-import org.diirt.datasource.loc.LocalDataSource;
 import static org.diirt.datasource.extra.ExpressionLanguage.*;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
@@ -348,12 +344,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     */
     public static void main(String args[]) {
         PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("ca", new JCADataSource());
-        dataSource.putDataSource("loc", new LocalDataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MockDynamicTablePVFrame().setVisible(true);

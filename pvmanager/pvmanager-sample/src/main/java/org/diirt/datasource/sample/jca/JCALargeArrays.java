@@ -6,7 +6,7 @@ package org.diirt.datasource.sample.jca;
 
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
-import org.diirt.datasource.ca.JCADataSource;
+import org.diirt.support.ca.JCADataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
@@ -19,7 +19,9 @@ import static org.diirt.util.time.TimeDuration.*;
  * @author carcassi
  */
 public class JCALargeArrays {
-   static     long  start = System.currentTimeMillis();
+
+    static long start = System.currentTimeMillis();
+
     public static void main(String[] args) throws Exception {
         System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "1");
 //        System.setProperty("gov.aps.jca.jni.JNIContext.max_array_bytes", "10000000");
@@ -47,7 +49,7 @@ public class JCALargeArrays {
                     }
                 })
                 .maxRate(ofHertz(50));
-        
+
         Thread.sleep(5000);
         pv.close();
         PVManager.getDefaultDataSource().close();

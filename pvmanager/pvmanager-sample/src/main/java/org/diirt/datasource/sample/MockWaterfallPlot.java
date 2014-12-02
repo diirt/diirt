@@ -7,7 +7,6 @@ package org.diirt.datasource.sample;
 import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import org.diirt.datasource.CompositeDataSource;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,13 +14,11 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.datasource.ca.JCADataSource;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VImage;
 import org.diirt.datasource.extra.ColorScheme;
 import org.diirt.datasource.extra.WaterfallPlot;
 import org.diirt.datasource.extra.WaterfallPlotParameters;
-import org.diirt.datasource.sim.SimulationDataSource;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.WaterfallPlotParameters.*;
@@ -36,12 +33,6 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
 
     /** Creates new form MockWaterfallPlot */
     public MockWaterfallPlot() {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("epics", new JCADataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
         initComponents();
         WaterfallPlotParameters defaults = WaterfallPlotParameters.defaults();
         adaptiveRangeField.setSelected(defaults.isAdaptiveRange());
@@ -241,6 +232,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
     * @param args the command line arguments
     */
     public static void main(String args[]) {
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MockWaterfallPlot().setVisible(true);

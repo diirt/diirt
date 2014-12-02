@@ -21,7 +21,7 @@ import org.diirt.vtype.VStringArray;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import org.diirt.datasource.ca.JCADataSourceBuilder;
+import org.diirt.support.ca.JCADataSourceBuilder;
 import org.diirt.util.time.TimeDuration;
 import static org.diirt.util.time.TimeDuration.*;
 

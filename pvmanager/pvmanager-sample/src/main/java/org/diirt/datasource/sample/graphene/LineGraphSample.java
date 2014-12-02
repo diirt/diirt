@@ -6,7 +6,6 @@ package org.diirt.datasource.sample.graphene;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import org.diirt.datasource.CompositeDataSource;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,13 +15,12 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.ValueUtil;
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.ca.JCADataSource;
 import org.diirt.datasource.graphene.Graph2DResult;
 import org.diirt.datasource.graphene.LineGraph2DExpression;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.datasource.sample.SetupUtil;
 import static org.diirt.datasource.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
@@ -36,12 +34,6 @@ public class LineGraphSample extends javax.swing.JFrame {
      * Creates new form MockWaterfallPlot
      */
     public LineGraphSample() {
-        PVManager.setDefaultNotificationExecutor(swingEDT());
-        CompositeDataSource dataSource = new CompositeDataSource();
-        dataSource.putDataSource("sim", SimulationDataSource.simulatedData());
-        dataSource.putDataSource("epics", new JCADataSource());
-        dataSource.setDefaultDataSource("sim");
-        PVManager.setDefaultDataSource(dataSource);
         initComponents();
         plotView.addComponentListener(new ComponentAdapter() {
 
@@ -252,6 +244,7 @@ public class LineGraphSample extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        SetupUtil.defaultCASetupForSwing();
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
