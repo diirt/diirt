@@ -4,7 +4,8 @@
  */
 package org.diirt.graphene;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import java.awt.Font;
 
@@ -15,7 +16,7 @@ public class FontUtilTest {
     @Test
     public void loadRegularFont() {
         final Font font = FontUtil.getLiberationSansRegular();
-        assertNotNull(font);
+        assertThat(font, not(nullValue()));
     }
 
 }
