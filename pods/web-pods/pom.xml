@@ -64,8 +64,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>datasource-ca</artifactId>
+            <groupId>org.diirt.support</groupId>
+            <artifactId>diirt-ca</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
