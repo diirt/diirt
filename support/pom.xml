@@ -13,5 +13,6 @@
     <modules>
         <module>cf</module>
         <module>ca</module>
+        <module>pva</module>
     </modules>
 </project>
