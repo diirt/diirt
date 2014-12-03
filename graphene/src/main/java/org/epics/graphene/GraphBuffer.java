@@ -80,10 +80,10 @@ public class GraphBuffer {
         hasAlphaChannel = image.getAlphaRaster() != null;
         g = image.createGraphics();
         
-        xPlotCoordStart=0; 
-        xPlotCoordEnd=width;
-        yPlotCoordStart=height; 
-        yPlotCoordEnd=0; 
+        //xPlotCoordStart=0; 
+        //xPlotCoordEnd=width;
+        //yPlotCoordStart=height; 
+        //yPlotCoordEnd=0; 
     }
     
     /**
@@ -566,18 +566,7 @@ public class GraphBuffer {
         private int start;
         private int end;
     }
-    /*void drawLineGraph(Point2DDataset data, InterpolationScheme interpolation,ReductionScheme reduction){
-        
-        calculateGraphArea(data);
-        SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
-        ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
-        
-        //g.setClip(0, 0, 300, 200);
-        g.setColor(Color.BLACK);
-        drawValueExplicitLine(xValues, yValues, interpolation, reduction);
-    
-    }
-    */
+
     public void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation,ProcessValue pv) {
         ReductionScheme reductionScheme = ReductionScheme.NONE;
         
@@ -614,17 +603,13 @@ public class GraphBuffer {
     }
     
     public void drawValueExplicitLine(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv){
-        
-        
-        this.calculateGraphArea(data);
+ 
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
         this.drawValueExplicitLine(xValues, yValues, interpolation, reduction, pv);
     }
     private void drawValueExplicitLine(ListNumber xValues,ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv) {
        
-        g.setColor(Color.BLACK);
-        drawBackground(Color.WHITE);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
@@ -665,14 +650,17 @@ public class GraphBuffer {
         // Draw the line
         g.draw(path);
     }
-    private void calculateGraphArea(Point2DDataset data){
-        
-        Range xPlotRange=xAxisRange.axisRange(data.getXStatistics(), data.getXDisplayRange()); 
-        Range yPlotRange=yAxisRange.axisRange(data.getYStatistics(), data.getYDisplayRange()); 
+    public void preparePlot(Range xPlotRange, Range yPlotRange,double xPlotCoordStart,double xPlotCoordEnd, double yPlotCoordStart, double yPlotCoordEnd){
+       
         xPlotValueStart = xPlotRange.getMinimum().doubleValue();
         xPlotValueEnd = xPlotRange.getMaximum().doubleValue();
         yPlotValueStart = yPlotRange.getMinimum().doubleValue();
         yPlotValueEnd = yPlotRange.getMaximum().doubleValue();
+        
+        this.xPlotCoordStart=xPlotCoordStart; 
+        this.xPlotCoordEnd=xPlotCoordEnd; 
+        this.yPlotCoordStart=yPlotCoordStart; 
+        this.yPlotCoordEnd=yPlotCoordEnd;
     }
     
     private double scaledX(double value) {
