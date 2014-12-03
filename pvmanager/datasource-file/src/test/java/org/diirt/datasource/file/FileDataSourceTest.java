@@ -4,30 +4,23 @@
  */
 package org.diirt.datasource.file;
 
-import org.diirt.datasource.file.CSVFileFormat;
-import org.diirt.datasource.file.ListFileFormat;
-import org.diirt.datasource.file.FileDataSource;
-import org.diirt.datasource.file.ImageFileFormat;
-import org.diirt.datasource.file.FileFormatRegistry;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.time.Duration;
 
 import org.diirt.datasource.test.CountDownPVReaderListener;
-import org.diirt.datasource.test.MockDataSource;
 
 import java.util.Arrays;
-import java.util.concurrent.Executor;
 
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.expression.Queue;
 
 import static org.junit.Assert.*;
 
@@ -43,7 +36,6 @@ import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
 
 import static org.hamcrest.Matchers.*;
 
@@ -57,11 +49,10 @@ public class FileDataSourceTest {
     }
     
     private static DataSource file;
-    private static FileFormatRegistry register = FileFormatRegistry.getDefault();
     
     @BeforeClass
     public static void createDataSource() {
-        file = new FileDataSource(new FileDataSourceConfiguration());
+        file = new FileDataSource(new FileDataSourceConfiguration().pollEnabled(true).pollInterval(Duration.ofMillis(250)));
     }
     
     @AfterClass
