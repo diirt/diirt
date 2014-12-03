@@ -8,7 +8,7 @@
     </parent>
     <artifactId>diirt-cf</artifactId>
     <name>org.diirt.support.cf</name>
-    <description>Diirt support for Channel Finder</description>
+    <description>Diirt support for Channel Finder.</description>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

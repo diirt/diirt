@@ -10,7 +10,7 @@
     <artifactId>graphene</artifactId>
 
     <name>org.diirt.graphene</name>
-    <description>Graph library for real time.</description>
+    <description>Core rendering engine for graphene.</description>
     <reporting>
         <plugins>
             <plugin>

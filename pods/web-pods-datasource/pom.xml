@@ -8,6 +8,7 @@
     </parent>
     <artifactId>web-pods-datasource</artifactId>
     <name>org.diirt.datasource.pods.web</name>
+    <description>Support for WebPods data source.</description>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>

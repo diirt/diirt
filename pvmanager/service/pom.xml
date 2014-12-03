@@ -9,4 +9,5 @@
     <artifactId>service</artifactId>
     <packaging>jar</packaging>
     <name>org.diirt.service</name>
+    <description>Support for command/response services.</description>
 </project>

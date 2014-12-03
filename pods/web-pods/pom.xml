@@ -9,6 +9,7 @@
 
     <artifactId>web-pods</artifactId>
     <name>org.diirt.pods.web</name>
+    <description>A distribution service based on WebSockets.</description>
     <packaging>war</packaging>
 
     <properties>

@@ -8,4 +8,5 @@
     </parent>
     <artifactId>vtype</artifactId>
     <name>org.diirt.vtype</name>
+    <description>Definition and basic implementation for value types.</description>
 </project>

@@ -8,6 +8,7 @@
     </parent>
     <artifactId>datasource-formula</artifactId>
     <name>org.diirt.datasource.formula</name>
+    <description>An extensible formula language suitable for real-time calculation.</description>
     <dependencies>
         <dependency>
             <groupId>org.antlr</groupId>

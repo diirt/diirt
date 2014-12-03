@@ -19,22 +19,22 @@
         </dependency>
     </dependencies>
     <modules>
-        <module>pvmanager-sample</module>
-        <module>pvmanager-loc</module>
-        <module>pvmanager-test</module>
-        <module>pvmanager-sim</module>
-        <module>pvmanager-extra</module>
-        <module>pvmanager-graphene</module>
-        <module>pvmanager-vtype</module>
-        <module>pvmanager-core</module>
-        <module>pvmanager-sys</module>
-        <module>pvmanager-timecache</module>
-        <module>pvmanager-file</module>
-        <module>pvmanager-jdbc</module>
-        <module>pvmanager-exec</module>
-        <module>pvmanager-integration</module>
-        <module>pvmanager-file-json</module>
-        <module>datasource-formula</module>
         <module>service</module>
+        <module>datasource</module>
+        <module>service-jdbc</module>
+        <module>service-exec</module>
+        <module>datasource-sample</module>
+        <module>datasource-test</module>
+        <module>datasource-extra</module>
+        <module>datasource-graphene</module>
+        <module>datasource-vtype</module>
+        <module>datasource-timecache</module>
+        <module>datasource-file</module>
+        <module>datasource-file-json</module>
+        <module>datasource-formula</module>
+        <module>datasource-integration</module>
+        <module>datasource-loc</module>
+        <module>datasource-sim</module>
+        <module>datasource-sys</module>
     </modules>
 </project>

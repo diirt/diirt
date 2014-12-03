@@ -8,6 +8,7 @@
     </parent>
     <artifactId>vtype-json</artifactId>
     <name>org.diirt.vtype.json</name>
+    <description>Standard JSON serilization for value types.</description>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

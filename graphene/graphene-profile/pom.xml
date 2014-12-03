@@ -8,6 +8,7 @@
     </parent>
     <artifactId>graphene-profile</artifactId>
     <name>org.diirt.graphene.profile</name>
+    <description>Tools to profile the graph library.</description>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

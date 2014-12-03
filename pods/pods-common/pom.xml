@@ -8,5 +8,6 @@
     </parent>
     <artifactId>pods-common</artifactId>
     <name>org.diirt.pods.common</name>
+    <description>Common functionality between all PODS.</description>
     <packaging>jar</packaging>
 </project>

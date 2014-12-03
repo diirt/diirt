@@ -8,6 +8,7 @@
     </parent>
     <artifactId>web-pods-common</artifactId>
     <name>org.diirt.pods.web.common</name>
+    <description>Common elements between client and server WebPods.</description>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
