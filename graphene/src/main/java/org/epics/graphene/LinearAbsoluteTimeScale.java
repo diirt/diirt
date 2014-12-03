@@ -50,7 +50,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         TimeScales.TimePeriod timePeriod = TimeScales.toTimePeriod(minPeriodInSec);
         timePeriod = TimeScales.nextDown(timePeriod);
         
-        // Kepp increasing the time until you have the right amount of references
+        // Keep increasing the time until you have the right amount of references
         List<Timestamp> references = TimeScales.createReferences(range, timePeriod);
         while(references.size() > maxRefs) {
             timePeriod = TimeScales.nextUp(timePeriod);
@@ -67,7 +67,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         }
         ArrayDouble normalizedValues = new ArrayDouble(normalized);
         
-        return new TimeAxis(range, references, normalizedValues, TimeScales.trimLabelsLeft(TimeScales.trimLabelsRight(TimeScales.createLabels(references))));
+        return new TimeAxis(range, references, normalizedValues, TimeScales.trimLabels(TimeScales.createLabels(references)));
     }
     
 }

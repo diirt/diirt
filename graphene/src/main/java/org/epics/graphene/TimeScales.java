@@ -439,6 +439,10 @@ public class TimeScales {
         return commonStart;
     }
     
+    @Deprecated
+    /**
+     * Use trimLabels()
+     */
     static List<String> trimLabelsRight(List<String> labels) {
         if (labels.isEmpty()) {
             return labels;
@@ -470,6 +474,10 @@ public class TimeScales {
         return result;
     }
     
+    @Deprecated
+    /**
+     * Use trimLabels()
+     */
     static List<String> trimLabelsLeft(List<String> labels) {
         if (labels.isEmpty()) {
             return labels;
