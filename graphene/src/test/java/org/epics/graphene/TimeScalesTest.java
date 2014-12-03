@@ -4,6 +4,7 @@
  */
 package org.epics.graphene;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -16,7 +17,9 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
+import java.util.TimeZone;
 import org.junit.Ignore;
+import org.epics.graphene.TimeScales.DateFormatter;
 
 /**
  *
@@ -645,7 +648,7 @@ public class TimeScalesTest {
     }
     
     @Test
-    @Ignore //create() does not use EDT/EST correctly
+    //@Ignore //create() does not use EDT/EST correctly
     public void createReferencesHoursDST2() {
 	//Test fall back daylight savings time (DST)
 	//Start: Sun Nov 02 00:00:00 EST 2014
@@ -656,10 +659,16 @@ public class TimeScalesTest {
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 5 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 ) ) );
-	System.out.println( references.get( 1 ).toDate() );
-	System.out.println( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ).toDate() );
-	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 1 , 0 , 0 , 0 ) ) );
-	assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
+	
+	//TODO resolve GregorianCalendar functioning improperly
+	//I do not know why when changing time zone, GregorianCalendar's hours
+	//remain in GMT time. For example, if you set time zone to GMT-5, setting the hours
+	//still sets the GMT hours. Therefore, we must add an additional four hours.
+	//The first two times November 2, 1:00 AM and November 2, 2:00 AM must be created
+	//as November 5, 5:00 AM GMT and November 5, 6:00 AM GMT because
+	//we have to manually change the time zone to EDT
+	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 5 , 0 , 0 , 0 , "EDT" ) ) );
+	assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 6 , 0 , 0 , 0 , "EDT" ) ) );
 	
 	//hour 1 is repeated due to DST
 	assertThat( references.get( 3 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
@@ -998,9 +1007,594 @@ public class TimeScalesTest {
                 ".1")));
     }
     
+    
+    @Test
+    public void trimLabels1() {
+	//Tests just 1 label. Since there is only 1 label, there should not
+	//be any common parts, and the entire thing should be displayed
+	List< String > input = Arrays.asList(
+		"2014/11/26 09:50:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:50:00.000000000"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void dateFormatterNano1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.000000001") );
+    }
+    
+    @Test
+    public void dateFormatterMilli1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1000000 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.001") );
+    }
+    
+    @Test
+    public void dateFormatterSeconds1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50:10") );
+    }
+
+    @Test
+    public void dateFormatterMinutes1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:50" ) );
+    }
+    
+    @Test
+    public void dateFormatterHours1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26 09:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterDays1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11/26" ) );
+    }
+    
+    @Test
+    public void dateFormatterMonths1() {
+	DateFormatter f = new DateFormatter( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
+	assertThat( compactDate , equalTo( "2014/11" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears1() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.YEAR_PRECISION );
+	assertThat( compactDate , equalTo( "2014" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears2() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears3() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000000000" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears4() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears5() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00:00" ) );
+    }
+    
+    @Test
+    public void dateFormatterYears6() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+
+    @Test
+    public void dateFormatterYears7() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
+    }
+
+    @Test
+    public void dateFormatterYears8() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01/01" ) );
+    }
+
+    @Test
+    public void dateFormatterYears9() {
+	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
+	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
+	
+	//recall that we cannot just display an hour by itself. The minutes
+	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
+	//be ambiguous and meaningless
+	assertThat( compactDate , equalTo( "2014/01" ) );
+    }
+    
+    @Test
+    public void trimLabelsNanoseconds1() {
+	//Test when the nanoseconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.000000002" ,
+		"2014/11/26 09:03:00.000000004" ,
+		"2014/11/26 09:04:00.000000006" ,
+		"2014/11/26 09:05:00.000000008" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000000000" ,
+		"09:02:00.000000002" ,
+		"09:03:00.000000004" ,
+		"09:04:00.000000006" ,
+		"09:05:00.000000008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMilliseconds1() {
+	//Test when the milliseconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.002000000" ,
+		"2014/11/26 09:03:00.004000000" ,
+		"2014/11/26 09:04:00.006000000" ,
+		"2014/11/26 09:05:00.008000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000" ,
+		"09:02:00.002" ,
+		"09:03:00.004" ,
+		"09:04:00.006" ,
+		"09:05:00.008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMilliseconds2() {
+		//Test when the milliseconds are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.002000000" ,
+		"2014/11/26 09:03:00.004000000" ,
+		"2014/11/26 09:04:00.006000000" ,
+		"2014/11/26 09:05:00.008000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000" ,
+		"09:02:00.002" ,
+		"09:03:00.004" ,
+		"09:04:00.006" ,
+		"09:05:00.008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsSeconds1() {
+	//Test when the seconds are changing, but the nanoseconds are not
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000001" , 
+		"2014/11/26 09:02:01.000000001" ,
+		"2014/11/26 09:03:02.000000001" ,
+		"2014/11/26 09:04:03.000000001" ,
+		"2014/11/26 09:05:04.000000001" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.000000001" ,
+		"09:02:01.000000001" ,
+		"09:03:02.000000001" ,
+		"09:04:03.000000001" ,
+		"09:05:04.000000001" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMinutes1() {
+	//Test when the unique parts are in the middle of the labels.
+	//In this case, the hours and minutes should be displayed. Although
+	//the hour is common to all labels, it is meaningless to display
+	//just the minutes as 1, 2, 3, 4, ...
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.000000000" ,
+		"2014/11/26 09:03:00.000000000" ,
+		"2014/11/26 09:04:00.000000000" ,
+		"2014/11/26 09:05:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01" ,
+		"09:02" ,
+		"09:03" ,
+		"09:04" ,
+		"09:05" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMinutes2() {
+	//Test when the unique parts are in the middle of the labels.
+	//and the tenths place of the minute is changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:17:00.000000000" , 
+		"2014/11/26 09:18:00.000000000" ,
+		"2014/11/26 09:19:00.000000000" ,
+		"2014/11/26 09:20:00.000000000" ,
+		"2014/11/26 09:21:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:17" ,
+		"09:18" ,
+		"09:19" ,
+		"09:20" ,
+		"09:21" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsHours1() {
+	//Test when the hours are changing
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:00:00.000000000" , 
+		"2014/11/26 10:00:00.000000000" ,
+		"2014/11/26 11:00:00.000000000" ,
+		"2014/11/26 12:00:00.000000000" ,
+		"2014/11/26 13:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:00" ,
+		"10:00" ,
+		"11:00" ,
+		"12:00" ,
+		"13:00" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsHours2() {
+	//Test when the hours are changing, but the milliseconds aren't
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:00:00.003000000" , 
+		"2014/11/26 10:00:00.003000000" ,
+		"2014/11/26 11:00:00.003000000" ,
+		"2014/11/26 12:00:00.003000000" ,
+		"2014/11/26 13:00:00.003000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:00:00.003" ,
+		"10:00:00.003" ,
+		"11:00:00.003" ,
+		"12:00:00.003" ,
+		"13:00:00.003" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsDays1() {
+	//Test when the unique parts are at the front of the labels.
+	//Although the month is common to all the labels, it would be
+	//meaningless to just display days as 5, 6, 7, 8, 9. 
+	//The days need the month in order to be meaningful
+	List< String > input = Arrays.asList( 
+		"2014/11/05 00:00:00.000000000" , 
+		"2014/11/06 00:00:00.000000000" ,
+		"2014/11/07 00:00:00.000000000" ,
+		"2014/11/08 00:00:00.000000000" ,
+		"2014/11/09 00:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/05" ,
+		"11/06" ,
+		"11/07" ,
+		"11/08" ,
+		"11/09"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsDays2() {
+	//Test when the unique parts are at the front of the labels.
+	//Although the month is common to all the labels, it would be
+	//meaningless to just display days as 7, 8, 9, 10, 11. 
+	//The days need the month in order to be meaningful.
+	List< String > input = Arrays.asList( 
+		"2014/11/07 00:00:00.000000000" , 
+		"2014/11/08 00:00:00.000000000" ,
+		"2014/11/09 00:00:00.000000000" ,
+		"2014/11/10 00:00:00.000000000" ,
+		"2014/11/11 00:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/07" ,
+		"11/08" ,
+		"11/09" ,
+		"11/10" ,
+		"11/11"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsDays3() {
+	//Test when the unique parts are at the front of the labels.
+	//In this case, it is the month that is changing
+	List< String > input = Arrays.asList( 
+		"2014/05/11 00:00:00.000000000" , 
+		"2014/06/11 00:00:00.000000000" ,
+		"2014/07/11 00:00:00.000000000" ,
+		"2014/08/11 00:00:00.000000000" ,
+		"2014/09/11 00:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/05/11" ,
+		"06/11" ,
+		"07/11" ,
+		"08/11" ,
+		"09/11"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsDays4() {
+	//Test when the unique parts are at the front of the labels.
+	//Here, the days wrap around to the next month
+	List< String > input = Arrays.asList( 
+		"2014/11/28 00:00:00.000000000" , 
+		"2014/11/29 00:00:00.000000000" ,
+		"2014/11/30 00:00:00.000000000" ,
+		"2014/12/01 00:00:00.000000000" ,
+		"2014/12/02 00:00:00.000000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/28" ,
+		"11/29" ,
+		"11/30" ,
+		"12/01" ,
+		"12/02"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsDays5() {
+	//Test when the unique parts are at the front of the labels.
+	//Here, the days wrap around to the next year. Although the year
+	//is not common to all the labels, it would be redundant to display
+	//2014/12/28 then followed by 2014/12/29; however, it would be necesary
+	//to show that the year has become 2015 on 2015/01/01
+	List< String > input = Arrays.asList( 
+		"2014/12/28 00:00:00.000000000" , 
+		"2014/12/29 00:00:00.000000000" ,
+		"2014/12/30 00:00:00.000000000" ,
+		"2014/12/31 00:00:00.000000000" ,
+		"2015/01/01 00:00:00.000000000" , 
+		"2015/01/02 00:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/12/28" ,
+		"12/29" ,
+		"12/30" ,
+		"12/31" ,
+		"2015/01/01" ,
+		"01/02"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMonths1() {
+	//Test when the unique parts are at the front of the labels.
+	//Here, the months are changing, but nothing else. Since it would be
+	//meaningless to just display 05, 06, 07, 08, 09, 10, because it would
+	//not be clear whether these are seconds, days, months, etc.,
+	//the year is also necessary to clarify
+	List< String > input = Arrays.asList( 
+		"2014/05/01 00:00:00.000000000" , 
+		"2014/06/01 00:00:00.000000000" ,
+		"2014/07/01 00:00:00.000000000" ,
+		"2014/08/01 00:00:00.000000000" ,
+		"2014/09/01 00:00:00.000000000" , 
+		"2014/10/01 00:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/05" ,
+		"2014/06" ,
+		"2014/07" ,
+		"2014/08" ,
+		"2014/09" ,
+		"2014/10"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMonths2() {
+	//Test when the unique parts are at the front of the labels.
+	//Here, the months are changing, but they wrap around to the next year
+	List< String > input = Arrays.asList( 
+		"2014/09/01 00:00:00.000000000" , 
+		"2014/10/01 00:00:00.000000000" ,
+		"2014/11/01 00:00:00.000000000" ,
+		"2014/12/01 00:00:00.000000000" ,
+		"2015/01/01 00:00:00.000000000" , 
+		"2015/02/01 00:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/09" ,
+		"2014/10" ,
+		"2014/11" ,
+		"2014/12" ,
+		"2015/01" ,
+		"2015/02"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMonths3() {
+	//Test when the months are changing, but the seconds are not
+	//at 0
+	List< String > input = Arrays.asList( 
+		"2014/09/01 00:00:23.000000000" , 
+		"2014/10/01 00:00:23.000000000" ,
+		"2014/11/01 00:00:23.000000000" ,
+		"2014/12/01 00:00:23.000000000" ,
+		"2015/01/01 00:00:23.000000000" , 
+		"2015/02/01 00:00:23.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/09/01 00:00:23" ,
+		"10/01 00:00:23" ,
+		"11/01 00:00:23" ,
+		"12/01 00:00:23" ,
+		"2015/01/01 00:00:23" ,
+		"02/01 00:00:23"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsYears1() {
+	//Test when just the years are changing
+	List< String > input = Arrays.asList( 
+		"2014/01/01 00:00:00.000000000" , 
+		"2015/01/01 00:00:00.000000000" ,
+		"2016/01/01 00:00:00.000000000" ,
+		"2017/01/01 00:00:00.000000000" ,
+		"2018/01/01 00:00:00.000000000" , 
+		"2019/01/01 00:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014" ,
+		"2015" ,
+		"2016" ,
+		"2017" ,
+		"2018" ,
+		"2019"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsYears2() {
+	//Test when just the years are changing, but
+	//the days and hours are not 1 and 0, respectively
+	List< String > input = Arrays.asList( 
+		"2014/01/05 20:00:00.000000000" , 
+		"2015/01/05 20:00:00.000000000" ,
+		"2016/01/05 20:00:00.000000000" ,
+		"2017/01/05 20:00:00.000000000" ,
+		"2018/01/05 20:00:00.000000000" , 
+		"2019/01/05 20:00:00.000000000"
+	);
+	List< String > expected = Arrays.asList(
+		"2014/01/05 20:00" ,
+		"2015/01/05 20:00" ,
+		"2016/01/05 20:00" ,
+		"2017/01/05 20:00" ,
+		"2018/01/05 20:00" ,
+		"2019/01/05 20:00"
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );	
+    }
+    
     static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         GregorianCalendar cal = new GregorianCalendar(year, month - 1, day, hour, minute, second);
         cal.set(GregorianCalendar.MILLISECOND, millisecond);
         return Timestamp.of(cal.getTime());
     }
+    
+    /**
+     * Creates the timestamp corresponding to the given time in GMT,
+     * but with the specified timezone. If you wish to use times in 
+     * your own timezone, you must add or subtract the GMT difference
+     * to your day and hours parameter.
+     * 
+     * @param year
+     * @param month
+     * @param day
+     * @param hour
+     * @param minute
+     * @param second
+     * @param millisecond
+     * @param timezone
+     * @return 
+     */
+    static Timestamp create(int year , int month , int day , int hour , int minute , int second , int millisecond , String timezone ) {
+	GregorianCalendar cal = new GregorianCalendar( TimeZone.getTimeZone( timezone ) );
+	cal.set( YEAR , year );
+	cal.set( MONTH , month-1 );
+	cal.set( GregorianCalendar.DAY_OF_MONTH , day );
+	cal.set( HOUR_OF_DAY , hour );
+	cal.get( HOUR_OF_DAY );
+	cal.set( MINUTE , minute );
+	cal.set( SECOND , second );
+	cal.set( MILLISECOND , millisecond );
+	return Timestamp.of( cal.getTime() );
+    }
+    
+    //*MC: Trim labels
 }
