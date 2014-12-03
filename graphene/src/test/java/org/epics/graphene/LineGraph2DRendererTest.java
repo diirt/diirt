@@ -641,6 +641,18 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         //Compares to correct image
         ImageAssert.compareImages("lineGraph2D.manyLinesStress", image);
     }
+    
+    @Test
+    public void drawGraphBuffer()throws Exception{
+        
+        Point2DDataset data = Point2DTestDatasets.twoValueDataset();
+        GraphBuffer buffer=new GraphBuffer(300, 200);
+        buffer.setXScaleAsPoint(data.getXStatistics(), 0, 300, ValueScales.linearScale());
+        buffer.setYScaleAsPoint(data.getYStatistics(), 0, 200, ValueScales.linearScale());
+        LineGraph2DRenderer renderer=new LineGraph2DRenderer(300, 200);
+        renderer.graphBufferDraw(buffer, data, InterpolationScheme.CUBIC, ReductionScheme.NONE);
+        ImageAssert.compareImages("lineGraph2D.cubic.twoValues", buffer.getImage());
+    }
 
     @Test
     public void updateInterpolation() throws Exception {

@@ -146,7 +146,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
     
-    public void GraphBufferDraw(GraphBuffer buffer,Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction ){
+    public void graphBufferDraw(GraphBuffer buffer,Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction ){
         
         ProcessValue pv=new ProcessValue() {
 
@@ -161,7 +161,10 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
             }
         };
-        
+       
+        buffer.setXScaleAsPoint(data.getXStatistics(), 0, 300, ValueScales.linearScale());
+        buffer.setYScaleAsPoint(data.getYStatistics(), 0, 200, ValueScales.linearScale());
+        buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
     }
     /**
      *Draws a graph with multiple lines, each pertaining to a different set of data.

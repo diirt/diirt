@@ -613,24 +613,27 @@ public class GraphBuffer {
         g.draw(path);
     }
     
-     
-    public void drawValueExplicitLine(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv) {
+    public void drawValueExplicitLine(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv){
         
-        calculateGraphArea(data);
+        
+        this.calculateGraphArea(data);
         SortedListView xValues = org.epics.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.epics.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
-        
+        this.drawValueExplicitLine(xValues, yValues, interpolation, reduction, pv);
+    }
+    private void drawValueExplicitLine(ListNumber xValues,ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv) {
+       
+        g.setColor(Color.BLACK);
+        drawBackground(Color.WHITE);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         ScaledData scaledData;
-        
-     
-        //Narrow Data
+             
         int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
         int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
         
-        xValues = (SortedListView) ListMath.limit(xValues, start, end + 1);
+        xValues =ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);
         
         switch (reduction) {
@@ -703,7 +706,7 @@ public class GraphBuffer {
         // than that, it's not worth it. Don't do the data reduction.
         int xPlotCoordWidth=300; 
         if (xValues.size() < xPlotCoordWidth * 4) {
-            return scaleNoReduction(xValues, yValues, dataStart);
+            return scaleNoReduction(xValues, yValues, dataStart,pv);
         }
 
         ScaledData scaledData = new ScaledData();
@@ -755,23 +758,6 @@ public class GraphBuffer {
         return scaledData;
     }
     
-    //process value 
-    private class valueProcess implements ProcessValue{
-        
-            private int currentIndex;
-            private double currentScaledDiff;
-            
-            public void valueProcess (){}
-       
-            @Override
-       public void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY){
-           double scaledDiff = Math.abs(scaledX - focusPixelX);
-            if (scaledDiff < currentScaledDiff) {
-                currentIndex = index;
-                currentScaledDiff = scaledDiff;
-            }
-       }
-    };
     
     private static Path2D.Double nearestNeighbour(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
