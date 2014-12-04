@@ -20,6 +20,7 @@ window.onload = function() {
     var socket;
     var channel;
     var id;
+    var currentId = 0;
     var resultsInfo = []; // Contains JSON
     
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
@@ -61,6 +62,8 @@ window.onload = function() {
         channel = channelField.value;
         id = idField.value;
         var message = '{"message" : "subscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
+        currentId++;
+        idField.value = currentId;
         sendMessage(message); // Sends the message through socket
         result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
        // resultsInfo.unshift(message);
@@ -70,7 +73,7 @@ window.onload = function() {
     
     // Unsubscribe
     unsubscribeBtn.onclick = function(e) {
-        var message = '{"message" : "unsubscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
+        var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
         sendMessage(message);
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
@@ -91,9 +94,9 @@ window.onload = function() {
        if (response.type === "connection") {
            subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
-      // if (response.value.type.name === "VTable") {
-      //     value = '<option>table</option>';
-      // }
+      if (response.value.type.name === "VTable") {
+           value = '<option>table</option>';
+       }
        if (response.type === "error") {
            value = '<option class = "error">' + response.error + '</option>';
        } 
@@ -109,6 +112,7 @@ window.onload = function() {
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
        console.log('connected to socket');
        resultsInfo.unshift('Connected to ' + serverField.value);
+       idField.value = currentId;
     };
     
     
@@ -122,8 +126,6 @@ window.onload = function() {
     function closeSocket(event) {
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
-        result.innerHTML= "";
-        details.innerHTML = "";
         subscriptionList.innerHTML = "";
         // socketStatus.innerHTML = 'Disconnected';
         // socketStatus.className = 'Closed';
