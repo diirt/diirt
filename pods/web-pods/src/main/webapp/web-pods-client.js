@@ -20,9 +20,13 @@ window.onload = function() {
     var socket;
     var channel;
     var id;
+    var filter = 'none';
     var currentId = 0;
     var channelList = [];
+    var resultsInfoFiltered = []; // Contains JSON organized by id
     var resultsInfo = []; // Contains JSON
+    var results = [];
+    var resultsFiltered = [];
     
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
     
@@ -60,7 +64,7 @@ window.onload = function() {
     subscriptionList.onchange = function(e) {
         var index = subscriptionList.selectedIndex;
         channel = channelList[index];
-        id = channelList.length - 1 - index;
+        id = index;
         console.log('id: ' + id + 'channel: ' + channel);
     };
     
@@ -72,16 +76,20 @@ window.onload = function() {
         currentId++;
         idField.value = currentId;
         sendMessage(message); // Sends the message through socket
-        subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
+        var newSubscription = document.createElement('option');
+        subscriptionList.appendChild(newSubscription);
+        newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
         result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
+        resultsInfoFiltered.unshift([message]);
         socket.onmessage = function(e) { newMessage(e) };
     };
     
     
     // Unsubscribe
     unsubscribeBtn.onclick = function(e) {
+        // TODO: Change class of subscriptions when unsubscribed (change to color red)
         var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
         sendMessage(message);
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
@@ -100,20 +108,33 @@ window.onload = function() {
    function newMessage (event) {
        var response = JSON.parse(event.data);
        var value;
+       var filterValue;
        if (response.type === "connection") { // Successful subscription
            // subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
       if (response.value.type.name === "VTable") {
            value = '<option>table</option>';
+           filterValue = 'table';
        }
        if (response.type === "error") {
            value = '<option class = "error">' + response.error + '</option>';
+           filterValue = response.error;
        } 
        if (response.type === "value") {
             value = '<option>' + response.value.value + '</option>';
+            filterValue = response.value.value;
         }
-        result.innerHTML = value + result.innerHTML;
         resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+        resultsInfoFiltered[id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');      
+        // Display event details based on filter status
+        if (filter == 'none') { // No filter
+            result.innerHTML = value + result.innerHTML;
+        }
+        else if (response.id == filter) { // If the event should be displayed - matches filter
+            var option = document.createElement('option');
+            result.insertBefore(option, result.childNodes[0]);
+            option.appendChild(document.createTextNode(filterValue));
+        }
     };
     
     // Updates connection status
@@ -170,12 +191,16 @@ window.onload = function() {
     
     
     filterBtn.onclick = function(e) {
-        // TODO: filter event info by subscription
+        filter = id;
+        // result.innerHTML = '';
+        // TODO: Everything here
     }
     
     showAllBtn.onclick = function(e) {
-        // TODO: remove subscription filter, show all data
+        filter = 'none';
+        // TODO: Everything here
     }
+    
     
     // Clears event info
     clearBtn.onclick = function(e) {
