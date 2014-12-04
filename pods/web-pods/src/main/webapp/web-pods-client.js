@@ -122,6 +122,7 @@ window.onload = function() {
        console.log('connected to socket');
        resultsInfo.unshift('Connected to ' + serverField.value);
        idField.value = currentId;
+       subscriptionList.innerHTML = '';
     };
     
     
@@ -135,6 +136,7 @@ window.onload = function() {
     function closeSocket(event) {
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
+        currentId = 0;
         // socketStatus.innerHTML = 'Disconnected';
         // socketStatus.className = 'Closed';
     };
