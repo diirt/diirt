@@ -91,12 +91,10 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     legendMarginToGraph corresponds to the space between the original graph and the legend.
     graphAreaToLegendMargin -> the space between the legend labels and the edge of the picture.*/
     private int legendWidth = 10,
-                legendMarginToGraph = 10,
                 graphAreaToLegendMargin = 3;
     protected int zLabelMargin = 3;
     private boolean drawLegend = DEFAULT_DRAW_LEGEND;
     private Range zRange;
-    private Range zAggregatedRange;
     private Range zPlotRange;
     private AxisRangeInstance zAxisRange = AxisRanges.display().createInstance();
     private ValueScale zValueScale = ValueScales.linearScale();
@@ -184,7 +182,6 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         }
 
 
-        double xStartGraph = super.xPlotCoordStart;
         double yEndGraph = area.graphBottom;
 
         double yHeightTotal = area.graphBottom - area.graphTop + 1;

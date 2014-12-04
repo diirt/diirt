@@ -10,9 +10,7 @@ import org.diirt.graphene.ScatterGraph2DRenderer;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.Graph2DRendererUpdate;
 import java.awt.Graphics2D;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import org.diirt.graphene.profile.ProfileGraph2D;
 import org.diirt.graphene.profile.utils.DatasetFactory;
 

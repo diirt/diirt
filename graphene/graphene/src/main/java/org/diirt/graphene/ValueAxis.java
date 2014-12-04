@@ -49,10 +49,6 @@ public class ValueAxis {
     
     private static final DecimalFormat defaultFormat = new DecimalFormat("0.###");
     
-    private static final DecimalFormat decimal0 = new DecimalFormat("0");
-    private static final DecimalFormat decimal1 = new DecimalFormat("0.0");
-    private static final DecimalFormat decimal2 = new DecimalFormat("0.00");
-    
     private static final Map<Integer, DecimalFormat> formats = new ConcurrentHashMap<Integer, DecimalFormat>();
     
     static DecimalFormat formatWithFixedSignificantDigits(int significantDigits) {

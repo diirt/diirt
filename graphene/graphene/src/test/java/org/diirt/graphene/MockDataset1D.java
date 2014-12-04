@@ -9,9 +9,6 @@ import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.stats.Statistics;
 import java.util.Random;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.CollectionDouble;
-import org.diirt.util.array.CollectionNumber;
-import org.diirt.util.array.IteratorDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.stats.Range;
 
@@ -22,8 +19,6 @@ import org.diirt.util.stats.Range;
 public class MockDataset1D implements Point1DDataset {
     
     private ListNumber values;
-    private double minValue = Double.POSITIVE_INFINITY;
-    private double maxValue = Double.NEGATIVE_INFINITY;
     private Statistics statistics;
 
     public MockDataset1D(double[] data) {

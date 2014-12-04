@@ -5,9 +5,7 @@
 package org.diirt.graphene.profile.impl;
 
 import java.awt.Graphics2D;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import org.diirt.graphene.Graph2DRendererUpdate;
 import org.diirt.graphene.InterpolationScheme;
 import org.diirt.graphene.Point2DDataset;

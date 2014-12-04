@@ -29,8 +29,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.diirt.graphene.Cell2DDataset;
-import org.diirt.graphene.IntensityGraph2DRenderer;
 import org.diirt.graphene.LineGraph2DRenderer;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.profile.impl.ProfileAreaGraph2D;
@@ -890,7 +888,6 @@ public final class TestCaseProfiler {
          * @param values rgb values for all pixels
          */
         private void doByteArray(double[] values){
-            byte[] pixels = (((DataBufferByte)image.getRaster().getDataBuffer()).getData());
             boolean hasAlphaChannel = image.getAlphaRaster() != null;
             
             //all data

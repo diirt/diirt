@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
@@ -18,7 +17,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
-import org.diirt.util.time.TimestampFormat;
 
 /**
  *

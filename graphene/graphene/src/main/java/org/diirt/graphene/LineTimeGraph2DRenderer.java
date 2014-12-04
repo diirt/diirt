@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Arrays;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.SortedListView;
 
 /**
  * Renderer for a line graph.
