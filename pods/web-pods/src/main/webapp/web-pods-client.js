@@ -7,16 +7,28 @@ window.onload = function() {
     var idField = document.getElementById('idNum');
     var result = document.getElementById('results');
     var details = document.getElementById('details');
+    var subscriptionList = document.getElementById('subscriptions');
     var connectBtn = document.getElementById('connect');
     var disconnectBtn = document.getElementById('disconnect');
     var subscribeBtn = document.getElementById('subscribe');
     var pauseBtn = document.getElementById('pause');
     var resumeBtn = document.getElementById('resume');
     var unsubscribeBtn = document.getElementById('unsubscribe');
+    var clearBtn = document.getElementById('clear');
+    var filterBtn = document.getElementById('filter');
+    var showAllBtn = document.getElementById('showAll');
     var socket;
     var channel;
     var id;
+    var filter = 'none';
+    var currentId = 0;
+    var channelList = [];
+    var resultsInfoFiltered = []; // Contains JSON organized by id
     var resultsInfo = []; // Contains JSON
+    var results = [];
+    var resultsFiltered = [];
+    
+    serverField.value = "ws://" + window.location.host + "/web-pods/socket";
     
     
     function waitForConnection(callback) {
@@ -49,22 +61,37 @@ window.onload = function() {
         return false;
     };
     
+    subscriptionList.onchange = function(e) {
+        var index = subscriptionList.selectedIndex;
+        channel = channelList[index];
+        id = index;
+        console.log('id: ' + id + 'channel: ' + channel);
+    };
     
     // Subscribe
     subscribeBtn.onclick = function(e) {
         channel = channelField.value;
         id = idField.value;
         var message = '{"message" : "subscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
+        currentId++;
+        idField.value = currentId;
         sendMessage(message); // Sends the message through socket
+        var newSubscription = document.createElement('option');
+        subscriptionList.appendChild(newSubscription);
+        newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
+        channelList.unshift(channel);
         result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
+        resultsInfoFiltered.unshift([message]);
         socket.onmessage = function(e) { newMessage(e) };
     };
     
     
     // Unsubscribe
     unsubscribeBtn.onclick = function(e) {
+        // TODO: Change class of subscriptions when unsubscribed (change to color red)
         var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
+        sendMessage(message);
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
     };
@@ -77,18 +104,46 @@ window.onload = function() {
     };
    
    
-    // When a message is sent by the server, retrieve the data and display in div results
+    // Message received
    function newMessage (event) {
-        var response = JSON.parse(event.data);
-        var value = response.value.value;
-        result.innerHTML = '<option>' + value + '</option>' + result.innerHTML;
+       var response = JSON.parse(event.data);
+       var value;
+       var filterValue;
+       if (response.type === "connection") { // Successful subscription
+           // subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
+       }
+      if (response.value.type.name === "VTable") {
+           value = '<option>table</option>';
+           filterValue = 'table';
+       }
+       if (response.type === "error") {
+           value = '<option class = "error">' + response.error + '</option>';
+           filterValue = response.error;
+       } 
+       if (response.type === "value") {
+            value = '<option>' + response.value.value + '</option>';
+            filterValue = response.value.value;
+        }
         resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+        resultsInfoFiltered[id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');      
+        // Display event details based on filter status
+        if (filter == 'none') { // No filter
+            result.innerHTML = value + result.innerHTML;
+        }
+        else if (response.id == filter) { // If the event should be displayed - matches filter
+            var option = document.createElement('option');
+            result.insertBefore(option, result.childNodes[0]);
+            option.appendChild(document.createTextNode(filterValue));
+        }
     };
     
     // Updates connection status
    function openSocket (event) {
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
-       resultsInfo.unshift('Connected to ' + socket.URL);
+       console.log('connected to socket');
+       resultsInfo.unshift('Connected to ' + serverField.value);
+       idField.value = currentId;
+       subscriptionList.innerHTML = '';
     };
     
     
@@ -102,6 +157,7 @@ window.onload = function() {
     function closeSocket(event) {
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
+        currentId = 0;
         // socketStatus.innerHTML = 'Disconnected';
         // socketStatus.className = 'Closed';
     };
@@ -134,9 +190,29 @@ window.onload = function() {
     };
     
     
+    filterBtn.onclick = function(e) {
+        filter = id;
+        // result.innerHTML = '';
+        // TODO: Everything here
+    }
+    
+    showAllBtn.onclick = function(e) {
+        filter = 'none';
+        // TODO: Everything here
+    }
+    
+    
+    // Clears event info
+    clearBtn.onclick = function(e) {
+        result.innerHTML= "";
+        details.innerHTML = "";
+    }
+    
+    
     // Displays details for selected event
     results.onchange = function(e) {
         var index = results.selectedIndex;
+        console.log(index);
         details.innerHTML = resultsInfo[index];
     };
  

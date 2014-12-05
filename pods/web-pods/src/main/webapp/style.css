@@ -13,7 +13,7 @@ h1 {
   color: green;
 }
 
-.closed {
+.closed, .error {
   color: red;
 }
 
@@ -48,7 +48,7 @@ ul li span {
 }
 
 textarea {
-  width: 25%;
+  width: 15%;
   padding: 0.1rem;
   font-size: 1rem;
   min-height: 15px;
@@ -65,13 +65,18 @@ button {
 }
 
 select, option {
-    width: 300px;
+    width: 400px;
     font-size: 1em;
     float: left;
 }
 
 #details {
     padding-left: 50px;
-    float: left;
+   
+}
+
+#subscriptions {
+    width: 20%;
+    padding-right: 20px;
 }
 
