@@ -211,9 +211,8 @@ class GraphAreaData {
     }
     
     /**
-     * returns a default range that will be used when the range of an axis
-     * happens to be 0 (i.e. its minimum is the same as its maximum). 
-     * We cannot deal label axes with range 0, so this method is necessary.
+     * Makes sure the range is safe for plotting, possibly returning a modified one.
+     * This takes care of ranges of zero length or otherwise invalid.
      * 
      * @param range a range
      * @return the same range, or one that is safe to draw

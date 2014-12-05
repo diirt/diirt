@@ -41,7 +41,6 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
     private int focusValueIndex = -1;
     
-    private GraphBuffer buffer; 
     /**
      * Creates a new line graph renderer.
      * 
@@ -61,7 +60,6 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         return interpolation;
     }
     
-   
     /**
      *Current state of highlightFocusValue.
      * <ul>
@@ -111,9 +109,6 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
 
-    public void setGraphBuffer(GraphBuffer buffer) {
-      this.buffer=buffer;  
-    }
     /**
      * Draws the graph on the given graphics context.
      * 
@@ -151,14 +146,13 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
     
-    public void graphBufferDraw(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction ){
-        
-       calculateRanges(data.getXStatistics(),data.getXDisplayRange(),data.getYStatistics(),data.getYDisplayRange());  
+    public void draw(GraphBuffer buffer, Point2DDataset data) {
+       calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());  
        calculateGraphArea();
-       buffer.preparePlot(getXPlotRange(), getYPlotRange(), xPlotCoordStart, xPlotCoordEnd, yPlotCoordStart, yPlotCoordEnd);
        
+       // TODO: make sure this is right
        
-       GraphAreaData area =new GraphAreaData(); 
+       GraphAreaData area = new GraphAreaData(); 
        area.setGraphBuffer(buffer);
        
        buffer.drawBackground(backgroundColor);
@@ -171,7 +165,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         area.prepareGraphArea(false, referenceLineColor);
         area.drawGraphArea();
        
-        ProcessValue pv=new ProcessValue() {
+        ProcessValue pv = new ProcessValue() {
 
             @Override
             public void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
@@ -180,16 +174,18 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
                     if (scaledDiff < currentScaledDiff) {
                         currentIndex = index;
                         currentScaledDiff = scaledDiff;
-            }
-        }
+                    }
+                }
             }
         };
        
      
         buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
     }
+    
     /**
-     *Draws a graph with multiple lines, each pertaining to a different set of data.
+     * Draws a graph with multiple lines, each pertaining to a different set of data.
+     * 
      * @param g Graphics2D object used to perform drawing functions within draw.
      * @param data can not be null
      */

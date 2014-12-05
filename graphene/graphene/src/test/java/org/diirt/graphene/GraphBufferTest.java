@@ -15,9 +15,9 @@ import org.diirt.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.epics.util.array.ArrayDouble;
-import org.epics.graphene.Cell2DDataset;
-import org.epics.graphene.Cell2DDatasets;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.graphene.Cell2DDataset;
+import org.diirt.graphene.Cell2DDatasets;
 /**
  *
  * @author carcassi
