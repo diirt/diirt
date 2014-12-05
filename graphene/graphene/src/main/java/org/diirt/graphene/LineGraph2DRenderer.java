@@ -41,6 +41,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
     private int focusValueIndex = -1;
     
+    private GraphBuffer buffer; 
     /**
      * Creates a new line graph renderer.
      * 
@@ -60,6 +61,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         return interpolation;
     }
     
+   
     /**
      *Current state of highlightFocusValue.
      * <ul>
@@ -109,6 +111,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
 
+    public void setGraphBuffer(GraphBuffer buffer) {
+      this.buffer=buffer;  
+    }
     /**
      * Draws the graph on the given graphics context.
      * 
@@ -146,6 +151,43 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
     
+    public void graphBufferDraw(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction ){
+        
+       calculateRanges(data.getXStatistics(),data.getXDisplayRange(),data.getYStatistics(),data.getYDisplayRange());  
+       calculateGraphArea();
+       buffer.preparePlot(getXPlotRange(), getYPlotRange(), xPlotCoordStart, xPlotCoordEnd, yPlotCoordStart, yPlotCoordEnd);
+       
+       
+       GraphAreaData area =new GraphAreaData(); 
+       area.setGraphBuffer(buffer);
+       
+       buffer.drawBackground(backgroundColor);
+       int areaRightPixel = getImageWidth() - 1 - rightMargin;
+        area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
+        area.setGraphPadding(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
+        area.setLabelMargin(xLabelMargin, yLabelMargin);
+        area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
+        area.prepareLabels(labelFont, labelColor);
+        area.prepareGraphArea(false, referenceLineColor);
+        area.drawGraphArea();
+       
+        ProcessValue pv=new ProcessValue() {
+
+            @Override
+            public void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                if (focusPixelX != null) {
+                    double scaledDiff = Math.abs(scaledX - focusPixelX);
+                    if (scaledDiff < currentScaledDiff) {
+                        currentIndex = index;
+                        currentScaledDiff = scaledDiff;
+            }
+        }
+            }
+        };
+       
+     
+        buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
+    }
     /**
      *Draws a graph with multiple lines, each pertaining to a different set of data.
      * @param g Graphics2D object used to perform drawing functions within draw.

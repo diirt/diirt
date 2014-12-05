@@ -1,0 +1,2 @@
+"Graph Type","Date","Average Time (ms)","Total Time (ms)","Number of Tries","Number of Data Points","Image Width","Image Height","Timing Type","Update Applied","Dataset Comments","Author","General Message","JVM Version","Available Memory (GB)","RAM (GB)","OS","OS Version",
+"LineGraph2D","2014/11/06 16:40:14","2.0500129381803216","12658","9738","10000","640","480","System","Nearest Neighbor Interpolation","","yangyf","","1.8.0_20","0.889","4.000","Mac OS X","10.8.4",

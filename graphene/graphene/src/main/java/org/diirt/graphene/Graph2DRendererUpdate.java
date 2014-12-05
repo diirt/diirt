@@ -8,8 +8,12 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- *
+ * A set of changes to be applied to a {@link Graph2DRenderer}. This class
+ * makes sure the operation is atomic, and the change can be queued in a multi-threaded
+ * environment.
+ * 
  * @author carcassi
+ * @param <T> the type of the update
  */
 public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
     
@@ -55,7 +59,7 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      */
     public T imageHeight(int height) {
         if (height <= 0){
-            throw new IllegalArgumentException("Image height must be a positive non-zero integer.");
+            throw new IllegalArgumentException("Image height must be a postive non-zero integer.");
         }
         
         this.imageHeight = height;
@@ -70,7 +74,7 @@ public class Graph2DRendererUpdate<T extends Graph2DRendererUpdate<T>> {
      */   
     public T imageWidth(int width) {
         if (width <= 0){
-            throw new IllegalArgumentException("Image width must be a positive non-zero integer.");
+            throw new IllegalArgumentException("Image width must be a postive non-zero integer.");
         }
         
         this.imageWidth = width;

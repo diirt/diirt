@@ -261,7 +261,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         return new IntensityGraph2DRendererUpdate();
     }
     
-    private class PointToDataMap {
+    private class PointToDataMap {  
         public int[] pointToDataMap;
         public int startPoint;
     }
@@ -271,7 +271,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         int minValuePixel = buffer.xValueToPixel(xBoundaries.getDouble(0));
         int maxValuePixel = buffer.xValueToPixel(xBoundaries.getDouble(xBoundaries.size() - 1));
         if ( minValuePixel > rightPixel ||
-                maxValuePixel < leftPixel) {
+                maxValuePixel < leftPixel) {  
             PointToDataMap result = new PointToDataMap();
             result.pointToDataMap = new int[0];
             result.startPoint = leftPixel;
@@ -294,7 +294,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             // from large cells)
             int currentPixel = startPixel + currentOffset;
             while ((currentRightBoundaryPixel < currentPixel || (currentRightBoundaryPixel == currentPixel && currentLeftBoundaryPixel != currentPixel))
-                    && currentValueIndex < xBoundaries.size() - 2) {
+                    && currentValueIndex < xBoundaries.size() - 2) {  
                 currentValueIndex++;
                 currentLeftBoundaryPixel = currentRightBoundaryPixel;
                 currentRightBoundaryPixel = buffer.xValueToPixel(xBoundaries.getDouble(currentValueIndex + 1));
