@@ -18,7 +18,6 @@ import static org.diirt.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
 import java.util.TimeZone;
 import org.junit.Ignore;
-import org.diirt.graphene.TimeScales.DateFormatter;
 
 /**
  *
@@ -789,8 +788,6 @@ public class TimeScalesTest {
 	//End: Sun Mar 08 00:00:00 EST 2015
 	Timestamp start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
 	Timestamp end = start.plus( TimeDuration.ofHours( 24*7*5 ) );
-	System.out.println( start.toDate() );
-	System.out.println( end.toDate() );
 	TimeInterval timeInterval = TimeInterval.between( start , end );
 	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 6 ) );
@@ -1022,130 +1019,6 @@ public class TimeScalesTest {
     }
     
     @Test
-    public void dateFormatterNano1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.000000001") );
-    }
-    
-    @Test
-    public void dateFormatterMilli1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 1000000 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26 09:50:10.001") );
-    }
-    
-    @Test
-    public void dateFormatterSeconds1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 10 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26 09:50:10") );
-    }
-
-    @Test
-    public void dateFormatterMinutes1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 50 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26 09:50" ) );
-    }
-    
-    @Test
-    public void dateFormatterHours1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 9 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26 09:00" ) );
-    }
-    
-    @Test
-    public void dateFormatterDays1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 26 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11/26" ) );
-    }
-    
-    @Test
-    public void dateFormatterMonths1() {
-	DateFormatter f = new DateFormatter( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
-	assertThat( compactDate , equalTo( "2014/11" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears1() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.YEAR_PRECISION );
-	assertThat( compactDate , equalTo( "2014" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears2() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
-	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears3() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.NANOSECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000000000" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears4() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MILLISECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/01/01 00:00:00.000" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears5() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.SECOND_PRECISION );
-	assertThat( compactDate , equalTo( "2014/01/01 00:00:00" ) );
-    }
-    
-    @Test
-    public void dateFormatterYears6() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MINUTE_PRECISION );
-	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
-    }
-
-    @Test
-    public void dateFormatterYears7() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.HOUR_PRECISION );
-	
-	//recall that we cannot just display an hour by itself. The minutes
-	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
-	//be ambiguous and meaningless
-	assertThat( compactDate , equalTo( "2014/01/01 00:00" ) );
-    }
-
-    @Test
-    public void dateFormatterYears8() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.DAY_PRECISION );
-	
-	//recall that we cannot just display an hour by itself. The minutes
-	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
-	//be ambiguous and meaningless
-	assertThat( compactDate , equalTo( "2014/01/01" ) );
-    }
-
-    @Test
-    public void dateFormatterYears9() {
-	DateFormatter f = new DateFormatter( 2014 , 1 , 1 , 0 , 0 , 0 , 0 );
-	String compactDate = f.maintainRequiredPrecision( -1 , DateFormatter.MONTH_PRECISION );
-	
-	//recall that we cannot just display an hour by itself. The minutes
-	//must go with the hour. Otherwise, some date like 2014/01/01 00 would
-	//be ambiguous and meaningless
-	assertThat( compactDate , equalTo( "2014/01" ) );
-    }
-    
-    @Test
     public void trimLabelsNanoseconds1() {
 	//Test when the nanoseconds are changing
 	List< String > input = Arrays.asList( 
@@ -1166,6 +1039,27 @@ public class TimeScalesTest {
 	assertThat( found , equalTo( expected ) );
     }
     
+    @Test
+    public void trimLabelsNanoseconds2() {
+	//Test when the nanoseconds are changing with trailing 0s
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.000200000" ,
+		"2014/11/26 09:03:00.000400000" ,
+		"2014/11/26 09:04:00.000600000" ,
+		"2014/11/26 09:05:00.000800000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.0000" ,
+		"09:02:00.0002" ,
+		"09:03:00.0004" ,
+		"09:04:00.0006" ,
+		"09:05:00.0008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+       
     @Test
     public void trimLabelsMilliseconds1() {
 	//Test when the milliseconds are changing
@@ -1203,6 +1097,27 @@ public class TimeScalesTest {
 		"09:03:00.004" ,
 		"09:04:00.006" ,
 		"09:05:00.008" 
+	);
+	List< String > found = TimeScales.trimLabels( input );
+	assertThat( found , equalTo( expected ) );
+    }
+    
+    @Test
+    public void trimLabelsMilliseconds3() {
+	//Test when the nanoseconds are changing with trailing 0s
+	List< String > input = Arrays.asList( 
+		"2014/11/26 09:01:00.000000000" , 
+		"2014/11/26 09:02:00.020000000" ,
+		"2014/11/26 09:03:00.040000000" ,
+		"2014/11/26 09:04:00.060000000" ,
+		"2014/11/26 09:05:00.080000000" 
+	);
+	List< String > expected = Arrays.asList(
+		"2014/11/26 09:01:00.00" ,
+		"09:02:00.02" ,
+		"09:03:00.04" ,
+		"09:04:00.06" ,
+		"09:05:00.08" 
 	);
 	List< String > found = TimeScales.trimLabels( input );
 	assertThat( found , equalTo( expected ) );
