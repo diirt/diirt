@@ -16,7 +16,7 @@
  * @param debug debug flag
  * @returns a new Client object.
  */
-function Client(url, debug) {
+function Client(url, debug, username, password) {
 
 	var channelIDIndex = 0;
 	var channelArray = [];
@@ -34,7 +34,7 @@ function Client(url, debug) {
     var jsonSent = []; // Contains JSON organized by id
 
 
-	openWebSocket(url);
+	openWebSocket(url, username, password);
 
     /**
 	 * Add a callback to WebSocket onOpen event.
@@ -198,7 +198,12 @@ function Client(url, debug) {
 	 * connect to a websocket.
 	 * @param {string} url url of the service websocket.
 	 */
-    function openWebSocket(url) {
+    function openWebSocket(url, username, password) {
+        if(username != null && password != null) {
+            if(url.indexOf("wss://") != -1) {
+                url = url + '?user/' + username + '/password/' + password;
+            }
+        }
         if ('WebSocket' in window) {
             websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
@@ -265,7 +270,7 @@ function Client(url, debug) {
     this.sendText =function(text) {
         websocket.send(text);
         if(debug) {
-            jsonSent.unshift(JSON.stringify(text));
+            jsonSent.unshift(text);
         }
     };
 

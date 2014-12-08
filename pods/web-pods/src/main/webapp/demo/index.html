@@ -58,6 +58,8 @@
         function openWs() {
             var wsUri = document.getElementById("wsurl").value.trim();
             wp = new Client(wsUri, true);
+            document.getElementById("outMessage").value = wp.getSentMessages();
+
         }
 
 
