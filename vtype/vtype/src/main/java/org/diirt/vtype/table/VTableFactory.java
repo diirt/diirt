@@ -4,6 +4,7 @@
  */
 package org.diirt.vtype.table;
 
+import java.lang.reflect.Method;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.BufferInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
@@ -146,6 +148,69 @@ public class VTableFactory {
                     }
                 }
             }
+        }
+        
+        return ValueFactory.newVTable(columnTypes, columnNames, columnData);
+    }
+    
+    public static VTable union(VString extraColumnName, final VStringArray extraColumnData, final VTable... tables) {
+        if (tables.length == 0) {
+            return null;
+        }
+        
+        if (tables.length == 1) {
+            return tables[0];
+        }
+        
+        List<String> columnNames = new ArrayList<>();
+        List<Class<?>> columnTypes = new ArrayList<>();
+        List<Map<String, VColumn>> tableColumns = new ArrayList<>();
+        if (extraColumnName != null) {
+            columnNames.add(extraColumnName.getValue());
+            columnTypes.add(String.class);
+        }
+        int[] tableOffsets = new int[tables.length];
+        int currentOffset = 0;
+        for (int k = 0; k < tables.length; k++) {
+            VTable table = tables[k];
+            tableOffsets[k] = currentOffset;
+            currentOffset += table.getRowCount();
+            tableColumns.add(VColumn.columnMap(table));
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                String name = table.getColumnName(i);
+                if (!columnNames.contains(name)) {
+                    columnNames.add(name);
+                    columnTypes.add(table.getColumnType(i));
+                }
+            }
+        }
+        final int rowCount = currentOffset;
+        final ListInt offsets = new ArrayInt(tableOffsets);
+        
+        List<Object> columnData = new ArrayList<>();
+        if (extraColumnName != null) {
+            columnData.add(new AbstractList<String>() {
+
+                @Override
+                public String get(int index) {
+                    int nTable = ListNumbers.binarySearchValueOrLower(offsets, index);
+                    return extraColumnData.getData().get(nTable);
+                }
+
+                @Override
+                public int size() {
+                    return rowCount;
+                }
+            });
+        }
+        
+        for (int i = 1; i < columnNames.size(); i++) {
+            String columnName = columnNames.get(i);
+            List<VColumn> columns = new ArrayList<>();
+            for (int j = 0; j < tableColumns.size(); j++) {
+                columns.add(tableColumns.get(j).get(columnName));
+            }
+            columnData.add(VColumn.combineData(columnTypes.get(i), rowCount, offsets, columns));
         }
         
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);

@@ -12,6 +12,7 @@ import org.diirt.util.array.ArrayInt;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
@@ -161,6 +162,45 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble()));
         assertThat(table.getColumnData(2), equalTo((Object) new ArrayList<String>()));
         assertThat(table.getColumnData(3), equalTo((Object) new ArrayDouble()));
+    }
+    
+    @Test
+    public void union1() {
+        VTable table1 = newVTable(column("A", newVDoubleArray(new ArrayDouble(1.0,2.0,3.0), alarmNone(), timeNow(), displayNone())),
+                                 column("B", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())));
+        VTable table2 = newVTable(column("A", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())),
+                                 column("B", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())));
+        VTable table = union((VString) ValueFactory.toVType("C"), (VStringArray) ValueFactory.toVType(Arrays.asList("A", "B")), table1, table2);
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(6));
+        assertThat(table.getColumnName(0), equalTo("C"));
+        assertThat(table.getColumnName(1), equalTo("A"));
+        assertThat(table.getColumnName(2), equalTo("B"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) double.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("A","A","A","B","B","B")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1,2,3,3,2,1)));
+        assertThat(table.getColumnData(2), equalTo((Object) new ArrayDouble(3,2,1,3,2,1)));
+    }
+    
+    @Test
+    public void union2() {
+        VTable table1 = newVTable(column("A", newVDoubleArray(new ArrayDouble(1.0,2.0,3.0), alarmNone(), timeNow(), displayNone())),
+                                 column("B", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())));
+        VTable table2 = newVTable(column("A", newVDoubleArray(new ArrayDouble(3.0,2.0,1.0), alarmNone(), timeNow(), displayNone())));
+        VTable table = union((VString) ValueFactory.toVType("C"), (VStringArray) ValueFactory.toVType(Arrays.asList("B", "A")), table1, table2);
+        assertThat(table.getColumnCount(), equalTo(3));
+        assertThat(table.getRowCount(), equalTo(6));
+        assertThat(table.getColumnName(0), equalTo("C"));
+        assertThat(table.getColumnName(1), equalTo("A"));
+        assertThat(table.getColumnName(2), equalTo("B"));
+        assertThat(table.getColumnType(0), equalTo((Object) String.class));
+        assertThat(table.getColumnType(1), equalTo((Object) double.class));
+        assertThat(table.getColumnType(2), equalTo((Object) double.class));
+        assertThat(table.getColumnData(0), equalTo((Object) Arrays.asList("B","B","B","A","A","A")));
+        assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1,2,3,3,2,1)));
+        assertThat(table.getColumnData(2), equalTo((Object) new ArrayDouble(3,2,1,Double.NaN,Double.NaN,Double.NaN)));
     }
     
     @Test
