@@ -88,7 +88,7 @@ public class VColumn {
                 int rowIndex = index - offsets.getInt(tableIndex);
                 @SuppressWarnings("unchecked")
                 List<String> values = (List<String>) columns.get(tableIndex).getData();
-                if (index < values.size()) {
+                if (rowIndex < values.size()) {
                     return values.get(rowIndex);
                 } else {
                     return null;
