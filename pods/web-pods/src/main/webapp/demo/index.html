@@ -44,7 +44,7 @@
     <textarea id="textMessage" style="width:65%;height:150px;" type="text" readonly=true></textarea>
 
     <br>
-    <div id="out">Outgoing Messages:</div>
+    <div id="out">Messages:</div>
     <textarea id="outMessage" style="width:65%;height:150px;" type="text" readonly=true></textarea>
     </div>
 
@@ -55,25 +55,9 @@
         var wp;
         var readOnly = false;
 
-        function writeToIn(message) {
-            document.getElementById("textMessage").value = message;
-		}
-
         function openWs() {
             var wsUri = document.getElementById("wsurl").value.trim();
-            wp = new Client(wsUri, true, "outMessage");
-            wp.addOnServerMessageCallback(function(json) {
-                if (json.msg == "Error") {
-                    writeToIn('<span style="color: red;">ERROR: '
-                            +  json.title + " - " + json.details +'</span>');
-                } else if (json.msg == "Info") {
-                    writeToIn("Info: " + json.title + " - " + json.details);
-                }
-            });
-            wp.addWebSocketOnErrorCallback(function(evt) {
-                writeToIn('<span style="color: red;">ERROR:</span> '
-							+ evt.data);
-            });
+            wp = new Client(wsUri, true);
         }
 
 
@@ -81,19 +65,9 @@
             var channelName = document.getElementById("channelName").value.trim();
             var e = document.getElementById("type");
             var channel = null;
-            if (e.selectedIndex != 0) {
-                var type = e.options[e.selectedIndex].value;
-                channel = wp.subscribeChannel(channelName, readOnly, type, 1);
-            } else {
-                channel = wp.subscribeChannel(channelName, readOnly);
-            }
-    		updateTable();
-            // add listener to the channel.
-            channel.addCallback(function(evt, channel) {
-                writeToIn(JSON.stringify(evt));
+            var callback = function(evt, channel) {
                 switch (evt.type) {
                 case "connection": //connection state changed
-                    writeToIn(channel.isConnected()?"Connected":"Disconnected.");
                     break;
                 case "value": //value changed
                    var valueCell = document.getElementById("channelvalue" + channel.id);
@@ -101,7 +75,6 @@
 
                     break;
                 case "error": //error happened
-                    writeToIn("Error: " + JSON.stringify(evt));
                     break;
                 case "writePermission":	// write permission changed.
                     break;
@@ -110,7 +83,16 @@
                 default:
                     break;
                 }
-            });
+                document.getElementById("textMessage").value = wp.getReceivedMessagesPerChannel('*');
+            };
+            if (e.selectedIndex != 0) {
+                var type = e.options[e.selectedIndex].value;
+                channel = wp.subscribeChannel(channelName, callback, readOnly, type, 1);
+            } else {
+                channel = wp.subscribeChannel(channelName, callback, readOnly);
+            }
+    		updateTable();
+            document.getElementById("outMessage").value = wp.getSentMessages();
             return false;
         }
 
@@ -166,16 +148,19 @@
             } else {
                 wp.getChannel(id).pause();
             }
+            document.getElementById("outMessage").value = wp.getSentMessages();
 	    }
 
         function unsubscribe(id) {
             wp.getChannel(id).unsubscribe();
+            document.getElementById("outMessage").value = wp.getSentMessages();
         }
 
         function setValue(id) {
             var channel = wp.getChannel(id);
             channel.value.value = document.getElementById("setvalue" + id).value.trim();
             wp.getChannel(id).updateValue();
+            document.getElementById("outMessage").value = wp.getSentMessages();
         }
 
         function updateReadOnly() {

@@ -28,8 +28,11 @@ function Client(url, debug) {
 	var clientSelf = this;
 	var debug = debug;
 	var defaultTypeVersion = 1;
-    this.isLive = false;
-    var  forcedClose = false;
+    var isLive = false;
+    var forcedClose = false;
+    var jsonFilteredReceived = []; // Contains JSON organized by id
+    var jsonSent = []; // Contains JSON organized by id
+
 
 	openWebSocket(url);
 
@@ -138,6 +141,9 @@ function Client(url, debug) {
             };
             this.addWebSocketOnOpenCallback(listener);
         }
+        if(debug) {
+            jsonFilteredReceived.unshift([json]);
+        }
         channel.channelCallback = callback;
         channelIDIndex++;
         return channel;
@@ -219,13 +225,28 @@ function Client(url, debug) {
         websocket.onclose = function(evt) {
             fireOnClose(evt);
         };
+        if(debug) {
+            onServerMessageCallbacks.push(function(json) {
+              jsonFilteredReceived[json.id].unshift(JSON.stringify(json));
+            });
+            webSocketOnErrorCallbacks.push(function(evt) {
+              jsonFilteredReceived[json.id].unshift(JSON.stringify(json));
+            });
+        }
     }
 
-    function writeToScreen(message) {
-      //TODO
-    }
+    this.getReceivedMessagesPerChannel= function(channelId) {
+       if(channelId == '*') {
+           return jsonFilteredReceived.join("\n");
+       } else {
+           return jsonFilteredReceived[channelId].join("\n");
+       }
+    };
 
 
+    this.getSentMessages= function() {
+           return jsonSent.join("\n");
+    };
     /**
      * Close Websocket.
      */
@@ -243,8 +264,9 @@ function Client(url, debug) {
 	*/
     this.sendText =function(text) {
         websocket.send(text);
-        if(debug)
-            writeToScreen(text);
+        if(debug) {
+            jsonSent.unshift(JSON.stringify(text));
+        }
     };
 
 
