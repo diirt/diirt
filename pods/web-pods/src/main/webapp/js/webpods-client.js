@@ -16,7 +16,7 @@
  * @param debug debug flag
  * @returns a new Client object.
  */
-function Client(url, debug, debugMessageBox) {
+function Client(url, debug) {
 
 	var channelIDIndex = 0;
 	var channelArray = [];
@@ -27,7 +27,6 @@ function Client(url, debug, debugMessageBox) {
 	var onServerMessageCallbacks = [];
 	var clientSelf = this;
 	var debug = debug;
-	var debugMessageBox = debugMessageBox;
 	var defaultTypeVersion = 1;
     this.isLive = false;
     var  forcedClose = false;
@@ -139,7 +138,7 @@ function Client(url, debug, debugMessageBox) {
             };
             this.addWebSocketOnOpenCallback(listener);
         }
-        channel.addCallback(callback);
+        channel.channelCallback = callback;
         channelIDIndex++;
         return channel;
     };
@@ -185,7 +184,7 @@ function Client(url, debug, debugMessageBox) {
                 };
                 this.addWebSocketOnOpenCallback(listener);
             }
-            channel.addCallback(ch.channelCallbacks[0]);
+            channel.channelCallback = ch.channelCallback;
         return channel;
     };
 
@@ -223,8 +222,7 @@ function Client(url, debug, debugMessageBox) {
     }
 
     function writeToScreen(message) {
-        if (debugMessageBox != null)
-            document.getElementById(debugMessageBox).value = message;
+      //TODO
     }
 
 
@@ -400,7 +398,8 @@ function Client(url, debug, debugMessageBox) {
         this.name = name;
         this.id = -1;
         this.value = null;
-        this.channelCallbacks = [];
+        // for the moment only allowed one callback that will be pass at the time of subscription
+        this.channelCallback = null;
         this.paused = false;
         this.connected = false;
         this.readOnly = true;
@@ -447,22 +446,11 @@ function Client(url, debug, debugMessageBox) {
     };
 
     /**
-     * Add a callback to the Channel that will be notified on Channel's event.
-     * @param {Client~Channel~ChannelCallback} callback the callback function.
-     */
-    Channel.prototype.addCallback = function(callback) {
-        this.channelCallbacks.push(callback);
-    };
-
-    /**
      * Remove a callback.
      * @param {Client~Channel~ChannelCallback} callback the callback function.
      */
     Channel.prototype.removeCallback = function(callback) {
-        for ( var i in this.channelCallbacks) {
-            if (this.channelCallbacks[i] == callback)
-                delete this.channelCallbacks[i];
-        }
+        channelCallback = null;
     };
 
     /**
@@ -515,8 +503,6 @@ function Client(url, debug, debugMessageBox) {
         // update the  properties of the channel
         // processJson should be implemented in specific protocol library
         processJsonForChannel(json, this);
-        for ( var i in this.channelCallbacks) {
-            this.channelCallbacks[i](json, this);
-        }
+        this.channelCallback(json, this);
     };
 }
