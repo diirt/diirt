@@ -14,14 +14,11 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import static org.diirt.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Ranges;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 
@@ -725,6 +722,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             // Draw first and last label
             int[] drawRange = new int[] {xAreaStart, xAreaEnd};
             int yTop = (int) (yAreaEnd + xLabelMargin + 1);
+	    if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
+		timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
+	    }
             String firstHalf = timeReferenceLabels.get(0).substring(0, timeReferenceLabels.get(0).indexOf(" "));
             String secondHalf = timeReferenceLabels.get(0).substring(timeReferenceLabels.get(0).indexOf(" ") + 1);
             drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(0)),

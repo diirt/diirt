@@ -4,8 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.TemporalGraph2DRenderer;
-import org.diirt.graphene.TemporalGraph2DRendererUpdate;
 import org.diirt.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -16,6 +14,7 @@ import org.diirt.util.time.Timestamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -108,6 +107,52 @@ public class TemporalGraph2DRendererTest {
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
         ImageAssert.compareImages("timeGraph2DArea.1", image);
+    }
+    
+    @Test
+    @Ignore
+    public void timeGraphAreaHours2() throws Exception {
+        // TODO: Fix multi-line labels
+	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+
+            @Override
+            public TemporalGraph2DRendererUpdate newUpdate() {
+                return new TemporalGraph2DRendererUpdate();
+            }
+        };
+        BufferedImage image = new BufferedImage(1000, 400, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        Timestamp start = TimeScalesTest.create( 2014 , 12 , 2 , 8 , 8 , 8 , 0 );
+        Timestamp end = TimeScalesTest.create( 2014 , 12 , 3 , 8 , 8 , 8 , 0 );
+        renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
+        renderer.calculateGraphArea();
+        renderer.drawGraphArea();
+	ImageAssert.compareImages( "timeGraph2DArea2" , image );
+    }
+    
+    @Test
+    @Ignore
+    public void timeGraphAreaDays1() throws Exception {
+        // TODO: Fix multi-line labels
+	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+
+            @Override
+            public TemporalGraph2DRendererUpdate newUpdate() {
+                return new TemporalGraph2DRendererUpdate();
+            }
+        };
+        BufferedImage image = new BufferedImage(1000, 400, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.g = graphics;
+        Timestamp start = TimeScalesTest.create( 2014 , 1 , 2 , 8 , 8 , 8 , 0 );
+        Timestamp end = TimeScalesTest.create( 2014 , 1 , 23 , 8 , 8 , 8 , 0 );
+        renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
+        renderer.calculateGraphArea();
+        renderer.drawGraphArea();
+	ImageAssert.compareImages( "timeGraph2DAreaDays1" , image );
+	//File f = new File( "src/test/resources/org/epics/graphene/timeGraph2DAreaDays1.png" );
+	//ImageIO.write( image , "png" , f );
     }
     
 }

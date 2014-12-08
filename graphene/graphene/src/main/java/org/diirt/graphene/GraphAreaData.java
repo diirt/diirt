@@ -19,7 +19,31 @@ import org.diirt.util.array.ListInt;
 import org.diirt.util.stats.Ranges;
 
 /**
- *
+ * Provides high level representation for a graph, based on user level settings,
+ * and the logic to layout those settings into low level, pixel based, elements.
+ * <p>
+ * The input of this class will be elements like:
+ * <ul>
+ *     <li>Margin and padding</li>
+ *     <li>Type of axis (linear or log scale)</li>
+ *     <li>Value range of the axis</li>
+ * </ul>
+ * The output will be elements like:
+ * <ul>
+ *     <li>The pixel coordinate of the reference lines</li>
+ *     <li>The position and text for each label</li>
+ *     <li>The pixel range of the graph</li>
+ * </ul>
+ * <p>
+ * Many of these elements have to be computed together. For example, the position
+ * of the origin of the graph is a function of the font (affects the space
+ * needed for the labels), the range of the axis (affect the size of the labels),
+ * the margin, the padding, ..., therefore the calculation of the layout cannot be
+ * separated.
+ * <p>
+ * This class should then use the {@link GraphBuffer} to perform the actual drawing
+ * operations.
+ * 
  * @author carcassi
  */
 class GraphAreaData {
@@ -187,7 +211,8 @@ class GraphAreaData {
     }
     
     /**
-     * If the range is zero, fake a range.
+     * Makes sure the range is safe for plotting, possibly returning a modified one.
+     * This takes care of ranges of zero length or otherwise invalid.
      * 
      * @param range a range
      * @return the same range, or one that is safe to draw
@@ -250,6 +275,9 @@ class GraphAreaData {
         }
     }
     
+    /**
+     * draws the coordinate grid and labeled axes onto the image of the graph
+     */
     protected void drawGraphArea() {
         graphBuffer.getGraphicsContext().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         

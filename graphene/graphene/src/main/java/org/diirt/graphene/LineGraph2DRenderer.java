@@ -146,8 +146,46 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
     }
     
+    public void draw(GraphBuffer buffer, Point2DDataset data) {
+       calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());  
+       calculateGraphArea();
+       
+       // TODO: make sure this is right
+       
+       GraphAreaData area = new GraphAreaData(); 
+       area.setGraphBuffer(buffer);
+       
+       buffer.drawBackground(backgroundColor);
+       int areaRightPixel = getImageWidth() - 1 - rightMargin;
+        area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
+        area.setGraphPadding(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
+        area.setLabelMargin(xLabelMargin, yLabelMargin);
+        area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
+        area.prepareLabels(labelFont, labelColor);
+        area.prepareGraphArea(false, referenceLineColor);
+        area.drawGraphArea();
+       
+        ProcessValue pv = new ProcessValue() {
+
+            @Override
+            public void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
+                if (focusPixelX != null) {
+                    double scaledDiff = Math.abs(scaledX - focusPixelX);
+                    if (scaledDiff < currentScaledDiff) {
+                        currentIndex = index;
+                        currentScaledDiff = scaledDiff;
+                    }
+                }
+            }
+        };
+       
+     
+        buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
+    }
+    
     /**
-     *Draws a graph with multiple lines, each pertaining to a different set of data.
+     * Draws a graph with multiple lines, each pertaining to a different set of data.
+     * 
      * @param g Graphics2D object used to perform drawing functions within draw.
      * @param data can not be null
      */
