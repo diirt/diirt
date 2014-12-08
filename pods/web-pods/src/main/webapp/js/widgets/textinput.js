@@ -15,10 +15,12 @@ $(document).ready(function() {
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
+        var disable = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
         var id = nodes[i].getAttribute("id");
         var input = document.createElement("textarea");
         input.id = id;
         input.style.resize="none";
+        input.disabled = disabled;
         var div = document.getElementById(id);
         div.appendChild(input);
         fitToContainer(div.firstChild);

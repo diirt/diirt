@@ -16,7 +16,7 @@ $(document).ready(function() {
         var k=1;
 	    var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
-	    var buffer=[[new Date(), 0]], totalPoints=200;
+	    var buffer=[[new Date(), 0]], totalPoints=50;
 	    var callback = function(evt, channel) {
                            switch (evt.type) {
                            case "connection": //connection state changed
