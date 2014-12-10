@@ -8,6 +8,7 @@ package org.diirt.pods.common;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +64,20 @@ public abstract class ChannelTranslator {
     }
     
     /**
+     * Creates a channel translator that uses the regex to match the channel and
+     * the optional substitution string to perform the translation.
+     * 
+     * @param regex a regular expression
+     * @param substitution the substitution string; can be null
+     * @param permission the permission to enforce on the channel
+     * @param allowedUsers the users allowed to access the channel
+     * @return the translator
+     */
+    public static ChannelTranslator regexTranslator(String regex, String substitution, ChannelTranslation.Permission permission, Collection<String> allowedUsers) {
+        return new RegexChannelTranslator(regex, substitution, permission, allowedUsers);
+    }
+    
+    /**
      * Creates a channel translator that returns the first successful match
      * from the list of give translators.
      * 
@@ -98,10 +113,20 @@ public abstract class ChannelTranslator {
                 if (substitutionNode != null) {
                     substitution = substitutionNode.getNodeValue();
                 }
+                
+                Node userNode = method.getAttributes().getNamedItem("user");
+                List<String> allowedUsers = null;
+                if (userNode != null) {
+                    allowedUsers = new ArrayList<>();
+                    for (String token : userNode.getNodeValue().split(",")) {
+                        allowedUsers.add(token.trim());
+                    }
+                }
+                
                 String permissionName = xPath.evaluate("@permission", method);
                 ChannelTranslation.Permission permission = ChannelTranslation.Permission.valueOf(permissionName);
                 
-                translators.add(regexTranslator(regex, substitution, permission));
+                translators.add(regexTranslator(regex, substitution, permission, allowedUsers));
             }
             
             return compositeTranslator(translators);

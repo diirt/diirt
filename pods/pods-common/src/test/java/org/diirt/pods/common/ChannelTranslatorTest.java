@@ -136,4 +136,26 @@ public class ChannelTranslatorTest {
         }
     }
     
+    @Test
+    public void loadTranslator2() throws Exception{
+        File file = new File(getClass().getResource("mappings2.xml").toURI());
+        try (InputStream input = new FileInputStream(file)) {
+            ChannelTranslator translator = loadTranslator(input);
+            ChannelTranslation target = translator.translate("channel1");
+            assertThat(target.getFormula(), equalTo("channel1"));
+            assertThat(target.getPermission(), equalTo(READ_ONLY));
+
+            target = translator.translate(new ChannelRequest("channel1", "carcassi", null, null, null));
+            assertThat(target.getFormula(), equalTo("channel1"));
+            assertThat(target.getPermission(), equalTo(READ_WRITE));
+
+            target = translator.translate("channel2-name");
+            assertThat(target, nullValue());
+
+            target = translator.translate(new ChannelRequest("channel2-name", "shroff", null, null, null));
+            assertThat(target.getFormula(), equalTo("name"));
+            assertThat(target.getPermission(), equalTo(READ_ONLY));
+        }
+    }
+    
 }
