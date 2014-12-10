@@ -9,4 +9,7 @@
     <!-- Allow read of a particular file -->
     <!--<mapping channel="testfile" substitution="file:///home/user/file.jvtype" permission="READ_ONLY"/>-->
     <!--<mapping channel="testfile" substitution="file:///C:/Users/user/file.jvtype" permission="READ_ONLY"/>-->
+    <!-- Different access based on authenticated user -->
+    <!--<mapping channel="channel1" user="carcassi,shroff" permission="READ_WRITE"/>-->
+    <!--<mapping channel="testfile" permission="READ_ONLY"/>-->
 </mappings>
