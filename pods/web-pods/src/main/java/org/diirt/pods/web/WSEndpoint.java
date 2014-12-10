@@ -43,6 +43,7 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.pods.common.ChannelRequest;
 import org.diirt.pods.web.common.MessageDecodeException;
 import org.diirt.util.time.TimeDuration;
 
@@ -71,6 +72,9 @@ public class WSEndpoint {
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
     private int defaultMaxRate;
+    
+    private String currentUser;
+    private String remoteAddress;
 
     @OnMessage
     public void onMessage(Session session, Message message) {
@@ -107,10 +111,28 @@ public class WSEndpoint {
             maxRate = message.getMaxRate();
         }
         
-        ChannelTranslation translation = channelTranslator.translate(message.getChannel());
+        ChannelTranslation translation = channelTranslator.translate(new ChannelRequest(message.getChannel(), currentUser, null, null, remoteAddress));
+        
+        // No channel map, return an error
+        if (translation == null) {
+            sendError(session, message.getId(), "Channel " + message.getChannel() + " does not exist");
+            return;
+        }
+
+        // No access to the channel, return an error
+        if (translation.getPermission() == ChannelTranslation.Permission.NONE) {
+            sendError(session, message.getId(), "No access to channel " + message.getChannel());
+            return;
+        }
+
+        boolean readOnly = message.isReadOnly();
+        if (!readOnly && translation.getPermission() == ChannelTranslation.Permission.READ_ONLY) {
+            sendError(session, message.getId(), "No write access to channel " + message.getChannel());
+            readOnly = true;
+        }
         
         PVReader<?> reader;
-        if (message.isReadOnly()) {
+        if (readOnly) {
             reader = PVManager.read(formula(translation.getFormula()))
                 .readListener(new ReadOnlyListener(session, message))
                 .maxRate(TimeDuration.ofMillis(maxRate));
@@ -182,8 +204,12 @@ public class WSEndpoint {
         
         // Retrive user and remote host for security purposes
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
-        String remoteHost = (String) httpSession.getAttribute("remoteHost");
-        Principal user = session.getUserPrincipal();
+        remoteAddress = (String) httpSession.getAttribute("remoteHost");
+        if (session.getUserPrincipal() != null) {
+            currentUser = session.getUserPrincipal().getName();
+        } else {
+            currentUser = null;
+        }
     }
 
     @OnClose
@@ -240,10 +266,10 @@ public class WSEndpoint {
         }
     }
     
-    private static PV<Object, Object> pv(PVWriter<Object> reader) {
+    private static boolean readConnected(Object channel) {
         @SuppressWarnings("unchecked")
-        PV<Object, Object> channel = (PV<Object, Object>) reader;
-        return channel;
+        PVReader<Object> reader = (PVReader<Object>) channel;
+        return reader.isConnected();
     }
 
     private class ReadWriteListener implements PVReaderListener<Object>, PVWriterListener<Object> {
@@ -279,7 +305,7 @@ public class WSEndpoint {
                 return;
             }
             if (event.isConnectionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), pv(event.getPvWriter()).isConnected(), event.getPvWriter().isWriteConnected()));
+                session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), readConnected(event.getPvWriter()), event.getPvWriter().isWriteConnected()));
             }
             if (event.isWriteSucceeded()) {
                 session.getAsyncRemote().sendObject(new MessageWriteCompletedEvent(message.getId()));
