@@ -1,15 +1,54 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!--
+    ** WebPods default mapping file **
+
+      This file allows to map the incoming channel names (as seen from the web
+    clients) to local channels and formulas (as seen from the server). It
+    allows to translate the name through regular expressions, regulate the
+    web pods protocol permissions and authorization.
+    
+      The file consists in a list of rules, that are matched at subscription time
+    against the incoming channel name and authentication parameters
+    (currently only the username).
+    The first rule that match a request is used. If no rule is matched,
+    no mapping is established and the subscription results in an error.
+    It is therefore possible to write rules that are never reachable.
+    Each rule is defined through a <mapping> entitity and a series of attributes.
+    
+      The incoming channel name can be translated with a regex substitution
+    string. This allows to map different parts of the name space to different
+    channel datasources or formula patterns. The incoming channel pattern is
+    given through the 'channel' attribute and the substitution string is
+    given through the 'substitution' attribute. The syntax is the standard
+    Java regex syntax, available at:
+        http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+    The 'channel' field is mandatory, while the 'substitution' field is optional.
+    If the subsitution field is missing, the channel name remains unchanged.
+      
+      The 'permission' attribute can have the following values:
+    * READ_WRITE - the matched channel can be opened as both read only or read/write
+    * READ_ONLY - the matched channel can be opened in read only mode. If
+      read/write is requested, the channel will be opened in read only mode.
+    * NONE - the matched channel can not be opened
+    The 'permission' field is mandatory.
+    
+      The 'user' attribute contains a comma separated list of usernames. If
+    present, the match is successful only if the subscription is authenticated
+    and the username matches one in the list. If missing, any request can 
+    potentially be a match (i.e. the username is not used during the match).
+
+-->
 <mappings version="1">
     <!-- By default, allow simulated data -->
     <mapping channel="sim/(.*)" substitution="sim://$1" permission="READ_ONLY"/>
     <!-- By default, allow local variables -->
     <mapping channel="loc/(.*)" substitution="loc://$1" permission="READ_WRITE"/>
-    <!-- Forward all CA -->
+    <!-- Forward all other channels to Channel Access (Epics v3) -->
     <!--<mapping channel="(.*)" substitution="ca://$1" permission="READ_ONLY"/>-->
-    <!-- Allow read of a particular file -->
+    <!-- Allows read access to a file (use first for Linux or second for Windows) -->
     <!--<mapping channel="testfile" substitution="file:///home/user/file.jvtype" permission="READ_ONLY"/>-->
     <!--<mapping channel="testfile" substitution="file:///C:/Users/user/file.jvtype" permission="READ_ONLY"/>-->
-    <!-- Different access based on authenticated user -->
-    <!--<mapping channel="channel1" user="carcassi,shroff" permission="READ_WRITE"/>-->
-    <!--<mapping channel="testfile" permission="READ_ONLY"/>-->
+    <!-- Different access to a channel based on authenticated user -->
+    <!--<mapping channel="channel1" substitution="ca://channel1" user="carcassi,shroff" permission="READ_WRITE"/>-->
+    <!--<mapping channel="channel1" substitution="ca://channel1" permission="READ_ONLY"/>-->
 </mappings>
