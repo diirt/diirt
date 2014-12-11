@@ -14,10 +14,13 @@ $(document).ready(function() {
 	var nodes = document.getElementsByClassName("xygraph");
 		var len = nodes.length;
 		var charts = {};
+		var point = {};
+		var maxPoints = {};
 	for ( var i = 0; i < len; i++) {
-        var k=1;
 	    var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
+        var maxPoint = nodes[i].getAttribute("data-max-points");
+        var dataType = nodes[i].getAttribute("data-type") != null ? nodes[i].getAttribute("data-type") : 'spline';
         var callback = function(evt, channel) {
                            switch (evt.type) {
                            case "connection": //connection state changed
@@ -28,11 +31,10 @@ $(document).ready(function() {
                                var time = (new Date()).getTime();
                                var y = channelValue.value;
                                var c = charts[channel.getId()];
-                               var series = c.options.series[0];
-                                   if (k % 50 == 0) {
-                                       c.series[0].addPoint([k++, y], true, true);
+                                   if (point[channel.getId()] >= maxPoints[channel.getId()]) {
+                                       c.series[0].addPoint([point[channel.getId()]++, y], true, true);
                                } else {
-                                       c.series[0].addPoint([k++, y], true, false);
+                                       c.series[0].addPoint([point[channel.getId()] ++, y], true, false);
                                }
                               break;
                            case "error": //error happened
@@ -50,7 +52,7 @@ $(document).ready(function() {
         var options = {
             chart: {
                 renderTo: id,
-                type: 'spline',
+                type: dataType,
                 animation: Highcharts.svg, // don't animate in old IE
                 marginRight: 10
 
@@ -72,13 +74,6 @@ $(document).ready(function() {
                     color: '#808080'
                 }]
             },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
             legend: {
                 enabled: false
             },
@@ -92,6 +87,8 @@ $(document).ready(function() {
         }
         var chart = new Highcharts.Chart(options);
         charts[channel.getId()] = chart;
+        maxPoints[channel.getId()] = maxPoint != null ? maxPoint : 50;
+        point[channel.getId()] = 0;
     }
 });
 

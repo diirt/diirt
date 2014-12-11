@@ -16,7 +16,7 @@
  * @param debug debug flag
  * @returns a new Client object.
  */
-function Client(url, debug, debugMessageBox) {
+function Client(url, debug, username, password) {
 
 	var channelIDIndex = 0;
 	var channelArray = [];
@@ -27,12 +27,14 @@ function Client(url, debug, debugMessageBox) {
 	var onServerMessageCallbacks = [];
 	var clientSelf = this;
 	var debug = debug;
-	var debugMessageBox = debugMessageBox;
 	var defaultTypeVersion = 1;
-    this.isLive = false;
-    var  forcedClose = false;
+    var isLive = false;
+    var forcedClose = false;
+    var jsonFilteredReceived = []; // Contains JSON organized by id
+    var jsonSent = []; // Contains JSON organized by id
 
-	openWebSocket(url);
+
+	openWebSocket(url, username, password);
 
     /**
 	 * Add a callback to WebSocket onOpen event.
@@ -139,7 +141,10 @@ function Client(url, debug, debugMessageBox) {
             };
             this.addWebSocketOnOpenCallback(listener);
         }
-        channel.addCallback(callback);
+        if(debug) {
+            jsonFilteredReceived.unshift([json]);
+        }
+        channel.channelCallback = callback;
         channelIDIndex++;
         return channel;
     };
@@ -185,7 +190,7 @@ function Client(url, debug, debugMessageBox) {
                 };
                 this.addWebSocketOnOpenCallback(listener);
             }
-            channel.addCallback(ch.channelCallbacks[0]);
+            channel.channelCallback = ch.channelCallback;
         return channel;
     };
 
@@ -193,7 +198,12 @@ function Client(url, debug, debugMessageBox) {
 	 * connect to a websocket.
 	 * @param {string} url url of the service websocket.
 	 */
-    function openWebSocket(url) {
+    function openWebSocket(url, username, password) {
+        if(username != null && password != null) {
+            if(url.indexOf("wss://") != -1) {
+                url = url + '?user/' + username + '/password/' + password;
+            }
+        }
         if ('WebSocket' in window) {
             websocket = new WebSocket(url);
         } else if ('MozWebSocket' in window) {
@@ -220,14 +230,28 @@ function Client(url, debug, debugMessageBox) {
         websocket.onclose = function(evt) {
             fireOnClose(evt);
         };
+        if(debug) {
+            onServerMessageCallbacks.push(function(json) {
+              jsonFilteredReceived[json.id].unshift(JSON.stringify(json));
+            });
+            webSocketOnErrorCallbacks.push(function(evt) {
+              jsonFilteredReceived[json.id].unshift(JSON.stringify(json));
+            });
+        }
     }
 
-    function writeToScreen(message) {
-        if (debugMessageBox != null)
-            document.getElementById(debugMessageBox).value = message;
-    }
+    this.getReceivedMessagesPerChannel= function(channelId) {
+       if(channelId == '*') {
+           return jsonFilteredReceived.join("\n");
+       } else {
+           return jsonFilteredReceived[channelId].join("\n");
+       }
+    };
 
 
+    this.getSentMessages= function() {
+           return jsonSent.join("\n");
+    };
     /**
      * Close Websocket.
      */
@@ -245,8 +269,9 @@ function Client(url, debug, debugMessageBox) {
 	*/
     this.sendText =function(text) {
         websocket.send(text);
-        if(debug)
-            writeToScreen(text);
+        if(debug) {
+            jsonSent.unshift(text);
+        }
     };
 
 
@@ -400,7 +425,8 @@ function Client(url, debug, debugMessageBox) {
         this.name = name;
         this.id = -1;
         this.value = null;
-        this.channelCallbacks = [];
+        // for the moment only allowed one callback that will be pass at the time of subscription
+        this.channelCallback = null;
         this.paused = false;
         this.connected = false;
         this.readOnly = true;
@@ -447,22 +473,11 @@ function Client(url, debug, debugMessageBox) {
     };
 
     /**
-     * Add a callback to the Channel that will be notified on Channel's event.
-     * @param {Client~Channel~ChannelCallback} callback the callback function.
-     */
-    Channel.prototype.addCallback = function(callback) {
-        this.channelCallbacks.push(callback);
-    };
-
-    /**
      * Remove a callback.
      * @param {Client~Channel~ChannelCallback} callback the callback function.
      */
     Channel.prototype.removeCallback = function(callback) {
-        for ( var i in this.channelCallbacks) {
-            if (this.channelCallbacks[i] == callback)
-                delete this.channelCallbacks[i];
-        }
+        channelCallback = null;
     };
 
     /**
@@ -515,8 +530,6 @@ function Client(url, debug, debugMessageBox) {
         // update the  properties of the channel
         // processJson should be implemented in specific protocol library
         processJsonForChannel(json, this);
-        for ( var i in this.channelCallbacks) {
-            this.channelCallbacks[i](json, this);
-        }
+        this.channelCallback(json, this);
     };
 }

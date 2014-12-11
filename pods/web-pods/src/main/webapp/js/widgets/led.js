@@ -19,12 +19,7 @@ $(document).ready(function() {
         var type = nodes[i].getAttribute("data-type");
         var id = nodes[i].getAttribute("id");
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
-        function fitToContainer(canvas){
-        	  canvas.style.width='100%';
-        	  canvas.style.height='100%';
-        	  canvas.width  = canvas.offsetWidth;
-        	  canvas.height = canvas.offsetHeight;
-        }
+        fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
             var callback = function(evt, channel) {
                                switch (evt.type) {
@@ -68,6 +63,13 @@ $(document).ready(function() {
     }
 });
 
+
+function fitToContainer(canvas){
+      canvas.style.width='100%';
+      canvas.style.height='100%';
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+}
 
 window.onbeforeunload = function() {
 	wp.close();

@@ -15,13 +15,16 @@ $(document).ready(function() {
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
+        var disabled = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
         var id = nodes[i].getAttribute("id");
         var input = document.createElement("textarea");
         input.id = id;
+        input.style.resize="none";
+        input.disabled = disabled;
         var div = document.getElementById(id);
-        var style = nodes[i].getAttribute("style");
-        input.style = style;
         div.appendChild(input);
+        fitToContainer(div.firstChild);
+
         if (channelname != null && channelname.trim().length > 0) {
             var callback = function(evt, channel) {
                                switch (evt.type) {
@@ -67,7 +70,12 @@ $(document).ready(function() {
 
 });
 
-
+function fitToContainer(canvas){
+	  canvas.style.width='100%';
+	  canvas.style.height='100%';
+	  canvas.width  = canvas.offsetWidth;
+	  canvas.height = canvas.offsetHeight;
+}
 
 window.onbeforeunload = function() {
 	wp.close();
