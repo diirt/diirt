@@ -21,7 +21,7 @@ public void reportError(RecognitionException e) {
 }
 
 singlePv returns [FormulaAst result]
-    :   pv EOF {result = $pv.result;}
+    :   channel EOF {result = $channel.result;}
     ;
 
 formula returns [FormulaAst result]
@@ -113,7 +113,7 @@ unaryExpressionNotPlusMinus returns [FormulaAst result]
 primary returns [FormulaAst result]
     :   functionExpression {result = $functionExpression.result;}
     |   parExpression {result = $parExpression.result;}
-    |   pv {result = $pv.result;}
+    |   channel {result = $channel.result;}
     |   numericLiteral {result = $numericLiteral.result;}
     |   stringLiteral {result = $stringLiteral.result;}
     |   constant {result = $constant.result;}
@@ -129,7 +129,7 @@ parExpression returns [FormulaAst result]
     :   '(' expression ')' {result = $expression.result;}
     ;
 
-pv returns [FormulaAst result]
+channel returns [FormulaAst result]
     :   PV {result = channelFromToken($PV.text);}
     ;
 
