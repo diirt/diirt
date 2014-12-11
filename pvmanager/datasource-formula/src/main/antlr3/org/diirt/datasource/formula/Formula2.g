@@ -20,7 +20,7 @@ public void reportError(RecognitionException e) {
 }
 }
 
-singlePv returns [FormulaAst result]
+singleChannel returns [FormulaAst result]
     :   channel EOF {result = $channel.result;}
     ;
 
@@ -130,7 +130,7 @@ parExpression returns [FormulaAst result]
     ;
 
 channel returns [FormulaAst result]
-    :   PV {result = channelFromToken($PV.text);}
+    :   PCHANNEL {result = channelFromToken($PCHANNEL.text);}
     ;
 
 numericLiteral returns [FormulaAst result]
@@ -170,7 +170,7 @@ STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-PV
+PCHANNEL
     :  '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
     ;
 
