@@ -39,6 +39,13 @@ public class ExpressionLanguage {
         return new FormulaParser(tokenStream);
     }
     
+    static Formula2Parser createParser2(String text) {
+        CharStream stream = new ANTLRStringStream(text);
+        FormulaLexer lexer = new FormulaLexer(stream);
+        TokenStream tokenStream = new CommonTokenStream(lexer);
+        return new Formula2Parser(tokenStream);
+    }
+    
     /**
      * If the formula represents a single channels it returns the name,
      * null otherwise.
@@ -101,17 +108,45 @@ public class ExpressionLanguage {
         
         RuntimeException parsingError;
         try {
-            DesiredRateExpression<?> exp = createParser(formula).formula();
-            if (exp == null) {
+//            DesiredRateExpression<?> exp = createParser(formula).formula();
+//            if (exp == null) {
+//                throw new NullPointerException("Parsing failed");
+//            }
+//            return exp;
+            FormulaAst ast = createParser2(formula).formula();
+            if (ast == null) {
                 throw new NullPointerException("Parsing failed");
             }
-            return exp;
+            return fromAst(ast);
         } catch (RecognitionException ex) {
             parsingError = new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
         } catch (Exception ex) {
             parsingError = new IllegalArgumentException("Malformed formula '" + formula + "'", ex);
         }
         return errorDesiredRateExpression(parsingError); 
+    }
+    
+    public static DesiredRateExpression<?> fromAst(FormulaAst ast) {
+        switch(ast.getType()) {
+            case CHANNEL:
+                return new LastOfChannelExpression<>((String) ast.getToken(), Object.class);
+            case FLOATING_POINT:
+                return org.diirt.datasource.vtype.ExpressionLanguage.vConst((Double) ast.getToken());
+            case INTEGER:
+                return org.diirt.datasource.vtype.ExpressionLanguage.vConst((Integer) ast.getToken());
+            case STRING:
+                return org.diirt.datasource.vtype.ExpressionLanguage.vConst((String) ast.getToken());
+            case ID:
+                return namedConstant((String) ast.getToken());
+            case OP:
+                DesiredRateExpressionList<Object> expressions = new DesiredRateExpressionListImpl<>();
+                for (FormulaAst child : ast.getChildren()) {
+                    expressions.and(fromAst(child));
+                }
+                return function((String) ast.getToken(), expressions);
+            default:
+                throw new IllegalArgumentException("Unsupported type " + ast.getType() + " for ast");
+        }
     }
     
     /**

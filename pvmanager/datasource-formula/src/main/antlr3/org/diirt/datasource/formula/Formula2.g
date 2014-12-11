@@ -20,8 +20,8 @@ public void reportError(RecognitionException e) {
 }
 }
 
-singleChannel returns [FormulaAst result]
-    :   channel EOF {result = $channel.result;}
+singlePv returns [FormulaAst result]
+    :   pv EOF {result = $pv.result;}
     ;
 
 formula returns [FormulaAst result]
@@ -113,14 +113,14 @@ unaryExpressionNotPlusMinus returns [FormulaAst result]
 primary returns [FormulaAst result]
     :   functionExpression {result = $functionExpression.result;}
     |   parExpression {result = $parExpression.result;}
-    |   channel {result = $channel.result;}
+    |   pv {result = $pv.result;}
     |   numericLiteral {result = $numericLiteral.result;}
     |   stringLiteral {result = $stringLiteral.result;}
     |   constant {result = $constant.result;}
     ;
 
 functionExpression returns [FormulaAst result]
-    :   FUNCTION '(' op=expression {String name = $FUNCTION.text; List<FormulaAst> args = new ArrayList<>(); args.add($op.result);}
+    :   FUNCTION '(' op=expression {String name = $FUNCTION.text; List<FormulaAst> args = new ArrayList(); args.add($op.result);}
         (   ',' op2=expression {args.add($op2.result);}
         )* ')' {result = op(name, args);}
     ;
@@ -129,8 +129,8 @@ parExpression returns [FormulaAst result]
     :   '(' expression ')' {result = $expression.result;}
     ;
 
-channel returns [FormulaAst result]
-    :   CHANNEL {result = channelFromToken($CHANNEL.text);}
+pv returns [FormulaAst result]
+    :   PV {result = channelFromToken($PV.text);}
     ;
 
 numericLiteral returns [FormulaAst result]
@@ -170,7 +170,7 @@ STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-CHANNEL
+PV
     :  '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
     ;
 

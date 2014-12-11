@@ -78,7 +78,7 @@ public class FormulaAst {
     }
     
     public static FormulaAst op(String opName, List<FormulaAst> children) {
-        return new FormulaAst(Type.ID, children, opName);
+        return new FormulaAst(Type.OP, children, opName);
     }
     
 }
