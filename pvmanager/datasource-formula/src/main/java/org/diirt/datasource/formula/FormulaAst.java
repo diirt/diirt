@@ -6,8 +6,6 @@ package org.diirt.datasource.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -16,7 +14,6 @@ import org.antlr.runtime.TokenStream;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
 import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
-import static org.diirt.datasource.formula.ExpressionLanguage.cachedPv;
 import org.diirt.util.text.StringUtil;
 
 /**
@@ -92,11 +89,11 @@ public class FormulaAst {
         return new FormulaAst(Type.OP, children, opName);
     }
     
-    static Formula2Parser createParser(String text) {
+    static FormulaParser createParser(String text) {
         CharStream stream = new ANTLRStringStream(text);
-        Formula2Lexer lexer = new Formula2Lexer(stream);
+        FormulaLexer lexer = new FormulaLexer(stream);
         TokenStream tokenStream = new CommonTokenStream(lexer);
-        return new Formula2Parser(tokenStream);
+        return new FormulaParser(tokenStream);
     }
     
     public static FormulaAst formula(String formula) {

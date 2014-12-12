@@ -1,4 +1,4 @@
-grammar Formula2;
+grammar Formula;
 
 options {
     language = Java;
