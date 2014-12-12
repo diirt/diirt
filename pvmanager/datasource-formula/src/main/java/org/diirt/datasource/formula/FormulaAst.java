@@ -92,7 +92,7 @@ public class FormulaAst {
         return new FormulaAst(Type.OP, children, opName);
     }
     
-    private static Formula2Parser createParser2(String text) {
+    private static Formula2Parser createParser(String text) {
         CharStream stream = new ANTLRStringStream(text);
         FormulaLexer lexer = new FormulaLexer(stream);
         TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -100,22 +100,46 @@ public class FormulaAst {
     }
     
     public static FormulaAst formula(String formula) {
-        if (!formula.startsWith("=")) {
-            if (formula.trim().matches(StringUtil.SINGLEQUOTED_STRING_REGEX)) {
-                return channel(formula.trim());
-            }
-            return channel(formula);
-        } else {
-            formula = formula.substring(1);
+        FormulaAst ast = staticChannel(formula);
+        if (ast != null) {
+            return ast;
         }
+        formula = formula.substring(1);
+        
         try {
-            FormulaAst ast = createParser2(formula).formula();
+            ast = createParser(formula).formula();
             if (ast == null) {
                 throw new IllegalArgumentException("Parsing failed");
             }
             return ast;
         } catch (RecognitionException ex) {
             throw new IllegalArgumentException("Error parsing formula: " + ex.getMessage(), ex);
+        }
+    }
+    
+    private static FormulaAst staticChannel(String formula) {
+        if (formula.startsWith("=")) {
+            return null;
+        }
+        
+        if (formula.trim().matches(StringUtil.SINGLEQUOTED_STRING_REGEX)) {
+            return channel(formula.trim());
+        }
+        return channel(formula);
+    }
+    
+    public static FormulaAst singleChannel(String formula) {
+        FormulaAst ast = staticChannel(formula);
+        if (ast != null) {
+            return ast;
+        }
+        formula = formula.substring(1);
+        
+        try {
+            ast = createParser(formula).singleChannel();
+            return ast;
+        } catch (Exception ex) {
+            return null;
         }
     }
     

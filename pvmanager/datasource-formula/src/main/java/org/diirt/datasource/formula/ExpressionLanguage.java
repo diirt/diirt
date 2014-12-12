@@ -39,13 +39,6 @@ public class ExpressionLanguage {
         return new FormulaParser(tokenStream);
     }
     
-    static Formula2Parser createParser2(String text) {
-        CharStream stream = new ANTLRStringStream(text);
-        FormulaLexer lexer = new FormulaLexer(stream);
-        TokenStream tokenStream = new CommonTokenStream(lexer);
-        return new Formula2Parser(tokenStream);
-    }
-    
     /**
      * If the formula represents a single channels it returns the name,
      * null otherwise.
@@ -54,29 +47,11 @@ public class ExpressionLanguage {
      * @return the channel it represents or null
      */
     public static String channelFromFormula(String formula) {
-        if (!formula.startsWith("=")) {
-            if (formula.trim().matches(StringUtil.SINGLEQUOTED_STRING_REGEX)) {
-                return StringUtil.unquote(formula);
-            }
-            return formula;
+        FormulaAst ast = FormulaAst.singleChannel(formula);
+        if (ast == null) {
+            return null;
         } else {
-            formula = formula.substring(1);
-        }
-        try {
-            FormulaParser parser = createParser(formula);
-            DesiredRateExpression<?> exp = parser.singlePv();
-            if (parser.failed()) {
-                return null;
-            }
-            if (exp instanceof LastOfChannelExpression) {
-                LastOfChannelExpression channelExp = (LastOfChannelExpression) exp;
-                return channelExp.getName();
-            }
-            return null;
-        } catch (RecognitionException ex) {
-            return null;
-        } catch (Exception ex) {
-            return null;
+            return (String) ast.getToken();
         }
     }
 
