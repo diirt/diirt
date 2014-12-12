@@ -5,16 +5,16 @@ options {
 }
 
 @header {
-  package org.diirt.datasource.formula;
-  import static org.diirt.datasource.formula.FormulaAst.*;
+package org.diirt.datasource.formula;
+import static org.diirt.datasource.formula.FormulaAst.*;
 }
 
 @lexer::header {
-  package org.diirt.datasource.formula;
+package org.diirt.datasource.formula;
 }
 
 @members {
-  @Override
+@Override
 public void reportError(RecognitionException e) {
     throw new RuntimeException(e);
 }
