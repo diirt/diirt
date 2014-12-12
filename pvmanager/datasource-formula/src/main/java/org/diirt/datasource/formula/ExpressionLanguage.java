@@ -40,7 +40,7 @@ public class ExpressionLanguage {
         if (ast == null) {
             return null;
         } else {
-            return (String) ast.getToken();
+            return (String) ast.getValue();
         }
     }
 
@@ -64,7 +64,11 @@ public class ExpressionLanguage {
     }
     
     private static DesiredRateExpression<?> parseFormula(String formula) {
-        return FormulaAst.formula(formula).toExpression();
+        try {
+            return FormulaAst.formula(formula).toExpression();
+        } catch(RuntimeException ex) {
+            return errorDesiredRateExpression(ex);
+        }
     }
     
     /**

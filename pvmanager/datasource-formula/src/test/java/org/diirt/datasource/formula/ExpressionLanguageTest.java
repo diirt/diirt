@@ -581,6 +581,12 @@ public class ExpressionLanguageTest extends BaseTestForFormula {
         VInt result = (VInt) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3));
     }
+
+    @Test
+    public void formula67() throws RecognitionException {
+        ReadExpressionTester exp = new ReadExpressionTester(formula("=1+'broken token"));
+        assertThat(exp.getExpression().getDesiredRateExpressionImpl(), instanceOf(ErrorDesiredRateExpression.class));
+    }
     
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
