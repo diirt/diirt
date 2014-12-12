@@ -18,6 +18,8 @@ import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
 import java.io.InputStream;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -43,6 +45,7 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.datasource.formula.FormulaAst;
 import org.diirt.pods.common.ChannelRequest;
 import org.diirt.pods.web.common.MessageDecodeException;
 import org.diirt.util.time.TimeDuration;
@@ -110,38 +113,63 @@ public class WSEndpoint {
         if (message.getMaxRate() >= 20) {
             maxRate = message.getMaxRate();
         }
-        
-        ChannelTranslation translation = channelTranslator.translate(new ChannelRequest(message.getChannel(), currentUser, null, null, remoteAddress));
-        
-        // No channel map, return an error
-        if (translation == null) {
-            sendError(session, message.getId(), "Channel " + message.getChannel() + " does not exist");
+
+        // First create the AST as seen by the client: authorization
+        // step is based on the namespace as seen by the client
+        FormulaAst clientAst;
+        try {
+            clientAst = FormulaAst.formula(message.getChannel());
+        } catch(RuntimeException ex) {
+            sendError(session, message.getId(), ex.getMessage());
             return;
         }
-
-        // No access to the channel, return an error
-        if (translation.getPermission() == ChannelTranslation.Permission.NONE) {
-            sendError(session, message.getId(), "No access to channel " + message.getChannel());
-            return;
-        }
-
+        
+        List<String> clientChannels = clientAst.listChannelNames();
+        Map<String, FormulaAst> substitutions = new HashMap<>();
         boolean readOnly = message.isReadOnly();
-        if (!readOnly && translation.getPermission() == ChannelTranslation.Permission.READ_ONLY) {
-            sendError(session, message.getId(), "No write access to channel " + message.getChannel());
-            readOnly = true;
+        for (String clientChannel : clientChannels) {
+            ChannelTranslation translation = channelTranslator.translate(new ChannelRequest(clientChannel, currentUser, null, null, remoteAddress));
+            
+            // No channel map, return an error
+            if (translation == null) {
+                sendError(session, message.getId(), "Channel " + clientChannel + " does not exist");
+                return;
+            }
+
+            // No access to the channel, return an error
+            if (translation.getPermission() == ChannelTranslation.Permission.NONE) {
+                sendError(session, message.getId(), "No access to channel " + clientChannel);
+                return;
+            }
+
+            if (!message.isReadOnly() && translation.getPermission() == ChannelTranslation.Permission.READ_ONLY) {
+                sendError(session, message.getId(), "No write access to channel " + clientChannel);
+                readOnly = true;
+            }
+            
+            try {
+                substitutions.put(clientChannel, FormulaAst.formula(translation.getFormula()));
+            } catch (RuntimeException ex) {
+                sendError(session, message.getId(), ex.getMessage());
+                return;
+            }
         }
         
+        connect(readOnly, clientAst.substituteChannels(substitutions), session, message, maxRate);
+    }
+
+    private void connect(boolean readOnly, FormulaAst ast, final Session session, final MessageSubscribe message, int maxRate) {
         PVReader<?> reader;
         if (readOnly) {
-            reader = PVManager.read(formula(translation.getFormula()))
-                .readListener(new ReadOnlyListener(session, message))
-                .maxRate(TimeDuration.ofMillis(maxRate));
+            reader = PVManager.read(ast.toExpression())
+                    .readListener(new ReadOnlyListener(session, message))
+                    .maxRate(TimeDuration.ofMillis(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
-            reader = PVManager.readAndWrite(formula(translation.getFormula()))
-                .readListener(readWriteListener)
-                .writeListener(readWriteListener)
-                .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
+            reader = PVManager.readAndWrite(formula(ast))
+                    .readListener(readWriteListener)
+                    .writeListener(readWriteListener)
+                    .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
         }
         channels.put(message.getId(), reader);
     }
