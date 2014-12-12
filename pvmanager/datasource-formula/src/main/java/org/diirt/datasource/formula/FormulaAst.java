@@ -92,7 +92,7 @@ public class FormulaAst {
         return new FormulaAst(Type.OP, children, opName);
     }
     
-    private static Formula2Parser createParser(String text) {
+    static Formula2Parser createParser(String text) {
         CharStream stream = new ANTLRStringStream(text);
         FormulaLexer lexer = new FormulaLexer(stream);
         TokenStream tokenStream = new CommonTokenStream(lexer);

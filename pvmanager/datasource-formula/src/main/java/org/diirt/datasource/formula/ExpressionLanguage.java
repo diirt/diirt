@@ -32,13 +32,6 @@ public class ExpressionLanguage {
         // No instances
     }
     
-    static FormulaParser createParser(String text) {
-        CharStream stream = new ANTLRStringStream(text);
-        FormulaLexer lexer = new FormulaLexer(stream);
-        TokenStream tokenStream = new CommonTokenStream(lexer);
-        return new FormulaParser(tokenStream);
-    }
-    
     /**
      * If the formula represents a single channels it returns the name,
      * null otherwise.
