@@ -63,6 +63,18 @@ public class ExpressionLanguage {
         }
     }
     
+    public static DesiredRateReadWriteExpression<?, Object> formula(FormulaAst ast) {
+        DesiredRateExpression<?> exp = ast.toExpression();
+            
+        if (exp instanceof LastOfChannelExpression) {
+            return new DesiredRateReadWriteExpressionImpl<>(exp, org.diirt.datasource.vtype.ExpressionLanguage.vType(exp.getName()));
+        } else if (exp instanceof ErrorDesiredRateExpression) {
+            return new DesiredRateReadWriteExpressionImpl<>(exp, readOnlyWriteExpression("Parsing error")); 
+        } else {
+            return new DesiredRateReadWriteExpressionImpl<>(exp, readOnlyWriteExpression("Read-only formula"));
+        }
+    }
+    
     private static DesiredRateExpression<?> parseFormula(String formula) {
         try {
             return FormulaAst.formula(formula).toExpression();
