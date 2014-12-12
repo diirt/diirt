@@ -4,8 +4,11 @@
  */
 package org.diirt.datasource.formula;
 
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -282,6 +285,78 @@ public class FormulaAst {
             default:
                 throw new IllegalArgumentException("Unsupported type " + getType() + " for ast");
         }
+    }
+    
+    /**
+     * Returns a new AST where the channel nodes that match the keys of the map
+     * are substituted with the values of the map.
+     * 
+     * @param substitutions from channel name to new AST
+     * @return a new AST
+     */
+    public FormulaAst substituteChannels(Map<String, FormulaAst> substitutions) {
+        switch(getType()) {
+            case CHANNEL:
+                FormulaAst sub = substitutions.get((String) getValue());
+                if (sub == null) {
+                    sub = this;
+                }
+                return sub;
+            case OP:
+                FormulaAst[] subs = new FormulaAst[getChildren().size()];
+                for (int i = 0; i < subs.length; i++) {
+                    subs[i] = getChildren().get(i).substituteChannels(substitutions);
+                }
+                return op((String) getValue(), subs);
+            default:
+                return this;
+        }
+    }
+
+    @Override
+    public String toString() {
+        switch(getType()) {
+            case OP:
+                return FormulaFunctions.format((String) getValue(), new AbstractList<String>() {
+
+                    @Override
+                    public String get(int index) {
+                        return getChildren().get(index).toString();
+                    }
+
+                    @Override
+                    public int size() {
+                        return getChildren().size();
+                    }
+                });
+            default:
+                return getValue().toString();
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        
+        if (obj instanceof FormulaAst) {
+            FormulaAst other = (FormulaAst) obj;
+            return Objects.equals(getType(), other.getType()) &&
+                    Objects.equals(getValue(), other.getValue()) &&
+                    Objects.equals(getChildren(), other.getChildren());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.type);
+        hash = 89 * hash + Objects.hashCode(this.children);
+        hash = 89 * hash + Objects.hashCode(this.value);
+        return hash;
     }
     
 }
