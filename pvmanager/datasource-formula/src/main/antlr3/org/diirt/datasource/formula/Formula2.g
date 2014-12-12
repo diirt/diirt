@@ -130,7 +130,7 @@ parExpression returns [FormulaAst result]
     ;
 
 channel returns [FormulaAst result]
-    :   PCHANNEL {result = channelFromToken($PCHANNEL.text);}
+    :   CHANNEL {result = channelFromToken($CHANNEL.text);}
     ;
 
 numericLiteral returns [FormulaAst result]
@@ -170,7 +170,7 @@ STRING
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-PCHANNEL
+CHANNEL
     :  '\'' ( ESC_SEQ | ~('\\'|'\'') )* '\''
     ;
 

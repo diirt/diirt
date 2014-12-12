@@ -7,7 +7,6 @@ package org.diirt.datasource.formula;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.antlr.runtime.*;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
@@ -17,9 +16,6 @@ import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
 import org.diirt.datasource.expression.DesiredRateReadWriteExpressionImpl;
 import org.diirt.datasource.expression.Expressions;
 import org.diirt.datasource.expression.WriteExpression;
-import org.diirt.datasource.formula.FormulaLexer;
-import org.diirt.datasource.formula.FormulaParser;
-import org.diirt.util.text.StringUtil;
 import org.diirt.vtype.ValueUtil;
 
 /**

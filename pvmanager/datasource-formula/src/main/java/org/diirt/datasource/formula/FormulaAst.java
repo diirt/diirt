@@ -94,7 +94,7 @@ public class FormulaAst {
     
     static Formula2Parser createParser(String text) {
         CharStream stream = new ANTLRStringStream(text);
-        FormulaLexer lexer = new FormulaLexer(stream);
+        Formula2Lexer lexer = new Formula2Lexer(stream);
         TokenStream tokenStream = new CommonTokenStream(lexer);
         return new Formula2Parser(tokenStream);
     }
