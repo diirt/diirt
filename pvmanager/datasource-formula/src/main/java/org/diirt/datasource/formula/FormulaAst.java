@@ -5,7 +5,9 @@
 package org.diirt.datasource.formula;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -73,6 +75,30 @@ public class FormulaAst {
      */
     public List<FormulaAst> getChildren() {
         return children;
+    }
+    
+    /**
+     * Lists all the channel names used in the AST.
+     * 
+     * @return a list of channel names
+     */
+    public List<String> listChannelNames() {
+        List<String> names = new ArrayList<>();
+        listChannelNames(names);
+        return Collections.unmodifiableList(names);
+    }
+    
+    private void listChannelNames(List<String> names) {
+        switch(getType()) {
+            case OP:
+                for (FormulaAst child : getChildren()) {
+                    child.listChannelNames(names);
+                }
+                break;
+            case CHANNEL:
+                names.add((String) getValue());
+            default:
+        }
     }
     
     /**

@@ -4,6 +4,8 @@
  */
 package org.diirt.datasource.formula;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -40,5 +42,13 @@ public class FormulaAstTest {
     @Test
     public void toString2() {
         assertThat(formula("=3+4").toString(), equalTo("(3 + 4)"));
+    }
+    
+    @Test
+    public void listChannelNames1() {
+        assertThat(formula("=3+4").listChannelNames(), equalTo(new ArrayList<String>()));
+        assertThat(formula("='x'+4").listChannelNames(), equalTo(Arrays.asList("x")));
+        assertThat(formula("=3+'x'+\"y\"").listChannelNames(), equalTo(Arrays.asList("x")));
+        assertThat(formula("='x'+'y'").listChannelNames(), equalTo(Arrays.asList("x", "y")));
     }
 }
