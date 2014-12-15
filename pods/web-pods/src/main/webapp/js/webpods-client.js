@@ -100,10 +100,8 @@ function Client(url, debug, username, password) {
 	 */
     this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
-        if(readOnly == null || readOnly =="true") {
+        if(readOnly != false) {
             readOnly = true;
-        } else {
-            readOnly = false;
         }
         if (type != null) {
             if (version == null)
