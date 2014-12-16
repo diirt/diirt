@@ -7,22 +7,16 @@ package org.diirt.ui.tools;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executor;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriterEvent;
-import org.diirt.datasource.PVWriterListener;
 import org.diirt.datasource.formula.ExpressionLanguage;
+import org.diirt.util.concurrent.Executors;
 import org.diirt.util.time.TimeDuration;
 
 public class ProbeController implements Initializable {
@@ -58,17 +52,9 @@ public class ProbeController implements Initializable {
                         }
                     }
                 })
-                .notifyOn(exec)
+                .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
     }
-    
-    private static Executor exec = new Executor() {
-
-        @Override
-        public void execute(Runnable command) {
-            Platform.runLater(command);
-        }
-    };
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
