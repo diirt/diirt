@@ -18,10 +18,14 @@ import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.formula.ExpressionLanguage;
 import org.diirt.util.concurrent.Executors;
 import org.diirt.util.time.TimeDuration;
+import org.diirt.vtype.SimpleValueFormat;
+import org.diirt.vtype.ValueFormat;
 
 public class ProbeController implements Initializable {
     
     private PVReader<?> pv;
+    
+    private ValueFormat format = new SimpleValueFormat(3);
     
     @FXML
     private TextField channelField;
@@ -42,7 +46,7 @@ public class ProbeController implements Initializable {
 
         pv = PVManager.readAndWrite(ExpressionLanguage.formula(channelField.getText()))
                 .readListener((PVReaderEvent<Object> e) -> {
-                    valueField.setText(Objects.toString(e.getPvReader().getValue()));
+                    valueField.setText(format.format(e.getPvReader().getValue()));
                 })
                 .writeListener((PVWriterEvent<Object> e) -> {
                     if (e.isConnectionChanged()) {
