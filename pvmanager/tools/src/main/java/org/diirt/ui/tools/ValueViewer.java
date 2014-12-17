@@ -9,19 +9,33 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Time;
+import javafx.scene.control.TitledPane;
+import org.diirt.vtype.Display;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.ValueUtil;
 
-public class ValueViewer extends ScrollPane {
+public final class ValueViewer extends ScrollPane {
     
+    @FXML
+    private TitledPane commonMetadata;
     @FXML
     private TextField typeField;
     @FXML
     private TextField alarmField;
     @FXML
     private TextField timeField;
+    @FXML
+    private TitledPane numberMetadata;
+    @FXML
+    private TextField displayRangeField;
+    @FXML
+    private TextField alarmRangeField;
+    @FXML
+    private TextField warningRangeField;
+    @FXML
+    private TextField controlRangeField;
+    @FXML
+    private TextField unitField;
 
     public ValueViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -35,17 +49,45 @@ public class ValueViewer extends ScrollPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+        setValue(null, false);
     }
     
     public void setValue(Object value, boolean connection) {
-        Class<?> clazz = ValueUtil.typeOf(value);
-        if (clazz == null) {
+        commonMetadata(value, connection);
+        numberDisplay(ValueUtil.displayOf(value));
+    }
+    
+    private void commonMetadata(Object value, boolean connection) {
+        if (value == null) {
             typeField.setText(null);
+            alarmField.setText(null);
+            timeField.setText(null);
         } else {
-            typeField.setText(clazz.getSimpleName());
+            Class<?> clazz = ValueUtil.typeOf(value);
+            if (clazz == null) {
+                typeField.setText(null);
+            } else {
+                typeField.setText(clazz.getSimpleName());
+            }
+            alarmField.setText(VTypeToString.alarmToString(ValueUtil.alarmOf(value, connection)));
+            timeField.setText(VTypeToString.timeToString(ValueUtil.timeOf(value)));
         }
-        alarmField.setText(VTypeToString.alarmToString(ValueUtil.alarmOf(value, connection)));
-        timeField.setText(VTypeToString.timeToString(ValueUtil.timeOf(value)));
+    }
+    
+    private void numberDisplay(Display display) {
+        if (display == null) {
+            numberMetadata.setVisible(false);
+            numberMetadata.setManaged(false);
+        } else {
+            numberMetadata.setVisible(true);
+            numberMetadata.setManaged(true);
+            displayRangeField.setText(display.getLowerDisplayLimit() + " - " + display.getUpperDisplayLimit());
+            alarmRangeField.setText(display.getLowerAlarmLimit()+ " - " + display.getUpperAlarmLimit());
+            warningRangeField.setText(display.getLowerWarningLimit()+ " - " + display.getUpperWarningLimit());
+            controlRangeField.setText(display.getLowerCtrlLimit()+ " - " + display.getUpperCtrlLimit());
+            unitField.setText(display.getUnits());
+        }
     }
 
 }
