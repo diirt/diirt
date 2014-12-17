@@ -9,12 +9,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.ValueUtil;
 
 public class ValueViewer extends ScrollPane {
     
     @FXML
     private TextField typeField;
+    @FXML
+    private TextField alarmField;
+    @FXML
+    private TextField timeField;
 
     public ValueViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -30,13 +37,15 @@ public class ValueViewer extends ScrollPane {
         }
     }
     
-    public void setValue(Object value) {
+    public void setValue(Object value, boolean connection) {
         Class<?> clazz = ValueUtil.typeOf(value);
         if (clazz == null) {
             typeField.setText(null);
         } else {
             typeField.setText(clazz.getSimpleName());
         }
+        alarmField.setText(VTypeToString.alarmToString(ValueUtil.alarmOf(value, connection)));
+        timeField.setText(VTypeToString.timeToString(ValueUtil.timeOf(value)));
     }
 
 }

@@ -63,7 +63,7 @@ public class ProbeController implements Initializable {
                 .readListener((PVReaderEvent<Object> e) -> {
                     valueField.setText(format.format(e.getPvReader().getValue()));
                     setAlarm(e.getPvReader().getValue());
-                    valueViewer.setValue(e.getPvReader().getValue());
+                    valueViewer.setValue(e.getPvReader().getValue(), e.getPvReader().isConnected());
                 })
                 .writeListener((PVWriterEvent<Object> e) -> {
                     if (e.isConnectionChanged()) {

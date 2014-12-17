@@ -13,7 +13,7 @@
    <content>
       <VBox prefHeight="373.0" prefWidth="413.0">
          <children>
-            <TitledPane animated="false" VBox.vgrow="NEVER">
+            <TitledPane animated="false" text="Common metadata" VBox.vgrow="NEVER">
                <content>
                   <GridPane hgap="5.0" vgap="5.0">
                     <columnConstraints>
@@ -28,7 +28,10 @@
                      <children>
                         <Label text="Type" />
                         <TextField fx:id="typeField" editable="false" GridPane.columnIndex="1" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="alarmField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Alarm" GridPane.rowIndex="1" />
+                        <Label text="Time" GridPane.rowIndex="2" />
+                        <TextField fx:id="timeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </content>
