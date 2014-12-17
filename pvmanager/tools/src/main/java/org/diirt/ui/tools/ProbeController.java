@@ -5,12 +5,22 @@
 package org.diirt.ui.tools;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
@@ -18,12 +28,15 @@ import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.formula.ExpressionLanguage;
 import org.diirt.util.concurrent.Executors;
 import org.diirt.util.time.TimeDuration;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
+import org.diirt.vtype.ValueUtil;
 
 public class ProbeController implements Initializable {
     
-    private PVReader<?> pv;
+    private PV<?, Object> pv;
     
     private ValueFormat format = new SimpleValueFormat(3);
     
@@ -47,6 +60,7 @@ public class ProbeController implements Initializable {
         pv = PVManager.readAndWrite(ExpressionLanguage.formula(channelField.getText()))
                 .readListener((PVReaderEvent<Object> e) -> {
                     valueField.setText(format.format(e.getPvReader().getValue()));
+                    setAlarm(e.getPvReader().getValue());
                 })
                 .writeListener((PVWriterEvent<Object> e) -> {
                     if (e.isConnectionChanged()) {
@@ -58,6 +72,28 @@ public class ProbeController implements Initializable {
                 })
                 .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
+    }
+    
+    private static final Map<AlarmSeverity, Border> BORDER_MAP = createBorderMap();
+
+    private static Map<AlarmSeverity, Border> createBorderMap() {
+        Map<AlarmSeverity, Border> map = new EnumMap<>(AlarmSeverity.class);
+        map.put(AlarmSeverity.NONE, null);
+        map.put(AlarmSeverity.MINOR, new Border(new BorderStroke(Color.YELLOW, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+        map.put(AlarmSeverity.MAJOR, new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+        map.put(AlarmSeverity.INVALID, new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+        map.put(AlarmSeverity.UNDEFINED, new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
+        return Collections.unmodifiableMap(map);
+    }
+    
+    private void setAlarm(Object value) {
+        Alarm alarm = ValueUtil.alarmOf(value, pv.isConnected());
+        valueField.setBorder(BORDER_MAP.get(alarm.getAlarmSeverity()));
+    }
+
+    @FXML
+    private void onNewValueChanged(ActionEvent event) {
+        pv.write(newValueField.getText());
     }
     
     @Override
