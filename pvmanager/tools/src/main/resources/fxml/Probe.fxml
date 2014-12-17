@@ -39,9 +39,9 @@
                   <ValueViewer fx:id="valueViewer" />
                </content>
           </Tab>
-          <Tab text="Channel">
+          <Tab text="Events">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <EventLogViewer fx:id="eventLogViewer" />
             </content>
           </Tab>
         </tabs>
