@@ -46,6 +46,8 @@ public class ProbeController implements Initializable {
     private TextField valueField;
     @FXML
     private TextField newValueField;
+    @FXML
+    private ValueViewer valueViewer;
 
     @FXML
     private void onChannelChanged(ActionEvent event) {
@@ -61,6 +63,7 @@ public class ProbeController implements Initializable {
                 .readListener((PVReaderEvent<Object> e) -> {
                     valueField.setText(format.format(e.getPvReader().getValue()));
                     setAlarm(e.getPvReader().getValue());
+                    valueViewer.setValue(e.getPvReader().getValue());
                 })
                 .writeListener((PVWriterEvent<Object> e) -> {
                     if (e.isConnectionChanged()) {

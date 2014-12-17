@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--fx:controller="org.diirt.ui.tools.ValueViewer"-->
+
+<fx:root fitToWidth="true" prefHeight="466.0" prefWidth="492.0" type="ScrollPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <VBox prefHeight="373.0" prefWidth="413.0">
+         <children>
+            <TitledPane animated="false" VBox.vgrow="NEVER">
+               <content>
+                  <GridPane hgap="5.0" vgap="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Type" />
+                        <TextField fx:id="typeField" editable="false" GridPane.columnIndex="1" />
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="NEVER">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+               </content></TitledPane>
+         </children>
+      </VBox>
+   </content>
+</fx:root>
