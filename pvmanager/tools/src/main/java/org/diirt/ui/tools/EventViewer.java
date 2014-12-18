@@ -40,6 +40,14 @@ public final class EventViewer extends ScrollPane {
     @FXML
     private TitledPane eventWriteError;
     @FXML
+    private TitledPane eventWriteSucceeded;
+    @FXML
+    private TitledPane eventWriteFailed;
+    @FXML
+    private TextField writeFailedMessageField;
+    @FXML
+    private TextArea writeFailedField;
+    @FXML
     private TextField writeExceptionMessageField;
     @FXML
     private TextArea writeExceptionField;
@@ -73,6 +81,8 @@ public final class EventViewer extends ScrollPane {
         updateReadValue(readEvent);
         updateReadError(readEvent);
         updateWriteConnection(writeEvent);
+        updateWriteSucceeded(writeEvent);
+        updateWriteFailed(writeEvent);
         updateWriteError(writeEvent);
     }
 
@@ -127,6 +137,32 @@ public final class EventViewer extends ScrollPane {
             eventWriteConnection.setVisible(false);
             eventWriteConnection.setManaged(false);
             writeConnectedField.setSelected(false);
+        }
+    }
+
+    private void updateWriteSucceeded(WriteEvent writeEvent) {
+        if (writeEvent != null && writeEvent.getEvent().isWriteSucceeded()) {
+            eventWriteSucceeded.setVisible(true);
+            eventWriteSucceeded.setManaged(true);
+        } else {
+            eventWriteSucceeded.setVisible(false);
+            eventWriteSucceeded.setManaged(false);
+        }
+    }
+
+    private void updateWriteFailed(WriteEvent writeEvent) {
+        if (writeEvent != null && writeEvent.getEvent().isWriteFailed()) {
+            eventWriteFailed.setVisible(true);
+            eventWriteFailed.setManaged(true);
+            writeFailedMessageField.setText(writeEvent.getLastException().getMessage());
+            StringWriter sw = new StringWriter();
+            writeEvent.getLastException().printStackTrace(new PrintWriter(sw));
+            writeFailedField.setText(sw.toString());
+        } else {
+            eventWriteFailed.setVisible(false);
+            eventWriteFailed.setManaged(false);
+            writeFailedMessageField.setText(null);
+            writeFailedField.setText(null);
         }
     }
 
