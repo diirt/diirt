@@ -4,9 +4,12 @@
  */
 package org.diirt.ui.tools;
 
+import com.sun.javafx.collections.ImmutableObservableList;
 import java.io.IOException;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -36,6 +39,10 @@ public final class ValueViewer extends ScrollPane {
     private TextField controlRangeField;
     @FXML
     private TextField unitField;
+    @FXML
+    private TitledPane enumMetadata;
+    @FXML
+    private ListView<String> labelsField;
 
     public ValueViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -56,6 +63,7 @@ public final class ValueViewer extends ScrollPane {
     public void setValue(Object value, boolean connection) {
         commonMetadata(value, connection);
         numberDisplay(ValueUtil.displayOf(value));
+        enumMetadata(value);
     }
     
     private void commonMetadata(Object value, boolean connection) {
@@ -87,6 +95,17 @@ public final class ValueViewer extends ScrollPane {
             warningRangeField.setText(display.getLowerWarningLimit()+ " - " + display.getUpperWarningLimit());
             controlRangeField.setText(display.getLowerCtrlLimit()+ " - " + display.getUpperCtrlLimit());
             unitField.setText(display.getUnits());
+        }
+    }
+    
+    private void enumMetadata(Object value) {
+        if (value instanceof org.diirt.vtype.Enum) {
+            enumMetadata.setVisible(true);
+            enumMetadata.setManaged(true);
+            labelsField.setItems(FXCollections.observableList(((org.diirt.vtype.Enum) value).getLabels()));
+        } else {
+            enumMetadata.setVisible(false);
+            enumMetadata.setManaged(false);
         }
     }
 
