@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -24,6 +25,8 @@ public final class EventLogViewer extends HBox {
     private ListView<Event> eventList;
     @FXML
     private ValueViewer valueViewer;
+    @FXML
+    private EventViewer eventViewer;
     
     private Log eventLog = new Log(new Runnable() {
         @Override
@@ -50,12 +53,17 @@ public final class EventLogViewer extends HBox {
 
             @Override
             public void changed(ObservableValue<? extends Event> observable, Event oldValue, Event newValue) {
+                eventViewer.setEvent(newValue);
                 if (newValue instanceof ReadEvent) {
                     ReadEvent readEvent = (ReadEvent) newValue;
                     valueViewer.setValue(readEvent.getValue(), readEvent.isConnected());
                 } else {
+                    WriteEvent writeEvent = (WriteEvent) newValue;
+                    
                     valueViewer.setValue(null, false);
                 }
+                
+                
             }
         });
     }
@@ -67,6 +75,5 @@ public final class EventLogViewer extends HBox {
     private void onNewEvent() {
         eventList.getItems().add(0, eventLog.getEvents().get(eventLog.getEvents().size() - 1));
     }
-    
 
 }

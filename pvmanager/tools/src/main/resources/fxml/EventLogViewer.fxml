@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -7,18 +8,24 @@
 <?import javafx.scene.layout.*?>
 <?import org.diirt.ui.tools.*?>
 
+<!-- fx:controller="org.diirt.ui.tools.EventLogViewer" -->
+
 <fx:root type="HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ListView fx:id="eventList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="171.0" HBox.hgrow="NEVER" />
-      <TabPane tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
-        <tabs>
-          <Tab text="Event" />
-          <Tab text="Value">
-               <content>
-                  <ValueViewer fx:id="valueViewer" />
-               </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+    <children>
+        <ListView fx:id="eventList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="171.0" HBox.hgrow="NEVER" />
+        <TabPane tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+            <tabs>
+                <Tab text="Event">
+                    <content>
+                        <EventViewer fx:id="eventViewer" />
+                    </content>
+                </Tab>
+                <Tab text="Value">
+                    <content>
+                        <ValueViewer fx:id="valueViewer" />
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </fx:root>
