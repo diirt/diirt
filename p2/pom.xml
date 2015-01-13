@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.diirt</groupId>
+        <artifactId>diirt-all</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>p2-repository</artifactId>
+    <name>org.diirt.p2</name>
+    <description>P2 repository for the diirt bundles and their dependencies.</description>
+    <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.reficio</groupId>
+                <artifactId>p2-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <id>org.diirt:datasource-sample:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                                
+                                <!-- specify your dependecies here -->
+                                <!-- groupId:artifactId:version -->
+								
+                                <!--  EPICS artifacts -->
+<!--                                <artifact>
+                                    <id>epics:pvDataJava:${pvdata.version}</id>
+                                    <instructions>
+                                        <Bundle-Name>org.epics.pvdata</Bundle-Name>
+                                        <Bundle-SymbolicName>org.epics.pvdata</Bundle-SymbolicName>
+                                    </instructions>
+                                    <transitive>false</transitive>
+                                    <source>true</source>
+                                </artifact>
+                                <artifact>
+                                    <id>epics:pvAccessJava:${pvaccess.version}</id>
+                                    <instructions>
+                                        <Bundle-Name>org.epics.pvaccess</Bundle-Name>
+                                        <Bundle-SymbolicName>org.epics.pvaccess</Bundle-SymbolicName>
+                                        <Require-Bundle>org.epics.pvdata</Require-Bundle>
+                                    </instructions>
+                                    <transitive>false</transitive>
+                                    <source>true</source>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:pvmanager-integration:${pvmanager.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:pvmanager-graphene:${pvmanager.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:graphene:${graphene.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:epics-vtype:${pvmanager.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:vtype-json:${pvmanager.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.epics:epics-util:${epics.util.version}</id>
+                                    <source>true</source>
+                                    <transitive>false</transitive>
+                                </artifact>-->
+								
+								
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>reficio</id>
+            <url>http://repo.reficio.org/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+</project>

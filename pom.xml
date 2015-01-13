@@ -74,6 +74,7 @@
         <module>graphene</module>
         <module>support</module>
         <module>pods</module>
+        <module>javafx</module>
     </modules>
     <build>
         <plugins>

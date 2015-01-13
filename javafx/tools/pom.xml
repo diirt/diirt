@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>javafx-all</artifactId>
+        <groupId>org.diirt.javafx</groupId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>tools</artifactId>
+    <name>org.diirt.javafx.tools</name>
+    <description>A set of standard diirt tools for debugging and basic usage.</description>
+    <version>3.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-formula</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-sim</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt.support</groupId>
+            <artifactId>diirt-ca</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-sys</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt.support</groupId>
+            <artifactId>diirt-pva</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-loc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-file-json</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-file</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>web-pods-datasource</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt</groupId>
+            <artifactId>datasource-graphene</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mainClass>org.diirt.ui.tools.MainApp</mainClass>
+    </properties>
+
+</project>
