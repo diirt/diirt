@@ -49,6 +49,7 @@ public class ServiceLoaderOSGiWrapper {
     }
 
     private static <T> List<T> loadOSGi(Class<T> serviceClazz) {
+        // TODO: improve logging
         Object bundle = osgi.getBundle(serviceClazz);
         System.out.println("Found bundle " + bundle);
         osgi.start(bundle);
@@ -103,7 +104,6 @@ public class ServiceLoaderOSGiWrapper {
             try {
                 return Class.forName(name);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ServiceLoaderOSGiWrapper.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
         }

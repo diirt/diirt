@@ -28,6 +28,11 @@
                 </executions>
                 <configuration>
                     <instructions>
+                        <!-- The OSGi framework is added as an import package
+                        to make the ServiceLoader workaround function. It is
+                        accessed through introspection, so no maven dependency
+                        is needed. But it is required when in OSGi so that
+                        the introspection actually works.-->
                         <Import-Package>javax.swing,org.osgi.framework</Import-Package>
                     </instructions>
                 </configuration>
