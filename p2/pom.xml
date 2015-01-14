@@ -30,6 +30,11 @@
                                     <source>true</source>
                                     <transitive>true</transitive>
                                 </artifact>
+                                <artifact>
+                                    <id>org.diirt.support:diirt-cf:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
                                 
                                 <!-- specify your dependecies here -->
                                 <!-- groupId:artifactId:version -->
