@@ -7,6 +7,7 @@ package org.diirt.datasource;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 
 /**
  * A class that provides support for a DataSource.
@@ -49,9 +50,8 @@ public abstract class DataSourceProvider {
     public static CompositeDataSource createDataSource() {
         log.config("Fetching data source providers");
         CompositeDataSource composite = new CompositeDataSource();
-        ServiceLoader<DataSourceProvider> sl = ServiceLoader.load(DataSourceProvider.class);
         int count = 0;
-        for (DataSourceProvider factory : sl) {
+        for (DataSourceProvider factory : ServiceLoaderOSGiWrapper.load(DataSourceProvider.class)) {
             log.log(Level.CONFIG, "Adding data source provider ''{0}'' ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
             composite.putDataSource(factory);
             count++;
