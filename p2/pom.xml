@@ -24,7 +24,7 @@
                             <goal>site</goal>
                         </goals>
                         <configuration>
-                            <categoryFileURL>category.xml</categoryFileURL>
+                            <categoryFileURL>${basedir}/category.xml</categoryFileURL>
                             <artifacts>
                                 <artifact>
                                     <id>org.diirt:datasource-sample:${project.version}</id>
