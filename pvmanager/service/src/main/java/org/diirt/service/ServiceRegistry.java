@@ -7,11 +7,11 @@ package org.diirt.service;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 
 /**
  * Main entry point for service lookup.
@@ -36,9 +36,8 @@ public class ServiceRegistry {
     
     static {
         log.config("Fetching service providers");
-        ServiceLoader<ServiceProvider> sl = ServiceLoader.load(ServiceProvider.class);
         int count = 0;
-        for (ServiceProvider factory : sl) {
+        for (ServiceProvider factory : ServiceLoaderOSGiWrapper.load(ServiceProvider.class)) {
             log.log(Level.CONFIG, "Registering service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
             registry.registerServices(factory);
             count++;
