@@ -28,7 +28,7 @@
                 </executions>
                 <configuration>
                     <instructions>
-                        <Import-Package>javax.swing</Import-Package>
+                        <Import-Package>javax.swing,org.osgi.framework</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
