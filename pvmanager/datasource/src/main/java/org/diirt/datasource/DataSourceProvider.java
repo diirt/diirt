@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource;
 
-import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
