@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.ui.tools;
+package org.diirt.javafx.tools;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -12,21 +12,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class Probe extends Application {
+public class TestGraphene extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("diirt - Probe");
-        stage.setScene(createScene());
-        stage.show();
-    }
-    
-    public static Scene createScene() throws Exception {
-        Parent root = FXMLLoader.load(Probe.class.getResource("/fxml/Probe.fxml"));
+        Parent root = new BaseGraphView();
         
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
-        return scene;
+        
+        stage.setTitle("diirt - Graphene");
+        stage.setScene(scene);
+        stage.setWidth(300);
+        stage.setWidth(400);
+        stage.show();
     }
 
     /**

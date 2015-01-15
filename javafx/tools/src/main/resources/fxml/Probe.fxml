@@ -6,9 +6,9 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.diirt.ui.tools.*?>
+<?import org.diirt.javafx.tools.*?>
 
-<VBox prefHeight="373.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diirt.ui.tools.ProbeController">
+<VBox prefHeight="373.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diirt.javafx.tools.ProbeController">
    <children>
       <GridPane hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" VBox.vgrow="NEVER">
          <columnConstraints>

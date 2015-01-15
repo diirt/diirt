@@ -6,7 +6,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.diirt.ui.tools.*?>
+<?import org.diirt.javafx.tools.*?>
 
 <!-- fx:controller="org.diirt.ui.tools.EventLogViewer" -->
 

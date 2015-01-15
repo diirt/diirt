@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.ui.tools;
+package org.diirt.javafx.tools;
 
 import java.net.URL;
 import java.util.Collections;
@@ -69,7 +69,12 @@ public class ProbeController implements Initializable {
                     valueViewer.setValue(e.getPvReader().getValue(), e.getPvReader().isConnected());
                     Event lastEvent = eventLogViewer.eventLog().getEvents().get(eventLogViewer.eventLog().getEvents().size() - 1);
                     if (lastEvent instanceof ReadEvent) {
-                        errorField.setText(((ReadEvent) lastEvent).getLastException().getMessage());
+                        Exception lastException = ((ReadEvent) lastEvent).getLastException();
+                        if (lastException != null) {
+                            errorField.setText(lastException.getMessage());
+                        } else {
+                            errorField.setText(null);
+                        }
                     }
                 })
                 .writeListener(eventLogViewer.eventLog().<Object>createWriteListener(channelField.getText()))
