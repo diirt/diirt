@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javax.swing.SwingUtilities;
 
 /**
@@ -32,16 +31,6 @@ public class Executors {
     }
 
     /**
-     * Executes tasks on the JavaFX Application thread using
-     * Platform.runLater().
-     * 
-     * @return an executor that posts events to JavaFX
-     */
-    public static Executor javaFXAT() {
-        return JAVA_FX_EXECUTOR;
-    }
-
-    /**
      * Executes tasks on the current thread.
      * 
      * @return an object that runs tasks on the current thread
@@ -55,14 +44,6 @@ public class Executors {
         @Override
         public void execute(Runnable command) {
             SwingUtilities.invokeLater(command);
-        }
-    };
-    
-    private static final Executor JAVA_FX_EXECUTOR = new Executor() {
-
-        @Override
-        public void execute(Runnable command) {
-            Platform.runLater(command);
         }
     };
 
