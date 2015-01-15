@@ -83,6 +83,7 @@ public class PVAChannelHandler extends
 	
 	private static final String PVREQUEST_PREFIX = "?request=";
 	private final PVStructure pvRequest;
+	private final String extractPVField;
 	
 	public static PVAChannelHandler create(String channelName,
 			ChannelProvider channelProvider, short priority,
@@ -110,6 +111,23 @@ public class PVAChannelHandler extends
 		this.pvaChannelProvider = channelProvider;
 		this.priority = priority;
 		this.pvaTypeSupport = typeSupport;
+		
+		if (pvRequest != null)
+		{
+			PVStructure field = pvRequest.getStructureField("field");
+			if (field != null)
+			{
+				String[] fieldNames = field.getStructure().getFieldNames();
+				if (fieldNames.length == 1)
+				{
+					extractPVField = fieldNames[0];
+					return;
+				}
+			}
+		}
+		extractPVField = null;
+		
+		// NOTE: mind "return" above
 	}
 
 	/**
@@ -124,6 +142,10 @@ public class PVAChannelHandler extends
 	 */
 	public Field getChannelType() {
 		return channelType;
+	}
+
+	public String getExtractFieldName() {
+		return extractPVField;
 	}
 
 	@Override
@@ -222,7 +244,7 @@ public class PVAChannelHandler extends
 		{
 			channelType = field;
 		
-			Field valueField = ((Structure)channelType).getField("value");
+			Field valueField = (channelType instanceof Structure) ? ((Structure)channelType).getField("value") : null;
 			if (valueField != null && valueField.getID().equals("enum_t"))
 			{
 				isChannelEnumType = true;

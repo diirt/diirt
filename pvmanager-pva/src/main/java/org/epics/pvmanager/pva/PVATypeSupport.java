@@ -4,7 +4,7 @@
  */
 package org.epics.pvmanager.pva;
 
-import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.Type;
 import org.epics.pvmanager.DataSourceTypeSupport;
@@ -36,7 +36,7 @@ public class PVATypeSupport extends DataSourceTypeSupport {
     		null)
     	{
             @Override
-            public PVAPVStructure createValue(final PVStructure message, Field valueType, boolean disconnected) {
+            public PVAPVStructure createValue(final PVStructure message, PVField valueType, boolean disconnected) {
             	return new PVAPVStructure(message, disconnected);
             }
         };
