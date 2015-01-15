@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 import org.diirt.vtype.ValueFactory;
 
 /**
@@ -23,8 +23,7 @@ public class FormulaRegistry {
     
     static {
         // Find formula functions to register using the ServiceLoader
-        ServiceLoader<FormulaFunctionSet> sl = ServiceLoader.load(FormulaFunctionSet.class);
-        for (FormulaFunctionSet functionSet : sl) {
+        for (FormulaFunctionSet functionSet : ServiceLoaderOSGiWrapper.load(FormulaFunctionSet.class)) {
             registry.registerFormulaFunctionSet(functionSet);
         }
     }
