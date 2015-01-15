@@ -4,6 +4,8 @@
  */
 package org.epics.pvmanager.pva;
 
+import java.util.Arrays;
+
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.Structure;
@@ -59,9 +61,51 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         this.valueFieldTypes = fieldTypes;
     }
 
+    public boolean match(Structure structure) {
+        // If one of the IDs does not match, no match
+        if (ntIds != null)
+        {
+        	boolean match = false;
+        	String ntId = structure.getID();
+        	// TODO "structure" ID ??
+        	for (String id : ntIds)
+        		if (ntId.startsWith(id))	// ignore minor version
+        		{
+        			match = true;
+        			break;
+        		}
+        	
+        	if (!match)
+        		return false;
+        }
+        
+        // If the type of the channel does not match, no match
+        if (valueFieldTypes != null)
+        {
+        	boolean match = false;
+        	// we assume Structure here
+        	Field channelValueType = structure.getField("value");
+        	if (channelValueType != null)
+    		{
+            	for (Field vf : valueFieldTypes)
+            		if (channelValueType.equals(vf))
+            		{
+            			match = true;
+            			break;
+            		}
+            	
+            	if (!match)
+            		return false;
+    		}
+        }
+
+        // Everything matches
+        return true;
+    }
+    
     @Override
     public int match(ValueCache<?> cache, PVAChannelHandler channel) {
-
+    	
     	// If the generated type can't be put in the cache, no match
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
@@ -73,7 +117,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         	String ntId = channel.getChannelType().getID();
         	// TODO "structure" ID ??
         	for (String id : ntIds)
-        		if (ntId.equals(id))
+        		if (ntId.startsWith(id))	// ignore minor version
         		{
         			match = true;
         			break;
@@ -129,4 +173,12 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
      * @return the new value
      */
     public abstract Object createValue(PVStructure message, Field valueType, boolean disconnected);
+
+	@Override
+	public String toString() {
+		return "PVATypeAdapter [typeClass=" + typeClass + ", ntIds="
+				+ Arrays.toString(ntIds) + ", valueFieldTypes="
+				+ Arrays.toString(valueFieldTypes) + "]";
+	}
+    
 }

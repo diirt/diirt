@@ -81,10 +81,32 @@ public class PVAChannelHandler extends
 	private static PVStructure standardPutPVRequest = createRequest.createRequest("field(value)");
 	private static PVStructure enumPutPVRequest = createRequest.createRequest("field(value.index)");
 	
-	public PVAChannelHandler(String channelName,
+	private static final String PVREQUEST_PREFIX = "?request=";
+	private final PVStructure pvRequest;
+	
+	public static PVAChannelHandler create(String channelName,
+			ChannelProvider channelProvider, short priority,
+			PVATypeSupport typeSupport) {
+		
+		int pos = channelName.indexOf(PVREQUEST_PREFIX); 
+		if (pos == -1)
+		{
+			return new PVAChannelHandler(channelName, null, channelProvider, priority, typeSupport);
+		}
+		else
+		{
+			String pvRequestString = channelName.substring(pos+PVREQUEST_PREFIX.length());
+			channelName = channelName.substring(0, pos);
+			return new PVAChannelHandler(channelName, pvRequestString, channelProvider, priority, typeSupport);
+		}
+		
+	}
+
+	public PVAChannelHandler(String channelName, String pvRequestString,
 			ChannelProvider channelProvider, short priority,
 			PVATypeSupport typeSupport) {
 		super(channelName);
+		this.pvRequest = createRequest.createRequest(pvRequestString);
 		this.pvaChannelProvider = channelProvider;
 		this.priority = priority;
 		this.pvaTypeSupport = typeSupport;
@@ -155,14 +177,29 @@ public class PVAChannelHandler extends
 		reportStatus("Failed to create channel instance '" + channel.getChannelName(), status);
 		this.channel = channel;
 	}
-
+	
 	@Override
 	public void channelStateChange(Channel channel, ConnectionState connectionState) {
 		try {
 
 			// introspect
 			if (connectionState == ConnectionState.CONNECTED) {
-				channel.getField(this, null);
+				if (pvRequest == null)
+					channel.getField(this, null);
+				else
+				{
+					PVStructure field = pvRequest.getStructureField("field");
+					if (field != null)
+					{
+						String[] fieldNames = field.getStructure().getFieldNames();
+						if (fieldNames.length == 1)
+							channel.getField(this, fieldNames[0]);
+						else
+							channel.getField(this, null);
+					}
+					else
+						channel.getField(this, null);
+				}
 			}
 			else
 			{
@@ -194,7 +231,7 @@ public class PVAChannelHandler extends
 			else
 				isChannelEnumType = false;
 		}
-		
+	
 		processConnection(this);
 	}
 
@@ -216,6 +253,8 @@ public class PVAChannelHandler extends
         Map<String, Object> properties = new HashMap<String, Object>();
         if (channel != null) {
             properties.put("Channel name", channel.getChannelName());
+            if (pvRequest != null)
+                properties.put("User pvRequest", pvRequest.toString());
             properties.put("Connection state", channel.getConnectionState().name());
             properties.put("Provider name", channel.getProvider().getProviderName());
             if (channel.getConnectionState() == Channel.ConnectionState.CONNECTED) {
@@ -543,7 +582,7 @@ public class PVAChannelHandler extends
 				} catch (InterruptedException e) { }
 			}
 			// TODO optimize fields
-			channel.createMonitor(this, allPVRequest);
+			channel.createMonitor(this, pvRequest != null ? pvRequest : allPVRequest);
 		}
 	}
 

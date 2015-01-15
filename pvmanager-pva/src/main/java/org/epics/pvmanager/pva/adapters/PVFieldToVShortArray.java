@@ -6,17 +6,19 @@ package org.epics.pvmanager.pva.adapters;
 
 
 import java.util.List;
-import org.epics.pvdata.pv.ShortArrayData;
+
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
-import org.epics.vtype.VShortArray;
-import org.epics.vtype.VTypeToString;
+import org.epics.pvdata.pv.PVUShortArray;
+import org.epics.pvdata.pv.ShortArrayData;
 import org.epics.util.array.ArrayInt;
 import org.epics.util.array.ArrayShort;
 import org.epics.util.array.ListInt;
 import org.epics.util.array.ListShort;
 import org.epics.vtype.ArrayDimensionDisplay;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VTypeToString;
 import org.epics.vtype.ValueUtil;
 
 /**
@@ -28,17 +30,31 @@ public class PVFieldToVShortArray extends AlarmTimeDisplayExtractor implements V
 	private final ListInt size;
 	private final ListShort list;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVShortArray(PVStructure pvField, String fieldName, boolean disconnected) {
-		super(pvField, disconnected);
-		
-		PVShortArray valueField =
-			(PVShortArray)pvField.getScalarArrayField(fieldName, ScalarType.pvShort);
-		if (valueField != null)
+	public PVFieldToVShortArray(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVShortArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVShortArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+
+		if (field instanceof PVShortArray)
 		{
+			PVShortArray valueField = (PVShortArray)field;
+
+			ShortArrayData data = new ShortArrayData();
+			valueField.get(0, valueField.getLength(), data);
+			
+			this.size = new ArrayInt(data.data.length);
+			this.list = new ArrayShort(data.data);
+		}
+		else if (field instanceof PVUShortArray)
+		{
+			PVUShortArray valueField = (PVUShortArray)field;
+
 			ShortArrayData data = new ShortArrayData();
 			valueField.get(0, valueField.getLength(), data);
 			
@@ -50,10 +66,6 @@ public class PVFieldToVShortArray extends AlarmTimeDisplayExtractor implements V
 			size = null;
 			list = null;
 		}
-	}
-
-	public PVFieldToVShortArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
 	}
 	
 	/* (non-Javadoc)

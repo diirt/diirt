@@ -83,7 +83,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 			
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 
 			final PVStructureArray attributeArray = pvStructure.getStructureArrayField("attribute");
 
@@ -186,7 +186,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 			
 			AlarmTimeDisplayExtractor atd = new AlarmTimeDisplayExtractor(pvStructure, false);
 
@@ -270,7 +270,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 	        
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 
 			PVUnion valueUnion = pvStructure.getUnionField("value");
 			PVScalarArray pvArray = valueUnion.get(PVScalarArray.class);

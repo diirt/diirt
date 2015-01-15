@@ -4,7 +4,8 @@
  */
 package org.epics.pvmanager.pva.adapters;
 
-import org.epics.pvdata.pv.PVString;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.vtype.VString;
 import org.epics.vtype.VTypeToString;
@@ -17,16 +18,19 @@ public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VStri
 	
 	protected final String value;
 
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
 	public PVFieldToVString(PVStructure pvField, boolean disconnected) {
-		super(pvField, disconnected);
+		this("value", pvField, disconnected);
+	}
 
-		PVString stringField = pvField.getStringField("value");
-		if (stringField != null)
-			value = stringField.get();
+	public PVFieldToVString(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVString(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+		
+		if (field instanceof PVScalar)
+			value = convert.toString((PVScalar)field);
 		else
 			value = null;
 	}

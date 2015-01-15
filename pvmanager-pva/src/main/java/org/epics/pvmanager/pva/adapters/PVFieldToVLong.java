@@ -18,23 +18,23 @@ public class PVFieldToVLong extends AlarmTimeDisplayExtractor implements VLong {
 
 	protected final Long value;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
 	public PVFieldToVLong(PVStructure pvField, boolean disconnected) {
-		super(pvField, disconnected);
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVLong(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVLong(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
 		
-		PVField field = pvField.getSubField("value");
 		if (field instanceof PVScalar)
 			value = convert.toLong((PVScalar)field);
 		else
 			value = null;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.pva.adapters.PVFieldToVNumber#getValue()
-	 */
+	
 	@Override
     public Long getValue()
     {

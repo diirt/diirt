@@ -27,6 +27,7 @@ import org.epics.pvmanager.WriteFunction;
 import org.epics.pvmanager.pva.adapters.NTUtils;
 import org.epics.pvmanager.pva.adapters.PVFieldNTMatrixToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTNameValueToVTable;
+import org.epics.pvmanager.pva.adapters.PVFieldToVBooleanArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVByteArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVFloatArray;
@@ -419,18 +420,20 @@ class RPCServiceMethod extends ServiceMethod {
 		if ("epics:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID()))
 	      return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
 	    else
-          return new PVFieldToVDoubleArray(pvResult, fieldName != null ? fieldName : resultName, true);
+          return new PVFieldToVDoubleArray(fieldName != null ? fieldName : resultName, pvResult, true);
 		
     } else if (resultType.isAssignableFrom(VFloatArray.class)) {
-        return new PVFieldToVFloatArray(pvResult, fieldName != null ? fieldName : resultName, true);
+        return new PVFieldToVFloatArray(fieldName != null ? fieldName : resultName, pvResult, true);
     } else if (resultType.isAssignableFrom(VIntArray.class)) {
-        return new PVFieldToVIntArray(pvResult, fieldName != null ? fieldName : resultName, true);
+        return new PVFieldToVIntArray(fieldName != null ? fieldName : resultName, pvResult, true);
     } else if (resultType.isAssignableFrom(VShortArray.class)) {
-        return new PVFieldToVShortArray(pvResult, fieldName != null ? fieldName : resultName, true);
+        return new PVFieldToVShortArray(fieldName != null ? fieldName : resultName, pvResult, true);
     } else if (resultType.isAssignableFrom(VByteArray.class)) {
-        return new PVFieldToVByteArray(pvResult, fieldName != null ? fieldName : resultName, true);
+        return new PVFieldToVByteArray( fieldName != null ? fieldName : resultName, pvResult, true);
     } else if (resultType.isAssignableFrom(VStringArray.class)) {
-        return new PVFieldToVStringArray(pvResult, fieldName != null ? fieldName : resultName, true);
+        return new PVFieldToVStringArray(fieldName != null ? fieldName : resultName, pvResult, true);
+    } else if (resultType.isAssignableFrom(VBooleanArray.class)) {
+        return new PVFieldToVBooleanArray(fieldName != null ? fieldName : resultName, pvResult, true);
     } else if (resultType.isAssignableFrom(VTable.class)) {
         if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID()))
             return new PVFieldNTNameValueToVTable(pvResult, false);

@@ -11,6 +11,7 @@ import org.epics.pvmanager.ChannelHandler;
 import org.epics.pvmanager.DataSource;
 import org.epics.pvmanager.formula.FormulaRegistry;
 import org.epics.pvmanager.pva.formula.NTNDArrayFunctionSet;
+import org.epics.pvmanager.pva.formula.PVAPVStructureFunctionSet;
 import org.epics.pvmanager.vtype.DataTypeSupport;
 
 /**
@@ -25,6 +26,7 @@ public class PVADataSource extends DataSource {
         
         // TODO move this out
         // Install formulas
+        FormulaRegistry.getDefault().registerFormulaFunctionSet(new PVAPVStructureFunctionSet());
         FormulaRegistry.getDefault().registerFormulaFunctionSet(new NTNDArrayFunctionSet());
     }
 
@@ -76,7 +78,7 @@ public class PVADataSource extends DataSource {
 
     @Override
     protected ChannelHandler createChannel(String channelName) {
-        return new PVAChannelHandler(channelName, pvaChannelProvider, defaultPriority, pvaTypeSupport);
+        return PVAChannelHandler.create(channelName, pvaChannelProvider, defaultPriority, pvaTypeSupport);
     }
 
 }

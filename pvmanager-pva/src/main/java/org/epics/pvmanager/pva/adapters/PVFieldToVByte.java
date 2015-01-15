@@ -14,33 +14,33 @@ import org.epics.vtype.VTypeToString;
  * @author dkumar
  */
 public class PVFieldToVByte extends AlarmTimeDisplayExtractor implements VByte {
- 
-  protected final Byte value;
 
+	protected final Byte value;
 
-  /**
-   * @param pvField
-   * @param disconnected
-   */
-  public PVFieldToVByte(PVStructure pvField, boolean disconnected) {
-    super(pvField, disconnected);
+	public PVFieldToVByte(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
 
-	PVField field = pvField.getSubField("value");
-	if (field instanceof PVScalar)
-		value = convert.toByte((PVScalar)field);
-    else
-    	value = null;
-  }
+	public PVFieldToVByte(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
 
+	public PVFieldToVByte(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
 
-  @Override
-  public Byte getValue() {
-    return value;
-  }
+		if (field instanceof PVScalar)
+			value = convert.toByte((PVScalar) field);
+		else
+			value = null;
+	}
 
+	@Override
+	public Byte getValue() {
+		return value;
+	}
 
-  @Override
-  public String toString() {
-    return VTypeToString.toString(this);
-  }
+	@Override
+	public String toString() {
+		return VTypeToString.toString(this);
+	}
 }
