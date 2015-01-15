@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource;
 
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
@@ -47,15 +48,8 @@ public abstract class DataSourceProvider {
      * @return a new DataSource
      */
     public static CompositeDataSource createDataSource() {
-        log.config("Fetching data source providers");
         CompositeDataSource composite = new CompositeDataSource();
-        int count = 0;
-        for (DataSourceProvider factory : ServiceLoaderOSGiWrapper.load(DataSourceProvider.class)) {
-            log.log(Level.CONFIG, "Adding data source provider ''{0}'' ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
-            composite.putDataSource(factory);
-            count++;
-        }
-        log.log(Level.CONFIG, "Found {0} data source providers", count);
+        ServiceLoaderOSGiWrapper.load(DataSourceProvider.class, log, composite::putDataSource);
         return composite;
     }
 }
