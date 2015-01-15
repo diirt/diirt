@@ -19,6 +19,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label text="Channel:" />
@@ -27,6 +28,8 @@
             <Label text="Value:" GridPane.rowIndex="1" />
             <Label text="New value:" GridPane.rowIndex="2" />
             <TextField fx:id="newValueField" disable="true" editable="false" onAction="#onNewValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="errorField" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Last error:" GridPane.rowIndex="3" />
          </children>
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />

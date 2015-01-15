@@ -45,6 +45,8 @@ public class ProbeController implements Initializable {
     @FXML
     private TextField newValueField;
     @FXML
+    private TextField errorField;
+    @FXML
     private ValueViewer valueViewer;
     @FXML
     private EventLogViewer eventLogViewer;
@@ -65,6 +67,10 @@ public class ProbeController implements Initializable {
                     valueField.setText(format.format(e.getPvReader().getValue()));
                     setAlarm(e.getPvReader().getValue());
                     valueViewer.setValue(e.getPvReader().getValue(), e.getPvReader().isConnected());
+                    Event lastEvent = eventLogViewer.eventLog().getEvents().get(eventLogViewer.eventLog().getEvents().size() - 1);
+                    if (lastEvent instanceof ReadEvent) {
+                        errorField.setText(((ReadEvent) lastEvent).getLastException().getMessage());
+                    }
                 })
                 .writeListener(eventLogViewer.eventLog().<Object>createWriteListener(channelField.getText()))
                 .writeListener((PVWriterEvent<Object> e) -> {
