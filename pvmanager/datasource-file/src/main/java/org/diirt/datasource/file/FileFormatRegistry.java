@@ -5,10 +5,10 @@
 package org.diirt.datasource.file;
 
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 
 /**
  * Place to registers file formats so that the file datasource can use them.
@@ -34,8 +34,7 @@ public class FileFormatRegistry {
     
     static {
         // Find file formats to register using the ServiceLoader
-        ServiceLoader<FileFormat> sl = ServiceLoader.load(FileFormat.class);
-        for (FileFormat fileFormat : sl) {
+        for (FileFormat fileFormat : ServiceLoaderOSGiWrapper.load(FileFormat.class)) {
             registry.registerFileFormat(fileFormat);
         }
     }
