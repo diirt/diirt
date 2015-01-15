@@ -13,5 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>tools</module>
+        <module>javafx</module>
     </modules>
 </project>
