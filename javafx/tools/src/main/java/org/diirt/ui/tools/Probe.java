@@ -16,14 +16,17 @@ public class Probe extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Probe.fxml"));
+        stage.setTitle("diirt - Probe");
+        stage.setScene(createScene());
+        stage.show();
+    }
+    
+    public static Scene createScene() throws Exception {
+        Parent root = FXMLLoader.load(Probe.class.getResource("/fxml/Probe.fxml"));
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
-        
-        stage.setTitle("diirt - Probe");
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
 
     /**
