@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 import org.diirt.vtype.ValueFactory;
 
@@ -21,11 +22,11 @@ import org.diirt.vtype.ValueFactory;
 public class FormulaRegistry {
     private final static FormulaRegistry registry = new FormulaRegistry();
     
+    private static final Logger log = Logger.getLogger(FormulaRegistry.class.getName());
+    
     static {
         // Find formula functions to register using the ServiceLoader
-        for (FormulaFunctionSet functionSet : ServiceLoaderOSGiWrapper.load(FormulaFunctionSet.class)) {
-            registry.registerFormulaFunctionSet(functionSet);
-        }
+        ServiceLoaderOSGiWrapper.load(FormulaFunctionSet.class, log, registry::registerFormulaFunctionSet);
     }
 
     /**
