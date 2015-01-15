@@ -4,12 +4,6 @@
  */
 package org.diirt.ui.tools;
 
-import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Bounds;
 import javafx.scene.layout.BorderPane;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
@@ -17,14 +11,10 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
-import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.datasource.graphene.Graph2DResult;
 import org.diirt.datasource.graphene.IntensityGraph2DExpression;
-import static org.diirt.datasource.util.Executors.swingEDT;
-import org.diirt.graphene.Graph2DRendererUpdate;
-import org.diirt.util.concurrent.Executors;
+import org.diirt.javafx.util.Executors;
 import static org.diirt.util.time.TimeDuration.ofHertz;
-import org.diirt.vtype.ValueUtil;
 
 public final class BaseGraphView extends BorderPane {
 
