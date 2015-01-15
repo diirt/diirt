@@ -34,9 +34,7 @@ public class FileFormatRegistry {
     
     static {
         // Find file formats to register using the ServiceLoader
-        for (FileFormat fileFormat : ServiceLoaderOSGiWrapper.load(FileFormat.class)) {
-            registry.registerFileFormat(fileFormat);
-        }
+        ServiceLoaderOSGiWrapper.load(FileFormat.class, log, registry::registerFileFormat);
     }
     
     /**
