@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +36,17 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class ServiceLoaderOSGiWrapper {
+    
+    public static <T> void load(Class<T> serviceClazz, Logger log, Consumer<T> consumer) {
+        log.log(Level.CONFIG, "Fetching {0}s", serviceClazz.getSimpleName());
+        int count = 0;
+        for (T service : ServiceLoaderOSGiWrapper.load(serviceClazz)) {
+            log.log(Level.CONFIG, "Found {0} ({1})", new Object[] {serviceClazz.getSimpleName(), service.getClass().getSimpleName()});
+            consumer.accept(service);
+            count++;
+        }
+        log.log(Level.CONFIG, "Found {0} {1}s", new Object[] {count, serviceClazz.getSimpleName()});
+    }
 
     public static <T> Iterable<T> load(Class<T> serviceClazz) {
         if (isOSGi(serviceClazz)) {
