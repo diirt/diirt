@@ -22,6 +22,7 @@ import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVLongArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTHistogramToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTMatrixToVDoubleArray;
 import org.epics.pvmanager.pva.adapters.PVFieldNTNameValueToVTable;
+import org.epics.pvmanager.pva.adapters.PVFieldToTimestamp;
 import org.epics.pvmanager.pva.adapters.PVFieldToVBoolean;
 import org.epics.pvmanager.pva.adapters.PVFieldToVBooleanArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVByte;
@@ -41,6 +42,7 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVStatistics;
 import org.epics.pvmanager.pva.adapters.PVFieldToVString;
 import org.epics.pvmanager.pva.adapters.PVFieldToVStringArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVTable;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VByte;
@@ -455,6 +457,17 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
             
+    //  -> Timestamp 
+    final static PVATypeAdapter ToTimeStamp = new PVATypeAdapter(
+    		Timestamp.class,
+    		new String[] { "time_t" })
+    	{
+            @Override
+            public Timestamp createValue(final PVStructure message, PVField valueField, boolean disconnected) {
+            	return PVFieldToTimestamp.create(message);
+            }
+        };
+        
     public static final Set<PVATypeAdapter> converters;
     
     static {
@@ -491,6 +504,8 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVNumberArrayAsHistogram); // NTHistogram support
 
         newFactories.add(ToNTNDArray); // NTNDArray support
+
+        newFactories.add(ToTimeStamp); // time_t support
 
         converters = Collections.unmodifiableSet(newFactories);
     }
