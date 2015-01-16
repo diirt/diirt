@@ -8,6 +8,7 @@ import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import org.diirt.util.array.ListDouble;
 
 /**
  * A numeric color map defined by interpolated colors (gradients).
@@ -16,7 +17,7 @@ import java.util.List;
  */
 class NumberColorMapGradient implements NumberColorMap {
 
-    private final Color[] colors;
+    private final List<Color> colors; 
     private final String name;
 
     /**
@@ -26,9 +27,10 @@ class NumberColorMapGradient implements NumberColorMap {
      * 
      * @param colors 
      */
-    public NumberColorMapGradient(Color[] colors, String name) {
+    public NumberColorMapGradient(List<Color> colors,ListDouble positions, String name) {
         this.colors = colors;
         this.name = name;
+
     }
 
     @Override
@@ -38,12 +40,12 @@ class NumberColorMapGradient implements NumberColorMap {
 
     class ValueColorSchemeInstanceGradient implements NumberColorMapInstance {
 
-        protected Color[] colors;
+        protected List<Color> colors;
         protected List<Double> percentages = new ArrayList<>();
         protected int nanColor;
         protected Range range;
 
-        public ValueColorSchemeInstanceGradient(Color[] colors, Range range) {
+        public ValueColorSchemeInstanceGradient(List<Color> colors, Range range) {
             this.range = range;
             this.colors = colors;
             this.nanColor = colors[colors.length - 1].getRGB();
