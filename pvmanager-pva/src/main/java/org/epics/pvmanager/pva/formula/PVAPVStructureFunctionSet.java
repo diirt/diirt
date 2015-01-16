@@ -13,10 +13,22 @@ import java.util.List;
 import java.util.Set;
 
 import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.PVBoolean;
+import org.epics.pvdata.pv.PVByte;
+import org.epics.pvdata.pv.PVDouble;
 import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVFloat;
+import org.epics.pvdata.pv.PVInt;
+import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVScalarArray;
+import org.epics.pvdata.pv.PVShort;
+import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.PVUByte;
+import org.epics.pvdata.pv.PVUInt;
+import org.epics.pvdata.pv.PVULong;
+import org.epics.pvdata.pv.PVUShort;
 import org.epics.pvdata.pv.PVUnion;
 import org.epics.pvdata.pv.Scalar;
 import org.epics.pvdata.pv.ScalarArray;
@@ -46,6 +58,7 @@ import org.epics.pvmanager.pva.adapters.PVFieldToVShort;
 import org.epics.pvmanager.pva.adapters.PVFieldToVShortArray;
 import org.epics.pvmanager.pva.adapters.PVFieldToVString;
 import org.epics.pvmanager.pva.adapters.PVFieldToVStringArray;
+import org.epics.util.time.Timestamp;
 import org.epics.vtype.VBoolean;
 import org.epics.vtype.VBooleanArray;
 import org.epics.vtype.VByte;
@@ -111,9 +124,10 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 				values.add(columnData);
 				*/
 				
-				types.add(toVTypeClass(pvF.getField()));
+				Class<?> clazz = toVTableColumnClass(pvF.getField());
+				types.add(clazz);
 				ArrayList<Object> columnData = new ArrayList<Object>();
-				columnData.add(toVType(pvF, null));
+				columnData.add(toVTableColumnValue(pvF, clazz));
 				values.add(columnData);
 				
 			}
@@ -422,6 +436,195 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 			return new PVAPVField(pvField, false);
 	}
 
+	public static Object toVTableColumnValue(PVField pvField, Class<?> vtableClass) {
+		
+		if (pvField instanceof PVStructure)
+		{
+			if (vtableClass.equals(Timestamp.class))
+				return toVType(pvField, null);
+			else
+				return null;
+		}
+		else if (pvField instanceof PVScalar)
+		{
+			PVScalar pvScalar = (PVScalar)pvField;
+			switch (pvScalar.getScalar().getScalarType())
+			{
+			case pvDouble:
+				return ((PVDouble)pvScalar).get();
+			case pvFloat:
+				return ((PVFloat)pvScalar).get();
+			case pvInt:
+				return ((PVInt)pvScalar).get();
+			case pvUInt:
+				return ((PVUInt)pvScalar).get();
+			case pvLong:
+				return ((PVLong)pvScalar).get();
+			case pvULong:
+				return ((PVULong)pvScalar).get();
+			case pvShort:
+				return ((PVShort)pvScalar).get();
+			case pvUShort:
+				return ((PVUShort)pvScalar).get();
+			case pvByte:
+				return ((PVByte)pvScalar).get();
+			case pvUByte:
+				return ((PVUByte)pvScalar).get();
+			case pvString:
+				return ((PVString)pvScalar).get();
+			case pvBoolean:
+				return ((PVBoolean)pvScalar).get();
+			default:
+				throw new RuntimeException("unsupported scalar type: " + pvScalar.getScalar());
+			}
+		}
+		else if (pvField instanceof PVScalarArray)
+		{
+			return null;
+		}
+		else if (pvField instanceof PVUnion)
+		{
+			return null;
+		}
+		else
+			return null;
+	}
+
+	/*
+	static Map<Class<?>,Class<?>> VTypeToVTable = new HashMap<Class<?>,Class<?>>();
+	static
+	{
+		VTypeToVTable.put(VByte.class, Byte.class);
+		VTypeToVTable.put(VShort.class, Short.class);
+		VTypeToVTable.put(VInt.class, Integer.class);
+		VTypeToVTable.put(VLong.class, Long.class);
+		VTypeToVTable.put(VBoolean.class, Boolean.class);
+		VTypeToVTable.put(VString.class, String.class);
+		VTypeToVTable.put(VDouble.class, Double.class);
+		VTypeToVTable.put(VFloat.class, Float.class);
+		VTypeToVTable.put(Timestamp.class, Timestamp.class);
+		VTypeToVTable.put(VNumber.class, Number.class);
+	}
+	
+	public static Class<?> toVTableColumnClass(Field field) {
+		
+		Class<?> vclazz = toVTypeClass(field);
+		
+		Class<?> vTableType = VTypeToVTable.get(vclazz);
+		if (vTableType != null)
+			return vTableType;
+		else
+			return String.class;
+	}
+	*/
+	
+	public static Class<?> toVTableColumnClass(Field field) {
+		
+		Type fieldType = field.getType();
+		if (fieldType == Type.structure)
+		{
+			Structure fieldStructure = (Structure)field;
+			
+			if (fieldStructure.getID().equals("time_t"))
+				return Timestamp.class;
+			else
+				return String.class;
+		}
+		else if (fieldType == Type.scalar)
+		{
+			Scalar scalar = (Scalar)field;
+			switch (scalar.getScalarType())
+			{
+			case pvDouble:
+				return Double.class;
+			case pvFloat:
+				return Float.class;
+			case pvInt:
+			case pvUInt:
+				return Integer.class;
+			case pvLong:
+			case pvULong:
+				return Long.class;
+			case pvShort:
+			case pvUShort:
+				return Short.class;
+			case pvByte:
+			case pvUByte:
+				return Byte.class;
+			case pvString:
+				return String.class;
+			case pvBoolean:
+				return Boolean.class;
+			default:
+				throw new RuntimeException("unsupported scalar type: " + scalar.getScalarType());
+			}
+		}
+		else if (fieldType == Type.scalarArray)
+		{
+			return String.class;
+		}
+		else if (fieldType == Type.union)
+		{
+			Union u = (Union)field;
+			if (u.isVariant())
+				return String.class;
+			else
+			{
+				return String.class;
+				/*
+				boolean allScalars = true;
+				boolean allScalarArrays = true;
+				boolean allNumeric = true;
+				boolean sameFields = true;
+				Field lastField = null;
+				for (Field uf : u.getFields())
+				{
+					if (lastField != null)
+						if (!uf.equals(lastField))
+							sameFields = false;
+	
+					Type uft = uf.getType();
+					if (uft != Type.scalar)
+						allScalars = false;
+					else
+					{
+						Scalar s = (Scalar)uf;
+						if (!s.getScalarType().isNumeric())
+							allNumeric = false;
+					}
+					
+					if (uft != Type.scalarArray)
+						allScalarArrays = false;
+					{
+						ScalarArray s = (ScalarArray)uf;
+						if (!s.getElementType().isNumeric())
+							allNumeric = false;
+					}
+					
+					lastField = uf;
+				}
+				
+				if (sameFields)
+					return toVTableColumnClass(lastField);
+				else if (allNumeric)
+				{
+					if (allScalars)
+						return String.class;
+						//return VNumber.class;
+					else if (allScalarArrays)
+						return String.class;
+					else
+						return String.class;
+				}
+				else 
+					return String.class; 
+				*/
+			}
+		}
+		else
+			return String.class; 
+	}
+	
 	public static Class<?> toVTypeClass(Field field) {
 		
 		Type fieldType = field.getType();
@@ -553,4 +756,5 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 		else
 			return Object.class; // TODO PVUnionArray, PVStructureArray
 	}
+	
 }
