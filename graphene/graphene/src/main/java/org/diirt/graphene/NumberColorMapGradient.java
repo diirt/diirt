@@ -75,7 +75,7 @@ class NumberColorMapGradient implements NumberColorMap {
             int alpha = 0, red = 0, green = 0, blue = 0;
             if(relative){
                 if (fullRange > 0) {
-                    for (int i = 0; i < positions.size() - 1; i++) {
+                    for (int i = 0; i < positions.size()-1; i++) {
                         if (range.getMinimum() + positions.get(i) * fullRange <= value && value <= range.getMinimum() + positions.get(i + 1) * fullRange) {
                             double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.get(i) * fullRange, range.getMinimum() + positions.get(i + 1) * fullRange);
                             normalValue = Math.min(normalValue, 1.0);

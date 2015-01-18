@@ -6,9 +6,25 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.parsers.DocumentBuilderFactory; 
+import javax.xml.parsers.DocumentBuilder; 
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * A utility class that provides implementations of {@link NumberColorMap},
@@ -20,6 +36,70 @@ public class NumberColorMaps {
     
     // TODO: add more color schemes like the ones that can be found:
     // http://www.mathworks.com/help/matlab/ref/colormap.html
+    
+      private NumberColorMap colorMap; 
+    
+    public NumberColorMaps(){
+        colorMap=JET; //default color map
+    }
+    public NumberColorMap getColorMap(){
+        return colorMap; 
+    }
+   /*  file format 
+    <colormap> 
+        <color>
+          <position> relative or absoulute </position>
+          <R> </R>
+          <G> </G> 
+          <B> </B> 
+        </color>
+    </colormap>
+   */
+    
+    public void loadColorMap(File file,boolean format_relative) throws FileNotFoundException, ParserConfigurationException, SAXException, IOException{
+      // new implementation loading from XML file 
+        List<Double> positions = new ArrayList<>(); 
+        List<Color> colors= new ArrayList<>(); 
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(file); 
+        Element el = doc.getDocumentElement(); 
+        NodeList nl = el.getChildNodes(); 
+        
+        if(nl!=null){
+            for(int i=0; i<nl.getLength();i++){
+                 if(nl.item(i).getNodeType()==Node.ELEMENT_NODE){
+                     Element e = (Element)nl.item(i); 
+                     if(e.getNodeName()=="color"){
+                        
+                         positions.add( parseDouble(e.getElementsByTagName("position").item(0).getTextContent())); 
+                         int R =parseInt(e.getElementsByTagName("R").item(0).getTextContent()); 
+                         int G =parseInt(e.getElementsByTagName("G").item(0).getTextContent()); 
+                         int B =parseInt(e.getElementsByTagName("B").item(0).getTextContent()); 
+                     }
+                 }
+            }
+        }
+        
+        
+      /* 
+        //color map file can be found at colormap.org
+        Scanner scanner=new Scanner(file);          
+        String line; 
+        List<Color> colorArray=new ArrayList<Color>(); 
+        while(scanner.hasNextLine()){
+            line=scanner.nextLine(); 
+            String []tokens=line.split("\\s+"); 
+            if(tokens.length!=3){
+                throw new IOException(); 
+            }
+            colorArray.add(new Color(parseInt(tokens[0]),parseInt(tokens[1]),parseInt(tokens[2]))); 
+        }
+       */ 
+        colorMap=new NumberColorMapGradient(colors, positions, format_relative, Color.yellow, Color.orange, Color.orange, file.getName()); 
+       
+             
+    }
     
     /**
      * JET ranges from blue to red, going through cyan and yellow.
