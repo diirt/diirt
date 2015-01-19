@@ -403,8 +403,13 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         line.moveTo(scaledX[0], scaledY[0]);
         // TODO: review for NaN support
         for (int i = 1; i < scaledY.length; i++) {
-            line.lineTo(scaledX[i], scaledY[i-1]);
-            line.lineTo(scaledX[i], scaledY[i]);
+	    line.lineTo(scaledX[i], scaledY[i-1]);
+	    if ( !Double.isNaN( scaledY[ i ] ) ) {
+		line.lineTo(scaledX[i], scaledY[i]);
+	    }
+	    else {
+		line.moveTo( scaledX[ i ] , scaledY[ i ] );
+	    }
         }
 //        line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
         //TODO: last value till end of the graph 

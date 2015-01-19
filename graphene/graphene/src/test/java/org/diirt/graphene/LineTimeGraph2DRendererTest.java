@@ -108,4 +108,22 @@ public class LineTimeGraph2DRendererTest {
         ImageAssert.compareImages("lineTimeGraph.4", image);
     }
     
+    @Test
+    public void testPreviousValue1() throws Exception {
+	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, Double.NaN, 4, 5, 6),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(1000)),
+                start.plus(TimeDuration.ofMillis(2000)),
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(4000)),
+                start.plus(TimeDuration.ofMillis(5000))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.previousvalue.NaN.1", image);
+    }
+    
 }
