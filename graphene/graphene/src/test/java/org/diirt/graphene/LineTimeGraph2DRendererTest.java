@@ -216,4 +216,31 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.5", image);
     }
+    
+    @Test
+    public void testPreviousValueBigFluctuation() throws Exception {
+	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10 , 0 , 100 , 0 , 10 , 0 , 100 , -100 , 0 , 10 , 100 , -100 , 100 , -100 , 0  ),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(1)),
+                start.plus(TimeDuration.ofMillis(2)),
+                start.plus(TimeDuration.ofMillis(3)),
+                start.plus(TimeDuration.ofMillis(4)),
+                start.plus(TimeDuration.ofMillis(5)),
+		start.plus(TimeDuration.ofMillis(6)),
+		start.plus(TimeDuration.ofMillis(7)),
+		start.plus(TimeDuration.ofMillis(8)),
+		start.plus(TimeDuration.ofMillis(9)),
+		start.plus(TimeDuration.ofMillis(10)),
+		start.plus(TimeDuration.ofMillis(11)),
+		start.plus(TimeDuration.ofMillis(12)),
+		start.plus(TimeDuration.ofMillis(13)),
+		start.plus(TimeDuration.ofMillis(14))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.previousValue.2", image);
+    }
 }
