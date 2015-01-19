@@ -65,7 +65,7 @@ window.onload = function() {
         var index = subscriptionList.selectedIndex;
         channel = channelList[index];
         id = index;
-        console.log('id: ' + id + 'channel: ' + channel);
+        // console.log('id: ' + id + 'channel: ' + channel);
     };
     
     // Subscribe
@@ -77,6 +77,7 @@ window.onload = function() {
         idField.value = currentId;
         sendMessage(message); // Sends the message through socket
         var newSubscription = document.createElement('option'); // New subscription to be added to sub list
+        newSubscription.className = 'open';
         subscriptionList.appendChild(newSubscription);
         newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
@@ -97,6 +98,7 @@ window.onload = function() {
         // TODO: Change to appendChild
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
+        subscriptionList.childNodes[id].className = 'unsubscribed'; // Strikethrough
     };
     
     
@@ -116,7 +118,6 @@ window.onload = function() {
            // subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
       if (response.value.type.name === "VTable") {
-           console.log('table');
            value = '<option>table</option>';
            filterValue = 'table';
        }
@@ -132,7 +133,7 @@ window.onload = function() {
         resultsInfoFiltered[id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');      
         // Display event details based on filter status
         if (filter == 'none') { // No filter
-           // TODO: Change to apendChild 
+           // TODO: Change to appendChild 
            result.innerHTML = value + result.innerHTML;
         }
         else if (response.id == filter) { // If the event should be displayed - matches filter
@@ -146,7 +147,6 @@ window.onload = function() {
    function openSocket (event) {
        //TODO: change to appeendChild
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
-       console.log('connected to socket');
        resultsInfo.unshift('Connected to ' + serverField.value);
        idField.value = currentId;
        //TODO: Change to clear all children...or something like that
@@ -187,6 +187,7 @@ window.onload = function() {
         result.innerHTML = '<option>Paused</option>' + result.innerHTML;
         resultsInfo.unshift(message);
         // socketStatus.innerHTML = 'Paused';
+        subscriptionList.childNodes[id].className = 'closed';
     };
     
     // Resume
@@ -197,6 +198,7 @@ window.onload = function() {
         result.innerHTML = '<option>Resume</option>' + result.innerHTML;
         resultsInfo.unshift(message);
         // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
+        subscriptionList.childNodes[id].className = 'open';
     };
     
     
@@ -220,11 +222,8 @@ window.onload = function() {
     
     
     // Displays details for selected event
-    // TODO: fix this whatever is happening here it is bad
     result.onchange = function(e) {
-        console.log('result onchange');
         var i = result.selectedIndex;
-        console.log(i);
         details.innerHTML = resultsInfo[i];
     };
  

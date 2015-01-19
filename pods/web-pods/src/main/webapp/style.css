@@ -9,8 +9,12 @@ h1 {
     margin-top: 0;
 }
 
-.open {
+.open{
   color: green;
+}
+
+.unsubscribed {
+  text-decoration: line-through;
 }
 
 .closed, .error {
