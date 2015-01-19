@@ -120,11 +120,11 @@ window.onload = function() {
            value = '<option>table</option>';
            filterValue = 'table';
        }
-       if (response.type === "error") {
+       else if (response.type === "error") {
            value = '<option class = "error">' + response.error + '</option>';
            filterValue = response.error;
        } 
-       if (response.type === "value") {
+       else if (response.type === "value") {
             value = '<option>' + response.value.value + '</option>';
             filterValue = response.value.value;
         }
