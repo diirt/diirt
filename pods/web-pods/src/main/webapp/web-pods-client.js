@@ -76,11 +76,13 @@ window.onload = function() {
         currentId++;
         idField.value = currentId;
         sendMessage(message); // Sends the message through socket
-        var newSubscription = document.createElement('option');
+        var newSubscription = document.createElement('option'); // New subscription to be added to sub list
         subscriptionList.appendChild(newSubscription);
         newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
-        result.innerHTML = '<option>Subscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        var subscriptionNotification = document.createElement('option'); // New subscription to be added to results window
+        result.insertBefore(subscriptionNotification, result.childNodes[0]);
+        subscriptionNotification.appendChild(document.createTextNode('Subscribe: ' + channel + ', ' + id));
         resultsInfo.unshift(message);
         resultsInfoFiltered.unshift([message]);
         socket.onmessage = function(e) { newMessage(e) };
@@ -92,6 +94,7 @@ window.onload = function() {
         // TODO: Change class of subscriptions when unsubscribed (change to color red)
         var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
         sendMessage(message);
+        // TODO: Change to appendChild
         result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
         resultsInfo.unshift(message);
     };
@@ -113,6 +116,7 @@ window.onload = function() {
            // subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
       if (response.value.type.name === "VTable") {
+           console.log('table');
            value = '<option>table</option>';
            filterValue = 'table';
        }
@@ -128,7 +132,8 @@ window.onload = function() {
         resultsInfoFiltered[id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');      
         // Display event details based on filter status
         if (filter == 'none') { // No filter
-            result.innerHTML = value + result.innerHTML;
+           // TODO: Change to apendChild 
+           result.innerHTML = value + result.innerHTML;
         }
         else if (response.id == filter) { // If the event should be displayed - matches filter
             var option = document.createElement('option');
@@ -139,10 +144,12 @@ window.onload = function() {
     
     // Updates connection status
    function openSocket (event) {
+       //TODO: change to appeendChild
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
        console.log('connected to socket');
        resultsInfo.unshift('Connected to ' + serverField.value);
        idField.value = currentId;
+       //TODO: Change to clear all children...or something like that
        subscriptionList.innerHTML = '';
     };
     
@@ -155,6 +162,7 @@ window.onload = function() {
     
     // Updates the connection status when socket is closed
     function closeSocket(event) {
+        //TODO: Change to appendChild
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
         currentId = 0;
@@ -175,6 +183,7 @@ window.onload = function() {
     pauseBtn.onclick = function(e) {
         var message = '{"message":"pause","id": ' + id + '}';
         sendMessage(message);
+        // TODO: appendChild
         result.innerHTML = '<option>Paused</option>' + result.innerHTML;
         resultsInfo.unshift(message);
         // socketStatus.innerHTML = 'Paused';
@@ -184,6 +193,7 @@ window.onload = function() {
     resumeBtn.onclick = function(e) {
         var message = '{"message" : "resume", "id" : ' + id + '}';
         sendMessage(message);
+        //TODO: appendChild
         result.innerHTML = '<option>Resume</option>' + result.innerHTML;
         resultsInfo.unshift(message);
         // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
@@ -210,10 +220,12 @@ window.onload = function() {
     
     
     // Displays details for selected event
-    results.onchange = function(e) {
-        var index = results.selectedIndex;
-        console.log(index);
-        details.innerHTML = resultsInfo[index];
+    // TODO: fix this whatever is happening here it is bad
+    result.onchange = function(e) {
+        console.log('result onchange');
+        var i = result.selectedIndex;
+        console.log(i);
+        details.innerHTML = resultsInfo[i];
     };
  
 };
