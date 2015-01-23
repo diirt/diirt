@@ -107,7 +107,7 @@ public class PVAChannelHandler extends
 			ChannelProvider channelProvider, short priority,
 			PVATypeSupport typeSupport) {
 		super(channelName);
-		this.pvRequest = createRequest.createRequest(pvRequestString);
+		this.pvRequest = (pvRequestString != null) ? createRequest.createRequest(pvRequestString) : null;
 		this.pvaChannelProvider = channelProvider;
 		this.priority = priority;
 		this.pvaTypeSupport = typeSupport;
@@ -115,21 +115,63 @@ public class PVAChannelHandler extends
 		if (pvRequest != null)
 		{
 			PVStructure field = pvRequest.getStructureField("field");
-			if (field != null)
-			{
-				String[] fieldNames = field.getStructure().getFieldNames();
-				if (fieldNames.length == 1)
-				{
-					extractPVField = fieldNames[0];
-					return;
-				}
-			}
+			extractPVField = getOnlyChildFieldName(field);
 		}
-		extractPVField = null;
+		else
+			extractPVField = null;
 		
 		// NOTE: mind "return" above
 	}
 
+	private static final String _OPTIONS = "_options";
+	private static final String TAKE_PARENT = _OPTIONS;
+	private static final String getOnlyChildFieldName(PVStructure field)
+	{		
+		if (field != null)
+		{
+			String[] fieldNames = field.getStructure().getFieldNames();
+			if (fieldNames.length > 0)
+			{
+				String name = null;
+				for (int i = 0; i < fieldNames.length; i++)
+				{
+					// ignore options
+					if (!fieldNames[0].equals(_OPTIONS))
+					{
+						if (name == null)
+							name = fieldNames[0];
+						else
+							return null;
+					}
+				}
+				
+				if (name == null)
+				{
+					// only "_options" field, that's OK
+					return TAKE_PARENT;
+				}
+				else
+				{
+					String childName = getOnlyChildFieldName(field.getStructureField(name));
+					if (childName == null)
+						return null;
+					else if (childName.equals(_OPTIONS))
+						return name;
+					else
+						return name + "." + childName;
+				}
+			}
+			else
+			{
+				// no options, no subfield(s)
+				return TAKE_PARENT;
+			}
+		}
+		else
+			return null;
+	}
+	
+	
 	/**
 	 * @return the channel
 	 */
@@ -206,22 +248,10 @@ public class PVAChannelHandler extends
 
 			// introspect
 			if (connectionState == ConnectionState.CONNECTED) {
-				if (pvRequest == null)
+				if (extractPVField == null)
 					channel.getField(this, null);
 				else
-				{
-					PVStructure field = pvRequest.getStructureField("field");
-					if (field != null)
-					{
-						String[] fieldNames = field.getStructure().getFieldNames();
-						if (fieldNames.length == 1)
-							channel.getField(this, fieldNames[0]);
-						else
-							channel.getField(this, null);
-					}
-					else
-						channel.getField(this, null);
-				}
+					channel.getField(this, extractPVField);
 			}
 			else
 			{
