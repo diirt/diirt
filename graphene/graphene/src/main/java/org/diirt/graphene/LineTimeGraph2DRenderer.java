@@ -7,8 +7,9 @@ package org.diirt.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Arrays;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.SortedListView;
 
 /**
  * Renderer for a line graph.
@@ -73,6 +74,11 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         
         ListNumber xValues = data.getNormalizedTime();
         ListNumber yValues = data.getValues();
+	
+	//TODO continue the last data point to today's date
+	//xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {99999} ) );
+	//double lastY = yValues.getDouble( yValues.size()-1 );
+	//yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
 
         setClip(g);
         g.setColor(Color.BLACK);
