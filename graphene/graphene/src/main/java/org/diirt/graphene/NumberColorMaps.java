@@ -39,11 +39,11 @@ public class NumberColorMaps {
     // http://www.mathworks.com/help/matlab/ref/colormap.html
     
       private NumberColorMap colorMap; 
-      private static List<Double> jet=percentageRange(7); 
-      private static List<Double> gray=percentageRange(3); 
-      private static List<Double> bone=percentageRange(6);
-     private static List<Double> hot=percentageRange(5);
-     private static List<Double> hsv=percentageRange(8);
+      private static List<Double> jet=percentageRange(5); 
+      private static List<Double> gray=percentageRange(1); 
+      private static List<Double> bone=percentageRange(4);
+     private static List<Double> hot=percentageRange(3);
+     private static List<Double> hsv=percentageRange(6);
     public NumberColorMaps(){
         
           //  jet=percentageRange(7); 

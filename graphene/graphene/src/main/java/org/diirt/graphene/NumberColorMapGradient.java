@@ -68,12 +68,27 @@ class NumberColorMapGradient implements NumberColorMap {
             }
             double fullRange = range.getMaximum() - range.getMinimum();
             int alpha = 0, red = 0, green = 0, blue = 0;
-            if(relative){
-                if (fullRange > 0) {
-                    for (int i = 0; i < positions.size()-1; i++) {
-                         
-                        if (range.getMinimum() + positions.get(i) * fullRange <= value && value <= range.getMinimum() + positions.get(i + 1) * fullRange) {
-                            double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.get(i) * fullRange, range.getMinimum() + positions.get(i + 1) * fullRange);
+            //if we are using relative mapping 
+                if(relative){
+                    if (fullRange > 0) {
+                        for (int i = 0; i < positions.size()-1; i++) {
+
+                            if (range.getMinimum() + positions.get(i) * fullRange <= value && value <= range.getMinimum() + positions.get(i + 1) * fullRange) {
+                                double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.get(i) * fullRange, range.getMinimum() + positions.get(i + 1) * fullRange);
+                                normalValue = Math.min(normalValue, 1.0);
+                                normalValue = Math.max(normalValue, 0.0);
+                                alpha = 255;
+                                red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
+                                green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
+                                blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
+                            }
+                        }
+                    } 
+
+                else {
+                    for (int i = 0; i < positions.size() - 1; i++) {
+                        if (positions.get(i) <= .5 && .5 <= positions.get(i + 1)) {
+                            double normalValue = 0;
                             normalValue = Math.min(normalValue, 1.0);
                             normalValue = Math.max(normalValue, 0.0);
                             alpha = 255;
@@ -82,22 +97,10 @@ class NumberColorMapGradient implements NumberColorMap {
                             blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
                         }
                     }
-                } 
-            }
-            else {
-                for (int i = 0; i < positions.size() - 1; i++) {
-                    if (positions.get(i) <= .5 && .5 <= positions.get(i + 1)) {
-                        double normalValue = 0;
-                        normalValue = Math.min(normalValue, 1.0);
-                        normalValue = Math.max(normalValue, 0.0);
-                        alpha = 255;
-                        red = (int) (colors.get(i).getRed() + (colors.get(i+1).getRed() - colors.get(i).getRed()) * normalValue);
-                        green = (int) (colors.get(i).getGreen() + (colors.get(i+1).getGreen() - colors.get(i).getGreen()) * normalValue);
-                        blue = (int) (colors.get(i).getBlue() + (colors.get(i+1).getBlue() - colors.get(i).getBlue()) * normalValue);
-                    }
+                  }
                 }
-            }
-           
+             //TODO: absoulute scale
+                
             if (value > range.getMaximum()) {
                
                 alpha = 255;
