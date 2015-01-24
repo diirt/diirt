@@ -401,7 +401,6 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     private static Path2D.Double previousValue(double[] scaledX, double[] scaledY) {
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[0], scaledY[0]);
-        // TODO: review for NaN support
         for (int i = 1; i < scaledY.length; i++) {
 	    line.lineTo(scaledX[i], scaledY[i-1]);
 	    if ( !Double.isNaN( scaledY[ i ] ) ) {
