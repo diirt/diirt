@@ -12,6 +12,7 @@ import java.io.IOException;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,35 @@ public class NumberColorMaps {
     // http://www.mathworks.com/help/matlab/ref/colormap.html
     
       private NumberColorMap colorMap; 
-    
+      private static List<Double> jet=percentageRange(7); 
+      private static List<Double> gray=percentageRange(3); 
+      private static List<Double> bone=percentageRange(6);
+     private static List<Double> hot=percentageRange(5);
+     private static List<Double> hsv=percentageRange(8);
     public NumberColorMaps(){
-        colorMap=JET; //default color map
+        
+          //  jet=percentageRange(7); 
+          // gray=percentageRange(3); 
+          // bone=percentageRange(6);
+          // hot=percentageRange(5);
+          // hsv=percentageRange(8);
+           colorMap=JET; //default color map
     }
+    
+    
     public NumberColorMap getColorMap(){
         return colorMap; 
+    }
+    private static ArrayList<Double> percentageRange(int size) {
+        ArrayList<Double> percentages = new ArrayList<>();
+
+        percentages.add(0.0);
+
+        for (int i = 1; i <= size; i++) {
+            percentages.add((double) i / size);
+        }
+
+        return percentages;
     }
    /*  file format 
     <colormap> 
@@ -70,12 +94,13 @@ public class NumberColorMaps {
             for(int i=0; i<nl.getLength();i++){
                  if(nl.item(i).getNodeType()==Node.ELEMENT_NODE){
                      Element e = (Element)nl.item(i); 
-                     if(e.getNodeName()=="color"){
+                     if("color"==e.getNodeName()){
                         
-                         positions.add( parseDouble(e.getElementsByTagName("position").item(0).getTextContent())); 
+                         positions.add(parseDouble(e.getElementsByTagName("position").item(0).getTextContent())); 
                          int R =parseInt(e.getElementsByTagName("R").item(0).getTextContent()); 
                          int G =parseInt(e.getElementsByTagName("G").item(0).getTextContent()); 
                          int B =parseInt(e.getElementsByTagName("B").item(0).getTextContent()); 
+                         colors.add(new Color(R,G,B)); 
                      }
                  }
             }
@@ -96,7 +121,7 @@ public class NumberColorMaps {
             colorArray.add(new Color(parseInt(tokens[0]),parseInt(tokens[1]),parseInt(tokens[2]))); 
         }
        */ 
-        colorMap=new NumberColorMapGradient(colors, positions, format_relative, Color.yellow, Color.orange, Color.orange, file.getName()); 
+        colorMap=new NumberColorMapGradient(colors, positions, format_relative, Color.BLACK, file.getName()); 
        
              
     }
@@ -104,51 +129,54 @@ public class NumberColorMaps {
     /**
      * JET ranges from blue to red, going through cyan and yellow.
      */
-    public static final NumberColorMap JET = new NumberColorMapGradient(new Color[]{new Color(0,0,138), 
+    
+    
+     public static final NumberColorMap JET = new NumberColorMapGradient(Arrays.asList(new Color[]{new Color(0,0,138), 
                                                                                 Color.BLUE,
                                                                                 Color.CYAN,
                                                                                 Color.YELLOW,
                                                                                 Color.RED,
                                                                                 new Color(138,0,0), 
-                                                                                Color.BLACK}, "JET");
+                                                                                Color.BLACK}),jet,true,new Color(0,0,0), "JET");
     /**
      * GRAY ranges from black to white.
      */
-    public static final NumberColorMap GRAY = new NumberColorMapGradient(new Color[]{Color.BLACK, 
+    
+    public static final NumberColorMap GRAY = new NumberColorMapGradient(Arrays.asList(new Color[]{Color.BLACK, 
                                                                                        Color.WHITE,
-                                                                                       Color.RED}, "GRAY");
+                                                                                       Color.RED}),gray,true,new Color(0,0,0), "GRAY");
     /**
      * BONE ranges from black to white passing from blue.
      */
-    public static final NumberColorMap BONE = new NumberColorMapGradient(new Color[]{Color.BLACK,
+    public static final NumberColorMap BONE = new NumberColorMapGradient(Arrays.asList(new Color[]{Color.BLACK,
                                                                                        new Color(57, 57, 86),
                                                                                        new Color(107, 115, 140),
                                                                                        new Color(165, 198, 198),
                                                                                        Color.WHITE,
-                                                                                       Color.RED}, "BONE");
+                                                                                       Color.RED} ),bone,true,new Color(0,0,0), "BONE");
     /**
      * HOT ranges from black to white passing from red and yellow.
      */
-    public static final NumberColorMap HOT = new NumberColorMapGradient(new Color[]{Color.BLACK,
+    public static final NumberColorMap HOT = new NumberColorMapGradient(Arrays.asList(new Color[]{Color.BLACK,
                                                                                        Color.RED,
                                                                                        Color.YELLOW,
                                                                                        Color.WHITE,
-                                                                                       Color.BLUE}, "HOT");
+                                                                                       Color.BLUE} ),hot,true,new Color(0,0,0), "HOT");
     /**
      * HSV goes through the color wheel: red, yellow, green, cyan, blue, magenta
      * and back to red. Useful for periodic functions.
      */
-    public static final NumberColorMap HSV = new NumberColorMapGradient(new Color[]{Color.RED,
+    public static final NumberColorMap HSV = new NumberColorMapGradient(Arrays.asList(new Color[]{Color.RED,
                                                                                        Color.YELLOW,
                                                                                        Color.GREEN,
                                                                                        Color.CYAN,
                                                                                        Color.BLUE,
                                                                                        Color.MAGENTA,
                                                                                        Color.RED,
-                                                                                       Color.BLACK}, "HSV");
+                                                                                       Color.BLACK} ),hsv,true,new Color(0,0,0), "HSV");
     private static final Map<String, NumberColorMap> registeredColorSchemes
             = new ConcurrentHashMap<>();
-    
+   
     static {
         registeredColorSchemes.put(JET.toString(), JET);
         registeredColorSchemes.put(GRAY.toString(), GRAY);
@@ -162,6 +190,7 @@ public class NumberColorMaps {
      * 
      * @return a set of color maps and their names
      */
+/*
     public static Map<String, NumberColorMap> getRegisteredColorSchemes() {
         return Collections.unmodifiableMap(registeredColorSchemes);
     }
