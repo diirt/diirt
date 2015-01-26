@@ -10,4 +10,33 @@
     <name>org.diirt.util</name>
     <description>Basic Java utility classes to be shared across projects until
         suitable replacements are available in the JDK.</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>    
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <instructions>
+                        <!-- The OSGi framework is added as an import package
+                        to make the ServiceLoader workaround function. It is
+                        accessed through introspection, so no maven dependency
+                        is needed. But it is required when in OSGi so that
+                        the introspection actually works.-->
+                        <Import-Package>org.osgi.framework,*</Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -57,7 +57,9 @@
                 <version>1.0.2</version>
                 <configuration>
                     <services>
+                        <param>org.diirt.datasource.DataSourceProvider</param>
                         <param>org.diirt.service.ServiceProvider</param>
+                        <param>org.diirt.datasource.formula.FormulaFunctionSet</param>
                     </services>
                 </configuration>
                 <executions>

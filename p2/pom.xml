@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.diirt</groupId>
+        <artifactId>diirt-all</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>p2-repository</artifactId>
+    <name>org.diirt.p2</name>
+    <description>P2 repository for the diirt bundles and their dependencies.</description>
+    <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.reficio</groupId>
+                <artifactId>p2-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <configuration>
+                            <categoryFileURL>${basedir}/category.xml</categoryFileURL>
+                            <artifacts>
+                                <artifact>
+                                    <id>org.diirt:datasource-sample:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.diirt.javafx:tools:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.diirt.support:diirt-cf:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.diirt.support:diirt-ca:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                                <artifact>
+                                    <id>org.diirt.support:diirt-pva:${project.version}</id>
+                                    <source>true</source>
+                                    <transitive>true</transitive>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>reficio</id>
+            <url>http://repo.reficio.org/maven/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+</project>

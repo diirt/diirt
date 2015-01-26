@@ -8,6 +8,7 @@ import gov.aps.jca.Context;
 import gov.aps.jca.Monitor;
 import java.util.concurrent.Executor;
 import org.diirt.datasource.CompositeDataSource;
+import org.diirt.datasource.CompositeDataSourceConfiguration;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
@@ -74,7 +75,7 @@ public class ConfigurationExamples {
         composite.putDataSource("sim", new SimulationDataSource());
 
         // If no prefix is given to a channel, use JCA as default
-        composite.setDefaultDataSource("ca");
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("ca"));
 
         // Set the composite as the default
         PVManager.setDefaultDataSource(composite);

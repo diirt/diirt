@@ -22,10 +22,6 @@ public class PVADataSource extends DataSource {
     static {
         // Install type support for the types it generates.
         DataTypeSupport.install();
-        
-        // TODO move this out
-        // Install formulas
-        FormulaRegistry.getDefault().registerFormulaFunctionSet(new NTNDArrayFunctionSet());
     }
 
     //private static final Logger logger = Logger.getLogger(PVADataSource.class.getName());
