@@ -56,8 +56,14 @@ public class ServiceLoaderOSGiWrapper {
         }
     }
 
-    private static boolean isOSGi(Class<?> clazz) {
-        return osgi.frameworkUtilClass != null;
+    private static boolean isOSGi(Class<?> serviceClazz) {
+        try {
+            if (osgi.frameworkUtilClass != null && osgi.getBundle(serviceClazz) != null) {
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     private static <T> List<T> loadOSGi(Class<T> serviceClazz) {
@@ -111,6 +117,13 @@ public class ServiceLoaderOSGiWrapper {
         private final Method getBundlesMethod = loadMethod(bundleContextClass, "getBundles");
         private final Method loadClassMethod = loadMethod(bundleClass, "loadClass", String.class);
         private final Method getEntryMethod = loadMethod(bundleClass, "getEntry", String.class);
+        private final boolean osgiEnabled;
+
+        public OSGiReflection() {
+            this.osgiEnabled = false;
+        }
+        
+        
         
         private Class<?> loadClass(String name) {
             try {
