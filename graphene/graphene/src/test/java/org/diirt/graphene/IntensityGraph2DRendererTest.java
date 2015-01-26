@@ -68,7 +68,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         return data;
     }
 
-    private Cell2DDataset rectangleDataset() {
+    public static Cell2DDataset rectangleDataset() {
         double listOfData[] = new double[10 * 10];
         for (int i = 0; i < (10 * 10); i++) {
             listOfData[i] = i;
@@ -457,18 +457,5 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         assertThat(renderer.getYIndexSelectionRange().getMaximum(), equalTo(135.0));
         ImageAssert.compareImages("intensityGraph2D.selectedRegion.1", graphBuffer.getImage());
     }
-    
-    @Test
-    public void customizedColorMapDraw() throws Exception{ 
-        //0% = dark red 25% = red 50% =light lilac 75% = blue 100% =dark blue
-        Cell2DDataset data = rectangleDataset();  
-        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
-        NumberColorMaps customized = new NumberColorMaps(); 
-        File file = new File("/Users/YifengYang/Desktop/UROP/graphene_new/diirt/graphene/graphene/src/test/resources/org/diirt/graphene/ColorTest.xml"); 
-        customized.loadColorMap(file, true);
-        renderer.update(renderer.newUpdate().colorMap(customized.getColorMap()));
-        GraphBuffer graphbuffer= new GraphBuffer(renderer); 
-        renderer.draw(graphbuffer, data);
-        ImageAssert.compareImages("intensityGraph2D.customizedColorMap", graphbuffer.getImage());
-    }
+
 }

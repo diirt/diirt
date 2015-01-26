@@ -38,26 +38,15 @@ public class NumberColorMaps {
     // TODO: add more color schemes like the ones that can be found:
     // http://www.mathworks.com/help/matlab/ref/colormap.html
     
-      private NumberColorMap colorMap; 
-      private static List<Double> jet=percentageRange(5); 
-      private static List<Double> gray=percentageRange(1); 
-      private static List<Double> bone=percentageRange(4);
-     private static List<Double> hot=percentageRange(3);
-     private static List<Double> hsv=percentageRange(6);
-    public NumberColorMaps(){
-        
-          //  jet=percentageRange(7); 
-          // gray=percentageRange(3); 
-          // bone=percentageRange(6);
-          // hot=percentageRange(5);
-          // hsv=percentageRange(8);
-           colorMap=JET; //default color map
+    private static List<Double> jet=percentageRange(5); 
+    private static List<Double> gray=percentageRange(1); 
+    private static List<Double> bone=percentageRange(4);
+    private static List<Double> hsv=percentageRange(6);
+    
+    private NumberColorMaps() {
+        // Utility class. Do not instanciate.
     }
     
-    
-    public NumberColorMap getColorMap(){
-        return colorMap; 
-    }
     private static ArrayList<Double> percentageRange(int size) {
         ArrayList<Double> percentages = new ArrayList<>();
 
@@ -80,7 +69,7 @@ public class NumberColorMaps {
     </colormap>
    */
     
-    public void loadColorMap(File file,boolean format_relative) throws FileNotFoundException, ParserConfigurationException, SAXException, IOException{
+    public static NumberColorMapGradient loadColorMap(File file,boolean format_relative) throws FileNotFoundException, ParserConfigurationException, SAXException, IOException{
       // new implementation loading from XML file 
         List<Double> positions = new ArrayList<>(); 
         List<Color> colors= new ArrayList<>(); 
@@ -121,7 +110,7 @@ public class NumberColorMaps {
             colorArray.add(new Color(parseInt(tokens[0]),parseInt(tokens[1]),parseInt(tokens[2]))); 
         }
        */ 
-        colorMap=new NumberColorMapGradient(colors, positions, format_relative, Color.BLACK, file.getName()); 
+        return new NumberColorMapGradient(colors, positions, format_relative, Color.BLACK, file.getName()); 
        
              
     }
@@ -157,11 +146,12 @@ public class NumberColorMaps {
     /**
      * HOT ranges from black to white passing from red and yellow.
      */
-    public static final NumberColorMap HOT = new NumberColorMapGradient(Arrays.asList(new Color[]{Color.BLACK,
-                                                                                       Color.RED,
-                                                                                       Color.YELLOW,
-                                                                                       Color.WHITE,
-                                                                                       Color.BLUE} ),hot,true,new Color(0,0,0), "HOT");
+    public static final NumberColorMap HOT = relative(Arrays.asList(Color.BLACK,
+                                                Color.RED,
+                                                Color.YELLOW,
+                                                Color.WHITE,
+                                                Color.BLUE), Color.BLACK, "HOT");
+            
     /**
      * HSV goes through the color wheel: red, yellow, green, cyan, blue, magenta
      * and back to red. Useful for periodic functions.
@@ -222,4 +212,8 @@ public class NumberColorMaps {
         return new NumberColorMapInstanceOptimized(instance, oldRange, newRange);
     }
     
+    public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
+        return new NumberColorMapGradient(colors, percentageRange(colors.size()), true, nanColor, name);
+    }
+
 }

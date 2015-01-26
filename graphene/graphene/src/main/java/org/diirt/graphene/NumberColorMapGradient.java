@@ -19,8 +19,8 @@ class NumberColorMapGradient implements NumberColorMap {
 
     private final List<Color> colors; 
     private final List<Double> positions; 
-    private boolean relative; 
-    Color nanColor; 
+    private final boolean relative; 
+    private final Color nanColor; 
     private final String name;
 
     /**
@@ -36,6 +36,10 @@ class NumberColorMapGradient implements NumberColorMap {
         this.name = name;
         this.nanColor=nanColor; 
         this.positions=positions;
+    }
+
+    public List<Color> getColors() {
+        return colors;
     }
 
     @Override
