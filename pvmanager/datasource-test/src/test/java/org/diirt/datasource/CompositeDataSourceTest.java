@@ -51,7 +51,7 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("mock1", mock1);
         composite.putDataSource("mock2", mock2);
-        composite.setDefaultDataSource("mock1");
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("mock1"));
 
         // Call only default
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
@@ -71,7 +71,7 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("mock1", mock1);
         composite.putDataSource("mock2", mock2);
-        composite.setDefaultDataSource("mock1");
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("mock1"));
 
         // Call only default
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
@@ -138,9 +138,16 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("mock1", mock1);
         composite.putDataSource("mock2", mock2);
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("wrong"));
+
+        // Call only default
+        ReadRecipeBuilder builder = new ReadRecipeBuilder();
+        builder.addChannel("pv01", new ValueCacheImpl<Double>(Double.class));
+        builder.addChannel("pv03", new ValueCacheImpl<Double>(Double.class));
+        ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
 
         // Should cause error
-        composite.setDefaultDataSource("wrong");
+        composite.connectRead(recipe);
     }
 
     @Test
@@ -149,8 +156,7 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("mock1", mock1);
         composite.putDataSource("mock2", mock2);
-        composite.setDefaultDataSource("mock1");
-        composite.setDelimiter("?");
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("mock1").delimiter("?"));
 
         // Call only default
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
@@ -204,7 +210,7 @@ public class CompositeDataSourceTest {
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("mock1", mock1);
         composite.putDataSource("mock2", mock2);
-        composite.setDefaultDataSource("mock1");
+        composite.setConfiguration(new CompositeDataSourceConfiguration().defaultDataSource("mock1"));
 
         WriteRecipeBuilder builder = new WriteRecipeBuilder();
         builder.addChannel("pv01", new WriteCache<>("pv01"));
