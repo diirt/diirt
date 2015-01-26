@@ -127,7 +127,9 @@ public class CompositeDataSource extends DataSource {
         int indexDelimiter = channelName.indexOf(delimiter);
         if (indexDelimiter == -1) {
             if (defaultDataSource == null)
-                throw new IllegalArgumentException("Channel " + channelName + " uses the default data source but one was never set.");
+                throw new IllegalArgumentException("Channel " + channelName + " uses default data source but one was never set.");
+            if (!dataSourceProviders.containsKey(defaultDataSource))
+                throw new IllegalArgumentException("Channel " + channelName + " uses default data source " + defaultDataSource + " which was not found.");
             return defaultDataSource;
         } else {
             String source = channelName.substring(0, indexDelimiter);
