@@ -22,7 +22,7 @@ public class GraphUI extends Application {
     public void start( Stage stage ) {
 	Group root = new Group();
 	Scene scene = new Scene( root );
-	GraphFx graph = new GraphFx();
+	GraphFx graph = new GraphFx( 500 , 500 );
 	root.getChildren().add( graph );
 	stage.setScene( scene );
 	stage.setWidth( 500 );
