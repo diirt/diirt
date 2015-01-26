@@ -4,9 +4,11 @@
  */
 package org.diirt.datasource;
 
+import java.io.InputStream;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.Configuration;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 
 /**
@@ -49,7 +51,18 @@ public abstract class DataSourceProvider {
      */
     public static CompositeDataSource createDataSource() {
         CompositeDataSource composite = new CompositeDataSource();
+        composite.setConfiguration(readConfiguration(composite, "datasources"));
         ServiceLoaderOSGiWrapper.load(DataSourceProvider.class, log, composite::putDataSource);
         return composite;
+    }
+    
+    private static CompositeDataSourceConfiguration readConfiguration(CompositeDataSource dataSource, String confPath) {
+        try (InputStream input = Configuration.getFileAsStream(confPath + "/datasources.xml", dataSource, "datasources.default.xml")) {
+            CompositeDataSourceConfiguration conf = new CompositeDataSourceConfiguration(input);
+            return conf;
+        } catch (Exception ex) {
+            Logger.getLogger(CompositeDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/datasources.xml", ex);
+            return null;
+        }
     }
 }
