@@ -4,10 +4,8 @@
  */
 package org.diirt.support.ca;
 
-import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.datasource.ChannelHandler;
@@ -15,13 +13,9 @@ import org.diirt.datasource.DataSource;
 import org.diirt.datasource.vtype.DataTypeSupport;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.jni.JNIContext;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import static org.diirt.datasource.util.Executors.namedPool;
+import static org.diirt.util.concurrent.Executors.namedPool;
 
 /**
  * A data source that uses jca.

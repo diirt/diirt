@@ -17,7 +17,7 @@ import javax.swing.table.TableModel;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.vtype.VDouble;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

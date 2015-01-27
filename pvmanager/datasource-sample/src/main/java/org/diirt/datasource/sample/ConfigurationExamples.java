@@ -15,7 +15,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.support.ca.JCADataSource;
 import org.diirt.support.ca.JCADataSourceBuilder;
 import org.diirt.datasource.sim.SimulationDataSource;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

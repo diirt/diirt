@@ -34,7 +34,7 @@ public final class FileDataSource extends DataSource {
         this(new FileDataSourceProvider().readDefaultConfiguration());
     }
     
-    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch"));
+    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.util.concurrent.Executors.namedPool("diirt - file watch"));
     
     public FileDataSource(FileDataSourceConfiguration conf) {
         super(true);
