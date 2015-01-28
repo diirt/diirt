@@ -510,6 +510,18 @@ public class PVAChannelHandler extends
 					}
 				}
 				
+				// fallback: try to convert string to an number (index)
+				if (index == -1)
+				{
+					try {
+						int ix = Integer.parseInt(nv);
+						if (ix >= 0 && ix < choices.length)
+							index = ix;
+					} catch (Throwable th) {
+						// failed to convert, noop
+					}
+				}
+				
 				if (index == -1)
 					throw new IllegalArgumentException("enumeration '" + nv +"' is not a valid choice");
 			}
