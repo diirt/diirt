@@ -13,7 +13,7 @@ import gov.aps.jca.JCALibrary;
 public class JCAVarArray {
     public static void main(String[] args) {
         // Test CAJ
-        JCADataSource jcaDataSource = new JCADataSource();
+        JCADataSource jcaDataSource = new JCADataSourceConfiguration().create();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
         

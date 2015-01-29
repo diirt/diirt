@@ -47,7 +47,7 @@ public class JCADataSource extends DataSource {
      * defaults described in {@link JCADataSourceConfiguration}.
      */
     public JCADataSource() {
-        this(new JCADataSourceConfiguration());
+        this(new JCADataSourceProvider().readDefaultConfiguration());
     }
     
     /**
@@ -58,6 +58,10 @@ public class JCADataSource extends DataSource {
     public JCADataSource(JCADataSourceConfiguration configuration) {
         super(true);
         // Retrive data source properties
+        
+        if (configuration == null) {
+            configuration = new JCADataSourceConfiguration();
+        }
         
         ctxt = configuration.createContext();
 
