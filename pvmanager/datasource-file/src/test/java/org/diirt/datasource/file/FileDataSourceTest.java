@@ -52,7 +52,7 @@ public class FileDataSourceTest {
     
     @BeforeClass
     public static void createDataSource() {
-        file = new FileDataSource(new FileDataSourceConfiguration().pollEnabled(true).pollInterval(Duration.ofMillis(250)));
+        file = new FileDataSourceConfiguration().pollEnabled(true).pollInterval(Duration.ofMillis(250)).create();
     }
     
     @AfterClass
