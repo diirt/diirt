@@ -13,9 +13,10 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.support.ca.JCADataSource;
-import org.diirt.support.ca.JCADataSourceBuilder;
 import org.diirt.datasource.sim.SimulationDataSource;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.diirt.javafx.util.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**
@@ -25,9 +26,11 @@ import static org.diirt.util.time.TimeDuration.*;
  */
 public class ConfigurationExamples {
 
-    public void e1_pvManagerInCSS() {
-        // In CSS, data sources are configured by adding the appropriate plug-ins,
-        // so you **must not change the default configuration**.
+    public void datasourcesInSWT_CSSTudio() {
+        // In CS-Studio, you should never change the default configuration programmatically
+        // or you will create problems for other applications. All configuration
+        // shoul be done on your own readers/writers.
+        
         // If you are developing user interfaces in SWT, you will want to route the notifications on the SWT thread.
 
         // Import from here
@@ -37,13 +40,14 @@ public class ConfigurationExamples {
         PVReader<?> pvReader = PVManager.read(channel("test")).notifyOn(swtThread()).maxRate(ofMillis(100));
     }
 
-    public void e2_pvManagerInSwing() {
-        // You will first need to configure the data sources yourself (see other examples).
-        // You will want to route notification directly on the Event Dispatch Thread.
-        // You can do this on a PV by PV basis, or you can change the default. 
+    public void datasourcesInSwing() {
+        // When creating UIs in swing, you will need to route notification directly
+        // on the Event Dispatch Thread.
+        // You can do this on a PV by PV basis, or you can change the default if
+        // you control the whole application.
         
         // Import from here
-        // import static org.epics.pvmanager.util.Executors.*;
+        // import static org.diirt.util.concurrent.Executors.*;
  
         // Route notification for this pv on the Swing EDT
         PVReader<?> pvReader = PVManager.read(channel("test")).notifyOn(swingEDT()).maxRate(ofMillis(100));
@@ -52,24 +56,56 @@ public class ConfigurationExamples {
         PVManager.setDefaultNotificationExecutor(swingEDT());
     }
 
-    public void e3_configuringJcaAsDefaultDataSource() {
-        // Sets CAJ (pure java implementation) as the default data source,
-        // monitoring both value and alarm changes
+    public void datasourcesInJavaFX() {
+        // When creating UIs in JavaFX, you will need to route notification directly
+        // on the Application Thread.
+        // You can do this on a PV by PV basis, or you can change the default if
+        // you control the whole application.
+        
+        // Import from here
+        // import static org.diirt.javafx.util.Executors.*;
+ 
+        // Route notification for this pv on the Swing EDT
+        PVReader<?> pvReader = PVManager.read(channel("test")).notifyOn(javaFXAT()).maxRate(ofMillis(100));
+
+        // Or you can change the default
+        PVManager.setDefaultNotificationExecutor(javaFXAT());
+    }
+
+    public void programmaticDataSourceConfiguration() {
+        // The recommended method to configure data sources is through
+        // the configuration files in DIIRT_HOME.
+        
+        // If is needed, you can still change the configuration through
+        // the programmatic API. This can be useful for unit testing
+        // or standalone applications. You should not do this in shared
+        // environment, like CS-Studio.
+        
+        // As an example, we set Channel Access datasource (pure java implementation)
+        // as the only data source.
         PVManager.setDefaultDataSource(new JCADataSource());
 
         // For ultimate control, you can modify all the parameters, 
         // and even create the JCA context yourself
         Context jcaContext = null;
-        PVManager.setDefaultDataSource(new JCADataSourceBuilder()
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration()
                 .monitorMask(Monitor.VALUE | Monitor.ALARM)
-                .jcaContext(jcaContext)
-                .build());
+                .jcaContext(jcaContext).create());
         
-        // For more options, check JCADataSource and JCADataSourceBuilder.
+        // For more options of this and other data sources,
+        // check their javadocs.
     }
 
-    public void e4_configuringMultipleDataSources() {
-        // Create a multiple data source, and add different data sources
+    public void programmaticCompositeDataSourceConfiguration() {
+        // The recommended method to configure data sources is through
+        // the configuration files in DIIRT_HOME.
+        
+        // If is needed, you can still change the configuration through
+        // the programmatic API. This can be useful for unit testing
+        // or standalone applications. You should not do this in shared
+        // environment, like CS-Studio.
+        
+        // Create a composite data source, and add different data sources
         CompositeDataSource composite = new CompositeDataSource();
         composite.putDataSource("ca", new JCADataSource());
         composite.putDataSource("sim", new SimulationDataSource());
