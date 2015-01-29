@@ -7,13 +7,13 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
-import org.diirt.support.ca.JCADataSourceBuilder;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.integration.Constants.*;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -77,7 +77,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
     }
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(false).build());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().dbePropertySupported(false).create());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new UpdateTestPhase();
         phase1.execute();

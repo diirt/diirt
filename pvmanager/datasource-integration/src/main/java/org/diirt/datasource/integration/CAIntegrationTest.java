@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.PVManager;
 import org.diirt.support.ca.JCADataSource;
-import org.diirt.support.ca.JCADataSourceBuilder;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**
  *
@@ -33,7 +33,7 @@ public class CAIntegrationTest {
         
         PVManager.getDefaultDataSource().close();
         
-        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(true).build());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().dbePropertySupported(true).create());
 
         phases = Arrays.<TestPhase>asList(new UpdateTestPhase(),
                 new RestartTestPhase(),
