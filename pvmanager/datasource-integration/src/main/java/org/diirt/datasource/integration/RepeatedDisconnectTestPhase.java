@@ -13,6 +13,7 @@ import org.diirt.vtype.AlarmSeverity;
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.integration.Constants.*;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 import org.diirt.vtype.VDouble;
 
 /**
@@ -71,7 +72,7 @@ public class RepeatedDisconnectTestPhase extends AbstractCATestPhase {
     }
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new JCADataSource());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().create());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new RepeatedDisconnectTestPhase();
         phase1.execute();

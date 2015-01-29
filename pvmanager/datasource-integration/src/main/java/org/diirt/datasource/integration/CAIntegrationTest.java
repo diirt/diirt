@@ -24,7 +24,7 @@ public class CAIntegrationTest {
                 new RepeatedDisconnectTestPhase());
         int debugLevel = 1;
         
-        PVManager.setDefaultDataSource(new JCADataSource());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().create());
         
         for (TestPhase phase : phases) {
             phase.setDebugLevel(debugLevel);
