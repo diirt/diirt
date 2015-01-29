@@ -17,6 +17,7 @@ import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.support.ca.JCADataSourceConfiguration;
 import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.javafx.util.Executors.*;
+import org.diirt.support.ca.JCADataSourceProvider;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**
@@ -81,9 +82,21 @@ public class ConfigurationExamples {
         // or standalone applications. You should not do this in shared
         // environment, like CS-Studio.
         
-        // As an example, we set Channel Access datasource (pure java implementation)
-        // as the only data source.
-        PVManager.setDefaultDataSource(new JCADataSource());
+        // This loads the configuration from DIIRT_HOME, and sets the
+        // resulting JCADataSource as the only data source.
+        // This can be used when creating an application that still
+        // allows the users to provide their own configuration.
+        PVManager.setDefaultDataSource(new JCADataSourceProvider().createInstance());
+        
+        // This uses the default configuration, ignorint the user configuration
+        // and sets the resulting JCADataSource as the only data source.
+        // This can be useful for unit testsing, where the code should be
+        // in complete control of the settings.
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().create());
+        
+        // As a general rule: creating the data source from the provider, uses
+        // the user configuration. Creating it from the configuration allows you
+        // to create everything from scratch, ignoring user settings.
 
         // For ultimate control, you can modify all the parameters, 
         // and even create the JCA context yourself
@@ -105,9 +118,10 @@ public class ConfigurationExamples {
         // or standalone applications. You should not do this in shared
         // environment, like CS-Studio.
         
-        // Create a composite data source, and add different data sources
+        // Create a composite data source, and add different data sources.
+        // You can either add a DataSourceProvider or a DataSource.
         CompositeDataSource composite = new CompositeDataSource();
-        composite.putDataSource("ca", new JCADataSource());
+        composite.putDataSource(new JCADataSourceProvider());
         composite.putDataSource("sim", new SimulationDataSource());
 
         // If no prefix is given to a channel, use JCA as default

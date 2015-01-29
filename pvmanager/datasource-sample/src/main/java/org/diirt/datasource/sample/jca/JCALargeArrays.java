@@ -10,6 +10,7 @@ import org.diirt.support.ca.JCADataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VShortArray;
 import static org.diirt.util.time.TimeDuration.*;
@@ -23,9 +24,9 @@ public class JCALargeArrays {
     static long start = System.currentTimeMillis();
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "1");
+//        System.setProperty("com.cosylab.epics.caj.CAJContext.max_array_bytes", "1");
 //        System.setProperty("gov.aps.jca.jni.JNIContext.max_array_bytes", "10000000");
-        JCADataSource source = new JCADataSource();
+        JCADataSource source = new JCADataSourceConfiguration().addContextProperty("max_array_bytes", "1").create();
         source.getContext().printInfo();
         PVManager.setDefaultDataSource(source);
         final PVReader<Object> pv = PVManager.read(channel("carcassi:compressExample2"))
