@@ -21,7 +21,7 @@ public class JCADataSourceConfigurationTest {
 
     @Test
     public void readDefaultConfiguration() {
-        JCADataSourceConfiguration conf = new JCADataSourceConfiguration(this.getClass().getResourceAsStream("ca.default.xml"));
+        JCADataSourceConfiguration conf = new JCADataSourceConfiguration().read(this.getClass().getResourceAsStream("ca.default.xml"));
         assertThat(conf.monitorMask, equalTo(5));
         assertThat(conf.dbePropertySupported, equalTo(false));
         assertThat(conf.honorZeroPrecision, equalTo(true));
@@ -45,7 +45,7 @@ public class JCADataSourceConfigurationTest {
 
     @Test
     public void readConfiguration1() {
-        JCADataSourceConfiguration conf = new JCADataSourceConfiguration(this.getClass().getResourceAsStream("ca1.xml"));
+        JCADataSourceConfiguration conf = new JCADataSourceConfiguration().read(this.getClass().getResourceAsStream("ca1.xml"));
         assertThat(conf.monitorMask, equalTo(4));
         assertThat(conf.dbePropertySupported, equalTo(true));
         assertThat(conf.honorZeroPrecision, equalTo(false));
@@ -76,7 +76,7 @@ public class JCADataSourceConfigurationTest {
 
     @Test
     public void readConfiguration2() {
-        JCADataSourceConfiguration conf = new JCADataSourceConfiguration(this.getClass().getResourceAsStream("ca2.xml"));
+        JCADataSourceConfiguration conf = new JCADataSourceConfiguration().read(this.getClass().getResourceAsStream("ca2.xml"));
         assertThat(conf.monitorMask, equalTo(5));
         assertThat(conf.dbePropertySupported, equalTo(false));
         assertThat(conf.honorZeroPrecision, equalTo(true));
@@ -107,7 +107,7 @@ public class JCADataSourceConfigurationTest {
 
     @Test
     public void readConfiguration3() {
-        JCADataSourceConfiguration conf = new JCADataSourceConfiguration(this.getClass().getResourceAsStream("ca3.xml"));
+        JCADataSourceConfiguration conf = new JCADataSourceConfiguration().read(this.getClass().getResourceAsStream("ca3.xml"));
         assertThat(conf.monitorMask, equalTo(5));
         assertThat(conf.dbePropertySupported, equalTo(false));
         assertThat(conf.honorZeroPrecision, equalTo(true));
@@ -133,7 +133,7 @@ public class JCADataSourceConfigurationTest {
 
     @Test
     public void readConfiguration4() {
-        JCADataSourceConfiguration conf = new JCADataSourceConfiguration(this.getClass().getResourceAsStream("ca4.xml"));
+        JCADataSourceConfiguration conf = new JCADataSourceConfiguration().read(this.getClass().getResourceAsStream("ca4.xml"));
         assertThat(conf.monitorMask, equalTo(5));
         assertThat(conf.dbePropertySupported, equalTo(false));
         assertThat(conf.honorZeroPrecision, equalTo(true));

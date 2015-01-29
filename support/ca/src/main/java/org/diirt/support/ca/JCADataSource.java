@@ -41,21 +41,13 @@ public class JCADataSource extends DataSource {
     private final JCATypeSupport typeSupport;
     private final boolean rtypValueOnly;
     private final boolean honorZeroPrecision;
-
-    /**
-     * Creates a new data source using pure Java implementation and all the
-     * defaults described in {@link JCADataSourceConfiguration}.
-     */
-    public JCADataSource() {
-        this(new JCADataSourceProvider().readDefaultConfiguration());
-    }
     
     /**
      * Creates a new data source using the parameters given in the configuration.
      * 
      * @param configuration the configuration of the new data source
      */
-    public JCADataSource(JCADataSourceConfiguration configuration) {
+    JCADataSource(JCADataSourceConfiguration configuration) {
         super(true);
         // Retrive data source properties
         

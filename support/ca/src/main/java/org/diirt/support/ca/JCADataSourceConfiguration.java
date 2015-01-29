@@ -26,6 +26,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.datasource.DataSourceConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -38,7 +39,7 @@ import org.xml.sax.SAXException;
  *
  * @author carcassi
  */
-public final class JCADataSourceConfiguration {
+public final class JCADataSourceConfiguration extends DataSourceConfiguration<JCADataSource> {
     private static final Logger log = Logger.getLogger(JCADataSource.class.getName());
     
     // Package private so we don't need getters
@@ -53,18 +54,8 @@ public final class JCADataSourceConfiguration {
     
     Map<String, String> jcaContextProperties = new HashMap<>();
 
-    /**
-     * A new configuration with default settings.
-     */
-    public JCADataSourceConfiguration() {
-    }
-
-    /**
-     * A new configuration with settings read from the given stream.
-     * 
-     * @param input the configuration as read from an xml file
-     */
-    public JCADataSourceConfiguration(InputStream input) {
+    @Override
+    public JCADataSourceConfiguration read(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -168,6 +159,7 @@ public final class JCADataSourceConfiguration {
             Logger.getLogger(JCADataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load file configuration", ex);
             throw new IllegalArgumentException("Couldn't load file configuration", ex);
         }
+        return this;
     }
 
     /**
@@ -381,6 +373,7 @@ public final class JCADataSourceConfiguration {
      * 
      * @return a new data source
      */
+    @Override
     public JCADataSource create() {
         return new JCADataSource(this);
     }
