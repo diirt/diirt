@@ -44,118 +44,17 @@ public class JCADataSource extends DataSource {
 
     /**
      * Creates a new data source using pure Java implementation and all the
-     * defaults described in {@link JCADataSourceBuilder}.
+     * defaults described in {@link JCADataSourceConfiguration}.
      */
     public JCADataSource() {
-        this(new JCADataSourceBuilder());
+        this(new JCADataSourceConfiguration());
     }
     
     /**
-     * Creates a new data source using the given context. The context will
-     * never be closed.
+     * Creates a new data source using the parameters given in the configuration.
      * 
-     * @param jcaContext the context to be used
-     * @param monitorMask Monitor.VALUE, ...
-     * @deprecated use {@link JCADataSourceBuilder}
+     * @param configuration the configuration of the new data source
      */
-    @Deprecated
-    public JCADataSource(Context jcaContext, int monitorMask) {
-        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask));
-    }
-
-    /**
-     * Creates a new data source using the className to create the context.
-     *
-     * @param className JCALibrary.CHANNEL_ACCESS_JAVA, JCALibrary.JNI_THREAD_SAFE, ...
-     * @param monitorMask Monitor.VALUE, ...
-     * @deprecated use {@link JCADataSourceBuilder}
-     */
-    @Deprecated
-    public JCADataSource(String className, int monitorMask) {
-        this(new JCADataSourceBuilder().jcaContextClass(className).monitorMask(monitorMask));
-    }
-    
-    /**
-     * Creates a new data source using the given context. The context will
-     * never be closed. The type mapping con be configured with a custom
-     * type support.
-     * 
-     * @param jcaContext the context to be used
-     * @param monitorMask Monitor.VALUE, ...
-     * @param typeSupport type support to be used
-     * @deprecated use {@link JCADataSourceBuilder}
-     */
-    @Deprecated
-    public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport) {
-        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask)
-                .typeSupport(typeSupport));
-    }
-    
-    /**
-     * Creates a new data source using the given context. The context will
-     * never be closed. The type mapping con be configured with a custom
-     * type support.
-     * 
-     * @param jcaContext the context to be used
-     * @param monitorMask Monitor.VALUE, ...
-     * @param typeSupport type support to be used
-     * @param dbePropertySupported whether metadata monitors should be used
-     * @param varArraySupported true if var array should be used 
-     * @deprecated use {@link JCADataSourceBuilder}
-     */
-    @Deprecated
-    public JCADataSource(Context jcaContext, int monitorMask, JCATypeSupport typeSupport, boolean dbePropertySupported, boolean varArraySupported) {
-        this(new JCADataSourceBuilder().jcaContext(jcaContext).monitorMask(monitorMask)
-                .typeSupport(typeSupport).dbePropertySupported(dbePropertySupported)
-                .varArraySupported(varArraySupported));
-    }
-    
-    protected JCADataSource(JCADataSourceBuilder builder) {
-        super(true);
-        // Some properties are not pre-initialized to the default,
-        // so if they were not set, we should initialize them.
-        
-        // Default JCA context is pure Java
-        if (builder.jcaContext == null) {
-            ctxt = JCADataSourceBuilder.createContext(JCALibrary.CHANNEL_ACCESS_JAVA);
-        } else {
-            ctxt = builder.jcaContext;
-        }
-
-        try {
-            if (ctxt instanceof CAJContext) {
-                ((CAJContext) ctxt).setDoNotShareChannels(true);
-            }
-        } catch (Throwable t) {
-            log.log(Level.WARNING, "Couldn't change CAJContext to doNotShareChannels: this may cause some rare notification problems.", t);
-        }
-        
-        // Default type support are the VTypes
-        if (builder.typeSupport == null) {
-            typeSupport = new JCATypeSupport(new JCAVTypeAdapterSet());
-        } else {
-            typeSupport = builder.typeSupport;
-        }
-
-        // Default support for var array needs to be detected
-        if (builder.varArraySupported == null) {
-            varArraySupported = JCADataSourceBuilder.isVarArraySupported(ctxt);
-        } else {
-            varArraySupported = builder.varArraySupported;
-        }
-        
-        monitorMask = builder.monitorMask;
-        dbePropertySupported = builder.dbePropertySupported;
-        rtypValueOnly = builder.rtypValueOnly;
-        honorZeroPrecision = builder.honorZeroPrecision;
-        
-        if (useContextSwitchForAccessRightCallback()) {
-            contextSwitch = Executors.newSingleThreadExecutor(namedPool("PVMgr JCA Workaround "));
-        } else {
-            contextSwitch = null;
-        }
-    }
-    
     public JCADataSource(JCADataSourceConfiguration configuration) {
         super(true);
         // Retrive data source properties
@@ -179,7 +78,7 @@ public class JCADataSource extends DataSource {
 
         // Default support for var array needs to be detected
         if (configuration.varArraySupported == null) {
-            varArraySupported = JCADataSourceBuilder.isVarArraySupported(ctxt);
+            varArraySupported = JCADataSourceConfiguration.isVarArraySupported(ctxt);
         } else {
             varArraySupported = configuration.varArraySupported;
         }
@@ -265,18 +164,6 @@ public class JCADataSource extends DataSource {
      */
     public boolean isHonorZeroPrecision() {
         return honorZeroPrecision;
-    }
-    
-    /**
-     * Determines whether the context supports variable arrays
-     * or not.
-     * 
-     * @param context a JCA Context
-     * @return true if supports variable sized arrays
-     */
-    @Deprecated
-    public static boolean isVarArraySupported(Context context) {
-        return JCADataSourceBuilder.isVarArraySupported(context);
     }
     
     final boolean useContextSwitchForAccessRightCallback() {

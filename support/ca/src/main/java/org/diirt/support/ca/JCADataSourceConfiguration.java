@@ -33,10 +33,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Builder for {@link JCADataSource}. Given the moderate number of configuration
- * parameters, the builder allows to set only the ones the user needs to set.
- * <p>
- * Refer to each parameter for their meaning and default.
+ * Configuration for {@link JCADataSource}. This object is mutable and not
+ * thread-safe.
  *
  * @author carcassi
  */
@@ -55,9 +53,17 @@ public final class JCADataSourceConfiguration {
     
     Map<String, String> jcaContextProperties = new HashMap<>();
 
+    /**
+     * A new configuration with default settings.
+     */
     public JCADataSourceConfiguration() {
     }
 
+    /**
+     * A new configuration with settings read from the given stream.
+     * 
+     * @param input the configuration as read from an xml file
+     */
     public JCADataSourceConfiguration(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -136,9 +142,6 @@ public final class JCADataSourceConfiguration {
                 }
             }
             
-//    <!--<jcaContext pureJava="true" addr_list="" auto_addr_list="true" connection_timeout="30.0"
-//                beacon_period="15.0" repeater_port="5065" server_port="5064"
-//                max_array_bytes="16384" />-->
             String pureJava = xPath.evaluate("/ca/jcaContext/@pureJava", document);
             if (pureJava != null && !pureJava.isEmpty()) {
                 switch (pureJava.toUpperCase()) {
