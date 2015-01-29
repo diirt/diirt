@@ -20,8 +20,23 @@ import java.io.InputStream;
  * @param <T> the data source type to be configured
  */
 public abstract class DataSourceConfiguration<T extends DataSource> {
-    
+
+    /**
+     * Reads the configuration from the given stream and returns
+     * an object with the new configuration.
+     * <p>
+     * NOTE: whether this object is modified and returned, or a new
+     * object is returned, is currently unspecified.
+     * 
+     * @param stream the configuration file to be read
+     * @return the object with the new configuration
+     */
     public abstract DataSourceConfiguration<T> read(InputStream stream);
-    
+
+    /**
+     * Creates a new data source based on this configuration.
+     * 
+     * @return a new data source
+     */
     public abstract T create();
 }
