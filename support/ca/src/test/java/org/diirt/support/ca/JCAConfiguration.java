@@ -5,10 +5,6 @@
 package org.diirt.support.ca;
 
 import gov.aps.jca.Context;
-import org.diirt.support.ca.JCADataSourceBuilder;
-import org.diirt.support.ca.JCADataSource;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 
 /**
  *

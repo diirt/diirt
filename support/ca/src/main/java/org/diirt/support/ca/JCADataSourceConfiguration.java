@@ -372,4 +372,13 @@ public final class JCADataSourceConfiguration {
             throw new RuntimeException("JCA context creation failed", ex);
         }
     }    
+    
+    /**
+     * Creates a new JCADataSource with the current configuration.
+     * 
+     * @return a new data source
+     */
+    public JCADataSource create() {
+        return new JCADataSource(this);
+    }
 }

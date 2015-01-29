@@ -155,6 +155,47 @@ public class JCADataSource extends DataSource {
             contextSwitch = null;
         }
     }
+    
+    public JCADataSource(JCADataSourceConfiguration configuration) {
+        super(true);
+        // Retrive data source properties
+        
+        ctxt = configuration.createContext();
+
+        try {
+            if (ctxt instanceof CAJContext) {
+                ((CAJContext) ctxt).setDoNotShareChannels(true);
+            }
+        } catch (Throwable t) {
+            log.log(Level.WARNING, "Couldn't change CAJContext to doNotShareChannels: this may cause some rare notification problems.", t);
+        }
+        
+        // Default type support are the VTypes
+        if (configuration.typeSupport == null) {
+            typeSupport = new JCATypeSupport(new JCAVTypeAdapterSet());
+        } else {
+            typeSupport = configuration.typeSupport;
+        }
+
+        // Default support for var array needs to be detected
+        if (configuration.varArraySupported == null) {
+            varArraySupported = JCADataSourceBuilder.isVarArraySupported(ctxt);
+        } else {
+            varArraySupported = configuration.varArraySupported;
+        }
+        
+        monitorMask = configuration.monitorMask;
+        dbePropertySupported = configuration.dbePropertySupported;
+        rtypValueOnly = configuration.rtypValueOnly;
+        honorZeroPrecision = configuration.honorZeroPrecision;
+        
+        if (useContextSwitchForAccessRightCallback()) {
+            contextSwitch = Executors.newSingleThreadExecutor(namedPool("PVMgr JCA Workaround "));
+        } else {
+            contextSwitch = null;
+        }
+        
+    }
 
     @Override
     public void close() {

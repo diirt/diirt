@@ -4,10 +4,7 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSourceBuilder;
-import org.diirt.support.ca.JCADataSource;
 import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 
 /**
  *
@@ -16,12 +13,12 @@ import gov.aps.jca.Monitor;
 public class JCAVarArray {
     public static void main(String[] args) {
         // Test CAJ
-        JCADataSource jcaDataSource = new JCADataSourceBuilder().build();
+        JCADataSource jcaDataSource = new JCADataSource();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
         
         // Test JCA
-        jcaDataSource = new JCADataSourceBuilder().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).build();
+        jcaDataSource = new JCADataSourceConfiguration().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).create();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
     }
