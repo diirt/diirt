@@ -38,6 +38,7 @@ public final class Toolbox extends VBox {
     }
     
     private static final List<Tool> tools = Arrays.asList(
+            new Tool("Probe", Probe.class),
             new Tool("Formula Function Browser", FormulaFunctionViewer.class));
     
     private static class ToolButton extends Button {
