@@ -119,7 +119,7 @@ public class NumberColorMaps {
          
         while(scanner.hasNextLine()){
             line=scanner.nextLine(); 
-            String []tokens=line.split("\\s+"); 
+            String []tokens=line.split(","); 
             if(tokens.length!=3){
                 throw new IOException("Error Parsing RGB value"); 
             }

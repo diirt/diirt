@@ -9,6 +9,7 @@ import org.diirt.graphene.NumberColorMaps;
 import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.io.File;
+import java.util.List;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -57,4 +58,30 @@ public class NumberColorMapTest {
         ImageAssert.compareImages("numberColorMap.cutomizedColorMapDraw", graphbuffer.getImage());
     }
     
+    @Test 
+    public void loadColorMapXML() throws Exception {
+        File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap.xml"); 
+        NumberColorMapGradient colorMap = NumberColorMaps.load(file); 
+        List<Color> colors = colorMap.getColors(); 
+        assertThat(colors.get(0),equalTo(new Color(95,0,0))); 
+        assertThat(colors.get(1),equalTo(new Color(195,9,9))); 
+        assertThat(colors.get(2), equalTo(new Color(201,201,242)));
+        assertThat(colors.get(3), equalTo(new Color(13,13,198)));
+        assertThat(colors.get(4),equalTo(new Color(0,0,95))); 
+
+    }
+    
+    @Test 
+    public void loadColorMapCMAP () throws Exception{
+        //summer.cmap: exported from matlab. comma separated value of RGB colors
+        File file = new File ("src/test/resources/org/diirt/graphene/summer.cmap"); 
+        NumberColorMapGradient colormap = NumberColorMaps.load(file); 
+        List<Color> colors = colormap.getColors(); 
+        assertThat(colors.get(0), equalTo(new Color(0,128,102))); 
+        assertThat(colors.get(20),equalTo(new Color(81,168,102))); 
+        assertThat(colors.get(40), equalTo(new Color(162,208,102))); 
+        assertThat(colors.get(60), equalTo(new Color(243,249,102))); 
+        assertThat(colors.get(63), equalTo(new Color(255,255,102))); 
+        
+    }
 }
