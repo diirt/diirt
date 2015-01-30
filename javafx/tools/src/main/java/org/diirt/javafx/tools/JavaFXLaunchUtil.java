@@ -5,6 +5,8 @@
 package org.diirt.javafx.tools;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,6 +25,17 @@ public class JavaFXLaunchUtil {
         appTitle = title;
         appRootClass = rootClass;
         SimpleApplication.launch(SimpleApplication.class, args);
+    }
+
+    public static void open(String title, Class<? extends Parent> rootClass) {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(rootClass.newInstance()));
+            stage.show();
+        } catch (InstantiationException | IllegalAccessException instantiationException) {
+            // TODO put an Alert, but requires jdk 8u40
+        }
     }
     
     private static volatile String appTitle;
