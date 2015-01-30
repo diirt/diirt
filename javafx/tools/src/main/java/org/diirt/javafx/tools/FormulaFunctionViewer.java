@@ -61,7 +61,7 @@ public final class FormulaFunctionViewer extends HBox {
         @Override
         public List<BrowserItem> createChildren() {
             return FormulaRegistry.getDefault()
-                    .listFunctionSets().stream()
+                    .listFunctionSets().stream().sorted()
                     .map(name -> new FormulaFunctionSetBrowserItem(FormulaRegistry.getDefault().findFunctionSet(name)))
                     .collect(Collectors.toList());
         }
@@ -92,11 +92,10 @@ public final class FormulaFunctionViewer extends HBox {
 
         @Override
         public List<BrowserItem> createChildren() {
-            List<BrowserItem> children = new ArrayList<>();
-            for (FormulaFunction function : set.getFunctions()) {
-                children.add(new FormulaFunctionDataBrowserItem(function));
-            }
-            return children;
+            return set.getFunctions().stream()
+                    .sorted((f1, f2) -> f1.getName().compareTo(f2.getName()))
+                    .map((f) -> new FormulaFunctionDataBrowserItem(f))
+                    .collect(Collectors.toList());
         }
         
     }
