@@ -5,24 +5,19 @@
 package org.diirt.javafx.tools;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.formula.FormulaFunctionSet;
@@ -182,17 +177,7 @@ public final class FormulaFunctionViewer extends HBox {
     }
     
     public static void main(String[] args) {
-        ApplicationViewer.launch(ApplicationViewer.class, args);
-    }
-    
-    public static class ApplicationViewer extends Application {
-        @Override
-        public void start(Stage primaryStage) throws Exception {
-            primaryStage.setTitle("Diirt - Formula Function Browser");
-            Scene scene = new Scene(new FormulaFunctionViewer());
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        }
+        JavaFXLaunchUtil.launch("Diirt - Formula Function Browser", FormulaFunctionViewer.class, args);
     }
 
 }
