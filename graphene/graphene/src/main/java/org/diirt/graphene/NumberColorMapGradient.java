@@ -18,10 +18,11 @@ import org.diirt.util.array.ListDouble;
 class NumberColorMapGradient implements NumberColorMap {
 
     private final List<Color> colors; 
-    private final List<Double> positions; 
+    private final ListDouble positions; 
     private final boolean relative; 
     private final Color nanColor; 
     private final String name;
+
 
     /**
      * Creates a new color map.
@@ -30,12 +31,13 @@ class NumberColorMapGradient implements NumberColorMap {
      * 
      * @param colors 
      */
-    public NumberColorMapGradient(List<Color> colors,List<Double> positions,boolean relative,Color nanColor, String name) {
+    public NumberColorMapGradient(List<Color> colors,ListDouble positions,boolean relative,Color nanColor, String name) {
         this.colors = colors;
         this.relative=relative; 
         this.name = name;
         this.nanColor=nanColor; 
         this.positions=positions;
+   
     }
 
     public List<Color> getColors() {
@@ -50,11 +52,11 @@ class NumberColorMapGradient implements NumberColorMap {
     class ValueColorSchemeInstanceGradient implements NumberColorMapInstance {
 
         protected List<Color> colors;
-        protected List<Double> positions; 
+        protected ListDouble positions; 
         protected int nanColor;
         protected Range range;
         private final boolean relative; 
-        public ValueColorSchemeInstanceGradient(List<Color> colors,List<Double>positions, Range range,Color nanColor,boolean relative) {
+        public ValueColorSchemeInstanceGradient(List<Color> colors,ListDouble positions, Range range,Color nanColor,boolean relative) {
             this.range = range;
             this.colors = colors;
             this.positions=positions;
@@ -77,8 +79,8 @@ class NumberColorMapGradient implements NumberColorMap {
                     if (fullRange > 0) {
                         for (int i = 0; i < positions.size()-1; i++) {
 
-                            if (range.getMinimum() + positions.get(i) * fullRange <= value && value <= range.getMinimum() + positions.get(i + 1) * fullRange) {
-                                double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.get(i) * fullRange, range.getMinimum() + positions.get(i + 1) * fullRange);
+                            if (range.getMinimum() + positions.getDouble(i) * fullRange <= value && value <= range.getMinimum() + positions.getDouble(i+1) * fullRange) {
+                                double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.getDouble(i) * fullRange, range.getMinimum() + positions.getDouble(i+1) * fullRange);
                                 normalValue = Math.min(normalValue, 1.0);
                                 normalValue = Math.max(normalValue, 0.0);
                                 alpha = 255;
@@ -91,7 +93,7 @@ class NumberColorMapGradient implements NumberColorMap {
 
                 else {
                     for (int i = 0; i < positions.size() - 1; i++) {
-                        if (positions.get(i) <= .5 && .5 <= positions.get(i + 1)) {
+                        if (positions.getDouble(i) <= .5 && .5 <= positions.getDouble(i+1)) {
                             double normalValue = 0;
                             normalValue = Math.min(normalValue, 1.0);
                             normalValue = Math.max(normalValue, 0.0);
