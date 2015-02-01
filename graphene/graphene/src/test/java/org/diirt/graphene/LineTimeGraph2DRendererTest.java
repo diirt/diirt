@@ -246,11 +246,10 @@ public class LineTimeGraph2DRendererTest {
         ImageAssert.compareImages("lineTimeGraph.previousValue.2", image);
     }
 
-    @Ignore
     @Test
-    public void extraGraphArea() throws Exception {
+    public void extraGraphArea1() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,11),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(3000)),
                 start.plus(TimeDuration.ofMillis(6000)),
@@ -261,10 +260,10 @@ public class LineTimeGraph2DRendererTest {
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE)
                .timeAxisRange(TimeAxisRanges.absolute(TimeInterval.between(start,
-                       start.plus(TimeDuration.ofMillis(1000)))))
+                       start.plus(TimeDuration.ofMillis(50000)))))
                .axisRange(AxisRanges.fixed(0, 15)));
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.draw(graphics, data);
-        ImageAssert.compareImages("lineTimeGraph.extraGraphArea", image);
+        ImageAssert.compareImages("lineTimeGraph.extraGraphArea.1", image);
     }
 }
