@@ -75,10 +75,14 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         ListNumber xValues = data.getNormalizedTime();
         ListNumber yValues = data.getValues();
 	
-	//TODO continue the last data point to today's date
-	//xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {99999} ) );
-	//double lastY = yValues.getDouble( yValues.size()-1 );
-	//yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
+	//continue the last data point to today's date
+	//this assumes that the data is normalized such that 1.0 is the 
+	//end of the graph
+	if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
+	    xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {1.0} ) );
+	    double lastY = yValues.getDouble( yValues.size()-1 );
+	    yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
+	}
 
         setClip(g);
         g.setColor(Color.BLACK);
