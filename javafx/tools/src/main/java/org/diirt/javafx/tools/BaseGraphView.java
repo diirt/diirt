@@ -9,14 +9,13 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import static org.diirt.datasource.graphene.ExpressionLanguage.*;
-import static org.diirt.datasource.formula.ExpressionLanguage.*;
+import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.datasource.graphene.Graph2DResult;
-import org.diirt.datasource.graphene.IntensityGraph2DExpression;
+import org.diirt.graphene.Graph2DRendererUpdate;
 import org.diirt.javafx.util.Executors;
 import static org.diirt.util.time.TimeDuration.ofHertz;
 
-public final class BaseGraphView extends BorderPane {
+abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > extends BorderPane {
 
     VImageView imagePanel = new VImageView();
     
@@ -56,12 +55,10 @@ public final class BaseGraphView extends BorderPane {
         super.layoutChildren(); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
-    
     private PVReader<Graph2DResult> pv;
-    protected IntensityGraph2DExpression graph;
+    protected Graph2DExpression< T > graph;
 
-    protected void reconnect( String dataForm ) {
+    protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
             pv.close();
@@ -69,11 +66,11 @@ public final class BaseGraphView extends BorderPane {
             graph = null;
         }
 	
-	if ( dataForm == null ) {
+	if ( dataFormula == null ) {
 	    return;
 	}
         
-        graph = intensityGraphOf(formula( dataForm ));
+        graph = createExpression( dataFormula );
         
         graph.update(graph.newUpdate().imageHeight(600)
                 .imageWidth(600));
@@ -90,5 +87,8 @@ public final class BaseGraphView extends BorderPane {
                 })
                 .maxRate(ofHertz(100));
     }
-
+    
+    abstract public Graph2DExpression< T > createExpression( String dataFormula );
+    
+    
 }

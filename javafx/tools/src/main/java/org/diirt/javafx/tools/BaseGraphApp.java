@@ -11,21 +11,26 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import org.diirt.graphene.Graph2DRendererUpdate;
+import org.diirt.graphene.IntensityGraph2DRendererUpdate;
 
 /**
  *
  * @author Mickey
  */
-public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Application {
+abstract public class BaseGraphApp extends Application {
     
     final private DataSelectionPanel pnlData = new DataSelectionPanel();
-    final private BaseGraphView pnlGraph = new BaseGraphView();
+    private BaseGraphView pnlGraph;
     final private ErrorMessagePanel pnlError = new ErrorMessagePanel();
+    
+    abstract public BaseGraphView getGraphView();
+    
     @Override
     public void start( Stage stage ) throws Exception {
+	this.pnlGraph = getGraphView();
+	
 	BorderPane mainPanel = new BorderPane();
 	    mainPanel.setTop( this.pnlData );
 	    mainPanel.setCenter( this.pnlGraph );
@@ -53,12 +58,12 @@ public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Applic
     public void addDataFormulae( String... formNames ) {
 	for ( String s : formNames ) {
 	    DataFormula f = DataFormulaFactory.fromFormula( this.pnlGraph , s );
-	    this.pnlData.addDataForms( f );
+	    this.pnlData.addDataFormulae( f );
 	}
     }
     
-    public void addDataFormulae( DataFormula... dataForms ) {
-	this.pnlData.addDataForms( dataForms );
+    void addDataFormulae( DataFormula... dataForms ) {
+	this.pnlData.addDataFormulae( dataForms );
     }
     
     private class DataSelectionPanel extends BorderPane {
@@ -79,7 +84,7 @@ public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Applic
 		    reconnect( null );
 		}
 	    };
-	    addDataForms( defaultData );
+	    addDataFormulae( defaultData );
 	    this.cboSelectData.setValue( defaultData );
 	    
 	    this.cboSelectData.valueProperty().addListener( new ChangeListener< DataFormula >() {
@@ -91,7 +96,7 @@ public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Applic
 	    });
 	}
 	
-	final public void addDataForms( DataFormula... f ) {
+	final public void addDataFormulae( DataFormula... f ) {
 	    this.cboSelectData.getItems().addAll( f );
 	}
     }
@@ -99,9 +104,4 @@ public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Applic
     private class ErrorMessagePanel extends BorderPane {
 	
     }
-    
-    public static void main( String[] args ) {
-	launch( args );
-    }
-
 }
