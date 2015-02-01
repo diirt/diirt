@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javax.swing.SwingUtilities;
 
 /**
@@ -39,16 +38,6 @@ public class Executors {
     public static Executor localThread() {
         return CURRENT_EXECUTOR;
     }
-    
-    /**
-     * Executes tasks on the JavaFX Platform thread using Platform.runLater()
-     * 
-     * @return an executor that posts events on the JavaFX Platform event queue
-     * @author mjchao
-     */
-    public static Executor fxPlatform() {
-	return FX_EXECUTOR;
-    }
 
     private static Executor SWING_EXECUTOR = new Executor() {
 
@@ -71,22 +60,7 @@ public class Executors {
             }
         }
     };
-    
-    /**
-     * An executor that posts commands to the JavaFx event queue, known as
-     * Platform
-     * 
-     * @author mjchao
-     */
-    private static Executor FX_EXECUTOR = new Executor() {
-	
-	@Override
-	public void execute( Runnable command ) {
-	    Platform.runLater( command );
-	}
-    };
-    
-    
+     
     /**
      * A thread factory where each new thread starts with the given name. The
      * name of the thread will be poolname + number. This can be used instead
