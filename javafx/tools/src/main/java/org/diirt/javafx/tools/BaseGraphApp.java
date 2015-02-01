@@ -47,9 +47,7 @@ abstract public class BaseGraphApp extends Application {
 	stage.setWidth( 500 );
 	stage.setHeight( 500 );
 	stage.show();
-	
-	addDataFormulae( DataFormulaFactory.sineWave( this.pnlGraph ) , DataFormulaFactory.gaussianWaveform( this.pnlGraph ) );
-    }
+ }
     
     public void reconnect( String dataForm ) {
 	this.pnlGraph.reconnect( dataForm );

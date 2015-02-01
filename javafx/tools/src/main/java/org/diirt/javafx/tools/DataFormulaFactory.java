@@ -55,4 +55,15 @@ public class DataFormulaFactory {
 	};
 	return rtn;
     }
+    
+    final public static DataFormula histogram( final BaseGraphView view ) {
+	DataFormula rtn = new DataFormula( "Histogram with some properties..." ) {
+	    
+	    @Override
+	    public void onSelected() {
+		view.reconnect( "=histogram2DOf(tableOf(column(\"X\", 'sim://sineWaveform(1,100,100,0.01)'), column(\"Y\", 'sim://sineWaveform(10,100,100,0.01)')), \"Y\", \"X\")" );
+	    }
+	};
+	return rtn;
+    }
 }

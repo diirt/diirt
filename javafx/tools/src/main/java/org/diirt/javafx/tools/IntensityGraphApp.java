@@ -5,10 +5,13 @@
  */
 package org.diirt.javafx.tools;
 
+import javafx.stage.Stage;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.graphene.IntensityGraph2DRendererUpdate;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
+import org.diirt.graphene.IntensityGraph2DRenderer;
+import org.diirt.graphene.NumberColorMap;
 
 /**
  *
@@ -22,10 +25,52 @@ public class IntensityGraphApp extends BaseGraphApp {
 		return intensityGraphOf( formula(dataFormula) );
 	    }    
     };
+    
+    private Graph2DExpression<IntensityGraph2DRendererUpdate> graph;
 
     @Override
     public BaseGraphView getGraphView() {
 	return this.intensityGraphView;
+    }
+    
+    protected void updateGraph() {
+        if (graph != null) {
+            update(graph);
+        }
+    }
+    
+    private NumberColorMap colorMap = IntensityGraph2DRenderer.DEFAULT_COLOR_MAP;
+    private boolean drawLegend = IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND;
+    
+    public NumberColorMap getColorMap() {
+        return colorMap;
+    }
+
+    public void setColorMap(NumberColorMap colorMap) {
+        this.colorMap = colorMap;
+        updateGraph();
+    }
+
+    public boolean isDrawLegend() {
+        return drawLegend;
+    }
+
+    public void setDrawLegend(boolean drawLegend) {
+        this.drawLegend = drawLegend;
+        updateGraph();
+    }
+    
+    protected void update(Graph2DExpression<IntensityGraph2DRendererUpdate> graph) {
+        graph.update(graph.newUpdate().colorMap(colorMap).drawLegend(drawLegend));
+    }
+    
+    @Override
+    public void start( Stage stage ) throws Exception {
+	super.start( stage );
+	super.addDataFormulae( DataFormulaFactory.sineWave( this.intensityGraphView ) , 
+		DataFormulaFactory.gaussianWaveform( this.intensityGraphView ) ,
+		DataFormulaFactory.histogram( this.intensityGraphView ) );
+	this.graph = this.intensityGraphView.graph;
     }
 
     public static void main( String[] args ) {
