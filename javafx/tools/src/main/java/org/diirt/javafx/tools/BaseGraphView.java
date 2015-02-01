@@ -41,6 +41,16 @@ public final class BaseGraphView extends BorderPane {
 //                }
 //            }
 //        });
+	
+	//force the image to resize when this panel resizes
+	imagePanel.minHeightProperty().bind( this.heightProperty() );
+	imagePanel.prefHeightProperty().bind( this.heightProperty() );
+	imagePanel.maxHeightProperty().bind( this.heightProperty() );
+	
+	imagePanel.minWidthProperty().bind( this.widthProperty() );
+	imagePanel.prefWidthProperty().bind( this.widthProperty() );
+	imagePanel.maxWidthProperty().bind( this.widthProperty() );
+	
         setCenter(imagePanel);
         reconnect();
     }
