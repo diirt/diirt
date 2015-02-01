@@ -21,11 +21,17 @@ public final class VImageView extends BorderPane {
         imageView.fitHeightProperty().bind(heightProperty());
         imageView.fitWidthProperty().bind(widthProperty());
         setCenter(imageView);
+	setMinSize( 0 , 0 );
     }
     
     public void setVImage(VImage image) {
-        Image newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), (WritableImage) imageView.getImage());
-        imageView.setImage(newImage);
+	if ( image != null ) {
+	    Image newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), (WritableImage) imageView.getImage());
+	    imageView.setImage(newImage);
+	}
+	else {
+	    imageView.setImage( null );
+	}
     }
 
 }

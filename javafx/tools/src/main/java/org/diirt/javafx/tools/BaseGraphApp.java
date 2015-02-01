@@ -6,7 +6,10 @@
 package org.diirt.javafx.tools;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -40,13 +43,60 @@ public class BaseGraphApp< T extends Graph2DRendererUpdate< T > > extends Applic
 	stage.setHeight( 500 );
 	stage.show();
 	
+	addDataFormulae( DataFormulaFactory.sineWave( this.pnlGraph ) , DataFormulaFactory.gaussianWaveform( this.pnlGraph ) );
     }
     
-    private class DataSelectionPanel extends FlowPane {
+    public void reconnect( String dataForm ) {
+	this.pnlGraph.reconnect( dataForm );
+    }
+    
+    public void addDataFormulae( String... formNames ) {
+	for ( String s : formNames ) {
+	    DataFormula f = DataFormulaFactory.fromFormula( this.pnlGraph , s );
+	    this.pnlData.addDataForms( f );
+	}
+    }
+    
+    public void addDataFormulae( DataFormula... dataForms ) {
+	this.pnlData.addDataForms( dataForms );
+    }
+    
+    private class DataSelectionPanel extends BorderPane {
 	
+	private ComboBox< DataFormula > cboSelectData = new ComboBox< DataFormula >();
+	
+	public DataSelectionPanel() {
+	    this.setCenter( this.cboSelectData );
+	    
+	    //allow the combo box to stretch out and fill panel completely
+	    this.cboSelectData.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
+	    
+	    //allow the user to select no data
+	    DataFormula defaultData = new DataFormula( "[Select]" ) {
+		
+		@Override
+		public void onSelected() {
+		    reconnect( null );
+		}
+	    };
+	    addDataForms( defaultData );
+	    this.cboSelectData.setValue( defaultData );
+	    
+	    this.cboSelectData.valueProperty().addListener( new ChangeListener< DataFormula >() {
+
+		@Override
+		public void changed(ObservableValue<? extends DataFormula> observable, DataFormula oldValue, DataFormula newValue) {
+		    newValue.onSelected();
+		}
+	    });
+	}
+	
+	final public void addDataForms( DataFormula... f ) {
+	    this.cboSelectData.getItems().addAll( f );
+	}
     }
     
-    private class ErrorMessagePanel extends FlowPane {
+    private class ErrorMessagePanel extends BorderPane {
 	
     }
     

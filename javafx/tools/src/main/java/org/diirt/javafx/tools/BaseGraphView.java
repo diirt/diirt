@@ -42,17 +42,13 @@ public final class BaseGraphView extends BorderPane {
 //            }
 //        });
 	
-	//force the image to resize when this panel resizes
-	imagePanel.minHeightProperty().bind( this.heightProperty() );
-	imagePanel.prefHeightProperty().bind( this.heightProperty() );
-	imagePanel.maxHeightProperty().bind( this.heightProperty() );
-	
-	imagePanel.minWidthProperty().bind( this.widthProperty() );
-	imagePanel.prefWidthProperty().bind( this.widthProperty() );
-	imagePanel.maxWidthProperty().bind( this.widthProperty() );
-	
+	//allow this panel to shrink -- for some reason, JavaFX doesn't default
+	//to this
+	setMinSize( 0 , 0 );
         setCenter(imagePanel);
-        reconnect();
+	
+	//"sim://sine2DWaveform(1,50,45,100,100,0.1)"
+        reconnect( null );
     }
 
     @Override
@@ -65,14 +61,19 @@ public final class BaseGraphView extends BorderPane {
     private PVReader<Graph2DResult> pv;
     protected IntensityGraph2DExpression graph;
 
-    protected void reconnect() {
+    protected void reconnect( String dataForm ) {
+	
         if (pv != null) {
             pv.close();
             imagePanel.setVImage(null);
             graph = null;
         }
+	
+	if ( dataForm == null ) {
+	    return;
+	}
         
-        graph = intensityGraphOf(formula("sim://sine2DWaveform(1,50,45,100,100,0.1)"));
+        graph = intensityGraphOf(formula( dataForm ));
         
         graph.update(graph.newUpdate().imageHeight(600)
                 .imageWidth(600));

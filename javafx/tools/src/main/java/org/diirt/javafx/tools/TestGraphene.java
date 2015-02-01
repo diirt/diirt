@@ -15,7 +15,8 @@ public class TestGraphene extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new BaseGraphView();
+        BaseGraphView root = new BaseGraphView();
+	root.reconnect( "sim://sine2DWaveform(1,50,45,100,100,0.1)" );
         
         Scene scene = new Scene(root);
 	
