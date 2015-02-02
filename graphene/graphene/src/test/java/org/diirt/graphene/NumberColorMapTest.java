@@ -59,6 +59,18 @@ public class NumberColorMapTest {
     }
     
     @Test 
+    public void customizedColorMapDraw2() throws Exception{
+        
+        Cell2DDataset data = IntensityGraph2DRendererTest.rectangleDataset(); 
+        IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);     
+        File file = new File ("src/test/resources/org/diirt/graphene/summer.cmap"); 
+        renderer.update(renderer.newUpdate().colorMap(NumberColorMaps.load(file))); 
+        GraphBuffer graphbuffer = new GraphBuffer(renderer); 
+        renderer.draw(graphbuffer,data); 
+        ImageAssert.compareImages("numberColorMap.cutomizedColorMapDraw2", graphbuffer.getImage());
+    }
+    
+    @Test 
     public void loadColorMapXML() throws Exception {
         File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap.xml"); 
         NumberColorMapGradient colorMap = NumberColorMaps.load(file); 
