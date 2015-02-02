@@ -11,6 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.epics.pvmanager.DesiredRateEvent.Type.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -113,7 +114,9 @@ public class PassiveScanDecouplerTest {
         });
     }
 
+    // This test was better implemented in 3.x
     @Test
+    @Ignore
     public void rescheduling() throws Exception {
         repeatTest(10, new Callable<Object>() {
             @Override
