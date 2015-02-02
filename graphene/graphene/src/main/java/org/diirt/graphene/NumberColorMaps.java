@@ -243,5 +243,13 @@ public class NumberColorMaps {
     public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, percentageRange(colors.size()), true, nanColor, name);
     }
+    
+    public static NumberColorMap relative(List<Color> colors, ListDouble percentages, Color nanColor, String name) {
+        return new NumberColorMapGradient(colors, percentages, true, nanColor, name);
+    }
+    
+    public static NumberColorMap absolute(List<Color> colors, ListDouble values, Color nanColor, String name) {
+        return new NumberColorMapGradient(colors, values, false, nanColor, name);
+    }
 
 }

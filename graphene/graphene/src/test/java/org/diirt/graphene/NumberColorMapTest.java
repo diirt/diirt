@@ -9,11 +9,15 @@ import org.diirt.graphene.NumberColorMaps;
 import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -95,5 +99,40 @@ public class NumberColorMapTest {
         assertThat(colors.get(60), equalTo(new Color(243,249,102))); 
         assertThat(colors.get(63), equalTo(new Color(255,255,102))); 
         
+    }
+
+    // TODO: implement absolute color schemes
+    @Test
+    @Ignore
+    public void absoluteScheme() {
+        NumberColorMap colorMap = NumberColorMaps.absolute(
+                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(-1.0, 0, 1.0),
+                Color.BLACK, "TEST");
+        NumberColorMapInstance instance = colorMap.createInstance(Ranges.range(0.0, 1.0));
+        assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
+        assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
+        assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
+        instance = colorMap.createInstance(Ranges.range(-1.0, 1.0));
+        assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
+        assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
+        assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
+    }
+
+    @Test
+    @Ignore
+    public void relativeScheme() {
+        NumberColorMap colorMap = NumberColorMaps.relative(
+                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(0.0, 0.5, 1.0),
+                Color.BLACK, "TEST");
+        NumberColorMapInstance instance = colorMap.createInstance(Ranges.range(0.0, 1.0));
+        assertThat(instance.colorFor(0.0), equalTo(Color.RED.getRGB()));
+        assertThat(instance.colorFor(0.5), equalTo(Color.YELLOW.getRGB()));
+        assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
+        instance = colorMap.createInstance(Ranges.range(-1.0, 1.0));
+        assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
+        assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
+        assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
     }
 }
