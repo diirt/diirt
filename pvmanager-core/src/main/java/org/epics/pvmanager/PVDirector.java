@@ -167,9 +167,6 @@ public class PVDirector<T> {
         ReadRecipe recipe;
         synchronized(lock) {
             recipe = readRecipies.remove(expression);
-            for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
-                readConnCollector.removeChannel(channelRecipe.getChannelName());
-            }
         }
         if (recipe == null) {
             log.log(Level.SEVERE, "Director was asked to disconnect expression '" + expression + "' which was not found.");
@@ -177,6 +174,9 @@ public class PVDirector<T> {
         
         if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
+                for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
+                    readConnCollector.removeChannel(channelRecipe.getChannelName());
+                }
                 dataSource.disconnectRead(recipe);
             } catch(Exception ex) {
                 recipe.getChannelReadRecipes().iterator().next().getReadSubscription().getExceptionWriteFunction().writeValue(ex);
