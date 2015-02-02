@@ -4,6 +4,8 @@
  */
 package org.diirt.javafx.tools;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
@@ -46,8 +48,27 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 	setMinSize( 0 , 0 );
         setCenter(imagePanel);
 	
+	this.imagePanel.setOnMouseMoved( new EventHandler< MouseEvent >() {
+
+	    @Override
+	    public void handle(MouseEvent event) {
+		onMouseMove( event );
+	    }
+	});
+	
 	//"sim://sine2DWaveform(1,50,45,100,100,0.1)"
         reconnect( null );
+    }
+    
+    /**
+     * Called whenever the mouse moves over the graph image of this view. By
+     * default, this does nothing. Override this method to provide custom
+     * functionality
+     * 
+     * @param e 
+     */
+    protected void onMouseMove( MouseEvent e ) {
+	//do nothing by default
     }
 
     @Override
@@ -58,7 +79,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     private PVReader<Graph2DResult> pv;
     protected Graph2DExpression< T > graph;
 
-    protected void reconnect( String dataFormula ) {
+    final protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
             pv.close();

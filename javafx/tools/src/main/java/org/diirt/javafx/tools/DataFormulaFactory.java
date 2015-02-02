@@ -13,7 +13,7 @@ public class DataFormulaFactory {
     
     final public static DataFormula fromFormula( final BaseGraphView view , final String formula ) {
 	
-	DataFormula rtn = new DataFormula() {
+	DataFormula rtn = new DataFormula( formula ) {
 
 	    @Override
 	    public void onSelected() {

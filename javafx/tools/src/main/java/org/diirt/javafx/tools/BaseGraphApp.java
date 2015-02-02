@@ -41,6 +41,8 @@ abstract public class BaseGraphApp extends Application {
 	this.pnlGraph.setMinSize( 0 , 0 );
 	this.pnlError.setMinSize( 0 , 0 );
 	
+	
+	
 	Scene scene = new Scene( mainPanel );
 	stage.setTitle( "diirt - BaseGraphApp" );
 	stage.setScene( scene );
@@ -48,6 +50,10 @@ abstract public class BaseGraphApp extends Application {
 	stage.setHeight( 500 );
 	stage.show();
  }
+    
+    public void reconnect() {
+	this.pnlData.reselect();
+    }
     
     public void reconnect( String dataForm ) {
 	this.pnlGraph.reconnect( dataForm );
@@ -66,7 +72,7 @@ abstract public class BaseGraphApp extends Application {
     
     private class DataSelectionPanel extends BorderPane {
 	
-	private ComboBox< DataFormula > cboSelectData = new ComboBox< DataFormula >();
+	final private ComboBox< DataFormula > cboSelectData = new ComboBox< DataFormula >();
 	
 	public DataSelectionPanel() {
 	    this.setCenter( this.cboSelectData );
@@ -79,7 +85,7 @@ abstract public class BaseGraphApp extends Application {
 		
 		@Override
 		public void onSelected() {
-		    reconnect( null );
+		    BaseGraphApp.this.reconnect( null );
 		}
 	    };
 	    addDataFormulae( defaultData );
@@ -96,6 +102,10 @@ abstract public class BaseGraphApp extends Application {
 	
 	final public void addDataFormulae( DataFormula... f ) {
 	    this.cboSelectData.getItems().addAll( f );
+	}
+	
+	public void reselect() {
+	    this.cboSelectData.getValue().onSelected();
 	}
     }
     
