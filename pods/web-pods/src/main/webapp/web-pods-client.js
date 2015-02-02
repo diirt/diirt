@@ -1,35 +1,20 @@
 window.onload = function() {
-
-    // References to elements on the page
-    var form = document.getElementById('message-form');
-    var serverField = document.getElementById('server');
-    var channelField = document.getElementById('channel');
-    var idField = document.getElementById('idNum');
-    var result = document.getElementById('results');
-    var details = document.getElementById('details');
-    var subscriptionList = document.getElementById('subscriptions');
-    var connectBtn = document.getElementById('connect');
-    var disconnectBtn = document.getElementById('disconnect');
-    var subscribeBtn = document.getElementById('subscribe');
-    var pauseBtn = document.getElementById('pause');
-    var resumeBtn = document.getElementById('resume');
-    var unsubscribeBtn = document.getElementById('unsubscribe');
-    var clearBtn = document.getElementById('clear');
-    var filterBtn = document.getElementById('filter');
-    var showAllBtn = document.getElementById('showAll');
+    
     var socket;
     var channel;
     var id;
-    var filter = 'none';
-    var currentId = 0;
-    var channelList = [];
-    var resultsInfoFiltered = []; // Contains JSON organized by id
-    var resultsInfo = []; // Contains JSON
-    var results = [];
-    var resultsFiltered = [];
+   
     
-    serverField.value = "ws://" + window.location.host + "/web-pods/socket";
+    // Connect to the socket
+    function connect(server) {
+        socket = new WebSocket(server);
+        testSocket();
+    }
     
+    function close() {
+        socket.close(); // Close socket
+        socket.onclose = function(e) { closeSocket(e) };
+    }
     
     function waitForConnection(callback) {
         setTimeout(
@@ -44,66 +29,30 @@ window.onload = function() {
     };
     
     
+    
     //Delays sending a message until the socket connection is established
     function sendMessage(message) {
         waitForConnection(function(){
            socket.send(message); 
         });
     };
-  
-    
-    // When the form is submitted, send a message and add it to the sent message list
-    connectBtn.onclick = function(e) {
-        e.preventDefault();
-        var server = serverField.value;
-        socket = new WebSocket(server);
-        testSocket();
-        return false;
-    };
-    
-    subscriptionList.onchange = function(e) {
-        var index = subscriptionList.selectedIndex;
-        channel = channelList[index];
-        id = index;
-        // console.log('id: ' + id + 'channel: ' + channel);
-    };
     
     // Subscribe
-    subscribeBtn.onclick = function(e) {
-        channel = channelField.value;
-        id = idField.value;
-        var message = '{"message" : "subscribe", "id" : ' + id + ', "channel" :"' + channel + '"}';
-        currentId++;
-        idField.value = currentId;
+    function subscribe(idSub, channelSub) {
+        var message = '{"message" : "subscribe", "id" : ' + idSub + ', "channel" : "' + channelSub + '"}';
         sendMessage(message); // Sends the message through socket
-        var newSubscription = document.createElement('option'); // New subscription to be added to sub list
-        newSubscription.className = 'open';
-        subscriptionList.appendChild(newSubscription);
-        newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
-        channelList.unshift(channel);
-        var subscriptionNotification = document.createElement('option'); // New subscription to be added to results window
-        result.insertBefore(subscriptionNotification, result.childNodes[0]);
-        subscriptionNotification.appendChild(document.createTextNode('Subscribe: ' + channel + ', ' + id));
-        resultsInfo.unshift(message);
-        resultsInfoFiltered.unshift([message]);
         socket.onmessage = function(e) { newMessage(e) };
     };
     
     
     // Unsubscribe
-    unsubscribeBtn.onclick = function(e) {
-        // TODO: Change class of subscriptions when unsubscribed (change to color red)
-        var message = '{"message" : "unsubscribe", "id" : ' + id + '}';
+   function unsubscribe(idUn) {
+        var message = '{"message" : "unsubscribe", "id" : ' + idUn + '}';
         sendMessage(message);
-        // TODO: Change to appendChild
-        result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
-        resultsInfo.unshift(message);
-        subscriptionList.childNodes[id].className = 'unsubscribed'; // Strikethrough
     };
     
     
     function testSocket() {
-      // socket.onmessage = function(e) { newMessage(e) };
       socket.onopen = function(e) { openSocket(e) };
       socket.onerror = function(e) { error(e) };
     };
@@ -112,17 +61,132 @@ window.onload = function() {
     // Message received
    function newMessage (event) {
        var response = JSON.parse(event.data);
+       displayNewMessage(response);
+    };
+    
+    // Log errors to the console
+    function error (error) {
+        console.log('WebSocket Error: ' + error);
+    };
+      
+    // Pause
+    function pause (idP) {
+        var message = '{"message":"pause","id": ' + idP + '}';
+        sendMessage(message);
+    };
+    
+    // Resume
+    function resume (idR) {
+        var message = '{"message" : "resume", "id" : ' + idR + '}';
+        sendMessage(message);
+    };
+
+ 
+
+/*************************
+ * 
+ * Front end
+ * 
+ *************************/
+    
+     // References to elements on the page
+    var form = document.getElementById('message-form');
+    var serverField = document.getElementById('server');
+    var channelField = document.getElementById('channel');
+    var idField = document.getElementById('idNum');
+    var result = document.getElementById('results');
+    var details = document.getElementById('details');
+    var subscriptionList = document.getElementById('subscriptions');
+    var connectBtn = document.getElementById('connect');
+    var disconnectBtn = document.getElementById('disconnect');
+    var subscribeBtn = document.getElementById('subscribe');
+    var pauseBtn = document.getElementById('pause');
+    var resumeBtn = document.getElementById('resume');
+    var unsubscribeBtn = document.getElementById('unsubscribe');
+    var clearBtn = document.getElementById('clear');
+    
+    /*
+    var socket;
+    var channel;
+    var id;
+    */
+    var filter = 'none';
+    
+    
+    var currentId = 0;
+    var channelList = [];
+    // var resultsInfoFiltered = []; // Contains JSON organized by id
+    var resultsInfo = []; // Contains JSON
+    var results = [];
+    // var resultsFiltered = [];
+    
+    
+    // Automatically set socket address
+    serverField.value = "ws://" + window.location.host + "/web-pods/socket";
+    
+    
+    // Trigger socket connection when button is clicked
+    connectBtn.onclick = function(e) {
+        e.preventDefault();
+        connect(serverField.value);
+        return false;
+    };
+    
+    
+    // Trigger socket close when disconnet button is clicked
+    disconnectBtn.onclick = function(e) {
+        e.preventDefault();
+        close();
+        return false;
+    };
+    
+    
+    // Subscribe
+    subscribeBtn.onclick = function(e) {
+        // Break into two calls of other functions--format message and update UI
+        channel = channelField.value;
+        id = idField.value;
+        subscribe(id, channel);
+        currentId++;
+        idField.value = currentId;
+        
+        var newSubscription = document.createElement('option'); // New subscription to be added to sub list
+        newSubscription.className = 'open';
+        subscriptionList.appendChild(newSubscription);
+        newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
+        channelList.unshift(channel);
+        
+        var subscriptionNotification = document.createElement('option'); // New subscription to be added to     results window
+        result.insertBefore(subscriptionNotification, result.childNodes[0]);
+        subscriptionNotification.appendChild(document.createTextNode('Subscribe: ' + channel + ', ' + id));
+    };
+    
+    // Unsubscribe
+    unsubscribeBtn.onclick = function(e) {
+        id = subscriptionList.selectedIndex;
+        channel = channelList[channelList.length - id - 1];
+        unsubscribe(id);
+        
+        result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        resultsInfo.unshift('Unsubscribe: ' + channel + ', ' + id);
+        subscriptionList.childNodes[id].className = 'unsubscribed'; // Strikethrough
+    };
+    
+    
+     // Message received
+   function displayNewMessage (response) {
        var value;
        var filterValue;
        if (response.type === "connection") { // Successful subscription
-           // subscriptionList.innerHTML = '<option> id: ' + id + ', channel: ' + channel + '</option>' + subscriptionList.innerHTML;
        }
-      if (response.value.type.name === "VTable") {
+        if (response.value.type.name === "VTable") {
            value = '<option>table</option>';
            filterValue = 'table';
        }
        else if (response.type === "error") {
-           value = '<option class = "error">' + response.error + '</option>';
+           console.log('error');
+           console.log(response.type);
+           value = '<option>' + response.type + '</option>';
            filterValue = response.error;
        } 
        else if (response.type === "value") {
@@ -130,105 +194,60 @@ window.onload = function() {
             filterValue = response.value.value;
         }
         resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
-        resultsInfoFiltered[id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');      
-        // Display event details based on filter status
-        if (filter == 'none') { // No filter
-           // TODO: Change to appendChild 
-           result.innerHTML = value + result.innerHTML;
-        }
-        else if (response.id == filter) { // If the event should be displayed - matches filter
-            var option = document.createElement('option');
-            result.insertBefore(option, result.childNodes[0]);
-            option.appendChild(document.createTextNode(filterValue));
-        }
+        result.innerHTML = value + result.innerHTML; 
     };
     
     // Updates connection status
    function openSocket (event) {
-       //TODO: change to appeendChild
        result.innerHTML = '<option class="open">Connected</option>' + result.innerHTML;
        resultsInfo.unshift('Connected to ' + serverField.value);
        idField.value = currentId;
-       //TODO: Change to clear all children...or something like that
        subscriptionList.innerHTML = '';
     };
     
     
-    // Log errors to the console
-    function error (error) {
-        console.log('WebSocket Error: ' + error);
-    };
-    
-    
-    // Updates the connection status when socket is closed
+        // Updates the connection status when socket is closed
     function closeSocket(event) {
-        //TODO: Change to appendChild
         result.innerHTML = '<option class="closed">Disconnected</option>' + result.innerHTML;
         resultsInfo.unshift('Disconnected from ' + socket.URL);
         currentId = 0;
-        // socketStatus.innerHTML = 'Disconnected';
-        // socketStatus.className = 'Closed';
     };
-
-
-    // Close the socket when the disconnect button is clicked
-    disconnectBtn.onclick = function(e) {
-        e.preventDefault();
-        socket.close(); // Close socket
-        socket.onclose = function(e) { closeSocket(e) };
-        return false;
+    
+    subscriptionList.onchange = function(e) {
+        var index = subscriptionList.selectedIndex;
+        channel = channelList[index];
+        id = index;
     };
     
     // Pause
     pauseBtn.onclick = function(e) {
-        var message = '{"message":"pause","id": ' + id + '}';
-        sendMessage(message);
-        // TODO: appendChild
+        pause(id);
         result.innerHTML = '<option>Paused</option>' + result.innerHTML;
-        resultsInfo.unshift(message);
+        resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
         // socketStatus.innerHTML = 'Paused';
         subscriptionList.childNodes[id].className = 'closed';
     };
     
     // Resume
     resumeBtn.onclick = function(e) {
-        var message = '{"message" : "resume", "id" : ' + id + '}';
-        sendMessage(message);
-        //TODO: appendChild
+        resume(id);
         result.innerHTML = '<option>Resume</option>' + result.innerHTML;
-        resultsInfo.unshift(message);
+        resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
         // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
         subscriptionList.childNodes[id].className = 'open';
     };
-    
-    
-    filterBtn.onclick = function(e) {
-        filter = id;
-        // result.innerHTML = '';
-        // TODO: Everything here
-    }
-    
-    showAllBtn.onclick = function(e) {
-        filter = 'none';
-        // TODO: Everything here
-    }
-    
     
     // Clears event info
     clearBtn.onclick = function(e) {
         result.innerHTML= "";
         details.innerHTML = "";
     }
-    
-    
+
     // Displays details for selected event
     result.onchange = function(e) {
         var i = result.selectedIndex;
         details.innerHTML = resultsInfo[i];
     };
- 
-};
+    
 
-
-
-
+}
