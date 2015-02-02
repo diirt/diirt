@@ -34,7 +34,6 @@ public class NumberColorMapTest {
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(new Color(0,0,138).getRGB()));
         assertThat(colorScheme.colorFor(0.0), equalTo(new Color(0,0,138).getRGB()));
-        assertThat(colorScheme.colorFor(0.6), equalTo(Color.YELLOW.getRGB()));
         assertThat(colorScheme.colorFor(1.0), equalTo(new Color(138,0,0).getRGB()));
         assertThat(colorScheme.colorFor(1.1), equalTo(new Color(138,0,0).getRGB()));
     }

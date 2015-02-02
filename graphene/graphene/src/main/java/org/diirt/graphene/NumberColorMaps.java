@@ -153,14 +153,13 @@ public class NumberColorMaps {
                                                                                 Color.CYAN,
                                                                                 Color.YELLOW,
                                                                                 Color.RED,
-                                                                                new Color(138,0,0), 
-                                                                                Color.BLACK}), Color.BLACK, "JET"); 
+                                                                                new Color(138,0,0)}), Color.BLACK, "JET"); 
     /**
      * GRAY ranges from black to white.
      */
     public static final NumberColorMap GRAY= relative(Arrays.asList(new Color[]{Color.BLACK, 
-                                                                                       Color.WHITE,
-                                                                                       Color.RED}),Color.BLACK,"GRAY"); 
+                                                                                       Color.WHITE
+                                                                                       }),Color.RED,"GRAY"); 
     /**
      * BONE ranges from black to white passing from blue.
      */
@@ -168,16 +167,16 @@ public class NumberColorMaps {
                                                                                        new Color(57, 57, 86),
                                                                                        new Color(107, 115, 140),
                                                                                        new Color(165, 198, 198),
-                                                                                       Color.WHITE,
-                                                                                       Color.RED} ),Color.BLACK,"BONE");
+                                                                                       Color.WHITE
+                                                                                       } ),Color.RED,"BONE");
     /**
      * HOT ranges from black to white passing from red and yellow.
      */
     public static final NumberColorMap HOT = relative(Arrays.asList(Color.BLACK,
                                                 Color.RED,
                                                 Color.YELLOW,
-                                                Color.WHITE,
-                                                Color.BLUE), Color.BLACK, "HOT");
+                                                Color.WHITE
+                                                ), Color.BLUE, "HOT");
             
     /**
      * HSV goes through the color wheel: red, yellow, green, cyan, blue, magenta
@@ -189,8 +188,8 @@ public class NumberColorMaps {
                                                                                        Color.CYAN,
                                                                                        Color.BLUE,
                                                                                        Color.MAGENTA,
-                                                                                       Color.RED,
-                                                                                       Color.BLACK} ),Color.BLACK,"HSV"); 
+                                                                                       Color.RED
+                                                                                       } ),Color.BLACK,"HSV"); 
 
     private static final Map<String, NumberColorMap> registeredColorSchemes
             = new ConcurrentHashMap<>();

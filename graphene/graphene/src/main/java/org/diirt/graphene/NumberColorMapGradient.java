@@ -117,8 +117,8 @@ class NumberColorMapGradient implements NumberColorMap {
             if (value < range.getMinimum()) {
                 alpha = 255;
                 red = (colors.get(0).getRed());
-                green = (colors.get(0).getRed());
-                blue = (colors.get(0).getRed());
+                green = (colors.get(0).getGreen());
+                blue = (colors.get(0).getBlue());
             }
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
