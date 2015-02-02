@@ -15,8 +15,9 @@ import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 
 /**
- *
- * @author Mickey
+ * Creates bubble graphs.
+ * 
+ * @author mjchao
  */
 public class BubbleGraphApp extends BaseGraphApp {
     
@@ -25,8 +26,6 @@ public class BubbleGraphApp extends BaseGraphApp {
     private String sizeColumn = null;
     private String colorColumn = null;
     private boolean highlightFocusValue;
-    
-    private Graph2DExpression<BubbleGraph2DRendererUpdate> graph;
     
     final private BaseGraphView< BubbleGraph2DRendererUpdate > bubbleGraphView = new BaseGraphView< BubbleGraph2DRendererUpdate >() {
 
@@ -47,6 +46,11 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    }
 	}
     };
+    
+    //we can't get this object until the <code>BubbleGraphApp</code> is created
+    //since we get it from <code>bubbleGraphView</code>. Therefore, it is
+    //critical that this is initialized in the start() method.
+    private Graph2DExpression< BubbleGraph2DRendererUpdate > graph;
     
     public boolean isHighlightFocusValue() {
         return highlightFocusValue;

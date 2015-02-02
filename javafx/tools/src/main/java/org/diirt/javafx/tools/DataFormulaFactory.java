@@ -6,12 +6,13 @@
 package org.diirt.javafx.tools;
 
 /**
- *
+ * Creates Data Formula objects.
+ * 
  * @author Mickey
  */
 public class DataFormulaFactory {
     
-    final public static DataFormula fromFormula( final BaseGraphView view , final String formula ) {
+    final static DataFormula fromFormula( final BaseGraphView view , final String formula ) {
 	
 	DataFormula rtn = new DataFormula( formula ) {
 
@@ -23,7 +24,7 @@ public class DataFormulaFactory {
 	return rtn;
     }
     
-    final public static DataFormula fromNameAndFormula( final BaseGraphView view , final String name , final String formula ) {
+    final static DataFormula fromNameAndFormula( final BaseGraphView view , final String name , final String formula ) {
 	DataFormula rtn = new DataFormula( name ) {
 	    
 	    @Override
@@ -34,7 +35,7 @@ public class DataFormulaFactory {
 	return rtn;
     }
     
-    final public static DataFormula sineWave( final BaseGraphView view ) {
+    final static DataFormula sineWave( final BaseGraphView view ) {
 	DataFormula rtn = new DataFormula( "Sine wave with some properties..." ) {
 	    
 	    @Override
@@ -45,7 +46,7 @@ public class DataFormulaFactory {
 	return rtn;
     }
     
-    final public static DataFormula gaussianWaveform( final BaseGraphView view ) {
+    final static DataFormula gaussianWaveform( final BaseGraphView view ) {
 	DataFormula rtn = new DataFormula( "Gaussian Waveform" ) {
 	    
 	    @Override
@@ -56,7 +57,7 @@ public class DataFormulaFactory {
 	return rtn;
     }
     
-    final public static DataFormula histogram( final BaseGraphView view ) {
+    final static DataFormula histogram( final BaseGraphView view ) {
 	DataFormula rtn = new DataFormula( "Histogram with some properties..." ) {
 	    
 	    @Override

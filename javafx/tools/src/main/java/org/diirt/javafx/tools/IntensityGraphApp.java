@@ -14,8 +14,9 @@ import org.diirt.graphene.IntensityGraph2DRenderer;
 import org.diirt.graphene.NumberColorMap;
 
 /**
- *
- * @author Mickey
+ * Creates intensity graphs.
+ * 
+ * @author mjchao
  */
 public class IntensityGraphApp extends BaseGraphApp {
 
@@ -26,6 +27,9 @@ public class IntensityGraphApp extends BaseGraphApp {
 	    }    
     };
     
+    //we can't get this object until the <code>BubbleGraphApp</code> is created
+    //since we get it from <code>bubbleGraphView</code>. Therefore, it is
+    //critical that this is initialized in the start() method.
     private Graph2DExpression<IntensityGraph2DRendererUpdate> graph;
 
     @Override

@@ -17,37 +17,26 @@ import org.diirt.graphene.Graph2DRendererUpdate;
 import org.diirt.javafx.util.Executors;
 import static org.diirt.util.time.TimeDuration.ofHertz;
 
+/**
+ * Displays a graph, handles its resizing, and handles its connection
+ * with a data source.
+ * 
+ * @author mjchao, carcassi
+ * @param <T> the type of renderer object used to create the graphs displayed
+ * in by this graph view
+ */
 abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > extends BorderPane {
 
     VImageView imagePanel = new VImageView();
     
     public BaseGraphView() {
-//        heightProperty().addListener(new ChangeListener<Number>() {
-//
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                if (graph != null) {
-//                    graph.update(graph.newUpdate()
-//                            .imageHeight(Math.max(1, newValue.intValue())));
-//                }
-//            }
-//        });
-//        widthProperty().addListener(new ChangeListener<Number>() {
-//
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                if (graph != null) {
-//                    graph.update(graph.newUpdate()
-//                            .imageWidth(Math.max(1, newValue.intValue())));
-//                }
-//            }
-//        });
 	
 	//allow this panel to shrink -- for some reason, JavaFX doesn't default
 	//to this
 	setMinSize( 0 , 0 );
         setCenter(imagePanel);
 	
+	//watch for mouse movements, if necessary
 	this.imagePanel.setOnMouseMoved( new EventHandler< MouseEvent >() {
 
 	    @Override
@@ -63,22 +52,30 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     /**
      * Called whenever the mouse moves over the graph image of this view. By
      * default, this does nothing. Override this method to provide custom
-     * functionality
+     * functionality.
      * 
      * @param e 
      */
     protected void onMouseMove( MouseEvent e ) {
 	//do nothing by default
     }
-
-    @Override
-    protected void layoutChildren() {
-        super.layoutChildren(); //To change body of generated methods, choose Tools | Templates.
-    }
     
+    /**
+     * Reads from the data source.
+     */
     private PVReader<Graph2DResult> pv;
+    
+    /**
+     * An expression to be sent to the data source to receive data back.
+     */
     protected Graph2DExpression< T > graph;
 
+    /**
+     * Sends the given data formula to the data source and asks it for data. 
+     * The received data is then graphed on this <code>BaseGraphView</code>.
+     * 
+     * @param dataFormula the data formula to use
+     */
     final protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
@@ -109,6 +106,13 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
                 .maxRate(ofHertz(100));
     }
     
+    /**
+     * Creates an expression that the data source can understand from the
+     * provided data formula.
+     * 
+     * @param dataFormula the data formula to use
+     * @return an expression that the data source can understand
+     */
     abstract public Graph2DExpression< T > createExpression( String dataFormula );
     
     
