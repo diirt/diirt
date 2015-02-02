@@ -32,12 +32,12 @@ public class BubbleGraphApp extends BaseGraphApp {
 
 	@Override
 	public Graph2DExpression<BubbleGraph2DRendererUpdate> createExpression(String dataFormula) {
-	BubbleGraph2DExpression plot = bubbleGraphOf(formula(dataFormula),
-	    formulaArg(xColumn),
-	    formulaArg(yColumn),
-	    formulaArg(sizeColumn),
-	    formulaArg(colorColumn));
-        return plot;
+	    BubbleGraph2DExpression plot = bubbleGraphOf(formula(dataFormula),
+		formulaArg(xColumn),
+		formulaArg(yColumn),
+		formulaArg(sizeColumn),
+		formulaArg(colorColumn));
+	    return plot;
 	}
 	
 	@Override
