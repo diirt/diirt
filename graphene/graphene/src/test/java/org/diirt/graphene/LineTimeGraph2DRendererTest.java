@@ -247,6 +247,7 @@ public class LineTimeGraph2DRendererTest {
     }
 
     @Test
+    @Ignore
     public void extraGraphArea1() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,11),
