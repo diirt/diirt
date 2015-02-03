@@ -9,6 +9,8 @@ function drawSeriesChart() {
     var selectX = {};
     var selectY = {};
     var selectColor = {};
+    var graphDivs = {};
+
     for (var i = 0; i < len; i++) {
         // Extract the node and all its properties
         var masterDiv = nodes[i];
@@ -17,7 +19,7 @@ function drawSeriesChart() {
         var xColumn = nodes[i].getAttribute("data-x-column");
         var yColumn = nodes[i].getAttribute("data-y-column");
         var colorColumn = nodes[i].getAttribute("data-color-column");
-        var readOnly = true;
+        var readOnly = "true";
         
         // Prepare html
         var tableDiv = document.createElement("div");
@@ -43,6 +45,7 @@ function drawSeriesChart() {
         graphDiv.style.display = "table-row";
         graphDiv.style.height = "100%";
         tableDiv.appendChild(graphDiv);
+        graphDivs[i] = graphDiv;
         
         // Helper functions
         var populateSelect = function (select, list) {
@@ -96,6 +99,11 @@ function drawSeriesChart() {
             charts[channel.getId()].draw(data, options);
         };
         
+        var addError = function (message, channel, nNode) {
+            google.visualization.errors.addError(graphDivs[nNode],
+                message, "", {'removable': true});
+        };
+        
         var createCallback = function (nNode) {
 
             return function (evt, channel) {
@@ -108,6 +116,7 @@ function drawSeriesChart() {
                         processValue(channel, nNode);
                         break;
                     case "error": //error happened
+                        addError(evt.error, channel, nNode);
                         break;
                     case "writePermission":	// write permission changed.
                         break;
