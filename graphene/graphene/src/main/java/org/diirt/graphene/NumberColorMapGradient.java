@@ -72,10 +72,11 @@ class NumberColorMapGradient implements NumberColorMap {
             if (range == null) {
                 throw new NullPointerException("range can not be null.");
             }
-            double fullRange = range.getMaximum() - range.getMinimum();
+            
             int alpha = 0, red = 0, green = 0, blue = 0;
-            //if we are using relative mapping 
+            //Relative  
                 if(relative){
+                  double fullRange = range.getMaximum() - range.getMinimum();
                     if (fullRange > 0) {
                         for (int i = 0; i < positions.size()-1; i++) {
 
@@ -104,22 +105,39 @@ class NumberColorMapGradient implements NumberColorMap {
                         }
                     }
                   }
+                    
+                    if (value > range.getMaximum()) {
+
+                        alpha = 255;
+                        red = (colors.get(colors.size() - 1).getRed());
+                        green = (colors.get(colors.size() - 1).getGreen());
+                        blue = (colors.get(colors.size() - 1).getBlue());
+                    }
+                    if (value < range.getMinimum()) {
+                        alpha = 255;
+                        red = (colors.get(0).getRed());
+                        green = (colors.get(0).getGreen());
+                        blue = (colors.get(0).getBlue());
+                    }
+                     return (alpha << 24) | (red << 16) | (green << 8) | blue;
                 }
-             //TODO: absoulute scale
-                
-            if (value > range.getMaximum()) {
-               
-                alpha = 255;
-                red = (colors.get(colors.size()-1).getRed());
-                green = (colors.get(colors.size()-1).getGreen());
-                blue = (colors.get(colors.size()-1).getBlue());
-            }
-            if (value < range.getMinimum()) {
-                alpha = 255;
-                red = (colors.get(0).getRed());
-                green = (colors.get(0).getGreen());
-                blue = (colors.get(0).getBlue());
-            }
+             //Absolute
+              else
+                {
+                    for(int i =0; i <positions.size()-1; ++i){
+                        if(positions.getDouble(i)<=value && value<=positions.getDouble(i+1)){
+                            double normalValue = MathUtil.normalize(value, positions.getDouble(i), positions.getDouble(i+1));
+                           
+                            normalValue = Math.min(normalValue, 1.0); 
+                            normalValue = Math.max(normalValue, 0.0); 
+                            alpha = 255; 
+                            red = (int)(colors.get(i).getRed()+(colors.get(i+1).getRed()-colors.get(i).getRed())*normalValue); 
+                            green = (int)(colors.get(i).getGreen()+(colors.get(i+1).getGreen()-colors.get(i).getGreen())*normalValue); 
+                            blue = (int) (colors.get(i).getBlue()+(colors.get(i+1).getBlue()-colors.get(i).getBlue())*normalValue);
+                        }
+                    }
+                }
+           
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
 

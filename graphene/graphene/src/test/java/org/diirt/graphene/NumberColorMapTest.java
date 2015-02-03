@@ -100,10 +100,9 @@ public class NumberColorMapTest {
         
     }
 
-    // TODO: implement absolute color schemes
+    
     @Test
-    @Ignore
-    public void absoluteScheme() {
+    public void absoluteScheme()throws Exception {
         NumberColorMap colorMap = NumberColorMaps.absolute(
                 Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
                 new ArrayDouble(-1.0, 0, 1.0),
@@ -119,8 +118,7 @@ public class NumberColorMapTest {
     }
 
     @Test
-    @Ignore
-    public void relativeScheme() {
+    public void relativeScheme() throws Exception {
         NumberColorMap colorMap = NumberColorMaps.relative(
                 Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
                 new ArrayDouble(0.0, 0.5, 1.0),
