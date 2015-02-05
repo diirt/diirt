@@ -4,8 +4,12 @@
  */
 package org.diirt.support.pva;
 
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.Type;
 import org.diirt.datasource.DataSourceTypeSupport;
 import org.diirt.datasource.ValueCache;
+import org.diirt.support.pva.adapters.PVAPVStructure;
 
 /**
  * 
@@ -27,6 +31,16 @@ public class PVATypeSupport extends DataSourceTypeSupport {
         this.adapters = adapters;
     }
     
+    final static PVATypeAdapter ToPVAPVStructure = new PVATypeAdapter(
+    		PVAPVStructure.class,
+    		null)
+    	{
+            @Override
+            public PVAPVStructure createValue(final PVStructure message, PVField valueType, boolean disconnected) {
+            	return new PVAPVStructure(message, disconnected);
+            }
+        };
+    
     /**
      * Returns a matching type adapter for the given
      * cache and channel.
@@ -36,7 +50,18 @@ public class PVATypeSupport extends DataSourceTypeSupport {
      * @return the matched type adapter
      */
     protected PVATypeAdapter find(ValueCache<?> cache, PVAChannelHandler channel) {
-        return find(adapters.getAdapters(), cache, channel);
+    	try
+    	{
+    		return find(adapters.getAdapters(), cache, channel);
+    	} catch (IllegalStateException ise) {
+    		// TODO ultra-ugly
+    		if (ise.getMessage().indexOf("no match found") != -1)
+    		{
+    			if (channel.getChannelType().getType() == Type.structure)
+    	        	return ToPVAPVStructure;			
+    		}
+    		throw ise;
+    	}
     }
     
 }

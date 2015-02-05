@@ -2,9 +2,6 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/**
- * 
- */
 package org.diirt.support.pva.formula;
 
 import java.util.ArrayList;
@@ -83,7 +80,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 			
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 
 			final PVStructureArray attributeArray = pvStructure.getStructureArrayField("attribute");
 
@@ -186,7 +183,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 			
 			AlarmTimeDisplayExtractor atd = new AlarmTimeDisplayExtractor(pvStructure, false);
 
@@ -270,7 +267,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
 			if (value == null)
 				return null;
 	        
-			PVStructure pvStructure = value.getNTNdArray();
+			PVStructure pvStructure = value.getPVStructure();
 
 			PVUnion valueUnion = pvStructure.getUnionField("value");
 			PVScalarArray pvArray = valueUnion.get(PVScalarArray.class);

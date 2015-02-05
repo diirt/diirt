@@ -6,8 +6,10 @@ package org.diirt.support.pva.adapters;
 
 
 import java.util.List;
+
 import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.PVDoubleArray;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.diirt.vtype.VDoubleArray;
@@ -28,17 +30,21 @@ public class PVFieldToVDoubleArray extends AlarmTimeDisplayExtractor implements 
 	private final ListInt size;
 	private final ListDouble list;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVDoubleArray(PVStructure pvField, String fieldName, boolean disconnected) {
-		super(pvField, disconnected);
+	public PVFieldToVDoubleArray(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVDoubleArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVDoubleArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
 		
-		PVDoubleArray valueField =
-			(PVDoubleArray)pvField.getScalarArrayField(fieldName, ScalarType.pvDouble);
-		if (valueField != null)
+		if (field instanceof PVDoubleArray)
 		{
+			PVDoubleArray valueField = (PVDoubleArray)field;
+
 			DoubleArrayData data = new DoubleArrayData();
 			valueField.get(0, valueField.getLength(), data);
 			
@@ -50,10 +56,6 @@ public class PVFieldToVDoubleArray extends AlarmTimeDisplayExtractor implements 
 			size = null;
 			list = null;
 		}
-	}
-
-	public PVFieldToVDoubleArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
 	}
 
 	/* (non-Javadoc)

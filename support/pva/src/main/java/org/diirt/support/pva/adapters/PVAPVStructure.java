@@ -10,11 +10,15 @@ import org.epics.pvdata.pv.PVStructure;
  * @author msekoranja
  *
  */
-public class PVANTNDArray extends PVAPVStructure {
+public class PVAPVStructure extends PVAPVField {
 	
-	public PVANTNDArray(PVStructure ntNdArray, boolean disconnected)
+	public PVAPVStructure(PVStructure pvStructure, boolean disconnected)
 	{
-		super(ntNdArray, disconnected);
+		super(pvStructure, disconnected);
+	}
+	
+	public PVStructure getPVStructure() {
+		return (PVStructure)pvField;
 	}
 	
 }

@@ -5,6 +5,8 @@
 package org.diirt.support.pva.adapters;
 
 import org.epics.pvdata.pv.PVBoolean;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VTypeToString;
@@ -16,20 +18,23 @@ public class PVFieldToVBoolean extends AlarmTimeDisplayExtractor implements VBoo
  
   protected final Boolean value;
 
+	public PVFieldToVBoolean(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
 
-  /**
-   * @param pvField
-   * @param disconnected
-   */
-  public PVFieldToVBoolean(PVStructure pvField, boolean disconnected) {
-    super(pvField, disconnected);
+	public PVFieldToVBoolean(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
 
-    PVBoolean booleanField = pvField.getBooleanField("value");
-    if (booleanField != null) {
-      value = booleanField.get();
-    } else {
-      value = null;
-    }
+	public PVFieldToVBoolean(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+
+		if (field instanceof PVBoolean)
+			value = ((PVBoolean)field).get();
+		else if (field instanceof PVScalar)
+			value = convert.toInt((PVScalar)field) != 0;
+		else
+			value = null;
   }
 
 

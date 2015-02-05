@@ -4,11 +4,15 @@
  */
 package org.diirt.support.pva;
 
-import org.diirt.datasource.DataSourceTypeAdapter;
-import org.diirt.datasource.ValueCache;
+import java.util.Arrays;
+
 import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.Structure;
+import org.epics.pvdata.pv.Type;
+import org.diirt.datasource.DataSourceTypeAdapter;
+import org.diirt.datasource.ValueCache;
 
 /**
  * Type adapter for PVA data source. Will match a channel based on the value
@@ -59,9 +63,51 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         this.valueFieldTypes = fieldTypes;
     }
 
+    public boolean match(Structure structure) {
+        // If one of the IDs does not match, no match
+        if (ntIds != null)
+        {
+        	boolean match = false;
+        	String ntId = structure.getID();
+        	// TODO "structure" ID ??
+        	for (String id : ntIds)
+        		if (ntId.startsWith(id))	// ignore minor version
+        		{
+        			match = true;
+        			break;
+        		}
+        	
+        	if (!match)
+        		return false;
+        }
+        
+        // If the type of the channel does not match, no match
+        if (valueFieldTypes != null)
+        {
+        	boolean match = false;
+        	// we assume Structure here
+        	Field channelValueType = structure.getField("value");
+        	if (channelValueType != null)
+    		{
+            	for (Field vf : valueFieldTypes)
+            		if (channelValueType.equals(vf))
+            		{
+            			match = true;
+            			break;
+            		}
+            	
+            	if (!match)
+            		return false;
+    		}
+        }
+
+        // Everything matches
+        return true;
+    }
+    
     @Override
     public int match(ValueCache<?> cache, PVAChannelHandler channel) {
-
+    	
     	// If the generated type can't be put in the cache, no match
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
@@ -73,7 +119,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         	String ntId = channel.getChannelType().getID();
         	// TODO "structure" ID ??
         	for (String id : ntIds)
-        		if (ntId.equals(id))
+        		if (ntId.startsWith(id))	// ignore minor version
         		{
         			match = true;
         			break;
@@ -88,7 +134,9 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         {
         	boolean match = false;
         	// we assume Structure here
-        	Field channelValueType = ((Structure)channel.getChannelType()).getField("value");
+        	Field channelType = channel.getChannelType();
+        	Field channelValueType = (channelType.getType() == Type.structure) ?
+        			((Structure)channelType).getField("value") : channelType;
         	if (channelValueType != null)
     		{
             	for (Field vf : valueFieldTypes)
@@ -115,7 +163,20 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
     @Override
     @SuppressWarnings("unchecked")
     public boolean updateCache(@SuppressWarnings("rawtypes") ValueCache cache, PVAChannelHandler channel, PVStructure message) {
-        Object value = createValue(message, channel.getChannelType(), !channel.isConnected());
+
+    	PVField valueField = null;
+    	String extractFieldName = channel.getExtractFieldName();
+    	if (extractFieldName != null)
+    	{
+    		if (channel.getChannelType().getType() == Type.structure)
+    			message = message.getStructureField(extractFieldName);
+    		else
+    			// this avoids problem when scalars/scalar arrays needs to be passed as PVStructure message
+    			valueField = message.getSubField(extractFieldName);
+  
+    	}
+    	
+        Object value = createValue(message, valueField, !channel.isConnected());
         cache.writeValue(value);
         return true;
     }
@@ -124,9 +185,17 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
      * Given the value create the new value.
      * 
      * @param message the value taken from the monitor
-     * @param valueType the value introspection data
+     * @param valueField the value field data, optional
      * @param disconnected true if the value should report the channel is currently disconnected
      * @return the new value
      */
-    public abstract Object createValue(PVStructure message, Field valueType, boolean disconnected);
+    public abstract Object createValue(PVStructure message, PVField valueField, boolean disconnected);
+
+	@Override
+	public String toString() {
+		return "PVATypeAdapter [typeClass=" + typeClass + ", ntIds="
+				+ Arrays.toString(ntIds) + ", valueFieldTypes="
+				+ Arrays.toString(valueFieldTypes) + "]";
+	}
+    
 }

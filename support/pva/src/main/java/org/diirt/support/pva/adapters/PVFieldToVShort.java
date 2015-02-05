@@ -15,32 +15,32 @@ import org.diirt.vtype.VTypeToString;
  */
 public class PVFieldToVShort extends AlarmTimeDisplayExtractor implements VShort {
  
-  protected final Short value;
+	protected final Short value;
 
+	public PVFieldToVShort(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
 
-  /**
-   * @param pvField
-   * @param disconnected
-   */
-  public PVFieldToVShort(PVStructure pvField, boolean disconnected) {
-    super(pvField, disconnected);
+	public PVFieldToVShort(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
 
-	PVField field = pvField.getSubField("value");
-	if (field instanceof PVScalar)
-		value = convert.toShort((PVScalar)field);
-    else
-    	value = null;
-  }
+	public PVFieldToVShort(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+		
+		if (field instanceof PVScalar)
+			value = convert.toShort((PVScalar)field);
+		else
+			value = null;
+	}
 
+	@Override
+	public Short getValue() {
+		return value;
+	}
 
-  @Override
-  public Short getValue() {
-    return value;
-  }
-
-
-  @Override
-  public String toString() {
-    return VTypeToString.toString(this);
-  }
+	@Override
+	public String toString() {
+		return VTypeToString.toString(this);
+	}
 }
