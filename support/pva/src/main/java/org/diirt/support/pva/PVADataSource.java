@@ -6,12 +6,13 @@ package org.diirt.support.pva;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import org.diirt.datasource.formula.FormulaRegistry;
+import org.diirt.datasource.vtype.DataTypeSupport;
+import org.epics.pvaccess.ClientFactory;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
+import org.epics.pvaccess.client.ChannelProviderRegistry;
+import org.epics.pvaccess.client.ChannelProviderRegistryFactory;
 import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
-import org.diirt.support.pva.formula.NTNDArrayFunctionSet;
-import org.diirt.datasource.vtype.DataTypeSupport;
 
 /**
  * 
@@ -29,10 +30,6 @@ public class PVADataSource extends DataSource {
     private final short defaultPriority;
     private final ChannelProvider pvaChannelProvider;
     
-    // this grabs internal implementation (and does not get ChannelProvider via ChannelAccess)
-    // to allow clean shutdown (no such API for now)
-    private final ClientContextImpl pvaContext;
-    
     private final PVATypeSupport pvaTypeSupport = new PVATypeSupport(new PVAVTypeAdapterSet());
     
     public PVADataSource() {
@@ -41,13 +38,16 @@ public class PVADataSource extends DataSource {
     
     public PVADataSource(short defaultPriority) {
     	super(true);
-        this.pvaContext = new ClientContextImpl();
-        this.pvaChannelProvider = pvaContext.getProvider();
+    	
         this.defaultPriority = defaultPriority;
         
-        // force initialization now
-        try {
-			pvaContext.initialize();
+		try {
+			ClientFactory.start();
+		    final ChannelProviderRegistry registry = ChannelProviderRegistryFactory.getChannelProviderRegistry();
+		    this.pvaChannelProvider = registry.createProvider("pva");
+		    if (this.pvaChannelProvider == null)
+		    	throw new RuntimeException("pvAccess ChannelProvider not installed");
+		    
 		} catch (PVAException e) {
 			throw new RuntimeException("Failed to intialize pvAccess context.", e);
 		}
@@ -55,7 +55,6 @@ public class PVADataSource extends DataSource {
 
     public PVADataSource(ChannelProvider channelProvider, short defaultPriority) {
         super(true);
-        this.pvaContext = null;
         this.pvaChannelProvider = channelProvider;
         this.defaultPriority = defaultPriority;
     }
@@ -65,9 +64,8 @@ public class PVADataSource extends DataSource {
     }
     
     public void close() {
-    	// TODO destroy via ChannelProvider when API supports it
-    	if (pvaContext != null)
-    		pvaContext.dispose();
+    	if (this.pvaChannelProvider != null)
+    		pvaChannelProvider.destroy();
     }
 
     @Override
