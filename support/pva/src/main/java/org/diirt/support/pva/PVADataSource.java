@@ -48,8 +48,8 @@ public class PVADataSource extends DataSource {
 		    if (this.pvaChannelProvider == null)
 		    	throw new RuntimeException("pvAccess ChannelProvider not installed");
 		    
-		} catch (PVAException e) {
-			throw new RuntimeException("Failed to intialize pvAccess context.", e);
+		} catch (Throwable th) {
+			throw new RuntimeException("Failed to intialize pvAccess context.", th);
 		}
     }
 
