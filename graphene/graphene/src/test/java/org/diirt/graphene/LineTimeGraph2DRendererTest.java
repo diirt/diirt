@@ -266,4 +266,95 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.1", image);
     }
+    
+    @Test
+    public void extraGraphArea2() throws Exception {
+	//test using a small extra graph area gap. The gap is only 1 second in
+	//this test case
+        Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(6000)),
+                start.plus(TimeDuration.ofMillis(9000)),
+                start.plus(TimeDuration.ofMillis(12000)),
+                start.plus(TimeDuration.ofMillis(15000))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE)
+               .timeAxisRange(TimeAxisRanges.absolute(TimeInterval.between(start,
+                       start.plus(TimeDuration.ofMillis(16000)))))
+               .axisRange(AxisRanges.fixed(0, 15)));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.extraGraphArea.2", image);
+    }
+    
+    @Test
+    public void extraGraphArea3() throws Exception {
+	//test using a huge extra graph area gap. The gap is a minute, while
+	//the data points are just second apart
+        Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(1000)),
+                start.plus(TimeDuration.ofMillis(2000)),
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(4000)),
+                start.plus(TimeDuration.ofMillis(5000))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE)
+               .timeAxisRange(TimeAxisRanges.absolute(TimeInterval.between(start,
+                       start.plus(TimeDuration.ofMillis(65000)))))
+               .axisRange(AxisRanges.fixed(0, 66)));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.extraGraphArea.3", image);
+    }
+    
+    @Test
+    public void extraGraphAreaDegenerate1() throws Exception {
+	//test going backwards in time. Sure, it's a degenerate graph, but we
+	//will see if it handles extending to the end of the graph correctly.
+        Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10,20,30,40,50,25),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(6000)),
+                start.plus(TimeDuration.ofMillis(8500)),
+                start.plus(TimeDuration.ofMillis(12500)),
+                start.plus(TimeDuration.ofMillis(1500))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE)
+               .timeAxisRange(TimeAxisRanges.absolute(TimeInterval.between(start,
+                       start.plus(TimeDuration.ofMillis(20000))))));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.extraGraphArea.degenerate.1", image);
+    }
+    
+    @Test
+    public void extraGraphAreaDegenerate2() throws Exception {
+	//test going backwards in time with no extra graph area. Essentially,
+	//our data points extend the whole x axis range, but the last data point
+	//has x value less than other data points
+        Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,-1),
+                Arrays.asList(start,
+                start.plus(TimeDuration.ofMillis(3000)),
+                start.plus(TimeDuration.ofMillis(6000)),
+                start.plus(TimeDuration.ofMillis(8500)),
+                start.plus(TimeDuration.ofMillis(12500)),
+                start.plus(TimeDuration.ofMillis(1500))));
+        BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE)
+               .timeAxisRange(TimeAxisRanges.absolute(TimeInterval.between(start,
+                       start.plus(TimeDuration.ofMillis(12500))))));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.extraGraphArea.degenerate.2", image);
+    }
 }
