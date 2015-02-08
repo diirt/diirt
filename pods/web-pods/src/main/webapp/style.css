@@ -17,7 +17,7 @@ h1 {
   text-decoration: line-through;
 }
 
-.closed, .error {
+.closed {
   color: red;
 }
 
@@ -66,7 +66,6 @@ button {
   font-size: 0.9rem;
   margin-bottom: 4px;
   color: white;
-  // margin: 0 0.25rem;
   text-align: center;
   background: #BABABA;
 }

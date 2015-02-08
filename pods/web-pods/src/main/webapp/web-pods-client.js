@@ -222,7 +222,7 @@ window.onload = function() {
     // Pause
     pauseBtn.onclick = function(e) {
         pause(id);
-        result.innerHTML = '<option>Paused</option>' + result.innerHTML;
+        result.innerHTML = '<option>Pause: ' + channel + ', ' + id +'</option>' + result.innerHTML;
         resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
         // socketStatus.innerHTML = 'Paused';
         subscriptionList.childNodes[id].className = 'closed';
@@ -231,8 +231,8 @@ window.onload = function() {
     // Resume
     resumeBtn.onclick = function(e) {
         resume(id);
-        result.innerHTML = '<option>Resume</option>' + result.innerHTML;
-        resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
+        result.innerHTML = '<option>Resume: ' + channel + ', ' + id +'</option>' + result.innerHTML;
+        resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' resumed');
         // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
         subscriptionList.childNodes[id].className = 'open';
     };
