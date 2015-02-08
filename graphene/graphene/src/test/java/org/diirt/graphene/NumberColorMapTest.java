@@ -75,6 +75,7 @@ public class NumberColorMapTest {
     
     @Test 
     public void loadColorMapXML() throws Exception {
+        //testing with relative colormap 
         File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap.xml"); 
         NumberColorMapGradient colorMap = NumberColorMaps.load(file); 
         List<Color> colors = colorMap.getColors(); 
@@ -84,6 +85,20 @@ public class NumberColorMapTest {
         assertThat(colors.get(3), equalTo(new Color(13,13,198)));
         assertThat(colors.get(4),equalTo(new Color(0,0,95))); 
 
+    }
+    @Test 
+    public void loadColorMapXML2 () throws Exception {
+     
+        File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap2.xml");
+        NumberColorMapGradient colorMap = NumberColorMaps.load(file);
+        List<Color> colors = colorMap.getColors();
+        assertThat(colors.get(0), equalTo(new Color(95, 0, 0)));
+        assertThat(colors.get(1), equalTo(new Color(135, 2, 2)));
+        assertThat(colors.get(2), equalTo(new Color(195, 9, 9)));
+        assertThat(colors.get(3), equalTo(new Color(201, 201, 242)));
+        assertThat(colors.get(4), equalTo(new Color(13, 13, 198)));
+        assertThat(colors.get(5), equalTo(new Color(9, 9, 137)));
+        assertThat(colors.get(6), equalTo(new Color(0, 0, 95)));
     }
     
     @Test 
@@ -115,6 +130,33 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
         assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
         assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
+    }
+    
+    @Test 
+    public void absoluteScheme2() throws Exception{
+        File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap2.xml");
+        NumberColorMap customized = NumberColorMaps.load(file); 
+        NumberColorMapInstance instance = customized.createInstance(Ranges.range(0.0, 1.0)); 
+        assertThat(instance.colorFor(-1.0),equalTo(new Color(95,0,0).getRGB())); 
+        assertThat(instance.colorFor(0.0),equalTo(new Color(95,0,0).getRGB())); 
+        assertThat(instance.colorFor(0.1),equalTo(new Color(135,2,2).getRGB())); 
+        assertThat(instance.colorFor(0.25),equalTo(new Color(195,9,9).getRGB())); 
+        assertThat(instance.colorFor(0.5),equalTo(new Color(201,201,242).getRGB())); 
+        assertThat(instance.colorFor(0.75),equalTo(new Color(13,13,198).getRGB())); 
+        assertThat(instance.colorFor(0.9),equalTo(new Color(9,9,137).getRGB())); 
+        assertThat(instance.colorFor(1.0),equalTo(new Color(0,0,95).getRGB())); 
+        assertThat(instance.colorFor(1.1),equalTo(new Color(0,0,95).getRGB()));
+        
+        instance = customized.createInstance(Ranges.range(-1.0, 1.0));
+        assertThat(instance.colorFor(-1.0), equalTo(new Color(95, 0, 0).getRGB()));
+        assertThat(instance.colorFor(0.0), equalTo(new Color(95, 0, 0).getRGB()));
+        assertThat(instance.colorFor(0.1), equalTo(new Color(135, 2, 2).getRGB()));
+        assertThat(instance.colorFor(0.25), equalTo(new Color(195, 9, 9).getRGB()));
+        assertThat(instance.colorFor(0.5), equalTo(new Color(201, 201, 242).getRGB()));
+        assertThat(instance.colorFor(0.75), equalTo(new Color(13, 13, 198).getRGB()));
+        assertThat(instance.colorFor(0.9), equalTo(new Color(9, 9, 137).getRGB()));
+        assertThat(instance.colorFor(1.0), equalTo(new Color(0, 0, 95).getRGB()));
+        assertThat(instance.colorFor(1.1), equalTo(new Color(0, 0, 95).getRGB()));
     }
 
     @Test

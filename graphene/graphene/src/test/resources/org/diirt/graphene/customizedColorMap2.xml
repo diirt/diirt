@@ -1,0 +1,51 @@
+<colormap positionType="absolute">
+	<color>
+		<position>0.0</position>
+		<R>95</R>
+		<G>0</G>
+		<B>0</B>
+	</color>
+
+	<color>
+		<position>0.1</position>
+		<R>135</R>
+		<G>2</G>
+		<B>2</B>
+	</color>
+
+	<color>
+		<position>0.25</position>
+		<R>195</R>
+		<G>9</G>
+		<B>9</B>
+	</color>
+
+	<color>
+		<position>0.5</position>
+		<R>201</R>
+		<G>201</G>
+		<B>242</B>
+	</color>
+
+	<color>
+		<position>0.75</position>
+		<R>13</R>
+		<G>13</G>
+		<B>198</B>
+	</color>
+
+	<color>
+		<position>0.9</position>
+		<R>9</R>
+		<G>9</G>
+		<B>137</B>
+	</color>
+
+	<color>
+		<position>1.0</position>
+		<R>0</R>
+		<G>0</G>
+		<B>95</B>
+	</color>
+
+</colormap>
