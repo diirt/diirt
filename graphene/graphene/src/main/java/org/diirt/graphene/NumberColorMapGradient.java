@@ -136,6 +136,19 @@ class NumberColorMapGradient implements NumberColorMap {
                             blue = (int) (colors.get(i).getBlue()+(colors.get(i+1).getBlue()-colors.get(i).getBlue())*normalValue);
                         }
                     }
+                    if (value > positions.getDouble(positions.size()-1)) {
+                        alpha = 255;
+                        red = (colors.get(colors.size() - 1).getRed());
+                        green = (colors.get(colors.size() - 1).getGreen());
+                        blue = (colors.get(colors.size() - 1).getBlue());
+                    }
+
+                    if (value < positions.getDouble(0)) {
+                        alpha = 255;
+                        red = (colors.get(0).getRed());
+                        green = (colors.get(0).getGreen());
+                        blue = (colors.get(0).getBlue());
+                    }
                 }
            
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
