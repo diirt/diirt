@@ -153,6 +153,7 @@ window.onload = function() {
         subscriptionList.appendChild(newSubscription);
         newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
+        subscriptionList.selectedIndex = id;
     };
     
     // Unsubscribe
@@ -224,7 +225,6 @@ window.onload = function() {
         pause(id);
         result.innerHTML = '<option>Pause: ' + channel + ', ' + id +'</option>' + result.innerHTML;
         resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
-        // socketStatus.innerHTML = 'Paused';
         subscriptionList.childNodes[id].className = 'closed';
     };
     
@@ -233,7 +233,6 @@ window.onload = function() {
         resume(id);
         result.innerHTML = '<option>Resume: ' + channel + ', ' + id +'</option>' + result.innerHTML;
         resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' resumed');
-        // socketStatus.innerHTML = 'Connected to: ' + socket.URL;
         subscriptionList.childNodes[id].className = 'open';
     };
     
