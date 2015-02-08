@@ -115,10 +115,8 @@ window.onload = function() {
     
     var currentId = 0;
     var channelList = [];
-    // var resultsInfoFiltered = []; // Contains JSON organized by id
     var resultsInfo = []; // Contains JSON
     var results = [];
-    // var resultsFiltered = [];
     
     
     // Automatically set socket address
@@ -155,10 +153,6 @@ window.onload = function() {
         subscriptionList.appendChild(newSubscription);
         newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
-        
-        var subscriptionNotification = document.createElement('option'); // New subscription to be added to     results window
-        result.insertBefore(subscriptionNotification, result.childNodes[0]);
-        subscriptionNotification.appendChild(document.createTextNode('Subscribe: ' + channel + ', ' + id));
     };
     
     // Unsubscribe
@@ -178,8 +172,14 @@ window.onload = function() {
        var value;
        var filterValue;
        if (response.type === "connection") { // Successful subscription
+           // New subscription added to results window 
+           var subscriptionNotification = document.createElement('option');
+            result.insertBefore(subscriptionNotification, result.childNodes[0]); 
+            subscriptionNotification.appendChild(document.createTextNode('Subscribed: ' + channel + ', ' + id));
+            resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            return;
        }
-        if (response.value.type.name === "VTable") {
+       else if (response.value.type.name === "VTable") {
            value = '<option>table</option>';
            filterValue = 'table';
        }
