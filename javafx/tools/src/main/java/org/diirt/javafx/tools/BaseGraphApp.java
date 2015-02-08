@@ -6,10 +6,14 @@
 package org.diirt.javafx.tools;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -100,13 +104,14 @@ abstract public class BaseGraphApp extends Application {
 	 * the allowed data formulae are stored here and the user can
 	 * select from this list
 	 */
-	final private ComboBox< DataFormula > cboSelectData = new ComboBox< DataFormula >();
+	final private ComboBox cboSelectData = new ComboBox();
 	
 	public DataSelectionPanel() {
 	    this.setCenter( this.cboSelectData );
 	    
 	    //allow the combo box to stretch out and fill panel completely
 	    this.cboSelectData.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
+	    this.cboSelectData.setEditable( true );
 	    
 	    //allow the user to select no data
 	    DataFormula defaultData = new DataFormula( "[Select]" ) {
@@ -120,12 +125,18 @@ abstract public class BaseGraphApp extends Application {
 	    this.cboSelectData.setValue( defaultData );
 	    
 	    //watches for when the user selects a new data formula
-	    this.cboSelectData.valueProperty().addListener( new ChangeListener< DataFormula >() {
+	    this.cboSelectData.valueProperty().addListener( new ChangeListener< Object >() {
 
 		@Override
-		public void changed(ObservableValue<? extends DataFormula> observable, DataFormula oldValue, DataFormula newValue) {
-		    newValue.onSelected();
+		public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+		    if ( newValue instanceof DataFormula ) {
+			((DataFormula) newValue).onSelected();
+		    }
+		    else if ( newValue instanceof String ) {
+			DataFormulaFactory.fromFormula( pnlGraph , (String) newValue ).onSelected();
+		    }
 		}
+		
 	    });
 	}
 	
@@ -144,7 +155,7 @@ abstract public class BaseGraphApp extends Application {
 	 * data source using this data formula.
 	 */
 	public void reselect() {
-	    this.cboSelectData.getValue().onSelected();
+	    ((DataFormula)this.cboSelectData.getValue()).onSelected();
 	}
     }
     
