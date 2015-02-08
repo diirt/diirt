@@ -4,6 +4,8 @@
  */
 package org.diirt.javafx.tools;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -43,6 +45,27 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 	    public void handle(MouseEvent event) {
 		onMouseMove( event );
 	    }
+	});
+	
+	this.imagePanel.widthProperty().addListener(new ChangeListener< Number >() {
+
+	    @Override
+	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		if ( graph != null ) {
+		    graph.update(graph.newUpdate().imageWidth(Math.max( 1 , newValue.intValue() ) ));
+		}
+	    }
+	});
+	
+	this.imagePanel.heightProperty().addListener( new ChangeListener< Number >() {
+
+	    @Override
+	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		if ( graph != null ) {
+		    graph.update(graph.newUpdate().imageHeight(Math.max(1 , newValue.intValue())));
+		}
+	    }
+	    
 	});
 	
 	//"sim://sine2DWaveform(1,50,45,100,100,0.1)"
@@ -90,8 +113,8 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
         
         graph = createExpression( dataFormula );
         
-        graph.update(graph.newUpdate().imageHeight(600)
-                .imageWidth(600));
+        graph.update(graph.newUpdate().imageHeight(Math.max(1 , imagePanel.heightProperty().intValue()))
+                .imageWidth(Math.max( 1 , imagePanel.widthProperty().intValue() ) ));
         pv = PVManager.read(graph)
                 .notifyOn(Executors.javaFXAT())
                 .readListener(new PVReaderListener<Graph2DResult>() {

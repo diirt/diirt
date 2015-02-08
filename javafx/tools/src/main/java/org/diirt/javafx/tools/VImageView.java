@@ -26,7 +26,15 @@ public final class VImageView extends BorderPane {
     
     public void setVImage(VImage image) {
 	if ( image != null ) {
-	    Image newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), (WritableImage) imageView.getImage());
+	    
+	    //we must create a new WritableImage every time. If the WritableImage
+	    //is larger than the image we want to display, then SwingFXUtils.toFXImage()
+	    //simply draws our smaller image onto the larger WritableImage.
+	    //This is bad because then we have a random gray gap on the right side.
+	    //Thus, we fix this by creating a new WritableImage of the correct
+	    //size every time and having SwingFXUtils.toFXImage() draw on that.
+	    WritableImage newImage = new WritableImage( image.getWidth() , image.getHeight() );
+	    newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), newImage );
 	    imageView.setImage(newImage);
 	}
 	else {

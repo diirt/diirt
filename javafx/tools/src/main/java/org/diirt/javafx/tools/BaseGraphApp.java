@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.diirt.graphene.Graph2DRendererUpdate;
-import org.diirt.graphene.IntensityGraph2DRendererUpdate;
 
 /**
  * Allows the user to select some form of data (e.g. a Gaussian wave or a sine
