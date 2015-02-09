@@ -170,6 +170,7 @@ window.onload = function() {
     
      // Message received
    function displayNewMessage (response) {
+       var previouslySelected = result.selectedIndex;
        var value;
        var filterValue;
        if (response.type === "connection") { // Successful subscription
@@ -196,6 +197,7 @@ window.onload = function() {
         }
         resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
         result.innerHTML = value + result.innerHTML; 
+        result.selectedIndex = previouslySelected + 1;
     };
     
     // Updates connection status
