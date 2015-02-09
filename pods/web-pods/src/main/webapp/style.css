@@ -77,8 +77,8 @@ select, option {
 }
 
 #details {
-    float: right;
-    margin-right: 400px;
+    float: left;
+    //margin-right: 400px;
 }
 
 #subscriptions {

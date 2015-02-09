@@ -173,6 +173,14 @@ window.onload = function() {
        var previouslySelected = result.selectedIndex;
        var value;
        var filterValue;
+       if (response.type === "error") { // Let's try this for errors
+           console.log(JSON.stringify(response, null, '     '));
+            var errorNotification = document.createElement('option');
+            result.insertBefore(errorNotification, result.childNodes[0]); 
+            errorNotification.appendChild(document.createTextNode('Error'));
+            resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            return;
+       }
        if (response.type === "connection") { // Successful subscription
            // New subscription added to results window 
            var subscriptionNotification = document.createElement('option');
