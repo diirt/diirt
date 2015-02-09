@@ -69,7 +69,7 @@ public class NumberColorMaps {
     </colormap>
    */
     
-    public static NumberColorMapGradient load(File file) throws FileNotFoundException,ParserConfigurationException, SAXException, IOException{
+    public static NumberColorMap load(File file) throws FileNotFoundException,ParserConfigurationException, SAXException, IOException{
         //determine file type 
         String fileName= file.getName(); 
         String fileExtenstion=fileName.substring(fileName.lastIndexOf(".")+1,fileName.length()); 
