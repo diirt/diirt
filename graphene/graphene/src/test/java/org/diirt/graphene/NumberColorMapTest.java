@@ -77,7 +77,7 @@ public class NumberColorMapTest {
     public void loadColorMapXML() throws Exception {
         //testing with relative colormap 
         File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap.xml"); 
-        NumberColorMapGradient colorMap = NumberColorMaps.load(file); 
+        NumberColorMapGradient colorMap = (NumberColorMapGradient) NumberColorMaps.load(file); 
         List<Color> colors = colorMap.getColors(); 
         assertThat(colors.get(0),equalTo(new Color(95,0,0))); 
         assertThat(colors.get(1),equalTo(new Color(195,9,9))); 
@@ -90,7 +90,7 @@ public class NumberColorMapTest {
     public void loadColorMapXML2 () throws Exception {
      
         File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap2.xml");
-        NumberColorMapGradient colorMap = NumberColorMaps.load(file);
+        NumberColorMapGradient colorMap = (NumberColorMapGradient) NumberColorMaps.load(file);
         List<Color> colors = colorMap.getColors();
         assertThat(colors.get(0), equalTo(new Color(95, 0, 0)));
         assertThat(colors.get(1), equalTo(new Color(135, 2, 2)));
@@ -105,7 +105,7 @@ public class NumberColorMapTest {
     public void loadColorMapCMAP () throws Exception{
         //summer.cmap: exported from matlab. comma separated value of RGB colors
         File file = new File ("src/test/resources/org/diirt/graphene/summer.cmap"); 
-        NumberColorMapGradient colormap = NumberColorMaps.load(file); 
+        NumberColorMapGradient colormap = (NumberColorMapGradient) NumberColorMaps.load(file); 
         List<Color> colors = colormap.getColors(); 
         assertThat(colors.get(0), equalTo(new Color(0,128,102))); 
         assertThat(colors.get(20),equalTo(new Color(81,168,102))); 
@@ -173,5 +173,23 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
         assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
         assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Ignore
+    public void invalidRelativeScheme() throws Exception {
+        NumberColorMap colorMap = NumberColorMaps.relative(
+                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(-1.0, 0.0, 1.0),
+                Color.BLACK, "TEST");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Ignore
+    public void invalidAbsoluteScheme() throws Exception {
+        NumberColorMap colorMap = NumberColorMaps.absolute(
+                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(-1.0, -2.0, 1.0),
+                Color.BLACK, "TEST");
     }
 }

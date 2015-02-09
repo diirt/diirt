@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory; 
 import javax.xml.parsers.DocumentBuilder; 
 import javax.xml.parsers.ParserConfigurationException;
@@ -69,7 +70,9 @@ public class NumberColorMaps {
     </colormap>
    */
     
-    public static NumberColorMapGradient load(File file) throws FileNotFoundException,ParserConfigurationException, SAXException, IOException{
+    public static NumberColorMap load(File file) throws FileNotFoundException,ParserConfigurationException, SAXException, IOException{
+        // TODO: catch the exceptions and wrap them in a RuntimeException
+        
         //determine file type 
         String fileName= file.getName(); 
         String fileExtenstion=fileName.substring(fileName.lastIndexOf(".")+1,fileName.length()); 
@@ -79,9 +82,10 @@ public class NumberColorMaps {
         boolean relative = true; //default positions to be relative 
         
         //Reading from xml 
-       if(fileExtenstion.equalsIgnoreCase("xml")){
-                //if we are reading from a xml file
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
+        // TODO: Break into two fucntions
+        if(fileExtenstion.equalsIgnoreCase("xml")){
+            //if we are reading from a xml file
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(file); 
             
@@ -112,43 +116,37 @@ public class NumberColorMaps {
 
           }
         //color map file can be found at colormap.org 
-       else if (fileExtenstion.equalsIgnoreCase("cmap")){
+        else if (fileExtenstion.equalsIgnoreCase("cmap")) {
 
-        Scanner scanner=new Scanner(file);          
-        String line; 
-         
-        while(scanner.hasNextLine()){
-            line=scanner.nextLine(); 
-            String []tokens=line.split(","); 
-            if(tokens.length!=3){
-                throw new IOException("Error Parsing RGB value"); 
+            Scanner scanner = new Scanner(file);
+            String line;
+
+            while (scanner.hasNextLine()) {
+                line = scanner.nextLine();
+                String[] tokens = line.split(",");
+                if (tokens.length != 3) {
+                    throw new IOException("Error Parsing RGB value");
+                }
+                colors.add(new Color(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2])));
             }
-            colors.add(new Color(parseInt(tokens[0]),parseInt(tokens[1]),parseInt(tokens[2]))); 
-        }
             return (NumberColorMapGradient) relative(colors, Color.BLACK, file.getName());//cmap file is automatically relative
-       }
-       else
-       {
-           throw new FileNotFoundException("File Format not Recognized"); 
-           
-       }
-       
-        double [] positionsArray = new double [positions.size()]; 
-        for(int i =0; i<positions.size();++i){
-            positionsArray[i]=positions.get(i); 
+        } else {
+            throw new RuntimeException("File Format not Recognized");
         }
-         return new NumberColorMapGradient(colors,new ArrayDouble(positionsArray), relative, Color.BLACK, file.getName()); 
-     
-       
-       
-             
+
+        double[] positionsArray = new double[positions.size()];
+        for (int i = 0; i < positions.size(); ++i) {
+            positionsArray[i] = positions.get(i);
+        }
+        return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, Color.BLACK, file.getName());
+
     }
     
     /**
      * JET ranges from blue to red, going through cyan and yellow.
      */
     
-     public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{new Color(0,0,138), 
+    public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{new Color(0,0,138), 
                                                                                 Color.BLUE,
                                                                                 Color.CYAN,
                                                                                 Color.YELLOW,
@@ -226,19 +224,7 @@ public class NumberColorMaps {
     public static NumberColorMapInstance optimize(NumberColorMapInstance instance, Range range){
         return new NumberColorMapInstanceOptimized(instance, range);
     }
-    
-    /**
-     * TODO: what is this about?
-     * 
-     * @param instance the color map instance to optimize
-     * @param oldRange TODO
-     * @param newRange TODO
-     * @return TODO
-     */
-    public static NumberColorMapInstance optimize(NumberColorMapInstance instance, Range oldRange, Range newRange){
-        return new NumberColorMapInstanceOptimized(instance, oldRange, newRange);
-    }
-    
+    // TODO: add javadocs
     public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, percentageRange(colors.size()), true, nanColor, name);
     }

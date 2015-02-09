@@ -27,19 +27,20 @@ class NumberColorMapGradient implements NumberColorMap {
     /**
      * Creates a new color map.
      * <p>
-     * TODO: use List, separate NaN color, allow for relative percentage offsets
      * 
      * @param colors 
      */
-    public NumberColorMapGradient(List<Color> colors,ListDouble positions,boolean relative,Color nanColor, String name) {
+    public NumberColorMapGradient(List<Color> colors, ListDouble positions, 
+            boolean relative,Color nanColor, String name) {
         this.colors = colors;
-        this.relative=relative; 
+        this.relative = relative; 
         this.name = name;
-        this.nanColor=nanColor; 
-        this.positions=positions;
+        this.nanColor = nanColor; 
+        this.positions = positions;
    
     }
 
+    // TODO: add javadocs
     public List<Color> getColors() {
         return colors;
     }
@@ -63,6 +64,9 @@ class NumberColorMapGradient implements NumberColorMap {
             this.nanColor =nanColor.getRGB();         
             this.relative=relative; 
         }
+        
+        // TODO: break up the colorFor into two (absoluteColorFor, relativeColorFor)
+        // ColorFor chooses between implementation
 
         @Override
         public int colorFor(double value) {
