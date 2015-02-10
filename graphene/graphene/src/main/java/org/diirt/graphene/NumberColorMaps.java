@@ -60,28 +60,17 @@ public class NumberColorMaps {
 
         return new ArrayDouble(percentages);
     }
-   /*  file format 
-    <colormap positionType="relative"/"absolute"> 
-        <color>
-          <position> relative or absoulute </position>
-          <R> </R>
-          <G> </G> 
-          <B> </B> 
-        </color>
-    </colormap>
-   */
-    
+  
     public static NumberColorMap load(File file) {
         //determine file type 
         String fileName = file.getName();
-        String fileExtenstion = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
         List<Double> positions = new ArrayList<>();
         List<Color> colors = new ArrayList<>();
         boolean relative = true; //default positions to be relative 
 
         //Reading from xml 
-        if (fileExtenstion.equalsIgnoreCase("xml")) {
+        if (file.getName().endsWith(".xml")) {
             //if we are reading from a xml file
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder;
@@ -128,7 +117,7 @@ public class NumberColorMaps {
             }
 
         } //color map file can be found at colormap.org 
-        else if (fileExtenstion.equalsIgnoreCase("cmap")) {
+        else if (file.getName().endsWith(".cmap")) {
 
             Scanner scanner;
             try {

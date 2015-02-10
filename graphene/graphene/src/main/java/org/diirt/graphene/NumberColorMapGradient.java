@@ -33,6 +33,18 @@ class NumberColorMapGradient implements NumberColorMap {
      */
     public NumberColorMapGradient(List<Color> colors, ListDouble positions, 
             boolean relative, Color nanColor, String name) {
+    
+        for (int i =0; i<positions.size(); ++i)   {
+            //if using a relative scale, value should be bewteen 0.0 and 1.0 
+            if(relative && !(positions.getDouble(i) >=0 && positions.getDouble(i) <=1)){
+                throw new RuntimeException("Position Value for relative scale should be between 0.0 and 1.0"); 
+            }
+            //check position values are in strictly increasing order 
+            if (i!=0 && positions.getDouble(i-1) >= positions.getDouble(i)){
+                throw new RuntimeException("Position value should be strictly increasing");
+            }
+        }
+        
         this.colors = colors;
         this.relative = relative; 
         this.name = name;
