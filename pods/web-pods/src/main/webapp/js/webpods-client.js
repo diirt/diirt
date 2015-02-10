@@ -94,23 +94,13 @@ function Client(url, debug, maxRate, username, password) {
 	 * @param {object} callback related with the channel.
 	 * @param {boolean} readOnly select if the channel can be use as read/write or just read.
      * @param {string} type select the vtype that the channel values will contain.
-	 * @param {string} version select version number of the vtype.
      * @param {intiger} maxRate select update value rate.
 	 * @returns the channel.
 	 */
-    this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
+    this.subscribeChannel = function(name, callback, readOnly, type, maxRate) {
         var typeJson;
         if(readOnly != false) {
             readOnly = true;
-        }
-        if (type != null) {
-            if (version == null)
-                version = defaultVersion;
-            typeJson = JSON.stringify({
-                "name" : type,
-                "version" : version
-            });
-
         }
         var json = JSON.stringify({
             "message" : "subscribe",
@@ -118,7 +108,7 @@ function Client(url, debug, maxRate, username, password) {
             "channel" : name,
             "readOnly" : readOnly,
             "maxRate" : maxRate,
-            "type" : typeJson
+            "type" : type
         });
         var channel = new Channel(name);
         channelArray[channelIDIndex] = channel;

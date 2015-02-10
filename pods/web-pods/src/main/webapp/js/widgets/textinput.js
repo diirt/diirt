@@ -17,6 +17,7 @@ $(document).ready(function() {
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var disabled = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
         var id = nodes[i].getAttribute("id");
+        var type = nodes[i].getAttribute("data-type");
         var input = document.createElement("textarea");
         input.id = id;
         input.style.resize="none";
@@ -52,7 +53,7 @@ $(document).ready(function() {
                                    break;
                                }
                            };
-            var channel = wp.subscribeChannel(channelname, callback, readOnly);
+            var channel = wp.subscribeChannel(channelname, callback, readOnly, type);
             inputs[channel.getId()] = input;
         }
         input.onkeyup = function(evt) {

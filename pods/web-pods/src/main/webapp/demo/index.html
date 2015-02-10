@@ -89,7 +89,7 @@
             };
             if (e.selectedIndex != 0) {
                 var type = e.options[e.selectedIndex].value;
-                channel = wp.subscribeChannel(channelName, callback, readOnly, type, 1);
+                channel = wp.subscribeChannel(channelName, callback, readOnly, type);
             } else {
                 channel = wp.subscribeChannel(channelName, callback, readOnly);
             }

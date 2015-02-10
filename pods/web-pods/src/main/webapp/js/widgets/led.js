@@ -16,7 +16,6 @@ $(document).ready(function() {
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
-        var type = nodes[i].getAttribute("data-type");
         var id = nodes[i].getAttribute("id");
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
         fitToContainer(nodes[i].firstChild);
