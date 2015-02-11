@@ -11,13 +11,19 @@ $(document).ready(function() {
 	var nodes = document.getElementsByClassName("textinput");
 	var len = nodes.length;
     var inputs = {};
+    var modified = {};
+
 
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var disabled = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
         var id = nodes[i].getAttribute("id");
-        var type = nodes[i].getAttribute("data-type");
+        if (id === null) {
+            counter++;
+            id = "text-input-" + counter;
+            nodes[i].id = id;
+        }
         var input = document.createElement("textarea");
         input.id = id;
         input.style.resize="none";
@@ -33,6 +39,9 @@ $(document).ready(function() {
                                    channel.readOnly = !evt.writeConnected;
                                    break;
                                case "value": //value changed
+                                   if(modified[channel.getId()] == true) {
+                                       break;
+                                   }
                                    var channelValue = channel.getValue();
                                    inputs[channel.getId()].value =(channelValue.value);
                                    if(channelValue.alarm.severity =="MINOR") {
@@ -53,7 +62,7 @@ $(document).ready(function() {
                                    break;
                                }
                            };
-            var channel = wp.subscribeChannel(channelname, callback, readOnly, type);
+            var channel = wp.subscribeChannel(channelname, callback, readOnly);
             inputs[channel.getId()] = input;
         }
         input.onkeyup = function(evt) {
@@ -65,6 +74,24 @@ $(document).ready(function() {
                     }
                 }
                 ch.setValue(input.value.trim());
+            }
+        };
+
+        input.onfocus = function(evt) {
+            for(var sl in   inputs  ) {
+                if(inputs[sl].id == evt.target.id) {
+                    modified[sl] = true;
+                    break;
+                }
+            }
+        };
+
+        input.onblur = function(evt) {
+            for(var sl in   inputs  ) {
+                if(inputs[sl].id == evt.target.id) {
+                    modified[sl] = false;
+                    break;
+                }
             }
         };
     }
