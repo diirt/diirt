@@ -13,15 +13,13 @@ $(document).ready(function() {
     var inputs = {};
     var modified = {};
 
-
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var disabled = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
         var id = nodes[i].getAttribute("id");
         if (id === null) {
-            counter++;
-            id = "text-input-" + counter;
+            id = "text-input-" + i;
             nodes[i].id = id;
         }
         var input = document.createElement("textarea");
@@ -108,4 +106,3 @@ function fitToContainer(canvas){
 window.onbeforeunload = function() {
 	wp.close();
 };
-

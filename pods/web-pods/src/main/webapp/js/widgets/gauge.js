@@ -35,7 +35,7 @@ $(document).ready(function() {
                                                    displayLow, displayHigh,
                                                    0).Set('colors.ranges', []);
                                        } else {
-                                       gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
+                                           gauges[channel.getId()] = new RGraph.Gauge(gauges[channel.getId()].id,
                                            channelValue.display.lowDisplay, channelValue.display.highDisplay,
                                            channelValue.value).Set('colors.ranges', []);
                                        }
@@ -93,5 +93,5 @@ function fitToContainer(canvas){
 	  canvas.style.width='100%';
 	  canvas.style.height='100%';
 	  canvas.width  = canvas.offsetWidth;
-	  canvas.height = canvas.offsetHeight;
+      canvas.height = canvas.offsetHeight;
 }

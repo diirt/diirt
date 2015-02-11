@@ -17,6 +17,10 @@ $(document).ready(function() {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id = nodes[i].getAttribute("id");
+        if (id === null) {
+            id = "led-" + i;
+            nodes[i].id = id;
+        }
         nodes[i].innerHTML = '<canvas id="'+id+'">[No canvas support]</canvas>';
         fitToContainer(nodes[i].firstChild);
         if (channelname != null && channelname.trim().length > 0) {
