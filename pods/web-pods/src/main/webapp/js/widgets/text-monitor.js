@@ -26,6 +26,8 @@ $(document).ready(function () {
         input.disabled = true;
         input.style.width="100%";
         input.style.height="100%";
+        input.style.font="inherit";
+//        input.style.font-family="inherit";
         var div = document.getElementById(id);
         div.appendChild(input);
 
