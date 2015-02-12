@@ -24,6 +24,8 @@ $(document).ready(function () {
         var input = document.createElement("input");
         input.id = id;
         input.disabled = true;
+        input.style.width="100%";
+        input.style.height="100%";
         var div = document.getElementById(id);
         div.appendChild(input);
 
