@@ -32,18 +32,25 @@
     
 <div>
     <h3>Testing widget size</h3>
-    <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp" style="width:50px; height: 10px"></span></p>
-    <p>sim/noise: <span class="text-monitor" data-channel="sim/noise" style="width:100px; height: 14px"></span></p>
-    <p>sim/strings: <span class="text-monitor" data-channel="sim/strings" style="width:150px; height: 18px"></span></p>
-    <p>sim/table: <span class="text-monitor" data-channel="sim/table" style="width:200px; height: 22px"></span></p>
+    <p>width:50px; height: 10px - <span class="text-monitor" data-channel="sim/noise" style="width:50px; height: 10px"></span></p>
+    <p>width:100px; height: 14px - <span class="text-monitor" data-channel="sim/noise" style="width:100px; height: 14px"></span></p>
+    <p>width:150px; height: 18px - <span class="text-monitor" data-channel="sim/noise" style="width:150px; height: 18px"></span></p>
+    <p>width:200px; height: 22px - <span class="text-monitor" data-channel="sim/noise" style="width:200px; height: 22px"></span></p>
 </div>
     
 <div>
     <h3>Changing fonts</h3>
-    <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-    <p style="font: italic bold 18px Georgia, serif;">sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
-    <p>sim/strings: <span class="text-monitor" data-channel="sim/strings" style="font-family: monospace"></span></p>
-    <p>sim/table: <span class="text-monitor" data-channel="sim/table" style="font-family: sans-serif"></span></p>
+    <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
+    <p>font-family: sans-serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: sans-serif"></span></p>
+    <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
+    <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
+</div>
+    
+<div>
+    <h3>Changing text alignment</h3>
+    <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
+    <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
+    <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp"  style="text-align: right"></span></p>
 </div>
 
 </body>
