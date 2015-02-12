@@ -1,63 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=9">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
-    <script>
-        var pathName = document.location.pathname.replace("demo/text-monitor.html", "");
-        var wsUri = "ws://"+document.location.host+pathName+"socket";
-        var wp = new Client(wsUri);
-    </script>
-    
-    <script type="text/javascript" language="javascript" src="../js/widgets/text-monitor.js"></script>
-    <link rel="stylesheet" href="../js/widgets/text-monitor.css">
+        <script>
+            var pathName = document.location.pathname.replace("demo/text-monitor.html", "");
+            var wsUri = "ws://" + document.location.host + pathName + "socket";
+            var wp = new Client(wsUri);
+        </script>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <title>Text monitor examples</title>
-</head>
-<body>
+        <script type="text/javascript" language="javascript" src="../js/widgets/text-monitor.js"></script>
+        <link rel="stylesheet" href="../js/widgets/text-monitor.css">
 
-<div>
-    <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp"></span></p>
-    <p>sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
-    <p>sim/strings: <span class="text-monitor" data-channel="sim/strings"></span></p>
-    <p>sim/table: <span class="text-monitor" data-channel="sim/table"></span></p>
-</div>
-    
-<div>
-    <h3>Testing widget size</h3>
-    <p>width:50px; height: 10px - <span class="text-monitor" data-channel="sim/noise" style="width:50px; height: 10px"></span></p>
-    <p>width:100px; height: 14px - <span class="text-monitor" data-channel="sim/noise" style="width:100px; height: 14px"></span></p>
-    <p>width:150px; height: 18px - <span class="text-monitor" data-channel="sim/noise" style="width:150px; height: 18px"></span></p>
-    <p>width:200px; height: 22px - <span class="text-monitor" data-channel="sim/noise" style="width:200px; height: 22px"></span></p>
-</div>
-    
-<div>
-    <h3>Changing fonts</h3>
-    <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
-    <p>font-family: sans-serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: sans-serif"></span></p>
-    <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-    <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
-</div>
-    
-<div>
-    <h3>Changing text alignment</h3>
-    <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
-    <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
-    <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
-</div>
-    
-<div>
-    <h3>Positioning</h3>
-    <p>margin-left: 50px - <span class="text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
-    <p>float: right - <span class="text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
-</div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-</body>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <title>Text monitor examples</title>
+    </head>
+    <body>
+
+        <div class="container" style="width:90%">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Simple monitoring</div>
+                        <div class="panel-body">
+                            <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp"></span></p>
+                            <p>sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
+                            <p>sim/strings: <span class="text-monitor" data-channel="sim/strings"></span></p>
+                            <p>sim/table: <span class="text-monitor" data-channel="sim/table"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing size</div>
+                        <div class="panel-body">
+                            <p>width:50px; height: 10px - <span class="text-monitor" data-channel="sim/noise" style="width:50px; height: 10px"></span></p>
+                            <p>width:100px; height: 14px - <span class="text-monitor" data-channel="sim/noise" style="width:100px; height: 14px"></span></p>
+                            <p>width:150px; height: 18px - <span class="text-monitor" data-channel="sim/noise" style="width:150px; height: 18px"></span></p>
+                            <p>width:200px; height: 22px - <span class="text-monitor" data-channel="sim/noise" style="width:200px; height: 22px"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing fonts</div>
+                        <div class="panel-body">
+                            <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
+                            <p>font-family: serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
+                            <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
+                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing text alignment</div>
+                        <div class="panel-body">
+                            <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
+                            <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
+                            <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Positioning</div>
+                        <div class="panel-body">
+                            <p>margin-left: 50px - <span class="text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
+                            <p>float: right - <span class="text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
 </html>
