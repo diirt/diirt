@@ -35,7 +35,6 @@ $(document).ready(function () {
             var callback = function (evt, channel) {
                 switch (evt.type) {
                     case "connection": //connection state changed
-                        channel.readOnly = !evt.writeConnected;
                         break;
                     case "value": //value changed
                         var channelValue = channel.getValue();
@@ -46,18 +45,29 @@ $(document).ready(function () {
                         }
                          
                         if ("alarm" in channelValue) {
-                            if (channelValue.alarm.severity === "MINOR") {
-                                inputs[channel.getId()].style.backgroundColor = "yellow";
-                            } else if (channelValue.alarm.severity === "MAJOR") {
-                                inputs[channel.getId()].style.backgroundColor = "red";
-                            } else {
-                                inputs[channel.getId()].style.backgroundColor = "white";
+                            switch(channelValue.alarm.severity) {
+                                case "MINOR":
+                                    inputs[channel.getId()].style.backgroundColor = "yellow";
+                                    break;
+                                case "MAJOR":
+                                    inputs[channel.getId()].style.backgroundColor = "red";
+                                    break;
+                                case "INVALID":
+                                case "UNDEFINED":
+                                    inputs[channel.getId()].style.backgroundColor = "magenta";
+                                    break;
+                                default:
+                                    inputs[channel.getId()].style.backgroundColor = "white";
+                                    break;
                             }
                         } else {
                             inputs[channel.getId()].style.backgroundColor = "white";
                         }
+                        inputs[channel.getId()].parentNode.removeAttribute("title");
                         break;
                     case "error": //error happened
+                        inputs[channel.getId()].style.backgroundColor = "magenta";
+                        inputs[channel.getId()].parentNode.title = evt.error;
                         break;
                     case "writeCompleted": // write finished.
                         break;
