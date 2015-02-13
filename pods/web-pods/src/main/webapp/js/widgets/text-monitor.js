@@ -11,7 +11,34 @@ $(document).ready(function () {
     var nodes = document.getElementsByClassName("text-monitor");
     var len = nodes.length;
     var inputs = {};
+    var currentAlarms = {};
     counter = 0;
+    
+    function changeAlarm(severity, id, widget) {
+        var currentAlarm = currentAlarms[id];
+        if (currentAlarm) {
+            widget.classList.remove(currentAlarm);
+        }
+        switch (severity) {
+            case "MINOR":
+                currentAlarm = "alarm-minor";
+                break;
+            case "MAJOR":
+                currentAlarm = "alarm-major";
+                break;
+            case "INVALID":
+                currentAlarm = "alarm-invalid";
+                break;
+            case "UNDEFINED":
+                currentAlarm = "alarm-undefined";
+                break;
+            default:
+                currentAlarm = "alarm-none";
+                break;
+        }
+        currentAlarms[id] = currentAlarm;
+        widget.classList.add(currentAlarm);
+    }
 
     for (var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
@@ -45,28 +72,14 @@ $(document).ready(function () {
                         }
                          
                         if ("alarm" in channelValue) {
-                            switch(channelValue.alarm.severity) {
-                                case "MINOR":
-                                    inputs[channel.getId()].style.backgroundColor = "yellow";
-                                    break;
-                                case "MAJOR":
-                                    inputs[channel.getId()].style.backgroundColor = "red";
-                                    break;
-                                case "INVALID":
-                                case "UNDEFINED":
-                                    inputs[channel.getId()].style.backgroundColor = "magenta";
-                                    break;
-                                default:
-                                    inputs[channel.getId()].style.backgroundColor = "white";
-                                    break;
-                            }
+                            changeAlarm(channelValue.alarm.severity, channel.getId(), inputs[channel.getId()]);
                         } else {
-                            inputs[channel.getId()].style.backgroundColor = "white";
+                            changeAlarm("NONE", channel.getId(), inputs[channel.getId()]);
                         }
                         inputs[channel.getId()].parentNode.removeAttribute("title");
                         break;
                     case "error": //error happened
-                        inputs[channel.getId()].style.backgroundColor = "magenta";
+                        changeAlarm("INVALID", channel.getId(), inputs[channel.getId()]);
                         inputs[channel.getId()].parentNode.title = evt.error;
                         break;
                     case "writeCompleted": // write finished.

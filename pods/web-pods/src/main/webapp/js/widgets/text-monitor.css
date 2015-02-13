@@ -2,3 +2,23 @@
     display: inline-block;
 }
 
+.alarm-none {
+    background-color: white;
+}
+
+.alarm-minor {
+    background-color: yellow;
+}
+
+.alarm-major {
+    background-color: red;
+}
+
+.alarm-invalid {
+    background-color: magenta;
+}
+
+.alarm-undefined {
+    background-color: magenta;
+}
+
