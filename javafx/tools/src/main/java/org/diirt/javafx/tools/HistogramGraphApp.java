@@ -14,8 +14,8 @@ import org.diirt.datasource.graphene.HistogramGraph2DExpression;
 import org.diirt.graphene.AreaGraph2DRendererUpdate;
 
 /**
- *
- * @author Mickey
+ * Creates histogram graphs
+ * @author mjchao
  */
 public class HistogramGraphApp extends BaseGraphApp {
 
