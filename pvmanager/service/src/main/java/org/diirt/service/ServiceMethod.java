@@ -9,9 +9,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A call that provides access to command/response type of communication for sources of
@@ -74,6 +79,9 @@ public abstract class ServiceMethod {
     private final List<DataDescription> results;
     private final Map<String, DataDescription> resultMap;
 
+    private final boolean asyncExecute;
+    private final boolean syncExecute;
+            
     /**
      * Creates a new service method with the given description. All properties
      * are copied out of the description, guaranteeing the immutability
@@ -89,6 +97,21 @@ public abstract class ServiceMethod {
         this.argumentMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentMap));
         this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
         this.resultMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultMap));
+        
+        //Determines whether the synchronous or asynchronous method was overridden
+        boolean sync = false;
+        boolean async = false;
+        try {
+            sync = !ServiceMethod.class.equals(this.getClass().getMethod("syncExecImpl", Map.class).getDeclaringClass());
+            async = !ServiceMethod.class.equals(this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class).getDeclaringClass());
+        } catch (NoSuchMethodException | SecurityException ex) {
+            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        syncExecute = sync;
+        asyncExecute = async;
+        if (!asyncExecute && !syncExecute){
+            throw new RuntimeException("Must implement the method \"syncExecImpl\" or \"asyncExecImpl\".");
+        }
     }
 
     /**
@@ -267,4 +290,103 @@ public abstract class ServiceMethod {
      * @param errorCallback the error callback, for failures; not null
      */
     protected abstract void executeMethod(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback);
+    
+    
+    //Implementation of the method (OVERRIDDEN BY SUBCLASS)
+    //--------------------------------------------------------------------------    
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters){
+        throw new RuntimeException("syncExecImpl was not overridden.");
+    }
+    
+    public void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+        throw new RuntimeException("asyncExecImpl was not overridden.");        
+    }
+    //--------------------------------------------------------------------------
+    
+    
+    //Wrap from sync <--> async calls
+    //--------------------------------------------------------------------------
+    private Map<String, Object> wrapAsSync(Map<String, Object> parameters) {
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
+        final AtomicReference<Exception> exception = new AtomicReference<>();
+
+        Consumer<Map<String, Object>> callback = new Consumer<Map<String, Object>>() {
+            @Override
+            public void accept(Map<String, Object> newValue) {
+                result.set(newValue);
+                latch.countDown();
+            }
+        };
+        Consumer<Exception> errorCallback = new Consumer<Exception>() {
+            @Override
+            public void accept(Exception newValue) {
+                exception.set(newValue);
+                latch.countDown();
+            }
+        };
+
+        try {
+            asyncExecImpl(parameters, callback, errorCallback);
+        } catch (Exception ex) {
+            errorCallback.accept(ex);
+        }
+
+        try {
+            latch.await();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException("Interrupted", ex);
+        }
+
+        if (result.get() != null) {
+            return result.get();
+        }
+
+        throw new RuntimeException("Failed", exception.get());
+    }
+    
+    private void wrapAsAsync(ExecutorService executor, Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+        executor.submit(new Runnable(){
+            @Override
+            public void run() {
+                try{
+                    callback.accept(syncExecImpl(parameters));
+                } catch (Exception ex){
+                    errorCallback.accept(ex);
+                }
+            }
+        });
+    }
+    //--------------------------------------------------------------------------
+    
+    //Execute the method
+    //--------------------------------------------------------------------------
+    public Map<String, Object> executeSync(Map<String, Object> parameters){
+        validateParameters(parameters);
+        
+        if (syncExecute){
+            return syncExecImpl(parameters);
+        }
+        else if (asyncExecute){
+            return wrapAsSync(parameters);
+        }
+        else{
+            throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
+        }
+    }
+    
+    public void executeAsync(ExecutorService executor, Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+        validateParameters(parameters);
+        
+        if (asyncExecute){
+            asyncExecImpl(parameters, callback, errorCallback);
+        }
+        else if (syncExecute){
+            wrapAsAsync(executor, parameters, callback, errorCallback);
+        }
+        else{
+            throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
+        }        
+    }
+    //--------------------------------------------------------------------------    
 }

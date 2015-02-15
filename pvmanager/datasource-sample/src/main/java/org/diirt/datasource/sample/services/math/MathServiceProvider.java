@@ -1,0 +1,35 @@
+package org.diirt.datasource.sample.services.math;
+
+import java.util.Arrays;
+import java.util.Collection;
+import org.diirt.service.Service;
+import org.diirt.service.ServiceDescription;
+import org.diirt.service.ServiceMethod;
+import org.diirt.service.ServiceProvider;
+
+/**
+ *
+ * @author asbarber
+ */
+public class MathServiceProvider implements ServiceProvider{
+
+    @Override
+    public String getName() {
+        return "math";
+    }
+
+    @Override
+    public Collection<Service> createServices() {
+        ServiceMethod methodAdd = new AddServiceMethod();
+        ServiceMethod methodMult = new MultiplyServiceMethod();
+        
+        //TODO
+        ServiceDescription descr = new ServiceDescription("math", "description");
+        descr.addServiceMethod(methodAdd);
+        descr.addServiceMethod(methodMult);
+        
+        Service service = new Service(descr);
+        return Arrays.asList(service);
+    }
+    
+}

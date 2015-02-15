@@ -28,6 +28,7 @@ public class MultiplyServiceMethod extends ServiceMethod {
                 .addResult("result", "The product of arg1 and arg2", VNumber.class));
     }
 
+    //WILL BE REMOVED
     @Override
     public void executeMethod(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         VNumber arg1 = (VNumber) parameters.get("arg1");
@@ -41,5 +42,20 @@ public class MultiplyServiceMethod extends ServiceMethod {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);
         callback.accept(resultMap);
+    }
+    
+    @Override
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters){
+        VNumber arg1 = (VNumber) parameters.get("arg1");
+        VNumber arg2 = (VNumber) parameters.get("arg2");
+        VNumber result = (VNumber) VDouble.create(
+            arg1.getValue().doubleValue() * arg2.getValue().doubleValue(),
+            Alarm.noValue(),
+            Time.now(),
+            Display.none()
+        );
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", result);
+        return resultMap;
     }
 }

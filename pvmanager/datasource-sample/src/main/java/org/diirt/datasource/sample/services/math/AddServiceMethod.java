@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
- * All rights reserved. Use is subject to license terms. See LICENSE.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT All rights
+ * reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.datasource.sample.services.math;
 
@@ -28,18 +28,34 @@ public class AddServiceMethod extends ServiceMethod {
                 .addResult("result", "The sum of arg1 and arg2", VNumber.class));
     }
 
+    //WILL BE REMOVED
     @Override
     public void executeMethod(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         VNumber arg1 = (VNumber) parameters.get("arg1");
         VNumber arg2 = (VNumber) parameters.get("arg2");
         VNumber result = (VNumber) VDouble.create(
-            arg1.getValue().doubleValue() + arg2.getValue().doubleValue(),
-            Alarm.noValue(),
-            Time.now(),
-            Display.none()
+                arg1.getValue().doubleValue() + arg2.getValue().doubleValue(),
+                Alarm.noValue(),
+                Time.now(),
+                Display.none()
         );
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);
         callback.accept(resultMap);
+    }
+
+    @Override
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
+        VNumber arg1 = (VNumber) parameters.get("arg1");
+        VNumber arg2 = (VNumber) parameters.get("arg2");
+        VNumber result = (VNumber) VDouble.create(
+                arg1.getValue().doubleValue() + arg2.getValue().doubleValue(),
+                Alarm.noValue(),
+                Time.now(),
+                Display.none()
+        );
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", result);
+        return resultMap;        
     }
 }

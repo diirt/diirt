@@ -7,6 +7,7 @@ package org.diirt.datasource.sample.services.math;
 import java.util.HashMap;
 import java.util.Map;
 import org.diirt.service.ServiceMethod;
+import org.diirt.service.ServiceRegistry;
 import org.diirt.vtype.next.Alarm;
 import org.diirt.vtype.next.Display;
 import org.diirt.vtype.next.Time;
@@ -23,7 +24,7 @@ import org.diirt.vtype.next.VNumber;
  * {@link org.diirt.datasource.sample.services.math.AddServiceMethod} and
  * {@link org.diirt.datasource.sample.services.math.MultiplyServiceMethod} are
  * methods that represent the action of a service (to add, to multiply).
- * 
+ *
  * <p>
  * <b>Service</b>: The class
  * {@link org.diirt.datasource.sample.services.math.MathService} registers the
@@ -40,14 +41,17 @@ public class MathExample {
      * @param args ignored, command line arguments
      */
     public static void main(String[] args) {
+        for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
+            System.out.println("- " + service);
+        }
+
         executeAdd();
         executeMultiply();
     }
 
     /**
-     * Demonstration of the addition service. The service accepts {@link VNumber
-     * } arguments and stores the result (addition of the values) in a
-     * {@link ValueCache}.
+     * Demonstration of the {@link VNumber} addition service. Executes
+     * synchronously.
      */
     public static void executeAdd() {
         //Generate the service action to be called
@@ -63,14 +67,11 @@ public class MathExample {
         parameters.put("arg2", arg2);
         System.out.println("service: 1 + 2");
 
-        //Executes the service
-        //Stores the results in a simple object
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        //Executes the service and obtains all values returned
+        Map<String, Object> returnValues = method.executeSync(parameters);
 
-        //Obtains the result
-        VNumber result = (VNumber) cache.get().get("result");
+        //Obtains the mathematical result
+        VNumber result = (VNumber) returnValues.get("result");
         System.out.println("result: " + result.getValue().doubleValue());
 
         //Expected output:
@@ -79,9 +80,8 @@ public class MathExample {
     }
 
     /**
-     * Demonstration of the multiplication service. The service accepts 
-     * {@link VNumber } arguments and stores the result (product of the values)
-     * in a {@link ValueCache}.
+     * Demonstration of the {@link VNumber} multiplication service. Executes
+     * synchronously.
      */
     public static void executeMultiply() {
         //Generate the service action to be called
@@ -97,14 +97,11 @@ public class MathExample {
         parameters.put("arg2", arg2);
         System.out.println("service: 2 * 3");
 
-        //Executes the service
-        //Stores the results in a simple object        
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        //Executes the service and obtains all values returned
+        Map<String, Object> returnValues = method.executeSync(parameters);
 
-        //Obtains the results
-        VNumber result = (VNumber) cache.get().get("result");
+        //Obtains the mathematical results
+        VNumber result = (VNumber) returnValues.get("result");
         System.out.println("result: " + result.getValue().doubleValue());
 
         //Expected output:
