@@ -72,27 +72,14 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         drawBackground();
         drawGraphArea();
         
-        ListNumber xValues = data.getNormalizedTime();
+        ListNumber xValues = data.getNormalizedTime( super.getPlotTimeInterval() );
         ListNumber yValues = data.getValues();
 	
 	//if necessary, extend the last data point to the end of the graph, 
 	//so that we don't have a random empty gap with no graph
-	if ( xValues.getDouble( xValues.size()-1 ) == 1.0 ) {
+	if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
 	    if ( super.getAggregatedTimeInterval().getEnd().compareTo( super.getPlotTimeInterval().getEnd() ) < 0 ) {
-		
-		//Please see TemporalGraph2DRenderer.drawValueLine(...) as to why
-		//this multiplier is here
-		double multiplier = (double)(super.getAggregatedTimeInterval().getEnd().durationFrom( super.getAggregatedTimeInterval().getStart() ).toNanosLong()) / super.getPlotTimeInterval().getEnd().durationFrom( super.getPlotTimeInterval().getStart() ).toNanosLong();
-		
-		//to extend the last data point to the end of the graph, we need
-		//to know what the normalized value is for the pixel on the right
-		//border. Let this value be x. Conveniently, multiplier scales these
-		//x values of the graph's x axis range to x values in the dataset's
-		//x range. If x * multiplier = 1.0, where 1.0 is the normalized
-		//value of the leftmost point in the dataset's x axis range, then 1.0/multiplier will give us
-		//x, the normalized value of the leftmost point int he graph's 
-		//x axis range.
-		double lastX = 1.0 / multiplier;
+		double lastX = 1.0;
 		xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {lastX} ) );
 		double lastY = yValues.getDouble( yValues.size()-1 );
 		yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
