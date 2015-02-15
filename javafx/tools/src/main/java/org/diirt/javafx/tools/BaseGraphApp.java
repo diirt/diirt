@@ -148,6 +148,12 @@ abstract public class BaseGraphApp extends Application {
 	 */
 	final public void addDataFormulae( DataFormula... f ) {
 	    this.cboSelectData.getItems().addAll( f );
+	    
+	    //we want the default data formula to not be [Select], so
+	    //we update it to be the first formula in the list
+	    if ( this.cboSelectData.getItems().size() >= 2 ) {
+		this.cboSelectData.setValue( this.cboSelectData.getItems().get( 1 ) );
+	    }
 	}
 	
 	/**
