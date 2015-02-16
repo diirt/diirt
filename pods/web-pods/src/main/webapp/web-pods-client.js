@@ -105,11 +105,8 @@ window.onload = function() {
     var unsubscribeBtn = document.getElementById('unsubscribe');
     var clearBtn = document.getElementById('clear');
     
-    /*
-    var socket;
-    var channel;
-    var id;
-    */
+    var filterBtn = document.getElementById('filter');
+    var showAllBtn = document.getElementById('showAll');
     var filter = 'none';
     
     
@@ -117,6 +114,8 @@ window.onload = function() {
     var channelList = [];
     var resultsInfo = []; // Contains JSON
     var results = [];
+    var resultsFiltered = [];
+    var resultsInfoFiltered = [];
     
     
     // Automatically set socket address
@@ -154,6 +153,9 @@ window.onload = function() {
         newSubscription.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
         channelList.unshift(channel);
         subscriptionList.selectedIndex = id;
+        
+        resultsInfoFiltered.push([]); //creates new array for filtered info
+        resultsFiltered.push([]);
     };
     
     // Unsubscribe
@@ -161,9 +163,15 @@ window.onload = function() {
         id = subscriptionList.selectedIndex;
         channel = channelList[channelList.length - id - 1];
         unsubscribe(id);
+        if (filter == id || filter == 'none') {
+            result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        }
         
-        result.innerHTML = '<option>Unsubscribe: ' + channel + ', ' + id + '</option>' + result.innerHTML;
+        results.unshift('Unsubscribe: ' + channel + ', ' + id);
+        resultsFiltered[id].unshift('Unsubscribe: ' + channel + ', ' + id);
+        
         resultsInfo.unshift('Unsubscribe: ' + channel + ', ' + id);
+        resultsInfoFiltered[id].unshift('Unsubscribe: ' + channel + ', ' + id);
         subscriptionList.childNodes[id].className = 'unsubscribed'; // Strikethrough
     };
     
@@ -173,39 +181,50 @@ window.onload = function() {
        var previouslySelected = result.selectedIndex;
        var value;
        var filterValue;
-       if (response.type === "error") { // Let's try this for errors
-           console.log(JSON.stringify(response, null, '     '));
-            var errorNotification = document.createElement('option');
-            result.insertBefore(errorNotification, result.childNodes[0]); 
-            errorNotification.appendChild(document.createTextNode('Error'));
+       if (response.type === "error") {
+            if (filter = 'none') { // Print error to display
+                var errorNotification = document.createElement('option');
+                result.insertBefore(errorNotification, result.childNodes[0]); 
+                errorNotification.appendChild(document.createTextNode('Error'));
+            }
             resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            results.unshift('Error');
+            resultsFiltered[response.id].unshift('Error');
+            resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
             return;
        }
        if (response.type === "connection") { // Successful subscription
-           // New subscription added to results window 
-           var subscriptionNotification = document.createElement('option');
-            result.insertBefore(subscriptionNotification, result.childNodes[0]); 
-            subscriptionNotification.appendChild(document.createTextNode('Subscribed: ' + channel + ', ' + id));
+           if (filter === 'none') { // New subscription added to results window 
+                var subscriptionNotification = document.createElement('option');
+                result.insertBefore(subscriptionNotification, result.childNodes[0]); 
+                subscriptionNotification.appendChild(document.createTextNode('Subscribed: ' + channel + ', ' + id));
+            }
+            results.unshift('Subscribed: ' + channel + ', ' + id);
             resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            resultsFiltered[response.id].unshift('Subscribed: ' + channel + ', ' + id);
+            resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
             return;
        }
        else if (response.value.type.name === "VTable") {
            value = '<option>table</option>';
            filterValue = 'table';
+           resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+           results.unshift('table');
+           resultsFiltered[response.id].unshift('table');
+           resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
        }
-       else if (response.type === "error") {
-           console.log('error');
-           console.log(response.type);
-           value = '<option>' + response.type + '</option>';
-           filterValue = response.error;
-       } 
        else if (response.type === "value") {
             value = '<option>' + response.value.value + '</option>';
             filterValue = response.value.value;
+            resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            results.unshift(response.value.value);
+            resultsFiltered[response.id].unshift(response.value.value);
+            resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
         }
-        resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
-        result.innerHTML = value + result.innerHTML; 
-        result.selectedIndex = previouslySelected + 1;
+        if (filter === 'none' || filter == response.id) { // Print event to display immediately
+            result.innerHTML = value + result.innerHTML; 
+            result.selectedIndex = previouslySelected + 1;
+        }
     };
     
     // Updates connection status
@@ -233,16 +252,26 @@ window.onload = function() {
     // Pause
     pauseBtn.onclick = function(e) {
         pause(id);
-        result.innerHTML = '<option>Pause: ' + channel + ', ' + id +'</option>' + result.innerHTML;
+        if (filter == id || filter == 'none') {
+            result.innerHTML = '<option>Pause: ' + channel + ', ' + id +'</option>' + result.innerHTML;
+        }
+        results.unshift('Pause: ' + channel + ', ' + id);
         resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' paused');
+        resultsFiltered[id].unshift('Pause: ' + channel + ', ' + id);
+        resultsInfoFiltered[id].unshift('Channel: ' + channel + ', id: ' + id + ' paused');
         subscriptionList.childNodes[id].className = 'closed';
     };
     
     // Resume
     resumeBtn.onclick = function(e) {
         resume(id);
-        result.innerHTML = '<option>Resume: ' + channel + ', ' + id +'</option>' + result.innerHTML;
+        if (filter == id || filter == 'none') {
+            result.innerHTML = '<option>Resume: ' + channel + ', ' + id +'</option>' + result.innerHTML;
+        }
+        results.unshift('Resume: ' + channel + ', ' + id);
         resultsInfo.unshift('Channel: ' + channel + ', id: ' + id + ' resumed');
+        resultsFiltered[id].unshift('Resume: ' + channel + ', ' + id);
+        resultsInfoFiltered[id].unshift('Channel: ' + channel + ', id: ' + id + ' resumed');
         subscriptionList.childNodes[id].className = 'open';
     };
     
@@ -255,8 +284,33 @@ window.onload = function() {
     // Displays details for selected event
     result.onchange = function(e) {
         var i = result.selectedIndex;
-        details.innerHTML = resultsInfo[i];
+        if (filter == 'none') {
+            details.innerHTML = resultsInfo[i];
+        }
+        else {
+            details.innerHTML = resultsInfoFiltered[filter][i];
+        }
     };
+    
+    filterBtn.onclick = function(e) {
+        filter = id;
+        result.innerHTML = '';
+        for (var i = resultsFiltered[filter].length - 1; i >= 0; --i) {
+            var event = document.createElement('option');
+            result.insertBefore(event, result.childNodes[0]); 
+            event.appendChild(document.createTextNode(resultsFiltered[filter][i]));
+        }
+    }
+    
+    showAllBtn.onclick = function(e) {
+        filter = 'none';
+        result.innerHTML = '';
+        for (var i = results.length - 1; i >= 0; --i) {
+            var event = document.createElement('option');
+            result.insertBefore(event, result.childNodes[0]); 
+            event.appendChild(document.createTextNode(results[i]));
+        }
+    }
     
 
 }
