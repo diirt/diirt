@@ -36,7 +36,7 @@ $(document).ready(function () {
             nodes[i].id = id;
         }
         
-        nodes[i].innerHTML = '<svg height="100%" width="100%"><circle class="value-0" cx="50%" cy="50%" r="48%" stroke="black" stroke-width="1" fill="red" /></svg>';
+        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top"><circle class="value-0" cx="50%" cy="50%" r="48%" stroke="black" stroke-width="1" fill="red" /></svg>';
         var circle = nodes[i].firstChild.firstChild;
         
         if (dataChannel != null && dataChannel.trim().length > 0) {
@@ -47,10 +47,22 @@ $(document).ready(function () {
                         break;
                     case "value": //value changed
                         var channelValue = channel.getValue();
-                        if (channelValue.value) {
-                            changeValue(1, channel.getId(), leds[channel.getId()]);
+                        // Display the new value
+                        if ("value" in channelValue) {
+                            // If a scalar/array, use the actual value
+                            if (channelValue.value) {
+                                changeValue(1, channel.getId(), leds[channel.getId()]);
+                            } else {
+                                changeValue(0, channel.getId(), leds[channel.getId()]);
+                            }
                         } else {
-                            changeValue(0, channel.getId(), leds[channel.getId()]);
+                            // If another type, just check whether there is a value
+                            if (channelValue) {
+                                changeValue(1, channel.getId(), leds[channel.getId()]);
+                            } else {
+                                changeValue(0, channel.getId(), leds[channel.getId()]);
+                                
+                            }
                         }
                         break;
                     case "error": //error happened
