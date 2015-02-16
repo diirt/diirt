@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @author: nothing to be proud of
+ * @author: eschuhmacher carcassi
  *
  * scripts to be included on the html file
  * <script type="text/javascript" language="javascript" src="../js/widgets/text-monitor.js"></script>
@@ -41,13 +41,17 @@ $(document).ready(function () {
     }
 
     for (var i = 0; i < len; i++) {
-        var channelname = nodes[i].getAttribute("data-channel");
+        // Retrieve parameters from the HTML tag
+        var channelName = nodes[i].getAttribute("data-channel");
         var id = nodes[i].getAttribute("id");
         if (id === null) {
             counter++;
             id = "text-monitor-" + counter;
             nodes[i].id = id;
         }
+        
+        // Create the widget
+        // Should take all the space of the parent and use the same font/textAlignment
         var input = document.createElement("input");
         input.id = id;
         input.disabled = true;
@@ -58,27 +62,37 @@ $(document).ready(function () {
         var div = document.getElementById(id);
         div.appendChild(input);
 
-        if (channelname !== null && channelname.trim().length > 0) {
+        // If a channel is defined, connect
+        if (channelName !== null && channelName.trim().length > 0) {
             var callback = function (evt, channel) {
                 switch (evt.type) {
                     case "connection": //connection state changed
                         break;
                     case "value": //value changed
                         var channelValue = channel.getValue();
+                        
+                        // Display the new value
                         if ("value" in channelValue) {
-                            inputs[channel.getId()].value = (channelValue.value);
+                            // If it's a scalar or array, display the value
+                            inputs[channel.getId()].value = channelValue.value;
                         } else {
-                            inputs[channel.getId()].value = (channelValue.type.name);
+                            // If something else, display the type name
+                            inputs[channel.getId()].value = channelValue.type.name;
                         }
-                         
+                        
+                        // Change the style based on the alarm
                         if ("alarm" in channelValue) {
                             changeAlarm(channelValue.alarm.severity, channel.getId(), inputs[channel.getId()]);
                         } else {
                             changeAlarm("NONE", channel.getId(), inputs[channel.getId()]);
                         }
+                        
+                        // Remove error tooltip
                         inputs[channel.getId()].parentNode.removeAttribute("title");
                         break;
                     case "error": //error happened
+                        // Change displayed alarm to invalid, and set the
+                        // tooltip to the error message
                         changeAlarm("INVALID", channel.getId(), inputs[channel.getId()]);
                         inputs[channel.getId()].parentNode.title = evt.error;
                         break;
@@ -88,7 +102,7 @@ $(document).ready(function () {
                         break;
                 }
             };
-            var channel = wp.subscribeChannel(channelname, callback, true);
+            var channel = wp.subscribeChannel(channelName, callback, true);
             inputs[channel.getId()] = input;
         }
     }
