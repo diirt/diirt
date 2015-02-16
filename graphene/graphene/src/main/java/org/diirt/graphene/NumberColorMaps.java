@@ -111,7 +111,7 @@ public class NumberColorMaps {
             builder = factory.newDocumentBuilder();
 
         } catch (ParserConfigurationException ex) {
-            throw new RuntimeException("ParserConfigurationException: Error Parsing file", ex);
+            throw new RuntimeException("Couldn't load color map from file " + file, ex);
         }
 
         try {
@@ -209,6 +209,8 @@ public class NumberColorMaps {
         registeredColorSchemes.put(BONE.toString(), BONE);
         registeredColorSchemes.put(HOT.toString(), HOT);
         registeredColorSchemes.put(HSV.toString(), HSV);
+        // TODO: Load new ones from "DIIRT_HOME/graphene/colormaps/
+        // using Configuration. (see jdbc service)
     }
     
     /**
