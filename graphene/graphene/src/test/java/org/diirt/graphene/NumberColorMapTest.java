@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import javax.management.RuntimeErrorException;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.stats.Ranges;
@@ -115,7 +116,32 @@ public class NumberColorMapTest {
         
     }
 
+    @Test(expected = RuntimeException.class)
+    public void expectExceptionPercentageRange() throws Exception{
+        //percentage value should not be negative 
+        NumberColorMap colorMap = NumberColorMaps.relative(
+                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(-1.0, 0, 1.0),
+                Color.BLACK, "TEST");
+    }
     
+    @Test(expected = RuntimeException.class)
+    public void expectExceptionIncreasingOrder()throws Exception{
+        //position values should always be in increasing order  
+          NumberColorMap colorMap = NumberColorMaps.absolute(
+                Arrays.asList(Color.RED,Color.DARK_GRAY,Color.BLACK, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(-1.0, 0, -0.5, 1.0, 0.5),
+                Color.BLACK, "TEST");
+    }
+    @Test(expected = RuntimeException.class)
+    public void expectExceptionIncreasingOrder2() throws Exception {
+        NumberColorMap colorMap = NumberColorMaps.relative(
+                Arrays.asList(Color.RED,Color.DARK_GRAY,Color.BLACK, Color.YELLOW, Color.GREEN),
+                new ArrayDouble(0.0, 0.1, 0.2, 0.5,0.3),
+                Color.BLACK, "TEST");
+    }
+
+     
     @Test
     public void absoluteScheme()throws Exception {
         NumberColorMap colorMap = NumberColorMaps.absolute(
@@ -173,23 +199,5 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(-1.0), equalTo(Color.RED.getRGB()));
         assertThat(instance.colorFor(0.0), equalTo(Color.YELLOW.getRGB()));
         assertThat(instance.colorFor(1.0), equalTo(Color.GREEN.getRGB()));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    @Ignore
-    public void invalidRelativeScheme() throws Exception {
-        NumberColorMap colorMap = NumberColorMaps.relative(
-                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(-1.0, 0.0, 1.0),
-                Color.BLACK, "TEST");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    @Ignore
-    public void invalidAbsoluteScheme() throws Exception {
-        NumberColorMap colorMap = NumberColorMaps.absolute(
-                Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(-1.0, -2.0, 1.0),
-                Color.BLACK, "TEST");
     }
 }

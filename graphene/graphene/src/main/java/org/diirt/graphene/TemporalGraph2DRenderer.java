@@ -354,19 +354,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         int dataCount = xValues.size();
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
-	
-	//the x values provided are normalized from 0 to 1, where 1 is the greatest
-	//time value in the dataset to be plotted. however, we want to scale these x values to the
-	//x axis range of the graph area; that is, the data point with normalized value 1
-	//is not necessarily on the right border of the graph. If the graph x axis range is much
-	//larger than the dataset's x value range, then the normalized x value of 1 may be
-	//in the center of the graph. Therefore, we want to multiply each normalized x value
-	//by (range of dataset x values)/(range of graph x axis). Thus, we have essentially
-	//re-normalized to the range of the graph's x axis. Once this re-normalization is complete, 
-	//we can use the scaledX() function to get the pixel at which each data point belongs
-	double multiplier = (double)(this.aggregatedTimeInterval.getEnd().durationFrom( this.aggregatedTimeInterval.getStart() ).toNanosLong()) / this.plotTimeInterval.getEnd().durationFrom( this.plotTimeInterval.getStart() ).toNanosLong();
+
 	for (int i = 0; i < scaledY.length; i++) {
-            scaledX[i] = scaledX(xValues.getDouble(i)*multiplier);
+            scaledX[i] = scaledX(xValues.getDouble(i));
             scaledY[i] = scaledY(yValues.getDouble(i));
         }
         

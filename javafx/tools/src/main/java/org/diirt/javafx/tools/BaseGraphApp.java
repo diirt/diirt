@@ -20,6 +20,18 @@ import javafx.stage.Stage;
 /**
  * Allows the user to select some form of data (e.g. a Gaussian wave or a sine
  * wave) and graphs it.
+ * <p>
+ * To produce a custom graph app, e.g. a BubbleGraphApp, you first extend the
+ * BaseGraphApp. Inside this new class, you must create the BaseGraphView object
+ * templated with the correct Graph2DRendererUpdate for your graph type.
+ * Furthermore, you must define how to create expressions to be sent to
+ * PVManager for data. Inside the BaseGraphView object, you will also find a
+ * Graph2DExpression object which represents the data to be plotted on the graph.
+ * You can send updates to this if you choose to.
+ * <p>
+ * The BaseGraphView object is created, so you can define the getGraphView()
+ * method. Now, everything should be all set up. Just override start(), 
+ * add your data formulae, and your graph app should be complete.
  * 
  * @author mjchao
  */
@@ -148,6 +160,12 @@ abstract public class BaseGraphApp extends Application {
 	 */
 	final public void addDataFormulae( DataFormula... f ) {
 	    this.cboSelectData.getItems().addAll( f );
+	    
+	    //we want the default data formula to not be [Select], so
+	    //we update it to be the first formula in the list
+	    if ( this.cboSelectData.getItems().size() >= 2 ) {
+		this.cboSelectData.setValue( this.cboSelectData.getItems().get( 1 ) );
+	    }
 	}
 	
 	/**

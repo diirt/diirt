@@ -43,12 +43,19 @@ public class TimeSeriesDatasets {
             }
 
             @Override
-            public ListNumber getNormalizedTime() {
+            public ListNumber getNormalizedTime( TimeInterval normalizationRange ) {
+		
+		//the data is normalized over the time interval of the data
+		//but then it needs to be normalized again over the time interval
+		//of the plot.
+		//thus, we use this scale to convert values normalized over the
+		//data's time interval to the plot's time interval
+		final double scale = (double)(timeInterval.getEnd().durationFrom( timeInterval.getStart() ).toNanosLong())/(normalizationRange.getEnd().durationFrom( normalizationRange.getStart() ).toNanosLong() );
                 return new ListDouble() {
 
                     @Override
                     public double getDouble(int index) {
-                        return TimeScales.normalize(timestamps.get(index), timeInterval);
+                        return TimeScales.normalize(timestamps.get(index), timeInterval) * scale;
                     }
 
                     @Override

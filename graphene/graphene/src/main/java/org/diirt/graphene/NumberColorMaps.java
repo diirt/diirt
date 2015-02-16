@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.imageio.ImageIO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory; 
 import javax.xml.parsers.DocumentBuilder; 
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,87 +61,96 @@ public class NumberColorMaps {
 
         return new ArrayDouble(percentages);
     }
-   /*  file format 
-    <colormap positionType="relative"/"absolute"> 
-        <color>
-          <position> relative or absoulute </position>
-          <R> </R>
-          <G> </G> 
-          <B> </B> 
-        </color>
-    </colormap>
-   */
-    
-    public static NumberColorMap load(File file) throws FileNotFoundException,ParserConfigurationException, SAXException, IOException{
-        // TODO: catch the exceptions and wrap them in a RuntimeException
-        
-        //determine file type 
-        String fileName= file.getName(); 
-        String fileExtenstion=fileName.substring(fileName.lastIndexOf(".")+1,fileName.length()); 
- 
-        List<Double> positions = new ArrayList<>(); 
-        List<Color> colors= new ArrayList<>(); 
-        boolean relative = true; //default positions to be relative 
-        
+  
+    public static NumberColorMap load(File file) {
+
         //Reading from xml 
-        // TODO: Break into two fucntions
-        if(fileExtenstion.equalsIgnoreCase("xml")){
-            //if we are reading from a xml file
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(file); 
-            
-            //check if the postions is relative  
-            NodeList nodeList = doc.getElementsByTagName("colormap"); 
-            Node node = nodeList.item(0); 
-            Attr attr = (Attr) node.getAttributes().getNamedItem("positionType"); 
-            relative = attr.getValue().equals("relative"); 
-            //read positions and RGB value
-            Element el = doc.getDocumentElement(); 
-            NodeList nl = el.getChildNodes(); 
-            
-            if(nl!=null){
-                for(int i=0; i<nl.getLength();i++){
-                     if(nl.item(i).getNodeType()==Node.ELEMENT_NODE){
-                         Element e = (Element)nl.item(i); 
-                         if("color"==e.getNodeName()){
+        if (file.getName().endsWith(".xml")) {
+            return loadXML(file);
+        } //reading from CMAP
+        else if (file.getName().endsWith(".cmap")) {
+            return loadCMAP(file);
+        }
+        //File format not recognized
+        throw new RuntimeException("File Format not Recognized");
+    }
+    
+    
+    private static NumberColorMap loadCMAP(File file){
+        List<Color> colors = new ArrayList<>();
+        Scanner scanner;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException("Colormap file not found", ex);
+        }
+        String line;
 
-                             positions.add(parseDouble(e.getElementsByTagName("position").item(0).getTextContent())); 
-                             int R =parseInt(e.getElementsByTagName("R").item(0).getTextContent()); 
-                             int G =parseInt(e.getElementsByTagName("G").item(0).getTextContent()); 
-                             int B =parseInt(e.getElementsByTagName("B").item(0).getTextContent()); 
-                             colors.add(new Color(R,G,B)); 
-                         }
-                     }
-                }
+        while (scanner.hasNextLine()) {
+            line = scanner.nextLine();
+            String[] tokens = line.split(",");
+            if (tokens.length != 3) {
+                throw new RuntimeException("Error Parsing RGB value");
             }
+            colors.add(new Color(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2])));
+        }
+        return relative(colors, Color.BLACK, file.getName());//cmap file is automatically relative
+    }
+    
+    private static NumberColorMap loadXML(File file){
+        //if we are reading from a xml file
 
-          }
-        //color map file can be found at colormap.org 
-        else if (fileExtenstion.equalsIgnoreCase("cmap")) {
+        List<Double> positions = new ArrayList<>();
+        List<Color> colors = new ArrayList<>();
+        boolean relative = true; //default positions to be relative 
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        Document doc;
 
-            Scanner scanner = new Scanner(file);
-            String line;
+        try {
+            builder = factory.newDocumentBuilder();
 
-            while (scanner.hasNextLine()) {
-                line = scanner.nextLine();
-                String[] tokens = line.split(",");
-                if (tokens.length != 3) {
-                    throw new IOException("Error Parsing RGB value");
-                }
-                colors.add(new Color(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2])));
-            }
-            return (NumberColorMapGradient) relative(colors, Color.BLACK, file.getName());//cmap file is automatically relative
-        } else {
-            throw new RuntimeException("File Format not Recognized");
+        } catch (ParserConfigurationException ex) {
+            throw new RuntimeException("ParserConfigurationException: Error Parsing file", ex);
         }
 
+        try {
+            doc = builder.parse(file);
+        } catch (SAXException ex) {
+            throw new RuntimeException("SAXException: error parsing file ", ex);
+        } catch (IOException ex) {
+            throw new RuntimeException("IOException: error reading from file", ex);
+        }
+
+        //check if the postions is relative  
+        NodeList nodeList = doc.getElementsByTagName("colormap");
+        Node node = nodeList.item(0);
+        Attr attr = (Attr) node.getAttributes().getNamedItem("positionType");
+        relative = attr.getValue().equals("relative");
+        //read positions and RGB value
+        Element el = doc.getDocumentElement();
+        NodeList nl = el.getChildNodes();
+
+        if (nl != null) {
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    Element e = (Element) nl.item(i);
+                    if ("color".equals(e.getNodeName())) {
+
+                        positions.add(parseDouble(e.getElementsByTagName("position").item(0).getTextContent()));
+                        int R = parseInt(e.getElementsByTagName("R").item(0).getTextContent());
+                        int G = parseInt(e.getElementsByTagName("G").item(0).getTextContent());
+                        int B = parseInt(e.getElementsByTagName("B").item(0).getTextContent());
+                        colors.add(new Color(R, G, B));
+                    }
+                }
+            }
+        }
         double[] positionsArray = new double[positions.size()];
         for (int i = 0; i < positions.size(); ++i) {
             positionsArray[i] = positions.get(i);
         }
         return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, Color.BLACK, file.getName());
-
     }
     
     /**
