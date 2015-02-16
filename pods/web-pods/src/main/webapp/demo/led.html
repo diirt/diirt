@@ -61,7 +61,7 @@
         </nav>
         
         <div class="container-fluid" >
-            <h1>Read-only led widget - led</h1>
+            <h1>Read-only LED widget - led</h1>
             <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
             
             <div class="row">
@@ -107,23 +107,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Changing fonts</div>
                         <div class="panel-body">
-                            <p>Using CSS style font to change the font size or type. Note that, by default, the font
-                            is inherited.</p>
-                            <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
-                            <p>font-family: serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
-                            <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Changing text alignment</div>
-                        <div class="panel-body">
-                            <p>Using CSS style text-align to change text alignment in the field.</p>
-                            <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
-                            <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
-                            <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
+                            <p>By default, the size of the LED changes with the font.</p>
+                            <p style="font-family: monospace">font-family: monospace - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font-family: serif">font-family: serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: italic bold 18px Georgia, serif;">font: italic bold 18px Georgia, serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: 14px monospace;">font: 14px monospace - <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
                         </div>
                     </div>
                 </div>
@@ -132,8 +120,10 @@
                         <div class="panel-heading">Positioning</div>
                         <div class="panel-body">
                             <p>Using CSS style margin or float to adjust widget position.</p>
-                            <p>margin-left: 50px - <span class="text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
-                            <p>float: right - <span class="text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
+                            <p>margin-left: 50px - <span class="led" data-channel="sim/flipflop(1.0)" style="margin-left: 50px"></span></p>
+                            <p>float: right - <span class="led" data-channel="sim/flipflop(1.0)" style="float: right"></span></p>
+                            <p>vertical-align: bottom - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: bottom"></span></p>
+                            <p>vertical-align: top - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: top"></span></p>
                         </div>
                     </div>
                 </div>
