@@ -32,12 +32,13 @@ $(document).ready(function () {
         var id = nodes[i].getAttribute("id");
         if (id === null) {
             counter++;
-            id = "text-monitor-" + counter;
+            id = "led-" + counter;
             nodes[i].id = id;
         }
         
         nodes[i].innerHTML = '<svg height="100%" width="100%"><circle class="value-0" cx="50%" cy="50%" r="48%" stroke="black" stroke-width="1" fill="red" /></svg>';
         var circle = nodes[i].firstChild.firstChild;
+        
         if (dataChannel != null && dataChannel.trim().length > 0) {
             var callback = function (evt, channel) {
                 switch (evt.type) {
@@ -53,6 +54,11 @@ $(document).ready(function () {
                         }
                         break;
                     case "error": //error happened
+                        // Change displayed alarm to invalid, and set the
+                        // tooltip to the error message
+                        changeValue("error", channel.getId(), leds[channel.getId()]);
+                        leds[channel.getId()].parentNode.parentNode.title = evt.error;
+                        break;
                         break;
                     case "writePermission":	// write permission changed.
                         break;

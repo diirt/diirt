@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-        <title>WebPODS - text-monitor examples</title>
+        <title>WebPODS - led examples</title>
     </head>
     <body>
         <!-- Nav bar -->
@@ -43,7 +43,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="..">Home</a></li>
                         <li><a href=".">Examples</a></li>
-                        <li class="active"><a href="#">text-monitor</a></li>
+                        <li class="active"><a href="#">led</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -61,7 +61,7 @@
         </nav>
         
         <div class="container-fluid" >
-            <h1>Read-only text field for a channel - text-monitor</h1>
+            <h1>Read-only led widget - led</h1>
             <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
             
             <div class="row">
@@ -71,8 +71,8 @@
                         <div class="panel-body">
                             <p>These simple examples just add the channel, using the data-channel property.</p>
                             <p>sim/ramp: <span class="led" data-channel="sim/ramp"></span></p>
-                            <p>sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
-                            <p>sim/strings: <span class="text-monitor" data-channel="sim/strings"></span></p>
+                            <p>sim/flipflop(1.0): <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
+                            <p>='sim/noise'>0.0: <span class="led" data-channel="='sim/noise'>0.0"></span></p>
                             <p>sim/table: <span class="text-monitor" data-channel="sim/table"></span></p>
                         </div>
                     </div>
@@ -82,9 +82,9 @@
                         <div class="panel-heading">Error conditions</div>
                         <div class="panel-body">
                             <p>Behavior under different error conditions.</p>
-                            <p>Slow connection: <span class="text-monitor" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
-                            <p>Error messages: <span class="text-monitor" data-channel="sim/wrongChannel"></span></p>
-                            <p>Wrong formula: <span class="text-monitor" data-channel='=1+"test"'></span></p>
+                            <p>Slow connection: <span class="led" data-channel='sim/delayedConnectionChannel(5, 1)'></span></p>
+                            <p>Error messages: <span class="led" data-channel="sim/wrongChannel"></span></p>
+                            <p>Wrong formula: <span class="led" data-channel='=1+"test"'></span></p>
                         </div>
                     </div>
                 </div>
