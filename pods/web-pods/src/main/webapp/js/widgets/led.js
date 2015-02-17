@@ -14,17 +14,50 @@ $(document).ready(function () {
     var nodes = document.getElementsByClassName("led");
     var len = nodes.length;
     var leds = {};
+    var currentStateStyles = {};
     var currentValueStyles = {};
     counter = 0;
     
-    function changeValue(value, id, cicle) {
-        var currentValueStyle = currentValueStyles[id];
-        if (currentValueStyle) {
-            cicle.classList.remove(currentValueStyle);
+    function change(id, nextState, nextValue) {
+        var circle = leds[id];
+        var currentState = currentStateStyles[id];
+        var currentValue = currentValueStyles[id];
+        if (currentState) {
+            circle.classList.remove(currentState);
         }
-        currentValueStyle = "value-" + value;
-        currentValueStyles[id] = currentValueStyle;
-        cicle.classList.add(currentValueStyle);
+        if (currentValue) {
+            circle.classList.remove(currentValue);
+        }
+        circle.classList.add(nextState);
+        if (nextValue) {
+            circle.classList.add(nextValue);
+        }
+        currentStateStyles[id] = nextState;
+        currentValueStyles[id] = nextValue;
+    }
+    
+    function ledOn(id) {
+        change(id, "on", "");
+    }
+    
+    function ledOff(id) {
+        change(id, "off", "");
+    }
+    
+    function ledError(id) {
+        change(id, "error", "");
+    }
+    
+    function ledValue(index, labels, id) {
+        var state = "off";
+        if (index) {
+            state = "on";
+        }
+        var value;
+        if (labels && labels[index]) {
+            value = "value-" + labels[index].toLowerCase();
+        }
+        change(id, state, value);
     }
     
     for (var i = 0; i < len; i++) {
@@ -36,39 +69,42 @@ $(document).ready(function () {
             nodes[i].id = id;
         }
         
-        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top; overflow:visible"><circle class="value-0" cx="50%" cy="50%" r="50%" stroke="black" stroke-width="1" fill="red" /></svg>';
+        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top; overflow:visible"><circle class="off" cx="50%" cy="50%" r="50%" stroke="black" stroke-width="1" fill="red" /></svg>';
         var circle = nodes[i].firstChild.firstChild;
         
         if (dataChannel != null && dataChannel.trim().length > 0) {
             var callback = function (evt, channel) {
                 switch (evt.type) {
                     case "connection": //connection state changed
-                        channel.readOnly = !evt.writeConnected;
                         break;
                     case "value": //value changed
                         var channelValue = channel.getValue();
                         // Display the new value
                         if ("value" in channelValue) {
-                            // If a scalar/array, use the actual value
-                            if (channelValue.value) {
-                                changeValue(1, channel.getId(), leds[channel.getId()]);
+                            if (channelValue.type.name == "VEnum") {
+                                // If enum, use labels as styles
+                                ledValue(channelValue.value, channelValue.enum.labels, channel.getId());
                             } else {
-                                changeValue(0, channel.getId(), leds[channel.getId()]);
+                                // If a scalar/array, use the actual value
+                                if (channelValue.value) {
+                                    ledOn(channel.getId());
+                                } else {
+                                    ledOff(channel.getId());
+                                }
                             }
                         } else {
                             // If another type, just check whether there is a value
                             if (channelValue) {
-                                changeValue(1, channel.getId(), leds[channel.getId()]);
+                                ledOn(channel.getId());
                             } else {
-                                changeValue(0, channel.getId(), leds[channel.getId()]);
-                                
+                                ledOff(channel.getId());
                             }
                         }
                         break;
                     case "error": //error happened
                         // Change displayed alarm to invalid, and set the
                         // tooltip to the error message
-                        changeValue("error", channel.getId(), leds[channel.getId()]);
+                        ledError(channel.getId());
                         leds[channel.getId()].parentNode.parentNode.title = evt.error;
                         break;
                         break;
@@ -82,6 +118,7 @@ $(document).ready(function () {
             };
             var channel = wp.subscribeChannel(dataChannel, callback, true);
             leds[channel.getId()] = circle;
+            currentStateStyles[channel.getId()] = "off";
         }
     }
 });
