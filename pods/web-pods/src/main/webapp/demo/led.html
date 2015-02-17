@@ -18,6 +18,9 @@
         <script type="text/javascript" language="javascript" src="../js/widgets/led.js"></script>
         <link rel="stylesheet" href="../js/widgets/led.css">
 
+        <!-- Custom stylesheet for this page-->
+        <link rel="stylesheet" href="led.css">
+        
         <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -74,6 +77,7 @@
                             <p>=alarmOf('sim/ramp'): <span class="led alarm" data-channel="=alarmOf('sim/ramp')"></span></p>
                             <p>sim/flipflop(1.0): <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
                             <p>='sim/noise'>0.0: <span class="led" data-channel="='sim/noise'>0.0"></span></p>
+                            <p>=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf("LOW", "MIDDLE", "HIGH")): <span class="led customvalues" data-channel="=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf(&quot;LOW&quot;, &quot;MIDDLE&quot;, &quot;HIGH&quot;))"></span></p>
                             <p>sim/table: <span class="led" data-channel="sim/table"></span></p>
                         </div>
                     </div>
