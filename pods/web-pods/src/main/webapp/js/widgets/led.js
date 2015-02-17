@@ -36,7 +36,7 @@ $(document).ready(function () {
             nodes[i].id = id;
         }
         
-        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top"><circle class="value-0" cx="50%" cy="50%" r="48%" stroke="black" stroke-width="1" fill="red" /></svg>';
+        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top; overflow:visible"><circle class="value-0" cx="50%" cy="50%" r="50%" stroke="black" stroke-width="1" fill="red" /></svg>';
         var circle = nodes[i].firstChild.firstChild;
         
         if (dataChannel != null && dataChannel.trim().length > 0) {
