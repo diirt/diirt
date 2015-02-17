@@ -5,15 +5,15 @@
     vertical-align: middle;
 }
 
-.value-0 {
+.led .value-0 {
     fill: lightGray;
 }
 
-.value-1 {
+.led .value-1 {
     fill: lime;
 }
 
-.value-error {
+.led .value-error {
     fill: magenta;
 }
 
