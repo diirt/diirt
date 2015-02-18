@@ -25,14 +25,14 @@ class FormulaReadFunction implements ReadFunction<Object> {
     public Object lastValue;
     public volatile PVDirector<?> director;
 
-    FormulaReadFunction(List<ReadFunction<?>> argumentFunctions, Collection<FormulaFunction> formulaMatches) {
+    FormulaReadFunction(List<ReadFunction<?>> argumentFunctions, Collection<FormulaFunction> formulaMatches, String functionName) {
         this.argumentFunctions = argumentFunctions;
         this.formulaMatches = formulaMatches;
         this.argumentValues = new ArrayList<>(argumentFunctions.size());
         for (ReadFunction<?> argumentFunction : argumentFunctions) {
             argumentValues.add(null);
         }
-        this.functionName = formulaMatches.iterator().next().getName();
+        this.functionName = functionName;
     }
 
     void setDirector(PVDirector<?> director) {
@@ -41,6 +41,10 @@ class FormulaReadFunction implements ReadFunction<Object> {
     
    @Override
     public Object readValue() {
+        if (formulaMatches.isEmpty()) {
+            throw new RuntimeException("No function named '" + functionName + "'  is defined");
+        }
+        
         List<Object> previousValues = new ArrayList<>(argumentValues);
         for (int i = 0; i < argumentFunctions.size(); i++) {
             argumentValues.set(i, argumentFunctions.get(i).readValue());
