@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <!-- The WebPods client, its depedency and its configuration -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+        <script>
+            // Calculating URL from document location, so that examples work no
+            // matter where they are deployed. Typical use would hard-code URL
+            var wsUri = "ws://" + document.location.host + "/" + 
+                    document.location.pathname.split("/")[1] + "/socket";
+            var wp = new Client(wsUri);
+        </script>
+
+        <!-- The table widget -->
+        <script type="text/javascript" src="//www.google.com/jsapi"></script>
+        <script type="text/javascript" language="javascript" src="../js/widgets/table.js"></script>
+        <link rel="stylesheet" href="../js/widgets/table.css">
+
+        <!-- Custom stylesheet for this page-->
+        <link rel="stylesheet" href="table.css">
+        
+        <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+        <title>WebPODS - led examples</title>
+    </head>
+    <body>
+        <!-- Nav bar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">WebPODS</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="..">Home</a></li>
+                        <li><a href=".">Examples</a></li>
+                        <li class="active"><a href="#">table</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Useful links <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="http://diirt.org">diirt.org</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPODS-users">User documentation</a></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPods">Developer documentation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container-fluid" >
+            <h1>Read-only table widget - table</h1>
+            <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Simple monitoring</div>
+                        <div class="panel-body">
+                            <p>These simple examples just add the channel, using the data-channel property.</p>
+                            <p>sim/table: <span class="table" data-channel="sim/table"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Multi-state</div>
+                        <div class="panel-body">
+                            <p>For enum, the LED can display all states.</p>
+                            <p>=alarmOf('sim/ramp'): <span class="led alarm" data-channel="=alarmOf('sim/ramp')"></span></p>
+                            <p>=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf("LOW", "MIDDLE", "HIGH")): <span class="led customvalues" data-channel="=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf(&quot;LOW&quot;, &quot;MIDDLE&quot;, &quot;HIGH&quot;))"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Error conditions</div>
+                        <div class="panel-body">
+                            <p>Behavior under different error conditions.</p>
+                            <p>Slow connection: <span class="led" data-channel='sim/delayedConnectionChannel(5, 1)'></span></p>
+                            <p>Error messages: <span class="led" data-channel="sim/wrongChannel"></span></p>
+                            <p>Wrong formula: <span class="led" data-channel='=1+"test"'></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing size</div>
+                        <div class="panel-body">
+                            <p>Using CSS style width and height to change size.</p>
+                            <p>width: 5px; height: 18px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 5px; height: 5px"></span></p>
+                            <p>width: 10px; height: 10px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 10px; height: 10px"></span></p>
+                            <p>width: 15px; height: 15px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 15px; height: 15px"></span></p>
+                            <p>width: 20px; height: 20px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 20px; height: 20px"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing fonts</div>
+                        <div class="panel-body">
+                            <p>By default, the size of the LED changes with the font.</p>
+                            <p style="font-family: monospace">font-family: monospace - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font-family: serif">font-family: serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: italic bold 18px Georgia, serif;">font: italic bold 18px Georgia, serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: 14px monospace;">font: 14px monospace - <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Positioning</div>
+                        <div class="panel-body">
+                            <p>Using CSS style margin or float to adjust widget position.</p>
+                            <p>margin-left: 50px - <span class="led" data-channel="sim/flipflop(1.0)" style="margin-left: 50px"></span></p>
+                            <p>float: right - <span class="led" data-channel="sim/flipflop(1.0)" style="float: right"></span></p>
+                            <p>vertical-align: bottom - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: bottom"></span></p>
+                            <p>vertical-align: top - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: top"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
