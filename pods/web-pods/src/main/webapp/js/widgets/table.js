@@ -36,7 +36,7 @@ function drawSeriesChart() {
                     case "double":
                     case "float":
                     case "long":
-                    case "integer":
+                    case "int":
                     case "short":
                     case "byte":
                         data.addColumn('number', vtable.columnNames[col]);
