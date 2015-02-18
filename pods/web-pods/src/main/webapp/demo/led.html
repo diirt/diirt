@@ -74,11 +74,19 @@
                         <div class="panel-body">
                             <p>These simple examples just add the channel, using the data-channel property.</p>
                             <p>sim/ramp: <span class="led" data-channel="sim/ramp"></span></p>
-                            <p>=alarmOf('sim/ramp'): <span class="led alarm" data-channel="=alarmOf('sim/ramp')"></span></p>
                             <p>sim/flipflop(1.0): <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
                             <p>='sim/noise'>0.0: <span class="led" data-channel="='sim/noise'>0.0"></span></p>
-                            <p>=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf("LOW", "MIDDLE", "HIGH")): <span class="led customvalues" data-channel="=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf(&quot;LOW&quot;, &quot;MIDDLE&quot;, &quot;HIGH&quot;))"></span></p>
                             <p>sim/table: <span class="led" data-channel="sim/table"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Multi-state</div>
+                        <div class="panel-body">
+                            <p>For enum, the LED can display all states.</p>
+                            <p>=alarmOf('sim/ramp'): <span class="led alarm" data-channel="=alarmOf('sim/ramp')"></span></p>
+                            <p>=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf("LOW", "MIDDLE", "HIGH")): <span class="led customvalues" data-channel="=enumOf('sim/noise', arrayOf(-1.0, 1.0), arrayOf(&quot;LOW&quot;, &quot;MIDDLE&quot;, &quot;HIGH&quot;))"></span></p>
                         </div>
                     </div>
                 </div>
@@ -93,6 +101,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">Changing size</div>
@@ -105,9 +116,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">Changing fonts</div>
