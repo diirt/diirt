@@ -162,4 +162,23 @@ public class TableFunctionSetTest extends BaseTestForFormula {
                 .compareReturnValue(expected, "Table", Arrays.asList("1", "2"), table1, table2);
     }
     
+    @Test
+    public void tableUnion2() {
+        VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable table2 = newVTable(column("Rack", newVStringArray(Arrays.asList("B", "B", "A"), alarmNone(), timeNow())),
+                                 column("Position", newVDoubleArray(new ArrayDouble(3,2,1), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
+        VTable expected = newVTable(column("Table", newVStringArray(Arrays.asList("1", "1", "1", "2", "2", "2"), alarmNone(), timeNow())),
+                                 column("Rack", newVStringArray(Arrays.asList("A", "A", "B", "B", "B", "A"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3,Double.NaN,Double.NaN,Double.NaN), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386","286", "286", "386"), alarmNone(), timeNow())),
+                                 column("Position", newVDoubleArray(new ArrayDouble(Double.NaN,Double.NaN,Double.NaN,3,2,1), alarmNone(), timeNow(), displayNone())));
+
+        // TODO: add null cases
+        FunctionTester.findBySignature(set, "union", VString.class, VStringArray.class, VTable.class)
+                .compareReturnValue(expected, "Table", Arrays.asList("1", "2"), table1, table2);
+    }
+    
 }
