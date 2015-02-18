@@ -9,8 +9,10 @@
         <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
         <script>
-            var pathName = document.location.pathname.replace("demo/text-monitor.html", "");
-            var wsUri = "ws://" + document.location.host + pathName + "socket";
+            // Calculating URL from document location, so that examples work no
+            // matter where they are deployed. Typical use would hard-code URL
+            var wsUri = "ws://" + document.location.host + "/" + 
+                    document.location.pathname.split("/")[1] + "/socket";
             var wp = new Client(wsUri);
         </script>
 
