@@ -2,14 +2,17 @@
  * Custom LED states for custom enum
  */
 
-.led.customvalues .value-low {
-    fill: LightCyan;
+.led.customvalues .value-low:before {
+    color: LightCyan;
+    content: "\f175";
 }
 
-.led.customvalues .value-middle {
-    fill: Cyan;
+.led.customvalues .value-middle:before {
+    color: Cyan;
+    content: "\f07e";
 }
 
-.led.customvalues .value-high {
-    fill: DarkTurquoise;
+.led.customvalues .value-high:before {
+    color: DarkTurquoise;
+    content: "\f176";
 }

@@ -1,14 +1,10 @@
 /**
  * LED widget
  *
- * By default, the LED is desined to be mixed with the text. It is a square
- * inline-block, the size of a text line, vertically aligned in the middle.
+ * By default, the LED is desined to be mixed with the text.
  */
 .led {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 /**
@@ -20,34 +16,34 @@
  * value-n: if the channel is an enum, the 
  */
 .led .off {
-    fill: lightGray;
+    color: lightGray;
 }
 
 .led .on {
-    fill: lime;
+    color: lime;
 }
 
 .led.alarm .value-none {
-    fill: lime;
+    color: lime;
 }
 
 .led.alarm .value-minor {
-    fill: yellow;
+    color: yellow;
 }
 
 .led.alarm .value-major {
-    fill: red;
+    color: red;
 }
 
 .led.alarm .value-invalid {
-    fill: magenta;
+    color: magenta;
 }
 
 .led.alarm .value-undefined {
-    fill: magenta;
+    color: magenta;
 }
 
 .led .error {
-    fill: magenta;
+    color: magenta;
 }
 
