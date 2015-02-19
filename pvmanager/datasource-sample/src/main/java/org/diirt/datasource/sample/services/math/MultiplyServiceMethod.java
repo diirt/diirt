@@ -6,6 +6,7 @@ package org.diirt.datasource.sample.services.math;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
@@ -21,11 +22,12 @@ import org.diirt.vtype.next.VNumber;
  */
 public class MultiplyServiceMethod extends ServiceMethod {
 
-    public MultiplyServiceMethod() {
+    public MultiplyServiceMethod(ExecutorService executor) {
         super(new ServiceMethodDescription("multiply", "Multiplies two numbers.")
                 .addArgument("arg1", "First argument", VNumber.class)
                 .addArgument("arg2", "Second argument", VNumber.class)
-                .addResult("result", "The product of arg1 and arg2", VNumber.class));
+                .addResult("result", "The product of arg1 and arg2", VNumber.class)
+                .executor(executor));
     }
 
     //WILL BE REMOVED

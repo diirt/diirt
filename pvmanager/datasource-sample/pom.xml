@@ -39,7 +39,7 @@
                 <version>1.0.2</version>
                 <configuration>
                     <services>
-                        <param>org.diirt.datasource.sample.services.math.MathService</param>
+                        <param>org.diirt.service.ServiceProvider</param>
                     </services>
                 </configuration>
                 <executions>

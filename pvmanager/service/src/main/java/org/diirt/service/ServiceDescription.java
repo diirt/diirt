@@ -48,5 +48,5 @@ public class ServiceDescription {
     public ServiceDescription addServiceMethod(ServiceMethod serviceMethod) {
         serviceMethods.put(serviceMethod.getName(), serviceMethod);
         return this;
-    }
+    }  
 }

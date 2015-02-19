@@ -6,14 +6,15 @@ package org.diirt.datasource.sample.services.math;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.next.VNumber;
 import org.diirt.vtype.next.Alarm;
 import org.diirt.vtype.next.Display;
 import org.diirt.vtype.next.Time;
 import org.diirt.vtype.next.VDouble;
+import org.diirt.vtype.next.VNumber;
 
 /**
  *
@@ -21,11 +22,12 @@ import org.diirt.vtype.next.VDouble;
  */
 public class AddServiceMethod extends ServiceMethod {
 
-    public AddServiceMethod() {
+    public AddServiceMethod(ExecutorService executor) {
         super(new ServiceMethodDescription("add", "Adds two numbers.")
                 .addArgument("arg1", "First argument", VNumber.class)
                 .addArgument("arg2", "Second argument", VNumber.class)
-                .addResult("result", "The sum of arg1 and arg2", VNumber.class));
+                .addResult("result", "The sum of arg1 and arg2", VNumber.class)
+                .executor(executor));
     }
 
     //WILL BE REMOVED

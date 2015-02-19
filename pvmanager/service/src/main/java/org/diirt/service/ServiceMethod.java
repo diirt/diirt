@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -78,7 +79,8 @@ public abstract class ServiceMethod {
     private final Map<String, DataDescription> argumentMap;
     private final List<DataDescription> results;
     private final Map<String, DataDescription> resultMap;
-
+    private final ExecutorService executor;
+    
     private final boolean asyncExecute;
     private final boolean syncExecute;
             
@@ -97,6 +99,7 @@ public abstract class ServiceMethod {
         this.argumentMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentMap));
         this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
         this.resultMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultMap));
+        this.executor = serviceMethodDescription.executorService;
         
         //Determines whether the synchronous or asynchronous method was overridden
         boolean sync = false;
@@ -181,7 +184,45 @@ public abstract class ServiceMethod {
             }
         }
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName()).append("(");
+        
+        boolean first = true;
+        for (DataDescription argument : getArguments()) {
+            if (!first) {
+                sb.append(", ");
+            } else {
+                first = false;
+            }
+            sb.append(argument.getType().getSimpleName())
+                    .append(" ")
+                    .append(argument.getName());
+        }
+        sb.append(")");
+        
+        if (!getResults().isEmpty()) {
+            sb.append(": ");
+        }
+        first = true;
+        for (DataDescription result : getResults()) {
+            if (!first) {
+                sb.append(", ");
+            } else {
+                first = false;
+            }
+            sb.append(result.getType().getSimpleName())
+                    .append(" ")
+                    .append(result.getName());
+        }
+
+        return sb.toString();
+    }
+
+    //TO DELETE
+    //--------------------------------------------------------------------------   
     /**
      * Executes the service method with the given parameters, the result of which
      * will be communicated through the callbacks.
@@ -200,7 +241,7 @@ public abstract class ServiceMethod {
             errorCallback.accept(ex);
         }
     }
-    
+       
     /**
      * Executes the service methods with the given parameters, and waits for the
      * response. This is a blocking call and should be used with caution.
@@ -240,43 +281,7 @@ public abstract class ServiceMethod {
         
         throw new RuntimeException("Failed", exception.get());
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getName()).append("(");
-        
-        boolean first = true;
-        for (DataDescription argument : getArguments()) {
-            if (!first) {
-                sb.append(", ");
-            } else {
-                first = false;
-            }
-            sb.append(argument.getType().getSimpleName())
-                    .append(" ")
-                    .append(argument.getName());
-        }
-        sb.append(")");
-        
-        if (!getResults().isEmpty()) {
-            sb.append(": ");
-        }
-        first = true;
-        for (DataDescription result : getResults()) {
-            if (!first) {
-                sb.append(", ");
-            } else {
-                first = false;
-            }
-            sb.append(result.getType().getSimpleName())
-                    .append(" ")
-                    .append(result.getName());
-        }
-
-        return sb.toString();
-    }
-
+    
     /**
      * Implementation of the service method.
      * <p>
@@ -290,6 +295,7 @@ public abstract class ServiceMethod {
      * @param errorCallback the error callback, for failures; not null
      */
     protected abstract void executeMethod(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback);
+    //--------------------------------------------------------------------------    
     
     
     //Implementation of the method (OVERRIDDEN BY SUBCLASS)
@@ -333,8 +339,9 @@ public abstract class ServiceMethod {
         }
 
         try {
-            latch.await();
+            latch.await(60, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted", ex);
         }
 
@@ -375,18 +382,43 @@ public abstract class ServiceMethod {
         }
     }
     
-    public void executeAsync(ExecutorService executor, Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+    public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+        
+        //TODO: try to find a way to ensure the service method has an executor
+        //descr -> SM descrs -> service methods -> service
+        //service methods are IMMUTABLE
         validateParameters(parameters);
         
         if (asyncExecute){
             asyncExecImpl(parameters, callback, errorCallback);
         }
         else if (syncExecute){
-            wrapAsAsync(executor, parameters, callback, errorCallback);
+            if (executor != null){
+                wrapAsAsync(executor, parameters, callback, errorCallback);
+            }
+            else{
+                throw new RuntimeException("Attempts asyncExecImpl with no executor.");
+            }
         }
         else{
             throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
         }        
     }
     //--------------------------------------------------------------------------    
+
+    //TODO: service.close() have a close method
+    //ServiceDescription, add create services (see jdbc)
+    //change methoddescription to implementation
+    //move asyncImpl and syncImpl to interfaces and include in methoddescription
+    
+    //SM descr      ->      S descr
+    //                   /  |
+    //                  /   v
+    //SM impl        < /    S
+    
+    //Notes:
+    //I kept the service-method-implementations within this class in order
+    //to ensure ServiceMethod remained immutable. Creating "asyncImpl" and
+    //"syncImpl" interfaces and copying those references to a ServiceMethod
+    //would not gurantee the execution was immutable.
 }

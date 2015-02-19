@@ -6,8 +6,10 @@ package org.diirt.datasource.sample.services.math;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.diirt.service.ServiceMethod;
-import org.diirt.service.ServiceRegistry;
 import org.diirt.vtype.next.Alarm;
 import org.diirt.vtype.next.Display;
 import org.diirt.vtype.next.Time;
@@ -41,21 +43,25 @@ public class MathExample {
      * @param args ignored, command line arguments
      */
     public static void main(String[] args) {
-        for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
-            System.out.println("- " + service);
-        }
+//        for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
+//            System.out.println("- " + service);
+//        }
 
-        executeAdd();
-        executeMultiply();
+        System.out.println("SYNCHRONOUS EXECUTION: ");
+        syncExecuteAdd();
+        syncExecuteMultiply();
+        
+        System.out.println("ASYNCHRONOUS EXECUTION: ");
+        asyncExecuteAdd();
     }
 
     /**
      * Demonstration of the {@link VNumber} addition service. Executes
      * synchronously.
      */
-    public static void executeAdd() {
+    public static void syncExecuteAdd() {
         //Generate the service action to be called
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = new MathService().getServiceMethods().get("add");
 
         //Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
@@ -83,9 +89,9 @@ public class MathExample {
      * Demonstration of the {@link VNumber} multiplication service. Executes
      * synchronously.
      */
-    public static void executeMultiply() {
+    public static void syncExecuteMultiply() {
         //Generate the service action to be called
-        ServiceMethod method = new MultiplyServiceMethod();
+        ServiceMethod method = new MathService().getServiceMethods().get("multiply");
 
         //Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
@@ -107,5 +113,45 @@ public class MathExample {
         //Expected output:
         //service: 2 * 3
         //result: 6.0
+    }
+
+    public static void asyncExecuteAdd() {
+        ServiceMethod method = new MathService().getServiceMethods().get("add");
+        //Generate the parameters to be supplied to the addition service
+        VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
+
+        //Puts the arguments in a map to supply to the the service
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("arg1", arg1);
+        parameters.put("arg2", arg2);
+        System.out.println("service: 1 + 2");
+
+        Consumer<Map<String, Object>> callback = new Consumer<Map<String, Object>>() {
+
+            @Override
+            public void accept(Map<String, Object> returnValues) {
+                //Obtains the mathematical result
+                VNumber result = (VNumber) returnValues.get("result");
+                System.out.println("result: " + result.getValue().doubleValue());
+            }
+
+        };
+        Consumer<Exception> errorCallback = new Consumer<Exception>() {
+
+            @Override
+            public void accept(Exception e) {
+                Logger.getLogger(MathExample.class.getName()).log(Level.SEVERE, null, e);
+            }
+
+        };
+
+        //Executes the service asynchronously, callbacks handle what happens afterwards
+        method.executeAsync(parameters, callback, errorCallback);
+        System.out.println("I might print out before the result.");
+        
+        //Expected output:
+        //service: 1 + 2
+        //result: 3.0          
     }
 }

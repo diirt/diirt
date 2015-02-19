@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import static org.diirt.service.Service.namePattern;
 
 /**
@@ -28,7 +29,8 @@ public class ServiceMethodDescription {
     List<ServiceMethod.DataDescription> results = new ArrayList<>();
     Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
     Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
-
+    ExecutorService executorService; //NEW
+    
     /**
      * Creates a new service method description with the given name and description,
      * both of which are mandatory attributes of the service methods.
@@ -81,6 +83,15 @@ public class ServiceMethodDescription {
         ServiceMethod.DataDescription dataDescription = new ServiceMethod.DataDescription(name, description, type);
         results.add(dataDescription);
         resultMap.put(name, dataDescription);
+        return this;
+    }
+    
+    //NEW
+    public ServiceMethodDescription executor(ExecutorService executor){
+        if (this.executorService != null) {
+            throw new IllegalArgumentException("ExecutorService was already set");
+        }        
+        this.executorService = executor;
         return this;
     }
 }

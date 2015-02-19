@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.sample.services.math;
 
+import java.util.concurrent.Executors;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 
@@ -15,8 +16,8 @@ public class MathService extends Service {
 
     public MathService() {
         super(new ServiceDescription("math", "Simple math service")
-                .addServiceMethod(new AddServiceMethod())
-                .addServiceMethod(new MultiplyServiceMethod()));
+                .addServiceMethod(new AddServiceMethod(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("mathService"))))
+                .addServiceMethod(new MultiplyServiceMethod(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("mathService")))));
     }
     
 }
