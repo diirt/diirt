@@ -1,10 +1,14 @@
 /**
  * LED widget
  *
- * By default, the LED is desined to be mixed with the text.
+ * By default, the LED is desined to be mixed with the text. It is a square
+ * inline-block, the size of a text line, vertically aligned in the middle.
  */
 .led {
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
 }
 
 /**

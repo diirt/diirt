@@ -69,8 +69,24 @@ $(document).ready(function () {
             nodes[i].id = id;
         }
         
-        nodes[i].innerHTML = '<span class="fa fa-fw fa-circle off"></span>';
-        var circle = nodes[i].firstChild;
+        
+        // I experimented with using Font Awesome instead of SVG to create the LED.
+        // It works, but the border is done with a text-shadow hack that 
+        // does not render as nicely. One was able to customize the icon (changing
+        // it from the default circle), but one would have to use the UNICODE
+        // for the character. Also: most of the symbols provided by Font Awesome
+        // would not be the type of symbol users of WebPODS would find interesting.
+        // So, we are still using the SVG circle implementation.
+        // 
+        // Here are the few changes needed for Font Awesome. The CSS of the led
+        // needs a "text outline" hack:
+        //     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        // And the following two lines need to be changed to:
+        //        nodes[i].innerHTML = '<span class="fa fa-fw fa-circle off"></span>';
+        //        var circle = nodes[i].firstChild;
+
+        nodes[i].innerHTML = '<svg style="height:100%; width:100%; vertical-align:top; overflow:visible"><circle class="off" cx="50%" cy="50%" r="50%" stroke="black" stroke-width="1" fill="currentColor" /></svg>';
+        var circle = nodes[i].firstChild.firstChild;
         
         if (dataChannel != null && dataChannel.trim().length > 0) {
             var callback = function (evt, channel) {
