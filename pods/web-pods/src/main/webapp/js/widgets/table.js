@@ -58,13 +58,18 @@ function drawSeriesChart() {
         var processValue = function (id, value) {
             var dataTable = convertVTableToDataTable(value);
             var parameters = new Object();
-            parameters.sortColumn = tables[id].getSortInfo().column;
-            parameters.sortAscending = tables[id].getSortInfo().ascending;
+            if (tables[id].getSortInfo()) {
+                parameters.sortColumn = tables[id].getSortInfo().column;
+                parameters.sortAscending = tables[id].getSortInfo().ascending;
+            }
+            parameters.height = "inherit";
+            parameters.width = "inherit";
             tables[id].draw(dataTable, parameters);
         };
         
-        var addError = function (message, channel, nNode) {
-            google.visualization.errors.addError(graphDivs[nNode],
+        var addError = function (message, channel, node) {
+            console.log("table " + tables[channel.getId()]);
+            google.visualization.errors.addError(node,
                 message, "", {'removable': true});
         };
         
@@ -91,11 +96,11 @@ function drawSeriesChart() {
         
         };
         
-        var channel = wp.subscribeChannel(dataChannel, createCallback(i), true);
+        var channel = wp.subscribeChannel(dataChannel, createCallback(node), true);
 
         var data = google.visualization.arrayToDataTable([
-            ['ID', 'X', 'Y', 'Color', 'Size'],
-            ['', 0, 0, '', 0]
+            ['', '', ''],
+            ['', '', '']
         ]);
 
         var options = {
@@ -109,7 +114,7 @@ function drawSeriesChart() {
         var table = new google.visualization.Table(node);
         tables[channel.getId()] = table;
 
-        table.draw(data, options);
+        //table.draw(data, options);
         
     }
 }
