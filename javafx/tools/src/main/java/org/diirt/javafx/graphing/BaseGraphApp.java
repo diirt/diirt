@@ -5,17 +5,17 @@
  */
 package org.diirt.javafx.graphing;
 
-import org.diirt.javafx.tools.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 /**
@@ -106,10 +106,16 @@ abstract public class BaseGraphApp extends Application {
 	 * the allowed data formulae are stored here and the user can
 	 * select from this list
 	 */
+	final private Label lblData = new Label( "Data:" );
 	final private ComboBox<String> cboSelectData = new ComboBox<String>();
+	final private Button cmdConfigure = new Button( "Configure" );
 	
 	public DataSelectionPanel() {
-	    this.setCenter( this.cboSelectData );
+	    FlowPane pnlCenter = new FlowPane();
+	    this.cboSelectData.setPrefWidth( 375 );
+	    pnlCenter.getChildren().addAll( this.lblData , this.cboSelectData , this.cmdConfigure );
+	    
+	    this.setCenter( pnlCenter );
 	    
 	    //allow the combo box to stretch out and fill panel completely
 	    this.cboSelectData.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
@@ -121,6 +127,15 @@ abstract public class BaseGraphApp extends Application {
 		@Override
 		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		    reconnect( newValue );
+		}
+		
+	    });
+	    
+	    this.cmdConfigure.setOnAction( new EventHandler< ActionEvent >() {
+
+		@Override
+		public void handle(ActionEvent event) {
+		    BaseGraphApp.this.openConfigurationPanel();
 		}
 		
 	    });
@@ -142,6 +157,10 @@ abstract public class BaseGraphApp extends Application {
 	final public String getSelectedFormula() {
 	    return this.cboSelectData.getValue();
 	}
+    }
+    
+    public void openConfigurationPanel() {
+	//do nothing, by default
     }
     
     /**

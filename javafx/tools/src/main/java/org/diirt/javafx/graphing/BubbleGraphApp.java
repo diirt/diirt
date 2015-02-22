@@ -5,15 +5,7 @@
  */
 package org.diirt.javafx.graphing;
 
-import org.diirt.javafx.tools.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import static org.diirt.datasource.formula.ExpressionLanguage.formula;
-import static org.diirt.datasource.formula.ExpressionLanguage.formulaArg;
-import org.diirt.datasource.graphene.BubbleGraph2DExpression;
-import static org.diirt.datasource.graphene.ExpressionLanguage.bubbleGraphOf;
-import org.diirt.datasource.graphene.Graph2DExpression;
-import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 
 /**
  * Creates bubble graphs.
