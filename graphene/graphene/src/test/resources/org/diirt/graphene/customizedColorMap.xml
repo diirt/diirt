@@ -1,36 +1,9 @@
-<colormap positionType="relative">
-	<color>
-		<position>0.0</position>
-		<R>95</R>
-		<G>0</G>
-		<B>0</B>
-	</color>
+<colormap position = "relative" colorNaN="#000000">
 
-	<color>
-		<position>0.25</position>
-		<R>195</R>
-		<G>9</G>
-		<B>9</B>
-	</color>
+		<color position="0.0" value="rgb(95,0,0)"> </color>
+		<color position="0.25" value="rgb(195,9,9)"> </color>
+		<color position="0.5" value="rgb(201,201,242)"> </color>
+		<color position="0.75" value="rgb(13,13,198)"> </color>
+		<color position="1.0" value="rgb(0,0,95)"> </color>
 
-	<color>
-		<position>0.5</position>
-		<R>201</R>
-		<G>201</G>
-		<B>242</B>
-	</color>
-
-	<color>
-		<position>0.75</position>
-		<R>13</R>
-		<G>13</G>
-		<B>198</B>
-	</color>
-
-	<color>
-		<position>1.0</position>
-		<R>0</R>
-		<G>0</G>
-		<B>95</B>
-	</color>
 </colormap>

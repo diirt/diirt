@@ -5,7 +5,7 @@
 package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
-import java.awt.Color;
+import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.imageio.ImageIO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory; 
@@ -72,7 +71,7 @@ public class NumberColorMaps {
             return loadCMAP(file);
         }
         //File format not recognized
-        throw new RuntimeException("File Format not Recognized");
+        throw new RuntimeException("File Format not Recognized"+file);
     }
     
     
@@ -82,7 +81,7 @@ public class NumberColorMaps {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException ex) {
-            throw new RuntimeException("Colormap file not found", ex);
+            throw new RuntimeException("Colormap file "+file+" not found", ex);
         }
         String line;
 
@@ -90,13 +89,22 @@ public class NumberColorMaps {
             line = scanner.nextLine();
             String[] tokens = line.split(",");
             if (tokens.length != 3) {
-                throw new RuntimeException("Error Parsing RGB value");
+                throw new RuntimeException("Error Parsing RGB value from file: "+file);
             }
-            colors.add(new Color(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2])));
+            colors.add(Color.rgb(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2]),1.0));
         }
-        return relative(colors, Color.BLACK, file.getName());//cmap file is automatically relative
+        String colormapName = file.getName(); 
+        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
+        return relative(colors, Color.BLACK, colormapName);//cmap file is automatically relative
     }
     
+    //TODO:new XML file format 
+    /*  <colormap position="relative" colorNaN="#000000">
+        <color position="0.0" value="#450000">
+        <color position="0.1" value="rgb(94,0,0)">
+        <color position="0.2" value="#400">
+        </colormap>
+    */
     private static NumberColorMap loadXML(File file){
         //if we are reading from a xml file
 
@@ -111,58 +119,55 @@ public class NumberColorMaps {
             builder = factory.newDocumentBuilder();
 
         } catch (ParserConfigurationException ex) {
-            throw new RuntimeException("Couldn't load color map from file " + file, ex);
+            throw new RuntimeException("Couldn't load color map from file: " + file, ex);
         }
 
         try {
             doc = builder.parse(file);
         } catch (SAXException ex) {
-            throw new RuntimeException("SAXException: error parsing file ", ex);
+            throw new RuntimeException("Couldn't parse color map file: "+file, ex);
         } catch (IOException ex) {
-            throw new RuntimeException("IOException: error reading from file", ex);
+            throw new RuntimeException("Couldn't load color map from file: "+file, ex);
         }
 
-        //check if the postions is relative  
-        NodeList nodeList = doc.getElementsByTagName("colormap");
-        Node node = nodeList.item(0);
-        Attr attr = (Attr) node.getAttributes().getNamedItem("positionType");
-        relative = attr.getValue().equals("relative");
-        //read positions and RGB value
-        Element el = doc.getDocumentElement();
-        NodeList nl = el.getChildNodes();
+        Element root = doc.getDocumentElement(); 
+        relative = root.getAttribute("position").equals("relative"); 
+        Color nanColor = Color.web(root.getAttribute("colorNaN")); 
+    
 
-        if (nl != null) {
-            for (int i = 0; i < nl.getLength(); i++) {
-                if (nl.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    Element e = (Element) nl.item(i);
-                    if ("color".equals(e.getNodeName())) {
-
-                        positions.add(parseDouble(e.getElementsByTagName("position").item(0).getTextContent()));
-                        int R = parseInt(e.getElementsByTagName("R").item(0).getTextContent());
-                        int G = parseInt(e.getElementsByTagName("G").item(0).getTextContent());
-                        int B = parseInt(e.getElementsByTagName("B").item(0).getTextContent());
-                        colors.add(new Color(R, G, B));
+        NodeList children = root.getChildNodes();
+      
+        for(int i = 0 ; i<children.getLength();++i){
+             Node child = children.item(i); 
+             if(child instanceof Element){
+                    Element e = (Element)child; 
+                    if(e.getTagName()=="color"){
+                       positions.add(parseDouble( e.getAttribute("position"))); 
+                       colors.add(Color.web(e.getAttribute("value"))); 
+                       
                     }
-                }
-            }
+             }
         }
+    
         double[] positionsArray = new double[positions.size()];
         for (int i = 0; i < positions.size(); ++i) {
             positionsArray[i] = positions.get(i);
         }
-        return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, Color.BLACK, file.getName());
+        String colormapName = file.getName(); 
+        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
+        return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, nanColor, colormapName);
     }
     
     /**
      * JET ranges from blue to red, going through cyan and yellow.
      */
     
-    public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{new Color(0,0,138), 
+    public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{Color.rgb(0,0,138), 
                                                                                 Color.BLUE,
                                                                                 Color.CYAN,
                                                                                 Color.YELLOW,
                                                                                 Color.RED,
-                                                                                new Color(138,0,0)}), Color.BLACK, "JET"); 
+                                                                                Color.rgb(138,0,0)}), Color.BLACK, "JET"); 
     /**
      * GRAY ranges from black to white.
      */
@@ -171,11 +176,11 @@ public class NumberColorMaps {
                                                                                        }),Color.RED,"GRAY"); 
     /**
      * BONE ranges from black to white passing from blue.
-     */
+     */     
     public static final NumberColorMap BONE = relative(Arrays.asList(new Color[]{Color.BLACK,
-                                                                                       new Color(57, 57, 86),
-                                                                                       new Color(107, 115, 140),
-                                                                                       new Color(165, 198, 198),
+                                                                                       Color.rgb(57, 57, 86),
+                                                                                        Color.rgb(107, 115, 140),
+                                                                                        Color.rgb(165, 198, 198),
                                                                                        Color.WHITE
                                                                                        } ),Color.RED,"BONE");
     /**
