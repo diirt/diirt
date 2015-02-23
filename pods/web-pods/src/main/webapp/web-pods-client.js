@@ -104,6 +104,7 @@ window.onload = function() {
     var resumeBtn = document.getElementById('resume');
     var unsubscribeBtn = document.getElementById('unsubscribe');
     var clearBtn = document.getElementById('clear');
+    var deselectBtn = document.getElementById('deselect');
     
     var filterBtn = document.getElementById('filter');
     var showAllBtn = document.getElementById('showAll');
@@ -191,6 +192,7 @@ window.onload = function() {
             results.unshift('Error');
             resultsFiltered[response.id].unshift('Error');
             resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            result.scrollTop = 0;
             return;
        }
        if (response.type === "connection") { // Successful subscription
@@ -203,6 +205,7 @@ window.onload = function() {
             resultsInfo.unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
             resultsFiltered[response.id].unshift('Subscribed: ' + channel + ', ' + id);
             resultsInfoFiltered[response.id].unshift('<div><pre>' + JSON.stringify(response, null, '     ') + '</pre></div>');
+            result.scrollTop = 0;
             return;
        }
        else if (response.value.type.name === "VTable") {
@@ -225,7 +228,9 @@ window.onload = function() {
             result.innerHTML = value + result.innerHTML; 
             result.selectedIndex = previouslySelected + 1;
         }
-    };
+   result.scrollTop = 0;
+   console.log('should scroll to top');
+   };
     
     // Updates connection status
    function openSocket (event) {
