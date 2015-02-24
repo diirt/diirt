@@ -175,10 +175,15 @@ public class TableFunctionSetTest extends BaseTestForFormula {
                                  column("Slot", newVDoubleArray(new ArrayDouble(1,2,3,Double.NaN,Double.NaN,Double.NaN), alarmNone(), timeNow(), displayNone())),
                                  column("CPU", newVStringArray(Arrays.asList("286", "286", "386","286", "286", "386"), alarmNone(), timeNow())),
                                  column("Position", newVDoubleArray(new ArrayDouble(Double.NaN,Double.NaN,Double.NaN,3,2,1), alarmNone(), timeNow(), displayNone())));
+        VTable expected2 = newVTable(column("Table", newVStringArray(Arrays.asList("1", "1", "1"), alarmNone(), timeNow())),
+                                 column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
+                                 column("Slot", newVDoubleArray(new ArrayDouble(1,2,3), alarmNone(), timeNow(), displayNone())),
+                                 column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
 
         // TODO: add null cases
         FunctionTester.findBySignature(set, "union", VString.class, VStringArray.class, VTable.class)
-                .compareReturnValue(expected, "Table", Arrays.asList("1", "2"), table1, table2);
+                .compareReturnValue(expected, "Table", Arrays.asList("1", "2"), table1, table2)
+                .compareReturnValue(expected2, "Table", Arrays.asList("1", "2"), table1, null);
     }
     
 }
