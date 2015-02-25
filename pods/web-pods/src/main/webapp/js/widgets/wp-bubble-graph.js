@@ -31,15 +31,20 @@ function drawSeriesChart() {
         var columnsDiv = document.createElement("div");
         columnsDiv.style.display = "table-row";
         tableDiv.appendChild(columnsDiv);
+        var columnsP = document.createElement("p");
+        columnsDiv.appendChild(columnsP);
+        columnsP.appendChild(document.createTextNode("X: "));
         selectX[i] = document.createElement("select");
         selectX[i].id = id + "-select-x";
-        columnsDiv.appendChild(selectX[i]);
+        columnsP.appendChild(selectX[i]);
+        columnsP.appendChild(document.createTextNode(" Y: "));
         selectY[i] = document.createElement("select");
         selectY[i].id = id + "-select-y";
-        columnsDiv.appendChild(selectY[i]);
+        columnsP.appendChild(selectY[i]);
+        columnsP.appendChild(document.createTextNode(" Color: "));
         selectColor[i] = document.createElement("select");
         selectColor[i].id = id + "-select-color";
-        columnsDiv.appendChild(selectColor[i]);
+        columnsP.appendChild(selectColor[i]);
 
         var graphDiv = document.createElement("div");
         graphDiv.style.display = "table-row";
