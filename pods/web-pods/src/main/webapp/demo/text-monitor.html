@@ -72,10 +72,10 @@
                         <div class="panel-heading">Simple monitoring</div>
                         <div class="panel-body">
                             <p>These simple examples just add the channel, using the data-channel property.</p>
-                            <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp"></span></p>
-                            <p>sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
-                            <p>sim/strings: <span class="text-monitor" data-channel="sim/strings"></span></p>
-                            <p>sim/table: <span class="text-monitor" data-channel="sim/table"></span></p>
+                            <p>sim/ramp: <span class="wp-text-monitor" data-channel="sim/ramp"></span></p>
+                            <p>sim/noise: <span class="wp-text-monitor" data-channel="sim/noise"></span></p>
+                            <p>sim/strings: <span class="wp-text-monitor" data-channel="sim/strings"></span></p>
+                            <p>sim/table: <span class="wp-text-monitor" data-channel="sim/table"></span></p>
                         </div>
                     </div>
                 </div>
@@ -84,9 +84,9 @@
                         <div class="panel-heading">Error conditions</div>
                         <div class="panel-body">
                             <p>Behavior under different error conditions.</p>
-                            <p>Slow connection: <span class="text-monitor" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
-                            <p>Error messages: <span class="text-monitor" data-channel="sim/wrongChannel"></span></p>
-                            <p>Wrong formula: <span class="text-monitor" data-channel='=1+"test"'></span></p>
+                            <p>Slow connection: <span class="wp-text-monitor" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
+                            <p>Error messages: <span class="wp-text-monitor" data-channel="sim/wrongChannel"></span></p>
+                            <p>Wrong formula: <span class="wp-text-monitor" data-channel='=1+"test"'></span></p>
                         </div>
                     </div>
                 </div>
@@ -95,10 +95,10 @@
                         <div class="panel-heading">Changing size</div>
                         <div class="panel-body">
                             <p>Using CSS style width and height to change size.</p>
-                            <p>width: 50px; height: 18px - <span class="text-monitor" data-channel="sim/noise" style="width: 50px; height: 18px"></span></p>
-                            <p>width: 100px; height: 22px - <span class="text-monitor" data-channel="sim/noise" style="width: 100px; height: 22px"></span></p>
-                            <p>width: 150px; height: 26px - <span class="text-monitor" data-channel="sim/noise" style="width: 150px; height: 26px"></span></p>
-                            <p>width: 200px; height: 30px - <span class="text-monitor" data-channel="sim/noise" style="width: 200px; height: 30px"></span></p>
+                            <p>width: 50px; height: 18px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 50px; height: 18px"></span></p>
+                            <p>width: 100px; height: 22px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 100px; height: 22px"></span></p>
+                            <p>width: 150px; height: 26px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 150px; height: 26px"></span></p>
+                            <p>width: 200px; height: 30px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 200px; height: 30px"></span></p>
                         </div>
                     </div>
                 </div>
@@ -111,10 +111,10 @@
                         <div class="panel-body">
                             <p>Using CSS style font to change the font size or type. Note that, by default, the font
                             is inherited.</p>
-                            <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
-                            <p>font-family: serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
-                            <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
+                            <p>font-family: monospace - <span class="wp-text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
+                            <p>font-family: serif - <span class="wp-text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
+                            <p>font: italic bold 18px Georgia, serif - <span class="wp-text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
+                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="wp-text-monitor" data-channel="sim/ramp"></span></p>
                         </div>
                     </div>
                 </div>
@@ -123,9 +123,9 @@
                         <div class="panel-heading">Changing text alignment</div>
                         <div class="panel-body">
                             <p>Using CSS style text-align to change text alignment in the field.</p>
-                            <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
-                            <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
-                            <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
+                            <p>text-align: left - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
+                            <p>text-align: center - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
+                            <p>text-align: right - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
                         </div>
                     </div>
                 </div>
@@ -134,8 +134,8 @@
                         <div class="panel-heading">Positioning</div>
                         <div class="panel-body">
                             <p>Using CSS style margin or float to adjust widget position.</p>
-                            <p>margin-left: 50px - <span class="text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
-                            <p>float: right - <span class="text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
+                            <p>margin-left: 50px - <span class="wp-text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
+                            <p>float: right - <span class="wp-text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
 
 $(document).ready(function () {
 
-    var nodes = document.getElementsByClassName("text-monitor");
+    var nodes = document.getElementsByClassName("wp-text-monitor");
     var len = nodes.length;
     var inputs = {};
     var currentAlarms = {};

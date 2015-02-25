@@ -11,7 +11,7 @@
 
 $(document).ready(function () {
 
-    var nodes = document.getElementsByClassName("led");
+    var nodes = document.getElementsByClassName("wp-led");
     var len = nodes.length;
     var leds = {};
     var currentStateStyles = {};

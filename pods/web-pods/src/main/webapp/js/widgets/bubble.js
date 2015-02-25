@@ -2,7 +2,7 @@ google.load("visualization", "1", {packages: ["corechart"]});
 google.setOnLoadCallback(drawSeriesChart);
 
 function drawSeriesChart() {
-    var nodes = document.getElementsByClassName("bubble-graph");
+    var nodes = document.getElementsByClassName("wp-bubble-graph");
     var len = nodes.length;
     var charts = {};
     var values = {};

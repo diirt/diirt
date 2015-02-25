@@ -4,7 +4,7 @@
  * By default, the LED is desined to be mixed with the text. It is a square
  * inline-block, the size of a text line, vertically aligned in the middle.
  */
-.led {
+.wp-led {
     display: inline-block;
     width: 1em;
     height: 1em;
@@ -19,35 +19,35 @@
  * error: an error
  * value-n: if the channel is an enum, the 
  */
-.led .off {
+.wp-led .off {
     color: lightGray;
 }
 
-.led .on {
+.wp-led .on {
     color: lime;
 }
 
-.led.alarm .value-none {
+.wp-led.alarm .value-none {
     color: lime;
 }
 
-.led.alarm .value-minor {
+.wp-led.alarm .value-minor {
     color: yellow;
 }
 
-.led.alarm .value-major {
+.wp-led.alarm .value-major {
     color: red;
 }
 
-.led.alarm .value-invalid {
+.wp-led.alarm .value-invalid {
     color: magenta;
 }
 
-.led.alarm .value-undefined {
+.wp-led.alarm .value-undefined {
     color: magenta;
 }
 
-.led .error {
+.wp-led .error {
     color: magenta;
 }
 
