@@ -72,11 +72,57 @@ function drawSeriesChart() {
             }
         };
         
+        var fixSelection = function (selectX, selectY, selectColor, vtable) {
+            var finalX = -1;
+            var finalY = -1;
+            var finalColor = -1;
+            for (var col = 0; col < vtable.columnTypes.length; col++) {
+                switch (vtable.columnTypes[col]) {
+                    case "String":
+                        if (finalColor === -1) {
+                            finalColor = col;
+                        }
+                        break;
+                    case "double":
+                    case "float":
+                    case "long":
+                    case "int":
+                    case "short":
+                    case "byte":
+                        if (finalX === -1) {
+                            finalX = col;
+                        } else if (finalY === -1) {
+                            finalY = col;
+                        } else if (finalColor === -1) {
+                            finalColor = col;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (finalX !== -1) {
+                selectX.selectedIndex = finalX;
+            }
+            if (finalY !== -1) {
+                selectY.selectedIndex = finalY;
+            }
+            if (finalColor !== -1) {
+                selectColor.selectedIndex = finalColor;
+            }
+        }
+        
         var processValue = function (channel, nNode) {
             var value = values[channel.getId()];
             populateSelect(selectX[nNode], value.columnNames);
             populateSelect(selectY[nNode], value.columnNames);
             populateSelect(selectColor[nNode], value.columnNames);
+            //alert(selectX[nNode].selectedIndex + " " + selectY[nNode].selectedIndex + " " + selectColor[nNode].selectedIndex);
+            if (selectX[nNode].selectedIndex === 0 &&
+                    selectY[nNode].selectedIndex === 0 &&
+                    selectColor[nNode].selectedIndex === 0) {
+                fixSelection(selectX[nNode], selectY[nNode], selectColor[nNode], value)
+            }
             var xId = selectX[nNode].selectedIndex;
             var yId = selectY[nNode].selectedIndex;
             var colorId = selectColor[nNode].selectedIndex;
