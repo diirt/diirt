@@ -10,11 +10,17 @@ function drawSeriesChart() {
     var selectY = {};
     var selectColor = {};
     var graphDivs = {};
+    counter = 0;
 
     for (var i = 0; i < len; i++) {
         // Extract the node and all its properties
         var masterDiv = nodes[i];
         var id = nodes[i].getAttribute("id");
+        if (id === null) {
+            counter++;
+            id = "bubble-graph-" + counter;
+            nodes[i].id = id;
+        }
         var channelname = nodes[i].getAttribute("data-channel");
         var xColumn = nodes[i].getAttribute("data-x-column");
         var yColumn = nodes[i].getAttribute("data-y-column");

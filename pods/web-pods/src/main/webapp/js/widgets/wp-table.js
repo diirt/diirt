@@ -13,7 +13,7 @@ function drawSeriesChart() {
         var id = nodes[i].getAttribute("id");
         if (id === null) {
             counter++;
-            id = "led-" + counter;
+            id = "table-" + counter;
             nodes[i].id = id;
         }
         var dataChannel = nodes[i].getAttribute("data-channel");
