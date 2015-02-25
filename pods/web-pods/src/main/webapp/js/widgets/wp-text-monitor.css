@@ -2,23 +2,23 @@
     display: inline-block;
 }
 
-.alarm-none {
+.wp-text-monitor .alarm-none {
     background-color: white;
 }
 
-.alarm-minor {
+.wp-text-monitor .alarm-minor {
     background-color: yellow;
 }
 
-.alarm-major {
+.wp-text-monitor .alarm-major {
     background-color: red;
 }
 
-.alarm-invalid {
+.wp-text-monitor .alarm-invalid {
     background-color: magenta;
 }
 
-.alarm-undefined {
+.wp-text-monitor .alarm-undefined {
     background-color: magenta;
 }
 
