@@ -11,8 +11,9 @@
         <script>
             // Calculating URL from document location, so that examples work no
             // matter where they are deployed. Typical use would hard-code URL
-            var wsUri = "ws://" + document.location.host + "/" + 
+            var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" + 
                     document.location.pathname.split("/")[1] + "/socket";
+            alert(wsUri);
             var wp = new Client(wsUri);
         </script>
 
