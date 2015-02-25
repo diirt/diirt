@@ -299,12 +299,4 @@ public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
                 .compareReturnTime(time1, true, time1, time2)
                 .compareReturnTime(time2, false, time1, time2);
     }
-    
-    @Test
-    public void enumIndexOfFunction(){
-        Alarm none = alarmNone();
-        List<String> labels = Arrays.asList("One", "Two", "Three");
-        FunctionTester.findByName(set, "indexOf")
-                .compareReturnValue(newVNumber(0, none, timeNow(), displayNone()), newVEnum(0, labels, none, timeNow()));
-    }
 }

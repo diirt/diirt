@@ -22,7 +22,6 @@ public class StringFunctionSet extends FormulaFunctionSet {
 		.addFormulaFunction(new ConcatStringsFunction())
 		.addFormulaFunction(new PvFormulaFunction())
 		.addFormulaFunction(new PvsFormulaFunction())
-		.addFormulaFunction(new HighestSeverityFunction())
 		.addFormulaFunction(new ToStringFunction())
                 );
     }

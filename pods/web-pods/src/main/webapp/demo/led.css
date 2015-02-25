@@ -1,0 +1,18 @@
+/**
+ * Custom LED states for custom enum
+ */
+
+.wp-led.customvalues .value-low {
+    color: LightCyan;
+    content: "\f175";
+}
+
+.wp-led.customvalues .value-middle {
+    color: Cyan;
+    content: "\f07e";
+}
+
+.wp-led.customvalues .value-high {
+    color: DarkTurquoise;
+    content: "\f176";
+}

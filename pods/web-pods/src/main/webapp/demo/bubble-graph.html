@@ -15,17 +15,18 @@
                     document.location.pathname.split("/")[1] + "/socket";
             var wp = new Client(wsUri);
         </script>
-
-        <!-- The text-monitor widget -->
-        <script type="text/javascript" language="javascript" src="../js/widgets/wp-text-monitor.js"></script>
-        <link rel="stylesheet" href="../js/widgets/wp-text-monitor.css">
-
+        
+        <!-- The bubble graph widget -->
+        <script type="text/javascript" src="//www.google.com/jsapi"></script>
+        <script type="text/javascript" language="javascript" src="../js/widgets/wp-bubble-graph.js"></script>
+        <link rel="stylesheet" href="../js/widgets/wp-bubble-graph.css">
+        
         <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-        <title>WebPODS - Text monitor examples</title>
+        <title>WebPODS - Bubble graph examples</title>
     </head>
     <body>
         <!-- Nav bar -->
@@ -45,7 +46,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="..">Home</a></li>
                         <li><a href=".">Examples</a></li>
-                        <li class="active"><a href="#">wp-text-monitor</a></li>
+                        <li class="active"><a href="#">wp-bubble-graph</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -63,7 +64,7 @@
         </nav>
         
         <div class="container-fluid" >
-            <h1>Read-only text field for a channel (wp-text-monitor)</h1>
+            <h1>Read-only bubble graph widget (wp-bubble-graph)</h1>
             <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
             
             <div class="row">
@@ -72,10 +73,8 @@
                         <div class="panel-heading">Simple monitoring</div>
                         <div class="panel-body">
                             <p>These simple examples just add the channel, using the data-channel property.</p>
-                            <p>sim/ramp: <span class="wp-text-monitor" data-channel="sim/ramp"></span></p>
-                            <p>sim/noise: <span class="wp-text-monitor" data-channel="sim/noise"></span></p>
-                            <p>sim/strings: <span class="wp-text-monitor" data-channel="sim/strings"></span></p>
-                            <p>sim/table: <span class="wp-text-monitor" data-channel="sim/table"></span></p>
+                            <p>sim/table:</p> <div class="wp-table" data-channel="sim/table"></div>
+                            <div class="wp-bubble-graph" data-channel="sim/table"></div>
                         </div>
                     </div>
                 </div>
@@ -84,9 +83,8 @@
                         <div class="panel-heading">Error conditions</div>
                         <div class="panel-body">
                             <p>Behavior under different error conditions.</p>
-                            <p>Slow connection: <span class="wp-text-monitor" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
-                            <p>Error messages: <span class="wp-text-monitor" data-channel="sim/wrongChannel"></span></p>
-                            <p>Wrong formula: <span class="wp-text-monitor" data-channel='=1+"test"'></span></p>
+                            <p>Error messages:</p> <div class="wp-bubble-graph" data-channel="sim/wrongChannel"></div>
+                            <p>Wrong formula:</p> <div class="wp-bubble-graph" data-channel='=1+"test"'></div>
                         </div>
                     </div>
                 </div>
@@ -95,52 +93,18 @@
                         <div class="panel-heading">Changing size</div>
                         <div class="panel-body">
                             <p>Using CSS style width and height to change size.</p>
-                            <p>width: 50px; height: 18px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 50px; height: 18px"></span></p>
-                            <p>width: 100px; height: 22px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 100px; height: 22px"></span></p>
-                            <p>width: 150px; height: 26px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 150px; height: 26px"></span></p>
-                            <p>width: 200px; height: 30px - <span class="wp-text-monitor" data-channel="sim/noise" style="width: 200px; height: 30px"></span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Changing fonts</div>
-                        <div class="panel-body">
-                            <p>Using CSS style font to change the font size or type. Note that, by default, the font
-                            is inherited.</p>
-                            <p>font-family: monospace - <span class="wp-text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
-                            <p>font-family: serif - <span class="wp-text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
-                            <p>font: italic bold 18px Georgia, serif - <span class="wp-text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="wp-text-monitor" data-channel="sim/ramp"></span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Changing text alignment</div>
-                        <div class="panel-body">
-                            <p>Using CSS style text-align to change text alignment in the field.</p>
-                            <p>text-align: left - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
-                            <p>text-align: center - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
-                            <p>text-align: right - <span class="wp-text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Positioning</div>
-                        <div class="panel-body">
-                            <p>Using CSS style margin or float to adjust widget position.</p>
-                            <p>margin-left: 50px - <span class="wp-text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
-                            <p>float: right - <span class="wp-text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
+                            <p>width: 300px; height: 250px:</p> <div class="wp-bubble-graph" data-channel="sim/table" style="width: 300px; height: 250px"></div>
+                            <p>width: 400px; height: 300px:</p> <div class="wp-bubble-graph" data-channel="sim/table" style="width: 400px; height: 300px"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div id="series_chart_div" class="wp-bubble-graph" data-channel="sim/table"
+             data-x-column="Index" data-y-column="Value" data-color-column="Text"
+             style="width: 640px; height: 480px;"></div>
+        <div id="ganglia_chart_div" class="wp-bubble-graph" data-channel="sim/table"
+             data-x-column="Value" data-y-column="Index" data-color-column="Text"
+             style="width: 640px; height: 480px;"></div>
     </body>
 </html>

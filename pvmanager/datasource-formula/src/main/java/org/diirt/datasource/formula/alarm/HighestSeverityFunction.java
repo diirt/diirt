@@ -2,12 +2,13 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.alarm;
 
 import java.util.AbstractList;
 import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Time;

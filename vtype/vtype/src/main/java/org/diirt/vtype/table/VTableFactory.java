@@ -154,12 +154,20 @@ public class VTableFactory {
     }
     
     public static VTable union(VString extraColumnName, final VStringArray extraColumnData, final VTable... tables) {
-        if (tables.length == 0) {
-            return null;
+        // Prune nulls
+        final List<String> extraColumnDataPruned = new ArrayList<>();
+        final List<VTable> tablesPruned = new ArrayList<>();
+
+        for (int i = 0; i < tables.length; i++) {
+            VTable table = tables[i];
+            if (table != null) {
+                extraColumnDataPruned.add(extraColumnData.getData().get(i));
+                tablesPruned.add(table);
+            }
         }
         
-        if (tables.length == 1) {
-            return tables[0];
+        if (tablesPruned.isEmpty()) {
+            return null;
         }
         
         List<String> columnNames = new ArrayList<>();
@@ -169,10 +177,13 @@ public class VTableFactory {
             columnNames.add(extraColumnName.getValue());
             columnTypes.add(String.class);
         }
-        int[] tableOffsets = new int[tables.length];
+        int[] tableOffsets = new int[tablesPruned.size()];
         int currentOffset = 0;
-        for (int k = 0; k < tables.length; k++) {
-            VTable table = tables[k];
+        for (int k = 0; k < tablesPruned.size(); k++) {
+            VTable table = tablesPruned.get(k);
+            if (table == null) {
+                continue;
+            }
             tableOffsets[k] = currentOffset;
             currentOffset += table.getRowCount();
             tableColumns.add(VColumn.columnMap(table));
@@ -194,7 +205,7 @@ public class VTableFactory {
                 @Override
                 public String get(int index) {
                     int nTable = ListNumbers.binarySearchValueOrLower(offsets, index);
-                    return extraColumnData.getData().get(nTable);
+                    return extraColumnDataPruned.get(nTable);
                 }
 
                 @Override

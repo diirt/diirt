@@ -12,6 +12,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.datasource.expression.DesiredRateExpression;
@@ -50,6 +51,8 @@ public class PVDirector<T> {
     private final ReadFunction<T> readFunction;
     /** Creation for stack trace */
     private final Exception creationStackTrace = new Exception("PV was never closed (stack trace for creation)");
+    /** Used to ignore duplicated errors */
+    private final AtomicReference<Exception> previousCalculationException = new AtomicReference<>();
     
     // Required to connect/disconnect expressions
     private final DataSource dataSource;
@@ -285,7 +288,13 @@ public class PVDirector<T> {
             calculationSucceeded = true;
         } catch (RuntimeException ex) {
             // Calculation failed
-            calculationException = ex;
+            Exception previousException = previousCalculationException.get();
+            if (previousException == null ||
+                    !ex.getClass().equals(previousException.getClass()) ||
+                    !ex.getMessage().equals(previousException.getMessage())) {
+                calculationException = ex;
+                previousCalculationException.set(ex);
+            }
         } catch (Throwable ex) {
             log.log(Level.SEVERE, "Unrecoverable error during scanning", ex);
         }
