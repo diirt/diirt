@@ -2,7 +2,7 @@ google.load("visualization", "1", {packages: ["table"]});
 google.setOnLoadCallback(drawSeriesChart);
 
 function drawSeriesChart() {
-    var nodes = document.getElementsByClassName("table");
+    var nodes = document.getElementsByClassName("wp-table");
     var len = nodes.length;
     var counter = 0;
     var tables = {};
