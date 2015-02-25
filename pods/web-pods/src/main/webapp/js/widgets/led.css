@@ -1,0 +1,19 @@
+.led {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+.value-0 {
+    fill: lightGray;
+}
+
+.value-1 {
+    fill: lime;
+}
+
+.value-error {
+    fill: magenta;
+}
+

@@ -9,21 +9,21 @@
         <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
 
         <script>
-            var pathName = document.location.pathname.replace("demo/text-monitor.html", "");
+            var pathName = document.location.pathname.replace("demo/led.html", "");
             var wsUri = "ws://" + document.location.host + pathName + "socket";
             var wp = new Client(wsUri);
         </script>
 
-        <!-- The text-monitor widget -->
-        <script type="text/javascript" language="javascript" src="../js/widgets/text-monitor.js"></script>
-        <link rel="stylesheet" href="../js/widgets/text-monitor.css">
+        <!-- The led widget -->
+        <script type="text/javascript" language="javascript" src="../js/widgets/led.js"></script>
+        <link rel="stylesheet" href="../js/widgets/led.css">
 
         <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-        <title>WebPODS - text-monitor examples</title>
+        <title>WebPODS - led examples</title>
     </head>
     <body>
         <!-- Nav bar -->
@@ -43,7 +43,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="..">Home</a></li>
                         <li><a href=".">Examples</a></li>
-                        <li class="active"><a href="#">text-monitor</a></li>
+                        <li class="active"><a href="#">led</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -61,7 +61,7 @@
         </nav>
         
         <div class="container-fluid" >
-            <h1>Read-only text field for a channel - text-monitor</h1>
+            <h1>Read-only LED widget - led</h1>
             <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
             
             <div class="row">
@@ -70,10 +70,10 @@
                         <div class="panel-heading">Simple monitoring</div>
                         <div class="panel-body">
                             <p>These simple examples just add the channel, using the data-channel property.</p>
-                            <p>sim/ramp: <span class="text-monitor" data-channel="sim/ramp"></span></p>
-                            <p>sim/noise: <span class="text-monitor" data-channel="sim/noise"></span></p>
-                            <p>sim/strings: <span class="text-monitor" data-channel="sim/strings"></span></p>
-                            <p>sim/table: <span class="text-monitor" data-channel="sim/table"></span></p>
+                            <p>sim/ramp: <span class="led" data-channel="sim/ramp"></span></p>
+                            <p>sim/flipflop(1.0): <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
+                            <p>='sim/noise'>0.0: <span class="led" data-channel="='sim/noise'>0.0"></span></p>
+                            <p>sim/table: <span class="led" data-channel="sim/table"></span></p>
                         </div>
                     </div>
                 </div>
@@ -82,9 +82,9 @@
                         <div class="panel-heading">Error conditions</div>
                         <div class="panel-body">
                             <p>Behavior under different error conditions.</p>
-                            <p>Slow connection: <span class="text-monitor" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
-                            <p>Error messages: <span class="text-monitor" data-channel="sim/wrongChannel"></span></p>
-                            <p>Wrong formula: <span class="text-monitor" data-channel='=1+"test"'></span></p>
+                            <p>Slow connection: <span class="led" data-channel='sim/delayedConnectionChannel(5, 1)'></span></p>
+                            <p>Error messages: <span class="led" data-channel="sim/wrongChannel"></span></p>
+                            <p>Wrong formula: <span class="led" data-channel='=1+"test"'></span></p>
                         </div>
                     </div>
                 </div>
@@ -93,10 +93,10 @@
                         <div class="panel-heading">Changing size</div>
                         <div class="panel-body">
                             <p>Using CSS style width and height to change size.</p>
-                            <p>width: 50px; height: 18px - <span class="text-monitor" data-channel="sim/noise" style="width: 50px; height: 18px"></span></p>
-                            <p>width: 100px; height: 22px - <span class="text-monitor" data-channel="sim/noise" style="width: 100px; height: 22px"></span></p>
-                            <p>width: 150px; height: 26px - <span class="text-monitor" data-channel="sim/noise" style="width: 150px; height: 26px"></span></p>
-                            <p>width: 200px; height: 30px - <span class="text-monitor" data-channel="sim/noise" style="width: 200px; height: 30px"></span></p>
+                            <p>width: 5px; height: 18px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 5px; height: 5px"></span></p>
+                            <p>width: 10px; height: 10px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 10px; height: 10px"></span></p>
+                            <p>width: 15px; height: 15px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 15px; height: 15px"></span></p>
+                            <p>width: 20px; height: 20px - <span class="led" data-channel="sim/flipflop(1.0)" style="width: 20px; height: 20px"></span></p>
                         </div>
                     </div>
                 </div>
@@ -107,23 +107,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Changing fonts</div>
                         <div class="panel-body">
-                            <p>Using CSS style font to change the font size or type. Note that, by default, the font
-                            is inherited.</p>
-                            <p>font-family: monospace - <span class="text-monitor" data-channel="sim/ramp" style="font-family: monospace"></span></p>
-                            <p>font-family: serif - <span class="text-monitor" data-channel="sim/ramp" style="font-family: serif"></span></p>
-                            <p>font: italic bold 18px Georgia, serif - <span class="text-monitor" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
-                            <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-monitor" data-channel="sim/ramp"></span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Changing text alignment</div>
-                        <div class="panel-body">
-                            <p>Using CSS style text-align to change text alignment in the field.</p>
-                            <p>text-align: left - <span class="text-monitor" data-channel="sim/ramp" style="text-align: left"></span></p>
-                            <p>text-align: center - <span class="text-monitor" data-channel="sim/ramp" style="text-align: center"></span></p>
-                            <p>text-align: right - <span class="text-monitor" data-channel="sim/ramp" style="text-align: right"></span></p>
+                            <p>By default, the size of the LED changes with the font.</p>
+                            <p style="font-family: monospace">font-family: monospace - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font-family: serif">font-family: serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: italic bold 18px Georgia, serif;">font: italic bold 18px Georgia, serif - <span class="led" data-channel="sim/flipflop(1.0)" ></span></p>
+                            <p style="font: 14px monospace;">font: 14px monospace - <span class="led" data-channel="sim/flipflop(1.0)"></span></p>
                         </div>
                     </div>
                 </div>
@@ -132,8 +120,10 @@
                         <div class="panel-heading">Positioning</div>
                         <div class="panel-body">
                             <p>Using CSS style margin or float to adjust widget position.</p>
-                            <p>margin-left: 50px - <span class="text-monitor" data-channel="sim/ramp" style="margin-left: 50px"></span></p>
-                            <p>float: right - <span class="text-monitor" data-channel="sim/ramp" style="float: right"></span></p>
+                            <p>margin-left: 50px - <span class="led" data-channel="sim/flipflop(1.0)" style="margin-left: 50px"></span></p>
+                            <p>float: right - <span class="led" data-channel="sim/flipflop(1.0)" style="float: right"></span></p>
+                            <p>vertical-align: bottom - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: bottom"></span></p>
+                            <p>vertical-align: top - <span class="led" data-channel="sim/flipflop(1.0)" style="vertical-align: top"></span></p>
                         </div>
                     </div>
                 </div>

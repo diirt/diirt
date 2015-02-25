@@ -331,7 +331,13 @@ public class PVDirector<T> {
                         //    the next event is serialized after the end of this one.
                         pv.setConnected(connected);
                         if (lastException != null) {
-                            pv.setLastException(lastException);
+                            if (lastException instanceof TimeoutException &&
+                                    (connected || finalValue != null)) {
+                                // Skip TimeoutExceptions if we are connected and/or
+                                // have a value
+                            } else {
+                                pv.setLastException(lastException);
+                            }
                         }
                         
                         // XXX Are we sure that we should skip notifications if values are null?

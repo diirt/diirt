@@ -163,12 +163,14 @@ public class WSEndpoint {
         if (readOnly) {
             reader = PVManager.read(ast.toExpression())
                     .readListener(new ReadOnlyListener(session, message))
+                    .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
                     .maxRate(TimeDuration.ofMillis(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
             reader = PVManager.readAndWrite(formula(ast))
                     .readListener(readWriteListener)
                     .writeListener(readWriteListener)
+                    .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
                     .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
         }
         channels.put(message.getId(), reader);
