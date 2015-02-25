@@ -13,7 +13,6 @@
             // matter where they are deployed. Typical use would hard-code URL
             var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" + 
                     document.location.pathname.split("/")[1] + "/socket";
-            alert(wsUri);
             var wp = new Client(wsUri);
         </script>
 
