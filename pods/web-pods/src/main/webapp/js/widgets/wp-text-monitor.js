@@ -73,8 +73,16 @@ $(document).ready(function () {
                         
                         // Display the new value
                         if ("value" in channelValue) {
-                            // If it's a scalar or array, display the value
-                            inputs[channel.getId()].value = channelValue.value;
+                            switch(channelValue.type.name) {
+                               //display the label value if the type is an enum
+                               case "VEnum":
+                                   inputs[channel.getId()].value = channelValue.enum.labels[channelValue.value]
+                                   break;
+                               default:
+                                   // If it's a scalar or array, display the value
+                                   inputs[channel.getId()].value = channelValue.value;
+                                   break;
+                            }
                         } else {
                             // If something else, display the type name
                             inputs[channel.getId()].value = channelValue.type.name;
