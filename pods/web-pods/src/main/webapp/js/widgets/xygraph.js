@@ -20,7 +20,7 @@ $(document).ready(function() {
 	    var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var maxPoint = nodes[i].getAttribute("data-max-points");
-        var dataType = nodes[i].getAttribute("data-grap-type") != null ? nodes[i].getAttribute("data-grap-type") : 'spline';
+        var dataType = nodes[i].getAttribute("data-graph-type") != null ? nodes[i].getAttribute("data-graph-type") : 'spline';
         var callback = function(evt, channel) {
                            switch (evt.type) {
                            case "connection": //connection state changed
@@ -32,9 +32,11 @@ $(document).ready(function() {
                                var y = channelValue.value;
                                var c = charts[channel.getId()];
                                    if (point[channel.getId()] >= maxPoints[channel.getId()]) {
-                                       c.series[0].addPoint([point[channel.getId()]++, y], true, true);
+                                       c.series[0].addPoint([channelValue.time.unixSec * 1000, y], true, true);
+                                      point[channel.getId()] ++;
                                } else {
-                                       c.series[0].addPoint([point[channel.getId()] ++, y], true, false);
+                                       c.series[0].addPoint([channelValue.time.unixSec * 1000, y], true, false);
+                                       point[channel.getId()] ++;
                                }
                               break;
                            case "error": //error happened
@@ -65,7 +67,7 @@ $(document).ready(function() {
                 text: channelname
             },
             xAxis: {
-                type: 'linear',
+                type: 'datetime',
                 tickPixelInterval: 150
             },
             yAxis: {
@@ -83,6 +85,14 @@ $(document).ready(function() {
             },
             exporting: {
                 enabled: false
+            },
+            tooltip: {
+                formatter: function () {
+                //the displayed time will be without the timezone
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
             },
             series: [{
                 name: channelname,
