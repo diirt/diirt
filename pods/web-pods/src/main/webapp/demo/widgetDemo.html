@@ -17,14 +17,16 @@
     </script>
     <script type="text/javascript" language="javascript" src="../js/widgets/gauge.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/xygraph.js"></script>
-    <script type="text/javascript" language="javascript" src="../js/widgets/textinput.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/text-input.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/spinner.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/thermometer.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/tank.js"></script>.
     <script type="text/javascript" language="javascript" src="../js/widgets/progressbar.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/meter.js"></script>
-    <script type="text/javascript" language="javascript" src="../js/widgets/led.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/wp-led.js"></script>
     <script type="text/javascript" language="javascript" src="../js/widgets/slider.js"></script>
+    <link rel="stylesheet" href="../js/widgets/text-input.css">
+    <link rel="stylesheet" href="../js/widgets/wp-led.css">
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.common.core.js" ></script>
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.gauge.js" ></script>
     <script src="../js/widgets/lib/RGraph/libraries/RGraph.thermometer.js" ></script>
@@ -40,11 +42,11 @@
 <div>
     <p>loc/test(3): <span class="gauge" data-channel="loc/test(3)" data-displayLow=0 data-displayHigh=10></span></p>
     <p>sim/ramp(0, 100, 1, 1): <span class="thermometer" data-channel="sim/ramp(0, 100, 1, 1)" data-displayLow="0" data-displayHigh="100"></span></p>
-    <p>sim/flipflop: <span class="led" data-channel="sim/flipflop"></span></p>
+    <p>sim/flipflop: <span class="wp-led" data-channel="sim/flipflop"></span></p>
     <p style="width: 200px">sim/ramp(0, 100, 1, 1): <span class="tank" data-channel="sim/ramp(0, 100, 1, 1)"  data-displayLow="0" data-displayHigh="100" ></span></p>
     <p>sim/ramp(0, 100, 1, 1): <span class="meter" data-channel="sim/ramp(0, 100, 1, 1)" data-displayLow="0" data-displayHigh="100"></span></p>
     <p>sim/ramp(0, 100, 1, 1): <span class="progressbar" data-channel="sim/ramp(0, 100, 1, 1)" data-displayLow="0" data-displayHigh="100"></span></p>
-    <p style="width: 200px">sim/ramp(0, 100, 1, 1): <span class="textinput" data-channel="sim/ramp(0, 100, 1, 1)"></span></p>
+    <p style="width: 200px">sim/ramp(0, 100, 1, 1): <span class="text-input" data-channel="sim/ramp(0, 100, 1, 1)"></span></p>
     <p>sim/ramp(0, 100, 1, 1): <input class="spinner" data-channel="sim/ramp(0, 100, 1, 1)" data-displayLow="0" data-displayHigh="100" data-step="1"></p>
     <p>loc/test(3): <div id = "slider1" class="slider" data-channel="loc/test(3)" data-displayLow="0" data-displayHigh="100" data-step="1"  style="height: 160px"></div></p>
 </div>

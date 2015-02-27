@@ -12,11 +12,39 @@ $(document).ready(function() {
 	var len = nodes.length;
     var inputs = {};
     var modified = {};
+    var currentAlarms = {};
+
+    function updateAlarm(severity, id, widget) {
+        var currentAlarm = currentAlarms[id];
+        if (currentAlarm) {
+            widget.classList.remove(currentAlarm);
+        }
+        switch (severity) {
+            case "MINOR":
+                currentAlarm = "alarm-minor";
+                break;
+            case "MAJOR":
+                currentAlarm = "alarm-major";
+                break;
+            case "INVALID":
+                currentAlarm = "alarm-invalid";
+                break;
+            case "UNDEFINED":
+                currentAlarm = "alarm-undefined";
+                break;
+            default:
+                currentAlarm = "alarm-none";
+                break;
+        }
+        currentAlarms[id] = currentAlarm;
+        widget.classList.add(currentAlarm);
+    }
 
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var disabled = nodes[i].getAttribute("data-disable") != null ? nodes[i].getAttribute("data-disable") : false;
+        var resize = nodes[i].getAttribute("data-resize") != null ? nodes[i].getAttribute("data-resize") : false;
         var id = nodes[i].getAttribute("id");
         if (id === null) {
             id = "text-input-" + i;
@@ -24,11 +52,17 @@ $(document).ready(function() {
         }
         var input = document.createElement("textarea");
         input.id = id;
-        input.style.resize="none";
+        input.style.width = "100%";
+        input.style.height = "100%";
+        input.style.font = "inherit";
+        input.style.textAlign = "inherit";
+        input.rows = "1";
+        if(!resize) {
+            input.style.resize="none";
+        }
         input.disabled = disabled;
         var div = document.getElementById(id);
         div.appendChild(input);
-        fitToContainer(div.firstChild);
 
         if (channelname != null && channelname.trim().length > 0) {
             var callback = function(evt, channel) {
@@ -41,16 +75,30 @@ $(document).ready(function() {
                                        break;
                                    }
                                    var channelValue = channel.getValue();
-                                   inputs[channel.getId()].value =(channelValue.value);
-                                   if(channelValue.alarm.severity =="MINOR") {
-                                       inputs[channel.getId()].style.backgroundColor ="yellow";
-                                   } else if (channelValue.alarm.severity =="MAJOR") {
-                                       inputs[channel.getId()].style.backgroundColor = "red";
+                                   // Display the new value
+                                   if ("value" in channelValue) {
+                                       // If it's a scalar or array, display the value
+                                       inputs[channel.getId()].value = channelValue.value;
                                    } else {
-                                       inputs[channel.getId()].style.backgroundColor ="white";
+                                       // If something else, display the type name
+                                       inputs[channel.getId()].value = channelValue.type.name;
                                    }
+
+                                   // Change the style based on the alarm
+                                   if ("alarm" in channelValue) {
+                                       updateAlarm(channelValue.alarm.severity, channel.getId(), inputs[channel.getId()]);
+                                   } else {
+                                       updateAlarm("NONE", channel.getId(), inputs[channel.getId()]);
+                                   }
+
+                                   // Remove error tooltip
+                                   inputs[channel.getId()].parentNode.removeAttribute("title");
                                    break;
                                case "error": //error happened
+                                   // Change displayed alarm to invalid, and set the
+                                   // tooltip to the error message
+                                   updateAlarm("INVALID", channel.getId(), inputs[channel.getId()]);
+                                   inputs[channel.getId()].parentNode.title = evt.error;
                                    break;
                                case "writePermission":	// write permission changed.
                                    break;
@@ -63,6 +111,7 @@ $(document).ready(function() {
             var channel = wp.subscribeChannel(channelname, callback, readOnly);
             inputs[channel.getId()] = input;
         }
+
         input.onkeyup = function(evt) {
             if (evt.keyCode == 13) {
                 for(var sl in   inputs  ) {
@@ -95,13 +144,6 @@ $(document).ready(function() {
     }
 
 });
-
-function fitToContainer(canvas){
-	  canvas.style.width='100%';
-	  canvas.style.height='100%';
-	  canvas.width  = canvas.offsetWidth;
-	  canvas.height = canvas.offsetHeight;
-}
 
 window.onbeforeunload = function() {
 	wp.close();

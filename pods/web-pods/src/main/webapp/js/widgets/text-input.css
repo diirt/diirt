@@ -1,0 +1,24 @@
+.text-input {
+    display: inline-block;
+}
+
+.text-input .alarm-none {
+    background-color: white;
+}
+
+.text-input .alarm-minor {
+    background-color: yellow;
+}
+
+.text-input .alarm-major {
+    background-color: red;
+}
+
+.text-input .alarm-invalid {
+    background-color: magenta;
+}
+
+.text-input .alarm-undefined {
+    background-color: magenta;
+}
+
