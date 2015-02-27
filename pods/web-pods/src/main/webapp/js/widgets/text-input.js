@@ -2,13 +2,13 @@
  * @author: eschuhmacher
  *
  * scripts to be included on the html file
- * <script type="text/javascript" language="javascript" src="../js/widgets/textinput.js"></script>
+ * <script type="text/javascript" language="javascript" src="../js/widgets/text-input.js"></script>
  * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
  ******************************************************************************/
 
 $(document).ready(function() {
 
-	var nodes = document.getElementsByClassName("textinput");
+	var nodes = document.getElementsByClassName("text-input");
 	var len = nodes.length;
     var inputs = {};
     var modified = {};
