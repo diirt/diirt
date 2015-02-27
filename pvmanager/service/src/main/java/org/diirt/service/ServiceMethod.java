@@ -224,7 +224,7 @@ public abstract class ServiceMethod {
     
     //Implementation of the method (OVERRIDDEN BY SUBCLASS)
     //--------------------------------------------------------------------------    
-    public Map<String, Object> syncExecImpl(Map<String, Object> parameters){
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
         throw new RuntimeException("syncExecImpl was not overridden.");
     }
     
@@ -296,7 +296,13 @@ public abstract class ServiceMethod {
         validateParameters(parameters);
         
         if (syncExecute){
-            return syncExecImpl(parameters);
+            try {
+                return syncExecImpl(parameters);
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Exception ex) {
+                throw new RuntimeException("Method execution failed", ex);
+            }
         }
         else if (asyncExecute){
             return wrapAsSync(parameters);
