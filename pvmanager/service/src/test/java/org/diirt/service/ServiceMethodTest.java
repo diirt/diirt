@@ -21,55 +21,44 @@ public class ServiceMethodTest {
 
     @Test
     public void execute1() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        Map<String, Object> result = method.executeSync(parameters);
         
-        assertThat(cache.get().get("result"), equalTo((Object) 3.0));
-        assertThat(exceptionCache.get(), nullValue());
+        assertThat(result.get("result"), equalTo((Object) 3.0));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void execute2() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", "test");
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
-        
-        assertThat(cache.get(), nullValue());
-        assertThat(exceptionCache.get(), instanceOf(IllegalArgumentException.class));
+        method.executeSync(parameters);
     }
 
     @Test
     public void execute3() {
-        ServiceMethod method = new MultiplyServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        Map<String, Object> result = method.executeSync(parameters);
         
-        assertThat(cache.get().get("result"), equalTo((Object) 2.0));
-        assertThat(exceptionCache.get(), nullValue());
+        assertThat(result.get("result"), equalTo((Object) 2.0));
     }
     
     @Test
     public void toString1() {
-        ServiceMethod method = new MultiplyServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
         assertThat(method.toString(), equalTo("multiply(Number arg1, Number arg2): Number result"));
     }
     
     @Test
     public void toString2() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         assertThat(method.toString(), equalTo("add(Number arg1, Number arg2): Number result"));
     }
 }

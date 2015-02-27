@@ -12,8 +12,8 @@
  * the support for the given service.
  * Once a service and a service method is identified, the client can execute
  * the method synchronously or asynchronously (preferred), with a call to
- * {@link ServiceMethod#execute(java.util.Map, java.util.function.Consumer, java.util.function.Consumer)  }
- * or {@link ServiceMethod#syncExecute(java.util.Map) }. All objects are
+ * {@link ServiceMethod#executeAsync(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+ * or {@link ServiceMethod#executeSync(java.util.Map) }. All objects are
  * thread-safe.
  * <p>
  * A service provide can create <code>ServiceMethod</code> implementations,

@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT All rights
- * reserved. Use is subject to license terms. See LICENSE.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.service;
 
@@ -67,17 +67,14 @@ public class ServiceDescription {
     }
 
     //NEW
-    public Service createService(Function<ServiceMethodDescription, ServiceMethod> fMethod, Function<ServiceDescription, Service> fService) {
+    public Service createService() {
         //All method descriptions
         for (ServiceMethodDescription serviceMethodDescription : serviceMethodDescriptions) {
-            //Update executor
-            serviceMethodDescription.addExecutor(executorService);
-
             //Creates the method and updates
-            ServiceMethod method = fMethod.apply(serviceMethodDescription);
+            ServiceMethod method = serviceMethodDescription.createServiceMethod(this);
             serviceMethods.put(method.getName(), method);
         }
 
-        return fService.apply(this);
+        return new Service(this);
     }
 }

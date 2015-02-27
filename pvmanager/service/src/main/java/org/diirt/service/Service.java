@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-public class Service {
+public final class Service {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
     
     private final String name;
@@ -35,7 +35,7 @@ public class Service {
      * 
      * @param serviceDescription the description of the service, can't be null
      */
-    public Service(ServiceDescription serviceDescription) {
+    Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
         this.description = serviceDescription.description;
         this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.serviceMethods));
