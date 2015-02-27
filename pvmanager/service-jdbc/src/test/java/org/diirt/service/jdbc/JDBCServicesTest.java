@@ -5,6 +5,7 @@
 package org.diirt.service.jdbc;
 
 import java.io.InputStream;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
@@ -21,7 +22,7 @@ public class JDBCServicesTest {
     @Test
     public void createFromXml1() {
         InputStream stream = getClass().getResourceAsStream("jdbcService.1.xml");
-        JDBCService service = JDBCServices.createFromXml(stream);
+        Service service = JDBCServices.createFromXml(stream);
         assertThat(service.getName(), equalTo("jdbcSample"));
         assertThat(service.getDescription(), equalTo("A test service"));
         assertThat(service.getServiceMethods().size(), equalTo(2));

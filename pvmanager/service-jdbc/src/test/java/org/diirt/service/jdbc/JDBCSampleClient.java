@@ -21,7 +21,7 @@ public class JDBCSampleClient {
 
     public static void main(String[] args) throws Exception {
         
-        ServiceRegistry.getDefault().registerService(new JDBCSampleService());
+        ServiceRegistry.getDefault().registerService(JDBCSampleService.create());
         
         ServiceMethod method;
         VTable table;
@@ -31,10 +31,10 @@ public class JDBCSampleClient {
         arguments.put("name", newVString("George", alarmNone(), timeNow()));
         arguments.put("index", newVDouble(4.1, alarmNone(), timeNow(), displayNone()));
         arguments.put("value", newVDouble(2.11, alarmNone(), timeNow(), displayNone()));
-        method.syncExecute(arguments);
+        method.executeSync(arguments);
         
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/query");
-        table = (VTable) method.syncExecute(new HashMap<String, Object>()).get("result");
+        table = (VTable) method.executeSync(new HashMap<String, Object>()).get("result");
         
         CSVIO io = new CSVIO();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);

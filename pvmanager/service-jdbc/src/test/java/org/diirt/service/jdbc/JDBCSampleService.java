@@ -5,6 +5,7 @@
 package org.diirt.service.jdbc;
 
 import java.util.concurrent.Executors;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 
@@ -12,12 +13,12 @@ import org.diirt.vtype.VString;
  *
  * @author carcassi
  */
-public class JDBCSampleService extends JDBCService {
+public class JDBCSampleService {
 
-    public JDBCSampleService() {
-        super(new JDBCServiceDescription("jdbcSample", "A test service")
+    public static Service create() {
+        return new JDBCServiceDescription("jdbcSample", "A test service")
                 .dataSource(new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root"))
-                .executorService(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
+                .addExecutor(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
                 .addServiceMethod(new JDBCServiceMethodDescription("query", "A test query")
                     .query("SELECT * FROM Data")
                     .queryResult("result", "The query result")
@@ -27,7 +28,7 @@ public class JDBCSampleService extends JDBCService {
                     .addArgument("name", "The name", VString.class)
                     .addArgument("index", "The index", VNumber.class)
                     .addArgument("value", "The value", VNumber.class)
-                ));
+                ).createService();
     }
     
 }

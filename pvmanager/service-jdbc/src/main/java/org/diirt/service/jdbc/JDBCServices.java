@@ -17,6 +17,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.w3c.dom.Document;
@@ -43,7 +44,7 @@ public class JDBCServices {
      * @param input a stream with an xml file
      * @return the new service
      */
-    public static JDBCService createFromXml(InputStream input) {
+    public static Service createFromXml(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -62,7 +63,7 @@ public class JDBCServices {
             
             JDBCServiceDescription service = new JDBCServiceDescription(serviceName, serviceDesecription);
             service.dataSource(new SimpleDataSource(jdbcUrl));
-            service.executorService(defaultExecutor);
+            service.addExecutor(defaultExecutor);
 
             NodeList methods = (NodeList) xPath.evaluate("/jdbcService/methods/method", document, XPathConstants.NODESET);
             for (int i = 0; i < methods.getLength(); i++) {
@@ -100,7 +101,7 @@ public class JDBCServices {
                 service.addServiceMethod(jdbcMethod);
             }
             
-            return new JDBCService(service);
+            return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(JDBCServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);
             throw new IllegalArgumentException("Couldn't create service", ex);

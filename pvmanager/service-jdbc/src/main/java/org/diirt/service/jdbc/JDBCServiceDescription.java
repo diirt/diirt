@@ -23,12 +23,9 @@ import org.diirt.service.ServiceDescription;
  *
  * @author carcassi
  */
-public class JDBCServiceDescription {
+public class JDBCServiceDescription extends ServiceDescription {
     
-    final ServiceDescription serviceDescription;
     DataSource dataSource;
-    ExecutorService executorService;
-    private List<JDBCServiceMethodDescription> jdbcServiceMethodDescriptions = new ArrayList<>();
     
     /**
      * A new service description with the given service name and description.
@@ -37,18 +34,7 @@ public class JDBCServiceDescription {
      * @param description a brief description
      */
     public JDBCServiceDescription(String name, String description) {
-        serviceDescription = new ServiceDescription(name, description);
-    }
-
-    /**
-     * Adds a service method (i.e. a query) to the service.
-     * 
-     * @param jdbcServiceMethodDescription a method description
-     * @return this
-     */
-    public JDBCServiceDescription addServiceMethod(JDBCServiceMethodDescription jdbcServiceMethodDescription) {
-        jdbcServiceMethodDescriptions.add(jdbcServiceMethodDescription);
-        return this;
+        super(name, description);
     }
 
     /**
@@ -65,28 +51,5 @@ public class JDBCServiceDescription {
         }
         this.dataSource = dataSource;
         return this;
-    }
-    
-    /**
-     * The ExecutorService on which to execute the query.
-     * 
-     * @param executorService an executor service
-     * @return this
-     */
-    public JDBCServiceDescription executorService(ExecutorService executorService) {
-        if (this.executorService != null) {
-            throw new IllegalArgumentException("ExecutorService was already set");
-        }
-        this.executorService = executorService;
-        return this;
-    }
-    
-    ServiceDescription createService() {
-        for (JDBCServiceMethodDescription jdbcServiceMethodDescription : jdbcServiceMethodDescriptions) {
-            jdbcServiceMethodDescription.dataSource(dataSource);
-            jdbcServiceMethodDescription.executorService(executorService);
-            serviceDescription.addServiceMethod(new JDBCServiceMethod(jdbcServiceMethodDescription));
-        }
-        return serviceDescription;
     }
 }

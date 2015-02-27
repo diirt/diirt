@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
+import org.diirt.service.ServiceDescription;
+import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VTable;
 
@@ -16,12 +18,9 @@ import org.diirt.vtype.VTable;
  *
  * @author carcassi
  */
-public class JDBCServiceMethodDescription {
+public class JDBCServiceMethodDescription extends ServiceMethodDescription {
     
-    final ServiceMethodDescription serviceMethodDescription;
     boolean resultAdded = false;
-    DataSource dataSource;
-    ExecutorService executorService;
     String query;
     final List<String> orderedParameterNames = new ArrayList<>();
 
@@ -32,23 +31,7 @@ public class JDBCServiceMethodDescription {
      * @param description the method description
      */
     public JDBCServiceMethodDescription(String name, String description) {
-        serviceMethodDescription = new ServiceMethodDescription(name, description);
-    }
-    
-    /**
-     * Adds an argument for the query.
-     * <p>
-     * Arguments need to be specified in the same order as they appear in the query.
-     * 
-     * @param name argument name
-     * @param description argument description
-     * @param type the expected type of the argument
-     * @return this
-     */
-    public JDBCServiceMethodDescription addArgument(String name, String description, Class<?> type) {
-        serviceMethodDescription.addArgument(name, description, type);
-        orderedParameterNames.add(name);
-        return this;
+        super(name, description);
     }
     
     /**
@@ -65,23 +48,7 @@ public class JDBCServiceMethodDescription {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
-        serviceMethodDescription.addResult(name, description, VTable.class);
-        return this;
-    }
-    
-    JDBCServiceMethodDescription dataSource(DataSource dataSource) {
-        if (this.dataSource != null) {
-            throw new IllegalArgumentException("DataSource was already set");
-        }
-        this.dataSource = dataSource;
-        return this;
-    }
-    
-    JDBCServiceMethodDescription executorService(ExecutorService executorService) {
-        if (this.executorService != null) {
-            throw new IllegalArgumentException("ExecutorService was already set");
-        }
-        this.executorService = executorService;
+        addResult(name, description, VTable.class);
         return this;
     }
     
@@ -98,7 +65,10 @@ public class JDBCServiceMethodDescription {
         this.query = query;
         return this;
     }
-    
-    
+
+    @Override
+    public ServiceMethod createServiceMethod(ServiceDescription serviceDesccription) {
+        return new JDBCServiceMethod(this, (JDBCServiceDescription) serviceDesccription);
+    }
     
 }

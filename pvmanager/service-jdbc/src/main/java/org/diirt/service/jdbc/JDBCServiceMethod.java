@@ -35,7 +35,6 @@ import org.diirt.vtype.ValueFactory;
 class JDBCServiceMethod extends ServiceMethod {
     
     private final DataSource dataSource;
-    private final ExecutorService executorService;
     private final String query;
     private final List<String> parameterNames;
 
@@ -44,20 +43,15 @@ class JDBCServiceMethod extends ServiceMethod {
      * 
      * @param serviceMethodDescription a method description
      */
-    JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription) {
-        super(serviceMethodDescription.serviceMethodDescription);
-        this.dataSource = serviceMethodDescription.dataSource;
-        this.executorService = serviceMethodDescription.executorService;
+    JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription, JDBCServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
+        this.dataSource = serviceDescription.dataSource;
         this.query = serviceMethodDescription.query;
         this.parameterNames = serviceMethodDescription.orderedParameterNames;
     }
 
     private DataSource getDataSource() {
         return dataSource;
-    }
-
-    private ExecutorService getExecutorService() {
-        return executorService;
     }
 
     protected String getQuery() {
@@ -73,38 +67,33 @@ class JDBCServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
-        getExecutorService().submit(new Runnable() {
-            @Override
-            public void run() {
-                try (Connection connection = getDataSource().getConnection())  {
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery())) {
-                        int i = 0;
-                        for (String parameterName : getParameterNames()) {
-                            Object value = parameters.get(parameterName);
-                            if (value instanceof VString) {
-                                preparedStatement.setString(i+1, ((VString) value).getValue());
-                            } else if (value instanceof VNumber) {
-                                preparedStatement.setDouble(i+1, ((VNumber) value).getValue().doubleValue());
-                            } else {
-                                throw new RuntimeException("JDBC mapping support for " + value.getClass().getSimpleName() + " not implemented");
-                            }
-                            i++;
-                        }
-                        if (isResultQuery()) {
-                            ResultSet resultSet = preparedStatement.executeQuery();
-                            VTable table = resultSetToVTable(resultSet);
-                            callback.accept(Collections.<String, Object>singletonMap(getResults().get(0).getName(), table));
-                        } else {
-                            preparedStatement.execute();
-                            callback.accept(new HashMap<String, Object>());
-                        }
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
+        try (Connection connection = getDataSource().getConnection())  {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery())) {
+                int i = 0;
+                for (String parameterName : getParameterNames()) {
+                    Object value = parameters.get(parameterName);
+                    if (value instanceof VString) {
+                        preparedStatement.setString(i+1, ((VString) value).getValue());
+                    } else if (value instanceof VNumber) {
+                        preparedStatement.setDouble(i+1, ((VNumber) value).getValue().doubleValue());
+                    } else {
+                        throw new RuntimeException("JDBC mapping support for " + value.getClass().getSimpleName() + " not implemented");
                     }
-                } catch (Exception ex) {
-                    errorCallback.accept(ex);
+                    i++;
+                }
+                if (isResultQuery()) {
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    VTable table = resultSetToVTable(resultSet);
+                    return Collections.<String, Object>singletonMap(getResults().get(0).getName(), table);
+                } else {
+                    preparedStatement.execute();
+                    return new HashMap<String, Object>();
                 }
             }
-        });
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     /**
