@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt.javafx</groupId>
         <artifactId>javafx-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
     <artifactId>javafx</artifactId>
     <packaging>jar</packaging>

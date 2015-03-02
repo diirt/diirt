@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>graphene-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
     <artifactId>graphene-profile</artifactId>
     <name>org.diirt.graphene.profile</name>
