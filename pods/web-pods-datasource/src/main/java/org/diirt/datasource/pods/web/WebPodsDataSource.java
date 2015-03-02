@@ -16,7 +16,7 @@ import javax.websocket.WebSocketContainer;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import static org.diirt.datasource.util.Executors.namedPool;
+import static org.diirt.util.concurrent.Executors.namedPool;
 import org.diirt.datasource.vtype.DataTypeSupport;
 
 /**
