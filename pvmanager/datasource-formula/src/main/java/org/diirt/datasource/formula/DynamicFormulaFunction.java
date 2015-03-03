@@ -7,8 +7,8 @@ package org.diirt.datasource.formula;
 import org.diirt.datasource.PVDirector;
 
 /**
- * Formula function that can add and remove dynamically access to
- * pvs.
+ * Formula function that can dynamically add and remove access to
+ * channels.
  * <p>
  * This formula function is given a director which can be used to open/close
  * expressions that read real-time data.
