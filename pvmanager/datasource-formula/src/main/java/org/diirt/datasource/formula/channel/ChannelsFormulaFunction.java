@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.channel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.formula.DynamicFormulaFunction;
 import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
@@ -90,7 +91,7 @@ class ChannelsFormulaFunction extends DynamicFormulaFunction {
             if (newNames != null) {
                 for (int i = 0; i < newNames.size(); i++) {
                     if (newNames.get(i) != null && newExpressions.get(i) == null) {
-                        DesiredRateExpression<?> newExpression = new LastOfChannelExpression<Object>(newNames.get(i), Object.class);
+                        DesiredRateExpression<?> newExpression = channel(newNames.get(i), Object.class);
                         getDirector().connectReadExpression(newExpression);
                         newExpressions.set(i, newExpression);
                     }

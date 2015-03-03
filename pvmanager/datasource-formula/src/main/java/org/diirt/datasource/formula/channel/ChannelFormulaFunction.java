@@ -2,12 +2,13 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.channel;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.formula.DynamicFormulaFunction;
 import org.diirt.vtype.VString;
 
 /**
@@ -70,7 +71,7 @@ class ChannelFormulaFunction extends DynamicFormulaFunction {
             
             // Connect new
             if (newName != null) {
-                currentExpression = new LastOfChannelExpression<Object>(newName, Object.class);
+                currentExpression = channel(newName, Object.class);
                 getDirector().connectReadExpression(currentExpression);
             }
             previousName = newName;
