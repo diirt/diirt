@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+    <properties>
+        <title>Diirt changes page</title>
+        <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
+    </properties>
+  
+    <body>
+        <release version="3.0.0" date="2015/03/02" description="First release of 3.x.x branch.">
+            <action dev="carcassi"  type="add">
+                all: configuration thrugh files in DIIRT_HOME
+            </action>
+            <action dev="carcassi"  type="add">
+                core: using ServiceLoader to tie together all the components at runtime
+            </action>
+            <action dev="carcassi"  type="update">
+                util: csv parsing failure include line number
+            </action>
+            <action dev="carcassi"  type="update">
+                util: moved various utility classes to util package
+            </action>
+            <action dev="carcassi"  type="update">
+                datasource: duplicated exceptions from calculation are ignored; timeouts no longer come after value
+            </action>
+            <action dev="carcassi"  type="update">
+                formula: improved and reorganized enum and table functions
+            </action>
+            <action dev="students"  type="update">
+                graphene: groudn work for time series plot
+            </action>
+            <action dev="carcassi"  type="add">
+                javafx: first tool prototypes in JavaFX - Probe and Formula Function Browser
+            </action>
+            <action dev="carcassi"  type="add">
+                formula: parsing generates AST, which can be manipulated and supports subtree substitution
+            </action>
+            <action dev="carcassi"  type="add">
+                webpods: first version of WebSocket + JSON server
+            </action>
+            <action dev="carcassi"  type="add">
+                webpods: first version of client widgets (wp-text-monitor, wp-led, wp-table, wp-bubble)
+            </action>
+            <action dev="carcassi"  type="add">
+                webpods: first version of WebPODS datasource
+            </action>
+            <action dev="carcassi"  type="update">
+                service: uses Java 8 lambda classes
+            </action>
+            <action dev="shroffk"  type="add">
+                cf: adding channelfinder support
+            </action>
+        </release>
+    </body>
+</document>
+
