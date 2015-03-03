@@ -2,8 +2,9 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula.enums;
+package org.diirt.datasource.formula.venum;
 
+import org.diirt.datasource.formula.venum.VEnumFunctionSet;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.alarm.*;
@@ -24,9 +25,9 @@ import static org.diirt.vtype.ValueFactory.*;
  * 
  * @author carcassi
  */
-public class EnumFunctionSetTest extends BaseTestForFormula {
+public class VEnumFunctionSetTest extends BaseTestForFormula {
 
-    private EnumFunctionSet set = new EnumFunctionSet();
+    private VEnumFunctionSet set = new VEnumFunctionSet();
 
     @Test
     public void enumOf1() {
