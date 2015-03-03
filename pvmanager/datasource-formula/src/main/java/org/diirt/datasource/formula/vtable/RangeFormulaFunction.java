@@ -2,14 +2,12 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.table.Column;
+import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.vtype.VNumber;
 import org.diirt.vtype.table.ListNumberProvider;
 import org.diirt.vtype.table.VTableFactory;
 
@@ -17,7 +15,7 @@ import org.diirt.vtype.table.VTableFactory;
  *
  * @author carcassi
  */
-class ColumnFromListNumberGeneratorFunction implements FormulaFunction {
+class RangeFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -31,39 +29,39 @@ class ColumnFromListNumberGeneratorFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "column";
+        return "range";
     }
 
     @Override
     public String getDescription() {
-        return "Constructs column from a list number generator";
+        return "A generator for values between a range";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>>asList(VString.class, ListNumberProvider.class);
+        return Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("columnName", "numberGenerator");
+        return Arrays.asList("minValue", "maxValue");
     }
 
     @Override
     public Class<?> getReturnType() {
-        return Column.class;
+        return ListNumberProvider.class;
     }
 
     @Override
     public Object calculate(final List<Object> args) {
-        VString name = (VString) args.get(0);
-        ListNumberProvider data = (ListNumberProvider) args.get(1);
+        VNumber minValue = (VNumber) args.get(0);
+        VNumber maxValue = (VNumber) args.get(1);
         
-        if (name == null || data == null) {
+        if (minValue == null || maxValue == null) {
             return null;
         }
-
-        return VTableFactory.column(name.getValue(), data);
+        
+        return VTableFactory.range(minValue.getValue().doubleValue(), maxValue.getValue().doubleValue());
     }
     
 }

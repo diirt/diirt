@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.formula;
 
+import org.diirt.datasource.formula.vtable.TableFunctionSet;
 import org.junit.BeforeClass;
 
 /**

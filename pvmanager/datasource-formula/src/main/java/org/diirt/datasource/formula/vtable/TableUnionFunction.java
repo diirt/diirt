@@ -2,26 +2,23 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import java.util.ArrayList;
-import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.VString;
+import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
- * Natural join of a set of tables.
+ * Union of a set of tables.
  *
  * @author carcassi
  */
-class NaturalJoinFunction implements FormulaFunction {
+class TableUnionFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -35,22 +32,22 @@ class NaturalJoinFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "join";
+        return "union";
     }
 
     @Override
     public String getDescription() {
-        return "Natural join between tables";
+        return "Union between tables";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>>asList(VTable.class);
+        return Arrays.<Class<?>>asList(VString.class, VStringArray.class, VTable.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("tables");
+        return Arrays.asList("columnName", "columnValues", "tables");
     }
 
     @Override
@@ -60,14 +57,15 @@ class NaturalJoinFunction implements FormulaFunction {
 
     @Override
     public Object calculate(final List<Object> args) {
+        VString columnName = (VString) args.get(0);
+        VStringArray columnValues = (VStringArray) args.get(1);
         List<VTable> tables = new ArrayList<>();
-        for (Object object : args) {
-            if (object != null) {
-                tables.add((VTable) object);
-            }
+        for (int i = 2; i < args.size(); i++) {
+            Object object = args.get(i);
+            tables.add((VTable) object);
         }
         
-        return VTableFactory.join(tables);
+        return VTableFactory.union(columnName, columnValues, tables.toArray(new VTable[tables.size()]));
     }
     
 }

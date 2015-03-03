@@ -2,22 +2,22 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import java.util.Arrays;
+import org.diirt.datasource.formula.BaseTestForFormula;
+import org.diirt.datasource.formula.FormulaFunctionSet;
+import org.diirt.datasource.formula.FunctionTester;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
 import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.vtype.table.Column;
 import org.diirt.vtype.table.VTableFactory;
 import static org.diirt.vtype.table.VTableFactory.*;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
 /**

@@ -2,12 +2,13 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.vtype.VString;
@@ -20,7 +21,7 @@ import org.diirt.vtype.table.VTableFactory;
  *
  * @author carcassi
  */
-class TableStringMatchFilterFunction implements FormulaFunction {
+class TableRangeFilterFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -34,22 +35,22 @@ class TableStringMatchFilterFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "tableStringMatchFilter";
+        return "tableRangeFilter";
     }
 
     @Override
     public String getDescription() {
-        return "Extract the rows where the column value contains the given string";
+        return "Extract the rows where the column value is within the range [min, max)";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>>asList(VTable.class, VString.class, VString.class);
+        return Arrays.<Class<?>>asList(VTable.class, VString.class, VType.class, VType.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("table", "columName", "substring");
+        return Arrays.asList("table", "columName", "min", "max");
     }
 
     @Override
@@ -61,13 +62,14 @@ class TableStringMatchFilterFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VTable table = (VTable) args.get(0);
         VString columnName = (VString) args.get(1);
-        VString substring = (VString) args.get(2);
+        VType min = (VType) args.get(2);
+        VType max = (VType) args.get(3);
         
-        if (columnName == null || columnName.getValue() == null || table == null || substring == null) {
+        if (columnName == null || columnName.getValue() == null || table == null || min == null || max == null) {
             return null;
         }
         
-        VTable result = VTableFactory.tableStringMatchFilter(table, columnName.getValue(), substring.getValue());
+        VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), min, max);
         
         return result;
     }

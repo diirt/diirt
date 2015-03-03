@@ -2,11 +2,15 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VNumber;
+import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.VString;
+import org.diirt.vtype.VTable;
+import org.diirt.vtype.table.Column;
 import org.diirt.vtype.table.ListNumberProvider;
 import org.diirt.vtype.table.VTableFactory;
 
@@ -14,7 +18,7 @@ import org.diirt.vtype.table.VTableFactory;
  *
  * @author carcassi
  */
-class RangeFormulaFunction implements FormulaFunction {
+class ColumnFromListNumberGeneratorFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -28,39 +32,39 @@ class RangeFormulaFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "range";
+        return "column";
     }
 
     @Override
     public String getDescription() {
-        return "A generator for values between a range";
+        return "Constructs column from a list number generator";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
+        return Arrays.<Class<?>>asList(VString.class, ListNumberProvider.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("minValue", "maxValue");
+        return Arrays.asList("columnName", "numberGenerator");
     }
 
     @Override
     public Class<?> getReturnType() {
-        return ListNumberProvider.class;
+        return Column.class;
     }
 
     @Override
     public Object calculate(final List<Object> args) {
-        VNumber minValue = (VNumber) args.get(0);
-        VNumber maxValue = (VNumber) args.get(1);
+        VString name = (VString) args.get(0);
+        ListNumberProvider data = (ListNumberProvider) args.get(1);
         
-        if (minValue == null || maxValue == null) {
+        if (name == null || data == null) {
             return null;
         }
-        
-        return VTableFactory.range(minValue.getValue().doubleValue(), maxValue.getValue().doubleValue());
+
+        return VTableFactory.column(name.getValue(), data);
     }
     
 }

@@ -2,21 +2,20 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vtable;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.table.Column;
+import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.table.ListNumberProvider;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
- * Constructs a table column from a string array.
  *
  * @author carcassi
  */
-class ColumnFromVStringArrayFunction implements FormulaFunction {
+class StepFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -30,39 +29,39 @@ class ColumnFromVStringArrayFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "column";
+        return "step";
     }
 
     @Override
     public String getDescription() {
-        return "Constructs a table column from a string array";
+        return "A generator for values based on initial value and increment";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>>asList(VString.class, VStringArray.class);
+        return Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("columnName", "stringArray");
+        return Arrays.asList("initialValue", "increment");
     }
 
     @Override
     public Class<?> getReturnType() {
-        return Column.class;
+        return ListNumberProvider.class;
     }
 
     @Override
     public Object calculate(final List<Object> args) {
-        VString name = (VString) args.get(0);
-        VStringArray data = (VStringArray) args.get(1);
+        VNumber initialValue = (VNumber) args.get(0);
+        VNumber increment = (VNumber) args.get(1);
         
-        if (name == null || data == null) {
+        if (initialValue == null || increment == null) {
             return null;
         }
-
-        return VTableFactory.column(name.getValue(), data);
+        
+        return VTableFactory.step(initialValue.getValue().doubleValue(), increment.getValue().doubleValue());
     }
     
 }
