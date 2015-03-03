@@ -4,22 +4,13 @@
  */
 package org.diirt.datasource.formula;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import org.diirt.datasource.formula.array.ArrayFunctionSet;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VString;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
-import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
-import static org.diirt.vtype.ValueFactory.*;
 import static org.mockito.Mockito.*;
 
 /**
