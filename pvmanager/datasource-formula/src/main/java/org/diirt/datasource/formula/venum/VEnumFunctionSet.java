@@ -17,7 +17,7 @@ public class VEnumFunctionSet extends FormulaFunctionSet {
      * Creates a new set.
      */
     public VEnumFunctionSet() {
-        super(new FormulaFunctionSetDescription("enum",
+        super(new FormulaFunctionSetDescription("venum",
                 "Functions for enum manipulation")
                 .addFormulaFunction(new EnumIndexOfFunction())
                 .addFormulaFunction(new EnumFromVNumberFunction())
