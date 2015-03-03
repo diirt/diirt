@@ -115,6 +115,6 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction i
      * @param arg2 the second argument; not null
      * @return the result; not null
      */
-    abstract ListNumber calculate(ListNumber arg1, Number arg2);
+    public abstract ListNumber calculate(ListNumber arg1, Number arg2);
 
 }

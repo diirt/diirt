@@ -2,11 +2,14 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.array;
 
+import org.diirt.datasource.formula.array.ArrayFunctionSet;
 import static org.diirt.vtype.ValueFactory.*;
 
 import java.util.Arrays;
+import org.diirt.datasource.formula.FormulaFunctionSet;
+import org.diirt.datasource.formula.FunctionTester;
 
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;

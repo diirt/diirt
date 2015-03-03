@@ -5,6 +5,7 @@
 package org.diirt.datasource.formula;
 
 import org.diirt.datasource.PVDirector;
+import org.diirt.datasource.expression.DesiredRateExpression;
 
 /**
  * Formula function that can dynamically add and remove access to
@@ -26,6 +27,22 @@ public abstract class DynamicFormulaFunction extends StatefulFormulaFunction {
      */
     public final PVDirector<?> getDirector() {
         return director;
+    }
+    
+    /**
+     * Expression for the last value of the given channel, suitable to be
+     * used within formula.
+     * <p>
+     * TODO: we need to clarify when it is better to use this method directly,
+     * and when to use the normal expressions.
+     * 
+     * @param <T> the expression type
+     * @param channelName the channel name
+     * @param clazz the expression type
+     * @return a new expression
+     */
+    public final <T> DesiredRateExpression<T> channel(String channelName, Class clazz) {
+        return new LastOfChannelExpression<>(channelName, clazz);
     }
     
     /**

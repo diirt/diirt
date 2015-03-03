@@ -9,9 +9,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import org.diirt.datasource.formula.array.ArrayFunctionSet;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -96,7 +98,48 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature1() {
-        FormulaFunction function = new ArrayOfNumberFormulaFunction();
+        FormulaFunction function = new FormulaFunction() {
+
+            @Override
+            public boolean isPure() {
+                return true;
+            }
+
+            @Override
+            public boolean isVarArgs() {
+                return true;
+            }
+
+            @Override
+            public String getName() {
+                return "arrayOf";
+            }
+
+            @Override
+            public String getDescription() {
+                return "";
+            }
+
+            @Override
+            public List<Class<?>> getArgumentTypes() {
+                return Arrays.asList(VNumber.class);
+            }
+
+            @Override
+            public List<String> getArgumentNames() {
+                return Arrays.asList("args");
+            }
+
+            @Override
+            public Class<?> getReturnType() {
+                return VNumberArray.class;
+            }
+
+            @Override
+            public Object calculate(List<Object> args) {
+                throw new UnsupportedOperationException("Not supported.");
+            }
+        };
         assertThat(FormulaFunctions.formatSignature(function), equalTo("arrayOf(VNumber... args): VNumberArray"));
     }
     

@@ -2,8 +2,13 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.array;
 
+import org.diirt.datasource.formula.AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction;
+import org.diirt.datasource.formula.AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction;
+import org.diirt.datasource.formula.AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction;
+import org.diirt.datasource.formula.FormulaFunctionSet;
+import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 import org.diirt.util.array.ListMath;
 import org.diirt.util.array.ListNumber;
 import org.diirt.vtype.VNumberArray;
@@ -30,14 +35,14 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                         new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(array[x], expon)",
                                 "array", "expon") {
                     @Override
-                    ListNumber calculate(ListNumber arg1, Number arg2) {
+                    public ListNumber calculate(ListNumber arg1, Number arg2) {
                         return ListMath.pow(arg1, arg2.doubleValue());
                     }
                 })
                 .addFormulaFunction(
                         new AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(base, array[x])", "base", "array") {
                     @Override
-                    ListNumber calculate(Number arg1, ListNumber arg2) {
+                    public ListNumber calculate(Number arg1, ListNumber arg2) {
                         return ListMath.pow(arg1.doubleValue(), arg2);
                     }
                 })
@@ -50,7 +55,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array1", "array2") {
 
                             @Override
-                            ListNumber calculate(ListNumber array1, ListNumber array2) {
+                            public ListNumber calculate(ListNumber array1, ListNumber array2) {
                                 return ListMath.multiply(array1, array2);
                             }
                         })
@@ -59,7 +64,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array1", "array2") {
 
                             @Override
-                            ListNumber calculate(ListNumber array1, ListNumber array2) {
+                            public ListNumber calculate(ListNumber array1, ListNumber array2) {
                                 return ListMath.divide(array1, array2);
                             }
                         })
@@ -71,7 +76,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array1", "array2") {
 
                             @Override
-                            ListNumber calculate(ListNumber array1, ListNumber array2) {
+                            public ListNumber calculate(ListNumber array1, ListNumber array2) {
                                 return ListMath.add(array1, array2);
                             }
                         })
@@ -80,7 +85,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array1", "array2") {
 
                             @Override
-                            ListNumber calculate(ListNumber array1, ListNumber array2) {
+                            public ListNumber calculate(ListNumber array1, ListNumber array2) {
                                 return ListMath.subtract(array1, array2);
                             }
                         })
@@ -89,7 +94,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "offset") {
 
                             @Override
-                            ListNumber calculate(ListNumber array, Number offset) {
+                            public ListNumber calculate(ListNumber array, Number offset) {
                                 return ListMath.rescale(array, 1.0, offset.doubleValue());
                             }
                         })
@@ -98,7 +103,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "offset", "array") {
 
                             @Override
-                            ListNumber calculate(Number offset, ListNumber array) {
+                            public ListNumber calculate(Number offset, ListNumber array) {
                                 return ListMath.rescale(array, 1.0, offset.doubleValue());
                             }
                         })
@@ -107,7 +112,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "offset") {
 
                             @Override
-                            ListNumber calculate(ListNumber array, Number offset) {
+                            public ListNumber calculate(ListNumber array, Number offset) {
                                 return ListMath.rescale(array, 1.0, -offset.doubleValue());
                             }
                         })
@@ -116,7 +121,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "offset", "array") {
 
                             @Override
-                            ListNumber calculate(Number offset, ListNumber array) {
+                            public ListNumber calculate(Number offset, ListNumber array) {
                                 return ListMath.rescale(array, -1.0, offset.doubleValue());
                             }
                         })
@@ -125,7 +130,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "num", "array") {
 
                             @Override
-                            ListNumber calculate(Number numerator, ListNumber array) {
+                            public ListNumber calculate(Number numerator, ListNumber array) {
                                 return ListMath.inverseRescale(array, numerator.doubleValue(), 0.0);
                             }
                         })
@@ -134,7 +139,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "num") {
 
                             @Override
-                            ListNumber calculate(ListNumber array, Number num) {
+                            public ListNumber calculate(ListNumber array, Number num) {
                                 return ListMath.rescale(array, num.doubleValue(), 0.0);
                             }
                         })
@@ -143,7 +148,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "num", "array") {
 
                             @Override
-                            ListNumber calculate(Number num, ListNumber array) {
+                            public ListNumber calculate(Number num, ListNumber array) {
                                 return ListMath.rescale(array, num.doubleValue(), 0.0);
                             }
                         })
@@ -152,7 +157,7 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "num") {
 
                             @Override
-                            ListNumber calculate(ListNumber array, Number num) {
+                            public ListNumber calculate(ListNumber array, Number num) {
                                 return ListMath.rescale(array, (1 / num.doubleValue()), 0.0);
                             }
                         })

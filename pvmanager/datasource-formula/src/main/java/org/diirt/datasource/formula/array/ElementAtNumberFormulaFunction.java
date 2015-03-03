@@ -2,26 +2,24 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.array;
 
 import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.newVNumberArray;
+import static org.diirt.vtype.ValueFactory.newVNumber;
 
 import java.util.Arrays;
 import java.util.List;
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.util.array.ArrayDouble;
 
-import org.diirt.util.array.ListMath;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueUtil;
 
 /**
- * @author carcassi
+ * @author shroffk
  *
  */
-class ArrayRangeOfFormulaFunction implements FormulaFunction {
+class ElementAtNumberFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
@@ -35,29 +33,45 @@ class ArrayRangeOfFormulaFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "arrayRangeOf";
+        return "elementAt";
     }
 
     @Override
     public String getDescription() {
-        return "Returns the range where the array is defined";
+        return "Result = array[index]";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return Arrays.<Class<?>> asList(VNumberArray.class);
+        return Arrays.<Class<?>> asList(VNumberArray.class, VNumber.class);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.epics.pvmanager.formula.FormulaFunction#getArgumentNames()
+     */
     @Override
     public List<String> getArgumentNames() {
-        return Arrays.asList("array");
+        return Arrays.asList("Array", "index");
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.epics.pvmanager.formula.FormulaFunction#getReturnType()
+     */
     @Override
     public Class<?> getReturnType() {
-        return VNumberArray.class;
+        return VNumber.class;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.epics.pvmanager.formula.FormulaFunction#calculate(java.util.List)
+     */
     @Override
     public Object calculate(List<Object> args) {
         if (NullUtils.containsNull(args)) {
@@ -65,14 +79,11 @@ class ArrayRangeOfFormulaFunction implements FormulaFunction {
         }
         
         VNumberArray numberArray = (VNumberArray) args.get(0);
-        double min = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(0);
-        double max = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(numberArray.getSizes().getInt(0));
+        VNumber index = (VNumber) args.get(1);
+        int i = index.getValue().intValue();
         
-        return newVNumberArray(
-                new ArrayDouble(min, max),
-                ValueUtil.highestSeverityOf(args, false),
-                ValueUtil.latestValidTimeOrNowOf(args),
-                displayNone());
+        return newVNumber(numberArray.getData().getDouble(i),
+                numberArray, numberArray, displayNone());
     }
 
 }

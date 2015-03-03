@@ -2,7 +2,7 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.array;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,12 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import org.diirt.datasource.expression.DesiredRateExpression;
+import org.diirt.datasource.formula.DynamicFormulaFunction;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.table.VTableFactory;
 
@@ -80,13 +78,13 @@ class CaHistogramFormulaFunction extends DynamicFormulaFunction {
             
             // Connect new expressions
             if (newName != null) {
-                DesiredRateExpression<?> newExpression = new LastOfChannelExpression<Object>(newName, Object.class);
+                DesiredRateExpression<?> newExpression = channel(newName, Object.class);
                 getDirector().disconnectReadExpression(newExpression);
                 newExpressions.set(0, newExpression);
-                newExpression = new LastOfChannelExpression<Object>(newName + ".LLIM", Object.class);
+                newExpression = channel(newName + ".LLIM", Object.class);
                 getDirector().disconnectReadExpression(newExpression);
                 newExpressions.set(1, newExpression);
-                newExpression = new LastOfChannelExpression<Object>(newName + ".ULIM", Object.class);
+                newExpression = channel(newName + ".ULIM", Object.class);
                 getDirector().disconnectReadExpression(newExpression);
                 newExpressions.set(2, newExpression);
             }
